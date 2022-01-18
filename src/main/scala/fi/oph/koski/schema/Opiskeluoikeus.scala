@@ -83,6 +83,9 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   def withSuoritukset(suoritukset: List[PäätasonSuoritus]): Opiskeluoikeus = {
     shapeless.lens[Opiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").set(this)(suoritukset)
   }
+  def aktiivinen = {
+    !tila.opiskeluoikeusjaksot.exists(_.opiskeluoikeusPäättynyt)
+  }
 }
 
 object OpiskeluoikeudenTyyppi {

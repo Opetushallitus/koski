@@ -68,7 +68,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
       "lähdejärjestelmällisellä suorituksella" in {
         val json =
           """[{
-           "lähdejärjestelmänId": "12345",
+          "lähdejärjestelmänId": "l-050504",
           "oppilaitosOid": "1.2.246.562.10.52251087186",
           "suorituksenTyyppi": "ammatillinentutkinto",
           "koulutusmoduulinTunniste": "351301"
@@ -288,7 +288,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
       "lähdejärjestelmällisellä suorituksella" in {
         val oppija = getSuoritusjakoOppija(secrets("lähdejärjestelmällinen"))
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
-          lähdejärjestelmänId = Some("12345"),
+          lähdejärjestelmänId = Some("l-050504"),
           oppilaitosOid = Some("1.2.246.562.10.52251087186"),
           suorituksenTyyppi = "ammatillinentutkinto",
           koulutusmoduulinTunniste = "351301"

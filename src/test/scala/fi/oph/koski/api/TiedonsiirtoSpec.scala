@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
+import fi.oph.koski.documentation.AmmatillinenExampleData.{lähdeWinnova, winnovaLähdejärjestelmäId}
 import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.eerola
@@ -76,8 +76,8 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   }
 
   "Esiopetus" in {
-    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
-    val esiopetusOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeusHelsingissä.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("848223"), lähdeWinnova)))
+    val esiopetusOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeusHelsingissä.copy(lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("43349052"), lähdeWinnova)))
     val markkanen = asUusiOppija(KoskiSpecificMockOppijat.markkanen)
 
     resetFixtures
@@ -105,7 +105,7 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   }
 
   "Tiedonsiirtolokin katsominen" - {
-    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-304ir3")))
     "hierarkiassa ylempänä oleva käyttäjä voi katsoa hierarkiasssa alempana olevan käyttäjän luomia rivejä" in {
       resetFixtures
       putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
@@ -197,7 +197,7 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   }
 
   "Virheellisten tiedonsiirtojen poistaminen" - {
-    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-9534")))
 
     "onnistuu omille virheellisille tiedonsiirtoriveille" in {
       resetFixtures

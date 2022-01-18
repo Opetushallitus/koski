@@ -152,8 +152,6 @@ object AmmatillinenExampleData {
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", "8406")
   lazy val lähdeWinnova = Koodistokoodiviite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   lazy val lähdePrimus = Koodistokoodiviite("primus", Some("Primus"), "lahdejarjestelma", Some(1))
-  lazy val winnovaLähdejärjestelmäId = LähdejärjestelmäId(Some("12345"), lähdeWinnova)
-  lazy val primusLähdejärjestelmäId = LähdejärjestelmäId(Some("12345"), lähdePrimus)
   lazy val arvosanaViisi = Koodistokoodiviite("5", Some("5"), "arviointiasteikkoammatillinen15", Some(1))
   lazy val arviointiViisi = Some(List(arviointi(arvosanaViisi)))
   lazy val hyväksytty: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1))
@@ -187,6 +185,9 @@ object AmmatillinenExampleData {
     vahvistus = vahvistusValinnaisellaTittelillä(date(2013, 5, 31), stadinAmmattiopisto),
     tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
   )
+
+  def winnovaLähdejärjestelmäId(ooId: String) = LähdejärjestelmäId(Some(ooId), lähdeWinnova)
+  def primusLähdejärjestelmäId(ooId: String) = LähdejärjestelmäId(Some(ooId), lähdePrimus)
 
   def autonLisävarustetyöt(pakollinen: Boolean, kuvaus: String = "Tuunaus") = MuuValtakunnallinenTutkinnonOsa(
     Koodistokoodiviite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", Some(1)),

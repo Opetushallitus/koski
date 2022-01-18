@@ -2,11 +2,11 @@ package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
-import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
+import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste, suoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste}
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koululainen
@@ -195,12 +195,12 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Mahdollistaa lähdejärjestelmä-id:n vaihtamisen (case: oppilaitos vaihtaa tietojärjestelmää)" in {
-        val original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+        val original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-23352")))
 
-        verifyChange(original = original, user = helsinginKaupunkiPalvelukäyttäjä, change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(lähdejärjestelmänId = Some(primusLähdejärjestelmäId)) }) {
+        verifyChange(original = original, user = helsinginKaupunkiPalvelukäyttäjä, change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(lähdejärjestelmänId = Some(primusLähdejärjestelmäId("primus-30405321"))) }) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
-          result.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo) should equal(Some(primusLähdejärjestelmäId.lähdejärjestelmä.koodiarvo))
+          result.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo) should equal(Some(primusLähdejärjestelmäId("").lähdejärjestelmä.koodiarvo))
         }
       }
 
@@ -227,7 +227,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     }
 
     "Käytettäessä lähdejärjestelmä-id:tä" - {
-      val original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+      val original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-03520f")))
 
       "Muokkaa olemassaolevaa opiskeluoikeutta, kun lähdejärjestelmä-id on sama" in {
         resetFixtures
@@ -250,7 +250,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Estää tyypin vaihtamisen" in {
-        verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => TestMethodsLukio.lukionOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId), oppilaitos = existing.oppilaitos)}) {
+        verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => TestMethodsLukio.lukionOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-03520f")), oppilaitos = existing.oppilaitos)}) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ammatillinenkoulutus. Uusi tyyppi lukiokoulutus."))
         }
       }
@@ -268,11 +268,10 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
       "Estää opiskeluoikeuden siirtymisen eri henkilölle" in {
         resetFixtures
-        val lähdejärjestelmänId2 = LähdejärjestelmäId(Some("123452"), AmmatillinenExampleData.lähdeWinnova)
         createOpiskeluoikeus(koululainen, original, user = helsinginKaupunkiPalvelukäyttäjä)
         val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
 
-        createOrUpdate(koululainen, opiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)), {
+        createOrUpdate(koululainen, opiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-kf040431n"))), {
           verifyResponseStatus(403, ErrorMatcher.regex(KoskiErrorCategory.forbidden.oppijaOidinMuutos, "Oppijan oid.*ei löydy opiskeluoikeuden oppijan oideista.*".r))
         }, helsinginKaupunkiPalvelukäyttäjä)
       }
@@ -438,7 +437,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
     }
     "Väärän muotoinen hetu" in {
-      putOppija(Oppija(oppija.copy(hetu = "291297"), List(defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)))), headers = authHeaders(MockUsers.helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      putOppija(Oppija(oppija.copy(hetu = "291297"), List(defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-väärähetu"))))), headers = authHeaders(MockUsers.helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: 291297"))
       }
     }
@@ -517,6 +516,37 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         val muutos = ensimmäinenOpiskeluoikeus.withOppilaitos(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto))
         putOppija(Oppija(oppija, List(muutos))) {
           verifyResponseStatusOk()
+        }
+      }
+      "Siirron esto koskee myös lähdejärjestelmällistä siirtoa" in {
+        resetFixtures
+
+        val opiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus.copy(
+          lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("654321"), lähdeWinnova)),
+          oppilaitos = Some(Oppilaitos(YleissivistavakoulutusExampleData.päiväkotiVironniemi.oid)),
+          koulutustoimija = Some(YleissivistavakoulutusExampleData.helsinki),
+          suoritukset = List(
+            suoritus(perusteenDiaarinumero = "102/011/2014",
+              tunniste = päiväkodinEsiopetuksenTunniste,
+              toimipiste = Oppilaitos(YleissivistavakoulutusExampleData.päiväkotiVironniemi.oid))),
+        )
+        putOppija(Oppija(oppija, List(opiskeluoikeus)), headers = authHeaders(paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[EsiopetuksenOpiskeluoikeus]
+        val muutos = ensimmäinenOpiskeluoikeus.copy(
+          lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("654321"), lähdeWinnova)),
+          oid = None,
+          oppilaitos = Some(Oppilaitos(YleissivistavakoulutusExampleData.kulosaarenAlaAste.oid)),
+          suoritukset = List(
+            suoritus(perusteenDiaarinumero = "102/011/2014",
+              tunniste = päiväkodinEsiopetuksenTunniste,
+              toimipiste = Oppilaitos(YleissivistavakoulutusExampleData.kulosaarenAlaAste.oid))),
+        )
+
+        putOppija(Oppija(oppija, List(muutos)), headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto())
         }
       }
     }

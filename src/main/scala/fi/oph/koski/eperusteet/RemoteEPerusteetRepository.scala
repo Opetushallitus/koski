@@ -1,7 +1,7 @@
 package fi.oph.koski.eperusteet
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
-import fi.oph.koski.http.Http
+import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
@@ -29,8 +29,13 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
     findPerusteenYksilöintitiedot(diaariNumero)
-      .map(e => runIO(http.get(uri"/api/perusteet/${e.id}/kaikki")(Http.parseJson[EPerusteRakenne])))
+      .map(e => rakenneCache(e.id.toString).getOrElse(throw new HttpStatusException(404, "Tutkinnon rakennetta ei löytynyt ePerusteista", "GET", s"/api/perusteet/${e.id}/kaikki")))
   }
+
+  private val rakenneCache = KeyValueCache[String, Option[EPerusteRakenne]](
+    ExpiringCache("EPerusteetRepository.rakenne", 2.minutes, 50),
+    id => runIO(http.get(uri"/api/perusteet/${id}/kaikki")(Http.parseJsonOptional[EPerusteRakenne]))
+  )
 
   def findRakenteet(diaarinumero: String): List[EPerusteRakenne] = {
     runIO(http.get(uri"/api/perusteet?diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteRakenteet])).data

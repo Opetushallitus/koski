@@ -441,7 +441,7 @@ describe('Ammatillinen koulutus', function() {
         before(
           insertExample('ammatillinen - reformin mukainen perustutkinto.json'),
           page.openPage,
-          page.oppijaHaku.searchAndSelect('280618-402H'),
+          page.oppijaHaku.searchAndSelect('020882-577H'),
           click(findFirst('.expand-all'))
         )
 
