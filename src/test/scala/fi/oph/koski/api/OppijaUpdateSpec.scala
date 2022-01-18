@@ -268,7 +268,6 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
       "Estää opiskeluoikeuden siirtymisen eri henkilölle" in {
         resetFixtures
-        val lähdejärjestelmänId2 = LähdejärjestelmäId(Some("123452"), AmmatillinenExampleData.lähdeWinnova)
         createOpiskeluoikeus(koululainen, original, user = helsinginKaupunkiPalvelukäyttäjä)
         val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
 

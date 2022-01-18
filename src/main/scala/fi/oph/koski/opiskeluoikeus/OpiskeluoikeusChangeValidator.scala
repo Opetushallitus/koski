@@ -4,7 +4,7 @@ import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
-import fi.oph.koski.validation.AmmatillinenValidation.validateVanhanOpiskeluoikeudenTapaukset
+import fi.oph.koski.validation.AmmatillinenValidation
 
 class OpiskeluoikeusChangeValidator(organisaatioRepository: OrganisaatioRepository, ePerusteet: EPerusteetRepository) {
   def validateOpiskeluoikeusChange(oldState: KoskeenTallennettavaOpiskeluoikeus, newState: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
@@ -12,7 +12,7 @@ class OpiskeluoikeusChangeValidator(organisaatioRepository: OrganisaatioReposito
       validateOpiskeluoikeudenTyypinMuutos(oldState, newState),
       validateLähdejärjestelmäIdnPoisto(oldState, newState),
       validateOppilaitoksenMuutos(oldState, newState),
-      validateVanhanOpiskeluoikeudenTapaukset(oldState, newState, ePerusteet)
+      AmmatillinenValidation.validateVanhanOpiskeluoikeudenTapaukset(oldState, newState, ePerusteet)
     )
   }
 

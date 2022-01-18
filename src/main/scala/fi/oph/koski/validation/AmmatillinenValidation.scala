@@ -24,12 +24,7 @@ object AmmatillinenValidation {
   private def validateUseaPäätasonSuoritus(opiskeluoikeus: AmmatillinenOpiskeluoikeus): HttpStatus = {
     opiskeluoikeus.suoritukset.length match {
       case 1 => HttpStatus.ok
-      case 2 =>
-        if (näyttötutkintoJaNäyttöönValmistavaLöytyvät(opiskeluoikeus)) {
-          HttpStatus.ok
-        } else {
-          KoskiErrorCategory.badRequest.validation.ammatillinen.useampiPäätasonSuoritus()
-        }
+      case 2 if näyttötutkintoJaNäyttöönValmistavaLöytyvät(opiskeluoikeus) => HttpStatus.ok
       case _ => KoskiErrorCategory.badRequest.validation.ammatillinen.useampiPäätasonSuoritus()
     }
   }
@@ -41,12 +36,6 @@ object AmmatillinenValidation {
     } && opiskeluoikeus.suoritukset.exists {
       case _: NäyttötutkintoonValmistavanKoulutuksenSuoritus => true
       case _ => false
-    }
-  }
-
-  private def suoritustavat(oo: AmmatillinenOpiskeluoikeus): List[String] = {
-    oo.suoritukset.collect {
-      case osittainenTaiKokonainen: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => osittainenTaiKokonainen.suoritustapa.koodiarvo
     }
   }
 
@@ -118,5 +107,11 @@ object AmmatillinenValidation {
         case _ => true
       }
     ).map(_.koulutusmoduuli.tunniste.koodiarvo)
+  }
+
+  private def suoritustavat(oo: AmmatillinenOpiskeluoikeus): List[String] = {
+    oo.suoritukset.collect {
+      case osittainenTaiKokonainen: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => osittainenTaiKokonainen.suoritustapa.koodiarvo
+    }
   }
 }
