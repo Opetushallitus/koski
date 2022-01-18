@@ -1,6 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## x.12.2021
+## 18.1.2022
+- Ammatillisen opiskeluoikeuden tutkintokoodin ja suoritustavan muuttamiseen liittyvä, 13.12.2021 luotu validaatio ollut virheellinen; Validaatio korjattu. Ammatillisen opiskeluoikeuden tutkintokoodia (suorituksen koulutusmoduulin koodiarvo) ja suoritustapaa ei voi vaihtaa ammatillisen opiskeluoikeuden luonnin jälkeen.
+- Validaatio liittyen oppilaitoksen vaihtoon ollut virheellinen. Oppilaitosta, joka on aktiivinen, ei voi vaihtaa jos koulutustoimija pysyy samana.
+
+## 20.12.2021
 - Perusopetuksen (aikuiset, nuoret ja lukio) ja perusopetuksen lisäopetuksen kenttää "tehostetunTuenPäätökset" ei enää oteta siirroissa vastaan; tieto tiputetaan pois ilman virhettä/varoitusta
 - Perusopetuksen (nuoret) ja perusopetuksen lisäopetuksen kenttää "perusopetuksenAloittamistaLykätty"  ei enää oteta siirroissa vastaan; tieto tiputetaan pois ilman virhettä/varoitusta
 
