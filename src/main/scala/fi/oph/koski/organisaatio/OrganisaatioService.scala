@@ -68,6 +68,12 @@ class OrganisaatioService(application: KoskiApplication) {
       .filter(_.aktiivinen)
       .flatMap(_.toKunta)
 
+  def haeKuntakoodi(organisaatioOid: String): Option[String] =
+    aktiivisetKunnat()
+      .find(_.oid == organisaatioOid)
+      .flatMap(_.kotipaikka)
+      .map(_.koodiarvo)
+
   private def koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat: Set[Oid])(implicit user: Session): List[OrganisaatioHierarkia] =
     perustiedot.haeVarhaiskasvatustoimipisteet(koulutustoimijat) match {
       case päiväkoditJoihinTallennettuOpiskeluoikeuksia if päiväkoditJoihinTallennettuOpiskeluoikeuksia.nonEmpty =>

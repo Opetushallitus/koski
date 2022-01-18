@@ -11,7 +11,7 @@ export type HetuhakuInput = {
 }
 
 export type KuntarouhintaInput = {
-  kunta: string
+  kuntaOid: string
   lang?: Language
   password?: string
 }

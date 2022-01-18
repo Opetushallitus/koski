@@ -3,6 +3,7 @@ package fi.oph.koski.valpas
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
@@ -87,13 +88,13 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
     }
 
     "toimii kuntakäyttäjänä" in {
-      doKuntaQuery(ValpasMockUsers.valpasHelsinki) {
+      doKuntaQuery(ValpasMockUsers.valpasHelsinki, MockOrganisaatiot.helsinginKaupunki) {
         verifyResponseStatusOk()
       }
     }
 
     "Hylkää, jos kysellään Ahvenanmaan kuntia" in {
-      val kunta = AhvenanmaanKunnat.ahvenanmaanKunnat(0)
+      val kunta = MockOrganisaatiot.maarianhamina
 
       doKuntaQuery(ValpasMockUsers.valpasOphPääkäyttäjä, kunta) {
         verifyResponseStatus(400,
@@ -102,7 +103,7 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
     }
 
     "Hylkää, jos kysellään kuntakoodiston muita koodeja kuin oikeita kuntia" in {
-      val kunta = "199"
+      val kunta = MockOrganisaatiot.evira
 
       doKuntaQuery(ValpasMockUsers.valpasOphPääkäyttäjä, kunta) {
         verifyResponseStatus(400,
@@ -135,11 +136,11 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
     }
 
     "jättää merkinnän auditlokiin" in {
-      doKuntaQuery(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu, ValpasKuntarouhintaSpec.kunta) {
+      doKuntaQuery(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu, ValpasKuntarouhintaSpec.kuntaOid) {
         AuditLogTester.verifyAuditLogMessage(Map(
           "operation" -> ValpasOperation.VALPAS_ROUHINTA_KUNTA.toString,
           "target" -> Map(
-            ValpasAuditLogMessageField.hakulause.toString -> ValpasKuntarouhintaSpec.kunta,
+            ValpasAuditLogMessageField.hakulause.toString -> ValpasKuntarouhintaSpec.kuntakoodi,
             ValpasAuditLogMessageField.oppijaHenkilöOidList.toString ->
               ValpasKuntarouhintaSpec.eiOppivelvollisuuttaSuorittavatOppijat(t)
                 .map(_.oppija.oid)
@@ -168,11 +169,11 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
     }
   }
 
-  private def doKuntaQuery(user: ValpasMockUser, kunta: String = "091")(f: => Unit) = {
+  private def doKuntaQuery(user: ValpasMockUser, kuntaOid: String = ValpasKuntarouhintaSpec.kuntaOid)(f: => Unit) = {
     val kuntaQuery =
       s"""
       {
-        "kunta": "${kunta}",
+        "kuntaOid": "${kuntaOid}",
         "password": "hunter2",
         "lang": "fi"
       }

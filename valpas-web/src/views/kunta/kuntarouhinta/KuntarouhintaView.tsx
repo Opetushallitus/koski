@@ -34,6 +34,7 @@ import {
   withRequiresKuntavalvonta,
 } from "../../../state/accessRights"
 import { KuntarouhintaInput } from "../../../state/apitypes/rouhinta"
+import { Oid } from "../../../state/common"
 import { usePassword } from "../../../state/password"
 import {
   kuntarouhintaPathWithOid,
@@ -85,14 +86,9 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
       kuntarouhintaPathWithOid
     )
 
-    const kunta = useMemo(
-      () => organisaatiot.find((o) => o.oid === organisaatioOid)?.kotipaikka,
-      [organisaatiot, organisaatioOid]
-    )
-
-    const rouhintaQuery: [KuntarouhintaInput] | undefined = useMemo(
-      () => kunta && [createQuery(kunta.koodiarvo)],
-      [kunta]
+    const rouhintaQuery: [KuntarouhintaInput] = useMemo(
+      () => [createQuery(organisaatioOid)],
+      [organisaatioOid]
     )
 
     const rouhintaFetch = useApiMethod(
@@ -105,18 +101,19 @@ export const KuntarouhintaView = withRequiresKuntavalvonta(
     )
 
     const fetchTableData = useCallback(() => {
-      if (kunta?.koodiarvo) {
-        rouhintaFetch.call(createQuery(kunta.koodiarvo))
-      }
-    }, [kunta?.koodiarvo, rouhintaFetch])
+      rouhintaFetch.call(createQuery(organisaatioOid))
+    }, [organisaatioOid, rouhintaFetch])
 
     const password = usePassword()
     const rouhintaDownload = useApiMethod(downloadKuntarouhinta)
     const downloadData = useCallback(() => {
-      if (kunta?.koodiarvo) {
-        rouhintaDownload.call(createQuery(kunta.koodiarvo, password))
-      }
-    }, [kunta?.koodiarvo, password, rouhintaDownload])
+      rouhintaDownload.call(createQuery(organisaatioOid, password))
+    }, [organisaatioOid, password, rouhintaDownload])
+
+    const kunta = useMemo(
+      () => organisaatiot.find((o) => o.oid === organisaatioOid)?.kotipaikka,
+      [organisaatiot, organisaatioOid]
+    )
 
     return (
       <Page>
@@ -246,10 +243,7 @@ const OrganisaatioMissingView = () => (
   />
 )
 
-const createQuery = (
-  kuntakoodi: string,
-  password?: string
-): KuntarouhintaInput => ({
-  kunta: kuntakoodi,
+const createQuery = (kuntaOid: Oid, password?: string): KuntarouhintaInput => ({
+  kuntaOid,
   password,
 })

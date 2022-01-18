@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.localization.LocalizationReader
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaService
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
@@ -11,7 +12,8 @@ import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 object ValpasKuntarouhintaSpec {
   val tarkastelupäivä = date(2021, 5, 20)
 
-  val kunta = "624" // Pyhtää
+  val kuntakoodi = "624" // Pyhtää
+  val kuntaOid = MockOrganisaatiot.pyhtäänKunta
 
   def eiOppivelvollisuuttaSuorittavatOppijat(t: LocalizationReader) = List(
     RouhintaExpectedData(
@@ -155,7 +157,7 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
   private def loadKuntahaku() = {
     new ValpasRouhintaService(KoskiApplicationForTests)
       .haeKunnanPerusteellaExcel(
-        kunta = ValpasKuntarouhintaSpec.kunta,
+        kunta = ValpasKuntarouhintaSpec.kuntakoodi,
         language = "fi",
         password = Some("hunter2")
       )(session(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu))
