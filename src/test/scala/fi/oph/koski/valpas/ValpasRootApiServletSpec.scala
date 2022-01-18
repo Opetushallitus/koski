@@ -73,7 +73,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     authGet(url, ValpasMockUsers.valpasMonta) {
       verifyResponseStatusOk()
       Thread.sleep(200) // wait for logging to catch up (there seems to be a slight delay)
-      AccessLogTester.getLogMessages.lastOption.get.getMessage.toString should include(maskedHetu)
+      AccessLogTester.getLogMessages.lastOption.get should include(maskedHetu)
     }
   }
 

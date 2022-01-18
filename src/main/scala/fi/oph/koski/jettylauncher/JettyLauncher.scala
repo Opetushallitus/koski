@@ -21,7 +21,7 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
 
 object JettyLauncher extends App with Logging {
-  LogConfiguration.configureLoggingWithFileWatch()
+  LogConfiguration.configureLogging()
 
   private val globalPort = System.getProperty("koski.port", "7021").toInt
 

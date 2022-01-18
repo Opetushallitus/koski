@@ -3,7 +3,7 @@ package fi.oph.koski
 import fi.oph.koski.log.LogConfiguration
 
 object TestEnvironment {
-  LogConfiguration.configureLoggingWithFileWatch()
+  LogConfiguration.configureLogging(isTestEnvironment = true)
 }
 
 trait TestEnvironment {

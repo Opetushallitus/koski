@@ -1,24 +1,23 @@
 package fi.oph.koski.log
 
 import fi.oph.koski.json.GenericJsonFormats
-import fi.vm.sade.auditlog.Audit
-import org.apache.log4j.Logger
-import org.apache.log4j.spi.LoggingEvent
 import org.json4s.JsonAST.JObject
 import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.matchers.should.Matchers
 
 object AuditLogTester extends Matchers with LogTester {
+  override def appenderName: String = "Audit"
+
   def verifyAuditLogMessage(params: Map[String, Any]): Unit = {
-    val message = getLogMessages.lastOption.map(m => parse(m.getMessage.toString))
+    val message = getLogMessages.lastOption.map(m => parse(m))
     message match {
       case Some(msg: JObject) => verifyAuditLogMessage(msg, params)
       case _ => throw new IllegalStateException("No audit log message found")
     }
   }
 
-  def verifyAuditLogMessage(loggingEvent: LoggingEvent, params: Map[String, Any]): Unit = {
-    parse(loggingEvent.getMessage.toString) match {
+  def verifyAuditLogMessage(loggingEvent: String, params: Map[String, Any]): Unit = {
+    parse(loggingEvent) match {
       case msg: JObject => verifyAuditLogMessage(msg, params)
       case _ => throw new IllegalStateException("No audit log message found")
     }
@@ -40,6 +39,4 @@ object AuditLogTester extends Matchers with LogTester {
       case _ => ???
     }
   }
-
-  override def getLogger: Logger = Logger.getLogger(classOf[Audit])
 }

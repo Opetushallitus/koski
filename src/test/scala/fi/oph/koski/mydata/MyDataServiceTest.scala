@@ -13,7 +13,6 @@ class MyDataServiceTest extends AnyFreeSpec with TestEnvironment with Matchers w
   val memberId = "hsl"
 
   before {
-    AuditLogTester.setup
     AuditLogTester.clearMessages
   }
 

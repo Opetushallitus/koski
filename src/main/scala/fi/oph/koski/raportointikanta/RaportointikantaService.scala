@@ -5,8 +5,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.RaportointiDatabaseConfig
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
-import org.apache.log4j.LogManager
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
@@ -128,7 +126,6 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private val tietokantaUpload = "database-upload"
 
   private def shutdown = {
-    LogManager.shutdown()
     Thread.sleep(60000) //Varmistetaan, että kaikki logit ehtivät varmasti siirtyä Cloudwatchiin ennen sulkemista.
     sys.exit()
   }
