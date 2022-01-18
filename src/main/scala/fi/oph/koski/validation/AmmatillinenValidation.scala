@@ -41,8 +41,9 @@ object AmmatillinenValidation {
 
   private def validatePerusteVoimassa(opiskeluoikeus: AmmatillinenOpiskeluoikeus, ePerusteet: EPerusteetRepository, config: Config): HttpStatus = {
     val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan")).minusDays(1)
+    val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
 
-    if (!opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(_.opiskeluoikeusPäättynyt) && LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)) {
+    if (opiskeluoikeus.aktiivinen && voimassaolotarkastusAstunutVoimaan) {
       opiskeluoikeus.suoritukset.head.koulutusmoduuli match {
         case diaarillinen: DiaarinumerollinenKoulutus if diaarillinen.perusteenDiaarinumero.isDefined =>
           ePerusteet.findUusinRakenne(diaarillinen.perusteenDiaarinumero.get) match {
