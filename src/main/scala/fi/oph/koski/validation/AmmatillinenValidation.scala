@@ -77,14 +77,11 @@ object AmmatillinenValidation {
     val vanhanSuoritustavat = suoritustavat(vanhaOpiskeluoikeus)
     val uudenSuoritustavat = suoritustavat(uusiOpiskeluoikeus)
 
-    val vanhanTutkintokoodit = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, ePerusteet)
-    val uudenTutkintokoodit = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, ePerusteet)
-
-    // Pieni oikominen; jos tutkintokoodeja olisi kolmesta tai useammasta päätason suorituksesta, tämä ei välttämättä
+    // Pieni oikominen; jos suoritustapoja/tutkintokoodeja olisi kolmesta tai useammasta päätason suorituksesta, tämä ei välttämättä
     // nappaisi kaikkia muutoksia. Mutta päätason suorituksia ei pitäisi voida olla kahta enempää, eikä samantyyppisiä
     // päätason suorituksia yhtä enempää.
     val suoritustapaLöytyy = vanhanSuoritustavat.count(tapa => uudenSuoritustavat.contains(tapa)) == vanhanSuoritustavat.length
-    val tutkintokoodiLöytyy = vanhanTutkintokoodit.count(koodi => uudenTutkintokoodit.contains(koodi)) == vanhanTutkintokoodit.length
+    val tutkintokoodiLöytyy = checkTutkintokooditLöytyvät(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, ePerusteet)
 
     val salliNäytönJaValmistavanPoikkeusPoistettaessaSuoritusta = näyttötutkintoJaNäyttöönValmistavaLöytyvät(vanhaOpiskeluoikeus)
 
@@ -92,6 +89,23 @@ object AmmatillinenValidation {
       HttpStatus.ok
     } else {
       KoskiErrorCategory.badRequest.validation.ammatillinen.muutettuSuoritustapaaTaiTutkintokoodia()
+    }
+  }
+
+  private def checkTutkintokooditLöytyvät(vanhaOpiskeluoikeus: AmmatillinenOpiskeluoikeus,
+                                          uusiOpiskeluoikeus: AmmatillinenOpiskeluoikeus,
+                                          ePerusteet: EPerusteetRepository) = {
+    // Optimointi: Tarkistetaan eperusteista löytyvyys vain jos tarpeen eli jos tutkintokoodit eivät alustavasti mätsää
+    val vanhanTutkintokoodit = tutkintokoodit(vanhaOpiskeluoikeus)
+    val uudenTutkintokoodit = tutkintokoodit(uusiOpiskeluoikeus)
+
+    if (vanhanTutkintokoodit.count(koodi => uudenTutkintokoodit.contains(koodi)) != vanhanTutkintokoodit.length) {
+      val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, ePerusteet)
+      val uudenTutkintokooditEperusteeettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, ePerusteet)
+
+      vanhanTutkintokooditEperusteettomat.count(koodi => uudenTutkintokooditEperusteeettomat.contains(koodi)) == vanhanTutkintokooditEperusteettomat.length
+    } else {
+      true
     }
   }
 
@@ -107,6 +121,12 @@ object AmmatillinenValidation {
         case _ => true
       }
     ).map(_.koulutusmoduuli.tunniste.koodiarvo)
+  }
+
+  private def tutkintokoodit(oo: AmmatillinenOpiskeluoikeus): List[String] = {
+    oo.suoritukset.map(
+      _.koulutusmoduuli.tunniste.koodiarvo
+    )
   }
 
   private def suoritustavat(oo: AmmatillinenOpiskeluoikeus): List[String] = {
