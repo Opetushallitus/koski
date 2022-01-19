@@ -182,7 +182,7 @@ const DataTableHeader = (props: DataTableHeaderProps) => (
               visible={props.tableState.sort.columnIndex === index}
               ascending={props.tableState.sort.ascending}
             />
-            {col.tooltip && <InfoTooltip>{col.tooltip}</InfoTooltip>}
+            {col.tooltip && <InfoTooltip content={col.tooltip} />}
           </div>
         </HeaderCell>
       ))}

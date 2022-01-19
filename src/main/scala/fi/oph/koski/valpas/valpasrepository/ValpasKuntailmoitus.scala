@@ -32,7 +32,10 @@ case class ValpasKuntailmoitusLaajatTiedot(
   // Option, koska relevantti kenttä vain haettaessa ilmoituksia tietylle kunnalle
   onUudempiaIlmoituksiaMuihinKuntiin: Option[Boolean],
 
-  aktiivinen: Option[Boolean]
+  aktiivinen: Option[Boolean],
+
+  // Tietoja ilmoituksen näytettävistä tiedoista on karsittu käyttöoikeuksien perusteella
+  tietojaKarsittu: Option[Boolean] = None,
 
 ) {
   def withOppijaOid(oppijaOid: String): ValpasKuntailmoitusLaajatTiedot =

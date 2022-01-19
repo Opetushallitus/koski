@@ -7,8 +7,13 @@ const errorLogLevels = [logging.Level.SEVERE, logging.Level.WARNING]
 
 type NetworkErrorCase = [string, string]
 const globalAllowedNetworkErrors: NetworkErrorCase[] = [
+  // Virkailijanäkymä:
   ["/valpas/api/user", UNAUTHORIZED],
   ["/valpas/api/user", FORBIDDEN],
+  // Kansalaisen näkymä:
+  ["/valpas/api/kansalainen/user", UNAUTHORIZED],
+  ["/valpas/api/kansalainen/user", FORBIDDEN],
+  ["/koski/user", UNAUTHORIZED],
   [
     // Chrome 89.0 deprecation message due React
     // Fixed in PR https://github.com/facebook/react/pull/20831

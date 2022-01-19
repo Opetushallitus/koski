@@ -109,8 +109,6 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
       response.getOutputStream
     )
   }
-
-  def langFromCookie: Option[String] = sanitizeLanguage(request.cookies.get("lang"))
 }
 
 case class HetuhakuInput(

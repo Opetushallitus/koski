@@ -10,7 +10,7 @@ case class AuthenticationUser(
   serviceTicket: Option[String],
   kansalainen: Boolean = false,
   huollettava: Boolean = false,
-  huollettavat: Option[HuollettavatSearchResult] = None
+  huollettavat: Option[HuollettavatSearchResult] = None,
 ) extends UserWithUsername with UserWithOid {
   def isSuoritusjakoKatsominen: Boolean = oid == KoskiSpecificSession.SUORITUSJAKO_KATSOMINEN_USER
 }

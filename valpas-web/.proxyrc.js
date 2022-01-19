@@ -8,7 +8,8 @@ const REDIRECTS = {
 
 module.exports = function (app) {
   setupBackendProxy(app)
-  setupRaamitProxy(app)
+  setupVirkailijaRaamitProxy(app)
+  setupOppijaRaamitProxy(app)
   setupRedirects(app)
 }
 
@@ -36,12 +37,24 @@ const setupBackendProxy = (app) => {
 
 // Proxy raameihin tai jos ei asetettu, apupalvelimelle
 
-const setupRaamitProxy = (app) => {
+const setupVirkailijaRaamitProxy = (app) => {
   const target =
     process.env.VIRKAILIJA_RAAMIT_HOST ||
     `http://localhost:${STATIC_RESPONSE_APP_PORT}/raamit`
   app.use(
     createProxyMiddleware("/virkailija-raamit", {
+      target,
+      changeOrigin: true,
+    })
+  )
+}
+
+const setupOppijaRaamitProxy = (app) => {
+  const target =
+    process.env.OPPIJA_RAAMIT_HOST ||
+    `http://localhost:${STATIC_RESPONSE_APP_PORT}/oppija-raamit`
+  app.use(
+    createProxyMiddleware("/oppija-raamit", {
       target,
       changeOrigin: true,
     })

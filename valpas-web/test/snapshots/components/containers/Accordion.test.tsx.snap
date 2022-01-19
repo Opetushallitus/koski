@@ -1,14 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Accordion kaikki sivut avatutuvat klikkauksesta 1`] = `
-<ul
+<section
   class="accordion"
 >
-  <li
-    class="accordion__item"
+  <h4
+    class="accordion__label"
   >
-    <h4
-      class="accordion__label"
+    <button
+      aria-controls="test-0-region"
+      aria-expanded="false"
+      class="accordion__trigger"
+      id="test-0-trigger"
     >
       <span
         aria-hidden="true"
@@ -17,18 +20,25 @@ exports[`Accordion kaikki sivut avatutuvat klikkauksesta 1`] = `
         keyboard_arrow_right
       </span>
       Yksi
-    </h4>
-    <div
-      class="accordion__content"
-    >
-      Ekan sivun sisältö
-    </div>
-  </li>
-  <li
-    class="accordion__item accordion__item--open"
+    </button>
+  </h4>
+  <div
+    aria-hidden="true"
+    aria-labelledby="test-0-trigger"
+    class="accordion__region"
+    id="test-0-region"
+    role="region"
   >
-    <h4
-      class="accordion__label"
+    Ekan sivun sisältö
+  </div>
+  <h4
+    class="accordion__label"
+  >
+    <button
+      aria-controls="test-1-region"
+      aria-expanded="true"
+      class="accordion__trigger"
+      id="test-1-trigger"
     >
       <span
         aria-hidden="true"
@@ -37,18 +47,24 @@ exports[`Accordion kaikki sivut avatutuvat klikkauksesta 1`] = `
         keyboard_arrow_right
       </span>
       Kaksi
-    </h4>
-    <div
-      class="accordion__content"
-    >
-      Tokan sivun sisältö
-    </div>
-  </li>
-  <li
-    class="accordion__item accordion__item--open"
+    </button>
+  </h4>
+  <div
+    aria-labelledby="test-1-trigger"
+    class="accordion__region accordion__region--open"
+    id="test-1-region"
+    role="region"
   >
-    <h4
-      class="accordion__label"
+    Tokan sivun sisältö
+  </div>
+  <h4
+    class="accordion__label"
+  >
+    <button
+      aria-controls="test-2-region"
+      aria-expanded="true"
+      class="accordion__trigger"
+      id="test-2-trigger"
     >
       <span
         aria-hidden="true"
@@ -57,25 +73,31 @@ exports[`Accordion kaikki sivut avatutuvat klikkauksesta 1`] = `
         keyboard_arrow_right
       </span>
       Kolmas
-    </h4>
-    <div
-      class="accordion__content"
-    >
-      Kolmannen sivun sisältö
-    </div>
-  </li>
-</ul>
+    </button>
+  </h4>
+  <div
+    aria-labelledby="test-2-trigger"
+    class="accordion__region accordion__region--open"
+    id="test-2-region"
+    role="region"
+  >
+    Kolmannen sivun sisältö
+  </div>
+</section>
 `;
 
 exports[`Accordion renderöityy oikein 1`] = `
-<ul
+<section
   class="accordion"
 >
-  <li
-    class="accordion__item accordion__item--open"
+  <h4
+    class="accordion__label"
   >
-    <h4
-      class="accordion__label"
+    <button
+      aria-controls="test-0-region"
+      aria-expanded="true"
+      class="accordion__trigger"
+      id="test-0-trigger"
     >
       <span
         aria-hidden="true"
@@ -84,18 +106,24 @@ exports[`Accordion renderöityy oikein 1`] = `
         keyboard_arrow_right
       </span>
       Yksi
-    </h4>
-    <div
-      class="accordion__content"
-    >
-      Ekan sivun sisältö
-    </div>
-  </li>
-  <li
-    class="accordion__item"
+    </button>
+  </h4>
+  <div
+    aria-labelledby="test-0-trigger"
+    class="accordion__region accordion__region--open"
+    id="test-0-region"
+    role="region"
   >
-    <h4
-      class="accordion__label"
+    Ekan sivun sisältö
+  </div>
+  <h4
+    class="accordion__label"
+  >
+    <button
+      aria-controls="test-1-region"
+      aria-expanded="false"
+      class="accordion__trigger"
+      id="test-1-trigger"
     >
       <span
         aria-hidden="true"
@@ -104,18 +132,25 @@ exports[`Accordion renderöityy oikein 1`] = `
         keyboard_arrow_right
       </span>
       Kaksi
-    </h4>
-    <div
-      class="accordion__content"
-    >
-      Tokan sivun sisältö
-    </div>
-  </li>
-  <li
-    class="accordion__item"
+    </button>
+  </h4>
+  <div
+    aria-hidden="true"
+    aria-labelledby="test-1-trigger"
+    class="accordion__region"
+    id="test-1-region"
+    role="region"
   >
-    <h4
-      class="accordion__label"
+    Tokan sivun sisältö
+  </div>
+  <h4
+    class="accordion__label"
+  >
+    <button
+      aria-controls="test-2-region"
+      aria-expanded="false"
+      class="accordion__trigger"
+      id="test-2-trigger"
     >
       <span
         aria-hidden="true"
@@ -124,12 +159,16 @@ exports[`Accordion renderöityy oikein 1`] = `
         keyboard_arrow_right
       </span>
       Kolmas
-    </h4>
-    <div
-      class="accordion__content"
-    >
-      Kolmannen sivun sisältö
-    </div>
-  </li>
-</ul>
+    </button>
+  </h4>
+  <div
+    aria-hidden="true"
+    aria-labelledby="test-2-trigger"
+    class="accordion__region"
+    id="test-2-region"
+    role="region"
+  >
+    Kolmannen sivun sisältö
+  </div>
+</section>
 `;

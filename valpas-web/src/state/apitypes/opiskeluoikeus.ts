@@ -1,8 +1,6 @@
 import * as A from "fp-ts/Array"
-import * as Ord from "fp-ts/Ord"
-import * as string from "fp-ts/string"
 import { KoskiOpiskeluoikeudenTila } from "../../state/apitypes/koskiopiskeluoikeudentila"
-import { ISODate, Language, Oid } from "../common"
+import { ISODate, Oid } from "../common"
 import { Opiskeluoikeudentyyppi } from "./koodistot"
 import { OppijaHakutilanteillaSuppeatTiedot } from "./oppija"
 import { Oppilaitos, Toimipiste } from "./organisaatiot"
@@ -19,7 +17,7 @@ export type OpiskeluoikeusLaajatTiedot = {
   perusopetuksenJälkeinenTiedot?: PerusopetuksenJälkeinenLaajatTiedot
   muuOpetusTiedot?: MuuOpetusLaajatTiedot
   päätasonSuoritukset: PäätasonSuoritus[]
-  tarkasteltavaPäätasonSuoritus: PäätasonSuoritus
+  tarkasteltavaPäätasonSuoritus?: PäätasonSuoritus
   onTehtyIlmoitus?: boolean
   maksuttomuus?: Maksuttomuus[]
   oikeuttaMaksuttomuuteenPidennetty?: OikeuttaMaksuttomuuteenPidennetty[]
@@ -81,45 +79,11 @@ export type OikeuttaMaksuttomuuteenPidennetty = {
   loppu: ISODate
 }
 
-type PäätasonSuoritus = {
+export type PäätasonSuoritus = {
   toimipiste: Toimipiste
   ryhmä?: string
   suorituksenTyyppi: Suorituksentyyppi
 }
-
-const opiskeluoikeusAiempienOpintojenDateOrd = (key: keyof OpintotasonTiedot) =>
-  Ord.contramap(
-    (o: OpiskeluoikeusLaajatTiedot) =>
-      (o.perusopetusTiedot?.[key] ||
-        o.perusopetuksenJälkeinenTiedot?.[key] ||
-        "0000-0-00") as ISODate
-  )(string.Ord)
-
-const opiskeluoikeusMyöhempienOpintojenDateOrd = (
-  key: keyof OpintotasonTiedot
-) =>
-  Ord.contramap(
-    (o: OpiskeluoikeusLaajatTiedot) =>
-      (o.perusopetuksenJälkeinenTiedot?.[key] ||
-        o.perusopetusTiedot?.[key] ||
-        "0000-00-00") as ISODate
-  )(string.Ord)
-
-const alkamispäiväOrd = opiskeluoikeusAiempienOpintojenDateOrd("alkamispäivä")
-const päättymispäiväOrd = opiskeluoikeusMyöhempienOpintojenDateOrd(
-  "päättymispäivä"
-)
-const tyyppiNimiOrd = (lang: Language) =>
-  Ord.contramap((o: OpiskeluoikeusLaajatTiedot) => o.tyyppi.nimi?.[lang] || "")(
-    string.Ord
-  )
-
-export const sortOpiskeluoikeusLaajatTiedot = (lang: Language) =>
-  A.sortBy<OpiskeluoikeusLaajatTiedot>([
-    Ord.reverse(alkamispäiväOrd),
-    Ord.reverse(päättymispäiväOrd),
-    tyyppiNimiOrd(lang),
-  ])
 
 export const isHakeutumisvalvottavaOpiskeluoikeus = (
   organisaatioOid: string | undefined
@@ -140,14 +104,6 @@ export const isNuortenPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
 
 export const isInternationalSchool = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "internationalschool"
-
-export const isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa = (
-  oo: OpiskeluoikeusLaajatTiedot
-) =>
-  oo.tyyppi.koodiarvo == "internationalschool" &&
-  oo.perusopetusTiedot !== undefined &&
-  oo.perusopetusTiedot.valmistunutAiemminTaiLähitulevaisuudessa &&
-  oo.perusopetusTiedot.päättymispäivä !== undefined
 
 export const hakeutumisvalvottavatOpiskeluoikeudet = (
   organisaatioOid: Oid | undefined,
@@ -187,44 +143,3 @@ export const voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäv
     (tila === "voimassa" || tila === "voimassatulevaisuudessa") && !!näytäMuuna
   )
 }
-
-export const aiempiOpinto = (
-  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): LaajatOpintotasonTiedot =>
-  opiskeluoikeus.muuOpetusTiedot ||
-  opiskeluoikeus.perusopetusTiedot ||
-  opiskeluoikeus.perusopetuksenJälkeinenTiedot!
-
-export const myöhempiOpinto = (
-  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): LaajatOpintotasonTiedot =>
-  opiskeluoikeus.perusopetuksenJälkeinenTiedot ||
-  opiskeluoikeus.perusopetusTiedot ||
-  opiskeluoikeus.muuOpetusTiedot!
-
-export const aiempienOpintojenAlkamispäivä = (
-  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): ISODate => aiempiOpinto(opiskeluoikeus).alkamispäivä!
-
-export const myöhempienOpintojenPäättymispäivä = (
-  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): ISODate | undefined => myöhempiOpinto(opiskeluoikeus).päättymispäivä
-
-export const myöhempienOpintojenTarkastelupäivänTila = (
-  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): ValpasOpiskeluoikeudenTila =>
-  myöhempiOpinto(opiskeluoikeus).tarkastelupäivänTila
-
-export const myöhempienOpintojenTarkastelupäivänKoskiTila = (
-  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): KoskiOpiskeluoikeudenTila =>
-  myöhempiOpinto(opiskeluoikeus).tarkastelupäivänKoskiTila
-
-export const myöhempienOpintojenKoskiTilanAlkamispäivä = (
-  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): ISODate =>
-  myöhempiOpinto(opiskeluoikeus).tarkastelupäivänKoskiTilanAlkamispäivä
-
-export const isPerusopetuksenJälkeinenOpiskeluoikeus = (
-  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
-): boolean => opiskeluoikeus.perusopetuksenJälkeinenTiedot !== undefined

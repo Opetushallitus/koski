@@ -6,6 +6,7 @@ import {
   fetchCurrentVirkailijaUser,
 } from "../api/api"
 import { ApiResponse } from "../api/apiFetch"
+import { koskiBackendHost } from "../utils/environment"
 import { absoluteKoskiUrl, buildUrl } from "../utils/url"
 import { User } from "./common"
 
@@ -84,7 +85,7 @@ const mockValpasVirkailijaLogin = (): Login => ({ type: "local" })
 const mockKoskiOppijaLogin = (): Login => ({
   type: "external",
   redirectToExternalLogin() {
-    location.href = buildUrl("http://localhost:7021/koski/login/oppija/local", {
+    location.href = buildUrl(`${koskiBackendHost}/koski/login/oppija/local`, {
       redirect: location.href,
     })
   },

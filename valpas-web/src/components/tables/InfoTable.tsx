@@ -12,9 +12,9 @@ export type InfoTableProps = {
 export type InfoTableSize = "normal" | "tighter"
 
 export const InfoTable = (props: InfoTableProps) => (
-  <table className={b([props.size])}>
-    <tbody>{props.children}</tbody>
-  </table>
+  <section className={b([props.size])}>
+    <ul className={b("body")}>{props.children}</ul>
+  </section>
 )
 
 export type InfoTableRow = {
@@ -24,18 +24,21 @@ export type InfoTableRow = {
 }
 
 export const InfoTableRow = (props: InfoTableRow) => (
-  <tr className={b("row")}>
+  <li className={b("row")}>
     {props.label ? (
       <>
-        <th className={b("label")}>{props.label}:</th>
-        <td className={b("value")} data-testid={props.testId}>
+        <span className={b("label")}>{props.label}:</span>
+        <span className={b("value")} data-testid={props.testId}>
           {props.value}
-        </td>
+        </span>
       </>
     ) : (
-      <td className={b("value")} colSpan={2} data-testid={props.testId}>
+      <span
+        className={b("value", { nolabel: true })}
+        data-testid={props.testId}
+      >
         {props.value}
-      </td>
+      </span>
     )}
-  </tr>
+  </li>
 )

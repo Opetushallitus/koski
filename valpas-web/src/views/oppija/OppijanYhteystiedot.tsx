@@ -17,6 +17,7 @@ import {
   Yhteystiedot,
   YhteystietojenAlkuperä,
 } from "../../state/apitypes/yhteystiedot"
+import { useIsKansalainenView } from "../../state/kansalainenContext"
 import { nonNull } from "../../utils/arrays"
 import { formatDate } from "../../utils/date"
 import "./OppijanYhteystiedot.less"
@@ -32,12 +33,19 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
   const ilmoitetut = props.yhteystiedot.filter(isHakemukselta)
   const viralliset = props.yhteystiedot.filter(isRekisteristä)
   const viewIlmoitetut = ilmoitetut.length > 0
+  const isKansalainenView = useIsKansalainenView()
 
   return (
     <>
       {props.henkilö.turvakielto && (
         <IconSection icon={<WarningIcon />} id="turvakielto-varoitus">
-          <T id="oppija__turvakielto_varoitus" />
+          <T
+            id={
+              isKansalainenView
+                ? "oppija__kansalainen_turvakielto_varoitus"
+                : "oppija__turvakielto_varoitus"
+            }
+          />
         </IconSection>
       )}
       <ColumnsContainer>
@@ -94,6 +102,7 @@ const YhteystietoAccordion = <T extends YhteystietojenAlkuperä>(
 ) =>
   isNonEmpty(props.yhteystiedot) ? (
     <Accordion
+      accordionId="yhteystiedot"
       items={props.yhteystiedot.map((yhteystiedot) => ({
         label: props.label(yhteystiedot),
         render: () => <Yhteystietolista yhteystiedot={yhteystiedot} />,

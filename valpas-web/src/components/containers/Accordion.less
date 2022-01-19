@@ -3,20 +3,24 @@
 @import "../../style/typography.less";
 
 .accordion__label {
-  font-size: @font-size-medium;
-  font-weight: @font-weight-regular;
-
   margin-bottom: 0.5rem;
-  color: @color-blue;
   user-select: none;
-  cursor: pointer;
 
   &:hover {
     color: @color-blue-lighten-1;
   }
 }
 
-.accordion__content {
+.accordion__trigger {
+  display: block;
+  border: none;
+  background: none;
+  font-size: @font-size-medium;
+  font-weight: @font-weight-regular;
+  color: @color-blue;
+}
+
+.accordion__region {
   overflow: hidden;
   max-height: 0;
   opacity: 0;
@@ -28,7 +32,7 @@
   margin-left: 0.7rem;
 }
 
-.accordion__item--open .accordion__content {
+.accordion__region--open {
   max-height: 1000px;
   opacity: 1;
   transition: max-height 500ms ease-in-out, opacity 500ms ease;

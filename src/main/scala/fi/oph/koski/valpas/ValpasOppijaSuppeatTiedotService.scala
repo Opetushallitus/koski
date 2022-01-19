@@ -122,6 +122,7 @@ object ValpasOpiskeluoikeusPerusopetusSuppeatTiedot {
       päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
       tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
       tarkastelupäivänKoskiTila = laajatTiedot.tarkastelupäivänKoskiTila,
+      tarkastelupäivänKoskiTilanAlkamispäivä = laajatTiedot.tarkastelupäivänKoskiTilanAlkamispäivä,
       valmistunutAiemminTaiLähitulevaisuudessa = laajatTiedot.valmistunutAiemminTaiLähitulevaisuudessa,
       vuosiluokkiinSitomatonOpetus = laajatTiedot.vuosiluokkiinSitomatonOpetus,
       näytäMuunaPerusopetuksenJälkeisenäOpintona = laajatTiedot.näytäMuunaPerusopetuksenJälkeisenäOpintona,
@@ -135,6 +136,7 @@ case class ValpasOpiskeluoikeusPerusopetusSuppeatTiedot(
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   tarkastelupäivänTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
+  tarkastelupäivänKoskiTilanAlkamispäivä: String,
   valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
   vuosiluokkiinSitomatonOpetus: Boolean,
   näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
@@ -148,6 +150,7 @@ object ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot {
       päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
       tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
       tarkastelupäivänKoskiTila = laajatTiedot.tarkastelupäivänKoskiTila,
+      tarkastelupäivänKoskiTilanAlkamispäivä = laajatTiedot.tarkastelupäivänKoskiTilanAlkamispäivä,
       valmistunutAiemminTaiLähitulevaisuudessa = laajatTiedot.valmistunutAiemminTaiLähitulevaisuudessa,
       näytäMuunaPerusopetuksenJälkeisenäOpintona = laajatTiedot.näytäMuunaPerusopetuksenJälkeisenäOpintona,
     )
@@ -162,6 +165,7 @@ object ValpasOpiskeluoikeusMuuOpetusSuppeatTiedot {
       päättymispäiväMerkittyTulevaisuuteen = laajatTiedot.päättymispäiväMerkittyTulevaisuuteen,
       tarkastelupäivänTila = laajatTiedot.tarkastelupäivänTila,
       tarkastelupäivänKoskiTila = laajatTiedot.tarkastelupäivänKoskiTila,
+      tarkastelupäivänKoskiTilanAlkamispäivä = laajatTiedot.tarkastelupäivänKoskiTilanAlkamispäivä,
       valmistunutAiemminTaiLähitulevaisuudessa = laajatTiedot.valmistunutAiemminTaiLähitulevaisuudessa,
       näytäMuunaPerusopetuksenJälkeisenäOpintona = laajatTiedot.näytäMuunaPerusopetuksenJälkeisenäOpintona,
     )
@@ -174,6 +178,7 @@ case class ValpasOpiskeluoikeusPerusopetuksenJälkeinenSuppeatTiedot(
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   tarkastelupäivänTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
+  tarkastelupäivänKoskiTilanAlkamispäivä: String,
   valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
   näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusTiedot
@@ -184,6 +189,7 @@ case class ValpasOpiskeluoikeusMuuOpetusSuppeatTiedot(
   päättymispäiväMerkittyTulevaisuuteen: Option[Boolean],
   tarkastelupäivänTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
+  tarkastelupäivänKoskiTilanAlkamispäivä: String,
   valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
   näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusTiedot

@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.servlet
 
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.UserLanguage.sanitizeLanguage
 import fi.oph.koski.servlet.ApiServlet
 import fi.oph.koski.util.PaginatedResponse
 import fi.oph.koski.valpas.valpasuser.ValpasSession
@@ -20,4 +21,6 @@ trait ValpasApiServlet extends ApiServlet with ValpasBaseServlet {
         JsonSerializer.write(x, pretty)
     }
   }
+
+  def langFromCookie: Option[String] = sanitizeLanguage(request.cookies.get("lang"))
 }

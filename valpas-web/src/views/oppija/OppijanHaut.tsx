@@ -25,19 +25,19 @@ import {
   isVastaanotettu,
   isVastaanotettuEhdollisesti,
 } from "../../state/apitypes/hakutoive"
-import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { plainComponent } from "../../utils/plaincomponent"
 import "./OppijanHaut.less"
 
 const b = bem("oppijanhaut")
 
 export type OppijanHautProps = {
-  oppija: OppijaHakutilanteillaLaajatTiedot
+  hakutilanteet: HakuLaajatTiedot[]
+  hakutilanneError?: string
 }
 
 export const OppijanHaut = (props: OppijanHautProps) => {
-  const haut = sortHakuLaajatTiedot(props.oppija.hakutilanteet)
-  const error = props.oppija.hakutilanneError
+  const haut = sortHakuLaajatTiedot(props.hakutilanteet)
+  const error = props.hakutilanneError
   return error ? (
     <NoDataMessage>
       <T id="oppija__hakuhistoria_virhe" />

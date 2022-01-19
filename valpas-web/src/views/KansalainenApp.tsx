@@ -1,9 +1,12 @@
 import React from "react"
 import { Redirect, Route, Switch } from "react-router"
+import { Page } from "../components/containers/Page"
 import { LoadingModal } from "../components/icons/Spinner"
 import { getCurrentKansalainenUser, hasValpasAccess } from "../state/auth"
 import { BasePathProvider, useBasePath } from "../state/basePath"
 import { User } from "../state/common"
+import { FeatureFlagEnabler, isFeatureFlagEnabled } from "../state/featureFlags"
+import { KansalainenContextProvider } from "../state/kansalainenContext"
 import {
   kansalainenEiOpintopolussaPath,
   kansalainenLoginVirhePath,
@@ -16,7 +19,7 @@ import {
   KansalainenLoginErrorView,
 } from "./kansalainen/kansalainenErrors"
 import { KansalainenLandingView } from "./kansalainen/KansalainenLandingView"
-import { KansalainenOmatTiedotView } from "./kansalainen/KansalainenOmatTiedotView"
+import { KansalainenOmatJaHuollettavienTiedotView } from "./kansalainen/tiedot/KansalainenOmatJaHuollettavienTiedotView"
 import { KansalainenRaamit } from "./Raamit"
 
 const PublicKansalainenRoutes = () => {
@@ -47,11 +50,21 @@ const ProtectedKansalainenRoutes = (props: ProtectedOppijaRoutesProps) => {
   const basePath = useBasePath()
   return (
     <Switch>
+      <Route exact path="/enable/beta">
+        <FeatureFlagEnabler
+          features={["kansalainenBeta"]}
+          redirectTo={kansalainenOmatTiedotPath.href(basePath)}
+        />
+      </Route>
       <Route exact path={basePath}>
         <Redirect to={kansalainenOmatTiedotPath.href(basePath)} />
       </Route>
       <Route exact path={kansalainenOmatTiedotPath.route(basePath)}>
-        <KansalainenOmatTiedotView user={props.user} />
+        {isFeatureFlagEnabled("kansalainenBeta") ? (
+          <KansalainenOmatJaHuollettavienTiedotView user={props.user} />
+        ) : (
+          <Page>Kansalaisen näkymä ei ole vielä käytössä</Page>
+        )}
       </Route>
       <Route>
         <NotFoundView />
@@ -68,12 +81,14 @@ export const KansalainenApp = (props: KansalainenAppProps) => {
   const user = useUserLogin(getCurrentKansalainenUser)
   return user ? (
     <BasePathProvider value={props.basePath}>
-      <KansalainenRaamit user={user} />
-      {hasValpasAccess(user) ? (
-        <ProtectedKansalainenRoutes user={user} />
-      ) : (
-        <PublicKansalainenRoutes />
-      )}
+      <KansalainenContextProvider>
+        <KansalainenRaamit user={user} />
+        {hasValpasAccess(user) ? (
+          <ProtectedKansalainenRoutes user={user} />
+        ) : (
+          <PublicKansalainenRoutes />
+        )}
+      </KansalainenContextProvider>
     </BasePathProvider>
   ) : (
     <LoadingModal />

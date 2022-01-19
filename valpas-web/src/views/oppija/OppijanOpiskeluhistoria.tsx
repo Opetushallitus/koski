@@ -16,37 +16,36 @@ import {
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
 import { getLocalizedMaybe, T, t, useLanguage } from "../../i18n/i18n"
+import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import { KoodistoKoodiviite } from "../../state/apitypes/koodistot"
+import { KoskiOpiskeluoikeudenTila } from "../../state/apitypes/koskiopiskeluoikeudentila"
+import { kuntaKotipaikka } from "../../state/apitypes/kuntailmoitus"
 import {
-  KuntailmoitusLaajatTiedotLisätiedoilla,
-  kuntaKotipaikka,
-  sortKuntailmoitusLaajatTiedotLisätiedoilla,
-} from "../../state/apitypes/kuntailmoitus"
-import {
-  aiempienOpintojenAlkamispäivä,
-  isPerusopetuksenJälkeinenOpiskeluoikeus,
-  isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa,
-  myöhempienOpintojenKoskiTilanAlkamispäivä,
-  myöhempienOpintojenPäättymispäivä,
-  myöhempienOpintojenTarkastelupäivänKoskiTila,
-  myöhempienOpintojenTarkastelupäivänTila,
-  OpiskeluoikeusLaajatTiedot,
-  sortOpiskeluoikeusLaajatTiedot,
+  LaajatOpintotasonTiedot,
+  OpintotasonTiedot,
 } from "../../state/apitypes/opiskeluoikeus"
-import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { OppivelvollisuudenKeskeytys } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
 import { organisaatioNimi } from "../../state/apitypes/organisaatiot"
 import { suorituksenTyyppiToKoulutustyyppi } from "../../state/apitypes/suorituksentyyppi"
-import { ISODate } from "../../state/common"
+import { ValpasOpiskeluoikeudenTila } from "../../state/apitypes/valpasopiskeluoikeudentila"
+import { ISODate, Language } from "../../state/common"
 import { formatDate, formatDateRange, parseYear } from "../../utils/date"
+import { withoutDefaultAction } from "../../utils/events"
 import { pick } from "../../utils/objects"
 import { OppijaKuntailmoitus } from "./OppijaKuntailmoitus"
 import "./OppijanOpiskeluhistoria.less"
+import {
+  MinimiOpiskeluoikeus,
+  MinimiOppijaKuntailmoitus,
+} from "./typeIntersections"
 
 const b = bem("oppijanopiskeluhistoria")
 
 export type OppijanOpiskeluhistoriaProps = {
-  oppija: OppijaHakutilanteillaLaajatTiedot
+  henkilö: HenkilöLaajatTiedot
+  opiskeluoikeudet: MinimiOpiskeluoikeus[]
+  kuntailmoitukset: MinimiOppijaKuntailmoitus[]
+  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
 }
 
 type OpiskeluhistoriaItem = {
@@ -71,15 +70,13 @@ export const OppijanOpiskeluhistoria = (
 
   const items = useMemo(() => {
     // Järjestele listat ensin niiden omien kriteerien mukaan
-    const opiskeluoikeudet = sortOpiskeluoikeusLaajatTiedot(language)(
-      props.oppija.oppija.opiskeluoikeudet
+    const opiskeluoikeudet = sortOpiskeluoikeudet(language)(
+      props.opiskeluoikeudet
     )
 
-    const ilmoitukset = sortKuntailmoitusLaajatTiedotLisätiedoilla(
-      props.oppija.kuntailmoitukset
-    )
+    const ilmoitukset = sortKuntailmoitukset(props.kuntailmoitukset)
 
-    const keskeytykset = props.oppija.oppivelvollisuudenKeskeytykset
+    const keskeytykset = props.oppivelvollisuudenKeskeytykset
 
     // Yhdistä erilaatuiset asiat yhtenäiseksi listaksi
     return pipe(
@@ -114,9 +111,9 @@ export const OppijanOpiskeluhistoria = (
     )
   }, [
     language,
-    props.oppija.kuntailmoitukset,
-    props.oppija.oppija.opiskeluoikeudet,
-    props.oppija.oppivelvollisuudenKeskeytykset,
+    props.kuntailmoitukset,
+    props.opiskeluoikeudet,
+    props.oppivelvollisuudenKeskeytykset,
   ])
 
   return items.length > 0 ? (
@@ -129,15 +126,17 @@ export const OppijanOpiskeluhistoria = (
 }
 
 type OpiskeluhistoriaOpintoProps = {
-  opiskeluoikeus: OpiskeluoikeusLaajatTiedot
+  opiskeluoikeus: MinimiOpiskeluoikeus
 }
 
 const OpiskeluhistoriaOpinto = ({
   opiskeluoikeus,
 }: OpiskeluhistoriaOpintoProps) => {
-  const nimi = suorituksenTyyppiToKoulutustyyppi(
-    opiskeluoikeus.tarkasteltavaPäätasonSuoritus.suorituksenTyyppi
-  )
+  const nimi = opiskeluoikeus.tarkasteltavaPäätasonSuoritus
+    ? suorituksenTyyppiToKoulutustyyppi(
+        opiskeluoikeus.tarkasteltavaPäätasonSuoritus.suorituksenTyyppi
+      )
+    : t("Opiskeluoikeus")
 
   const alkamispäivä = aiempienOpintojenAlkamispäivä(opiskeluoikeus)
   const päättymispäivä = myöhempienOpintojenPäättymispäivä(opiskeluoikeus)
@@ -165,13 +164,15 @@ const OpiskeluhistoriaOpinto = ({
             value={maksuttomuusValue(opiskeluoikeus)}
           />
         )}
-        <InfoTableRow
-          label={t("oppija__toimipiste")}
-          value={organisaatioNimi(
-            opiskeluoikeus.tarkasteltavaPäätasonSuoritus.toimipiste
-          )}
-        />
-        {opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä && (
+        {opiskeluoikeus.tarkasteltavaPäätasonSuoritus && (
+          <InfoTableRow
+            label={t("oppija__toimipiste")}
+            value={organisaatioNimi(
+              opiskeluoikeus.tarkasteltavaPäätasonSuoritus.toimipiste
+            )}
+          />
+        )}
+        {opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.ryhmä && (
           <InfoTableRow
             label={t("oppija__ryhma")}
             value={opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä}
@@ -212,7 +213,7 @@ const OpiskeluhistoriaOpinto = ({
 }
 
 type OpiskeluhistoriaIlmoitusProps = {
-  kuntailmoitus: KuntailmoitusLaajatTiedotLisätiedoilla
+  kuntailmoitus: MinimiOppijaKuntailmoitus
 }
 
 const OpiskeluhistoriaIlmoitus = ({
@@ -229,14 +230,18 @@ const OpiskeluhistoriaIlmoitus = ({
           value={formatDate(kuntailmoitus.aikaleima)}
         />
       )}
-      <InfoTableRow
-        label={t("oppija__ilmoitushistoria_ilmoittaja")}
-        value={organisaatioNimi(kuntailmoitus.tekijä.organisaatio)}
-      />
-      <InfoTableRow
-        label={t("oppija__ilmoitushistoria_kohde")}
-        value={kuntaKotipaikka(kuntailmoitus.kunta)}
-      />
+      {kuntailmoitus.tekijä && (
+        <InfoTableRow
+          label={t("oppija__ilmoitushistoria_ilmoittaja")}
+          value={organisaatioNimi(kuntailmoitus.tekijä.organisaatio)}
+        />
+      )}
+      {kuntailmoitus.kunta && (
+        <InfoTableRow
+          label={t("oppija__ilmoitushistoria_kohde")}
+          value={kuntaKotipaikka(kuntailmoitus.kunta)}
+        />
+      )}
       <InfoTableRow value={<IlmoitusLink kuntailmoitus={kuntailmoitus} />} />
     </InfoTable>
   </IconSection>
@@ -269,9 +274,13 @@ const IlmoitusLink = (props: OpiskeluhistoriaIlmoitusProps) => {
 
   return (
     <>
-      <div className={b("lisatiedot")} onClick={() => setModalVisibility(true)}>
+      <a
+        href="#"
+        className={b("lisatiedot")}
+        onClick={withoutDefaultAction(() => setModalVisibility(true))}
+      >
         <T id="oppija__ilmoitushistoria_lisätiedot" />
-      </div>
+      </a>
       {modalVisible && (
         <Modal onClose={() => setModalVisibility(false)} closeOnBackgroundClick>
           <OppijaKuntailmoitus kuntailmoitus={props.kuntailmoitus} />
@@ -290,7 +299,7 @@ const yearRangeString = (a?: ISODate, b?: ISODate): string =>
 const yearString = (date?: ISODate): string | undefined =>
   date && parseYear(date).toString()
 
-const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
+const tilaString = (opiskeluoikeus: MinimiOpiskeluoikeus): string => {
   const valpasTila = myöhempienOpintojenTarkastelupäivänTila(opiskeluoikeus)
   const koskiTila = myöhempienOpintojenTarkastelupäivänKoskiTila(opiskeluoikeus)
 
@@ -316,7 +325,7 @@ const tilaString = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot): string => {
   }
 }
 
-const maksuttomuusValue = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot) => {
+const maksuttomuusValue = (opiskeluoikeus: MinimiOpiskeluoikeus) => {
   const maksuttomuusRivit = (opiskeluoikeus.maksuttomuus || []).map(
     ({ maksuton, alku, loppu }) =>
       t(
@@ -349,3 +358,96 @@ const maksuttomuusValue = (opiskeluoikeus: OpiskeluoikeusLaajatTiedot) => {
     t("oppija__maksuttomuus_ei_siirretty")
   )
 }
+
+const opiskeluoikeusAiempienOpintojenDateOrd = (key: keyof OpintotasonTiedot) =>
+  Ord.contramap(
+    (o: MinimiOpiskeluoikeus) =>
+      (o.muuOpetusTiedot?.[key] ||
+        o.perusopetusTiedot?.[key] ||
+        o.perusopetuksenJälkeinenTiedot?.[key] ||
+        "0000-0-00") as ISODate
+  )(string.Ord)
+
+const opiskeluoikeusMyöhempienOpintojenDateOrd = (
+  key: keyof OpintotasonTiedot
+) =>
+  Ord.contramap(
+    (o: MinimiOpiskeluoikeus) =>
+      (o.perusopetuksenJälkeinenTiedot?.[key] ||
+        o.perusopetusTiedot?.[key] ||
+        o.muuOpetusTiedot?.[key] ||
+        "0000-00-00") as ISODate
+  )(string.Ord)
+
+const tyyppiNimiOrd = (lang: Language) =>
+  Ord.contramap((o: MinimiOpiskeluoikeus) => o.tyyppi?.nimi?.[lang] || "")(
+    string.Ord
+  )
+
+const alkamispäiväOrd = opiskeluoikeusAiempienOpintojenDateOrd("alkamispäivä")
+const päättymispäiväOrd = opiskeluoikeusMyöhempienOpintojenDateOrd(
+  "päättymispäivä"
+)
+
+const sortOpiskeluoikeudet = (lang: Language) =>
+  A.sortBy<MinimiOpiskeluoikeus>([
+    Ord.reverse(alkamispäiväOrd),
+    Ord.reverse(päättymispäiväOrd),
+    tyyppiNimiOrd(lang),
+  ])
+
+const aiempiOpinto = (
+  opiskeluoikeus: MinimiOpiskeluoikeus
+): LaajatOpintotasonTiedot =>
+  opiskeluoikeus.muuOpetusTiedot ||
+  opiskeluoikeus.perusopetusTiedot ||
+  opiskeluoikeus.perusopetuksenJälkeinenTiedot!
+
+const myöhempiOpinto = (
+  opiskeluoikeus: MinimiOpiskeluoikeus
+): LaajatOpintotasonTiedot =>
+  opiskeluoikeus.perusopetuksenJälkeinenTiedot ||
+  opiskeluoikeus.perusopetusTiedot ||
+  opiskeluoikeus.muuOpetusTiedot!
+
+const aiempienOpintojenAlkamispäivä = (
+  opiskeluoikeus: MinimiOpiskeluoikeus
+): ISODate => aiempiOpinto(opiskeluoikeus).alkamispäivä!
+
+const myöhempienOpintojenPäättymispäivä = (
+  opiskeluoikeus: MinimiOpiskeluoikeus
+): ISODate | undefined => myöhempiOpinto(opiskeluoikeus).päättymispäivä
+
+const myöhempienOpintojenTarkastelupäivänTila = (
+  opiskeluoikeus: MinimiOpiskeluoikeus
+): ValpasOpiskeluoikeudenTila =>
+  myöhempiOpinto(opiskeluoikeus).tarkastelupäivänTila
+
+const myöhempienOpintojenTarkastelupäivänKoskiTila = (
+  opiskeluoikeus: MinimiOpiskeluoikeus
+): KoskiOpiskeluoikeudenTila =>
+  myöhempiOpinto(opiskeluoikeus).tarkastelupäivänKoskiTila
+
+const myöhempienOpintojenKoskiTilanAlkamispäivä = (
+  opiskeluoikeus: MinimiOpiskeluoikeus
+): ISODate =>
+  myöhempiOpinto(opiskeluoikeus).tarkastelupäivänKoskiTilanAlkamispäivä
+
+const isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa = (
+  oo: MinimiOpiskeluoikeus
+) =>
+  oo.tyyppi?.koodiarvo == "internationalschool" &&
+  oo.perusopetusTiedot !== undefined &&
+  oo.perusopetusTiedot.valmistunutAiemminTaiLähitulevaisuudessa &&
+  oo.perusopetusTiedot.päättymispäivä !== undefined
+
+const isPerusopetuksenJälkeinenOpiskeluoikeus = (
+  opiskeluoikeus: MinimiOpiskeluoikeus
+): boolean => opiskeluoikeus.perusopetuksenJälkeinenTiedot !== undefined
+
+const kuntailmoitusAikaleimaOrd = Ord.contramap(
+  (kuntailmoitus: MinimiOppijaKuntailmoitus) =>
+    kuntailmoitus.aikaleima || "0000-00-00"
+)(string.Ord)
+
+const sortKuntailmoitukset = A.sort(Ord.reverse(kuntailmoitusAikaleimaOrd))

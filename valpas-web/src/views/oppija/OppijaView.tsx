@@ -1,6 +1,5 @@
 import bem from "bem-ts"
 import * as A from "fp-ts/Array"
-import { isEmpty } from "fp-ts/lib/Array"
 import { pipe } from "fp-ts/lib/function"
 import * as O from "fp-ts/Option"
 import * as string from "fp-ts/string"
@@ -10,21 +9,13 @@ import { ApiMethodState, useApiWithParams } from "../../api/apiHooks"
 import { isSuccess, mapError, mapLoading, mapSuccess } from "../../api/apiUtils"
 import { ButtonLabel } from "../../components/buttons/ButtonLabel"
 import { FlatLink } from "../../components/buttons/FlatButton"
-import {
-  BorderlessCard,
-  CardBody,
-  CardHeader,
-} from "../../components/containers/cards"
-import { Column, ColumnsContainer } from "../../components/containers/Columns"
 import { Page } from "../../components/containers/Page"
-import { BackIcon, SuccessCircleIcon } from "../../components/icons/Icon"
+import { BackIcon } from "../../components/icons/Icon"
 import { Spinner } from "../../components/icons/Spinner"
-import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import { withRequiresJokinOikeus } from "../../state/accessRights"
 import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
-import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import {
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
@@ -40,11 +31,7 @@ import {
   suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg,
 } from "../../state/paths"
 import { plainComponent } from "../../utils/plaincomponent"
-import { OppijaKuntailmoitus } from "./OppijaKuntailmoitus"
-import { OppijanHaut } from "./OppijanHaut"
-import { OppijanOpiskeluhistoria } from "./OppijanOpiskeluhistoria"
-import { OppijanOppivelvollisuustiedot } from "./OppijanOppivelvollisuustiedot"
-import { OppijanYhteystiedot } from "./OppijanYhteystiedot"
+import { OppijaGrid } from "./OppijaGrid"
 import "./OppijaView.less"
 
 const b = bem("oppijaview")
@@ -69,61 +56,7 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
         <Spinner />
       ))}
 
-      {oppijaData && (
-        <>
-          <Kuntailmoitus oppija={oppijaData} />
-          <ColumnsContainer>
-            <Column size={4}>
-              <BorderlessCard id="oppivelvollisuustiedot">
-                <CardHeader>
-                  <T id="oppija__oppivelvollisuustiedot_otsikko" />
-                </CardHeader>
-                <CardBody>
-                  <OppijanOppivelvollisuustiedot oppija={oppijaData} />
-                </CardBody>
-              </BorderlessCard>
-            </Column>
-            <Column size={8}>
-              <BorderlessCard id="yhteystiedot">
-                <CardHeader>
-                  <T id="oppija__yhteystiedot_otsikko" />
-                  <InfoTooltip>
-                    <T id="oppija__yhteystiedot_tooltip" />
-                  </InfoTooltip>
-                </CardHeader>
-                <CardBody>
-                  <OppijanYhteystiedot
-                    henkilö={oppijaData.oppija.henkilö}
-                    yhteystiedot={oppijaData.yhteystiedot}
-                  />
-                </CardBody>
-              </BorderlessCard>
-            </Column>
-          </ColumnsContainer>
-          <ColumnsContainer>
-            <Column size={4}>
-              <BorderlessCard id="opiskeluhistoria">
-                <CardHeader>
-                  <T id="oppija__opiskeluhistoria_otsikko" />
-                </CardHeader>
-                <CardBody>
-                  <OppijanOpiskeluhistoria oppija={oppijaData} />
-                </CardBody>
-              </BorderlessCard>
-            </Column>
-            <Column size={8}>
-              <BorderlessCard id="haut">
-                <CardHeader>
-                  <T id="oppija__haut_otsikko" />
-                </CardHeader>
-                <CardBody>
-                  <OppijanHaut oppija={oppijaData} />
-                </CardBody>
-              </BorderlessCard>
-            </Column>
-          </ColumnsContainer>
-        </>
-      )}
+      {oppijaData && <OppijaGrid data={oppijaData} />}
     </Page>
   )
 })
@@ -212,32 +145,3 @@ const nimiWithOptionalHetu = (henkilö: HenkilöLaajatTiedot): string =>
   (henkilö.hetu ? ` (${henkilö.hetu})` : "")
 
 const SecondaryOppijaHeading = plainComponent("h2", b("secondaryheading"))
-
-type KuntailmoitusProps = {
-  oppija: OppijaHakutilanteillaLaajatTiedot
-}
-
-const Kuntailmoitus = (props: KuntailmoitusProps) => {
-  const aktiivisetKuntailmoitukset = props.oppija.kuntailmoitukset.filter(
-    isAktiivinenKuntailmoitus
-  )
-
-  return (
-    <>
-      {isEmpty(aktiivisetKuntailmoitukset) ? (
-        <EiIlmoituksiaMessage />
-      ) : (
-        aktiivisetKuntailmoitukset.map((kuntailmoitus, index) => (
-          <OppijaKuntailmoitus key={index} kuntailmoitus={kuntailmoitus} />
-        ))
-      )}
-    </>
-  )
-}
-
-const EiIlmoituksiaMessage = () => (
-  <div className={b("eiilmoituksia")}>
-    <SuccessCircleIcon color="green" />
-    <T id="oppija__ei_ilmoituksia" />
-  </div>
-)

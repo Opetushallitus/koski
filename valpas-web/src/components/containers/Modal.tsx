@@ -1,6 +1,8 @@
 import bem from "bem-ts"
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
+import { t } from "../../i18n/i18n"
 import { useComponentAppearDisappear } from "../../state/animations"
+import { onKbEscape } from "../../utils/events"
 import { FlatButton } from "../buttons/FlatButton"
 import { CloseIcon } from "../icons/Icon"
 import "./Modal.less"
@@ -43,16 +45,26 @@ type BackgroundProps = {
 }
 
 const Background = (props: BackgroundProps) => {
+  const ref = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     const className = b("noscroll")
     document.body.classList.add(className)
-    return () => document.body.classList.remove(className)
+    ref.current?.focus()
+    return () => {
+      document.body.classList.remove(className)
+    }
   })
 
   return (
     <div
       className={b("background", { init: props.hidden })}
+      tabIndex={0}
+      role={props.onClose && "button"}
       onClick={props.onClose}
+      onKeyDown={onKbEscape(props.onClose)}
+      ref={ref}
+      aria-hidden="false"
     >
       {props.children}
     </div>
@@ -69,12 +81,16 @@ const Container = (props: ContainerProps) => (
       closeable: !!props.onClose,
       init: props.hidden,
     })}
-    onClick={(event) => event.stopPropagation()}
+    role="dialog"
   >
     <div className={b("header")}>
       <h2 className={b("title")}>{props.title}</h2>
       {props.onClose && (
-        <FlatButton className={b("closebutton")} onClick={props.onClose}>
+        <FlatButton
+          className={b("closebutton")}
+          onClick={props.onClose}
+          aria-label={t("closebutton_aria_label")}
+        >
           <CloseIcon />
         </FlatButton>
       )}

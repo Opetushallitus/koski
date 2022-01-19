@@ -12,8 +12,12 @@ import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Error } from "../../components/typography/error"
 import { T, t } from "../../i18n/i18n"
 import { kuntavalvontaAllowed } from "../../state/accessRights"
-import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
-import { isKeskeytysToistaiseksi } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
+import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
+import {
+  isKeskeytysToistaiseksi,
+  OppivelvollisuudenKeskeytys,
+} from "../../state/apitypes/oppivelvollisuudenkeskeytys"
+import { ISODate } from "../../state/common"
 import { formatDate, formatNullableDate } from "../../utils/date"
 import { Ilmoituslomake } from "../../views/ilmoituslomake/Ilmoituslomake"
 import "./OppijaView.less"
@@ -22,7 +26,12 @@ import { OppivelvollisuudenKeskeytysModal } from "./OppivelvollisuudenKeskeytysM
 const b = bem("oppijaview")
 
 export type OppijanOppivelvollisuustiedotProps = {
-  oppija: OppijaHakutilanteillaLaajatTiedot
+  henkilö: HenkilöLaajatTiedot
+  opiskelee: boolean
+  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti?: ISODate
+  oppivelvollisuusVoimassaAsti: ISODate
+  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
+  onOikeusTehdäKuntailmoitus?: boolean
 }
 
 export const OppijanOppivelvollisuustiedot = (
@@ -30,7 +39,7 @@ export const OppijanOppivelvollisuustiedot = (
 ) => {
   const [keskeytysModalVisible, setKeskeytysModalVisible] = useState(false)
 
-  const oppijaOids = [props.oppija.oppija.henkilö.oid]
+  const oppijaOids = [props.henkilö.oid]
 
   const pohjatiedot = useApiMethod(fetchKuntailmoituksenPohjatiedot)
 
@@ -40,20 +49,23 @@ export const OppijanOppivelvollisuustiedot = (
         <InfoTableRow
           label={t("oppija__opiskelutilanne")}
           value={t(
-            props.oppija.oppija.opiskelee
+            props.opiskelee
               ? "oppija__opiskelutilanne__opiskelemassa"
               : "oppija__opiskelutilanne__ei_opiskelupaikkaa"
           )}
         />
         <InfoTableRow
           label={t("oppija__oppivelvollisuus_voimassa")}
-          value={oppivelvollisuusValue(props.oppija)}
+          value={oppivelvollisuusValue(
+            props.oppivelvollisuudenKeskeytykset,
+            props.oppivelvollisuusVoimassaAsti
+          )}
         />
         <InfoTableRow
           label={t("oppija__maksuttomuus_voimassa")}
           value={t("oppija__maksuttomuus_voimassa_value", {
             date: formatNullableDate(
-              props.oppija.oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+              props.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
             ),
           })}
         />
@@ -70,7 +82,7 @@ export const OppijanOppivelvollisuustiedot = (
 
               {keskeytysModalVisible && (
                 <OppivelvollisuudenKeskeytysModal
-                  oppija={props.oppija.oppija}
+                  henkilö={props.henkilö}
                   onClose={() => setKeskeytysModalVisible(false)}
                   onSubmit={() => window.location.reload()}
                 />
@@ -78,7 +90,7 @@ export const OppijanOppivelvollisuustiedot = (
             </VisibleForKäyttöoikeusrooli>
           }
         />
-        {props.oppija.onOikeusTehdäKuntailmoitus && (
+        {props.onOikeusTehdäKuntailmoitus && (
           <InfoTableRow
             value={
               <>
@@ -90,13 +102,11 @@ export const OppijanOppivelvollisuustiedot = (
                   >
                     <T id="oppija__tee_ilmoitus_valvontavastuusta" />
                   </RaisedButton>
-                  <InfoTooltip>
-                    {t("oppija__tee_ilmoitus_valvontavastuusta_tooltip")
-                      .split("\n")
-                      .map((substring, i) => (
-                        <p key={`${i}`}>{substring}</p>
-                      ))}
-                  </InfoTooltip>
+                  <InfoTooltip
+                    content={t(
+                      "oppija__tee_ilmoitus_valvontavastuusta_tooltip"
+                    )}
+                  />
                 </div>
                 {mapLoading(pohjatiedot, () => (
                   <Spinner />
@@ -115,7 +125,7 @@ export const OppijanOppivelvollisuustiedot = (
                 {isSuccess(pohjatiedot) &&
                 !A.isEmpty(pohjatiedot.data.mahdollisetTekijäOrganisaatiot) ? (
                   <Ilmoituslomake
-                    oppijat={[{ henkilö: props.oppija.oppija.henkilö }]}
+                    oppijat={[{ henkilö: props.henkilö }]}
                     pohjatiedot={pohjatiedot.data}
                     tekijäorganisaatio={
                       pohjatiedot.data.mahdollisetTekijäOrganisaatiot[0]!!
@@ -136,9 +146,10 @@ export const OppijanOppivelvollisuustiedot = (
 }
 
 const oppivelvollisuusValue = (
-  oppija: OppijaHakutilanteillaLaajatTiedot
+  oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[],
+  oppivelvollisuusVoimassaAsti: ISODate
 ): React.ReactNode => {
-  const keskeytykset = oppija.oppivelvollisuudenKeskeytykset
+  const keskeytykset = oppivelvollisuudenKeskeytykset
     .filter((ovk) => ovk.voimassa || ovk.tulevaisuudessa)
     .map((ovk) =>
       ovk.loppu !== undefined
@@ -151,14 +162,14 @@ const oppivelvollisuusValue = (
           })
     )
 
-  const keskeytysToistaiseksi = oppija.oppivelvollisuudenKeskeytykset.some(
+  const keskeytysToistaiseksi = oppivelvollisuudenKeskeytykset.some(
     isKeskeytysToistaiseksi
   )
 
   const strs = !keskeytysToistaiseksi
     ? [
         t("oppija__oppivelvollisuus_voimassa_value", {
-          date: formatNullableDate(oppija.oppija.oppivelvollisuusVoimassaAsti),
+          date: formatNullableDate(oppivelvollisuusVoimassaAsti),
         }),
         ...keskeytykset,
       ]

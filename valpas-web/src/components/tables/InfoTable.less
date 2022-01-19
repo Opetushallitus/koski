@@ -5,12 +5,25 @@
 @infotable-cell-bottom-tighter-padding: .pxToRem(4) [];
 
 .infotable {
+  display: table;
   width: 100%;
   font-size: @font-size-medium;
 }
 
+.infotable__body {
+  display: table-row-group;
+}
+
+.infotable__row {
+  display: table-row;
+  width: auto;
+  clear: both;
+}
+
 .infotable__label,
 .infotable__value {
+  float: left;
+  display: table-column;
   padding: 0 0 @infotable-cell-bottom-padding 0;
   vertical-align: bottom;
 }
@@ -19,12 +32,16 @@
   text-align: left;
   padding-right: 1rem;
   font-weight: @font-weight-bold;
-  width: 30%;
+  width: 40%;
 }
 
 .infotable__value {
-  width: 70%;
+  width: 60%;
   vertical-align: bottom;
+}
+
+.infotable__value--nolabel {
+  column-span: 2;
 }
 
 .infotable__null {
