@@ -1,5 +1,6 @@
 import bem from "bem-ts"
 import React from "react"
+import { makeAutoWrappable } from "../../i18n/i18n"
 import "./InfoTable.less"
 
 const b = bem("infotable")
@@ -27,7 +28,12 @@ export const InfoTableRow = (props: InfoTableRow) => (
   <li className={b("row")}>
     {props.label ? (
       <>
-        <span className={b("label")}>{props.label}:</span>
+        <span className={b("label")}>
+          {typeof props.label === "string"
+            ? makeAutoWrappable(props.label)
+            : props.label}
+          :
+        </span>
         <span className={b("value")} data-testid={props.testId}>
           {props.value}
         </span>

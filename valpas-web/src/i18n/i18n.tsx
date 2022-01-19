@@ -111,6 +111,11 @@ export const disableMissingTranslationWarnings = () => {
   logMissingTranslationWarnings = false
 }
 
+const zeroWidthSpace = "\u200B"
+const wrappableSpecialCharRegex = /(\/)/
+export const makeAutoWrappable = (s: string): string =>
+  s.split(wrappableSpecialCharRegex).join(zeroWidthSpace)
+
 /**
  * Palauttaa koodiviitteestä aina edes jonkilaisen esitettävän merkkijonon
  */
