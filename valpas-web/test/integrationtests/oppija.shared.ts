@@ -65,7 +65,7 @@ export const historiaOpintoOikeus = (p: {
     p.otsikko,
     ...rivi("Tila", p.tila),
     ...rivi("Maksuttomuus", p.maksuttomuus?.join("\n")),
-    ...rivi("Toimipiste", p.toimipiste),
+    ...rivi("Oppilaitos/toimipiste", p.toimipiste),
     ...rivi("Ryhmä", p.ryhmä),
     ...rivi(
       "Muuta",
