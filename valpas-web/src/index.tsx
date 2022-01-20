@@ -7,6 +7,7 @@ import { fetchAppConfiguration } from "./api/api"
 import { getLanguage } from "./i18n/i18n"
 import { AppConfiguration } from "./state/apitypes/appConfiguration"
 import { enableFeature, Feature } from "./state/featureFlags"
+import { OppijaRaamitService } from "./state/oppijaRaamitService"
 import "./style/index.less"
 import { ValpasApp } from "./views/ValpasApp"
 
@@ -14,6 +15,7 @@ declare global {
   interface Window extends AppConfiguration {
     virkailija_raamit_set_to_load?: boolean
     enableFeature?: (feature: Feature) => void
+    Service?: OppijaRaamitService
   }
 }
 

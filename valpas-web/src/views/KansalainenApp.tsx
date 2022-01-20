@@ -13,6 +13,7 @@ import {
   kansalainenOmatTiedotPath,
 } from "../state/kansalainenPaths"
 import { Login, useUserLogin } from "../state/login"
+import "../state/oppijaRaamitService"
 import { NotFoundView } from "./ErrorView"
 import {
   KansalainenEiTietojaOpintopolussaView,

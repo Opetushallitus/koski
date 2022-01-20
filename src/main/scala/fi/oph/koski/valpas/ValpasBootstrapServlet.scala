@@ -1,19 +1,20 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
-import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.koskiuser.AuthenticationUser
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
+import fi.oph.koski.valpas.valpasuser.ValpasAuthenticationSupport
 
-class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with Unauthenticated {
+class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with ValpasAuthenticationSupport {
   get("/window-properties") {
     WindowProperties(
       valpasLocalizationMap = application.valpasLocalizationRepository.localizations,
       environment = Environment.currentEnvironment(application.config),
       opintopolkuVirkailijaUrl = application.config.getString("opintopolku.virkailija.url"),
       opintopolkuOppijaUrl = application.config.getString("opintopolku.oppija.url"),
+      oppijaRaamitUser = getUser.map(OppijaRaamitUser.apply).toOption,
     )
   }
 }
@@ -23,4 +24,17 @@ case class WindowProperties(
   environment: String,
   opintopolkuVirkailijaUrl: String,
   opintopolkuOppijaUrl: String,
+  oppijaRaamitUser: Option[OppijaRaamitUser],
 )
+
+case class OppijaRaamitUser(
+  name: String,
+  oid: String,
+)
+
+object OppijaRaamitUser {
+  def apply(user: AuthenticationUser): OppijaRaamitUser = OppijaRaamitUser(
+    name = user.name,
+    oid = user.oid,
+  )
+}
