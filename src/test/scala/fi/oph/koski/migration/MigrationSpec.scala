@@ -9,7 +9,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
   "Migraatiot" - {
     "Havaittiin uusi tietokannan migraatiotiedosto. Migraatiot, varsinkin jos koskevat Kosken suurimpia tauluja, on hyvä testata tietokantareplikaa vasten. " +
       "Korjaa tämän testin odottama tiedostomäärä, kun olet varma että migraatiot voi viedä eteenpäin." in {
-      new File("./src/main/resources/db/migration").listFiles.length should equal (77)
+      new File("./src/main/resources/db/migration").listFiles.length should equal (78)
     }
   }
 }
