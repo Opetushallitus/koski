@@ -609,7 +609,7 @@ object VirtaXMLConverterUtils {
   }
 
   // huom, tässä kentässä voi olla oppilaitosnumeron lisäksi muitakin arvoja, esim. "UK" = "Ulkomainen korkeakoulu"
-  // https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaatio
+  // https://wiki.eduuni.fi/display/CSCVIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaatio,Organisation
   private def nykyinenOppilaitosnumero(node: Node): Option[String] = (node \ "Myontaja").headOption.map(_.text)
 }
 
@@ -621,7 +621,7 @@ case class Oppilaitosnumerot(
   def asList = List(lähde, nykyinen).flatten
 }
 
-// https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaationrooli,Organisationensroll
+// https://wiki.eduuni.fi/display/CSCVIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaationrooli,Organisationensroll
 object OrganisaationRooli extends Enumeration {
   val Myöntävä = Value("1")
   val Järjestävä = Value("2")

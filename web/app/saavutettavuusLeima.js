@@ -9,7 +9,7 @@ const saavutettavuusImages = {
 export const patchSaavutettavuusLeima = () =>
   waitForFooter(footerLogos => {
     const alt = t('Saavutettavuus huomioitu')
-    const url = 'https://confluence.csc.fi/display/OPHPALV/Saavutettavuus+on+huomioitu'
+    const url = 'https://wiki.eduuni.fi/display/OPHPALV/Saavutettavuus+on+huomioitu'
     const imgSrc = saavutettavuusImages[lang]
 
     const img = document.createElement('img')
