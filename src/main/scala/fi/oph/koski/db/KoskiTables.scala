@@ -30,9 +30,10 @@ object KoskiTables {
     val alkamispäivä = column[Date]("alkamispaiva")
     val päättymispäivä = column[Option[Date]]("paattymispaiva")
     val suoritusjakoTehty = column[Boolean]("suoritusjako_tehty_rajapaivan_jalkeen") // Rajapäivä marraskuu 2021
+    val suoritustyypit = column[List[String]]("suoritustyypit")
 
-    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
-    def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä)
+    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty, suoritustyypit) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
+    def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä, suoritustyypit)
   }
 
   object OpiskeluoikeusTable {
@@ -59,7 +60,8 @@ object KoskiTables {
         opiskeluoikeus.tyyppi.koodiarvo,
         Date.valueOf(opiskeluoikeus.alkamispäivä.get),
         opiskeluoikeus.päättymispäivä.map(Date.valueOf),
-        false
+        false,
+        opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)
       )
     }
 
@@ -85,7 +87,8 @@ object KoskiTables {
        opiskeluoikeus.getOppilaitos.oid,
        opiskeluoikeus.mitätöity,
        Date.valueOf(opiskeluoikeus.alkamispäivä.get),
-       opiskeluoikeus.päättymispäivä.map(Date.valueOf))
+       opiskeluoikeus.päättymispäivä.map(Date.valueOf),
+       opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo))
     }
   }
 
@@ -262,7 +265,8 @@ case class OpiskeluoikeusRow(id: Int,
   koulutusmuoto: String,
   alkamispäivä: Date,
   päättymispäivä: Option[Date],
-  suoritusjakoTehty: Boolean
+  suoritusjakoTehty: Boolean,
+  suoritustyypit: List[String]
 ) {
 
   def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {
