@@ -73,7 +73,7 @@ trait Suoritus {
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
   def koulutusmoduuli: SuorituksenKoulutusmoduuli
-  def toimipiste: OrganisaatioWithOid
+  def toimipiste: Option[OrganisaatioWithOid]
   def vahvistus: Option[Vahvistus]
   @KoodistoUri("kieli")
   def suorituskieli: schema.Koodistokoodiviite
@@ -133,7 +133,7 @@ case class AmmatillinenSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: schema.Koodistokoodiviite,
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
-  toimipiste: OrganisaatioWithOid,
+  toimipiste: Option[OrganisaatioWithOid],
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
 ) extends Suoritus
@@ -176,7 +176,7 @@ case class IBSuoritus(
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: schema.Koodistokoodiviite,
   koulutusmoduuli: IBTutkinto,
-  toimipiste: OrganisaatioWithOid,
+  toimipiste: Option[OrganisaatioWithOid],
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
 ) extends Suoritus
@@ -218,7 +218,7 @@ case class InternationalSchoolSuoritus(
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")
   tyyppi: schema.Koodistokoodiviite,
   koulutusmoduuli: InternationalSchoolLuokkaAste,
-  toimipiste: OrganisaatioWithOid,
+  toimipiste: Option[OrganisaatioWithOid],
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
 ) extends Suoritus
@@ -300,7 +300,7 @@ case class Opiskeluoikeusjakso(
 
 case class Vahvistus(
   päivä: LocalDate,
-  myöntäjäOrganisaatio: Organisaatio
+  myöntäjäOrganisaatio: Option[Organisaatio]
 )
 
 case class OpiskeluoikeudenLisätiedot(
