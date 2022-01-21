@@ -243,15 +243,18 @@ class YtlSpec
       }
     }
 
-    "Haku epäonnistuu rikkinäisellä datalla (koodistosta puuttuva koulutuskoodi)" in {
+    "Haku onnistuu myös rikkinäisellä datalla (koodistosta puuttuva koulutuskoodi)" in {
+      // Scala-schemaa käytetään tavalla, jossa kaikki json-taulukoiden alkioissa olevat validointivirheet
+      // jätetään huomioimatta ja jätetään vain alkio pois listalta. Tämän vuoksi esim. koodistosta
+      // puuttuvia arvoja ei huomata. Tämän ei kuitenkaan pitäisi olla ongelma, koska tietokannassa ei voi olla
+      // tältä osin rikkinäistä dataa.
       val oidit = List(
         KoskiSpecificMockOppijat.tunnisteenKoodiarvoPoistettu
       ).map(_.oid)
 
-      val caught = intercept[Exception] {
-        postOidit(oidit){}
+      postOidit(oidit) {
+        verifyResponseStatusOk()
       }
-      assert(caught.getClass.getName == "org.apache.http.NoHttpResponseException")
     }
 
     "Sallitaan yhteensä 1000 hetua ja oidia" in {

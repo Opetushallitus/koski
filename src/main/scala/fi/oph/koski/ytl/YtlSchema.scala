@@ -65,34 +65,24 @@ trait YtlOpiskeluoikeus {
   def alkamispäivä: Option[LocalDate]
   def päättymispäivä: Option[LocalDate]
 
-  // Poistaa deserialisoinnissa poistettaviksi merkityt suoritukset ja koulutusmoduulit jos sellaisia datassa on.
-  // TODO: Poistaa myös erityisoppilaitosten tiedot, koska ne ovat sensitiivistä dataa.
   def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus]
 }
 
-trait RaakaSuoritus {
+trait Suoritus {
   @KoodistoUri("suorituksentyyppi")
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
-}
-
-trait Suoritus extends RaakaSuoritus {
-  def koulutusmoduuli: RaakaSuorituksenKoulutusmoduuli
+  def koulutusmoduuli: SuorituksenKoulutusmoduuli
   def toimipiste: OrganisaatioWithOid
   def vahvistus: Option[Vahvistus]
   @KoodistoUri("kieli")
   def suorituskieli: schema.Koodistokoodiviite
 }
 
-trait PoistettavaSuoritus extends RaakaSuoritus
-
-trait RaakaSuorituksenKoulutusmoduuli {
+trait SuorituksenKoulutusmoduuli {
   @Discriminator
   def tunniste: schema.Koodistokoodiviite
 }
-
-trait SuorituksenKoulutusmoduuli extends RaakaSuorituksenKoulutusmoduuli
-trait PoistettavaSuorituksenKoulutusmoduuli extends RaakaSuorituksenKoulutusmoduuli
 
 @Title("Lukion opiskeluoikeus")
 case class YTLLukionOpiskeluoikeus(
@@ -109,7 +99,9 @@ case class YTLLukionOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   oppimääräSuoritettu: Option[Boolean]
 ) extends YtlOpiskeluoikeus {
-  def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus] = Some(this)
+  def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus] = {
+    Some(this)
+  }
 }
 
 @Title("Ammatillinen opiskeluoikeus")
@@ -119,7 +111,7 @@ case class YtlAmmatillinenOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   tila: OpiskeluoikeudenTila,
-  suoritukset: List[RaakaAmmatillinenSuoritus],
+  suoritukset: List[AmmatillinenSuoritus],
   lisätiedot: Option[OpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: schema.Koodistokoodiviite,
@@ -128,25 +120,13 @@ case class YtlAmmatillinenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
 ) extends YtlOpiskeluoikeus {
   def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus] = {
-    val uudetSuoritukset = suoritukset.filter {
-      case s: PoistettavaAmmatillinenSuoritus => false
-      case _ => true
-    }
-
-    if (uudetSuoritukset.length > 0) {
-      Some(this.copy(suoritukset = uudetSuoritukset))
+    if (this.suoritukset.length > 0) {
+      Some(this)
     } else {
       None
     }
   }
 }
-
-trait RaakaAmmatillinenSuoritus extends RaakaSuoritus
-
-@Title("IGNORE")
-case class PoistettavaAmmatillinenSuoritus(
-  tyyppi: schema.Koodistokoodiviite
-) extends RaakaAmmatillinenSuoritus with PoistettavaSuoritus
 
 @Title("Ammatillinen suoritus")
 case class AmmatillinenSuoritus(
@@ -156,7 +136,7 @@ case class AmmatillinenSuoritus(
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
-) extends RaakaAmmatillinenSuoritus with Suoritus
+) extends Suoritus
 
 case class AmmatillinenTutkintoKoulutus(
   @KoodistoUri("koulutus")
@@ -165,7 +145,7 @@ case class AmmatillinenTutkintoKoulutus(
   perusteenNimi: Option[schema.LocalizedString],
   @KoodistoUri("koulutustyyppi")
   koulutustyyppi: Option[schema.Koodistokoodiviite]
-) extends RaakaSuorituksenKoulutusmoduuli
+) extends SuorituksenKoulutusmoduuli
 
 @Title("IB-tutkinnon opiskeluoikeus")
 case class YtlIBOpiskeluoikeus(
@@ -174,7 +154,7 @@ case class YtlIBOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   tila: OpiskeluoikeudenTila,
-  suoritukset: List[RaakaIBSuoritus],
+  suoritukset: List[IBSuoritus],
   lisätiedot: Option[OpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: schema.Koodistokoodiviite,
@@ -183,25 +163,13 @@ case class YtlIBOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
 ) extends YtlOpiskeluoikeus {
   def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus] = {
-    val uudetSuoritukset = suoritukset.filter {
-      case s: PoistettavaIBSuoritus => false
-      case _ => true
-    }
-
-    if (uudetSuoritukset.length > 0) {
-      Some(this.copy(suoritukset = uudetSuoritukset))
+    if (this.suoritukset.length > 0) {
+      Some(this)
     } else {
       None
     }
   }
 }
-
-trait RaakaIBSuoritus extends RaakaSuoritus
-
-@Title("IGNORE")
-case class PoistettavaIBSuoritus(
-  tyyppi: schema.Koodistokoodiviite,
-) extends RaakaIBSuoritus with PoistettavaSuoritus
 
 @Title("IB-suoritus")
 case class IBSuoritus(
@@ -211,7 +179,7 @@ case class IBSuoritus(
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
-) extends RaakaIBSuoritus with Suoritus
+) extends Suoritus
 
 @Title("IB-tutkinto")
 case class IBTutkinto(
@@ -219,7 +187,7 @@ case class IBTutkinto(
   @KoodistoKoodiarvo("301102")
   tunniste: schema.Koodistokoodiviite,
   koulutustyyppi: Option[schema.Koodistokoodiviite]
-) extends RaakaSuorituksenKoulutusmoduuli
+) extends SuorituksenKoulutusmoduuli
 
 @Title("International Schoolin opiskeluoikeus")
 case class YTLInternationalSchoolOpiskeluoikeus(
@@ -228,7 +196,7 @@ case class YTLInternationalSchoolOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   tila: OpiskeluoikeudenTila,
-  suoritukset: List[RaakaInternationalSchoolSuoritus],
+  suoritukset: List[InternationalSchoolSuoritus],
   lisätiedot: Option[OpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo("internationalschool")
   tyyppi: schema.Koodistokoodiviite,
@@ -237,43 +205,23 @@ case class YTLInternationalSchoolOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
 ) extends YtlOpiskeluoikeus {
   def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus] = {
-    val uudetSuoritukset = suoritukset.filter {
-      case s: PoistettavaInternationalSchoolSuoritus => false
-      case s: InternationalSchoolSuoritus if s.koulutusmoduuli.isInstanceOf[PoistettavaInternationalSchoolLuokkaAste] => false
-      case _ => true
-    }
-
-    if (uudetSuoritukset.length > 0) {
-      Some(this.copy(suoritukset = uudetSuoritukset))
+    if (this.suoritukset.length > 0) {
+      Some(this)
     } else {
       None
     }
   }
 }
 
-trait RaakaInternationalSchoolSuoritus extends RaakaSuoritus
-
-@Title("IGNORE")
-case class PoistettavaInternationalSchoolSuoritus(
-  tyyppi: schema.Koodistokoodiviite
-) extends RaakaInternationalSchoolSuoritus with PoistettavaSuoritus
-
 @Title("International Schoolin suoritus")
 case class InternationalSchoolSuoritus(
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")
   tyyppi: schema.Koodistokoodiviite,
-  koulutusmoduuli: RaakaInternationalSchoolLuokkaAste,
+  koulutusmoduuli: InternationalSchoolLuokkaAste,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
-) extends RaakaInternationalSchoolSuoritus with Suoritus
-
-trait RaakaInternationalSchoolLuokkaAste extends RaakaSuorituksenKoulutusmoduuli
-
-@Title("IGNORE")
-case class PoistettavaInternationalSchoolLuokkaAste(
-  tunniste: schema.Koodistokoodiviite,
-) extends RaakaInternationalSchoolLuokkaAste with PoistettavaSuorituksenKoulutusmoduuli
+) extends Suoritus
 
 @Title("International Schoolin luokka-aste")
 case class InternationalSchoolLuokkaAste(
@@ -284,7 +232,7 @@ case class InternationalSchoolLuokkaAste(
   @KoodistoKoodiarvo("ib")
   @KoodistoKoodiarvo("ish")
   diplomaType: schema.Koodistokoodiviite
-) extends RaakaInternationalSchoolLuokkaAste with SuorituksenKoulutusmoduuli
+) extends SuorituksenKoulutusmoduuli
 
 trait Organisaatio
 

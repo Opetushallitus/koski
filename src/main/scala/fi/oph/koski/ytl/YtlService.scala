@@ -15,10 +15,8 @@ import fi.oph.koski.schema.{Henkilö, KoskiSchema}
 import org.json4s.JsonAST.JValue
 import org.json4s.MappingException
 import rx.lang.scala.Observable
-import fi.oph.scalaschema.SerializationContext
 
 class YtlService(application: KoskiApplication) extends Logging {
-  private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, KoskiSchema.skipSyntheticProperties)
 
   private lazy val opiskeluoikeudenTyyppiFilter =
     OpiskeluoikeusQueryFilter.OneOfOpiskeluoikeudenTyypit(
@@ -70,7 +68,9 @@ class YtlService(application: KoskiApplication) extends Logging {
   private def deserializeYtlOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[HttpStatus, YtlOpiskeluoikeus] = {
     val json = KoskiTables.OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
 
-    application.validatingAndResolvingExtractor.extract[YtlOpiskeluoikeus](KoskiSchema.lenientDeserialization)(json)
+    application.validatingAndResolvingExtractor.extract[YtlOpiskeluoikeus](
+      KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItems
+    )(json)
   }
 
   private def auditLogOpiskeluoikeusKatsominen(oppija: YtlOppija)(koskiSession: KoskiSpecificSession): Unit =
