@@ -2,7 +2,7 @@ package fi.oph.koski.perftest
 
 import java.time.{LocalDate}
 
-object LuovutuspalveluTilastokeskuksenHaku {
+object LuovutuspalveluTilastokeskuksenHaku extends App {
   PerfTestRunner.executeTest(LuovutuspalveluTilastokeskuksenHakuScenario)
 }
 
