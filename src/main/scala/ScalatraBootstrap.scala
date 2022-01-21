@@ -42,8 +42,8 @@ import fi.oph.koski.valpas._
 import fi.oph.koski.valpas.kansalainen.ValpasKansalainenApiServlet
 import fi.oph.koski.valpas.sso.ValpasOppijaCasServlet
 import fi.oph.koski.valvira.ValviraServlet
+import fi.oph.koski.ytl.YtlServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
-
 import javax.servlet.ServletContext
 import org.scalatra._
 
@@ -111,6 +111,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/api/luovutuspalvelu/valvira", new ValviraServlet)
     mount("/api/luovutuspalvelu/kela", new KelaServlet)
     mount("/api/luovutuspalvelu/migri", new MigriServlet)
+    mount("/api/luovutuspalvelu/ytl", new YtlServlet)
     mount("/api/palveluvayla", new PalveluvaylaServlet)
     mount("/api/luovutuspalvelu/haku", new TilastokeskusServlet)
     mount("/api/omadata/oppija", new ApiProxyServlet)
