@@ -11,6 +11,7 @@
     "start": "node autoclear.js && parcel serve src/index.html",
     "start:watch": "concurrently npm:start npm:lint:types:watch",
     "start:raamit": "node autoclear.js --dev-raamit && VIRKAILIJA_RAAMIT_HOST=\"https://virkailija.untuvaopintopolku.fi/\" OPPIJA_RAAMIT_HOST=\"https://untuvaopintopolku.fi/\" parcel serve src/index.html",
+    "start:local-oppijaraamit": "node autoclear.js --dev-local-oppijaraamit && OPPIJA_RAAMIT_HOST=\"http://localhost:8080/\" parcel serve src/index.html",
     "start:integration": "node autoclear.js --integration && parcel serve src/index.html --no-hmr --no-cache",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "node autoclear.js --unittest && jest --runInBand src",
