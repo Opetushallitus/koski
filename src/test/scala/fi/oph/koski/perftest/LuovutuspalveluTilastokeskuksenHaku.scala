@@ -11,12 +11,13 @@ object LuovutuspalveluTilastokeskuksenHaku extends App {
 
 object LuovutuspalveluTilastokeskuksenHakuScenario extends PerfTestScenario {
   def tilastokeskusUser = new UserWithPassword {
-    override def username = "passketti"
+    override def username = requiredEnv("TILASTOKESKUS_USER")
     override def password = requiredEnv("TILASTOKESKUS_PASS")
   }
+  override def defaultUser = tilastokeskusUser
   val alkupäivä = LocalDate.now.minusMonths(1).toString
   val loppupäivä = LocalDate.now.toString
   def operation(x: Int) = {
-    List(Operation(uri = s"api/luovutuspalvelu/haku?v=1&opiskeluoikeusAlkanutAikaisintaan=$alkupäivä&opiskeluoikeusAlkanutViimeistään=$loppupäivä", headers = authHeaders(tilastokeskusUser)))
+    List(Operation(uri = s"api/luovutuspalvelu/haku?v=1&opiskeluoikeusAlkanutAikaisintaan=$alkupäivä&opiskeluoikeusAlkanutViimeistään=$loppupäivä")) // headers = authHeaders(tilastokeskusUser) ?
   }
 }
