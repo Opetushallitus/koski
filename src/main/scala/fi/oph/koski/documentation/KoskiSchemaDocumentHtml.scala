@@ -170,7 +170,7 @@ object KoskiSchemaDocumentHtml {
     case Description(desc) => Some(<span class="description">{formatDescription(desc)}</span>)
     case ReadOnly(desc) => Some(<div class="readonly">{formatDescription(desc)}</div>)
     case _ => None
-  }) ++ onlyWhenHtml(metadata) ++ sensitiveDataHtml(metadata) ++ deprecatedHtml(metadata, includeMessage = true)
+  }) ++ onlyWhenHtml(metadata) ++ sensitiveDataHtml(metadata) ++ deprecatedHtml(metadata, includeMessage = true) ++ redundantDataHtml(metadata)
 
   private def onlyWhenHtml(metadata: List[Metadata]): List[Elem] = metadata.collect { case o: OnlyWhen => o } match {
     case Nil => Nil
@@ -180,6 +180,7 @@ object KoskiSchemaDocumentHtml {
   private def sensitiveDataHtml(metadata: List[Metadata]): List[Elem] = metadata.collect {
     case s: SensitiveData => <div class="sensitive">Erityinen henkilötieto + salassa pidettävä tieto.</div>
   }
+
 
   private def deprecatedHtml(metadata: List[Metadata], includeMessage: Boolean = false): List[Elem] = metadata.collect {
     case d: Deprecated =>
@@ -191,6 +192,10 @@ object KoskiSchemaDocumentHtml {
           "Vanhentunut kenttä"
         }}
       </div>
+  }
+
+  private def redundantDataHtml(metadata: List[Metadata]): List[Elem] = metadata.collect {
+    case s: RedundantData => <div class="redundant">Kenttä ei ole käytössä. Koski ei ota vastaan kentässä siirrettyä tietoa.</div>
   }
 
   def intersperse[E](x: E, xs:Seq[E]): Seq[E] = (x, xs) match {

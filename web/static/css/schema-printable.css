@@ -70,7 +70,8 @@ td.kuvaus .description {
 }
 
 .sensitive,
-.deprecated {
+.deprecated,
+.redundant {
   font-weight: bold;
 }
 
