@@ -276,7 +276,7 @@ jobs:
       - name: Build
         run: mvn test-compile
 
-      - name: Run perftest randomget-light
+      - name: Run perftest tilastokeskus-haku
         run: |
           export PERFTEST_THREADS=2
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.LuovutuspalveluTilastokeskuksenHaku"
