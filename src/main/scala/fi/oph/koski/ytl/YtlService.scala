@@ -27,11 +27,7 @@ class YtlService(application: KoskiApplication) extends Logging {
       )
     )
 
-  def streamOppijat(oidit: Seq[String], hetut: Seq[String], user: KoskiSpecificSession): Observable[JValue] = {
-    // Käytä globaaleja oikeuksia tietojen hakemiseen: filtteröinti YTL:lle sallittuihin kenttiin
-    // tapahtuu deserialisoinnissa ja muussa koodilogiikassa.
-    implicit val systemUser: KoskiSpecificSession = KoskiSpecificSession.systemUser
-
+  def streamOppijat(oidit: Seq[String], hetut: Seq[String])(implicit user: KoskiSpecificSession): Observable[JValue] = {
     val henkilöt =
       application.opintopolkuHenkilöFacade.findOppijatNoSlaveOids(oidit) ++
         application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut)
@@ -54,7 +50,7 @@ class YtlService(application: KoskiApplication) extends Logging {
       // Poista listalta oppijat, joilla ei ollut yhtään (YTL:ää kiinnostavaa) opiskeluoikeutta
       .filterNot(_.opiskeluoikeudet.isEmpty)
       .doOnEach(auditLogOpiskeluoikeusKatsominen(_)(user))
-      .map(JsonSerializer.serializeWithUser(systemUser))
+      .map(JsonSerializer.serializeWithUser(user))
   }
 
   private def toYtlOpiskeluoikeus(row: OpiskeluoikeusRow)(implicit user: SensitiveDataAllowed): YtlOpiskeluoikeus = {

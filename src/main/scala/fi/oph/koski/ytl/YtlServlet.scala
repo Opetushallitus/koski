@@ -21,7 +21,7 @@ class YtlServlet(implicit val application: KoskiApplication) extends KoskiSpecif
     withJsonBody { json =>
       YtlRequest.parseBulk(json) match {
         case Right((oidit, hetut)) =>
-          streamResponse[JValue](ytlService.streamOppijat(oidit, hetut, session), session)
+          streamResponse[JValue](ytlService.streamOppijat(oidit, hetut), session)
         case Left(status) =>
           haltWithStatus(status)
       }
