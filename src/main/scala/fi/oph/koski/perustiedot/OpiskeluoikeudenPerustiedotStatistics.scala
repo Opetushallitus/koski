@@ -73,7 +73,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: ElasticSearchIndex) {
           |            "tila": {
           |              "terms": {
           |                "field": "tilat.tila.koodiarvo.keyword",
-          |                "include": "valmistunut"
+          |                "include": ["valmistunut", "hyvaksytystisuoritettu"]
           |              }
           |            }
           |          }
