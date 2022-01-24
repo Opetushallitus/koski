@@ -1,6 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.TestMethodsLukio.päättötodistusSuoritus
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -83,6 +84,16 @@ class OppijaValidationLukioAlkamispäiväSpec
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma(
             "Uusi lukion opiskelija ei voi aloittaa vanhojen opetussuunnitelman perusteiden mukaisia opintoja 1.8.2021 tai myöhemmin. Käytä lukion opetussuunnitelman perusteen diaarinumeroa OPH-2263-2019. Jos tosiasiassa oppija on aloittanut vanhojen perusteiden mukaiset lukio-opinnot ennen 1.8.2021, häneltä puuttuu KOSKI-tietovarannosta tämä opiskeluoikeus"
           ))
+        }
+      }
+      "Sallitaan jos opiskelee aikuisten opsilla" in {
+        putOpiskeluoikeus(
+          defaultOpiskeluoikeus.copy(
+            tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
+            suoritukset = List(päättötodistusSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma))),
+          KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
+        ) {
+          verifyResponseStatusOk()
         }
       }
     }

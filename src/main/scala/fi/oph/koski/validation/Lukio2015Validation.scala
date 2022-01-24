@@ -1,10 +1,12 @@
 package fi.oph.koski.validation
 
+import fi.oph.koski.documentation.LukioExampleData.aikuistenOpetussuunnitelma
+
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, LukionOpiskeluoikeus, LukionOppiaineenOppimääränSuoritus2015}
+import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, LukionOpiskeluoikeus, LukionOppiaineenOppimääränSuoritus2015, LukionOppimääränSuoritus2015}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 
 object Lukio2015Validation {
@@ -33,7 +35,9 @@ object Lukio2015Validation {
         case Some(alkamispäivä) if alkamispäivä.isBefore(rajapäivä) =>
           HttpStatus.ok
         case Some(alkamispäivä)
-          if eiRajapäivääEdeltäviäMuitaOpiskeluoikeuksia(oppijanOid, opiskeluoikeus.oid, opiskeluoikeusRepository) && !onUlkomainenVaihtoopiskelija(opiskeluoikeus) =>
+          if eiRajapäivääEdeltäviäMuitaOpiskeluoikeuksia(oppijanOid, opiskeluoikeus.oid, opiskeluoikeusRepository)
+            && !onUlkomainenVaihtoopiskelija(opiskeluoikeus)
+            && !onAikuistenOppimäärä(opiskeluoikeus) =>
             KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma()
         case _ =>
           HttpStatus.ok
@@ -77,6 +81,16 @@ object Lukio2015Validation {
   private def onUlkomainenVaihtoopiskelija(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean = {
     opiskeluoikeus match {
       case lukionOpiskeluoikeus: LukionOpiskeluoikeus => lukionOpiskeluoikeus.lisätiedot.exists(_.ulkomainenVaihtoopiskelija)
+      case _ => false
+    }
+  }
+
+  private def onAikuistenOppimäärä(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean = {
+    opiskeluoikeus match {
+      case lukionOpiskeluoikeus: LukionOpiskeluoikeus => lukionOpiskeluoikeus.suoritukset.exists{
+        case s: LukionOppimääränSuoritus2015 if s.oppimäärä == aikuistenOpetussuunnitelma => true
+        case _ => false
+      }
       case _ => false
     }
   }
