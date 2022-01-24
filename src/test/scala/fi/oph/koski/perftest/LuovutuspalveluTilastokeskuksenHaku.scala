@@ -15,9 +15,7 @@ object LuovutuspalveluTilastokeskuksenHakuScenario extends PerfTestScenario {
     override def password = requiredEnv("TILASTOKESKUS_PASS")
   }
   override def defaultUser = tilastokeskusUser
-  val alkupäivä = LocalDate.now.minusMonths(1).toString
-  val loppupäivä = LocalDate.now.toString
   def operation(x: Int) = {
-    List(Operation(uri = s"api/luovutuspalvelu/haku?v=1&opiskeluoikeusAlkanutAikaisintaan=$alkupäivä&opiskeluoikeusAlkanutViimeistään=$loppupäivä")) // headers = authHeaders(tilastokeskusUser) ?
+    List(Operation(uri = s"api/luovutuspalvelu/haku?v=1&opiskeluoikeusAlkanutAikaisintaan=2021-01-01&opiskeluoikeusAlkanutViimeistään=2021-12-31")) // headers = authHeaders(tilastokeskusUser) ?
   }
 }
