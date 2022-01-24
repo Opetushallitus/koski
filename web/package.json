@@ -89,6 +89,7 @@
     "preinstall": "npx npm-force-resolutions"
   },
   "resolutions": {
-    "tar": "^6.1.1"
+    "tar": "^6.1.1",
+    "ansi-regex": "5.0.1"
   }
 }
