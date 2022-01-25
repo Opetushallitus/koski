@@ -34,9 +34,13 @@ object TilanAsettaminenKunVahvistettuSuoritusValidation {
   }
 
   private def validateYleisetSuoritukset(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    opiskeluoikeus.suoritukset.exists(suoritus => suoritus.vahvistettu) match {
-      case true => KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus()
-      case false => HttpStatus.ok
+    opiskeluoikeus.suoritukset.filter {
+      case _: NäyttötutkintoonValmistavanKoulutuksenSuoritus => false
+      case _ => true
+    }
+      .exists(suoritus => suoritus.vahvistettu) match {
+        case true => KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus()
+        case false => HttpStatus.ok
     }
   }
 
