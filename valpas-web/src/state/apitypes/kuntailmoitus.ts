@@ -1,4 +1,5 @@
 import { getLocalizedMaybe } from "../../i18n/i18n"
+import { MinimiOppijaKuntailmoitus } from "../../views/oppija/typeIntersections"
 import { ISODateTime, Oid } from "../common"
 import { Kieli, Kunta, Maa } from "./koodistot"
 import { OppijaKuntailmoituksillaSuppeatTiedot } from "./oppija"
@@ -71,7 +72,7 @@ export type KuntailmoituksenOppijanYhteystiedot = {
 }
 
 export const isAktiivinenKuntailmoitus = (
-  kuntailmoitus: KuntailmoitusLaajatTiedotLisätiedoilla
+  kuntailmoitus: MinimiOppijaKuntailmoitus
 ): boolean => kuntailmoitus.aktiivinen
 
 export const getNäytettävätIlmoitukset = (

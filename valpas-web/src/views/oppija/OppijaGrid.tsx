@@ -42,17 +42,7 @@ export type OppijaGridProps = {
 }
 
 export const OppijaGrid = (props: OppijaGridProps) => {
-  const kuntailmoitukset = props.data.kuntailmoitukset.filter(
-    isAktiivinenKuntailmoitus
-  )
-
-  return (
-    <Grid
-      {...props.data.oppija}
-      {...props.data}
-      kuntailmoitukset={kuntailmoitukset}
-    />
-  )
+  return <Grid {...props.data.oppija} {...props.data} />
 }
 
 export type KansalainenGridProps = {
@@ -89,7 +79,11 @@ type GridProps = {
 
 const Grid = (props: GridProps) => (
   <>
-    <Kuntailmoitus aktiivisetKuntailmoitukset={props.kuntailmoitukset} />
+    <Kuntailmoitus
+      aktiivisetKuntailmoitukset={props.kuntailmoitukset.filter(
+        isAktiivinenKuntailmoitus
+      )}
+    />
     <ColumnsContainer>
       <Column size={4}>
         <BorderlessCard id="oppivelvollisuustiedot">
