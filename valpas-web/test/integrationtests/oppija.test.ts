@@ -16,6 +16,7 @@ import {
   historiaOpintoOikeus,
   historiaOppivelvollisuudenKeskeytys,
   historiaOppivelvollisuudenKeskeytysToistaiseksi,
+  historiaVastuuilmoitus,
   ilmoitetutYhteystiedot,
   ilmoitetutYhteystiedotEquals,
   merge,
@@ -111,6 +112,10 @@ const maksuttomuuttaPidennettyPath = oppijaPath.href("/virkailija", {
 
 const perusopetukseenValmistautuvaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000131",
+})
+
+const montaKuntailmoitustaPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000041",
 })
 
 const mainHeadingEquals = (expected: string) =>
@@ -933,6 +938,54 @@ describe("Oppijakohtainen näkymä", () => {
         toimipiste: "Jyväskylän normaalikoulu",
         alkamispäivä: "1.5.2021",
       })
+    )
+  })
+
+  it("Näyttää oppijan kaikki kuntailmoitukset", async () => {
+    await loginAs(montaKuntailmoitustaPath, "valpas-monta", true, "2021-12-01")
+    await mainHeadingEquals(
+      "LukionAloittanutJaLopettanut-ilmo Valpas (050405A249S)"
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaVastuuilmoitus({
+          päivämäärä: "30.11.2021",
+          ilmoittaja: "Jyväskylän normaalikoulu",
+          tahoJolleIlmoitettu: "Helsinki",
+        }),
+        historiaVastuuilmoitus({
+          päivämäärä: "20.9.2021",
+          ilmoittaja: "Jyväskylän normaalikoulu",
+          tahoJolleIlmoitettu: "Pyhtää",
+        }),
+        historiaVastuuilmoitus({
+          päivämäärä: "15.9.2021",
+          ilmoittaja: "Jyväskylän normaalikoulu",
+          tahoJolleIlmoitettu: "Helsinki",
+        }),
+        historiaOpintoOikeus({
+          otsikko: "Lukion oppimäärä 2021 – 2021",
+          tila: "Eronnut",
+          maksuttomuus: ["15.8.2021– maksuton"],
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "AH",
+          alkamispäivä: "15.8.2021",
+          päättymispäivä: "19.9.2021",
+        }),
+        historiaVastuuilmoitus({
+          päivämäärä: "15.6.2021",
+          ilmoittaja: "Jyväskylän normaalikoulu",
+          tahoJolleIlmoitettu: "Pyhtää",
+        }),
+        historiaOpintoOikeus({
+          otsikko: "Perusopetus 2012 – 2021",
+          tila: "Valmistunut",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "15.8.2012",
+          päättymispäivä: "30.5.2021",
+        })
+      )
     )
   })
 })
