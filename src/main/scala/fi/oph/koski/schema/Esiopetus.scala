@@ -48,7 +48,6 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
-  @Deprecated("Käytä korvaavia kenttiä Erityisen tuen päätökset ja Osa-aikainen erityisopetus lukuvuoden aikana")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @RedundantData
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
