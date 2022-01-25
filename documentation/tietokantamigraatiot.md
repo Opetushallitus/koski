@@ -55,9 +55,9 @@ END; $$;
 
 ## Timestamp-sarakkeen automaattinen päivittyminen
 
-Kosken tietokannoille on säädetty trigger, joka päivittää rivin `timestamp`-sarakkeen aina kun riviä päivitetään.
+Kosken tietokannoille on säädetty trigger, joka päivittää rivin `timestamp`-sarakkeen aina kun riviä päivitetään. Muita triggereitä ei kirjoitushetkellä Koskella ole.
 
-Tämä ei ole suotavaa migraatioita tehdessä, koska kyseistä riviä käytetään päättelemään koska opiskeluoikeuden tietoja on viimeksi muokattu.
+Timestampin päivitys ei välttämättä ole suotavaa migraatioita tehdessä, koska kyseistä saraketta käytetään päättelemään koska opiskeluoikeuden tietoja on viimeksi muokattu.
 
 PSQL:ssä voi disabloida triggerit sessiokohtaisesti komennolla:
 `SET session_replication_role = replica;`
