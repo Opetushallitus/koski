@@ -57,3 +57,6 @@ export const pakollisetTitle = 'Pakolliset oppiaineet'
 export const valinnaisetTitle = 'Valinnaiset oppiaineet'
 export const groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pakollinen ? pakollisetTitle : valinnaisetTitle
 
+export const isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa = model => model.value.classes.includes('nuortenperusopetuksenoppiaineensuoritusvalmistavassaopetuksessa')
+
+export const isPerusopetukseenValmistavanKoulutuksenSuoritus = model => model.value.classes.includes('perusopetukseenvalmistavanopetuksensuoritus')

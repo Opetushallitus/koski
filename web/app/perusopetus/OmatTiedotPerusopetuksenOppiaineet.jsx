@@ -5,7 +5,9 @@ import {
   isVuosiluokkaTaiPerusopetuksenOppimäärä,
   isYsiluokka,
   jääLuokalle, pakollisetTitle, valinnaisetTitle,
-  valmiitaSuorituksia
+  valmiitaSuorituksia,
+  isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa,
+  isPerusopetukseenValmistavanKoulutuksenSuoritus
 } from './Perusopetus'
 import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
 import {FootnoteDescriptions, FootnoteHint} from '../components/footnote'
@@ -64,7 +66,11 @@ const GroupedOppiaineet = ({model}) => {
 
     return (
       <section className='suoritus-group' key={groupTitle}>
-        <h4><Text name={groupTitle}/></h4>
+        {
+          !isPerusopetukseenValmistavanKoulutuksenSuoritus(model) ?
+            <h4><Text name={groupTitle}/></h4>
+            : null
+        }
         <Oppiainetaulukko model={model} suoritukset={suoritukset} showLaajuus={true}/>
       </section>
     )
@@ -77,14 +83,50 @@ const Oppiainetaulukko = ({model, suoritukset, showLaajuus}) => {
     ? suoritukset
     : suoritukset.filter(s => arvioituTaiVahvistettu(s) || osasuoritukset(s).length)
 
-  return (
-    <table className='suoritus-table'>
-      <thead>
-      <tr>
-        <th className='oppiaine' scope='col'><Text name={isToimintaAlueittain(model) ? 'Toiminta-alue' : 'Oppiaine'}/></th>
-        {showArvosana && <th className='arvosana' scope='col'><Text name='Arvosana'/></th>}
-      </tr>
-      </thead>
+  const valmistavanOpetuksenSuoritukset = filteredSuoritukset
+    .filter(s => isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s))
+
+  const muutSuoritukset = filteredSuoritukset
+    .filter(s => !isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s))
+
+  const perusopetukseenValmistavanListaus = (
+    <tbody>
+      <tr className="perusopetus-valmistava-oppiane-tyyppi"><Text name="Perusopetuksen valmistavan opetuksen opinnot"/></tr>
+      <th className='oppiaine' scope='col'><Text name={isToimintaAlueittain(model) ? 'Toiminta-alue' : 'Oppiaine'}/></th>
+      {showArvosana && <th className='arvosana' scope='col' style={{textAlign: 'center'}}><Text name='Arvosana'/></th>}
+    {
+      valmistavanOpetuksenSuoritukset.map(suoritus => (
+        <OppiaineRow
+          baret-lift
+          key={suoritus.arrayKey}
+          model={suoritus}
+          showLaajuus={showLaajuus}
+          showArvosana={showArvosana}
+          isMobile={isMobileAtom}
+          footnotes={footnotesForSuoritus(suoritus)}
+        />
+      ))
+    }
+     <tr className="perusopetus-valmistava-oppiane-tyyppi"><Text name="Perusopetuksen oppimäärään sisältyvät opinnot"/></tr>
+     <th className='oppiaine' scope='col'><Text name={isToimintaAlueittain(model) ? 'Toiminta-alue' : 'Oppiaine'}/></th>
+     {showArvosana && <th className='arvosana' scope='col' style={{textAlign: 'center'}}><Text name='Arvosana'/></th>}
+    {
+      muutSuoritukset.map(suoritus => (
+        <OppiaineRow
+          baret-lift
+          key={suoritus.arrayKey}
+          model={suoritus}
+          showLaajuus={showLaajuus}
+          showArvosana={showArvosana}
+          isMobile={isMobileAtom}
+          footnotes={footnotesForSuoritus(suoritus)}
+        />
+      ))
+    }
+    </tbody>
+  )
+
+  const perusopetuksenListaus = (
       <tbody>
       {
         filteredSuoritukset.map(suoritus => (
@@ -100,6 +142,25 @@ const Oppiainetaulukko = ({model, suoritukset, showLaajuus}) => {
         ))
       }
       </tbody>
+    )
+
+  return (
+    <table className='suoritus-table'>
+      <thead>
+      {
+      !isPerusopetukseenValmistavanKoulutuksenSuoritus(model) ?
+        <tr>
+          <th className='oppiaine' scope='col'><Text name={isToimintaAlueittain(model) ? 'Toiminta-alue' : 'Oppiaine'}/></th>
+          {showArvosana && <th className='arvosana' scope='col' style={{textAlign: 'center'}}><Text name='Arvosana'/></th>}
+        </tr>
+        : null
+      }
+      </thead>
+      {
+        !isPerusopetukseenValmistavanKoulutuksenSuoritus(model) ?
+          perusopetuksenListaus
+          : perusopetukseenValmistavanListaus
+      }
     </table>
   )
 }

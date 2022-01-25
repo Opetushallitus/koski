@@ -3465,14 +3465,14 @@ describe('Perusopetus', function() {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
           'Oppiaineiden arvosanat\n' +
           'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-          'Oppiaine Arvosana Laajuus\n' +
-          'Äidinkieli S 10 vuosiviikkotuntia\n' +
-          'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
-          'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen\n' +
+          'Perusopetuksen valmistavan opetuksen opinnot Oppiaine Arvosana Laajuus\n' +
           'Fysiikka 9 1 vuosiviikkotuntia\n' +
           'Suorituskieli suomi\n' +
           'Luokka-aste 7. vuosiluokka\n' +
-          'Suoritustapa Erityinen tutkinto'
+          'Suoritustapa Erityinen tutkinto Perusopetuksen oppimäärään sisältyvät opinnot Oppiaine Arvosana Laajuus\n' +
+          'Äidinkieli S 10 vuosiviikkotuntia\n' +
+          'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
+          'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen'
         )
       })
     })
@@ -3489,7 +3489,7 @@ describe('Perusopetus', function() {
       describe('Oppiaine', function() {
         var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.uusi-perusopetukseen-valmistava-oppiaine')
         describe('Uuden oppiaineen lisääminen', function() {
-          var uusiPaikallinen = editor.subEditor('.paikallinen:nth-child(4)')
+          var uusiPaikallinen = editor.subEditor('.oppiaine-rivi:nth-of-type(2)')
           before(editor.edit, uusiOppiaine.selectValue('Lisää'),
             uusiPaikallinen.propertyBySelector('.koodi').setValue('TNS'),
             uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'),
