@@ -2,14 +2,18 @@ package fi.oph.koski.ytl
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.documentation.ExamplesLukio2019
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.koski.koskiuser.{MockUser, MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+
+import java.time.format.DateTimeFormatter.ISO_INSTANT
+import java.time.ZonedDateTime
 
 class YtlSpec
   extends AnyFreeSpec
@@ -42,7 +46,7 @@ class YtlSpec
         KoskiSpecificMockOppijat.amis
       ).map(_.hetu.get)
 
-      postHetut(hetut, MockUsers.luovutuspalveluKäyttäjäArkaluontoinen) {
+      postHetut(hetut, None, MockUsers.luovutuspalveluKäyttäjäArkaluontoinen) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu näillä käyttöoikeuksilla"))
       }
     }
@@ -93,6 +97,118 @@ class YtlSpec
         val response = JsonSerializer.parse[List[YtlOppija]](body)
         response.length should equal(7)
       }
+    }
+
+    "Haku opiskeluoikeuksiaMuuttunutJälkeen aikaleimalla" - {
+      val hetut = List(
+        KoskiSpecificMockOppijat.amis,
+        KoskiSpecificMockOppijat.lukioKesken,
+        KoskiSpecificMockOppijat.lukionAineopiskelija,
+        KoskiSpecificMockOppijat.uusiLukio,
+        KoskiSpecificMockOppijat.ylioppilasLukiolainen,
+        KoskiSpecificMockOppijat.ibFinal,
+        KoskiSpecificMockOppijat.ibPreIB2019,
+        KoskiSpecificMockOppijat.internationalschool,
+        KoskiSpecificMockOppijat.dia,
+        KoskiSpecificMockOppijat.eskari,
+        KoskiSpecificMockOppijat.eiKoskessa,
+        KoskiSpecificMockOppijat.luva
+      ).map(_.hetu.get)
+
+      "Palauttaa oppijat, kun aikaleima on tarpeeksi menneisyydessä" in {
+        val now = ZonedDateTime.now
+
+        postHetut(hetut, Some(now.minusDays(1))) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+          response.length should equal(7)
+        }
+      }
+
+      "Ei palauta oppijoita, kun aikaleima on uudempi kuin oppijat" in {
+        val now = ZonedDateTime.now
+
+        postHetut(hetut, Some(now)) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+          response.length should equal(0)
+        }
+      }
+
+      "Palauttaa oppijalta, jolla on jokin opiskeluoikeus muuttunut, kaikki opiskeluoikeudet" in {
+        resetFixtures()
+
+        // Asetetaan aika 5 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
+        val ennenTallennusta = ZonedDateTime.now.minusSeconds(2)
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+
+        putOpiskeluoikeus(uusiOo, KoskiSpecificMockOppijat.internationalschool, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        postHetut(hetut, Some(ennenTallennusta)) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+          response.length should equal(1)
+
+          response(0).opiskeluoikeudet.length should equal(2)
+
+          val järjestettyResponse = response.updated(0, response(0).copy(opiskeluoikeudet = response(0).opiskeluoikeudet.sortBy(_.tyyppi.koodiarvo)))
+
+          järjestettyResponse(0).opiskeluoikeudet(0).tyyppi.koodiarvo should equal("internationalschool")
+          järjestettyResponse(0).opiskeluoikeudet(1).tyyppi.koodiarvo should equal("lukiokoulutus")
+        }
+      }
+
+      "Palauttaa oppijalta, jolla jokin opiskeluoikeus on mitätöity, olemassaolevat opiskeluoikeudet" in {
+        resetFixtures()
+
+        // Asetetaan aika 5 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
+        val ennenTallennusta = ZonedDateTime.now.minusSeconds(2)
+
+        val uusiOo = createOpiskeluoikeus(
+          oppija = KoskiSpecificMockOppijat.internationalschool,
+          opiskeluoikeus = ExamplesLukio2019.opiskeluoikeus.copy(),
+          user = MockUsers.jyväskyläTallentaja
+        )
+
+        mitätöiOpiskeluoikeus(uusiOo.oid.get, MockUsers.jyväskyläTallentaja)
+
+        postHetut(hetut, Some(ennenTallennusta)) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+          response.length should equal(1)
+
+          response(0).opiskeluoikeudet.length should equal(1)
+
+          response(0).opiskeluoikeudet(0).tyyppi.koodiarvo should equal("internationalschool")
+        }
+      }
+
+      "Palauttaa oppijalta, jolla ainoa opiskeluoikeus on mitätöity, tyhjän listan opiskeluoikeuksia" in {
+        resetFixtures()
+
+        // Asetetaan aika 5 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
+        val ennenTallennusta = ZonedDateTime.now.minusSeconds(2)
+
+        val uusiOo = createOpiskeluoikeus(
+          oppija = KoskiSpecificMockOppijat.luva,
+          opiskeluoikeus = ExamplesLukio2019.opiskeluoikeus.copy(),
+          user = MockUsers.jyväskyläTallentaja
+        )
+
+        mitätöiOpiskeluoikeus(uusiOo.oid.get, MockUsers.jyväskyläTallentaja)
+
+        postHetut(hetut, Some(ennenTallennusta)) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+          response.length should equal(1)
+
+          response(0).opiskeluoikeudet.length should equal(0)
+        }
+      }
+
     }
 
     "Kosken testioppijoiden hakeminen oidilla onnistuu" in {
@@ -303,21 +419,24 @@ class YtlSpec
     }
   }
 
-  private def postHetut[A](hetut: List[String], user: MockUser = MockUsers.ytlKäyttäjä)(f: => A): A =
-    postOppijat(None, Some(hetut), user)(f)
+  private def postHetut[A](hetut: List[String], opiskeluoikeuksiaMuuttunutJälkeen: Option[ZonedDateTime] = None, user: MockUser = MockUsers.ytlKäyttäjä)(f: => A): A =
+    postOppijat(None, Some(hetut), opiskeluoikeuksiaMuuttunutJälkeen, user)(f)
 
-  private def postOidit[A](oidit: List[String], user: MockUser = MockUsers.ytlKäyttäjä)(f: => A): A =
-    postOppijat(Some(oidit), None, user)(f)
+  private def postOidit[A](oidit: List[String], opiskeluoikeuksiaMuuttunutJälkeen: Option[ZonedDateTime] = None, user: MockUser = MockUsers.ytlKäyttäjä)(f: => A): A =
+    postOppijat(Some(oidit), None, opiskeluoikeuksiaMuuttunutJälkeen, user)(f)
 
   private def postOppijat[A](oidit: List[String], hetut: List[String], user: MockUser = MockUsers.ytlKäyttäjä)(f: => A): A =
-    postOppijat(Some(oidit), Some(hetut), user)(f)
+    postOppijat(Some(oidit), Some(hetut), None, user)(f)
 
-  private def postOppijat[A](oidit: Option[List[String]], hetut: Option[List[String]], user: MockUser)(f: => A): A = {
+  private def postOppijat[A](oidit: Option[List[String]], hetut: Option[List[String]], opiskeluoikeuksiaMuuttunutJälkeen: Option[ZonedDateTime], user: MockUser)(f: => A): A = {
     post(
       "api/luovutuspalvelu/ytl/oppijat",
-      JsonSerializer.writeWithRoot(YtlBulkRequest(oidit = oidit, hetut = hetut)),
+      JsonSerializer.writeWithRoot(YtlBulkRequest(oidit = oidit, hetut = hetut, opiskeluoikeuksiaMuuttunutJälkeen = opiskeluoikeuksiaMuuttunutJälkeen.map(_.format(ISO_INSTANT)))),
       headers = authHeaders(user) ++ jsonContent
     )(f)
+  }
+  private def mitätöiOpiskeluoikeus(oid: String, user: UserWithPassword = defaultUser) = {
+    delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(user))(verifyResponseStatusOk())
   }
 
   private def expectedMaksuttomuuttaPidennetty2(opiskeluoikeusOidit: Seq[String], aikaleimat: Seq[String]) =

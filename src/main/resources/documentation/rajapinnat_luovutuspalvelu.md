@@ -519,8 +519,15 @@ Esimerkkipyyntö
 
     {
       "hetut": ["180859-914S", "020654-9025", "010326-953H"],
-      "oidit": ["1.2.246.562.24.82405337123", "1.2.246.562.24.82405337995"]
+      "oidit": ["1.2.246.562.24.82405337123", "1.2.246.562.24.82405337995"],
+      "opiskeluoikeuksiaMuuttunutJälkeen": "2022-01-27T05:27:49.276Z"
     }
+
+opiskeluoikeuksiaMuuttunutJälkeen on valinnainen parametri. Jos se on määritelty, palautetaan oppijan opiskeluoikeudet
+vain, jos jokin hänen opiskeluoikeutensa on muuttunut kyseisen ajanhetken jälkeen.  Kannattaa huomioida, että tästä
+syntyy myös erikoistapaus, jos oppijan opiskeluoikeuksia on mitätöity ajanhetken jälkeen. Tällöin saatetaan palauttaa
+oppijan tiedot tyhjällä opiskeluoikeudet-listalla, vaikka normaalitapauksissa oppijaa ei palauteta lainkaan, jos
+hänellä ei ole yhtään YTL:ää kiinnostavaa opiskeluoikeutta.
 
 Esimerkkivastaus
 

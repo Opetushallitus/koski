@@ -1,8 +1,7 @@
 package fi.oph.koski.ytl
 
 import java.sql.Timestamp
-import java.time.LocalDateTime
-
+import java.time.{Instant, LocalDateTime}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiTables, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.OppijaHenkilö
@@ -27,7 +26,7 @@ class YtlService(application: KoskiApplication) extends Logging {
       )
     )
 
-  def streamOppijat(oidit: Seq[String], hetut: Seq[String])(implicit user: KoskiSpecificSession): Observable[JValue] = {
+  def streamOppijat(oidit: Seq[String], hetut: Seq[String], opiskeluoikeuksiaMuuttunutJälkeen: Option[Instant])(implicit user: KoskiSpecificSession): Observable[JValue] = {
     val henkilöt =
       application.opintopolkuHenkilöFacade.findOppijatNoSlaveOids(oidit) ++
         application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut)
@@ -39,16 +38,40 @@ class YtlService(application: KoskiApplication) extends Logging {
     )
 
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, queryFilters, None)
-      .map((t: (QueryOppijaHenkilö, List[OpiskeluoikeusRow])) => {
-        val hlö = oidToHenkilo(t._1.oid)
-        YtlOppija(
-          henkilö = YtlHenkilö(hlö, hlö.äidinkieli.flatMap(k => application.koodistoViitePalvelu.validate("kieli", k.toUpperCase))),
-          opiskeluoikeudet = t._2
-            .map(toYtlOpiskeluoikeus).flatMap(_.poistaTiedotJoihinEiKäyttöoikeutta)
-        )
-      })
-      // Poista listalta oppijat, joilla ei ollut yhtään (YTL:ää kiinnostavaa) opiskeluoikeutta
-      .filterNot(_.opiskeluoikeudet.isEmpty)
+      .map {
+        case (oppijaHenkilö: QueryOppijaHenkilö, opiskeluoikeusRows: List[OpiskeluoikeusRow]) =>
+          val oppijallaOnMuuttuneitaOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
+            .map(Timestamp.from)
+            .forall(opiskeluoikeuksiaMuuttunutJälkeen =>
+              opiskeluoikeusRows.exists(!_.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
+            )
+
+          lazy val haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
+            .map(Timestamp.from)
+            .exists(opiskeluoikeuksiaMuuttunutJälkeen =>
+              opiskeluoikeusRows.exists(oo => oo.mitätöity && !oo.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
+            )
+
+          lazy val opiskeluoikeudet =
+            opiskeluoikeusRows
+              .filterNot(_.mitätöity)
+              .map(toYtlOpiskeluoikeus)
+              .flatMap(_.poistaTiedotJoihinEiKäyttöoikeutta)
+
+          if (oppijallaOnMuuttuneitaOpiskeluoikeuksia &&
+            (opiskeluoikeudet.nonEmpty || haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia)
+          ) {
+            val hlö = oidToHenkilo(oppijaHenkilö.oid)
+            Some(YtlOppija(
+              henkilö = YtlHenkilö(hlö, hlö.äidinkieli.flatMap(k => application.koodistoViitePalvelu.validate("kieli", k.toUpperCase))),
+              opiskeluoikeudet = opiskeluoikeudet
+            ))
+          } else {
+            None
+          }
+      }
+      .filter(_.isDefined)
+      .map(_.getOrElse(throw new InternalError("Internal error")))
       .doOnEach(auditLogOpiskeluoikeusKatsominen(_)(user))
       .map(JsonSerializer.serializeWithUser(user))
   }
