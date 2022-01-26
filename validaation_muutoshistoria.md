@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 25.1.2022
+- Lukion vanhan opsin mukaisen aikuisten oppimäärällisen lukio-opiskeluoikeuden luonti sallitaan
+- Ammatillinen näyttötutkintoon valmistava koulutus voi olla merkittynä vahvistetuksi, vaikka opiskeluoikeus päättyisi tilaan "katsotaan eronneeksi"
+
 ## 18.1.2022
 - Ammatillisen opiskeluoikeuden tutkintokoodin ja suoritustavan muuttamiseen liittyvä, 13.12.2021 luotu validaatio ollut virheellinen; Validaatio korjattu. Ammatillisen opiskeluoikeuden tutkintokoodia (suorituksen koulutusmoduulin koodiarvo) ja suoritustapaa ei voi vaihtaa ammatillisen opiskeluoikeuden luonnin jälkeen.
 - Validaatio liittyen oppilaitoksen vaihtoon ollut virheellinen. Oppilaitosta, joka on aktiivinen, ei voi vaihtaa jos koulutustoimija pysyy samana.
