@@ -137,6 +137,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/valpas/api/luovutuspalvelu/kela", new ValpasKelaServlet)
     mount("/valpas/api/rouhinta", new ValpasRouhintaApiServlet)
     mount("/valpas/api/kansalainen", new ValpasKansalainenApiServlet)
+    mount("/valpas/api/luovutuspalvelu/ytl", new ValpasYtlServlet)
     mount("/valpas/logout", new ValpasLogoutServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
       mount("/valpas/login", new LocalLoginServlet)

@@ -33,6 +33,8 @@ object ValpasMockKäyttöoikeusryhmät {
 
   def kelaLuovutuspalveluKäyttäjä: Set[Käyttöoikeus] = Set(KäyttöoikeusViranomainen(List(ValpasPalvelurooli(ValpasRooli.KELA))))
 
+  def ytlLuovutuspalveluKäyttäjä: Set[Käyttöoikeus] = Set(KäyttöoikeusViranomainen(List(ValpasPalvelurooli(ValpasRooli.YTL))))
+
   private def oppilaitosHakeutuminenKäyttäjä(organisaatioOid: String) = organisaatioKäyttäjä(organisaatioOid, ValpasRooli.OPPILAITOS_HAKEUTUMINEN)
 
   private def oppilaitosSuorittaminenKäyttäjä(organisaatioOid: String) = organisaatioKäyttäjä(organisaatioOid, ValpasRooli.OPPILAITOS_SUORITTAMINEN)
