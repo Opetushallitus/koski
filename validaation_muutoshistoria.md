@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 27.1.2022
+- Pre-IB 2015 opintojen maksuttomuusvalidointi laajennettu sallimaan kaikki vuonna 2021 aloitetut suoritukset.
+- Pre-IB 2015 suoritukset lasketaan oppivelvollisuuden suorittamiseen kelpaavaksi.
+
 ## 25.1.2022
 - Lukion vanhan opsin mukaisen aikuisten oppimäärällisen lukio-opiskeluoikeuden luonti sallitaan
 - Ammatillinen näyttötutkintoon valmistava koulutus voi olla merkittynä vahvistetuksi, vaikka opiskeluoikeus päättyisi tilaan "katsotaan eronneeksi"
