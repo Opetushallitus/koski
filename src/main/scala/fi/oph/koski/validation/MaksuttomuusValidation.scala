@@ -56,7 +56,7 @@ object MaksuttomuusValidation {
           (opiskeluoikeusAlkanutHenkilönOllessaLiianVanha, s"opiskeluoikeus on merkitty alkavaksi vuonna, jona oppija täyttää enemmän kuin ${rajapäivät.maksuttomuusLoppuuIka} vuotta"),
           (kelpaamatonLukionVanhanOpsinOpiskeluoikeus,
             s"oppija on aloittanut vanhojen lukion opetussuunnitelman perusteiden mukaisen koulutuksen aiemmin kuin ${lukioVanhallaOpsillaSallittuAlkamisjakso.alku}"),
-          (preIBMaksuttomuusTietoEiSallittu(opiskeluoikeus, rajapäivät), s"oppija on aloittanut Pre-IB opinnot aiemmin kuin ${rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku}"),
+          (preIBMaksuttomuusTietoEiSallittu(opiskeluoikeus, rajapäivät), s"oppija on aloittanut Pre-IB opinnot aiemmin kuin ${rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku.format(FinnishDateFormat.finnishDateFormat)}"),
         ).filter(_._1).map(_._2)
 
     val maksuttomuustietojaSiirretty = maksuttomuustietoSiirretty || maksuttomuudenPidennysSiirretty

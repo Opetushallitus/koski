@@ -999,29 +999,24 @@ describe("Oppijakohtainen näkymä", () => {
       "SuorittaaPreIB Valpas (190704A574E)"
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000135")
-    await opiskeluhistoriaEquals(`
-      school
-      IB 2021 –
-      Tila:
-      Läsnä
-      Maksuttomuus:
-      1.6.2021– maksuton
-      Oppilaitos/toimipiste:
-      Jyväskylän normaalikoulu
-      Opiskeluoikeuden alkamispäivä:
-      1.6.2021
-      school
-      Perusopetus 2012 – 2021
-      Tila:
-      Valmistunut
-      Oppilaitos/toimipiste:
-      Jyväskylän normaalikoulu
-      Ryhmä:
-      9C
-      Opiskeluoikeuden alkamispäivä:
-      15.8.2012
-      Opiskeluoikeuden päättymispäivä:
-      30.5.2021
-    `)
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoOikeus({
+            otsikko: "IB 2021 –",
+            tila: "Läsnä",
+            maksuttomuus: ["1.6.2021– maksuton"],
+            toimipiste: "Jyväskylän normaalikoulu",
+            alkamispäivä: "1.6.2021"
+        }),
+        historiaOpintoOikeus({
+          otsikko: "Perusopetus 2012 – 2021",
+          tila: "Valmistunut",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "15.8.2012",
+          päättymispäivä: "30.5.2021",
+        })
+      )
+    )
   })
 })
