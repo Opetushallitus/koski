@@ -118,6 +118,10 @@ const montaKuntailmoitustaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000041",
 })
 
+const preIBdOppijaPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000135",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -987,5 +991,37 @@ describe("Oppijakohtainen näkymä", () => {
         })
       )
     )
+  })
+
+  it("Näyttää preIB oppijan tiedot", async () => {
+    await loginAs(preIBdOppijaPath, "valpas-monta", true)
+    await mainHeadingEquals(
+      "Pre-IB Valpas (190704A574E)"
+    )
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000135")
+    await opiskeluhistoriaEquals(`
+      school
+      IB 2021 –
+      Tila:
+      Läsnä
+      Maksuttomuus:
+      1.6.2021– maksuton
+      Oppilaitos/toimipiste:
+      Jyväskylän normaalikoulu
+      Opiskeluoikeuden alkamispäivä:
+      1.6.2021
+      school
+      Perusopetus 2012 – 2021
+      Tila:
+      Valmistunut
+      Oppilaitos/toimipiste:
+      Jyväskylän normaalikoulu
+      Ryhmä:
+      9C
+      Opiskeluoikeuden alkamispäivä:
+      15.8.2012
+      Opiskeluoikeuden päättymispäivä:
+      30.5.2021
+    `)
   })
 })

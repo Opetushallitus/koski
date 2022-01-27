@@ -4,6 +4,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.stadinAmmattiopisto
 
 import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.ExamplesIB._
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos, ressunLukio}
@@ -1353,5 +1354,31 @@ object ValpasOpiskeluoikeusExampleData {
       PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2021, 5, 1), opiskeluoikeusLäsnä),
     )),
   )
+
+  def ibOpiskeluoikeusPreIbSuoritus = {
+    val maksuttomuus: Option[List[Maksuttomuus]] = Some(List(
+      Maksuttomuus(alku = date(2021, 6, 1), loppu = None, maksuton = true),
+    ))
+    val oo = ExamplesLukio2019.aktiivinenOpiskeluoikeus
+    val edellisetLisätiedot = oo.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())
+
+    IBOpiskeluoikeus(
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(date(2021, 6, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        )
+      ),
+      suoritukset = List(
+        preIBSuoritus.copy(
+          toimipiste = jyväskylänNormaalikoulu,
+          vahvistus = vahvistusPaikkakunnalla(päivä = date(2021, 6, 1), org = jyväskylänNormaalikoulu, kunta = jyväskylä)
+        ),
+      ),
+      lisätiedot = Some(edellisetLisätiedot.copy(
+        maksuttomuus = maksuttomuus
+      ))
+    )
+  }
 
 }

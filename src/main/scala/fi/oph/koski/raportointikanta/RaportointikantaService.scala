@@ -37,7 +37,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSpecificSession.systemUser
     MitätöityOpiskeluoikeusLoader.load(application.opiskeluoikeusQueryRepository, systemUser, db).concatEager(
-      OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, db, rajapäivät = application.valpasRajapäivätService)
+      OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, db)
     )
   }
 

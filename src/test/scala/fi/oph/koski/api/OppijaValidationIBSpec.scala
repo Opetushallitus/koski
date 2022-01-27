@@ -102,35 +102,37 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
     }
 
     "Maksuttomuustieto" - {
-      "Kun opiskeluoikeus alkanut 1.8.2021 jälkeen" - {
+      "Kun opiskeluoikeus alkanut 1.1.2021 jälkeen" - {
         "Palautetaan HTTP/200" in {
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
-            lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 8, 1) , loppu = None, maksuton = true))))),
+            lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 1, 1) , loppu = None, maksuton = true))))),
               tila = LukionOpiskeluoikeudenTila(
               List(
-                LukionOpiskeluoikeusjakso(date(2021, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+                LukionOpiskeluoikeusjakso(date(2021, 1, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
                 LukionOpiskeluoikeusjakso(date(2022, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
               )
             )
           )
           putOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
             verifyResponseStatusOk()
-          }}
+          }
+        }
       }
-      "Kun opiskeluoikeus alkanut ennen 1.8.2021" - {
-        "Palautetaan HTTP/500" in {
+      "Kun opiskeluoikeus alkanut ennen 1.1.2021" - {
+        "Palautetaan HTTP/400" in {
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
-            lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 7, 30) , loppu = None, maksuton = true))))),
+            lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(alku = date(2020, 12, 31) , loppu = None, maksuton = true))))),
             tila = LukionOpiskeluoikeudenTila(
               List(
-                LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+                LukionOpiskeluoikeusjakso(date(2020, 12, 31), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
                 LukionOpiskeluoikeusjakso(date(2022, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt, Some(ExampleData.valtionosuusRahoitteinen))
               )
             )
           )
           putOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)."))
-          }}
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on aloittanut Pre-IB opinnot aiemmin kuin 2021-01-01."))
+          }
+        }
       }
     }
   }
