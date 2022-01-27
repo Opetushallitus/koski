@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.log
 
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogOperation}
 import fi.oph.koski.schema.Organisaatio
-import fi.oph.koski.valpas.kansalainen.KansalaisnäkymänTiedot
+import fi.oph.koski.valpas.kansalainen.{KansalainenOppijatiedot, KansalaisnäkymänTiedot}
 import fi.oph.koski.valpas.{ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOppilaitos}
@@ -164,19 +164,36 @@ object ValpasAuditLog {
   def auditLogKansalainenOmatTiedot
     (tiedot: KansalaisnäkymänTiedot)
     (implicit session: ValpasSession)
-  : Unit = {
-    val oppijat = tiedot.omatTiedot.toList ++ tiedot.huollettavat
-    if (oppijat.nonEmpty) {
-      val oppijaOidit = oppijat.map(_.oppija.henkilö.oid)
+  : Unit =
+    logKansalainenKatsominen(
+      tiedot.omatTiedot.toList,
+      ValpasOperation.VALPAS_KANSALAINEN_KATSOMINEN
+    )
 
+  def auditLogKansalainenHuollettavienTiedot
+    (tiedot: KansalaisnäkymänTiedot)
+    (implicit session: ValpasSession)
+  : Unit =
+    logKansalainenKatsominen(
+      tiedot.huollettavat,
+      ValpasOperation.VALPAS_KANSALAINEN_HUOLTAJA_KATSOMINEN
+    )
+
+  private def logKansalainenKatsominen
+    (tiedot: Seq[KansalainenOppijatiedot], operation: ValpasOperation)
+    (implicit session: ValpasSession)
+  : Unit = {
+    if (tiedot.nonEmpty) {
+      val oppijaOidit = tiedot.map(_.oppija.henkilö.oid)
       val message = ValpasAuditLogMessage(
-        ValpasOperation.VALPAS_KANSALAINEN_KATSOMINEN,
+        operation,
         session,
         Map(ValpasAuditLogMessageField.oppijaHenkilöOidList -> oppijaOidit.mkString(" ")),
       )
       AuditLog.log(message)
     }
   }
+
 }
 
 object ValpasAuditLogMessage {
@@ -210,7 +227,8 @@ object ValpasOperation extends Enumeration {
       OPPIVELVOLLISUUSREKISTERI_LUOVUTUS,
       VALPAS_ROUHINTA_HETUHAKU,
       VALPAS_ROUHINTA_KUNTA,
-      VALPAS_KANSALAINEN_KATSOMINEN = Value
+      VALPAS_KANSALAINEN_KATSOMINEN,
+      VALPAS_KANSALAINEN_HUOLTAJA_KATSOMINEN = Value
 }
 
 private class ValpasAuditLogOperation(op: ValpasOperation) extends AuditLogOperation(op)

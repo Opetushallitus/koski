@@ -32,22 +32,23 @@ class ValpasKansalainenApiServletSpec extends ValpasTestBase with BeforeAndAfter
     }
   }
 
-  "Kansalaisen omien tietojen hakeminen tuottaa audit-logimerkinnän" in {
-    val oppija = ValpasMockOppijat.lukioOpiskelija
-    get(getOmatTiedotUrl, headers = kansalainenLoginHeaders(oppija.hetu.get)) {
-      verifyResponseStatusOk()
-      AuditLogTester.verifyAuditLogMessage(katsominenAuditLogMessage(List(oppija.oid)))
+  "Audit-logit" - {
+    "Kansalaisen omien tietojen hakeminen tuottaa audit-logimerkinnän" in {
+      val oppija = ValpasMockOppijat.lukioOpiskelija
+      get(getOmatTiedotUrl, headers = kansalainenLoginHeaders(oppija.hetu.get)) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(katsominenAuditLogMessage(List(oppija.oid)))
+      }
     }
-  }
 
-  "Kansalaisen tietojen hakeminen tuottaa audit-logimerkinnän huollettavista" in {
-    get(getOmatTiedotUrl, headers = kansalainenLoginHeaders("240470-621T")) {
-      verifyResponseStatusOk()
-      // Huoltajalla 240470-621T itsellään ei ole tietoja Valppaassa, joten viestissä on vain Valppaasta löytyvät huollettavat
-      AuditLogTester.verifyAuditLogMessage(katsominenAuditLogMessage(List(
-        ValpasMockOppijat.turvakieltoOppija.oid,
-        ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
-      )))
+    "Kansalaisen tietojen hakeminen tuottaa audit-logimerkinnän huollettavista" in {
+      get(getOmatTiedotUrl, headers = kansalainenLoginHeaders("240470-621T")) {
+        verifyResponseStatusOk() // Huoltajalla 240470-621T itsellään ei ole tietoja Valppaassa, joten viestissä on vain Valppaasta löytyvät huollettavat
+        AuditLogTester.verifyAuditLogMessage(huoltajaKatsominenAuditLogMessage(List(
+          ValpasMockOppijat.turvakieltoOppija.oid,
+          ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
+        )))
+      }
     }
   }
 
@@ -60,4 +61,13 @@ class ValpasKansalainenApiServletSpec extends ValpasTestBase with BeforeAndAfter
         ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> oppijaOidit.mkString(" ")
       )
     )
+
+  def huoltajaKatsominenAuditLogMessage(oppijaOidit: Seq[String]) =
+    Map(
+      "operation" -> ValpasOperation.VALPAS_KANSALAINEN_HUOLTAJA_KATSOMINEN.toString,
+      "target" -> Map(
+        ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> oppijaOidit.mkString(" ")
+      )
+    )
+
 }
