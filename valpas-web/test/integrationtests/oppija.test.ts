@@ -996,7 +996,7 @@ describe("Oppijakohtainen näkymä", () => {
   it("Näyttää preIB oppijan tiedot", async () => {
     await loginAs(preIBdOppijaPath, "valpas-monta", true)
     await mainHeadingEquals(
-      "Pre-IB Valpas (190704A574E)"
+      "SuorittaaPreIB Valpas (190704A574E)"
     )
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000135")
     await opiskeluhistoriaEquals(`
