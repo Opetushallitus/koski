@@ -43,6 +43,7 @@ jobs:
           make owasp
 
       - name: Archive OWASP results
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: owasp-report
