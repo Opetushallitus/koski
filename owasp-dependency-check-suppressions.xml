@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-  <suppress>
-    <notes>SocketServer not used in project</notes>
-    <gav regex="true">^log4j:(log4j|apache-log4j-extras):.*$</gav>
-    <cve>CVE-2019-17571</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[file name: log4j-1.2.17.jar and apache-log4j-extras-1.2.17.jar. SMTP appender not in use.]]></notes>
-    <packageUrl regex="true">^pkg:maven/log4j/(log4j|apache\-log4j\-extras)@.*$</packageUrl>
-    <cve>CVE-2020-9488</cve>
-  </suppress>
-  <suppress until="2022-01-01Z">
+  <suppress until="2022-03-01Z">
     <notes>Medium level issues in the org.apache.xmlbeans:xmlbeans:jar:2.6.0 which is dependency of
       org.apache.poi:poi-ooxml:jar:3.17. Ticket for fix https://jira.eduuni.fi/browse/TOR-1373.</notes>
     <cve>CVE-2019-12415</cve>
     <cve>CVE-2021-23926</cve>
-  </suppress>
-  <suppress>
-    <notes><![CDATA[file name: json-smart-1.1.1.jar. Dependency of https://mvnrepository.com/artifact/net.logstash.log4j/jsonevent-layout.
-    Latest update 2014. Problem is in json-smart parser. However, Logstash only writes JSON.]]></notes>
-    <cve>CVE-2021-27568</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[file name: hosted-git-info:3.0.7. Node not in use: DoS is not possible.]]></notes>
@@ -50,7 +35,7 @@
     <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
     <vulnerabilityName>CVE-2020-28500</vulnerabilityName>
   </suppress>
-  <suppress until="2022-01-01Z">
+  <suppress until="2022-03-01Z">
     <notes><![CDATA[file name: lodash:4.17.20. Dev dependency.]]></notes>
     <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
     <vulnerabilityName>CVE-2021-23337</vulnerabilityName>
@@ -61,8 +46,8 @@
     <cpe>cpe:/a:netty:netty</cpe>
   </suppress>
   <suppress>
-    <notes><![CDATA[file name: log4j-1.2.17.jar. JMSAppender not used in Koski.]]></notes>
-    <packageUrl regex="true">^pkg:maven/log4j/log4j@.*$</packageUrl>
-    <vulnerabilityName>CVE-2021-4104</vulnerabilityName>
+    <notes><![CDATA[ file name: log4j-slf4j-impl-2.17.0.jar. This issue is fixed by limiting JNDI data source names to the java protocol in Log4j2 versions 2.17.1]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-slf4j\-impl@.*$</packageUrl>
+    <cve>CVE-2021-44832</cve>
   </suppress>
 </suppressions>
