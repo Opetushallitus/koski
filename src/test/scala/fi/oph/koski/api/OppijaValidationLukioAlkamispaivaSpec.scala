@@ -3,6 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.TestMethodsLukio.päättötodistusSuoritus
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.ExamplesLukio.aikuistenOpsinPerusteet2015
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -86,14 +87,28 @@ class OppijaValidationLukioAlkamispäiväSpec
           ))
         }
       }
-      "Sallitaan jos opiskelee aikuisten opsilla" in {
-        putOpiskeluoikeus(
-          defaultOpiskeluoikeus.copy(
-            tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
-            suoritukset = List(päättötodistusSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma))),
-          KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
-        ) {
-          verifyResponseStatusOk()
+      "Sallitaan jos opiskelee aikuisten opsilla" - {
+        "Oppimäärä" in {
+          putOpiskeluoikeus(
+            defaultOpiskeluoikeus.copy(
+              tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
+              suoritukset = List(päättötodistusSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma))),
+            KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
+          ) {
+            verifyResponseStatusOk()
+          }
+        }
+        "Oppiaineen oppimäärä" in {
+          putOpiskeluoikeus(
+            defaultOpiskeluoikeus.copy(
+              tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
+              suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi.copy(
+                koulutusmoduuli = lukionOppiaine("YH", diaarinumero = Some(aikuistenOpsinPerusteet2015))
+              ))),
+            KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
+          ) {
+            verifyResponseStatusOk()
+          }
         }
       }
     }
