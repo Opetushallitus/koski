@@ -5,7 +5,7 @@ import org.json4s.JsonAST.JObject
 
 case class OksaUri(tunnus: String, käsite: String) extends Metadata {
   def asLink = {
-    val baseUrl = "https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-"
+    val baseUrl = "https://wiki.eduuni.fi/display/ophoppija/Opetus+ja+koulutussanasto+-+OKSA"
     <a href={baseUrl + tunnus} target="_blank">{käsite}</a>
   }
 

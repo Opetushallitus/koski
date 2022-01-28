@@ -95,7 +95,7 @@ Esimerkkivastaus:
     </SOAP-ENV:Envelope>
 
 
-Vastauksen tietosisältö on kuvattu [wikissä](https://confluence.csc.fi/pages/viewpage.action?pageId=76536741), 
+Vastauksen tietosisältö on kuvattu [wikissä](https://wiki.eduuni.fi/display/OPHPALV/Oma+Data%3A+Opiskelijastatus+-+palautuvat+tiedot),
 mutta käytännössä se on osajoukko Kosken [tietomallista](/koski/dokumentaatio/tietomalli).
 
 
