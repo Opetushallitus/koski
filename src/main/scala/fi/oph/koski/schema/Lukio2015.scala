@@ -163,7 +163,7 @@ case class PaikallinenLukionOppiaine2015(
   pakollinen: Boolean = true,
   laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionOppiaine2015 with PaikallinenKoulutusmoduuli with StorablePreference
+) extends LukionOppiaine2015 with PaikallinenKoulutusmoduuli with StorablePreference with Diaarinumerollinen
 
 trait LukionValtakunnallinenOppiaine2015 extends LukionOppiaine2015 with YleissivistavaOppiaine
 
@@ -194,7 +194,7 @@ case class LukionMuuValtakunnallinenOppiaine2015(
   @DefaultValue(None)
   laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015
+) extends LukionValtakunnallinenOppiaine2015 with Diaarinumerollinen
 
 @Title("Uskonto")
 @OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine")
@@ -208,7 +208,7 @@ case class LukionUskonto2015(
   @DefaultValue(None)
   laajuus: Option[LaajuusKursseissa] = None,
   uskonnonOppimäärä: Option[Koodistokoodiviite] = None
-) extends LukionValtakunnallinenOppiaine2015 with Uskonto
+) extends LukionValtakunnallinenOppiaine2015 with Uskonto with Diaarinumerollinen
 
 @Title("Äidinkieli ja kirjallisuus")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
@@ -226,7 +226,7 @@ case class LukionÄidinkieliJaKirjallisuus2015(
   @DefaultValue(None)
   laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015 with LukionÄidinkieliJaKirjallisuus {
+) extends LukionValtakunnallinenOppiaine2015 with LukionÄidinkieliJaKirjallisuus with Diaarinumerollinen {
   override def description: LocalizedString = kieliaineDescription
 }
 
@@ -251,7 +251,7 @@ case class VierasTaiToinenKotimainenKieli2015(
   @DefaultValue(None)
   laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015 with Kieliaine {
+) extends LukionValtakunnallinenOppiaine2015 with Kieliaine with Diaarinumerollinen {
   override def description = kieliaineDescription
 }
 
@@ -271,6 +271,6 @@ case class LukionMatematiikka2015(
   @DefaultValue(None)
   laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015 with KoodistostaLöytyväKoulutusmoduuli with Oppimäärä {
+) extends LukionValtakunnallinenOppiaine2015 with KoodistostaLöytyväKoulutusmoduuli with Oppimäärä with Diaarinumerollinen {
   override def description = oppimäärä.description
 }

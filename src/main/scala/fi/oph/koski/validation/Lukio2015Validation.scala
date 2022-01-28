@@ -1,12 +1,13 @@
 package fi.oph.koski.validation
 
+import fi.oph.koski.documentation.ExamplesLukio.aikuistenOpsinPerusteet2015
 import fi.oph.koski.documentation.LukioExampleData.aikuistenOpetussuunnitelma
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, LukionOpiskeluoikeus, LukionOppiaineenOppimääränSuoritus2015, LukionOppimääränSuoritus2015}
+import fi.oph.koski.schema.{Diaarinumerollinen, Henkilö, KoskeenTallennettavaOpiskeluoikeus, LukionOpiskeluoikeus, LukionOppiaine, LukionOppiaine2015, LukionOppiaineenOppimääränSuoritus2015, LukionOppimääränSuoritus2015}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 
 object Lukio2015Validation {
@@ -89,6 +90,10 @@ object Lukio2015Validation {
     opiskeluoikeus match {
       case lukionOpiskeluoikeus: LukionOpiskeluoikeus => lukionOpiskeluoikeus.suoritukset.exists{
         case s: LukionOppimääränSuoritus2015 if s.oppimäärä == aikuistenOpetussuunnitelma => true
+        case s: LukionOppiaineenOppimääränSuoritus2015 => s.koulutusmoduuli match {
+          case oppi: Diaarinumerollinen => oppi.perusteenDiaarinumero.getOrElse("") == aikuistenOpsinPerusteet2015
+          case _ => false
+        }
         case _ => false
       }
       case _ => false
