@@ -99,6 +99,39 @@ class YtlSpec
       }
     }
 
+    "Erityisoppilaitosten käsittelyssä" - {
+      "poistetaan palautettavista tiedoista kaikki koulutustoimija-, oppilaitos- ja toimipistetiedot, jos opiskeluoikeuden oppilaitos on erityisoppilaitos" in {
+        val hetut = List(
+          KoskiSpecificMockOppijat.opiskeleeAmmatillisessaErityisoppilaitoksessa,
+          KoskiSpecificMockOppijat.opiskeleeAmmatillisessaErityisoppilaitoksessaOrganisaatioHistoriallinen
+        ).map(_.hetu.get)
+
+        postHetut(hetut) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+          response.length should equal(2)
+
+          val järjestettyResponse = response.sortBy(_.opiskeluoikeudet.length)
+
+          järjestettyResponse(0).opiskeluoikeudet.length should equal(1)
+          järjestettyResponse(1).opiskeluoikeudet.length should equal(3)
+
+          (järjestettyResponse(0).opiskeluoikeudet ++ järjestettyResponse(1).opiskeluoikeudet).foreach(yoo => {
+            val oo = yoo.asInstanceOf[YtlAmmatillinenOpiskeluoikeus]
+
+            oo.organisaatiohistoria should equal(None)
+            oo.koulutustoimija should equal(None)
+            oo.oppilaitos should equal(None)
+
+            val suoritus = oo.suoritukset(0)
+
+            suoritus.toimipiste should equal(None)
+            suoritus.vahvistus.get.myöntäjäOrganisaatio should equal(None)
+          })
+        }
+      }
+    }
+
     "Haku opiskeluoikeuksiaMuuttunutJälkeen aikaleimalla" - {
       val hetut = List(
         KoskiSpecificMockOppijat.amis,

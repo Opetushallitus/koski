@@ -10,6 +10,7 @@ import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
+import fi.oph.koski.organisaatio.Oppilaitostyyppi
 import fi.oph.koski.schema.{Henkilö, KoskiSchema}
 import org.json4s.JsonAST.JValue
 import org.json4s.MappingException
@@ -56,7 +57,20 @@ class YtlService(application: KoskiApplication) extends Logging {
             opiskeluoikeusRows
               .filterNot(_.mitätöity)
               .map(toYtlOpiskeluoikeus)
-              .flatMap(_.poistaTiedotJoihinEiKäyttöoikeutta)
+              .flatMap(oo => {
+                val tarkistettavatOidit = oo.kaikkiMahdollisetOppilaitosOiditRakenteessa.toSet
+
+                // TODO: organisaatiohierarkian läpikäynti saattaa olla sen verran hidasta, että tämä kannattaisi
+                // siirtää organisaatioRepositoryyn ja tehdä sinne erillinen cache. Suorituskykytestataan nyt kuitenkin
+                // ensin.
+                val onErityisoppilaitos = tarkistettavatOidit.exists(oid =>
+                  application.organisaatioService.organisaatioRepository.findWithOid(oid)
+                    .exists(_.children.exists(_.oppilaitostyyppi.contains(Oppilaitostyyppi.ammatillisetErityisoppilaitokset)))
+                )
+                oo.siivoaTiedot(
+                  poistaOrganisaatiotiedot = onErityisoppilaitos
+                )
+              })
 
           if (oppijallaOnMuuttuneitaOpiskeluoikeuksia &&
             (opiskeluoikeudet.nonEmpty || haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia)

@@ -22743,6 +22743,109 @@
         "organisaatiotyyppi_09"
       ],
       "status": "AKTIIVINEN"
+    },
+    {
+      "oid": "1.2.246.562.10.82016343103",
+      "alkuPvm": 258760800000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.00000000001",
+      "ytunnus": "0147520-0",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Kiipulasäätiö sr",
+        "sv": "Kiipulasäätiö sr",
+        "en": "Kiipulasäätiö sr"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_165",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.78979122013",
+          "alkuPvm": 1230760800000,
+          "parentOid": "1.2.246.562.10.82016343103",
+          "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.82016343103",
+          "oppilaitosKoodi": "10077",
+          "oppilaitostyyppi": "oppilaitostyyppi_22#1",
+          "toimipistekoodi": "10077",
+          "match": true,
+          "nimi": {
+            "fi": "Kiipulan ammattiopisto",
+            "sv": "Kiipulan ammattiopisto",
+            "en": "Kiipulan ammattiopisto"
+          },
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
+          "kotipaikkaUri": "kunta_165",
+          "children": [
+            {
+              "oid": "1.2.246.562.10.28100171934",
+              "alkuPvm": 1533070800000,
+              "parentOid": "1.2.246.562.10.78979122013",
+              "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.82016343103/1.2.246.562.10.78979122013",
+              "toimipistekoodi": "1007717",
+              "match": true,
+              "nimi": {
+                "fi": "Nokian toimipaikka",
+                "sv": "Nokian toimipaikka",
+                "en": "Nokian toimipaikka"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_536",
+              "children": [],
+              "subRows": [],
+              "status": "AKTIIVINEN",
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "aliOrganisaatioMaara": 0
+            },
+            {
+              "oid": "1.2.246.562.10.67304059446",
+              "alkuPvm": 1230760800000,
+              "parentOid": "1.2.246.562.10.78979122013",
+              "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.82016343103/1.2.246.562.10.78979122013",
+              "toimipistekoodi": "1007708",
+              "match": true,
+              "nimi": {
+                "sv": "Riihimäen toimipaikka",
+                "fi": "Riihimäen toimipaikka",
+                "en": "Riihimäen toimipaikka"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_694",
+              "children": [],
+              "subRows": [],
+              "status": "AKTIIVINEN",
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "aliOrganisaatioMaara": 0
+            }
+          ],
+          "subRows": [
+          ],
+          "status": "AKTIIVINEN",
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ],
+          "aliOrganisaatioMaara": 2
+        }
+      ],
+      "subRows": [
+      ],
+      "status": "AKTIIVINEN",
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_01"
+      ],
+      "aliOrganisaatioMaara": 1
     }
   ]
 }

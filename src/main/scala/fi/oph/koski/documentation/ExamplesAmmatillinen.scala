@@ -1,13 +1,15 @@
 package fi.oph.koski.documentation
 
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
+
+import java.time.LocalDate
 
 object ExamplesAmmatillinen {
   lazy val examples = List(
@@ -189,6 +191,35 @@ object AmmatillinenPerustutkintoExample {
       )
     )
   )
+
+  def perustutkintoOpiskeluoikeusValmisOrganisaatiohistorialla(
+    koulutustoimija: Koulutustoimija = kiipulasäätiö,
+    oppilaitos: Oppilaitos = kiipulanAmmattiopisto,
+    toimipiste: OrganisaatioWithOid = kiipulanAmmattiopistoNokianToimipaikka,
+    organisaatioHistorianOppilaitos: Oppilaitos = kiipulanAmmattiopisto,
+    vahvistuksenOrganisaatio: OrganisaatioWithOid = kiipulanAmmattiopisto
+  ): AmmatillinenOpiskeluoikeus =
+    AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis(
+      oppilaitos = oppilaitos,
+      toimipiste = toimipiste
+    ).copy(
+      koulutustoimija = Some(koulutustoimija),
+      organisaatiohistoria = Some(List(
+        OpiskeluoikeudenOrganisaatiohistoria(
+          muutospäivä = LocalDate.of(2013, 1, 1),
+          oppilaitos = Some(organisaatioHistorianOppilaitos),
+          koulutustoimija = Some(Koulutustoimija(
+            oid = MockOrganisaatiot.helsinginKaupunki,
+            nimi = Some(Finnish(fi = "Helsingin kaupunki"))
+          ))
+        )
+      )),
+      suoritukset = List(
+        AmmatillinenExampleData.ympäristöalanPerustutkintoValmis(toimipiste).copy(
+          vahvistus = vahvistus(date(2016, 5, 31), vahvistuksenOrganisaatio, Some(helsinki)),
+        )
+      )
+    )
 
   val sisältyvä = oppija(opiskeluoikeus = opiskeluoikeus(tutkinto = autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia))).copy(
     sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(omnia), "1.2.246.562.15.84012103747"))

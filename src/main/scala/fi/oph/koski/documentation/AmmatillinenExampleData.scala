@@ -147,6 +147,10 @@ object AmmatillinenExampleData {
   lazy val deprekoituOsaamisenHankkimistapaOppilaitos = OsaamisenHankkimistapaIlmanLisätietoja(Koodistokoodiviite("oppisopimus", Some("Oppilaitosmuotoinen"), "osaamisenhankkimistapa", Some(1)))
   lazy val osaamisenHankkimistapaOppisopimus = OppisopimuksellinenOsaamisenHankkimistapa(Koodistokoodiviite("oppisopimus", Some("Oppisopimus"), "osaamisenhankkimistapa", Some(1)), Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8"), oppisopimuksenPurkaminen = Some(OppisopimuksenPurkaminen(date(2013, 3, 20), purettuKoeajalla = true))))
   lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
+  lazy val kiipulasäätiö: Koulutustoimija = Koulutustoimija(MockOrganisaatiot.kiipulasäätiö, Some("Kiipulasäätiö sr"))
+  lazy val kiipulanAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.kiipulanAmmattiopisto)
+  lazy val kiipulanAmmattiopistoNokianToimipaikka: Toimipiste = Toimipiste(MockOrganisaatiot.kiipulanAmmattiopistoNokianToimipaikka, Some("Kiipulan ammattiopiston Nokian toimipaikka"))
+
   lazy val stadinToimipiste: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste, Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val stadinOppisopimuskeskus: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinOppisopimuskeskus, Some("Stadin oppisopimuskeskus"))
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", "8406")

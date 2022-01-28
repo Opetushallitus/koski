@@ -1,7 +1,6 @@
 package fi.oph.koski.ytl
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
@@ -65,7 +64,32 @@ trait YtlOpiskeluoikeus {
   def alkamispäivä: Option[LocalDate]
   def päättymispäivä: Option[LocalDate]
 
-  def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus]
+  def siivoaTiedot(poistaOrganisaatiotiedot: Boolean = false): Option[YtlOpiskeluoikeus]
+
+  def kaikkiMahdollisetOppilaitosOiditRakenteessa: Seq[String] =
+    oppilaitosOidit ++ organisaatiohistorianOppilaitosOidit
+
+  protected def oppilaitosOidit: Seq[String] =
+    oppilaitos.map(_.oid).toSeq
+
+  protected def organisaatiohistorianOppilaitosOidit: Seq[String] =
+    this.organisaatiohistoria.map(_.map(_.oppilaitos.map(_.oid))).toSeq.flatten.flatten
+}
+
+trait SuorituksiaSisältäväYtlOpiskeluoikeus extends YtlOpiskeluoikeus {
+  def suoritukset: List[Suoritus]
+
+  override def kaikkiMahdollisetOppilaitosOiditRakenteessa: Seq[String] =
+    super.kaikkiMahdollisetOppilaitosOiditRakenteessa ++ suoritustenToimipisteet ++ suoritustenVahvistustenOrganisaatiot
+
+  private def suoritustenToimipisteet =
+    this.suoritukset.flatMap(_.toimipiste.map(_.oid))
+
+  private def suoritustenVahvistustenOrganisaatiot =
+    this.suoritukset.flatMap(_.vahvistus.flatMap(_.myöntäjäOrganisaatio.flatMap {
+    case o: OrganisaatioWithOid => Some(o.oid)
+    case _ => None
+  }))
 }
 
 trait Suoritus {
@@ -99,8 +123,16 @@ case class YTLLukionOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   oppimääräSuoritettu: Option[Boolean]
 ) extends YtlOpiskeluoikeus {
-  def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus] = {
-    Some(this)
+  def siivoaTiedot(poistaOrganisaatiotiedot: Boolean = false): Option[YtlOpiskeluoikeus] = {
+    if (poistaOrganisaatiotiedot) {
+      Some(this.copy(
+        oppilaitos = None,
+        koulutustoimija = None,
+        organisaatiohistoria = None
+      ))
+    } else {
+      Some(this)
+    }
   }
 }
 
@@ -118,12 +150,20 @@ case class YtlAmmatillinenOpiskeluoikeus(
   organisaatiohistoria: Option[List[OrganisaatioHistoria]],
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
-) extends YtlOpiskeluoikeus {
-  def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus] = {
-    if (this.suoritukset.length > 0) {
-      Some(this)
-    } else {
-      None
+) extends SuorituksiaSisältäväYtlOpiskeluoikeus {
+  def siivoaTiedot(poistaOrganisaatiotiedot: Boolean = false): Option[YtlOpiskeluoikeus] = {
+    (suoritukset.isEmpty, poistaOrganisaatiotiedot) match {
+      case (true, _) => None
+      case (_, true) => Some(this.copy(
+        oppilaitos = None,
+        koulutustoimija = None,
+        organisaatiohistoria = None,
+        suoritukset = this.suoritukset.map(s => s.copy(
+          toimipiste = None,
+          vahvistus = s.vahvistus.map(v => v.copy(myöntäjäOrganisaatio = None)))
+        )
+      ))
+      case _ => Some(this)
     }
   }
 }
@@ -161,12 +201,20 @@ case class YtlIBOpiskeluoikeus(
   organisaatiohistoria: Option[List[OrganisaatioHistoria]],
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
-) extends YtlOpiskeluoikeus {
-  def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus] = {
-    if (this.suoritukset.length > 0) {
-      Some(this)
-    } else {
-      None
+) extends SuorituksiaSisältäväYtlOpiskeluoikeus {
+  def siivoaTiedot(poistaOrganisaatiotiedot: Boolean = false): Option[YtlOpiskeluoikeus] = {
+    (suoritukset.isEmpty, poistaOrganisaatiotiedot) match {
+      case (true, _) => None
+      case (_, true) => Some(this.copy(
+        oppilaitos = None,
+        koulutustoimija = None,
+        organisaatiohistoria = None,
+        suoritukset = this.suoritukset.map(s => s.copy(
+          toimipiste = None,
+          vahvistus = s.vahvistus.map(v => v.copy(myöntäjäOrganisaatio = None)))
+        )
+      ))
+      case _ => Some(this)
     }
   }
 }
@@ -203,12 +251,20 @@ case class YTLInternationalSchoolOpiskeluoikeus(
   organisaatiohistoria: Option[List[OrganisaatioHistoria]],
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
-) extends YtlOpiskeluoikeus {
-  def poistaTiedotJoihinEiKäyttöoikeutta: Option[YtlOpiskeluoikeus] = {
-    if (this.suoritukset.length > 0) {
-      Some(this)
-    } else {
-      None
+) extends SuorituksiaSisältäväYtlOpiskeluoikeus {
+  def siivoaTiedot(poistaOrganisaatiotiedot: Boolean = false): Option[YtlOpiskeluoikeus] = {
+    (suoritukset.isEmpty, poistaOrganisaatiotiedot) match {
+      case (true, _) => None
+      case (_, true) => Some(this.copy(
+        oppilaitos = None,
+        koulutustoimija = None,
+        organisaatiohistoria = None,
+        suoritukset = this.suoritukset.map(s => s.copy(
+          toimipiste = None,
+          vahvistus = s.vahvistus.map(v => v.copy(myöntäjäOrganisaatio = None)))
+        )
+      ))
+      case _ => Some(this)
     }
   }
 }

@@ -124,11 +124,11 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
   "Organisaatiohierarkia raporttityypeillä -API" - {
     "Juuriorganisaatiot pääkäyttäjälle" in {
       verifyOrganisaatiohierarkia(paakayttaja) { hierarkia => {
-        hierarkia.length shouldEqual 18
+        hierarkia.length shouldEqual 19
       }}
     }
 
-    "Juuriorganisaatiota testikäyttäjälle kalle" in {
+    "Juuriorganisaatiot testikäyttäjälle kalle" in {
       verifyOrganisaatiohierarkia(kalle) { hierarkia => {
         hierarkia.length shouldEqual 19
       }}

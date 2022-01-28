@@ -523,6 +523,11 @@ Esimerkkipyyntö
       "opiskeluoikeuksiaMuuttunutJälkeen": "2022-01-27T05:27:49.276Z"
     }
 
+### Ammatillisten erityisoppilaitosten käsittely
+
+Mikäli opiskeluoikeuden tiedoissa esiintyy missä tahansa (oppilaitos, organisaatiohistoria, suoritus, vahvistus)
+ammatillinen erityisoppilaitos, ei oppijan tiedoissa palauteta mitään organisaatiotietoja.
+
 opiskeluoikeuksiaMuuttunutJälkeen on valinnainen parametri. Jos se on määritelty, palautetaan oppijan opiskeluoikeudet
 vain, jos jokin hänen opiskeluoikeutensa on muuttunut kyseisen ajanhetken jälkeen.  Kannattaa huomioida, että tästä
 syntyy myös erikoistapaus, jos oppijan opiskeluoikeuksia on mitätöity ajanhetken jälkeen. Tällöin saatetaan palauttaa
