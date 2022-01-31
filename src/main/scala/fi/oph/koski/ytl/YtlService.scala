@@ -4,13 +4,14 @@ import java.sql.Timestamp
 import java.time.{Instant, LocalDateTime}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiTables, OpiskeluoikeusRow}
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
 import fi.oph.koski.organisaatio.Oppilaitostyyppi
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{Henkilö, KoskiSchema}
 import org.json4s.JsonAST.JValue
 import org.json4s.MappingException
@@ -28,20 +29,36 @@ class YtlService(application: KoskiApplication) extends Logging {
     )
 
   def streamOppijat(oidit: Seq[String], hetut: Seq[String], opiskeluoikeuksiaMuuttunutJälkeen: Option[Instant])(implicit user: KoskiSpecificSession): Observable[JValue] = {
-    val henkilöt =
+    val pyydetytHenkilöt: Seq[OppijaHenkilö] =
       application.opintopolkuHenkilöFacade.findOppijatNoSlaveOids(oidit) ++
         application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut)
-    val oidToHenkilo: Map[Henkilö.Oid, OppijaHenkilö] = henkilöt.map(h => h.oid -> h).toMap
-    val masterOids = henkilöt.map(_.oid)
+
+    val oidToPyydettyHenkilö: Map[Henkilö.Oid, OppijaHenkilö] = pyydetytHenkilöt.map(h => h.oid -> h).toMap
+
+    val pyydetytOidit: List[Henkilö.Oid] = oidToPyydettyHenkilö.keys.toList
+    val masterHenkilöt: Map[Henkilö.Oid, LaajatOppijaHenkilöTiedot] =
+      application.opintopolkuHenkilöFacade.findMasterOppijat(pyydetytOidit)
+    val masterOppijanSlaveOidit: Map[Henkilö.Oid, List[Henkilö.Oid]] = masterHenkilöt.collect {
+      case (_, hlö) =>
+        (hlö.oid, hlö.linkitetytOidit)
+    }
+
+    val masterOppijoidenOidit: Seq[Henkilö.Oid] = masterHenkilöt.values.map(_.oid).toSeq
+
+    val haettavatOppijaOidit: Seq[Henkilö.Oid] =
+      masterOppijoidenOidit ++ application.henkilöCache.resolveLinkedOids(masterOppijoidenOidit)
+
     val queryFilters = List(
       opiskeluoikeudenTyyppiFilter,
-      OpiskeluoikeusQueryFilter.OppijaOidHaku(masterOids ++ application.henkilöCache.resolveLinkedOids(masterOids))
+      OpiskeluoikeusQueryFilter.OppijaOidHaku(haettavatOppijaOidit)
     )
 
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, queryFilters, None)
       .map {
         case (oppijaHenkilö: QueryOppijaHenkilö, opiskeluoikeusRows: List[OpiskeluoikeusRow]) =>
-          val oppijallaOnMuuttuneitaOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
+          val oppijaOnLinkitetty = masterOppijanSlaveOidit(oppijaHenkilö.oid).nonEmpty
+
+          lazy val oppijallaOnMuuttuneitaOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
             .map(Timestamp.from)
             .forall(opiskeluoikeuksiaMuuttunutJälkeen =>
               opiskeluoikeusRows.exists(!_.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
@@ -72,19 +89,30 @@ class YtlService(application: KoskiApplication) extends Logging {
                 )
               })
 
-          if (oppijallaOnMuuttuneitaOpiskeluoikeuksia &&
-            (opiskeluoikeudet.nonEmpty || haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia)
+          if (oppijaOnLinkitetty || (
+              oppijallaOnMuuttuneitaOpiskeluoikeuksia &&
+              (opiskeluoikeudet.nonEmpty || haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia))
           ) {
-            val hlö = oidToHenkilo(oppijaHenkilö.oid)
-            Some(YtlOppija(
-              henkilö = YtlHenkilö(hlö, hlö.äidinkieli.flatMap(k => application.koodistoViitePalvelu.validate("kieli", k.toUpperCase))),
-              opiskeluoikeudet = opiskeluoikeudet
-            ))
+            // Etsi kaikki oppija-oidit, joilla tätä henkilöä on alunperin kyselty. Vastaus palautetaam jokaiselle
+            // niistä, jotta kutsuja saa oikean ja riittävän tiedon siitä, millä oideilla opiskeluikeuksia löytyi.
+            val hlöt = {
+              // Epäloogisesti oppijaHenkilössä eivät palaudu oppijan kaikkia slave-oidit, vaikka se linkitetytOid:it
+              // kentän sisältääkin. Siksi pitää käyttää erikseen masterOppijanSlaveOidit-mappiä.
+              val etsittävätHenkilöOidit = Seq(oppijaHenkilö.oid) ++ masterOppijanSlaveOidit(oppijaHenkilö.oid)
+              oidToPyydettyHenkilö.collect { case (oid, hlö) if etsittävätHenkilöOidit.contains(oid) => hlö }
+            }
+            hlöt.map(hlö =>
+              Some(YtlOppija(
+                henkilö = YtlHenkilö(hlö, hlö.äidinkieli.flatMap(k => application.koodistoViitePalvelu.validate("kieli", k.toUpperCase))),
+                opiskeluoikeudet = opiskeluoikeudet
+              ))
+            )
           } else {
-            None
+            Seq.empty
           }
       }
-      .filter(_.isDefined)
+      .filter(_.nonEmpty)
+      .flatMap(o => Observable.from(o))
       .map(_.getOrElse(throw new InternalError("Internal error")))
       .doOnEach(auditLogOpiskeluoikeusKatsominen(_)(user))
       .map(JsonSerializer.serializeWithUser(user))

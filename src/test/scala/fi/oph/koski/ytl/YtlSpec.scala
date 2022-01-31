@@ -41,6 +41,194 @@ class YtlSpec
       }
     }
 
+    "Master-slave haut" - {
+      val masterOppija = KoskiSpecificMockOppijat.oppivelvollisuustietoMaster
+      val slaveOppija1 = KoskiSpecificMockOppijat.oppivelvollisuustietoSlave1
+      val slaveOppija2 = KoskiSpecificMockOppijat.oppivelvollisuustietoSlave2
+
+      "Slave-oppijalle tallennettu opiskeluoikeus löytyy slave-oppijan oidilla" in {
+        resetFixtures()
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val oidit = List(slaveOppija1.henkilö.oid)
+
+        postOidit(oidit) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+          response.length should equal(1)
+          response(0).opiskeluoikeudet.length should equal(1)
+          response(0).henkilö.oid should equal(slaveOppija1.henkilö.oid)
+        }
+      }
+
+      "Master-oppijalle tallennettu opiskeluoikeus löytyy slave-oppijan oidilla" in {
+        resetFixtures()
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        putOpiskeluoikeus(uusiOo, masterOppija, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val oidit = List(slaveOppija1.henkilö.oid)
+
+        postOidit(oidit) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+          response.length should equal(1)
+          response(0).opiskeluoikeudet.length should equal(1)
+          response(0).henkilö.oid should equal(slaveOppija1.henkilö.oid)
+        }
+      }
+
+
+      "Slave-oppijalle tallennettu opiskeluoikeus löytyy master-oppijan oidilla" in {
+        resetFixtures()
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val oidit = List(masterOppija.oid)
+
+        postOidit(oidit) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+          response.length should equal(1)
+          response(0).opiskeluoikeudet.length should equal(1)
+          response(0).henkilö.oid should equal(masterOppija.oid)
+        }
+      }
+
+      "Slave-oppijalle tallennettu opiskeluoikeus löytyy toisen slave-oppijan oidilla" in {
+        resetFixtures()
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val oidit = List(slaveOppija2.henkilö.oid)
+
+        postOidit(oidit) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+          response.length should equal(1)
+          response(0).henkilö.oid should equal(slaveOppija2.henkilö.oid)
+          response(0).opiskeluoikeudet.length should equal(1)
+        }
+      }
+
+      "Slave-oppijalle tallennettu opiskeluoikeus palautetaan kaikilla haetuilla samaan oppijaan viittaavilla oideilla" in {
+        resetFixtures()
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val oidit = List(
+          masterOppija.oid,
+          slaveOppija1.henkilö.oid,
+          slaveOppija2.henkilö.oid
+        ).sorted
+
+        postOidit(oidit) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+          response.length should equal(3)
+          val järjestettyResponse = response.sortBy(_.henkilö.oid)
+
+          järjestettyResponse.zipWithIndex.foreach {case (responseOppija, idx) => {
+            responseOppija.henkilö.oid should equal(oidit(idx))
+            responseOppija.opiskeluoikeudet.length should equal(1)
+          }}
+        }
+      }
+
+      "Slave-oppijalle tallennettu opiskeluoikeus palautetaan hetulla + slave-oideilla haettaessa niillä kaikilla" in {
+        resetFixtures()
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val hetut = List(masterOppija.hetu.get)
+
+        val oidit = List(
+          slaveOppija1.henkilö.oid,
+          slaveOppija2.henkilö.oid
+        )
+
+        postOppijat(oidit = oidit, hetut = hetut) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+          response.length should equal(3)
+          response.foreach(responseOppija => {
+            responseOppija.opiskeluoikeudet.length should equal(1)
+          })
+        }
+      }
+
+      "Slave-oppijalle tallennettu opiskeluoikeus palautetaan vain kerran haettaessa master-hetulla ja master-oidilla" in {
+        resetFixtures()
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val hetut = List(masterOppija.hetu.get)
+
+        val oidit = List(masterOppija.oid)
+
+        postOppijat(oidit = oidit, hetut = hetut) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+          response.length should equal(1)
+          response(0).opiskeluoikeudet.length should equal(1)
+        }
+      }
+
+      "Aikaleimalla kysyttäessä linkitettyjä oideja sisältävät oppijat palautetaan aina" in {
+        resetFixtures()
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val oidit = List(
+          masterOppija.oid,
+          slaveOppija1.henkilö.oid,
+          slaveOppija2.henkilö.oid
+        )
+
+        postOidit(oidit, Some(ZonedDateTime.now.plusDays(1))) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+          response.length should equal(3)
+          response.foreach(responseOppija => {
+            responseOppija.opiskeluoikeudet.length should equal(1)
+          })
+        }
+      }
+    }
+
+
     "Ei voi kutsua ilman YTL-käyttöoikeutta" in {
       val hetut = List(
         KoskiSpecificMockOppijat.amis
