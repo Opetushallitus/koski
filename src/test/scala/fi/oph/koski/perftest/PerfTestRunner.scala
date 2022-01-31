@@ -79,7 +79,13 @@ object PerfTestRunner extends Logging {
                     scenario.logger.error(e.getMessage)
                     false
                 }
-                stats.record(o.method + " " + o.uriPattern.getOrElse(o.uri), success, currentTimeMillis - started)(scenario.logger)
+                val elapsed = currentTimeMillis - started
+                if (elapsed <= scenario.maximumExpectedDurationMs) {
+                  stats.record(o.method + " " + o.uriPattern.getOrElse(o.uri), success, elapsed)(scenario.logger)
+                } else {
+                  scenario.logger.warn(s"Round took $elapsed milliseconds, while maximum expected duration was ${scenario.maximumExpectedDurationMs} milliseconds")
+                  stats.record(o.method + " " + o.uriPattern.getOrElse(o.uri), false, elapsed)(scenario.logger)
+                }
               }
               run
           }

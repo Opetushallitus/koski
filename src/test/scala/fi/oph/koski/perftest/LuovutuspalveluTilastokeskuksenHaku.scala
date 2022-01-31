@@ -15,6 +15,7 @@ object LuovutuspalveluTilastokeskuksenHakuScenario extends PerfTestScenario {
     override def password = requiredEnv("TILASTOKESKUS_PASS")
   }
   override def defaultUser = tilastokeskusUser
+  override def maximumExpectedDurationMs = 10000
   def operation(x: Int) = {
     List(Operation(uri = s"api/luovutuspalvelu/haku?v=1&opiskeluoikeusAlkanutAikaisintaan=2021-01-01&opiskeluoikeusAlkanutViimeistään=2021-12-31")) // headers = authHeaders(tilastokeskusUser) ?
   }

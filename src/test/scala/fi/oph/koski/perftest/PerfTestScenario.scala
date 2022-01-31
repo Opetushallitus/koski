@@ -10,6 +10,7 @@ trait PerfTestScenario extends KoskidevHttpSpecification with EnvVariables with 
   def serverCount: Int = env("KOSKI_SERVER_COUNT", "2").toInt
   def threadCount: Int = env("PERFTEST_THREADS", "10").toInt
   def operation(round: Int): List[Operation]
+  def maximumExpectedDurationMs: Int = Int.MaxValue
   def name = getClass.getSimpleName
   def readBody: Boolean = false
 
