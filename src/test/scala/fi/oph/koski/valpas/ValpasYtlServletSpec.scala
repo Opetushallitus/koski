@@ -4,6 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.{JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import fi.oph.koski.valpas.ytl.YtlMaksuttomuustieto
@@ -160,6 +161,34 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
     "Ei salli käyttöä ilman ytl-luovutuspalveluoikeuksia" in {
       doQuery(user = ValpasMockUsers.valpasMonta) {
         verifyResponseStatus(403, ValpasErrorCategory.forbidden())
+      }
+    }
+  }
+
+  "Audit-logitus" - {
+    "Pyynnöistä jää jäljet audit-logiin" in {
+      val oppijat = List(
+        ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
+        ValpasMockOppijat.maksuttomuuttaPidennetty,
+      )
+
+      doQuery(oidit = Some(oppijat.map(_.oid))) {
+        verifyResponseStatusOk()
+        AuditLogTester
+          .getLogMessages
+          .takeRight(oppijat.size)
+          .zip(oppijat)
+          .foreach { msg_oppija =>
+            AuditLogTester.verifyAuditLogMessage(
+              msg_oppija._1,
+              Map(
+                "operation" -> ValpasOperation.OPPIVELVOLLISUUSREKISTERI_LUOVUTUS.toString,
+                "target" -> Map(
+                  ValpasAuditLogMessageField.oppijaHenkilöOid.toString -> msg_oppija._2.oid,
+                )
+              )
+            )
+          }
       }
     }
   }
