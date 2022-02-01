@@ -81,12 +81,14 @@ object AmmatillinenValidation {
     // Pieni oikominen; jos suoritustapoja/tutkintokoodeja olisi kolmesta tai useammasta päätason suorituksesta, tämä ei välttämättä
     // nappaisi kaikkia muutoksia. Mutta päätason suorituksia ei pitäisi voida olla kahta enempää, eikä samantyyppisiä
     // päätason suorituksia yhtä enempää.
-    val suoritustapaLöytyy = vanhanSuoritustavat.count(tapa => uudenSuoritustavat.contains(tapa)) == vanhanSuoritustavat.length
-    val tutkintokoodiLöytyy = checkTutkintokooditLöytyvät(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, ePerusteet)
+    val samojaSuoritustapojaLöytyy = vanhanSuoritustavat.count(tapa => uudenSuoritustavat.contains(tapa))
+    val suoritusTavatLöytyvät = samojaSuoritustapojaLöytyy == vanhanSuoritustavat.length
+    val tutkintokooditLöytyvät = checkTutkintokooditLöytyvät(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, ePerusteet)
 
-    val salliNäytönJaValmistavanPoikkeusPoistettaessaSuoritusta = näyttötutkintoJaNäyttöönValmistavaLöytyvät(vanhaOpiskeluoikeus)
+    val salliNäytönJaValmistavanPoikkeusPoistettaessaSuoritusta =
+      samojaSuoritustapojaLöytyy == 1 && näyttötutkintoJaNäyttöönValmistavaLöytyvät(vanhaOpiskeluoikeus)
 
-    if (suoritustapaLöytyy && (tutkintokoodiLöytyy || salliNäytönJaValmistavanPoikkeusPoistettaessaSuoritusta)) {
+    if ((suoritusTavatLöytyvät && tutkintokooditLöytyvät) || salliNäytönJaValmistavanPoikkeusPoistettaessaSuoritusta) {
       HttpStatus.ok
     } else {
       KoskiErrorCategory.badRequest.validation.ammatillinen.muutettuSuoritustapaaTaiTutkintokoodia()
@@ -133,6 +135,7 @@ object AmmatillinenValidation {
   private def suoritustavat(oo: AmmatillinenOpiskeluoikeus): List[String] = {
     oo.suoritukset.collect {
       case osittainenTaiKokonainen: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => osittainenTaiKokonainen.suoritustapa.koodiarvo
+      case _: NäyttötutkintoonValmistavanKoulutuksenSuoritus => "valmentava"
     }
   }
 }
