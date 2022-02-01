@@ -9,6 +9,8 @@ import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import org.json4s.JsonAST.JValue
 
+import java.time.Instant
+
 class YtlServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresYtl with NoCache with ObservableSupport {
   val ytlService = new YtlService(application)
 
@@ -20,8 +22,8 @@ class YtlServlet(implicit val application: KoskiApplication) extends KoskiSpecif
 
     withJsonBody { json =>
       YtlRequest.parseBulk(json) match {
-        case Right((oidit, hetut)) =>
-          streamResponse[JValue](ytlService.streamOppijat(oidit, hetut, session), session)
+        case Right((oidit, hetut, opiskeluoikeuksiaMuuttunutJälkeen)) =>
+          streamResponse[JValue](ytlService.streamOppijat(oidit, hetut, opiskeluoikeuksiaMuuttunutJälkeen), session)
         case Left(status) =>
           haltWithStatus(status)
       }
@@ -30,7 +32,7 @@ class YtlServlet(implicit val application: KoskiApplication) extends KoskiSpecif
 }
 
 object YtlRequest {
-  def parseBulk(json : JValue): Either[HttpStatus, (Seq[Henkilö.Oid], Seq[Henkilö.Hetu])] = {
+  def parseBulk(json : JValue): Either[HttpStatus, (Seq[Henkilö.Oid], Seq[Henkilö.Hetu], Option[Instant])] = {
     val MaxOppijat = 1000
 
     JsonSerializer.validateAndExtract[YtlBulkRequest](json)
@@ -41,12 +43,14 @@ object YtlRequest {
         for {
           oidit <- HttpStatus.foldEithers(req.oidit.getOrElse(List.empty).map(HenkilöOid.validateHenkilöOid))
           hetut <- HttpStatus.foldEithers(req.hetut.getOrElse(List.empty).map(Hetu.validFormat))
-        } yield (oidit, hetut)
+          opiskeluoikeuksiaMuuttunutJälkeen = req.opiskeluoikeuksiaMuuttunutJälkeen.map(Instant.parse)
+        } yield (oidit, hetut, opiskeluoikeuksiaMuuttunutJälkeen)
       })
   }
 }
 
 case class YtlBulkRequest(
   oidit: Option[List[String]],
-  hetut: Option[List[String]]
+  hetut: Option[List[String]],
+  opiskeluoikeuksiaMuuttunutJälkeen: Option[String]
 )

@@ -63,24 +63,24 @@ describe('Oppijataulukko', function() {
     describe('tutkintonimikkeellä', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('koulutus'), page.oppijataulukko.filterBy('tutkinto', 'ympäristönhoitaja'))
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amis, Antti', 'Ammattilainen, Aarne', 'Paallekkaisia, Pekka' ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('3')
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amis, Antti', 'Ammattilainen, Aarne', 'Erityisoppilaitoksessa, Emppu', 'Erityisoppilaitoksessa, Emppu', 'Erityisoppilaitoksessa, Emppu Historia', 'Paallekkaisia, Pekka' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('6')
       })
     })
 
     describe('osaamisalalla', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('koulutus'), page.oppijataulukko.filterBy('tutkinto', 'ympäristöalan osaamisala'))
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amis, Antti', 'Ammatillinen-Osittainen, Raitsu', 'Ammattilainen, Aarne', 'Osittainen, Outi', 'Paallekkaisia, Pekka' ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('5')
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amis, Antti', 'Ammatillinen-Osittainen, Raitsu', 'Ammattilainen, Aarne', 'Erityisoppilaitoksessa, Emppu', 'Erityisoppilaitoksessa, Emppu', 'Erityisoppilaitoksessa, Emppu Historia', 'Osittainen, Outi', 'Paallekkaisia, Pekka' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('8')
       })
     })
 
     describe('tilalla', function() {
       before(page.oppijataulukko.filterBy('tyyppi', 'Ammatillinen koulutus'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila', 'Valmistunut'))
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amikseenvalmistautuja, Anneli', 'Ammatillinen-Osittainen, Raitsu', 'Ammattilainen, Aarne', 'Erikoinen, Erja', 'Kokonaisuuksilla, Keijo', 'Osittainen, Outi', 'Telmanen, Tuula', 'Valviralle, Veera' ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('8')
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amikseenvalmistautuja, Anneli', 'Ammatillinen-Osittainen, Raitsu', 'Ammattilainen, Aarne', 'Erikoinen, Erja', 'Erityisoppilaitoksessa, Emppu', 'Erityisoppilaitoksessa, Emppu', 'Erityisoppilaitoksessa, Emppu Historia', 'Kokonaisuuksilla, Keijo', 'Osittainen, Outi', 'Telmanen, Tuula', 'Valviralle, Veera' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('11')
       })
     })
 
@@ -155,6 +155,9 @@ describe('Oppijataulukko', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([
           'Ammattilainen, Aarne',
           'Erikoinen, Erja',
+          'Erityisoppilaitoksessa, Emppu',
+          'Erityisoppilaitoksessa, Emppu',
+          'Erityisoppilaitoksessa, Emppu Historia',
           'Eskari, Essi',
           'Kelalle, Useita',
           'Koululainen, Kaisa',
@@ -167,7 +170,7 @@ describe('Oppijataulukko', function() {
           'Monikoululainen, Miia',
           'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('13')
+        expect(page.opiskeluoikeudeTotal()).to.equal('16')
       })
     })
   })

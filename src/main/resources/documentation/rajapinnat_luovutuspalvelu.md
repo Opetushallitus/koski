@@ -512,17 +512,40 @@ Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 Tällä kutsulla haetaan usean (enintään 1000 kpl) henkilön tiedot henkilötunnusten tai
 oppija-oidien perusteella.
 
-Esimerkkipyyntö
+### Esimerkkipyyntö
 
     POST /koski/api/luovutuspalvelu/ytl/oppijat HTTP/1.1
     Content-Type: application/json
 
     {
       "hetut": ["180859-914S", "020654-9025", "010326-953H"],
-      "oidit": ["1.2.246.562.24.82405337123", "1.2.246.562.24.82405337995"]
+      "oidit": ["1.2.246.562.24.82405337123", "1.2.246.562.24.82405337995"],
+      "opiskeluoikeuksiaMuuttunutJälkeen": "2022-01-27T05:27:49.276Z"
     }
 
-Esimerkkivastaus
+### Ammatillisten erityisoppilaitosten käsittely
+
+Mikäli opiskeluoikeuden tiedoissa esiintyy missä tahansa (oppilaitos, organisaatiohistoria, suoritus, vahvistus)
+ammatillinen erityisoppilaitos, ei oppijan tiedoissa palauteta mitään organisaatiotietoja.
+
+### Linkitettyjen oppijoiden käsittely
+
+Jos oppijaan on linkitetty toisia oppijoita, palautetaan aina kaikki saman henkilön opiskeluoikeudet riippumatta
+siitä, millä oppija-oidilla ne on tallennettu. Jos samaa oppijaa kysytään useammalla eri oidilla tai hetulla,
+palautetaan sama lista opiskeluoikeuksia niille kaikille.
+
+### opiskeluoikeuksiaMuuttunutJälkeen
+
+opiskeluoikeuksiaMuuttunutJälkeen on valinnainen parametri. Jos se on määritelty, palautetaan oppijan opiskeluoikeudet
+vain, jos jokin hänen opiskeluoikeutensa on muuttunut kyseisen ajanhetken jälkeen. Huomioitavia erikoistapauksia:
+
+1. Jos oppijan opiskeluoikeuksia on mitätöity ajanhetken jälkeen, palautetaan oppijan tiedot tyhjällä opiskeluoikeudet-listalla,
+vaikka normaalitapauksissa oppijaa ei palauteta lainkaan, jos hänellä ei ole yhtään YTL:ää kiinnostavaa opiskeluoikeutta.
+2. Jos oppijaan on linkitetty muita oppijoita, palautetaan oppijan opiskeluoikeudet aina. Tämä johtuu siitä, että
+järjestelmässä ei ole saatavilla tietoa linkityksen tapahtumisajasta, joten sen oletetaan varmuuden vuoksi aina
+tapahtuneen annetun ajanhetken jälkeen..
+
+### Esimerkkivastaus
 
     HTTP/1.1 200 OK
     Content-Type: application/json
