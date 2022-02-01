@@ -93,38 +93,41 @@ class YtlService(application: KoskiApplication) extends Logging with Timing {
       }
 
       def teePalautettavatYtlOppijat(oppijaHenkilö: QueryOppijaHenkilö, opiskeluoikeusRows: List[OpiskeluoikeusRow]) = {
-        val oppijaOnLinkitetty = masterOppijanLinkitetytOppijaOidit(oppijaHenkilö.oid).nonEmpty
+        // TODO: poista tämä paljon spämmäävä timed-lohko, kun suorituskykytestit tehty
+        timed("teePalautettavatYtlOppijat", 1) {
+          val oppijaOnLinkitetty = masterOppijanLinkitetytOppijaOidit(oppijaHenkilö.oid).nonEmpty
 
-        lazy val haetaanIlmanAikaleimaaTaiOppijallaOnMuuttuneitaOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
-          .map(Timestamp.from)
-          .forall(opiskeluoikeuksiaMuuttunutJälkeen =>
-            opiskeluoikeusRows.exists(!_.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
-          )
+          lazy val haetaanIlmanAikaleimaaTaiOppijallaOnMuuttuneitaOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
+            .map(Timestamp.from)
+            .forall(opiskeluoikeuksiaMuuttunutJälkeen =>
+              opiskeluoikeusRows.exists(!_.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
+            )
 
-        lazy val haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
-          .map(Timestamp.from)
-          .exists(opiskeluoikeuksiaMuuttunutJälkeen =>
-            opiskeluoikeusRows.exists(oo => oo.mitätöity && !oo.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
-          )
+          lazy val haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
+            .map(Timestamp.from)
+            .exists(opiskeluoikeuksiaMuuttunutJälkeen =>
+              opiskeluoikeusRows.exists(oo => oo.mitätöity && !oo.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
+            )
 
-        lazy val opiskeluoikeudet =
-          opiskeluoikeusRows
-            .filterNot(_.mitätöity)
-            .map(toYtlOpiskeluoikeus)
-            .flatMap(siivoaOpiskeluoikeus)
+          lazy val opiskeluoikeudet =
+            opiskeluoikeusRows
+              .filterNot(_.mitätöity)
+              .map(toYtlOpiskeluoikeus)
+              .flatMap(siivoaOpiskeluoikeus)
 
-        if (oppijaOnLinkitetty || (
-          haetaanIlmanAikaleimaaTaiOppijallaOnMuuttuneitaOpiskeluoikeuksia &&
-            (opiskeluoikeudet.nonEmpty || haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia))
-        ) {
-          teePalautettavatYtlHenkilöt(oppijaHenkilö).map(ytlHenkilö =>
-            Some(YtlOppija(
-              henkilö = ytlHenkilö,
-              opiskeluoikeudet = opiskeluoikeudet
-            ))
-          )
-        } else {
-          Seq.empty
+          if (oppijaOnLinkitetty || (
+            haetaanIlmanAikaleimaaTaiOppijallaOnMuuttuneitaOpiskeluoikeuksia &&
+              (opiskeluoikeudet.nonEmpty || haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia))
+          ) {
+            teePalautettavatYtlHenkilöt(oppijaHenkilö).map(ytlHenkilö =>
+              Some(YtlOppija(
+                henkilö = ytlHenkilö,
+                opiskeluoikeudet = opiskeluoikeudet
+              ))
+            )
+          } else {
+            Seq.empty
+          }
         }
       }
 
@@ -136,7 +139,12 @@ class YtlService(application: KoskiApplication) extends Logging with Timing {
         .flatMap(oppijat => Observable.from(oppijat))
         .map(_.getOrElse(throw new InternalError("Internal error")))
         .doOnEach(auditLogOpiskeluoikeusKatsominen(_)(user))
-        .map(JsonSerializer.serializeWithUser(user))
+        .map({
+          // TODO: poista tämä paljon spämmäävä timed-lohko, kun suorituskykytestit tehty
+          timed("serializeWithUser", 1) {
+            JsonSerializer.serializeWithUser(user)
+          }
+        })
     }
   }
 
