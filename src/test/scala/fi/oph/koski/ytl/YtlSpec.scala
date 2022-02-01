@@ -61,6 +61,7 @@ class YtlSpec
           val response = JsonSerializer.parse[List[YtlOppija]](body)
 
           response.length should equal(1)
+          response(0).henkilö.pääoppijaOid should equal(Some(masterOppija.oid))
           response(0).opiskeluoikeudet.length should equal(1)
           response(0).henkilö.oid should equal(slaveOppija1.henkilö.oid)
         }
@@ -81,6 +82,7 @@ class YtlSpec
           val response = JsonSerializer.parse[List[YtlOppija]](body)
 
           response.length should equal(1)
+          response(0).henkilö.pääoppijaOid should equal(Some(masterOppija.oid))
           response(0).opiskeluoikeudet.length should equal(1)
           response(0).henkilö.oid should equal(slaveOppija1.henkilö.oid)
         }
@@ -102,6 +104,7 @@ class YtlSpec
           val response = JsonSerializer.parse[List[YtlOppija]](body)
 
           response.length should equal(1)
+          response(0).henkilö.pääoppijaOid should equal(Some(masterOppija.oid))
           response(0).opiskeluoikeudet.length should equal(1)
           response(0).henkilö.oid should equal(masterOppija.oid)
         }
@@ -122,6 +125,7 @@ class YtlSpec
           val response = JsonSerializer.parse[List[YtlOppija]](body)
 
           response.length should equal(1)
+          response(0).henkilö.pääoppijaOid should equal(Some(masterOppija.oid))
           response(0).henkilö.oid should equal(slaveOppija2.henkilö.oid)
           response(0).opiskeluoikeudet.length should equal(1)
         }
@@ -149,6 +153,7 @@ class YtlSpec
           val järjestettyResponse = response.sortBy(_.henkilö.oid)
 
           järjestettyResponse.zipWithIndex.foreach {case (responseOppija, idx) => {
+            responseOppija.henkilö.pääoppijaOid should equal(Some(masterOppija.oid))
             responseOppija.henkilö.oid should equal(oidit(idx))
             responseOppija.opiskeluoikeudet.length should equal(1)
           }}
@@ -176,6 +181,7 @@ class YtlSpec
 
           response.length should equal(3)
           response.foreach(responseOppija => {
+            responseOppija.henkilö.pääoppijaOid should equal(Some(masterOppija.oid))
             responseOppija.opiskeluoikeudet.length should equal(1)
           })
         }
@@ -198,6 +204,7 @@ class YtlSpec
           val response = JsonSerializer.parse[List[YtlOppija]](body)
 
           response.length should equal(1)
+          response(0).henkilö.pääoppijaOid should equal(Some(masterOppija.oid))
           response(0).opiskeluoikeudet.length should equal(1)
         }
       }
@@ -222,6 +229,7 @@ class YtlSpec
 
           response.length should equal(3)
           response.foreach(responseOppija => {
+            responseOppija.henkilö.pääoppijaOid should equal(Some(masterOppija.oid))
             responseOppija.opiskeluoikeudet.length should equal(1)
           })
         }
@@ -359,8 +367,8 @@ class YtlSpec
       "Palauttaa oppijalta, jolla on jokin opiskeluoikeus muuttunut, kaikki opiskeluoikeudet" in {
         resetFixtures()
 
-        // Asetetaan aika 5 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
-        val ennenTallennusta = ZonedDateTime.now.minusSeconds(2)
+        // Asetetaan aika 3 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
+        val ennenTallennusta = ZonedDateTime.now.minusSeconds(3)
 
         val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
 
@@ -385,8 +393,8 @@ class YtlSpec
       "Palauttaa oppijalta, jolla jokin opiskeluoikeus on mitätöity, olemassaolevat opiskeluoikeudet" in {
         resetFixtures()
 
-        // Asetetaan aika 5 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
-        val ennenTallennusta = ZonedDateTime.now.minusSeconds(2)
+        // Asetetaan aika 3 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
+        val ennenTallennusta = ZonedDateTime.now.minusSeconds(3)
 
         val uusiOo = createOpiskeluoikeus(
           oppija = KoskiSpecificMockOppijat.internationalschool,
@@ -410,8 +418,8 @@ class YtlSpec
       "Palauttaa oppijalta, jolla ainoa opiskeluoikeus on mitätöity, tyhjän listan opiskeluoikeuksia" in {
         resetFixtures()
 
-        // Asetetaan aika 5 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
-        val ennenTallennusta = ZonedDateTime.now.minusSeconds(2)
+        // Asetetaan aika 3 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
+        val ennenTallennusta = ZonedDateTime.now.minusSeconds(3)
 
         val uusiOo = createOpiskeluoikeus(
           oppija = KoskiSpecificMockOppijat.luva,
@@ -665,6 +673,7 @@ class YtlSpec
        |[
        |  {
        |    "henkilö": {
+       |      "pääoppijaOid": "1.2.246.562.24.00000000114",
        |      "oid": "1.2.246.562.24.00000000114",
        |      "hetu": "220835-2325",
        |      "syntymäaika": "2004-01-01",

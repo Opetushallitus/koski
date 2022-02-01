@@ -32,11 +32,12 @@ case class YtlHenkilö(
   kutsumanimi: String,
   @KoodistoUri("kieli")
   äidinkieli: Option[schema.Koodistokoodiviite],
-  turvakielto: Option[Boolean]
+  turvakielto: Option[Boolean],
+  pääoppijaOid: Option[String]
 )
 
 object YtlHenkilö {
-  def apply(hlö: OppijaHenkilö, äidinkieli: Option[schema.Koodistokoodiviite]): YtlHenkilö = {
+  def apply(hlö: OppijaHenkilö, pääoppijaOid: Option[String], äidinkieli: Option[schema.Koodistokoodiviite]): YtlHenkilö = {
     YtlHenkilö(
       oid = hlö.oid,
       hetu = hlö.hetu,
@@ -45,7 +46,8 @@ object YtlHenkilö {
       sukunimi = hlö.sukunimi,
       kutsumanimi = hlö.kutsumanimi,
       äidinkieli = äidinkieli,
-      turvakielto = Some(hlö.turvakielto)
+      turvakielto = Some(hlö.turvakielto),
+      pääoppijaOid = pääoppijaOid
     )
   }
 }

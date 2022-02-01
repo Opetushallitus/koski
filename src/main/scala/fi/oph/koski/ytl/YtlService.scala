@@ -84,12 +84,15 @@ class YtlService(application: KoskiApplication) extends Logging with Timing {
         val pyynnössäEsiintyneetOppijaHenkilöt =
           oppijaOidToPyydettyHenkilö.collect { case (oid, hlö) if etsittävätHenkilöOidit.contains(oid) => hlö }
 
-        pyynnössäEsiintyneetOppijaHenkilöt.map(hlö =>
+        pyynnössäEsiintyneetOppijaHenkilöt.map(hlö => {
+          val pääoppijaOid = Some(tulosOppija.oid)
+
           YtlHenkilö(
-            hlö,
-            hlö.äidinkieli.flatMap(k => application.koodistoViitePalvelu.validate("kieli", k.toUpperCase))
+            hlö = hlö,
+            pääoppijaOid = pääoppijaOid,
+            äidinkieli = hlö.äidinkieli.flatMap(k => application.koodistoViitePalvelu.validate("kieli", k.toUpperCase))
           )
-        )
+        })
       }
 
       def teePalautettavatYtlOppijat(oppijaHenkilö: QueryOppijaHenkilö, opiskeluoikeusRows: List[OpiskeluoikeusRow]) = {
