@@ -125,14 +125,14 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
           case Some(o) if o.onOikeusValvoaMaksuttomuutta => ValpasLöytyiHenkilöhakuResult(o)
           // Henkilö, jonka tiedot löytyvät, mutta jolla maksuttomuus on päättynyt esim. toiselta asteelta
           // valmistumiseen, ei ole enää maksuttomuuden piirissä:
-          case Some(o) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(o.henkilö.oid, o.henkilö.hetu)
+          case Some(o) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(o.henkilö.oid), o.henkilö.hetu)
           case None => asLaajatOppijaHenkilöTiedot(henkilö) match {
-            case Some(h) if !h.turvakielto && h.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(h.oid, h.hetu)
+            case Some(h) if !h.turvakielto && h.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(h.oid), h.hetu)
             case _ => ValpasEiLöytynytHenkilöhakuResult()
           }
         })
     } else {
-      Right(ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(henkilö.oid, henkilö.hetu))
+      Right(ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(henkilö.oid), henkilö.hetu))
     }
   }
 
@@ -174,6 +174,8 @@ object ValpasLöytyiHenkilöhakuResult {
 trait ValpasHenkilöhakuResult {
   @SyntheticProperty
   def ok: Boolean
+
+  def cleanUpForUserSearch: ValpasHenkilöhakuResult = this
 }
 
 case class ValpasLöytyiHenkilöhakuResult(
@@ -186,11 +188,13 @@ case class ValpasLöytyiHenkilöhakuResult(
 }
 
 case class ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(
-  oid: ValpasHenkilö.Oid,
+  oid: Option[ValpasHenkilö.Oid],
   hetu: Option[String],
   eiLainTaiMaksuttomuudenPiirissä: Boolean = true
 ) extends ValpasHenkilöhakuResult {
   def ok = false
+
+  override def cleanUpForUserSearch: ValpasHenkilöhakuResult = this.copy(oid = None, hetu = None)
 }
 
 case class ValpasEiLöytynytHenkilöhakuResult() extends ValpasHenkilöhakuResult {

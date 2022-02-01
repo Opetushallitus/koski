@@ -87,8 +87,8 @@ object YtlMaksuttomuustieto {
         oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
         maksuttomuudenPiirissä = None,
       ))
-      case r: ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult => Some(YtlMaksuttomuustieto(
-        oppijaOid = r.oid,
+      case r: ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult => r.oid.map(oid => YtlMaksuttomuustieto(
+        oppijaOid = oid,
         hetu = r.hetu,
         oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
         maksuttomuudenPiirissä = Some(false),
