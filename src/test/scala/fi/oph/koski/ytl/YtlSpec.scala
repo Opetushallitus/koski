@@ -367,8 +367,8 @@ class YtlSpec
       "Palauttaa oppijalta, jolla on jokin opiskeluoikeus muuttunut, kaikki opiskeluoikeudet" in {
         resetFixtures()
 
-        // Asetetaan aika 5 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
-        val ennenTallennusta = ZonedDateTime.now.minusSeconds(2)
+        // Asetetaan aika 3 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
+        val ennenTallennusta = ZonedDateTime.now.minusSeconds(3)
 
         val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
 
@@ -393,8 +393,8 @@ class YtlSpec
       "Palauttaa oppijalta, jolla jokin opiskeluoikeus on mitätöity, olemassaolevat opiskeluoikeudet" in {
         resetFixtures()
 
-        // Asetetaan aika 5 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
-        val ennenTallennusta = ZonedDateTime.now.minusSeconds(2)
+        // Asetetaan aika 3 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
+        val ennenTallennusta = ZonedDateTime.now.minusSeconds(3)
 
         val uusiOo = createOpiskeluoikeus(
           oppija = KoskiSpecificMockOppijat.internationalschool,
@@ -418,8 +418,8 @@ class YtlSpec
       "Palauttaa oppijalta, jolla ainoa opiskeluoikeus on mitätöity, tyhjän listan opiskeluoikeuksia" in {
         resetFixtures()
 
-        // Asetetaan aika 5 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
-        val ennenTallennusta = ZonedDateTime.now.minusSeconds(2)
+        // Asetetaan aika 3 sekuntia menneisyyteen, koska PostgreSQL:n kello saattaa olla hieman eri ajassa.
+        val ennenTallennusta = ZonedDateTime.now.minusSeconds(3)
 
         val uusiOo = createOpiskeluoikeus(
           oppija = KoskiSpecificMockOppijat.luva,
