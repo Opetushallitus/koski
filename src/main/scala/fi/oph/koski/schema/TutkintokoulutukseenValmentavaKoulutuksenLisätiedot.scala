@@ -1,17 +1,14 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koskiuser.Rooli
-import fi.oph.koski.schema.annotation.{SensitiveData, Tooltip}
+import fi.oph.koski.schema.annotation.{Deprecated, OksaUri, SensitiveData, Tooltip}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
-trait TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto {
-  def järjestämislupa: String
-}
+trait TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
 
 case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
-  järjestämislupa: String,
   @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Koulutuksen järjestäjän tarjoama(t) majoitusjakso(t). Huoneeseen muuttopäivä ja lähtöpäivä. Rahoituksen laskennassa käytettävä tieto.")
   majoitus: Option[List[Aikajakso]] = None,
@@ -65,11 +62,52 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
 case class TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
-  järjestämislupa: String
+  @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
+  @DefaultValue(false)
+  pidennettyPäättymispäivä: Boolean = false,
+  @Description("Rahoituksen laskennassa käytettävä tieto.")
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @Description("Onko opiskelija sisöoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa käytettävä tieto.")
+  sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
 
 case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
-  järjestämislupa: String
+  @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
+  @Description("Tieto opiskelusta ulkomailla huoltajan ilmoituksesta alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto opiskelusta ulkomailla huoltajan ilmoituksesta alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
+  @Deprecated("Käytä korvaavaa kenttää Ulkomaanjaksot")
+  ulkomailla: Option[Aikajakso] = None,
+  @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  vammainen: Option[List[Aikajakso]] = None,
+  @Description("Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, onko oppija vaikeasti kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  vaikeastiVammainen: Option[List[Aikajakso]] = None,
+  @Description("Oppilaalla on majoitusetu (alku- ja loppupäivämäärä). Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, jos oppilaalla on majoitusetu (alku- ja loppupäivämäärät). Rahoituksen laskennassa käytettävä tieto.")
+  majoitusetu: Option[Aikajakso] = None,
+  @Description("Oppilaalla on kuljetusetu (alku- ja loppupäivämäärät).")
+  @Tooltip("Tieto siitä, jos oppilaalla on kuljetusetu (alku- ja loppupäivämäärät).")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  kuljetusetu: Option[Aikajakso] = None,
+  @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Mahdollisen sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
+  @Description("Oppija on koulukotikorotuksen piirissä, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, jos oppija on koulukotikorotuksen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  koulukoti: Option[List[Aikajakso]] = None,
+  @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
+  @DefaultValue(false)
+  pidennettyPäättymispäivä: Boolean = false,
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
