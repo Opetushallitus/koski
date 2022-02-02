@@ -131,6 +131,53 @@ class YtlSpec
         }
       }
 
+      "Saman oppijan hakeminen master-oppijan oidilla ja hetulla palauttaa oppijan vain yhden kerran" in {
+        resetFixtures()
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val oidit = List(
+          masterOppija.oid
+        )
+        val hetut = List(
+          masterOppija.hetu.get
+        )
+
+        postOppijat(oidit, hetut) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+          response.length should equal(1)
+          response(0).opiskeluoikeudet.length should equal(1)
+        }
+      }
+
+      "Saman oppijan hakeminen slave-oppijan oidilla ja hetulla palauttaa oppijan molemmilla" in {
+        resetFixtures()
+
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val oidit = List(
+          slaveOppija2.henkilö.oid
+        )
+        val hetut = List(
+          masterOppija.hetu.get
+        )
+
+        postOppijat(oidit, hetut) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[List[YtlOppija]](body)
+          response.length should equal(2)
+          response(0).opiskeluoikeudet.length should equal(1)
+          response(1).opiskeluoikeudet.length should equal(1)
+        }
+      }
+
       "Slave-oppijalle tallennettu opiskeluoikeus palautetaan kaikilla haetuilla samaan oppijaan viittaavilla oideilla" in {
         resetFixtures()
 
