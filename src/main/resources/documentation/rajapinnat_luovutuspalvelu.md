@@ -537,7 +537,8 @@ palautetaan sama lista opiskeluoikeuksia niille kaikille.
 ### opiskeluoikeuksiaMuuttunutJälkeen
 
 opiskeluoikeuksiaMuuttunutJälkeen on valinnainen parametri. Jos se on määritelty, palautetaan oppijan opiskeluoikeudet
-vain, jos jokin hänen opiskeluoikeutensa on muuttunut kyseisen ajanhetken jälkeen. Huomioitavia erikoistapauksia:
+vain, jos jokin hänen opiskeluoikeutensa on muuttunut kyseisen ajanhetken jälkeen. Aikaleima on määriteltävä
+esimerkkipyynnönn mukaisesti UTC-ajassa. Huomioitavia erikoistapauksia:
 
 1. Jos oppijan opiskeluoikeuksia on mitätöity ajanhetken jälkeen, palautetaan oppijan tiedot tyhjällä opiskeluoikeudet-listalla,
 vaikka normaalitapauksissa oppijaa ei palauteta lainkaan, jos hänellä ei ole yhtään YTL:ää kiinnostavaa opiskeluoikeutta.
