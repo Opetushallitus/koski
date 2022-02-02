@@ -24,21 +24,36 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
     AuditLogTester.clearMessages
   }
 
+  val oppijatOikeusMaksuttomuuteen = List(
+    // Tuple: (oppija: LaajatOppijaHenkilöTiedot, maksuttomuusVoimassaAsti: LocalDate)
+    (ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021, LocalDate.of(2025, 12, 31)),
+    (ValpasMockOppijat.maksuttomuuttaPidennetty, LocalDate.of(2024, 12, 31)),
+    (ValpasMockOppijat.turvakieltoOppijaTyhjälläKotikunnalla, LocalDate.of(2025, 12, 31)),
+  )
+
+  val oppijatEiOikeuttaMaksuttomuuteenKoskaOVLUlkopuolella = List(
+    ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004,
+    ValpasMockOppijat.muuttanutUlkomaille,
+  )
+
+  val oppijatEiOikeuttaMaksuttomuuteenKoskaValmistunut = List(
+    // Tuple: (oppija: LaajatOppijaHenkilöTiedot, maksuttomuusVoimassaAsti: LocalDate)
+    (ValpasMockOppijat.ammattikoulustaValmistunutOpiskelija, LocalDate.of(2021, 9, 2)),
+  )
+
+  val oppijatEiKoskessa = List(
+    ValpasMockOppijat.eiKoskessaOppivelvollinen,
+    ValpasMockOppijat.eiOppivelvollinenLiianNuori,
+  )
+
   "YTL-luovutuspalvelukäyttäjä" - {
     "Oidit" - {
       "Oikea tulos, jos oppijalla oikeus maksuttomaan koulutukseen" in {
-        val expectedData = List(
-          YtlMaksuttomuustieto(
-            oppijaOid = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
-            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(LocalDate.of(2025,12,31)),
-            maksuttomuudenPiirissä = Some(true),
-          ),
-          YtlMaksuttomuustieto(
-            oppijaOid = ValpasMockOppijat.maksuttomuuttaPidennetty.oid,
-            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(LocalDate.of(2024,12,31)),
-            maksuttomuudenPiirissä = Some(true),
-          ),
-        )
+        val expectedData = oppijatOikeusMaksuttomuuteen.map(o => YtlMaksuttomuustieto(
+          oppijaOid = o._1.oid,
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(o._2),
+          maksuttomuudenPiirissä = Some(true),
+        ))
 
         doQuery(oidit = Some(expectedData.map(_.oppijaOid))) {
           verifyResponseStatusOk()
@@ -46,13 +61,24 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
         }
       }
 
-      "Oikea tulos, jos oppijalla ei ole oikeutta maksuttomaan koulutukseen" in {
-        val expectedData = List(
-          YtlMaksuttomuustieto(
-            oppijaOid = ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.oid,
-            maksuttomuudenPiirissä = Some(false),
-          ),
-        )
+      "Oikea tulos, jos oppijalla ei ole oikeutta maksuttomaan koulutukseen, koska koulutuksen maksuttomuuslain ulkopuolella" in {
+        val expectedData = oppijatEiOikeuttaMaksuttomuuteenKoskaOVLUlkopuolella.map(o => YtlMaksuttomuustieto(
+          oppijaOid = o.oid,
+          maksuttomuudenPiirissä = Some(false),
+        ))
+
+        doQuery(oidit = Some(expectedData.map(_.oppijaOid))) {
+          verifyResponseStatusOk()
+          sort(parsedResponse) shouldBe sort(expectedData)
+        }
+      }
+
+      "Oikea tulos, jos oppijalla ei ole oikeutta maksuttomaan koulutukseen, koska on Valppaan tietojen perusteella valmistunut toisen asteen koulutuksesta" in {
+        val expectedData = oppijatEiOikeuttaMaksuttomuuteenKoskaValmistunut.map(o => YtlMaksuttomuustieto(
+          oppijaOid = o._1.oid,
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(o._2),
+          maksuttomuudenPiirissä = Some(false),
+        ))
 
         doQuery(oidit = Some(expectedData.map(_.oppijaOid))) {
           verifyResponseStatusOk()
@@ -61,10 +87,7 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
       }
 
       "Tyhjä vastaus, jois oppijaa ei löydy Koskesta (maksuttomuutta ei voida päätellä)" in {
-        val oids = List(
-          ValpasMockOppijat.eiKoskessaOppivelvollinen.oid,
-          ValpasMockOppijat.eiOppivelvollinenLiianNuori.oid,
-        )
+        val oids = oppijatEiKoskessa.map(_.oid)
 
         doQuery(oidit = Some(oids)) {
           verifyResponseStatusOk()
@@ -91,19 +114,13 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
 
     "Hetut" - {
       "Oikea tulos, jos oppijalla oikeus maksuttomaan koulutukseen" in {
-        val expectedData = List(
+        val expectedData = oppijatOikeusMaksuttomuuteen.map(o =>
           YtlMaksuttomuustieto(
-            oppijaOid = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
-            hetu = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.hetu,
-            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(LocalDate.of(2025,12,31)),
+            oppijaOid = o._1.oid,
+            hetu = o._1.hetu,
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(o._2),
             maksuttomuudenPiirissä = Some(true),
-          ),
-          YtlMaksuttomuustieto(
-            oppijaOid = ValpasMockOppijat.maksuttomuuttaPidennetty.oid,
-            hetu = ValpasMockOppijat.maksuttomuuttaPidennetty.hetu,
-            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(LocalDate.of(2024,12,31)),
-            maksuttomuudenPiirissä = Some(true),
-          ),
+          )
         )
 
         doQuery(hetut = Some(expectedData.map(_.hetu.get))) {
@@ -112,26 +129,35 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
         }
       }
 
-      "Oikea tulos, jos oppijalla ei ole oikeutta maksuttomaan koulutukseen" in {
-        val expectedData = List(
-          YtlMaksuttomuustieto(
-            oppijaOid = ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.oid,
-            hetu = ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.hetu,
-            maksuttomuudenPiirissä = Some(false),
-          ),
-        )
+      "Oikea tulos, jos oppijalla ei ole oikeutta maksuttomaan koulutukseen, koska koulutuksen maksuttomuuslain ulkopuolella" in {
+        val expectedData = oppijatEiOikeuttaMaksuttomuuteenKoskaOVLUlkopuolella.map(o => YtlMaksuttomuustieto(
+          oppijaOid = o.oid,
+          hetu = o.hetu,
+          maksuttomuudenPiirissä = Some(false),
+        ))
 
         doQuery(hetut = Some(expectedData.map(_.hetu.get))) {
+          verifyResponseStatusOk()
+          sort(parsedResponse) shouldBe sort(expectedData)
+        }
+      }
+
+      "Oikea tulos, jos oppijalla ei ole oikeutta maksuttomaan koulutukseen, koska on Valppaan tietojen perusteella valmistunut toisen asteen koulutuksesta" in {
+        val expectedData = oppijatEiOikeuttaMaksuttomuuteenKoskaValmistunut.map(o => YtlMaksuttomuustieto(
+          oppijaOid = o._1.oid,
+          hetu = o._1.hetu,
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(o._2),
+          maksuttomuudenPiirissä = Some(false),
+        ))
+
+        doQuery(hetut = Some(expectedData.flatMap(_.hetu))) {
           verifyResponseStatusOk()
           sort(parsedResponse) shouldBe sort(expectedData)
         }
       }
 
       "Tyhjä vastaus, jois oppijaa ei löydy Koskesta (maksuttomuutta ei voida päätellä)" in {
-        val hetut = List(
-          ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get,
-          ValpasMockOppijat.eiOppivelvollinenLiianNuori.hetu.get,
-        )
+        val hetut = oppijatEiKoskessa.flatMap(_.hetu)
 
         doQuery(hetut = Some(hetut)) {
           verifyResponseStatusOk()

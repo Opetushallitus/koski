@@ -49,6 +49,5 @@ final class StringChainingOps(private val self: String) extends AnyVal {
 
 final class LocalDateChainingOps(private val self: LocalDate) extends AnyVal {
   def isEqualOrAfter(d: LocalDate): Boolean = !self.isBefore(d)
-  def isEqualOrBefore(d: LocalDate): Boolean =
-    !self.isAfter(d)
+  def isEqualOrBefore(d: LocalDate): Boolean = !self.isAfter(d)
 }
