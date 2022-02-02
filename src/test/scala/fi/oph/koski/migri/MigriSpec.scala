@@ -1,12 +1,13 @@
 package fi.oph.koski.migri
 
-import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec, schema}
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.documentation.{AmmatillinenOldExamples, LukioExampleData, MuunAmmatillisenKoulutuksenExample}
+import fi.oph.koski.documentation.{AmmatillinenOldExamples, ExamplesLukio2019, MuunAmmatillisenKoulutuksenExample}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{MockUser, MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
@@ -57,6 +58,81 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
 
       opiskeluoikeusTyypit should contain theSameElementsAs(List("ammatillinenkoulutus"))
       suoritusTyypit should contain theSameElementsAs(List("ammatillinentutkinto"))
+    }
+  }
+
+  "Master-slave haut" - {
+    val masterOppija = KoskiSpecificMockOppijat.oppivelvollisuustietoMaster
+    val slaveOppija1 = KoskiSpecificMockOppijat.oppivelvollisuustietoSlave1
+    val slaveOppija2 = KoskiSpecificMockOppijat.oppivelvollisuustietoSlave2
+
+    "Master-oppijalle tallennettu opiskeluoikeus löytyy slave-oppijan oidilla" in {
+      resetFixtures()
+
+      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+      putOpiskeluoikeus(uusiOo, masterOppija, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+
+      postOid(slaveOppija1.henkilö.oid, user) {
+        verifyResponseStatusOk()
+
+        val oppija = JsonSerializer.parse[MigriOppija](body)
+
+        oppija should not be (null)
+      }
+    }
+
+
+    "Slave-oppijalle tallennettu opiskeluoikeus löytyy slave-oppijan oidilla" in {
+      resetFixtures()
+
+      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+      putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+
+      postOid(slaveOppija1.henkilö.oid, user) {
+        verifyResponseStatusOk()
+
+        val oppija = JsonSerializer.parse[MigriOppija](body)
+
+        oppija should not be (null)
+      }
+    }
+
+    "Slave-oppijalle tallennettu opiskeluoikeus löytyy master-oppijan oidilla" in {
+      resetFixtures()
+
+      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+      putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+
+      postOid(masterOppija.oid, user) {
+        verifyResponseStatusOk()
+
+        val oppija = JsonSerializer.parse[MigriOppija](body)
+
+        oppija should not be (null)
+      }
+    }
+
+    "Slave-oppijalle tallennettu opiskeluoikeus löytyy sisarus-slaven oidilla" in {
+      resetFixtures()
+
+      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+      putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+
+      postOid(slaveOppija2.henkilö.oid, user) {
+        verifyResponseStatusOk()
+
+        val oppija = JsonSerializer.parse[MigriOppija](body)
+
+        oppija should not be (null)
+      }
     }
   }
 
