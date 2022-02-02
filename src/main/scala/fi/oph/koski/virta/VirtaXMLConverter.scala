@@ -152,7 +152,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val opiskeluoikeusJaksot = koulutuskoodillisetJaksot(opiskeluoikeusNode)
     val suoritusLöytyyKoulutuskoodilla = opiskeluoikeusJaksot.exists { jakso =>
       val opiskeluoikeudenTutkinto = tutkinto(jakso.koulutuskoodi)
-      suoritukset.exists(_.koulutusmoduuli == opiskeluoikeudenTutkinto)
+      suoritukset.exists(_.koulutusmoduuli.tunniste == opiskeluoikeudenTutkinto.tunniste)
     }
 
     if (suoritusLöytyyKoulutuskoodilla) { // suoritus löytyy virta datasta vain jos se on valmis

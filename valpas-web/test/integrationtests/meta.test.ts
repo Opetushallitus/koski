@@ -1,8 +1,8 @@
 import { Builder } from "selenium-webdriver"
 import chrome from "selenium-webdriver/chrome"
 
-describe("Testiympäristön oikeellisuus", () => {
-  it("Chromedriver on ajantasainen (päivitä uusin valpas-web -kansiossa: npm i -D chromedriver@latest)", async () => {
+describe("Chromedriver on ajantasainen", () => {
+  it(" (PÄIVITÄ valpas-web: npm i -D chromedriver@latest)", async () => {
     jest.setTimeout(30000)
 
     const options = new chrome.Options().headless()
