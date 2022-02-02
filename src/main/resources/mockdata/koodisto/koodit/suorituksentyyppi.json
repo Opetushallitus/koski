@@ -1601,5 +1601,50 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuva-koulutuksen-suoritus",
+  "koodiArvo" : "tuva-koulutuksen-suoritus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuva-koulutuksen-osa-suoritus",
+  "koodiArvo" : "tuva-koulutuksen-osa-suoritus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen osan suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen osan suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen osan suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuva-koulutuksen-valinnainen-osa-suoritus",
+  "koodiArvo" : "tuva-koulutuksen-valinnainen-osa-suoritus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen valinnaisen osan suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen valinnaisen osan suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen valinnaisen osan suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }
 ]

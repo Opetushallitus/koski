@@ -117,4 +117,21 @@
     "kieli" : "EN"
   } ],
   "versio" : 1
+}, {
+  "koodiUri" : "opintojenlaajuusyksikko_8",
+  "koodiArvo" : "8",
+  "metadata" : [ {
+    "nimi" : "viikkoa",
+    "lyhytNimi" : "viikkoa",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "veckor",
+    "lyhytNimi" : "veckor",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "weeks",
+    "lyhytNimi" : "weeks",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
 } ]

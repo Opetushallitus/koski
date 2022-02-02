@@ -1,0 +1,19 @@
+{
+  "koodistoUri" : "tuvasuorituksenosa",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Suoritusten osa TUVA",
+    "kuvaus" : "Suoritusten osa TUVA"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Suoritusten osa TUVA",
+    "kuvaus" : ""
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2022-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 1
+}

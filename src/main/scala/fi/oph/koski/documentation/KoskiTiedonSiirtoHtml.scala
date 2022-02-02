@@ -20,7 +20,8 @@ object KoskiTiedonSiirtoHtml {
     "Valmentava koulutus",
     "Vapaa sivistystyö",
     "Korkeakoulu (Virrasta)",
-    "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)"
+    "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)",
+    "Tutkintokoulutukseen valmentava koulutus"
   )
 
   val categoryExamples: Map[String, List[Example]] = Map(
@@ -34,7 +35,8 @@ object KoskiTiedonSiirtoHtml {
     "Valmentava koulutus" -> (ExamplesValma.examples ++ ExamplesTelma.examples),
     "Vapaa sivistystyö" -> ExamplesVapaaSivistystyö.examples,
     "Korkeakoulu (Virrasta)" -> ExamplesKorkeakoulu.examples,
-    "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)" -> ExamplesYlioppilastutkinto.examples
+    "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)" -> ExamplesYlioppilastutkinto.examples,
+    "Tutkintokoulutukseen valmentava koulutus" -> ExamplesTutkintokoulutukseenValmentavaKoulutus.examples,
   )
 
   val jsonTableHtmlContentsCache: collection.mutable.Map[(String, String), String] = collection.mutable.Map()

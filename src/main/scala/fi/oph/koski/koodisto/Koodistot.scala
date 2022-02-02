@@ -72,6 +72,7 @@ object Koodistot {
     KoodistoAsetus("perusopetuksensuoritustapa"),
     KoodistoAsetus("perusopetuksentoimintaalue"),
     KoodistoAsetus("perusopetuksentukimuoto"),
+    KoodistoAsetus("tuvasuorituksenosa"),
     KoodistoAsetus("suorituksentyyppi"),
     KoodistoAsetus("tutkinnonosatvalinnanmahdollisuus"),
     KoodistoAsetus("uskonnonoppimaara"),

@@ -224,6 +224,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           vahvistuksenOrganisaatio = AmmatillinenExampleData.kiipulanAmmattiopisto
         )
       ),
+      (KoskiSpecificMockOppijat.tuva, ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeus),
     )
   }
 

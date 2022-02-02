@@ -18,7 +18,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeus(
   lisätiedot: Option[TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
   suoritukset: List[TutkintokoulutukseenValmentavanKoulutuksenSuoritus],
-  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus,
+  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.tuva,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -45,8 +45,9 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
 
 case class TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
+  @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("tuva-koulutuksen-suoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstmaahanmuuttajienkotoutumiskoulutus", koodistoUri = "suorituksentyyppi"),
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "tuva-koulutuksen-suoritus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutus,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla],
   @Description("Koulutuksen opetuskieli")
@@ -56,16 +57,18 @@ case class TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with OpintopistelaajuuksienYhteislaskennallinenSuoritus
+) extends VapaanSivistystyönPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with Suoritus
 
 @Description("Tutkintokoulutukseen valmistavan koulutuksen tunnistetiedot")
 case class TutkintokoulutukseenValmentavanKoulutus(
-  @KoodistoKoodiarvo("666")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("666", koodistoUri = "koulutus"),
+  //TODO:
+  @KoodistoKoodiarvo("999999")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999999", koodistoUri = "koulutus"),
+  //TODO: diaarinumeron arvo
   perusteenDiaarinumero: Option[String] = None,
   koulutustyyppi: Option[Koodistokoodiviite] = None,
-  laajuus: Option[LaajuusOpintopisteissä] = None
-) extends DiaarinumerollinenKoulutus with Tutkinto with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
+  laajuus: Option[LaajuusViikoissa] = None
+) extends DiaarinumerollinenKoulutus with Tutkinto with KoulutusmoduuliValinnainenLaajuus
 
 trait TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus extends Suoritus with MahdollisestiTunnustettu
 
@@ -75,8 +78,9 @@ case class TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
   koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenMuuOsa,
   arviointi: Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite],
-  @KoodistoKoodiarvo("lukionoppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi"),
+  @KoodistoUri("suorituksentyyppi")
+  @KoodistoKoodiarvo("tuva-koulutuksen-osa-suoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "tuva-koulutuksen-osa-suoritus", koodistoUri = "suorituksentyyppi"),
   tunnustettu: Option[OsaamisenTunnustaminen]
 ) extends OppiaineenSuoritus with Vahvistukseton with TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen
 
@@ -87,8 +91,9 @@ trait TutkintokoulutukseenValmentavanKoulutuksenMuuOsa extends KoulutusmoduuliVa
 @Title("Opiskelu- ja urasuunnittelutaidot")
 @Description("Opiskelu- ja urasuunnittelutaidot")
 case class TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot(
-  @KoodistoKoodiarvo("MA")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
+  @KoodistoUri("tuvasuorituksenosa")
+  @KoodistoKoodiarvo("opiskelujaurasuunnittelutaidot")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "opiskelujaurasuunnittelutaidot", koodistoUri = "tuvasuorituksenosa"),
   @DefaultValue(None)
   @MinValue(2)
   @MaxValue(10)
@@ -98,8 +103,9 @@ case class TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot(
 @Title("Perustaitojen vahvistaminen")
 @Description("Perustaitojen vahvistaminen")
 case class TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
-  @KoodistoKoodiarvo("MA")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
+  @KoodistoUri("tuvasuorituksenosa")
+  @KoodistoKoodiarvo("perustaitojenvahvistaminen")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perustaitojenvahvistaminen", koodistoUri = "tuvasuorituksenosa"),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(30)
@@ -109,9 +115,9 @@ case class TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
 @Title("Lukiokoulutuksen opinnot ja niihin valmentautuminen")
 @Description("Lukiokoulutuksen opinnot ja niihin valmentautuminen")
 case class TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot(
-  //TODO:
-  @KoodistoKoodiarvo("MA")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
+  @KoodistoUri("tuvasuorituksenosa")
+  @KoodistoKoodiarvo("lukiokoulutuksenopinnot")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukiokoulutuksenopinnot", koodistoUri = "tuvasuorituksenosa"),
   //TODO:
   @Description("Onko kyseessä laaja vai lyhyt oppimäärä")
   @KoodistoUri("oppiainematematiikka")
@@ -127,9 +133,9 @@ case class TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot(
 @Title("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen")
 @Description("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen")
 case class TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot(
-  //TODO:
-  @KoodistoKoodiarvo("MA")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
+  @KoodistoUri("tuvasuorituksenosa")
+  @KoodistoKoodiarvo("ammatillisenkoulutuksenopinnot")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ammatillisenkoulutuksenopinnot", koodistoUri = "tuvasuorituksenosa"),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(30)
@@ -139,9 +145,9 @@ case class TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot(
 @Title("Työelämätaidot ja työpaikalla tapahtuva oppiminen")
 @Description("Työelämätaidot ja työpaikalla tapahtuva oppiminen")
 case class TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(
-  //TODO
-  @KoodistoKoodiarvo("MA")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
+  @KoodistoUri("tuvasuorituksenosa")
+  @KoodistoKoodiarvo("työelämätaidotjatyöpaikallaoppiminen")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "työelämätaidotjatyöpaikallaoppiminen", koodistoUri = "tuvasuorituksenosa"),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(20)
@@ -151,9 +157,9 @@ case class TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtu
 @Title("Arjen ja yhteiskunnallisen osallisuuden taidot")
 @Description("Arjen ja yhteiskunnallisen osallisuuden taidot")
 case class TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot(
-  //TODO:
-  @KoodistoKoodiarvo("MA")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
+  @KoodistoUri("tuvasuorituksenosa")
+  @KoodistoKoodiarvo("arjenjayhteiskunnallisenosallisuudentaidot")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "arjenjayhteiskunnallisenosallisuudentaidot", koodistoUri = "tuvasuorituksenosa"),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(20)
@@ -169,15 +175,18 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(
   @Description("Tutkintokoulutukseen valmentavan koulutuksen valinnaisten opintojen osasuoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus]],
-  @KoodistoKoodiarvo("lukionoppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi"),
+  @KoodistoUri("suorituksentyyppi")
+  @KoodistoKoodiarvo("tuva-koulutuksen-valinnainen-osa-suoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "tuva-koulutuksen-valinnainen-osa-suoritus", koodistoUri = "suorituksentyyppi"),
   tunnustettu: Option[OsaamisenTunnustaminen]
 ) extends OppiaineenSuoritus with Vahvistukseton with TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen
 
+@Title("Valinnaiset koulutuksen osat")
+@Description("Valinnaiset koulutuksen osat")
 case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
-  //TODO:
-  @KoodistoKoodiarvo("MA")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
+  @KoodistoUri("tuvasuorituksenosa")
+  @KoodistoKoodiarvo("valinnaisetkoulutuksenosat")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "valinnaisetkoulutuksenosat", koodistoUri = "tuvasuorituksenosa"),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(10)
@@ -196,6 +205,7 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsas
   //                                      @ComplexObject
   //                                      tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite],
+  @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("lukionkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen //with MahdollisestiTunnustettu
@@ -203,6 +213,7 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsas
 case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus(
   nimi: LocalizedString,
   //TODO:
+  @KoodistoUri("koskioppiaineetyleissivistava")
   @KoodistoKoodiarvo("MA")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
   @DefaultValue(None)
@@ -212,7 +223,7 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsas
 @Title("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen sanallinen arviointi")
 @Description("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen hyväksytty/hylätty arviointi")
 case class SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
-  arvosana: Koodistokoodiviite, // = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+  arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
   päivä: LocalDate
 ) extends TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi with SanallinenYleissivistävänKoulutuksenArviointi
