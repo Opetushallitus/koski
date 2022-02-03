@@ -85,7 +85,10 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       .subscribeOn(scheduler)
       .subscribe(
         onNext = doNothing,
-        onError = (_) => onEnd(),
+        onError = (_) => {
+          putLoadTimeMetric(Option(false))
+          onEnd()
+        },
         onCompleted = () => {
           //Without try-catch, in case of an exception the process just silently halts, this is a feature of java.util.concurrent.Executors
           try {
