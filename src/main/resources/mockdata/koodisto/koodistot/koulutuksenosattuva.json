@@ -1,10 +1,10 @@
 {
-  "koodistoUri" : "tuvasuorituksenosa",
+  "koodistoUri" : "koulutuksenosattuva",
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Suoritusten osa TUVA",
-    "kuvaus" : "Suoritusten osa TUVA"
+    "nimi" : "Koulutuksen osat TUVA",
+    "kuvaus" : "Tutkintokoulutukseen valmistavan koulutuksen osa"
   }, {
     "kieli" : "SV",
     "nimi" : "Suoritusten osa TUVA",

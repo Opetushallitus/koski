@@ -52497,6 +52497,19 @@
   } ],
   "versio" : 6
 }, {
+  "koodiUri" : "koulutus_999908",
+  "koodiArvo" : "999908",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutus",
+    "lyhytNimi" : "Tutkintokoulutukseen valmentava koulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning som handleder för examensutbildning",
+    "lyhytNimi" : "Utbildning som handleder för examensutbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 6
+}, {
   "koodiUri" : "koulutus_999999",
   "koodiArvo" : "999999",
   "metadata" : [ {

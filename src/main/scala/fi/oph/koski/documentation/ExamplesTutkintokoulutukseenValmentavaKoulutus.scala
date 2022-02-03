@@ -7,20 +7,96 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 object ExamplesTutkintokoulutukseenValmentavaKoulutus {
 
-  lazy val tuvaTila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
-    opiskeluoikeusjaksot = List(
-      TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
-        alku = date(2021, 8, 1),
-        tila = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila")
+  def tuvaSanallinenArviointi(d: LocalDate): Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = Some(
+    List(
+      SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
+        arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+        kuvaus = Some(
+          finnish("Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus.")
+        ),
+        päivä = d
       )
     )
   )
 
-  lazy val tuvaOpiskeluOikeus = TutkintokoulutukseenValmentavanOpiskeluoikeus(
+  def tuvaNumeerinenArviointi(d: LocalDate): Option[List[NumeerinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = Some(
+    List(
+      NumeerinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
+        arvosana = Koodistokoodiviite("10", "arviointiasteikkoyleissivistava"),
+        kuvaus = None,
+        päivä = date(2021, 12, 1)
+      )
+    )
+  )
+
+  def tuvaOpiskeluOikeusjakso(d: LocalDate, koodistokoodiviite: String) = TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
+    alku = d,
+    tila = Koodistokoodiviite(koodistokoodiviite, "koskiopiskeluoikeudentila")
+  )
+
+  def tuvaKoulutuksenMuunOsanSuoritus(
+    koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenMuuOsa,
+    arviointiPäivä: LocalDate,
+    koodistoviite: String
+  ) = TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
+    koulutusmoduuli = koulutusmoduuli,
+    arviointi = tuvaSanallinenArviointi(arviointiPäivä),
+    suorituskieli = Some(suomenKieli),
+    tyyppi = Koodistokoodiviite(koodistoviite, "suorituksentyyppituva"),
+    tunnustettu = None
+  )
+
+  def tuvaKoulutuksenValinnaisenOsanSuoritus(
+    laajuus: Double,
+    arviointiPäivä: LocalDate
+  ) = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(
+    koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
+      laajuus = Some(LaajuusViikoissa(laajuus))
+    ),
+    arviointi = tuvaSanallinenArviointi(arviointiPäivä),
+    suorituskieli = Some(suomenKieli),
+    tyyppi = Koodistokoodiviite("tutkintokoulutukseenvalmentava", "suorituksentyyppituva"),
+    tunnustettu = None,
+    osasuoritukset = None
+  )
+
+  def tuvaOpiskeluJaUrasuunnittelutaidot(laajuus: Double) = TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot(
+    laajuus = Some(LaajuusViikoissa(laajuus))
+  )
+
+  def tuvaPerustaitojenVahvistaminen(laajuus: Double) = TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
+    laajuus = Some(LaajuusViikoissa(laajuus))
+  )
+
+  def tuvaAmmatillisenKoulutuksenOpinnot(laajuus: Double) = TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot(
+    laajuus = Some(LaajuusViikoissa(laajuus))
+  )
+
+  def tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus: Double) = TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(
+    laajuus = Some(LaajuusViikoissa(laajuus))
+  )
+
+  def tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(laajuus: Double) = TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot(
+    laajuus = Some(LaajuusViikoissa(laajuus))
+  )
+
+  def tuvaLukiokoulutuksenOpinnot(laajuus: Double) = TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot(
+    laajuus = Some(LaajuusViikoissa(laajuus))
+  )
+
+  lazy val tuvaTila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
+    opiskeluoikeusjaksot = List(
+      tuvaOpiskeluOikeusjakso(date(2021, 8, 1), "lasna"),
+      tuvaOpiskeluOikeusjakso(date(2021, 12, 31), "valmistunut")
+    )
+  )
+
+  lazy val tuvaOpiskeluOikeusValmistunut = TutkintokoulutukseenValmentavanOpiskeluoikeus(
     oppilaitos = Some(stadinAmmattiopisto),
     tila = tuvaTila,
     lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
@@ -30,60 +106,111 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
       TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
         toimipiste = stadinAmmattiopisto,
         koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutus(
-          perusteenDiaarinumero = Some("OPH-58-2021"),
-          tunniste = Koodistokoodiviite("999999", "koulutus"),
+          laajuus = Some(LaajuusViikoissa(12))
         ),
-        vahvistus = None,
+        vahvistus = Some(
+          HenkilövahvistusValinnaisellaPaikkakunnalla(
+            päivä = date(2021, 12, 31),
+            paikkakunta = Some(
+              ExampleData.helsinki
+            ),
+            myöntäjäOrganisaatio = stadinAmmattiopisto,
+            myöntäjäHenkilöt = List(
+              Organisaatiohenkilö("Reijo Reksi", "rehtori", stadinAmmattiopisto)
+            )
+          )
+        ),
         suorituskieli = suomenKieli,
-        osasuoritukset =
-          Some(
-            List(
-              TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
-                koulutusmoduuli = TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot(
-                  laajuus = Some(LaajuusViikoissa(2))
-                ),
-                arviointi = Some(
-                  List(
-                    SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
-                      arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
-                      kuvaus = None,
-                      päivä = date(2022, 1, 31)
-                    )
+        osasuoritukset = Some(
+          List(
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(2),
+              arviointiPäivä = date(2021, 9, 1),
+              koodistoviite = "tutkintokoulutukseenvalmentava"
+            ),
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaPerustaitojenVahvistaminen(1),
+              arviointiPäivä = date(2021, 9, 1),
+              koodistoviite = "perusopetus"
+            ),
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaAmmatillisenKoulutuksenOpinnot(1),
+              arviointiPäivä = date(2021, 10, 1),
+              koodistoviite = "ammatillinenkoulutus"
+            ),
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(1),
+              arviointiPäivä = date(2021, 10, 1),
+              koodistoviite = "tutkintokoulutukseenvalmentava"
+            ),
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(1),
+              arviointiPäivä = date(2021, 11, 1),
+              koodistoviite = "tutkintokoulutukseenvalmentava"
+            ),
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaLukiokoulutuksenOpinnot(1),
+              arviointiPäivä = date(2021, 11, 1),
+              koodistoviite = "lukiokoulutus"
+            ).copy(
+              tunnustettu = Some(
+                OsaamisenTunnustaminen(
+                  osaaminen = Some(
+                    LukioExampleData.kurssisuoritus(
+                      LukioExampleData.valtakunnallinenKurssi("ENA1")
+                    ).copy(arviointi = LukioExampleData.numeerinenArviointi(8))
+                  ),
+                  selite = finnish("Tunnustettu lukion kurssi")
+                )
+              )
+            ),
+            tuvaKoulutuksenValinnaisenOsanSuoritus(
+              laajuus = 5,
+              arviointiPäivä = date(2021, 12, 1)
+            ).copy(
+              osasuoritukset = Some(
+                List(
+                  TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus(
+                    koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus(
+                      nimi = finnish("Valinnainen kurssi 1"),
+                      tunniste = PaikallinenKoodi("VALKU1", finnish("Paikallinen kurssisuoritus")),
+                      laajuus = Some(
+                        LaajuusViikoissa(2)
+                      )
+                    ),
+                    arviointi = tuvaNumeerinenArviointi(date(2021, 12, 1)),
+                    tunnustettu = None,
+                    suorituskieli = Some(suomenKieli)
+                  ),
+                  TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus(
+                    koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus(
+                      nimi = finnish("Valinnainen kurssi 2"),
+                      tunniste = PaikallinenKoodi("VALKU2", finnish("Paikallinen kurssisuoritus")),
+                      laajuus = Some(
+                        LaajuusViikoissa(3)
+                      )
+                    ),
+                    arviointi = tuvaNumeerinenArviointi(date(2021, 12, 1)),
+                    tunnustettu = None,
+                    suorituskieli = Some(suomenKieli)
                   )
-                ),
-                suorituskieli = Some(suomenKieli),
-                tunnustettu = None
-              ),
-              TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
-                koulutusmoduuli = TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
-                  laajuus = Some(LaajuusViikoissa(1))
-                ),
-                arviointi = None,
-                suorituskieli = Some(suomenKieli),
-                tunnustettu = None
-              ),
-              TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
-                koulutusmoduuli = TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot(
-                  laajuus = Some(LaajuusViikoissa(1))
-                ),
-                arviointi = None,
-                suorituskieli = Some(suomenKieli),
-                tunnustettu = None
+                )
               )
             )
-          ),
+          )
+        )
       )
     )
   )
 
-  lazy val tuvaOppija = Oppija(
+  lazy val tuvaOppijaValmistunut = Oppija(
     MockOppijat.asUusiOppija(KoskiSpecificMockOppijat.tuva),
     List(
-      tuvaOpiskeluOikeus
+      tuvaOpiskeluOikeusValmistunut
     )
   )
 
   lazy val examples = List(
-    Example("tutkintokoulutukseen valmentava koulutus", "Oppija on suorittamassa tutkintokoulutukseen valmentavaa koulutusta.", tuvaOppija)
+    Example("tutkintokoulutukseen valmentava koulutus - valmistunut", "Oppija on suorittanut tutkintokoulutukseen valmentavan koulutuksen.", tuvaOppijaValmistunut)
   )
 }

@@ -28,7 +28,8 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-vst-oppivelvollisille-suunnattu",
     "rakenne-vst-maahanmuuttajien-kotoutumiskoulutus",
     "rakenne-vst-lukutaitokoulutus",
-    "rakenne-tieto-ja-viestintätekniikan-perustutkinto"
+    "rakenne-tieto-ja-viestintätekniikan-perustutkinto",
+    "rakenne-tutkintokoulutukseen-valmentava-koulutus"
   ).map { id =>
     JsonSerializer.extract[EPerusteRakenne](JsonResources.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
   }

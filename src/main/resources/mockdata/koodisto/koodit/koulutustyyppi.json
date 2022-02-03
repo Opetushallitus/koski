@@ -32648,4 +32648,53 @@
     "codeElementVersion" : 1,
     "passive" : false
   }]
+},
+{
+  "koodiUri" : "koulutustyyppi_40",
+  "koodiArvo" : "40",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutus",
+    "lyhytNimi" : "Tutkintokoulutukseen valmentava koulutus",
+    "kuvaus" : "Tutkintokoulutukseen valmentava koulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning som handleder för examensutbildning",
+    "lyhytNimi" : "Utbildning som handleder för examensutbildning",
+    "kuvaus" : "Utbildning som handleder för examensutbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "haunkohdejoukko_18",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_999911",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_21",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_62",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_63",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_64",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_66",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_99",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }]
 }]
