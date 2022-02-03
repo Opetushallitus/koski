@@ -19,7 +19,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
   private val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
   private val opiskeluoikeusRepository = application.opiskeluoikeusRepository
   private val rajapäivätService = application.valpasRajapäivätService
-  private val db = application.raportointiDatabase
+  private val opintopolkuHenkilöt = application.opintopolkuHenkilöFacade
 
   def findHenkilöSuorittaminen
     (query: String)
@@ -43,24 +43,24 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
       .flatMap(_ => findHenkilö(asMaksuttomuusHenkilöhakuResultIlmanOikeustarkistusta _, query))
   }
 
-  def findHenkilöOidillaIlmanOikeustarkastusta
-    (oppijaOid: String)
+  def findHenkilöOideillaIlmanOikeustarkastusta
+    (oppijaOids: Seq[String])
     (implicit session: ValpasSession)
-  : Either[HttpStatus, ValpasHenkilöhakuResult] = {
-    henkilöRepository
-      .findByOid(oppijaOid, findMasterIfSlaveOid = true)
-      .toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyOpintopolusta())
-      .flatMap(asMaksuttomuusHenkilöhakuResultIlmanOikeustarkistusta)
+  : Seq[Either[HttpStatus, ValpasHenkilöhakuResult]] = {
+    opintopolkuHenkilöt
+      .findMasterOppijat(oppijaOids.toList)
+      .values
+      .map(asMaksuttomuusHenkilöhakuResultIlmanOikeustarkistusta)
+      .toSeq
   }
 
-  def findHenkilöHetullaIlmanOikeustarkastusta
-    (hetu: String)
+  def findHenkilöHetuillaIlmanOikeustarkastusta
+    (hetus: Seq[String])
     (implicit session: ValpasSession)
-  : Either[HttpStatus, ValpasHenkilöhakuResult] = {
-    henkilöRepository
-      .findByHetuOrCreateIfInYtrOrVirta(hetu)
-      .toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyOpintopolusta())
-      .flatMap(asMaksuttomuusHenkilöhakuResultIlmanOikeustarkistusta)
+  : Seq[Either[HttpStatus, ValpasHenkilöhakuResult]] = {
+    opintopolkuHenkilöt
+      .findOppijatByHetusNoSlaveOids(hetus.toList)
+      .map(asMaksuttomuusHenkilöhakuResultIlmanOikeustarkistusta)
   }
 
   private def findHenkilö

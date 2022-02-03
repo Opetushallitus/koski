@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.ytl
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.oppivelvollisuustieto.{Oppivelvollisuustiedot, OptionalOppivelvollisuustieto}
 import fi.oph.koski.util.ChainingSyntax._
@@ -30,7 +31,7 @@ class ValpasYtlService(application: KoskiApplication) {
       .map(YtlMaksuttomuustieto.apply(rajapäivät.tarkastelupäivä))
 
     val puuttuvatOidit = oidit.diff(tiedotKoskessa.map(_.oppijaOid))
-    val tiedotOnrissa = puuttuvatOidit.map(oppijaSearch.findHenkilöOidillaIlmanOikeustarkastusta)
+    val tiedotOnrissa = oppijaSearch.findHenkilöOideillaIlmanOikeustarkastusta(puuttuvatOidit)
 
     yhdistäKoskiJaOnrTiedot(tiedotKoskessa, tiedotOnrissa).map(_.withoutHetu)
   }
@@ -44,7 +45,7 @@ class ValpasYtlService(application: KoskiApplication) {
       .map(YtlMaksuttomuustieto.apply(rajapäivät.tarkastelupäivä))
 
     val puuttuvatHetut = hetut.diff(tiedotKoskessa.flatMap(_.hetu))
-    val tiedotOnrissa = puuttuvatHetut.map(oppijaSearch.findHenkilöHetullaIlmanOikeustarkastusta)
+    val tiedotOnrissa = oppijaSearch.findHenkilöHetuillaIlmanOikeustarkastusta(puuttuvatHetut)
 
     yhdistäKoskiJaOnrTiedot(tiedotKoskessa, tiedotOnrissa)
   }
@@ -95,6 +96,13 @@ object YtlMaksuttomuustieto {
       ))
       case _ => None
     }
+
+  def apply(tiedot: LaajatOppijaHenkilöTiedot): YtlMaksuttomuustieto = YtlMaksuttomuustieto(
+    oppijaOid = tiedot.oid,
+    hetu = tiedot.hetu,
+    oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
+    maksuttomuudenPiirissä = Some(false),
+  )
 
   def oidOrder: Ordering[YtlMaksuttomuustieto] = Ordering.by((t: YtlMaksuttomuustieto) => t.oppijaOid)
 }
