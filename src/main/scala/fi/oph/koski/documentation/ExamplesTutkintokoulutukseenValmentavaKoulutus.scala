@@ -99,8 +99,9 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
   lazy val tuvaOpiskeluOikeusValmistunut = TutkintokoulutukseenValmentavanOpiskeluoikeus(
     oppilaitos = Some(stadinAmmattiopisto),
     tila = tuvaTila,
+    järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa"),
     lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
-      järjestämislupa = "Ammatillinen",
+
     )),
     suoritukset = List(
       TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
