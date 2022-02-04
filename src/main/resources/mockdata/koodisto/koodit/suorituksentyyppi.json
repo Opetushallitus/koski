@@ -1602,8 +1602,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_tuva-koulutuksen-suoritus",
-  "koodiArvo" : "tuva-koulutuksen-suoritus",
+  "koodiUri" : "suorituksentyyppi_tuvakoulutuksensuoritus",
+  "koodiArvo" : "tuvakoulutuksensuoritus",
   "metadata" : [ {
     "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
     "kieli" : "FI"

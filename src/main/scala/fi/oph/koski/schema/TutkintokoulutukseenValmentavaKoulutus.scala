@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation.{ComplexObject, FlattenInUI, KoodistoKoodiarvo, KoodistoUri, Tabular}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, MaxValue, MinItems, MinValue, OnlyWhen, Title}
 
@@ -48,8 +49,8 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
 case class TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   @KoodistoUri("suorituksentyyppi")
-  @KoodistoKoodiarvo("tuva-koulutuksen-suoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "tuva-koulutuksen-suoritus", koodistoUri = "suorituksentyyppi"),
+  @KoodistoKoodiarvo("tuvakoulutuksensuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "tuvakoulutuksensuoritus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutus,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla],
   @Description("Koulutuksen opetuskieli")
@@ -75,6 +76,12 @@ trait TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus extends Suoritus wi
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen osasuoritus")
 @Description("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen tiedot")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "101")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "102")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "103")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "perustaitojenvahvistaminen")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "lukiokoulutuksenopinnot")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "ammatillisenkoulutuksenopinnot")
 case class TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
   koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenMuuOsa,
   arviointi: Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = None,
@@ -87,14 +94,21 @@ case class TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
 
 trait TutkintokoulutukseenValmentavanKoulutuksenMuuOsa extends KoulutusmoduuliValinnainenLaajuus {
   def laajuus: Option[LaajuusViikoissa]
+
+  def nimi: LocalizedString
 }
 
 @Title("Opiskelu- ja urasuunnittelutaidot")
 @Description("Opiskelu- ja urasuunnittelutaidot")
 case class TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot(
+  override val nimi: LocalizedString = LocalizedString.unlocalized("Opiskelu- ja urasuunnittelutaidot"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("101")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "101", koodistoUri = "koulutuksenosattuva"),
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(
+    koodiarvo = "101",
+    koodistoUri = "koulutuksenosattuva",
+    nimi = Some(LocalizedString.unlocalized("Opiskelu- ja urasuunnittelutaidot"))
+  ),
   @DefaultValue(None)
   @MinValue(2)
   @MaxValue(10)
@@ -104,9 +118,14 @@ case class TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot(
 @Title("Perustaitojen vahvistaminen")
 @Description("Perustaitojen vahvistaminen")
 case class TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
+  override val nimi: LocalizedString = LocalizedString.unlocalized("Perustaitojen vahvistaminen"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("perustaitojenvahvistaminen")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perustaitojenvahvistaminen", koodistoUri = "koulutuksenosattuva"),
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(
+    koodiarvo = "perustaitojenvahvistaminen",
+    koodistoUri = "koulutuksenosattuva",
+    nimi = Some(LocalizedString.unlocalized("Perustaitojen vahvistaminen"))
+  ),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(30)
@@ -116,9 +135,14 @@ case class TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
 @Title("Lukiokoulutuksen opinnot ja niihin valmentautuminen")
 @Description("Lukiokoulutuksen opinnot ja niihin valmentautuminen")
 case class TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot(
+  override val nimi: LocalizedString = LocalizedString.unlocalized("Lukiokoulutuksen opinnot ja niihin valmentautuminen"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("lukiokoulutuksenopinnot")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukiokoulutuksenopinnot", koodistoUri = "koulutuksenosattuva"),
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(
+    koodiarvo = "lukiokoulutuksenopinnot",
+    koodistoUri = "koulutuksenosattuva",
+    nimi = Some(LocalizedString.unlocalized("Lukiokoulutuksen opinnot ja niihin valmentautuminen"))
+  ),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(30)
@@ -128,9 +152,14 @@ case class TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot(
 @Title("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen")
 @Description("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen")
 case class TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot(
+  override val nimi: LocalizedString = LocalizedString.unlocalized("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("ammatillisenkoulutuksenopinnot")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ammatillisenkoulutuksenopinnot", koodistoUri = "koulutuksenosattuva"),
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(
+    koodiarvo = "ammatillisenkoulutuksenopinnot",
+    koodistoUri = "koulutuksenosattuva",
+    nimi = Some(LocalizedString.unlocalized("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"))
+  ),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(30)
@@ -140,9 +169,14 @@ case class TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot(
 @Title("Työelämätaidot ja työpaikalla tapahtuva oppiminen")
 @Description("Työelämätaidot ja työpaikalla tapahtuva oppiminen")
 case class TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(
+  override val nimi: LocalizedString = LocalizedString.unlocalized("Työelämätaidot ja työpaikalla tapahtuva oppiminen"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("102")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "102", koodistoUri = "koulutuksenosattuva"),
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(
+    koodiarvo = "102",
+    koodistoUri = "koulutuksenosattuva",
+    nimi = Some(LocalizedString.unlocalized("Työelämätaidot ja työpaikalla tapahtuva oppiminen"))
+  ),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(20)
@@ -152,9 +186,14 @@ case class TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtu
 @Title("Arjen ja yhteiskunnallisen osallisuuden taidot")
 @Description("Arjen ja yhteiskunnallisen osallisuuden taidot")
 case class TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot(
+  override val nimi: LocalizedString = LocalizedString.unlocalized("Arjen ja yhteiskunnallisen osallisuuden taidot"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("103")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "103", koodistoUri = "koulutuksenosattuva"),
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(
+    koodiarvo = "103",
+    koodistoUri = "koulutuksenosattuva",
+    nimi = Some(LocalizedString.unlocalized("Arjen ja yhteiskunnallisen osallisuuden taidot"))
+  ),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(20)
@@ -182,9 +221,14 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(
 @Title("Valinnaiset koulutuksen osat")
 @Description("Valinnaiset koulutuksen osat")
 case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
+  override val nimi: LocalizedString = LocalizedString.unlocalized("Valinnaiset koulutuksen osat"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("104")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "104", koodistoUri = "koulutuksenosattuva"),
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(
+    koodiarvo = "104",
+    koodistoUri = "koulutuksenosattuva",
+    nimi = Some(LocalizedString.unlocalized("Valinnaiset koulutuksen osat"))
+  ),
   @DefaultValue(None)
   @MinValue(1)
   @MaxValue(10)

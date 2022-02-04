@@ -1,13 +1,13 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOppijat}
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 import java.time.LocalDate.{of => date}
 
 object ExamplesTutkintokoulutukseenValmentavaKoulutus {
@@ -95,14 +95,45 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
       tuvaOpiskeluOikeusjakso(date(2021, 12, 31), "valmistunut")
     )
   )
+  lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
+  lazy val lähdePrimus = Koodistokoodiviite("primus", Some("Primus"), "lahdejarjestelma", Some(1))
+  lazy val opiskeluoikeudenOrganisaatioHistoria = List(
+    OpiskeluoikeudenOrganisaatiohistoria(
+      muutospäivä = date(2021, 8, 1),
+      oppilaitos = Some(Oppilaitos(
+        oid = MockOrganisaatiot.stadinAmmattiopisto,
+        nimi = Some(Finnish(fi = "Stadin ammatti- ja aikuisopisto"))
+      )),
+      koulutustoimija = Some(Koulutustoimija(
+        oid = MockOrganisaatiot.helsinginKaupunki,
+        nimi = Some(Finnish(fi = "Helsingin kaupunki"))
+      ))
+    )
+  )
 
   lazy val tuvaOpiskeluOikeusValmistunut = TutkintokoulutukseenValmentavanOpiskeluoikeus(
+    lähdejärjestelmänId = None,
     oppilaitos = Some(stadinAmmattiopisto),
+    koulutustoimija = Some(
+      Koulutustoimija(
+        oid = MockOrganisaatiot.helsinginKaupunki,
+        nimi = Some(Finnish(fi = "Helsingin kaupunki"))
+      )
+    ),
     tila = tuvaTila,
     järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa"),
     lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
-
+      maksuttomuus = Some(
+        List(
+          Maksuttomuus(
+            alku = date(2021, 8, 1),
+            loppu = None,
+            maksuton = true
+          )
+        )
+      )
     )),
+    organisaatiohistoria = Some(opiskeluoikeudenOrganisaatioHistoria),
     suoritukset = List(
       TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
         toimipiste = stadinAmmattiopisto,
