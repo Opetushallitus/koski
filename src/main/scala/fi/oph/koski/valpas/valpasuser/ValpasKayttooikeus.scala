@@ -13,4 +13,5 @@ object ValpasRooli {
   val OPPILAITOS_MAKSUTTOMUUS = "OPPILAITOS_MAKSUTTOMUUS"
   val KUNTA = "KUNTA"
   val KELA = "KELA"
+  val YTL = "YTL"
 }

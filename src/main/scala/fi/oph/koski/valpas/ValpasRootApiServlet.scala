@@ -88,6 +88,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     val query = params("query")
     renderEither(
       oppijaSearchService.findHenkilöMaksuttomuus(query)
+        .map(_.cleanUpForUserSearch)
         .tap(auditLogHenkilöHaku(query))
     )
   }
@@ -96,6 +97,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     val query = params("query")
     renderEither(
       oppijaSearchService.findHenkilöSuorittaminen(query)
+        .map(_.cleanUpForUserSearch)
         .tap(auditLogHenkilöHaku(query))
     )
   }
@@ -104,6 +106,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     val query = params("query")
     renderEither(
       oppijaSearchService.findHenkilöKunta(query)
+        .map(_.cleanUpForUserSearch)
         .tap(auditLogHenkilöHaku(query))
     )
   }

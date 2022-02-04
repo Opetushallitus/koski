@@ -35,6 +35,39 @@ object Oppivelvollisuustiedot {
     )
   }
 
+  def queryByOidsIncludeMissing(oids: Seq[String], db: RaportointiDatabase): Seq[OptionalOppivelvollisuustieto] = {
+    db.runDbSync(
+      sql"""
+        SELECT
+          r_henkilo.oppija_oid,
+          r_henkilo.hetu,
+          r_henkilo.etunimet,
+          r_henkilo.sukunimi,
+          oppivelvollisuustiedot.oppivelvollisuusvoimassaasti,
+          oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti
+        FROM r_henkilo
+        FULL JOIN oppivelvollisuustiedot ON r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid
+        WHERE r_henkilo.oppija_oid = any($oids)
+      """.as[OptionalOppivelvollisuustieto]
+    )
+  }
+
+  def queryByHetusIncludeMissing(hetus: Seq[String], db: RaportointiDatabase): Seq[OptionalOppivelvollisuustieto] =
+    db.runDbSync(
+      sql"""
+        SELECT
+        r_henkilo.oppija_oid,
+        r_henkilo.hetu,
+        r_henkilo.etunimet,
+        r_henkilo.sukunimi,
+        oppivelvollisuustiedot.oppivelvollisuusvoimassaasti,
+        oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti
+          FROM r_henkilo
+          FULL JOIN oppivelvollisuustiedot ON r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid
+          WHERE r_henkilo.hetu = any($hetus)
+      """.as[OptionalOppivelvollisuustieto]
+    )
+
   /*
     Voimassaolojen päättelyssä ei tällä hetkellä oteta ylioppilastutkinnon suoritusta ollenkaan huomioon, koska tekovaiheessa tähän dataan ei ollut pääsyä.
     Tämä kierretään sillä, että voimassaolot päättyvät aina syntymäajan mukaan.
@@ -247,6 +280,15 @@ object Oppivelvollisuustiedot {
     )
   )
 
+  implicit private val getOptionalOppivelvollisuustietoResult: GetResult[OptionalOppivelvollisuustieto] = GetResult(row =>
+    OptionalOppivelvollisuustieto(
+      oid = row.rs.getString("oppija_oid"),
+      hetu = Option(row.rs.getString("hetu")),
+      oppivelvollisuusVoimassaAsti = Option(row.getLocalDate("oppivelvollisuusVoimassaAsti")),
+      oikeusMaksuttomaanKoulutukseenVoimassaAsti = Option(row.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti")),
+    )
+  )
+
   private def validatedUnboundCodeList(list: Seq[String]): String = {
     assert(list.forall(_.forall(Character.isDigit)), "Annettu kuntakoodilista sisälsi ei-numeerisia merkkejä")
     val listString = list
@@ -260,4 +302,11 @@ case class Oppivelvollisuustieto(
   oid: String,
   oppivelvollisuusVoimassaAsti: LocalDate,
   oikeusMaksuttomaanKoulutukseenVoimassaAsti: LocalDate
+)
+
+case class OptionalOppivelvollisuustieto(
+  oid: String,
+  hetu: Option[String],
+  oppivelvollisuusVoimassaAsti: Option[LocalDate],
+  oikeusMaksuttomaanKoulutukseenVoimassaAsti: Option[LocalDate]
 )

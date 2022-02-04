@@ -568,3 +568,41 @@ tapahtuneen annetun ajanhetken jälkeen.
 
 Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 <a href="/koski/json-schema-viewer/?schema=ytl-oppija-schema.json">täällä</a>.
+
+## /koski/valpas/api/luovutuspalvelus/ytl/oppijat
+
+Tällä kutsulla haetaan usean (enintään 1000 kpl) henkilön tiedot henkilötunnusten tai
+oppija-oidien perusteella.
+
+### Esimerkkipyyntö
+
+    POST /koski/api/luovutuspalvelu/ytl/oppijat HTTP/1.1
+    Content-Type: application/json
+
+    {
+      "hetut": ["180859-914S", "020654-9025", "010326-953H"],
+      "oidit": ["1.2.246.562.24.82405337123", "1.2.246.562.24.82405337995"]
+    }
+
+### Esimerkkivastaus
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    [
+      {
+        "oppijaOid": "1.2.246.562.24.00000000001",
+        "hetu": "040705A994K",
+        "oikeusMaksuttomaanKoulutukseenVoimassaAsti": "2025-12-31",
+        "maksuttomuudenPiirissä": true
+      },
+      ...
+    ]
+
+Palautettavan JSON-rakenteen tietomallin dokumentaatio on
+<a href="/koski/json-schema-viewer/?schema=ytl-valpas-oppija-schema.json">täällä</a>.
+
+Jos rajapinta ei palauta vastaavan oppijan tietoja, oppijan tietoja ei löydy Valppaasta, eikä oikeutta koulutuksen maksuttomuuteen voida
+sen myötä päätellä Valppaan tietojen perusteella.
+
+Hetu palautetaan vain oppijoille, jotka on haettu hetun avulla.

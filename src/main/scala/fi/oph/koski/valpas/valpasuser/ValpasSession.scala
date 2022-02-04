@@ -30,7 +30,9 @@ class ValpasSession(
     requiredRoles.subsetOf(käyttäjänGlobaalitValpasOikeudet)
   }
 
-  def hasKelaAccess: Boolean = !globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("VALPAS", ValpasRooli.KELA))).isEmpty
+  def hasKelaAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("VALPAS", ValpasRooli.KELA))).nonEmpty
+
+  def hasYtlAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("VALPAS", ValpasRooli.YTL))).nonEmpty
 
   protected def kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
 

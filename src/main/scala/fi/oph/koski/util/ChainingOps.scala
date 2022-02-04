@@ -1,5 +1,6 @@
 package fi.oph.koski.util
 
+import java.time.LocalDate
 import scala.language.implicitConversions
 
 
@@ -11,6 +12,8 @@ object ChainingSyntax {
   implicit final def eitherChainingOps[S, T](e: Either[S, T]): EitherChainingOps[S, T] = new EitherChainingOps(e)
 
   implicit final def stringOps(s: String): StringChainingOps = new StringChainingOps(s)
+
+  implicit final def localDateOps(d: LocalDate): LocalDateChainingOps = new LocalDateChainingOps(d)
 }
 
 final class ChainingOps[A](private val self: A) extends AnyVal {
@@ -42,4 +45,9 @@ final class StringChainingOps(private val self: String) extends AnyVal {
       })
       .map(_.mkString(" "))
       .mkString("\n")
+}
+
+final class LocalDateChainingOps(private val self: LocalDate) extends AnyVal {
+  def isEqualOrAfter(d: LocalDate): Boolean = !self.isBefore(d)
+  def isEqualOrBefore(d: LocalDate): Boolean = !self.isAfter(d)
 }
