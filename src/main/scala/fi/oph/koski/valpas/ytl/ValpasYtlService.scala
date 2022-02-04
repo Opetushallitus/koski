@@ -1,14 +1,10 @@
 package fi.oph.koski.valpas.ytl
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.oppivelvollisuustieto.{Oppivelvollisuustiedot, OptionalOppivelvollisuustieto}
-import fi.oph.koski.util.ChainingSyntax._
+import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
+import fi.oph.koski.valpas.ValpasHenkilöhakuResult
 import fi.oph.koski.valpas.valpasuser.ValpasSession
-import fi.oph.koski.valpas.{ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult, ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
-
-import java.time.LocalDate
 
 class ValpasYtlService(application: KoskiApplication) {
   private val raportointiDb = application.raportointiDatabase
@@ -61,48 +57,3 @@ class ValpasYtlService(application: KoskiApplication) {
   }
 }
 
-case class YtlMaksuttomuustieto(
-  oppijaOid: String,
-  hetu: Option[String] = None,
-  oikeusMaksuttomaanKoulutukseenVoimassaAsti: Option[LocalDate] = None,
-  maksuttomuudenPiirissä: Option[Boolean] = None,
-) {
-  def withoutHetu: YtlMaksuttomuustieto = this.copy(hetu = None)
-}
-
-object YtlMaksuttomuustieto {
-  def apply(tarkastelupäivä: LocalDate)(tiedot: OptionalOppivelvollisuustieto): YtlMaksuttomuustieto = YtlMaksuttomuustieto(
-    oppijaOid = tiedot.oid,
-    hetu = tiedot.hetu,
-    oikeusMaksuttomaanKoulutukseenVoimassaAsti = tiedot.oikeusMaksuttomaanKoulutukseenVoimassaAsti,
-    maksuttomuudenPiirissä = tiedot.oikeusMaksuttomaanKoulutukseenVoimassaAsti
-      .map(_.isEqualOrAfter(tarkastelupäivä))
-      .orElse(Some(false)),
-  )
-
-  def apply(tiedot: ValpasHenkilöhakuResult): Option[YtlMaksuttomuustieto] =
-    tiedot match {
-      case r: ValpasLöytyiHenkilöhakuResult => Some(YtlMaksuttomuustieto(
-        oppijaOid = r.oid,
-        hetu = r.hetu,
-        oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
-        maksuttomuudenPiirissä = None,
-      ))
-      case r: ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult => r.oid.map(oid => YtlMaksuttomuustieto(
-        oppijaOid = oid,
-        hetu = r.hetu,
-        oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
-        maksuttomuudenPiirissä = Some(false),
-      ))
-      case _ => None
-    }
-
-  def apply(tiedot: LaajatOppijaHenkilöTiedot): YtlMaksuttomuustieto = YtlMaksuttomuustieto(
-    oppijaOid = tiedot.oid,
-    hetu = tiedot.hetu,
-    oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
-    maksuttomuudenPiirissä = Some(false),
-  )
-
-  def oidOrder: Ordering[YtlMaksuttomuustieto] = Ordering.by((t: YtlMaksuttomuustieto) => t.oppijaOid)
-}
