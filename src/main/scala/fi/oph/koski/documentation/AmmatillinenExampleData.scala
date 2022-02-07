@@ -150,6 +150,8 @@ object AmmatillinenExampleData {
   lazy val kiipulasäätiö: Koulutustoimija = Koulutustoimija(MockOrganisaatiot.kiipulasäätiö, Some("Kiipulasäätiö sr"))
   lazy val kiipulanAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.kiipulanAmmattiopisto)
   lazy val kiipulanAmmattiopistoNokianToimipaikka: Toimipiste = Toimipiste(MockOrganisaatiot.kiipulanAmmattiopistoNokianToimipaikka, Some("Kiipulan ammattiopiston Nokian toimipaikka"))
+  lazy val länsirannikonKoulutusOy = Koulutustoimija(MockOrganisaatiot.länsirannikonKoulutusOy, Some("Länsirannikon koulutus Oy"), Some("2245018-4"), Some(jyväskylä))
+  lazy val autokorjaamoOy: Yritys = Yritys("Autokorjaamo Oy", "1234567-8")
 
   lazy val stadinToimipiste: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste, Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val stadinOppisopimuskeskus: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinOppisopimuskeskus, Some("Stadin oppisopimuskeskus"))
@@ -367,6 +369,20 @@ object AmmatillinenExampleData {
       )
     )
   )
+
+  def perustutkintoOpiskeluoikeusValmisVahvistettuKoulutustoimijalla(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) =
+    perustutkintoOpiskeluoikeusValmis(oppilaitos, toimipiste).copy(
+      suoritukset = List(ympäristöalanPerustutkintoValmis(toimipiste).copy(
+        vahvistus = vahvistus(date(2016, 5, 31), länsirannikonKoulutusOy, Some(helsinki))
+      )),
+    )
+
+  def perustutkintoOpiskeluoikeusValmisVahvistettuYrityksessä(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) =
+    perustutkintoOpiskeluoikeusValmis(oppilaitos, toimipiste).copy(
+      suoritukset = List(ympäristöalanPerustutkintoValmis(toimipiste).copy(
+        vahvistus = vahvistus(date(2016, 5, 31), autokorjaamoOy, Some(helsinki))
+      ))
+    )
 
   def perustutkintoOpiskeluoikeusKesken(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),

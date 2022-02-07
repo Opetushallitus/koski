@@ -295,6 +295,7 @@ case class InternationalSchoolLuokkaAste(
 trait Organisaatio
 
 trait OrganisaatioWithOid extends Organisaatio {
+  @Discriminator
   def oid: String
   def nimi: Option[schema.LocalizedString]
   @KoodistoUri("kunta")

@@ -2,7 +2,7 @@ package fi.oph.koski.ytl
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.documentation.ExamplesLukio2019
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesLukio2019}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -38,6 +38,37 @@ class YtlSpec
         response(0).opiskeluoikeudet.length should equal(1)
 
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+      }
+    }
+
+    "Koulutustoimijalla ja yrityksessä vahvistetut suoritukset toimivat" in {
+      resetFixtures()
+
+      val oppija1 = KoskiSpecificMockOppijat.oikeusOpiskelunMaksuttomuuteen
+      val oppija2 = KoskiSpecificMockOppijat.oppivelvollisuustietoMaster
+
+      val oidit = List(
+        oppija1.oid,
+        oppija2.oid
+      )
+
+      val uusiOo1 = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmisVahvistettuKoulutustoimijalla()
+      putOpiskeluoikeus(uusiOo1, oppija1, authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+
+      val uusiOo2 = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmisVahvistettuYrityksessä()
+      putOpiskeluoikeus(uusiOo1, oppija2, authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+
+      postOidit(oidit) {
+        verifyResponseStatusOk()
+        val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+        response.length should equal(2)
+        response(0).opiskeluoikeudet.length should equal(1)
+        response(1).opiskeluoikeudet.length should equal(1)
       }
     }
 
