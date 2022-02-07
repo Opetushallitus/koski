@@ -25,9 +25,9 @@ object ExampleData {
   val jyväskylä = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "179", nimi = Some("Jyväskylä"))
   val suomi = Koodistokoodiviite(koodistoUri = "maatjavaltiot2", koodiarvo = "246", nimi = Some("Suomi"))
   val ruotsi = Koodistokoodiviite(koodistoUri = "maatjavaltiot2", koodiarvo = "752", nimi = Some("Ruotsi"))
-  def vahvistus(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, paikkakunta: Option[Koodistokoodiviite] = None) =
+  def vahvistus(päivä: LocalDate = date(2016, 6, 4), org: Organisaatio = jyväskylänNormaalikoulu, paikkakunta: Option[Koodistokoodiviite] = None) =
     Some(HenkilövahvistusValinnaisellaPaikkakunnalla(päivä = päivä, myöntäjäOrganisaatio = org, paikkakunta = paikkakunta, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
-  def vahvistusPaikkakunnalla(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä) =
+  def vahvistusPaikkakunnalla(päivä: LocalDate = date(2016, 6, 4), org: Organisaatio = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä) =
     Some(HenkilövahvistusPaikkakunnalla(päivä = päivä, kunta, myöntäjäOrganisaatio = org, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
 
   lazy val laajuusOpintoviikoissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "1", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("opintoviikkoa")))
@@ -41,7 +41,7 @@ object ExampleData {
   lazy val valtionosuusRahoitteinen: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "opintojenrahoitus")
   lazy val muutaKauttaRahoitettu: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenrahoitus")
 
-  def vahvistusValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, titteli: Option[LocalizedString] = Some("rehtori")) =
+  def vahvistusValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: Organisaatio = jyväskylänNormaalikoulu, titteli: Option[LocalizedString] = Some("rehtori")) =
     Some(
       HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
         päivä = päivä,
@@ -50,7 +50,7 @@ object ExampleData {
       )
     )
 
-  def vahvistusPaikkakunnallaJaValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä,  titteli: Option[LocalizedString] = Some("rehtori")) =
+  def vahvistusPaikkakunnallaJaValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: Organisaatio = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä,  titteli: Option[LocalizedString] = Some("rehtori")) =
     Some(
       HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
         päivä = päivä,
