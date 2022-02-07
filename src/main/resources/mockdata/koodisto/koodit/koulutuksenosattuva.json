@@ -1,0 +1,148 @@
+[ {
+  "koodiUri" : "koulutuksenosattuva_101",
+  "koodiArvo" : "101",
+  "metadata" : [ {
+    "nimi" : "Opiskelu- ja urasuunnittelutaidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Opiskelu- ja urasuunnittelutaidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Opiskelu- ja urasuunnittelutaidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutuksenosattuva_perustaitojenvahvistaminen",
+  "koodiArvo" : "perustaitojenvahvistaminen",
+  "metadata" : [ {
+    "nimi" : "Perustaitojen vahvistaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Perustaitojen vahvistaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perustaitojen vahvistaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutuksenosattuva_ammatillisenkoulutuksenopinnot",
+  "koodiArvo" : "ammatillisenkoulutuksenopinnot",
+  "metadata" : [ {
+    "nimi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutuksenosattuva_lukiokoulutuksenopinnot",
+  "koodiArvo" : "lukiokoulutuksenopinnot",
+  "metadata" : [ {
+    "nimi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutuksenosattuva_102",
+  "koodiArvo" : "102",
+  "metadata" : [ {
+    "nimi" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutuksenosattuva_103",
+  "koodiArvo" : "103",
+  "metadata" : [ {
+    "nimi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutuksenosattuva_104",
+  "koodiArvo" : "104",
+  "metadata" : [ {
+    "nimi" : "Valinnaiset koulutuksen osat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Valinnaiset koulutuksen osat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Valinnaiset koulutuksen osat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

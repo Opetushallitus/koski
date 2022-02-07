@@ -1583,5 +1583,21 @@
   "deprecated:Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'" : "Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'",
   "Oppimäärä suoritettu" : "Oppimäärä suoritettu",
   "description:Tieto siitä, onko lukion oppimäärän..." : "Tieto siitä, onko lukion oppimäärän suorittamiseen vaadittavat opinnot suoritettu. Jos lukion oppimäärän suoritus on vahvistettu, lukion oppimäärän suorittamiseen vaadittavat opinnot tulkitaan automaattisesti suoritetuksi, jolloin tähän kenttään tallennetaan automaattisesti arvo 'true'.",
-  "deprecated:Kenttä ei ole käytössä" : "Kenttä ei ole käytössä"
+  "deprecated:Kenttä ei ole käytössä" : "Kenttä ei ole käytössä",
+  "description:Opiskelu- ja urasuunnittelutaidot" : "Opiskelu- ja urasuunnittelutaidot",
+  "description:Tutkintokoulutukseen valmistavan koulutuksen (TUVA) opiskeluoikeus" : "Tutkintokoulutukseen valmistavan koulutuksen (TUVA) opiskeluoikeus",
+  "description:Tutkintokoulutukseen valmentavan valinnaisen opintojakson paikallinen..." : "Tutkintokoulutukseen valmentavan valinnaisen opintojakson paikallinen osasuoritus, jolla on laajuus viikkoina sekä arvosana.",
+  "description:Ammatillisen koulutuksen opinnot ja niihin..." : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+  "description:Perustaitojen vahvistaminen" : "Perustaitojen vahvistaminen",
+  "description:Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen hyväksytty/hylätty..." : "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen hyväksytty/hylätty arviointi",
+  "description:Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen tiedot" : "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen tiedot",
+  "description:Tutkintokoulutukseen valmistavan koulutuksen tunnistetiedot" : "Tutkintokoulutukseen valmistavan koulutuksen tunnistetiedot",
+  "description:Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen arviointi..." : "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen arviointi numeerisella arvosanalla",
+  "description:Työelämätaidot ja työpaikalla tapahtuva oppiminen" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
+  "description:Lukiokoulutuksen opinnot ja niihin valmentautuminen" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+  "description:Valinnaisen koulutusosan osasuorituksen paikallinen opintojakso." : "Valinnaisen koulutusosan osasuorituksen paikallinen opintojakso.",
+  "description:Arjen ja yhteiskunnallisen osallisuuden taidot" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
+  "description:Valinnaiset koulutuksen osat" : "Valinnaiset koulutuksen osat",
+  "description:Tutkintokoulutukseen valmentavan koulutuksen valinnaisten opintojen..." : "Tutkintokoulutukseen valmentavan koulutuksen valinnaisten opintojen osasuoritukset",
+  "Järjestämislupa" : "Järjestämislupa"
 }

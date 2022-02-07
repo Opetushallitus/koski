@@ -1,0 +1,25 @@
+[ {
+  "koodiUri" : "tuvajarjestamislupa_ammatillinen",
+  "koodiArvo" : "ammatillinen",
+  "metadata" : [ {
+    "nimi" : "Ammatillinen TUVA-järjestämislupa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tuvajarjestamislupa_lukio",
+  "koodiArvo" : "lukio",
+  "metadata" : [ {
+    "nimi" : "Lukion TUVA-järjestämislupa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+},{
+  "koodiUri" : "tuvajarjestamislupa_perusopetus",
+  "koodiArvo" : "perusopetus",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen TUVA-järjestämislupa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

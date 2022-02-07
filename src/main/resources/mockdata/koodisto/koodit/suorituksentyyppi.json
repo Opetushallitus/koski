@@ -1601,5 +1601,20 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuvakoulutuksensuoritus",
+  "koodiArvo" : "tuvakoulutuksensuoritus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }
 ]

@@ -45,6 +45,7 @@ object Koodistot {
     KoodistoAsetus("koskioppiaineetyleissivistava"),
     KoodistoAsetus("koskiyoarvosanat", vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("koskiyokokeet"),
+    KoodistoAsetus("koulutuksenosattuva"),
     KoodistoAsetus("lahdejarjestelma", vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("lasnaolotila"),
     KoodistoAsetus("lukioonvalmistavankoulutuksenkurssit2015"),
@@ -72,6 +73,7 @@ object Koodistot {
     KoodistoAsetus("perusopetuksensuoritustapa"),
     KoodistoAsetus("perusopetuksentoimintaalue"),
     KoodistoAsetus("perusopetuksentukimuoto"),
+    KoodistoAsetus("suorituksentyyppituva"),
     KoodistoAsetus("suorituksentyyppi"),
     KoodistoAsetus("tutkinnonosatvalinnanmahdollisuus"),
     KoodistoAsetus("uskonnonoppimaara"),
@@ -83,6 +85,7 @@ object Koodistot {
     KoodistoAsetus("valpasopiskeluoikeudentila"),
     KoodistoAsetus("valpashaunvalintatila"),
     KoodistoAsetus("valpasvastaanottotieto"),
+    KoodistoAsetus("tuvajarjestamislupa"),
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.koodisto)
 

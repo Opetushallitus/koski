@@ -222,4 +222,20 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+} , {
+  "koodiUri" : "opiskeluoikeudentyyppi_tuva",
+  "koodiArvo" : "tuva",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutus",
+    "lyhytNimi" : "Tutkintokoulutukseen valmentava koulutus",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning som handleder för examensutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

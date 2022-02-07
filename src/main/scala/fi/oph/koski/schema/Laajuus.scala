@@ -60,3 +60,9 @@ case class LaajuusOsaamispisteissä(
   @KoodistoKoodiarvo("6")
   yksikkö: Koodistokoodiviite = laajuusOsaamispisteissä
 ) extends Laajuus
+
+case class LaajuusViikoissa(
+  arvo: Double,
+  @KoodistoKoodiarvo("8")
+  yksikkö: Koodistokoodiviite = laajuusViikoissa
+) extends Laajuus

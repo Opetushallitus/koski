@@ -147,6 +147,7 @@ object KoskiSpecificMockOppijat {
   val vuonna2004SyntynytMuttaEronnutPeruskoulustaEnnen2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulusta eronnut ennen 2021", "100504A476V", syntymäaika = Some(LocalDate.of(2004, 5, 10)), kotikunta = Some("091"))
   val opiskeleeAmmatillisessaErityisoppilaitoksessa = koskiSpecificOppijat.oppija("Erityisoppilaitoksessa", "Emppu", "210205A835C", syntymäaika = Some(LocalDate.of(2005, 2, 21)), kotikunta = Some("091"))
   val opiskeleeAmmatillisessaErityisoppilaitoksessaOrganisaatioHistoriallinen = koskiSpecificOppijat.oppija("Erityisoppilaitoksessa", "Emppu Historia", "210905A671R", syntymäaika = Some(LocalDate.of(2005, 9, 5)), kotikunta = Some("091"))
+  val tuva = koskiSpecificOppijat.oppija(suku = "Vaara", etu = "Turo", hetu = "270504A317P", syntymäaika = Some(LocalDate.of(2004, 5, 27)))
 
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen

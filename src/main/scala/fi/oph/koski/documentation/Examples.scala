@@ -8,7 +8,7 @@ object Examples {
     ExamplesPerusopetuksenLisaopetus.examples ++ ExamplesLukioonValmistavaKoulutus.examples ++
     ExamplesLukio.examples ++ ExamplesLukio2019.examples ++ ExamplesYlioppilastutkinto.examples ++
     ExamplesKorkeakoulu.examples ++ ExamplesTiedonsiirto.examples ++ ExamplesIB.examples ++ ExamplesDIA.examples ++ ExamplesInternationalSchool.examples ++
-    ExamplesVapaaSivistystyö.examples
+    ExamplesVapaaSivistystyö.examples ++ ExamplesTutkintokoulutukseenValmentavaKoulutus.examples
 
   val allExamples = examples
 }
