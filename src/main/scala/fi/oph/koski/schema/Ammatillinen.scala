@@ -1278,7 +1278,7 @@ case class ValmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
   @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
   koulutusmoduuli: ValmaKoulutuksenOsa,
-  arviointi: Option[List[AmmatillinenArviointi]],
+  arviointi: Option[List[TelmaJaValmaArviointi]],
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -1365,7 +1365,7 @@ case class TelmaKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
   @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) osan tunnistetiedot")
   koulutusmoduuli: TelmaKoulutuksenOsa,
-  arviointi: Option[List[AmmatillinenArviointi]],
+  arviointi: Option[List[TelmaJaValmaArviointi]],
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -1437,6 +1437,16 @@ trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArvi
 }
 
 case class AmmatillinenArviointi(
+  arvosana: Koodistokoodiviite,
+  päivä: LocalDate,
+  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
+  arvioitsijat: Option[List[Arvioitsija]] = None,
+  @Hidden
+  kuvaus: Option[LocalizedString] = None
+) extends AmmatillinenKoodistostaLöytyväArviointi
+  with SanallinenArviointi
+
+case class TelmaJaValmaArviointi(
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
   @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
