@@ -33,103 +33,113 @@ class YtlService(application: KoskiApplication) extends Logging with Timing {
     hetut: Seq[String],
     opiskeluoikeuksiaMuuttunutJälkeen: Option[Instant]
   )(implicit user: KoskiSpecificSession): Observable[JValue] = {
-    val pyydetytHenkilöt: Seq[OppijaHenkilö] =
-      application.opintopolkuHenkilöFacade.findOppijatNoSlaveOids(oidit) ++
-        application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut)
+    timed("streamOppijat", 1) {
 
-    val oppijaOidToPyydettyHenkilö: Map[Henkilö.Oid, OppijaHenkilö] = pyydetytHenkilöt.map(h => h.oid -> h).toMap
+      val pyydetytHenkilöt: Seq[OppijaHenkilö] =
+        timed("findOppijat", 0) {
+          application.opintopolkuHenkilöFacade.findOppijatNoSlaveOids(oidit) ++
+            application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut)
+        }
 
-    val pyydetytOppijaOidit: List[Henkilö.Oid] = oppijaOidToPyydettyHenkilö.keys.toList
+      val oppijaOidToPyydettyHenkilö: Map[Henkilö.Oid, OppijaHenkilö] = pyydetytHenkilöt.map(h => h.oid -> h).toMap
 
-    // Haku pitää tehdä master-oppijoiden kautta, jotta saadaan palautettua opiskeluoikeudet myös mahdollisilta
-    // sisaruksena olevilta linkitetyiltä oppijoilta.
-    val masterHenkilöt: Map[Henkilö.Oid, LaajatOppijaHenkilöTiedot] =
-    application.opintopolkuHenkilöFacade.findMasterOppijat(pyydetytOppijaOidit)
-    val masterOppijanLinkitetytOppijaOidit: Map[Henkilö.Oid, List[Henkilö.Oid]] = masterHenkilöt.collect {
-      case (_, hlö) =>
-        (hlö.oid, hlö.linkitetytOidit)
-    }
+      val pyydetytOppijaOidit: List[Henkilö.Oid] = oppijaOidToPyydettyHenkilö.keys.toList
 
-    val masterOppijoidenOidit: Seq[Henkilö.Oid] = masterHenkilöt.values.map(_.oid).toSeq
-
-    val haettavatOppijaOidit: Seq[Henkilö.Oid] =
-      masterOppijoidenOidit ++ application.henkilöCache.resolveLinkedOids(masterOppijoidenOidit)
-
-    val queryFilters = List(
-      opiskeluoikeudenTyyppiFilter,
-      OpiskeluoikeusQueryFilter.OppijaOidHaku(haettavatOppijaOidit)
-    )
-
-    def teePalautettavatYtlHenkilöt(tulosOppija: QueryOppijaHenkilö): Iterable[YtlHenkilö] = {
-      // Luo YTLHenkilöt oppijoista, joilla oppijaa on alunperin pyydetty. Lista opiskeluoikeuksia palautetaan jokaiselle
-      // niistä, jotta kutsuja saa oikean ja riittävän tiedon siitä, millä kutsujan antamilla oppija-oideilla
-      // opiskeluoikeuksia löytyi.
-
-      // Hieman epäloogisesti QueryOppijaHenkilö ei sisällä kaikkia oppijan linkitettyjä oideja, vaikka se
-      // sen nimisen kentän sisältääkin: tietokantahausta tulee paluuarvona ainoastaan KOSKI-tietokannasta löytyviä
-      // oppijaOideja. Siksi linkitetyt oidit pitää hakea erikseen.
-      val etsittävätHenkilöOidit =
-      Seq(tulosOppija.oid) ++ masterOppijanLinkitetytOppijaOidit(tulosOppija.oid)
-
-      val pyynnössäEsiintyneetOppijaHenkilöt =
-        oppijaOidToPyydettyHenkilö.collect { case (oid, hlö) if etsittävätHenkilöOidit.contains(oid) => hlö }
-
-      pyynnössäEsiintyneetOppijaHenkilöt.map(hlö => {
-        val pääoppijaOid = Some(tulosOppija.oid)
-
-        YtlHenkilö(
-          hlö = hlö,
-          pääoppijaOid = pääoppijaOid,
-          äidinkieli = hlö.äidinkieli.flatMap(k => application.koodistoViitePalvelu.validate("kieli", k.toUpperCase))
-        )
-      })
-    }
-
-    def teePalautettavatYtlOppijat(oppijaHenkilö: QueryOppijaHenkilö, opiskeluoikeusRows: List[OpiskeluoikeusRow]) = {
-      val oppijaOnLinkitetty = masterOppijanLinkitetytOppijaOidit(oppijaHenkilö.oid).nonEmpty
-
-      lazy val haetaanIlmanAikaleimaaTaiOppijallaOnMuuttuneitaOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
-        .map(Timestamp.from)
-        .forall(opiskeluoikeuksiaMuuttunutJälkeen =>
-          opiskeluoikeusRows.exists(!_.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
-        )
-
-      lazy val haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
-        .map(Timestamp.from)
-        .exists(opiskeluoikeuksiaMuuttunutJälkeen =>
-          opiskeluoikeusRows.exists(oo => oo.mitätöity && !oo.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
-        )
-
-      lazy val opiskeluoikeudet =
-        opiskeluoikeusRows
-          .filterNot(_.mitätöity)
-          .map(toYtlOpiskeluoikeus)
-          .flatMap(siivoaOpiskeluoikeus)
-
-      if (oppijaOnLinkitetty || (
-        haetaanIlmanAikaleimaaTaiOppijallaOnMuuttuneitaOpiskeluoikeuksia &&
-          (opiskeluoikeudet.nonEmpty || haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia))
-      ) {
-        teePalautettavatYtlHenkilöt(oppijaHenkilö).map(ytlHenkilö =>
-          Some(YtlOppija(
-            henkilö = ytlHenkilö,
-            opiskeluoikeudet = opiskeluoikeudet
-          ))
-        )
-      } else {
-        Seq.empty
+      // Haku pitää tehdä master-oppijoiden kautta, jotta saadaan palautettua opiskeluoikeudet myös mahdollisilta
+      // sisaruksena olevilta linkitetyiltä oppijoilta.
+      val masterHenkilöt: Map[Henkilö.Oid, LaajatOppijaHenkilöTiedot] =
+        timed("findMasterOppijat", 0) {
+          application.opintopolkuHenkilöFacade.findMasterOppijat(pyydetytOppijaOidit)
+        }
+      val masterOppijanLinkitetytOppijaOidit: Map[Henkilö.Oid, List[Henkilö.Oid]] = masterHenkilöt.collect {
+        case (_, hlö) =>
+          (hlö.oid, hlö.linkitetytOidit)
       }
-    }
 
-    OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, queryFilters, None)
-      .map {
-        case (oppijaHenkilö: QueryOppijaHenkilö, opiskeluoikeusRows: List[OpiskeluoikeusRow]) =>
-          teePalautettavatYtlOppijat(oppijaHenkilö, opiskeluoikeusRows)
+      val masterOppijoidenOidit: Seq[Henkilö.Oid] = masterHenkilöt.values.map(_.oid).toSeq
+
+      val haettavatOppijaOidit: Seq[Henkilö.Oid] =
+        masterOppijoidenOidit ++
+          timed("resolveLinkedOids", 0) {
+            application.henkilöCache.resolveLinkedOids(masterOppijoidenOidit)
+          }
+
+      val queryFilters = List(
+        opiskeluoikeudenTyyppiFilter,
+        OpiskeluoikeusQueryFilter.OppijaOidHaku(haettavatOppijaOidit)
+      )
+
+      def teePalautettavatYtlHenkilöt(tulosOppija: QueryOppijaHenkilö): Iterable[YtlHenkilö] = {
+        // Luo YTLHenkilöt oppijoista, joilla oppijaa on alunperin pyydetty. Lista opiskeluoikeuksia palautetaan jokaiselle
+        // niistä, jotta kutsuja saa oikean ja riittävän tiedon siitä, millä kutsujan antamilla oppija-oideilla
+        // opiskeluoikeuksia löytyi.
+
+        // Hieman epäloogisesti QueryOppijaHenkilö ei sisällä kaikkia oppijan linkitettyjä oideja, vaikka se
+        // sen nimisen kentän sisältääkin: tietokantahausta tulee paluuarvona ainoastaan KOSKI-tietokannasta löytyviä
+        // oppijaOideja. Siksi linkitetyt oidit pitää hakea erikseen.
+        val etsittävätHenkilöOidit =
+        Seq(tulosOppija.oid) ++ masterOppijanLinkitetytOppijaOidit(tulosOppija.oid)
+
+        val pyynnössäEsiintyneetOppijaHenkilöt =
+          oppijaOidToPyydettyHenkilö.collect { case (oid, hlö) if etsittävätHenkilöOidit.contains(oid) => hlö }
+
+        pyynnössäEsiintyneetOppijaHenkilöt.map(hlö => {
+          val pääoppijaOid = Some(tulosOppija.oid)
+
+          YtlHenkilö(
+            hlö = hlö,
+            pääoppijaOid = pääoppijaOid,
+            äidinkieli = hlö.äidinkieli.flatMap(k => application.koodistoViitePalvelu.validate("kieli", k.toUpperCase))
+          )
+        })
       }
-      .flatMap(oppijat => Observable.from(oppijat))
-      .map(_.getOrElse(throw new InternalError("Internal error")))
-      .doOnEach(auditLogOpiskeluoikeusKatsominen(_)(user))
-      .map(JsonSerializer.serializeWithUser(user))
+
+      def teePalautettavatYtlOppijat(oppijaHenkilö: QueryOppijaHenkilö, opiskeluoikeusRows: List[OpiskeluoikeusRow]) = {
+        val oppijaOnLinkitetty = masterOppijanLinkitetytOppijaOidit(oppijaHenkilö.oid).nonEmpty
+
+        lazy val haetaanIlmanAikaleimaaTaiOppijallaOnMuuttuneitaOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
+          .map(Timestamp.from)
+          .forall(opiskeluoikeuksiaMuuttunutJälkeen =>
+            opiskeluoikeusRows.exists(!_.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
+          )
+
+        lazy val haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
+          .map(Timestamp.from)
+          .exists(opiskeluoikeuksiaMuuttunutJälkeen =>
+            opiskeluoikeusRows.exists(oo => oo.mitätöity && !oo.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
+          )
+
+        lazy val opiskeluoikeudet =
+          opiskeluoikeusRows
+            .filterNot(_.mitätöity)
+            .map(toYtlOpiskeluoikeus)
+            .flatMap(siivoaOpiskeluoikeus)
+
+        if (oppijaOnLinkitetty || (
+          haetaanIlmanAikaleimaaTaiOppijallaOnMuuttuneitaOpiskeluoikeuksia &&
+            (opiskeluoikeudet.nonEmpty || haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia))
+        ) {
+          teePalautettavatYtlHenkilöt(oppijaHenkilö).map(ytlHenkilö =>
+            Some(YtlOppija(
+              henkilö = ytlHenkilö,
+              opiskeluoikeudet = opiskeluoikeudet
+            ))
+          )
+        } else {
+          Seq.empty
+        }
+      }
+
+      OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, queryFilters, None)
+        .map {
+          case (oppijaHenkilö: QueryOppijaHenkilö, opiskeluoikeusRows: List[OpiskeluoikeusRow]) =>
+            teePalautettavatYtlOppijat(oppijaHenkilö, opiskeluoikeusRows)
+        }
+        .flatMap(oppijat => Observable.from(oppijat))
+        .map(_.getOrElse(throw new InternalError("Internal error")))
+        .doOnEach(auditLogOpiskeluoikeusKatsominen(_)(user))
+        .map(JsonSerializer.serializeWithUser(user))
+    }
   }
 
   private def toYtlOpiskeluoikeus(row: OpiskeluoikeusRow)(implicit user: SensitiveDataAllowed): YtlOpiskeluoikeus = {
