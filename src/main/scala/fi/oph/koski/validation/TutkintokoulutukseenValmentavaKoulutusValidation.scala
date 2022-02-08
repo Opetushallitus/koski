@@ -64,7 +64,7 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
       case t: TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot =>
         laajuusVälillä(min = 1, max = 20, t, tuvaArjenJaYhteiskunnallisenOsallisuudenTaidotVääräLaajuus())
       case t: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa =>
-        laajuusVälillä(min = 1, max = 10, t, tuvaPerustaitojenVahvistaminenVääräLaajuus())
+        laajuusVälillä(min = 1, max = 10, t, tuvaValinnaisenKoulutusosanVääräLaajuus())
       case _ => HttpStatus.ok
     }
 

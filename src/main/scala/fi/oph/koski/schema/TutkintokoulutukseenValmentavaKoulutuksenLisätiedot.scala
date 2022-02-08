@@ -6,6 +6,8 @@ import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
 trait TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
 
+@Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden ammatillisen koulutuksen järjestämisluvan lisätiedot")
+@Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden ammatillisen koulutuksen järjestämisluvan lisätiedot")
 case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
@@ -59,6 +61,8 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
   with VaikeastiVammainen
   with MaksuttomuusTieto
 
+@Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden lukiokoulutuksen järjestämisluvan lisätiedot")
+@Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden lukiokoulutuksen järjestämisluvan lisätiedot")
 case class TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
@@ -72,6 +76,8 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanL
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
 
+@Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan lisätiedot")
+@Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan lisätiedot")
 case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
@@ -107,6 +113,11 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLis
   @Tooltip("Tieto siitä, jos oppija on koulukotikorotuksen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[Aikajakso]] = None,
+  @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Mahdollisen pidennetyn oppivelvollisuuden alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
+  pidennettyOppivelvollisuus: Option[Aikajakso] = None,
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
   @DefaultValue(false)
   pidennettyPäättymispäivä: Boolean = false,
