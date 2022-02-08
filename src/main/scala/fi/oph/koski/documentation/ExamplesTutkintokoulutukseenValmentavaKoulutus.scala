@@ -7,12 +7,12 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 object ExamplesTutkintokoulutukseenValmentavaKoulutus {
 
-  def tuvaSanallinenArviointi(d: LocalDate): Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = Some(
+  def tuvaSanallinenArviointi(arviointiPäivä: Option[LocalDate]): Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = arviointiPäivä.map(d =>
     List(
       SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
         arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
@@ -39,9 +39,30 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
     tila = Koodistokoodiviite(koodistokoodiviite, "koskiopiskeluoikeudentila")
   )
 
+  def tuvaPäätasonSuoritus = TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
+    toimipiste = stadinAmmattiopisto,
+    koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutus(
+      laajuus = Some(LaajuusViikoissa(12))
+    ),
+    vahvistus = Some(
+      HenkilövahvistusValinnaisellaPaikkakunnalla(
+        päivä = date(2021, 12, 31),
+        paikkakunta = Some(
+          ExampleData.helsinki
+        ),
+        myöntäjäOrganisaatio = stadinAmmattiopisto,
+        myöntäjäHenkilöt = List(
+          Organisaatiohenkilö("Reijo Reksi", "rehtori", stadinAmmattiopisto)
+        )
+      )
+    ),
+    suorituskieli = suomenKieli,
+    osasuoritukset = None
+  )
+
   def tuvaKoulutuksenMuunOsanSuoritus(
     koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenMuuOsa,
-    arviointiPäivä: LocalDate,
+    arviointiPäivä: Option[LocalDate] = None,
     koodistoviite: String
   ) = TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
     koulutusmoduuli = koulutusmoduuli,
@@ -53,7 +74,7 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
 
   def tuvaKoulutuksenValinnaisenOsanSuoritus(
     laajuus: Double,
-    arviointiPäivä: LocalDate
+    arviointiPäivä: Option[LocalDate] = None
   ) = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(
     koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
       laajuus = Some(LaajuusViikoissa(laajuus))
@@ -135,54 +156,37 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
     )),
     organisaatiohistoria = Some(opiskeluoikeudenOrganisaatioHistoria),
     suoritukset = List(
-      TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
-        toimipiste = stadinAmmattiopisto,
-        koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutus(
-          laajuus = Some(LaajuusViikoissa(12))
-        ),
-        vahvistus = Some(
-          HenkilövahvistusValinnaisellaPaikkakunnalla(
-            päivä = date(2021, 12, 31),
-            paikkakunta = Some(
-              ExampleData.helsinki
-            ),
-            myöntäjäOrganisaatio = stadinAmmattiopisto,
-            myöntäjäHenkilöt = List(
-              Organisaatiohenkilö("Reijo Reksi", "rehtori", stadinAmmattiopisto)
-            )
-          )
-        ),
-        suorituskieli = suomenKieli,
+      tuvaPäätasonSuoritus.copy(
         osasuoritukset = Some(
           List(
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(2),
-              arviointiPäivä = date(2021, 9, 1),
+              arviointiPäivä = Some(date(2021, 9, 1)),
               koodistoviite = "tutkintokoulutukseenvalmentava"
             ),
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaPerustaitojenVahvistaminen(1),
-              arviointiPäivä = date(2021, 9, 1),
+              arviointiPäivä = Some(date(2021, 9, 1)),
               koodistoviite = "perusopetus"
             ),
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaAmmatillisenKoulutuksenOpinnot(1),
-              arviointiPäivä = date(2021, 10, 1),
+              arviointiPäivä = Some(date(2021, 10, 1)),
               koodistoviite = "ammatillinenkoulutus"
             ),
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(1),
-              arviointiPäivä = date(2021, 10, 1),
+              arviointiPäivä = Some(date(2021, 10, 1)),
               koodistoviite = "tutkintokoulutukseenvalmentava"
             ),
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(1),
-              arviointiPäivä = date(2021, 11, 1),
+              arviointiPäivä = Some(date(2021, 11, 1)),
               koodistoviite = "tutkintokoulutukseenvalmentava"
             ),
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaLukiokoulutuksenOpinnot(1),
-              arviointiPäivä = date(2021, 11, 1),
+              arviointiPäivä = Some(date(2021, 11, 1)),
               koodistoviite = "lukiokoulutus"
             ).copy(
               tunnustettu = Some(
@@ -198,7 +202,7 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
             ),
             tuvaKoulutuksenValinnaisenOsanSuoritus(
               laajuus = 5,
-              arviointiPäivä = date(2021, 12, 1)
+              arviointiPäivä = Some(date(2021, 12, 1))
             ).copy(
               osasuoritukset = Some(
                 List(
@@ -235,9 +239,11 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
     )
   )
 
+  val tuvaHenkilö = MockOppijat.asUusiOppija(KoskiSpecificMockOppijat.tuva)
+
   lazy val tuvaOppijaValmistunut = Oppija(
-    MockOppijat.asUusiOppija(KoskiSpecificMockOppijat.tuva),
-    List(
+    henkilö = tuvaHenkilö,
+    opiskeluoikeudet = List(
       tuvaOpiskeluOikeusValmistunut
     )
   )

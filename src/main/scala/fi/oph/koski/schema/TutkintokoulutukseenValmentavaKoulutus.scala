@@ -1,8 +1,7 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.schema.LocalizedString.unlocalized
-import fi.oph.koski.schema.annotation.{ComplexObject, FlattenInUI, KoodistoKoodiarvo, KoodistoUri, Tabular}
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, MaxValue, MinItems, MinValue, OnlyWhen, Title}
+import fi.oph.koski.schema.annotation._
+import fi.oph.scalaschema.annotation._
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -60,7 +59,8 @@ case class TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with Suoritus
+) extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus
+  with Arvioinniton with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with Suoritus
 
 @Description("Tutkintokoulutukseen valmistavan koulutuksen tunnistetiedot")
 case class TutkintokoulutukseenValmentavanKoulutus(
@@ -110,8 +110,6 @@ case class TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot(
     nimi = Some(LocalizedString.unlocalized("Opiskelu- ja urasuunnittelutaidot"))
   ),
   @DefaultValue(None)
-  @MinValue(2)
-  @MaxValue(10)
   laajuus: Option[LaajuusViikoissa] = None
 ) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
 
@@ -127,8 +125,6 @@ case class TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
     nimi = Some(LocalizedString.unlocalized("Perustaitojen vahvistaminen"))
   ),
   @DefaultValue(None)
-  @MinValue(1)
-  @MaxValue(30)
   laajuus: Option[LaajuusViikoissa] = None
 ) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
 
@@ -144,8 +140,6 @@ case class TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot(
     nimi = Some(LocalizedString.unlocalized("Lukiokoulutuksen opinnot ja niihin valmentautuminen"))
   ),
   @DefaultValue(None)
-  @MinValue(1)
-  @MaxValue(30)
   laajuus: Option[LaajuusViikoissa] = None
 ) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
 
@@ -161,8 +155,6 @@ case class TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot(
     nimi = Some(LocalizedString.unlocalized("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"))
   ),
   @DefaultValue(None)
-  @MinValue(1)
-  @MaxValue(30)
   laajuus: Option[LaajuusViikoissa] = None
 ) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
 
@@ -178,8 +170,6 @@ case class TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtu
     nimi = Some(LocalizedString.unlocalized("Työelämätaidot ja työpaikalla tapahtuva oppiminen"))
   ),
   @DefaultValue(None)
-  @MinValue(1)
-  @MaxValue(20)
   laajuus: Option[LaajuusViikoissa] = None
 ) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
 
@@ -195,8 +185,6 @@ case class TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTa
     nimi = Some(LocalizedString.unlocalized("Arjen ja yhteiskunnallisen osallisuuden taidot"))
   ),
   @DefaultValue(None)
-  @MinValue(1)
-  @MaxValue(20)
   laajuus: Option[LaajuusViikoissa] = None
 ) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
 
@@ -230,8 +218,6 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
     nimi = Some(LocalizedString.unlocalized("Valinnaiset koulutuksen osat"))
   ),
   @DefaultValue(None)
-  @MinValue(1)
-  @MaxValue(10)
   laajuus: Option[LaajuusViikoissa] = None
 ) extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli
 
