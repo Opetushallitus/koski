@@ -30,7 +30,9 @@ import {
   jääLuokalle,
   luokkaAste,
   luokkaAsteenOsasuoritukset,
-  oppimääränOsasuoritukset, pakollisetTitle, valinnaisetTitle, valmiitaSuorituksia
+  oppimääränOsasuoritukset, pakollisetTitle, valinnaisetTitle, valmiitaSuorituksia,
+  isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa,
+  isPerusopetukseenValmistavanKoulutuksenSuoritus
 } from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
@@ -192,31 +194,58 @@ class Oppiainetaulukko extends React.Component {
             ? 'Lisää pakollinen oppiaine'
             : 'Lisää valinnainen oppiaine')))
 
-    return (<section className="oppiaine-taulukko">
+    const suoritusListaus = (listattavatSuoritukset, listausTitle) => (
+      <React.Fragment>
+      {listausTitle && <Text name={listausTitle}/>}
+       <hr/>
+        <thead>
+        <tr>
+          <th className="oppiaine"><Text name={isToimintaAlueittain(model) ? 'Toiminta-alue' : 'Oppiaine'}/></th>
+          {showArvosana && <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}><Text name="Arvosana"/></th>}
+          {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}><Text name="Laajuus"/></th>}
+        </tr>
+        </thead>
+        {
+          listattavatSuoritukset.filter(s => edit || arvioituTaiVahvistettu(s) || osasuoritukset(s).length || isVuosiluokkaTaiPerusopetuksenOppimäärä(model)).map((suoritus) => (
+            <PerusopetuksenOppiaineRowEditor
+              baret-lift
+              key={suoritus.arrayKey}
+              model={suoritus}
+              uusiOppiaineenSuoritus={selectSuoritusProto(suoritus)}
+              expanded={isExpandedP(suoritus)}
+              onExpand={setExpanded(suoritus)}
+              showArvosana={showArvosana}
+              showLaajuus={showLaajuus}
+              footnotes={footnotesForSuoritus(suoritus)}
+            />
+          ))
+        }
+      </React.Fragment>
+    )
+
+    return (<section className="oppiaine-taulukko" style={{width: '100%'}}>
         {title && <h5><Text name={title} /></h5>}
         { suoritukset.length > 0 && (
-          <table>
-            <thead>
-            <tr>
-              <th className="oppiaine"><Text name={isToimintaAlueittain(model) ? 'Toiminta-alue' : 'Oppiaine'}/></th>
-              {showArvosana && <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}><Text name="Arvosana"/></th>}
-              {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}><Text name="Laajuus"/></th>}
-            </tr>
-            </thead>
+          isPerusopetukseenValmistavanKoulutuksenSuoritus(model) ?
+          <table style={{ width: '100%' }}>
+            <th>
             {
-              suoritukset.filter(s => edit || arvioituTaiVahvistettu(s) || osasuoritukset(s).length || isVuosiluokkaTaiPerusopetuksenOppimäärä(model)).map((suoritus) => (
-                <PerusopetuksenOppiaineRowEditor
-                  baret-lift
-                  key={suoritus.arrayKey}
-                  model={suoritus}
-                  uusiOppiaineenSuoritus={selectSuoritusProto(suoritus)}
-                  expanded={isExpandedP(suoritus)}
-                  onExpand={setExpanded(suoritus)}
-                  showArvosana={showArvosana}
-                  showLaajuus={showLaajuus}
-                  footnotes={footnotesForSuoritus(suoritus)}
-                />
-              ))
+              suoritusListaus(
+                suoritukset.filter(s => isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s)),
+                'Perusopetuksen valmistavan opetuksen opinnot')
+            }
+            </th>
+            <th>
+            {
+              suoritusListaus(
+                suoritukset.filter(s => !isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s)),
+                'Perusopetuksen oppimäärään sisältyvät opinnot')
+            }
+            </th>
+          </table> :
+          <table>
+            {
+              suoritusListaus(suoritukset)
             }
           </table>
         )}
