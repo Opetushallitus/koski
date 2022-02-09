@@ -30,12 +30,14 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
       opiskeluoikeus.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo).contains("valmistunut")
     val päätasonSuorituksenLaajuusViikkoina = suoritus.koulutusmoduuli.laajuusArvo(default = 0.0)
 
-    if (opiskeluOikeudenTilaValmistunut && päätasonSuorituksenLaajuusViikkoina >= 4.0) {
+    if (opiskeluOikeudenTilaValmistunut && 4.0 <= päätasonSuorituksenLaajuusViikkoina && päätasonSuorituksenLaajuusViikkoina <= 38.0) {
       HttpStatus.fold(
         validateOsasuoritustenLaajuus(suoritus),
         validateTuvaOpiskeluJaUrasuunnittelutaidotOsasuoritusOlemassa(suoritus),
-        validateTuvaMuidenKuinOpiskeluJaUrasuunnittelutaidotOsasuorituksenLaajuus(suoritus)
+        validateTuvaMuutOsasuorituksetOlemassa(suoritus)
       )
+    } else if (!opiskeluOikeudenTilaValmistunut) {
+      HttpStatus.ok
     } else {
       tuvaPäätasonSuoritusVääräLaajuus()
     }
@@ -52,19 +54,33 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
 
     val validointiTulokset = suoritus.osasuoritukset.getOrElse(List.empty).map(_.koulutusmoduuli).map {
       case t: TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot =>
-        laajuusVälillä(min = 2, max = 10, t, tuvaOpiskeluJaUrasuunnittelutaidotVääräLaajuus())
+        laajuusVälillä(min = 2, max = 10, t, tuvaOsaSuoritusVääräLaajuus(
+          "Tutkintokoulutukseen valmentavan koulutuksen opiskelu- ja urasuunnittelutaitojen osasuorituksen laajuus on oltava vähintään 2 ja enintään 10 viikkoa."
+        ))
       case t: TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen =>
-        laajuusVälillä(min = 1, max = 30, t, tuvaPerustaitojenVahvistaminenVääräLaajuus())
+        laajuusVälillä(min = 1, max = 30, t, tuvaOsaSuoritusVääräLaajuus(
+          "Tutkintokoulutukseen valmentavan koulutuksen perustaitojen vahvistamisen osasuorituksen laajuus on oltava vähintään 1 ja enintään 30 viikkoa."
+        ))
       case t: TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot =>
-        laajuusVälillä(min = 1, max = 30, t, tuvaLukiokoulutuksenOpinnotVääräLaajuus())
+        laajuusVälillä(min = 1, max = 30, t, tuvaOsaSuoritusVääräLaajuus(
+          "Tutkintokoulutukseen valmentavan koulutuksen lukion opintojen osasuorituksen laajuus on oltava vähintään 1 ja enintään 30 viikkoa."
+        ))
       case t: TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot =>
-        laajuusVälillä(min = 1, max = 30, t, tuvaAmmatillisenKoulutuksenOpinnotVääräLaajuus())
+        laajuusVälillä(min = 1, max = 30, t, tuvaOsaSuoritusVääräLaajuus(
+          "Tutkintokoulutukseen valmentavan koulutuksen ammatillisen koulutuksen opintojen osasuorituksen laajuus on oltava vähintään 1 ja enintään 30 viikkoa."
+        ))
       case t: TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen =>
-        laajuusVälillä(min = 1, max = 20, t, tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminenVääräLaajuus())
+        laajuusVälillä(min = 1, max = 20, t, tuvaOsaSuoritusVääräLaajuus(
+          "Tutkintokoulutukseen valmentavan koulutuksen työelämätaitojen ja työpaikalla tapahtuvan oppimisen osasuorituksen laajuus on oltava vähintään 1 ja enintään 20 viikkoa."
+        ))
       case t: TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot =>
-        laajuusVälillä(min = 1, max = 20, t, tuvaArjenJaYhteiskunnallisenOsallisuudenTaidotVääräLaajuus())
+        laajuusVälillä(min = 1, max = 20, t, tuvaOsaSuoritusVääräLaajuus(
+          "Tutkintokoulutukseen valmentavan koulutuksen arjen ja yhteiskunnallisen osallisuuden taitojen osasuorituksen laajuus on oltava vähintään 1 ja enintään 20 viikkoa."
+        ))
       case t: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa =>
-        laajuusVälillä(min = 1, max = 10, t, tuvaValinnaisenKoulutusosanVääräLaajuus())
+        laajuusVälillä(min = 1, max = 10, t, tuvaOsaSuoritusVääräLaajuus(
+          "Tutkintokoulutukseen valmentavan koulutuksen valinnaisen osasuorituksen laajuus on oltava vähintään 1 ja enintään 10 viikkoa."
+        ))
       case _ => HttpStatus.ok
     }
 
@@ -84,16 +100,16 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
     }
   }
 
-  private def validateTuvaMuidenKuinOpiskeluJaUrasuunnittelutaidotOsasuorituksenLaajuus(
+  private def validateTuvaMuutOsasuorituksetOlemassa(
     suoritus: TutkintokoulutukseenValmentavanKoulutuksenSuoritus
   ): HttpStatus = {
-    val muutVähintäänViikonLaajuisetOsasuoritukset =
+    val muutOsasuoritukset =
       suoritus.osasuoritukset.getOrElse(List.empty).groupBy(_.koulutusmoduuli).filter {
         case (_: TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot, _) => false
         case (_, _) => true
       }
 
-    HttpStatus.validate(muutVähintäänViikonLaajuisetOsasuoritukset.size >= 2) {
+    HttpStatus.validate(muutOsasuoritukset.size >= 2) {
       KoskiErrorCategory.badRequest.validation.rakenne.tuvaOsasuorituksiaLiianVähän()
     }
   }

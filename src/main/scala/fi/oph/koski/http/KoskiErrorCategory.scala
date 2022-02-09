@@ -160,14 +160,8 @@ object KoskiErrorCategory {
         val oppiaineenLaajuusPuuttuu = subcategory("oppiaineenLaajuusPuuttuu", "Oppiaineen laajuus puuttuu")
         val lukiodiplominLaajuusEiOle2Opintopistettä = subcategory("lukiodiplominLaajuusVäärä", "Lukiodiplomin laajuuden on oltava aina 2 opintopistettä")
         val lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo = subcategory("lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo", "Lukioon valmistavan koulutuksen suorituksella voi olla laajuuden koodiyksikkönä vain '2', jos suorituksen diaarinumero on 'OPH-4958-2020'")
-        val tuvaPäätasonSuoritusVääräLaajuus = subcategory("tuvaPäätasonSuoritusVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen päätason suorituksen laajuus on oltava vähintään 4 viikkoa.")
-        val tuvaOpiskeluJaUrasuunnittelutaidotVääräLaajuus = subcategory("tuvaOpiskeluJaUrasuunnittelutaidotVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen opiskelu- ja urasuunnittelutaitojen osan suorituksen laajuus on oltava vähintään 2 ja enintään 10 viikkoa.")
-        val tuvaPerustaitojenVahvistaminenVääräLaajuus = subcategory("tuvaPerustaitojenVahvistaminenVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen perustaitojen vahvistamisen osan suorituksen laajuus on oltava vähintään 1 ja enintään 30 viikkoa.")
-        val tuvaLukiokoulutuksenOpinnotVääräLaajuus = subcategory("tuvaLukiokoulutuksenOpinnotVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen lukion opintojen osan suorituksen laajuus on oltava vähintään 1 ja enintään 30 viikkoa.")
-        val tuvaAmmatillisenKoulutuksenOpinnotVääräLaajuus = subcategory("tuvaAmmatillisenKoulutuksenOpinnotVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen ammatillisen koulutuksen opintojen osan suorituksen laajuus on oltava vähintään 1 ja enintään 30 viikkoa.")
-        val tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminenVääräLaajuus = subcategory("tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminenVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen työelämätaitojen ja työpaikalla tapahtuvan oppimisen osan suorituksen laajuus on oltava vähintään 1 ja enintään 20 viikkoa.")
-        val tuvaArjenJaYhteiskunnallisenOsallisuudenTaidotVääräLaajuus = subcategory("tuvaArjenJaYhteiskunnallisenOsallisuudenTaidotVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen arjen ja yhteiskunnallisen osallisuuden taitojen osan suorituksen laajuus on oltava vähintään 1 ja enintään 20 viikkoa.")
-        val tuvaValinnaisenKoulutusosanVääräLaajuus = subcategory("tuvaValinnaisenKoulutusosanVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen valinneisen osan suorituksen laajuus on oltava vähintään 1 ja enintään 10 viikkoa.")
+        val tuvaPäätasonSuoritusVääräLaajuus = subcategory("tuvaPäätasonSuoritusVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen päätason suorituksen laajuus on oltava vähintään 4 viikkoa ja enintään 38 viikkoa.")
+        val tuvaOsaSuoritusVääräLaajuus = subcategory("tuvaOsaSuoritusVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksella on väärä laajuus.")
       }
       val laajuudet = new Laajuudet
 

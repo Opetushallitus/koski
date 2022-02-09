@@ -17,26 +17,29 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
 
     "Suoritukset" - {
       "valmistuneen päätason suorituksen kesto ja osasuoritukset vaatimusten mukaiset" in {
-        putOpiskeluoikeus(tuvaOpiskeluOikeusValmistunut, henkilö = tuvaHenkilö, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        putOpiskeluoikeus(tuvaOpiskeluOikeusValmistunut, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "keskeneräisen päätason suorituksen kesto ja osasuoritukset vaatimusten mukaiset" in {
+        putOpiskeluoikeus(tuvaOpiskeluOikeusEiValmistunut, henkilö = tuvaHenkilöEiValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
 
       "valmistuneen päätason suorituksen laajuus liian pieni (ja osasuorituksia puuttuu)" in {
         val oo = tuvaOpiskeluOikeusValmistunut.copy(
-          suoritukset = List(tuvaPäätasonSuoritus.copy(
-            koulutusmoduuli = tuvaPäätasonSuoritus.koulutusmoduuli.copy(
-              laajuus = Some(LaajuusViikoissa(3))
-            ),
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = Some(3)).copy(
             osasuoritukset = Some(
               List(
                 tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(2),
+                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
                   koodistoviite = "tutkintokoulutukseenvalmentava",
                   arviointiPäivä = Some(date(2021, 9, 1))
                 ),
                 tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(1),
+                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(1)),
                   koodistoviite = "tutkintokoulutukseenvalmentava",
                   arviointiPäivä = Some(date(2021, 9, 1))
                 )
@@ -45,31 +48,58 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
           ))
         )
 
-        putOpiskeluoikeus(oo, henkilö = tuvaHenkilö, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        putOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.tuvaPäätasonSuoritusVääräLaajuus())
+        }
+      }
+
+      "valmistuneen päätason suorituksen laajuus liian suuri" in {
+        val oo = tuvaOpiskeluOikeusValmistunut.copy(
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = Some(39)).copy(
+            osasuoritukset = Some(
+              List(
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ),
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(20)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ),
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(laajuus = Some(17)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                )
+              )
+            )
+          ))
+        )
+
+        putOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.tuvaPäätasonSuoritusVääräLaajuus())
         }
       }
 
       "valmistuneen päätason suorituksen osasuorituksen laajuus liian pieni" in {
         val oo = tuvaOpiskeluOikeusValmistunut.copy(
-          suoritukset = List(tuvaPäätasonSuoritus.copy(
-            koulutusmoduuli = tuvaPäätasonSuoritus.koulutusmoduuli.copy(
-              laajuus = Some(LaajuusViikoissa(4))
-            ),
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = Some(4)).copy(
             osasuoritukset = Some(
               List(
                 tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(1),
+                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(1)),
                   koodistoviite = "tutkintokoulutukseenvalmentava",
                   arviointiPäivä = Some(date(2021, 9, 1))
                 ),
                 tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(2),
+                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(2)),
                   koodistoviite = "tutkintokoulutukseenvalmentava",
                   arviointiPäivä = Some(date(2021, 9, 1))
                 ),
                 tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(1),
+                  koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(laajuus = Some(1)),
                   koodistoviite = "tutkintokoulutukseenvalmentava",
                   arviointiPäivä = Some(date(2021, 9, 1))
                 )
@@ -78,26 +108,28 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
           ))
         )
 
-        putOpiskeluoikeus(oo, henkilö = tuvaHenkilö, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.tuvaOpiskeluJaUrasuunnittelutaidotVääräLaajuus())
+        putOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+          verifyResponseStatus(
+            expectedStatus = 400,
+            KoskiErrorCategory.badRequest.validation.laajuudet.tuvaOsaSuoritusVääräLaajuus(
+              "Tutkintokoulutukseen valmentavan koulutuksen opiskelu- ja urasuunnittelutaitojen osasuorituksen laajuus on oltava vähintään 2 ja enintään 10 viikkoa."
+            )
+          )
         }
       }
 
       "valmistuneen päätason suorituksesta puuttuu opiskelu ja urasuunnittelutaitojen osasuoritus" in {
         val oo = tuvaOpiskeluOikeusValmistunut.copy(
-          suoritukset = List(tuvaPäätasonSuoritus.copy(
-            koulutusmoduuli = tuvaPäätasonSuoritus.koulutusmoduuli.copy(
-              laajuus = Some(LaajuusViikoissa(4))
-            ),
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = Some(4)).copy(
             osasuoritukset = Some(
               List(
                 tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(2),
+                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(2)),
                   koodistoviite = "tutkintokoulutukseenvalmentava",
                   arviointiPäivä = Some(date(2021, 9, 1))
                 ),
                 tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(2),
+                  koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(laajuus = Some(2)),
                   koodistoviite = "tutkintokoulutukseenvalmentava",
                   arviointiPäivä = Some(date(2021, 9, 1))
                 )
@@ -106,26 +138,23 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
           ))
         )
 
-        putOpiskeluoikeus(oo, henkilö = tuvaHenkilö, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        putOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuvaOpiskeluJaUrasuunnittelutaitojenOsasuoritusPuuttuu())
         }
       }
 
       "valmistuneen päätason suorituksesta puuttuu riittävä määrä eri osasuorituksia" in {
         val oo = tuvaOpiskeluOikeusValmistunut.copy(
-          suoritukset = List(tuvaPäätasonSuoritus.copy(
-            koulutusmoduuli = tuvaPäätasonSuoritus.koulutusmoduuli.copy(
-              laajuus = Some(LaajuusViikoissa(4))
-            ),
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = Some(4)).copy(
             osasuoritukset = Some(
               List(
                 tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(2),
+                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
                   koodistoviite = "tutkintokoulutukseenvalmentava",
                   arviointiPäivä = Some(date(2021, 9, 1))
                 ),
                 tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(2),
+                  koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(laajuus = Some(2)),
                   koodistoviite = "tutkintokoulutukseenvalmentava",
                   arviointiPäivä = Some(date(2021, 9, 1))
                 )
@@ -134,7 +163,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
           ))
         )
 
-        putOpiskeluoikeus(oo, henkilö = tuvaHenkilö, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        putOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuvaOsasuorituksiaLiianVähän())
         }
       }

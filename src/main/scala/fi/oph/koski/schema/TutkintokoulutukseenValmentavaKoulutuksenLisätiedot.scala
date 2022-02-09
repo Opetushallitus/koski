@@ -2,12 +2,13 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation.{Deprecated, OksaUri, SensitiveData, Tooltip}
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, OnlyWhen, Title}
 
 trait TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
 
 @Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden ammatillisen koulutuksen järjestämisluvan lisätiedot")
 @Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden ammatillisen koulutuksen järjestämisluvan lisätiedot")
+@OnlyWhen("../järjestämislupa/koodiarvo", "ammatillinen")
 case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
@@ -63,6 +64,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
 
 @Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden lukiokoulutuksen järjestämisluvan lisätiedot")
 @Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden lukiokoulutuksen järjestämisluvan lisätiedot")
+@OnlyWhen("../järjestämislupa/koodiarvo", "lukio")
 case class TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
@@ -78,6 +80,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanL
 
 @Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan lisätiedot")
 @Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan lisätiedot")
+@OnlyWhen("../järjestämislupa/koodiarvo", "perusopetus")
 case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
