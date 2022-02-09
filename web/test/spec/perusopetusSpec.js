@@ -3443,7 +3443,7 @@ describe('Perusopetus', function() {
 
   describe('Perusopetukseen valmistava opetus', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetukseenvalmistavaopetus'))
-    describe('Kaikki tiedot näkyvissä', function() {
+      describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
@@ -3466,13 +3466,13 @@ describe('Perusopetus', function() {
           'Oppiaineiden arvosanat\n' +
           'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
           'Perusopetuksen valmistavan opetuksen opinnot Oppiaine Arvosana Laajuus\n' +
+          'Äidinkieli S 10 vuosiviikkotuntia\n' +
+          'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
+          'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen Perusopetuksen oppimäärään sisältyvät opinnot Oppiaine Arvosana Laajuus\n' +
           'Fysiikka 9 1 vuosiviikkotuntia\n' +
           'Suorituskieli suomi\n' +
           'Luokka-aste 7. vuosiluokka\n' +
-          'Suoritustapa Erityinen tutkinto Perusopetuksen oppimäärään sisältyvät opinnot Oppiaine Arvosana Laajuus\n' +
-          'Äidinkieli S 10 vuosiviikkotuntia\n' +
-          'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
-          'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen'
+          'Suoritustapa Erityinen tutkinto'
         )
       })
     })
@@ -3530,7 +3530,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Uuden nuorten perusopetuksen oppiaineen lisääminen', function () {
-          var uusiNuortenOppiaine = OpinnotPage().opiskeluoikeusEditor().propertyBySelector('.uusi-oppiaine:nth-child(2)')
+          var uusiNuortenOppiaine = OpinnotPage().opiskeluoikeusEditor().propertyBySelector('.oppiaine-taulukko > .uusi-oppiaine')
           var historia = editor.subEditor('.HI')
           before(
             editor.edit,

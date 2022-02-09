@@ -84,10 +84,10 @@ const Oppiainetaulukko = ({model, suoritukset, showLaajuus}) => {
     : suoritukset.filter(s => arvioituTaiVahvistettu(s) || osasuoritukset(s).length)
 
   const valmistavanOpetuksenSuoritukset = filteredSuoritukset
-    .filter(s => isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s))
+    .filter(s => !isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s))
 
   const muutSuoritukset = filteredSuoritukset
-    .filter(s => !isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s))
+    .filter(s => isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s))
 
   const perusopetukseenValmistavanListaus = (
     <tbody>

@@ -231,14 +231,14 @@ class Oppiainetaulukko extends React.Component {
             <th>
             {
               suoritusListaus(
-                suoritukset.filter(s => isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s)),
+                suoritukset.filter(s => !isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s)),
                 'Perusopetuksen valmistavan opetuksen opinnot')
             }
             </th>
             <th>
             {
               suoritusListaus(
-                suoritukset.filter(s => !isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s)),
+                suoritukset.filter(s => isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(s)),
                 'Perusopetuksen oppimäärään sisältyvät opinnot')
             }
             </th>
@@ -249,10 +249,6 @@ class Oppiainetaulukko extends React.Component {
             }
           </table>
         )}
-        <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus}
-                                            pakollinen={pakolliset} resultCallback={addOppiaine(uusiOppiaineenSuoritus)}
-                                            organisaatioOid={modelData(model.context.toimipiste).oid}
-                                            placeholder={placeholder}/>
         {
           uusiPerusopetukseenValmistavanOppiaineenSuoritus &&
           <span className='uusi-perusopetukseen-valmistava-oppiaine'>
@@ -263,6 +259,10 @@ class Oppiainetaulukko extends React.Component {
                                             />
           </span>
         }
+        <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus}
+                                            pakollinen={pakolliset} resultCallback={addOppiaine(uusiOppiaineenSuoritus)}
+                                            organisaatioOid={modelData(model.context.toimipiste).oid}
+                                            placeholder={placeholder}/>
 
       </section>
     )
