@@ -1,6 +1,7 @@
 import Bacon from 'baconjs'
 import {increaseLoading, decreaseLoading} from './loadingFlag'
 import {showInternalError} from './location'
+import Cookies from 'js-cookie'
 
 const parseResponseFor = (url) =>
   (result) => {
@@ -75,10 +76,12 @@ const http = (url, optionsForFetch, options = {}) => {
   return result
 }
 
+const csrfHeader = () => ({ CSRF: Cookies.get('CSRF') })
+
 http.get = (url, options = {}, headers = {}) => http(url, { credentials: 'include', headers },  options)
-http.delete = (url, options = {}) => http(url, { credentials: 'include', method: 'delete'},  options)
-http.post = (url, entity, options = {}) => http(url, { credentials: 'include', method: 'post', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json'} }, options)
-http.put = (url, entity, options = {}) => http(url, { credentials: 'include', method: 'put', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json'} }, options)
+http.delete = (url, options = {}) => http(url, { credentials: 'include', method: 'delete', headers: csrfHeader()},  options)
+http.post = (url, entity, options = {}) => http(url, { credentials: 'include', method: 'post', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json', ...csrfHeader() } }, options)
+http.put = (url, entity, options = {}) => http(url, { credentials: 'include', method: 'put', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json', ...csrfHeader() } }, options)
 http.mock = (url, result) => mocks[url] = result
 http.cache = {}
 http.cachedGet = (url, options = {}) => {
