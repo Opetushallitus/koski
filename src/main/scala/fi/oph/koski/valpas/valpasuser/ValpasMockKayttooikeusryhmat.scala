@@ -1,49 +1,54 @@
 package fi.oph.koski.valpas.valpasuser
 
-import fi.oph.koski.koskiuser.{Käyttöoikeus, KäyttöoikeusGlobal, KäyttöoikeusOrg, KäyttöoikeusViranomainen}
-import fi.oph.koski.schema.OidOrganisaatio
+import fi.oph.koski.koskiuser.Rooli
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
+import fi.oph.koski.userdirectory.{OrganisaatioJaKäyttöoikeudet, PalveluJaOikeus}
 
 object ValpasMockKäyttöoikeusryhmät {
-  def peruskoulunKäyttäjä(organisaatioOid: String): Set[Käyttöoikeus] = Set(oppilaitosHakeutuminenKäyttäjä(organisaatioOid))
 
-  def peruskoulunJossa10LuokkaKäyttäjä(organisaatioOid: String): Set[Käyttöoikeus] = nivelvaiheenKäyttäjä(organisaatioOid)
+  def peruskoulunKäyttäjä(organisaatioOid: String): Seq[OrganisaatioJaKäyttöoikeudet] = Seq(oppilaitosHakeutuminenKäyttäjä(organisaatioOid))
 
-  def nivelvaiheenKäyttäjä(organisaatioOid: String): Set[Käyttöoikeus] = oppilaitosKäyttäjäKaikkiOikeudet(organisaatioOid)
+  def peruskoulunJossa10LuokkaKäyttäjä(organisaatioOid: String): Seq[OrganisaatioJaKäyttöoikeudet] = nivelvaiheenKäyttäjä(organisaatioOid)
 
-  def toisenAsteenKäyttäjä(organisaatioOid: String): Set[Käyttöoikeus] = Set(oppilaitosSuorittaminenKäyttäjä _, oppilaitosMaksuttomuusKäyttäjä _).map(_(organisaatioOid))
+  def nivelvaiheenKäyttäjä(organisaatioOid: String): Seq[OrganisaatioJaKäyttöoikeudet] = oppilaitosKäyttäjäKaikkiOikeudet(organisaatioOid)
 
-  def oppilaitosKäyttäjäPelkkäSuorittaminen(organisaatioOid: String): Set[Käyttöoikeus] = Set(oppilaitosSuorittaminenKäyttäjä(organisaatioOid))
+  def toisenAsteenKäyttäjä(organisaatioOid: String): Seq[OrganisaatioJaKäyttöoikeudet] = Seq(oppilaitosSuorittaminenKäyttäjä _, oppilaitosMaksuttomuusKäyttäjä _).map(_(organisaatioOid))
 
-  def oppilaitosKäyttäjäKaikkiOikeudet(organisaatioOid: String): Set[Käyttöoikeus] = Set(oppilaitosHakeutuminenKäyttäjä _, oppilaitosSuorittaminenKäyttäjä _, oppilaitosMaksuttomuusKäyttäjä _).map(_(organisaatioOid))
+  def oppilaitosKäyttäjäPelkkäSuorittaminen(organisaatioOid: String): Seq[OrganisaatioJaKäyttöoikeudet] = Seq(oppilaitosSuorittaminenKäyttäjä(organisaatioOid))
 
-  def oppilaitosKäyttäjäPelkkäMaksuttomuus(organisaatioOid: String): Set[Käyttöoikeus] = Set(oppilaitosMaksuttomuusKäyttäjä(organisaatioOid))
+  def oppilaitosKäyttäjäKaikkiOikeudet(organisaatioOid: String): Seq[OrganisaatioJaKäyttöoikeudet] = Seq(oppilaitosHakeutuminenKäyttäjä _, oppilaitosSuorittaminenKäyttäjä _, oppilaitosMaksuttomuusKäyttäjä _).map(_(organisaatioOid))
 
-  def kuntakäyttäjä(organisaatioOid: String): Set[Käyttöoikeus] = Set(organisaatioKäyttäjä(organisaatioOid, ValpasRooli.KUNTA))
+  def oppilaitosKäyttäjäPelkkäMaksuttomuus(organisaatioOid: String): Seq[OrganisaatioJaKäyttöoikeudet] = Seq(oppilaitosMaksuttomuusKäyttäjä(organisaatioOid))
 
-  def pääkäyttäjä: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(
-    ValpasPalvelurooli(ValpasRooli.KUNTA),
-    ValpasPalvelurooli(ValpasRooli.OPPILAITOS_HAKEUTUMINEN),
-    ValpasPalvelurooli(ValpasRooli.OPPILAITOS_SUORITTAMINEN),
-    ValpasPalvelurooli(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
-  )))
+  def kuntakäyttäjä(organisaatioOid: String): Seq[OrganisaatioJaKäyttöoikeudet] = Seq(organisaatioKäyttäjä(organisaatioOid, ValpasRooli.KUNTA))
 
-  def hakeutuminenPääkäyttäjä: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(
-    ValpasPalvelurooli(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)
-  )))
+  def pääkäyttäjä: Seq[OrganisaatioJaKäyttöoikeudet] =
+    Seq(OrganisaatioJaKäyttöoikeudet(
+      Opetushallitus.organisaatioOid,
+      List(
+        ValpasRooli.KUNTA,
+        ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
+        ValpasRooli.OPPILAITOS_SUORITTAMINEN,
+        ValpasRooli.OPPILAITOS_MAKSUTTOMUUS
+      )
+        .map(rooli => PalveluJaOikeus("VALPAS", rooli))))
 
-  def kelaLuovutuspalveluKäyttäjä: Set[Käyttöoikeus] = Set(KäyttöoikeusViranomainen(List(ValpasPalvelurooli(ValpasRooli.KELA))))
+  def hakeutuminenPääkäyttäjä: Seq[OrganisaatioJaKäyttöoikeudet] =
+    Seq(OrganisaatioJaKäyttöoikeudet(
+      Opetushallitus.organisaatioOid,
+      List(PalveluJaOikeus("VALPAS", ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
+    ))
+  def kelaLuovutuspalveluKäyttäjä: Seq[OrganisaatioJaKäyttöoikeudet] = Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.kela, List(PalveluJaOikeus("VALPAS", ValpasRooli.KELA), PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE))))
+  def ytlLuovutuspalveluKäyttäjä: Seq[OrganisaatioJaKäyttöoikeudet] = Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.ytl, List(PalveluJaOikeus("VALPAS", ValpasRooli.YTL), PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE))))
 
-  def ytlLuovutuspalveluKäyttäjä: Set[Käyttöoikeus] = Set(KäyttöoikeusViranomainen(List(ValpasPalvelurooli(ValpasRooli.YTL))))
+  private def oppilaitosHakeutuminenKäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet = organisaatioKäyttäjä(organisaatioOid, ValpasRooli.OPPILAITOS_HAKEUTUMINEN)
 
-  private def oppilaitosHakeutuminenKäyttäjä(organisaatioOid: String) = organisaatioKäyttäjä(organisaatioOid, ValpasRooli.OPPILAITOS_HAKEUTUMINEN)
+  private def oppilaitosSuorittaminenKäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet = organisaatioKäyttäjä(organisaatioOid, ValpasRooli.OPPILAITOS_SUORITTAMINEN)
 
-  private def oppilaitosSuorittaminenKäyttäjä(organisaatioOid: String) = organisaatioKäyttäjä(organisaatioOid, ValpasRooli.OPPILAITOS_SUORITTAMINEN)
+  private def oppilaitosMaksuttomuusKäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet = organisaatioKäyttäjä(organisaatioOid, ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
 
-  private def oppilaitosMaksuttomuusKäyttäjä(organisaatioOid: String) = organisaatioKäyttäjä(organisaatioOid, ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
-
-  private def organisaatioKäyttäjä(organisaatioOid: String, rooli: String) = KäyttöoikeusOrg(
-    OidOrganisaatio(organisaatioOid),
-    List(ValpasPalvelurooli(rooli)),
-    true,
-    None)
+  private def organisaatioKäyttäjä(organisaatioOid: String, rooli: String): OrganisaatioJaKäyttöoikeudet =
+    OrganisaatioJaKäyttöoikeudet(organisaatioOid,
+      List(PalveluJaOikeus("VALPAS", rooli))
+    )
 }
