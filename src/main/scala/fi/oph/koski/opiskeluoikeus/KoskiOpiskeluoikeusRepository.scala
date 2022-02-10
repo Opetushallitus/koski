@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, OppijaHenkilöWithMasterInfo, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import org.json4s.JValue

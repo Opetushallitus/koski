@@ -1,32 +1,19 @@
 package fi.oph.koski.ytl
 
-import java.sql.Timestamp
 import java.time.{Instant, LocalDateTime}
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{KoskiTables, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
-import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
 import fi.oph.koski.organisaatio.Oppilaitostyyppi
-import fi.oph.koski.schema.{Henkilö, KoskiSchema}
+import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.util.Timing
 import org.json4s.JsonAST.JValue
-import org.json4s.MappingException
 import rx.lang.scala.Observable
 
 class YtlService(application: KoskiApplication) extends Logging with Timing {
-
-  private lazy val opiskeluoikeudenTyyppiFilter =
-    OpiskeluoikeusQueryFilter.OneOfOpiskeluoikeudenTyypit(
-      YtlSchema.schemassaTuetutOpiskeluoikeustyypit.map(
-        tyyppi => OpiskeluoikeusQueryFilter.OpiskeluoikeudenTyyppi(
-          application.koodistoViitePalvelu.validateRequired("opiskeluoikeudentyyppi", tyyppi)
-        )
-      )
-    )
+  private val ytlOpiskeluoikeusRepository = new YtlOpiskeluoikeusRepository(application.replicaDatabase.db, application.validatingAndResolvingExtractor)
 
   def streamOppijat(
     oidit: Seq[String],
@@ -58,33 +45,18 @@ class YtlService(application: KoskiApplication) extends Logging with Timing {
 
       val masterOppijoidenOidit: Seq[Henkilö.Oid] = masterHenkilöt.values.map(_.oid).toSeq
 
-      val haettavatOppijaOidit: Seq[Henkilö.Oid] =
-        masterOppijoidenOidit ++
-          timed("resolveLinkedOids", 0) {
-            application.henkilöCache.resolveLinkedOids(masterOppijoidenOidit)
-          }
-
-      val queryFilters = List(
-        opiskeluoikeudenTyyppiFilter,
-        OpiskeluoikeusQueryFilter.OppijaOidHaku(haettavatOppijaOidit)
-      )
-
-      def teePalautettavatYtlHenkilöt(tulosOppija: QueryOppijaHenkilö): Iterable[YtlHenkilö] = {
+      def teePalautettavatYtlHenkilöt(oppijaMasterOid: String): Iterable[YtlHenkilö] = {
         // Luo YTLHenkilöt oppijoista, joilla oppijaa on alunperin pyydetty. Lista opiskeluoikeuksia palautetaan jokaiselle
         // niistä, jotta kutsuja saa oikean ja riittävän tiedon siitä, millä kutsujan antamilla oppija-oideilla
         // opiskeluoikeuksia löytyi.
-
-        // Hieman epäloogisesti QueryOppijaHenkilö ei sisällä kaikkia oppijan linkitettyjä oideja, vaikka se
-        // sen nimisen kentän sisältääkin: tietokantahausta tulee paluuarvona ainoastaan KOSKI-tietokannasta löytyviä
-        // oppijaOideja. Siksi linkitetyt oidit pitää hakea erikseen.
         val etsittävätHenkilöOidit =
-        Seq(tulosOppija.oid) ++ masterOppijanLinkitetytOppijaOidit(tulosOppija.oid)
+          Seq(oppijaMasterOid) ++ masterOppijanLinkitetytOppijaOidit(oppijaMasterOid)
 
         val pyynnössäEsiintyneetOppijaHenkilöt =
           oppijaOidToPyydettyHenkilö.collect { case (oid, hlö) if etsittävätHenkilöOidit.contains(oid) => hlö }
 
         pyynnössäEsiintyneetOppijaHenkilöt.map(hlö => {
-          val pääoppijaOid = Some(tulosOppija.oid)
+          val pääoppijaOid = Some(oppijaMasterOid)
 
           YtlHenkilö(
             hlö = hlö,
@@ -94,59 +66,43 @@ class YtlService(application: KoskiApplication) extends Logging with Timing {
         })
       }
 
-      def teePalautettavatYtlOppijat(oppijaHenkilö: QueryOppijaHenkilö, opiskeluoikeusRows: List[OpiskeluoikeusRow]) = {
-        val oppijaOnLinkitetty = masterOppijanLinkitetytOppijaOidit(oppijaHenkilö.oid).nonEmpty
-
-        lazy val haetaanIlmanAikaleimaaTaiOppijallaOnMuuttuneitaOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
-          .map(Timestamp.from)
-          .forall(opiskeluoikeuksiaMuuttunutJälkeen =>
-            opiskeluoikeusRows.exists(!_.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
-          )
-
-        lazy val haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia = opiskeluoikeuksiaMuuttunutJälkeen
-          .map(Timestamp.from)
-          .exists(opiskeluoikeuksiaMuuttunutJälkeen =>
-            opiskeluoikeusRows.exists(oo => oo.mitätöity && !oo.aikaleima.before(opiskeluoikeuksiaMuuttunutJälkeen))
-          )
-
-        lazy val opiskeluoikeudet =
+      def teePalautettavatYtlOppijat(oppijaMasterOid: String, opiskeluoikeusRows: Seq[OppijanOpiskeluoikeusRow]): Iterable[YtlOppija] = {
+        val opiskeluoikeudet =
           opiskeluoikeusRows
             .filterNot(_.mitätöity)
-            .map(toYtlOpiskeluoikeus)
+            .map(_.opiskeluoikeus)
             .flatMap(siivoaOpiskeluoikeus)
 
-        if (oppijaOnLinkitetty || (
-          haetaanIlmanAikaleimaaTaiOppijallaOnMuuttuneitaOpiskeluoikeuksia &&
-            (opiskeluoikeudet.nonEmpty || haetaanAikaleimallaJaOppijallaOnUusiaMitätöityjäOpiskeluoikeuksia))
-        ) {
-          teePalautettavatYtlHenkilöt(oppijaHenkilö).map(ytlHenkilö =>
-            Some(YtlOppija(
+        val mitätöityjäAikaleimanJälkeen =
+          opiskeluoikeusRows.filter(_.mitätöityAikaleimanJälkeen).nonEmpty
+
+        if (mitätöityjäAikaleimanJälkeen || opiskeluoikeudet.nonEmpty) {
+          teePalautettavatYtlHenkilöt(oppijaMasterOid).map(ytlHenkilö =>
+            YtlOppija(
               henkilö = ytlHenkilö,
-              opiskeluoikeudet = opiskeluoikeudet
-            ))
+              opiskeluoikeudet = opiskeluoikeudet.toList
+            )
           )
-        } else {
+        }
+        else {
           Seq.empty
         }
       }
 
-      OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, queryFilters, None)
-        .map {
-          case (oppijaHenkilö: QueryOppijaHenkilö, opiskeluoikeusRows: List[OpiskeluoikeusRow]) =>
-            teePalautettavatYtlOppijat(oppijaHenkilö, opiskeluoikeusRows)
-        }
-        .flatMap(oppijat => Observable.from(oppijat))
-        .map(_.getOrElse(throw new InternalError("Internal error")))
+      val opiskeluoikeudet: Seq[OppijanOpiskeluoikeusRow] = {
+        ytlOpiskeluoikeusRepository.getOppijanKaikkiOpiskeluoikeudetJosJokinNiistäOnPäivittynytAikaleimanJälkeen(
+          palautettavatOpiskeluoikeudenTyypit = YtlSchema.schemassaTuetutOpiskeluoikeustyypit,
+          oppijaMasterOids = masterOppijoidenOidit.toList,
+          aikaleimaInstant = opiskeluoikeuksiaMuuttunutJälkeen
+        )
+      }
+
+      Observable.from(
+        opiskeluoikeudet.groupBy(_.masterOppijaOid).flatMap {
+          case (oppijaMasterOid, opiskeluoikeusRows) => teePalautettavatYtlOppijat(oppijaMasterOid, opiskeluoikeusRows)
+        })
         .doOnEach(auditLogOpiskeluoikeusKatsominen(_)(user))
         .map(JsonSerializer.serializeWithUser(user))
-    }
-  }
-
-  private def toYtlOpiskeluoikeus(row: OpiskeluoikeusRow)(implicit user: SensitiveDataAllowed): YtlOpiskeluoikeus = {
-    deserializeYtlOpiskeluoikeus(row.data, row.oid, row.versionumero, row.aikaleima) match {
-      case Right(oo) => oo
-      case Left(errors) =>
-        throw new MappingException(s"Error deserializing YTL opiskeluoikeus ${row.oid} for oppija ${row.oppijaOid}: ${errors}")
     }
   }
 
@@ -161,14 +117,6 @@ class YtlService(application: KoskiApplication) extends Logging with Timing {
     oo.siivoaTiedot(
       poistaOrganisaatiotiedot = onErityisoppilaitos
     )
-  }
-
-  private def deserializeYtlOpiskeluoikeus(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): Either[HttpStatus, YtlOpiskeluoikeus] = {
-    val json = KoskiTables.OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
-
-    application.validatingAndResolvingExtractor.extract[YtlOpiskeluoikeus](
-      KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItems
-    )(json)
   }
 
   private def auditLogOpiskeluoikeusKatsominen(oppija: YtlOppija)(koskiSession: KoskiSpecificSession): Unit =
