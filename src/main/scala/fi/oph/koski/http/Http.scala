@@ -168,7 +168,10 @@ case class Http(root: String, client: Client[IO]) extends Logging {
 
   private val rootUri = Http.uriFromString(root)
 
-  private val commonHeaders = Headers(Header.Raw(CIString("Caller-Id"), OpintopolkuCallerId.koski))
+  private val commonHeaders = Headers(
+    Header.Raw(CIString("Caller-Id"), OpintopolkuCallerId.koski),
+    OpintopolkuCsrfToken.serviceHttpHeader,
+  )
 
   private def get(uri: Uri): Request[IO] = Request(uri = uri)
 
@@ -210,6 +213,7 @@ case class Http(root: String, client: Client[IO]) extends Logging {
       request
         .withUri(addRoot(request.uri))
         .withHeaders(request.headers ++ commonHeaders)
+        .addCookie(OpintopolkuCsrfToken.serviceCookie)
     )
   }
 
