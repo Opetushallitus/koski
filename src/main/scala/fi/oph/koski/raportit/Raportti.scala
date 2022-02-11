@@ -1,6 +1,7 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.koodisto.KoodistoPalvelu
+import fi.oph.koski.localization.LocalizationReader
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.raportit.aikuistenperusopetus.AikuistenPerusopetusRaporttiType
@@ -9,7 +10,7 @@ import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio}
 
 trait Raportti {
 
-  val columnSettings: Seq[(String, Column)]
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)]
 }
 
 trait AikajaksoRaportti extends Raportti {
@@ -27,13 +28,13 @@ trait AikajaksoRaportti extends Raportti {
 
 trait VuosiluokkaRaporttiPaivalta extends Raportti {
 
-  def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
+  def title(etuliite: String, oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, vuosiluokka: String, loadStarted: LocalDateTime): String
+  def documentation(t: LocalizationReader): String
 
-  def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
+  def filename(etuliite: String, oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
-  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Seq[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): Seq[Product]
+  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Seq[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String, t: LocalizationReader): Seq[Product]
 }
 
 trait RaporttiRequest {
@@ -64,7 +65,8 @@ case class PerusopetuksenVuosiluokkaRequest
   downloadToken: Option[String],
   password: String,
   paiva: LocalDate,
-  vuosiluokka: String
+  vuosiluokka: String,
+  lang: String
 ) extends RaporttiRequest
 
 case class OppilaitosRaporttiResponse(

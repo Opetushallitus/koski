@@ -1,11 +1,10 @@
 package fi.oph.koski.tools
 
 import fi.oph.koski.cache.GlobalCacheManager
-import fi.oph.koski.localization.{KoskiLocalizationConfig, MockLocalizationRepository, ReadOnlyRemoteLocalizationRepository}
+import fi.oph.koski.localization.{KoskiLocalizationConfig, LocalizationReader, MockLocalizationRepository, ReadOnlyRemoteLocalizationRepository}
 import fi.oph.koski.raportit.{Column, DataSheet, ExcelWriter, WorkbookSettings}
 import fi.oph.koski.schema.LocalizedString
 import java.io.FileOutputStream
-
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 
 
@@ -20,7 +19,9 @@ object MissingLocalizationsToExcel extends App {
 
   val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))
   val remoteLocalizations = new ReadOnlyRemoteLocalizationRepository(root, localizationConfig).localizations
-  val localLocalizations: Map[String, LocalizedString] = new MockLocalizationRepository(localizationConfig).localizations
+  val localizationRepository = new MockLocalizationRepository(localizationConfig)
+  val localLocalizations: Map[String, LocalizedString] = localizationRepository.localizations
+  val t = new LocalizationReader(localizationRepository, "fi")
 
   val columnSettings = List(
     "key" -> Column("Avain"),
@@ -37,7 +38,7 @@ object MissingLocalizationsToExcel extends App {
   val workbookSettings = WorkbookSettings("Puuttuvat käännökset", None)
   val sheets = List(missingKeysForLang("sv"), missingKeysForLang("en"))
 
-  ExcelWriter.writeExcel(workbookSettings, sheets, output)
+  ExcelWriter.writeExcel(workbookSettings, sheets, t, output)
 
   output.close()
 }

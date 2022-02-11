@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.koskiuser.UserLanguage.sanitizeLanguage
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{AhvenanmaanKunnat, ExcelWriter, OppilaitosRaporttiResponse}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
@@ -19,16 +20,21 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
   private val rouhinta = new ValpasRouhintaService(application)
   private val koodistoPalvelu = application.koodistoPalvelu
   private val organisaatiot = application.organisaatioService
+  private val localization = application.valpasLocalizationRepository
 
   post("/hetut") {
     withJsonBody { (body: JValue) =>
-      val result = extractHetuList(body)
+      val hetuList = extractHetuList(body)
+      val language = hetuList.map(_.lang.orElse(langFromCookie)) match {
+        case Left(_) => "fi"
+        case Right(lang) => lang.getOrElse("fi")
+      }
+      val result = hetuList
         .flatMap(input => {
           if (jsonRequested) {
             rouhinta.haeHetulistanPerusteella(input.hetut)
               .tap(tulos => auditLogRouhintahakuHetulistalla(input.hetut, tulos.palautetutOppijaOidit))
           } else {
-            val language = input.lang.orElse(langFromCookie).getOrElse("fi")
             rouhinta.haeHetulistanPerusteellaExcel(input.hetut, language, input.password)
               .map(tulos => {
                 auditLogRouhintahakuHetulistalla(input.hetut, tulos.data.palautetutOppijaOidit)
@@ -36,19 +42,23 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
               })
           }
         })
-      renderResult(result)
+      renderResult(result, new LocalizationReader(localization, language))
     } (parseErrorHandler = haltWithStatus)
   }
 
   post("/kunta") {
     withJsonBody { (body: JValue) =>
-      val result = extractAndValidateKuntakoodi(body)
+      val kuntaInput = extractAndValidateKuntakoodi(body)
+      val language = kuntaInput.map(_.original.lang.orElse(langFromCookie)) match {
+        case Left(_) => "fi"
+        case Right(lang) => lang.getOrElse("fi")
+      }
+      val result = kuntaInput
         .flatMap(input => {
           if (jsonRequested) {
             rouhinta.haeKunnanPerusteella(input.kunta)
               .tap(tulos => auditLogRouhintahakuKunnalla(input.kunta, tulos.palautetutOppijaOidit))
           } else {
-            val language = input.original.lang.orElse(langFromCookie).getOrElse("fi")
             rouhinta.haeKunnanPerusteellaExcel(input.kunta, language, input.original.password)
               .map(tulos => {
                 auditLogRouhintahakuKunnalla(input.kunta, tulos.data.palautetutOppijaOidit)
@@ -56,7 +66,7 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
               })
           }
         })
-      renderResult(result)
+      renderResult(result, new LocalizationReader(localization, language))
     } (parseErrorHandler = haltWithStatus)
 
   }
@@ -87,10 +97,10 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
       })
       .toRight(ValpasErrorCategory.badRequest(s"Kunta ${input.kuntaOid} ei ole koodistopalvelun tuntema manner-Suomen kunta"))
 
-  private def renderResult(result: Either[HttpStatus, Any]): Unit = {
+  private def renderResult(result: Either[HttpStatus, Any], t: LocalizationReader): Unit = {
     result match {
       case Right(r) => r match {
-        case r: OppilaitosRaporttiResponse => writeExcel(r)
+        case r: OppilaitosRaporttiResponse => writeExcel(r, t)
         case r: HeturouhinnanTulos => renderObject(r)
         case r: KuntarouhinnanTulos => renderObject(r)
         case _ => haltWithStatus(ValpasErrorCategory.internalError())
@@ -99,13 +109,14 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
     }
   }
 
-  private def writeExcel(raportti: OppilaitosRaporttiResponse): Unit = {
+  private def writeExcel(raportti: OppilaitosRaporttiResponse, t: LocalizationReader): Unit = {
     contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename}"""")
     raportti.downloadToken.foreach { t => response.addCookie(Cookie("valpasDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }
     ExcelWriter.writeExcel(
       raportti.workbookSettings,
       raportti.sheets,
+      t,
       response.getOutputStream
     )
   }

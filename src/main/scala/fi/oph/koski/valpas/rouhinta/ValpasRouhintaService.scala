@@ -50,7 +50,6 @@ class ValpasRouhintaService(application: KoskiApplication) extends ValpasRouhint
     (kunta: String, language: String, password: Option[String])
     (implicit session: ValpasSession)
   : Either[HttpStatus, KuntarouhinnanExcelTulos] = {
-    val t = new LocalizationReader(localization, language)
     haeKunnanPerusteella(kunta)
       .map(asKuntarouhintaExcelResponse(language, password))
   }

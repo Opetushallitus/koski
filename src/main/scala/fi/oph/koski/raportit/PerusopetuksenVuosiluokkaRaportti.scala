@@ -3,24 +3,32 @@ package fi.oph.koski.raportit
 import java.sql.Date
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{Koodistokoodiviite, _}
 import org.json4s.JValue
 import fi.oph.koski.log.Logging
+import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 
 object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta with Logging {
 
-  def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOids: Seq[Oid], paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
+  def buildRaportti(
+    repository: PerusopetuksenRaportitRepository,
+    oppilaitosOids: Seq[Oid],
+    paiva: LocalDate,
+    vuosiluokka: String,
+    t: LocalizationReader
+  ): Seq[PerusopetusRow] = {
     val rows = if (vuosiluokka == "9") {
       repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOids, paiva, vuosiluokka)
     } else {
       repository.perusopetuksenvuosiluokka(oppilaitosOids, paiva, vuosiluokka)
     }
-    rows.map(buildRow(_, paiva))
+    rows.map(buildRow(_, paiva, t))
   }
 
-  private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate) = {
+  private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate, t: LocalizationReader) = {
     val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val (toimintaalueOsasuoritukset, muutOsasuoritukset) = row.osasuoritukset.partition(_.suorituksenTyyppi == "perusopetuksentoimintaalue")
@@ -47,47 +55,47 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinTila = row.opiskeluoikeus.viimeisinTila.getOrElse(""),
       tilaHakupaivalla = row.aikajaksot.last.tila,
-      suorituksenTila = if (row.päätasonSuoritus.vahvistusPäivä.isDefined) "valmis" else "kesken",
+      suorituksenTila = if (row.päätasonSuoritus.vahvistusPäivä.isDefined) t.get("raportti-excel-default-value-valmis") else t.get("raportti-excel-default-value-kesken"),
       suorituksenAlkamispaiva = JsonSerializer.extract[Option[LocalDate]](row.päätasonSuoritus.data \ "alkamispäivä").getOrElse("").toString,
       suorituksenVahvistuspaiva = row.päätasonSuoritus.vahvistusPäivä.getOrElse("").toString,
       jaaLuokalle = JsonSerializer.extract[Option[Boolean]](row.päätasonSuoritus.data \ "jääLuokalle").getOrElse(false),
       luokka = row.luokka,
       voimassaolevatVuosiluokat = row.voimassaolevatVuosiluokat.mkString(","),
-      aidinkieli = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "AI")(pakollisetValtakunnalliset),
-      pakollisenAidinkielenOppimaara = getOppiaineenOppimäärä("AI")(pakollisetValtakunnalliset),
-      kieliA1 = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "A1")(pakollisetValtakunnalliset),
-      kieliA1Oppimaara = getOppiaineenOppimäärä("A1")(pakollisetValtakunnalliset),
-      kieliA2 = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "A2")(pakollisetValtakunnalliset),
-      kieliA2Oppimaara = getOppiaineenOppimäärä("A2")(pakollisetValtakunnalliset),
-      kieliB = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "B1")(pakollisetValtakunnalliset),
-      kieliBOppimaara = getOppiaineenOppimäärä("B1")(pakollisetValtakunnalliset),
-      uskonto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "KT", "ET")(pakollisetValtakunnalliset),
-      uskonnonOppimaara = uskonnonOppimääräIfNotElämänkatsomustieto(pakollisetValtakunnalliset),
-      historia = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "HI")(pakollisetValtakunnalliset),
-      yhteiskuntaoppi = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "YH")(pakollisetValtakunnalliset),
-      matematiikka = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "MA")(pakollisetValtakunnalliset),
-      kemia = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "KE")(pakollisetValtakunnalliset),
-      fysiikka = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "FY")(pakollisetValtakunnalliset),
-      biologia = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "BI")(pakollisetValtakunnalliset),
-      maantieto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "GE")(pakollisetValtakunnalliset),
-      musiikki = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "MU")(pakollisetValtakunnalliset),
-      kuvataide = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "KU")(pakollisetValtakunnalliset),
-      kotitalous = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "KO")(pakollisetValtakunnalliset),
-      terveystieto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "TE")(pakollisetValtakunnalliset),
-      kasityo = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "KS")(pakollisetValtakunnalliset),
-      liikunta = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "LI")(pakollisetValtakunnalliset),
-      ymparistooppi = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "YL")(pakollisetValtakunnalliset),
-      opintoohjaus = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, "OP")(pakollisetValtakunnalliset),
+      aidinkieli = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "AI")(pakollisetValtakunnalliset),
+      pakollisenAidinkielenOppimaara = getOppiaineenOppimäärä("AI", t)(pakollisetValtakunnalliset),
+      kieliA1 = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "A1")(pakollisetValtakunnalliset),
+      kieliA1Oppimaara = getOppiaineenOppimäärä("A1", t)(pakollisetValtakunnalliset),
+      kieliA2 = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "A2")(pakollisetValtakunnalliset),
+      kieliA2Oppimaara = getOppiaineenOppimäärä("A2", t)(pakollisetValtakunnalliset),
+      kieliB = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "B1")(pakollisetValtakunnalliset),
+      kieliBOppimaara = getOppiaineenOppimäärä("B1", t)(pakollisetValtakunnalliset),
+      uskonto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "KT", "ET")(pakollisetValtakunnalliset),
+      uskonnonOppimaara = uskonnonOppimääräIfNotElämänkatsomustieto(pakollisetValtakunnalliset, t),
+      historia = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "HI")(pakollisetValtakunnalliset),
+      yhteiskuntaoppi = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "YH")(pakollisetValtakunnalliset),
+      matematiikka = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "MA")(pakollisetValtakunnalliset),
+      kemia = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "KE")(pakollisetValtakunnalliset),
+      fysiikka = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "FY")(pakollisetValtakunnalliset),
+      biologia = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "BI")(pakollisetValtakunnalliset),
+      maantieto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "GE")(pakollisetValtakunnalliset),
+      musiikki = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "MU")(pakollisetValtakunnalliset),
+      kuvataide = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "KU")(pakollisetValtakunnalliset),
+      kotitalous = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "KO")(pakollisetValtakunnalliset),
+      terveystieto = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "TE")(pakollisetValtakunnalliset),
+      kasityo = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "KS")(pakollisetValtakunnalliset),
+      liikunta = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "LI")(pakollisetValtakunnalliset),
+      ymparistooppi = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "YL")(pakollisetValtakunnalliset),
+      opintoohjaus = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "OP")(pakollisetValtakunnalliset),
       kayttaymisenArvio = JsonSerializer.extract[Option[PerusopetuksenKäyttäytymisenArviointi]](row.päätasonSuoritus.data \ "käyttäytymisenArvio").map(_.arvosana.koodiarvo).getOrElse(""),
       paikallistenOppiaineidenKoodit = paikalliset.map(_.koulutusmoduuliKoodiarvo).mkString(","),
-      pakollisetPaikalliset = pakollisetPaikalliset.map(nimiJaKoodi).mkString(","),
-      valinnaisetPaikalliset = valinnaisetPaikalliset.map(nimiJaKoodiJaArvosana).mkString(","),
-      valinnaisetValtakunnalliset = valinnaisetValtakunnalliset.map(nimiJaKoodiJaArvosana).mkString(","),
-      valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ >= _, 2)).map(nimiJaKoodiJaLaajuusJaArvosana).mkString(","),
-      valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ < _, 2)).map(nimiJaKoodiJaLaajuusJaArvosana).mkString(","),
-      numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(os => vuosiviikkotunteja(os, _ < _, 2) && isNumeroarviollinen(os)).map(nimiJaKoodiJaLaajuusJaArvosana).mkString(","),
-      valinnaisetEiLaajuutta = kaikkiValinnaiset.filter(_.koulutusmoduuliLaajuusArvo.isEmpty).map(nimiJaKoodi).mkString(","),
-      vahvistetutToimintaAlueidenSuoritukset = toimintaalueOsasuoritukset.filter(_.arviointiHyväksytty.getOrElse(false)).sortBy(_.koulutusmoduuliKoodiarvo).map(nimiJaKoodi).mkString(","),
+      pakollisetPaikalliset = pakollisetPaikalliset.map(r => nimiJaKoodi(r, t)).mkString(","),
+      valinnaisetPaikalliset = valinnaisetPaikalliset.map(r => nimiJaKoodiJaArvosana(r, t)).mkString(","),
+      valinnaisetValtakunnalliset = valinnaisetValtakunnalliset.map(r => nimiJaKoodiJaArvosana(r, t)).mkString(","),
+      valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ >= _, 2)).map(r => nimiJaKoodiJaLaajuusJaArvosana(r, t)).mkString(","),
+      valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ < _, 2)).map(r => nimiJaKoodiJaLaajuusJaArvosana(r, t)).mkString(","),
+      numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(os => vuosiviikkotunteja(os, _ < _, 2) && isNumeroarviollinen(os)).map(r => nimiJaKoodiJaLaajuusJaArvosana(r, t)).mkString(","),
+      valinnaisetEiLaajuutta = kaikkiValinnaiset.filter(_.koulutusmoduuliLaajuusArvo.isEmpty).map(r => nimiJaKoodi(r, t)).mkString(","),
+      vahvistetutToimintaAlueidenSuoritukset = toimintaalueOsasuoritukset.filter(_.arviointiHyväksytty.getOrElse(false)).sortBy(_.koulutusmoduuliKoodiarvo).map(r => nimiJaKoodi(r, t)).mkString(","),
       majoitusetu = opiskeluoikeudenLisätiedot.exists(_.majoitusetu.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
       kuljetusetu = opiskeluoikeudenLisätiedot.exists(_.kuljetusetu.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
       kotiopetus = opiskeluoikeudenLisätiedot.exists(oo => oneOfAikajaksoistaVoimassaHakuPaivalla(oo.kotiopetus, oo.kotiopetusjaksot, hakupaiva)),
@@ -129,84 +137,95 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "koulutusmoduuli" \ "pakollinen").getOrElse(false)
   }
 
-  private def oppiaineenArvosanaTiedot(päätasonVahvistusPäivä: Option[Date], koodistoKoodit: String*)(oppiaineidenSuoritukset: Seq[ROsasuoritusRow]) = {
+  private def oppiaineenArvosanaTiedot(
+    päätasonVahvistusPäivä: Option[Date],
+    t: LocalizationReader,
+    koodistoKoodit: String*
+  )(oppiaineidenSuoritukset: Seq[ROsasuoritusRow]): String = {
     oppiaineidenSuoritukset.filter(s => koodistoKoodit.contains(s.koulutusmoduuliKoodiarvo)) match {
-      case Nil => "Oppiaine puuttuu"
-      case suoritukset@_ => suoritukset.map(oppiaineenArvosanaJaYksilöllistettyTieto(_, päätasonVahvistusPäivä)).mkString(",")
+      case Nil => t.get("raportti-excel-default-value-oppiaine-puuttuu")
+      case suoritukset@_ => suoritukset.map(
+        oppiaineenArvosanaJaYksilöllistettyTieto(_, päätasonVahvistusPäivä, t)
+      ).mkString(",")
     }
   }
 
-  private def oppiaineenArvosanaJaYksilöllistettyTieto(osasuoritus: ROsasuoritusRow, päätasonVahvistusPäivä: Option[Date]) = {
-    val arvosana = osasuoritus.arviointiArvosanaKoodiarvo.getOrElse("Arvosana puuttuu")
-    val viimeinenPäiväIlmanLaajuuksia = Date.valueOf(LocalDate.of(2020,7,31))
+  private def oppiaineenArvosanaJaYksilöllistettyTieto(
+    osasuoritus: ROsasuoritusRow,
+    päätasonVahvistusPäivä: Option[Date],
+    t: LocalizationReader
+  ): String = {
+    val arvosana = osasuoritus.arviointiArvosanaKoodiarvo
+      .getOrElse(t.get("raportti-excel-default-value-arvosana-puuttuu"))
+    val viimeinenPäiväIlmanLaajuuksia = Date.valueOf(LocalDate.of(2020, 7, 31))
     if (päätasonVahvistusPäivä.exists(_.after(viimeinenPäiväIlmanLaajuuksia)) && osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)) {
-      val laajuus = osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse("Ei laajuutta")
-      s"$arvosana${täppäIfYksilöllistetty(osasuoritus)} laajuus: $laajuus"
+      val laajuus = osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))
+      s"$arvosana${täppäIfYksilöllistetty(osasuoritus)} ${t.get("raportti-excel-default-value-laajuus")}: $laajuus"
     } else {
       s"$arvosana${täppäIfYksilöllistetty(osasuoritus)}"
     }
   }
 
-  private def täppäIfYksilöllistetty(osasuoritus: ROsasuoritusRow) = {
+  private def täppäIfYksilöllistetty(osasuoritus: ROsasuoritusRow): String = {
     val isYksilöllistetty = JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "yksilöllistettyOppimäärä").getOrElse(false)
     if (isYksilöllistetty) "*" else ""
   }
 
-  private def uskonnonOppimääräIfNotElämänkatsomustieto(osasuoritukset: Seq[ROsasuoritusRow]) = {
+  private def uskonnonOppimääräIfNotElämänkatsomustieto(osasuoritukset: Seq[ROsasuoritusRow], t: LocalizationReader): String = {
     val hasElämänkatsomustieto = osasuoritukset.exists(_.koulutusmoduuliKoodiarvo == "ET")
-    if (hasElämänkatsomustieto) "" else uskonnonOppimäärä(osasuoritukset)
+    if (hasElämänkatsomustieto) "" else uskonnonOppimäärä(osasuoritukset, t)
   }
 
-  private def uskonnonOppimäärä(osasuoritukset: Seq[ROsasuoritusRow]) = {
+  private def uskonnonOppimäärä(osasuoritukset: Seq[ROsasuoritusRow], t: LocalizationReader): String = {
     osasuoritukset
       .find(_.koulutusmoduuliKoodiarvo == "KT")
       .map { uskonto =>
         JsonSerializer.extract[Option[Koodistokoodiviite]](uskonto.data \ "koulutusmoduuli" \ "uskonnonOppimäärä")
-          .flatMap(_.nimi.map(_.get("fi")))
-          .getOrElse("Oppimäärä puuttuu")
+          .flatMap(_.nimi.map(_.get(t.language)))
+          .getOrElse(t.get("raportti-excel-default-value-oppimäärä-puuttuu"))
       }
-      .getOrElse("Oppiaine puuttuu")
+      .getOrElse(t.get("raportti-excel-default-value-oppiaine-puuttuu"))
   }
 
-  private def getOppiaineenOppimäärä(koodistoKoodi: String)(osasuoritukset: Seq[ROsasuoritusRow]) = {
+  private def getOppiaineenOppimäärä(koodistoKoodi: String, t: LocalizationReader)(osasuoritukset: Seq[ROsasuoritusRow]): String = {
     osasuoritukset.filter(_.koulutusmoduuliKoodiarvo == koodistoKoodi) match {
-      case Nil => "Oppiaine puuttuu"
-      case found@_ => found.map(getOppiaineenNimi).mkString(",")
+      case Nil => t.get("raportti-excel-default-value-oppiaine-puuttuu")
+      case found@_ => found.map(f => getOppiaineenNimi(f, t)).mkString(",")
     }
   }
 
-  private def getOppiaineenNimi(osasuoritus: ROsasuoritusRow) = {
-    val muuAine = getFinnishNimi(osasuoritus.data \ "koulutusmoduuli" \ "tunniste" \ "nimi")
-    val kieliAine = getFinnishNimi(osasuoritus.data \ "koulutusmoduuli" \ "kieli" \ "nimi")
+  private def getOppiaineenNimi(osasuoritus: ROsasuoritusRow, t: LocalizationReader): String = {
+    val muuAine = getLokalisoituNimi(osasuoritus.data \ "koulutusmoduuli" \ "tunniste" \ "nimi", t)
+    val kieliAine = getLokalisoituNimi(osasuoritus.data \ "koulutusmoduuli" \ "kieli" \ "nimi", t)
     val result = (kieliAine, muuAine) match {
-      case (Some(_), _)  => kieliAine
+      case (Some(_), _) => kieliAine
       case (_, Some(_)) => muuAine
       case _ => None
     }
-    result.getOrElse("Oppiaine puuttuu")
+    result.getOrElse(t.get("raportti-excel-default-value-oppiaine-puuttuu"))
   }
 
-  private def nimiJaKoodiJaLaajuusJaArvosana(osasuoritus: ROsasuoritusRow) = {
-    nimiJaKoodi(osasuoritus) + " " +
-      osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse("Ei laajuutta") + " " +
-      osasuoritus.arviointiArvosanaKoodiarvo.getOrElse("Ei arvosanaa")
+  private def nimiJaKoodiJaLaajuusJaArvosana(osasuoritus: ROsasuoritusRow, t: LocalizationReader): String = {
+    nimiJaKoodi(osasuoritus, t) + " " +
+      osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu")) + " " +
+      osasuoritus.arviointiArvosanaKoodiarvo.getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))
   }
 
-  private def nimiJaKoodi(osasuoritus: ROsasuoritusRow) = {
-    s"${getOppiaineenNimi(osasuoritus)} (${osasuoritus.koulutusmoduuliKoodiarvo})"
+  private def nimiJaKoodi(osasuoritus: ROsasuoritusRow, t: LocalizationReader): String = {
+    s"${getOppiaineenNimi(osasuoritus, t)} (${osasuoritus.koulutusmoduuliKoodiarvo})"
   }
 
-  private def nimiJaKoodiJaArvosana(osasuoritus: ROsasuoritusRow) = {
-    s"${getOppiaineenNimi(osasuoritus)} (${osasuoritus.koulutusmoduuliKoodiarvo}) ${osasuoritus.arviointiArvosanaKoodiarvo.getOrElse("Ei arvosanaa")}"
+  private def nimiJaKoodiJaArvosana(osasuoritus: ROsasuoritusRow, t: LocalizationReader): String = {
+    s"${getOppiaineenNimi(osasuoritus, t)} (${osasuoritus.koulutusmoduuliKoodiarvo}) ${osasuoritus.arviointiArvosanaKoodiarvo.getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))}"
   }
 
-  private def getFinnishNimi(j: JValue) = {
-    JsonSerializer.extract[Option[LocalizedString]](j).map(_.get("fi"))
+  private def getLokalisoituNimi(j: JValue, t: LocalizationReader): Option[String] = {
+    JsonSerializer.extract[Option[LocalizedString]](j).map(_.get(t.language))
   }
 
   private val vuosiviikkotunnitKoodistoarvo = "3"
 
-  private def vuosiviikkotunteja(osasuoritus: ROsasuoritusRow, op: (Double, Double) => Boolean, threshold: Double) = {
+  private def vuosiviikkotunteja(osasuoritus: ROsasuoritusRow, op: (Double, Double) => Boolean, threshold: Double): Boolean = {
     osasuoritus.koulutusmoduuliLaajuusYksikkö.contains(vuosiviikkotunnitKoodistoarvo) &&
       op(osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse(-1d), threshold)
   }
@@ -215,31 +234,26 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     osasuoritus.arviointiArvosanaKoodiarvo.exists(_.matches("\\d+"))
   }
 
-  private def oneOfAikajaksoistaVoimassaHakuPaivalla(aikajakso: Option[Jakso], aikajaksot: Option[List[Jakso]], hakupaiva: LocalDate) = {
-   aikajakso.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)) ||
-     aikajaksot.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))
+  private def oneOfAikajaksoistaVoimassaHakuPaivalla(aikajakso: Option[Jakso], aikajaksot: Option[List[Jakso]], hakupaiva: LocalDate): Boolean = {
+    aikajakso.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)) ||
+      aikajaksot.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))
   }
 
-  private def aikajaksoVoimassaHakuPaivalla(aikajakso: Jakso, paiva: LocalDate) = {
+  private def aikajaksoVoimassaHakuPaivalla(aikajakso: Jakso, paiva: LocalDate): Boolean = {
     (aikajakso.alku, aikajakso.loppu) match {
       case (alku, Some(loppu)) => !alku.isAfter(paiva) && !loppu.isBefore(paiva)
       case (alku, _) => !alku.isAfter(paiva)
     }
   }
 
-  val perusopetuksenToiminaAlueKoodisto = Map(
-    "1" -> "motoriset taidot",
-    "2" -> "kieli ja kommunikaatio",
-    "3"	-> "sosiaaliset taidot",
-    "4"	-> "päivittäisten toimintojen taidot",
-    "5"	->"kognitiiviset taidot"
-  )
+  private def combineErityisenTuenPäätökset(
+    erityisenTuenPäätös: Option[ErityisenTuenPäätös],
+    erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]]
+  ): List[ErityisenTuenPäätös] = {
+    erityisenTuenPäätös.toList ++ erityisenTuenPäätökset.toList.flatten
+  }
 
- private def combineErityisenTuenPäätökset(erityisenTuenPäätös: Option[ErityisenTuenPäätös], erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]]) = {
-   erityisenTuenPäätös.toList ++ erityisenTuenPäätökset.toList.flatten
- }
-
-  private def erityisentuenPäätösvoimassaPaivalla(päätös: ErityisenTuenPäätös, paiva: LocalDate) = {
+  private def erityisentuenPäätösvoimassaPaivalla(päätös: ErityisenTuenPäätös, paiva: LocalDate): Boolean = {
     (päätös.alku, päätös.loppu) match {
       case (Some(alku), Some(loppu)) => !alku.isAfter(paiva) && !loppu.isBefore(paiva)
       case (Some(alku), _) => !alku.isAfter(paiva)
@@ -247,103 +261,91 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     }
   }
 
-  def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = "TITLE TODO"
+  def title(etuliite: String, oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String =
+    s"$etuliite $vuosiluokka $oppilaitosOid ${finnishDateFormat.format(paiva)}"
 
-  def documentation(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, loadStarted: LocalDateTime): String =
-    s"""
-      |Tarkempi kuvaus joistakin sarakkeista:
-      |
-      |- Sukupuoli: 1 = mies, 2 = nainen
-      |- Viimeisin opiskeluoikeuden tila: Se opiskeluoikeuden tila, joka opiskeluoikeudella on nyt.
-      |- Opiskeluoikeuden tila tulostuspäivänä: Opiskeluoikeuden tila, joka opiskeluoikeudella oli sinä päivämääränä, joka on syötetty tulostusparametreissa ”Päivä”-kenttään.
-      |- Suorituksen vahvistuspäivä: Sen päätason suorituksen (vuosiluokka tai perusopetuksen oppimäärä), jolta raportti on tulostettu, vahvistuspäivä.
-      |- Vuosiluokkien suoritukset, joilta puuttuu vahvistus: Lista niistä vuosiluokista, joilta puuttuu vahvistus. Jos tässä sarakkeessa on useampia vuosiluokkia, se on osoitus siitä, että tiedoissa on virheitä.
-      |- Pakollisten oppiaineiden arvosana- ja oppimääräsarakkeet (sarakkeet S-AQ): Valtakunnalliset oppiainesuoritukset (https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskioppiaineetyleissivistava/latest), jotka siirretty pakollisena.
-      |- Paikallisten oppiaineiden koodit: Vuosiluokkasuorituksella olevien paikallisten oppiaineiden koodit. Jos tästä löytyy jokin valtakunnallinen oppiaine (https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskioppiaineetyleissivistava/latest), tiedonsiirroissa on siirretty virheellisesti valtakunnallinen oppiaine paikallisena.
-      |- Pakolliset paikalliset oppiaineet: Pakollisissa oppiaineissa olevat paikalliset oppiaineet. Pääsääntöisesti, jos tässä sarakkeessa on mitään arvoja, oppiaineiden siirrossa on tapahtunut virhe (eli joko pakollinen valtakunnallinen oppiaine on siirretty pakollisena paikallisena oppiaineena tai valinnainen paikallinen oppiaine on siirretty pakollisena paikallisena oppiaineena). Vain tietyillä erityiskouluilla (esim. steinerkoulut) on pakollisia paikallisia oppiaineita.
-      |- Valinnaiset oppiaineet joilla on numeroarviointi ja joiden laajuus on pienempi kuin 2 vuosiviikkotuntia: Jos tässä sarakkeessa on muita kuin tyhjiä kenttiä, kyseisten oppiaineiden siirrossa on jokin virhe (eli joko oppiaineen laajuus on oikeasti 2 vuosiviikkotuntia tai enemmän tai sitten alle 2 vuosiviikkotunnin laajuiselle valinnaiselle oppiaineelle on virheellisesti siirretty numeroarvosana). Alle 2 vuosiviikkotunnin laajuisella oppiainesuorituksella ei pitäisi olla numeroarvosanaa.
-      |- Vahvistetut toiminta-alueiden suoritukset: Sarake listaa S-merkinnällä vahvistetut toiminta-alueen suoritukset niiltä oppilailta, jotka opiskelevat toiminta-alueittain. Jos sarakkeesta löytyy kenttiä, joissa on vähemmän kuin viisi toiminta-alueittain opiskeltavan perusopetuksen toiminta-aluetta (https://virkailija.opintopolku.fi/koski/dokumentaatio/koodisto/perusopetuksentoimintaalue/latest), suoritettujen toiminta-alueiden siirroissa on todennäköisesti virhe.
-      |- Opiskeluoikeuden lisätiedoissa ilmoitettavat etu- ja tukimuodot (sarakkeet BB-BR: Sarakkeessa oleva arvo kertoo, onko siirretyn KOSKI-datan mukaan kyseinen etu- tai tukimuoto ollut voimassa raportin tulostusparametrien ”Päivä”-kenttään syötettynä päivämääränä. Esimerkki: Jos raportti on tulostettu päivälle 1.6.2019 ja oppilaalla on opiskeluoikeuden lisätiedoissa majoitusjakso välillä 1.1.-31.12.2019, ”Majoitusetu”-sarakkeeseen tulostuu oppilaan rivillä ”Kyllä”.
-    """.stripMargin
+  def documentation(t: LocalizationReader): String = t.get("raportti-excel-perusopetus-dokumentaatio")
 
-  def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = {
-    s"Perusopetuksen_vuosiluokka_${oppilaitosOid}_${vuosiluokka}_${paiva}.xlsx"
+  def filename(etuliite: String, oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = {
+    s"${etuliite}_${oppilaitosOid}_${vuosiluokka}_${paiva}.xlsx"
   }
 
-  private def compactLisätiedotColumn(title: String) = CompactColumn(title, comment = Some("Sarakkeessa oleva arvo kertoo, onko siirretyn KOSKI-datan mukaan kyseinen etu- tai tukimuoto ollut voimassa raportin tulostusparametrien ”Päivä”-kenttään syötettynä päivämääränä."))
+  private def compactLisätiedotColumn(title: String, t: LocalizationReader) = CompactColumn(title, comment = Some(t.get("raportti-excel-kolumni-compactLisätiedotColumn-comment")))
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
-    "oppilaitoksenNimi" -> Column("Oppilaitoksen nimi", comment = Some("Oppilaitos, joka opiskeluoikeudella on nyt. Mahdollisesti eri kuin todellinen oppilaitos raportin tulostusparametrin \"Päivä\"- kenttään syötettynä päivämääränä.")),
-    "oppilaitosRaportointipäivänä" -> Column("Oppilaitos raportointipäivänä (jos eri)", comment = Some("Oppilaitos ja koulutustoimija, joihin opiskeluoikeus kuului raportin tulostusparametrin \"Päivä\"- kenttään syötettynä päivämääränä, jos eri kuin viereisen sarakkeen oppilaitos.")),
-    "lähdejärjestelmä" -> Column("Lähdejärjestelmä"),
-    "lähdejärjestelmänId" -> CompactColumn("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
-    "yksiloity" -> Column("Yksilöity", comment = Some("Jos tässä on arvo 'ei', tulee oppija yksilöidä oppijanumerorekisterissä")),
-    "oppijaOid" -> Column("Oppijan oid"),
-    "hetu" -> Column("hetu"),
-    "sukunimi" -> Column("Sukunimi"),
-    "etunimet" -> Column("Etunimet"),
-    "sukupuoli" -> Column("Sukupuoli", comment = Some("1 = mies, 2 = nainen")),
-    "kotikunta" -> Column("Kotikunta", comment = Some("Tieto 'kotikunta' haetaan opintopolun oppijanumerorekisteristä, koulutuksenjärjestäjä ei tallenna kotikunta-tietoa KOSKI-palveluun. Oppijanumerorekisterin kotikunta-tieto ei sisällä takautuvia tietoja oppijan kotikuntahistoriasta, joten raportilla näkyvä kotikunta on raportin tulostamispäivän mukainen kotikunta, eli ei välttämättä sama, kuin mikä väestötietojärjestelmässä oppijan tosiasiallinen kotikunta on ollut raportille valittuna päivänä.")),
-    "opiskeluoikeudenAlkamispäivä" -> Column("Opiskeluoikeuden alkamispäivä"),
-    "viimeisinTila" -> CompactColumn("Viimeisin opiskeluoikeuden tila", comment = Some("Se opiskeluoikeuden tila, joka opiskeluoikeudella on nyt.")),
-    "tilaHakupaivalla" -> CompactColumn("Opiskeluoikeuden tila tulostuspäivänä", comment = Some("Se opiskeluoikeuden tila, joka opiskeluoikeudella oli raportin tulostusparametrin \"Päivä\"- kenttään syötettynä päivämääränä")),
-    "suorituksenTila" -> CompactColumn("Suorituksen tila"),
-    "suorituksenAlkamispaiva" -> CompactColumn("Suoritukselle merkattu alkamispäivä"),
-    "suorituksenVahvistuspaiva" -> CompactColumn("Suorituksen vahvistuspäivä"),
-    "jaaLuokalle" -> CompactColumn("Jää luokalle"),
-    "luokka" -> CompactColumn("Luokan tunniste"),
-    "voimassaolevatVuosiluokat" -> CompactColumn("Vuosiluokkien suoritukset joilta puuttuu vahvistus", comment = Some("Jos tässä sarakkeessa on useampia vuosiluokkia, se on osoitus siitä, että tiedoissa on virheitä.")),
-    "aidinkieli" -> CompactColumn("Äidinkieli"),
-    "pakollisenAidinkielenOppimaara" -> CompactColumn("Äidinkielen oppimäärä"),
-    "kieliA1" -> CompactColumn("A1-kieli"),
-    "kieliA1Oppimaara" -> CompactColumn("A1-kielen oppimäärä"),
-    "kieliA2" -> CompactColumn("A2-kieli"),
-    "kieliA2Oppimaara" -> CompactColumn("A2-kielen oppimäärä"),
-    "kieliB" -> CompactColumn("B-kieli"),
-    "kieliBOppimaara" -> CompactColumn("B-kielen oppimäärä"),
-    "uskonto" -> CompactColumn("Uskonto/Elämänkatsomustieto"),
-    "uskonnonOppimaara" -> CompactColumn("Uskonnon oppimäärä"),
-    "historia" -> CompactColumn("Historia"),
-    "yhteiskuntaoppi" -> CompactColumn("Yhteiskuntaoppi"),
-    "matematiikka" -> CompactColumn("Matematiikka"),
-    "kemia" -> CompactColumn("Kemia"),
-    "fysiikka" -> CompactColumn("Fysiikka"),
-    "biologia" -> CompactColumn("Biologia"),
-    "maantieto" -> CompactColumn("Maantieto"),
-    "musiikki" -> CompactColumn("Musiikki"),
-    "kuvataide" -> CompactColumn("Kuvataide"),
-    "kotitalous" -> CompactColumn("Kotitalous"),
-    "terveystieto" -> CompactColumn("Terveystieto"),
-    "kasityo" -> CompactColumn("Käsityö"),
-    "liikunta" -> CompactColumn("Liikunta"),
-    "ymparistooppi" -> CompactColumn("Ympäristöoppi"),
-    "opintoohjaus" -> CompactColumn("Opinto-ohjaus"),
-    "kayttaymisenArvio" -> CompactColumn("Käyttäytymisen arviointi"),
-    "paikallistenOppiaineidenKoodit" -> CompactColumn("Paikallisten oppiaineiden koodit"),
-    "pakollisetPaikalliset" -> CompactColumn("Pakolliset paikalliset oppiaineet", comment = Some("Pääsääntöisesti, jos tässä sarakkeessa on mitään arvoja, oppiaineiden siirrossa on tapahtunut virhe (eli joko pakollinen valtakunnallinen oppiaine on siirretty pakollisena paikallisena oppiaineena tai valinnainen paikallinen oppiaine on siirretty pakollisena paikallisena oppiaineena). Vain tietyillä erityiskouluilla (esim. steinerkoulut) on pakollisia paikallisia oppiaineita.")),
-    "valinnaisetPaikalliset" -> CompactColumn("Valinnaiset paikalliset oppiaineet"),
-    "valinnaisetValtakunnalliset" -> CompactColumn("Valinnaiset valtakunnalliset oppiaineet"),
-    "valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia" -> CompactColumn("Valinnaiset oppiaineet, joiden laajuus on suurempi tai yhtäsuuri kuin 2 vuosiviikkotuntia"),
-    "valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> CompactColumn("Valinnaiset oppiaineet, joiden laajuus on pienempi kuin 2 vuosiviikko tuntia"),
-    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> CompactColumn("Valinnaiset oppiaineet, joilla on numeroarviointi ja joiden laajuus on pienempi kuin 2 vuosiviikkotuntia", comment = Some("Jos tässä sarakkeessa on muita kuin tyhjiä kenttiä, kyseisten oppiaineiden siirrossa on jokin virhe (eli joko oppiaineen laajuus on oikeasti 2 vuosiviikkotuntia tai enemmän tai sitten alle 2 vuosiviikkotunnin laajuiselle valinnaiselle oppiaineelle on virheellisesti siirretty numeroarvosana). Alle 2 vuosiviikkotunnin laajuisella oppiainesuorituksella ei pitäisi olla numeroarvosanaa.")),
-    "valinnaisetEiLaajuutta" -> CompactColumn("Valinnaiset oppiaineet, joilla ei ole laajuutta"),
-    "vahvistetutToimintaAlueidenSuoritukset" -> CompactColumn("Vahvistetut toiminta-alueiden suoritukset", comment = Some("Sarake listaa S-merkinnällä vahvistetut toiminta-alueen suoritukset niiltä oppilailta, jotka opiskelevat toiminta-alueittain. Jos sarakkeesta löytyy kenttiä, joissa on vähemmän kuin viisi toiminta-alueittain opiskeltavan perusopetuksen toiminta-aluetta (https://virkailija.opintopolku.fi/koski/dokumentaatio/koodisto/perusopetuksentoimintaalue/latest), suoritettujen toiminta-alueiden siirroissa on todennäköisesti virhe.")),
-    "majoitusetu" -> compactLisätiedotColumn("Majoitusetu"),
-    "kuljetusetu" -> compactLisätiedotColumn("Kuljetusetu"),
-    "kotiopetus" -> compactLisätiedotColumn("Kotiopetus"),
-    "ulkomailla" -> compactLisätiedotColumn("Ulkomailla"),
-    "perusopetuksenAloittamistaLykatty" -> compactLisätiedotColumn("Perusopetuksen aloittamista lykätty"),
-    "aloittanutEnnenOppivelvollisuutta" -> compactLisätiedotColumn("Aloittanut ennen oppivelvollisuutta"),
-    "pidennettyOppivelvollisuus" -> compactLisätiedotColumn("Pidennetty oppivelvollisuus"),
-    "joustavaPerusopetus" -> compactLisätiedotColumn("Joustava perusopetus"),
-    "vuosiluokkiinSitoutumatonOpetus" -> compactLisätiedotColumn("Vuosiluokkiin sitomaton opetus"),
-    "vammainen" -> compactLisätiedotColumn("Vammainen"),
-    "vaikeastiVammainen" -> compactLisätiedotColumn("Vaikeimmin kehitysvammainen"),
-    "sisäoppilaitosmainenMajoitus" -> compactLisätiedotColumn("Sisäoppilaitosmainen majoitus"),
-    "koulukoti" -> compactLisätiedotColumn("Koulukoti"),
-    "erityisenTuenPaatosVoimassa" -> CompactColumn("Erityisen tuen jakso voimassa", comment = Some("Sarakkeessa arvo \"kyllä\" jos opiskeluoikeudella on voimassa oleva erityisen tuen jakso raportin tulostukseen valittuna päivämääränä.")),
-    "erityisenTuenPaatosToimialueittain" -> compactLisätiedotColumn("Opiskelee toimialueittain")
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
+    "oppilaitoksenNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi"), comment = Some(t.get("raportti-excel-kolumni-oppilaitoksenNimi-comment"))),
+    "oppilaitosRaportointipäivänä" -> Column(t.get("raportti-excel-kolumni-oppilaitosRaportointipäivänä"), comment = Some(t.get("raportti-excel-kolumni-oppilaitosRaportointipäivänä-comment"))),
+    "lähdejärjestelmä" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmä")),
+    "lähdejärjestelmänId" -> CompactColumn(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
+    "yksiloity" -> Column(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
+    "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
+    "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
+    "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
+    "sukupuoli" -> Column(t.get("raportti-excel-kolumni-sukupuoli"), comment = Some(t.get("raportti-excel-kolumni-sukupuoli-comment"))),
+    "kotikunta" -> Column(t.get("raportti-excel-kolumni-kotikunta"), comment = Some(t.get("raportti-excel-kolumni-kotikunta-comment"))),
+    "opiskeluoikeudenAlkamispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
+    "viimeisinTila" -> CompactColumn(t.get("raportti-excel-kolumni-viimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-viimeisinTila-comment"))),
+    "tilaHakupaivalla" -> CompactColumn(t.get("raportti-excel-kolumni-tilaHakupaivalla"), comment = Some(t.get("raportti-excel-kolumni-tilaHakupaivalla-comment"))),
+    "suorituksenTila" -> CompactColumn(t.get("raportti-excel-kolumni-suorituksenTila")),
+    "suorituksenAlkamispaiva" -> CompactColumn(t.get("raportti-excel-kolumni-suorituksenAlkamispaiva")),
+    "suorituksenVahvistuspaiva" -> CompactColumn(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva")),
+    "jaaLuokalle" -> CompactColumn(t.get("raportti-excel-kolumni-jaaLuokalle")),
+    "luokka" -> CompactColumn(t.get("raportti-excel-kolumni-luokka")),
+    "voimassaolevatVuosiluokat" -> CompactColumn(t.get("raportti-excel-kolumni-voimassaolevatVuosiluokat"), comment = Some(t.get("raportti-excel-kolumni-voimassaolevatVuosiluokat-comment"))),
+    "aidinkieli" -> CompactColumn(t.get("raportti-excel-kolumni-aidinkieli")),
+    "pakollisenAidinkielenOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-pakollisenAidinkielenOppimaara")),
+    "kieliA1" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA1")),
+    "kieliA1Oppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA1Oppimaara")),
+    "kieliA2" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA2")),
+    "kieliA2Oppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA2Oppimaara")),
+    "kieliB" -> CompactColumn(t.get("raportti-excel-kolumni-kieliB")),
+    "kieliBOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-kieliBOppimaara")),
+    "uskonto" -> CompactColumn(t.get("raportti-excel-kolumni-uskonto")),
+    "uskonnonOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-uskonnonOppimaara")),
+    "historia" -> CompactColumn(t.get("raportti-excel-kolumni-historia")),
+    "yhteiskuntaoppi" -> CompactColumn(t.get("raportti-excel-kolumni-yhteiskuntaoppi")),
+    "matematiikka" -> CompactColumn(t.get("raportti-excel-kolumni-matematiikka")),
+    "kemia" -> CompactColumn(t.get("raportti-excel-kolumni-kemia")),
+    "fysiikka" -> CompactColumn(t.get("raportti-excel-kolumni-fysiikka")),
+    "biologia" -> CompactColumn(t.get("raportti-excel-kolumni-biologia")),
+    "maantieto" -> CompactColumn(t.get("raportti-excel-kolumni-maantieto")),
+    "musiikki" -> CompactColumn(t.get("raportti-excel-kolumni-musiikki")),
+    "kuvataide" -> CompactColumn(t.get("raportti-excel-kolumni-kuvataide")),
+    "kotitalous" -> CompactColumn(t.get("raportti-excel-kolumni-kotitalous")),
+    "terveystieto" -> CompactColumn(t.get("raportti-excel-kolumni-terveystieto")),
+    "kasityo" -> CompactColumn(t.get("raportti-excel-kolumni-kasityo")),
+    "liikunta" -> CompactColumn(t.get("raportti-excel-kolumni-liikunta")),
+    "ymparistooppi" -> CompactColumn(t.get("raportti-excel-kolumni-ymparistooppi")),
+    "opintoohjaus" -> CompactColumn(t.get("raportti-excel-kolumni-opintoohjaus")),
+    "kayttaymisenArvio" -> CompactColumn(t.get("raportti-excel-kolumni-kayttaymisenArvio")),
+    "paikallistenOppiaineidenKoodit" -> CompactColumn(t.get("raportti-excel-kolumni-paikallistenOppiaineidenKoodit")),
+    "pakollisetPaikalliset" -> CompactColumn(t.get("raportti-excel-kolumni-pakollisetPaikalliset"), comment = Some(t.get("raportti-excel-kolumni-pakollisetPaikalliset-comment"))),
+    "valinnaisetPaikalliset" -> CompactColumn(t.get("raportti-excel-kolumni-valinnaisetPaikalliset")),
+    "valinnaisetValtakunnalliset" -> CompactColumn(t.get("raportti-excel-kolumni-valinnaisetValtakunnalliset")),
+    "valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia" -> CompactColumn(t.get("raportti-excel-kolumni-valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia")),
+    "valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> CompactColumn(t.get("raportti-excel-kolumni-valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia")),
+    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> CompactColumn(
+      title = t.get("raportti-excel-kolumni-numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia"),
+      comment = Some(t.get("raportti-excel-kolumni-numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia-comment"))),
+    "valinnaisetEiLaajuutta" -> CompactColumn(t.get("raportti-excel-kolumni-valinnaisetEiLaajuutta")),
+    "vahvistetutToimintaAlueidenSuoritukset" -> CompactColumn(t.get("raportti-excel-kolumni-vahvistetutToimintaAlueidenSuoritukset"), comment = Some(t.get("raportti-excel-kolumni-vahvistetutToimintaAlueidenSuoritukset-comment"))),
+    "majoitusetu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-majoitusetu"), t),
+    "kuljetusetu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-kuljetusetu"), t),
+    "kotiopetus" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-kotiopetus"), t),
+    "ulkomailla" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-ulkomailla"), t),
+    "perusopetuksenAloittamistaLykatty" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-perusopetuksenAloittamistaLykatty"), t),
+    "aloittanutEnnenOppivelvollisuutta" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-aloittanutEnnenOppivelvollisuutta"), t),
+    "pidennettyOppivelvollisuus" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-pidennettyOppivelvollisuus"), t),
+    "joustavaPerusopetus" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-joustavaPerusopetus"), t),
+    "vuosiluokkiinSitoutumatonOpetus" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-vuosiluokkiinSitoutumatonOpetus"), t),
+    "vammainen" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-vammainen"), t),
+    "vaikeastiVammainen" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-vaikeastiVammainen"), t),
+    "sisäoppilaitosmainenMajoitus" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus"), t),
+    "koulukoti" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-koulukoti"), t),
+    "erityisenTuenPaatosVoimassa" -> CompactColumn(t.get("raportti-excel-kolumni-erityisenTuenPaatosVoimassa"), comment = Some(t.get("raportti-excel-kolumni-erityisenTuenPaatosVoimassa-comment"))),
+    "erityisenTuenPaatosToimialueittain" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-erityisenTuenPaatosToimialueittain"), t)
   )
 }
 

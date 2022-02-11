@@ -13,6 +13,7 @@ import {filterOrgTreeByRaporttityyppi} from './raporttiUtils'
 import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
+import {lang} from '../i18n/i18n'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -489,6 +490,7 @@ function PerusopetuksenVuosiluokka({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
