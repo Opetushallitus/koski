@@ -8,11 +8,10 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
 import fi.oph.koski.organisaatio.Oppilaitostyyppi
 import fi.oph.koski.schema.Henkilö
-import fi.oph.koski.util.Timing
 import org.json4s.JsonAST.JValue
 import rx.lang.scala.Observable
 
-class YtlService(application: KoskiApplication) extends Logging with Timing {
+class YtlService(application: KoskiApplication) extends Logging {
   private val ytlOpiskeluoikeusRepository = new YtlOpiskeluoikeusRepository(application.replicaDatabase.db, application.validatingAndResolvingExtractor)
 
   def streamOppijat(
@@ -20,90 +19,83 @@ class YtlService(application: KoskiApplication) extends Logging with Timing {
     hetut: Seq[String],
     opiskeluoikeuksiaMuuttunutJälkeen: Option[Instant]
   )(implicit user: KoskiSpecificSession): Observable[JValue] = {
-    timed("streamOppijat", 1) {
+    val pyydetytHenkilöt: Seq[OppijaHenkilö] =
+      application.opintopolkuHenkilöFacade.findOppijatNoSlaveOids(oidit) ++
+        application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut)
 
-      val pyydetytHenkilöt: Seq[OppijaHenkilö] =
-        timed("findOppijat", 0) {
-          application.opintopolkuHenkilöFacade.findOppijatNoSlaveOids(oidit) ++
-            application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut)
-        }
+    val oppijaOidToPyydettyHenkilö: Map[Henkilö.Oid, OppijaHenkilö] = pyydetytHenkilöt.map(h => h.oid -> h).toMap
 
-      val oppijaOidToPyydettyHenkilö: Map[Henkilö.Oid, OppijaHenkilö] = pyydetytHenkilöt.map(h => h.oid -> h).toMap
+    val pyydetytOppijaOidit: List[Henkilö.Oid] = oppijaOidToPyydettyHenkilö.keys.toList
 
-      val pyydetytOppijaOidit: List[Henkilö.Oid] = oppijaOidToPyydettyHenkilö.keys.toList
+    // Haku pitää tehdä master-oppijoiden kautta, jotta saadaan palautettua opiskeluoikeudet myös mahdollisilta
+    // sisaruksena olevilta linkitetyiltä oppijoilta.
+    val masterHenkilöt: Map[Henkilö.Oid, LaajatOppijaHenkilöTiedot] =
+      application.opintopolkuHenkilöFacade.findMasterOppijat(pyydetytOppijaOidit)
+    val masterOppijanLinkitetytOppijaOidit: Map[Henkilö.Oid, List[Henkilö.Oid]] = masterHenkilöt.collect {
+      case (_, hlö) =>
+        (hlö.oid, hlö.linkitetytOidit)
+    }
 
-      // Haku pitää tehdä master-oppijoiden kautta, jotta saadaan palautettua opiskeluoikeudet myös mahdollisilta
-      // sisaruksena olevilta linkitetyiltä oppijoilta.
-      val masterHenkilöt: Map[Henkilö.Oid, LaajatOppijaHenkilöTiedot] =
-        timed("findMasterOppijat", 0) {
-          application.opintopolkuHenkilöFacade.findMasterOppijat(pyydetytOppijaOidit)
-        }
-      val masterOppijanLinkitetytOppijaOidit: Map[Henkilö.Oid, List[Henkilö.Oid]] = masterHenkilöt.collect {
-        case (_, hlö) =>
-          (hlö.oid, hlö.linkitetytOidit)
-      }
+    val masterOppijoidenOidit: Seq[Henkilö.Oid] = masterHenkilöt.values.map(_.oid).toSeq
 
-      val masterOppijoidenOidit: Seq[Henkilö.Oid] = masterHenkilöt.values.map(_.oid).toSeq
+    def teePalautettavatYtlHenkilöt(oppijaMasterOid: String): Iterable[YtlHenkilö] = {
+      // Luo YTLHenkilöt oppijoista, joilla oppijaa on alunperin pyydetty. Lista opiskeluoikeuksia palautetaan jokaiselle
+      // niistä, jotta kutsuja saa oikean ja riittävän tiedon siitä, millä kutsujan antamilla oppija-oideilla
+      // opiskeluoikeuksia löytyi.
+      val etsittävätHenkilöOidit =
+        Seq(oppijaMasterOid) ++ masterOppijanLinkitetytOppijaOidit(oppijaMasterOid)
 
-      def teePalautettavatYtlHenkilöt(oppijaMasterOid: String): Iterable[YtlHenkilö] = {
-        // Luo YTLHenkilöt oppijoista, joilla oppijaa on alunperin pyydetty. Lista opiskeluoikeuksia palautetaan jokaiselle
-        // niistä, jotta kutsuja saa oikean ja riittävän tiedon siitä, millä kutsujan antamilla oppija-oideilla
-        // opiskeluoikeuksia löytyi.
-        val etsittävätHenkilöOidit =
-          Seq(oppijaMasterOid) ++ masterOppijanLinkitetytOppijaOidit(oppijaMasterOid)
+      val pyynnössäEsiintyneetOppijaHenkilöt =
+        oppijaOidToPyydettyHenkilö.collect { case (oid, hlö) if etsittävätHenkilöOidit.contains(oid) => hlö }
 
-        val pyynnössäEsiintyneetOppijaHenkilöt =
-          oppijaOidToPyydettyHenkilö.collect { case (oid, hlö) if etsittävätHenkilöOidit.contains(oid) => hlö }
+      pyynnössäEsiintyneetOppijaHenkilöt.map(hlö => {
+        val pääoppijaOid = Some(oppijaMasterOid)
 
-        pyynnössäEsiintyneetOppijaHenkilöt.map(hlö => {
-          val pääoppijaOid = Some(oppijaMasterOid)
+        YtlHenkilö(
+          hlö = hlö,
+          pääoppijaOid = pääoppijaOid,
+          äidinkieli = hlö.äidinkieli.flatMap(k => application.koodistoViitePalvelu.validate("kieli", k.toUpperCase))
+        )
+      })
+    }
 
-          YtlHenkilö(
-            hlö = hlö,
-            pääoppijaOid = pääoppijaOid,
-            äidinkieli = hlö.äidinkieli.flatMap(k => application.koodistoViitePalvelu.validate("kieli", k.toUpperCase))
+    def teePalautettavatYtlOppijat(oppijaMasterOid: String, opiskeluoikeusRows: Seq[OppijanOpiskeluoikeusRow]): Iterable[YtlOppija] = {
+      val opiskeluoikeudet =
+        opiskeluoikeusRows
+          .filterNot(_.mitätöity)
+          .map(_.opiskeluoikeus)
+          .flatMap(siivoaOpiskeluoikeus)
+
+      val mitätöityjäAikaleimanJälkeen =
+        opiskeluoikeusRows.filter(_.mitätöityAikaleimanJälkeen).nonEmpty
+
+      if (mitätöityjäAikaleimanJälkeen || opiskeluoikeudet.nonEmpty) {
+        teePalautettavatYtlHenkilöt(oppijaMasterOid).map(ytlHenkilö =>
+          YtlOppija(
+            henkilö = ytlHenkilö,
+            opiskeluoikeudet = opiskeluoikeudet.toList
           )
-        })
-      }
-
-      def teePalautettavatYtlOppijat(oppijaMasterOid: String, opiskeluoikeusRows: Seq[OppijanOpiskeluoikeusRow]): Iterable[YtlOppija] = {
-        val opiskeluoikeudet =
-          opiskeluoikeusRows
-            .filterNot(_.mitätöity)
-            .map(_.opiskeluoikeus)
-            .flatMap(siivoaOpiskeluoikeus)
-
-        val mitätöityjäAikaleimanJälkeen =
-          opiskeluoikeusRows.filter(_.mitätöityAikaleimanJälkeen).nonEmpty
-
-        if (mitätöityjäAikaleimanJälkeen || opiskeluoikeudet.nonEmpty) {
-          teePalautettavatYtlHenkilöt(oppijaMasterOid).map(ytlHenkilö =>
-            YtlOppija(
-              henkilö = ytlHenkilö,
-              opiskeluoikeudet = opiskeluoikeudet.toList
-            )
-          )
-        }
-        else {
-          Seq.empty
-        }
-      }
-
-      val opiskeluoikeudet: Seq[OppijanOpiskeluoikeusRow] = {
-        ytlOpiskeluoikeusRepository.getOppijanKaikkiOpiskeluoikeudetJosJokinNiistäOnPäivittynytAikaleimanJälkeen(
-          palautettavatOpiskeluoikeudenTyypit = YtlSchema.schemassaTuetutOpiskeluoikeustyypit,
-          oppijaMasterOids = masterOppijoidenOidit.toList,
-          aikaleimaInstant = opiskeluoikeuksiaMuuttunutJälkeen
         )
       }
-
-      Observable.from(
-        opiskeluoikeudet.groupBy(_.masterOppijaOid).flatMap {
-          case (oppijaMasterOid, opiskeluoikeusRows) => teePalautettavatYtlOppijat(oppijaMasterOid, opiskeluoikeusRows)
-        })
-        .doOnEach(auditLogOpiskeluoikeusKatsominen(_)(user))
-        .map(JsonSerializer.serializeWithUser(user))
+      else {
+        Seq.empty
+      }
     }
+
+    val opiskeluoikeudet: Seq[OppijanOpiskeluoikeusRow] = {
+      ytlOpiskeluoikeusRepository.getOppijanKaikkiOpiskeluoikeudetJosJokinNiistäOnPäivittynytAikaleimanJälkeen(
+        palautettavatOpiskeluoikeudenTyypit = YtlSchema.schemassaTuetutOpiskeluoikeustyypit,
+        oppijaMasterOids = masterOppijoidenOidit.toList,
+        aikaleimaInstant = opiskeluoikeuksiaMuuttunutJälkeen
+      )
+    }
+
+    Observable.from(
+      opiskeluoikeudet.groupBy(_.masterOppijaOid).flatMap {
+        case (oppijaMasterOid, opiskeluoikeusRows) => teePalautettavatYtlOppijat(oppijaMasterOid, opiskeluoikeusRows)
+      })
+      .doOnEach(auditLogOpiskeluoikeusKatsominen(_)(user))
+      .map(JsonSerializer.serializeWithUser(user))
   }
 
   private def siivoaOpiskeluoikeus(oo: YtlOpiskeluoikeus): Option[YtlOpiskeluoikeus] = {
