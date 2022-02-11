@@ -26,8 +26,22 @@ object DirectoryClient {
     })
   }
 
-  def resolveKäyttöoikeudet(käyttäjä: HenkilönKäyttöoikeudet): (String, List[Käyttöoikeus]) =
-    (käyttäjä.oidHenkilo, käyttäjä.organisaatiot.flatMap {
+  def resolveKäyttöoikeudet(käyttäjä: HenkilönKäyttöoikeudet): (String, List[Käyttöoikeus]) = {
+    // Yhdistele mahdolliset samaan organisaatioon kuuluvat käyttöoikeudet aina samaan rakenteeseen, jotta käyttäytyminen
+    // ei muutu rakenteesta riippuen. Tämän kirjoitushetkellä tämä tehdään tuotantoympäristöissä jo käyttöoikeuspalvelussa:
+    // Sen vuoksi KOSKI on aiemminkin pystynyt mm. käyttämään käännöspalvelun oikeuksia päätellessään, pitääkö
+    // käyttäjälle näyttää käännösten muokkaustyökalut.
+    val samanOrganisaationKäyttöoikeudetYhdistettynä = käyttäjä.organisaatiot
+        .groupBy(_.organisaatioOid)
+      .map {
+        case (orgOid, organisaatioJaKäyttöoikeudet) =>
+          OrganisaatioJaKäyttöoikeudet(
+            orgOid, organisaatioJaKäyttöoikeudet.flatMap(_.kayttooikeudet).toSet.toList
+          )
+      }
+      .toList
+
+    (käyttäjä.oidHenkilo, samanOrganisaationKäyttöoikeudetYhdistettynä.flatMap {
       case OrganisaatioJaKäyttöoikeudet(organisaatioOid, käyttöoikeudet) =>
         val roolit = käyttöoikeudet.collect { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus) }
         if (!roolit.map(_.palveluName).exists(List("KOSKI", "VALPAS").contains)) {
@@ -40,6 +54,7 @@ object DirectoryClient {
           List(KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), roolit, juuri = true, oppilaitostyyppi = None))
         }
     })
+  }
 
   private def hasViranomaisRooli(roolit: List[Palvelurooli]) =
     roolit.exists(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli)) ||

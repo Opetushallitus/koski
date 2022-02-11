@@ -63,14 +63,26 @@ object MockUsers {
     "käyttäjä",
     "mikko",
     "1.2.246.562.24.99999999987",
-    Seq(ophPääkäyttäjä, OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(PalveluJaOikeus("KOSKI", Rooli.MITATOIDYT_OPISKELUOIKEUDET))))
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid,
+      ophPääkäyttäjä.kayttooikeudet ++
+      List(
+        PalveluJaOikeus("KOSKI", Rooli.MITATOIDYT_OPISKELUOIKEUDET)
+      )
+    ))
   )
 
   val paakayttaja = KoskiMockUser(
     "käyttäjä",
     "pää",
     "1.2.246.562.24.99999999992",
-    Seq(ophPääkäyttäjä, localizationAdmin, OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(PalveluJaOikeus("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA"))))
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid,
+      ophPääkäyttäjä.kayttooikeudet ++
+      localizationAdmin.kayttooikeudet ++
+      List(
+        PalveluJaOikeus("LOKALISOINTI", "CRUD"),
+        PalveluJaOikeus("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA")
+      )
+    ))
   )
 
   val viranomainen = KoskiMockUser(
