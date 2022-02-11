@@ -1,5 +1,6 @@
 import * as E from "fp-ts/lib/Either"
 import { pipe } from "fp-ts/lib/function"
+import Cookies from "js-cookie"
 import { t } from "../i18n/i18n"
 import { parseErrors } from "./apiErrors"
 
@@ -75,6 +76,7 @@ export const enrichJsonRequest = (
   headers: {
     Accept: accept,
     "Content-Type": "application/json",
+    CSRF: Cookies.get("CSRF")!,
     ...init?.headers,
   },
   body: init?.body && JSON.stringify(init.body),
