@@ -38,8 +38,8 @@ object ValpasMockKäyttöoikeusryhmät {
       Opetushallitus.organisaatioOid,
       List(PalveluJaOikeus("VALPAS", ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
     ))
-  def kelaLuovutuspalveluKäyttäjä: Seq[OrganisaatioJaKäyttöoikeudet] = Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.kela, List(PalveluJaOikeus("VALPAS", ValpasRooli.KELA), PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE))))
-  def ytlLuovutuspalveluKäyttäjä: Seq[OrganisaatioJaKäyttöoikeudet] = Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.ytl, List(PalveluJaOikeus("VALPAS", ValpasRooli.YTL), PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE))))
+  def kelaLuovutuspalveluKäyttäjä: Seq[OrganisaatioJaKäyttöoikeudet] = Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.kela, List(PalveluJaOikeus("VALPAS", ValpasRooli.KELA))))
+  def ytlLuovutuspalveluKäyttäjä: Seq[OrganisaatioJaKäyttöoikeudet] = Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.ytl, List(PalveluJaOikeus("VALPAS", ValpasRooli.YTL))))
 
   private def oppilaitosHakeutuminenKäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet = organisaatioKäyttäjä(organisaatioOid, ValpasRooli.OPPILAITOS_HAKEUTUMINEN)
 

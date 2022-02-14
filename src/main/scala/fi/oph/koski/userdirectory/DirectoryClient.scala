@@ -7,6 +7,7 @@ import fi.oph.koski.log.NotLoggable
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.oph.koski.sso.CasService
+import fi.oph.koski.valpas.valpasuser.ValpasRooli
 
 import scala.concurrent.duration.DurationInt
 
@@ -58,8 +59,12 @@ object DirectoryClient {
 
   private def hasViranomaisRooli(roolit: List[Palvelurooli]) =
     roolit.exists(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli)) ||
-      roolit.map(_.rooli).contains(Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU)
-
+      roolit.exists {
+        case Palvelurooli("KOSKI", Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU) => true
+        case Palvelurooli("VALPAS", ValpasRooli.YTL) => true
+        case Palvelurooli("VALPAS", ValpasRooli.KELA) => true
+        case _ => false
+      }
 }
 
 case class DirectoryUser(oid: String, käyttöoikeudet: List[Käyttöoikeus], etunimet: String, sukunimi: String, asiointikieli: Option[String])
