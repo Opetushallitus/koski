@@ -24,11 +24,25 @@ import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 import {OpiskeluoikeudenTila} from '../omattiedot/fragments/OpiskeluoikeudenTila'
 import {ArrayEditor} from '../editor/ArrayEditor'
 import {modelEmpty} from '../editor/EditorModel'
+import {VirtaVirheetPopup} from '../virta/VirtaVirheetPopup.jsx'
+import Atom from 'bacon.atom'
 
-export const excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen']
+export const excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen', 'virtaVirheet']
+
+/*
+      {
+        suoritusjakoTehty.map(v => !v && <a className='peru-suostumus-linkki' onClick={() => peruuttamassaSuostumustaAtom.modify(x => !x)}>{'Peruuta suostumus'}</a>)
+      }
+      {
+        peruuttamassaSuostumustaAtom.map(peruuttamassa => peruuttamassa &&
+          <SuostumuksenPeruutusPopup opiskeluoikeusOid={opiskeluoikeusOid} onDismiss={() => peruuttamassaSuostumustaAtom.modify(x => !x)}/>)
+      }
+      */
 
 export const OpiskeluoikeusEditor = ({model}) => {
   return (<TogglableEditor model={addContext(model, {opiskeluoikeus: model})} renderChild={ (mdl, editLink) => {
+    const katsomassaVirtaVirheitä = Atom(false)
+
     const context = mdl.context
 
     const alkuChangeBus = Bacon.Bus()
@@ -53,6 +67,14 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <Versiohistoria opiskeluoikeusOid={modelData(mdl, 'oid')} oppijaOid={context.oppijaOid}/>
           <OpiskeluoikeudenId opiskeluoikeus={mdl}/>
         </h3>
+        {
+          (modelData(model, 'virtaVirheet') && modelData(model, 'virtaVirheet').length > 0) &&
+            <a className='virta-virheet' onClick={() => katsomassaVirtaVirheitä.modify(x => !x)}>{'Virta-Virheet'}</a>
+        }
+        {
+          katsomassaVirtaVirheitä.map(katsomassa => katsomassa &&
+            <VirtaVirheetPopup virheet={modelData(model, 'virtaVirheet')} onDismiss={() => katsomassaVirtaVirheitä.modify(x => !x)}/>)
+        }
         <div className={mdl.context.edit ? 'opiskeluoikeus-content editing' : 'opiskeluoikeus-content'}>
           {!isSyntheticOpiskeluoikeus &&
             <OpiskeluoikeudenTiedot

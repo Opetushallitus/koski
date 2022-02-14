@@ -19,10 +19,11 @@ import fi.oph.koski.virta.VirtaXMLConverterUtils._
 import scala.collection.mutable.{HashMap, HashSet, ListBuffer}
 
 case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository) extends Logging {
+  var virheet: ListBuffer[VirtaVirhe] = ListBuffer[VirtaVirhe]()
 
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     import fi.oph.koski.util.DateOrdering._
-
+    virheet = ListBuffer[VirtaVirhe]()
     val suoritusNodeList: List[Node] = filterLABDuplikaatit(suoritusNodes(virtaXml))
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
     val opiskeluoikeusNodes: List[Node] = (virtaXml \\ "Opiskeluoikeus").toList
@@ -41,7 +42,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(Some(opiskeluoikeusNode), _, suoritusNodeList))
 
       val vahvistus = suoritukset.flatMap(_.vahvistus).sortBy(_.päivä)(localDateOrdering).lastOption
-
       val oppilaitos: Option[Oppilaitos] = optionalOppilaitos(opiskeluoikeusNode, vahvistus.map(_.päivä))
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
         lähdejärjestelmänId = Some(LähdejärjestelmäId(Some(opiskeluoikeusNode \ "@avain" text), requiredKoodi("lahdejarjestelma", "virta"))),
@@ -58,7 +58,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           lukukausiIlmoittautuminen = lukukausiIlmoittautuminen(oppilaitos, opiskeluoikeudenTila, avain(opiskeluoikeusNode), virtaXml),
           järjestäväOrganisaatio = järjestäväOrganisaatio(opiskeluoikeusNode, vahvistus.map(_.päivä)),
           maksettavatLukuvuosimaksut = Some(lukuvuosimaksut)
-        ))
+        )),
+        virtaVirheet = virheet.toList
       )
 
       (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
@@ -75,6 +76,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         suoritukset = suoritukset,
         tila = KorkeakoulunOpiskeluoikeudenTila(Nil),
         tyyppi = ooTyyppi,
+        virtaVirheet = virheet.toList,
         synteettinen = true
       )
     }
@@ -243,7 +245,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
             case Some(node) => tutkinto(koulutuskoodi, jaksonNimi(node))
             case _ => tutkinto(koulutuskoodi, None)
           }
-          val osasuoritukset = childNodes(suoritus, allNodes)._1.map(convertOpintojaksonSuoritus(_, allNodes))
+          val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
           val päivämääräVahvistus = vahvistus(suoritus)
           KorkeakoulututkinnonSuoritus(
             koulutusmoduuli = koulutusmoduuli,
@@ -325,7 +327,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private lazy val lukukausiIlmottautuminenPuuttuu = koodistoViitePalvelu.validateRequired(Koodistokoodiviite("4", "virtalukukausiilmtila"))
 
   private def convertOpintojaksonSuoritus(suoritus: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
-    val osasuoritukset = childNodes(suoritus, allNodes)._1.map(convertOpintojaksonSuoritus(_, allNodes))
+    val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
     val päivämääräVahvistus = vahvistus(suoritus)
     KorkeakoulunOpintojaksonSuoritus(
@@ -424,12 +426,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def childNodes(node: Node, allNodes: List[Node]) = {
     val löytyvätNodet = ListBuffer[Node]()
-    val orvotNodet = ListBuffer[String]()
     sisaltyvatAvaimet(node).foreach { opintosuoritusAvain =>
       val osasuoritusNodes = allNodes.filter(avain(_) == opintosuoritusAvain)
       osasuoritusNodes match {
         case osasuoritusNode :: Nil => löytyvätNodet += osasuoritusNode
-        case Nil => orvotNodet += sisaltyvatAvaimet(node).toString()
+        case Nil => virheet += OpiskeluoikeusAvaintaEiLöydy(arvo = opintosuoritusAvain)
         case osasuoritusNodes => {
           MyöntäjänäLABAmmattiKorkeakoulu(osasuoritusNodes) match {
             case Some(node) => node
@@ -438,7 +439,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         }
       }
     }
-    (löytyvätNodet.toList, orvotNodet.toList)
+    löytyvätNodet.toList
   }
 
   private def suoritusNodes(virtaXml: Node) = {
@@ -449,7 +450,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
                                 päätasonSuoristusNode: Option[Node]): Boolean = try {
     suorituksessaOpintoOikeudenAvain(suoritus, opiskeluoikeus) &&
       LapsenTapauksessaOpiskeluoikeusavaimenPitääOllaSamaKuinPäätasonSuorituksella(opiskeluoikeus, päätasonSuoristusNode) ||
-      childNodes(suoritus, allNodes)._1.find(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes, Some(päätasonSuoristusNode.getOrElse(suoritus)))).isDefined
+      childNodes(suoritus, allNodes).find(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes, Some(päätasonSuoristusNode.getOrElse(suoritus)))).isDefined
   } catch {
     case IllegalSuoritusException(_) => false
   }
