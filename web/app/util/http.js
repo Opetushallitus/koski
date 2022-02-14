@@ -78,7 +78,7 @@ const http = (url, optionsForFetch, options = {}) => {
 
 const csrfHeader = () => ({
   CSRF: Cookies.get('CSRF'),
-  'Called-id': '1.2.246.562.10.00000000001.koski.frontend'
+  'Caller-id': '1.2.246.562.10.00000000001.koski.frontend'
 })
 
 http.get = (url, options = {}, headers = {}) => http(url, { credentials: 'include', headers },  options)
