@@ -20,8 +20,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koulutuksenosattuva_perustaitojenvahvistaminen",
-  "koodiArvo" : "perustaitojenvahvistaminen",
+  "koodiUri" : "koulutuksenosattuva_107",
+  "koodiArvo" : "107",
   "metadata" : [ {
     "nimi" : "Perustaitojen vahvistaminen",
     "lyhytNimi" : "",
@@ -41,8 +41,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koulutuksenosattuva_ammatillisenkoulutuksenopinnot",
-  "koodiArvo" : "ammatillisenkoulutuksenopinnot",
+  "koodiUri" : "koulutuksenosattuva_105",
+  "koodiArvo" : "105",
   "metadata" : [ {
     "nimi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
     "lyhytNimi" : "",
@@ -62,8 +62,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koulutuksenosattuva_lukiokoulutuksenopinnot",
-  "koodiArvo" : "lukiokoulutuksenopinnot",
+  "koodiUri" : "koulutuksenosattuva_106",
+  "koodiArvo" : "106",
   "metadata" : [ {
     "nimi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
     "lyhytNimi" : "",
