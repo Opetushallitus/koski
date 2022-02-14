@@ -30,7 +30,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
   }
 
   private lazy val repository = PerusopetuksenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
-  val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
+  private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   "Perusopetuksenvuosiluokka raportti" - {
 

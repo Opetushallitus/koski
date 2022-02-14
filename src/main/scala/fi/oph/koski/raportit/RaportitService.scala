@@ -212,12 +212,12 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def perusopetuksenLisäopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSpecificSession) = {
+  def perusopetuksenLisäopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid)
     OppilaitosRaporttiResponse(
-      sheets = Seq(perusopetuksenLisäopetuksenOppijamäärätRaportti.build(oppilaitosOids.toSeq, request.paiva)),
-      workbookSettings = WorkbookSettings("Perusopetuksen oppijamäärien raportti", Some(request.password)),
-      filename = s"lisaopetus_vos_raportti-${request.paiva}.xlsx",
+      sheets = Seq(perusopetuksenLisäopetuksenOppijamäärätRaportti.build(oppilaitosOids.toSeq, request.paiva, t)),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-perusopetuksenlisaopetus-vos-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-perusopetuksenlisaopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
   }

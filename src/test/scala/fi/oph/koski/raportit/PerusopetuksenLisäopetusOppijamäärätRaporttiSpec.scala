@@ -2,6 +2,7 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.KoskiMockUser
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -22,8 +23,9 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
 
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = PerusopetuksenLisäopetusOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val raportti = raporttiBuilder
-    .build(Seq(jyväskylänNormaalikoulu), date(2012, 1, 1))(session(defaultUser))
+    .build(Seq(jyväskylänNormaalikoulu), date(2012, 1, 1), t)(session(defaultUser))
     .rows.map(_.asInstanceOf[PerusopetuksenLisäopetusOppijamäärätRaporttiRow])
 
   "Perusopetuksen lisäopetuksen oppijamäärien raportti" - {

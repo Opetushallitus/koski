@@ -22,7 +22,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
 
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = PerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
-  val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
+  private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val raportti = raporttiBuilder
     .build(Seq(jyväskylänNormaalikoulu), date(2012, 1, 1), t)(session(defaultUser))
     .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
