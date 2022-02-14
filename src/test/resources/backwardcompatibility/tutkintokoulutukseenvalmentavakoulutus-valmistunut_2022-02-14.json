@@ -195,7 +195,7 @@
             "en" : "Perustaitojen vahvistaminen"
           },
           "tunniste" : {
-            "koodiarvo" : "perustaitojenvahvistaminen",
+            "koodiarvo" : "107",
             "nimi" : {
               "fi" : "Perustaitojen vahvistaminen",
               "sv" : "Perustaitojen vahvistaminen",
@@ -251,7 +251,7 @@
             "en" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"
           },
           "tunniste" : {
-            "koodiarvo" : "ammatillisenkoulutuksenopinnot",
+            "koodiarvo" : "105",
             "nimi" : {
               "fi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
               "sv" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
@@ -419,7 +419,7 @@
             "en" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen"
           },
           "tunniste" : {
-            "koodiarvo" : "lukiokoulutuksenopinnot",
+            "koodiarvo" : "106",
             "nimi" : {
               "fi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
               "sv" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",

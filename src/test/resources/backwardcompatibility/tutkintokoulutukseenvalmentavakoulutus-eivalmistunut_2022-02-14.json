@@ -110,7 +110,7 @@
             "en" : "Perustaitojen vahvistaminen"
           },
           "tunniste" : {
-            "koodiarvo" : "perustaitojenvahvistaminen",
+            "koodiarvo" : "107",
             "nimi" : {
               "fi" : "Perustaitojen vahvistaminen",
               "sv" : "Perustaitojen vahvistaminen",

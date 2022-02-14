@@ -79,9 +79,9 @@ trait TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus extends Suoritus wi
 @OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "101")
 @OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "102")
 @OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "103")
-@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "perustaitojenvahvistaminen")
-@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "lukiokoulutuksenopinnot")
-@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "ammatillisenkoulutuksenopinnot")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "105")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "106")
+@OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "107")
 case class TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
   koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenMuuOsa,
   arviointi: Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = None,
@@ -118,9 +118,9 @@ case class TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot(
 case class TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
   override val nimi: LocalizedString = LocalizedString.unlocalized("Perustaitojen vahvistaminen"),
   @KoodistoUri("koulutuksenosattuva")
-  @KoodistoKoodiarvo("perustaitojenvahvistaminen")
+  @KoodistoKoodiarvo("107")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(
-    koodiarvo = "perustaitojenvahvistaminen",
+    koodiarvo = "107",
     koodistoUri = "koulutuksenosattuva",
     nimi = Some(LocalizedString.unlocalized("Perustaitojen vahvistaminen"))
   ),
@@ -133,9 +133,9 @@ case class TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
 case class TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot(
   override val nimi: LocalizedString = LocalizedString.unlocalized("Lukiokoulutuksen opinnot ja niihin valmentautuminen"),
   @KoodistoUri("koulutuksenosattuva")
-  @KoodistoKoodiarvo("lukiokoulutuksenopinnot")
+  @KoodistoKoodiarvo("106")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(
-    koodiarvo = "lukiokoulutuksenopinnot",
+    koodiarvo = "106",
     koodistoUri = "koulutuksenosattuva",
     nimi = Some(LocalizedString.unlocalized("Lukiokoulutuksen opinnot ja niihin valmentautuminen"))
   ),
@@ -148,9 +148,9 @@ case class TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot(
 case class TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot(
   override val nimi: LocalizedString = LocalizedString.unlocalized("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"),
   @KoodistoUri("koulutuksenosattuva")
-  @KoodistoKoodiarvo("ammatillisenkoulutuksenopinnot")
+  @KoodistoKoodiarvo("105")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(
-    koodiarvo = "ammatillisenkoulutuksenopinnot",
+    koodiarvo = "105",
     koodistoUri = "koulutuksenosattuva",
     nimi = Some(LocalizedString.unlocalized("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"))
   ),
