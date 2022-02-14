@@ -225,6 +225,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         )
       ),
       (KoskiSpecificMockOppijat.tuva, ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusValmistunut),
+      (KoskiSpecificMockOppijat.tuvaPerus, ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusEiValmistunut),
     )
   }
 

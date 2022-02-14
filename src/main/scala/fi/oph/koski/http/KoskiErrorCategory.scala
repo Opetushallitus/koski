@@ -125,6 +125,8 @@ object KoskiErrorCategory {
         val oppimääräSuoritettuIlmanVahvistettuaOppiaineenOppimäärää = subcategory("oppimääräSuoritettuIlmanVahvistettuaOppiaineenOppimäärää", "Opiskeluoikeuden tiedoissa on oppimäärä merkitty suoritetuksi, mutta opiskeluoikeudella ei ole vahvistettuja oppiaineen oppimäärän suorituksia")
         val deprekoituLukionAineopintojenPäätasonSuorituksenKenttä = subcategory("deprekoituLukionAineopintojenPäätasonSuorituksenKenttä", "Lukion oppiaineen oppimäärän suorituksen mukana siirretty kenttä 'lukionOppimääräSuoritettu' on deprekoitu, eikä sitä tule enää käyttää. Korvaavana kenttänä toimii lukion opiskeluoikeuden kenttä 'oppimääräSuoritettu'")
         val perusteenVoimassaoloPäättynyt = subcategory("perusteenVoimassaoloPäättynyt", "Tutkinnon perusteen siirtymäaika on päättynyt tai, jos perusteelle ei ole määritelty siirtyymäaikaa, perusteen voimassaoloaika on päättynyt. Aktiivisen opiskeluoikeuden tutkinnon rakenteen tulee olla voimassa.")
+        val tuvaOpiskeluJaUrasuunnittelutaitojenOsasuoritusPuuttuu = subcategory("tuvaOpiskeluJaUrasuunnittelutaitojenOsasuoritusPuuttuu", "Tutkintokoulutukseen valmentavan koulutuksen pakollinen osasuoritus Opiskelu- ja urasuunnittelutaidot puuttuu.")
+        val tuvaOsasuorituksiaLiianVähän = subcategory("tuvaOsasuorituksiaLiianVähän", "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksia on oltava vähintään kolmesta eri koulutuksen osasta.")
       }
       val rakenne = new Rakenne
 
@@ -158,6 +160,8 @@ object KoskiErrorCategory {
         val oppiaineenLaajuusPuuttuu = subcategory("oppiaineenLaajuusPuuttuu", "Oppiaineen laajuus puuttuu")
         val lukiodiplominLaajuusEiOle2Opintopistettä = subcategory("lukiodiplominLaajuusVäärä", "Lukiodiplomin laajuuden on oltava aina 2 opintopistettä")
         val lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo = subcategory("lukioonValmistavallaKoulutuksellaVääräLaajuudenArvo", "Lukioon valmistavan koulutuksen suorituksella voi olla laajuuden koodiyksikkönä vain '2', jos suorituksen diaarinumero on 'OPH-4958-2020'")
+        val tuvaPäätasonSuoritusVääräLaajuus = subcategory("tuvaPäätasonSuoritusVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen päätason suorituksen laajuus on oltava vähintään 4 viikkoa ja enintään 38 viikkoa.")
+        val tuvaOsaSuoritusVääräLaajuus = subcategory("tuvaOsaSuoritusVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksella on väärä laajuus.")
       }
       val laajuudet = new Laajuudet
 
