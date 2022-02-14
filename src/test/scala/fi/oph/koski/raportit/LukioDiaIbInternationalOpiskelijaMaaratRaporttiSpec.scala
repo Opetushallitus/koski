@@ -27,11 +27,11 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec wi
   "Lukion opiskelijamäärät raportti" - {
     "Raportin lataaminen onnistuu ja tuottaa auditlogin" in {
       AuditLogTester.clearMessages
-      authGet(s"api/raportit/lukiodiaibinternationalopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana") {
+      authGet(s"api/raportit/lukiodiaibinternationalopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=fi") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukiokoulutus_opiskelijamaarat_20180101.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiodiaibinternationalopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiodiaibinternationalopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=fi")))
       }
     }
 
@@ -162,7 +162,8 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec wi
       oppilaitosOid = MockOrganisaatiot.helsinginKaupunki,
       downloadToken = None,
       password = "foobar",
-      paiva = LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.date
+      paiva = LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.date,
+      lang = "fi"
     )
     new RaportitService(KoskiApplicationForTests)
       .lukioDiaIbInternationalOpiskelijaMaaratRaportti(request)

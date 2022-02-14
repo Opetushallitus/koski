@@ -99,7 +99,8 @@ case class RaporttiPäivältäRequest(
   oppilaitosOid: Organisaatio.Oid,
   downloadToken: Option[String],
   password: String,
-  paiva: LocalDate
+  paiva: LocalDate,
+  lang: String
 ) extends RaporttiRequest
 
 sealed trait RaportinTyyppi {

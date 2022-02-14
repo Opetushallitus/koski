@@ -28,7 +28,7 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
 
   "Perusopetuksen lisäopetuksen oppijamäärien raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/perusopetuksenlisaopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&password=salasana") {
+      authGet(s"api/raportit/perusopetuksenlisaopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&password=salasana&lang=fi") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="lisaopetus_vos_raportti-2007-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
@@ -36,7 +36,7 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
           Map(
             "operation" -> "OPISKELUOIKEUS_RAPORTTI",
             "target" -> Map(
-              "hakuEhto" -> s"raportti=perusopetuksenlisaopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01"
+              "hakuEhto" -> s"raportti=perusopetuksenlisaopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&lang=fi"
             )
           )
         )

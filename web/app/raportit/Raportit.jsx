@@ -543,6 +543,7 @@ function LukioDiaIBInternationalOpiskelijamaarat({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
@@ -561,6 +562,7 @@ function LuvaOpiskelijamaaratRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
@@ -579,6 +581,7 @@ function EsiopetusRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
@@ -597,6 +600,7 @@ function EsiopetuksenOppijamäärätRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
@@ -615,6 +619,7 @@ function PerusopetuksenOppijamäärätRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
@@ -633,6 +638,7 @@ function PerusopetuksenLisäopetuksenOppijamäärätRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
@@ -667,6 +673,7 @@ function AikuistenPerusopetuksenOppijamäärätRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
     />
   )
 }

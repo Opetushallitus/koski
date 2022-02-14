@@ -1,9 +1,9 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUser}
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -22,13 +22,14 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
 
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = PerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val raportti = raporttiBuilder
-    .build(Seq(jyväskylänNormaalikoulu), date(2012, 1, 1))(session(defaultUser))
+    .build(Seq(jyväskylänNormaalikoulu), date(2012, 1, 1), t)(session(defaultUser))
     .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
 
   "Perusopetuksen oppijamäärien raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/perusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&password=salasana") {
+      authGet(s"api/raportit/perusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&lang=fi&password=salasana") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="perusopetus_vos_raportti-2007-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
@@ -36,7 +37,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
           Map(
             "operation" -> "OPISKELUOIKEUS_RAPORTTI",
             "target" -> Map(
-              "hakuEhto" -> s"raportti=perusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01"
+              "hakuEhto" -> s"raportti=perusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01&lang=fi"
             )
           )
         )
