@@ -1,9 +1,10 @@
 package fi.oph.koski.raportit
 
+import fi.oph.koski.localization.LocalizationReader
+
 import java.io.OutputStream
 import java.time.{LocalDate, ZoneId}
 import java.util.Date
-
 import org.apache.poi.openxml4j.opc.OPCPackage
 import org.apache.poi.poifs.crypt.{EncryptionInfo, EncryptionMode, Encryptor}
 import org.apache.poi.poifs.crypt.temp.{EncryptedTempData, SXSSFWorkbookWithCustomZipEntrySource}
@@ -18,7 +19,7 @@ import scala.collection.JavaConverters._
 
 object ExcelWriter {
 
-  def writeExcel(workbookSettings: WorkbookSettings, sheets: Seq[Sheet], out: OutputStream): Unit = {
+  def writeExcel(workbookSettings: WorkbookSettings, sheets: Seq[Sheet], t: LocalizationReader, out: OutputStream): Unit = {
 
     val wb = if (workbookSettings.password.isEmpty) new SXSSFWorkbook else new SXSSFWorkbookWithCustomZipEntrySource
     try {
@@ -28,7 +29,7 @@ object ExcelWriter {
       sheets.foreach { sheet =>
         val sh = createSheet(sheet, wb)
         sheet match {
-          case ds: SheetWithColumnSettings => writeDataSheet(wb, sh, ds)
+          case ds: SheetWithColumnSettings => writeDataSheet(wb, sh, ds, t)
           case ds: DocumentationSheet => writeDocumentationSheet(wb, sh, ds)
         }
       }
@@ -87,7 +88,7 @@ object ExcelWriter {
     wb.sheetIterator.asScala.exists(_.getSheetName.toLowerCase == sheetName.toLowerCase)
   }
 
-  private def writeDataSheet(wb: SXSSFWorkbook, sh: SXSSFSheet, dataSheet: SheetWithColumnSettings): Unit = {
+  private def writeDataSheet(wb: SXSSFWorkbook, sh: SXSSFSheet, dataSheet: SheetWithColumnSettings, t: LocalizationReader): Unit = {
     addIgnoredErrors(sh)
 
     val sheetHasGroupingHeaders = dataSheet.columnSettingsWithIndex.map(_._1).exists(_.groupingTitle.isDefined)
@@ -123,7 +124,7 @@ object ExcelWriter {
     //sets column names visible when user is scrolling through rows
     sh.createFreezePane(0, cellHeaderRownumber + 1)
 
-    val writeDataToCell = createDataCellWriter(wb)
+    val writeDataToCell = createDataCellWriter(wb, t)
 
     for (rowNumber <- dataSheet.rows.indices) {
       val rowInExcel = sh.createRow(rowNumber + cellHeaderRownumber + 1)
@@ -207,7 +208,7 @@ object ExcelWriter {
   }
 
   type DataCellWriter = (Any, SXSSFCell) => Unit
-  private def createDataCellWriter(wb: SXSSFWorkbook): DataCellWriter = {
+  private def createDataCellWriter(wb: SXSSFWorkbook, t: LocalizationReader): DataCellWriter = {
     val textStyle = wb.createCellStyle()
     textStyle.setDataFormat(BuiltinFormats.getBuiltinFormat("text").toShort)
 
@@ -219,7 +220,8 @@ object ExcelWriter {
     floatStyle.setDataFormat(wb.getCreationHelper.createDataFormat().getFormat("#.0"))
 
     val booleanStyle = wb.createCellStyle()
-    booleanStyle.setDataFormat(wb.getCreationHelper.createDataFormat().getFormat("\"kyllä\";;\"ei\";"))
+    booleanStyle.setDataFormat(wb.getCreationHelper.createDataFormat()
+      .getFormat(s"${t.get("raportti-excel-default-value-kyllä")};;${t.get("raportti-excel-default-value-ei")};"))
     booleanStyle.setAlignment(HorizontalAlignment.LEFT)
 
     (data: Any, cell: SXSSFCell) => setDataCellValue(data, cell, textStyle, dateStyle, floatStyle, booleanStyle)

@@ -2,14 +2,14 @@ package fi.oph.koski.raportit
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesPerusopetus._
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.PerusopetusExampleData._
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, KoskiSpecificMockOppijat}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
@@ -30,6 +30,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
   }
 
   private lazy val repository = PerusopetuksenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
+  val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   "Perusopetuksenvuosiluokka raportti" - {
 
@@ -43,7 +44,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
     "Tuottaa oikeat tiedot" in {
       withLisätiedotFixture(KoskiSpecificMockOppijat.ysiluokkalainen, perusopetuksenOpiskeluoikeudenLisätiedot) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), vuosiluokka = "8")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), vuosiluokka = "8", t)
         val ynjevinOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
         val rivi = result.find(_.opiskeluoikeusOid == ynjevinOpiskeluoikeusOid)
 
@@ -55,7 +56,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
     "Ei näytetä laajuuksia kun päätason suorituksen arviointipäivä on 31.7.2020 tai ennen" in {
       withAdditionalSuoritukset(KoskiSpecificMockOppijat.ysiluokkalainen, List(seitsemännenLuokanSuoritusLaajuudet_ennen_1_8_2020)) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2019, 8, 15), vuosiluokka = "7")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2019, 8, 15), vuosiluokka = "7", t)
         val oppijaOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
         val rivi = result.find(_.opiskeluoikeusOid == oppijaOpiskeluoikeusOid)
 
@@ -68,7 +69,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
     "Näytetään laajuudet kun päätason suorituksen arviointipäivä on 1.8.2020 tai jälkeen" in {
       withAdditionalSuoritukset(KoskiSpecificMockOppijat.ysiluokkalainen, List(seitsemännenLuokanSuoritusLaajuudet_jälkeen_1_8_2020)) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2020, 8, 1), vuosiluokka = "7")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2020, 8, 1), vuosiluokka = "7", t)
         val oppijaOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
         val rivi = result.find(_.opiskeluoikeusOid == oppijaOpiskeluoikeusOid)
 
@@ -82,7 +83,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
     "Monta saman vuosiluokan suoritusta eritellään omiksi riveiksi" in {
       withAdditionalSuoritukset(KoskiSpecificMockOppijat.ysiluokkalainen, List(kahdeksannenLuokanLuokalleJääntiSuoritus.copy(luokka = "8C"))) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), vuosiluokka = "8")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), vuosiluokka = "8", t)
         val ynjevinOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
         val rivit = result.filter(_.opiskeluoikeusOid == ynjevinOpiskeluoikeusOid)
 
@@ -94,7 +95,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
     "Raportille ei päädy vuosiluokkien suorituksia joiden vahvistuspäivä on menneisyydessä" in {
       val hakuDate = date(2015, 5, 30)
-      val rows = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), hakuDate, "7")
+      val rows = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), hakuDate, "7", t)
       rows.map(_.suorituksenVahvistuspaiva).foreach(paivaStr => {
         if (!paivaStr.isEmpty) {
           val paiva = LocalDate.parse(paivaStr)
@@ -106,7 +107,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     "Toiminta alueiden suoritukset joilla on arvosana näytetään omassa kolumnissaan" in {
       val suoritusToimintaAlueenOsasuorituksilla = yhdeksännenLuokanSuoritus.copy(osasuoritukset = toimintaAlueOsasuoritukset, vahvistus = None)
       withAdditionalSuoritukset(KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija, List(suoritusToimintaAlueenOsasuorituksilla)) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 9, 1), "9")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 9, 1), "9", t)
         val rows = result.filter(_.oppijaOid == KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija.oid)
         rows.length should equal(1)
         val row = rows.head
@@ -122,7 +123,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     "Elämänkatsomustiedon opiskelijoille ei yritetä hakea uskonnon oppimäärää" in {
       val suoritusElämänkatsomustiedolla = kahdeksannenLuokanSuoritus.copy(osasuoritukset = Some(List(suoritus(uskonto(oppiaineenKoodiarvo = "ET")).copy(arviointi = arviointi(5)))), vahvistus = None)
       withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(suoritusElämänkatsomustiedolla)) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "8")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "8", t)
         val rows = result.filter(_.oppijaOid == KoskiSpecificMockOppijat.vuosiluokkalainen.oid)
         rows.length should equal(1)
         val row = rows.head
@@ -135,7 +136,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     "Peruskoulun päättävät" - {
 
       "Hakee tiedot peruskoulun oppimäärän suorituksesta" in {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2016, 1, 1), "9")
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2016, 1, 1), "9", t)
         val kaisanOpiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.koululainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
         val rivit = result.filter(_.opiskeluoikeusOid == kaisanOpiskeluoikeusOid)
         rivit.length should equal(1)
@@ -146,7 +147,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
       "Jos oppilas on jäämässä luokalle käytetään yhdeksännen luokan vuosiluokka suoritusta" in {
         withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus, yhdeksännenLuokanLuokallejääntiSuoritus, kahdeksannenLuokanSuoritus)) {
-          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9")
+          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9", t)
           val opiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
@@ -156,7 +157,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
       "Jos oppilas on jäämässä luokalle käytetään yhdeksännen luokan vuosiluokka suoritusta (ei vahvistusta luokalle jäänti suorituksella)" in {
         withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus.copy(vahvistus = None), yhdeksännenLuokanLuokallejääntiSuoritus.copy(vahvistus = None), kahdeksannenLuokanSuoritus)) {
-          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9")
+          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9", t)
           val opiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
@@ -166,7 +167,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
       "Jos oppilas on jäänyt aikaisemmin luokalle mutta nyt suorittanut perusopetuksen oppimäärän" in {
         withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus.copy(vahvistus = None), yhdeksännenLuokanSuoritus, yhdeksännenLuokanLuokallejääntiSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(date(2015, 1, 1))), kahdeksannenLuokanSuoritus)) {
-          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9")
+          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), "9", t)
           val opiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
@@ -176,7 +177,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
       "Ei tulosta tulosta päättötodistusta oppijoilla joilla ei ole yhdeksännen luokan opintoja" in {
         withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus)) {
-          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 6, 1), "9")
+          val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 6, 1), "9", t)
           result.map(_.oppijaOid) shouldNot contain(KoskiSpecificMockOppijat.vuosiluokkalainen.oid)
         }
       }
@@ -190,11 +191,11 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
           )
         ) {
           PerusopetuksenVuosiluokkaRaportti
-            .buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 9, 1), "9")
+            .buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 9, 1), "9", t)
             .map(_.oppijaOid) shouldNot contain(KoskiSpecificMockOppijat.vuosiluokkalainen.oid)
 
           PerusopetuksenVuosiluokkaRaportti
-            .buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 11, 1), "9")
+            .buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 11, 1), "9", t)
             .map(_.oppijaOid) should contain(KoskiSpecificMockOppijat.vuosiluokkalainen.oid)
         }
       }
@@ -203,7 +204,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     "Raportilla näytettävien vuosiluokan suoritusten valinta" - {
       lazy val raportti = {
         insertTestData
-        PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 2, 2), "8")
+        PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2015, 2, 2), "8", t)
       }
       "Viimeisin suoritus on vahvistettu suoritus haetulta vuosiluokalta" - {
         "Näytetään, vaikka hakupäivä ei osu alku- ja vahvistuspäivän väliin" in {
@@ -229,14 +230,14 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       lazy val raportitService = new RaportitService(KoskiApplicationForTests)
 
       "Vuosiluokan suoritus" in {
-        val request = PerusopetuksenVuosiluokkaRequest(MockOrganisaatiot.helsinginKaupunki, None, "", date(2015, 1, 1), "8")
-        val rows = raportitService.perusopetuksenVuosiluokka(request).sheets.collect { case dSheet: DataSheet => dSheet }
+        val request = PerusopetuksenVuosiluokkaRequest(MockOrganisaatiot.helsinginKaupunki, None, "", date(2015, 1, 1), "8", "fi")
+        val rows = raportitService.perusopetuksenVuosiluokka(request, t).sheets.collect { case dSheet: DataSheet => dSheet }
         rows.flatMap(_.rows.map(_.asInstanceOf[PerusopetusRow])).map(_.oppilaitoksenNimi).toSet should equal(Set("Stadin ammatti- ja aikuisopisto"))
       }
 
       "Peruskoulun päättävät" in {
-        val request = PerusopetuksenVuosiluokkaRequest(MockOrganisaatiot.helsinginKaupunki, None, "", date(2015, 9, 1), "9")
-        val rows = raportitService.perusopetuksenVuosiluokka(request).sheets.collect { case dSheet: DataSheet => dSheet }
+        val request = PerusopetuksenVuosiluokkaRequest(MockOrganisaatiot.helsinginKaupunki, None, "", date(2015, 9, 1), "9", "fi")
+        val rows = raportitService.perusopetuksenVuosiluokka(request, t).sheets.collect { case dSheet: DataSheet => dSheet }
         rows.flatMap(_.rows.map(_.asInstanceOf[PerusopetusRow])).map(_.oppilaitoksenNimi).toSet should equal(Set("Stadin ammatti- ja aikuisopisto"))
       }
     }
@@ -246,7 +247,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         repository,
         Seq(MockOrganisaatiot.kulosaarenAlaAste),
         LocalDate.of(2012, 8, 15),
-        vuosiluokka = "6"
+        vuosiluokka = "6",
+        t
       )
       val oppijaOid = KoskiSpecificMockOppijat.organisaatioHistoriallinen.oid
       val rivi = raportti.find(_.oppijaOid == oppijaOid).get
@@ -465,10 +467,10 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     toimintaAlueenSuoritus("4")
   ))
 
-  private val defaultQuery = makeQueryString(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2016, 1, 1), "9")
+  private val defaultQuery = makeQueryString(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2016, 1, 1), "9", "fi")
 
-  private def makeQueryString(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String) = {
-    s"oppilaitosOid=$oppilaitosOid&paiva=${paiva.toString}&vuosiluokka=$vuosiluokka"
+  private def makeQueryString(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, lang: String) = {
+    s"oppilaitosOid=$oppilaitosOid&paiva=${paiva.toString}&vuosiluokka=$vuosiluokka&lang=$lang"
   }
 
   private val mennytAikajakso = Aikajakso(date(2000, 1, 1), Some(date(2001, 1, 1)))

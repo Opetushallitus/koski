@@ -1,6 +1,7 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.TestEnvironment
+import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
+import fi.oph.koski.localization.{LocalizationReader, LocalizationRepository}
 import org.apache.poi.EncryptedDocumentException
 import org.apache.poi.ss.usermodel._
 import org.scalatest.freespec.AnyFreeSpec
@@ -14,7 +15,6 @@ import scala.collection.JavaConverters._
 
 
 class ExcelWriterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
-
   "ExcelWriter" - {
 
     "Excelin avaus vaatii salasanan" in {
@@ -376,8 +376,9 @@ class ExcelWriterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     val (workbookSettings, sheets) = params
     val file = new File("excel_file_for_tests.xlsx")
     val outputStream = new FileOutputStream(file)
+    val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
     try {
-      ExcelWriter.writeExcel(workbookSettings, sheets, outputStream)
+      ExcelWriter.writeExcel(workbookSettings, sheets, t, outputStream)
       val wb: Workbook = WorkbookFactory.create(file, excelPassword)
       tests(wb)
     } finally {

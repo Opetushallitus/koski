@@ -5,7 +5,7 @@ import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 
 import java.time.LocalDate
 
-class LocalizationReader(repository: LocalizationRepository, language: String) {
+class LocalizationReader(repository: LocalizationRepository, val language: String) {
   def get(key: String): String = repository.get(key).get(language)
 
   def get(key: String, params: Map[String, String]): String = params.foldLeft(get(key))((acc, kv) => acc.replaceAll("\\{\\{" + kv._1 + "\\}\\}", kv._2))

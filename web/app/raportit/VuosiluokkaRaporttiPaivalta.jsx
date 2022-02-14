@@ -10,7 +10,7 @@ import Dropdown from '../components/Dropdown'
 import { LyhytKuvaus, PaivaValinta, RaportinLataus, Vinkit } from './raporttiComponents'
 import { selectFromState, today } from './raporttiUtils'
 
-export const VuosiluokkaRaporttiPaivalta = ({stateP, apiEndpoint, shortDescription, dateInputHelp, example}) => {
+export const VuosiluokkaRaporttiPaivalta = ({stateP, apiEndpoint, shortDescription, dateInputHelp, example, lang}) => {
   const paivaAtom = Atom(today())
   const vuosiluokkaAtom = Atom('1')
   const submitBus = Bacon.Bus()
@@ -20,7 +20,7 @@ export const VuosiluokkaRaporttiPaivalta = ({stateP, apiEndpoint, shortDescripti
 
   const downloadExcelP = Bacon.combineWith(
     selectedOrganisaatioP, paivaAtom, vuosiluokkaAtom,
-    (o, p, v) => o && p && v && ({oppilaitosOid: o.oid, paiva: formatISODate(p), vuosiluokka:(v), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
+    (o, p, v) => o && p && v && ({oppilaitosOid: o.oid, paiva: formatISODate(p), vuosiluokka:(v), password, lang: lang, baseUrl: `/koski/api/raportit${apiEndpoint}`})
   )
   const downloadExcelE = submitBus.map(downloadExcelP)
     .flatMapLatest(downloadExcel)

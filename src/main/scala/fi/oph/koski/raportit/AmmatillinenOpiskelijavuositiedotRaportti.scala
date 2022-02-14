@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.{LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio, Osaamisalajakso}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
@@ -68,7 +69,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     rows
   }
 
-  val columnSettings: Seq[(String, Column)] = Seq(
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
     "lähdejärjestelmä" -> Column("Lähdejärjestelmä", width = Some(4000)),
     "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä", width = Some(4000)),

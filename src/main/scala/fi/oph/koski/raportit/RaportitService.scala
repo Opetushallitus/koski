@@ -3,6 +3,7 @@ package fi.oph.koski.raportit
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenEiRahoitustietoaKurssit, AikuistenPerusopetuksenEriVuonnaKorotetutKurssit, AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetusRaportti, AikuistenPerusopetusRaporttiRepository}
 import fi.oph.koski.raportit.lukio.{LukioDiaIbInternationalOpiskelijamaaratRaportti, LukioMuutaKauttaRahoitetut, LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineOpiskeluoikeudenUlkopuoliset, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, LukioRahoitusmuotoEiTiedossa, LukioRaportitRepository, LukioRaportti, LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti}
@@ -45,8 +46,8 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
-    aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
+  def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest, t: LocalizationReader): OppilaitosRaporttiResponse = {
+    aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti, t)
   }
 
   def ammatillinenTutkintoSuoritustietojenTarkistus(request: AikajaksoRaporttiAikarajauksellaRequest): OppilaitosRaporttiResponse = {
@@ -73,8 +74,8 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest): OppilaitosRaporttiResponse = {
-    perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokkaRaportti)
+  def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest, t: LocalizationReader): OppilaitosRaporttiResponse = {
+    perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokkaRaportti, t)
   }
 
   def lukioraportti(request: AikajaksoRaporttiAikarajauksellaRequest) = {
@@ -237,10 +238,10 @@ class RaportitService(application: KoskiApplication) {
     raportointiDatabase.runDbSync(query.as[(String, Seq[String])]).toMap
   }
 
-  private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti) = {
+  private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti, t: LocalizationReader) = {
     val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu)
     val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.alku, request.loppu, raportointiDatabase.status.startedTime.get.toLocalDateTime))
-    val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings)
+    val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings(t))
 
     OppilaitosRaporttiResponse(
       sheets = Seq(data, documentation),
@@ -250,16 +251,16 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  private def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest, raporttiBuilder: VuosiluokkaRaporttiPaivalta) = {
+  private def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest, raporttiBuilder: VuosiluokkaRaporttiPaivalta, t: LocalizationReader) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "perusopetus")
-    val rows = raporttiBuilder.buildRaportti(perusopetusRepository, oppilaitosOids, request.paiva, request.vuosiluokka)
-    val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.paiva, request.vuosiluokka, raportointiDatabase.status.startedTime.get.toLocalDateTime))
-    val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings)
+    val rows = raporttiBuilder.buildRaportti(perusopetusRepository, oppilaitosOids, request.paiva, request.vuosiluokka, t)
+    val documentation = DocumentationSheet(t.get("raportti-excel-perusopetus-ohjeet-sheet-name"), raporttiBuilder.documentation(t))
+    val data = DataSheet(t.get("raportti-excel-perusopetus-opiskeluoikeudet-sheet-name"), rows, raporttiBuilder.columnSettings(t))
 
     OppilaitosRaporttiResponse(
       sheets = Seq(data, documentation),
-      workbookSettings = WorkbookSettings(raporttiBuilder.title(request.oppilaitosOid, request.paiva, request.vuosiluokka), Some(request.password)),
-      filename = raporttiBuilder.filename(request.oppilaitosOid, request.paiva, request.vuosiluokka),
+      workbookSettings = WorkbookSettings(raporttiBuilder.title(t.get("raportti-excel-perusopetus-title-etuliite"), request.oppilaitosOid, request.paiva, request.vuosiluokka), Some(request.password)),
+      filename = raporttiBuilder.filename(t.get("raportti-excel-perusopetus-tiedoston-etuliite"), request.oppilaitosOid, request.paiva, request.vuosiluokka),
       downloadToken = request.downloadToken
     )
   }
