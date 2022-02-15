@@ -5,6 +5,7 @@ import * as R from 'ramda'
 import Highlight from 'react-highlight'
 import CodeMirror from '@skidding/react-codemirror'
 import Dropdown from '../components/Dropdown'
+import Cookies from 'js-cookie'
 
 function selectElementContents(el) {
   var range = document.createRange()
@@ -124,7 +125,15 @@ const ApiOperationTester = ({operation}) => {
   const tryRequest = () => {
     loadingA.set(true)
 
-    let options = {credentials: 'include', method: operation.method, headers: {'Content-Type': 'application/json'}}
+    let options = {
+      credentials: 'include',
+      method: operation.method,
+      headers: {
+        'Content-Type': 'application/json',
+        CSRF: Cookies.get('CSRF'),
+        'Caller-id': '1.2.246.562.10.00000000001.koski.frontend'
+      }
+    }
 
     const pd = postDataAtom.get()
     if (pd !== undefined) {
