@@ -142,7 +142,7 @@ case class OpiskeluvalmiuksiaTukevienOpintojenJakso(
   def contains(d: LocalDate): Boolean = !d.isBefore(alku) && !d.isAfter(loppu)
 }
 
-@Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/pages/viewpage.action?pageId=71953716)")
+@Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: [wiki](https://wiki.eduuni.fi/pages/viewpage.action?pageId=190612822#id-1.1.Ammatillistenopiskeluoikeuksienl%C3%A4sn%C3%A4olotiedotjaopiskeluoikeudenrahoitusmuodontiedot-Opiskeluoikeudentilat)")
 case class AmmatillinenOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[AmmatillinenOpiskeluoikeusjakso]

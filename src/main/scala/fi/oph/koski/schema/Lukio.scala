@@ -115,7 +115,7 @@ case class SanallinenLukionArviointi(
   päivä: LocalDate
 ) extends LukionArviointi with SanallinenYleissivistävänKoulutuksenArviointi
 
-@Description("Ks. tarkemmin lukion ja IB-tutkinnon opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/pages/viewpage.action?pageId=71953716)")
+@Description("Ks. tarkemmin lukion ja IB-tutkinnon opiskeluoikeuden tilat: [wiki](https://wiki.eduuni.fi/display/OPHPALV/1.2.+Lukion+opiskeluoikeuden+tilajaksot+ja+opintojen+rahoitusmuodon+ilmaiseminen+tilajaksossa#id-1.2.Lukionopiskeluoikeudentilajaksotjaopintojenrahoitusmuodonilmaiseminentilajaksossa-Opiskeluoikeudentilat)")
 case class LukionOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]
