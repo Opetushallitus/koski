@@ -142,15 +142,17 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val date = getLocalDateParam("paiva")
     val password = getStringParam("password")
     val token = params.get("downloadToken")
+    val lang = getStringParam("lang")
+    val t = new LocalizationReader(application.koskiLocalizationRepository, lang)
 
     val resp = getStringParam("oppilaitosOid") match {
       case organisaatioService.ostopalveluRootOid =>
-        esiopetusService.buildOstopalveluRaportti(date, password, token)
+        esiopetusService.buildOstopalveluRaportti(date, password, token, t)
       case oid =>
-        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, password, token)
+        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, password, token, t)
     }
 
-    writeExcel(resp)
+    writeExcel(resp, t)
   }
 
   get("/esiopetuksenoppijamaaratraportti") {

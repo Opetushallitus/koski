@@ -1,15 +1,15 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate
-
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.db.DB
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
-
 import slick.jdbc.GetResult
+
 import scala.concurrent.duration.DurationInt
 
 case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) extends QueryMethods {
@@ -50,12 +50,12 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     )
   )
 
-  def build(oppilaitosOids: List[String], päivä: LocalDate)(implicit u: KoskiSpecificSession): DataSheet = {
+  def build(oppilaitosOids: List[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
     val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[EsiopetusRaporttiRow]
     DataSheet(
-      title = "Suoritukset",
+      title = t.get("raportti-excel-suoritukset-sheet-name"),
       rows = runDbSync(raporttiQuery, timeout = 5.minutes),
-      columnSettings = columnSettings
+      columnSettings = columnSettings(t)
     )
   }
 
@@ -132,39 +132,39 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     oppilaitosOids
   }
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "oppijaOid" -> Column("Oppija oid"),
-    "hetu" -> Column("Hetu"),
-    "etunimet" -> Column("Etunimet"),
-    "sukunimi" -> Column("Sukunimi"),
-    "kotikunta" -> Column("Kotikunta", comment = Some("Tieto 'kotikunta' haetaan opintopolun oppijanumerorekisteristä, koulutuksenjärjestäjä ei tallenna kotikunta-tietoa KOSKI-palveluun. Oppijanumerorekisterin kotikunta-tieto ei sisällä takautuvia tietoja oppijan kotikuntahistoriasta, joten raportilla näkyvä kotikunta on raportin tulostamispäivän mukainen kotikunta, eli ei välttämättä sama, kuin mikä väestötietojärjestelmässä oppijan tosiasiallinen kotikunta on ollut raportille valittuna päivänä.")),
-    "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
-    "lähdejärjestelmäKoodiarvo" -> Column("Lähdejärjestelmä"),
-    "lähdejärjestelmäId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
-    "aikaleima" -> Column("Opiskeluoikeus päivitetty"),
-    "koulutustoimijaNimi" -> Column("Koulutustoimijan nimi"),
-    "oppilaitosNimi" -> Column("Oppilaitoksen nimi"),
-    "toimipisteNimi" -> Column("Toimipisteen nimi"),
-    "opiskeluoikeudenAlkamispäivä" -> Column("Opiskeluoikeuden alkamispäivä"),
-    "opiskeluoikeudenPäättymispäivä" -> Column("Opiskeluoikeuden päättymispäivä"),
-    "opiskeluoikeudenViimeisinTila" -> Column("Opiskeluoikeuden viimeisin tila"),
-    "opiskeluoikeudenTilaRaportinTarkasteluajankohtana" -> Column("Opiskeluoikeuden tila raportin tarkasteluajankohtana", comment = Some("Opiskeluoikeuden tila raportin tulostusparametreissa valittuna päivänä")),
-    "koulutuskoodi" -> Column("Koulutuskoodi"),
-    "koulutus" -> Column("Koulutus"),
-    "perusteenDiaarinumero" -> Column("Perusteen diaarinumero"),
-    "suorituskieli" -> Column("Suorituskieli"),
-    "suorituksenVahvistuspäivä" -> Column("Suorituksen vahvistuspäivä"),
-    "yksilöity" -> Column("Oppija yksilöity"),
-    "pidennettyOppivelvollisuus" -> Column("Pidennetty oppivelvollisuus"),
-    "tukimuodot" -> Column("Tukimuodot"),
-    "erityisenTuenPäätös" -> Column("Erityisen tuen jakso voimassa"),
-    "vammainen" -> Column("Vammainen"),
-    "vaikeastiVammainen" -> Column("Vaikeimmin kehitysvammainen"),
-    "majoitusetu" -> Column("Majoitusetu"),
-    "kuljetusetu" -> Column("Kuljetusetu"),
-    "sisäoppilaitosmainenMajoitus" -> Column("Sisäoppilaitosmainen majoitus"),
-    "koulukoti" -> Column("Koulukoti"),
-    "ostopalveluTaiPalveluseteli" -> Column("Ostopalvelu/palveluseteli", comment = Some("'JM02': Ostopalvelu, 'JM03': Palveluseteli"))
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
+    "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
+    "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
+    "kotikunta" -> Column(t.get("raportti-excel-kolumni-kotikunta"), comment = Some(t.get("raportti-excel-kolumni-kotikunta-comment"))),
+    "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
+    "lähdejärjestelmäKoodiarvo" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmä")),
+    "lähdejärjestelmäId" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
+    "aikaleima" -> Column(t.get("raportti-excel-kolumni-aikaleima")),
+    "koulutustoimijaNimi" -> Column(t.get("raportti-excel-kolumni-koulutustoimijaNimi")),
+    "oppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+    "toimipisteNimi" -> Column(t.get("raportti-excel-kolumni-toimipisteNimi")),
+    "opiskeluoikeudenAlkamispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
+    "opiskeluoikeudenPäättymispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
+    "opiskeluoikeudenViimeisinTila" -> Column(t.get("raportti-excel-kolumni-viimeisinTila")),
+    "opiskeluoikeudenTilaRaportinTarkasteluajankohtana" -> Column(t.get("raportti-excel-kolumni-tilaHakupaivalla"), comment = Some(t.get("raportti-excel-kolumni-tilaHakupaivalla-comment"))),
+    "koulutuskoodi" -> Column(t.get("raportti-excel-kolumni-koulutuskoodi")),
+    "koulutus" -> Column(t.get("raportti-excel-kolumni-koulutus")),
+    "perusteenDiaarinumero" -> Column(t.get("raportti-excel-kolumni-perusteenDiaarinumero")),
+    "suorituskieli" -> Column(t.get("raportti-excel-kolumni-suorituskieli")),
+    "suorituksenVahvistuspäivä" -> Column(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva")),
+    "yksilöity" -> Column(t.get("raportti-excel-kolumni-yksiloity")),
+    "pidennettyOppivelvollisuus" -> Column(t.get("raportti-excel-kolumni-pidennettyOppivelvollisuus")),
+    "tukimuodot" -> Column(t.get("raportti-excel-kolumni-tukimuodot")),
+    "erityisenTuenPäätös" -> Column(t.get("raportti-excel-kolumni-erityisenTuenPaatosVoimassa")),
+    "vammainen" -> Column(t.get("raportti-excel-kolumni-vammainen")),
+    "vaikeastiVammainen" -> Column(t.get("raportti-excel-kolumni-vaikeastiVammainen")),
+    "majoitusetu" -> Column(t.get("raportti-excel-kolumni-majoitusetu")),
+    "kuljetusetu" -> Column(t.get("raportti-excel-kolumni-kuljetusetu")),
+    "sisäoppilaitosmainenMajoitus" -> Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus")),
+    "koulukoti" -> Column(t.get("raportti-excel-kolumni-koulukoti")),
+    "ostopalveluTaiPalveluseteli" -> Column(t.get("raportti-excel-kolumni-ostopalveluTaiPalveluseteli"), comment = Some(t.get("raportti-excel-kolumni-ostopalveluTaiPalveluseteli-comment")))
   )
 }
 
