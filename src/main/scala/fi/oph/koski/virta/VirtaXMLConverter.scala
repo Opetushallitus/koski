@@ -29,7 +29,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val ooTyyppi: Koodistokoodiviite = koodistoViitePalvelu.validateRequired(OpiskeluoikeudenTyyppi.korkeakoulutus)
 
     val (orphans, opiskeluoikeudet) = opiskeluoikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
-      val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList))
+      val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList, None))
 
       val opiskeluoikeudenTila: KorkeakoulunOpiskeluoikeudenTila = KorkeakoulunOpiskeluoikeudenTila((opiskeluoikeusNode \ "Tila")
         .sortBy(alkuPvm)
@@ -445,11 +445,25 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").toList
   }
 
-  def sisältyyOpiskeluoikeuteen(suoritus: Node, opiskeluoikeus: Node, allNodes: List[Node]): Boolean = try {
-    val opiskeluoikeusAvain: String = (suoritus \ "@opiskeluoikeusAvain").text
-    opiskeluoikeusAvain == avain(opiskeluoikeus) || childNodes(suoritus, allNodes)._1.find(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes)).isDefined
+  def sisältyyOpiskeluoikeuteen(suoritus: Node, opiskeluoikeus: Node, allNodes: List[Node],
+                                päätasonSuoristusNode: Option[Node]): Boolean = try {
+    suorituksessaOpintoOikeudenAvain(suoritus, opiskeluoikeus) &&
+      LapsenTapauksessaOpiskeluoikeusavaimenPitääOllaSamaKuinPäätasonSuorituksella(opiskeluoikeus, päätasonSuoristusNode) ||
+      childNodes(suoritus, allNodes)._1.find(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes, Some(päätasonSuoristusNode.getOrElse(suoritus)))).isDefined
   } catch {
     case IllegalSuoritusException(_) => false
+  }
+
+  private def suorituksessaOpintoOikeudenAvain(suoritus: Node, opiskeluoikeus: Node): Boolean = {
+    opiskeluoikeusAvain(suoritus) == avain(opiskeluoikeus)
+  }
+
+  // Sisältyvien opiskeluoikeuksien osalta kaikilla suorituksilla ei välttämättä ole sama opiskeluoikeus. Voi olla esim.
+  // suoritus (OpiskeluoikeusAvain1) -> sisältyvyys -> suoritus (OpiskeluoikeusAvain2)
+  // Siksi tehdään vertailu myös päätason suorituksen opiskeluoikeuteen (sisältyyOpiskeluoikeuteen), jottei tulkittaisi
+  // tällaisessa tilanteessa koko päätasonsuorituksen kuuluvan johonkin toiseen opiskeluoikeuteen.
+  private def LapsenTapauksessaOpiskeluoikeusavaimenPitääOllaSamaKuinPäätasonSuorituksella(opiskeluoikeus: Node, päätasonSuoristusNode: Option[Node]): Boolean = {
+    päätasonSuoristusNode.isEmpty || opiskeluoikeusAvain(päätasonSuoristusNode.get) == "" || opiskeluoikeusAvain(päätasonSuoristusNode.get) == avain(opiskeluoikeus)
   }
 
   private def requiredKoodi(uri: String, koodi: String) = {
