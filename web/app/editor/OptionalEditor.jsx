@@ -28,7 +28,7 @@ export class OptionalEditor extends React.Component {
           ? model.context.edit && prototype()
               ? <a className="add-value" onClick={addValue}><Text name="lisää"/></a>
               : null
-          : <Editor model={R.merge(modelToBeShown, { optional: false })}/>
+          : <Editor model={R.mergeRight(modelToBeShown, { optional: false })}/>
       }
       {
         canRemove && <a className="remove-value" onClick={removeValue}/>

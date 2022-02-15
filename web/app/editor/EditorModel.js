@@ -269,7 +269,7 @@ const preparePrototypeModel = (prototypeModel, forModel) => {
   let contextualizedProto = contextualizeSubModel(prototypeModel, forModel)
   contextualizedProto.parent = forModel.parent // parent fix
 
-  let mergedModel = R.merge(forModel, contextualizedProto) // includes all attributes from parent model (like maxLines etc that come from property annotations)
+  let mergedModel = R.mergeRight(forModel, contextualizedProto) // includes all attributes from parent model (like maxLines etc that come from property annotations)
   return mergedModel
 }
 
@@ -280,7 +280,7 @@ export const optionalPrototypeModel = (model) => {
     // This is a OneOfModel, just pick the first alternative
     prototype = prototype.oneOfPrototypes[0] = preparePrototypeModel(prototype.oneOfPrototypes[0], model)
   }
-  return R.merge(prototype, createOptionalEmpty(model)) // Ensure that the prototype model has optional flag and optionalPrototype
+  return R.mergeRight(prototype, createOptionalEmpty(model)) // Ensure that the prototype model has optional flag and optionalPrototype
 }
 
 export const createOptionalEmpty = (optModel) => ({ optional: optModel.optional, optionalPrototype: optModel.optionalPrototype })
@@ -351,7 +351,7 @@ export const contextualizeModel = (model, context, path) => {
     throwError('context missing')
   }
   model = resolvePrototype(model, context)
-  return R.merge(model, { context, path: childPath(model, path) })
+  return R.mergeRight(model, { context, path: childPath(model, path) })
 }
 
 // TODO: don't call this for arrayPrototype. Add arrayPrototype accessor instead
@@ -359,14 +359,14 @@ export const contextualizeSubModel = (subModel, parentModel, path) => {
   if (!subModel) return subModel
   subModel = resolvePrototype(subModel, parentModel.context)
   var subPath = childPath(parentModel, path)
-  return R.merge(subModel, { context: parentModel.context, path: subPath, parent: parentModel })
+  return R.mergeRight(subModel, { context: parentModel.context, path: subPath, parent: parentModel })
 }
 
 // Add more context parameters to the current context of the model.
 export const addContext = (model, additionalContext) => {
   additionalContext = removeUndefinedValues(additionalContext)
   if (!model.context) return contextualizeModel(model, additionalContext)
-  return contextualizeModel(model, R.merge(model.context, additionalContext))
+  return contextualizeModel(model, R.mergeRight(model.context, additionalContext))
 }
 
 export const modelValid = (model, recursive = true) => {
@@ -471,7 +471,7 @@ const modelItemsRaw = (model) => ((model && model.type == 'array' && model.value
 let contextualizeProperty = (mainModel) => (property) => {
   if (!property) return property
   let model = contextualizeChild(mainModel, property.model, property.key)
-  return R.merge(property, { model, owner: mainModel })
+  return R.mergeRight(property, { model, owner: mainModel })
 }
 
 let arrayKeyCounter = 0
@@ -576,7 +576,7 @@ const resolvePrototype = (model, context) => {
       }
     }
     // merge in properties, such as maxLines
-    foundProto = R.merge(foundProto, R.dissoc('type', R.dissoc('key', model)))
+    foundProto = R.mergeRight(foundProto, R.dissoc('type', R.dissoc('key', model)))
     return foundProto
   }
   return model

@@ -34,6 +34,6 @@ DateEditor.validateModel = (model) => {
 const isOptional = model => model.optional && !isPerusopetuksenVuosiluokanSuorituksenAlkamispäivä(model)
 
 const isPerusopetuksenVuosiluokanSuorituksenAlkamispäivä = model => R.and(
-  R.contains('perusopetuksenvuosiluokansuoritus', model.parent.value.classes),
+  R.includes('perusopetuksenvuosiluokansuoritus', model.parent.value.classes),
   R.last(model.path) === 'alkamispäivä'
 )

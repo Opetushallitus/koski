@@ -74,7 +74,7 @@ const iterator = (obj, currentPath) => {
 }
 
 const spesificComponent = (key, value) => {
-  if (R.contains(key, ['oppilaitos', 'toimipiste', 'koulutustoimija'])) {
+  if (R.includes(key, ['oppilaitos', 'toimipiste', 'koulutustoimija'])) {
     return OrganisaationNimi
   }
   if (key === 'tunniste' || isKoodistoviite(value)) {

@@ -34,7 +34,7 @@ const HetuLogin = ( { loginUrl = '/koski/cas/oppija', redirectUrl = null } ) => 
     .map(state)
     .flatMap(credentials => {
       Cookie.set('_shibsession_', 'mock')
-      const headers = R.reject(R.isNil, R.merge(credentials, {security: 'mock'}))
+      const headers = R.reject(R.isNil, R.mergeRight(credentials, {security: 'mock'}))
       // console.log('Logging in with', headers)
       const lang = credentials.lang ? credentials.lang : 'fi'
       return Bacon.fromPromise(fetch(loginUrl + window.location.search, { credentials: 'include', headers})).map(resp => ({resp: resp, lang: lang}))
