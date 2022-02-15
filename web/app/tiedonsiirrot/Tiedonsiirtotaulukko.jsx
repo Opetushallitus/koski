@@ -81,7 +81,7 @@ class Lokirivi extends React.Component {
     const nimi = sukunimi + (sukunimi ? ', ' : '') + kutsumanimi
     const className = ((isParent || isChild) ? 'group ' : '') + (isEven ? 'even' : 'odd')
 
-    const select = (value) => selected.modify(prev => R.contains(value, prev) ? R.without([value], prev) : R.append(value, prev))
+    const select = (value) => selected.modify(prev => R.includes(value, prev) ? R.without([value], prev) : R.append(value, prev))
 
     return (<tr className={className} id={'tiedonsiirto-' + row.id}>
       <td className="tila">

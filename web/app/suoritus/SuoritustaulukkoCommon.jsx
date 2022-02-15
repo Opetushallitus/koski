@@ -40,7 +40,7 @@ export const groupSuoritukset = (parentSuoritus, suoritukset, context, suoritusP
     let grouped, groupIds, groupTitles
     if (isAmmatillinentutkinto(parentSuoritus) && R.keys(ammatillisentutkinnonosanryhmaKoodisto).length > 1) {
       grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || NON_GROUPED)(suoritukset)
-      groupTitles = R.merge(ammatillisentutkinnonosanryhmaKoodisto, { [NON_GROUPED] : t('Muut suoritukset')})
+      groupTitles = R.mergeRight(ammatillisentutkinnonosanryhmaKoodisto, { [NON_GROUPED] : t('Muut suoritukset')})
       groupIds = R.keys(grouped).sort()
       if (context.edit) {
         // Show the empty groups too

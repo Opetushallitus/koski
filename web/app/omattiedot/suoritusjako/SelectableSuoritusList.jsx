@@ -37,7 +37,7 @@ export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) 
                           (<li key={id}>
                             <Checkbox
                               id={id}
-                              checked={R.contains(id, selectedIds)}
+                              checked={R.includes(id, selectedIds)}
                               onChange={toggleSelection(id)}
                               LabelComponent={Title}
                               listStylePosition='inside'

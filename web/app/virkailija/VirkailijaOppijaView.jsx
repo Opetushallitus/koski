@@ -64,7 +64,7 @@ export const invalidateOpiskeluoikeus = oid => {
 const invalidateE = invalidateBus.flatMapLatest(oid =>
   Http.delete(`/koski/api/opiskeluoikeus/${oid}`, {
     invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']
-  })).map(() => oppija => Bacon.once(R.merge(oppija, {event: 'invalidated'})))
+  })).map(() => oppija => Bacon.once(R.mergeRight(oppija, {event: 'invalidated'})))
 
 const deletePäätasonSuoritusBus = Bacon.Bus()
 export const deletePäätasonSuoritus = (opiskeluoikeus, päätasonSuoritus) =>
@@ -76,7 +76,7 @@ export const deletePäätasonSuoritus = (opiskeluoikeus, päätasonSuoritus) =>
 
 const deletePäätasonSuoritusE = deletePäätasonSuoritusBus.flatMapLatest(({opiskeluoikeusOid, versionumero, päätasonSuoritus}) =>
   Http.post(`/koski/api/opiskeluoikeus/${opiskeluoikeusOid}/${versionumero}/delete-paatason-suoritus`, päätasonSuoritus)
-).map(() => oppija => Bacon.once(R.merge(oppija, {event: 'päätasonSuoritusDeleted'})))
+).map(() => oppija => Bacon.once(R.mergeRight(oppija, {event: 'päätasonSuoritusDeleted'})))
 
 const createState = (oppijaOid) => {
   const changeBus = Bacon.Bus()
@@ -98,7 +98,7 @@ const createState = (oppijaOid) => {
     .map((edit) => () =>
       Http.cachedGet(oppijaEditorUri, { willHandleErrors: true})
         .map(setupModelContext)
-        .map( oppija => R.merge(oppija, { event: edit ? 'edit' : 'view' }))
+        .map( oppija => R.mergeRight(oppija, { event: edit ? 'edit' : 'view' }))
     )
 
   let changeBuffer = null
@@ -129,7 +129,7 @@ const createState = (oppijaOid) => {
           //console.log('Apply', batch.length, 'changes:', batch)
           let locallyModifiedOppija = applyChangesAndValidate(oppijaBeforeChange, batch)
 
-          return R.merge(locallyModifiedOppija, {event: 'dirty', inProgress: false, opiskeluoikeusOid: opiskeluoikeusOid })
+          return R.mergeRight(locallyModifiedOppija, {event: 'dirty', inProgress: false, opiskeluoikeusOid: opiskeluoikeusOid })
         })
       })
     }
@@ -154,15 +154,15 @@ const createState = (oppijaOid) => {
       showError(e)
     }
 
-    return Bacon.once(R.merge(oppijaBeforeSave, { event: 'saving', inProgress: true})).concat(
+    return Bacon.once(R.mergeRight(oppijaBeforeSave, { event: 'saving', inProgress: true})).concat(
       Http.put('/koski/api/oppija', oppijaUpdate, { willHandleErrors: true, invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor/' + oppijaOid]})
         .flatMap(() => Http.cachedGet(oppijaEditorUri, {errorHandler})) // loading after save fails -> rare, not easily recoverable error, show full screen
         .map(setupModelContext)
-        .map( oppija => R.merge(oppija, { event: 'saved' }))
+        .map( oppija => R.mergeRight(oppija, { event: 'saved' }))
     )
   })
 
-  const editE = editingP.changes().filter(R.identity).map(() => (oppija) => Bacon.once(R.merge(oppija, { event: 'edit' })))
+  const editE = editingP.changes().filter(R.identity).map(() => (oppija) => Bacon.once(R.mergeRight(oppija, { event: 'edit' })))
 
   let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, editE, invalidateE, deletePäätasonSuoritusE) // :: EventStream [Model -> EventStream[Model]]
 

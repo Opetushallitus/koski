@@ -92,12 +92,12 @@ export default ({ options,
   let handleInputBlur = (allOptions, s) => (e) => {
     if (!inputElem) return
     let matchingOptions = allOptions.filter(o => inputElem.value && displayValue(o).toLowerCase() == inputElem.value.toLowerCase())
-    if (!R.isEmpty(matchingOptions) && !R.contains(s, matchingOptions)) {
+    if (!R.isEmpty(matchingOptions) && !R.includes(s, matchingOptions)) {
       // if multiple options have the same display value (e.g. arviointiasteikkoammatillinent1k3 and ...15),
       // try to use the selected (highlighted one) when parsing explicitly typed input.
       const selectionIndex = selectionIndexAtom.get()
       const selectedOption = allOptions[selectionIndex]
-      const option = (selectedOption && R.contains(selectedOption, matchingOptions)) ? selectedOption : matchingOptions[0]
+      const option = (selectedOption && R.includes(selectedOption, matchingOptions)) ? selectedOption : matchingOptions[0]
       selectOption(e, option)
     } else {
       openAtom.set(false)

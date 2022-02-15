@@ -12,7 +12,7 @@ export const LocalizedStringEditor = ({model, ...rest}) => {
 
   let usedLanguage = getUsedLanguage(wrappedModel)
 
-  let stringModel = R.merge(lensedModel(wrappedModel, localizedStringLens(wrappedModel)), { optional: model.optional, maxLines: wrappedModel.maxLines })
+  let stringModel = R.mergeRight(lensedModel(wrappedModel, localizedStringLens(wrappedModel)), { optional: model.optional, maxLines: wrappedModel.maxLines })
 
   return <span className={'localized-string ' + usedLanguage}><StringEditor {...{model: stringModel, ...rest}} /></span>
 }

@@ -210,7 +210,7 @@ export class Oppijataulukko extends React.Component {
 
     this.filterBus.plug(
       koulutus
-        .filter(suoritusTyypit => this.props.params['suorituksenTyyppi'] && !R.contains(this.props.params['suorituksenTyyppi'], R.map(x => x.key, suoritusTyypit)))
+        .filter(suoritusTyypit => this.props.params['suorituksenTyyppi'] && !R.includes(this.props.params['suorituksenTyyppi'], R.map(x => x.key, suoritusTyypit)))
         .map(() => R.objOf('suorituksenTyyppi', undefined))
     )
     this.filterBus.merge(this.textFilterBus.throttle(delays().delay(500))).onValue(navigateWithQueryParams)

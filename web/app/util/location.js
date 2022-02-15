@@ -70,7 +70,7 @@ export function parseLocation(location) {
     queryString: location.search || '',
     hash: location.hash,
     addQueryParams(newParams) {
-      return this.replaceQueryParams(R.merge(this.params, newParams))
+      return this.replaceQueryParams(R.mergeRight(this.params, newParams))
     },
     filterQueryParams(f) {
       let newParams = R.fromPairs(R.toPairs(this.params).filter(([key, value]) => f(key, value)))
