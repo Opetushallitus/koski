@@ -25,11 +25,11 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec wit
 
   "Aikuisten perusopetuksen oppijamäärien raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/aikuistenperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&password=salasana") {
+      authGet(s"api/raportit/aikuistenperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&password=salasana&lang=fi") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="aikuisten_perusopetuksen_vos_raportti-2010-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&lang=fi")))
       }
     }
 
@@ -45,10 +45,10 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec wit
       r.oppimääränSuorittajiaYhteensä should equal(5)
       r.oppimääränSuorittajiaVOS should equal(2)
       r.oppimääränSuorittajiaMuuKuinVOS should equal(3)
-      r.aineopiskelijoitaYhteensä should equal (3)
+      r.aineopiskelijoitaYhteensä should equal(3)
       r.aineopiskelijoitaVOS should equal(2)
       r.aineopiskelijoitaMuuKuinVOS should equal(1)
-      r.vieraskielisiäYhteensä should equal (2)
+      r.vieraskielisiäYhteensä should equal(2)
       r.vieraskielisiäVOS should equal(1)
       r.vieraskielisiäMuuKuinVOS should equal(1)
     }
@@ -60,5 +60,5 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec wit
     found.head
   }
 
-  private def session(user: KoskiMockUser)= user.toKoskiSpecificSession(application.käyttöoikeusRepository)
+  private def session(user: KoskiMockUser) = user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 }

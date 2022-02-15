@@ -13,7 +13,8 @@ export const RaporttiPaivalta = ({
   apiEndpoint,
   shortDescription,
   dateInputHelp,
-  example
+  example,
+  lang
 }) => {
   const paivaAtom = Atom(today())
   const submitBus = Bacon.Bus()
@@ -23,7 +24,7 @@ export const RaporttiPaivalta = ({
 
   const downloadExcelP = Bacon.combineWith(
     selectedOrganisaatioP, paivaAtom,
-    (o, p) => o && p && ({oppilaitosOid: o.oid, paiva: formatISODate(p), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
+    (o, p) => o && p && ({oppilaitosOid: o.oid, paiva: formatISODate(p), lang: lang, password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
   )
   const downloadExcelE = submitBus.map(downloadExcelP)
     .flatMapLatest(downloadExcel)

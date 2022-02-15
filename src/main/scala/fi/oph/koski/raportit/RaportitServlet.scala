@@ -104,14 +104,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   get("/lukiodiaibinternationalopiskelijamaarat") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.lukiokoulutus)
     val r = parseRaporttiPäivältäRequest
-    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=lukiodiaibinternationalopiskelijamaarat&oppilaitosOid=${r.oppilaitosOid}&paiva=${r.paiva}")))
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=lukiodiaibinternationalopiskelijamaarat&oppilaitosOid=${r.oppilaitosOid}&paiva=${r.paiva}&lang=${r.lang}")))
     writeExcel(raportitService.lukioDiaIbInternationalOpiskelijaMaaratRaportti(r))
   }
 
   get("/luvaopiskelijamaarat") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.luva)
     val r = parseRaporttiPäivältäRequest
-    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=luvaopiskelijamaarat&oppilaitosOid=${r.oppilaitosOid}&paiva=${r.paiva}")))
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=luvaopiskelijamaarat&oppilaitosOid=${r.oppilaitosOid}&paiva=${r.paiva}&lang=${r.lang}")))
     writeExcel(raportitService.lukioonValmistavanKoulutuksenOpiskelijaMaaratRaportti(r))
   }
 
@@ -157,7 +157,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.esiopetus)
     val parsedRequest = parseRaporttiPäivältäRequest
 
-    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}")))
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.esiopetuksenOppijamäärät(parsedRequest))
   }
 
@@ -165,7 +165,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.aikuistenperusopetus)
     val parsedRequest = parseRaporttiPäivältäRequest
 
-    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}")))
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.aikuistenperusopetuksenOppijamäärät(parsedRequest))
   }
 
@@ -180,17 +180,19 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   get("/perusopetuksenoppijamaaratraportti") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetus)
     val parsedRequest = parseRaporttiPäivältäRequest
+    val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
 
-    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=perusopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}")))
-    writeExcel(raportitService.perusopetuksenOppijamäärät(parsedRequest))
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=perusopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
+    writeExcel(raportitService.perusopetuksenOppijamäärät(parsedRequest, t), t)
   }
 
   get("/perusopetuksenlisaopetuksenoppijamaaratraportti") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus)
     val parsedRequest = parseRaporttiPäivältäRequest
+    val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
 
-    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=perusopetuksenlisaopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}")))
-    writeExcel(raportitService.perusopetuksenLisäopetuksenOppijamäärät(parsedRequest))
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=perusopetuksenlisaopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
+    writeExcel(raportitService.perusopetuksenLisäopetuksenOppijamäärät(parsedRequest, t), t)
   }
 
   private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {
@@ -226,8 +228,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val password = getStringParam("password")
     val downloadToken = params.get("downloadToken")
     val oppilaitosOid = getOppilaitosOid
+    val lang = getStringParam("lang")
 
-    RaporttiPäivältäRequest(oppilaitosOid, downloadToken, password, paiva)
+    RaporttiPäivältäRequest(oppilaitosOid, downloadToken, password, paiva, lang)
   }
 
   private def parseAikajaksoRaporttiAikarajauksellaRequest: AikajaksoRaporttiAikarajauksellaRequest = {
@@ -258,14 +261,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   }
 
   private def parseVuosiluokkaRequest: PerusopetuksenVuosiluokkaRequest = {
-   PerusopetuksenVuosiluokkaRequest(
-     oppilaitosOid = getOppilaitosOid,
-     downloadToken = params.get("downloadToken"),
-     password = getStringParam("password"),
-     paiva = getLocalDateParam("paiva"),
-     vuosiluokka = getStringParam("vuosiluokka"),
-     lang = getStringParam("lang")
-   )
+    PerusopetuksenVuosiluokkaRequest(
+      oppilaitosOid = getOppilaitosOid,
+      downloadToken = params.get("downloadToken"),
+      password = getStringParam("password"),
+      paiva = getLocalDateParam("paiva"),
+      vuosiluokka = getStringParam("vuosiluokka"),
+      lang = getStringParam("lang")
+    )
   }
 
   private def getOppilaitosOid: Organisaatio.Oid = {
