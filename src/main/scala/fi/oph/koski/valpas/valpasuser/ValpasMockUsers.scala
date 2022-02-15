@@ -1,11 +1,10 @@
 package fi.oph.koski.valpas.valpasuser
 
 import java.net.InetAddress
-
 import fi.oph.koski.koskiuser.AuthenticationUser.fromDirectoryUser
-import fi.oph.koski.koskiuser.{AuthenticationUser, Käyttöoikeus, KäyttöoikeusRepository, MockKäyttöoikeusryhmät, MockUser}
+import fi.oph.koski.koskiuser.{AuthenticationUser, KäyttöoikeusRepository, MockKäyttöoikeusryhmät, MockUser}
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
-import fi.oph.koski.userdirectory.DirectoryUser
+import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser, HenkilönKäyttöoikeudet, OrganisaatioJaKäyttöoikeudet}
 import fi.oph.koski.valpas.valpasuser.ValpasMockKäyttöoikeusryhmät._
 
 object ValpasMockUsers {
@@ -323,10 +322,12 @@ case class ValpasMockUser(
   lastname: String,
   firstname: String,
   oid: String,
-  käyttöoikeudet: Set[Käyttöoikeus],
+  käyttöoikeudetRaw: Seq[OrganisaatioJaKäyttöoikeudet],
   lang: String = "fi",
   käyttöoikeusRyhmät: List[String] = Nil
 ) extends MockUser {
+  val käyttöoikeudet = DirectoryClient.resolveKäyttöoikeudet(HenkilönKäyttöoikeudet(oid, käyttöoikeudetRaw.toList))._2.toSet
+
   lazy val ldapUser = DirectoryUser(oid, käyttöoikeudet.toList, firstname, lastname, Some(lang))
 
   def toValpasSession(käyttöoikeudet: KäyttöoikeusRepository): ValpasSession = {

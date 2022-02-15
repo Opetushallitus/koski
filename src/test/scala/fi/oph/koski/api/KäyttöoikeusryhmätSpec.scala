@@ -355,6 +355,14 @@ class KäyttöoikeusryhmätSpec
     verifyMuidenApienKutsuminenEstetty(MockUsers.kelaSuppeatOikeudet)
   }
 
+  "YTL ei voi kutsua muita apeja" in {
+    verifyMuidenApienKutsuminenEstetty(MockUsers.ytlKäyttäjä)
+  }
+
+  "Valvira ei voi kutsua muita apeja" in {
+    verifyMuidenApienKutsuminenEstetty(MockUsers.valviraKäyttäjä)
+  }
+
   "viranomainen jolla ei ole luovutuspalveluoikeuksia" - {
     "ei voi kutsua luovutuspalveluapeja" in {
       val body = HetuRequestV1(1, KoskiSpecificMockOppijat.ysiluokkalainen.hetu.get, List("perusopetus"))
