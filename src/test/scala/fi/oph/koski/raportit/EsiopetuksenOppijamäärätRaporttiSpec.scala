@@ -3,6 +3,7 @@ package fi.oph.koski.raportit
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiTouhula, tornionKaupunki}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -21,12 +22,13 @@ class EsiopetuksenOppijamäärätRaporttiSpec
 
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2007, 1, 1))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2007, 1, 1), t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
   private lazy val ilmanOikeuksiaRaportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2007, 1, 1))(session(tornioTallentaja)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2007, 1, 1), t)(session(tornioTallentaja)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
   private lazy val tyhjäVuosiRaportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2012, 1, 1))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2012, 1, 1), t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
   private val raporttiService = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
 
   override protected def beforeAll(): Unit = {
@@ -106,7 +108,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec
   }
 
   private def buildRaportti(user: KoskiMockUser, organisaatio: Oid) =
-    raporttiService.build(List(organisaatio), localDate(2007, 1, 1))(session(user))
+    raporttiService.build(List(organisaatio), localDate(2007, 1, 1), t)(session(user))
 
   private def getOppilaitokset(raportti: DataSheet) = {
     getRows(raportti).map(_.oppilaitosNimi).sorted

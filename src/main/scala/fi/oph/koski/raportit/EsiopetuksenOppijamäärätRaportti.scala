@@ -1,15 +1,15 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate
-
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.db.DB
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
-
 import slick.jdbc.GetResult
+
 import scala.concurrent.duration.DurationInt
 
 case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends QueryMethods {
@@ -34,13 +34,13 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
     )
   )
 
-  def build(oppilaitosOids: List[String], päivä: LocalDate)(implicit u: KoskiSpecificSession): DataSheet = {
+  def build(oppilaitosOids: List[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
     val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[EsiopetuksenOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
-      title = "Suoritukset",
+      title = t.get("raportti-excel-suoritukset-sheet-name"),
       rows = rows,
-      columnSettings = columnSettings
+      columnSettings = columnSettings(t)
     )
   }
 
@@ -97,9 +97,6 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
     .filter(_.organisaatioAccessType.contains(AccessType.read))
     .map(_.koulutustoimija.oid)
 
-  private def käyttäjänOstopalveluOidit(implicit u: KoskiSpecificSession) =
-    organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
-
   private def validateOids(oppilaitosOids: List[String]) = {
     val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
     if (invalidOid.isDefined) {
@@ -108,23 +105,23 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
     oppilaitosOids
   }
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "oppilaitosNimi" -> Column("Oppilaitos"),
-    "opetuskieli" -> Column("Opetuskieli"),
-    "esiopetusoppilaidenMäärä" -> Column("Esiopetusoppilaiden määrä", comment = Some("\"Läsnä\"-tilaiset esiopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
-    "vieraskielisiä" -> Column("Esiopetusoppilaista vieraskielisiä"),
-    "koulunesiopetuksessa" -> Column("Peruskoulun esiopetuksessa"),
-    "päiväkodinesiopetuksessa" -> Column("Päiväkodin esiopetuksessa"),
-    "viisivuotiaita" -> Column("Viisivuotiaita", comment = Some("Esiopetuksen oppilaat, jotka ovat raportin \"Päivä\"-parametrissa määriteltynä vuotena täyttäneet viisi vuotta mutta joilla ei löydy opiskeluoikeuden lisätiedoista tietoa pidennetystä oppivelvollisuudesta.")),
-    "viisivuotiaitaEiPidennettyäOppivelvollisuutta" -> Column("Viisivuotiaita, ei pidennettyä oppivelvollisuutta"),
-    "pidennettyOppivelvollisuusJaVaikeastiVammainen" -> Column("Pidennetty oppivelvollisuus ja vaikeasti vammainen"),
-    "pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen" -> Column("Pidennetty oppivelvollisuus ja muu kuin vaikeimmin vammainen"),
-    "virheellisestiSiirretytVaikeastiVammaiset" -> Column("Virheellisesti siirretyt vaikeasti vammaiset", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva \"Vaikeasti vammainen\"-jakso, mutta joille ei löydy kyseiselle päivälle osuvaa pidennetyn oppivelvollisuuden ja erityisen tuen jaksoja.")),
-    "virheellisestiSiirretytMuutKuinVaikeimminVammaiset" -> Column("Virheellisesti siirretyt muut kuin vaikeimmin vammaiset", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva \"Muu kuin vaikeasti vammainen\"-jakso, mutta joille ei löydy kyseiselle päivälle osuvaa pidennetyn oppivelvollisuuden ja erityisen tuen jaksoja.")),
-    "erityiselläTuella" -> Column("Esiopetusoppilaat, joilla erityinen tuki", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva erityisen tuen jakso.")),
-    "majoitusetu" -> Column("Majoitusetu", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva majoitusetujakso. ")),
-    "kuljetusetu" -> Column("Kuljetusetu", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva kuljetusetujakso.")),
-    "sisäoppilaitosmainenMajoitus" -> Column("Sisäoppilaitosmainen majoitus", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva sisäoppilaitosmaisen majoituksen jakso."))
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "oppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+    "opetuskieli" -> Column(t.get("raportti-excel-kolumni-opetuskieli")),
+    "esiopetusoppilaidenMäärä" -> Column(t.get("raportti-excel-kolumni-esiopetusoppilaidenMäärä"), comment = Some(t.get("raportti-excel-kolumni-esiopetusoppilaidenMäärä-comment"))),
+    "vieraskielisiä" -> Column(t.get("raportti-excel-kolumni-esiopetusvieraskielisiä")),
+    "koulunesiopetuksessa" -> Column(t.get("raportti-excel-kolumni-koulunesiopetuksessa")),
+    "päiväkodinesiopetuksessa" -> Column(t.get("raportti-excel-kolumni-päiväkodinesiopetuksessa")),
+    "viisivuotiaita" -> Column(t.get("raportti-excel-kolumni-viisivuotiaita")),
+    "viisivuotiaitaEiPidennettyäOppivelvollisuutta" -> Column(t.get("raportti-excel-kolumni-viisivuotiaitaEiPidennettyäOppivelvollisuutta"), comment = Some(t.get("raportti-excel-kolumni-viisivuotiaitaEiPidennettyäOppivelvollisuutta-comment"))),
+    "pidennettyOppivelvollisuusJaVaikeastiVammainen" -> Column(t.get("raportti-excel-kolumni-pidennettyOppivelvollisuusJaVaikeastiVammainen")),
+    "pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen" -> Column(t.get("raportti-excel-kolumni-pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen")),
+    "virheellisestiSiirretytVaikeastiVammaiset" -> Column(t.get("raportti-excel-kolumni-virheellisestiSiirretytVaikeastiVammaiset"), comment = Some(t.get("raportti-excel-kolumni-virheellisestiSiirretytVaikeastiVammaiset-comment"))),
+    "virheellisestiSiirretytMuutKuinVaikeimminVammaiset" -> Column(t.get("raportti-excel-kolumni-virheellisestiSiirretytMuutKuinVaikeimminVammaiset"), comment = Some(t.get("raportti-excel-kolumni-virheellisestiSiirretytMuutKuinVaikeimminVammaiset-comment"))),
+    "erityiselläTuella" -> Column(t.get("raportti-excel-kolumni-erityiselläTuella"), comment = Some(t.get("raportti-excel-kolumni-erityiselläTuella-comment"))),
+    "majoitusetu" -> Column(t.get("raportti-excel-kolumni-majoitusetu"), comment = Some(t.get("raportti-excel-kolumni-majoitusetu-comment"))),
+    "kuljetusetu" -> Column(t.get("raportti-excel-kolumni-kuljetusetu"), comment = Some(t.get("raportti-excel-kolumni-kuljetusetu-comment"))),
+    "sisäoppilaitosmainenMajoitus" -> Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-comment")))
   )
 }
 
