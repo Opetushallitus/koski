@@ -124,7 +124,7 @@ case class MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto(
 case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus,
   override val alkamispäivä: Option[LocalDate],
-  arviointi: Option[List[AmmatillinenArviointi]],
+  arviointi: Option[List[MuunAmmatillisenKoulutuksenArviointi]],
   @Description("Osasuoritukseen liittyvän näytön tiedot")
   @Tooltip("Osasuoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   @ComplexObject

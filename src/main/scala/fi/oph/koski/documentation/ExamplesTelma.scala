@@ -59,7 +59,7 @@ Kurssilla käytäviä asioita:
 
   def tunnustettu(selite: String): Some[OsaamisenTunnustaminen] = Some(OsaamisenTunnustaminen(None, selite))
 
-  private def telmaKurssinSuoritus(koodi: String, nimi: String, laajuusOsaamispisteissä: Float, pakollinen: Boolean, arviointi: Option[List[AmmatillinenArviointi]], tunnustaminen: Option[OsaamisenTunnustaminen] = None, näyttö: Option[Näyttö] = None, kuvaus: Option[String] = None) = {
+  private def telmaKurssinSuoritus(koodi: String, nimi: String, laajuusOsaamispisteissä: Float, pakollinen: Boolean, arviointi: Option[List[TelmaJaValmaArviointi]], tunnustaminen: Option[OsaamisenTunnustaminen] = None, näyttö: Option[Näyttö] = None, kuvaus: Option[String] = None) = {
     TelmaKoulutuksenOsanSuoritus(
       koulutusmoduuli = PaikallinenTelmaKoulutuksenOsa(
         tunniste = PaikallinenKoodi(koodi, finnish(nimi)),
@@ -74,13 +74,13 @@ Kurssilla käytäviä asioita:
 }
 
 object TelmaExampleData {
-  lazy val arviointiHyväksytty: Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(
+  lazy val arviointiHyväksytty: Some[List[TelmaJaValmaArviointi]] = Some(List(TelmaJaValmaArviointi(
     arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
     päivä = date(2013, 3, 20))))
 
-  lazy val arvointiTyydyttävä: Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(
+  lazy val arvointiTyydyttävä: Some[List[TelmaJaValmaArviointi]] = Some(List(TelmaJaValmaArviointi(
     arvosana = Koodistokoodiviite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None),
     päivä = date(2013, 3, 20))))
 
-  def sanallinenArvionti(teksti: String): Option[List[AmmatillinenArviointi]] = arviointiHyväksytty.map(_.map(a => a.copy(kuvaus = Some(teksti))))
+  def sanallinenArvionti(teksti: String): Option[List[TelmaJaValmaArviointi]] = arviointiHyväksytty.map(_.map(a => a.copy(kuvaus = Some(teksti))))
 }

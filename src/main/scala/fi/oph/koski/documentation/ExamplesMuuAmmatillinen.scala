@@ -43,7 +43,7 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
           finnish("Kurssilla opitaan hallitsemaan asunto- ja kiinteistöosakeyhtiön taloutta ja verotusta.")
         ),
         alkamispäivä = None,
-        arviointi = Some(List(arviointiHyväksytty)),
+        arviointi = Some(List(MuunAmmatillisenKoulutuksenExample.arviointiHyväksytty)),
         näyttö = None,
         liittyyTutkinnonOsaan = Koodistokoodiviite(
           "101481",
@@ -296,7 +296,7 @@ object MuunAmmatillisenKoulutuksenExample {
       pakollinen = true,
       laajuus = None
     ),
-    arviointi = Some(List(arviointiHyväksytty))
+    arviointi = Some(List(AmmatillinenExampleData.arviointiHyväksytty))
   )
 
   lazy val yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen = YhteisenTutkinnonOsanOsaAlueenSuoritus(
@@ -306,7 +306,7 @@ object MuunAmmatillisenKoulutuksenExample {
       kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
       laajuus = None
     ),
-    arviointi = Some(List(arviointiHyväksytty))
+    arviointi = Some(List(AmmatillinenExampleData.arviointiHyväksytty))
   )
 
   lazy val yhteisenTutkinnonOsanOsaAlueenSuoritusTunnustettuKesken = YhteisenTutkinnonOsanOsaAlueenSuoritus(
@@ -325,6 +325,10 @@ object MuunAmmatillisenKoulutuksenExample {
       laajuus = Some(LaajuusOsaamispisteissä(5, laajuusOsaamispisteissä))
     ),
     tunnustettu = Some(AmmatillinenExampleData.tunnustettu.copy(rahoituksenPiirissä = true)),
-    arviointi = Some(List(arviointiHyväksytty))
+    arviointi = Some(List(AmmatillinenExampleData.arviointiHyväksytty))
   )
+
+  lazy val arviointiHyväksytty = MuunAmmatillisenKoulutuksenArviointi(
+    arvosana = hyväksytty, date(2013, 3, 20),
+    arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))
 }

@@ -71,7 +71,7 @@ object ExamplesValma {
     koodi: String,
     kuvaus: String,
     laajuusOsaamispisteissä: Float,
-    arviointi: Option[List[AmmatillinenArviointi]],
+    arviointi: Option[List[TelmaJaValmaArviointi]],
     pakollinen: Boolean,
     tunnustettu: Option[OsaamisenTunnustaminen] = None,
     näyttö: Option[Näyttö] = None) =
@@ -86,4 +86,8 @@ object ExamplesValma {
       tunnustettu = tunnustettu,
       näyttö = näyttö
     )
+
+  lazy val arviointiHyväksytty = TelmaJaValmaArviointi(
+    arvosana = hyväksytty, date(2013, 3, 20),
+    arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))
 }
