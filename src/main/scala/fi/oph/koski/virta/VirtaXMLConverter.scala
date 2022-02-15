@@ -431,12 +431,9 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       osasuoritusNodes match {
         case osasuoritusNode :: Nil => löytyvätNodet += osasuoritusNode
         case Nil => virheet += OpiskeluoikeusAvaintaEiLöydy(arvo = opintosuoritusAvain)
-        case osasuoritusNodes => {
-          MyöntäjänäLABAmmattiKorkeakoulu(osasuoritusNodes) match {
-            case Some(node) => node
-            case None => throw IllegalSuoritusException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
-          }
-        }
+        case osasuoritusNodes =>
+          virheet += Duplikaatti(arvo = opintosuoritusAvain)
+          osasuoritusNodes.head
       }
     }
     löytyvätNodet.toList
