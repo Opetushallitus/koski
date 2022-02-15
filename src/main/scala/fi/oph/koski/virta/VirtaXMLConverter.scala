@@ -543,7 +543,6 @@ case class Ilmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOp
     oppilaitosNumero.contains(myöntäjä) && aktiivisetJaksot.exists(_.overlaps(ilmoittautuminen))
   }
 
-  private def opiskeluoikeusAvain(node: Node) = (node \ "@opiskeluoikeusAvain").text
 }
 
 case class LoppupäivällinenOpiskeluoikeusJakso(
@@ -563,6 +562,10 @@ object VirtaXMLConverterUtils {
 
   def avain(node: Node) = {
     (node \ "@avain").text
+  }
+
+  def opiskeluoikeusAvain(node: Node) = {
+    (node \ "@opiskeluoikeusAvain").text
   }
 
   def alkuPvm(node: Node) = {
