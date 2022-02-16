@@ -1735,5 +1735,6 @@
   "description:Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan..." : "Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan lisätiedot",
   "Virta virheet" : "Virta virheet",
   "description:Sisältö on aina tyhjä lista...." : "Sisältö on aina tyhjä lista. Kenttä näkyy tietomallissa vain teknisistä syistä.",
-  "description:Sisältö on aina tyhjä lista..." : "Sisältö on aina tyhjä lista opiskeluoikeusjaksoja. Kenttä näkyy tietomallissa vain teknisistä syistä."
+  "description:Sisältö on aina tyhjä lista..." : "Sisältö on aina tyhjä lista opiskeluoikeusjaksoja. Kenttä näkyy tietomallissa vain teknisistä syistä.",
+  "deprecated:Ei käytössä 1.1.2021 eteenpäin" : "Ei käytössä 1.1.2021 eteenpäin"
 }
