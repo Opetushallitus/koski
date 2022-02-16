@@ -25,19 +25,10 @@ import {OpiskeluoikeudenTila} from '../omattiedot/fragments/OpiskeluoikeudenTila
 import {ArrayEditor} from '../editor/ArrayEditor'
 import {modelEmpty} from '../editor/EditorModel'
 import {VirtaVirheetPopup} from '../virta/VirtaVirheetPopup.jsx'
+import {currentLocation} from '../util/location.js'
 import Atom from 'bacon.atom'
 
 export const excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen', 'virtaVirheet']
-
-/*
-      {
-        suoritusjakoTehty.map(v => !v && <a className='peru-suostumus-linkki' onClick={() => peruuttamassaSuostumustaAtom.modify(x => !x)}>{'Peruuta suostumus'}</a>)
-      }
-      {
-        peruuttamassaSuostumustaAtom.map(peruuttamassa => peruuttamassa &&
-          <SuostumuksenPeruutusPopup opiskeluoikeusOid={opiskeluoikeusOid} onDismiss={() => peruuttamassaSuostumustaAtom.modify(x => !x)}/>)
-      }
-      */
 
 export const OpiskeluoikeusEditor = ({model}) => {
   return (<TogglableEditor model={addContext(model, {opiskeluoikeus: model})} renderChild={ (mdl, editLink) => {
@@ -55,6 +46,8 @@ export const OpiskeluoikeusEditor = ({model}) => {
     const hasAlkamispäivä = !!modelData(mdl, 'alkamispäivä')
     const isSyntheticOpiskeluoikeus = !!modelData(model, 'synteettinen')
 
+    const virtaVirheetEnabled = currentLocation().params.diagnostiikka === 'true'
+
     return (
       <div className="opiskeluoikeus">
         <h3>
@@ -68,7 +61,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <OpiskeluoikeudenId opiskeluoikeus={mdl}/>
         </h3>
         {
-          (modelData(model, 'virtaVirheet') && modelData(model, 'virtaVirheet').length > 0) &&
+          (modelData(model, 'virtaVirheet') && modelData(model, 'virtaVirheet').length > 0) && virtaVirheetEnabled &&
             <a className='virta-virheet' onClick={() => katsomassaVirtaVirheitä.modify(x => !x)}>{'Virta-Virheet'}</a>
         }
         {
