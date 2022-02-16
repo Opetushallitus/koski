@@ -377,8 +377,12 @@ class ExcelWriterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     val file = new File("excel_file_for_tests.xlsx")
     val outputStream = new FileOutputStream(file)
     val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
+    val booleanTextValues = ExcelWriter.BooleanCellStyleLocalizedValues(
+      textForTrueValue = t.get("raportti-excel-default-value-kyllä"),
+      textForFalseValue = t.get("raportti-excel-default-value-ei")
+    )
     try {
-      ExcelWriter.writeExcel(workbookSettings, sheets, t, outputStream)
+      ExcelWriter.writeExcel(workbookSettings, sheets, booleanTextValues, outputStream)
       val wb: Workbook = WorkbookFactory.create(file, excelPassword)
       tests(wb)
     } finally {

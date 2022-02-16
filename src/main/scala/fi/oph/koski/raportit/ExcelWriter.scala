@@ -19,7 +19,9 @@ import scala.collection.JavaConverters._
 
 object ExcelWriter {
 
-  def writeExcel(workbookSettings: WorkbookSettings, sheets: Seq[Sheet], t: LocalizationReader, out: OutputStream): Unit = {
+  case class BooleanCellStyleLocalizedValues(textForTrueValue: String, textForFalseValue: String)
+
+  def writeExcel(workbookSettings: WorkbookSettings, sheets: Seq[Sheet], t: BooleanCellStyleLocalizedValues, out: OutputStream): Unit = {
 
     val wb = if (workbookSettings.password.isEmpty) new SXSSFWorkbook else new SXSSFWorkbookWithCustomZipEntrySource
     try {
@@ -88,7 +90,7 @@ object ExcelWriter {
     wb.sheetIterator.asScala.exists(_.getSheetName.toLowerCase == sheetName.toLowerCase)
   }
 
-  private def writeDataSheet(wb: SXSSFWorkbook, sh: SXSSFSheet, dataSheet: SheetWithColumnSettings, t: LocalizationReader): Unit = {
+  private def writeDataSheet(wb: SXSSFWorkbook, sh: SXSSFSheet, dataSheet: SheetWithColumnSettings, t: BooleanCellStyleLocalizedValues): Unit = {
     addIgnoredErrors(sh)
 
     val sheetHasGroupingHeaders = dataSheet.columnSettingsWithIndex.map(_._1).exists(_.groupingTitle.isDefined)
@@ -208,7 +210,7 @@ object ExcelWriter {
   }
 
   type DataCellWriter = (Any, SXSSFCell) => Unit
-  private def createDataCellWriter(wb: SXSSFWorkbook, t: LocalizationReader): DataCellWriter = {
+  private def createDataCellWriter(wb: SXSSFWorkbook, t: BooleanCellStyleLocalizedValues): DataCellWriter = {
     val textStyle = wb.createCellStyle()
     textStyle.setDataFormat(BuiltinFormats.getBuiltinFormat("text").toShort)
 
@@ -221,7 +223,7 @@ object ExcelWriter {
 
     val booleanStyle = wb.createCellStyle()
     booleanStyle.setDataFormat(wb.getCreationHelper.createDataFormat()
-      .getFormat(s"${t.get("raportti-excel-default-value-kyllä")};;${t.get("raportti-excel-default-value-ei")};"))
+      .getFormat(s"${t.textForTrueValue};;${t.textForFalseValue};"))
     booleanStyle.setAlignment(HorizontalAlignment.LEFT)
 
     (data: Any, cell: SXSSFCell) => setDataCellValue(data, cell, textStyle, dateStyle, floatStyle, booleanStyle)
