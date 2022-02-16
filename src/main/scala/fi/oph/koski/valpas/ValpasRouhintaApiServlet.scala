@@ -116,7 +116,10 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
     ExcelWriter.writeExcel(
       raportti.workbookSettings,
       raportti.sheets,
-      t,
+      ExcelWriter.BooleanCellStyleLocalizedValues(
+        textForTrueValue = t.get("raportti-excel-default-value-kyllä"),
+        textForFalseValue = t.get("raportti-excel-default-value-ei")
+      ),
       response.getOutputStream
     )
   }
