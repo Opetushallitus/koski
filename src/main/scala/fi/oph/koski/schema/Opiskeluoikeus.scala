@@ -62,7 +62,7 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
   def suoritukset: List[PäätasonSuoritus]
   @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista")
-  @Tooltip("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista. Tilojen kuvaukset löytyvät [täältä](https://confluence.csc.fi/pages/viewpage.action?pageId=71953716#KOSKI-palveluuntallennettavattiedotjatiedonsiirto/tietojenmanuaalinentallentaminen-tilat).")
+  @Tooltip("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista. Tilojen kuvaukset löytyvät opiskeluoikeustyypeittäin [täältä]( https://wiki.eduuni.fi/pages/viewpage.action?pageId=190613208).")
   def tila: OpiskeluoikeudenTila
   def luokka: Option[String] = {
     val vuosiluokkasuoritukset = suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
@@ -73,7 +73,7 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   def omistajaOrganisaatio: Option[Oppilaitos] = oppilaitos
   def getOppilaitos: Oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("Oppilaitos puuttuu"))
   def getOppilaitosOrKoulutusToimija: OrganisaatioWithOid = oppilaitos.orElse(koulutustoimija).getOrElse(throw new RuntimeException("Oppilaitos ja koulutustoimija puuttuu: " + this))
-  @Tooltip("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin ohjeet ja käyttötapaukset [usein kysyttyjen kysymysten](https://confluence.csc.fi/pages/viewpage.action?pageId=72811652) kohdasta Milloin ja miten käytetään linkitystä eri organisaatioissa olevien opintosuoritusten välillä KOSKI-palvelussa?")
+  @Tooltip("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin ohjeet ja käyttötapaukset [usein kysyttyjen kysymysten]( https://wiki.eduuni.fi/display/OPHPALV/4.+Ammatillisten+opiskeluoikeuksien+linkitys) kohdista Milloin ammatillisten opiskeluoikeuksien linkitystä käytetään? ja Kuinka linkitys käytännössä tehdään?")
   def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def mitätöity: Boolean = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "mitatoity")
   def mitätöintiPäivä: Option[LocalDate] =
@@ -144,8 +144,8 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[OpiskeluoikeudenLisätiedot]]("lisätiedot").set(this)(lisätiedot)
 }
 
-@Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin https://confluence.csc.fi/pages/viewpage.action?pageId=70627182")
-@Tooltip("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin ohjeet ja käyttötapaukset [usein kysyttyjen kysymysten](https://confluence.csc.fi/pages/viewpage.action?pageId=72811652) kohdasta Milloin ja miten käytetään linkitystä eri organisaatioissa olevien opintosuoritusten välillä KOSKI-palvelussa?")
+@Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin https://wiki.eduuni.fi/display/OPHPALV/4.+Ammatillisten+opiskeluoikeuksien+linkitys")
+@Tooltip("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin ohjeet ja käyttötapaukset [usein kysyttyjen kysymysten](https://wiki.eduuni.fi/display/OPHPALV/4.+Ammatillisten+opiskeluoikeuksien+linkitys) kohdasta Esimerkkitapauksia milloin ja miten linkitystä käytetään")
 case class SisältäväOpiskeluoikeus(
   @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden oppilaitostieto.")
   @Tooltip("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden oppilaitostieto.")

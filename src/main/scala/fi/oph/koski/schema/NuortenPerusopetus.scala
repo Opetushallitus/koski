@@ -639,7 +639,7 @@ case class NuortenPerusopetuksenVierasTaiToinenKotimainenKieli(
   kuvaus: Option[LocalizedString] = None
 ) extends PerusopetuksenVierasTaiToinenKotimainenKieli with NuortenPerusopetuksenKoodistostaLöytyväOppiaine
 
-@Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Perusopetus)")
+@Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [wiki](https://wiki.eduuni.fi/pages/viewpage.action?pageId=190612597#id-1.Opiskeluoikeudenperustiedotjalis%C3%A4tiedot-Opiskeluoikeudentilat/L%C3%A4sn%C3%A4olojaopintojenlopettaminen)")
 case class NuortenPerusopetuksenOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[NuortenPerusopetuksenOpiskeluoikeusjakso]

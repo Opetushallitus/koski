@@ -486,7 +486,7 @@
   "description:Koodin tunniste koodistossa": "Koodin tunniste koodistossa",
   "description:Opiskelu kotiopetuksessa huoltajan päätöksestä, alkamis-...": "Opiskelu kotiopetuksessa huoltajan päätöksestä, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.",
   "description:Lokalisoitu teksti, jossa mukana englanti": "Lokalisoitu teksti, jossa mukana englanti",
-  "description:Tila-tieto/tiedot oppijan läsnäolosta: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Esiopetus)": "Tila-tieto/tiedot oppijan läsnäolosta: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Esiopetus)",
+  "description:Tila-tieto/tiedot oppijan läsnäolosta: [wiki](https://wiki.eduuni.fi/display/OPHPALV/Esiopetuksen+opiskeluoikeudet#Esiopetuksenopiskeluoikeudet-Opiskeluoikeudentilat:L%C3%A4sn%C3%A4olojaopintojenlopettaminen)" : "Tila-tieto/tiedot oppijan läsnäolosta: [wiki](https://wiki.eduuni.fi/display/OPHPALV/Esiopetuksen+opiskeluoikeudet#Esiopetuksenopiskeluoikeudet-Opiskeluoikeudentilat:L%C3%A4sn%C3%A4olojaopintojenlopettaminen)",
   "description:Erityinen koulutustehtävä. Koodisto": "Erityinen koulutustehtävä. Koodisto",
   "description:Oppiaineen tunnistetiedot": "Oppiaineen tunnistetiedot",
   "description:Suoritettavan tutkinnon osan tunnistetiedot": "Suoritettavan tutkinnon osan tunnistetiedot",

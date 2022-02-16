@@ -24,10 +24,10 @@ export default ({memberName, onAcceptClick, logoutURL}) => (
         </ul>
       </div>
       <div className='acceptance-paragraphs'>
-        <p><Text name='Tarkemmat tiedot luovutettavista henkilötiedoista löydät KOSKI-palvelun CSC Wiki -sivustolta'/></p>
-        <p><a href='https://confluence.csc.fi/pages/viewpage.action?pageId=76536741'><Text name='Tietoa KOSKI-palvelun pyytämistä henkilötiedoista'/></a></p>
+        <p><Text name='Tarkemmat tiedot luovutettavista henkilötiedoista löydät KOSKI-palvelun Wiki -sivustolta'/></p>
+        <p><a href='https://wiki.eduuni.fi/display/OPHPALV/Oma+Data%3A+Opiskelijastatus+-+palautuvat+tiedot'><Text name='Tietoa KOSKI-palvelun pyytämistä henkilötiedoista'/></a></p>
         <p><Text name='Suostumuksesi päättymisajankohta (suostumuksen voimassaoloaika on 12 kk ellet peru suostumustasi aiemmin)'/></p>
-        <p><a href='https://confluence.csc.fi/pages/viewpage.action?pageId=76536741'><Text name='Tietoa KOSKI-palvelun pyytämistä henkilötiedoista'/></a></p>
+        <p><a href='https://wiki.eduuni.fi/display/OPHPALV/Oma+Data%3A+Opiskelijastatus+-+palautuvat+tiedot'><Text name='Tietoa KOSKI-palvelun pyytämistä henkilötiedoista'/></a></p>
         <p><Text name='Omat opiskeluoikeustietosi voit tarkistaa Oma Opintopolku-sivustolla'/></p>
         <p><a href='https://opintopolku.fi/koski/omattiedot'><Text name='Oma Opintopolussa olevat omat opintosuorituksesi'/></a></p>
         <p><Text name='Palveluntarjoaja käyttää tietojasi opiskelija-asemasi todentamiseen opiskelijahintaisen matkalipun myöntämisen yhteydessä...'/></p>

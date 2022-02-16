@@ -102,7 +102,7 @@ case class PerusopetukseenValmistavanOpetuksenOppiaine(
   def kuvaus: LocalizedString = opetuksenSisältö.getOrElse(LocalizedString.empty)
 }
 
-@Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Perusopetus)")
+@Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [wiki](https://wiki.eduuni.fi/display/OPHPALV/Perusopetukseen+valmistava+opetus#Perusopetukseenvalmistavaopetus-Opiskeluoikeudentilat:L%C3%A4sn%C3%A4olojaopintojenlopettaminen)")
 case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso]

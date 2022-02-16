@@ -265,7 +265,7 @@ case class AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends AikuistenPerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with SuoritustavallinenPerusopetuksenSuoritus with PerusopetuksenOppiaineenOppimääränSuoritus
 
-@Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Perusopetus)")
+@Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [wiki](https://wiki.eduuni.fi/pages/viewpage.action?pageId=190613191#Aikuistenperusopetuksenopiskeluoikeudenl%C3%A4sn%C3%A4olotiedotjaopiskeluoikeudenrahoitusmuodontiedot-Opiskeluoikeudentilat/L%C3%A4sn%C3%A4olojaopintojenlopettaminen)")
 case class AikuistenPerusopetuksenOpiskeluoikeudenTila(
   @MinItems(1)
   opiskeluoikeusjaksot: List[AikuistenPerusopetuksenOpiskeluoikeusjakso]

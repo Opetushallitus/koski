@@ -17,7 +17,7 @@ case class EsiopetuksenOpiskeluoikeus(
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   @Description("Oppijan opinto-oikeuden arvioitu päättymispäivä esiopetuksessa")
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  @Description("Tila-tieto/tiedot oppijan läsnäolosta: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Esiopetus)")
+  @Description("Tila-tieto/tiedot oppijan läsnäolosta: [wiki](https://wiki.eduuni.fi/display/OPHPALV/Esiopetuksen+opiskeluoikeudet#Esiopetuksenopiskeluoikeudet-Opiskeluoikeudentilat:L%C3%A4sn%C3%A4olojaopintojenlopettaminen)")
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
   koulutustoimija: Option[Koulutustoimija] = None,
   @Description("Esiopetuksen opiskeluoikeuden lisätiedot")
