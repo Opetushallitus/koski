@@ -196,8 +196,7 @@ class Oppiainetaulukko extends React.Component {
 
     const suoritusListaus = (listattavatSuoritukset, listausTitle) => (
       <React.Fragment>
-      {listausTitle && <Text name={listausTitle}/>}
-       <hr/>
+      {listausTitle && <b><Text name={listausTitle}/></b>}
         <thead>
         <tr>
           <th className="oppiaine"><Text name={isToimintaAlueittain(model) ? 'Toiminta-alue' : 'Oppiaine'}/></th>
@@ -205,6 +204,7 @@ class Oppiainetaulukko extends React.Component {
           {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}><Text name="Laajuus"/></th>}
         </tr>
         </thead>
+        <hr/>
         {
           listattavatSuoritukset.filter(s => edit || arvioituTaiVahvistettu(s) || osasuoritukset(s).length || isVuosiluokkaTaiPerusopetuksenOppimäärä(model)).map((suoritus) => (
             <PerusopetuksenOppiaineRowEditor
@@ -227,7 +227,7 @@ class Oppiainetaulukko extends React.Component {
         {title && <h5><Text name={title} /></h5>}
         { suoritukset.length > 0 && (
           isPerusopetukseenValmistavanKoulutuksenSuoritus(model) ?
-          <table style={{ width: '100%' }}>
+          <table>
             <th>
             {
               suoritusListaus(
