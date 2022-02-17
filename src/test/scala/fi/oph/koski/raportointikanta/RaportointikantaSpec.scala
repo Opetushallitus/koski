@@ -114,6 +114,7 @@ class RaportointikantaSpec
       val loadStarted = getLoadStartedTime
       authGet("api/raportointikanta/load")(verifyResponseStatusOk())
       loadStarted should equal(getLoadStartedTime)
+      Wait.until(loadComplete)
     }
 
     "Force load" in {
@@ -122,6 +123,11 @@ class RaportointikantaSpec
       val loadStarted = getLoadStartedTime
       authGet("api/raportointikanta/load?force=true")(verifyResponseStatusOk())
       loadStarted before getLoadStartedTime should be(true)
+
+      // Varmista, että raportointikanta ei jää epämääräiseen virhetilaan ennen muita testejä. Ilman sleeppiä
+      // näin voi generointivirheiden vuoksi käydä.
+      Thread.sleep(5000)
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
     }
   }
 
