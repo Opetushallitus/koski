@@ -500,6 +500,15 @@ class RaportointikantaSpec
     }
 
     "Mitätöityjä opiskeluoikeuksia ei ladata varsinaiseen opiskeluoikeudet-tauluun" in {
+      val mitätöidytOpiskeluoikeusOidit = runDbSync(
+        OpiskeluOikeudet.filter(_.mitätöity).sortBy(_.id).result
+      ).map(_.oid)
+
+      val opiskeluoikeusOiditRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.map(_.opiskeluoikeusOid).result
+      )
+
+      opiskeluoikeusOiditRaportointikannassa.exists(mitätöidytOpiskeluoikeusOidit.contains) should be(false)
     }
   }
 
