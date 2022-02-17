@@ -138,8 +138,6 @@ class RaportointikantaSpec
     val lukionJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/lukio-paattotodistus_2020-09-10.json")
     val lukionOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](lukionJson).right.get.opiskeluoikeudet.head.asInstanceOf[LukionOpiskeluoikeus].copy(oid = Some(oid))
     val aikuistenPerusopetuksenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/aikuistenperusopetuksenoppimaara2017_2020-07-13.json")
-    val aikuistenPerusopetuksenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](aikuistenPerusopetuksenJson).right.get.opiskeluoikeudet.head.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeus].copy(oid = Some(oid))
-
 
     val Läsnä = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila")
     val Loma =  Koodistokoodiviite("loma", "koskiopiskeluoikeudentila")
