@@ -19,7 +19,15 @@ import scala.collection.JavaConverters._
 
 object ExcelWriter {
 
-  case class BooleanCellStyleLocalizedValues(textForTrueValue: String, textForFalseValue: String)
+  case class BooleanCellStyleLocalizedValues(trueText: String, falseText: String)
+
+  object BooleanCellStyleLocalizedValues {
+    // Huom samat käännösavaimet sekä Koskessa että Valppaassa
+    def apply(t: LocalizationReader): BooleanCellStyleLocalizedValues = BooleanCellStyleLocalizedValues(
+      trueText = t.get("excel-export-default-value-kyllä"),
+      falseText = t.get("excel-export-default-value-ei")
+    )
+  }
 
   def writeExcel(workbookSettings: WorkbookSettings, sheets: Seq[Sheet], t: BooleanCellStyleLocalizedValues, out: OutputStream): Unit = {
 
@@ -223,7 +231,7 @@ object ExcelWriter {
 
     val booleanStyle = wb.createCellStyle()
     booleanStyle.setDataFormat(wb.getCreationHelper.createDataFormat()
-      .getFormat(s"${t.textForTrueValue};;${t.textForFalseValue};"))
+      .getFormat(s"${t.trueText};;${t.falseText};"))
     booleanStyle.setAlignment(HorizontalAlignment.LEFT)
 
     (data: Any, cell: SXSSFCell) => setDataCellValue(data, cell, textStyle, dateStyle, floatStyle, booleanStyle)

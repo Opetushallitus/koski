@@ -22,10 +22,7 @@ object MissingLocalizationsToExcel extends App {
   val localizationRepository = new MockLocalizationRepository(localizationConfig)
   val localLocalizations: Map[String, LocalizedString] = localizationRepository.localizations
   val t = new LocalizationReader(localizationRepository, "fi")
-  val booleanTextValues = ExcelWriter.BooleanCellStyleLocalizedValues(
-    textForTrueValue = t.get("raportti-excel-default-value-kyllä"),
-    textForFalseValue = t.get("raportti-excel-default-value-ei")
-  )
+  val booleanTextValues = ExcelWriter.BooleanCellStyleLocalizedValues(t)
 
   val columnSettings = List(
     "key" -> Column("Avain"),

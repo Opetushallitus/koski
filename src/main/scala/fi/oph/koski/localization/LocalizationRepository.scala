@@ -18,10 +18,12 @@ import scala.collection.immutable
 import scala.concurrent.duration.DurationInt
 
 trait LocalizationRepository extends Logging {
+  def localizationConfig: LocalizationConfig
+
   def localizations: Map[String, LocalizedString]
 
   def get(key: String): LocalizedString = localizations.getOrElse(key, {
-    logger.error(s"Unknown localization key: $key")
+    logger.error(s"Unknown localization key: $key in category ${localizationConfig.localizationCategory} and default file ${localizationConfig.defaultFinnishTextsResourceFilename}")
     LocalizedString.unlocalized(key)
   })
 
@@ -116,14 +118,14 @@ object MockLocalizationRepository {
   def readLocalLocalizations(resourceName: String) = JsonResources.readResource(resourceName)
 }
 
-class ReadOnlyRemoteLocalizationRepository(virkalijaRoot: String, localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
+class ReadOnlyRemoteLocalizationRepository(virkalijaRoot: String, val localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
   private val http = Http(virkalijaRoot, "lokalisaatiopalvelu")
   override def fetchLocalizations(): JValue = runIO(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=${localizationConfig.localizationCategory}")(Http.parseJson[JValue]))
   override def createOrUpdate(localizations: List[UpdateLocalization]): Unit = ???
   def init {}
 }
 
-class RemoteLocalizationRepository(config: Config, localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
+class RemoteLocalizationRepository(config: Config, val localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
   private val http = VirkailijaHttpClient(ServiceConfig.apply(config, "localization", "opintopolku.virkailija"), "/lokalisointi")
 
   override def fetchLocalizations(): JValue = runIO(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=${localizationConfig.localizationCategory}")(Http.parseJson[JValue]))
