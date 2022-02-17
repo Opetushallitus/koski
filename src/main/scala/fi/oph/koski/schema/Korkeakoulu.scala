@@ -4,7 +4,7 @@ import fi.oph.koski.schema.LocalizedString.unlocalized
 
 import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
-import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, OnlyWhen, SyntheticProperty, Title}
 
 case class KorkeakoulunOpiskeluoikeus(
   oid: Option[String] = None,
@@ -19,6 +19,8 @@ case class KorkeakoulunOpiskeluoikeus(
   suoritukset: List[KorkeakouluSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite,
+  @SyntheticProperty
+  virtaVirheet: List[VirtaVirhe] = List.empty,
   synteettinen: Boolean = false
 ) extends Opiskeluoikeus with Equals {
   override def canEqual(that: Any): Boolean = that.isInstanceOf[KorkeakoulunOpiskeluoikeus]
@@ -192,3 +194,20 @@ case class Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
   summa: Option[Int] = None,
   apuraha: Option[Int] = None
 )
+
+trait VirtaVirhe {
+  val tyyppi: String
+  val arvo: String
+}
+
+@OnlyWhen("tyyppi", "Duplikaatti")
+case class Duplikaatti (
+  tyyppi: String = "Duplikaatti",
+  arvo: String
+) extends VirtaVirhe
+
+@OnlyWhen("tyyppi", "OpiskeluoikeusAvaintaEiLöydy")
+case class OpiskeluoikeusAvaintaEiLöydy (
+  tyyppi: String = "OpiskeluoikeusAvaintaEiLöydy",
+  arvo: String
+) extends VirtaVirhe

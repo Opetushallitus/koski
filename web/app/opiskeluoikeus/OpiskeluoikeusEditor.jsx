@@ -24,11 +24,16 @@ import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 import {OpiskeluoikeudenTila} from '../omattiedot/fragments/OpiskeluoikeudenTila'
 import {ArrayEditor} from '../editor/ArrayEditor'
 import {modelEmpty} from '../editor/EditorModel'
+import {VirtaVirheetPopup} from '../virta/VirtaVirheetPopup.jsx'
+import {currentLocation} from '../util/location.js'
+import Atom from 'bacon.atom'
 
-export const excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen']
+export const excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen', 'virtaVirheet']
 
 export const OpiskeluoikeusEditor = ({model}) => {
   return (<TogglableEditor model={addContext(model, {opiskeluoikeus: model})} renderChild={ (mdl, editLink) => {
+    const katsomassaVirtaVirheitä = Atom(false)
+
     const context = mdl.context
 
     const alkuChangeBus = Bacon.Bus()
@@ -40,6 +45,8 @@ export const OpiskeluoikeusEditor = ({model}) => {
     const hasOppilaitos = !!modelData(mdl, 'oppilaitos')
     const hasAlkamispäivä = !!modelData(mdl, 'alkamispäivä')
     const isSyntheticOpiskeluoikeus = !!modelData(model, 'synteettinen')
+
+    const virtaVirheetEnabled = currentLocation().params.diagnostiikka === 'true'
 
     return (
       <div className="opiskeluoikeus">
@@ -53,6 +60,14 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <Versiohistoria opiskeluoikeusOid={modelData(mdl, 'oid')} oppijaOid={context.oppijaOid}/>
           <OpiskeluoikeudenId opiskeluoikeus={mdl}/>
         </h3>
+        {
+          (modelData(model, 'virtaVirheet') && modelData(model, 'virtaVirheet').length > 0) && virtaVirheetEnabled &&
+            <a className='virta-virheet' onClick={() => katsomassaVirtaVirheitä.modify(x => !x)}>{'Virta-Virheet'}</a>
+        }
+        {
+          katsomassaVirtaVirheitä.map(katsomassa => katsomassa &&
+            <VirtaVirheetPopup virheet={modelData(model, 'virtaVirheet')} onDismiss={() => katsomassaVirtaVirheitä.modify(x => !x)}/>)
+        }
         <div className={mdl.context.edit ? 'opiskeluoikeus-content editing' : 'opiskeluoikeus-content'}>
           {!isSyntheticOpiskeluoikeus &&
             <OpiskeluoikeudenTiedot
