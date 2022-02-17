@@ -7,6 +7,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
@@ -516,6 +517,37 @@ class RaportointikantaSpec
 
       opiskeluoikeusOiditRaportointikannassa.exists(mitätöidytOpiskeluoikeusOidit.contains) should be(false)
     }
+
+    "Jo ladatun opiskeluoikeuden mitätöinti kesken latauksen ei vaikuta lopputulokseen" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+
+      val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
+
+      val ensimmäinenMitätöimätönOpiskeluoikeusOidIdJärjestyksessä = runDbSync(
+        OpiskeluOikeudet.filterNot(_.mitätöity).sortBy(_.id).result
+      ).head.oid
+
+      val loadResult = KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false, pageSize = 10, onAfterPage = (page, batch) => {
+        if (page == 0) {
+          // Varmista, että mitätöitävä opiskeluoikeus oli tällä sivulla
+          batch.exists(_.oid == ensimmäinenMitätöimätönOpiskeluoikeusOidIdJärjestyksessä) should be(true)
+
+          mitätöiOpiskeluoikeus(ensimmäinenMitätöimätönOpiskeluoikeusOidIdJärjestyksessä)
+        }
+      })
+      loadResult should be(true)
+      Wait.until(isLoading)
+      Wait.until(loadComplete)
+
+      opiskeluoikeusCount should be(alkuperäinenOpiskeluoikeusCount)
+
+      val opiskeluoikeusOiditRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.map(_.opiskeluoikeusOid).result
+      )
+
+      opiskeluoikeusOiditRaportointikannassa should contain(ensimmäinenMitätöimätönOpiskeluoikeusOidIdJärjestyksessä)
+    }
+
   }
 
   private def opiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROpiskeluoikeudet.length.result)
@@ -529,6 +561,10 @@ class RaportointikantaSpec
 
   private def getLoadStartedTime: Timestamp = authGet("api/raportointikanta/status") {
     JsonSerializer.extract[Timestamp](JsonMethods.parse(body) \ "etl" \ "startedTime")
+  }
+
+  private def mitätöiOpiskeluoikeus(oid: String) = {
+    delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(MockUsers.paakayttaja))(verifyResponseStatusOk())
   }
 }
 

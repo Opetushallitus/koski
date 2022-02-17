@@ -154,10 +154,34 @@ object KoskiSpecificSession {
 
   private val systemKäyttöoikeudet: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))))
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
+  private val KOSKI_SYSTEM_USER_MITÄTÖIDYT: String = "Koski system user mitätöidyt"
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   val SUORITUSJAKO_KATSOMINEN_USER = "Koski suoritusjako katsominen"
   // Internal user with root access
-  val systemUser = new KoskiSpecificSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", systemKäyttöoikeudet)
+  val systemUser = new KoskiSpecificSession(
+    AuthenticationUser(
+      KOSKI_SYSTEM_USER,
+      KOSKI_SYSTEM_USER,
+      KOSKI_SYSTEM_USER, None
+    ),
+    "fi",
+    InetAddress.getLoopbackAddress,
+    "",
+    systemKäyttöoikeudet
+  )
+  // Internal user with root access and explicit rights to mitätöidyt opiskeluoikeudet
+  val systemUserMitätöidyt = new KoskiSpecificSession(
+    AuthenticationUser(
+      KOSKI_SYSTEM_USER_MITÄTÖIDYT,
+      KOSKI_SYSTEM_USER_MITÄTÖIDYT,
+      KOSKI_SYSTEM_USER_MITÄTÖIDYT,
+      None
+    ),
+    "fi",
+    InetAddress.getLoopbackAddress,
+    "",
+    systemKäyttöoikeudet ++ Set(KäyttöoikeusGlobal(List(Palvelurooli(MITATOIDYT_OPISKELUOIKEUDET))))
+  )
 
   val untrustedUser = new KoskiSpecificSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set())
 

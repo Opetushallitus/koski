@@ -8,7 +8,6 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.MaksuttomuusValidation
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
 
@@ -19,19 +18,25 @@ import scala.concurrent.duration.DurationInt
 import scala.util.Try
 
 object OpiskeluoikeusLoader extends Logging {
-  private val DefaultBatchSize = 500
+  val DefaultBatchSize = 500
+
   private val statusName = "opiskeluoikeudet"
 
   def loadOpiskeluoikeudet(
     opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
-    systemUser: KoskiSpecificSession,
+    systemUserMitätöidyt: KoskiSpecificSession,
     db: RaportointiDatabase,
-    batchSize: Int = DefaultBatchSize
+    batchSize: Int = DefaultBatchSize,
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
   ): Observable[LoadResult] = {
     db.setStatusLoadStarted(statusName)
-    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUser) { batch =>
+    var loopCount = 0
+    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUserMitätöidyt) { batch =>
       if (batch.nonEmpty) {
-        loadBatch(db, batch)
+        val result = loadBatch(db, batch)
+        onAfterPage(loopCount, batch)
+        loopCount = loopCount + 1
+        result
       } else {
         // Last batch processed; finalize
         createIndexes(db)
@@ -45,7 +50,11 @@ object OpiskeluoikeusLoader extends Logging {
   private def loadBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow]) = {
     val loadBatchStartTime = System.nanoTime()
 
-    val (errors, outputRows) = batch.par.map(row => buildRow(row)).seq.partition(_.isLeft)
+    val (errors, outputRows) = batch.par
+      .filterNot(row => row.mitätöity)
+      .map(row => buildRow(row))
+      .seq
+      .partition(_.isLeft)
     db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
     db.loadOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
     val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
