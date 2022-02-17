@@ -1,7 +1,7 @@
 package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.api.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, ExamplesLukio2019, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -17,7 +17,7 @@ import java.time.LocalDate.{of => date}
 import java.time.format.DateTimeFormatter.ISO_INSTANT
 import java.time.{LocalDate, ZonedDateTime}
 
-class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
+class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with OpiskeluoikeudenMitätöintiJaPoistoTestMethods with Matchers {
   import fi.oph.koski.util.DateOrdering._
   "Tilastokeskus-API" - {
     "Hakee oppijoiden tiedot" in {
@@ -37,6 +37,19 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
       val kaikkiOppijat = performQuery()
       val tilat = kaikkiOppijat.flatMap(_.opiskeluoikeudet).map(_.tila.opiskeluoikeusjaksot.last.tila.koodiarvo)
       tilat should contain("mitatoity")
+    }
+
+    "Ei hae kokonaan poistettuja opiskeluoikeuksia" in {
+      resetFixtures()
+
+      val oppijatEnnenPoistoa = performQuery()
+      val poistettava = ensimmäinenPoistettavissaolevaOpiskeluoikeusIdJärjestyksessä
+
+      poistaOpiskeluoikeus(poistettava.oppijaOid, poistettava.oid)
+
+      val oppijatPoistonJälkeen = performQuery()
+
+      oppijatPoistonJälkeen.length should be(oppijatEnnenPoistoa.length)
     }
 
     "Vaatii TILASTOKESKUS-käyttöoikeuden" in {

@@ -4,7 +4,7 @@ import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiDatabaseConfig}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUserMitätöidyt
+import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUserMitätöidytJaPoistetut
 import fi.oph.koski.log.Logging
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
@@ -45,8 +45,8 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
-    implicit val systemUser = KoskiSpecificSession.systemUserMitätöidyt
-    OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUserMitätöidyt, db, pageSize, onAfterPage)
+    implicit val systemUser = KoskiSpecificSession.systemUserMitätöidytJaPoistetut
+    OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUserMitätöidytJaPoistetut, db, pageSize, onAfterPage)
   }
 
   def loadHenkilöt(db: RaportointiDatabase = raportointiDatabase): Int =

@@ -5,12 +5,15 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjeste
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.varsinaisSuomiPalvelukäyttäjä
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate.{of => date}
+import scala.Left
 
 class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] with KoskiHttpSpec {
   def tag = implicitly[reflect.runtime.universe.TypeTag[VapaanSivistystyönOpiskeluoikeus]]
@@ -59,6 +62,22 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         putOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
         }
+      }
+    }
+
+    "Suostumuksen peruutus" - {
+      "Kun suostumus on peruutettu, oppijan opiskeluoikeuksia ei saa API:n kautta" in {
+        val oppijaOid = KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid
+        val oppijaResult = tryOppija(oppijaOid)
+        oppijaResult.isLeft should be(true)
+        oppijaResult.left.map(_.statusCode) should be(Left(404))
+      }
+
+      "Kun suostumus on peruutettu, oppijan opiskeluoikeuksia ei saa API:n kautta, vaikka olisi oikeudet mitätöityihin opiskeluoikeuksiin" in {
+        val oppijaOid = KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid
+        val oppijaResult = tryOppija(oppijaOid, MockUsers.paakayttajaMitatoidytOpiskeluoikeudet)
+        oppijaResult.isLeft should be(true)
+        oppijaResult.left.map(_.statusCode) should be(Left(404))
       }
     }
 

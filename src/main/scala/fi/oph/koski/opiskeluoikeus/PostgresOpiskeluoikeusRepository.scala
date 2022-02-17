@@ -334,7 +334,7 @@ class PostgresOpiskeluoikeusRepository(
   }
 
   private def updateAction[A <: PäätasonSuoritus](oldRow: OpiskeluoikeusRow, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowDeleteCompletedSuoritukset: Boolean = false)(implicit user: KoskiSpecificSession) = {
-    val (id, oid, versionumero) = (oldRow.id, oldRow.oid, oldRow.versionumero)
+    val (id, oid, versionumero, poistettu) = (oldRow.id, oldRow.oid, oldRow.versionumero, oldRow.poistettu)
     val nextVersionumero = versionumero + 1
 
     uusiOpiskeluoikeus.versionumero match {
@@ -347,7 +347,7 @@ class PostgresOpiskeluoikeusRepository(
 
         validator.validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok =>
-            val updatedValues@(newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
+            val updatedValues@(newData, _, _, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero, poistettu)
             val diff: JArray = jsonDiff(oldRow.data, newData)
             diff.values.length match {
               case 0 =>

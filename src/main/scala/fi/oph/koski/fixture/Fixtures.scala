@@ -24,11 +24,11 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
   ): Unit = synchronized {
     if (shouldUseFixtures) {
       application.cacheManager.invalidateAllCaches
+      application.suostumuksenPeruutusService.deleteAll()
       currentFixtureState = fixtureState
       fixtureState.resetFixtures
       application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.tiedonsiirtoService.index.deleteAll()
-      application.suostumuksenPeruutusService.deleteAll()
 
       if (reloadRaportointikanta) {
         raportointikantaService.loadRaportointikanta(force = true)
@@ -97,7 +97,7 @@ abstract class DatabaseFixtureState(application: KoskiApplication) extends Fixtu
     defaultOppijat.map(_.henkilö.oid) ++ (1 to (defaultOppijat.length) + 100).map(FixtureCreator.generateOppijaOid).toList
     ).distinct
 
-  protected def databaseFixtureCreator: DatabaseFixtureCreator
+  def databaseFixtureCreator: DatabaseFixtureCreator
 }
 
 class KoskiSpecificFixtureState(application: KoskiApplication) extends DatabaseFixtureState(application)  {
@@ -105,5 +105,5 @@ class KoskiSpecificFixtureState(application: KoskiApplication) extends DatabaseF
 
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = KoskiSpecificMockOppijat.defaultOppijat
 
-  protected lazy val databaseFixtureCreator: DatabaseFixtureCreator = new KoskiSpecificDatabaseFixtureCreator(application)
+  lazy val databaseFixtureCreator: DatabaseFixtureCreator = new KoskiSpecificDatabaseFixtureCreator(application)
 }

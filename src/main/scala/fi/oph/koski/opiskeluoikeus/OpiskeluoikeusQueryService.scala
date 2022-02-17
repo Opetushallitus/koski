@@ -28,7 +28,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
   }
 
   def muuttuneetOpiskeluoikeudetWithoutAccessCheck(after: Timestamp, afterId: Int, limit: Int): Seq[MuuttunutOpiskeluoikeusRow] = {
-    // huom, tässä halutaan myös mitätöidyt, sen takia OpiskeluOikeudet eikä OpiskeluOikeudetWithAccessCheck
+    // huom, tässä halutaan myös mitätöidyt ja poistetut, sen takia OpiskeluOikeudet eikä OpiskeluOikeudetWithAccessCheck
     runDbSync(
       OpiskeluOikeudet
         .filter(r => (r.aikaleima === after && r.id > afterId) || (r.aikaleima > after))
@@ -98,6 +98,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
       case (query, OneOfOpiskeluoikeudenTyypit(tyypit)) => query.filter(_._1.koulutusmuoto inSet tyypit.map(_.tyyppi.koodiarvo))
       case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.suoritustyypit.@>(List(tyyppi.koodiarvo)))
       case (query, NotSuorituksenTyyppi(tyyppi)) => query.filter(!_._1.suoritustyypit.@>(List(tyyppi.koodiarvo)))
+      case (query, Poistettu(poistettu)) => query.filter(d => d._1.poistettu === poistettu)
       case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
       case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
         val matchers = toimipisteet.map { toimipiste =>

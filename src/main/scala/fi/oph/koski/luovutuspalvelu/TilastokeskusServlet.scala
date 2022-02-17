@@ -10,7 +10,7 @@ import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresTilastokeskus}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log._
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.NotSuorituksenTyyppi
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{NotSuorituksenTyyppi, Poistettu}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.SuorituksenTyyppi.vstvapaatavoitteinenkoulutus
@@ -42,13 +42,13 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends K
 }
 
 case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSpecificSession, application: KoskiApplication) extends Logging {
-  val exclusionFilters = List(NotSuorituksenTyyppi(vstvapaatavoitteinenkoulutus))
+  val extraFilters = List(NotSuorituksenTyyppi(vstvapaatavoitteinenkoulutus), Poistettu(false))
 
   def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[JValue]] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
     OpiskeluoikeusQueryFilter.parse(params)(application.koodistoViitePalvelu, application.organisaatioService, koskiSession).map { filters =>
       AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(params))))
-      query(filters ::: exclusionFilters, paginationSettings)
+      query(filters ::: extraFilters, paginationSettings)
     }.map {
       _.map(x => (laajatHenkilötiedotToTilastokeskusHenkilötiedot(x._1), x._2))
        .map(tuple => JsonSerializer.serialize(TilastokeskusOppija(tuple._1, tuple._2.map(_.toOpiskeluoikeusUnsafe))))

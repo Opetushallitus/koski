@@ -25,7 +25,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   def loadOpiskeluoikeudet(
     opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
-    systemUserMitätöidyt: KoskiSpecificSession,
+    systemUserMitätöidytJaPoistetut: KoskiSpecificSession,
     db: RaportointiDatabase,
     batchSize: Int = DefaultBatchSize,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
@@ -33,7 +33,7 @@ object OpiskeluoikeusLoader extends Logging {
     db.setStatusLoadStarted(statusName)
     db.setStatusLoadStarted(mitätöidytStatusName)
     var loopCount = 0
-    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUserMitätöidyt) { batch =>
+    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUserMitätöidytJaPoistetut) { batch =>
       if (batch.nonEmpty) {
         val result = loadBatch(db, batch)
         onAfterPage(loopCount, batch)
@@ -91,7 +91,7 @@ object OpiskeluoikeusLoader extends Logging {
   }
 
   private def loadBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
-    val (errors, outputRows) = oot.par.map(buildRowMitätöity).seq.partition(_.isLeft)
+    val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(buildRowMitätöity).seq.partition(_.isLeft)
     db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
     db.updateStatusCount(mitätöidytStatusName, outputRows.size)
     errors.map(_.left.get)
