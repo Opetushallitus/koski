@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 14.2.2022
+- Valmistuneen TUVA opiskeluoikeuden pääsuorituksen laajuus oltava välillä 4-38 viikkoa.
+- Valmistuneen TUVA opiskeluoikeuden osasuoritusten laajuudet on oltava sallitulla välillä.
+- Valmistuneen TUVA opiskeluoikeuden osasuoritusten rakenne oltava sallittu.
+  - Opiskeluoikeudella on olemassa pakollinen osasuoritus Opiskelu- ja urasuunnittelutaidot sekä suoritukset kahdesta muusta koulutuksen osasta.
+
 ## 27.1.2022
 - Pre-IB 2015 opintojen maksuttomuusvalidointi laajennettu sallimaan kaikki vuonna 2021 aloitetut suoritukset.
 - Pre-IB 2015 suoritukset lasketaan oppivelvollisuuden suorittamiseen kelpaavaksi.
