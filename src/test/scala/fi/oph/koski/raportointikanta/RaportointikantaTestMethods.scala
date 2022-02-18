@@ -48,7 +48,7 @@ trait RaportointikantaTestMethods extends KoskiHttpSpec {
     }
   }
 
-  private def loadComplete = authGet("api/raportointikanta/status") {
+  def loadComplete = authGet("api/raportointikanta/status") {
     val isComplete = (JsonMethods.parse(body) \ "public" \ "isComplete").extract[Boolean]
     val isLoading = (JsonMethods.parse(body) \ "etl" \ "isLoading").extract[Boolean]
     isComplete && !isLoading

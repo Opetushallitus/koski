@@ -8,7 +8,6 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.MaksuttomuusValidation
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
 
@@ -19,33 +18,54 @@ import scala.concurrent.duration.DurationInt
 import scala.util.Try
 
 object OpiskeluoikeusLoader extends Logging {
-  private val DefaultBatchSize = 500
+  val DefaultBatchSize = 500
+
   private val statusName = "opiskeluoikeudet"
+  private val mitätöidytStatusName = "mitätöidyt_opiskeluoikeudet"
 
   def loadOpiskeluoikeudet(
     opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
-    systemUser: KoskiSpecificSession,
+    systemUserMitätöidyt: KoskiSpecificSession,
     db: RaportointiDatabase,
-    batchSize: Int = DefaultBatchSize
+    batchSize: Int = DefaultBatchSize,
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
   ): Observable[LoadResult] = {
     db.setStatusLoadStarted(statusName)
-    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUser) { batch =>
+    db.setStatusLoadStarted(mitätöidytStatusName)
+    var loopCount = 0
+    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUserMitätöidyt) { batch =>
       if (batch.nonEmpty) {
-        loadBatch(db, batch)
+        val result = loadBatch(db, batch)
+        onAfterPage(loopCount, batch)
+        loopCount = loopCount + 1
+        result
       } else {
         // Last batch processed; finalize
         createIndexes(db)
         db.setStatusLoadCompleted(statusName)
+        db.setStatusLoadCompleted(mitätöidytStatusName)
         Seq(LoadCompleted())
       }
     }
     result.doOnEach(progressLogger)
   }
 
-  private def loadBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow]) = {
+  private def loadBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow]): Seq[LoadResult] = {
+    val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
+
+    val resultOlemassaolevatOot = loadBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
+    val resultMitätöidyt = loadBatchMitätöidytOpiskeluoikeudet(db, mitätöidytOot)
+
+    resultOlemassaolevatOot ++ resultMitätöidyt
+  }
+
+  private def loadBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
     val loadBatchStartTime = System.nanoTime()
 
-    val (errors, outputRows) = batch.par.map(row => buildRow(row)).seq.partition(_.isLeft)
+    val (errors, outputRows) = oot.par
+      .map(row => buildRow(row))
+      .seq
+      .partition(_.isLeft)
     db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
     db.loadOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
     val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
@@ -67,8 +87,14 @@ object OpiskeluoikeusLoader extends Logging {
     val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
     val toOpiskeluoikeusUnsafeDuration: Long = outputRows.map(_.right.get.toOpiskeluoikeusUnsafeDuration).sum / 1000000
     logger.info(s"Batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
-
     result
+  }
+
+  private def loadBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
+    val (errors, outputRows) = oot.par.map(buildRowMitätöity).seq.partition(_.isLeft)
+    db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
+    db.updateStatusCount(mitätöidytStatusName, outputRows.size)
+    errors.map(_.left.get)
   }
 
   private def progressLogger: Subscriber[LoadResult] = new Subscriber[LoadResult] {
@@ -364,6 +390,21 @@ object OpiskeluoikeusLoader extends Logging {
         idGenerator
       )
     }
+  }
+
+  private def buildRowMitätöity(raw: OpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
+    for {
+      oo <- raw.toOpiskeluoikeus(KoskiSpecificSession.systemUser).left.map(e => LoadErrorResult(raw.oid, "[mitätöity] " + e.toString()))
+      mitätöityPvm <- oo.mitätöintiPäivä.toRight(LoadErrorResult(raw.oid, "Mitätöintipäivämäärän haku epäonnistui"))
+    } yield RMitätöityOpiskeluoikeusRow(
+      opiskeluoikeusOid = raw.oid,
+      versionumero = raw.versionumero,
+      aikaleima = raw.aikaleima,
+      oppijaOid = raw.oppijaOid,
+      mitätöity = mitätöityPvm,
+      tyyppi = raw.koulutusmuoto,
+      päätasonSuoritusTyypit = oo.suoritukset.map(_.tyyppi.koodiarvo).distinct
+    )
   }
 }
 

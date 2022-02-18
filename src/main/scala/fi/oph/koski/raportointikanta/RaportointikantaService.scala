@@ -2,8 +2,9 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.RaportointiDatabaseConfig
+import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiDatabaseConfig}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUserMitätöidyt
 import fi.oph.koski.log.Logging
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
@@ -14,13 +15,18 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
   private val eventBridgeClient = KoskiEventBridgeClient.apply(application.config)
 
-  def loadRaportointikanta(force: Boolean, scheduler: Scheduler = defaultScheduler, onEnd: () => Unit = () => ()): Boolean = {
+  def loadRaportointikanta(force: Boolean,
+    scheduler: Scheduler = defaultScheduler,
+    onEnd: () => Unit = () => (),
+    pageSize: Int = OpiskeluoikeusLoader.DefaultBatchSize,
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
+  ): Boolean = {
     if (isLoading && !force) {
       logger.info("Raportointikanta already loading, do nothing")
       false
     } else {
       loadDatabase.dropAndCreateObjects
-      startLoading(scheduler, onEnd)
+      startLoading(scheduler, onEnd, pageSize, onAfterPage)
       logger.info(s"Started loading raportointikanta (force: $force)")
       true
     }
@@ -33,12 +39,14 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     })
   }
 
-  private def loadOpiskeluoikeudet(db: RaportointiDatabase): Observable[LoadResult] = {
+  private def loadOpiskeluoikeudet(
+    db: RaportointiDatabase,
+    pageSize: Int,
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
+  ): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
-    implicit val systemUser = KoskiSpecificSession.systemUser
-    MitätöityOpiskeluoikeusLoader.load(application.opiskeluoikeusQueryRepository, systemUser, db).concatEager(
-      OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, db)
-    )
+    implicit val systemUser = KoskiSpecificSession.systemUserMitätöidyt
+    OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUserMitätöidyt, db, pageSize, onAfterPage)
   }
 
   def loadHenkilöt(db: RaportointiDatabase = raportointiDatabase): Int =
@@ -78,10 +86,15 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     }
   }
 
-  private def startLoading(scheduler: Scheduler, onEnd: () => Unit) = {
+  private def startLoading(
+    scheduler: Scheduler,
+    onEnd: () => Unit,
+    pageSize: Int,
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
+  ) = {
     logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name}")
     putLoadTimeMetric(None) // To store metric more often, Cloudwatch metric does not support missing data more than 24 hours
-    loadOpiskeluoikeudet(loadDatabase)
+    loadOpiskeluoikeudet(loadDatabase, pageSize, onAfterPage)
       .subscribeOn(scheduler)
       .subscribe(
         onNext = doNothing,
