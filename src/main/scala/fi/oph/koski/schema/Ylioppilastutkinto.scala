@@ -8,6 +8,7 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
+  @Description("Sisältö on aina tyhjä lista opiskeluoikeusjaksoja. Kenttä näkyy tietomallissa vain teknisistä syistä.")
   tila: YlioppilastutkinnonOpiskeluoikeudenTila,
   @MinItems(1) @MaxItems(1)
   suoritukset: List[YlioppilastutkinnonSuoritus],
@@ -22,7 +23,10 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   override def sisältyyOpiskeluoikeuteen = None
 }
 
-case class YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]) extends OpiskeluoikeudenTila
+case class YlioppilastutkinnonOpiskeluoikeudenTila(
+  @Description("Sisältö on aina tyhjä lista. Kenttä näkyy tietomallissa vain teknisistä syistä.")
+  opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]
+) extends OpiskeluoikeudenTila
 
 case class YlioppilastutkinnonSuoritus(
   @Title("Koulutus")
