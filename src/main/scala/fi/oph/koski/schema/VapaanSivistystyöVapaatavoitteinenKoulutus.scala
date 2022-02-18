@@ -44,7 +44,7 @@ case class VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus(
   kuvaus: LocalizedString,
   tunniste: PaikallinenKoodi,
   laajuus: LaajuusOpintopisteissä
-) extends KoulutusmoduuliPakollinenLaajuusOpintopisteissä with PaikallinenKoulutusmoduuli
+) extends KoulutusmoduuliPakollinenLaajuusOpintopisteissä with PaikallinenKoulutusmoduuli with StorablePreference
 
 @Title("Arviointi")
 case class VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(

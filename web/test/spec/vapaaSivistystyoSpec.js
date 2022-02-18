@@ -248,6 +248,20 @@ describe('VST', function () {
               expect(extractAsText(S('.suoritus-taulukko'))).to.include('Osasuorituksen osasuoritus 5 op')
             })
           })
+
+          describe('Osasuoritus on tallennettu ja tallenetun osasuorituksen voi lisätä', function () {
+            before(
+              editor.edit,
+              opinnot.avaaKaikki,
+              vst.lisääTallennettuPaikallinen(),
+              opinnot.avaaKaikki
+            )
+
+            it('toimii', function () {
+              var osasuoritukset = S('.vst-osasuoritus')
+              expect(osasuoritukset.length).to.equal(2)
+            })
+          })
         })
       })
     })

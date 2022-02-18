@@ -137,7 +137,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
   laajuus: LaajuusOpintopisteissä
-) extends PaikallinenKoulutusmoduuliPakollinenLaajuus
+) extends PaikallinenKoulutusmoduuliPakollinenLaajuus with StorablePreference
 
 @Title("Muualla suoritetut opinnot")
 case class MuuallaSuoritetutVapaanSivistystyönOpinnot(
@@ -338,4 +338,4 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsas
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOpintopisteissä]
-) extends PaikallinenKoulutusmoduuliValinnainenLaajuus
+) extends PaikallinenKoulutusmoduuliValinnainenLaajuus with StorablePreference
