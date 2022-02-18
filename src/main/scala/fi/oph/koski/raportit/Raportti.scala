@@ -92,7 +92,8 @@ case class AikuistenPerusopetusRaporttiRequest(
   alku: LocalDate,
   loppu: LocalDate,
   osasuoritustenAikarajaus: Boolean,
-  raportinTyyppi: AikuistenPerusopetusRaporttiType
+  raportinTyyppi: AikuistenPerusopetusRaporttiType,
+  lang: String
 ) extends RaporttiAikajaksoltaRequest
 
 case class RaporttiPäivältäRequest(

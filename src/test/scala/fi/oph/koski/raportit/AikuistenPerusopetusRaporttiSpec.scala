@@ -4,6 +4,7 @@ import fi.oph.koski.api.OpiskeluoikeusTestMethodsAikuistenPerusopetus
 import fi.oph.koski.documentation.{ExampleData, ExamplesAikuistenPerusopetus, YleissivistavakoulutusExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportit.aikuistenperusopetus._
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
@@ -25,6 +26,7 @@ class AikuistenPerusopetusRaporttiSpec
 
   private lazy val today = LocalDate.now
   private lazy val repository = AikuistenPerusopetusRaporttiRepository(KoskiApplicationForTests.raportointiDatabase.db)
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   override protected def alterFixture(): Unit = {
     lisääPäätasonSuorituksia(
@@ -699,7 +701,8 @@ class AikuistenPerusopetusRaporttiSpec
       organisaatioOid,
       alku,
       loppu,
-      osasuoritustenAikarajaus = osasuoritustenAikarajaus
+      osasuoritustenAikarajaus = osasuoritustenAikarajaus,
+      t
     ).build()
   }
 

@@ -655,6 +655,7 @@ function AikuistenPerusopetusRaportti({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      lang={lang}
     />
   )
 }

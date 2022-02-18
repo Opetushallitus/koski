@@ -78,9 +78,9 @@ class RaportitService(application: KoskiApplication) {
     perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokkaRaportti, t)
   }
 
-  def lukioraportti(request: AikajaksoRaporttiAikarajauksellaRequest) = {
+  def lukioraportti(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
     OppilaitosRaporttiResponse(
-      sheets = LukioRaportti(lukioRepository).buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
+      sheets = LukioRaportti(lukioRepository, t).buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
       workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
       filename = s"lukio_suoritustietojentarkistus_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
@@ -123,7 +123,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def aikuistenPerusopetus(request: AikuistenPerusopetusRaporttiRequest) = {
+  def aikuistenPerusopetus(request: AikuistenPerusopetusRaporttiRequest, t: LocalizationReader) = {
     OppilaitosRaporttiResponse(
       sheets = AikuistenPerusopetusRaportti(
         aikuistenPerusopetusRepository,
@@ -131,10 +131,11 @@ class RaportitService(application: KoskiApplication) {
         request.oppilaitosOid,
         request.alku,
         request.loppu,
-        request.osasuoritustenAikarajaus
+        request.osasuoritustenAikarajaus,
+        t
       ).build(),
-      workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
-      filename = s"aikuisten_perusopetus_suoritustietojen_tarkistus_${request.raportinTyyppi.typeName}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      workbookSettings = WorkbookSettings(s"${t.get("raportti-excel-aikuistenperusopetus-title-etuliite")}_${request.oppilaitosOid}", Some(request.password)),
+      filename = s"${t.get("raportti-excel-aikuistenperusopetus-tiedoston-etuliite")}_${request.raportinTyyppi.typeName}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
     )
   }

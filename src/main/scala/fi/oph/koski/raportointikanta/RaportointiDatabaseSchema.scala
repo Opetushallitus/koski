@@ -3,9 +3,9 @@ package fi.oph.koski.raportointikanta
 import java.sql.{Date, Timestamp}
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.YleissivistäväRaporttiOppiaineTaiKurssi
 import fi.oph.koski.schema.LocalizedString
 import org.json4s.JValue
@@ -579,7 +579,7 @@ case class EsiopetusOpiskeluoikeusAikajaksoRow(
 
 sealed trait RSuoritusRow {
   def arviointiArvosanaKoodiarvo: Option[String]
-  def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean
+  def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi, lang: String): Boolean
   def arviointiHyväksytty: Option[Boolean]
   def arvioituJaHyväksytty: Boolean = arviointiHyväksytty.getOrElse(false)
 }
@@ -607,18 +607,28 @@ case class RPäätasonSuoritusRow(
   data: JValue,
   sisältyyOpiskeluoikeuteenOid: Option[String]
 ) extends RSuoritusRow {
-  override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean = {
+  override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi, lang: String): Boolean = {
     val isPaikallinen = !koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava")
 
-    suorituksestaKäytettäväNimi.contains(x.nimi) &&
+    suorituksestaKäytettäväNimi(lang).contains(x.nimi) &&
       koulutusmoduuliKoodiarvo == x.koulutusmoduuliKoodiarvo &&
       isPaikallinen == x.koulutusmoduuliPaikallinen
   }
 
-  def suorituksestaKäytettäväNimi: Option[String] = {
-    JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "kieli" \ "nimi").map(_.get("fi"))
-      .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "oppimäärä" \ "nimi").map(_.get("fi")))
-      .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "uskonnonOppimäärä" \ "nimi").map(_.get("fi")))
+  def oppimääräKoodiarvoDatasta: Option[String] =
+    JsonSerializer.extract[Option[String]](data \ "koulutusmoduuli" \ "oppimäärä" \ "koodiarvo")
+      .orElse(oppimääräKoodiarvo)
+
+  def koulutusModuulistaKäytettäväNimi(lang: String): Option[String] = {
+    JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "tunniste" \ "nimi").map(_.get(lang))
+      .orElse(koulutusmoduuliNimi)
+  }
+
+  def suorituksestaKäytettäväNimi(lang: String): Option[String] = {
+    JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "kieli" \ "nimi").map(_.get(lang))
+      .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "oppimäärä" \ "nimi").map(_.get(lang)))
+      .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "uskonnonOppimäärä" \ "nimi").map(_.get(lang)))
+      .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "tunniste" \ "nimi").map(_.get(lang)))
       .orElse(koulutusmoduuliNimi)
   }
 }
@@ -652,15 +662,25 @@ case class ROsasuoritusRow(
   data: JValue,
   sisältyyOpiskeluoikeuteenOid: Option[String]
 ) extends RSuoritusRow {
-  override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean = {
-    suorituksestaKäytettäväNimi.contains(x.nimi) &&
+  override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi, lang: String): Boolean = {
+    suorituksestaKäytettäväNimi(lang).contains(x.nimi) &&
       koulutusmoduuliKoodiarvo == x.koulutusmoduuliKoodiarvo &&
       koulutusmoduuliPaikallinen == x.koulutusmoduuliPaikallinen
   }
 
-  def suorituksestaKäytettäväNimi: Option[String] = {
-    koulutusmoduuliKieliaineNimi
-      .orElse(koulutusmoduuliOppimääräNimi)
+  def oppimääräKoodiarvo: Option[String] =
+    JsonSerializer.extract[Option[String]](data \ "koulutusmoduuli" \ "oppimäärä" \ "koodiarvo")
+
+  def koulutusModuulistaKäytettäväNimi(lang: String): Option[String] = {
+    JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "tunniste" \ "nimi").map(_.get(lang))
+      .orElse(koulutusmoduuliNimi)
+  }
+
+  def suorituksestaKäytettäväNimi(lang: String): Option[String] = {
+    JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "kieli" \ "nimi").map(_.get(lang))
+      .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "oppimäärä" \ "nimi").map(_.get(lang)))
+      .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "uskonnonOppimäärä" \ "nimi").map(_.get(lang)))
+      .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "tunniste" \ "nimi").map(_.get(lang)))
       .orElse(koulutusmoduuliNimi)
   }
 

@@ -90,8 +90,10 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   get("/lukionsuoritustietojentarkistus") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.lukiokoulutus)
     val parsedRequest = parseAikajaksoRaporttiAikarajauksellaRequest
+    //TODO: kieliparametri requestista
+    val t = new LocalizationReader(application.koskiLocalizationRepository, "fi")
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=lukionsuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
-    writeExcel(raportitService.lukioraportti(parsedRequest))
+    writeExcel(raportitService.lukioraportti(parsedRequest, t))
   }
 
   get("/lukiokurssikertymat") {
@@ -118,8 +120,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   get("/aikuisten-perusopetus-suoritustietojen-tarkistus") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.aikuistenperusopetus)
     val parsedRequest = parseAikuistenPerusopetusRaporttiRequest
-    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=aikuistenperusopetuksensuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
-    writeExcel(raportitService.aikuistenPerusopetus(parsedRequest))
+    val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=aikuistenperusopetuksensuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&lang=${parsedRequest.lang}")))
+    writeExcel(raportitService.aikuistenPerusopetus(parsedRequest, t), t)
   }
 
 
@@ -259,7 +262,8 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
       alku = alku,
       loppu = loppu,
       osasuoritustenAikarajaus = getOptionalBooleanParam("osasuoritustenAikarajaus").getOrElse(false),
-      raportinTyyppi = raportinTyyppi
+      raportinTyyppi = raportinTyyppi,
+      lang = getStringParam("lang")
     )
   }
 

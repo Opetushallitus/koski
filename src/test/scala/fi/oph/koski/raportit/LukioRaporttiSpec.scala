@@ -4,6 +4,7 @@ import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio2015
 import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportit.lukio.{LukioRaportitRepository, LukioRaportti}
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
@@ -25,7 +26,8 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
 
   private lazy val today = LocalDate.now
   private lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
-  private lazy val lukioRaportti = LukioRaportti(repository)
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
+  private lazy val lukioRaportti = LukioRaportti(repository, t)
 
   "Lukion suoritustietoraportti" - {
 
