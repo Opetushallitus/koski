@@ -5,6 +5,9 @@ import fi.oph.koski.schema.LocalizedString.unlocalized
 import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, Discriminator, OnlyWhen, SyntheticProperty, Title}
+import fi.oph.koski.koskiuser.Rooli
+import fi.oph.koski.schema.annotation.SensitiveData
+import fi.oph.koski.schema.annotation.Deprecated
 
 case class KorkeakoulunOpiskeluoikeus(
   oid: Option[String] = None,
@@ -183,6 +186,8 @@ case class Lukukausi_Ilmoittautumisjakso(
   @KoodistoUri("virtalukukausiilmtila")
   tila: Koodistokoodiviite,
   ylioppilaskunnanJäsen: Option[Boolean] = None,
+  @SensitiveData(Set(Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU))
+  @Deprecated("Ei käytössä 1.1.2021 eteenpäin")
   ythsMaksettu: Option[Boolean] = None,
   @Title("Lukuvuosimaksu")
   maksetutLukuvuosimaksut: Option[Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu] = None

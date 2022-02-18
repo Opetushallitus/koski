@@ -23,13 +23,15 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     import fi.oph.koski.util.DateOrdering._
-    virheet = ListBuffer[VirtaVirhe]()
+
     val suoritusNodeList: List[Node] = filterLABDuplikaatit(suoritusNodes(virtaXml))
+
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
     val opiskeluoikeusNodes: List[Node] = (virtaXml \\ "Opiskeluoikeus").toList
     val ooTyyppi: Koodistokoodiviite = koodistoViitePalvelu.validateRequired(OpiskeluoikeudenTyyppi.korkeakoulutus)
 
     val (orphans, opiskeluoikeudet) = opiskeluoikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
+      virheet = ListBuffer[VirtaVirhe]()
       val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList, None))
 
       val opiskeluoikeudenTila: KorkeakoulunOpiskeluoikeudenTila = KorkeakoulunOpiskeluoikeudenTila((opiskeluoikeusNode \ "Tila")
@@ -65,6 +67,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
     }
 
+    virheet = ListBuffer[VirtaVirhe]()
     val orphanSuoritukset = orphans.flatMap(convertSuoritus(None, _, suoritusNodeList))
     val orphanages = orphanSuoritukset.groupBy(_.toimipiste).toList.map { case (organisaatio, suoritukset) =>
       KorkeakoulunOpiskeluoikeus(
@@ -81,67 +84,24 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       )
     }
 
-    // TOR-984 !!!!!!!! VÄLIAIKAINEN RATKAISU LAB-AMMATTIKOULUJEN DATAN NÄYTTÖÄ VARTEN.
-    // Heiltä tulee duplikaatteja suorituksia (=> suoritusten avain on sama). Tulloo myös
-    // duplikaatteja opiskeluoikeuksia. Eli poistetaan nämä. Katso myös MyöntäjänäLABAmmattiKorkeakoulu
-
     // huom, tämä suodattaa pois myös tapaukset jossa oppilaitos = None (esim. ulkomaiset)
-    poistaDuplikaatitSuorituksetJaOpiskeluoikeudet(opiskeluoikeudet).filter(_.suoritukset.nonEmpty) ++ orphanages
+    opiskeluoikeudet.filter(_.suoritukset.nonEmpty) ++ orphanages
   }
 
   private val LABAmmattikorkeaNumero = "10126"
   private val vanhaLahdenAmmattiKorkeaNumero = "02470"
-  private val duplikaattiKorjattavatOppilaitokset = List(LABAmmattikorkeaNumero, vanhaLahdenAmmattiKorkeaNumero)
-  private def poistaDuplikaatitSuorituksetJaOpiskeluoikeudet(opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus]) : List[KorkeakoulunOpiskeluoikeus] = {
-
-    if (opiskeluoikeudet.exists(o => duplikaattiKorjattavatOppilaitokset.contains(o.getOppilaitos.oppilaitosnumero.get.koodiarvo))) {
-      val ilmanDuplikaattejaOpiskeluoikeuksia: HashMap[String, KorkeakoulunOpiskeluoikeus] = HashMap()
-      opiskeluoikeudet.foreach(o => {
-        val ilmanDuplikaattiSuorituksia = o.copy(suoritukset = poistaDuplikaattiSuoritukset(o.suoritukset))
-        ilmanDuplikaattiSuorituksia.lähdejärjestelmänId match {
-          case Some(id) => {
-            if (ilmanDuplikaattejaOpiskeluoikeuksia.contains(id.toString)) {
-              val uusi = ilmanDuplikaattejaOpiskeluoikeuksia.get(id.toString).get.copy(
-                suoritukset = ilmanDuplikaattejaOpiskeluoikeuksia.get(id.toString).get.suoritukset ::: ilmanDuplikaattiSuorituksia.suoritukset
-              )
-              ilmanDuplikaattejaOpiskeluoikeuksia.update(id.toString, uusi)
-            } else {
-              ilmanDuplikaattejaOpiskeluoikeuksia.update(id.toString, ilmanDuplikaattiSuorituksia)
-            }
-          }
-          case _ => {}
-        }
-      })
-      ilmanDuplikaattejaOpiskeluoikeuksia.values.toList
-    } else {
-      opiskeluoikeudet
-    }
-  }
-
-  private def poistaDuplikaattiSuoritukset(suoritukset: List[KorkeakouluSuoritus]): List[KorkeakouluSuoritus] = {
-    suoritukset.map {
-      case k: KorkeakoulututkinnonSuoritus => {
-        k.copy(
-          osasuoritukset = Some(poistaDuplikaatitOsasuoritukset(k.osasuoritukset.getOrElse(List())))
-        )
-      }
-      case a => a
-    }
-  }
-
-  private def poistaDuplikaatitOsasuoritukset(suoritukset: List[KorkeakoulunOpintojaksonSuoritus]): List[KorkeakoulunOpintojaksonSuoritus] = {
-    val löydetyt: HashSet[String] = HashSet()
-    suoritukset.filter(s => {
-      if (löydetyt.contains(s.koulutusmoduuli.tunniste.toString)) {
-        false
-      } else {
-        löydetyt.add(s.koulutusmoduuli.tunniste.toString)
-        true
-      }
+  private def filterLABDuplikaatit(osasuoritusNodes: List[Node]): List[Node] = {
+    lazy val avaimet = osasuoritusNodes.filter(o => (o \ "Myontaja").text != LABAmmattikorkeaNumero).map(o => (o \ "@avain").text)
+    osasuoritusNodes.filter(o => {
+      if ((o \ "Myontaja").text == LABAmmattikorkeaNumero) {
+        if (avaimet.contains((o \ "@avain").text)) {
+          false
+        } else { true }
+      } else { true }
     })
   }
 
-    private def rearrangeSuorituksetIfNecessary(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
+  private def rearrangeSuorituksetIfNecessary(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
     if (tutkintoonJohtava(opiskeluoikeusNode)) {
       fixPäätasonSuoritusIfNecessary(suoritukset, opiskeluoikeusNode, tila)
     } else {
@@ -409,34 +369,19 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     (node \ "Sisaltyvyys").toList.map(sisaltyvyysNode => (sisaltyvyysNode \ "@sisaltyvaOpintosuoritusAvain").text)
   }
 
-  // TOR-984. Poistetaan, kun VIRTA on korjannut duplikaatit.
-  private def MyöntäjänäLABAmmattiKorkeakoulu(osasuoritusNodes: List[Node]) = {
-    osasuoritusNodes.find(osasuoritus => (osasuoritus \ "Myontaja").text == LABAmmattikorkeaNumero)
-  }
-  private def filterLABDuplikaatit(osasuoritusNodes: List[Node]): List[Node] = {
-    lazy val avaimet = osasuoritusNodes.filter(o => (o \ "Myontaja").text != LABAmmattikorkeaNumero).map(o => (o \ "@avain").text)
-    osasuoritusNodes.filter(o => {
-      if ((o \ "Myontaja").text == LABAmmattikorkeaNumero) {
-        if (avaimet.contains((o \ "@avain").text)) {
-          false
-        } else { true }
-      } else { true }
-    })
-  }
-
   private def childNodes(node: Node, allNodes: List[Node]) = {
-    val löytyvätNodet = ListBuffer[Node]()
-    sisaltyvatAvaimet(node).foreach { opintosuoritusAvain =>
+    sisaltyvatAvaimet(node).flatMap { opintosuoritusAvain =>
       val osasuoritusNodes = allNodes.filter(avain(_) == opintosuoritusAvain)
       osasuoritusNodes match {
-        case osasuoritusNode :: Nil => löytyvätNodet += osasuoritusNode
-        case Nil => virheet += OpiskeluoikeusAvaintaEiLöydy(arvo = opintosuoritusAvain)
+        case osasuoritusNode :: Nil => Some(osasuoritusNode)
+        case Nil =>
+          virheet += OpiskeluoikeusAvaintaEiLöydy(arvo = opintosuoritusAvain)
+          None
         case osasuoritusNodes =>
           virheet += Duplikaatti(arvo = opintosuoritusAvain)
-          osasuoritusNodes.head
+          Some(osasuoritusNodes.head)
       }
     }
-    löytyvätNodet.toList
   }
 
   private def suoritusNodes(virtaXml: Node) = {
