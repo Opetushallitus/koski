@@ -188,7 +188,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def aikuistenperusopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSpecificSession) = {
+  def aikuistenperusopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = request.oppilaitosOid match {
       case application.organisaatioService.ostopalveluRootOid =>
         application.organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
@@ -196,9 +196,9 @@ class RaportitService(application: KoskiApplication) {
         application.organisaatioService.organisaationAlaisetOrganisaatiot(oid)
     }
     OppilaitosRaporttiResponse(
-      sheets = Seq(aikuistenPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva)),
-      workbookSettings = WorkbookSettings("Aikuisten perusopetuksen oppijamäärien raportti", Some(request.password)),
-      filename = s"aikuisten_perusopetuksen_vos_raportti-${request.paiva}.xlsx",
+      sheets = Seq(aikuistenPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t)),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-aikuistenperusopetus-vos-title-etuliite"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-aikuistenperusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
   }
