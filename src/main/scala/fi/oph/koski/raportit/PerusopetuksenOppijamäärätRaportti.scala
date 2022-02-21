@@ -37,7 +37,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
     val raporttiQuery = query(oppilaitosOids, date, t).as[PerusopetuksenOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 10.minutes)
     DataSheet(
-      title = t.get("raportti-excel-perusopetus-vos-sheet-name"),
+      title = t.get("raportti-excel-suoritukset-sheet-name"),
       rows = rows,
       columnSettings = columnSettings(t)
     )

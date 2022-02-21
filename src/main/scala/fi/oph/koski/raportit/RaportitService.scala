@@ -153,7 +153,7 @@ class RaportitService(application: KoskiApplication) {
     downloadToken = request.downloadToken
   )
 
-  def esiopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSpecificSession) = {
+  def esiopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
 
     val oppilaitosOids = request.oppilaitosOid match {
       case application.organisaatioService.ostopalveluRootOid =>
@@ -162,9 +162,9 @@ class RaportitService(application: KoskiApplication) {
     }
 
     OppilaitosRaporttiResponse(
-      sheets = Seq(esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva)),
-      workbookSettings = WorkbookSettings("Esiopetuksen oppijamäärien raportti", Some(request.password)),
-      filename = s"esiopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
+      sheets = Seq(esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t)),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-esiopetus-vos-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-esiopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
   }

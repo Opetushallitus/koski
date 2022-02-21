@@ -1,11 +1,11 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate.{of => localDate}
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUser, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -18,8 +18,9 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
   private val application = KoskiApplicationForTests
   private val raporttiService = new EsiopetusRaporttiService(application)
   private val raporttiBuilder = EsiopetusRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2007, 1, 1))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2007, 1, 1), t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
@@ -28,11 +29,11 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
 
   "Esiopetuksen raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/esiopetus?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&password=salasana") {
+      authGet(s"api/raportit/esiopetus?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=fi&password=salasana") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="esiopetus_koski_raportti_${jyväskylänNormaalikoulu}_20180101.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=fi")))
       }
     }
 
@@ -86,7 +87,7 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
       "voi hakea kaikki koulutustoimijan alla olevat tiedot" in {
         val raportti = buildOrganisaatioRaportti(helsinkiTallentaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2006-08-13")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2006-08-13&lang=fi")))
       }
 
       "voi hakea kaikki ostopalvelu/palveluseteli-tiedot" in {
@@ -95,28 +96,28 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
         getRows(raportti).flatMap(_.ostopalveluTaiPalveluseteli) should equal(List("JM02", "JM02"))
 
         val ostopalveluOrganisaatiot = s"$päiväkotiMajakka,$päiväkotiTouhula"
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$ostopalveluOrganisaatiot&paiva=2006-08-13")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$ostopalveluOrganisaatiot&paiva=2006-08-13&lang=fi")))
       }
 
       "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
         val raportti = buildOstopalveluRaportti(tornioTallentaja)
         getOppilaitokset(raportti) should be(empty)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=&paiva=2006-08-13")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=&paiva=2006-08-13&lang=fi")))
       }
 
       "globaaleilla käyttöoikeuksilla voi tehdä raportin" in {
         val raportti = buildOrganisaatioRaportti(MockUsers.paakayttaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2006-08-13")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2006-08-13&lang=fi")))
       }
     }
   }
 
   private def buildOstopalveluRaportti(user: KoskiMockUser) =
-    raporttiService.buildOstopalveluRaportti(localDate(2006, 8, 13), "", None)(session(user))
+    raporttiService.buildOstopalveluRaportti(localDate(2006, 8, 13), "", None, t)(session(user))
 
   private def buildOrganisaatioRaportti(user: KoskiMockUser, organisaatio: Oid) =
-    raporttiService.buildOrganisaatioRaportti(organisaatio, localDate(2006, 8, 13), "", None)(session(user))
+    raporttiService.buildOrganisaatioRaportti(organisaatio, localDate(2006, 8, 13), "", None, t)(session(user))
 
   private def getOppilaitokset(raportti: OppilaitosRaporttiResponse) = {
     getRows(raportti).flatMap(_.oppilaitosNimi).sorted
