@@ -1,14 +1,14 @@
 package fi.oph.koski.raportit.aikuistenperusopetus
 
 import java.time.LocalDate
-
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.db.DB
-
+import fi.oph.koski.localization.LocalizationReader
 import slick.jdbc.GetResult
+
 import scala.concurrent.duration.DurationInt
 
 case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryMethods {
@@ -24,13 +24,13 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
     )
   )
 
-  def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSpecificSession): DataSheet = {
+  def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
     val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenEiRahoitustietoaKurssitRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
-      title = "Ei rahoitustietoa",
+      title = t.get("raportti-excel-eirahoitustietoa-sheet-name"),
       rows = rows,
-      columnSettings = columnSettings
+      columnSettings = columnSettings(t)
     )
   }
 
@@ -79,14 +79,14 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
   """
   }
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "opiskeluoikeudenOid" -> Column("Opiskeluoikeuden oid"),
-    "oppijaOid" -> Column("Oppijanumero"),
-    "oppilaitos" -> Column("Oppilaitos"),
-    "kurssikoodi" -> Column("Kurssikoodi"),
-    "kurssinNimi" -> Column("Kurssin nimi"),
-    "päätasonSuorituksenTyyppi" -> Column("Päätason suorituksen tyyppi"),
-    "kurssinSuorituksenTyyppi" -> Column("Kurssin suorituksen tyyppi"),
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "opiskeluoikeudenOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
+    "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "oppilaitos" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+    "kurssikoodi" -> Column(t.get("raportti-excel-kolumni-kurssikoodi")),
+    "kurssinNimi" -> Column(t.get("raportti-excel-kolumni-kurssinNimi")),
+    "päätasonSuorituksenTyyppi" -> Column(t.get("raportti-excel-kolumni-päätasonSuorituksenTyyppi")),
+    "kurssinSuorituksenTyyppi" -> Column(t.get("raportti-excel-kolumni-kurssinSuorituksenTyyppi")),
   )
 }
 

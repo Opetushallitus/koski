@@ -170,20 +170,20 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def aikuistenperusopetuksenKurssikertymä(request: AikajaksoRaporttiRequest)(implicit u: KoskiSpecificSession) = {
+  def aikuistenperusopetuksenKurssikertymä(request: AikajaksoRaporttiRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = validateOids(List(request.oppilaitosOid))
 
     OppilaitosRaporttiResponse(
       sheets = Seq(
-        aikuistenPerusopetuksenOppimääränKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu),
-        aikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu),
-        aikuistenPerusopetuksenMuutaKauttaRahoitetutKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu),
-        aikuistenPerusopetuksenEiRahoitustietoaKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu),
-        aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti.build(oppilaitosOids, request.alku, request.loppu),
-        aikuistenPerusopetuksenEriVuonnaKorotetutKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu),
+        aikuistenPerusopetuksenOppimääränKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
+        aikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
+        aikuistenPerusopetuksenMuutaKauttaRahoitetutKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
+        aikuistenPerusopetuksenEiRahoitustietoaKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
+        aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
+        aikuistenPerusopetuksenEriVuonnaKorotetutKurssitRaportti.build(oppilaitosOids, request.alku, request.loppu, t),
       ),
-      workbookSettings = WorkbookSettings("Aikuisten perusopetuksen kurssikertymien raportti", Some(request.password)),
-      filename = s"aikuisten_perusopetuksen_kurssikertymät_raportti-${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-aikuistenperusopetus-kurssikertymä-title-etuliite"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-aikuistenperusopetus-kurssikertymä-tiedoston-etuliite")}-${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken
     )
   }

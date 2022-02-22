@@ -37,7 +37,8 @@ export const AikajaksoRaporttiAikarajauksella = ({
   apiEndpoint,
   shortDescription,
   example,
-  osasuoritusType = osasuoritusTypes.TUTKINNON_OSA
+  osasuoritusType = osasuoritusTypes.TUTKINNON_OSA,
+  lang
 }) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
@@ -54,6 +55,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
       alku: formatISODate(a),
       loppu: formatISODate(l),
       osasuoritustenAikarajaus: r,
+      lang: lang,
       password,
       baseUrl: `/koski/api/raportit${apiEndpoint}`
     })

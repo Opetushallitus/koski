@@ -162,7 +162,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
     }
 
     "raportin lataaminen asettaa koskiDownloadToken-cookien" in {
-      authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy&downloadToken=test123") {
+      authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&lang=fi&password=dummy&downloadToken=test123") {
         verifyResponseStatusOk()
         val cookie = response.headers("Set-Cookie").find(x => x.startsWith("koskiDownloadToken"))
         cookie shouldBe defined

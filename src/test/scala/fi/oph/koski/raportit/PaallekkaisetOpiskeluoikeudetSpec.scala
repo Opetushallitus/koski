@@ -28,7 +28,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
   "Päällekkäisten opiskeluoikeuksien raportti" - {
     "Lataus onnistuu ja tuottaa auditlogin" in {
       AuditLogTester.clearMessages
-      authGet(s"api/raportit/paallekkaisetopiskeluoikeudet?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2020-01-01&password=salasana") {
+      authGet(s"api/raportit/paallekkaisetopiskeluoikeudet?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2020-01-01&lang=fi&password=salasana") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(
           s"""attachment; filename="paallekkaiset_opiskeluoikeudet_${MockOrganisaatiot.helsinginKaupunki}_2018-01-01_2020-01-01.xlsx""""
@@ -36,7 +36,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
         AuditLogTester.verifyAuditLogMessage(Map(
           "operation" -> "OPISKELUOIKEUS_RAPORTTI",
-          "target" -> Map("hakuEhto" -> s"raportti=paallekkaisetopiskeluoikeudet&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2020-01-01")
+          "target" -> Map("hakuEhto" -> s"raportti=paallekkaisetopiskeluoikeudet&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2020-01-01&lang=fi")
         ))
       }
     }
@@ -188,7 +188,8 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
       downloadToken = None,
       password = "password",
       alku = LocalDate.of(2020, 6, 30),
-      loppu = LocalDate.of(2020, 11, 30)
+      loppu = LocalDate.of(2020, 11, 30),
+      lang = "fi"
     )
 
     new RaportitService(KoskiApplicationForTests)

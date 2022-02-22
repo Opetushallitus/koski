@@ -1,14 +1,14 @@
 package fi.oph.koski.raportit.aikuistenperusopetus
 
 import java.time.LocalDate
-
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.db.DB
-
+import fi.oph.koski.localization.LocalizationReader
 import slick.jdbc.GetResult
+
 import scala.concurrent.duration.DurationInt
 
 case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) extends QueryMethods {
@@ -35,13 +35,13 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
     )
   )
 
-  def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSpecificSession): DataSheet = {
+  def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
     val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
-      title = "Aineopiskelijat",
+      title = t.get("raportti-excel-aineopiskelijat-sheet-name"),
       rows = rows,
-      columnSettings = columnSettings
+      columnSettings = columnSettings(t)
     )
   }
 
@@ -117,25 +117,25 @@ case class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät(db: DB) exte
   """
   }
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
-    "oppilaitos" -> Column("Oppilaitos"),
-    "yhteensäSuorituksia" -> Column("Kurssikertymä yhteensä", comment = Some("Kaikki sellaiset aikuisten perusopetuksen oppimäärän tai alkuvaiheen suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
-    "yhteensäSuoritettujaSuorituksia" -> Column("Suoritetut kurssit", comment = Some("Kaikki sellaiset aikuisten perusopetuksen oppimäärän tai alkuvaiheen suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
-    "yhteensäTunnistettujaSuorituksia" -> Column("Tunnustetut kurssit", comment = Some("Kaikki sellaiset aikuisten perusopetuksen oppimäärän tai alkuvaiheen suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
-    "yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä" -> Column("Tunnustetut kurssit - rahoituksen piirissä", comment = Some("Kaikki sellaiset aikuisten perusopetuksen oppimäärän tai alkuvaiheen suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään, jotka on merkitty tunnustetuiksi ja jotka on merkitty rahoituksen piirissä oleviksi.")),
-    "päättövaiheenSuorituksia" -> Column("Kurssikertymä yhteensä - päättövaihe", comment = Some("Kaikki sellaiset aikuisten perusopetuksen oppimäärän suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
-    "päättövaiheenSuoritettujaSuorituksia" -> Column("Suoritetut kurssit - päättövaihe", comment = Some("Kaikki sellaiset aikuisten perusopetuksen oppimäärän suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
-    "päättövaiheenTunnistettujaSuorituksia" -> Column("Tunnustetut kurssit - päättövaihe", comment = Some("Kaikki sellaiset aikuisten perusopetuksen oppimäärän suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
-    "päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä" -> Column("Tunnustetut kurssit - rahoituksen piirissä - päättövaihe", comment = Some("Kaikki sellaiset aikuisten perusopetuksen oppimäärän suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään, jotka on merkitty tunnustetuiksi ja jotka on merkitty rahoituksen piirissä oleviksi.")),
-    "alkuvaiheenSuorituksia" -> Column("Kurssikertymä yhteensä - alkuvaihe", comment = Some("Kaikki sellaiset aikuisten perusopetuksen alkuvaiheen suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
-    "alkuvaiheenSuoritettujaSuorituksia" -> Column("Suoritetut kurssit - alkuvaihe", comment = Some("Kaikki sellaiset aikuisten perusopetuksen alkuvaiheen suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
-    "alkuvaiheenTunnistettujaSuorituksia" -> Column("Tunnustetut kurssit - alkuvaihe", comment = Some("Kaikki sellaiset aikuisten perusopetuksen alkuvaiheen suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
-    "alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä" -> Column("Tunnustetut kurssit - rahoituksen piirissä - alkuvaihe", comment = Some("Kaikki sellaiset aikuisten perusopetuksen alkuvaiheen suorituksen sisältä löytyvät kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään, jotka on merkitty tunnustetuiksi ja jotka on merkitty rahoituksen piirissä oleviksi.")),
-    "suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - muuta kautta rahoitetut", comment = Some("Sellaiset suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit, joiden arviointipäivä osuu muuta kautta rahoitetun läsnäolojakson sisälle. Kurssien tunnistetiedot löytyvät välilehdeltä \"Muuta kautta rah.\"")),
-    "suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit, joilla ei rahoitustietoa", comment = Some("Sellaiset suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut pakolliset tai valtakunnalliset syventävät kurssit, joiden arviointipäivä osuus sellaiselle tilajaksolle, jolta ei löydy tietoa rahoitusmuodosta. Kurssien tunnistetiedot löytyvät välilehdeltä \"Ei rahoitusmuotoa\".")),
-    "suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit – arviointipäivä ei opiskeluoikeuden sisällä", comment = Some("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit, joiden arviointipäivä on aikaisemmin kuin opiskeluoikeuden alkamispäivä tai joiden arviointipäivä on myöhemmin kuin \"Valmistunut\"-tilan päivä. Kurssien tunnistetiedot löytyvät välilehdeltä \"Opiskeluoikeuden ulkop.\".")),
-    "eriVuonnaKorotetutSuoritukset" -> Column("Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - korotettu eri vuonna")
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "oppilaitosOid" -> Column(t.get("raportti-excel-kolumni-oppilaitosOid")),
+    "oppilaitos" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+    "yhteensäSuorituksia" -> Column(t.get("raportti-excel-kolumni-yhteensäSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-yhteensäSuorituksia-comment"))),
+    "yhteensäSuoritettujaSuorituksia" -> Column(t.get("raportti-excel-kolumni-yhteensäSuoritettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-yhteensäSuoritettujaSuorituksia-comment"))),
+    "yhteensäTunnistettujaSuorituksia" -> Column(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksia-comment"))),
+    "yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä" -> Column(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä"), comment = Some(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä-comment"))),
+    "päättövaiheenSuorituksia" -> Column(t.get("raportti-excel-kolumni-päättövaiheenSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-päättövaiheenSuorituksia-comment"))),
+    "päättövaiheenSuoritettujaSuorituksia" -> Column(t.get("raportti-excel-kolumni-päättövaiheenSuoritettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-päättövaiheenSuoritettujaSuorituksia-comment"))),
+    "päättövaiheenTunnistettujaSuorituksia" -> Column(t.get("raportti-excel-kolumni-päättövaiheenTunnistettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-päättövaiheenTunnistettujaSuorituksia-comment"))),
+    "päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä" -> Column(t.get("raportti-excel-kolumni-päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä"), comment = Some(t.get("raportti-excel-kolumni-päättövaiheenTunnistettujaSuorituksiaRahoituksenPiirissä-comment"))),
+    "alkuvaiheenSuorituksia" -> Column(t.get("raportti-excel-kolumni-alkuvaiheenSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-alkuvaiheenSuorituksia-comment"))),
+    "alkuvaiheenSuoritettujaSuorituksia" -> Column(t.get("raportti-excel-kolumni-alkuvaiheenSuoritettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-alkuvaiheenSuoritettujaSuorituksia-comment"))),
+    "alkuvaiheenTunnistettujaSuorituksia" -> Column(t.get("raportti-excel-kolumni-alkuvaiheenTunnistettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-alkuvaiheenTunnistettujaSuorituksia-comment"))),
+    "alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä" -> Column(t.get("raportti-excel-kolumni-alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä"), comment = Some(t.get("raportti-excel-kolumni-alkuvaiheenTunnistettujaSuorituksiaRahoituksenPiirissä-comment"))),
+    "suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut" -> Column(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut"), comment = Some(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut-comment"))),
+    "suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa" -> Column(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa"), comment = Some(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa-comment"))),
+    "suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa" -> Column(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa"), comment = Some(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa-comment"))),
+    "eriVuonnaKorotetutSuoritukset" -> Column(t.get("raportti-excel-kolumni-eriVuonnaKorotetutSuoritukset"))
   )
 }
 
