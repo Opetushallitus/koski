@@ -242,7 +242,7 @@ object HakukoosteExampleData {
       ilmoittautumistila = Some("EI_ILMOITTAUTUNUT"),
       koulutusOid = Some("TODO"),
       harkinnanvaraisuus = harkinnanvaraisuus,
-      hakukohdeKoulutuskoodi = Koodistokoodiviite("321152", "koulutus"),
+      hakukohdeKoulutuskoodi = Some(Koodistokoodiviite("321152", "koulutus")),
       varasijanumero = if (valintatila == Some("VARALLA")) Some(3) else None,
     )
 

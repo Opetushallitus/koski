@@ -55,7 +55,7 @@ case class Hakutoive(
   @EnumValues(Harkinnanvaraisuus.values)
   harkinnanvaraisuus: Option[String],
   @KoodistoUri("koulutus")
-  hakukohdeKoulutuskoodi: Koodistokoodiviite
+  hakukohdeKoulutuskoodi: Option[Koodistokoodiviite]
 ) {
   @SyntheticProperty
   def onHakenutHarkinnanvaraisesti = harkinnanvaraisuus.isDefined
