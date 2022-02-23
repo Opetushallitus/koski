@@ -18,12 +18,12 @@ object AmmatillinenRaporttiUtils {
       .distinct
   }
 
-  def tutkintonimike(osasuoritus: RPäätasonSuoritusRow) = {
-    JsonSerializer.extract[Option[List[Koodistokoodiviite]]](osasuoritus.data \ "tutkintonimike").map(_.flatMap(_.nimi)).map(_.map(_.get("fi"))).map(_.mkString(","))
+  def tutkintonimike(osasuoritus: RPäätasonSuoritusRow, lang: String) = {
+    JsonSerializer.extract[Option[List[Koodistokoodiviite]]](osasuoritus.data \ "tutkintonimike").map(_.flatMap(_.nimi)).map(_.map(_.get(lang))).map(_.mkString(","))
   }
 
-  def suoritusTavat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
-    päätasonsuoritukset.flatMap(pts => JsonSerializer.extract[Option[Koodistokoodiviite]](pts.data \ "suoritustapa").flatMap(_.nimi.map(_.get("fi")))).mkString(",")
+  def suoritusTavat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow], lang: String) = {
+    päätasonsuoritukset.flatMap(pts => JsonSerializer.extract[Option[Koodistokoodiviite]](pts.data \ "suoritustapa").flatMap(_.nimi.map(_.get(lang)))).mkString(",")
   }
 
   def vahvistusPäiväToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {

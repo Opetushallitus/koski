@@ -5,6 +5,7 @@ import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers._
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import org.scalatest.BeforeAndAfterAll
@@ -27,12 +28,13 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
   }
 
   private lazy val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   "Opiskelijavuositiedot" - {
     val oid = "1.2.246.562.15.123456"
 
     "raportti sisältää oikeat tiedot" in {
-      val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
+      val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"), t)
 
       val aarnenOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammattilainen.oid).oid.get
       val aarnenRivi = result.find(_.opiskeluoikeusOid == aarnenOpiskeluoikeusOid)
@@ -57,7 +59,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
 
     "ostettu" in {
       val markkasenOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.markkanen.oid).oid.get
-      val rivi = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"))
+      val rivi = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"), t)
         .find(_.opiskeluoikeusOid == markkasenOpiskeluoikeusOid)
         .get
       rivi.ostettu should equal(true)

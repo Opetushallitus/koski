@@ -240,14 +240,23 @@ class RaportitService(application: KoskiApplication) {
   }
 
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti, t: LocalizationReader) = {
-    val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu)
-    val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.alku, request.loppu, raportointiDatabase.status.startedTime.get.toLocalDateTime))
-    val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings(t))
+    val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu, t)
+    val documentation = DocumentationSheet(
+      title = t.get("raportti-excel-perusopetus-ohjeet-sheet-name"),
+      text = raporttiBuilder.documentation(
+        request.oppilaitosOid,
+        request.alku,
+        request.loppu,
+        raportointiDatabase.status.startedTime.get.toLocalDateTime,
+        t
+      )
+    )
+    val data = DataSheet(t.get("raportti-excel-perusopetus-opiskeluoikeudet-sheet-name"), rows, raporttiBuilder.columnSettings(t))
 
     OppilaitosRaporttiResponse(
       sheets = Seq(data, documentation),
-      workbookSettings = WorkbookSettings(raporttiBuilder.title(request.oppilaitosOid, request.alku, request.loppu), Some(request.password)),
-      filename = raporttiBuilder.filename(request.oppilaitosOid, request.alku, request.loppu),
+      workbookSettings = WorkbookSettings(raporttiBuilder.title(request.oppilaitosOid, request.alku, request.loppu, t), Some(request.password)),
+      filename = raporttiBuilder.filename(request.oppilaitosOid, request.alku, request.loppu, t),
       downloadToken = request.downloadToken
     )
   }

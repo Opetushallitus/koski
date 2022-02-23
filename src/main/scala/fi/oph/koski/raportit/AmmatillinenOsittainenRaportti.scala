@@ -50,10 +50,10 @@ object AmmatillinenOsittainenRaportti {
       etunimet = henkilö.etunimet,
       tutkinto = päätasonSuoritus.koulutusmoduuliKoodiarvo,
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
-      tutkintonimike = tutkintonimike(päätasonSuoritus).getOrElse(""),
+      tutkintonimike = tutkintonimike(päätasonSuoritus, "fi").getOrElse(""), //TODO kovakoodattu kielivalinta
       päätasonSuorituksenNimi = päätasonSuoritus.koulutusmoduuliNimi.getOrElse(""),
-      päätasonSuorituksenSuoritustapa = suoritusTavat(List(päätasonSuoritus)),
-      päätasonSuorituksenTila = vahvistusPäiväToTila(päätasonSuoritus.vahvistusPäivä),
+      päätasonSuorituksenSuoritustapa = suoritusTavat(List(päätasonSuoritus), "fi"), //TODO kovakoodattu kielivalinta
+      päätasonSuorituksenTila = vahvistusPäiväToTila(päätasonSuoritus.vahvistusPäivä), //TODO lokalisaatio?
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
       viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,
