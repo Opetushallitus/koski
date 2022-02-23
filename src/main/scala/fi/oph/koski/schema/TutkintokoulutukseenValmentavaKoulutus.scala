@@ -5,7 +5,8 @@ import fi.oph.scalaschema.annotation._
 
 import java.time.{LocalDate, LocalDateTime}
 
-@Description("Tutkintokoulutukseen valmistavan koulutuksen (TUVA) opiskeluoikeus")
+@Title("Tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeus")
+@Description("Tutkintokoulutukseen valmentavan koulutuksen (TUVA) opiskeluoikeus")
 case class TutkintokoulutukseenValmentavanOpiskeluoikeus(
   oid: Option[String] = None,
   versionumero: Option[Int] = None,
@@ -62,7 +63,7 @@ case class TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
 ) extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus
   with Arvioinniton with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with Suoritus
 
-@Description("Tutkintokoulutukseen valmistavan koulutuksen tunnistetiedot")
+@Description("Tutkintokoulutukseen valmentavan koulutuksen tunnistetiedot")
 case class TutkintokoulutukseenValmentavanKoulutus(
   //TODO: itse keksitty uusi koodiarvo
   @KoodistoKoodiarvo("999908")
