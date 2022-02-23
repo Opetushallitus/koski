@@ -209,7 +209,7 @@ Jos jollekin hetulle ei löydy opiskeluoikeuksia, tämä ei ole virhe vaan hetu 
 
 ## /koski/api/luovutuspalvelu/haku
 
-Tällä kutsulla haetaan usean (max. 1000 kpl) henkilön tiedot hakuehtojen perusteella. Käyttö rajattu vain tietyille viranomaisille.
+Tällä kutsulla haetaan usean (max. 1000 kpl) opiskeluoikeuden tiedot hakuehtojen perusteella. Käyttö rajattu vain tietyille viranomaisille.
 
 Tällä kutsulla ei voi hakea `korkeakoulutus`- tai `ylioppilastutkinto`-tyyppisiä opiskeluoikeuksia,
 
@@ -231,6 +231,12 @@ Hakuparametrien kuvaukset:
  * `muuttunutJälkeen` - Aikaleima jonka jälkeen opiskeluoikeus on muuttunut. Aikaleima annetaan UTC-ajassa, ISO 8601-muodossa, esim. `2018-12-03T10:15:30Z`. Rajaa tulokset niihin opiskeluoikeuksiin jotka ovat muuttuneet annettun aikaleiman jälkeen.
  * `pageSize` - Sivukoko. Määrittää kuinka monta opiskeluoikeutta vastauksessa palautetaan. Oletusarvo on 1000 opiskeluoikeutta.
  * `pageNumber` - Sivunumero. Määrittää ohitettavien sivujen määrän. Oletusarvo on 0 (näytetään ensimmäinen sivu).
+
+***Huomio sivutuksen käytöstä:*** Sivutus tehdään tilattomasti, minkä vuoksi osa hakuparametreista ei toimi täysin luotettavasti, jos opiskeluoikeuksia
+muutetaan kesken sivutettujen pyyntöjen. Tällöin opiskeluoikeuksia voi jäädä puuttumaan myöhemmältä sivulta, jos jokin aiemman sivun opiskeluoikeus
+poistuu omalta sivultaan siihen tehtyjen muutosten vuoksi. Vain `opiskeluoikeudenTyyppi` ja `muuttunutJälkeen` toimivat luotettavasti sivutuksen kanssa.
+Niissäkin on toistaiseksi mahdollista epäluotettavuutta, jos aiemmalla sivulla esiintyneitä oppijoita linkitetään kesken haun. Kaikkien
+hakuparametrien kanssa on myös mahdollista, että jo aiemmalla sivulla palauttu opiskeluoikeus palautetaan uudestaan myöhemmällä sivulla.
 
 Vastaus, kun pyyntö suoritetaan onnistuneesti:
 
