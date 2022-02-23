@@ -70,8 +70,9 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     loppu: LocalDate,
     t: LocalizationReader
   ): Seq[OpiskelijavuositiedotRow] = {
-    val result = raportointiDatabase.opiskeluoikeusAikajaksot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, alku, loppu)
-    result.map(r => buildRow(alku, loppu, r, t))
+    raportointiDatabase
+      .opiskeluoikeusAikajaksot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, alku, loppu)
+      .map(r => buildRow(alku, loppu, r, t))
   }
 
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
@@ -133,8 +134,8 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
   def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadStarted: LocalDateTime, t: LocalizationReader): String = s"""
     |${t.get("raportti-excel-ammatillinen-opiskelijavuosi-ohje-title")}
     |${t.get("raportti-excel-kolumni-oppilaitosOid")}: $oppilaitosOid
-    |${t.get("raportti-excel-ammatillinen-opiskelijavuosi-ohje-aikajakso")}: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
-    |${t.get("raportti-excel-ammatillinen-opiskelijavuosi-ohje-luotu")}: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadStarted)} ${t.get("raportti-excel-ammatillinen-opiskelijavuosi-ohje-luotu-takaliite")})
+    |${t.get("raportti-excel-ammatillinen-ohje-aikajakso")}: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
+    |${t.get("raportti-excel-ammatillinen-ohje-luotu")}: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadStarted)} ${t.get("raportti-excel-ammatillinen-ohje-luotu-takaliite")})
     |
     |${t.get("raportti-excel-ammatillinen-opiskelijavuosi-ohje-body")}
     """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")

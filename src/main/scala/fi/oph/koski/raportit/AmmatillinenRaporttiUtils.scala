@@ -2,8 +2,8 @@ package fi.oph.koski.raportit
 
 import java.sql.Date
 import java.time.LocalDate
-
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RPäätasonSuoritusRow}
 import fi.oph.koski.schema._
 
@@ -26,10 +26,10 @@ object AmmatillinenRaporttiUtils {
     päätasonsuoritukset.flatMap(pts => JsonSerializer.extract[Option[Koodistokoodiviite]](pts.data \ "suoritustapa").flatMap(_.nimi.map(_.get(lang)))).mkString(",")
   }
 
-  def vahvistusPäiväToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {
-    case Some(päivä) if isTulevaisuudessa(päivä) =>  s"Kesken, Valmistuu ${päivä.toLocalDate}"
-    case Some(_) =>  "Valmis"
-    case _ => "Kesken"
+  def vahvistusPäiväToTila(vahvistusPäivä: Option[Date], t: LocalizationReader) = vahvistusPäivä match {
+    case Some(päivä) if isTulevaisuudessa(päivä) =>  s"${t.get("raportti-excel-default-value-valmistumassa")} ${päivä.toLocalDate}"
+    case Some(_) => t.get("raportti-excel-default-value-valmis").capitalize
+    case _ => t.get("raportti-excel-default-value-kesken").capitalize
   }
 
   def isTulevaisuudessa(date: Date) = date.toLocalDate.isAfter(LocalDate.now())

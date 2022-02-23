@@ -50,22 +50,31 @@ class RaportitService(application: KoskiApplication) {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti, t)
   }
 
-  def ammatillinenTutkintoSuoritustietojenTarkistus(request: AikajaksoRaporttiAikarajauksellaRequest): OppilaitosRaporttiResponse = {
+  def ammatillinenTutkintoSuoritustietojenTarkistus(
+    request: AikajaksoRaporttiAikarajauksellaRequest,
+    t: LocalizationReader
+  ): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
       sheets = Seq(
-        DataSheet("Opiskeluoikeudet", AmmatillinenTutkintoRaportti.buildRaportti(request, ammatillisenRaportitRepository), AmmatillinenTutkintoRaportti.columnSettings),
-        DocumentationSheet("Ohjeet", AmmatillinenTutkintoRaportti.documentation(request, raportointiDatabase.status.startedTime.get.toLocalDateTime))
+        DataSheet(
+          title = t.get("raportti-excel-opiskeluoikeudet-sheet-name"),
+          rows = AmmatillinenTutkintoRaportti.buildRaportti(request, ammatillisenRaportitRepository, t),
+          columnSettings = AmmatillinenTutkintoRaportti.columnSettings(t)
+        ),
+        DocumentationSheet(
+          title = t.get("raportti-excel-ohjeet-sheet-name"),
+          text = AmmatillinenTutkintoRaportti.documentation(request, raportointiDatabase.status.startedTime.get.toLocalDateTime, t))
       ),
-      workbookSettings = WorkbookSettings(AmmatillinenTutkintoRaportti.title(request), Some(request.password)),
-      filename = AmmatillinenTutkintoRaportti.filename(request),
+      workbookSettings = WorkbookSettings(AmmatillinenTutkintoRaportti.title(request, t), Some(request.password)),
+      filename = AmmatillinenTutkintoRaportti.filename(request, t),
       downloadToken = request.downloadToken
     )
   }
 
-  def ammatillinenOsittainenSuoritustietojenTarkistus(request: AikajaksoRaporttiAikarajauksellaRequest): OppilaitosRaporttiResponse = {
+  def ammatillinenOsittainenSuoritustietojenTarkistus(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
       sheets = Seq(
-        DataSheet("Opiskeluoikeudet", AmmatillinenOsittainenRaportti.buildRaportti(request, ammatillisenRaportitRepository), AmmatillinenOsittainenRaportti.columnSettings),
+        DataSheet("Opiskeluoikeudet", AmmatillinenOsittainenRaportti.buildRaportti(request, ammatillisenRaportitRepository, t), AmmatillinenOsittainenRaportti.columnSettings),
         DocumentationSheet("Ohjeet", AmmatillinenOsittainenRaportti.documentation(request, raportointiDatabase.status.startedTime.get.toLocalDateTime))
       ),
       workbookSettings = WorkbookSettings(AmmatillinenOsittainenRaportti.title(request), Some(request.password)),
@@ -242,7 +251,7 @@ class RaportitService(application: KoskiApplication) {
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti, t: LocalizationReader) = {
     val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu, t)
     val documentation = DocumentationSheet(
-      title = t.get("raportti-excel-perusopetus-ohjeet-sheet-name"),
+      title = t.get("raportti-excel-ohjeet-sheet-name"),
       text = raporttiBuilder.documentation(
         request.oppilaitosOid,
         request.alku,
@@ -251,7 +260,7 @@ class RaportitService(application: KoskiApplication) {
         t
       )
     )
-    val data = DataSheet(t.get("raportti-excel-perusopetus-opiskeluoikeudet-sheet-name"), rows, raporttiBuilder.columnSettings(t))
+    val data = DataSheet(t.get("raportti-excel-opiskeluoikeudet-sheet-name"), rows, raporttiBuilder.columnSettings(t))
 
     OppilaitosRaporttiResponse(
       sheets = Seq(data, documentation),
@@ -264,8 +273,8 @@ class RaportitService(application: KoskiApplication) {
   private def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest, raporttiBuilder: VuosiluokkaRaporttiPaivalta, t: LocalizationReader) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "perusopetus")
     val rows = raporttiBuilder.buildRaportti(perusopetusRepository, oppilaitosOids, request.paiva, request.vuosiluokka, t)
-    val documentation = DocumentationSheet(t.get("raportti-excel-perusopetus-ohjeet-sheet-name"), raporttiBuilder.documentation(t))
-    val data = DataSheet(t.get("raportti-excel-perusopetus-opiskeluoikeudet-sheet-name"), rows, raporttiBuilder.columnSettings(t))
+    val documentation = DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), raporttiBuilder.documentation(t))
+    val data = DataSheet(t.get("raportti-excel-opiskeluoikeudet-sheet-name"), rows, raporttiBuilder.columnSettings(t))
 
     OppilaitosRaporttiResponse(
       sheets = Seq(data, documentation),

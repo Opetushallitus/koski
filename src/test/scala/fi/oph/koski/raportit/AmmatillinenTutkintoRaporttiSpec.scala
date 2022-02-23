@@ -5,6 +5,7 @@ import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
@@ -39,6 +40,7 @@ class AmmatillinenTutkintoRaporttiSpec
   }
 
   lazy val repository = AmmatillisenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   "Suoritustietojen tarkistusraportti" - {
     lazy val rivi = {
@@ -379,7 +381,7 @@ class AmmatillinenTutkintoRaporttiSpec
   )
 
   private def testiHenkilöRaporttiRows(request: AikajaksoRaporttiAikarajauksellaRequest, hetu: String = defaultHetu): Seq[SuoritustiedotTarkistusRow] =
-    AmmatillinenTutkintoRaportti.buildRaportti(request, repository).filter(_.hetu.contains(hetu)).toList
+    AmmatillinenTutkintoRaportti.buildRaportti(request, repository, t).filter(_.hetu.contains(hetu)).toList
 
   private def withNewSisällytettyOpiskeluoikeus(f: => Unit) = {
     resetFixtures

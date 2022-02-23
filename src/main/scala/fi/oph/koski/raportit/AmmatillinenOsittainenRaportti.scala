@@ -1,8 +1,8 @@
 package fi.oph.koski.raportit
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.AmmatillinenRaporttiUtils._
 import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.raportointikanta._
@@ -13,12 +13,12 @@ import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFo
 
 object AmmatillinenOsittainenRaportti {
 
-  def buildRaportti(request: AikajaksoRaporttiAikarajauksellaRequest, repository: AmmatillisenRaportitRepository): Seq[AmmatillinenOsittainRaporttiRow] = {
+  def buildRaportti(request: AikajaksoRaporttiAikarajauksellaRequest, repository: AmmatillisenRaportitRepository, t: LocalizationReader): Seq[AmmatillinenOsittainRaporttiRow] = {
     val data = repository.suoritustiedot(request.oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkintoosittainen", request.alku, request.loppu)
-    data.map(buildRow(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus))
+    data.map(buildRow(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus, t))
   }
 
-  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean)(data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
+  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean, t: LocalizationReader)(data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritus, sisältyvätOpiskeluoikeudet, unFilteredosasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritus, alku, loppu)
@@ -50,10 +50,10 @@ object AmmatillinenOsittainenRaportti {
       etunimet = henkilö.etunimet,
       tutkinto = päätasonSuoritus.koulutusmoduuliKoodiarvo,
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
-      tutkintonimike = tutkintonimike(päätasonSuoritus, "fi").getOrElse(""), //TODO kovakoodattu kielivalinta
-      päätasonSuorituksenNimi = päätasonSuoritus.koulutusmoduuliNimi.getOrElse(""),
-      päätasonSuorituksenSuoritustapa = suoritusTavat(List(päätasonSuoritus), "fi"), //TODO kovakoodattu kielivalinta
-      päätasonSuorituksenTila = vahvistusPäiväToTila(päätasonSuoritus.vahvistusPäivä), //TODO lokalisaatio?
+      tutkintonimike = tutkintonimike(päätasonSuoritus, t.language).getOrElse(""),
+      päätasonSuorituksenNimi = päätasonSuoritus.koulutusModuulistaKäytettäväNimi(t.language).getOrElse(""),
+      päätasonSuorituksenSuoritustapa = suoritusTavat(List(päätasonSuoritus), t.language),
+      päätasonSuorituksenTila = vahvistusPäiväToTila(päätasonSuoritus.vahvistusPäivä, t),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
       viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,

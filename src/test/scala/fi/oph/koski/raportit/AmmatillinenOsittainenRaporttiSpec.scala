@@ -4,6 +4,7 @@ import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, Oppija}
@@ -39,6 +40,7 @@ class AmmatillinenOsittainenRaporttiSpec
   }
 
   lazy val repository = AmmatillisenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   lazy val defaultTestiHenkilö = KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa
 
   "Ammatillisen tutkinnon osa/osia -raporti" - {
@@ -134,6 +136,6 @@ class AmmatillinenOsittainenRaporttiSpec
 
   private def testiHenkilöRaporttiRows(alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean, hetu:String = defaultTestiHenkilö.hetu.get) = {
     val request = AikajaksoRaporttiAikarajauksellaRequest(MockOrganisaatiot.stadinAmmattiopisto, None, "", alku, loppu, osasuoritustenAikarajaus, "fi")
-    AmmatillinenOsittainenRaportti.buildRaportti(request, repository).filter(_.hetu.contains(hetu)).toList
+    AmmatillinenOsittainenRaportti.buildRaportti(request, repository, t).filter(_.hetu.contains(hetu)).toList
   }
 }
