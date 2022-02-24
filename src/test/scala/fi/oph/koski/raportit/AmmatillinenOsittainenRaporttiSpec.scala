@@ -75,13 +75,13 @@ class AmmatillinenOsittainenRaporttiSpec
     "Korotetut suoritukset" in {
       val rivit = testiHenkilöRaporttiRows(alku = date(2016, 1, 1), loppu = date(2016, 5, 30), osasuoritustenAikarajaus = false, KoskiSpecificMockOppijat.ammattilainen.hetu.get)
 
-      rivit(0).suoritettujenOpintojenYhteislaajuus should equal("2.0 (2.0)")
-      rivit(0).valmiitAmmatillisetTutkinnonOsatLkm should equal("1 (1)")
-      rivit(0).näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal ("1 (1)")
-      rivit(0).tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal("1 (1)")
-      rivit(0).rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal("1 (1)")
-      rivit(0).suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("2.0 (2.0)")
-      rivit(0).tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("2.0 (2.0)")
+      rivit.head.suoritettujenOpintojenYhteislaajuus should equal("2.0 (2.0)")
+      rivit.head.valmiitAmmatillisetTutkinnonOsatLkm should equal("1 (1)")
+      rivit.head.näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal ("1 (1)")
+      rivit.head.tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm should equal("1 (1)")
+      rivit.head.rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm should equal("1 (1)")
+      rivit.head.suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("2.0 (2.0)")
+      rivit.head.tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("2.0 (2.0)")
     }
   }
 

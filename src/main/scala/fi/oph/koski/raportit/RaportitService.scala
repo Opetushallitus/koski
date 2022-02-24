@@ -74,11 +74,18 @@ class RaportitService(application: KoskiApplication) {
   def ammatillinenOsittainenSuoritustietojenTarkistus(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
       sheets = Seq(
-        DataSheet("Opiskeluoikeudet", AmmatillinenOsittainenRaportti.buildRaportti(request, ammatillisenRaportitRepository, t), AmmatillinenOsittainenRaportti.columnSettings),
-        DocumentationSheet("Ohjeet", AmmatillinenOsittainenRaportti.documentation(request, raportointiDatabase.status.startedTime.get.toLocalDateTime))
+        DataSheet(
+          title = t.get("raportti-excel-opiskeluoikeudet-sheet-name"),
+          rows = AmmatillinenOsittainenRaportti.buildRaportti(request, ammatillisenRaportitRepository, t),
+          columnSettings = AmmatillinenOsittainenRaportti.columnSettings(t)
+        ),
+        DocumentationSheet(
+          title = t.get("raportti-excel-ohjeet-sheet-name"),
+          text = AmmatillinenOsittainenRaportti.documentation(request, raportointiDatabase.status.startedTime.get.toLocalDateTime, t)
+        )
       ),
-      workbookSettings = WorkbookSettings(AmmatillinenOsittainenRaportti.title(request), Some(request.password)),
-      filename = AmmatillinenOsittainenRaportti.filename(request),
+      workbookSettings = WorkbookSettings(AmmatillinenOsittainenRaportti.title(request, t), Some(request.password)),
+      filename = AmmatillinenOsittainenRaportti.filename(request, t),
       downloadToken = request.downloadToken
     )
   }

@@ -116,7 +116,7 @@ object AmmatillinenTutkintoRaportti {
   def documentation(request: AikajaksoRaporttiAikarajauksellaRequest, loadStarted: LocalDateTime, t: LocalizationReader): String =
     s"""
        |${t.get("raportti-excel-ammatillinen-suoritustiedot-ohje-title")}
-       |${t.get("raportti-excel-ammatillinen-suoritustiedot-ohje-oppilaitos")}: ${request.oppilaitosOid}
+       |${t.get("raportti-excel-ammatillinen-ohje-oppilaitos")}: ${request.oppilaitosOid}
        |${t.get("raportti-excel-ammatillinen-ohje-aikajakso")}: ${finnishDateFormat.format(request.alku)} - ${finnishDateFormat.format(request.loppu)}
        |${t.get("raportti-excel-ammatillinen-ohje-luotu")}: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadStarted)} ${t.get("raportti-excel-ammatillinen-ohje-luotu-takaliite")})
        |
