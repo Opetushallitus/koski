@@ -1858,7 +1858,7 @@
   "raportti-excel-kolumni-suoritettujenYhteistenTutkinnonOsienYhteislaajuus": "Suoritettujen yhteisten tutkinnon osien yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)",
   "raportti-excel-kolumni-siirrettyjenYhteistenTutkinnonOsienYhteislaajuus": "KOSKI-palveluun siirrettyjen yhteisten tutkinnon osien (valmis- tai kesken-tilaiset) yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)",
   "raportti-excel-kolumni-tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus": "Tunnustettujen yhteisten tutkinnon osien yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)",
-  "raportti-excel-kolumni-suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus": "Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)",
+  "raportti-excel-kolumni-suoritettujenYhteistenTutkinnonOsienOsaAlueidenYhteislaajuusEsimerkillä": "Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)",
   "raportti-excel-kolumni-pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus": "Pakollisten yhteisten tutkinnon osien osa-alueiden yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)",
   "raportti-excel-kolumni-valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus": "Valinnaisten yhteisten tutkinnon osien osa-aluiden yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)",
   "raportti-excel-kolumni-valmiitVapaaValintaisetTutkinnonOsatLkm": "Valmiiden vapaavalintaisten tutkinnon osien lukumäärä, esim: 10 (joista 5 korotuksia)",
