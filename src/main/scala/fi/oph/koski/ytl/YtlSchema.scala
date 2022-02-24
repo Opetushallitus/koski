@@ -61,6 +61,7 @@ trait YtlOpiskeluoikeus {
   def oppilaitos: Option[Oppilaitos]
   def koulutustoimija: Option[Koulutustoimija]
   def tila: OpiskeluoikeudenTila
+  def suoritukset: List[Suoritus]
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
   def organisaatiohistoria: Option[List[OrganisaatioHistoria]]
   def alkamispäivä: Option[LocalDate]
@@ -78,8 +79,8 @@ trait YtlOpiskeluoikeus {
     this.organisaatiohistoria.map(_.map(_.oppilaitos.map(_.oid))).toSeq.flatten.flatten
 }
 
-trait SuorituksiaSisältäväYtlOpiskeluoikeus extends YtlOpiskeluoikeus {
-  def suoritukset: List[Suoritus]
+trait LaajatSuoritustiedotSisältäväYtlOpiskeluoikeus extends YtlOpiskeluoikeus {
+  def suoritukset: List[SuoritusLaajatTiedot]
 
   override def kaikkiMahdollisetOppilaitosOiditRakenteessa: Seq[String] =
     super.kaikkiMahdollisetOppilaitosOiditRakenteessa ++ suoritustenToimipisteet ++ suoritustenVahvistustenOrganisaatiot
@@ -98,6 +99,9 @@ trait Suoritus {
   @KoodistoUri("suorituksentyyppi")
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
+}
+
+trait SuoritusLaajatTiedot extends Suoritus {
   def koulutusmoduuli: SuorituksenKoulutusmoduuli
   def toimipiste: Option[OrganisaatioWithOid]
   def vahvistus: Option[Vahvistus]
@@ -117,6 +121,7 @@ case class YTLLukionOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   tila: OpiskeluoikeudenTila,
+  suoritukset: List[LukionSuoritus],
   lisätiedot: Option[OpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo("lukiokoulutus")
   tyyppi: schema.Koodistokoodiviite,
@@ -138,6 +143,14 @@ case class YTLLukionOpiskeluoikeus(
   }
 }
 
+@Title("Lukion suoritus")
+case class LukionSuoritus(
+  @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
+  @KoodistoKoodiarvo("lukionaineopinnot")
+  @KoodistoKoodiarvo("lukionoppimaara")
+  tyyppi: schema.Koodistokoodiviite
+) extends Suoritus
+
 @Title("Ammatillinen opiskeluoikeus")
 case class YtlAmmatillinenOpiskeluoikeus(
   oid: Option[String],
@@ -152,7 +165,7 @@ case class YtlAmmatillinenOpiskeluoikeus(
   organisaatiohistoria: Option[List[OrganisaatioHistoria]],
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
-) extends SuorituksiaSisältäväYtlOpiskeluoikeus {
+) extends LaajatSuoritustiedotSisältäväYtlOpiskeluoikeus {
   def siivoaTiedot(poistaOrganisaatiotiedot: Boolean = false): Option[YtlOpiskeluoikeus] = {
     (suoritukset.isEmpty, poistaOrganisaatiotiedot) match {
       case (true, _) => None
@@ -178,7 +191,7 @@ case class AmmatillinenSuoritus(
   toimipiste: Option[OrganisaatioWithOid],
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
-) extends Suoritus
+) extends SuoritusLaajatTiedot
 
 case class AmmatillinenTutkintoKoulutus(
   @KoodistoUri("koulutus")
@@ -203,7 +216,7 @@ case class YtlIBOpiskeluoikeus(
   organisaatiohistoria: Option[List[OrganisaatioHistoria]],
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
-) extends SuorituksiaSisältäväYtlOpiskeluoikeus {
+) extends LaajatSuoritustiedotSisältäväYtlOpiskeluoikeus {
   def siivoaTiedot(poistaOrganisaatiotiedot: Boolean = false): Option[YtlOpiskeluoikeus] = {
     (suoritukset.isEmpty, poistaOrganisaatiotiedot) match {
       case (true, _) => None
@@ -229,7 +242,7 @@ case class IBSuoritus(
   toimipiste: Option[OrganisaatioWithOid],
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
-) extends Suoritus
+) extends SuoritusLaajatTiedot
 
 @Title("IB-tutkinto")
 case class IBTutkinto(
@@ -253,7 +266,7 @@ case class YTLInternationalSchoolOpiskeluoikeus(
   organisaatiohistoria: Option[List[OrganisaatioHistoria]],
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
-) extends SuorituksiaSisältäväYtlOpiskeluoikeus {
+) extends LaajatSuoritustiedotSisältäväYtlOpiskeluoikeus {
   def siivoaTiedot(poistaOrganisaatiotiedot: Boolean = false): Option[YtlOpiskeluoikeus] = {
     (suoritukset.isEmpty, poistaOrganisaatiotiedot) match {
       case (true, _) => None
@@ -279,7 +292,7 @@ case class InternationalSchoolSuoritus(
   toimipiste: Option[OrganisaatioWithOid],
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite
-) extends Suoritus
+) extends SuoritusLaajatTiedot
 
 @Title("International Schoolin luokka-aste")
 case class InternationalSchoolLuokkaAste(

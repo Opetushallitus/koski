@@ -1024,6 +1024,20 @@ class YtlSpec
        |            }
        |          ]
        |        },
+       |        "suoritukset": [
+       |          {
+       |            "tyyppi": {
+       |              "koodiarvo": "lukionoppimaara",
+       |              "nimi": {
+       |                "fi": "Lukion oppimäärä",
+       |                "sv": "Gymnasiets lärokurs",
+       |                "en": "General upper secondary education  syllabus"
+       |              },
+       |              "koodistoUri": "suorituksentyyppi",
+       |              "koodistoVersio": 1
+       |            }
+       |          }
+       |        ],
        |        "lisätiedot": {
        |          "maksuttomuus": [
        |            {
