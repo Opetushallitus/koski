@@ -163,10 +163,10 @@ class RaportitService(application: KoskiApplication) {
     downloadToken = request.downloadToken
   )
 
-  def topksAmmatillinen(request: AikajaksoRaporttiRequest) = OppilaitosRaporttiResponse(
-    sheets = Seq(topksAmmatillinenRaportti.build(request.oppilaitosOid, request.alku, request.loppu)),
-    workbookSettings = WorkbookSettings("TOPKS ammatillinen suoritustietojen tarkistus", Some(request.password)),
-    filename = s"topks_ammatillinen_koski_raportti_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
+  def topksAmmatillinen(request: AikajaksoRaporttiRequest, t: LocalizationReader) = OppilaitosRaporttiResponse(
+    sheets = Seq(topksAmmatillinenRaportti.build(request.oppilaitosOid, request.alku, request.loppu, t)),
+    workbookSettings = WorkbookSettings(t.get("raportti-excel-ammatillinen-topks-title"), Some(request.password)),
+    filename = s"${t.get("raportti-excel-ammatillinen-topks-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
     downloadToken = request.downloadToken
   )
 

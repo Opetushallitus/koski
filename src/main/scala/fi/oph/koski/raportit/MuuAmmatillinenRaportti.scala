@@ -61,8 +61,7 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
         oo.lahdejarjestelma_id,
         oo.aikaleima,
         pts.paatason_suoritus_id,
-        CASE WHEN (pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang) IS NULL THEN (pts.koulutusmoduuli_nimi)
-        ELSE (pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang) END as koulutusmoduuli_nimi,
+        COALESCE(pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, pts.koulutusmoduuli_nimi) as koulutusmoduuli_nimi,
         pts.vahvistus_paiva,
         pts.toimipiste_nimi,
         pts.toimipiste_oid
@@ -88,8 +87,7 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
         oo.lahdejarjestelma_id,
         oo.aikaleima,
         pts.paatason_suoritus_id,
-        CASE WHEN (pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang) IS NULL THEN (pts.koulutusmoduuli_nimi)
-        ELSE (pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang) END as koulutusmoduuli_nimi,
+        COALESCE(pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, pts.koulutusmoduuli_nimi) as koulutusmoduuli_nimi,
         pts.vahvistus_paiva,
         pts.toimipiste_nimi,
         pts.toimipiste_oid
@@ -184,7 +182,7 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
     "lähdejärjestelmäKoodiarvo" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmä")),
     "lähdejärjestelmäId" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
     "aikaleima" -> Column(t.get("raportti-excel-kolumni-päivitetty")),
-    "toimipisteOid" -> Column(t.get("raportti-excel-kolumni-toimipisteNimi")),
+    "toimipisteOid" -> Column(t.get("raportti-excel-kolumni-toimipisteOid")),
     "suorituksenNimi" -> Column(t.get("raportti-excel-kolumni-päätasonSuorituksenNimi")),
     "opiskeluoikeudenAlkamispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
     "opiskeluoikeudenViimeisinTila" -> Column(t.get("raportti-excel-kolumni-viimeisinTila")),

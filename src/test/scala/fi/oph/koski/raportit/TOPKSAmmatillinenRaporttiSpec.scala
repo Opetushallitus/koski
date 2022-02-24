@@ -2,6 +2,7 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.documentation.TutkinnonOsaaPienempiKokonaisuusExample
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.stadinAmmattiopisto
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -18,6 +19,8 @@ class TOPKSAmmatillinenRaporttiSpec
     with AmmatillinenRaporttiTestMethods
     with DirtiesFixtures {
 
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
+
   override protected def alterFixture(): Unit = {
     insertTOPKSOpiskeluoikeusPäivämäärillä(KoskiSpecificMockOppijat.lukioKesken, alkanut = LocalDate.of(2017, 1, 2), päättynyt = LocalDate.of(2017, 12, 31))
     insertTOPKSOpiskeluoikeusPäivämäärillä(KoskiSpecificMockOppijat.amis, alkanut = LocalDate.of(2019, 1, 2), päättynyt = LocalDate.of(2019, 12, 31))
@@ -30,7 +33,7 @@ class TOPKSAmmatillinenRaporttiSpec
     val raporttiBuilder = TOPKSAmmatillinenRaporttiBuilder(KoskiApplicationForTests.raportointiDatabase.db)
     val alku = LocalDate.of(2018, 1, 1)
     val loppu = LocalDate.of(2019, 1, 1)
-    raporttiBuilder.build(stadinAmmattiopisto, alku, loppu).rows.map(_.asInstanceOf[TOPKSAmmatillinenRaporttiRow])
+    raporttiBuilder.build(stadinAmmattiopisto, alku, loppu, t).rows.map(_.asInstanceOf[TOPKSAmmatillinenRaporttiRow])
   }
 
   "Tutkinnon osaa pienemmistä kokonaisuuksista koostuvan suorituksen suoritustietoraportti (TOPKS)" - {

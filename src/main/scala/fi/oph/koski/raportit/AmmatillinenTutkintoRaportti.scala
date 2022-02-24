@@ -133,7 +133,7 @@ object AmmatillinenTutkintoRaportti {
     "sisältyvätOpiskeluoikeudetOppilaitokset" -> Column(t.get("raportti-excel-kolumni-sisältyvätOpiskeluoikeudetOppilaitokset"), width = Some(4000)),
     "linkitetynOpiskeluoikeudenOppilaitos" -> Column(t.get("raportti-excel-kolumni-linkitetynOpiskeluoikeudenOppilaitos")),
     "aikaleima" -> Column(t.get("raportti-excel-kolumni-päivitetty")),
-    "toimipisteOid" -> Column(t.get("raportti-excel-kolumni-toimipisteNimi")),
+    "toimipisteOid" -> Column(t.get("raportti-excel-kolumni-toimipisteOid")),
     "yksiloity" -> CompactColumn(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
     "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
     "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
