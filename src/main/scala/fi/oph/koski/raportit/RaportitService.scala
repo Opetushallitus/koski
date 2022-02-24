@@ -156,10 +156,10 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def muuAmmatillinen(request: AikajaksoRaporttiRequest) = OppilaitosRaporttiResponse(
-    sheets = Seq(muuammatillinenRaportti.build(request.oppilaitosOid, request.alku, request.loppu)),
-    workbookSettings = WorkbookSettings("Muu ammatillinen suoritustietojen tarkistus", Some(request.password)),
-    filename = s"muu_ammatillinen_koski_raportti_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
+  def muuAmmatillinen(request: AikajaksoRaporttiRequest, t: LocalizationReader) = OppilaitosRaporttiResponse(
+    sheets = Seq(muuammatillinenRaportti.build(request.oppilaitosOid, request.alku, request.loppu, t)),
+    workbookSettings = WorkbookSettings(t.get("raportti-excel-muu-ammatillinen-title"), Some(request.password)),
+    filename = s"${t.get("raportti-excel-muu-ammatillinen-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
     downloadToken = request.downloadToken
   )
 

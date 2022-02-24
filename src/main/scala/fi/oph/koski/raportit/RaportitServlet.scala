@@ -130,8 +130,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   get("/muuammatillinen") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
     val parsedRequest = parseAikajaksoRaporttiRequest
+    val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=muuammatillinen&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&lang=${parsedRequest.lang}")))
-    writeExcel(raportitService.muuAmmatillinen(parsedRequest))
+    writeExcel(raportitService.muuAmmatillinen(parsedRequest, t), t)
   }
 
   get("/topksammatillinen") {

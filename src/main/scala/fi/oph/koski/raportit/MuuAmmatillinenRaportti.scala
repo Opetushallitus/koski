@@ -1,12 +1,12 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate
-
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.DB
-
+import fi.oph.koski.localization.LocalizationReader
 import slick.jdbc.GetResult
+
 import scala.concurrent.duration.DurationInt
 
 case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
@@ -37,16 +37,16 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
     )
   )
 
-  def build(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): DataSheet = {
-    val rows = runDbSync(queryMuuAmmatillisenSuoritukset(oppilaitosOid, alku, loppu).as[MuuAmmatillinenRaporttiRow], timeout = 5.minutes)
+  def build(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, t: LocalizationReader): DataSheet = {
+    val rows = runDbSync(queryMuuAmmatillisenSuoritukset(oppilaitosOid, alku, loppu, t.language).as[MuuAmmatillinenRaporttiRow], timeout = 5.minutes)
     DataSheet(
-      title = "Muu_ammatillisen_koulutuksen_raportti",
+      title = t.get("raportti-excel-muu-ammatillinen-sheet-name"),
       rows,
-      columnSettings
+      columnSettings(t)
     )
   }
 
-  private def queryMuuAmmatillisenSuoritukset(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate) = sql"""
+  private def queryMuuAmmatillisenSuoritukset(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, lang: String) = sql"""
     with oppilaitoksen_opiskeluoikeudet_ja_paatason_suoritukset as (
       select
         oo.opiskeluoikeus_oid,
@@ -61,7 +61,8 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
         oo.lahdejarjestelma_id,
         oo.aikaleima,
         pts.paatason_suoritus_id,
-        pts.koulutusmoduuli_nimi,
+        CASE WHEN (pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang) IS NULL THEN (pts.koulutusmoduuli_nimi)
+        ELSE (pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang) END as koulutusmoduuli_nimi,
         pts.vahvistus_paiva,
         pts.toimipiste_nimi,
         pts.toimipiste_oid
@@ -87,7 +88,8 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
         oo.lahdejarjestelma_id,
         oo.aikaleima,
         pts.paatason_suoritus_id,
-        pts.koulutusmoduuli_nimi,
+        CASE WHEN (pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang) IS NULL THEN (pts.koulutusmoduuli_nimi)
+        ELSE (pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang) END as koulutusmoduuli_nimi,
         pts.vahvistus_paiva,
         pts.toimipiste_nimi,
         pts.toimipiste_oid
@@ -176,28 +178,28 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
     left join suoritettujen_muun_ammatillisen_koulutuksen_osasuoritusten_lukumäärä on oo_ja_pts.paatason_suoritus_id = suoritettujen_muun_ammatillisen_koulutuksen_osasuoritusten_lukumäärä.paatason_suoritus_id
   """
 
-  private lazy val columnSettings: Seq[(String, Column)] = Seq(
-    "opiskeluoikeusOid"  -> Column("Opiskeluoikeuden oid"),
-    "sisältyyOpiskeluoikeuteenOid" -> Column("Sisältyvän opiskeluoikeuden oid"),
-    "lähdejärjestelmäKoodiarvo" -> Column("Lähdejärjestelmä"),
-    "lähdejärjestelmäId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
-    "aikaleima" -> Column("Opiskeluoikeus päivitettv"),
-    "toimipisteOid" -> Column("Toimipisteen oid"),
-    "suorituksenNimi" -> Column("Päätason suoritus"),
-    "opiskeluoikeudenAlkamispäivä" -> Column("Opiskeluoikeuden alkamispäivä"),
-    "opiskeluoikeudenViimeisinTila" -> Column("Opiskeluoikeuden viimeisin tila"),
-    "yksilöity" -> Column("Yksilöity"),
-    "oppijaOid" -> Column("Oppijan oid"),
-    "hetu" -> Column("Henkilötunnus"),
-    "etunimet" -> Column("Etunimet"),
-    "sukunimi" -> Column("Sukunimi"),
-    "suoritutettujenOsasuoritustenLkm" -> Column("Suoritettujen osasuoritusten lukumäärä"),
-    "keskeneräistenOsasuoritustenLkm" -> Column("Keskeneräisten osasuoritusten lukumäärä"),
-    "kaikkienOsasuoritustenYhteislaajuus" -> Column("Kaikkien osasuoritusten yhteislaajuus"),
-    "kaikkienOsasuoritustenLaajuudenYksiköt" -> Column("Kaikkien osasuoritusten laajuuden yksiköt"),
-    "suoritettujenYhteistenTutkinnonOsienOsaalueidenLkm" -> Column("Suoritettujen yhteisten tutkinnon osien osa-alueiden lukumäärä"),
-    "suoritettujenTutkinnonOsaaPienempienKokonaisuuksienLkm" -> Column("Suoritettujen tutkinnon osaa pienempien kokonaisuuksien lukumäärä"),
-    "suoritettujenMuuAmmatillisenKoulutuksenOsasuoritustenLkm" -> Column("Suoritettujen Muu ammatillisen koulutuksen osasuoritusten lukumäärä")
+  private def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "opiskeluoikeusOid"  -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
+    "sisältyyOpiskeluoikeuteenOid" -> Column(t.get("raportti-excel-kolumni-sisältyyOpiskeluoikeuteenOid")),
+    "lähdejärjestelmäKoodiarvo" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmä")),
+    "lähdejärjestelmäId" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
+    "aikaleima" -> Column(t.get("raportti-excel-kolumni-päivitetty")),
+    "toimipisteOid" -> Column(t.get("raportti-excel-kolumni-toimipisteNimi")),
+    "suorituksenNimi" -> Column(t.get("raportti-excel-kolumni-päätasonSuorituksenNimi")),
+    "opiskeluoikeudenAlkamispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
+    "opiskeluoikeudenViimeisinTila" -> Column(t.get("raportti-excel-kolumni-viimeisinTila")),
+    "yksilöity" -> Column(t.get("raportti-excel-kolumni-yksiloity")),
+    "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
+    "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
+    "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
+    "suoritutettujenOsasuoritustenLkm" -> Column(t.get("raportti-excel-kolumni-suoritutettujenOsasuoritustenLkm")),
+    "keskeneräistenOsasuoritustenLkm" -> Column(t.get("raportti-excel-kolumni-keskeneräistenOsasuoritustenLkm")),
+    "kaikkienOsasuoritustenYhteislaajuus" -> Column(t.get("raportti-excel-kolumni-kaikkienOsasuoritustenYhteislaajuus")),
+    "kaikkienOsasuoritustenLaajuudenYksiköt" -> Column(t.get("raportti-excel-kolumni-kaikkienOsasuoritustenLaajuudenYksiköt")),
+    "suoritettujenYhteistenTutkinnonOsienOsaalueidenLkm" -> Column(t.get("raportti-excel-kolumni-suoritettujenYhteistenTutkinnonOsienOsaalueidenLkm")),
+    "suoritettujenTutkinnonOsaaPienempienKokonaisuuksienLkm" -> Column(t.get("raportti-excel-kolumni-suoritettujenTutkinnonOsaaPienempienKokonaisuuksienLkm")),
+    "suoritettujenMuuAmmatillisenKoulutuksenOsasuoritustenLkm" -> Column(t.get("raportti-excel-kolumni-suoritettujenMuuAmmatillisenKoulutuksenOsasuoritustenLkm"))
   )
 }
 

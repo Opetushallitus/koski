@@ -3,6 +3,7 @@ package fi.oph.koski.raportit
 import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, kiinteistösihteerinMuuAmmatillinenKoulutus, puutarhuri}
 import fi.oph.koski.documentation.MuunAmmatillisenKoulutuksenExample.muunAmmatillisenKoulutuksenSuoritus
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.stadinAmmattiopisto
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -19,6 +20,8 @@ class MuuAmmatillinenRaporttiSpec
     with AmmatillinenRaporttiTestMethods
     with DirtiesFixtures {
 
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
+
   override protected def alterFixture(): Unit = {
     insertMuuAmmatillisenSuorituksenOpiskeluoikeusPäivämäärillä(KoskiSpecificMockOppijat.amis, alkanut = LocalDate.of(2019, 1, 2), päättynyt = LocalDate.of(2019, 12, 31))
     insertMuuAmmatillisenSuorituksenOpiskeluoikeusPäivämäärillä(KoskiSpecificMockOppijat.lukiolainen, alkanut = LocalDate.of(2017, 1, 1), päättynyt = LocalDate.of(2020, 1, 1))
@@ -30,7 +33,7 @@ class MuuAmmatillinenRaporttiSpec
     val raporttiBuilder = MuuAmmatillinenRaporttiBuilder(KoskiApplicationForTests.raportointiDatabase.db)
     val alku = LocalDate.of(2018, 1, 1)
     val loppu = LocalDate.of(2019, 1, 1)
-    raporttiBuilder.build(stadinAmmattiopisto, alku, loppu).rows.map(_.asInstanceOf[MuuAmmatillinenRaporttiRow])
+    raporttiBuilder.build(stadinAmmattiopisto, alku, loppu, t).rows.map(_.asInstanceOf[MuuAmmatillinenRaporttiRow])
   }
 
   "Muu ammatillinen suoritustietoraportti" - {
