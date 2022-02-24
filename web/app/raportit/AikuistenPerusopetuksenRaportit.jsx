@@ -15,7 +15,7 @@ const reportTypes = {
   oppiaineenoppimäärä: 'oppiaineenoppimäärä'
 }
 
-export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescription, example}) => {
+export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescription, example, lang}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const osasuoritustenAikarajausAtom = Atom(false)
@@ -34,6 +34,7 @@ export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescr
       osasuoritustenAikarajaus: r,
       password,
       raportinTyyppi: t,
+      lang: lang,
       baseUrl: `/koski/api/raportit${apiEndpoint}`
     })
 

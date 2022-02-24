@@ -1,9 +1,10 @@
 package fi.oph.koski.raportit
 
+import fi.oph.koski.localization.LocalizationReader
+
 import java.lang.Character.isDigit
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.{Aikajakso, Jakso, Koulutusmoduuli}
 
@@ -18,9 +19,14 @@ case class YleissivistäväOppiaineenTiedot(suoritus: RSuoritusRow, osasuorituks
   private val laajuus = suorituksenOsasuoritukset.map(_.laajuus).sum
   private val hylättyjenLaajuus = hylätytOsasuoritukset.map(_.laajuus).sum
 
-  private val hylätytKurssitStr = if (hylättyjenLaajuus > 0) f" (joista $hylättyjenLaajuus%.1f hylättyjä)" else ""
+  private def hylätytKurssitStr(t: LocalizationReader) = if (hylättyjenLaajuus > 0) f" (${t.get("raportti-excel-default-value-joista")} $hylättyjenLaajuus%.1f ${t.get("raportti-excel-default-value-hylättyjä")})" else ""
 
-  override def toString: String = suoritus.arviointiArvosanaKoodiarvo.map(a => f"Arvosana $a, $laajuus%.1f kurssia$hylätytKurssitStr").getOrElse("Ei arvosanaa")
+  def toStringLokalisoitu(t: LocalizationReader): String = {
+    suoritus
+      .arviointiArvosanaKoodiarvo
+      .map(a => f"${t.get("raportti-excel-default-value-arvosana")} $a, $laajuus%.1f ${t.get("raportti-excel-default-value-kurssia")}${hylätytKurssitStr(t)}")
+      .getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))
+  }
 }
 
 sealed trait YleissivistäväRaporttiOppiaineTaiKurssi {
@@ -29,13 +35,13 @@ sealed trait YleissivistäväRaporttiOppiaineTaiKurssi {
   def koulutusmoduuliPaikallinen: Boolean
 }
 
-case class YleissivistäväRaporttiOppiaine(nimi: String, koulutusmoduuliKoodiarvo: String, koulutusmoduuliPaikallinen: Boolean) extends YleissivistäväRaporttiOppiaineTaiKurssi {
-  def toSheetTitle: String = s"$koulutusmoduuliKoodiarvo ${if (koulutusmoduuliPaikallinen) "p" else "v"} ${nimi.capitalize}"
-  def toColumnTitle: String = s"$koulutusmoduuliKoodiarvo ${nimi.capitalize} ${if (koulutusmoduuliPaikallinen) "paikallinen" else "valtakunnallinen"}"
+case class YleissivistäväRaporttiOppiaine(nimi: String, koulutusmoduuliKoodiarvo: String, koulutusmoduuliPaikallinen: Boolean, oppimääräKoodiarvo: Option[String]) extends YleissivistäväRaporttiOppiaineTaiKurssi {
+  def toSheetTitle(t: LocalizationReader): String = s"$koulutusmoduuliKoodiarvo ${if (koulutusmoduuliPaikallinen) t.get("raportti-excel-kolumni-paikallinen-lyhenne") else t.get("raportti-excel-kolumni-valtakunnallinen-lyhenne")} ${nimi.capitalize}"
+  def toColumnTitle(t: LocalizationReader): String = s"$koulutusmoduuliKoodiarvo ${nimi.capitalize} ${if (koulutusmoduuliPaikallinen) t.get("raportti-excel-kolumni-paikallinen") else t.get("raportti-excel-kolumni-valtakunnallinen")}"
 }
 
 case class YleissivistäväRaporttiKurssi(nimi: String, koulutusmoduuliKoodiarvo: String, koulutusmoduuliPaikallinen: Boolean) extends YleissivistäväRaporttiOppiaineTaiKurssi {
-  def toColumnTitle: String = s"$koulutusmoduuliKoodiarvo ${nimi.capitalize} ${if (koulutusmoduuliPaikallinen) "paikallinen" else "valtakunnallinen"}"
+  def toColumnTitle(t: LocalizationReader): String = s"$koulutusmoduuliKoodiarvo ${nimi.capitalize} ${if (koulutusmoduuliPaikallinen) t.get("raportti-excel-kolumni-paikallinen") else t.get("raportti-excel-kolumni-valtakunnallinen")}"
 }
 
 case class YleissivistäväRaporttiOppiaineJaKurssit(oppiaine: YleissivistäväRaporttiOppiaine, kurssit: Seq[YleissivistäväRaporttiKurssi])
@@ -65,7 +71,7 @@ object YleissivistäväOppiaineetOrdering extends Ordering[YleissivistäväRapor
   }
 
   private def orderMatikkaByOppimäärä(x: YleissivistäväRaporttiOppiaine, y: YleissivistäväRaporttiOppiaine) = {
-    (x.nimi.toLowerCase.contains("pitkä"), y.nimi.toLowerCase.contains("pitkä")) match {
+    (x.oppimääräKoodiarvo.contains("MAA"), y.oppimääräKoodiarvo.contains("MAA")) match {
       case (true, false) => -1
       case (false, true) => 1
       case _ => 0
@@ -139,61 +145,67 @@ object YleissivistäväUtils {
   def opetettavatOppiaineetJaNiidenKurssit(
     isOppiaineenOppimäärä: RPäätasonSuoritusRow => Boolean,
     isOppiaine: ROsasuoritusRow => Boolean,
-    rows: Seq[YleissivistäväRaporttiRows]
+    rows: Seq[YleissivistäväRaporttiRows],
+    t: LocalizationReader
   ): Seq[YleissivistäväRaporttiOppiaineJaKurssit] = {
-    rows
-      .flatMap(oppianeetJaNiidenKurssit(isOppiaineenOppimäärä, isOppiaine))
+    val oppiaineet = rows
+      .flatMap(oppianeetJaNiidenKurssit(isOppiaineenOppimäärä, isOppiaine, t))
+    oppiaineet
       .groupBy(_.oppiaine)
       .map { case (oppiaine, x) =>
-      YleissivistäväRaporttiOppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct.sorted(YleissivistäväKurssitOrdering.yleissivistäväKurssitOrdering))
-    }
+        YleissivistäväRaporttiOppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct.sorted(YleissivistäväKurssitOrdering.yleissivistäväKurssitOrdering))
+      }
       .toSeq
       .sorted(YleissivistäväOppiaineetOrdering)
   }
 
   private def oppianeetJaNiidenKurssit(
     isOppiaineenOppimäärä: RPäätasonSuoritusRow => Boolean,
-    isOppiaine: ROsasuoritusRow => Boolean
+    isOppiaine: ROsasuoritusRow => Boolean,
+    t: LocalizationReader
   ) (row: YleissivistäväRaporttiRows): Seq[YleissivistäväRaporttiOppiaineJaKurssit] = {
     if (isOppiaineenOppimäärä(row.päätasonSuoritus)) {
-      Seq(YleissivistäväRaporttiOppiaineJaKurssit(toOppiaine(row.päätasonSuoritus), row.osasuoritukset.map(toKurssi)))
+      Seq(YleissivistäväRaporttiOppiaineJaKurssit(toOppiaine(row.päätasonSuoritus, t), row.osasuoritukset.map(o => toKurssi(o, t))))
     } else {
-      oppiaineetJaNiidenKurssitOppimäärästä(isOppiaine, row)
+      oppiaineetJaNiidenKurssitOppimäärästä(isOppiaine, row, t)
     }
   }
 
   private def oppiaineetJaNiidenKurssitOppimäärästä(
     isOppiaine: ROsasuoritusRow => Boolean,
-    row: YleissivistäväRaporttiRows
+    row: YleissivistäväRaporttiRows,
+    t: LocalizationReader
   ): Seq[YleissivistäväRaporttiOppiaineJaKurssit] = {
     val kurssit = row.osasuoritukset.filter(_.ylempiOsasuoritusId.isDefined).groupBy(_.ylempiOsasuoritusId.get)
     val oppiaineet = row.osasuoritukset.filter(isOppiaine)
     val combineOppiaineWithKurssit = (oppiaine: ROsasuoritusRow) =>
       YleissivistäväRaporttiOppiaineJaKurssit(
-        toOppiaine(oppiaine),
-        kurssit.getOrElse(oppiaine.osasuoritusId, Nil).map(toKurssi)
+        toOppiaine(oppiaine, t),
+        kurssit.getOrElse(oppiaine.osasuoritusId, Nil).map(k => toKurssi(k, t))
       )
     oppiaineet.map(combineOppiaineWithKurssit)
   }
 
-  private def toOppiaine(row: RSuoritusRow) = row match {
+  private def toOppiaine(row: RSuoritusRow, t: LocalizationReader) = row match {
     case s: RPäätasonSuoritusRow =>
       YleissivistäväRaporttiOppiaine(
-        s.suorituksestaKäytettäväNimi.getOrElse("ei nimeä"),
+        s.suorituksestaKäytettäväNimi(t.language).getOrElse(t.get("raportti-excel-default-value-ei-nimeä")),
         s.koulutusmoduuliKoodiarvo,
-        !s.koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava")
+        !s.koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava"),
+        s.oppimääräKoodiarvoDatasta
       )
     case s: ROsasuoritusRow =>
       YleissivistäväRaporttiOppiaine(
-        s.suorituksestaKäytettäväNimi.getOrElse("ei nimeä"),
+        s.suorituksestaKäytettäväNimi(t.language).getOrElse(t.get("raportti-excel-default-value-ei-nimeä")),
         s.koulutusmoduuliKoodiarvo,
-        s.koulutusmoduuliPaikallinen
+        s.koulutusmoduuliPaikallinen,
+        s.oppimääräKoodiarvo
       )
   }
 
-  private def toKurssi(row: ROsasuoritusRow) = {
+  private def toKurssi(row: ROsasuoritusRow, t: LocalizationReader) = {
     YleissivistäväRaporttiKurssi(
-      row.koulutusmoduuliNimi.getOrElse("ei nimeä"),
+      row.koulutusModuulistaKäytettäväNimi(t.language).getOrElse(t.get("raportti-excel-default-value-ei-nimeä")),
       row.koulutusmoduuliKoodiarvo,
       row.koulutusmoduuliPaikallinen
     )
@@ -203,24 +215,25 @@ object YleissivistäväUtils {
     paatasonsuoritus: RPäätasonSuoritusRow,
     osasuoritukset: Seq[ROsasuoritusRow],
     oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit],
-    isOppiaineenOppimäärä: RPäätasonSuoritusRow => Boolean
+    isOppiaineenOppimäärä: RPäätasonSuoritusRow => Boolean,
+    t: LocalizationReader
   ): Seq[String] = {
 
     def oppiaineenTiedot(oppiaine: YleissivistäväRaporttiOppiaine) = if (isOppiaineenOppimäärä(paatasonsuoritus)) {
-      if (paatasonsuoritus.matchesWith(oppiaine)) {
+      if (paatasonsuoritus.matchesWith(oppiaine, t.language)) {
         List(YleissivistäväOppiaineenTiedot(paatasonsuoritus, osasuoritukset))
       } else {
         Nil
       }
     } else {
       val osasuorituksetMap = osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
-      val oppiaineenSuoritukset = osasuorituksetMap.getOrElse(oppiaine.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(oppiaine))
+      val oppiaineenSuoritukset = osasuorituksetMap.getOrElse(oppiaine.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(oppiaine, t.language))
       oppiaineenSuoritukset.map(suoritus => YleissivistäväOppiaineenTiedot(suoritus, osasuoritukset))
     }
 
     oppiaineet
       .map(_.oppiaine)
-      .map(oppiaineenTiedot(_).map(_.toString).mkString(","))
+      .map(oppiaineenTiedot(_).map(_.toStringLokalisoitu(t)).mkString(","))
   }
 
   def removeContinuousSameTila(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Seq[ROpiskeluoikeusAikajaksoRow] = {

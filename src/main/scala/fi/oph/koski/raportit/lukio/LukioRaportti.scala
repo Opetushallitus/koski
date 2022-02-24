@@ -2,6 +2,7 @@ package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.YleissivistäväUtils._
 import fi.oph.koski.raportit._
 import fi.oph.koski.raportointikanta._
@@ -12,7 +13,7 @@ import java.time.LocalDate
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
-case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExecutionContext {
+case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationReader) extends GlobalExecutionContext {
 
   private def isOppiaineenOppimäärä(päätasonSuoritus: RPäätasonSuoritusRow) = {
     päätasonSuoritus.suorituksenTyyppi == "lukionoppiaineenoppimaara"
@@ -32,7 +33,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
     osasuoritustenAikarajaus: Boolean
   ): Seq[DynamicDataSheet] = {
     val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus)
-    val oppiaineetJaKurssit = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, isOppiaine, rows)
+    val oppiaineetJaKurssit = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, isOppiaine, rows, t)
 
     val future = for {
       oppiaineJaLisätiedot <- oppiaineJaLisätiedotSheet(rows, oppiaineetJaKurssit, alku, loppu)
@@ -64,14 +65,14 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
     val filtered = data.filter(notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine))
 
     DynamicDataSheet(
-      title = oppiaine.toSheetTitle,
+      title = oppiaine.toSheetTitle(t),
       rows = filtered.map(oppiainekohtaisetKurssitiedot(_, kurssit)).map(_.toSeq),
       columnSettings = oppiaineKohtaisetColumnSettings(kurssit)
     )
   }
 
   private def notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine: YleissivistäväRaporttiOppiaine)(data: LukioRaporttiRows) = {
-    !isOppiaineenOppimäärä(data.päätasonSuoritus) || data.päätasonSuoritus.matchesWith(oppiaine)
+    !isOppiaineenOppimäärä(data.päätasonSuoritus) || data.päätasonSuoritus.matchesWith(oppiaine, t.language)
   }
 
   private def kaikkiOppiaineetVälilehtiRow(row: LukioRaporttiRows, oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
@@ -126,7 +127,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
          .filter(_.korotettuEriVuonna)
          .map(_.laajuus).sum
      ),
-      oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, isOppiaineenOppimäärä)
+      oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, isOppiaineenOppimäärä, t)
     )
   }
 
@@ -148,7 +149,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
   private def kurssienTiedot(osasuoritukset: Seq[ROsasuoritusRow], kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
     val osasuorituksetMap = osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
     kurssit.map { kurssi =>
-      osasuorituksetMap.getOrElse(kurssi.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(kurssi)).map(kurssisuoritus =>
+      osasuorituksetMap.getOrElse(kurssi.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(kurssi, t.language)).map(kurssisuoritus =>
         LukioKurssinTiedot(
           kurssintyyppi = JsonSerializer.extract[Option[Koodistokoodiviite]](kurssisuoritus.data \ "koulutusmoduuli" \ "kurssinTyyppi").map(_.koodiarvo),
           arvosana = kurssisuoritus.arviointiArvosanaKoodiarvo,
@@ -209,7 +210,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
       CompactColumn("Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)", comment = Some("Hylätyllä arvosanalla suoritettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
       CompactColumn("Yhteislaajuus (tunnustetut kurssit)", comment = Some("Tunnustettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien tunnustettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
       CompactColumn("Yhteislaajuus (eri vuonna korotetut kurssit)", comment = Some("Kurssit, joiden arviointia on korotettuu eri vuonna, kuin jona kurssin ensimmäinen arviointi on annettu."))
-    ) ++ oppiaineet.map(x => CompactColumn(title = x.oppiaine.toColumnTitle, comment = Some("Otsikon nimessä näytetään ensin oppiaineen koodi, sitten oppiaineen nimi ja viimeiseksi tieto, onko kyseessä valtakunnallinen vai paikallinen oppiaine (esim. BI Biologia valtakunnallinen). Sarakkeen arvossa näytetään pilkulla erotettuna oppiaineelle siirretty arvosana ja oppiaineessa suoritettujen kurssien määrä.")))
+    ) ++ oppiaineet.map(x => CompactColumn(title = x.oppiaine.toColumnTitle(t), comment = Some("Otsikon nimessä näytetään ensin oppiaineen koodi, sitten oppiaineen nimi ja viimeiseksi tieto, onko kyseessä valtakunnallinen vai paikallinen oppiaine (esim. BI Biologia valtakunnallinen). Sarakkeen arvossa näytetään pilkulla erotettuna oppiaineelle siirretty arvosana ja oppiaineessa suoritettujen kurssien määrä.")))
   }
 
   private def oppiaineKohtaisetColumnSettings(kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
@@ -221,7 +222,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
       CompactColumn("Toimipiste"),
       CompactColumn("Opetussuunnitelma", comment = Some("Suoritetaanko lukio oppimäärää tai oppiaineen oppimäärää nuorten vai aikuisten opetussuunnitelman mukaan.")),
       CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä koko lukion oppimäärän suoritus (\"lukionoppimaara\") vai aineopintosuoritus (\"lukionoppiaineenoppimaara\")."))
-    ) ++ kurssit.map(k => CompactColumn(title = k.toColumnTitle, comment = Some("Otsikon nimessä näytetään ensin kurssin koodi, sitten kurssin nimi ja viimeiseksi tieto siitä, onko kurssi valtakunnallinen vai paikallinen. Kurssisarake sisältää aina seuraavat tiedot, jos opiskelijalla on kyseisen kurssi suoritettuna: kurssityyppi (pakollinen, syventävä, soveltava), arvosana, kurssin laajuus ja \"tunnustettu\" jos kyseinen kurssi on tunnustettu.")))
+    ) ++ kurssit.map(k => CompactColumn(title = k.toColumnTitle(t), comment = Some("Otsikon nimessä näytetään ensin kurssin koodi, sitten kurssin nimi ja viimeiseksi tieto siitä, onko kurssi valtakunnallinen vai paikallinen. Kurssisarake sisältää aina seuraavat tiedot, jos opiskelijalla on kyseisen kurssi suoritettuna: kurssityyppi (pakollinen, syventävä, soveltava), arvosana, kurssin laajuus ja \"tunnustettu\" jos kyseinen kurssi on tunnustettu.")))
   }
 }
 

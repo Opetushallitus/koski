@@ -374,7 +374,8 @@ class AmmatillinenTutkintoRaporttiSpec
     loppu = date(2016,5 , 30),
     osasuoritustenAikarajaus = false,
     downloadToken = None,
-    password = ""
+    password = "",
+    lang = "fi"
   )
 
   private def testiHenkilöRaporttiRows(request: AikajaksoRaporttiAikarajauksellaRequest, hetu: String = defaultHetu): Seq[SuoritustiedotTarkistusRow] =

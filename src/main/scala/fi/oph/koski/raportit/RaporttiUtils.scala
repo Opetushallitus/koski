@@ -1,7 +1,6 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate
-
 import fi.oph.koski.raportointikanta.ROsasuoritusRow
 
 object RaporttiUtils {

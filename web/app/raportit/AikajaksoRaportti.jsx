@@ -8,7 +8,7 @@ import {downloadExcel} from './downloadExcel'
 import { AikajaksoValinta, LyhytKuvaus, RaportinLataus, Vinkit } from './raporttiComponents'
 import { selectFromState } from './raporttiUtils'
 
-export const AikajaksoRaportti = ({stateP, apiEndpoint, shortDescription, dateInputHelp, example}) => {
+export const AikajaksoRaportti = ({stateP, apiEndpoint, shortDescription, dateInputHelp, example, lang}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const submitBus = Bacon.Bus()
@@ -18,7 +18,7 @@ export const AikajaksoRaportti = ({stateP, apiEndpoint, shortDescription, dateIn
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    selectedOrganisaatioP, alkuAtom, loppuAtom, (o, a, l) => o && a && l && (l.valueOf() >= a.valueOf()) && {oppilaitosOid: o.oid, alku: formatISODate(a), loppu: formatISODate(l), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
+    selectedOrganisaatioP, alkuAtom, loppuAtom, (o, a, l) => o && a && l && (l.valueOf() >= a.valueOf()) && {oppilaitosOid: o.oid, alku: formatISODate(a), loppu: formatISODate(l), lang: lang, password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
 
   const downloadExcelE = submitBus.map(downloadExcelP).flatMapLatest(downloadExcel)
 

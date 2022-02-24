@@ -2,6 +2,7 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.KoskiMockUser
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppijamäärätRaporttiRow}
@@ -15,8 +16,9 @@ import java.time.LocalDate.{of => date}
 class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
   private val application = KoskiApplicationForTests
   private val raporttiBuilder = AikuistenPerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2010, 1, 1))(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppijamäärätRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2010, 1, 1), t)(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppijamäärätRaporttiRow])
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()

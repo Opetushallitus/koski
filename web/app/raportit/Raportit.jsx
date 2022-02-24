@@ -398,6 +398,7 @@ function PaallekkaisetOpiskeluoikeudet({ stateP }) {
       apiEndpoint={'/paallekkaisetopiskeluoikeudet'}
       shortDescription={<Text name='paallekkaiset-opiskeluoikeudet-short-description'/>}
       example={<Text name='paallekkaiset-opiskeluoikeudet-example'/>}
+      lang={lang}
     />
   )
 }
@@ -412,6 +413,7 @@ function Opiskelijavuositiedot({ stateP }) {
       apiEndpoint={'/ammatillinenopiskelijavuositiedot'}
       title={titleText}
       shortDescription={descriptionText}
+      lang={lang}
     />
   )
 }
@@ -428,6 +430,7 @@ function SuoritustietojenTarkistus({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
@@ -444,6 +447,7 @@ function AmmatillinenOsittainenSuoritustietojenTarkistus({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
@@ -458,6 +462,7 @@ function MuuAmmatillinenRaportti({ stateP }) {
       apiEndpoint={'/muuammatillinen'}
       title={titleText}
       shortDescription={descriptionText}
+      lang={lang}
     />
   )
 }
@@ -472,6 +477,7 @@ function TOPKSAmmatillinenRaportti({ stateP }) {
       apiEndpoint={'/topksammatillinen'}
       title={titleText}
       shortDescription={descriptionText}
+      lang={lang}
     />
   )
 }
@@ -508,6 +514,7 @@ function Lukioraportti({ stateP }) {
       shortDescription={shortDescriptionText}
       example={exampleText}
       osasuoritusType={osasuoritusTypes.KURSSI}
+      lang={lang}
     />
   )
 }
@@ -525,6 +532,7 @@ function LukioKurssikertyma({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
@@ -655,6 +663,7 @@ function AikuistenPerusopetusRaportti({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
+      lang={lang}
     />
   )
 }
@@ -692,6 +701,7 @@ function AikuistenPerusopetuksenKurssikertymäRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
     />
   )
 }

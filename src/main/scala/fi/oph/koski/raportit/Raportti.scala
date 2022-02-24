@@ -46,8 +46,6 @@ trait RaporttiRequest {
 trait RaporttiAikajaksoltaRequest extends RaporttiRequest {
   def alku: LocalDate
   def loppu: LocalDate
-  def auditlogHakuehto(raportti: String): String =
-    s"raportti=$raportti&oppilaitosOid=$oppilaitosOid&alku=$alku&loppu=$loppu"
 }
 
 case class AikajaksoRaporttiRequest
@@ -56,7 +54,8 @@ case class AikajaksoRaporttiRequest
   downloadToken: Option[String],
   password: String,
   alku: LocalDate,
-  loppu: LocalDate
+  loppu: LocalDate,
+  lang: String
 ) extends RaporttiAikajaksoltaRequest
 
 case class PerusopetuksenVuosiluokkaRequest
@@ -82,7 +81,8 @@ case class AikajaksoRaporttiAikarajauksellaRequest(
   password: String,
   alku: LocalDate,
   loppu: LocalDate,
-  osasuoritustenAikarajaus: Boolean
+  osasuoritustenAikarajaus: Boolean,
+  lang: String
 ) extends RaporttiAikajaksoltaRequest
 
 case class AikuistenPerusopetusRaporttiRequest(
@@ -92,7 +92,8 @@ case class AikuistenPerusopetusRaporttiRequest(
   alku: LocalDate,
   loppu: LocalDate,
   osasuoritustenAikarajaus: Boolean,
-  raportinTyyppi: AikuistenPerusopetusRaporttiType
+  raportinTyyppi: AikuistenPerusopetusRaporttiType,
+  lang: String
 ) extends RaporttiAikajaksoltaRequest
 
 case class RaporttiPäivältäRequest(

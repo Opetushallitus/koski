@@ -1,16 +1,16 @@
 package fi.oph.koski.raportit.aikuistenperusopetus
 
 import java.time.LocalDate
-
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.db.DB
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
-
 import slick.jdbc.GetResult
+
 import scala.concurrent.duration.DurationInt
 
 case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends QueryMethods {
@@ -34,13 +34,13 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     )
   )
 
-  def build(oppilaitosOids: List[String], päivä: LocalDate)(implicit u: KoskiSpecificSession): DataSheet = {
+  def build(oppilaitosOids: List[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
     val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[AikuistenPerusopetuksenOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
-      title = "Oppimäärä",
+      title = t.get("raportti-excel-oppimäärä-sheet-name"),
       rows = rows,
-      columnSettings = columnSettings
+      columnSettings = columnSettings(t)
     )
   }
 
@@ -103,22 +103,22 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     oppilaitosOids
   }
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
-    "oppilaitosNimi" -> Column("Oppilaitos"),
-    "opetuskieli" -> Column("Opetuskieli", comment = Some("Oppilaitokselle merkityt opetuskielet Opintopolun organisaatiopalvelussa.")),
-    "oppilaidenMääräYhteensä" -> Column("Opiskelijoiden määrä yhteensä", comment = Some("\"Läsnä\"-tilaiset aikuisten perusopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
-    "oppilaidenMääräVOS" -> Column("Opiskelijoista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\".")),
-    "oppilaidenMääräMuuKuinVOS" -> Column("Opiskelijoista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\".")),
-    "oppimääränSuorittajiaYhteensä" -> Column("Opiskelijoista aikuisten perusopetuksen oppimäärän suorittajia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena aikuisten perusopetuksen oppimäärä ja/tai alkuvaihe.")),
-    "oppimääränSuorittajiaVOS" -> Column("Perusopetuksen oppimäärän suorittajista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena aikuisten perusopetuksen oppimäärä ja/tai alkuvaihe ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\".")),
-    "oppimääränSuorittajiaMuuKuinVOS" -> Column("Perusopetuksen oppimäärän suorittajista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena aikuisten perusopetuksen oppimäärä ja/tai alkuvaihe ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\".")),
-    "aineopiskelijoitaYhteensä" -> Column("Opiskelijoista aineopiskelijoita", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa suoritetaan aikuisten perusopetuksen aineopintoja.")),
-    "aineopiskelijoitaVOS" -> Column("Aineopiskelijoista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa suoritetaan aikuisten perusopetuksen aineopintoja ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\".")),
-    "aineopiskelijoitaMuuKuinVOS" -> Column("Aineopiskelijoista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"tilaisista opiskeluoikeuksista ne, joissa suoritetaan aikuisten perusopetuksen aineopintoja ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\".")),
-    "vieraskielisiäYhteensä" -> Column("Opiskelijoista vieraskielisiä", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa oppijan äidinkieli on jokin muu kuin suomi, ruotsi, saame, romani tai viittomakieli.")),
-    "vieraskielisiäVOS" -> Column("Opiskelijoista vieraskielisiä - valtionosuusrahoitteiset", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa oppijan äidinkieli on jokin muu kuin suomi, ruotsi, saame, romani tai viittomakieli ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\".")),
-    "vieraskielisiäMuuKuinVOS" -> Column("Opiskelijoista vieraskielisiä - muuta kautta rahoitetut", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa oppijan äidinkieli on jokin muu kuin suomi, ruotsi, saame, romani tai viittomakieli ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\".")),
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "oppilaitosOid" -> Column(t.get("raportti-excel-kolumni-oppilaitosOid")),
+    "oppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+    "opetuskieli" -> Column(t.get("raportti-excel-kolumni-opetuskieli"), comment = Some(t.get("raportti-excel-kolumni-opetuskieli-comment"))),
+    "oppilaidenMääräYhteensä" -> Column(t.get("raportti-excel-kolumni-opiskelijoita"), comment = Some(t.get("raportti-excel-kolumni-opiskelijoita-AikuistenPerusopetus-comment"))),
+    "oppilaidenMääräVOS" -> Column(t.get("raportti-excel-kolumni-oppilaidenMääräVOS"), comment = Some(t.get("raportti-excel-kolumni-oppilaidenMääräVOS-comment"))),
+    "oppilaidenMääräMuuKuinVOS" -> Column(t.get("raportti-excel-kolumni-oppilaidenMääräMuuKuinVOS"), comment = Some(t.get("raportti-excel-kolumni-oppilaidenMääräMuuKuinVOS-comment"))),
+    "oppimääränSuorittajiaYhteensä" -> Column(t.get("raportti-excel-kolumni-oppimääränSuorittajiaYhteensä-AikuistenPerusopetus"), comment = Some(t.get("raportti-excel-kolumni-oppimääränSuorittajiaYhteensä-AikuistenPerusopetus-comment"))),
+    "oppimääränSuorittajiaVOS" -> Column(t.get("raportti-excel-kolumni-oppimääränSuorittajiaVOS-AikuistenPerusopetus"), comment = Some(t.get("raportti-excel-kolumni-oppimääränSuorittajiaVOS-AikuistenPerusopetus-comment"))),
+    "oppimääränSuorittajiaMuuKuinVOS" -> Column(t.get("raportti-excel-kolumni-oppimääränSuorittajiaMuuKuinVOS-AikuistenPerusopetus"), comment = Some(t.get("raportti-excel-kolumni-oppimääränSuorittajiaMuuKuinVOS-AikuistenPerusopetus-comment"))),
+    "aineopiskelijoitaYhteensä" -> Column(t.get("raportti-excel-kolumni-aineopiskelijoitaYhteensä-AikuistenPerusopetus"), comment = Some(t.get("raportti-excel-kolumni-aineopiskelijoitaYhteensä-AikuistenPerusopetus-comment"))),
+    "aineopiskelijoitaVOS" -> Column(t.get("raportti-excel-kolumni-aineopiskelijoitaVOS-AikuistenPerusopetus"), comment = Some(t.get("raportti-excel-kolumni-aineopiskelijoitaVOS-AikuistenPerusopetus-comment"))),
+    "aineopiskelijoitaMuuKuinVOS" -> Column(t.get("raportti-excel-kolumni-aineopiskelijoitaMuuKuinVOS-AikuistenPerusopetus"), comment = Some(t.get("raportti-excel-kolumni-aineopiskelijoitaMuuKuinVOS-AikuistenPerusopetus-comment"))),
+    "vieraskielisiäYhteensä" -> Column(t.get("raportti-excel-kolumni-vieraskielisiä-opiskelijoita"), comment = Some(t.get("raportti-excel-kolumni-vieraskielisiä-opiskelijoita-comment"))),
+    "vieraskielisiäVOS" -> Column(t.get("raportti-excel-kolumni-vieraskielisiäVOS-opiskelijoita"), comment = Some(t.get("raportti-excel-kolumni-vieraskielisiäVOS-opiskelijoita-comment"))),
+    "vieraskielisiäMuuKuinVOS" -> Column(t.get("raportti-excel-kolumni-vieraskielisiäMuuKuinVOS-opiskelijoita"), comment = Some(t.get("raportti-excel-kolumni-vieraskielisiäMuuKuinVOS-opiskelijoita-comment"))),
   )
 }
 

@@ -21,11 +21,11 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
 
   "Raportin lataaminen onnistuu ja tuottaa auditlogin" in {
     AuditLogTester.clearMessages
-    authGet(s"api/raportit/lukiokurssikertymat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2018-01-01&password=salasana") {
+    authGet(s"api/raportit/lukiokurssikertymat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2018-01-01&lang=fi&password=salasana") {
       verifyResponseStatusOk()
       response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukion_kurssikertymat_20180101-20180101.xlsx"""")
       response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiokurssikertymat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2018-01-01")))
+      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiokurssikertymat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2018-01-01&lang=fi")))
     }
   }
 
@@ -178,7 +178,8 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
       downloadToken = None,
       password = "foobar",
       alku = LukioKurssikertymaRaporttiFixtures.raportinAikajaksoAlku,
-      loppu = LukioKurssikertymaRaporttiFixtures.raportinAikajaksoLoppu
+      loppu = LukioKurssikertymaRaporttiFixtures.raportinAikajaksoLoppu,
+      lang = "fi"
     )
 
     new RaportitService(KoskiApplicationForTests).lukioKoulutuksenKurssikertyma(request).sheets
