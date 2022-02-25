@@ -42,8 +42,6 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends K
 }
 
 case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSpecificSession, application: KoskiApplication) extends Logging {
-  val pagination = QueryPagination(50)
-
   val exclusionFilters = List(NotSuorituksenTyyppi(vstvapaatavoitteinenkoulutus))
 
   def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[JValue]] = {
@@ -65,6 +63,7 @@ case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koski
         application.opintopolkuHenkilöFacade.findMasterOppijat(oids)
       }
 
+      // Huomioi: Tämä flatMappäily purkaa (aiemmin turhaan tehdyn) oppijaryhmittelyn.
       val oppijat: Seq[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oppijaHenkilö, opiskeluOikeudet) =>
         opiskeluOikeudet.flatMap { oo =>
           henkilöt.get(oppijaHenkilö.oid) match {
