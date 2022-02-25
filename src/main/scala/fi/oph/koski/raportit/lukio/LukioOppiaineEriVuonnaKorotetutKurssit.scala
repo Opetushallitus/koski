@@ -2,6 +2,7 @@ package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
@@ -10,13 +11,18 @@ import java.sql.ResultSet
 import java.time.LocalDate
 
 object LukioOppiaineEriVuonnaKorotetutKurssit extends DatabaseConverters {
-  val sheetTitle = "Eri vuonna korotetut kurssit"
 
-  def dataSheet(oppilaitosOids: List[String], jaksonAlku: LocalDate, jaksonLoppu: LocalDate, raportointiDatabase: RaportointiDatabase): DataSheet = {
+  def dataSheet(
+    oppilaitosOids: List[String],
+    jaksonAlku: LocalDate,
+    jaksonLoppu: LocalDate,
+    raportointiDatabase: RaportointiDatabase,
+    t: LocalizationReader
+  ): DataSheet = {
     DataSheet(
-      sheetTitle,
+      t.get("raportti-excel-erivuonnakorotetutkurssit-sheet-name"),
       rows = raportointiDatabase.runDbSync(queryOppimaara(oppilaitosOids, jaksonAlku, jaksonLoppu)),
-      columnSettings
+      columnSettings(t)
     )
   }
 
@@ -67,11 +73,11 @@ object LukioOppiaineEriVuonnaKorotetutKurssit extends DatabaseConverters {
     )
   })
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
-    "oppijaOid" -> Column("Oppijan oid"),
-    "koulutusmoduuliKoodiarvo" -> Column("Kurssikoodi"),
-    "koulutusmoduuliNimi" -> Column("Kurssin nimi"),
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
+    "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "koulutusmoduuliKoodiarvo" -> Column(t.get("raportti-excel-kolumni-kurssikoodi")),
+    "koulutusmoduuliNimi" -> Column(t.get("raportti-excel-kolumni-kurssinNimi")),
   )
 }
 

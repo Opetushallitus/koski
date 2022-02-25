@@ -2,6 +2,7 @@ package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
@@ -10,13 +11,18 @@ import java.sql.ResultSet
 import java.time.LocalDate
 
 object LukioOppimaaranKussikertymat extends DatabaseConverters {
-  val sheetTitle = "Oppimaara"
 
-  def dataSheet(oppilaitosOids: List[String], jaksonAlku: LocalDate, jaksonLoppu: LocalDate, raportointiDatabase: RaportointiDatabase): DataSheet = {
+  def dataSheet(
+    oppilaitosOids: List[String],
+    jaksonAlku: LocalDate,
+    jaksonLoppu: LocalDate,
+    raportointiDatabase: RaportointiDatabase,
+    t: LocalizationReader
+  ): DataSheet = {
     DataSheet(
-      sheetTitle,
+      t.get("raportti-excel-oppimäärä-sheet-name"),
       rows = raportointiDatabase.runDbSync(queryOppimaara(oppilaitosOids, jaksonAlku, jaksonLoppu)),
-      columnSettings
+      columnSettings(t)
     )
   }
 
@@ -74,13 +80,13 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
     )
   })
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
-    "oppilaitos" -> Column("Oppilaitos"),
-    "kurssejaYhteensa" -> Column("Kursseja yhteensä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.")),
-    "suoritettujaKursseja" -> Column("Suoritetut kurssit", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja joita ei ole merkitty tunnustetuiksi.")),
-    "tunnustettujaKursseja" -> Column("Tunnustetut kurssit", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään ja jotka on merkitty tunnustetuiksi.")),
-    "tunnustettujaKursseja_rahoituksenPiirissa" -> Column("Tunnustetut kurssit - rahoituksen piirissä", comment = Some("Kaikki sellaiset kurssit, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään, jotka on merkitty tunnustetuiksi ja jotka on merkitty rahoituksen piirissä oleviksi."))
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "oppilaitosOid" -> Column(t.get("raportti-excel-kolumni-oppilaitosOid")),
+    "oppilaitos" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+    "kurssejaYhteensa" -> Column(t.get("raportti-excel-kolumni-kurssejaYhteensa"), comment = Some(t.get("raportti-excel-kolumni-kurssejaYhteensa-comment"))),
+    "suoritettujaKursseja" -> Column(t.get("raportti-excel-kolumni-yhteensäSuoritettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-yhteensäSuoritettujaSuorituksia-lukio-comment"))),
+    "tunnustettujaKursseja" -> Column(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksia-lukio-comment"))),
+    "tunnustettujaKursseja_rahoituksenPiirissa" -> Column(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä"), comment = Some(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä-lukio-comment")))
   )
 }
 

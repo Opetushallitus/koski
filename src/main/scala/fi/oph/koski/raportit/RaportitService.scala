@@ -96,8 +96,11 @@ class RaportitService(application: KoskiApplication) {
 
   def lukioraportti(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
     OppilaitosRaporttiResponse(
-      sheets = LukioRaportti(lukioRepository, t).buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
-      workbookSettings = WorkbookSettings(s"${t.get("raportti-excel-lukio-opiskeluoikeus-title")}_${request.oppilaitosOid}", Some(request.password)),
+      sheets = LukioRaportti(lukioRepository, t)
+        .buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
+      workbookSettings = WorkbookSettings(
+        s"${t.get("raportti-excel-lukio-opiskeluoikeus-title")}_${request.oppilaitosOid}", Some(request.password)
+      ),
       filename = s"${t.get("raportti-excel-lukio-opiskeluoikeus-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
     )
@@ -112,19 +115,22 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def lukioKoulutuksenKurssikertyma(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
+  def lukioKoulutuksenKurssikertyma(
+    request: AikajaksoRaporttiRequest,
+    t: LocalizationReader
+  ): OppilaitosRaporttiResponse = {
     val oppilaitosOidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList
     OppilaitosRaporttiResponse(
       sheets = Seq(
-        LukioOppimaaranKussikertymat.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase),
-        LukioOppiaineenOppimaaranKurssikertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase),
-        LukioMuutaKauttaRahoitetut.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase),
-        LukioRahoitusmuotoEiTiedossa.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase),
-        LukioOppiaineOpiskeluoikeudenUlkopuoliset.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase),
-        LukioOppiaineEriVuonnaKorotetutKurssit.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase)
+        LukioOppimaaranKussikertymat.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        LukioOppiaineenOppimaaranKurssikertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        LukioMuutaKauttaRahoitetut.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        LukioRahoitusmuotoEiTiedossa.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        LukioOppiaineOpiskeluoikeudenUlkopuoliset.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        LukioOppiaineEriVuonnaKorotetutKurssit.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t)
       ),
-      workbookSettings = WorkbookSettings("Kurssikertymat", Some(request.password)),
-      filename = s"lukion_kurssikertymat_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-lukio-kurssikertymät-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-lukio-kurssikertymät-tiedoston-etuliite")}_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken
     )
   }

@@ -3,6 +3,7 @@ package fi.oph.koski.raportit
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.fixture.LukioKurssikertymaRaporttiFixtures
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.{LukioKurssikertymaAineopiskelijaRow, LukioKurssikertymaOppimaaraRow, LukioKurssinRahoitusmuotoRow, LukioMuutaKauttaRahoitetut, LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineEriVuonnaKorotetutKurssitRow, LukioOppiaineOpiskeluoikeudenUlkopuoliset, LukioOppiaineOpiskeluoikeudenUlkopuolisetRow, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, LukioRahoitusmuotoEiTiedossa}
@@ -11,6 +12,8 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
 class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
+
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
@@ -137,37 +140,37 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
   lazy val raportti = loadRaportti
 
   lazy val helsinkiOppimaara = raportti.collectFirst {
-    case d: DataSheet if d.title == LukioOppimaaranKussikertymat.sheetTitle => d.rows.collect {
+    case d: DataSheet if d.title == t.get("raportti-excel-oppimäärä-sheet-name") => d.rows.collect {
       case r: LukioKurssikertymaOppimaaraRow => r
     }
   }.get.find(_.oppilaitos == "Helsingin medialukio").get
 
   lazy val ressunAineopiskelijat = raportti.collectFirst {
-    case d: DataSheet if d.title == LukioOppiaineenOppimaaranKurssikertymat.sheetTitle => d.rows.collect {
+    case d: DataSheet if d.title == t.get("raportti-excel-aineopiskelijat-sheet-name") => d.rows.collect {
       case r: LukioKurssikertymaAineopiskelijaRow => r
     }
   }.get.find(_.oppilaitos == "Ressun lukio").get
 
   lazy val ressunMuutaKauttaRahoitetut: Seq[LukioKurssinRahoitusmuotoRow] = raportti.collectFirst {
-    case d: DataSheet if d.title == LukioMuutaKauttaRahoitetut.sheetTitle => d.rows.collect {
+    case d: DataSheet if d.title == t.get("raportti-excel-muutakauttarah-sheet-name") => d.rows.collect {
       case r: LukioKurssinRahoitusmuotoRow => r
     }
   }.get
 
   lazy val ressunRahoitusmuotoEiTiedossa: Seq[LukioKurssinRahoitusmuotoRow] = raportti.collectFirst {
-    case d: DataSheet if d.title == LukioRahoitusmuotoEiTiedossa.sheetTitle => d.rows.collect {
+    case d: DataSheet if d.title == t.get("raportti-excel-eirahoitusmuotoa-sheet-name") => d.rows.collect {
       case r: LukioKurssinRahoitusmuotoRow => r
     }
   }.get
 
   lazy val ressunOpiskeluoikeudenUlkopuolisetArvionnit: Seq[LukioOppiaineOpiskeluoikeudenUlkopuolisetRow] = raportti.collectFirst {
-    case d: DataSheet if d.title == LukioOppiaineOpiskeluoikeudenUlkopuoliset.sheetTitle => d.rows.collect {
+    case d: DataSheet if d.title == t.get("raportti-excel-opiskeluoikeudenulkop-sheet-name") => d.rows.collect {
       case r: LukioOppiaineOpiskeluoikeudenUlkopuolisetRow => r
     }
   }.get
 
   lazy val ressunOpiskeluoikeudenEriVuonnaArvioidut: Seq[LukioOppiaineEriVuonnaKorotetutKurssitRow] = raportti.collectFirst {
-    case d: DataSheet if d.title == LukioOppiaineEriVuonnaKorotetutKurssit.sheetTitle => d.rows.collect {
+    case d: DataSheet if d.title == t.get("raportti-excel-erivuonnakorotetutkurssit-sheet-name") => d.rows.collect {
       case r: LukioOppiaineEriVuonnaKorotetutKurssitRow => r
     }
   }.get
@@ -182,6 +185,6 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
       lang = "fi"
     )
 
-    new RaportitService(KoskiApplicationForTests).lukioKoulutuksenKurssikertyma(request).sheets
+    new RaportitService(KoskiApplicationForTests).lukioKoulutuksenKurssikertyma(request, t).sheets
   }
 }

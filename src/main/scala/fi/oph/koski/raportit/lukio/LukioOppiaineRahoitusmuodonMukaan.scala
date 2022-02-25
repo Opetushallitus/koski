@@ -2,6 +2,7 @@ package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
@@ -9,33 +10,45 @@ import slick.jdbc.GetResult
 import java.time.LocalDate
 
 object LukioMuutaKauttaRahoitetut {
-  val sheetTitle = "Muuta kautta rah."
 
-  def dataSheet(oppilaitosOids: List[String], jaksonAlku: LocalDate, jaksonLoppu: LocalDate, raportointiDatabase: RaportointiDatabase): DataSheet = {
+  def dataSheet(
+    oppilaitosOids: List[String],
+    jaksonAlku: LocalDate,
+    jaksonLoppu: LocalDate,
+    raportointiDatabase: RaportointiDatabase,
+    t: LocalizationReader
+  ): DataSheet = {
     DataSheet(
-      sheetTitle,
+      t.get("raportti-excel-muutakauttarah-sheet-name"),
       rows = raportointiDatabase.runDbSync(LukioOppiaineRahoitusmuodonMukaan.queryMuutaKauttaRahoitetut(
         oppilaitosOids,
         jaksonAlku,
         jaksonLoppu,
-        Some("6"))),
-      LukioOppiaineRahoitusmuodonMukaan.columnSettings
+        Some("6")
+      )),
+      LukioOppiaineRahoitusmuodonMukaan.columnSettings(t)
     )
   }
 }
 
 object LukioRahoitusmuotoEiTiedossa {
-  val sheetTitle = "Ei rahoitusmuotoa"
 
-  def dataSheet(oppilaitosOids: List[String], jaksonAlku: LocalDate, jaksonLoppu: LocalDate, raportointiDatabase: RaportointiDatabase): DataSheet = {
+  def dataSheet(
+    oppilaitosOids: List[String],
+    jaksonAlku: LocalDate,
+    jaksonLoppu: LocalDate,
+    raportointiDatabase: RaportointiDatabase,
+    t: LocalizationReader
+  ): DataSheet = {
     DataSheet(
-      sheetTitle,
+      t.get("raportti-excel-eirahoitusmuotoa-sheet-name"),
       rows = raportointiDatabase.runDbSync(LukioOppiaineRahoitusmuodonMukaan.queryMuutaKauttaRahoitetut(
         oppilaitosOids,
         jaksonAlku,
         jaksonLoppu,
-        None)),
-      LukioOppiaineRahoitusmuodonMukaan.columnSettings
+        None
+      )),
+      LukioOppiaineRahoitusmuodonMukaan.columnSettings(t)
     )
   }
 }
@@ -101,11 +114,11 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
     )
   })
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
-    "oppijaOid" -> Column("Oppijan oid"),
-    "koulutusmoduuliKoodiarvo" -> Column("Kurssikoodi"),
-    "koulutusmoduuliNimi" -> Column("Kurssin nimi"),
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
+    "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "koulutusmoduuliKoodiarvo" -> Column(t.get("raportti-excel-kolumni-kurssikoodi")),
+    "koulutusmoduuliNimi" -> Column(t.get("raportti-excel-kolumni-kurssinNimi")),
   )
 }
 
