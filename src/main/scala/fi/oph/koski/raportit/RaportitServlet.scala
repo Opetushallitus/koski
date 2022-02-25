@@ -108,8 +108,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   get("/lukiodiaibinternationalopiskelijamaarat") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.lukiokoulutus)
     val r = parseRaporttiPäivältäRequest
+    val t = new LocalizationReader(application.koskiLocalizationRepository, r.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=lukiodiaibinternationalopiskelijamaarat&oppilaitosOid=${r.oppilaitosOid}&paiva=${r.paiva}&lang=${r.lang}")))
-    writeExcel(raportitService.lukioDiaIbInternationalOpiskelijaMaaratRaportti(r))
+    writeExcel(raportitService.lukioDiaIbInternationalOpiskelijaMaaratRaportti(r, t), t)
   }
 
   get("/luvaopiskelijamaarat") {

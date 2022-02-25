@@ -106,11 +106,16 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def lukioDiaIbInternationalOpiskelijaMaaratRaportti(request: RaporttiPäivältäRequest): OppilaitosRaporttiResponse = {
+  def lukioDiaIbInternationalOpiskelijaMaaratRaportti(
+    request: RaporttiPäivältäRequest,
+    t: LocalizationReader
+  ): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
-      sheets = Seq(lukioDiaIbInternationalOpiskelijaMaaratRaportti.build(accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList, request.paiva)),
+      sheets = Seq(lukioDiaIbInternationalOpiskelijaMaaratRaportti
+        .build(accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList, request.paiva, t)
+      ),
       workbookSettings = WorkbookSettings("", Some(request.password)),
-      filename = s"lukiokoulutus_opiskelijamaarat_${request.paiva.toString.replaceAll("-", "")}.xlsx",
+      filename = s"${t.get("raportti-excel-lukio-opiskelijamäärät-tiedoston-etuliite")}_${request.paiva.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken
     )
   }
