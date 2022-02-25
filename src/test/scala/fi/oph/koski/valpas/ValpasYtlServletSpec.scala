@@ -196,13 +196,14 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
       val oppijat = List(
         ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
         ValpasMockOppijat.maksuttomuuttaPidennetty,
-      )
+      ).sortBy(_.oid)
 
       doQuery(oidit = Some(oppijat.map(_.oid))) {
         verifyResponseStatusOk()
         AuditLogTester
           .getLogMessages
           .takeRight(oppijat.size)
+          .sorted
           .zip(oppijat)
           .foreach { msg_oppija =>
             AuditLogTester.verifyAuditLogMessage(
