@@ -158,7 +158,7 @@ case class AikuistenPerusopetusRaportti(
       )
 
       DynamicDataSheet(
-        title = t.get("raportti-excel-aikuistenperusopetus-oppiaineet-sheet-name"),
+        title = t.get("raportti-excel-oppiaineet-sheet-name"),
         columnSettings = columnSettings,
         rows = rows
       )

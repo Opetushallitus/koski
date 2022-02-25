@@ -94,7 +94,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val parsedRequest = parseAikajaksoRaporttiAikarajauksellaRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=lukionsuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&lang=${parsedRequest.lang}")))
-    writeExcel(raportitService.lukioraportti(parsedRequest, t))
+    writeExcel(raportitService.lukioraportti(parsedRequest, t), t)
   }
 
   get("/lukiokurssikertymat") {
