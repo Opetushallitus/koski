@@ -1864,6 +1864,8 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
     ))(kuntaSession)
 
     val expectedKeskeytys = ValpasOppivelvollisuudenKeskeytys(
+      id = result.toOption.get.id,
+      tekijäOrganisaatioOid = tekijäOrganisaatioOid,
       alku = alku,
       loppu = None,
       voimassa = true,
@@ -1894,6 +1896,8 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
     ))(kuntaSession)
 
     val expectedKeskeytys = ValpasOppivelvollisuudenKeskeytys(
+      id = result.toOption.get.id,
+      tekijäOrganisaatioOid = tekijäOrganisaatioOid,
       alku = alku,
       loppu = Some(loppu),
       voimassa = true,

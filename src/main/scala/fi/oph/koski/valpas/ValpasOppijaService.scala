@@ -10,6 +10,8 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{LocalizedString, Organisaatio}
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
+import fi.oph.koski.util.UuidUtils
+import fi.oph.koski.valpas.db.ValpasSchema
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.kansalainen.{KansalainenOppijaIlmanTietoja, KansalainenOppijatiedot, KansalaisnäkymänTiedot}
@@ -18,6 +20,8 @@ import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
+
+import java.util.UUID
 
 case class OppijaHakutilanteillaLaajatTiedot(
   oppija: ValpasOppijaLaajatTiedot,
@@ -462,6 +466,40 @@ class ValpasOppijaService(
           .toRight(ValpasErrorCategory.internalError("Oppivelvollisuuden keskeytyksen lisääminen epäonnistui"))
       )
   }
+
+  def updateOppivelvollisuudenKeskeytys
+    (muutos: OppivelvollisuudenKeskeytyksenMuutos)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, (ValpasSchema.OppivelvollisuudenKeskeytysRow, ValpasOppivelvollisuudenKeskeytys)] = {
+    UuidUtils.optionFromString(muutos.id)
+      .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
+      .flatMap(uuid => ovKeskeytysService.getLaajatTiedot(uuid).toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()))
+      .flatMap(keskeytys => {
+      accessResolver
+        .assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
+        .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid))
+        .flatMap(accessResolver.withOppijaAccess(_))
+        .flatMap(_ => ovKeskeytysService.update(muutos))
+        .map(_ => (keskeytys, ovKeskeytysService.getSuppeatTiedot(UUID.fromString(muutos.id)).get))
+    })
+  }
+
+  def deleteOppivelvollisuudenKeskeytys
+    (uuid: UUID)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, (ValpasSchema.OppivelvollisuudenKeskeytysRow, ValpasOppivelvollisuudenKeskeytys)] = {
+    ovKeskeytysService.getLaajatTiedot(uuid)
+      .toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
+      .flatMap(keskeytys => {
+        accessResolver
+          .assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
+          .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid))
+          .flatMap(accessResolver.withOppijaAccess(_))
+          .flatMap(_ => ovKeskeytysService.delete(uuid))
+          .map(k => (keskeytys, ovKeskeytysService.getSuppeatTiedot(UUID.fromString(k.id)).get))
+      })
+  }
+
 
   private def asValpasOppijaLaajatTiedot(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     validatingAndResolvingExtractor
