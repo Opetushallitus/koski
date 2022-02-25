@@ -64,7 +64,7 @@ class AuditLogService(app: KoskiApplication) extends Logging {
       .map(name => Organisaatio(oid, name))
       .orElse(isOpetushallitus(oid))
       .toRight(KoskiErrorCategory.internalError())
-    nimi.left.foreach(_ => logger.error(s"AuditLogissa olevaa organisaatiota $oid ei löytynyt organisaatiopalvelusta"))
+    nimi.left.foreach(_ => logger.error(s"AuditLogissa olevaa organisaatiota $oid ei löytynyt organisaatiopalvelusta. Ks. oletettava syy TOR-1050."))
     nimi
   }
 
