@@ -19,6 +19,7 @@ import org.eclipse.jetty.servlet.{ServletContextHandler, ServletHolder}
 import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
+import fi.oph.koski.util.ChainingSyntax._
 
 object JettyLauncher extends App with Logging {
   LogConfiguration.configureLogging()
@@ -26,7 +27,20 @@ object JettyLauncher extends App with Logging {
   private val globalPort = System.getProperty("koski.port", "7021").toInt
 
   private val config: Config = if (Environment.usesAwsAppConfig) {
-    ConfigFactory.load(AppConfig.createConfig)
+    logger.info("Ladataan konfiguraatio...")
+    try {
+      AppConfig
+        .loadConfig
+        .map(ConfigFactory.load)
+        .getOrElse {
+          throw new RuntimeException("Konfiguraatiota ei saatu ladattua")
+        }
+    } catch {
+      case e: Any => {
+        logger.error(s"Konfiguraation lataus epäonnistui: ${e.getMessage}")
+        throw e
+      }
+    }
   } else {
     ConfigFactory.load
   }
