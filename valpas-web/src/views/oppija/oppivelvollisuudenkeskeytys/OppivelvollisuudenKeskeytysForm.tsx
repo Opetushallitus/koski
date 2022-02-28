@@ -1,93 +1,43 @@
 import bem from "bem-ts"
 import { isNonEmpty } from "fp-ts/lib/Array"
 import React, { useCallback, useState } from "react"
-import { createOppivelvollisuudenKeskeytys } from "../../api/api"
-import { ApiError } from "../../api/apiFetch"
-import { useApiMethod, useOnApiSuccess } from "../../api/apiHooks"
-import { isError } from "../../api/apiUtils"
-import { RaisedButton } from "../../components/buttons/RaisedButton"
-import { Modal } from "../../components/containers/Modal"
-import { LabeledCheckbox } from "../../components/forms/Checkbox"
-import { DatePicker } from "../../components/forms/DatePicker"
+import { ApiError } from "../../../api/apiFetch"
+import { RaisedButton } from "../../../components/buttons/RaisedButton"
+import { LabeledCheckbox } from "../../../components/forms/Checkbox"
+import { DatePicker } from "../../../components/forms/DatePicker"
 import {
   DateRange,
   DateRangePicker,
-} from "../../components/forms/DateRangePicker"
+} from "../../../components/forms/DateRangePicker"
 import {
   Dropdown,
   organisaatiotToOptions,
-} from "../../components/forms/Dropdown"
-import { RadioButton } from "../../components/forms/RadioButton"
-import { ApiErrors } from "../../components/typography/error"
-import { SecondaryHeading } from "../../components/typography/headings"
-import { T, t } from "../../i18n/i18n"
-import {
-  kuntavalvontaAllowed,
-  useOrganisaatiotOfRole,
-} from "../../state/accessRights"
-import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
-import { Organisaatio } from "../../state/apitypes/organisaatiot"
-import { ISODate, Oid } from "../../state/common"
-import { today } from "../../utils/date"
-import "./OppivelvollisuudenKeskeytysModal.less"
+} from "../../../components/forms/Dropdown"
+import { RadioButton } from "../../../components/forms/RadioButton"
+import { ApiErrors } from "../../../components/typography/error"
+import { T, t } from "../../../i18n/i18n"
+import { Organisaatio } from "../../../state/apitypes/organisaatiot"
+import { ISODate, Oid } from "../../../state/common"
+import { today } from "../../../utils/date"
+import "./OppivelvollisuudenKeskeytys.less"
 
 const b = bem("ovkeskeytys")
 
-export type OppivelvollisuudenKeskeytysModalProps = {
-  henkilö: HenkilöLaajatTiedot
-  onClose: () => void
-  onSubmit: () => void
-}
-
-export const OppivelvollisuudenKeskeytysModal = (
-  props: OppivelvollisuudenKeskeytysModalProps
-) => {
-  const organisaatiot = useOrganisaatiotOfRole(kuntavalvontaAllowed)
-  const create = useApiMethod(createOppivelvollisuudenKeskeytys)
-  const submit = useCallback(
-    (form: OppivelvollisuudenKeskeytysFormValues) => {
-      create.call({
-        ...form,
-        oppijaOid: props.henkilö.oid,
-      })
-    },
-    [create, props.henkilö.oid]
-  )
-
-  useOnApiSuccess(create, props.onSubmit)
-
-  return (
-    <Modal title={t("ovkeskeytys__otsikko")} onClose={props.onClose}>
-      <SecondaryHeading>
-        {props.henkilö.sukunimi} {props.henkilö.etunimet}
-        {props.henkilö.hetu && ` (${props.henkilö.hetu})`}
-      </SecondaryHeading>
-      <OppivelvollisuudenKeskeytysForm
-        organisaatiot={organisaatiot}
-        onSubmit={submit}
-        errors={isError(create) ? create.errors : []}
-      />
-    </Modal>
-  )
-}
-
-// Lomake
-
-type OppivelvollisuudenKeskeytysFormProps = {
+export type OppivelvollisuudenKeskeytysFormProps = {
   organisaatiot: Organisaatio[]
   onSubmit: (aikaväli: OppivelvollisuudenKeskeytysFormValues) => void
   errors: ApiError[]
 }
 
-type OppivelvollisuudenKeskeytysFormValues = {
+export type OppivelvollisuudenKeskeytysFormValues = {
   alku: ISODate
   loppu?: ISODate
   tekijäOrganisaatioOid: Oid
 }
 
-type Aikavalinta = "määräaikainen" | "toistaiseksi"
+export type Aikavalinta = "määräaikainen" | "toistaiseksi"
 
-const OppivelvollisuudenKeskeytysForm = (
+export const OppivelvollisuudenKeskeytysForm = (
   props: OppivelvollisuudenKeskeytysFormProps
 ) => {
   const [aikavalinta, setAikavalinta] = useState<Aikavalinta>("määräaikainen")

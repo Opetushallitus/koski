@@ -21,7 +21,7 @@ import { ISODate } from "../../state/common"
 import { formatDate, formatNullableDate } from "../../utils/date"
 import { Ilmoituslomake } from "../../views/ilmoituslomake/Ilmoituslomake"
 import "./OppijaView.less"
-import { OppivelvollisuudenKeskeytysModal } from "./OppivelvollisuudenKeskeytysModal"
+import { OppivelvollisuudenKeskeytyksenLisäysModal } from "./oppivelvollisuudenkeskeytys/OppivelvollisuudenKeskeytyksenLisäysModal"
 
 const b = bem("oppijaview")
 
@@ -81,7 +81,7 @@ export const OppijanOppivelvollisuustiedot = (
               </RaisedButton>
 
               {keskeytysModalVisible && (
-                <OppivelvollisuudenKeskeytysModal
+                <OppivelvollisuudenKeskeytyksenLisäysModal
                   henkilö={props.henkilö}
                   onClose={() => setKeskeytysModalVisible(false)}
                   onSubmit={() => window.location.reload()}
