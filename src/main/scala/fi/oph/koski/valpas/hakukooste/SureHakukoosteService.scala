@@ -12,7 +12,7 @@ import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 import org.json4s.JValue
 
-import scala.concurrent.duration.DurationInt
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 class SureHakukoosteService(
   config: Config,
@@ -28,10 +28,18 @@ class SureHakukoosteService(
   private val http = {
     // Suoritusterkisteriin POST-metodilla tehtävät kyselyt ovat oikeasti idempotentteja,
     // joten niiden uudelleenyrittäminen on ok: siksi unsafeRetryingClient.
+
+    // val (connectTimeout, headerTimeout) = (totalTimeout / 3, totalTimeout / 3 + 1.second)
+    // Kokeilu saada Valpas tuottamaan vähän vähemmän virheitä.
+    val (connectTimeout, headerTimeout) = totalTimeout match {
+      case t if t >= 4.seconds => (totalTimeout - 3.seconds, totalTimeout - 2.seconds)
+      case _ => (1.second, 2.seconds)
+    }
+
     val client = unsafeRetryingClient(
       baseUrl, clientBuilder => clientBuilder
-        .withConnectTimeout(totalTimeout / 3)
-        .withResponseHeaderTimeout(totalTimeout / 3 + 1.second)
+        .withConnectTimeout(connectTimeout)
+        .withResponseHeaderTimeout(headerTimeout)
         .withRequestTimeout(totalTimeout)
     )
 
