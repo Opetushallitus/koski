@@ -5,8 +5,8 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
-import fi.oph.koski.raportit.aikuistenperusopetus.{AikuistenPerusopetuksenAineopiskelijoidenKurssikertymät, AikuistenPerusopetuksenEiRahoitustietoaKurssit, AikuistenPerusopetuksenEriVuonnaKorotetutKurssit, AikuistenPerusopetuksenMuutaKauttaRahoitetutKurssit, AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit, AikuistenPerusopetuksenOppijamäärätRaportti, AikuistenPerusopetuksenOppimääränKurssikertymät, AikuistenPerusopetusRaportti, AikuistenPerusopetusRaporttiRepository}
-import fi.oph.koski.raportit.lukio.{LukioDiaIbInternationalOpiskelijamaaratRaportti, LukioMuutaKauttaRahoitetut, LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineOpiskeluoikeudenUlkopuoliset, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, LukioRahoitusmuotoEiTiedossa, LukioRaportitRepository, LukioRaportti, LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti}
+import fi.oph.koski.raportit.aikuistenperusopetus._
+import fi.oph.koski.raportit.lukio._
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 
@@ -34,14 +34,17 @@ class RaportitService(application: KoskiApplication) {
 
   def viimeisinPäivitys = raportointiDatabase.status.startedTime.get.toLocalDateTime
 
-  def paallekkaisetOpiskeluoikeudet(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
+  def paallekkaisetOpiskeluoikeudet(
+    request: AikajaksoRaporttiRequest,
+    t: LocalizationReader
+  ): OppilaitosRaporttiResponse = {
     val oidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toSeq
     OppilaitosRaporttiResponse(
       sheets = Seq(
-        PaallekkaisetOpiskeluoikeudet.datasheet(oidit, request.alku, request.loppu, raportointiDatabase)
+        PaallekkaisetOpiskeluoikeudet.datasheet(oidit, request.alku, request.loppu, raportointiDatabase)(t)
       ),
       workbookSettings = WorkbookSettings("", Some(request.password)),
-      filename = s"paallekkaiset_opiskeluoikeudet_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      filename = s"${t.get("raportti-excel-paallekkaiset-opiskeluoikeudet-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
     )
   }

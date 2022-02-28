@@ -328,6 +328,6 @@
   "kansalainen_etusivu_kuvaus": "Valpas koostaa yhteen tietoa Opintopolun muista palveluista ja näyttää tietoa oppivelvollisuuden suorittamisesta. Palvelussa ovat tiedot oppijan oppivelvollisuudesta, opiskeluoikeuksista ja koulutuksen maksuttomuudesta, haku- ja valintahistoria, yhteystiedot sekä tiedot viranomaisten välisistä vastuuilmoituksista ja oppivelvollisuuden suorittamisen keskeyttämisestä. Tiedot ovat Valpas- palvelussa turvallisesti koostettuna ja kansalaiset voivat tarkastella tietojaan.",
   "kansalainen_etusivu_tietojen_käyttö": "Lisäksi tietoja voidaan jakaa niitä toiminnassaan tarvitseville viranomaisille, kuten esimerkiksi koulutuksen järjestäjille, kunnille ja Kelalle.\nOma Opintopolku-palvelussa pystytään näyttämään tiedot oppivelvollisuudesta pääteltynä oppijan iästä ja suoritetuista tukinnoista sekä niiden ajankohdista. Tiedot oppijan opiskeluoikeuksista ja koulutuksen maksuttomuudesta tulevat KOSKI-palvelusta. Haku- ja valintahistoria perustuvat haku- ja valintapalvelusta saataviin valtakunnallisten yhteishakujen tietoihin. Oppijan yhteystiedot tulevat valtakunnallisten yhteishakujen hakulomakkeilta ja Digi- ja väestötietoviraston tiedoista. Tiedot viranomaisten välisistä vastuuilmoituksista ja oppivelvollisuuden suorittamisen keskeyttämisestä on voitu kirjata oppivelvolliselle elokuusta 2021 alkaen Valpas-palvelussa. ",
   "closebutton_aria_label": "Sulje",
-  "excel-export-default-value-kyllä": "\"kyllä\"",
-  "excel-export-default-value-ei": "\"ei\""
+  "excel-export-default-value-kyllä": "kyllä",
+  "excel-export-default-value-ei": "ei"
 }

@@ -52,9 +52,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
 
   get("/paallekkaisetopiskeluoikeudet") {
     val req = parseAikajaksoRaporttiRequest
+    val t = new LocalizationReader(application.koskiLocalizationRepository, req.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=paallekkaisetopiskeluoikeudet&oppilaitosOid=${req.oppilaitosOid}&alku=${req.alku}&loppu=${req.loppu}&lang=${req.lang}")))
-
-    writeExcel(raportitService.paallekkaisetOpiskeluoikeudet(req))
+    writeExcel(raportitService.paallekkaisetOpiskeluoikeudet(req, t), t)
   }
 
   get("/ammatillinenopiskelijavuositiedot") {
@@ -86,7 +86,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val parsedRequest = parseVuosiluokkaRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=perusopetuksenvuosiluokka&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&vuosiluokka=${parsedRequest.vuosiluokka}&lang=${parsedRequest.lang}")))
-    writeExcel(raportitService.perusopetuksenVuosiluokka(parsedRequest, t))
+    writeExcel(raportitService.perusopetuksenVuosiluokka(parsedRequest, t), t)
   }
 
   get("/lukionsuoritustietojentarkistus") {
@@ -168,7 +168,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.esiopetus)
     val parsedRequest = parseRaporttiPäivältäRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
-
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.esiopetuksenOppijamäärät(parsedRequest, t), t)
   }
@@ -177,7 +176,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.aikuistenperusopetus)
     val parsedRequest = parseRaporttiPäivältäRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
-
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.aikuistenperusopetuksenOppijamäärät(parsedRequest, t), t)
   }
@@ -186,7 +184,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.aikuistenperusopetus)
     val parsedRequest = parseAikajaksoRaporttiRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
-
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=aikuistenperusopetuksenkurssikertymaraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.aikuistenperusopetuksenKurssikertymä(parsedRequest, t), t)
   }
@@ -195,7 +192,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetus)
     val parsedRequest = parseRaporttiPäivältäRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
-
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=perusopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.perusopetuksenOppijamäärät(parsedRequest, t), t)
   }
@@ -204,7 +200,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus)
     val parsedRequest = parseRaporttiPäivältäRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
-
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=perusopetuksenlisaopetuksenoppijamaaratraportti&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&lang=${parsedRequest.lang}")))
     writeExcel(raportitService.perusopetuksenLisäopetuksenOppijamäärät(parsedRequest, t), t)
   }
@@ -215,8 +210,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     }
   }
 
-  //TODO: poista default LocalizationReader kun lokalisaatio on toteutettu jokaiseen endpointiin
-  private def writeExcel(raportti: OppilaitosRaporttiResponse, t: LocalizationReader = new LocalizationReader(application.koskiLocalizationRepository, "fi")) = {
+  private def writeExcel(raportti: OppilaitosRaporttiResponse, t: LocalizationReader) = {
     contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename}"""")
     raportti.downloadToken.foreach { t => response.addCookie(Cookie("koskiDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }

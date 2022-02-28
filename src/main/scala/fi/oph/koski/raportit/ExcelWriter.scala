@@ -229,9 +229,11 @@ object ExcelWriter {
     val floatStyle = wb.createCellStyle()
     floatStyle.setDataFormat(wb.getCreationHelper.createDataFormat().getFormat("#.0"))
 
+    val quot = "\""
     val booleanStyle = wb.createCellStyle()
     booleanStyle.setDataFormat(wb.getCreationHelper.createDataFormat()
-      .getFormat(s"${t.trueText};;${t.falseText};"))
+      .getFormat(s"$quot${t.trueText}$quot;;$quot${t.falseText}$quot;")
+    )
     booleanStyle.setAlignment(HorizontalAlignment.LEFT)
 
     (data: Any, cell: SXSSFCell) => setDataCellValue(data, cell, textStyle, dateStyle, floatStyle, booleanStyle)
