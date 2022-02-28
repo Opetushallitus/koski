@@ -1,3 +1,5 @@
+import { flatten } from "fp-ts/lib/Array"
+import { nonNull } from "../../src/utils/arrays"
 import {
   contentEventuallyEquals,
   expectElementNotVisible,
@@ -32,7 +34,7 @@ const rivi = (label: string, value?: string) =>
 
 export const oppivelvollisuustiedot = (p: {
   opiskelutilanne: string
-  oppivelvollisuus: string
+  oppivelvollisuus?: string
   oppivelvollisuudenKeskeytykset?: string[]
   maksuttomuusoikeus: string
   kuntailmoitusBtn?: true
@@ -40,14 +42,28 @@ export const oppivelvollisuustiedot = (p: {
 }) =>
   [
     ...rivi("Opiskelutilanne", p.opiskelutilanne),
-    ...rivi("Oppivelvollisuus", p.oppivelvollisuus),
-    ...(p.oppivelvollisuudenKeskeytykset || []).map((d) => `Keskeytetty ${d}`),
+    ...rivi(
+      "Oppivelvollisuus",
+      [
+        p.oppivelvollisuus,
+        ...flatten(
+          (p.oppivelvollisuudenKeskeytykset || []).map((d) => [
+            `Keskeytetty ${d}`,
+            p.oppivelvollisuudenKeskeytysBtn ? "mode_edit" : null,
+          ])
+        ),
+      ]
+        .filter(nonNull)
+        .join("\n")
+    ),
     ...rivi("Oikeus opintojen maksuttomuuteen", p.maksuttomuusoikeus),
     ...(p.oppivelvollisuudenKeskeytysBtn ? ["Keskeytä oppivelvollisuus"] : []),
     ...(p.kuntailmoitusBtn
       ? ["Tee ilmoitus valvontavastuusta", "info_outline"]
       : []),
-  ].join("\n")
+  ]
+    .filter(nonNull)
+    .join("\n")
 
 export const historiaOpintoOikeus = (p: {
   otsikko: string

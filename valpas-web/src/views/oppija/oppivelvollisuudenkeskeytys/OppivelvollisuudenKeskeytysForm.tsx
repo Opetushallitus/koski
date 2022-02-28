@@ -2,6 +2,7 @@ import bem from "bem-ts"
 import { isNonEmpty } from "fp-ts/lib/Array"
 import React, { useCallback, useState } from "react"
 import { ApiError } from "../../../api/apiFetch"
+import { ButtonGroup } from "../../../components/buttons/ButtonGroup"
 import { RaisedButton } from "../../../components/buttons/RaisedButton"
 import { LabeledCheckbox } from "../../../components/forms/Checkbox"
 import { DatePicker } from "../../../components/forms/DatePicker"
@@ -27,6 +28,8 @@ export type OppivelvollisuudenKeskeytysFormProps = {
   organisaatiot: Organisaatio[]
   onSubmit: (aikaväli: OppivelvollisuudenKeskeytysFormValues) => void
   errors: ApiError[]
+  muokattavaKeskeytys?: OppivelvollisuudenKeskeytysFormValues
+  onDelete?: () => void
 }
 
 export type OppivelvollisuudenKeskeytysFormValues = {
@@ -40,11 +43,19 @@ export type Aikavalinta = "määräaikainen" | "toistaiseksi"
 export const OppivelvollisuudenKeskeytysForm = (
   props: OppivelvollisuudenKeskeytysFormProps
 ) => {
-  const [aikavalinta, setAikavalinta] = useState<Aikavalinta>("määräaikainen")
+  const [aikavalinta, setAikavalinta] = useState<Aikavalinta>(
+    props.muokattavaKeskeytys && props.muokattavaKeskeytys.loppu === undefined
+      ? "toistaiseksi"
+      : "määräaikainen"
+  )
   const [toistaiseksiVahvistettu, setToistaiseksiVahvistettu] = useState(false)
-  const [dateRange, setDateRange] = useState<DateRange>([today(), null])
+  const [dateRange, setDateRange] = useState<DateRange>([
+    props.muokattavaKeskeytys?.alku || today(),
+    props.muokattavaKeskeytys?.loppu || null,
+  ])
   const [organisaatio, setOrganisaatio] = useState<Oid | undefined>(
-    props.organisaatiot[0]?.oid
+    props.muokattavaKeskeytys?.tekijäOrganisaatioOid ||
+      props.organisaatiot[0]?.oid
   )
 
   const määräaikainenSelected = aikavalinta === "määräaikainen"
@@ -95,6 +106,7 @@ export const OppivelvollisuudenKeskeytysForm = (
           value={organisaatio}
           onChange={setOrganisaatio}
           testId="organisaatio"
+          disabled={Boolean(props.muokattavaKeskeytys)}
         />
       ) : null}
 
@@ -131,21 +143,42 @@ export const OppivelvollisuudenKeskeytysForm = (
 
       {isNonEmpty(props.errors) && <ApiErrors errors={props.errors} />}
 
-      <RaisedButton
-        id="ovkeskeytys-submit"
-        className={b("submit")}
-        onClick={submit}
-        disabled={!isOk}
-      >
-        <T id="ovkeskeytys__keskeytä_oppivelvollisuus_nappi" />
-      </RaisedButton>
+      {props.muokattavaKeskeytys ? (
+        <ButtonGroup>
+          <RaisedButton
+            id="ovkeskeytys-submit-edit"
+            className={b("submit")}
+            onClick={submit}
+            disabled={!isOk}
+          >
+            <T id="ovkeskeytys__tallenna_btn" />
+          </RaisedButton>
+          <RaisedButton
+            id="ovkeskeytys-delete"
+            hierarchy="danger"
+            className={b("delete")}
+            onClick={props.onDelete}
+          >
+            <T id="ovkeskeytys__poista_btn" />
+          </RaisedButton>
+        </ButtonGroup>
+      ) : (
+        <RaisedButton
+          id="ovkeskeytys-submit"
+          className={b("submit")}
+          onClick={submit}
+          disabled={!isOk}
+        >
+          <T id="ovkeskeytys__keskeytä_oppivelvollisuus_nappi" />
+        </RaisedButton>
+      )}
     </section>
   )
 }
 
 type OppivelvollisuudenKeskeytysOptionProps = {
   selected: boolean
-  onSelect: () => void
+  onSelect?: () => void
   label: string
   children: React.ReactNode
 }
@@ -156,7 +189,7 @@ const OppivelvollisuudenKeskeytysOption = (
   <div className={b("option")}>
     <RadioButton
       selected={props.selected}
-      onChange={(checked) => checked && props.onSelect()}
+      onChange={(checked) => checked && props.onSelect?.()}
     >
       {props.label}
     </RadioButton>

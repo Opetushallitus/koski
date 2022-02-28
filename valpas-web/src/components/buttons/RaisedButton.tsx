@@ -12,7 +12,7 @@ export type RaisedButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
   disabled?: DisableState
 }
 
-export type ButtonHierarchy = "primary" | "secondary"
+export type ButtonHierarchy = "primary" | "secondary" | "danger"
 
 export const RaisedButton = (props: RaisedButtonProps) => {
   const { children, disabled, onClick, className, ...rest } = props

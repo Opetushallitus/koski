@@ -848,9 +848,9 @@ describe("Oppijakohtainen näkymä", () => {
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",
-        oppivelvollisuus: `Keskeytetty toistaiseksi ${formatDate(
-          today()
-        )} alkaen`,
+        oppivelvollisuudenKeskeytykset: [
+          `toistaiseksi ${formatDate(today())} alkaen`,
+        ],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
@@ -995,18 +995,16 @@ describe("Oppijakohtainen näkymä", () => {
 
   it("Näyttää preIB oppijan tiedot", async () => {
     await loginAs(preIBdOppijaPath, "valpas-monta", true)
-    await mainHeadingEquals(
-      "SuorittaaPreIB Valpas (190704A574E)"
-    )
+    await mainHeadingEquals("SuorittaaPreIB Valpas (190704A574E)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000135")
     await opiskeluhistoriaEquals(
       merge(
         historiaOpintoOikeus({
-            otsikko: "IB 2021 –",
-            tila: "Läsnä",
-            maksuttomuus: ["1.6.2021– maksuton"],
-            toimipiste: "Jyväskylän normaalikoulu",
-            alkamispäivä: "1.6.2021"
+          otsikko: "IB 2021 –",
+          tila: "Läsnä",
+          maksuttomuus: ["1.6.2021– maksuton"],
+          toimipiste: "Jyväskylän normaalikoulu",
+          alkamispäivä: "1.6.2021",
         }),
         historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 – 2021",
