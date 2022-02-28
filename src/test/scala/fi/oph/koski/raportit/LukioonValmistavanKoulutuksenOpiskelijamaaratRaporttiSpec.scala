@@ -3,6 +3,7 @@ package fi.oph.koski.raportit
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.fixture.LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow
@@ -11,6 +12,8 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
 class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
+
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
@@ -77,7 +80,7 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeS
       lang = "fi"
     )
     new RaportitService(KoskiApplicationForTests)
-      .lukioonValmistavanKoulutuksenOpiskelijaMaaratRaportti(request)
+      .lukioonValmistavanKoulutuksenOpiskelijaMaaratRaportti(request, t)
       .sheets.collectFirst { case d: DataSheet => d.rows.collect {
         case r: LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiRow => r
     }}.get

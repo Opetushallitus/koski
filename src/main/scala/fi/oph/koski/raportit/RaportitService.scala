@@ -140,12 +140,17 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def lukioonValmistavanKoulutuksenOpiskelijaMaaratRaportti(request: RaporttiPäivältäRequest): OppilaitosRaporttiResponse = {
+  def lukioonValmistavanKoulutuksenOpiskelijaMaaratRaportti(
+    request: RaporttiPäivältäRequest,
+    t: LocalizationReader
+  ): OppilaitosRaporttiResponse = {
     val oidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList
     OppilaitosRaporttiResponse(
-      sheets = Seq(LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti.dataSheet(oidit, request.paiva, raportointiDatabase)),
+      sheets = Seq(
+        LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti.dataSheet(oidit, request.paiva, raportointiDatabase, t)
+      ),
       workbookSettings = WorkbookSettings("", Some(request.password)),
-      filename = s"lukioon_valmistavan_koulutuksen_opiskelijamaarat_${request.paiva.toString.replaceAll("-", "")}.xlsx",
+      filename = s"${t.get("raportti-excel-luva-opiskelijamäärät-tiedoston-etuliite")}_${request.paiva.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken
     )
   }

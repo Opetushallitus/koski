@@ -241,6 +241,29 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
         YleissivistäväUtils.lengthInDaysInDateRange(Aikajakso(date(2011, 1, 1), Some(date(2012, 1, 1))), date(2010, 6, 6), date(2013, 1, 1)) shouldEqual (366)
       }
     }
+
+    "Raportin sisältö on käännetty kielivalinnan mukaan" - {
+
+      lazy val tSv: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "sv")
+      lazy val titleAndRowsWithColumnsSv = LukioRaportti(repository, tSv)
+        .buildRaportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1), osasuoritustenAikarajaus = false)
+        .map(s => (s.title, zipRowsWithColumTitles(s)))
+      lazy val kurssitNimetSv = titleAndRowsWithColumnsSv.tail.map(_._1)
+
+      "ruotsiksi soveltuvin osin" in {
+        kurssitNimetSv should not contain ("AI v Suomen kieli ja kirjallisuus")
+        kurssitNimetSv should not contain ("A1 v Englanti")
+        kurssitNimetSv should not contain ("B1 v Ruotsi")
+        kurssitNimetSv should not contain ("MA v Matematiikka, pitkä oppimäärä")
+        kurssitNimetSv should not contain ("OA v Oman äidinkielen opinnot")
+
+        kurssitNimetSv should contain ("AI v Finska och litteratur")
+        kurssitNimetSv should contain ("A1 v Engelska")
+        kurssitNimetSv should contain ("B1 v Svenska")
+        kurssitNimetSv should contain ("MA v Matematik, lång lärokurs")
+        kurssitNimetSv should contain ("OA v Studier i det egna modersmålet")
+      }
+    }
   }
 
   private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean) = {
