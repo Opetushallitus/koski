@@ -12,7 +12,7 @@ import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.UuidUtils
 import fi.oph.koski.valpas.db.ValpasSchema
-import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
+import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow, OppivelvollisuudenKeskeytyshistoriaRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
 import fi.oph.koski.valpas.kansalainen.{KansalainenOppijaIlmanTietoja, KansalainenOppijatiedot, KansalaisnäkymänTiedot}
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
@@ -500,6 +500,18 @@ class ValpasOppijaService(
       })
   }
 
+  def getOppivelvollisuudenKeskeytyksenMuutoshistoria
+    (uuid: UUID)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[OppivelvollisuudenKeskeytyshistoriaRow]] = {
+    val ovKeskeytyshistoria = ovKeskeytysService.getMuutoshistoria(uuid)
+    ovKeskeytyshistoria
+      .headOption
+      .toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
+      .map(_.oppijaOid)
+      .flatMap(getOppijaLaajatTiedot) // Tarkasta oikeus katsoa oppijan tietoja getOppijaLaajatTiedot avulla
+      .map(_ => ovKeskeytyshistoria)
+  }
 
   private def asValpasOppijaLaajatTiedot(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     validatingAndResolvingExtractor

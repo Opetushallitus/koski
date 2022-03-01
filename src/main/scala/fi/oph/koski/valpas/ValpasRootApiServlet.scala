@@ -160,7 +160,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
       .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
       .flatMap(oppijaLaajatTiedotService.deleteOppivelvollisuudenKeskeytys)
       .tap(k => auditLogOppivelvollisuudenKeskeytysDelete(k._1.oppijaOid, k._1.tekijäOrganisaatioOid))
-      .map(_ => "ok")
+      .map(k => k._2)
 
     renderEither(result)
   }

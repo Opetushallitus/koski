@@ -8,7 +8,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.UuidUtils
 import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasDatabase
-import fi.oph.koski.valpas.db.ValpasSchema.{OppivelvollisuudenKeskeytys, OppivelvollisuudenKeskeytysRow}
+import fi.oph.koski.valpas.db.ValpasSchema.{OppivelvollisuudenKeskeytys, OppivelvollisuudenKeskeytysRow, OppivelvollisuudenKeskeytyshistoria, OppivelvollisuudenKeskeytyshistoriaRow}
 
 import java.time.LocalDate
 import java.util.UUID
@@ -42,24 +42,36 @@ class OppivelvollisuudenKeskeytysRepository(database: ValpasDatabase, config: Co
     )
   }
 
-  def updateKeskeytys(keskeytys: OppivelvollisuudenKeskeytyksenMuutos): Either[HttpStatus, Unit] = {
+  def updateKeskeytys(keskeytys: OppivelvollisuudenKeskeytyksenMuutos): Either[HttpStatus, OppivelvollisuudenKeskeytysRow] = {
     UuidUtils.optionFromString(keskeytys.id)
       .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
       .flatMap(uuid => {
         val query = for { l <- OppivelvollisuudenKeskeytys if l.uuid === uuid } yield (l.alku, l.loppu)
         runDbSync(query.update(keskeytys.alku, keskeytys.loppu)) match {
           case 0 => Left(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
-          case _ => Right(Unit)
+          case _ => getKeskeytys(uuid).toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
         }
       })
   }
 
-  def deleteKeskeytys(uuid: UUID): Either[HttpStatus, Unit] = {
+  def deleteKeskeytys(uuid: UUID): Either[HttpStatus, OppivelvollisuudenKeskeytysRow] = {
     val query = for { l <- OppivelvollisuudenKeskeytys if l.uuid === uuid } yield l.peruttu
     runDbSync(query.update(true)) match {
       case 0 => Left(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
-      case _ => Right(Unit)
+      case _ => getKeskeytys(uuid).toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
     }
+  }
+
+  def addToHistory(tekijäOid: String)(row: OppivelvollisuudenKeskeytysRow): Unit = {
+    runDbSync(OppivelvollisuudenKeskeytyshistoria += row.asOppivelvollisuudenKeskeytyshistoriaRow(tekijäOid))
+  }
+
+  def getHistory(ovKeskeytysUuid: UUID): Seq[OppivelvollisuudenKeskeytyshistoriaRow] = {
+    runDbSync(OppivelvollisuudenKeskeytyshistoria
+      .filter(_.ovKeskeytysUuid === ovKeskeytysUuid)
+      .sortBy(_.muutosTehty)
+      .result
+    )
   }
 
   def truncate(): Unit = {

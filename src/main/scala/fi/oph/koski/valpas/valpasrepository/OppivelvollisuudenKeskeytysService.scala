@@ -4,10 +4,9 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Organisaatio
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasSchema.OppivelvollisuudenKeskeytysRow
 import fi.oph.koski.valpas.valpasuser.ValpasSession
-import fi.oph.scalaschema.annotation.EnumValue
+import fi.oph.koski.util.ChainingSyntax._
 
 import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID
@@ -32,6 +31,7 @@ class OppivelvollisuudenKeskeytysService(application: KoskiApplication) extends 
       tekijäOrganisaatioOid = keskeytys.tekijäOrganisaatioOid,
       luotu = LocalDateTime.now(),
     ))
+      .tap(_.map(db.addToHistory(session.user.oid)))
       .map(toValpasOppivelvollisuudenKeskeytys)
   }
 
@@ -43,13 +43,26 @@ class OppivelvollisuudenKeskeytysService(application: KoskiApplication) extends 
     db.getKeskeytys(uuid)
   }
 
-  def update(keskeytys: OppivelvollisuudenKeskeytyksenMuutos): Either[HttpStatus, Unit] = {
+  def update
+    (keskeytys: OppivelvollisuudenKeskeytyksenMuutos)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasOppivelvollisuudenKeskeytys] = {
     db.updateKeskeytys(keskeytys)
+      .tap(db.addToHistory(session.user.oid))
+      .map(toValpasOppivelvollisuudenKeskeytys)
   }
 
-  def delete(uuid: UUID): Either[HttpStatus, Unit] = {
+  def delete
+    (uuid: UUID)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, ValpasOppivelvollisuudenKeskeytys] = {
     db.deleteKeskeytys(uuid)
+      .tap(db.addToHistory(session.user.oid))
+      .map(toValpasOppivelvollisuudenKeskeytys)
   }
+
+  def getMuutoshistoria(uuid: UUID): Seq[OppivelvollisuudenKeskeytyshistoriaRow] =
+    db.getHistory(uuid)
 
   def toValpasOppivelvollisuudenKeskeytys(row: OppivelvollisuudenKeskeytysRow): ValpasOppivelvollisuudenKeskeytys =
     ValpasOppivelvollisuudenKeskeytys.apply(rajapäivät.tarkastelupäivä)(row)
