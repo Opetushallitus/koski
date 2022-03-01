@@ -170,7 +170,7 @@ class RaportitService(application: KoskiApplication) {
         t
       ).build(),
       workbookSettings = WorkbookSettings(s"${t.get("raportti-excel-aikuistenperusopetus-title-etuliite")}_${request.oppilaitosOid}", Some(request.password)),
-      filename = s"${t.get("raportti-excel-aikuistenperusopetus-tiedoston-etuliite")}_${request.raportinTyyppi.typeName}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      filename = s"${t.get("raportti-excel-aikuistenperusopetus-tiedoston-etuliite")}_${AikuistenPerusopetusRaportti.raporttiTypeLokalisoitu(request.raportinTyyppi.typeName, t)}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
     )
   }
