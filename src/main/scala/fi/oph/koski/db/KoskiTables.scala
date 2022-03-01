@@ -247,6 +247,10 @@ object KoskiTables {
       } yield oo
     }
 
+    // Huom! Tätä samaa koodia käytetään myös limit-offset -sivutuksessa ainakin raportointikannan generoinnissa.
+    // Älä siis lisää uusia filttereitä tähän huomioimatta sen rikkoutumisen mahdollisuutta. Raportointikannan
+    // generoinnin käyttäjällä on kaikki oikeudet, joten tämä koodi ei tällä hetkellä generoi sille uusia
+    // WHERE-ehtoja SQL:ään.
     query
       .filterIf(user.hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit)
       .filterIf(!user.hasMitätöidytOpiskeluoikeudetAccess)(o => !o.mitätöity)

@@ -124,8 +124,9 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       val teijaSession = sessio(KoskiSpecificMockOppijat.teija.oid)
       KoskiApplicationForTests.suostumuksenPeruutusService.peruutaSuostumus(vapaatavoitteinenOpiskeluoikeusOid)(teijaSession).statusCode should equal (403)
     }
-
     "Vain vapaan sivistystyön vapaatavoitteisen suorituksen ja opiskeluoikeuden voi peruuttaa" in {
+      resetFixtures
+
       val loginHeaders = kansalainenLoginHeaders(teijaHetu)
 
       post(s"/api/opiskeluoikeus/suostumuksenperuutus/$teijaOpiskeluoikeusOid", headers = loginHeaders) {
@@ -159,6 +160,24 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
           s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako, viranomainen on käyttänyt opiskeluoikeuden tietoja päätöksenteossa tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua."))
       }
     }
+
+    "Kansalainen ei voi peruuttaa suostumusta, jos opiskeluoikeus on mitätöity" in {
+      resetFixtures
+
+      mitätöiOpiskeluoikeus(vapaatavoitteinenOpiskeluoikeusOid)
+
+      val loginHeaders = kansalainenLoginHeaders(vapaatavoitteinenHetu)
+
+      // API:n yli
+      post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = loginHeaders) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(
+          s"Opiskeluoikeuden $vapaatavoitteinenOpiskeluoikeusOid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako, viranomainen on käyttänyt opiskeluoikeuden tietoja päätöksenteossa tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua."))
+      }
+      // Kutsutaan suoraan serviceä
+      val vapaatavoitteinenSession = sessio(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid)
+      KoskiApplicationForTests.suostumuksenPeruutusService.peruutaSuostumus(vapaatavoitteinenOpiskeluoikeusOid)(vapaatavoitteinenSession).statusCode should equal (403)
+    }
+
   }
 
   private def sessio(oid: String) = {
@@ -175,4 +194,9 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       Set.empty
     )
   }
+
+  private def mitätöiOpiskeluoikeus(oid: String) = {
+    delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(MockUsers.paakayttaja))(verifyResponseStatusOk())
+  }
+
 }
