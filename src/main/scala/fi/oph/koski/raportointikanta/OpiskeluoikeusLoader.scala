@@ -25,7 +25,6 @@ object OpiskeluoikeusLoader extends Logging {
 
   def loadOpiskeluoikeudet(
     opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
-    systemUserMitätöidytJaPoistetut: KoskiSpecificSession,
     db: RaportointiDatabase,
     batchSize: Int = DefaultBatchSize,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
@@ -33,7 +32,7 @@ object OpiskeluoikeusLoader extends Logging {
     db.setStatusLoadStarted(statusName)
     db.setStatusLoadStarted(mitätöidytStatusName)
     var loopCount = 0
-    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUserMitätöidytJaPoistetut) { batch =>
+    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize) { batch =>
       if (batch.nonEmpty) {
         val result = loadBatch(db, batch)
         onAfterPage(loopCount, batch)

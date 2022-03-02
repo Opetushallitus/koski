@@ -2,7 +2,6 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUserMitätöidytJaPoistetut
 
 object OpiskeluoikeusLoaderPerfTester extends App {
 
@@ -10,7 +9,7 @@ object OpiskeluoikeusLoaderPerfTester extends App {
 
   def doIt: Unit = {
     implicit val systemUser = KoskiSpecificSession.systemUser
-    val loadResults = OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUserMitätöidytJaPoistetut, application.raportointiDatabase)
+    val loadResults = OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, application.raportointiDatabase)
     loadResults.toBlocking.foreach(lr => println(s"${lr}"))
   }
 
