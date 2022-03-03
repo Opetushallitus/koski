@@ -2210,5 +2210,6 @@
   "Virta virheet" : "Virta virheet",
   "description:Sisältö on aina tyhjä lista...." : "Sisältö on aina tyhjä lista. Kenttä näkyy tietomallissa vain teknisistä syistä.",
   "description:Sisältö on aina tyhjä lista..." : "Sisältö on aina tyhjä lista opiskeluoikeusjaksoja. Kenttä näkyy tietomallissa vain teknisistä syistä.",
-  "deprecated:Ei käytössä 1.1.2021 eteenpäin" : "Ei käytössä 1.1.2021 eteenpäin"
+  "deprecated:Ei käytössä 1.1.2021 eteenpäin" : "Ei käytössä 1.1.2021 eteenpäin",
+  "Valinnaisen opintojakson paikallinen osasuoritus": "Valinnaisen opintojakson paikallinen osasuoritus"
 }

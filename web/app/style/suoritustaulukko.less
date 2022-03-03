@@ -34,6 +34,19 @@
           }
         }
       }
+      tbody.tuva-osasuoritus {
+        &+ tbody.tuva-osasuoritus {
+          border-top: 1px solid #eee;
+        }
+        .suoritus-taulukko {
+          > table {
+            width: initial;
+            .expand-all {
+              display: none;
+            }
+          }
+        }
+      }
       > tbody.group-header, tbody.taulukko-headers {
         background: @color-neutral-gray;
         th {
