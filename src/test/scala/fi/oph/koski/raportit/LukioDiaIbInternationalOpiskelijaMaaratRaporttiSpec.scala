@@ -4,6 +4,7 @@ package fi.oph.koski.raportit
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.fixture.LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow
@@ -13,6 +14,8 @@ import org.scalatest.freespec.AnyFreeSpec
 
 class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
   //Note: Raportin latauspäivä ja raportin fixtuurit käyttävät dynaamista päivämäärää, kts. LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.scala
+
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
@@ -166,7 +169,7 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec wi
       lang = "fi"
     )
     new RaportitService(KoskiApplicationForTests)
-      .lukioDiaIbInternationalOpiskelijaMaaratRaportti(request)
+      .lukioDiaIbInternationalOpiskelijaMaaratRaportti(request, t)
       .sheets.head.asInstanceOf[DataSheet]
       .rows.asInstanceOf[Seq[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow]]
   }

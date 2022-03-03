@@ -35,25 +35,36 @@ case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationRea
     val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus)
     val oppiaineetJaKurssit = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, isOppiaine, rows, t)
 
+    val oppiaineJaLisätiedotFuture = oppiaineJaLisätiedotSheet(rows, oppiaineetJaKurssit, alku, loppu)
+    val kurssitFuture = oppiaineKohtaisetSheetit(rows, oppiaineetJaKurssit)
+
     val future = for {
-      oppiaineJaLisätiedot <- oppiaineJaLisätiedotSheet(rows, oppiaineetJaKurssit, alku, loppu)
-      kurssit <- oppiaineKohtaisetSheetit(rows, oppiaineetJaKurssit)
+      oppiaineJaLisätiedot <- oppiaineJaLisätiedotFuture
+      kurssit <- kurssitFuture
     } yield (oppiaineJaLisätiedot +: kurssit)
 
     Futures.await(future, atMost = 6.minutes)
   }
 
-  private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
+  private def oppiaineJaLisätiedotSheet(
+    opiskeluoikeusData: Seq[LukioRaporttiRows],
+    oppiaineetJaKurssit: Seq[YleissivistäväRaporttiOppiaineJaKurssit],
+    alku: LocalDate,
+    loppu: LocalDate
+  ): Future[DynamicDataSheet] = {
     Future {
       DynamicDataSheet(
-        title = "Oppiaineet ja lisätiedot",
+        title = t.get("raportti-excel-oppiaineet-sheet-name"),
         rows = opiskeluoikeusData.map(kaikkiOppiaineetVälilehtiRow(_, oppiaineetJaKurssit, alku, loppu)).map(_.toSeq),
         columnSettings = oppiaineJaLisätiedotColumnSettings(oppiaineetJaKurssit)
       )
     }
   }
 
-  private def oppiaineKohtaisetSheetit(rows: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[YleissivistäväRaporttiOppiaineJaKurssit]) = {
+  private def oppiaineKohtaisetSheetit(
+    rows: Seq[LukioRaporttiRows],
+    oppiaineetJaKurssit: Seq[YleissivistäväRaporttiOppiaineJaKurssit]
+  ): Future[Seq[DynamicDataSheet]] = {
     Future {
       oppiaineetJaKurssit.map(oppiaineKohtainenSheet(_, rows))
     }
@@ -75,7 +86,12 @@ case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationRea
     !isOppiaineenOppimäärä(data.päätasonSuoritus) || data.päätasonSuoritus.matchesWith(oppiaine, t.language)
   }
 
-  private def kaikkiOppiaineetVälilehtiRow(row: LukioRaporttiRows, oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
+  private def kaikkiOppiaineetVälilehtiRow(
+    row: LukioRaporttiRows,
+    oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit],
+    alku: LocalDate,
+    loppu: LocalDate
+  ): LukioRaporttiKaikkiOppiaineetVälilehtiRow = {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val lisätiedot = JsonSerializer.extract[Option[LukionOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
     val lukionKurssit = row.osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi")
@@ -100,7 +116,7 @@ case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationRea
        opiskeluoikeuden_tilat_aikajakson_aikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).mkString(","),
        opetussuunnitelma = opetussuunnitelma(row.päätasonSuoritus),
        suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi,
-       suorituksenTila = row.päätasonSuoritus.vahvistusPäivä.fold("kesken")(_ => "valmis"),
+       suorituksenTila = row.päätasonSuoritus.vahvistusPäivä.fold(t.get("raportti-excel-default-value-kesken"))(_ => t.get("raportti-excel-default-value-valmis")),
        suorituksenVahvistuspäivä = row.päätasonSuoritus.vahvistusPäivä.map(_.toLocalDate),
        oppimääräSuoritettu = oppimääräSuoritettu.getOrElse(false),
        läsnäolopäiviä_aikajakson_aikana = row.aikajaksot.filter(_.tila == "lasna").map(j => Aikajakso(j.alku.toLocalDate, Some(j.loppu.toLocalDate))).map(lengthInDaysInDateRange(_, alku, loppu)).sum,
@@ -110,7 +126,7 @@ case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationRea
        pidennettyPäättymispäivä = lisätiedot.exists(_.pidennettyPäättymispäivä),
        ulkomainenVaihtoOpiskelija = lisätiedot.exists(_.ulkomainenVaihtoopiskelija),
        ulkomaanjaksot = lisätiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
-       erityisen_koulutustehtävän_tehtävät = lisätiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.flatMap(_.tehtävä.nimi.map(_.get("fi"))).mkString(","))),
+       erityisen_koulutustehtävän_tehtävät = lisätiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.flatMap(_.tehtävä.nimi.map(_.get(t.language))).mkString(","))),
        erityisen_koulutustehtävän_jaksot = lisätiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
        sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
        yhteislaajuus = lukionKurssit.map(_.laajuus).sum,
@@ -156,7 +172,7 @@ case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationRea
           laajuus = kurssisuoritus.koulutusmoduuliLaajuusArvo,
           tunnustettu = kurssisuoritus.tunnustettu,
           korotettuEriVuonna = kurssisuoritus.korotettuEriVuonna
-        ).toString
+        ).toStringLokalisoitu(t)
       ).mkString(",")
     }
   }
@@ -164,65 +180,65 @@ case class LukioRaportti(repository: LukioRaportitRepository, t: LocalizationRea
   private def opetussuunnitelma(suoritus: RPäätasonSuoritusRow) = {
     if (isOppiaineenOppimäärä(suoritus)) {
       JsonSerializer.extract[Option[String]](suoritus.data \ "koulutusmoduuli" \ "perusteenDiaarinumero").map {
-        case "60/011/2015" | "33/011/2003" => "Lukio suoritetaan nuorten opetussuunnitelman mukaan"
-        case "70/011/2015" | "4/011/2004" => "Lukio suoritetaan aikuisten opetussuunnitelman mukaan"
+        case "60/011/2015" | "33/011/2003" => t.get("raportti-excel-default-value-lukio-nuorten-ops")
+        case "70/011/2015" | "4/011/2004" => t.get("raportti-excel-default-value-lukio-aikuisten-ops")
         case diaarinumero => diaarinumero
       }
     } else {
-      JsonSerializer.extract[Option[Koodistokoodiviite]](suoritus.data \ "oppimäärä").flatMap(_.nimi.map(_.get("fi")))
+      JsonSerializer.extract[Option[Koodistokoodiviite]](suoritus.data \ "oppimäärä").flatMap(_.nimi.map(_.get(t.language)))
     }
   }
 
   private def oppiaineJaLisätiedotColumnSettings(oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]) = {
     Seq(
-      CompactColumn("Opiskeluoikeuden oid"),
-      CompactColumn("Lähdejärjestelmä"),
-      CompactColumn("Koulutustoimija"),
-      CompactColumn("Oppilaitoksen nimi"),
-      CompactColumn("Toimipiste"),
-      CompactColumn("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
-      CompactColumn("Päivitetty", comment = Some("Viimeisin opiskeluoikeuden päivitys KOSKI-palveluun. HUOM. Raportilla näkyy vain edeltävän päivän tilanne.")),
-      CompactColumn("Yksilöity", comment = Some("Jos tässä on arvo 'ei', tulee oppija yksilöidä oppijanumerorekisterissä")),
-      Column("Oppijan oid"),
-      Column("Hetu"),
-      Column("Sukunimi"),
-      Column("Etunimet"),
-      CompactColumn("Opiskeluoikeuden alkamispäivä"),
-      CompactColumn("Opiskeluoikeuden viimeisin tila", comment = Some("Se opiskeluoikeuden tila, joka opiskeluoikeudella on nyt.")),
-      CompactColumn("Opiskeluoikeuden tilat aikajakson aikana", comment = Some("Kaikki opiskeluoikeuden tilat, joita opiskeluoikeudella on ollut aikajaksona aikana. Tilat näyteään pilkuilla erotettuna aikajärjestyksessä.")),
-      CompactColumn("Opetussuunnitelma", comment = Some("Suoritetaanko lukio oppimäärää tai oppiaineen oppimäärää nuorten vai aikuisten opetussuunnitelman mukaan.")),
-      CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä koko lukion oppimäärän suoritus (\"lukionoppimaara\") vai aineopintosuoritus (\"lukionoppiaineenoppimaara\").")),
-      CompactColumn("Suorituksen tila", comment = Some("Onko kyseinen päätason suoritus (lukion oppimäärä tai oppiaineen oppimäärä) \"kesken\" vai \"valmis\".")),
-      CompactColumn("Suorituksen vahvistuspäivä", comment = Some("Päätason suorituksen (lukion oppimäärä tai oppiaineen oppimäärä) vahvistuspäivä. Vain \"valmis\"-tilaisilla suorituksilla on tässä kentässä jokin päivämäärä.")),
-      CompactColumn("Oppimäärä suoritettu", comment = Some("Tieto siitä, onko lukion oppimäärän suorittamiseen vaadittavat opinnot suoritettu. Jos lukion oppimäärän suoritus on vahvistettu, lukion oppimäärän suorittamiseen vaadittavat opinnot tulkitaan automaattisesti suoritetuksi, jolloin tähän kenttään tallennetaan automaattisesti arvo 'true'.")),
-      CompactColumn("Läsnäolopäiviä aikajakson aikana", comment = Some("Kuinka monta kalenteripäivää opiskelija on ollut raportin tulostusparametreissa määriteltynä aikajaksona \"Läsnä\"-tilassa KOSKI-palvelussa.")),
-      CompactColumn("Rahoitukset", comment = Some("Rahoituskoodit aikajärjestyksessä, joita opiskeluoikeuden läsnäolojaksoille on siirretty. Rahoituskoodien nimiarvot koodistossa https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
-      CompactColumn("Läsnä/valmistunut-rahoitusmuodot syötetty", comment = Some("Sarake kertoo, onko opiskeluoikeuden kaikille läsnä- ja valmistunut-jaksoille syötetty rahoitustieto")),
-      CompactColumn("Ryhmä"),
-      CompactColumn("Pidennetty päättymispäivä", comment = Some("Onko opiskelijalle merkitty opiskeluoikeuden lisätietoihin, että hänellä on pidennetty päättymispäivä (kyllä/ei).")),
-      CompactColumn("Ulkomainen vaihto-opiskelija", comment = Some("Onko kyseesä ulkomainen vaihto-opiskelija (kyllä/ei).")),
-      CompactColumn("Ulkomaanjaksot", comment = Some("Kuinka monta ulkomaanjaksopäivää opiskelijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
-      CompactColumn("Erityisen koulutustehtävän tehtävät", comment = Some("Erityiset koulutustehtävät, jotka opiskelijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
-      CompactColumn("Erityisen koulutustehtävän jaksot", comment = Some("Kuinka monta erityisen koulutustehtävän jaksopäivää opiskelijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
-      CompactColumn("Sisäoppilaitosmainen majoitus", comment = Some("Kuinka monta päivää opiskelija on ollut KOSKI-datan mukaan sisäoppilaitosmaisessa majoituksessa raportin tulostusparametreissa määritellyllä aikajaksolla.")),
-      CompactColumn("Yhteislaajuus (kaikki kurssit)", comment = Some("Opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien kurssien määrän tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien määrän riippuen siitä, mitä tulostusparametreissa on valittu.")),
-      CompactColumn("Yhteislaajuus (suoritetut kurssit)", comment = Some("Suoritettujen kurssien (eli sellaisten kurssien, jotka eivät ole tunnustettuja aikaisemman osaamisen pohjalta) yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
-      CompactColumn("Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)", comment = Some("Hylätyllä arvosanalla suoritettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
-      CompactColumn("Yhteislaajuus (tunnustetut kurssit)", comment = Some("Tunnustettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien tunnustettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
-      CompactColumn("Yhteislaajuus (eri vuonna korotetut kurssit)", comment = Some("Kurssit, joiden arviointia on korotettuu eri vuonna, kuin jona kurssin ensimmäinen arviointi on annettu."))
-    ) ++ oppiaineet.map(x => CompactColumn(title = x.oppiaine.toColumnTitle(t), comment = Some("Otsikon nimessä näytetään ensin oppiaineen koodi, sitten oppiaineen nimi ja viimeiseksi tieto, onko kyseessä valtakunnallinen vai paikallinen oppiaine (esim. BI Biologia valtakunnallinen). Sarakkeen arvossa näytetään pilkulla erotettuna oppiaineelle siirretty arvosana ja oppiaineessa suoritettujen kurssien määrä.")))
+      CompactColumn(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
+      CompactColumn(t.get("raportti-excel-kolumni-lähdejärjestelmä")),
+      CompactColumn(t.get("raportti-excel-kolumni-koulutustoimijaNimi")),
+      CompactColumn(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+      CompactColumn(t.get("raportti-excel-kolumni-toimipisteNimi")),
+      CompactColumn(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
+      CompactColumn(t.get("raportti-excel-kolumni-päivitetty"), comment = Some(t.get("raportti-excel-kolumni-päivitetty-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
+      Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      Column(t.get("raportti-excel-kolumni-hetu")),
+      Column(t.get("raportti-excel-kolumni-sukunimi")),
+      Column(t.get("raportti-excel-kolumni-etunimet")),
+      CompactColumn(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
+      CompactColumn(t.get("raportti-excel-kolumni-viimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-viimeisinTila-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-kaikkiTilat"), comment = Some(t.get("raportti-excel-kolumni-kaikkiTilat-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-opetussuunnitelma"), comment = Some(t.get("raportti-excel-kolumni-opetussuunnitelma-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-suorituksenTyyppi"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTyyppi-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-suorituksenTila"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTila-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva"), comment = Some(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-oppimääräSuoritettu"), comment = Some(t.get("raportti-excel-kolumni-oppimääräSuoritettu-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-läsnäolopäiviäAikajaksolla"), comment = Some(t.get("raportti-excel-kolumni-läsnäolopäiviäAikajaksolla-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-rahoitukset"), comment = Some(t.get("raportti-excel-kolumni-rahoitukset-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-rahoitusmuodot"), comment = Some(t.get("raportti-excel-kolumni-rahoitusmuodot-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-ryhmä")),
+      CompactColumn(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä"), comment = Some(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-ulkomainenVaihtoOpiskelija"), comment = Some(t.get("raportti-excel-kolumni-ulkomainenVaihtoOpiskelija-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-ulkomaanjaksot"), comment = Some(t.get("raportti-excel-kolumni-ulkomaanjaksot-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-erityinenKoulutustehtävä"), comment = Some(t.get("raportti-excel-kolumni-erityinenKoulutustehtävä-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-erityinenKoulutustehtäväJaksot"), comment = Some(t.get("raportti-excel-kolumni-erityinenKoulutustehtäväJaksot-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssit-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssit-comment")))
+    ) ++ oppiaineet.map(x => CompactColumn(title = x.oppiaine.toColumnTitle(t), comment = Some(t.get("raportti-excel-kolumni-oppiaineSarake-comment"))))
   }
 
   private def oppiaineKohtaisetColumnSettings(kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
     Seq(
-      Column("Oppijan oid"),
-      Column("Hetu"),
-      Column("Sukunimi"),
-      Column("Etunimet"),
-      CompactColumn("Toimipiste"),
-      CompactColumn("Opetussuunnitelma", comment = Some("Suoritetaanko lukio oppimäärää tai oppiaineen oppimäärää nuorten vai aikuisten opetussuunnitelman mukaan.")),
-      CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä koko lukion oppimäärän suoritus (\"lukionoppimaara\") vai aineopintosuoritus (\"lukionoppiaineenoppimaara\")."))
-    ) ++ kurssit.map(k => CompactColumn(title = k.toColumnTitle(t), comment = Some("Otsikon nimessä näytetään ensin kurssin koodi, sitten kurssin nimi ja viimeiseksi tieto siitä, onko kurssi valtakunnallinen vai paikallinen. Kurssisarake sisältää aina seuraavat tiedot, jos opiskelijalla on kyseisen kurssi suoritettuna: kurssityyppi (pakollinen, syventävä, soveltava), arvosana, kurssin laajuus ja \"tunnustettu\" jos kyseinen kurssi on tunnustettu.")))
+      Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      Column(t.get("raportti-excel-kolumni-hetu")),
+      Column(t.get("raportti-excel-kolumni-sukunimi")),
+      Column(t.get("raportti-excel-kolumni-etunimet")),
+      CompactColumn(t.get("raportti-excel-kolumni-toimipisteNimi")),
+      CompactColumn(t.get("raportti-excel-kolumni-opetussuunnitelma"), comment = Some(t.get("raportti-excel-kolumni-opetussuunnitelma-lukio-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-suorituksenTyyppi"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTyyppi-lukio-comment")))
+    ) ++ kurssit.map(k => CompactColumn(title = k.toColumnTitle(t), comment = Some(t.get("raportti-excel-kolumni-oppiaineSarake-lukio-comment"))))
   }
 }
 
@@ -279,13 +295,13 @@ case class LukioOppiaineenKurssienVälilehtiStaattisetKolumnit(
 )
 
 case class LukioKurssinTiedot(kurssintyyppi: Option[String], arvosana: Option[String], laajuus: Option[Double], tunnustettu: Boolean, korotettuEriVuonna: Boolean) {
-  override def toString: String = {
+  def toStringLokalisoitu(t: LocalizationReader): String = {
     List(
-      Some(kurssintyyppi.getOrElse("Ei tyyppiä").capitalize),
-      Some(arvosana.map("Arvosana " + _).getOrElse("Ei arvosanaa")),
-      Some(laajuus.map("Laajuus " + _).getOrElse("Ei laajuutta")),
-      if (tunnustettu) Some("Tunnustettu") else None,
-      if (korotettuEriVuonna) Some("Korotettu eri vuonna") else None
+      Some(kurssintyyppi.getOrElse(t.get("raportti-excel-default-value-ei-tyyppiä")).capitalize),
+      Some(arvosana.map(s"${t.get("raportti-excel-default-value-arvosana")} " + _).getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))),
+      Some(laajuus.map(s"${t.get("raportti-excel-default-value-laajuus").capitalize} " + _).getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))),
+      if (tunnustettu) Some(t.get("raportti-excel-default-value-tunnustettu")) else None,
+      if (korotettuEriVuonna) Some(t.get("raportti-excel-default-value-korotettuEriVuonna")) else None
     ).flatten.mkString(", ")
   }
 }

@@ -2,6 +2,7 @@ package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 import fi.oph.koski.raportit.{Column, CompactColumn, DataSheet}
 import fi.oph.koski.raportointikanta.RaportointiDatabase
@@ -12,11 +13,16 @@ import java.time.LocalDate
 
 object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti extends DatabaseConverters {
 
-  def dataSheet(oppilaitosOid: List[String], päivä: LocalDate, raportointiDatabase: RaportointiDatabase) = {
+  def dataSheet(
+    oppilaitosOid: List[String],
+    päivä: LocalDate,
+    raportointiDatabase: RaportointiDatabase,
+    t: LocalizationReader
+  ) = {
     DataSheet(
-      "Opiskelijamaarat",
+      t.get("raportti-excel-opiskelijamäärä-sheet-name"),
       rows = raportointiDatabase.runDbSync(query(oppilaitosOid, päivä)),
-      columnSettings
+      columnSettings(t)
     )
   }
 
@@ -84,23 +90,23 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti extends DatabaseCon
     )
   })
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "oppilaitosOid" -> Column("Oppilaitoksen oid-tunniste"),
-    "oppilaitos" -> Column("Oppilaitos"),
-    "opiskelijoidenMaara" -> CompactColumn("Opiskelijoiden määrä yhteensä", comment = Some("\"Läsnä\"-tilaiset opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä")),
-    "opiskelijoidenMaara_VOSRahoitteisia" -> CompactColumn("Opiskelijoista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\"")),
-    "opiskelijoidenMaara_MuutaKauttaRahoitettu" -> CompactColumn("Opiskelijoista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\"")),
-    "opiskelijoidenMaara_SisaoppilaitosmainenMajoitus_VOSRahoitteisia" -> CompactColumn("Opiskelijoista valtionosuusrahoitteisia - sisäoppilaitosmainen majoitus", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\" ja joissa opiskelijalla merkitty raportin tulostusparametreissa valitulle päivälle osuva sisäoppilaitosmaisen majoituksen jakso")),
-    "nuortenOppimaaranSuorittajia" -> CompactColumn("Nuorten opetussuunnitelman mukaan opiskelevat", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan nuorten opetussuunnitelman mukaan")),
-    "nuortenOppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn("Nuorten opetussuunnitelman mukaan opiskelevista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan nuorten opetussuunnitelman mukaan ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\"")),
-    "nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn("Nuorten opetussuunnitelman mukaan opiskelevista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan nuorten opetussuunnitelman mukaan ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\"")),
-    "nuortenOppimaaranSuorittajia_EiKotikuntaa" -> CompactColumn("Nuorten opetussuunnitelman mukaan opiskelevat - ei kotikuntaa", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan nuorten opetussuunnitelman mukaan ja joille ei Opintopolun oppijanumerorekisteristä löydy tietoa opiskelijan kotikunnasta")),
-    "nuortenOppimaaranSuorittajia_KotikuntaAhvenanmaa" -> CompactColumn("Nuorten opetussuunnitelman mukaan opiskelevat - kotikunta Ahvenanmaalla", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan nuorten opetussuunnitelman mukaan ja joiden kotikunta Opintopolun oppijanumerorekisterin mukaan Ahvenanmaalla")),
-    "aikuistenOppimaaranSuorittajia" -> CompactColumn("Aikuisten opetussuunnitelman mukaan lukion oppimäärää suorittavat", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena lukion oppimäärän suoritus aikuisten opetussuunnitelman mukaan")),
-    "aikuistenOppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn("Aikuisten opetussuunnitelman mukaan opiskelevista valtionosuusrahoitteisia", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan aikuisten opetussuunnitelman mukaan ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\"")),
-    "aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn("Aikuisten opetussuunnitelman mukaan opiskelevista muuta kautta rahoitettuja", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan aikuisten opetussuunnitelman mukaan ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\"")),
-    "aikuistenOppimaaranSuorittajia_EiKotikuntaa" -> CompactColumn("Aikuisten opetussuunnitelman mukaan opiskelevat - ei kotikuntaa", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan aikuisten opetussuunnitelman mukaan ja joille ei Opintopolun oppijanumerorekisteristä löydy tietoa opiskelijan kotikunnasta")),
-    "aikuistenOppimaaranSuorittajia_KotikuntaAhvenanmaa" -> CompactColumn("Aikuisten opetussuunnitelman mukaan opiskelevat - kotikunta Ahvenanmaalla", comment = Some("\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa lukiokoulutukseen valmistavaa koulutusta suoritetaan aikuisten opetussuunnitelman mukaan ja joiden kotikunta Opintopolun oppijanumerorekisterin mukaan Ahvenanmaalla"))
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "oppilaitosOid" -> Column(t.get("raportti-excel-kolumni-oppilaitosOid")),
+    "oppilaitos" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+    "opiskelijoidenMaara" -> CompactColumn(t.get("raportti-excel-kolumni-opiskelijoita"), comment = Some(t.get("raportti-excel-kolumni-opiskelijoita-lukio-comment"))),
+    "opiskelijoidenMaara_VOSRahoitteisia" -> CompactColumn(t.get("raportti-excel-kolumni-oppilaidenMääräVOS"), comment = Some(t.get("raportti-excel-kolumni-oppilaidenMääräVOS-comment"))),
+    "opiskelijoidenMaara_MuutaKauttaRahoitettu" -> CompactColumn(t.get("raportti-excel-kolumni-oppilaidenMääräMuuKuinVOS"), comment = Some(t.get("raportti-excel-kolumni-oppilaidenMääräMuuKuinVOS-comment"))),
+    "opiskelijoidenMaara_SisaoppilaitosmainenMajoitus_VOSRahoitteisia" -> CompactColumn(t.get("raportti-excel-kolumni-opiskelijoidenMaaraSisaoppilaitosmainenVOS"), comment = Some(t.get("raportti-excel-kolumni-opiskelijoidenMaaraSisaoppilaitosmainenVOS-comment"))),
+    "nuortenOppimaaranSuorittajia" -> CompactColumn(t.get("raportti-excel-kolumni-luvaNuortenOps"), comment = Some(t.get("raportti-excel-kolumni-luvaNuortenOps-comment"))),
+    "nuortenOppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn(t.get("raportti-excel-kolumni-luvaNuortenOpsVOS"), comment = Some(t.get("raportti-excel-kolumni-luvaNuortenOpsVOS-comment"))),
+    "nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn(t.get("raportti-excel-kolumni-luvaNuortenOpsMuutaKauttaRahoitettu"), comment = Some(t.get("raportti-excel-kolumni-luvaNuortenOpsMuutaKauttaRahoitettu-comment"))),
+    "nuortenOppimaaranSuorittajia_EiKotikuntaa" -> CompactColumn(t.get("raportti-excel-kolumni-luvaNuortenOpsEiKotikuntaa"), comment = Some(t.get("raportti-excel-kolumni-luvaNuortenOpsEiKotikuntaa-comment"))),
+    "nuortenOppimaaranSuorittajia_KotikuntaAhvenanmaa" -> CompactColumn(t.get("raportti-excel-kolumni-luvaNuortenOpsKotikuntaAhvenanmaa"), comment = Some(t.get("raportti-excel-kolumni-luvaNuortenOpsKotikuntaAhvenanmaa-comment"))),
+    "aikuistenOppimaaranSuorittajia" -> CompactColumn(t.get("raportti-excel-kolumni-luvaAikuistenOps"), comment = Some(t.get("raportti-excel-kolumni-luvaAikuistenOps-comment"))),
+    "aikuistenOppimaaranSuorittajia_VOSRahoitteisia" -> CompactColumn(t.get("raportti-excel-kolumni-luvaAikuistenOpsVOS"), comment = Some(t.get("raportti-excel-kolumni-luvaAikuistenOpsVOS-comment"))),
+    "aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu" -> CompactColumn(t.get("raportti-excel-kolumni-luvaAikuistenOpsMuutaKauttaRahoitetut"), comment = Some(t.get("raportti-excel-kolumni-luvaAikuistenOpsMuutaKauttaRahoitetut-comment"))),
+    "aikuistenOppimaaranSuorittajia_EiKotikuntaa" -> CompactColumn(t.get("raportti-excel-kolumni-luvaAikuistenOpsEiKotikuntaa"), comment = Some(t.get("raportti-excel-kolumni-luvaAikuistenOpsEiKotikuntaa-comment"))),
+    "aikuistenOppimaaranSuorittajia_KotikuntaAhvenanmaa" -> CompactColumn(t.get("raportti-excel-kolumni-luvaAikuistenOpsKotikuntaAhvenanmaa"), comment = Some(t.get("raportti-excel-kolumni-luvaAikuistenOpsKotikuntaAhvenanmaa-comment")))
   )
 }
 
