@@ -15,13 +15,13 @@ trait Raportti {
 
 trait AikajaksoRaportti extends Raportti {
 
-  def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String
+  def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, t: LocalizationReader): String
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadStarted: LocalDateTime): String
+  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadStarted: LocalDateTime, t: LocalizationReader): String
 
-  def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String
+  def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, t: LocalizationReader): String
 
-  def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[Product]
+  def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, t: LocalizationReader): Seq[Product]
 
   def name: String = this.getClass.getSimpleName.toLowerCase.filterNot(_ == '$')
 }

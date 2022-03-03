@@ -1,8 +1,8 @@
 package fi.oph.koski.raportit
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.AmmatillinenRaporttiUtils._
 import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.raportointikanta._
@@ -13,12 +13,30 @@ import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFo
 
 object AmmatillinenOsittainenRaportti {
 
-  def buildRaportti(request: AikajaksoRaporttiAikarajauksellaRequest, repository: AmmatillisenRaportitRepository): Seq[AmmatillinenOsittainRaporttiRow] = {
-    val data = repository.suoritustiedot(request.oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkintoosittainen", request.alku, request.loppu)
-    data.map(buildRow(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus))
+  def buildRaportti(
+    request: AikajaksoRaporttiAikarajauksellaRequest,
+    repository: AmmatillisenRaportitRepository,
+    t: LocalizationReader
+  ): Seq[AmmatillinenOsittainRaporttiRow] = {
+    repository
+      .suoritustiedot(
+        request.oppilaitosOid,
+        OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo,
+        "ammatillinentutkintoosittainen",
+        request.alku,
+        request.loppu
+      )
+      .map(d => buildRow(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus, d, t))
   }
 
-  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean)(data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
+  private def buildRow(
+    oppilaitosOid: Organisaatio.Oid,
+    alku: LocalDate,
+    loppu: LocalDate,
+    osasuoritustenAikarajaus: Boolean,
+    data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow]),
+    t: LocalizationReader
+  ) = {
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritus, sisältyvätOpiskeluoikeudet, unFilteredosasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritus, alku, loppu)
@@ -50,10 +68,10 @@ object AmmatillinenOsittainenRaportti {
       etunimet = henkilö.etunimet,
       tutkinto = päätasonSuoritus.koulutusmoduuliKoodiarvo,
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
-      tutkintonimike = tutkintonimike(päätasonSuoritus).getOrElse(""),
-      päätasonSuorituksenNimi = päätasonSuoritus.koulutusmoduuliNimi.getOrElse(""),
-      päätasonSuorituksenSuoritustapa = suoritusTavat(List(päätasonSuoritus)),
-      päätasonSuorituksenTila = vahvistusPäiväToTila(päätasonSuoritus.vahvistusPäivä),
+      tutkintonimike = tutkintonimike(päätasonSuoritus, t.language).getOrElse(""),
+      päätasonSuorituksenNimi = päätasonSuoritus.koulutusModuulistaKäytettäväNimi(t.language).getOrElse(""),
+      päätasonSuorituksenSuoritustapa = suoritusTavat(List(päätasonSuoritus), t.language),
+      päätasonSuorituksenTila = vahvistusPäiväToTila(päätasonSuoritus.vahvistusPäivä, t),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
       viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,
@@ -82,95 +100,75 @@ object AmmatillinenOsittainenRaportti {
     )
   }
 
-  def title(request: AikajaksoRaporttiAikarajauksellaRequest): String = {
-    s"Ammatillinen_tutkinnon_osa_ja_osia_${request.oppilaitosOid}_${request.alku}_${request.loppu}"
+  def title(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader): String = {
+    s"${t.get("raportti-excel-ammatillinen-osia-suoritustiedot-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}"
   }
 
-  def documentation(request: AikajaksoRaporttiAikarajauksellaRequest, loadStarted: LocalDateTime): String =
+  def documentation(
+    request: AikajaksoRaporttiAikarajauksellaRequest,
+    loadStarted: LocalDateTime,
+    t: LocalizationReader
+  ): String =
     s"""
-       |Suoritustiedot (Ammatillisen tutkinnon osa/osia)
-       |Oppilaitos: ${request.oppilaitosOid}
-       |Aikajakso: ${finnishDateFormat.format(request.alku)} - ${finnishDateFormat.format(request.loppu)}
-       |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadStarted)} tietojen pohjalta)
+       |${t.get("raportti-excel-ammatillinen-osia-suoritustiedot-ohje-title")}
+       |${t.get("raportti-excel-ammatillinen-ohje-oppilaitos")}: ${request.oppilaitosOid}
+       |${t.get("raportti-excel-ammatillinen-ohje-aikajakso")}: ${finnishDateFormat.format(request.alku)} - ${finnishDateFormat.format(request.loppu)}
+       |${t.get("raportti-excel-ammatillinen-ohje-luotu")}: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadStarted)} ${t.get("raportti-excel-ammatillinen-ohje-luotu-takaliite")})
        |
-       |Tarkempi kuvaus joistakin sarakkeista:
-       |
-       |- Tutkinto: Opiskeluoikeudella olevan päätason suorituksen tutkinto (myös ennen raportin aikajaksoa valmistuneet, ja raportin aikajakson jälkeen alkaneet). Valtakunnalliset tutkinnot käyttävät "koulutus"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koulutus/latest.
-       |
-       |- Osaamisalat: Ym. tutkinnon osaamisalat (myös ennen/jälkeen raportin aikajaksoa). Valtakunnalliset osaamisalat käyttävät "osaamisala"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/osaamisala/latest.
-       |
-       |- Suorituksen tila: Päätason suorituksen tila.
-       |
-       |- Viimeisin opiskeluoikeuden tila: opiskeluoikeuden tila raportin aikajakson lopussa. Käyttää "koskiopiskeluoikeudentila" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskiopiskeluoikeudentila/latest.
-       |
-       |- Rahoitukset: raportin aikajaksolla esiintyvät rahoitusmuodot pilkulla erotettuna (aakkosjärjestyksessä, ei aikajärjestyksessä). Arvot ovat "opintojenrahoitus" koodistosta, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest.
-       |
-       |- Suoritettujen opintojen yhteislaajuus: KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien ja yhteisten tutkinnon osien osa-alueiden yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille.
-       |
-       |- Valmiiden ammatillisten tutkinnon osien lukumäärä: KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien ja yhteisten tutkinnon osien yhteenlaskettu lukumäärä.
-       |
-       |- Valinnaisten ammatillisten tutkinnon osien lukumäärä: KOSKI-palveluun siirrettyjen valinnaisten ammatillisten tutkinnon osien yhteenlaskettu lukumäärä.
-       |
-       |- Tunnustettujen tutkinnon osien osuus valmiista ammatillisista tutkinnon osista: KOSKI-palveluun siirrettyjen tunnustettujen ammatillisten tutkinnon osien yhteenlaskettu lukumäärä.
-       |
-       |- Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista ammatillisista tutkinnon osista: KOSKI-palveluun siirrettyjen tunnustettujen, rahoituksen piirissä olevien ammatillisten tutkinnon osien yhteenlaskettu lukumäärä.
-       |
-       |- Suoritettujen ammatillisten tutkinnon osien yhteislaajuus: KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien  yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille siirtämistä laajuuksista.
-       |
-       |- Valinnaisten ammatillisten tutkinnon osien yhteislaajuus: KOSKI-palveluun siirrettyjen valinnaisten ammatillisten tutkinnon osien  yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille siirtämistä laajuuksista.
+       |${t.get("raportti-excel-ammatillinen-osia-suoritustiedot-ohje-body")}
      """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
 
-  def filename(request: AikajaksoRaporttiAikarajauksellaRequest): String = {
-    s"Ammatillinen_tutkinnon_osa_ja_osia_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx"
+  def filename(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader): String = {
+    s"${t.get("raportti-excel-ammatillinen-osia-suoritustiedot-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx"
   }
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
-    "lähdejärjestelmä" -> Column("Lähdejärjestelmä", width = Some(4000)),
-    "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä", width = Some(4000)),
-    "sisältyyOpiskeluoikeuteenOid" -> Column("Sisältyy opiskeluoikeuteen", width = Some(4000)),
-    "ostettu"-> CompactColumn("Ostettu"),
-    "sisältyvätOpiskeluoikeudetOidit" -> Column("Sisältyvät opiskeluoikeudet", width = Some(4000)),
-    "sisältyvätOpiskeluoikeudetOppilaitokset" -> Column("Sisältyvien opiskeluoikeuksien oppilaitokset", width = Some(4000)),
-    "linkitetynOpiskeluoikeudenOppilaitos" -> Column("Toisen koulutuksen järjestäjän opiskeluoikeus"),
-    "aikaleima" -> Column("Päivitetty"),
-    "toimipisteOid" -> Column("Toimipiste"),
-    "yksiloity" -> Column("Yksilöity", comment = Some("Jos tässä on arvo 'ei', tulee oppija yksilöidä oppijanumerorekisterissä")),
-    "oppijaOid" -> Column("Oppijan oid"),
-    "hetu" -> Column("Hetu"),
-    "sukunimi" -> Column("Sukunimi"),
-    "etunimet" -> Column("Etunimet"),
-    "tutkinto" -> CompactColumn("Tutkinto"),
-    "osaamisalat" -> CompactColumn("Osaamisalat"),
-    "tutkintonimike" -> CompactColumn("Tutkintonimike"),
-    "päätasonSuorituksenNimi" -> CompactColumn("Päätason suorituksen nimi"),
-    "päätasonSuorituksenSuoritustapa" -> CompactColumn("Päätason suorituksen suoritustapa"),
-    "päätasonSuorituksenTila" -> CompactColumn("Suorituksen tila"),
-    "opiskeluoikeudenAlkamispäivä" -> Column("Opiskeluoikeuden alkamispäivä"),
-    "viimeisinOpiskeluoikeudenTila" -> CompactColumn("Viimeisin opiskeluoikeuden tila"),
-    "viimeisinOpiskeluoikeudenTilaAikajaksonLopussa" -> CompactColumn("Viimeisin opiskeluoikeuden tila aikajakson lopussa"),
-    "opintojenRahoitukset" -> CompactColumn("Rahoitukset"),
-    "suoritettujenOpintojenYhteislaajuus" -> CompactColumn("Suoritettujen opintojen yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)"),
-    "valmiitAmmatillisetTutkinnonOsatLkm" -> CompactColumn("Valmiiden ammatillisten tutkinnon osien lukumäärä, esim: 10 (joista 5 korotuksia)"),
-    "näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm" -> CompactColumn("Valmiissa ammatillisissa tutkinnon osissa olevien näyttöjen lukumäärä, esim: 10 (joista 5 korotuksia)"),
-    "tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm" -> CompactColumn("Tunnustettujen tutkinnon osien osuus valmiista ammatillisista tutkinnon osista, esim: 10 (joista 5 korotuksia)"),
-    "rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm" -> CompactColumn("Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista ammatillisista tutkinnon osista, esim: 10 (joista 5 korotuksia)"),
-    "suoritetutAmmatillisetTutkinnonOsatYhteislaajuus" -> CompactColumn("KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien (valmis- tai kesken-tilaiset) yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)"),
-    "tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus" -> CompactColumn("Tunnustettujen ammatillisten tutkinnon osien yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)"),
-    "valmiitYhteistenTutkinnonOsatLkm" -> CompactColumn("Valmiiden yhteisten tutkinnon osien lukumäärä, esim: 10 (joista 5 korotuksia)"),
-    "pakollisetYhteistenTutkinnonOsienOsaalueidenLkm" -> CompactColumn("Pakollisten yhteisten tutkinnon osien osa-alueiden lukumäärä, esim: 10 (joista 5 korotuksia)"),
-    "valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm" -> CompactColumn("Valinnaisten yhteisten tutkinnon osien osa-alueiden lukumäärä, esim: 10 (joista 5 korotuksia)"),
-    "tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm" -> CompactColumn("Tunnustettujen tutkinnon osien osa-alueiden osuus valmiista yhteisten tutkinnon osien osa-alueista, esim: 10 (joista 5 korotuksia)"),
-    "rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm" -> CompactColumn("Rahoituksen piirissä olevien tutkinnon osien osa-aluiden osuus valmiista tunnustetuista yhteisten tutkinnon osien osa-alueista, esim: 10 (joista 5 korotuksia)"),
-    "tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm" -> CompactColumn("Tunnustettujen tutkinnon osien osuus valmiista yhteisistä tutkinnon osista, esim: 10 (joista 5 korotuksia)"),
-    "rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm" -> CompactColumn("Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista yhteisistä tutkinnon osista, esim: 10 (joista 5 korotuksia)"),
-    "suoritettujenYhteistenTutkinnonOsienYhteislaajuus" -> CompactColumn("KOSKI-palveluun siirrettyjen yhteisten tutkinnon osien (valmis- tai kesken-tilaiset) yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)"),
-    "tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus" -> CompactColumn("Tunnustettujen yhteisten tutkinnon osien yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)"),
-    "suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn("Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)"),
-    "pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn("Pakollisten yhteisten tutkinnon osien osa-alueiden yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)"),
-    "valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus" -> CompactColumn("Valinnaisten yhteisten tutkinnon osien osa-aluiden yhteislaajuus, esim: 35,0 (joista 15,0 korotuksia)"),
-    "valmiitVapaaValintaisetTutkinnonOsatLkm" -> CompactColumn("Valmiiden vapaavalintaisten tutkinnon osien lukumäärä, esim: 10 (joista 5 korotuksia)"),
-    "valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm" -> CompactColumn("Valmiiden tutkintoa yksilöllisesti laajentavien tutkinnon osien lukumäärä, esim: 10 (joista 5 korotuksia)")
+  def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
+    "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
+    "lähdejärjestelmä" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmä"), width = Some(4000)),
+    "lähdejärjestelmänId" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId"), width = Some(4000)),
+    "sisältyyOpiskeluoikeuteenOid" -> Column(t.get("raportti-excel-kolumni-sisältyyOpiskeluoikeuteenOid"), width = Some(4000)),
+    "ostettu"-> CompactColumn(t.get("raportti-excel-kolumni-ostettu")),
+    "sisältyvätOpiskeluoikeudetOidit" -> Column(t.get("raportti-excel-kolumni-sisältyvätOpiskeluoikeudetOidit"), width = Some(4000)),
+    "sisältyvätOpiskeluoikeudetOppilaitokset" -> Column(t.get("raportti-excel-kolumni-sisältyvätOpiskeluoikeudetOppilaitokset"), width = Some(4000)),
+    "linkitetynOpiskeluoikeudenOppilaitos" -> Column(t.get("raportti-excel-kolumni-linkitetynOpiskeluoikeudenOppilaitos")),
+    "aikaleima" -> Column(t.get("raportti-excel-kolumni-päivitetty")),
+    "toimipisteOid" -> Column(t.get("raportti-excel-kolumni-toimipisteOid")),
+    "yksiloity" -> Column(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
+    "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
+    "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
+    "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
+    "tutkinto" -> CompactColumn(t.get("raportti-excel-kolumni-tutkinto")),
+    "osaamisalat" -> CompactColumn(t.get("raportti-excel-kolumni-osaamisalat")),
+    "tutkintonimike" -> CompactColumn(t.get("raportti-excel-kolumni-tutkintonimike")),
+    "päätasonSuorituksenNimi" -> CompactColumn(t.get("raportti-excel-kolumni-päätasonSuorituksenNimi")),
+    "päätasonSuorituksenSuoritustapa" -> CompactColumn(t.get("raportti-excel-kolumni-päätasonSuorituksenSuoritustapa")),
+    "päätasonSuorituksenTila" -> CompactColumn(t.get("raportti-excel-kolumni-suorituksenTila")),
+    "opiskeluoikeudenAlkamispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
+    "viimeisinOpiskeluoikeudenTila" -> CompactColumn(t.get("raportti-excel-kolumni-viimeisinTila")),
+    "viimeisinOpiskeluoikeudenTilaAikajaksonLopussa" -> CompactColumn(t.get("raportti-excel-kolumni-viimeisinOpiskeluoikeudenTilaAikajaksonLopussa")),
+    "opintojenRahoitukset" -> CompactColumn(t.get("raportti-excel-kolumni-rahoitukset")),
+    "suoritettujenOpintojenYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-suoritettujenOpintojenYhteislaajuus")),
+    "valmiitAmmatillisetTutkinnonOsatLkm" -> CompactColumn(t.get("raportti-excel-kolumni-valmiitAmmatillisetTutkinnonOsatLkm")),
+    "näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm" -> CompactColumn(t.get("raportti-excel-kolumni-näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm")),
+    "tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm" -> CompactColumn(t.get("raportti-excel-kolumni-tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm")),
+    "rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm" -> CompactColumn(t.get("raportti-excel-kolumni-rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm")),
+    "suoritetutAmmatillisetTutkinnonOsatYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-siirretytAmmatillisetTutkinnonOsatYhteislaajuus")),
+    "tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-tunnustetutAmmatillisetTutkinnonOsatYhteislaajuus")),
+    "valmiitYhteistenTutkinnonOsatLkm" -> CompactColumn(t.get("raportti-excel-kolumni-valmiitYhteistenTutkinnonOsatLkm")),
+    "pakollisetYhteistenTutkinnonOsienOsaalueidenLkm" -> CompactColumn(t.get("raportti-excel-kolumni-pakollisetYhteistenTutkinnonOsienOsaalueidenLkm")),
+    "valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm" -> CompactColumn(t.get("raportti-excel-kolumni-valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm")),
+    "tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm" -> CompactColumn(t.get("raportti-excel-kolumni-tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm")),
+    "rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm" -> CompactColumn(t.get("raportti-excel-kolumni-rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm-tunnustetut")),
+    "tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm" -> CompactColumn(t.get("raportti-excel-kolumni-tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm")),
+    "rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm" -> CompactColumn(t.get("raportti-excel-kolumni-rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm")),
+    "suoritettujenYhteistenTutkinnonOsienYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-siirrettyjenYhteistenTutkinnonOsienYhteislaajuus")),
+    "tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus")),
+    "suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus")),
+    "pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus")),
+    "valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus")),
+    "valmiitVapaaValintaisetTutkinnonOsatLkm" -> CompactColumn(t.get("raportti-excel-kolumni-valmiitVapaaValintaisetTutkinnonOsatLkm")),
+    "valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm" -> CompactColumn(t.get("raportti-excel-kolumni-valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm"))
   )
 }
 
