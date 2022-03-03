@@ -164,7 +164,7 @@ object AmmatillinenOsittainenRaportti {
     "rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm" -> CompactColumn(t.get("raportti-excel-kolumni-rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm")),
     "suoritettujenYhteistenTutkinnonOsienYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-siirrettyjenYhteistenTutkinnonOsienYhteislaajuus")),
     "tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus")),
-    "suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus")),
+    "suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-suoritettujenYhteistenTutkinnonOsienOsaAlueidenYhteislaajuusEsimerkillä")),
     "pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus")),
     "valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus" -> CompactColumn(t.get("raportti-excel-kolumni-valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus")),
     "valmiitVapaaValintaisetTutkinnonOsatLkm" -> CompactColumn(t.get("raportti-excel-kolumni-valmiitVapaaValintaisetTutkinnonOsatLkm")),

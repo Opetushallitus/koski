@@ -1,11 +1,11 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate
-
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures.{keskimmaisenAlkamispaiva, ensimmaisenAlkamispaiva, ensimmaisenPaattymispaiva}
+import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures.{ensimmaisenAlkamispaiva, ensimmaisenPaattymispaiva, keskimmaisenAlkamispaiva}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -13,6 +13,8 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
 class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
+
+  private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
@@ -132,7 +134,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
             ["internationalschoolmypvuosiluokka", "8"]
           ]
         """
-          PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb) shouldBe("International school lukio")
+          PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb, t) shouldBe("International school lukio")
         }
         "Alemman vuosiluokan suoritukset tulkitaan perusopetukseksi" in {
           val jsonb = """
@@ -141,7 +143,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
             ["internationalschoolmypvuosiluokka", "8"]
           ]
         """
-          PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb) shouldBe("International school perusopetus")
+          PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb, t) shouldBe("International school perusopetus")
         }
       }
       "Ammatillinen" - {
@@ -152,7 +154,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
             ["nayttotutkintoonvalmistavakoulutus", "8718"]
           ]
         """
-          PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb) shouldBe("Ammatillisen tutkinnon suoritus")
+          PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb, t) shouldBe("Ammatillisen tutkinnon suoritus")
         }
         "Jos pelkkä näyttötutkintoon valmistava" in {
           val jsonb = """
@@ -160,7 +162,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
             ["nayttotutkintoonvalmistavakoulutus", "8718"]
           ]
         """
-          PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb) shouldBe("Näyttötutkintoon valmistavan koulutuksen suoritus")
+          PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb, t) shouldBe("Näyttötutkintoon valmistavan koulutuksen suoritus")
         }
       }
       "Muiden opiskeluoikeuksien suorituksista käytetään vain samaa nimeä riippumatta tyypistä" in {
@@ -172,7 +174,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
             ["perusopetuksenvuosiluokka", "6"]
           ]
         """
-        PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb) shouldBe("Perusopetuksen oppimäärä")
+        PaallekkaisetOpiskeluoikeudet.suorituksistaKaytettavaNimi(jsonb, t) shouldBe("Perusopetuksen oppimäärä")
       }
     }
   }
@@ -193,7 +195,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
     )
 
     new RaportitService(KoskiApplicationForTests)
-      .paallekkaisetOpiskeluoikeudet(request)
+      .paallekkaisetOpiskeluoikeudet(request, t)
       .sheets.head.asInstanceOf[DataSheet]
       .rows.asInstanceOf[Seq[PaallekkaisetOpiskeluoikeudetRow]]
   }

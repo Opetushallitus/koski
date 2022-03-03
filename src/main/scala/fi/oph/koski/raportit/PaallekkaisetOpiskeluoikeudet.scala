@@ -2,9 +2,9 @@ package fi.oph.koski.raportit
 
 import java.sql.{Date, ResultSet}
 import java.time.LocalDate
-
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import fi.oph.koski.schema.InternationalSchoolOpiskeluoikeus
@@ -14,11 +14,20 @@ import scala.concurrent.duration.DurationInt
 
 object PaallekkaisetOpiskeluoikeudet extends Logging {
 
-  def datasheet(oids: Seq[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, db: RaportointiDatabase) =
+  def datasheet(
+    oids: Seq[String],
+    aikaisintaan: LocalDate,
+    viimeistaan: LocalDate,
+    db: RaportointiDatabase
+  )(implicit t: LocalizationReader) =
     DataSheet(
-      title = "Päällekkäiset opiskeluoikeudet",
-      rows = db.runDbSync(query(oids, Date.valueOf(aikaisintaan), Date.valueOf(viimeistaan)).as[PaallekkaisetOpiskeluoikeudetRow], timeout = 5.minutes),
-      columnSettings
+      title = t.get("raportti-excel-paallekkaiset-opiskeluoikeudet-sheet-name"),
+      rows = db
+        .runDbSync(
+          query(oids, Date.valueOf(aikaisintaan), Date.valueOf(viimeistaan))
+            .as[PaallekkaisetOpiskeluoikeudetRow], timeout = 5.minutes
+        ),
+      columnSettings(t)
     )
 
   def createMaterializedView(s: Schema) =
@@ -146,71 +155,84 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       order by paallekkaiset_opiskeluoikeudet.oppilaitos_nimi
     """
 
-  implicit private val getResult: GetResult[PaallekkaisetOpiskeluoikeudetRow] = GetResult(r => {
-    val rs: ResultSet = r.rs
-    PaallekkaisetOpiskeluoikeudetRow(
-      oppijaOid = rs.getString("oppija_oid"),
-      opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
-      oppilaitosNimi = rs.getString("oppilaitos_nimi"),
-      koulutusmuoto = rs.getString("koulutusmuoto"),
-      alkamispaiva = r.getLocalDate("alkamispaiva"),
-      tilatParametrienSisalla = removeConsecutiveDuplicates(rs.getString("tilat_parametrien_sisalla")),
-      paattymispaiva = Option(r.getLocalDate("paattymispaiva")),
-      viimeisinTila = rs.getString("viimeisin_tila"),
-      rahoitusmuodot = Option(rs.getString("rahoitusmuodot")).map(removeConsecutiveDuplicates),
-      rahoitusmuodotParametrienSisalla = Option(rs.getString("rahoitusmuodot_osuu_parametreille")).map(removeConsecutiveDuplicates),
-      paallekkainenOpiskeluoikeusOid = rs.getString("paallekkainen_opiskeluoikeus_oid"),
-      paallekkainenOppilaitosNimi = rs.getString("paallekkainen_oppilaitos_nimi"),
-      paallekkainenKoulutusmuoto = rs.getString("paallekkainen_koulutusmuoto"),
-      paallekkainenSuoritusTyyppi = suorituksistaKaytettavaNimi(rs.getString("paallekkainen_paatason_suoritukset")),
-      paallekkainenTilatParametrienSisalla = Option(rs.getString("paallekkainen_tilat_parametrien_sisalla")).map(removeConsecutiveDuplicates),
-      paallekkainenViimeisinTila = rs.getString("paallekkainen_viimeisin_tila"),
-      paallekkainenAlkamispaiva = r.getLocalDate("paallekkainen_alkamispaiva"),
-      paallekkainenPaattymispaiva = Option(r.getLocalDate("paallekkainen_paattymispaiva")),
-      paallekkainenAlkanutEka = if (rs.getBoolean("sama_alkupaiva")) { "Sama alkamispäivä" } else { if (rs.getBoolean("paallekkainen_alkanut_eka")) "kyllä" else "ei" },
-      paallekkainenRahoitusmuodot = Option(rs.getString("paallekkainen_rahoitusmuodot")).map(removeConsecutiveDuplicates),
-      paallekkainenRahoitusmuodotParametrienSisalla = Option(rs.getString("paallekkainen_rahoitusmuodot_parametrien_sisalla")).map(removeConsecutiveDuplicates),
-      paallekkainenVoimassaParametrienSisalla = rs.getBoolean("paallekkainen_voimassa_aikajaksolla")
-    )
-  })
+  implicit private def getResult(implicit t: LocalizationReader): GetResult[PaallekkaisetOpiskeluoikeudetRow] = GetResult(
+    r => {
+      val rs: ResultSet = r.rs
+      PaallekkaisetOpiskeluoikeudetRow(
+        oppijaOid = rs.getString("oppija_oid"),
+        opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
+        oppilaitosNimi = rs.getString("oppilaitos_nimi"),
+        koulutusmuoto = rs.getString("koulutusmuoto"),
+        alkamispaiva = r.getLocalDate("alkamispaiva"),
+        tilatParametrienSisalla = removeConsecutiveDuplicates(rs.getString("tilat_parametrien_sisalla")),
+        paattymispaiva = Option(r.getLocalDate("paattymispaiva")),
+        viimeisinTila = rs.getString("viimeisin_tila"),
+        rahoitusmuodot = Option(rs.getString("rahoitusmuodot")).map(removeConsecutiveDuplicates),
+        rahoitusmuodotParametrienSisalla = Option(rs.getString("rahoitusmuodot_osuu_parametreille"))
+          .map(removeConsecutiveDuplicates),
+        paallekkainenOpiskeluoikeusOid = rs.getString("paallekkainen_opiskeluoikeus_oid"),
+        paallekkainenOppilaitosNimi = rs.getString("paallekkainen_oppilaitos_nimi"),
+        paallekkainenKoulutusmuoto = rs.getString("paallekkainen_koulutusmuoto"),
+        paallekkainenSuoritusTyyppi = suorituksistaKaytettavaNimi(rs.getString("paallekkainen_paatason_suoritukset"), t),
+        paallekkainenTilatParametrienSisalla = Option(rs.getString("paallekkainen_tilat_parametrien_sisalla"))
+          .map(removeConsecutiveDuplicates),
+        paallekkainenViimeisinTila = rs.getString("paallekkainen_viimeisin_tila"),
+        paallekkainenAlkamispaiva = r.getLocalDate("paallekkainen_alkamispaiva"),
+        paallekkainenPaattymispaiva = Option(r.getLocalDate("paallekkainen_paattymispaiva")),
+        paallekkainenAlkanutEka = if (rs.getBoolean("sama_alkupaiva")) {
+          t.get("raportti-excel-default-value-sama-alkamispäivä")
+        } else {
+          if (rs.getBoolean("paallekkainen_alkanut_eka")){ t.get("excel-export-default-value-kyllä") }
+          else { t.get("excel-export-default-value-ei") }
+        },
+        paallekkainenRahoitusmuodot = Option(rs.getString("paallekkainen_rahoitusmuodot"))
+          .map(removeConsecutiveDuplicates),
+        paallekkainenRahoitusmuodotParametrienSisalla = Option(rs
+          .getString("paallekkainen_rahoitusmuodot_parametrien_sisalla")
+        ).map(removeConsecutiveDuplicates),
+        paallekkainenVoimassaParametrienSisalla = rs.getBoolean("paallekkainen_voimassa_aikajaksolla")
+      )
+    }
+  )
 
   type SuorituksenTyyppi = String
   type KoulutusmoduuliKoodiarvo = String
-  def suorituksistaKaytettavaNimi(jsonb: String): String = {
+  def suorituksistaKaytettavaNimi(jsonb: String, t: LocalizationReader): String = {
     val suoritukset: List[(SuorituksenTyyppi, KoulutusmoduuliKoodiarvo)] = JsonSerializer.parse[List[List[String]]](jsonb).map(x => (x(0), x(1)))
-    val nimi = (suoritukset.head :: suoritukset).foldLeft[String](suoritukset.head._1) {
-      case (_, ("aikuistenperusopetuksenoppimaara", _)) => "Aikuisten perusopetuksen oppimäärä"
-      case (_, ("aikuistenperusopetuksenoppimaaranalkuvaihe", _)) => "Aikuisten perusopetuksen oppimäärä"
-      case (_, ("perusopetuksenoppiaineenoppimaara", _)) => "Perusopetuksen aineopiskelija"
-      case (_, ("ammatillinentutkintoosittainen", _)) => "Ammatillisen tutkinnon osa/osia"
-      case (_, ("ammatillinentutkinto", _)) => "Ammatillisen tutkinnon suoritus"
-      case ("Ammatillisen tutkinnon osa/osia", ("nayttotutkintoonvalmistavakoulutus", _)) => "Ammatillisen tutkinnon osa/osia"
-      case ("Ammatillisen tutkinnon suoritus", ("nayttotutkintoonvalmistavakoulutus", _)) => "Ammatillisen tutkinnon suoritus"
-      case (_, ("nayttotutkintoonvalmistavakoulutus", _)) => "Näyttötutkintoon valmistavan koulutuksen suoritus"
-      case (_, ("telma", _)) => "TELMA-koulutuksen suoritus"
-      case (_, ("valma", _)) => "VALMA-koulutuksen suoritus"
-      case (_, ("muuammatillinenkoulutus", _)) => "Muun ammatillisen koulutuksen suoritus"
-      case (_, ("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus", _)) => "Tutkinnon osaa pienimmistä kokonaisuuksista koostuva suoritus"
-      case (_, ("diatutkintovaihe", _ )) => "DIA-tutkinnon suoritus"
-      case (_, ("diavalmistavavaihe", _)) => "DIA-tutkinnon suoritus"
-      case (_, ("esiopetuksensuoritus", _)) => "Esiopetuksen suoritus"
-      case (_, ("ibtutkinto", _)) => "IB-tutkinnon suoritus"
-      case (_, ("preiboppimaara", _)) => "IB-tutkinnon suoritus"
+    val nimi = suoritukset.foldLeft[String](suoritukset.head._1) {
+      case (_, ("aikuistenperusopetuksenoppimaara", _)) => t.get("raportti-excel-default-value-aikuistenperusopetuksenoppimaara")
+      case (_, ("aikuistenperusopetuksenoppimaaranalkuvaihe", _)) => t.get("raportti-excel-default-value-aikuistenperusopetuksenoppimaara")
+      case (_, ("perusopetuksenoppiaineenoppimaara", _)) => t.get("raportti-excel-default-value-perusopetuksenaineopiskelija")
+      case (_, ("ammatillinentutkintoosittainen", _)) => t.get("raportti-excel-default-value-ammatillisenosia")
+      case (_, ("ammatillinentutkinto", _)) => t.get("raportti-excel-default-value-ammatillisensuoritus")
+      case (acc, ("nayttotutkintoonvalmistavakoulutus", _)) if acc == t.get("raportti-excel-default-value-ammatillisenosia") => acc
+      case (acc, ("nayttotutkintoonvalmistavakoulutus", _)) if acc == t.get("raportti-excel-default-value-ammatillisensuoritus") => acc
+      case (_, ("nayttotutkintoonvalmistavakoulutus", _)) => t.get("raportti-excel-default-value-näyttötutkintoonvalmistavansuoritus")
+      case (_, ("telma", _)) => t.get("raportti-excel-default-value-telmasuoritus")
+      case (_, ("valma", _)) => t.get("raportti-excel-default-value-valmasuoritus")
+      case (_, ("muuammatillinenkoulutus", _)) => t.get("raportti-excel-default-value-muuammatillinen")
+      case (_, ("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus", _)) => t.get("raportti-excel-default-value-tutkinnonosaapienemmistä")
+      case (_, ("diatutkintovaihe", _ )) => t.get("raportti-excel-default-value-diasuoritus")
+      case (_, ("diavalmistavavaihe", _)) => t.get("raportti-excel-default-value-diasuoritus")
+      case (_, ("esiopetuksensuoritus", _)) => t.get("raportti-excel-default-value-esiopetus")
+      case (_, ("ibtutkinto", _)) => t.get("raportti-excel-default-value-ibsuoritus")
+      case (_, ("preiboppimaara", _)) => t.get("raportti-excel-default-value-ibsuoritus")
       case (_, (suorituksenTyyppi, koodiarvo))
-        if InternationalSchoolOpiskeluoikeus.onLukiotaVastaavaInternationalSchoolinSuoritus(suorituksenTyyppi, koodiarvo) => "International school lukio"
-      case ("International school lukio", (_, _)) => "International school lukio"
+        if InternationalSchoolOpiskeluoikeus.onLukiotaVastaavaInternationalSchoolinSuoritus(suorituksenTyyppi, koodiarvo) => t.get("raportti-excel-default-value-intschoollukio")
+      case (acc, (_, _)) if acc == t.get("raportti-excel-default-value-intschoollukio") => acc
       case (_, (suorituksenTyyppi, koodiarvo))
-        if InternationalSchoolOpiskeluoikeus.onPeruskouluaVastaavaInternationalSchoolinSuoritus(suorituksenTyyppi, koodiarvo) => "International school perusopetus"
-      case (_, ("lukionoppiaineenoppimaara", _)) => "Lukion aineopiskelija"
-      case (_, ("lukionaineopinnot", _)) => "Lukion aineopiskelija"
-      case (_, ("lukionoppimaara", _)) => "Lukion oppimäärä"
-      case (_, ("luva", _)) => "Lukioon valmistavan koulutus (LUVA) suoritus"
-      case (_, ("perusopetukseenvalmistavaopetus", _)) => "Perusopetukseen valmistava suoritus"
-      case (_, ("perusopetuksenlisaopetus", _)) => "Perusopetuksen lisäopetus"
-      case (_, ("nuortenperusopetuksenoppiaineenoppimaara", _)) => "Perusopetuksen aineopiskelija"
-      case (_, ("perusopetuksenoppimaara", _)) => "Perusopetuksen oppimäärä"
-      case (_, ("perusopetuksenvuosiluokka", _)) => "Perusopetuksen oppimäärä"
-      case (_, ("vstoppivelvollisillesuunnattukoulutus", _)) => "Oppivelvollisille suunnattu vapaan sivistystyön koulutus"
+        if InternationalSchoolOpiskeluoikeus.onPeruskouluaVastaavaInternationalSchoolinSuoritus(suorituksenTyyppi, koodiarvo) => t.get("raportti-excel-default-value-intschoolperusopetus")
+      case (_, ("lukionoppiaineenoppimaara", _)) => t.get("raportti-excel-default-value-lukionaineopiskelija")
+      case (_, ("lukionaineopinnot", _)) => t.get("raportti-excel-default-value-lukionaineopiskelija")
+      case (_, ("lukionoppimaara", _)) => t.get("raportti-excel-default-value-lukionoppimäärä")
+      case (_, ("luva", _)) => t.get("raportti-excel-default-value-luva")
+      case (_, ("perusopetukseenvalmistavaopetus", _)) => t.get("raportti-excel-default-value-perusopetukseenvalmistava")
+      case (_, ("perusopetuksenlisaopetus", _)) => t.get("raportti-excel-default-value-perusopetuksenlisäopetus")
+      case (_, ("nuortenperusopetuksenoppiaineenoppimaara", _)) => t.get("raportti-excel-default-value-perusopetuksenaineopiskelija")
+      case (_, ("perusopetuksenoppimaara", _)) => t.get("raportti-excel-default-value-perusopetuksenoppimäärä")
+      case (_, ("perusopetuksenvuosiluokka", _)) => t.get("raportti-excel-default-value-perusopetuksenoppimäärä")
+      case (_, ("vstoppivelvollisillesuunnattukoulutus", _)) => t.get("raportti-excel-default-value-vst")
+      case (_, ("tuvakoulutuksensuoritus", _)) => t.get("raportti-excel-default-value-tuva")
       case (acc, (_, _)) => acc
     }
     if (nimi.forall(_.isLower)) logger.error(s"Unhandled suorituksen tyyppi $nimi. Raportin voi ladata, mutta päällekkäisen opiskeluoikeuden suorituksen nimenä käytettiin suorituksen tyyppiä")
@@ -220,32 +242,32 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   private def removeConsecutiveDuplicates(str: String) =
     str.split(",").foldRight(List.empty[String])((current, result) => if (result.headOption.contains(current)) result else current :: result).mkString(",")
 
-  val columnSettings = Columns.flattenGroupingColumns(Seq(
-    "Koulutuksen järjestäjän oma opiskeluoikeus" -> GroupColumnsWithTitle(List(
-      "oppijaOid" -> Column("Oppijanumero"),
-      "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
-      "oppilaitosNimi" -> Column("Oppilaitoksen nimi"),
-      "koulutusmuoto" -> Column("Koulutusmuoto"),
-      "alkamispaiva" -> Column("Opiskeluoikeuden alkamispäivä"),
-      "paattymispaiva" -> Column("Opiskeluoikeuden päättymispäivä"),
-      "tilatParametrienSisalla" -> Column("Opiskeluoikeuden tilat valitun aikajakson sisällä", comment = Some("Kaikki opiskeluoikeuden tilat tulostusparametreissa määritellyn aikajakson sisällä. Tilat erotettu toisistaan pilkulla ja järjestetty krononologisesti. Esimerkiksi, jos opiskeluoikeudella on tulostusparametreissa määritellyn aikajakson aikana ollut kaksi läsnäolojaksoa, joiden välissä on väliaikainen keskeytys, kentässä on arvo \"lasna,valiaikaisestikeskeytynyt,lasna\".")),
-      "viimeisinTila" -> Column("Opiskeluoikeuden viimeisin tila", comment = Some("Opiskeluoikeuden tila raportin tulostuspäivänä, eli opiskeluoikeuden tila \"tänään\".")),
-      "rahoitusmuodot" -> Column("Opiskeluoikeuden rahoitusmuodot", comment = Some("Jokaiselle opiskeluoikeuden tilajaksolle merkityt rahoitusmuodot riippumatta siitä, osuvatko tilat tulostusparametreissa määritellyn aikajakson sisään. Rahoitusmuodot erotettu toisistaan pilkulla ja järjestetty kronologisesti. Sellainen tilajakso, josta ei löydy rahoitusmuotoa ilmaistaan merkillä \"-\". Jos siis opiskeluoikeudella on valtionosuusrahoitteinen \"Läsnä\"-tila sekä väliaikainen keskeytys ilman rahoitusmuotoa, kentässä on arvo \"1,-\". HUOM! Kaikissa opiskeluoikeuksissa (esim. perusopetus, esiopetus) tieto rahoitusmuodosta ei ole relevantti.")),
-      "rahoitusmuodotParametrienSisalla" -> Column("Opiskeluoikeuden rahoitusmuodot valitulla ajanjaksolla", comment = Some("Sarakkeessa näytetään opiskeluoikeudella raporttiin valitulla aikajaksolla käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
+  def columnSettings(t: LocalizationReader) = Columns.flattenGroupingColumns(Seq(
+    t.get("raportti-excel-kolumni-koulutuksenJärjestäjänOpiskeluoikeus") -> GroupColumnsWithTitle(List(
+      "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
+      "oppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+      "koulutusmuoto" -> Column(t.get("raportti-excel-kolumni-koulutusmuoto")),
+      "alkamispaiva" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
+      "paattymispaiva" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
+      "tilatParametrienSisalla" -> Column(t.get("raportti-excel-kolumni-tilatParametrienSisalla"), comment = Some(t.get("raportti-excel-kolumni-tilatParametrienSisalla-comment"))),
+      "viimeisinTila" -> Column(t.get("raportti-excel-kolumni-viimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-viimeisinTila-comment"))),
+      "rahoitusmuodot" -> Column(t.get("raportti-excel-kolumni-oo-rahoitusmuodot"), comment = Some(t.get("raportti-excel-kolumni-oo-rahoitusmuodot-comment"))),
+      "rahoitusmuodotParametrienSisalla" -> Column(t.get("raportti-excel-kolumni-rahoitusmuodotParametrienSisalla"), comment = Some(t.get("raportti-excel-kolumni-rahoitusmuodotParametrienSisalla-comment"))),
     )),
-    "Päällekkäinen opiskeluoikeus" -> GroupColumnsWithTitle(List(
-      "paallekkainenOpiskeluoikeusOid" -> Column("Päällekkäisen opiskeluoikeuden oid"),
-      "paallekkainenOppilaitosNimi" -> Column("Päällekkäisen opiskeluoikeuden oppilaitoksen nimi"),
-      "paallekkainenKoulutusmuoto" -> Column("Päällekkäisen opiskeluoikeuden koulutusmuoto"),
-      "paallekkainenSuoritusTyyppi" -> Column("Päällekkäisen opiskeluoikeuden suorituksen tyyppi", comment = Some("Tieto siitä millaista tutkintoa/millaisia opintoja oppija suorittaa päällekkäisen opiskeluoikeuden sisällä.")),
-      "paallekkainenViimeisinTila" -> Column("Päällekkäisen opiskeluoikeuden viimeisin tila", comment = Some("Päällekkäisen opiskeluoikeuden tila raportin tulostuspäivänä, eli päällekkäisen opiskeluoikeuden tila \"tänään\".")),
-      "paallekkainenAlkamispaiva" -> Column("Päällekkäisen opiskeluoikeuden alkamispäivä"),
-      "paallekkainenPaattymispaiva" -> Column("Päällekkäisen opiskeluoikeuden päättymispäivä"),
-      "paallekkainenTilatParametrienSisalla" -> Column("Päällekkäisen opiskeluoikeuden tilat valitun aikajakson sisällä", comment = Some("Kaikki päällekkäisen opiskeluoikeuden tilat tulostusparametreissa määritellyn aikajakson sisällä. Tilat erotettu toisistaan pilkulla ja järjestetty krononologisesti. Esimerkiksi, jos päällekkäisellä opiskeluoikeudella on tulostusparametreissa määritellyn aikajakson aikana ollut kaksi läsnäolojaksoa, joiden välissä on väliaikainen keskeytys, kentässä on arvo \"lasna,valiaikaisestikeskeytynyt,lasna\".")),
-      "paallekkainenAlkanutEka" -> Column("Päällekkäinen opiskeluoikeus alkanut ensin", comment = Some("Onko päällekkäinen opiskeluoikeus alkanut ennen vertailtavana olevaa, koulutuksen järjestäjän omaa opiskeluoikeutta?")),
-      "paallekkainenRahoitusmuodot" -> Column("Päällekkäisen opiskeluoikeuden rahoitusmuodot", comment = Some("Jokaiselle päällekkäisen opiskeluoikeuden tilajaksolle merkityt rahoitusmuodot riippumatta siitä, osuvatko tilat tulostusparametreissa määritellyn aikajakson sisään. Rahoitusmuodot erotettu toisistaan pilkulla ja järjestetty kronologisesti. Sellainen tilajakso, josta ei löydy rahoitusmuotoa ilmaistaan merkillä \"-\". Jos siis päällekkäisellä opiskeluoikeudella on valtionosuusrahoitteinen \"Läsnä\"-tila sekä väliaikainen keskeytys ilman rahoitusmuotoa, kentässä on arvo \"1,-\". HUOM! Kaikissa opiskeluoikeuksissa (esim. perusopetus, esiopetus) tieto rahoitusmuodosta ei ole relevantti.")),
-      "paallekkainenRahoitusmuodotParametrienSisalla" -> Column("Päällekkäisen opiskeluoikeuden rahoitusmuodot valitulla aikajaksolla", comment = Some("Rahoitusmuodot niistä päällekkäisen opiskeluoikeuden tilajaksoista, jotka osuvat tulostusparametreissa määritellyn aikajakson sisään. Rahoitusmuodot erotettu toisistaan pilkulla ja järjestetty kronologisesti (eli samassa järjestyksessä kuin rahoitusmuotoa vastaavat tilat sarakkeessa \"Opiskeluoikeuden tilat valitun aikajakson sisällä\"). Sellainen tilajakso, josta ei löydy rahoitusmuotoa ilmaistaan merkillä \"-\". Jos siis päällekkäisellä opiskeluoikeudella on valitulla aikajaksolla valtionosuusrahoitteinen \"Läsnä\"-tila sekä väliaikainen keskeytys ilman rahoitusmuotoa, kentässä on arvo \"1,-\". HUOM! Kaikissa opiskeluoikeuksissa (esim. perusopetus, esiopetus) tieto rahoitusmuodosta ei ole relevantti.")),
-      "paallekkainenVoimassaParametrienSisalla" -> Column("Päällekkäinen opiskeluoikeus aktiviinen valitulla aikajaksolla", comment = Some("Tieto siitä, onko päällekkäinen opiskeluoikeus ollut vähintään päivän voimassa tulostusparametreisssa valitun aikajakson sisällä. Myös opiskeluoikeuden päättymispäivä lasketaan opiskeluoikeuden päättävästä tilasta huolimatta."))
+    t.get("raportti-excel-kolumni-päällekkäinenOpiskeluoikeus") -> GroupColumnsWithTitle(List(
+      "paallekkainenOpiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-paallekkainenOpiskeluoikeusOid")),
+      "paallekkainenOppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-paallekkainenOppilaitosNimi")),
+      "paallekkainenKoulutusmuoto" -> Column(t.get("raportti-excel-kolumni-paallekkainenKoulutusmuoto")),
+      "paallekkainenSuoritusTyyppi" -> Column(t.get("raportti-excel-kolumni-paallekkainenSuoritusTyyppi"), comment = Some(t.get("raportti-excel-kolumni-paallekkainenSuoritusTyyppi-comment"))),
+      "paallekkainenViimeisinTila" -> Column(t.get("raportti-excel-kolumni-paallekkainenViimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-paallekkainenViimeisinTila-comment"))),
+      "paallekkainenAlkamispaiva" -> Column(t.get("raportti-excel-kolumni-paallekkainenAlkamispaiva")),
+      "paallekkainenPaattymispaiva" -> Column(t.get("raportti-excel-kolumni-paallekkainenPaattymispaiva")),
+      "paallekkainenTilatParametrienSisalla" -> Column(t.get("raportti-excel-kolumni-paallekkainenTilatParametrienSisalla"), comment = Some(t.get("raportti-excel-kolumni-paallekkainenTilatParametrienSisalla-comment"))),
+      "paallekkainenAlkanutEka" -> Column(t.get("raportti-excel-kolumni-paallekkainenAlkanutEka"), comment = Some(t.get("raportti-excel-kolumni-paallekkainenAlkanutEka-comment"))),
+      "paallekkainenRahoitusmuodot" -> Column(t.get("raportti-excel-kolumni-paallekkainenRahoitusmuodot"), comment = Some(t.get("raportti-excel-kolumni-paallekkainenRahoitusmuodot-comment"))),
+      "paallekkainenRahoitusmuodotParametrienSisalla" -> Column(t.get("raportti-excel-kolumni-paallekkainenRahoitusmuodotParametrienSisalla"), comment = Some(t.get("raportti-excel-kolumni-paallekkainenRahoitusmuodotParametrienSisalla-comment"))),
+      "paallekkainenVoimassaParametrienSisalla" -> Column(t.get("raportti-excel-kolumni-paallekkainenVoimassaParametrienSisalla"), comment = Some(t.get("raportti-excel-kolumni-paallekkainenVoimassaParametrienSisalla-comment")))
     ))
   ))
 }

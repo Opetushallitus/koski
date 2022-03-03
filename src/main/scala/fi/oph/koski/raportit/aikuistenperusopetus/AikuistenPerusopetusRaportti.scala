@@ -89,6 +89,13 @@ object AikuistenPerusopetusRaportti {
       case _ => Left(s"${typeName} on epäkelpo aikuisten perusopetuksen raportin tyyppi")
     }
   }
+
+  def raporttiTypeLokalisoitu(typeName: String, t: LocalizationReader): String = typeName match {
+    case "alkuvaihe" => t.get("raportti-excel-aikuistenperusopetus-alkuvaihe-type")
+    case "päättövaihe" => t.get("raportti-excel-aikuistenperusopetus-päättövaihe-type")
+    case "oppiaineenoppimäärä" => t.get("raportti-excel-aikuistenperusopetus-oppiaineenoppimäärä-type")
+    case _ => typeName
+  }
 }
 
 case class AikuistenPerusopetusRaportti(
