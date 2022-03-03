@@ -13,6 +13,7 @@ object ValpasErrorCategory {
       val epävalidiHenkilöhakutermi = subcategory("epävalidiHenkilöhakutermi", "Hakutermi ei ollut validi suomalainen henkilötunnus tai oppijatunnus")
       val jsonSchema = subcategory("jsonSchema", "JSON-schema -validointi epäonnistui. Paluuviestin sisällä virheilmoitukset JSON-muodossa.")
       val epävalidiUuid = subcategory("epävalidiUuid", "UUID ei ollut validi")
+      val virheellinenPäivämäärä = subcategory("virheellinenPäivämäärä", "Virheellinen päivämäärä")
     }
     val validation = new Validation
     val requestTooLarge = subcategory("requestTooLarge", "Liian suuri kysely")

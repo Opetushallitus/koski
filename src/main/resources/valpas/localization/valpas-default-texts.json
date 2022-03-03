@@ -158,6 +158,8 @@
   "ovkeskeytys__tallenna_btn": "Tallenna korjaukset",
   "ovkeskeytys__poista_btn": "Poista virheellinen keskeytys",
   "ovkeskeytys__poista_varmistus": "Haluatko varmasti poistaa oppijan {{oppija}} oppivelvollisuuden keskeytyksen {{aikaväli}}?",
+  "ovkeskeytys__validaatio_alku_ja_loppupäivä": "Alkamispäivä ei voi olla loppumispäivän jälkeen",
+  "ovkeskeytys__validaatio_alkupäivä": "Alkamispäivä ei voi olla ennen {{pvm}}",
   "kayttooikeusrooli_OPPILAITOS_HAKEUTUMINEN": "Oppilaitoksen hakeutumisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_SUORITTAMINEN": "Oppilaitoksen oppivelvollisuuden suorittamisen valvonta",
   "kayttooikeusrooli_OPPILAITOS_MAKSUTTOMUUS": "Oppilaitoksen opiskelun maksuttomuustietojen määrittely",

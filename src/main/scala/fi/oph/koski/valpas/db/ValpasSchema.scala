@@ -1,9 +1,15 @@
 package fi.oph.koski.valpas.db
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
+import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
+import fi.oph.koski.valpas.ValpasErrorCategory
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import org.json4s.JValue
+
 import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID
 
@@ -132,21 +138,7 @@ object ValpasSchema extends Logging {
     tekijäOid: String,
     tekijäOrganisaatioOid: String,
     peruttu: Boolean = false,
-  ) {
-    def asOppivelvollisuudenKeskeytyshistoriaRow(tekijäOid: String): OppivelvollisuudenKeskeytyshistoriaRow =
-      OppivelvollisuudenKeskeytyshistoriaRow(
-        ovKeskeytysUuid = this.uuid,
-        muutosTehty = LocalDateTime.now(),
-        muutoksenTekijä = tekijäOid,
-        oppijaOid = this.oppijaOid,
-        alku = this.alku,
-        loppu = this.loppu,
-        luotu = this.luotu,
-        tekijäOid = this.tekijäOid,
-        tekijäOrganisaatioOid = this.tekijäOrganisaatioOid,
-        peruttu = this.peruttu,
-      )
-  }
+  )
 
   val OppivelvollisuudenKeskeytys = TableQuery[OppivelvollisuudenKeskeytysTable]
 

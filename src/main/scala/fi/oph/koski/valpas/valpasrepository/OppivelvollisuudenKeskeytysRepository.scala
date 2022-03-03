@@ -10,7 +10,7 @@ import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.db.ValpasSchema.{OppivelvollisuudenKeskeytys, OppivelvollisuudenKeskeytysRow, OppivelvollisuudenKeskeytyshistoria, OppivelvollisuudenKeskeytyshistoriaRow}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID
 
 class OppivelvollisuudenKeskeytysRepository(database: ValpasDatabase, config: Config) extends QueryMethods with Logging {
@@ -34,12 +34,12 @@ class OppivelvollisuudenKeskeytysRepository(database: ValpasDatabase, config: Co
     )
   }
 
-  def setKeskeytys(row: OppivelvollisuudenKeskeytysRow): Option[OppivelvollisuudenKeskeytysRow] = {
+  def setKeskeytys(row: OppivelvollisuudenKeskeytysRow): Either[HttpStatus, OppivelvollisuudenKeskeytysRow] = {
     runDbSync(
       OppivelvollisuudenKeskeytys
         .returning(OppivelvollisuudenKeskeytys)
         .insertOrUpdate(row)
-    )
+    ).toRight(ValpasErrorCategory.internalError())
   }
 
   def updateKeskeytys(keskeytys: OppivelvollisuudenKeskeytyksenMuutos): Either[HttpStatus, OppivelvollisuudenKeskeytysRow] = {
@@ -63,7 +63,18 @@ class OppivelvollisuudenKeskeytysRepository(database: ValpasDatabase, config: Co
   }
 
   def addToHistory(tekijäOid: String)(row: OppivelvollisuudenKeskeytysRow): Unit = {
-    runDbSync(OppivelvollisuudenKeskeytyshistoria += row.asOppivelvollisuudenKeskeytyshistoriaRow(tekijäOid))
+    runDbSync(OppivelvollisuudenKeskeytyshistoria += OppivelvollisuudenKeskeytyshistoriaRow(
+      ovKeskeytysUuid = row.uuid,
+      muutosTehty = LocalDateTime.now(),
+      muutoksenTekijä = tekijäOid,
+      oppijaOid = row.oppijaOid,
+      alku = row.alku,
+      loppu = row.loppu,
+      luotu = row.luotu,
+      tekijäOid = row.tekijäOid,
+      tekijäOrganisaatioOid = row.tekijäOrganisaatioOid,
+      peruttu = row.peruttu,
+    ))
   }
 
   def getHistory(ovKeskeytysUuid: UUID): Seq[OppivelvollisuudenKeskeytyshistoriaRow] = {
@@ -76,6 +87,7 @@ class OppivelvollisuudenKeskeytysRepository(database: ValpasDatabase, config: Co
 
   def truncate(): Unit = {
     if (config.getString("opintopolku.virkailija.url") == "mock") {
+      runDbSync(OppivelvollisuudenKeskeytyshistoria.delete)
       runDbSync(OppivelvollisuudenKeskeytys.delete)
     } else {
       throw new RuntimeException("Oppivelvollisuuden keskeytyksiä ei voi tyhjentää tuotantotilassa")

@@ -28,6 +28,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       currentFixtureState = fixtureState
       fixtureState.resetFixtures
       application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
+      application.valpasLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.tiedonsiirtoService.index.deleteAll()
 
       if (reloadRaportointikanta) {

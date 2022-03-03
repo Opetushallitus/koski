@@ -456,15 +456,12 @@ class ValpasOppijaService(
     (keskeytys: UusiOppivelvollisuudenKeskeytys)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppivelvollisuudenKeskeytys] = {
-    accessResolver
-      .assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
-      .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid))
-      .flatMap(accessResolver.withOppijaAccess(_))
-      .flatMap(_ =>
-        ovKeskeytysService
-          .create(keskeytys)
-          .toRight(ValpasErrorCategory.internalError("Oppivelvollisuuden keskeytyksen lisääminen epäonnistui"))
-      )
+    for {
+      saaTehdäIlmoituksen <- accessResolver.assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
+      oppija              <- getOppijaLaajatTiedot(keskeytys.oppijaOid)
+      onOikeusOppijaan    <- accessResolver.withOppijaAccess(oppija)
+      ovKeskeytys         <- ovKeskeytysService.create(keskeytys)
+    } yield ovKeskeytys
   }
 
   def updateOppivelvollisuudenKeskeytys
