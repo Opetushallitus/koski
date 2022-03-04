@@ -35,7 +35,8 @@ object KoskiTables {
 
 
     def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty, suoritustyypit, poistettu) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
-    def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä, suoritustyypit, poistettu)
+    def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä, suoritustyypit)
+    def updateableFieldsPoisto = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritustyypit, poistettu)
   }
 
   object OpiskeluoikeusTable {
@@ -78,7 +79,7 @@ object KoskiTables {
       SchemaValidatingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](readAsJValue(data, oid, versionumero, aikaleima))
     }
 
-    def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int, poistettu: Boolean) = {
+    def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int) = {
       val data = serialize(opiskeluoikeus)
 
       (data,
@@ -91,8 +92,8 @@ object KoskiTables {
        opiskeluoikeus.mitätöity,
        Date.valueOf(opiskeluoikeus.alkamispäivä.get),
        opiskeluoikeus.päättymispäivä.map(Date.valueOf),
-       opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo),
-       poistettu)
+       opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)
+      )
     }
   }
 

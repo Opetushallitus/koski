@@ -54,7 +54,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   }
 
   private def opiskeluoikeudenPoistonQuery(oid: String): dbio.DBIOAction[Int, NoStream, Write] = {
-    KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.updateableFields).update((JObject.apply(), 0, None, None, None, None, "", true, Date.valueOf(LocalDate.now()), None, List(), true))
+    KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.updateableFieldsPoisto).update((JObject.apply(), 0, None, None, None, None, "", true, "", Date.valueOf(LocalDate.now()), None, List(), true))
   }
 
   private def opiskeluoikeudenHistorianPoistonQuery(id: Int): dbio.DBIOAction[Int, NoStream, Write] = {
