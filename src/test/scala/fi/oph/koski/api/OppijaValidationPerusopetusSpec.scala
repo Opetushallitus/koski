@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
 import fi.oph.koski.documentation.ExamplesPerusopetus.erityisenTuenPäätös
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
@@ -526,6 +526,21 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       val tallennettuna = putAndGetOpiskeluoikeus(oo)
 
       tallennettuna.suoritukset.head.asInstanceOf[PerusopetuksenVuosiluokanSuoritus].osaAikainenErityisopetus should equal (None)
+    }
+  }
+
+  "Opiskeluoikeuden päättymispäivä on vuosiluokaan suorituksen alkamispäivää ennen -> HTTP 400" in {
+    putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      suoritukset = List(
+        yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2017, 1, 2)),
+          vahvistus = None
+      )),
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 1, 1), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2017, 1, 1), opiskeluoikeusKatsotaanEronneeksi)
+      ))
+    )) {
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää("Perusopetuksen opiskeluoikeuden päättymispäivä ei voi olla vuosiluokan suorituksen alkamispäivää ennen"))
     }
   }
 
