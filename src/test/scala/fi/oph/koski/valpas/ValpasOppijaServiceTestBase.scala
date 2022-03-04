@@ -1,13 +1,12 @@
 package fi.oph.koski.valpas
 
 import java.time.LocalDateTime
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{InternationalSchoolOpiskeluoikeus, InternationalSchoolVuosiluokanSuoritus, KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
-import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
+import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot}
 import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedot
@@ -235,7 +234,7 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
         oo.suoritukset.flatMap({
           case p: PerusopetuksenVuosiluokanSuoritus => Some(p)
           case _ => None
-        }).sortBy(s => s.alkamispäivä)(localDateOptionOrdering).reverse.headOption.map(r => r.luokka)
+        }).sortBy(s => s.alkamispäivä).reverse.headOption.map(r => r.luokka)
       case oo: PerusopetuksenLisäopetuksenOpiskeluoikeus =>
         oo.suoritukset.flatMap({
           case p: PerusopetuksenLisäopetuksenSuoritus => Some(p)
