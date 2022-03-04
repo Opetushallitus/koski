@@ -782,8 +782,6 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       LEFT JOIN valpastila valpastila_viimeisin
         ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
       -- Haetaan päätason suoritus, jonka dataa halutaan näyttää (toistaiseksi valitaan alkamispäivän perusteella uusin)
-      -- TODO: Ei välttämättä osu oikeaan, koska voi olla esim. monen eri tyyppisiä peruskoulun päätason suorituksia,
-      -- ja pitäisi oikeasti filteröidä myös tyypin perusteella.
       -- TODO: Voisi toteuttaa tutkittavan ajanhetken tarkistuksen tähänkin, että näytetään luokkatieto sen mukaan,
       -- millä luokalla on ollut tutkittavalla ajanhetkellä. Menneisyyden tarkastelulle tällä tarkkuudella ei
       -- kuitenkaan ole toistaiseksi ilmennyt tarvetta.
