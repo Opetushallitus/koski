@@ -17,7 +17,7 @@
     <scalatra.version>2.8.2</scalatra.version>
     <http4s.version>0.23.4</http4s.version>
     <json4s.version>4.0.4</json4s.version>
-    <awssdk.version>2.17.120</awssdk.version>
+    <awssdk.version>2.17.127</awssdk.version>
     <jetty.version>9.4.44.v20210927</jetty.version>
     <prometheus.client.version>0.14.1</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
