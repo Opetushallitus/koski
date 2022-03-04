@@ -6,7 +6,7 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.documentation.VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, MockUsers}
-import fi.oph.koski.koskiuser.MockUsers.varsinaisSuomiPalvelukäyttäjä
+import fi.oph.koski.koskiuser.MockUsers.{paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet, varsinaisSuomiPalvelukäyttäjä}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeus
 import org.scalatest.BeforeAndAfterAll
@@ -94,6 +94,19 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
 
       putOpiskeluoikeus(oo, henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.suostumusPeruttu())
+      }
+    }
+
+    "Koskeen ei voi päivittää oidin kautta samaa opiskeluoikeutta, joka on jo poistettu" in {
+      resetFixtures()
+      post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu)) {}
+
+      val oo = defaultOpiskeluoikeus.copy(
+        oid = Some(vapaatavoitteinenOpiskeluoikeusOid)
+      )
+
+      putOpiskeluoikeus(oo, henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus, headers = authHeaders(paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet) ++ jsonContent) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia(s"Opiskeluoikeutta ${vapaatavoitteinenOpiskeluoikeusOid} ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
       }
     }
 
