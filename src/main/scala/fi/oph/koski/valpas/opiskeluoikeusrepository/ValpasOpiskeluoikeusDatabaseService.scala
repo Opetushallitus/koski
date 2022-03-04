@@ -814,7 +814,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
             WHEN (pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka') THEN 1
             WHEN (pts.suorituksen_tyyppi = 'perusopetuksenoppimaara') THEN 2
           END,
-          pts.data->>'alkamispäivä' DESC
+          pts.data->>'alkamispäivä' DESC NULLS LAST
         LIMIT 1
       ) AS valittu_paatason_suoritus
   )
