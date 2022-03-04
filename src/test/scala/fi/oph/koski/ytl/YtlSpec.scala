@@ -1,7 +1,7 @@
 package fi.oph.koski.ytl
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.api.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesLukio2019}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.KoskiErrorCategory
@@ -19,6 +19,7 @@ class YtlSpec
   extends AnyFreeSpec
     with KoskiHttpSpec
     with OpiskeluoikeusTestMethodsAmmatillinen
+    with OpiskeluoikeudenMitätöintiJaPoistoTestMethods
     with Matchers
     with BeforeAndAfterAll {
 
@@ -741,9 +742,6 @@ class YtlSpec
       JsonSerializer.writeWithRoot(YtlBulkRequest(oidit = oidit, hetut = hetut, opiskeluoikeuksiaMuuttunutJälkeen = opiskeluoikeuksiaMuuttunutJälkeen.map(_.format(ISO_INSTANT)))),
       headers = authHeaders(user) ++ jsonContent
     )(f)
-  }
-  private def mitätöiOpiskeluoikeus(oid: String, user: UserWithPassword = defaultUser) = {
-    delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(user))(verifyResponseStatusOk())
   }
 
   private def expectedMaksuttomuuttaPidennetty2(opiskeluoikeusOidit: Seq[String], aikaleimat: Seq[String]) =

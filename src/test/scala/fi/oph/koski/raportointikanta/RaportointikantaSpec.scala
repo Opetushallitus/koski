@@ -1,6 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
+import fi.oph.koski.api.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
@@ -29,7 +29,8 @@ class RaportointikantaSpec
     with OpiskeluoikeusTestMethodsAmmatillinen
     with RaportointikantaTestMethods
     with DatabaseTestMethods
-    with DirtiesFixtures {
+    with DirtiesFixtures
+    with OpiskeluoikeudenMitätöintiJaPoistoTestMethods {
 
   override protected def alterFixture(): Unit = {
     createOrUpdate(KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
@@ -474,19 +475,19 @@ class RaportointikantaSpec
   }
 
   "Mitätöityjen opiskeluoikeuksien lataus" - {
-    "Kaikki mitätöidyt opiskeluoikeudet ladataan erilliseen tauluun" in {
-      val mitätöidytKoskessa = runDbSync(
-        OpiskeluOikeudet.filter(_.mitätöity).sortBy(_.oid).result
+    "Kaikki mitätöidyt poistamattomat opiskeluoikeudet ladataan erilliseen tauluun" in {
+      val mitätöidytPoistamattomatKoskessa = runDbSync(
+        OpiskeluOikeudet.filter(_.mitätöity).filterNot(_.poistettu).sortBy(_.oid).result
       )
       val mitätöidytRaportointikannassa = mainRaportointiDb.runDbSync(
         mainRaportointiDb.RMitätöidytOpiskeluoikeudet.sortBy(_.opiskeluoikeusOid).result
       )
       val mitätöintipäivä = LocalDate.now()
 
-      mitätöidytRaportointikannassa.length should equal(mitätöidytKoskessa.length)
+      mitätöidytRaportointikannassa.length should equal(mitätöidytPoistamattomatKoskessa.length)
 
       mitätöidytRaportointikannassa should equal(
-        (mitätöidytKoskessa zip mitätöidytRaportointikannassa).map(t => RMitätöityOpiskeluoikeusRow(
+        (mitätöidytPoistamattomatKoskessa zip mitätöidytRaportointikannassa).map(t => RMitätöityOpiskeluoikeusRow(
           opiskeluoikeusOid = t._1.oid,
           versionumero = t._1.versionumero,
           aikaleima = t._1.aikaleima,
@@ -523,16 +524,14 @@ class RaportointikantaSpec
 
       val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
 
-      val ensimmäinenMitätöimätönOpiskeluoikeusOidIdJärjestyksessä = runDbSync(
-        OpiskeluOikeudet.filterNot(_.mitätöity).sortBy(_.id).result
-      ).head.oid
+      val ensimmäinenMitätöimätönOpiskeluoikeusOidIdJärjestyksessä: String = ensimmäinenMitätöitävissäolevaOpiskeluoikeusIdJärjestyksessä.oid
 
       val loadResult = KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false, pageSize = 10, onAfterPage = (page, batch) => {
         if (page == 0) {
           // Varmista, että mitätöitävä opiskeluoikeus oli tällä sivulla
           batch.exists(_.oid == ensimmäinenMitätöimätönOpiskeluoikeusOidIdJärjestyksessä) should be(true)
 
-          mitätöiOpiskeluoikeus(ensimmäinenMitätöimätönOpiskeluoikeusOidIdJärjestyksessä)
+          mitätöiOpiskeluoikeus(ensimmäinenMitätöimätönOpiskeluoikeusOidIdJärjestyksessä, MockUsers.paakayttaja)
         }
       })
       loadResult should be(true)
@@ -548,6 +547,45 @@ class RaportointikantaSpec
       opiskeluoikeusOiditRaportointikannassa should contain(ensimmäinenMitätöimätönOpiskeluoikeusOidIdJärjestyksessä)
     }
 
+    "Jo ladatun opiskeluoikeuden poisto kesken latauksen ei vaikuta lopputulokseen" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+
+      val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
+
+      val ensimmäinenVSTVapaatavoitteinenOpiskeluoikeusIdJärjestyksessä = ensimmäinenPoistettavissaolevaOpiskeluoikeusIdJärjestyksessä
+
+      val poistettavaOpiskeluoikeusOid = ensimmäinenVSTVapaatavoitteinenOpiskeluoikeusIdJärjestyksessä.oid
+      val poistettavaOppijaOid = ensimmäinenVSTVapaatavoitteinenOpiskeluoikeusIdJärjestyksessä.oppijaOid
+
+      var poistettavanVSTnSivu = -2
+      var käytiinSeuraavallaDataaSisältävälläSivulla = false
+
+      val loadResult = KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false, pageSize = 10, onAfterPage = (page, batch) => {
+          if (batch.exists(_.oid == poistettavaOpiskeluoikeusOid)) {
+            poistettavanVSTnSivu = page
+
+            poistaOpiskeluoikeus(poistettavaOppijaOid, poistettavaOpiskeluoikeusOid)
+          }
+
+          if (page == (poistettavanVSTnSivu + 1) && batch.length > 0) {
+            käytiinSeuraavallaDataaSisältävälläSivulla = true
+          }
+      })
+      loadResult should be(true)
+
+      Wait.until(isLoading)
+      Wait.until(loadComplete)
+
+      käytiinSeuraavallaDataaSisältävälläSivulla should be(true)
+
+      opiskeluoikeusCount should be(alkuperäinenOpiskeluoikeusCount)
+
+      val opiskeluoikeusOiditRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.map(_.opiskeluoikeusOid).result
+      )
+
+      opiskeluoikeusOiditRaportointikannassa should contain(ensimmäinenVSTVapaatavoitteinenOpiskeluoikeusIdJärjestyksessä.oid)
+    }
   }
 
   private def opiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROpiskeluoikeudet.length.result)
@@ -561,10 +599,6 @@ class RaportointikantaSpec
 
   private def getLoadStartedTime: Timestamp = authGet("api/raportointikanta/status") {
     JsonSerializer.extract[Timestamp](JsonMethods.parse(body) \ "etl" \ "startedTime")
-  }
-
-  private def mitätöiOpiskeluoikeus(oid: String) = {
-    delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(MockUsers.paakayttaja))(verifyResponseStatusOk())
   }
 }
 

@@ -59,6 +59,19 @@ object MockUsers {
     Seq(ilmanLuottamuksellisiaTietoja(omnia), ilmanLuottamuksellisiaTietoja(jyväskylänNormaalikoulu))
   )
 
+  val paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet = KoskiMockUser(
+    "käyttäjä",
+    "mikko",
+    "1.2.246.562.24.99999999987",
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid,
+      ophPääkäyttäjä.kayttooikeudet ++
+        List(
+          PalveluJaOikeus("KOSKI", Rooli.MITATOIDYT_OPISKELUOIKEUDET),
+          PalveluJaOikeus("KOSKI", Rooli.POISTETUT_OPISKELUOIKEUDET)
+        )
+    ))
+  )
+
   val paakayttajaMitatoidytOpiskeluoikeudet = KoskiMockUser(
     "käyttäjä",
     "mikko",
@@ -413,6 +426,7 @@ object MockUsers {
     omniaPääkäyttäjä,
     paakayttaja,
     paakayttajaMitatoidytOpiskeluoikeudet,
+    paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet,
     viranomainen,
     helsinginKaupunkiPalvelukäyttäjä,
     helsinginKaupunkiEsiopetus,

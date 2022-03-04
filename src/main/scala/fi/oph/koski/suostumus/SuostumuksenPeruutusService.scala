@@ -2,17 +2,17 @@ package fi.oph.koski.suostumus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiTables, PoistettuOpiskeluoikeusRow, QueryMethods}
-import fi.oph.koski.henkilo.{HenkilönTunnisteet, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.KoskiOperation.LOGIN
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, KoskiOperation, Logging}
 import fi.oph.koski.schema.{Opiskeluoikeus, SuostumusPeruttavissaOpiskeluoikeudelta}
 import slick.dbio
 import slick.dbio.Effect.Write
+import org.json4s._
 
 import java.sql.{Date, Timestamp}
-import java.time.Instant
+import java.time.{Instant, LocalDate}
 
 case class SuostumuksenPeruutusService(protected val application: KoskiApplication) extends Logging with QueryMethods {
   import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -54,7 +54,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   }
 
   private def opiskeluoikeudenPoistonQuery(oid: String): dbio.DBIOAction[Int, NoStream, Write] = {
-    KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).delete
+    KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.updateableFieldsPoisto).update((JObject.apply(), 0, None, None, None, None, "", true, "", Date.valueOf(LocalDate.now()), None, List(), true))
   }
 
   private def opiskeluoikeudenHistorianPoistonQuery(id: Int): dbio.DBIOAction[Int, NoStream, Write] = {

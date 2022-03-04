@@ -8,11 +8,12 @@ import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinki, oppilaitos}
 import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiMockUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.päiväkotiMajakka
 import fi.oph.koski.schema._
 
+import java.net.InetAddress
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
@@ -226,9 +227,29 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       ),
       (KoskiSpecificMockOppijat.tuva, ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusValmistunut),
       (KoskiSpecificMockOppijat.tuvaPerus, ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusEiValmistunut),
+      (KoskiSpecificMockOppijat.poistettuOpiskeluoikeus, VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen),
     )
   }
 
+  override def resetFixtures: Unit = {
+    super.resetFixtures
+    peruutaSuostumusOpiskeluoikeudelta()
+  }
+
+  private def peruutaSuostumusOpiskeluoikeudelta(): Unit = {
+    val oppijaOid = KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid
+    peruutaSuostumusOpiskeluoikeudelta(
+      oppijaOid = oppijaOid,
+      opiskeluoikeusOid = application.oppijaFacade.findOppija(oppijaOid)(KoskiSpecificSession.systemUser).right.get.map(_.opiskeluoikeudet.head.oid.get)._value
+    )
+  }
+
+  def peruutaSuostumusOpiskeluoikeudelta(oppijaOid: String, opiskeluoikeusOid: String): Boolean = {
+    val oppija = oppijat.find(_.henkilö.oid == oppijaOid).get.henkilö
+    val user = new KoskiSpecificSession(AuthenticationUser(oppija.oid, oppija.etunimet, oppija.etunimet, None), "fi", InetAddress.getLocalHost, "", Set())
+    val poistoResult = application.suostumuksenPeruutusService.peruutaSuostumus(opiskeluoikeusOid)(user)
+    poistoResult.isOk
+  }
 }
 
 object AmmatillinenOpiskeluoikeusTestData {

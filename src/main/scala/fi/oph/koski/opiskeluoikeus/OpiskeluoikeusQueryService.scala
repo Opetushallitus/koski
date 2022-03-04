@@ -28,7 +28,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
   }
 
   def muuttuneetOpiskeluoikeudetWithoutAccessCheck(after: Timestamp, afterId: Int, limit: Int): Seq[MuuttunutOpiskeluoikeusRow] = {
-    // huom, tässä halutaan myös mitätöidyt, sen takia OpiskeluOikeudet eikä OpiskeluOikeudetWithAccessCheck
+    // huom, tässä halutaan myös mitätöidyt ja poistetut, sen takia OpiskeluOikeudet eikä OpiskeluOikeudetWithAccessCheck
     runDbSync(
       OpiskeluOikeudet
         .filter(r => (r.aikaleima === after && r.id > afterId) || (r.aikaleima > after))
@@ -83,6 +83,33 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     }
   }
 
+  def mapKaikkiOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
+    (pageSize: Int)
+      (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  : Observable[A] = {
+    mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiSivuittainWithoutAccessCheck(OpiskeluOikeudet))(mapFn)
+  }
+
+  private def mapKaikkiSivuittainWithoutAccessCheck[A]
+    (pageSize: Int)
+      (queryFn: PaginationSettings => Seq[OpiskeluoikeusRow])
+      (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  : Observable[A] = {
+    processByPage[OpiskeluoikeusRow, A](page => queryFn(PaginationSettings(page, pageSize)), mapFn)
+  }
+
+  private def kaikkiSivuittainWithoutAccessCheck(
+    query: Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq]
+  )(
+    pagination: PaginationSettings
+  ): Seq[OpiskeluoikeusRow] = {
+    // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
+    // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
+    retryWithInterval(5, intervalMs = 30000) {
+      runDbSync(defaultPagination.applyPagination(query.sortBy(_.id), pagination).result, timeout = 5.minutes)
+    }
+  }
+
   private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder])(implicit user: KoskiSpecificSession) = {
     val baseQuery = OpiskeluOikeudetWithAccessCheck
       .join(KoskiTables.Henkilöt).on(_.oppijaOid === _.oid)
@@ -98,6 +125,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
       case (query, OneOfOpiskeluoikeudenTyypit(tyypit)) => query.filter(_._1.koulutusmuoto inSet tyypit.map(_.tyyppi.koodiarvo))
       case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.suoritustyypit.@>(List(tyyppi.koodiarvo)))
       case (query, NotSuorituksenTyyppi(tyyppi)) => query.filter(!_._1.suoritustyypit.@>(List(tyyppi.koodiarvo)))
+      case (query, Poistettu(poistettu)) => query.filter(d => d._1.poistettu === poistettu)
       case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
       case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
         val matchers = toimipisteet.map { toimipiste =>

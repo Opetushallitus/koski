@@ -31,9 +31,12 @@ object KoskiTables {
     val päättymispäivä = column[Option[Date]]("paattymispaiva")
     val suoritusjakoTehty = column[Boolean]("suoritusjako_tehty_rajapaivan_jalkeen") // Rajapäivä marraskuu 2021
     val suoritustyypit = column[List[String]]("suoritustyypit")
+    val poistettu = column[Boolean]("poistettu")
 
-    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty, suoritustyypit) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
+
+    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritusjakoTehty, suoritustyypit, poistettu) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
     def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä, suoritustyypit)
+    def updateableFieldsPoisto = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä, suoritustyypit, poistettu)
   }
 
   object OpiskeluoikeusTable {
@@ -61,7 +64,8 @@ object KoskiTables {
         Date.valueOf(opiskeluoikeus.alkamispäivä.get),
         opiskeluoikeus.päättymispäivä.map(Date.valueOf),
         false,
-        opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)
+        opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo),
+        false
       )
     }
 
@@ -88,7 +92,8 @@ object KoskiTables {
        opiskeluoikeus.mitätöity,
        Date.valueOf(opiskeluoikeus.alkamispäivä.get),
        opiskeluoikeus.päättymispäivä.map(Date.valueOf),
-       opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo))
+       opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)
+      )
     }
   }
 
@@ -214,7 +219,9 @@ object KoskiTables {
 
   val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
 
-  // OpiskeluOikeudet-taulu. Käytä kyselyissä aina OpiskeluOikeudetWithAccessCheck, niin tulee myös käyttöoikeudet tarkistettua samalla.
+  // OpiskeluOikeudet-taulu. Käytä kyselyissä aina OpiskeluOikeudetWithAccessCheck,
+  // niin tulee myös käyttöoikeudet tarkistettua samalla, ja mitätöidyt ja poistetut opiskeluoikeudet poistettua
+  // listalta, jos on tarpeen, kuten yleensä on.
   val OpiskeluOikeudet = TableQuery[OpiskeluoikeusTable]
 
   val Henkilöt = TableQuery[HenkilöTable]
@@ -244,6 +251,7 @@ object KoskiTables {
     query
       .filterIf(user.hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit)
       .filterIf(!user.hasMitätöidytOpiskeluoikeudetAccess)(o => !o.mitätöity)
+      .filterIf(!user.hasPoistetutOpiskeluoikeudetAccess)(o => !o.poistettu)
   }
 }
 
@@ -266,7 +274,8 @@ case class OpiskeluoikeusRow(id: Int,
   alkamispäivä: Date,
   päättymispäivä: Option[Date],
   suoritusjakoTehty: Boolean,
-  suoritustyypit: List[String]
+  suoritustyypit: List[String],
+  poistettu: Boolean
 ) {
 
   def toOpiskeluoikeus(implicit user: SensitiveDataAllowed): Either[List[ValidationError], KoskeenTallennettavaOpiskeluoikeus] = {

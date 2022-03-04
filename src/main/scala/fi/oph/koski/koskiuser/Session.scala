@@ -76,6 +76,7 @@ class KoskiSpecificSession(
   def hasLuovutuspalveluAccess: Boolean = globalViranomaisKäyttöoikeudet.exists(_.isLuovutusPalveluAllowed)
   def hasTilastokeskusAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", TILASTOKESKUS))
   def hasMitätöidytOpiskeluoikeudetAccess: Boolean = hasTilastokeskusAccess || hasYtlAccess || globalKäyttöoikeudet.exists(_.globalPalveluroolit.exists(_.rooli == MITATOIDYT_OPISKELUOIKEUDET))
+  def hasPoistetutOpiskeluoikeudetAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.exists(_.rooli == POISTETUT_OPISKELUOIKEUDET))
   def hasValviraAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", VALVIRA))
   def hasKelaAccess: Boolean = !globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("KOSKI", LUOTTAMUKSELLINEN_KELA_LAAJA), Palvelurooli("KOSKI", LUOTTAMUKSELLINEN_KELA_SUPPEA))).isEmpty
   def hasYtlAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", YTL))
@@ -154,7 +155,7 @@ object KoskiSpecificSession {
 
   private val systemKäyttöoikeudet: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))))
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
-  private val KOSKI_SYSTEM_USER_MITÄTÖIDYT: String = "Koski system user mitätöidyt"
+  private val KOSKI_SYSTEM_USER_MITÄTÖIDYT_JA_POISTETUT: String = "Koski system user mitätöidyt ja poistetut"
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   val SUORITUSJAKO_KATSOMINEN_USER = "Koski suoritusjako katsominen"
   // Internal user with root access
@@ -168,19 +169,6 @@ object KoskiSpecificSession {
     InetAddress.getLoopbackAddress,
     "",
     systemKäyttöoikeudet
-  )
-  // Internal user with root access and explicit rights to mitätöidyt opiskeluoikeudet
-  val systemUserMitätöidyt = new KoskiSpecificSession(
-    AuthenticationUser(
-      KOSKI_SYSTEM_USER_MITÄTÖIDYT,
-      KOSKI_SYSTEM_USER_MITÄTÖIDYT,
-      KOSKI_SYSTEM_USER_MITÄTÖIDYT,
-      None
-    ),
-    "fi",
-    InetAddress.getLoopbackAddress,
-    "",
-    systemKäyttöoikeudet ++ Set(KäyttöoikeusGlobal(List(Palvelurooli(MITATOIDYT_OPISKELUOIKEUDET))))
   )
 
   val untrustedUser = new KoskiSpecificSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set())
