@@ -8,6 +8,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjeste
 import fi.oph.koski.documentation.VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.{paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet, varsinaisSuomiPalvelukäyttäjä}
+import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeus
 import org.json4s.JObject
@@ -40,6 +41,23 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       authGet("api/opiskeluoikeus/" + vapaatavoitteinenOpiskeluoikeusOid, defaultUser) {
         verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
       }
+    }
+
+    "Suostumuksen peruutuksesta jää audit-log -merkintä" in {
+      resetFixtures()
+
+      AuditLogTester.clearMessages
+      post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu)) {}
+
+      val logMessages = AuditLogTester.getLogMessages
+      logMessages.length should equal(2)
+
+      AuditLogTester.verifyAuditLogMessage(logMessages(1), Map(
+        "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
+        "target" -> Map(
+          KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> vapaatavoitteinenOpiskeluoikeus.oid.get
+        ),
+      ))
     }
 
     "Opiskeluoikeudesta jää raatorivi opiskeluoikeustauluun" in {
