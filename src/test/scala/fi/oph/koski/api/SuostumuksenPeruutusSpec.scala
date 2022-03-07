@@ -1,7 +1,8 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.documentation.VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen
@@ -9,6 +10,7 @@ import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, MockUse
 import fi.oph.koski.koskiuser.MockUsers.{paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet, varsinaisSuomiPalvelukäyttäjä}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeus
+import org.json4s.JObject
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -38,6 +40,41 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       authGet("api/opiskeluoikeus/" + vapaatavoitteinenOpiskeluoikeusOid, defaultUser) {
         verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
       }
+    }
+
+    "Opiskeluoikeudesta jää raatorivi opiskeluoikeustauluun" in {
+      resetFixtures()
+      post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu)) {}
+
+      val result: Either[HttpStatus, OpiskeluoikeusRow] =
+        KoskiApplicationForTests.opiskeluoikeusRepository.findByOid(
+          vapaatavoitteinenOpiskeluoikeusOid
+        )(
+          KoskiSpecificSession.systemUserMitätöidytJaPoistetut
+        )
+
+      result.isRight should be(true)
+
+      result.map(ooRow => {
+        ooRow.oid should be(vapaatavoitteinenOpiskeluoikeusOid)
+        ooRow.versionumero should be(0)
+        ooRow.aikaleima.toString should include(LocalDate.now.toString)
+        ooRow.oppijaOid should be(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid)
+        ooRow.oppilaitosOid should be("")
+        ooRow.koulutustoimijaOid should be(None)
+        ooRow.sisältäväOpiskeluoikeusOid should be(None)
+        ooRow.sisältäväOpiskeluoikeusOppilaitosOid should be(None)
+        ooRow.data should be(JObject(List()))
+        ooRow.luokka should be(None)
+        ooRow.mitätöity should be(true)
+        ooRow.koulutusmuoto should be("")
+        ooRow.alkamispäivä.toString should be(LocalDate.now.toString)
+        ooRow.päättymispäivä should be(None)
+        ooRow.suoritusjakoTehty should be(false)
+        ooRow.suoritustyypit should be(Nil)
+        ooRow.poistettu should be(true)
+      }
+      )
     }
 
     "Opiskeluoikeus on poistunut Elasticsearchista" in {

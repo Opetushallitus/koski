@@ -170,6 +170,19 @@ object KoskiSpecificSession {
     "",
     systemKäyttöoikeudet
   )
+  // Internal user with root access to also mitätöidyt and poistetut opiskeluoikeudet
+  val systemUserMitätöidytJaPoistetut = new KoskiSpecificSession(
+    AuthenticationUser(
+      KOSKI_SYSTEM_USER_MITÄTÖIDYT_JA_POISTETUT,
+      KOSKI_SYSTEM_USER_MITÄTÖIDYT_JA_POISTETUT,
+      KOSKI_SYSTEM_USER_MITÄTÖIDYT_JA_POISTETUT, None
+    ),
+    "fi",
+    InetAddress.getLoopbackAddress,
+    "",
+    systemKäyttöoikeudet ++
+      Set(KäyttöoikeusGlobal(List(Palvelurooli(MITATOIDYT_OPISKELUOIKEUDET), Palvelurooli(POISTETUT_OPISKELUOIKEUDET))))
+  )
 
   val untrustedUser = new KoskiSpecificSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set())
 
