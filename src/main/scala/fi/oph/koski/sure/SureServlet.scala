@@ -40,7 +40,11 @@ class SureServlet(implicit val application: KoskiApplication)
         case None =>
           val serialize = SensitiveAndRedundantDataFilter(session).rowSerializer
           val observable = OpiskeluoikeusQueryContext(request)(session, application).queryWithoutHenkilötiedotRaw(
-            List(OppijaOidHaku(oids)), None, "oids=" + oids.take(2).mkString(",") + ",...(" + oids.size + ")"
+            filters = List(
+              OppijaOidHaku(oids)
+            ),
+            paginationSettings = None,
+            queryForAuditLog = "oids=" + oids.take(2).mkString(",") + ",...(" + oids.size + ")"
           )
           streamResponse[JValue](observable.map(t => serialize(OidHenkilö(t._1), t._2)), session)
         case Some(status) => haltWithStatus(status)
