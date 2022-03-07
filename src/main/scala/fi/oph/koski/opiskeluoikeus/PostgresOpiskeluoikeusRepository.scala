@@ -161,6 +161,7 @@ class PostgresOpiskeluoikeusRepository(
   }
 
   private def syncHenkilötiedotAction(id: Int, oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilötiedot: Option[OppijaHenkilöWithMasterInfo]) = {
+    // TODO: Jos vst vapaatavoitteinen mitätöitiin, poista perustiedotIndexeristä.
     henkilötiedot match {
       case Some(henkilö) =>
         val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö)
@@ -347,25 +348,30 @@ class PostgresOpiskeluoikeusRepository(
 
         validator.validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok =>
-            val updatedValues@(newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
-            val diff: JArray = jsonDiff(oldRow.data, newData)
-            diff.values.length match {
-              case 0 =>
-                DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero, diff, newData)))
-              case _ =>
-                for {
-                  rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(_.updateableFields).update(updatedValues)
-                  _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
-                  hist <- historyRepository.findByOpiskeluoikeusOidAction(oid, nextVersionumero)
-                } yield {
-                  rowsUpdated match {
-                    case 1 =>
-                      verifyHistoria(newData, hist)
-                      Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
-                    case x: Int =>
-                      throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
+            // TODO: Mitätöinti tietokannassa tapahtuu tässä, jos opiskeluoikeus.mitätöity=true, eli jos opiskeluoikeuden tiloissa esiintyy mitatoity.
+            if (tallennettavaOpiskeluoikeus.mitätöity && tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus")) {
+              throw new NotImplementedError()
+            } else {
+              val updatedValues@(newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
+              val diff: JArray = jsonDiff(oldRow.data, newData)
+              diff.values.length match {
+                case 0 =>
+                  DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero, diff, newData)))
+                case _ =>
+                  for {
+                    rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(_.updateableFields).update(updatedValues)
+                    _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
+                    hist <- historyRepository.findByOpiskeluoikeusOidAction(oid, nextVersionumero)
+                  } yield {
+                    rowsUpdated match {
+                      case 1 =>
+                        verifyHistoria(newData, hist)
+                        Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
+                      case x: Int =>
+                        throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
+                    }
                   }
-                }
+              }
             }
           case nonOk => DBIO.successful(Left(nonOk))
         }
