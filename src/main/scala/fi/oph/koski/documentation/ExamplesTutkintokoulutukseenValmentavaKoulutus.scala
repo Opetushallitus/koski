@@ -68,7 +68,7 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
     koulutusmoduuli = koulutusmoduuli,
     arviointi = tuvaSanallinenArviointi(arviointiPäivä),
     suorituskieli = Some(suomenKieli),
-    tyyppi = Koodistokoodiviite(koodistoviite, "suorituksentyyppituva"),
+    tyyppi = Koodistokoodiviite(koodistoviite, "suorituksentyyppi"),
     tunnustettu = None
   )
 
@@ -81,7 +81,7 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
     ),
     arviointi = tuvaSanallinenArviointi(arviointiPäivä),
     suorituskieli = Some(suomenKieli),
-    tyyppi = Koodistokoodiviite("tutkintokoulutukseenvalmentava", "suorituksentyyppituva"),
+    tyyppi = Koodistokoodiviite("tutkintokoulutukseenvalmentava", "suorituksentyyppi"),
     tunnustettu = None,
     osasuoritukset = None
   )
@@ -172,12 +172,12 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaPerustaitojenVahvistaminen(laajuus = Some(1)),
               arviointiPäivä = Some(date(2021, 9, 1)),
-              koodistoviite = "perusopetus"
+              koodistoviite = "tuvaperusopetus"
             ),
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaAmmatillisenKoulutuksenOpinnot(laajuus = Some(1)),
               arviointiPäivä = Some(date(2021, 10, 1)),
-              koodistoviite = "ammatillinenkoulutus"
+              koodistoviite = "tuvaammatillinenkoulutus"
             ),
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(1)),
@@ -192,7 +192,7 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaLukiokoulutuksenOpinnot(laajuus = Some(1)),
               arviointiPäivä = Some(date(2021, 11, 1)),
-              koodistoviite = "lukiokoulutus"
+              koodistoviite = "tuvalukiokoulutus"
             ).copy(
               tunnustettu = Some(
                 OsaamisenTunnustaminen(
@@ -284,7 +284,7 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
             ),
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaPerustaitojenVahvistaminen(laajuus = None),
-              koodistoviite = "perusopetus"
+              koodistoviite = "tuvaperusopetus"
             ),
             tuvaKoulutuksenMuunOsanSuoritus(
               koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(laajuus = None),

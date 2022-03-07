@@ -100,7 +100,7 @@
         },
         "tyyppi" : {
           "koodiarvo" : "tutkintokoulutukseenvalmentava",
-          "koodistoUri" : "suorituksentyyppituva"
+          "koodistoUri" : "suorituksentyyppi"
         }
       }, {
         "koulutusmoduuli" : {
@@ -127,8 +127,8 @@
           "koodistoUri" : "kieli"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetus",
-          "koodistoUri" : "suorituksentyyppituva"
+          "koodiarvo" : "tuvaperusopetus",
+          "koodistoUri" : "suorituksentyyppi"
         }
       }, {
         "koulutusmoduuli" : {
@@ -156,7 +156,7 @@
         },
         "tyyppi" : {
           "koodiarvo" : "tutkintokoulutukseenvalmentava",
-          "koodistoUri" : "suorituksentyyppituva"
+          "koodistoUri" : "suorituksentyyppi"
         }
       } ]
     } ],
