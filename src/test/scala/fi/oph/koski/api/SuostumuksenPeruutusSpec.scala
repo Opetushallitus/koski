@@ -176,6 +176,34 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       // Perumisen jälkeen
       KoskiApplicationForTests.historyRepository.findByOpiskeluoikeusOid(vapaatavoitteinenOpiskeluoikeusOid)(virkailijaSession) should equal (None)
     }
+
+    "Opiskeluoikeuden, josta on tehty suoritusjako, voi silti mitätöidä (vaikka kansalainen ei suostumusta voikaan peruuttaa)" in {
+      resetFixtures
+      val loginHeaders = kansalainenLoginHeaders(vapaatavoitteinenHetu)
+
+      putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus) {
+        verifyResponseStatusOk()
+      }
+
+      val json =
+        raw"""[{
+        "oppilaitosOid": "${MockOrganisaatiot.varsinaisSuomenKansanopisto}",
+        "suorituksenTyyppi": "vstvapaatavoitteinenkoulutus",
+        "koulutusmoduulinTunniste": "099999"
+      }]"""
+
+      createSuoritusjako(json, vapaatavoitteinenHetu){
+        verifyResponseStatusOk()
+      }
+
+      val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid).head.oid.get
+
+      mitätöiOpiskeluoikeus(oid, MockUsers.paakayttaja)
+
+      authGet("api/opiskeluoikeus/" + oid, defaultUser) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+      }
+    }
   }
 
   "Kun suostumusta ei voida peruuttaa" - {
