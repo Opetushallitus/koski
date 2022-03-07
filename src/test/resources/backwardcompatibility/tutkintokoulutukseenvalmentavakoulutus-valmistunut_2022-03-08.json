@@ -133,11 +133,6 @@
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
-          "nimi" : {
-            "fi" : "Opiskelu- ja urasuunnittelutaidot",
-            "sv" : "Opiskelu- ja urasuunnittelutaidot",
-            "en" : "Opiskelu- ja urasuunnittelutaidot"
-          },
           "tunniste" : {
             "koodiarvo" : "101",
             "nimi" : {
@@ -189,11 +184,6 @@
         }
       }, {
         "koulutusmoduuli" : {
-          "nimi" : {
-            "fi" : "Perustaitojen vahvistaminen",
-            "sv" : "Perustaitojen vahvistaminen",
-            "en" : "Perustaitojen vahvistaminen"
-          },
           "tunniste" : {
             "koodiarvo" : "107",
             "nimi" : {
@@ -245,11 +235,6 @@
         }
       }, {
         "koulutusmoduuli" : {
-          "nimi" : {
-            "fi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
-            "sv" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
-            "en" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"
-          },
           "tunniste" : {
             "koodiarvo" : "105",
             "nimi" : {
@@ -301,11 +286,6 @@
         }
       }, {
         "koulutusmoduuli" : {
-          "nimi" : {
-            "fi" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
-            "sv" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
-            "en" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen"
-          },
           "tunniste" : {
             "koodiarvo" : "102",
             "nimi" : {
@@ -357,11 +337,6 @@
         }
       }, {
         "koulutusmoduuli" : {
-          "nimi" : {
-            "fi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
-            "sv" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
-            "en" : "Arjen ja yhteiskunnallisen osallisuuden taidot"
-          },
           "tunniste" : {
             "koodiarvo" : "103",
             "nimi" : {
@@ -413,11 +388,6 @@
         }
       }, {
         "koulutusmoduuli" : {
-          "nimi" : {
-            "fi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
-            "sv" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
-            "en" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen"
-          },
           "tunniste" : {
             "koodiarvo" : "106",
             "nimi" : {
@@ -506,11 +476,6 @@
         }
       }, {
         "koulutusmoduuli" : {
-          "nimi" : {
-            "fi" : "Valinnaiset koulutuksen osat",
-            "sv" : "Valinnaiset koulutuksen osat",
-            "en" : "Valinnaiset koulutuksen osat"
-          },
           "tunniste" : {
             "koodiarvo" : "104",
             "nimi" : {

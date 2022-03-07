@@ -2211,5 +2211,14 @@
   "description:Sisältö on aina tyhjä lista...." : "Sisältö on aina tyhjä lista. Kenttä näkyy tietomallissa vain teknisistä syistä.",
   "description:Sisältö on aina tyhjä lista..." : "Sisältö on aina tyhjä lista opiskeluoikeusjaksoja. Kenttä näkyy tietomallissa vain teknisistä syistä.",
   "deprecated:Ei käytössä 1.1.2021 eteenpäin" : "Ei käytössä 1.1.2021 eteenpäin",
-  "Valinnaisen opintojakson paikallinen osasuoritus": "Valinnaisen opintojakson paikallinen osasuoritus"
+  "Valinnaisen opintojakson paikallinen osasuoritus": "Valinnaisen opintojakson paikallinen osasuoritus",
+  "Lisää perustaitojen vahvistamisen opintojen osasuoritus": "Lisää perustaitojen vahvistamisen opintojen osasuoritus",
+  "Lisää ammatillisen koulutuksen opintojen ja niihin valmistautumisen osasuoritus": "Lisää ammatillisen koulutuksen opintojen ja niihin valmistautumisen osasuoritus",
+  "Lisää lukiokoulutuksen opintojen ja niihin valmistautumisen osasuoritus": "Lisää lukiokoulutuksen opintojen ja niihin valmistautumisen osasuoritus",
+  "Lisää työelämätaitojen ja työpaikalla tapahtuvan oppimisen osasuoritus": "Lisää työelämätaitojen ja työpaikalla tapahtuvan oppimisen osasuoritus",
+  "Lisää valinnaisten opintojen osasuoritus": "Lisää valinnaisten opintojen osasuoritus",
+  "Lisää opiskelu- ja urasuunnittelutaitojen opintojen osasuoritus": "Lisää opiskelu- ja urasuunnittelutaitojen opintojen osasuoritus",
+  "Lisää arjen ja yhteiskunnallisen osallisuuden taitojen osasuoritus": "Lisää arjen ja yhteiskunnallisen osallisuuden taitojen osasuoritus",
+  "Lisää paikallinen osasuoritus": "Lisää paikallinen osasuoritus",
+  "Paikallisen osasuorituksen lisäys": "Paikallisen osasuorituksen lisäys"
 }
