@@ -3,17 +3,17 @@ package fi.oph.koski.sure
 import java.sql.Timestamp
 import java.time.{Instant, OffsetDateTime}
 import java.time.format.DateTimeParseException
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{JsonSerializer, SensitiveAndRedundantDataFilter}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.log._
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.OppijaOidHaku
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{NotSuorituksenTyyppi, OppijaOidHaku}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
+import fi.oph.koski.schema.SuorituksenTyyppi.vstvapaatavoitteinenkoulutus
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.{KoskiSpecificApiServlet, InvalidRequestException, NoCache, ObservableSupport}
+import fi.oph.koski.servlet.{InvalidRequestException, KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
 import org.scalatra.ContentEncodingSupport
@@ -41,7 +41,8 @@ class SureServlet(implicit val application: KoskiApplication)
           val serialize = SensitiveAndRedundantDataFilter(session).rowSerializer
           val observable = OpiskeluoikeusQueryContext(request)(session, application).queryWithoutHenkilötiedotRaw(
             filters = List(
-              OppijaOidHaku(oids)
+              OppijaOidHaku(oids),
+              NotSuorituksenTyyppi(vstvapaatavoitteinenkoulutus)
             ),
             paginationSettings = None,
             queryForAuditLog = "oids=" + oids.take(2).mkString(",") + ",...(" + oids.size + ")"
