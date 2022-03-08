@@ -30,6 +30,12 @@ case class PerusopetuksenOpiskeluoikeus(
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
+  def kotiopetuksessa(päivämäärä: LocalDate) = lisätiedot match {
+    case Some(lisätiedot) => lisätiedot.kotiopetusjaksot.toList.flatten.exists(jakso => {
+      jakso.contains(päivämäärä)
+    })
+    case None => false
+  }
 }
 
 object PerusopetuksenOpiskeluoikeus {

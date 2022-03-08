@@ -544,6 +544,54 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     }
   }
 
+  "Valmiiksi merkkaaminen ilman 9. luokka-asteen suoritusta" - {
+    val oo = defaultOpiskeluoikeus.copy(
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2016, 1, 1), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2017, 1, 1), opiskeluoikeusValmistunut)
+      ))
+    )
+
+    "Opiskeluoikeus ilman poikkeavia lisätietoja -> HTTP 400" in {
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenValmistunutTilaIlmanYsiluokanSuoritusta())
+      }
+    }
+
+    "Lisätiedoissa vuosiluokkiin sitoutumaton opetus -> HTTP 200" in {
+      putOpiskeluoikeus(oo.copy(
+        lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          vuosiluokkiinSitoutumatonOpetus = true
+        ))
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Opiskelija ollut valmistuessa kotiopetuksessa -> HTTP 200" in {
+      putOpiskeluoikeus(oo.copy(
+        suoritukset = List(päättötodistusSuoritus.copy(
+          vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2016, 6, 4))
+        )),
+        lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          kotiopetusjaksot = Some(List(Aikajakso(LocalDate.of(2016, 6, 4), Some(LocalDate.of(2016, 6, 4)))))
+        ))
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Päättötodistuksessa suoritustapa 'erityinen tutkinto' -> HTTP 200" in {
+      putOpiskeluoikeus(oo.withSuoritukset(
+        List(päättötodistusSuoritus.copy(
+          suoritustapa = suoritustapaErityinenTutkinto
+        ))
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
   private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): PerusopetuksenOpiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
     getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
