@@ -1,3 +1,10 @@
+## 8.3.2022
+- Korvattu koodiston *suorituksentyyppituva* käyttö TUVA tietomallin osasuorituksen tyypissä koodistolla *suorituksentyyppi*.
+  - Koodistokoodit siirretty uuteen koodistoon ja vanhat koodiarvot osin päivitetty.
+
+## 7.2.2022
+- Lisätty tietomalli Tutkintokoulutukseen valmentava koulutus (TUVA)
+
 ## 13.1.2022
 - Seuraavat kentät on merkätty redundanteiksi. Nämä kentät tiputetaan hiljaisesti pois siirroissa, eikä niitä sisällytetä Koskesta saataviin tietoihin:
   - Kaikkien opiskeluoikeuksien lisätiedoissa:

@@ -1616,5 +1616,89 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tutkintokoulutukseenvalmentava",
+  "koodiArvo" : "tutkintokoulutukseenvalmentava",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava muu suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuvaperusopetus",
+  "koodiArvo" : "tuvaperusopetus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava perusopetuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava perusopetuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava perusopetuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuvalukiokoulutus",
+  "koodiArvo" : "tuvalukiokoulutus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava lukion suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava lukion suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava lukion suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuvaammatillinenkoulutus",
+  "koodiArvo" : "tuvaammatillinenkoulutus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava ammatillisen koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava ammatillisen koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava ammatillisen koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }
 ]

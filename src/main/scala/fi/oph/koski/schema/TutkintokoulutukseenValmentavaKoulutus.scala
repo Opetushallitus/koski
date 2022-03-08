@@ -87,7 +87,7 @@ case class TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
   koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenMuuOsa,
   arviointi: Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite],
-  @KoodistoUri("suorituksentyyppituva")
+  @KoodistoUri("suorituksentyyppi")
   tyyppi: Koodistokoodiviite,
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen]
@@ -200,9 +200,9 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(
   @Title("Kurssit")
   @Tabular
   override val osasuoritukset: Option[List[TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus]] = None,
-  @KoodistoUri("suorituksentyyppituva")
+  @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("tutkintokoulutukseenvalmentava")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "tutkintokoulutukseenvalmentava", koodistoUri = "suorituksentyyppituva"),
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "tutkintokoulutukseenvalmentava", koodistoUri = "suorituksentyyppi"),
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen]
 ) extends Suoritus with Vahvistukseton with TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen
@@ -232,9 +232,9 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsas
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite],
-  @KoodistoUri("suorituksentyyppituva")
+  @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("tutkintokoulutukseenvalmentava")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "tutkintokoulutukseenvalmentava", koodistoUri = "suorituksentyyppituva"),
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "tutkintokoulutukseenvalmentava", koodistoUri = "suorituksentyyppi"),
 
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu
 
