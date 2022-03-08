@@ -113,7 +113,7 @@ function OpinnotPage() {
       }
     },
     avaaLisätiedot: function() {
-      return click(S('.expandable-container .lisätiedot span'))()
+      return click(S('.expandable-container.lisätiedot span'))()
     },
     opiskeluoikeudet: Opiskeluoikeudet(),
     opiskeluoikeusEditor: function(index, omatTiedot) {
@@ -743,6 +743,9 @@ function Opiskeluoikeudet() {
     lisääOpiskeluoikeus: click(findSingle('.add-opiskeluoikeus a')),
     lisääOpiskeluoikeusEnabled: function() {
       return S('.add-opiskeluoikeus').is(':visible')
+    },
+    järjestämislupa: function() {
+      return S('.järjestämislupa .value > span').text()
     }
   }
 }

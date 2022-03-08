@@ -24,6 +24,7 @@ import InternationalSchoolOppiaineetEditor from '../internationalschool/Internat
 import {AikuistenPerusopetuksenKurssitEditor} from '../aikuistenperusopetus/AikuistenPerusopetuksenKurssitEditor'
 import {Suoritustaulukko} from './Suoritustaulukko'
 import {VapaanSivistystyonSuoritustaulukko} from '../vapaasivistystyo/VapaanSivistystyonSuoritustaulukko'
+import {TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko} from '../tuva/TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -139,6 +140,18 @@ export const resolveOsasuorituksetEditor = (mdl) => {
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         päätasonSuorituksenTyyppi={modelData(mdl, 'tyyppi').koodiarvo}
         additionalEditableKoulutusmoduuliProperties={['laajuus']}
+      />
+    )
+  }
+  if (oneOf(
+    'tutkintokoulutukseenvalmentavankoulutuksensuoritus',
+    'tutkintokoulutukseenvalmentavankoulutuksenosasuoritus',
+    'tutkintokoulutukseenvalmentavankoulutuksenvalinnaisenosansuoritus'
+  )) {
+    return (
+      <TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko
+        parentSuoritus={mdl}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
       />
     )
   }
