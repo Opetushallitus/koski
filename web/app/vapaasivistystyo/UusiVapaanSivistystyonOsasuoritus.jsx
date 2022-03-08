@@ -5,7 +5,8 @@ import {
   modelSetTitle,
   modelSetValues,
   pushModel,
-  modelLookup
+  modelLookup,
+  modelData
 } from '../editor/EditorModel'
 import * as R from 'ramda'
 import {koodistoValues} from '../uusioppija/koodisto'
@@ -16,6 +17,10 @@ import {enumValueToKoodiviiteLens} from '../koodisto/koodistot'
 import ModalDialog from '../editor/ModalDialog'
 import Text from '../i18n/Text'
 import {ift} from '../util/util'
+import DropDown from '../components/Dropdown'
+import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
+
+import {getOrganizationalPreferences, deleteOrganizationalPreference} from '../virkailija/organizationalPreferences'
 
 export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpanded, suoritukset}) => {
   const findSuoritus = (tyyppi) => suoritukset.find(s => s.value.classes.includes(tyyppi))
@@ -218,27 +223,70 @@ const LisääPaikallinen = ({suoritusPrototype, setExpanded, lisääText, lisä�
 
   const koulutusmoduuliPrototype = koulutusModuuliprototypes(suoritusPrototype)[0]
 
-  const addNewSuoritus = () => {
+  const addNewSuoritus = (storedSuoritus) => {
     const input = inputState.get()
     const updateValues = {
-      'kuvaus.fi': {data: input},
-      'tunniste.nimi.fi': {data: input},
-      'tunniste.koodiarvo': {data: input}
+      'kuvaus.fi': {data: storedSuoritus ? storedSuoritus.kuvaus.fi : input},
+      'tunniste.nimi.fi': {data: storedSuoritus ? storedSuoritus.tunniste.nimi.fi : input},
+      'tunniste.koodiarvo': {data: storedSuoritus ? storedSuoritus.tunniste.koodiarvo : input}
     }
-    const koulutusmoduuli = modelSetTitle(modelSetValues(koulutusmoduuliPrototype, updateValues), input)
+    const koulutusmoduuli = modelSetTitle(modelSetValues(koulutusmoduuliPrototype, updateValues), storedSuoritus ? storedSuoritus.tunniste.nimi.fi : input)
     const suoritus = modelSet(suoritusPrototype, koulutusmoduuli, 'koulutusmoduuli')
     pushModel(suoritus)
     setExpanded(suoritus)(true)
     showModal.set(false)
   }
 
+  const päätasonSuoritus = modelData(suoritusPrototype.context.opiskeluoikeus, 'suoritukset')[0]
+
+  const organisaatioOid = päätasonSuoritus.toimipiste.oid
+  const key = modelLookup(suoritusPrototype, 'koulutusmoduuli').value.classes[0]
+
+  const setOptions = suoritukset => {
+    const tallennetutSuoritukset = suoritukset.map(suoritus => {
+      return {
+        kuvaus: modelData(suoritus, 'kuvaus'),
+        tunniste: modelData(suoritus, 'tunniste')
+      }
+    })
+    options.set(tallennetutSuoritukset)
+  }
+
+  const options = Atom([])
+  getOrganizationalPreferences(organisaatioOid, key).onValue((value) => {
+    setOptions(value)
+  })
+
+  const newOsasuoritus = {
+    kuvaus: {fi: ''},
+    tunniste: {nimi: {fi: ''}, koodiarvo: ''},
+    uusi: true
+  }
+
+  const poistaPaikallinenOsasuoritus = osasuoritus => {
+    const avain = osasuoritus.tunniste.koodiarvo
+    const tyyppi = koulutusmoduuliPrototype.value.classes[0]
+    deleteOrganizationalPreference(organisaatioOid, tyyppi, avain).onValue(setOptions)
+  }
+
   return (
     <div className={'lisaa-uusi-suoritus paikallinen'}>
       <span className="lisaa-paikallinen-suoritus">
-        <a className='add-link'
-           onClick={() => showModal.set(true)}>
-          <Text name={lisääText}/>
-        </a>
+      {
+      elementWithLoadingIndicator(options.map('.length').map(
+        <DropDown
+          options={options}
+          keyValue={option => option.uusi ? 'uusi' : 'lisää ' + option.tunniste.koodiarvo}
+          displayValue={option => option.uusi ? 'Lisää uusi' : option.tunniste.nimi.fi}
+          selectionText={lisääText}
+          isRemovable={() => true}
+          newItem={newOsasuoritus}
+          removeText={t('Poista osasuoritus. Poistaminen ei vaikuta olemassa oleviin suorituksiin.')}
+          onSelectionChanged={option => option.uusi ? showModal.set(true) : addNewSuoritus(option)}
+          onRemoval={poistaPaikallinenOsasuoritus}
+        />
+        ))
+       }
       {
         ift(showModal,
           <ModalDialog className="lisaa-paikallinen-vst-suoritus-modal"

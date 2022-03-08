@@ -32,7 +32,10 @@ case class PreferencesService(protected val db: DB) extends Logging with QueryMe
     "paikallinenlukioonvalmistavankoulutuksenkurssi" -> classOf[PaikallinenLukioonValmistavanKoulutuksenKurssi],
     "paikallinenlukioonvalmistavankoulutuksenoppiaine" -> classOf[PaikallinenLukioonValmistavanKoulutuksenOppiaine],
     "ibkurssi" -> classOf[IBKurssi],
-    "lukionpaikallinenopintojakso2019" -> classOf[LukionPaikallinenOpintojakso2019]
+    "lukionpaikallinenopintojakso2019" -> classOf[LukionPaikallinenOpintojakso2019],
+    "vapaansivistystyonvapaatavoitteisenkoulutuksenosasuoritus" -> classOf[VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus],
+    "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenopintojenosasuoritus" -> classOf[VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus],
+    "oppivelvollisillesuunnattuvapaansivistystyonopintokokonaisuus" -> classOf[OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus],
   )
 
   def put(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String, key: String, value: JValue)(implicit session: KoskiSpecificSession) = {
