@@ -3,6 +3,7 @@ package fi.oph.koski.sure
 import fi.oph.koski.api.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -33,13 +34,36 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
           oppijat.map(_.henkilö).toSet should equal(henkilöOids.map(OidHenkilö))
         }
       }
-      "Palauttaa myös VST-vapaatavoitteiset opiskeluoikeudet" in {
-        val henkilöOids = Set(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid)
+      "Palauttaa oppijan muut opiskeluoikeudet, jos oppijalla on sekä VST-vapaatavoitteinen että muita opiskeluoikeuksia" in {
+        resetFixtures()
+
+        val oppija = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus
+
+        val uusiOo = createOpiskeluoikeus(
+          oppija = oppija,
+          opiskeluoikeus = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmisVahvistettuKoulutustoimijalla(),
+          user = MockUsers.paakayttaja)
+
+        val henkilöOids = Set(oppija).map(_.oid)
+
         postOids(henkilöOids) {
           verifyResponseStatusOk()
+
           val oppijat = SchemaValidatingExtractor.extract[List[Oppija]](body).right.get
-          oppijat.map(_.henkilö).toSet should equal(henkilöOids.map(OidHenkilö))
-          oppijat(0).opiskeluoikeudet(0).suoritukset(0).tyyppi.koodiarvo should be("vstvapaatavoitteinenkoulutus")
+
+          oppijat(0).opiskeluoikeudet.length should be(1)
+
+          oppijat(0).opiskeluoikeudet(0).oid should be(uusiOo.oid)
+        }
+      }
+      "Palauttaa tyhjän listan, jos oppijalla on vain VST-vapaatavoitteinen opiskeluoikeus" in {
+        resetFixtures()
+
+        val henkilöOids = Set(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid)
+
+        postOids(henkilöOids) {
+          verifyResponseStatusOk()
+          JsonMethods.parse(body) should equal(JArray(List.empty))
         }
       }
       "Palauttaa tyhjän listan, jos oppijalla on vain poistettu VST-vapaatavoitteinen opiskeluoikeus" in {
@@ -209,6 +233,8 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
       }
 
       "Myös poistetut lasketaan muuttuneiksi" in {
+        resetFixtures()
+
         val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
         val res1 = muuttuneetKursorilla(cursor, pageSize = 1000)
 
