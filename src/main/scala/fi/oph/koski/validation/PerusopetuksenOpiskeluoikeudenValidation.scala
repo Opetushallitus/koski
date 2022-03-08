@@ -1,14 +1,33 @@
 package fi.oph.koski.validation
 
-import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData.tehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenLisäopetus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus}
 
 object PerusopetuksenOpiskeluoikeusValidation {
   def validatePerusopetuksenOpiskeluoikeus(oo: Opiskeluoikeus) = {
     oo match {
-      case s: PerusopetuksenOpiskeluoikeus => validateNuortenPerusopetuksenOpiskeluoikeudenTila(s)
+      case s: PerusopetuksenOpiskeluoikeus => HttpStatus.fold(
+        List(validateNuortenPerusopetuksenOpiskeluoikeudenTila(s),
+          validateVuosiluokanAlkamispäivät(s)
+        ))
       case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateVuosiluokanAlkamispäivät(oo: PerusopetuksenOpiskeluoikeus): HttpStatus = {
+    oo.päättymispäivä match {
+      case Some(päättymispäivä) =>
+        oo.suoritukset.exists{
+          case vuosi: PerusopetuksenVuosiluokanSuoritus => vuosi.alkamispäivä match {
+            case Some(alkamispäivä) => alkamispäivä.isAfter(päättymispäivä)
+            case None => false
+            }
+        case _:Any => false
+      } match {
+          case true => KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää("Perusopetuksen opiskeluoikeuden päättymispäivä ei voi olla vuosiluokan suorituksen alkamispäivää ennen")
+          case false => HttpStatus.ok
+        }
+      case None => HttpStatus.ok
     }
   }
 
