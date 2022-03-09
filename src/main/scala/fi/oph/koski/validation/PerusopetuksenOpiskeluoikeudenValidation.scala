@@ -17,15 +17,15 @@ object PerusopetuksenOpiskeluoikeusValidation {
   private def validateVuosiluokanAlkamispäivät(oo: PerusopetuksenOpiskeluoikeus): HttpStatus = {
     oo.päättymispäivä match {
       case Some(päättymispäivä) =>
-        oo.suoritukset.exists{
+        oo.suoritukset.find{
           case vuosi: PerusopetuksenVuosiluokanSuoritus => vuosi.alkamispäivä match {
             case Some(alkamispäivä) => alkamispäivä.isAfter(päättymispäivä)
             case None => false
             }
         case _:Any => false
       } match {
-          case true => KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää("Perusopetuksen opiskeluoikeuden päättymispäivä ei voi olla vuosiluokan suorituksen alkamispäivää ennen")
-          case false => HttpStatus.ok
+          case Some(suoritus) => KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää(s"Vuosiluokan ${suoritus.asInstanceOf[PerusopetuksenVuosiluokanSuoritus].koulutusmoduuli.tunniste.koodiarvo} suoritus ei voi alkaa opiskeluoikeuden päättymisen jälkeen")
+          case None => HttpStatus.ok
         }
       case None => HttpStatus.ok
     }
