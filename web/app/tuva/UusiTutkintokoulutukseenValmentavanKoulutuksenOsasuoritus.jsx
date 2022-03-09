@@ -50,6 +50,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
                           setExpanded={setExpanded}
                           lisääText={'Lisää opiskelu- ja urasuunnittelutaitojen opintojen osasuoritus'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavatopiskelujaurasuunnittelutaidot'}
+                          className={'tuva-lisaa-osasuoritus-opiskelujaura'}
         />
       }
       {
@@ -58,6 +59,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
                           setExpanded={setExpanded}
                           lisääText={'Lisää perustaitojen vahvistamisen opintojen osasuoritus'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavaperustaitojenvahvistaminen'}
+                          className={'tuva-lisaa-osasuoritus-perustaidot'}
         />
       }
       {
@@ -66,6 +68,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
                           setExpanded={setExpanded}
                           lisääText={'Lisää ammatillisen koulutuksen opintojen ja niihin valmistautumisen osasuoritus'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavatammatillisenkoulutuksenopinnot'}
+                          className={'tuva-lisaa-osasuoritus-ammatillinen'}
         />
       }
       {
@@ -74,6 +77,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
                           setExpanded={setExpanded}
                           lisääText={'Lisää lukiokoulutuksen opintojen ja niihin valmistautumisen osasuoritus'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavatlukiokoulutuksenopinnot'}
+                          className={'tuva-lisaa-osasuoritus-lukio'}
         />
       }
       {
@@ -82,6 +86,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
                           setExpanded={setExpanded}
                           lisääText={'Lisää työelämätaitojen ja työpaikalla tapahtuvan oppimisen osasuoritus'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavattyoelamataidotjatyopaikallatapahtuvaoppiminen'}
+                          className={'tuva-lisaa-osasuoritus-tyoelamataidot'}
         />
       }
       {
@@ -90,6 +95,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
                           setExpanded={setExpanded}
                           lisääText={'Lisää arjen ja yhteiskunnallisen osallisuuden taitojen osasuoritus'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavatarjenjayhteiskunnallisenosallisuudentaidot'}
+                          className={'tuva-lisaa-osasuoritus-arkijayhteiskunta'}
         />
       }
       {
@@ -98,6 +104,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
                           setExpanded={setExpanded}
                           lisääText={'Lisää valinnaisten opintojen osasuoritus'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavankoulutuksenvalinnaisenkoulutusosa'}
+                          className={'tuva-lisaa-osasuoritus-vapaavalintainen'}
         />
       }
       {
@@ -106,13 +113,14 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
                           setExpanded={setExpanded}
                           lisääText={'Lisää paikallinen osasuoritus'}
                           lisääTitle={'Paikallisen osasuorituksen lisäys'}
+                          className={'tuva-lisaa-osasuoritus-vapaavalintainen-paikallinen'}
         />
       }
     </>
   )
 }
 
-const LisääOsasuoritus = ({suoritusPrototype, setExpanded, lisääText, koulutusModuuliTyyppi}) => {
+const LisääOsasuoritus = ({suoritusPrototype, setExpanded, lisääText, koulutusModuuliTyyppi, className}) => {
 
   const valinnainenOsasuoritus = koulutusModuuliTyyppi === 'tutkintokoulutukseenvalmentavankoulutuksenvalinnaisenkoulutusosa'
 
@@ -132,7 +140,7 @@ const LisääOsasuoritus = ({suoritusPrototype, setExpanded, lisääText, koulut
 
   return (
     <div className={'lisaa-uusi-suoritus'}>
-      <span className='lisaa-osa-alueen-suoritus'>
+      <span className={`lisaa-uusi-tuva-osasuoritus ${className}`}>
         <a className='add-link'
            onClick={() => addNewSuoritus()}>
           <Text name={lisääText}/>
@@ -182,7 +190,7 @@ const LisääPaikallinen = ({suoritusPrototype, setExpanded, lisääText, lisä�
                          validP={validP}>
               <h2><Text name={lisääTitle}/></h2>
               <label>
-                <Text name={'Opintokokonaisuuden nimi'} />
+                <Text name={'Paikallisen osasuorituksen nimi'} />
                 <input className='paikallinen-koulutusmoduuli-nimi'
                        type='text'
                        autoFocus={true}

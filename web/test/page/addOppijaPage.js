@@ -340,6 +340,24 @@ function AddOppijaPage() {
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus));
       };
     },
+    enterValidDataTUVA: function (params) {
+      params = _.merge({
+        oppilaitos: "Ressun",
+        järjestämislupa: "Perusopetuksen järjestämislupa (TUVA)",
+        suorituskieli: "suomi",
+        alkamispäivä: "1.8.2021",
+      });
+      return function () {
+        return api
+          .enterData(params)()
+          .then(
+            api.selectOpiskeluoikeudenTyyppi("Tutkintokoulutukseen valmentava koulutus")
+          )
+          .then(api.selectJärjestämislupa(params.järjestämislupa))
+          .then(api.selectAloituspäivä(params.alkamispäivä))
+          .then(api.selectMaksuttomuus(0));
+      };
+    },
     enterPaikallinenKoulutusmoduuliData: function (params) {
       params = _.merge(
         {
@@ -528,6 +546,9 @@ function AddOppijaPage() {
     },
     selectSuorituskieli: function (kieli) {
       return selectFromDropdown(".suorituskieli .dropdown", kieli);
+    },
+    selectJärjestämislupa: function (järjestämislupa) {
+      return selectFromDropdown(".järjestämislupa .dropdown", järjestämislupa);
     },
     opintojenRahoitukset: function () {
       return pageApi.getInputOptions(".opintojenrahoitus .dropdown");

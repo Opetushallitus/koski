@@ -32,7 +32,7 @@ export class TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko extends 
     const suoritusProtos = tutkinnonOsaPrototypes(suorituksetModel)
     const laajuusYksikkö = getLaajuusYksikkö(suoritusProtos[0])
     const title = t('Osasuoritus')
-    const paikallinenOsaSuoritusTitle = nestedLevel === 0 ? title : t('Valinnaisen opintojakson paikallinen osasuoritus')
+    const paikallinenOsaSuoritusTitle = nestedLevel === 0 ? title : t('Valinnaisen koulutuksen osan paikallinen osasuoritus')
 
     const columns = [SuoritusColumn, LaajuusColumn, ArvosanaColumn]
       .filter(column => column.shouldShow({parentSuoritus, suoritukset, suorituksetModel, context}))
