@@ -48,7 +48,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
         tuvaOpiskeluJaUrasuunnittelu &&
         <LisääOsasuoritus suoritusPrototype={tuvaOpiskeluJaUrasuunnittelu}
                           setExpanded={setExpanded}
-                          lisääText={'Lisää opiskelu- ja urasuunnittelutaitojen koulutuksen osa/osasuoritus'}
+                          lisääText={'Lisää opiskelu- ja urasuunnittelutaitojen koulutuksen osa'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavatopiskelujaurasuunnittelutaidot'}
                           className={'tuva-lisaa-osasuoritus-opiskelujaura'}
         />
@@ -57,7 +57,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
         tuvaOsaSuoritusPerustaitojenVahvistaminen &&
         <LisääOsasuoritus suoritusPrototype={tuvaOsaSuoritusPerustaitojenVahvistaminen}
                           setExpanded={setExpanded}
-                          lisääText={'Lisää perustaitojen vahvistamisen koulutuksen osa/osasuoritus'}
+                          lisääText={'Lisää perustaitojen vahvistamisen koulutuksen osa'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavaperustaitojenvahvistaminen'}
                           className={'tuva-lisaa-osasuoritus-perustaidot'}
         />
@@ -66,7 +66,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
         tuvaAmmatillisenKoulutuksenOpinnot &&
         <LisääOsasuoritus suoritusPrototype={tuvaAmmatillisenKoulutuksenOpinnot}
                           setExpanded={setExpanded}
-                          lisääText={'Lisää ammatillisen koulutuksen opintojen ja niihin valmistautumisen koulutuksen osa/osasuoritus'}
+                          lisääText={'Lisää ammatillisen koulutuksen opintojen ja niihin valmistautumisen koulutuksen osa'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavatammatillisenkoulutuksenopinnot'}
                           className={'tuva-lisaa-osasuoritus-ammatillinen'}
         />
@@ -75,7 +75,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
         tuvaLukioKoulutuksenOpinnot &&
         <LisääOsasuoritus suoritusPrototype={tuvaLukioKoulutuksenOpinnot}
                           setExpanded={setExpanded}
-                          lisääText={'Lisää lukiokoulutuksen opintojen ja niihin valmistautumisen koulutuksen osa/osasuoritus'}
+                          lisääText={'Lisää lukiokoulutuksen opintojen ja niihin valmistautumisen koulutuksen osa'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavatlukiokoulutuksenopinnot'}
                           className={'tuva-lisaa-osasuoritus-lukio'}
         />
@@ -84,7 +84,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
         tuvaTyöelämäTaidot &&
         <LisääOsasuoritus suoritusPrototype={tuvaTyöelämäTaidot}
                           setExpanded={setExpanded}
-                          lisääText={'Lisää työelämätaitojen ja työpaikalla tapahtuvan oppimisen koulutuksen osa/osasuoritus'}
+                          lisääText={'Lisää työelämätaitojen ja työpaikalla tapahtuvan oppimisen koulutuksen osa'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavattyoelamataidotjatyopaikallatapahtuvaoppiminen'}
                           className={'tuva-lisaa-osasuoritus-tyoelamataidot'}
         />
@@ -93,7 +93,7 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
         tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot &&
         <LisääOsasuoritus suoritusPrototype={tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot}
                           setExpanded={setExpanded}
-                          lisääText={'Lisää arjen ja yhteiskunnallisen osallisuuden taitojen koulutuksen osa/osasuoritus'}
+                          lisääText={'Lisää arjen ja yhteiskunnallisen osallisuuden taitojen koulutuksen osa'}
                           koulutusModuuliTyyppi={'tutkintokoulutukseenvalmentavatarjenjayhteiskunnallisenosallisuudentaidot'}
                           className={'tuva-lisaa-osasuoritus-arkijayhteiskunta'}
         />

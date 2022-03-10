@@ -48,6 +48,8 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")
+  @KoodistoKoodiarvo("1")
+  @KoodistoKoodiarvo("6")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
 
@@ -198,8 +200,6 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(
   koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa,
   arviointi: Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite],
-  @Description("Tutkintokoulutukseen valmentavan koulutuksen valinnaisten opintojen osasuoritukset")
-  @Title("Kurssit")
   @Tabular
   override val osasuoritukset: Option[List[TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus]] = None,
   @KoodistoUri("suorituksentyyppi")
@@ -225,8 +225,8 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
   def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
 }
 
-@Title("Tutkintokoulutukseen valmentavan valinnaisen opintojakson paikallinen osasuoritus")
-@Description("Tutkintokoulutukseen valmentavan valinnaisen opintojakson paikallinen osasuoritus, jolla on laajuus viikkoina sekä arvosana.")
+@Title("Valinnaisten tutkintokoulutukseen valmentavan koulutuksen opintojen osasuoritukset")
+@Description("Valinnaisten tutkintokoulutukseen valmentavan koulutuksen opintojen osasuoritukset. Tutkintokoulutukseen valmentavan valinnaisen koulutuksen osan paikalliset osasuoritukset, joilla on laajuus viikkoina sekä arvosana.")
 case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus(
   @Description("Valinnaisen koulutusosan osasuorituksen paikallinen opintojakso.")
   koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus,

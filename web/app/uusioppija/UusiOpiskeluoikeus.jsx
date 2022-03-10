@@ -45,11 +45,13 @@ export default ({opiskeluoikeusAtom}) => {
   const rahoitusAtom = Atom()
   const varhaiskasvatusOrganisaationUlkopuoleltaAtom = Atom(false)
   const varhaiskasvatusJärjestämismuotoAtom = Atom()
+  const onTuvaOpiskeluoikeus = Atom(false)
   const tuvaJärjestämislupaAtom = Atom()
   const maksuttomuusAtom = Atom()
-  tyyppiAtom.changes().onValue(() => {
+  tyyppiAtom.changes().onValue((tyyppi) => {
     suoritusAtom.set(undefined)
     rahoitusAtom.set(undefined)
+    onTuvaOpiskeluoikeus.set(tyyppi ? tyyppi.koodiarvo === 'tuva' : false)
   })
 
   const opiskeluoikeustyypitP = oppilaitosAtom
@@ -93,6 +95,7 @@ export default ({opiskeluoikeusAtom}) => {
     varhaiskasvatusJärjestämismuotoAtom,
     maksuttomuusAtom,
     maksuttomuusTiedonVoiValitaP,
+    onTuvaOpiskeluoikeus,
     tuvaJärjestämislupaAtom,
     makeOpiskeluoikeus
   )
@@ -219,7 +222,7 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
 
 const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) => {
   const options = Bacon.combineWith(tyyppiAtom, opintojenRahoituksetP, (tyyppi, rahoitukset) =>
-    koodiarvoMatch('aikuistenperusopetus', 'lukiokoulutus', 'internationalschool', 'ibtutkinto')(tyyppi)
+    koodiarvoMatch('aikuistenperusopetus', 'lukiokoulutus', 'internationalschool', 'ibtutkinto', 'tuva')(tyyppi)
       ? rahoitukset.filter(v => sallitutRahoituskoodiarvot.includes(v.koodiarvo))
       : rahoitukset
   )
@@ -266,6 +269,7 @@ const makeOpiskeluoikeus = (
   varhaiskasvatusJärjestämismuoto,
   maksuttomuus,
   maksuttomuusTiedonVoiValita,
+  onTuvaOpiskeluoikeus,
   tuvaJärjestämislupa
 ) => {
   const makeOpiskeluoikeusjakso = () => {
@@ -285,14 +289,15 @@ const makeOpiskeluoikeus = (
     && tila
     && (!varhaiskasvatusOrganisaationUlkopuolelta || varhaiskasvatusJärjestämismuoto)
     && (!maksuttomuusTiedonVoiValita || maksuttomuus !== undefined)
+    && (!onTuvaOpiskeluoikeus || tuvaJärjestämislupa)
   ) {
 
     const järjestämismuoto = tyyppi.koodiarvo === 'esiopetus' ? { järjestämismuoto: varhaiskasvatusJärjestämismuoto} : {}
     const maksuttomuusLisätieto = maksuttomuusTiedonVoiValita && maksuttomuus !== 'none'
       ? {lisätiedot: {maksuttomuus: [{alku: formatISODate(alkamispäivä), maksuton: maksuttomuus}]}}
       : {}
-    const järjestämislupa = tyyppi.koodiarvo === 'tuva' ? { järjestämislupa: tuvaJärjestämislupa ? tuvaJärjestämislupa : {} } : {}
-    const tuvaOletusLisätiedot = tyyppi.koodiarvo === 'tuva' ? getTuvaLisätiedot(tuvaJärjestämislupa) : {}
+    const järjestämislupa = onTuvaOpiskeluoikeus ? { järjestämislupa: tuvaJärjestämislupa ? tuvaJärjestämislupa : {} } : {}
+    const tuvaOletusLisätiedot = onTuvaOpiskeluoikeus ? getTuvaLisätiedot(tuvaJärjestämislupa) : {}
 
     const opiskeluoikeus =  {
       tyyppi: tyyppi,
