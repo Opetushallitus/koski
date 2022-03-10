@@ -673,6 +673,52 @@ function VSTSuoritukset(prev) {
   return _.merge(api, Editor(S(selectedOsasuoritus)), Property(function () { return S(selectedOsasuoritus) }))
 }
 
+function TUVASuoritukset(prev) {
+  var selectedOsasuoritus = prev
+
+  var api = {
+    lisääOsaSuoritus: function(className) {
+      return function () {
+        click(`${className} a`)()
+      }
+    },
+    lisääArvosana: function(hakusana) {
+      return function () {
+        return Page(findSingle('.arvosana .dropdown-wrapper', selectedOsasuoritus))
+          .setInputValue(".dropdown, .autocomplete", hakusana)()
+          .then(wait.forAjax)
+      }
+    },
+    lisääValinnainenPaikallinenSuoritus: function(nimi) {
+      return function () {
+        var modalElement = findSingle('.lisaa-paikallinen-tuva-suoritus-modal', selectedOsasuoritus)
+        return click('.lisaa-paikallinen-suoritus a')()
+          .then(Page(modalElement).setInputValue('input', nimi))
+          .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
+      }
+    },
+    selectOsasuoritus: function (nimi) {
+      return function () {
+        var osasuoritukset = selectedOsasuoritus ? selectedOsasuoritus.find('.tuva-osasuoritus') : S('.tuva-osasuoritus')
+
+        var found
+
+        osasuoritukset.each(function (i, e) {
+          if (extractAsText(S(e).find('tr > td.suoritus > button.nimi')).includes(nimi)) {
+            found = S(e)
+          }
+        })
+
+        if (!found) {
+          throw Error('Osasuoritus ' + nimi + ' not found')
+        }
+        return TUVASuoritukset(found)
+      }
+    }
+  }
+  return _.merge(api, Editor(S(selectedOsasuoritus)), Property(function () { return S(selectedOsasuoritus) }))
+}
+
 function IBSuoritukset() {
   var elem = findSingle('.ibtutkinnonsuoritus')
 

@@ -60,7 +60,6 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
   with Ulkomaajaksollinen
   with SisäoppilaitosmainenMajoitus
   with VaikeastiVammainen
-  with MaksuttomuusTieto
 
 @Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden lukiokoulutuksen järjestämisluvan lisätiedot")
 @Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden lukiokoulutuksen järjestämisluvan lisätiedot")

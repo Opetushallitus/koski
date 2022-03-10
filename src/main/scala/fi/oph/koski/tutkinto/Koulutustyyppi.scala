@@ -30,6 +30,7 @@ object Koulutustyyppi {
   val vapaanSivistystyönMaahanmuuttajienKotoutumisKoulutus = apply(30)
   val vapaanSivistystyönVapaatavoitteinenKoulutus = apply(10)
   val vstlukutaitokoulutus = apply(35)
+  val tuva = apply(40)
 
   def apply(numero: Int) = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(numero.toString, "koulutustyyppi"))
   def describe(koulutustyyppi: Koulutustyyppi) = koulutustyyppi.koodiarvo + koulutustyyppi.nimi.map(nimi => s"(${nimi.get("fi")})").getOrElse("")
@@ -69,6 +70,8 @@ object Koulutustyyppi {
         Set(vapaanSivistystyönVapaatavoitteinenKoulutus)
       case SuorituksenTyyppi.luva =>
         Set(luva)
+      case SuorituksenTyyppi.tuva =>
+        Set(tuva)
       case _ => Set.empty[Koulutustyyppi]
     }
   }

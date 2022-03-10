@@ -1,5 +1,6 @@
 const internationalSchoolTilat = [ 'eronnut', 'lasna', 'valmistunut', 'valiaikaisestikeskeytynyt' ]
 const vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat = ['hyvaksytystisuoritettu', 'keskeytynyt']
+const tuvaTilat = ['katsotaaneronneeksi', 'lasna', 'valiaikaisestikeskeytynyt', 'valmistunut']
 const alwaysExclude = ['mitatoity']
 
 const defaultGetKoodiarvo = x => x && x.koodiarvo
@@ -17,6 +18,7 @@ const filterByOpiskeluoikeudenTyyppi = (opiskeluoikeudenTyyppi, tilat, koodiarvo
     case 'perusopetukseenvalmistavaopetus': return tilat
     case 'ammatillinenkoulutus': return tilat.filter(t => koodiarvo(t) !== 'eronnut')
     case 'internationalschool': return tilat.filter(t => internationalSchoolTilat.includes(koodiarvo(t)))
+    case 'tuva': return tilat.filter(t => tuvaTilat.includes(koodiarvo(t)))
     default: return tilat.filter(t => koodiarvo(t) !== 'loma')
   }
 }

@@ -76,11 +76,6 @@
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
-          "nimi" : {
-            "fi" : "Opiskelu- ja urasuunnittelutaidot",
-            "sv" : "Opiskelu- ja urasuunnittelutaidot",
-            "en" : "Opiskelu- ja urasuunnittelutaidot"
-          },
           "tunniste" : {
             "koodiarvo" : "101",
             "nimi" : {
@@ -104,11 +99,6 @@
         }
       }, {
         "koulutusmoduuli" : {
-          "nimi" : {
-            "fi" : "Perustaitojen vahvistaminen",
-            "sv" : "Perustaitojen vahvistaminen",
-            "en" : "Perustaitojen vahvistaminen"
-          },
           "tunniste" : {
             "koodiarvo" : "107",
             "nimi" : {
@@ -132,11 +122,6 @@
         }
       }, {
         "koulutusmoduuli" : {
-          "nimi" : {
-            "fi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
-            "sv" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
-            "en" : "Arjen ja yhteiskunnallisen osallisuuden taidot"
-          },
           "tunniste" : {
             "koodiarvo" : "103",
             "nimi" : {

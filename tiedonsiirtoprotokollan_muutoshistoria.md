@@ -1,6 +1,7 @@
 ## 8.3.2022
 - Korvattu koodiston *suorituksentyyppituva* käyttö TUVA tietomallin osasuorituksen tyypissä koodistolla *suorituksentyyppi*.
   - Koodistokoodit siirretty uuteen koodistoon ja vanhat koodiarvot osin päivitetty.
+- Poistettu nimi-kenttä TUVA-osasuoritusten koulutusmoduuleista tarpeettomana.
 
 ## 7.2.2022
 - Lisätty tietomalli Tutkintokoulutukseen valmentava koulutus (TUVA)

@@ -6,6 +6,7 @@ import Text from '../i18n/Text'
 import {t} from '../i18n/i18n'
 import {tutkinnonOsaPrototypes} from '../ammatillinen/TutkinnonOsa'
 import {TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor} from './TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor'
+import {UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus} from './UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus'
 import {
   ArvosanaColumn,
   ExpandAllRows,
@@ -31,7 +32,7 @@ export class TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko extends 
     const suoritusProtos = tutkinnonOsaPrototypes(suorituksetModel)
     const laajuusYksikkö = getLaajuusYksikkö(suoritusProtos[0])
     const title = t('Osasuoritus')
-    const paikallinenOsaSuoritusTitle = nestedLevel === 0 ? title : t('Valinnaisen opintojakson paikallinen osasuoritus')
+    const paikallinenOsaSuoritusTitle = nestedLevel === 0 ? title : t('Valinnaisen koulutuksen osan paikallinen osasuoritus')
 
     const columns = [SuoritusColumn, LaajuusColumn, ArvosanaColumn]
       .filter(column => column.shouldShow({parentSuoritus, suoritukset, suorituksetModel, context}))
@@ -62,6 +63,16 @@ export class TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko extends 
                                                                            nestedLevel={nestedLevel + 1}
               />
             ))
+          }
+          {
+            context.edit &&
+            <SingleColumnRowTable colSpan={4}>
+              <UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus suoritusPrototypes={suoritusProtos}
+                                                                         setExpanded={setExpanded}
+                                                                         suoritukset={suoritukset}
+
+              />
+            </SingleColumnRowTable>
           }
           {
             nestedLevel === 0 &&

@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
@@ -22,6 +23,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeus(
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.tuva,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
   @KoodistoUri("tuvajarjestamislupa")
+  @ReadOnly("Järjestämislupaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
   järjestämislupa: Koodistokoodiviite
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -88,21 +90,23 @@ case class TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
   arviointi: Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoUri("suorituksentyyppi")
+  @KoodistoKoodiarvo("tutkintokoulutukseenvalmentava")
+  @KoodistoKoodiarvo("tuvaperusopetus")
+  @KoodistoKoodiarvo("tuvalukiokoulutus")
+  @KoodistoKoodiarvo("tuvaammatillinenkoulutus")
   tyyppi: Koodistokoodiviite,
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen]
 ) extends Suoritus with Vahvistukseton with TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen
 
-trait TutkintokoulutukseenValmentavanKoulutuksenMuuOsa extends KoulutusmoduuliValinnainenLaajuus {
+trait TutkintokoulutukseenValmentavanKoulutuksenMuuOsa
+  extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli {
   def laajuus: Option[LaajuusViikoissa]
-
-  def nimi: LocalizedString
 }
 
 @Title("Opiskelu- ja urasuunnittelutaidot")
 @Description("Opiskelu- ja urasuunnittelutaidot")
 case class TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot(
-  override val nimi: LocalizedString = LocalizedString.unlocalized("Opiskelu- ja urasuunnittelutaidot"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("101")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(
@@ -112,12 +116,11 @@ case class TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot(
   ),
   @DefaultValue(None)
   laajuus: Option[LaajuusViikoissa] = None
-) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
+) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa
 
 @Title("Perustaitojen vahvistaminen")
 @Description("Perustaitojen vahvistaminen")
 case class TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
-  override val nimi: LocalizedString = LocalizedString.unlocalized("Perustaitojen vahvistaminen"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("107")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(
@@ -127,12 +130,11 @@ case class TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen(
   ),
   @DefaultValue(None)
   laajuus: Option[LaajuusViikoissa] = None
-) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
+) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa
 
 @Title("Lukiokoulutuksen opinnot ja niihin valmentautuminen")
 @Description("Lukiokoulutuksen opinnot ja niihin valmentautuminen")
 case class TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot(
-  override val nimi: LocalizedString = LocalizedString.unlocalized("Lukiokoulutuksen opinnot ja niihin valmentautuminen"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("106")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(
@@ -142,12 +144,11 @@ case class TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot(
   ),
   @DefaultValue(None)
   laajuus: Option[LaajuusViikoissa] = None
-) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
+) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa
 
 @Title("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen")
 @Description("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen")
 case class TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot(
-  override val nimi: LocalizedString = LocalizedString.unlocalized("Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("105")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(
@@ -157,12 +158,11 @@ case class TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot(
   ),
   @DefaultValue(None)
   laajuus: Option[LaajuusViikoissa] = None
-) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
+) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa
 
 @Title("Työelämätaidot ja työpaikalla tapahtuva oppiminen")
 @Description("Työelämätaidot ja työpaikalla tapahtuva oppiminen")
 case class TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(
-  override val nimi: LocalizedString = LocalizedString.unlocalized("Työelämätaidot ja työpaikalla tapahtuva oppiminen"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("102")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(
@@ -172,12 +172,11 @@ case class TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtu
   ),
   @DefaultValue(None)
   laajuus: Option[LaajuusViikoissa] = None
-) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
+) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa
 
 @Title("Arjen ja yhteiskunnallisen osallisuuden taidot")
 @Description("Arjen ja yhteiskunnallisen osallisuuden taidot")
 case class TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot(
-  override val nimi: LocalizedString = LocalizedString.unlocalized("Arjen ja yhteiskunnallisen osallisuuden taidot"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("103")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(
@@ -187,7 +186,7 @@ case class TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTa
   ),
   @DefaultValue(None)
   laajuus: Option[LaajuusViikoissa] = None
-) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa with KoodistostaLöytyväKoulutusmoduuli
+) extends TutkintokoulutukseenValmentavanKoulutuksenMuuOsa
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen valinnaisten opintojen osasuoritus")
 @Description("Tutkintokoulutukseen valmentavan koulutuksen valinnaisten opintojen osasuoritus")
@@ -210,7 +209,6 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(
 @Title("Valinnaiset koulutuksen osat")
 @Description("Valinnaiset koulutuksen osat")
 case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
-  override val nimi: LocalizedString = LocalizedString.unlocalized("Valinnaiset koulutuksen osat"),
   @KoodistoUri("koulutuksenosattuva")
   @KoodistoKoodiarvo("104")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(
@@ -220,7 +218,9 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
   ),
   @DefaultValue(None)
   laajuus: Option[LaajuusViikoissa] = None
-) extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli
+) extends KoulutusmoduuliValinnainenLaajuus {
+  def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
+}
 
 @Title("Tutkintokoulutukseen valmentavan valinnaisen opintojakson paikallinen osasuoritus")
 @Description("Tutkintokoulutukseen valmentavan valinnaisen opintojakson paikallinen osasuoritus, jolla on laajuus viikkoina sekä arvosana.")

@@ -77,7 +77,7 @@ describe('Omat tiedot - TUVA', function () {
           'Valinnaiset koulutuksen osat 5 viikkoa S\n' +
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.12.2021\n' +
-          'Valinnaisen opintojakson paikallinen osasuoritus Laajuus Arvosana\n' +
+          'Valinnaisen koulutuksen osan paikallinen osasuoritus Laajuus Arvosana\n' +
           'Valinnainen kurssi 1 2 viikkoa 10\n' +
           'Valinnainen kurssi 2 3 viikkoa 10'
         )
