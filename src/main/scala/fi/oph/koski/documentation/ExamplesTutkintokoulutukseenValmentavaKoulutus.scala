@@ -12,27 +12,21 @@ import java.time.LocalDate.{of => date}
 
 object ExamplesTutkintokoulutukseenValmentavaKoulutus {
 
-  def tuvaSanallinenArviointi(arviointiPäivä: Option[LocalDate]): Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = arviointiPäivä.map(d =>
-    List(
-      SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
-        arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
-        kuvaus = Some(
-          finnish("Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus.")
-        ),
-        päivä = d
+  def tuvaSanallinenArviointi(
+    arviointiPäivä: Option[LocalDate]
+  ): Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = {
+    arviointiPäivä.map(d =>
+      List(
+        SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
+          arvosana = Koodistokoodiviite("Hyväksytty", "arviointiasteikkotuva"),
+          kuvaus = Some(
+            finnish("Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus.")
+          ),
+          päivä = d
+        )
       )
     )
-  )
-
-  def tuvaNumeerinenArviointi(d: LocalDate): Option[List[NumeerinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = Some(
-    List(
-      NumeerinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
-        arvosana = Koodistokoodiviite("10", "arviointiasteikkoyleissivistava"),
-        kuvaus = None,
-        päivä = date(2021, 12, 1)
-      )
-    )
-  )
+  }
 
   def tuvaOpiskeluOikeusjakso(d: LocalDate, koodistokoodiviite: String) = TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
     alku = d,
@@ -219,7 +213,7 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
                         LaajuusViikoissa(2)
                       )
                     ),
-                    arviointi = tuvaNumeerinenArviointi(date(2021, 12, 1)),
+                    arviointi = tuvaSanallinenArviointi(Some(date(2021, 12, 1))),
                     tunnustettu = None,
                     suorituskieli = Some(suomenKieli)
                   ),
@@ -231,7 +225,7 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
                         LaajuusViikoissa(3)
                       )
                     ),
-                    arviointi = tuvaNumeerinenArviointi(date(2021, 12, 1)),
+                    arviointi = tuvaSanallinenArviointi(Some(date(2021, 12, 1))),
                     tunnustettu = None,
                     suorituskieli = Some(suomenKieli)
                   )

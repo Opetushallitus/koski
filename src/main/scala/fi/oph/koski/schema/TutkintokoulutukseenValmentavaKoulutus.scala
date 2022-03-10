@@ -45,8 +45,11 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("mitatoity")
   @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
   @KoodistoKoodiarvo("valmistunut")
-  tila: Koodistokoodiviite
-) extends KoskiSuppeaOpiskeluoikeusjakso
+  tila: Koodistokoodiviite,
+  @Description("Opintojen rahoitus")
+  @KoodistoUri("opintojenrahoitus")
+  override val opintojenRahoitus: Option[Koodistokoodiviite] = None
+) extends KoskiOpiskeluoikeusjakso
 
 case class TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
@@ -247,17 +250,16 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsas
 @Title("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen sanallinen arviointi")
 @Description("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen hyväksytty/hylätty arviointi")
 case class SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
+  @KoodistoKoodiarvo("Hyväksytty")
+  @KoodistoKoodiarvo("Hylätty")
+  @KoodistoUri("arviointiasteikkotuva")
   arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
   päivä: LocalDate
-) extends TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi with SanallinenYleissivistävänKoulutuksenArviointi
+) extends TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi with SanallinenArviointi {
+  override def hyväksytty: Boolean = arvosana.koodiarvo == "Hyväksytty"
+  override def arvioitsijat: Option[List[SuorituksenArvioitsija]] = None
+}
 
-@Title("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen numeerinen arviointi")
-@Description("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen arviointi numeerisella arvosanalla")
-case class NumeerinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi(
-  arvosana: Koodistokoodiviite,
-  kuvaus: Option[LocalizedString],
-  päivä: LocalDate
-) extends TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi with NumeerinenYleissivistävänKoulutuksenArviointi
-
-trait TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi extends ArviointiPäivämäärällä
+trait TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi
+  extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä

@@ -162,8 +162,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
           },
           "kuvaus" : {
             "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
@@ -213,8 +213,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
           },
           "kuvaus" : {
             "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
@@ -264,8 +264,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
           },
           "kuvaus" : {
             "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
@@ -315,8 +315,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
           },
           "kuvaus" : {
             "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
@@ -366,8 +366,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
           },
           "kuvaus" : {
             "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
@@ -417,8 +417,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
           },
           "kuvaus" : {
             "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
@@ -505,8 +505,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
           },
           "kuvaus" : {
             "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
@@ -552,8 +552,11 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "10",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkotuva"
+            },
+            "kuvaus" : {
+              "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
             },
             "päivä" : "2021-12-01",
             "hyväksytty" : true
@@ -600,8 +603,11 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "10",
-              "koodistoUri" : "arviointiasteikkoyleissivistava"
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkotuva"
+            },
+            "kuvaus" : {
+              "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
             },
             "päivä" : "2021-12-01",
             "hyväksytty" : true

@@ -29,6 +29,7 @@ describe('TUVA', function () {
           'Koulutuksen maksuttomuus lisää uusi\n' +
           'Oikeutta maksuttomuuteen pidennetty lisää uusi\n' +
           'Erityisen tuen päätökset lisää uusi\n' +
+          'Ulkomaanjaksot lisää uusi\n' +
           'Muu kuin vaikeimmin kehitysvammainen lisää uusi\n' +
           'Vaikeimmin kehitysvammainen lisää uusi\n' +
           'Majoitusetu lisää\n' +
@@ -63,13 +64,13 @@ describe('TUVA', function () {
               return tuva.selectOsasuoritus('Opiskelu- ja urasuunnittelutaidot')().property('laajuus').setValue(2)()
             },
             function () {
-              return tuva.selectOsasuoritus('Opiskelu- ja urasuunnittelutaidot')().lisääArvosana('S')()
+              return tuva.selectOsasuoritus('Opiskelu- ja urasuunnittelutaidot')().lisääArvosana('Hyväksytty')()
             },
             editor.saveChanges,
             opinnot.avaaKaikki
           )
           it('voidaan lisätä', function () {
-            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Opiskelu- ja urasuunnittelutaidot 2 viikkoa S')
+            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Opiskelu- ja urasuunnittelutaidot 2 viikkoa Hyväksytty')
           })
         })
       })
@@ -92,13 +93,13 @@ describe('TUVA', function () {
               return tuva.selectOsasuoritus('Valinnaiset koulutuksen osat')().property('laajuus').setValue(2)()
             },
             function () {
-              return tuva.selectOsasuoritus('Valinnaiset koulutuksen osat')().lisääArvosana('S')()
+              return tuva.selectOsasuoritus('Valinnaiset koulutuksen osat')().lisääArvosana('Hyväksytty')()
             },
             editor.saveChanges,
             opinnot.avaaKaikki
           )
           it('voidaan lisätä', function () {
-            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 viikkoa S')
+            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 viikkoa Hyväksytty')
           })
         })
 
@@ -111,13 +112,13 @@ describe('TUVA', function () {
               return tuva.selectOsasuoritus('Ohjelmointi 1')().property('laajuus').setValue(2)()
             },
             function () {
-              return tuva.selectOsasuoritus('Ohjelmointi 1')().lisääArvosana('S')()
+              return tuva.selectOsasuoritus('Ohjelmointi 1')().lisääArvosana('Hyväksytty')()
             },
             editor.saveChanges,
             opinnot.avaaKaikki
           )
           it('voidaan lisätä', function () {
-            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 viikkoa S')
+            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 viikkoa Hyväksytty')
           })
         })
       })
