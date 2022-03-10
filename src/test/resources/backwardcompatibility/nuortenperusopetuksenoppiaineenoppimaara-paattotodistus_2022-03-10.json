@@ -1,5 +1,4 @@
 {
-  "ignoreKoskiValidator": true,
   "henkilö" : {
     "hetu" : "010101-123N",
     "etunimet" : "Eero",
@@ -12,15 +11,21 @@
       "oppilaitosnumero" : {
         "koodiarvo" : "00204",
         "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu"
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
         },
         "lyhytNimi" : {
-          "fi" : "Jyväskylän normaalikoulu"
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
         },
         "koodistoUri" : "oppilaitosnumero"
       },
       "nimi" : {
-        "fi" : "Jyväskylän normaalikoulu"
+        "fi" : "Jyväskylän normaalikoulu",
+        "sv" : "Jyväskylän normaalikoulu",
+        "en" : "Jyväskylän normaalikoulu"
       },
       "kotipaikka" : {
         "koodiarvo" : "179",
@@ -55,7 +60,6 @@
       } ]
     },
     "lisätiedot" : {
-      "perusopetuksenAloittamistaLykätty" : false,
       "aloittanutEnnenOppivelvollisuutta" : false,
       "vuosiluokkiinSitoutumatonOpetus" : false,
       "vaikeastiVammainen" : [ {
@@ -80,15 +84,21 @@
         "oppilaitosnumero" : {
           "koodiarvo" : "00204",
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu"
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
           },
           "lyhytNimi" : {
-            "fi" : "Jyväskylän normaalikoulu"
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
           },
           "koodistoUri" : "oppilaitosnumero"
         },
         "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu"
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
         },
         "kotipaikka" : {
           "koodiarvo" : "179",
@@ -120,15 +130,21 @@
           "oppilaitosnumero" : {
             "koodiarvo" : "00204",
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu"
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
             },
             "lyhytNimi" : {
-              "fi" : "Jyväskylän normaalikoulu"
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
             },
             "koodistoUri" : "oppilaitosnumero"
           },
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu"
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
           },
           "kotipaikka" : {
             "koodiarvo" : "179",
@@ -149,15 +165,21 @@
             "oppilaitosnumero" : {
               "koodiarvo" : "00204",
               "nimi" : {
-                "fi" : "Jyväskylän normaalikoulu"
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
               },
               "lyhytNimi" : {
-                "fi" : "Jyväskylän normaalikoulu"
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
               },
               "koodistoUri" : "oppilaitosnumero"
             },
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu"
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
             },
             "kotipaikka" : {
               "koodiarvo" : "179",

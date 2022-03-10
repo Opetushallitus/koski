@@ -6,7 +6,7 @@ import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesIB._
 import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
-import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, seitsemännenLuokanSuoritus, yhdeksännenLuokanSuoritus}
+import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, perusopetuksenOppimääränSuoritusKesken, seitsemännenLuokanSuoritus, suoritustapaErityinenTutkinto, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oppilaitos, ressunLukio}
 import fi.oph.koski.documentation._
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesEsiopetus, ExamplesInternationalSchool, ExamplesLukio2019, ExamplesPerusopetuksenLisaopetus, ExamplesTelma, ExamplesValma, InternationalSchoolExampleData, LukioExampleData, VapaaSivistystyöExample}
@@ -125,7 +125,8 @@ object ValpasOpiskeluoikeusExampleData {
     koulutustoimija = None,
     suoritukset = List(
       perusopetuksenOppimääränSuoritus.copy(
-        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30))
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30)),
+        suoritustapa = suoritustapaErityinenTutkinto
       )
     ),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
@@ -144,7 +145,8 @@ object ValpasOpiskeluoikeusExampleData {
       koulutustoimija = None,
       suoritukset = List(
         perusopetuksenOppimääränSuoritus.copy(
-          vahvistus = vahvistusPaikkakunnalla(valmistumispäivä)
+          vahvistus = vahvistusPaikkakunnalla(valmistumispäivä),
+          suoritustapa = suoritustapaErityinenTutkinto
         )
       ),
       tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
@@ -194,7 +196,8 @@ object ValpasOpiskeluoikeusExampleData {
     koulutustoimija = None,
     suoritukset = List(
       perusopetuksenOppimääränSuoritus.copy(
-        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30))
+        vahvistus = vahvistusPaikkakunnalla(date(2021, 5, 30)),
+        suoritustapa = suoritustapaErityinenTutkinto
       ),
       kahdeksannenLuokanSuoritus.copy(
         alkamispäivä = Some(date(2020, 8, 15)),

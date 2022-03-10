@@ -50,6 +50,8 @@ object PerusopetuksenOpiskeluoikeusValidation {
   }
 
   private def validateValmistuneellaOpiskeluoikeudellaYhdeksäsLuokkaTaiSitäEiTarvita(oo: PerusopetuksenOpiskeluoikeus) = {
+    val aineopiskelija = oo.suoritukset.filter(_.isInstanceOf[NuortenPerusopetuksenOppiaineenOppimääränSuoritus]).nonEmpty
+
     val ysiluokanSuoritusOlemassa = oo.suoritukset.exists {
       case vuosi: PerusopetuksenVuosiluokanSuoritus => vuosi.koulutusmoduuli.tunniste.koodiarvo == "9"
       case _: Any => false
@@ -58,14 +60,9 @@ object PerusopetuksenOpiskeluoikeusValidation {
     val vuosiluokkiinSitoutumatonOpetus = oo.lisätiedot.exists(_.vuosiluokkiinSitoutumatonOpetus)
 
     val kotiopetusVoimassaPäättötodistuksenVahvistuspäivänä = oo.suoritukset.exists {
-      case päättö: NuortenPerusopetuksenOppimääränSuoritus => {
-        println(päättö.vahvistus)
-
-        päättö.vahvistus.exists(vahvistus => {
-          println(oo.kotiopetuksessa(vahvistus.päivä))
+      case päättö: NuortenPerusopetuksenOppimääränSuoritus => päättö.vahvistus.exists(vahvistus => {
           oo.kotiopetuksessa(vahvistus.päivä)
         })
-      }
       case _: Any => false
     }
 
@@ -74,7 +71,7 @@ object PerusopetuksenOpiskeluoikeusValidation {
       case _: Any => false
     }
 
-    if (ysiluokanSuoritusOlemassa || vuosiluokkiinSitoutumatonOpetus || kotiopetusVoimassaPäättötodistuksenVahvistuspäivänä || erityinenTutkinto) {
+    if (aineopiskelija || ysiluokanSuoritusOlemassa || vuosiluokkiinSitoutumatonOpetus || kotiopetusVoimassaPäättötodistuksenVahvistuspäivänä || erityinenTutkinto) {
       HttpStatus.ok
     } else {
       KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenValmistunutTilaIlmanYsiluokanSuoritusta()

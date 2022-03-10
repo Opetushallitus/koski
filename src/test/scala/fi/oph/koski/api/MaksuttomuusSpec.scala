@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla}
-import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
+import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
@@ -155,8 +155,9 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
         "Perusopetuksen vahvistettu oppimäärä opiskeluoikeuden valmistumisella" in {
           val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(
             suoritukset = List(perusopetuksenOppimääränSuoritus.copy(
-              vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 1, 1))
-            )),
+              vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 1, 1))),
+              yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2016, 1, 1)))
+            ),
             alkamispäivä = date(2010, 8, 1),
             päättymispäivä = Some(date(2020, 8, 1)),
           )
@@ -284,8 +285,9 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       "Saa siirtää, jos ennen rajapäivää tehty vahvistus on mitätöidyssä opiskeluoikeudessa" in {
         val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(
           suoritukset = List(perusopetuksenOppimääränSuoritus.copy(
-            vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 1, 1))
-          )),
+            vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 1, 1))),
+            yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2016, 1, 1)))
+          ),
           alkamispäivä = date(2010, 8, 1),
           päättymispäivä = Some(date(2020, 8, 1))
         )
@@ -336,8 +338,9 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       "Saa siirtää jos suoritus vahvistettu Valpas-lain voimaantulopäivän jälkeen" in {
         val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(
           suoritukset = List(perusopetuksenOppimääränSuoritus.copy(
-            vahvistus = vahvistusPaikkakunnalla(päivä = date(2021, 1, 1))
-          )),
+            vahvistus = vahvistusPaikkakunnalla(päivä = date(2021, 1, 1))),
+            yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2016, 1, 1)))
+          ),
           alkamispäivä = date(2010, 8, 1),
           päättymispäivä = Some(date(2021, 8, 1))
         )
