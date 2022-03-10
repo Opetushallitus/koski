@@ -1,3 +1,8 @@
+## 10.3.2022
+- TUVA-tietomallin opiskeluoikeuden tilan opiskeluoikeusjaksoihin lisätty valinnainen kenttä opintojenRahoitus.
+- TUVA-tietomallin osasuoritusten arviointi-kentät muutettu käyttämään uutta koodistoa arviointiasteikkotuva.
+- TUVA-tietomallin perusopetuksen lisätiedoista korvattu vanhentunut ulkomailla-kenttä kentällä ulkomaanjaksot.
+
 ## 8.3.2022
 - Korvattu koodiston *suorituksentyyppituva* käyttö TUVA tietomallin osasuorituksen tyypissä koodistolla *suorituksentyyppi*.
   - Koodistokoodit siirretty uuteen koodistoon ja vanhat koodiarvot osin päivitetty.
