@@ -11,13 +11,15 @@ describe('TUVA', function () {
       addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Tutkintokoulutukseen valmentava koulutus')
     )
     it('toimii', function () {
+      expect(editor.propertyBySelector('.opiskeluoikeusjakso .date span').getText()).to.equal('1.8.2021')
+      expect(editor.propertyBySelector('.opiskeluoikeusjakso .tila').getText()).to.equal('Läsnä (muuta kautta rahoitettu)')
       expect(editor.propertyBySelector('.järjestämislupa').getValue()).to.equal('Perusopetuksen järjestämislupa (TUVA)')
       expect(opinnot.getTutkinto()).to.equal('Tutkintokoulutukseen valmentava koulutus')
       expect(opinnot.getOppilaitos()).to.equal('Ressun lukio')
       expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('OPH-1488-2021')
-      expect(extractAsText(S('.tunniste'))).to.equal('Tutkintokoulutukseen valmentava koulutus')
-      expect(extractAsText(S('.tunniste-koodiarvo'))).to.equal('999908')
-      expect(extractAsText(S('.suorituskieli .value'))).to.equal('suomi')
+      expect(editor.propertyBySelector('.tunniste').getText()).to.equal('Tutkintokoulutukseen valmentava koulutus')
+      expect(editor.propertyBySelector('.tunniste-koodiarvo').getText()).to.equal('999908')
+      expect(editor.propertyBySelector('.suorituskieli .value').getText()).to.equal('suomi')
     })
 
     describe('Järjestämisluvan mukaiset lisätietokentät näytetään', function () {

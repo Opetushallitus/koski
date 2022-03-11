@@ -346,15 +346,15 @@ function AddOppijaPage() {
         järjestämislupa: "Perusopetuksen järjestämislupa (TUVA)",
         suorituskieli: "suomi",
         alkamispäivä: "1.8.2021",
+        opintojenRahoitus: "Muuta kautta rahoitettu",
       });
       return function () {
         return api
           .enterData(params)()
-          .then(
-            api.selectOpiskeluoikeudenTyyppi("Tutkintokoulutukseen valmentava koulutus")
-          )
+          .then(api.selectOpiskeluoikeudenTyyppi("Tutkintokoulutukseen valmentava koulutus"))
           .then(api.selectJärjestämislupa(params.järjestämislupa))
           .then(api.selectAloituspäivä(params.alkamispäivä))
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
           .then(api.selectMaksuttomuus(0));
       };
     },

@@ -18,7 +18,7 @@ export const autoFillRahoitusmuoto = ({vaatiiRahoituksen, rahoitusValittu, setDe
 }
 
 export const opiskeluoikeudenTilaVaatiiRahoitusmuodon = (opiskeluoikeudenTyyppi, tila) => {
-  if (['aikuistenperusopetus', 'lukiokoulutus', 'luva', 'ibtutkinto', 'internationalschool', 'diatutkinto'].includes(opiskeluoikeudenTyyppi)) {
+  if (['aikuistenperusopetus', 'lukiokoulutus', 'luva', 'ibtutkinto', 'internationalschool', 'diatutkinto', 'tuva'].includes(opiskeluoikeudenTyyppi)) {
     return ['lasna', 'valmistunut'].includes(tila)
   }
   if ('ammatillinenkoulutus' === opiskeluoikeudenTyyppi) {
