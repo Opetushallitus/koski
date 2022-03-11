@@ -1,3 +1,6 @@
+## 14.3.2022
+- TUVA-opiskeluoikeuden järjestämislupa ei saa muuttua.
+
 ## 10.3.2022
 - TUVA-tietomallin opiskeluoikeuden tilan opiskeluoikeusjaksoihin lisätty valinnainen kenttä opintojenRahoitus.
 - TUVA-tietomallin osasuoritusten arviointi-kentät muutettu käyttämään uutta koodistoa arviointiasteikkotuva.

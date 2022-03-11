@@ -168,6 +168,26 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
         }
       }
     }
+
+    "Opiskeluoikeudet" - {
+      "opiskeluoikeuden järjestämislupa ei saa muuttua opiskeluoikeuden luonnin jälkeen" in {
+        putOpiskeluoikeus(
+          tuvaOpiskeluOikeusEiValmistunut
+            .copy(järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa"), lisätiedot = None),
+          henkilö = tuvaHenkilöEiValmis,
+          headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+        ) {
+          verifyResponseStatus(
+            400,
+            KoskiErrorCategory
+              .badRequest(
+                "Olemassaolevan tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeuden järjestämislupaa ei saa muuttaa."
+              )
+          )
+        }
+      }
+    }
+
   }
 
   override def defaultOpiskeluoikeus: TutkintokoulutukseenValmentavanOpiskeluoikeus = tuvaOpiskeluOikeusValmistunut
