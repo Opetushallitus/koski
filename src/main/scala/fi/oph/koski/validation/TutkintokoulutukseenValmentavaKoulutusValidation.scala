@@ -113,4 +113,20 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
       KoskiErrorCategory.badRequest.validation.rakenne.tuvaOsasuorituksiaLiianVähän()
     }
   }
+
+  def validateJärjestämislupaEiMuuttunut(
+    oldState: KoskeenTallennettavaOpiskeluoikeus,
+    newState: KoskeenTallennettavaOpiskeluoikeus
+  ): HttpStatus = {
+    (oldState, newState) match {
+      case (oldOo: TutkintokoulutukseenValmentavanOpiskeluoikeus, newOo: TutkintokoulutukseenValmentavanOpiskeluoikeus) =>
+        HttpStatus.validate(oldOo.järjestämislupa.koodiarvo == newOo.järjestämislupa.koodiarvo) {
+          KoskiErrorCategory
+            .badRequest(
+              "Olemassaolevan tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeuden järjestämislupaa ei saa muuttaa."
+            )
+        }
+      case _ => HttpStatus.ok
+    }
+  }
 }
