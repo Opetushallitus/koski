@@ -89,6 +89,12 @@ export const getText = (webElement: WebElement) => webElement.getText()
 export const getOptionalText = async (webElements: WebElement[]) =>
   webElements[0]?.getText()
 
+export const acceptConfirmation = async () => {
+  await driver.wait(until.alertIsPresent())
+  const alert = await driver.switchTo().alert()
+  await alert.accept()
+}
+
 // Mekanismi featureflagien väliaikaiseen sulkemiseen
 
 const disabledFeatures = new Set<Feature>()

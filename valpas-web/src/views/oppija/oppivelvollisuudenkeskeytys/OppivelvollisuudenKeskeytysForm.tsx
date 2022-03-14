@@ -48,6 +48,7 @@ export const OppivelvollisuudenKeskeytysForm = (
       ? "toistaiseksi"
       : "määräaikainen"
   )
+
   const [toistaiseksiVahvistettu, setToistaiseksiVahvistettu] = useState(false)
   const [dateRange, setDateRange] = useState<DateRange>([
     props.muokattavaKeskeytys?.alku || today(),

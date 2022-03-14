@@ -472,13 +472,13 @@ class ValpasOppijaService(
       .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
       .flatMap(uuid => ovKeskeytysService.getLaajatTiedot(uuid).toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()))
       .flatMap(keskeytys => {
-      accessResolver
-        .assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
-        .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid))
-        .flatMap(accessResolver.withOppijaAccess(_))
-        .flatMap(_ => ovKeskeytysService.update(muutos))
-        .map(_ => (keskeytys, ovKeskeytysService.getSuppeatTiedot(UUID.fromString(muutos.id)).get))
-    })
+        accessResolver
+          .assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
+          .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid))
+          .flatMap(accessResolver.withOppijaAccess(_))
+          .flatMap(_ => ovKeskeytysService.update(muutos))
+          .map(_ => (keskeytys, ovKeskeytysService.getSuppeatTiedot(UUID.fromString(muutos.id)).get))
+      })
   }
 
   def deleteOppivelvollisuudenKeskeytys

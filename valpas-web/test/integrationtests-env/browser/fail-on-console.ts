@@ -2,6 +2,7 @@ import { logging, WebDriver } from "selenium-webdriver"
 
 export const UNAUTHORIZED = "401 (Unauthorized)"
 export const FORBIDDEN = "403 (Forbidden)"
+export const BAD_REQUEST = "400 (Bad Request)"
 
 const errorLogLevels = [logging.Level.SEVERE, logging.Level.WARNING]
 
