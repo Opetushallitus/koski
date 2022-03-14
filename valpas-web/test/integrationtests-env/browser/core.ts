@@ -1,15 +1,23 @@
 import fs from "fs/promises"
 import { By, until, WebElement } from "selenium-webdriver"
+import { ISODate } from "../../../src/state/common"
 import { Feature } from "../../../src/state/featureFlags"
 import { driver } from "./driver"
 import { defaultSleepTime, defaultTimeout, shortTimeout } from "./timeouts"
 import { eventually, sleep } from "./utils"
 
+let browserDate = ""
+
+export const setBrowserDate = (date: ISODate) => {
+  browserDate = date
+}
+
 export const goToLocation = async (path: string) => {
   await driver.get(
     // TODO: Tutki miksi PUBLIC_URL ei asetu enää tänne
-    `http://localhost:1234${process.env.PUBLIC_URL || "/valpas"}${path}` +
-      featureQuery()
+    `http://localhost:1234${
+      process.env.PUBLIC_URL || "/valpas"
+    }${path}?date=${browserDate}` + featureQuery()
   )
 }
 
@@ -98,5 +106,5 @@ const featureQuery = () => {
   disabledFeatures.forEach((f) => collection.push(f))
   return collection.length === 0
     ? ""
-    : "?" + collection.map((f) => `disable-${f}`).join("&")
+    : "&" + collection.map((f) => `disable-${f}`).join("&")
 }
