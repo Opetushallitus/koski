@@ -27,8 +27,8 @@ trait RaportointikantaTestMethods extends KoskiHttpSpec {
     Wait.until(loadComplete)
   }
 
-  def verifyRaportinLataaminen(apiUrl: String, expectedRaporttiNimi: String, expectedFileNamePrefix: String): Unit = {
-    val queryString1 = s"oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&lang=fi"
+  def verifyRaportinLataaminen(apiUrl: String, expectedRaporttiNimi: String, expectedFileNamePrefix: String, lang: String = "fi"): Unit = {
+    val queryString1 = s"oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&lang=$lang"
     val queryString2 = "password=dummy&downloadToken=test123"
     authGet(s"$apiUrl?$queryString1&$queryString2") {
       verifyResponseStatusOk()

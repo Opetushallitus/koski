@@ -38,6 +38,16 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec wi
       }
     }
 
+    "Raportin lataaminen onnistuu eri lokalisaatiolla ja tuottaa auditlogin" in {
+      AuditLogTester.clearMessages
+      authGet(s"api/raportit/lukiodiaibinternationalopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=sv") {
+        verifyResponseStatusOk()
+        response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukiokoulutus_opiskelijamaarat_20180101.xlsx"""")
+        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiodiaibinternationalopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=sv")))
+      }
+    }
+
     lazy val rivit: Seq[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow] = loadRaportti
     lazy val helsinki = rivit.find(_.oppilaitosNimi == hese).get
     lazy val ressu = rivit.find(_.oppilaitosNimi == resu).get

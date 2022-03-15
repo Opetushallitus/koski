@@ -59,6 +59,7 @@ class RaportointikantaSpec
         false,
         None,
         None,
+        None,
         true
       )))
     }
@@ -67,41 +68,41 @@ class RaportointikantaSpec
       val hakuOidit = Set(master.oid, slaveOppija.oid)
       val henkilot = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result).toSet
       henkilot should equal (Set(
-        RHenkilöRow(slaveOppija.oid, master.oid, List(slaveOppija.oid), master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, None, true),
-        RHenkilöRow(master.oid, master.oid, List(slaveOppija.oid), master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, None, true)
+        RHenkilöRow(slaveOppija.oid, master.oid, List(slaveOppija.oid), master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, None, None, true),
+        RHenkilöRow(master.oid, master.oid, List(slaveOppija.oid), master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, None, None, true)
       ))
     }
     "Master oidia ei löydy koskesta" in {
       val slaveOppija = KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö
       val henkilot = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result).toSet
       henkilot should equal(Set(
-        RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, List(slaveOppija.oid), masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), true),
-        RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, List(slaveOppija.oid), masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), true)
+        RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, List(slaveOppija.oid), masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true),
+        RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, List(slaveOppija.oid), masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true)
       ))
     }
     "Organisaatiot on ladattu" in {
       organisaatioCount should be > 10
       val organisaatio = mainRaportointiDb.runDbSync(mainRaportointiDb.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result)
-      organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None)))
+      organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None)))
     }
     "Oppilaitosten opetuskielet on ladattu" in {
       val oppilaitoksetJaKielet = List(
-        (MockOrganisaatiot.aapajoenKoulu, "suomi", "1"),
-        (MockOrganisaatiot.yrkehögskolanArcada, "ruotsi", "2")
+        (MockOrganisaatiot.aapajoenKoulu, "suomi", "finska", "1"),
+        (MockOrganisaatiot.yrkehögskolanArcada, "ruotsi", "svenska", "2")
       )
-      oppilaitoksetJaKielet.foreach{ case(oppilaitosOid, kieli, kielikoodi) =>
+      oppilaitoksetJaKielet.foreach{ case(oppilaitosOid, kieli, kieliSv, kielikoodi) =>
         val oppilaitos = mainRaportointiDb.runDbSync(
           mainRaportointiDb.ROrganisaatiot.filter(_.organisaatioOid === oppilaitosOid).result
         ).head
         mainRaportointiDb.oppilaitoksenKielet(oppilaitos.organisaatioOid).shouldEqual(
-          Set(RKoodistoKoodiRow("oppilaitoksenopetuskieli", kielikoodi, kieli))
+          Set(RKoodistoKoodiRow("oppilaitoksenopetuskieli", kielikoodi, kieli, kieliSv))
         )
       }
     }
     "Koodistot on ladattu" in {
       koodistoKoodiCount should be > 500
       val koodi = mainRaportointiDb.runDbSync(mainRaportointiDb.RKoodistoKoodit.filter(_.koodistoUri === "opiskeluoikeudentyyppi").filter(_.koodiarvo === "korkeakoulutus").result)
-      koodi should equal(Seq(RKoodistoKoodiRow("opiskeluoikeudentyyppi", "korkeakoulutus", "Korkeakoulutus")))
+      koodi should equal(Seq(RKoodistoKoodiRow("opiskeluoikeudentyyppi", "korkeakoulutus", "Korkeakoulutus", "Högskoleutbildning")))
     }
     "Status-rajapinta" in {
       authGet("api/raportointikanta/status") {

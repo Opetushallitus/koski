@@ -35,6 +35,15 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec wit
       }
     }
 
+    "Raportti voidaan ladata eri lokalisaatiolla ja lataaminen tuottaa auditlogin" in {
+      authGet(s"api/raportit/aikuistenperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&password=salasana&lang=sv") {
+        verifyResponseStatusOk()
+        response.headers("Content-Disposition").head should equal(s"""attachment; filename="aikuisten_perusopetuksen_vos_raportti-2010-01-01.xlsx"""")
+        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&lang=sv")))
+      }
+    }
+
     "Raportin kolumnit" in {
       lazy val r = findSingle(raportti)
 

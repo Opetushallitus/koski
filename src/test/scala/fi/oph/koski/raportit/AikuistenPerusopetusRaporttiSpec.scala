@@ -27,6 +27,7 @@ class AikuistenPerusopetusRaporttiSpec
   private lazy val today = LocalDate.now
   private lazy val repository = AikuistenPerusopetusRaporttiRepository(KoskiApplicationForTests.raportointiDatabase.db)
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
+  private lazy val tSv: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "sv")
 
   override protected def alterFixture(): Unit = {
     lisääPäätasonSuorituksia(
@@ -263,6 +264,17 @@ class AikuistenPerusopetusRaporttiSpec
         YleissivistäväUtils.lengthInDaysInDateRange(Aikajakso(date(2011, 1, 1), Some(date(2012, 1, 1))), date(2010, 6, 6), date(2013, 1, 1)) shouldEqual (366)
       }
     }
+
+    "Latautuu eri lokalisaatiolla" in {
+      lazy val sheets = buildReport(
+        jyväskylänNormaalikoulu,
+        date(2012, 1, 1),
+        date(2016, 1, 1),
+        AikuistenPerusopetusAlkuvaiheRaportti,
+        localizationReader = tSv
+      )
+      sheets.forall(sheet => sheet.rows.flatten.nonEmpty) shouldBe true
+    }
   }
 
   "Aikuisten perusopetuksen alkuvaiheen suoritustietoraportti osasuoritusten aikarajauksella" - {
@@ -360,6 +372,18 @@ class AikuistenPerusopetusRaporttiSpec
           verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaRow, oppiaineetRowsWithColumns)
         }
       }
+    }
+
+    "Latautuu eri lokalisaatiolla" in {
+      lazy val sheets = buildReport(
+        jyväskylänNormaalikoulu,
+        date(2012, 1, 1),
+        date(2016, 1, 1),
+        AikuistenPerusopetusAlkuvaiheRaportti,
+        osasuoritustenAikarajaus = true,
+        localizationReader = tSv
+      )
+      sheets.forall(sheet => sheet.rows.flatten.nonEmpty) shouldBe true
     }
   }
 
@@ -509,6 +533,17 @@ class AikuistenPerusopetusRaporttiSpec
           verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaRow, oppiaineetRowsWithColumns)
         }
       }
+    }
+
+    "Latautuu eri lokalisaatiolla" in {
+      lazy val sheets = buildReport(
+        jyväskylänNormaalikoulu,
+        date(2012, 1, 1),
+        date(2016, 1, 1),
+        AikuistenPerusopetusPäättövaiheRaportti,
+        localizationReader = tSv
+      )
+      sheets.forall(sheet => sheet.rows.flatten.nonEmpty) shouldBe true
     }
   }
 
@@ -686,6 +721,17 @@ class AikuistenPerusopetusRaporttiSpec
         }
       }
     }
+
+    "Latautuu eri lokalisaatiolla" in {
+      lazy val sheets = buildReport(
+        jyväskylänNormaalikoulu,
+        date(2012, 1, 1),
+        date(2016, 1, 1),
+        AikuistenPerusopetusOppiaineenOppimääräRaportti,
+        localizationReader = tSv
+      )
+      sheets.forall(sheet => sheet.rows.flatten.nonEmpty) shouldBe true
+    }
   }
 
   private def buildReport(
@@ -693,7 +739,8 @@ class AikuistenPerusopetusRaporttiSpec
     alku: LocalDate,
     loppu: LocalDate,
     raportinTyyppi: AikuistenPerusopetusRaporttiType,
-    osasuoritustenAikarajaus: Boolean = false
+    osasuoritustenAikarajaus: Boolean = false,
+    localizationReader: LocalizationReader = t
   ) = {
     AikuistenPerusopetusRaportti(
       repository,
@@ -702,7 +749,7 @@ class AikuistenPerusopetusRaporttiSpec
       alku,
       loppu,
       osasuoritustenAikarajaus = osasuoritustenAikarajaus,
-      t
+      localizationReader
     ).build()
   }
 

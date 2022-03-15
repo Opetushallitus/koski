@@ -42,6 +42,10 @@ class TOPKSAmmatillinenRaporttiSpec
       verifyRaportinLataaminen(apiUrl = "api/raportit/topksammatillinen", expectedRaporttiNimi = "topksammatillinen", expectedFileNamePrefix = "topks_ammatillinen_koski_raportti")
     }
 
+    "Voidaan ladata eri lokalisaatiolla ja tuottaa auditlogin" in {
+      verifyRaportinLataaminen(apiUrl = "api/raportit/topksammatillinen", expectedRaporttiNimi = "topksammatillinen", expectedFileNamePrefix = "topks_ammatillinen_koski_raportti", lang = "sv")
+    }
+
     "Raportin hakuvälin päivämäärä rajaus" - {
       "Opiskeluoikeus päättynyt ennen hakuväliä" in {
         raportti.filter(_.hetu.exists(KoskiSpecificMockOppijat.lukioKesken.hetu.contains)).length should equal(0)

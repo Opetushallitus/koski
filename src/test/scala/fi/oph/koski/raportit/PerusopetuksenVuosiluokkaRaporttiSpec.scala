@@ -36,10 +36,19 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
     "Raportin lataaminen toimii" in {
       verifyPerusopetukseVuosiluokkaRaportinLataaminen(
-        queryString = defaultQuery,
+        queryString = defaultQuery(lang = "fi"),
         apiUrl = "api/raportit/perusopetuksenvuosiluokka",
         expectedRaporttiNimi = "perusopetuksenvuosiluokka",
         expectedFileNamePrefix = "Perusopetuksen_vuosiluokka")
+    }
+
+    "Raportin lataaminen toimii eri lokalisaatiolla" in {
+      verifyPerusopetukseVuosiluokkaRaportinLataaminen(
+        queryString = defaultQuery(lang = "sv"),
+        apiUrl = "api/raportit/perusopetuksenvuosiluokka",
+        expectedRaporttiNimi = "perusopetuksenvuosiluokka",
+        expectedFileNamePrefix = "Perusopetuksen_vuosiluokka"
+      )
     }
 
     "Tuottaa oikeat tiedot" in {
@@ -467,7 +476,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     toimintaAlueenSuoritus("4")
   ))
 
-  private val defaultQuery = makeQueryString(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2016, 1, 1), "9", "fi")
+  private def defaultQuery(lang: String) = makeQueryString(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2016, 1, 1), "9", lang)
 
   private def makeQueryString(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, lang: String) = {
     s"oppilaitosOid=$oppilaitosOid&paiva=${paiva.toString}&vuosiluokka=$vuosiluokka&lang=$lang"
