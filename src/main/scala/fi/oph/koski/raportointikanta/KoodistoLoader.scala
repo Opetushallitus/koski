@@ -38,6 +38,7 @@ object KoodistoLoader extends Logging {
     RKoodistoKoodiRow(
       koodistoUri = koodi.koodistoUri,
       koodiarvo = koodi.koodiArvo,
-      nimi = convertLocalizedString(koodi.nimi)
+      nimi = convertLocalizedString(koodi.nimi, "fi"),
+      nimiSv = convertLocalizedString(koodi.nimi, "sv")
     )
 }

@@ -6,13 +6,13 @@ import fi.oph.koski.log.Logging
 class Kunta
 
 object Kunta extends Logging {
-  def getKunnanNimi(koodi: Option[String], koodistoPalvelu: KoodistoPalvelu): Option[String] = {
+  def getKunnanNimi(koodi: Option[String], koodistoPalvelu: KoodistoPalvelu, lang: String): Option[String] = {
     koodi match {
       case Some(koodi) => {
         val koodistoKoodit = koodistoPalvelu.getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("kunta"))
         val koodistoKoodi = koodistoKoodit.find(_.koodiArvo == koodi)
         koodistoKoodi match {
-          case Some(koodi) => Some(koodi.nimi.get.get("fi"))
+          case Some(koodi) => Some(koodi.nimi.get.get(lang))
           case None => {
             logger.warn(s"Koodiarvolle $koodi ei löytynyt koodia kunta-koodistosta")
             None
