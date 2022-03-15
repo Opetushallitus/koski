@@ -21,7 +21,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
   ): DataSheet = {
     DataSheet(
       t.get("raportti-excel-aineopiskelijat-sheet-name"),
-      rows = raportointiDatabase.runDbSync(queryAineopiskelija(oppilaitosOids, jaksonAlku, jaksonLoppu)),
+      rows = raportointiDatabase.runDbSync(queryAineopiskelija(oppilaitosOids, jaksonAlku, jaksonLoppu, t.language)),
       columnSettings(t)
     )
   }
@@ -82,10 +82,11 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     sqlu"create index on #${s.name}.lukion_oppiaineen_oppimaaran_kurssikertyma(oppilaitos_oid, arviointi_paiva)"
 
 
-  private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
+  private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, lang: String) = {
+    val nimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
     sql"""
       select
-        r_organisaatio.nimi oppilaitos,
+        r_organisaatio.#$nimiSarake oppilaitos,
         oppimaaran_kurssikertymat.*,
         coalesce(muuta_kautta_rahoitetut.yhteensa, 0) as muuta_kautta_rahoitetut,
         coalesce(rahoitusmuoto_ei_tiedossa.yhteensa, 0) as rahoitusmuoto_ei_tiedossa,

@@ -24,7 +24,8 @@ object LukioMuutaKauttaRahoitetut {
         oppilaitosOids,
         jaksonAlku,
         jaksonLoppu,
-        Some("6")
+        Some("6"),
+        t.language
       )),
       LukioOppiaineRahoitusmuodonMukaan.columnSettings(t)
     )
@@ -46,7 +47,8 @@ object LukioRahoitusmuotoEiTiedossa {
         oppilaitosOids,
         jaksonAlku,
         jaksonLoppu,
-        None
+        None,
+        t.language
       )),
       LukioOppiaineRahoitusmuodonMukaan.columnSettings(t)
     )
@@ -62,6 +64,7 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
         opiskeluoikeus.oppija_oid,
         osasuoritus.koulutusmoduuli_koodiarvo,
         osasuoritus.koulutusmoduuli_nimi,
+        COALESCE(osasuoritus.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> 'sv', osasuoritus.koulutusmoduuli_nimi) as koulutusmoduuli_nimi_sv,
         osasuoritus.arviointi_paiva,
         aikajakso.opintojen_rahoitus
       from #${s.name}.r_paatason_suoritus paatason_suoritus
@@ -87,13 +90,20 @@ object LukioOppiaineRahoitusmuodonMukaan extends DatabaseConverters {
   def createIndex(s: Schema) =
     sqlu"create index on #${s.name}.lukion_oppiaineen_oppimaaran_kurssien_rahoitusmuodot(oppilaitos_oid)"
 
-  def queryMuutaKauttaRahoitetut(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, rahoitusmuoto: Option[String]) = {
+  def queryMuutaKauttaRahoitetut(
+    oppilaitosOids: List[String],
+    aikaisintaan: LocalDate,
+    viimeistaan: LocalDate,
+    rahoitusmuoto: Option[String],
+    lang: String
+  ) = {
+    val nimiSarake = if(lang == "sv") "koulutusmoduuli_nimi_sv" else "koulutusmoduuli_nimi"
     sql"""
       select
         opiskeluoikeus_oid,
         oppija_oid,
         koulutusmoduuli_koodiarvo,
-        koulutusmoduuli_nimi
+        #$nimiSarake as koulutusmoduuli_nimi
       from lukion_oppiaineen_oppimaaran_kurssien_rahoitusmuodot
       where oppilaitos_oid = any($oppilaitosOids)
         and (arviointi_paiva between $aikaisintaan and $viimeistaan)

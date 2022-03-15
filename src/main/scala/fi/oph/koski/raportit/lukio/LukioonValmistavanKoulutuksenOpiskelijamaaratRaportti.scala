@@ -21,17 +21,18 @@ object LukioonValmistavanKoulutuksenOpiskelijamaaratRaportti extends DatabaseCon
   ) = {
     DataSheet(
       t.get("raportti-excel-opiskelijamäärä-sheet-name"),
-      rows = raportointiDatabase.runDbSync(query(oppilaitosOid, päivä)),
+      rows = raportointiDatabase.runDbSync(query(oppilaitosOid, päivä, t.language)),
       columnSettings(t)
     )
   }
 
-  private def query(oppilaitosOid: List[String], paiva: LocalDate) = {
+  private def query(oppilaitosOid: List[String], paiva: LocalDate, lang: String) = {
+    val oppilaitosNimiSarake = if(lang == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"
     sql"""
       with oppija as (
         select
           r_opiskeluoikeus.oppilaitos_oid,
-          r_opiskeluoikeus.oppilaitos_nimi,
+          r_opiskeluoikeus.#$oppilaitosNimiSarake as oppilaitos_nimi,
           r_opiskeluoikeus_aikajakso.opintojen_rahoitus,
           r_opiskeluoikeus_aikajakso.sisaoppilaitosmainen_majoitus,
           r_henkilo.kotikunta,

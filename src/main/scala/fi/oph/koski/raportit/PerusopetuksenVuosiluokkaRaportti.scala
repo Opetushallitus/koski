@@ -21,9 +21,9 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     t: LocalizationReader
   ): Seq[PerusopetusRow] = {
     val rows = if (vuosiluokka == "9") {
-      repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOids, paiva, vuosiluokka)
+      repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOids, paiva, vuosiluokka, t)
     } else {
-      repository.perusopetuksenvuosiluokka(oppilaitosOids, paiva, vuosiluokka)
+      repository.perusopetuksenvuosiluokka(oppilaitosOids, paiva, vuosiluokka, t)
     }
     rows.map(buildRow(_, paiva, t))
   }
@@ -41,7 +41,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
 
     PerusopetusRow(
       opiskeluoikeusOid = row.opiskeluoikeus.opiskeluoikeusOid,
-      oppilaitoksenNimi = row.opiskeluoikeus.oppilaitosNimi,
+      oppilaitoksenNimi = if(t.language == "sv") row.opiskeluoikeus.oppilaitosNimiSv else row.opiskeluoikeus.oppilaitosNimi,
       oppilaitosRaportointipäivänä = oppilaitosRaportointipäivänä(row),
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
@@ -51,7 +51,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       sukunimi = row.henkilo.sukunimi,
       etunimet = row.henkilo.etunimet,
       sukupuoli = row.henkilo.sukupuoli,
-      kotikunta = row.henkilo.kotikuntaNimiFi,
+      kotikunta = if(t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi,
       opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinTila = row.opiskeluoikeus.viimeisinTila.getOrElse(""),
       tilaHakupaivalla = row.aikajaksot.last.tila,
