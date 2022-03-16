@@ -14,8 +14,10 @@ import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import {lang} from '../i18n/i18n'
+import {currentLocation} from '../util/location.js'
 
-const kaikkiRaportitKategorioittain = [
+// Muuta takaisin constiksi kun lops2021-raportit valmiit
+let kaikkiRaportitKategorioittain = [
   {
     id: 'esiopetus',
     tab: 'raporttikategoria-tab-esiopetus',
@@ -150,6 +152,37 @@ const kaikkiRaportitKategorioittain = [
     ]
   }
 ]
+if (currentLocation().params.lops2021raportit === 'true') {
+  kaikkiRaportitKategorioittain.push(
+      {
+        id: 'lukio2019',
+        tab: 'raporttikategoria-tab-lukio2019',
+        heading: 'raporttikategoria-heading-lukio2019',
+        raportit: [
+          {
+            id: 'lukionsuoritustietojentarkistus',
+            name: 'raportti-tab-lukionsuoritustietojentarkistus',
+            component: Lukio2019raportti
+          },
+          {
+            id: 'lukiokurssikertyma',
+            name: 'raportti-tab-lukio2019opintopistekertyma',
+            component: Lukio2019Opintopistekertyma
+          },
+          {
+            id: 'lukiodiaibinternationalopiskelijamaarat',
+            name: 'raportti-tab-lukiodiaibinternationalopiskelijamaarat',
+            component: LukioDiaIBInternationalOpiskelijamaarat
+          },
+          {
+            id: 'luvaopiskelijamaarat',
+            name: 'raportti-tab-luvaopiskelijamaarat',
+            component: LuvaOpiskelijamaaratRaportti
+          }
+        ]
+      }
+  )
+}
 
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map(tab => {
@@ -519,6 +552,24 @@ function Lukioraportti({ stateP }) {
   )
 }
 
+function Lukio2019raportti({ stateP }) {
+  const titleText = <Text name='Lukioraportti-title' />
+  const shortDescriptionText = <Text name='Lukioraportti-short-description' />
+  const exampleText = <Paragraphs name='Lukioraportti-example' />
+
+  return (
+    <AikajaksoRaporttiAikarajauksella
+      stateP={stateP}
+      apiEndpoint={'/lukio2019suoritustietojentarkistus'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      osasuoritusType={osasuoritusTypes.KURSSI}
+      lang={lang}
+    />
+  )
+}
+
 function LukioKurssikertyma({ stateP }) {
   const title = <Text name='lukion-kurssikertyma-title' />
   const shortDescriptionText = <Text name='lukion-kurssikertyma-short-description' />
@@ -528,6 +579,24 @@ function LukioKurssikertyma({ stateP }) {
   return (
     <AikajaksoRaportti stateP={stateP}
       apiEndpoint={'/lukiokurssikertymat'}
+      title={title}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+      lang={lang}
+    />
+  )
+}
+
+function Lukio2019Opintopistekertyma({ stateP }) {
+  const title = <Text name='lukion-opintopistekertyma-title' />
+  const shortDescriptionText = <Text name='lukion-opintopistekertyma-short-description' />
+  const dateInputHelpText = <Text name='lukion-opintopistekertyma-date-input-help' />
+  const exampleText = <Paragraphs name='lukion-opintopistekertyma-example' />
+
+  return (
+    <AikajaksoRaportti stateP={stateP}
+      apiEndpoint={'/lukio2019opintopistekertymat'}
       title={title}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
