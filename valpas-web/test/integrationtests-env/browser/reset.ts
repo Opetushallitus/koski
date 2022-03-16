@@ -4,11 +4,13 @@ import {
   expectElementEventuallyVisible,
   textEventuallyEquals,
 } from "./content"
-import { $, deleteCookies, goToLocation } from "./core"
+import { $, deleteCookies, goToLocation, setBrowserDate } from "./core"
 import { driver } from "./driver"
 import { getTextInput, setTextInput } from "./forms"
 import { defaultTimeout, longTimeout } from "./timeouts"
 import { eventually } from "./utils"
+
+const defaultDate = "2021-09-05"
 
 export const loginAs = async (
   initialPath: string,
@@ -40,6 +42,7 @@ export const reset = async (
   force: boolean = false,
   tarkastelupäivä?: string
 ) => {
+  await setBrowserDate(tarkastelupäivä || defaultDate)
   await deleteCookies()
   await goToLocation(initialPath)
   await driver.wait(until.elementLocated(By.css("article")), defaultTimeout)
@@ -47,9 +50,10 @@ export const reset = async (
 }
 
 export const resetMockData = async (
-  tarkastelupäivä: string = "2021-09-05",
+  tarkastelupäivä: string = defaultDate,
   force: boolean = false
 ) => {
+  await setBrowserDate(tarkastelupäivä)
   const inputSelector = "#tarkastelupäivä"
 
   await expectElementEventuallyVisible(inputSelector)

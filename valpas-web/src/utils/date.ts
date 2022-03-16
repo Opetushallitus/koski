@@ -1,6 +1,8 @@
 import { format, formatISO, getYear, parseISO } from "date-fns"
 import { ISODate } from "../state/common"
+import { getSearchQueryMap } from "../state/searchQuery"
 import { nonNull } from "./arrays"
+import { runningLocally } from "./environment"
 
 export const DATE_FORMAT = "d.M.yyyy"
 
@@ -19,9 +21,19 @@ export const formatDateRange = (fromDate?: ISODate, toDate?: ISODate) =>
     .filter(nonNull)
     .join("")
 
-export const currentYear = () => getYear(new Date())
+export const currentYear = () => getYear(dateToday())
 
 export const parseYear = (date: ISODate): number => getYear(parseISO(date))
 
 export const today = (): ISODate =>
-  formatISO(new Date(), { representation: "date" })
+  formatISO(dateToday(), { representation: "date" })
+
+export const dateToday = () => {
+  if (runningLocally()) {
+    const date = getSearchQueryMap().date
+    if (date) {
+      return new Date(parseISO(date))
+    }
+  }
+  return new Date()
+}

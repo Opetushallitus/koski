@@ -6,12 +6,13 @@ import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, Organis
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
+import fi.oph.koski.util.UuidUtils
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
-import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogHenkilöHaku, auditLogOppijaKatsominen, auditLogOppilaitosKatsominen, auditLogOppivelvollisuudenKeskeytys}
+import fi.oph.koski.valpas.log.ValpasAuditLog._
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{HakeutumisvalvontaTieto, ValpasOppilaitos}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
-import fi.oph.koski.valpas.valpasrepository.UusiOppivelvollisuudenKeskeytys
-import fi.oph.koski.valpas.valpasuser.{RequiresValpasSession, ValpasRooli}
+import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytyksenMuutos, UusiOppivelvollisuudenKeskeytys}
+import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 import org.json4s.JValue
 
 class ValpasRootApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
@@ -137,6 +138,31 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
 
       renderEither(result)
     } } (parseErrorHandler = handleUnparseableJson)
+  }
+
+  put("/oppija/ovkeskeytys") {
+    withJsonBody { (body: JValue) => {
+      val keskeytys = application
+        .validatingAndResolvingExtractor
+        .extract[OppivelvollisuudenKeskeytyksenMuutos](strictDeserialization)(body)
+
+      val result = keskeytys
+        .flatMap(oppijaLaajatTiedotService.updateOppivelvollisuudenKeskeytys)
+        .tap(k => auditLogOppivelvollisuudenKeskeytysUpdate(k._1.oppijaOid, k._1.tekijäOrganisaatioOid))
+        .map(k => k._2)
+
+      renderEither(result)
+    } } (parseErrorHandler = handleUnparseableJson)
+  }
+
+  delete("/oppija/ovkeskeytys/:uuid") {
+    val result = UuidUtils.optionFromString(params("uuid"))
+      .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
+      .flatMap(oppijaLaajatTiedotService.deleteOppivelvollisuudenKeskeytys)
+      .tap(k => auditLogOppivelvollisuudenKeskeytysDelete(k._1.oppijaOid, k._1.tekijäOrganisaatioOid))
+      .map(k => k._2)
+
+    renderEither(result)
   }
 
   private def handleUnparseableJson(status: HttpStatus) = {

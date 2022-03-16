@@ -9,6 +9,7 @@ export type IconProps = {
   inline?: boolean
   color?: IconColor
   className?: string
+  title?: string
 }
 
 export type IconColor =
@@ -43,9 +44,11 @@ export const SuccessCircleIcon = defineIcon("check_circle", "success")
 export const FutureSuccessIcon = defineIcon("hourglass_empty", "success")
 export const IlmoitusIcon = defineIcon("error_outline")
 export const OpiskeluhistoriaTapahtumaIcon = defineIcon("schedule")
+export const EditIcon = defineIcon("mode_edit")
 
 type MaterialDesignIconProps = IconProps & {
   name: string // Ikonien nimet löytyvät osoitteesta https://material.io/resources/icons/?style=baseline
+  title?: string
 }
 
 const MaterialDesignIcon = (props: MaterialDesignIconProps) => (
@@ -61,6 +64,7 @@ const MaterialDesignIcon = (props: MaterialDesignIconProps) => (
       }),
       props.className
     )}
+    title={props.title}
   >
     {props.name}
   </span>

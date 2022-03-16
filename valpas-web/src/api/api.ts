@@ -9,7 +9,10 @@ import {
   OppijaHakutilanteillaSuppeatTiedot,
   OppijaKuntailmoituksillaSuppeatTiedot,
 } from "../state/apitypes/oppija"
-import { UusiOppivelvollisuudenKeskeytys } from "../state/apitypes/oppivelvollisuudenkeskeytys"
+import {
+  OppivelvollisuudenKeskeytyksenMuutos,
+  UusiOppivelvollisuudenKeskeytys,
+} from "../state/apitypes/oppivelvollisuudenkeskeytys"
 import {
   HetuhakuInput,
   KuntarouhinnanTulos,
@@ -24,7 +27,7 @@ import {
 import { queryPath } from "../state/paths"
 import { tapLeftP } from "../utils/either"
 import { apiPostDownload } from "./apiDownload"
-import { ApiFailure, apiGet, apiPost, apiPut } from "./apiFetch"
+import { apiDelete, ApiFailure, apiGet, apiPost, apiPut } from "./apiFetch"
 import { createLocalThenApiCache, createPreferLocalCache } from "./cache"
 
 const SPREADSHEET_CONTENT_TYPE =
@@ -309,6 +312,22 @@ export const createOppivelvollisuudenKeskeytys = (
   handleExpiredSession(
     apiPost<void>("valpas/api/oppija/ovkeskeytys", { body: keskeytys })
   )
+
+/**
+ * Oppivelvollisuuden keskeytyksen päivitys
+ */
+export const updateOppivelvollisuudenKeskeytys = (
+  keskeytys: OppivelvollisuudenKeskeytyksenMuutos
+) =>
+  handleExpiredSession(
+    apiPut<void>("valpas/api/oppija/ovkeskeytys", { body: keskeytys })
+  )
+
+/**
+ * Oppivelvollisuuden keskeytyksen poisto
+ */
+export const deleteOppivelvollisuudenKeskeytys = (id: string) =>
+  handleExpiredSession(apiDelete<void>(`valpas/api/oppija/ovkeskeytys/${id}`))
 
 /**
  * Kansalaisen omien ja huollettavien tietojen hakeminen

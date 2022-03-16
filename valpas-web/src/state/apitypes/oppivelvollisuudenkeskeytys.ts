@@ -7,7 +7,15 @@ export type UusiOppivelvollisuudenKeskeytys = {
   loppu?: ISODate
 }
 
+export type OppivelvollisuudenKeskeytyksenMuutos = {
+  id: string
+  alku: ISODate
+  loppu?: ISODate
+}
+
 export type OppivelvollisuudenKeskeytys = {
+  id: string
+  tekijäOrganisaatioOid: Oid
   alku: ISODate
   loppu?: ISODate
   voimassa: boolean

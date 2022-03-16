@@ -101,6 +101,12 @@ export const apiPut = async <T>(
 ): Promise<ApiResponse<T>> =>
   apiFetch<T>(input, enrichJsonRequest("PUT", "application/json", init))
 
+export const apiDelete = async <T>(
+  input: RequestInfo,
+  init?: JsonRequestInit
+): Promise<ApiResponse<T>> =>
+  apiFetch<T>(input, enrichJsonRequest("DELETE", "application/json", init))
+
 export const prependUrl = (
   baseUrl: string,
   request: RequestInfo

@@ -1,9 +1,15 @@
 package fi.oph.koski.valpas.db
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
+import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
+import fi.oph.koski.valpas.ValpasErrorCategory
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import org.json4s.JValue
+
 import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID
 
@@ -14,7 +20,8 @@ object ValpasSchema extends Logging {
       IlmoitusLisätiedot.schema ++
       OpiskeluoikeusLisätiedot.schema ++
       OppivelvollisuudenKeskeytys.schema ++
-      IlmoitusOpiskeluoikeusKonteksti.schema
+      IlmoitusOpiskeluoikeusKonteksti.schema ++
+      OppivelvollisuudenKeskeytyshistoria.schema
     logger.info((schema.createStatements ++ "\n").mkString(";\n"))
   }
 
@@ -135,6 +142,48 @@ object ValpasSchema extends Logging {
 
   val OppivelvollisuudenKeskeytys = TableQuery[OppivelvollisuudenKeskeytysTable]
 
+  class OppivelvollisuudenKeskeytyshistoriaTable(tag: Tag) extends Table[OppivelvollisuudenKeskeytyshistoriaRow](tag, "oppivelvollisuuden_keskeytyshistoria") {
+    val id = column[Int]("id", O.PrimaryKey, O.AutoInc)
+    val ovKeskeytysUuid = column[UUID]("ov_keskeytys_uuid", O.SqlType("uuid"))
+    val muutosTehty = column[LocalDateTime]("muutos_tehty")
+    val muutoksenTekijä = column[String]("muutoksen_tekija")
+    val oppijaOid = column[String]("oppija_oid")
+    val alku = column[LocalDate]("alku")
+    val loppu = column[Option[LocalDate]]("loppu")
+    val luotu = column[LocalDateTime]("luotu")
+    val tekijäOid = column[String]("tekijä_oid")
+    val tekijäOrganisaatioOid = column[String]("tekijä_organisaatio_oid")
+    val peruttu = column[Boolean]("peruttu")
+
+    val * = (
+      ovKeskeytysUuid,
+      muutosTehty,
+      muutoksenTekijä,
+      oppijaOid,
+      alku,
+      loppu,
+      luotu,
+      tekijäOid,
+      tekijäOrganisaatioOid,
+      peruttu,
+    ) <> (OppivelvollisuudenKeskeytyshistoriaRow.tupled, OppivelvollisuudenKeskeytyshistoriaRow.unapply)
+  }
+
+  case class OppivelvollisuudenKeskeytyshistoriaRow(
+    ovKeskeytysUuid: UUID,
+    muutosTehty: LocalDateTime,
+    muutoksenTekijä: String,
+    oppijaOid: String,
+    alku: LocalDate,
+    loppu: Option[LocalDate],
+    luotu: LocalDateTime,
+    tekijäOid: String,
+    tekijäOrganisaatioOid: String,
+    peruttu: Boolean,
+  )
+
+  val OppivelvollisuudenKeskeytyshistoria = TableQuery[OppivelvollisuudenKeskeytyshistoriaTable]
+
   class IlmoitusOpiskeluoikeusKontekstiTable(tag: Tag) extends Table[IlmoitusOpiskeluoikeusKontekstiRow](tag, "ilmoitus_opiskeluoikeus_konteksti") {
     val ilmoitusUuid = column[UUID]("ilmoitus_uuid", O.SqlType("uuid"))
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
@@ -158,7 +207,6 @@ object ValpasSchema extends Logging {
   )
 
   val IlmoitusOpiskeluoikeusKonteksti = TableQuery[IlmoitusOpiskeluoikeusKontekstiTable]
-
 }
 
 

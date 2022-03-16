@@ -1,15 +1,17 @@
 import React, { useEffect } from "react"
 import { Redirect } from "react-router-dom"
 import { runningLocally } from "../utils/environment"
+import { getSearchQueryEntries } from "./searchQuery"
 
 export type Feature = "dummy"
 
-const disabledFeatures: string[] = window.location.search
-  .split("&")
-  .reduce((acc: string[], token) => {
-    const match = token.match(/disable-(\w+)/)
+const disabledFeatures: string[] = getSearchQueryEntries().reduce(
+  (acc: string[], entry) => {
+    const match = entry[0].match(/disable-(\w+)/)
     return match && match[1] ? [...acc, match[1]] : acc
-  }, [])
+  },
+  []
+)
 
 export const featureFlags: Record<Feature, string> = {
   dummy: "dummy",

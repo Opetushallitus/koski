@@ -72,7 +72,7 @@ object ValpasKuntarouhintaSpec {
       ooViimeisinTila = Some("Valmistunut"),
       ooKoulutusmuoto = Some("Perusopetus"),
       ooToimipiste = Some("Jyväskylän normaalikoulu"),
-      keskeytys = Some("16.5.2021 -"),
+      keskeytys = Some("16.8.2021 -"),
       kuntailmoitusKohde = Some("Pyhtää"),
       kuntailmoitusPvm = Some("20.5.2021"),
     ),

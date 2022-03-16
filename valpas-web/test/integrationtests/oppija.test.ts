@@ -1,12 +1,16 @@
 import { oppijaPath } from "../../src/state/paths"
-import { formatDate, today } from "../../src/utils/date"
 import {
   clickElement,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
-import { $$, goToLocation } from "../integrationtests-env/browser/core"
+import {
+  $$,
+  acceptConfirmation,
+  goToLocation,
+} from "../integrationtests-env/browser/core"
 import {
   allowNetworkError,
+  BAD_REQUEST,
   FORBIDDEN,
 } from "../integrationtests-env/browser/fail-on-console"
 import { loginAs, resetMockData } from "../integrationtests-env/browser/reset"
@@ -121,6 +125,13 @@ const montaKuntailmoitustaPath = oppijaPath.href("/virkailija", {
 const preIBdOppijaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000135",
 })
+
+const oppivelvollisuusKeskeytettyHelsinkiläinenPath = oppijaPath.href(
+  "/virkailija",
+  {
+    oppijaOid: "1.2.246.562.24.00000000130",
+  }
+)
 
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
@@ -822,7 +833,7 @@ describe("Oppijakohtainen näkymä", () => {
     )
   })
 
-  it("Oppivelvollisuuden keskeytys toimii oikein", async () => {
+  it("Oppivelvollisuuden keskeytyksen lisäys toimii oikein", async () => {
     await loginAs(oppivelvollisuusKeskeytettyMääräajaksiPath, "valpas-helsinki")
 
     await resetMockData("2022-11-11")
@@ -833,6 +844,10 @@ describe("Oppijakohtainen näkymä", () => {
 
     // Avaa ov-keskeytysmodaali
     await clickElement("#ovkeskeytys-btn")
+    await textEventuallyEquals(
+      ".modal__title",
+      "Oppivelvollisuuden keskeytyksen lisäys"
+    )
     await textEventuallyEquals(
       ".modal__container .heading--secondary",
       "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
@@ -848,9 +863,124 @@ describe("Oppijakohtainen näkymä", () => {
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",
-        oppivelvollisuus: `Keskeytetty toistaiseksi ${formatDate(
-          today()
-        )} alkaen`,
+        oppivelvollisuudenKeskeytykset: [`toistaiseksi 11.11.2022 alkaen`],
+        maksuttomuusoikeus: "31.12.2025 asti",
+        oppivelvollisuudenKeskeytysBtn: true,
+        kuntailmoitusBtn: true,
+      })
+    )
+  })
+
+  it("Oppivelvollisuuden keskeytyksen muokkaus toimii oikein", async () => {
+    await loginAs(
+      oppivelvollisuusKeskeytettyHelsinkiläinenPath,
+      "valpas-helsinki",
+      true,
+      "2021-09-05"
+    )
+
+    await mainHeadingEquals(
+      "Oppivelvollisuus-keskeytetty-ei-opiskele Valpas (011005A115P)"
+    )
+
+    // Avaa ov-keskeytysmodaali
+    await clickElement(".oppijaview__editkeskeytysbtn")
+    await textEventuallyEquals(
+      ".modal__title",
+      "Oppivelvollisuuden keskeytyksen muokkaus"
+    )
+    await textEventuallyEquals(
+      ".modal__container .heading--secondary",
+      "Oppivelvollisuus-keskeytetty-ei-opiskele Valpas (011005A115P)"
+    )
+
+    // Valitse "Oppivelvollisuus keskeytetään toistaiseksi", säilytä alkupäivänä nykyinen päivä, hyväksy ehto
+    await clickElement(
+      ".ovkeskeytys__option:nth-child(2) .radiobutton__container"
+    )
+    await clickElement(".ovkeskeytys__option:nth-child(2) .checkbox__labeltext")
+    await clickElement("#ovkeskeytys-submit-edit")
+
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Ei opiskelupaikkaa",
+        oppivelvollisuudenKeskeytykset: ["toistaiseksi 16.8.2021 alkaen"],
+        maksuttomuusoikeus: "31.12.2025 asti",
+        oppivelvollisuudenKeskeytysBtn: true,
+        kuntailmoitusBtn: true,
+      })
+    )
+  })
+
+  it("Oppivelvollisuuden keskeytystä ei voi asettaa alkavaksi ennen 1.8.2021", async () => {
+    allowNetworkError("/valpas/api/oppija/ovkeskeytys", BAD_REQUEST)
+
+    await loginAs(
+      oppivelvollisuusKeskeytettyHelsinkiläinenPath,
+      "valpas-helsinki",
+      true,
+      "2021-07-31"
+    )
+
+    await mainHeadingEquals(
+      "Oppivelvollisuus-keskeytetty-ei-opiskele Valpas (011005A115P)"
+    )
+
+    // Avaa ov-keskeytysmodaali
+    await clickElement("#ovkeskeytys-btn")
+    await textEventuallyEquals(
+      ".modal__title",
+      "Oppivelvollisuuden keskeytyksen lisäys"
+    )
+    await textEventuallyEquals(
+      ".modal__container .heading--secondary",
+      "Oppivelvollisuus-keskeytetty-ei-opiskele Valpas (011005A115P)"
+    )
+
+    // Valitse "Oppivelvollisuus keskeytetään toistaiseksi", säilytä alkupäivänä nykyinen päivä, hyväksy ehto
+    await clickElement(
+      ".ovkeskeytys__option:nth-child(2) .radiobutton__container"
+    )
+    await clickElement(".ovkeskeytys__option:nth-child(2) .checkbox__labeltext")
+    await clickElement("#ovkeskeytys-submit")
+
+    await textEventuallyEquals(
+      ".modal__container .error",
+      "Alkamispäivä ei voi olla ennen 1.8.2021"
+    )
+  })
+
+  it("Oppivelvollisuuden keskeytyksen poisto toimii oikein", async () => {
+    await loginAs(
+      oppivelvollisuusKeskeytettyHelsinkiläinenPath,
+      "valpas-helsinki",
+      true,
+      "2021-09-05"
+    )
+
+    await mainHeadingEquals(
+      "Oppivelvollisuus-keskeytetty-ei-opiskele Valpas (011005A115P)"
+    )
+
+    // Avaa ov-keskeytysmodaali
+    await clickElement(".oppijaview__editkeskeytysbtn")
+    await textEventuallyEquals(
+      ".modal__title",
+      "Oppivelvollisuuden keskeytyksen muokkaus"
+    )
+    await textEventuallyEquals(
+      ".modal__container .heading--secondary",
+      "Oppivelvollisuus-keskeytetty-ei-opiskele Valpas (011005A115P)"
+    )
+
+    // Valitse "Oppivelvollisuus keskeytetään toistaiseksi", säilytä alkupäivänä nykyinen päivä, hyväksy ehto
+    await clickElement("#ovkeskeytys-delete")
+    await acceptConfirmation()
+
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Ei opiskelupaikkaa",
+        oppivelvollisuus: "30.9.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
@@ -995,18 +1125,16 @@ describe("Oppijakohtainen näkymä", () => {
 
   it("Näyttää preIB oppijan tiedot", async () => {
     await loginAs(preIBdOppijaPath, "valpas-monta", true)
-    await mainHeadingEquals(
-      "SuorittaaPreIB Valpas (190704A574E)"
-    )
+    await mainHeadingEquals("SuorittaaPreIB Valpas (190704A574E)")
     await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000135")
     await opiskeluhistoriaEquals(
       merge(
         historiaOpintoOikeus({
-            otsikko: "IB 2021 –",
-            tila: "Läsnä",
-            maksuttomuus: ["1.6.2021– maksuton"],
-            toimipiste: "Jyväskylän normaalikoulu",
-            alkamispäivä: "1.6.2021"
+          otsikko: "IB 2021 –",
+          tila: "Läsnä",
+          maksuttomuus: ["1.6.2021– maksuton"],
+          toimipiste: "Jyväskylän normaalikoulu",
+          alkamispäivä: "1.6.2021",
         }),
         historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 – 2021",

@@ -87,6 +87,34 @@ object ValpasAuditLog {
     ))
   }
 
+  def auditLogOppivelvollisuudenKeskeytysUpdate
+    (oppijaOid: ValpasHenkilö.Oid, tekijäOrganisaatioOid: Organisaatio.Oid)
+    (implicit session: ValpasSession)
+  : Unit = {
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYKSEN_MUOKKAUS,
+      session,
+      Map(
+        ValpasAuditLogMessageField.oppijaHenkilöOid -> oppijaOid,
+        ValpasAuditLogMessageField.ilmoittajaOrganisaatioOid -> tekijäOrganisaatioOid,
+      )
+    ))
+  }
+
+  def auditLogOppivelvollisuudenKeskeytysDelete
+    (oppijaOid: ValpasHenkilö.Oid, tekijäOrganisaatioOid: Organisaatio.Oid)
+    (implicit session: ValpasSession)
+  : Unit = {
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYKSEN_POISTO,
+      session,
+      Map(
+        ValpasAuditLogMessageField.oppijaHenkilöOid -> oppijaOid,
+        ValpasAuditLogMessageField.ilmoittajaOrganisaatioOid -> tekijäOrganisaatioOid,
+      )
+    ))
+  }
+
   def auditLogOppivelvollisuusrekisteriLuovutus(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Unit = {
     val message = ValpasAuditLogMessage(
       ValpasOperation.OPPIVELVOLLISUUSREKISTERI_LUOVUTUS,
@@ -224,6 +252,8 @@ object ValpasOperation extends Enumeration {
       VALPAS_OPPIJA_KUNTAILMOITUS,
       VALPAS_OPPIJA_HAKU,
       VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS,
+      VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYKSEN_MUOKKAUS,
+      VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYKSEN_POISTO,
       OPPIVELVOLLISUUSREKISTERI_LUOVUTUS,
       VALPAS_ROUHINTA_HETUHAKU,
       VALPAS_ROUHINTA_KUNTA,

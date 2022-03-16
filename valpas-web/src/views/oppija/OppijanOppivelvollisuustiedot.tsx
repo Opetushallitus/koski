@@ -1,11 +1,13 @@
 import bem from "bem-ts"
 import * as A from "fp-ts/Array"
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { fetchKuntailmoituksenPohjatiedot } from "../../api/api"
 import { useApiMethod } from "../../api/apiHooks"
 import { isError, isLoading, isSuccess, mapLoading } from "../../api/apiUtils"
+import { FlatButton } from "../../components/buttons/FlatButton"
 import { RaisedButton } from "../../components/buttons/RaisedButton"
 import { VisibleForKäyttöoikeusrooli } from "../../components/containers/VisibleForKäyttöoikeusrooli"
+import { EditIcon } from "../../components/icons/Icon"
 import { Spinner } from "../../components/icons/Spinner"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
@@ -21,7 +23,8 @@ import { ISODate } from "../../state/common"
 import { formatDate, formatNullableDate } from "../../utils/date"
 import { Ilmoituslomake } from "../../views/ilmoituslomake/Ilmoituslomake"
 import "./OppijaView.less"
-import { OppivelvollisuudenKeskeytysModal } from "./OppivelvollisuudenKeskeytysModal"
+import { OppivelvollisuudenKeskeytyksenLisäysModal } from "./oppivelvollisuudenkeskeytys/OppivelvollisuudenKeskeytyksenLisäysModal"
+import { OppivelvollisuudenKeskeytyksenMuokkausModal } from "./oppivelvollisuudenkeskeytys/OppivelvollisuudenKeskeytyksenMuokkausModal"
 
 const b = bem("oppijaview")
 
@@ -38,6 +41,17 @@ export const OppijanOppivelvollisuustiedot = (
   props: OppijanOppivelvollisuustiedotProps
 ) => {
   const [keskeytysModalVisible, setKeskeytysModalVisible] = useState(false)
+  const [muokattavaKeskeytys, setMuokattavaKeskeytys] = useState<
+    OppivelvollisuudenKeskeytys | undefined
+  >(undefined)
+
+  const openKeskeytysModal = useCallback(
+    (keskeytys?: OppivelvollisuudenKeskeytys) => {
+      setMuokattavaKeskeytys(keskeytys)
+      setKeskeytysModalVisible(true)
+    },
+    []
+  )
 
   const oppijaOids = [props.henkilö.oid]
 
@@ -58,7 +72,8 @@ export const OppijanOppivelvollisuustiedot = (
           label={t("oppija__oppivelvollisuus_voimassa")}
           value={oppivelvollisuusValue(
             props.oppivelvollisuudenKeskeytykset,
-            props.oppivelvollisuusVoimassaAsti
+            props.oppivelvollisuusVoimassaAsti,
+            openKeskeytysModal
           )}
         />
         <InfoTableRow
@@ -75,18 +90,27 @@ export const OppijanOppivelvollisuustiedot = (
               <RaisedButton
                 id="ovkeskeytys-btn"
                 hierarchy="secondary"
-                onClick={() => setKeskeytysModalVisible(true)}
+                onClick={() => openKeskeytysModal()}
               >
                 <T id="oppija__keskeytä_oppivelvollisuus" />
               </RaisedButton>
 
-              {keskeytysModalVisible && (
-                <OppivelvollisuudenKeskeytysModal
-                  henkilö={props.henkilö}
-                  onClose={() => setKeskeytysModalVisible(false)}
-                  onSubmit={() => window.location.reload()}
-                />
-              )}
+              {keskeytysModalVisible &&
+                (muokattavaKeskeytys ? (
+                  <OppivelvollisuudenKeskeytyksenMuokkausModal
+                    henkilö={props.henkilö}
+                    keskeytys={muokattavaKeskeytys}
+                    onClose={() => setKeskeytysModalVisible(false)}
+                    onSubmit={() => window.location.reload()}
+                    onDelete={() => window.location.reload()}
+                  />
+                ) : (
+                  <OppivelvollisuudenKeskeytyksenLisäysModal
+                    henkilö={props.henkilö}
+                    onClose={() => setKeskeytysModalVisible(false)}
+                    onSubmit={() => window.location.reload()}
+                  />
+                ))}
             </VisibleForKäyttöoikeusrooli>
           }
         />
@@ -147,26 +171,41 @@ export const OppijanOppivelvollisuustiedot = (
 
 const oppivelvollisuusValue = (
   oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[],
-  oppivelvollisuusVoimassaAsti: ISODate
+  oppivelvollisuusVoimassaAsti: ISODate,
+  openKeskeytysModal: (keskeytys: OppivelvollisuudenKeskeytys) => void
 ): React.ReactNode => {
   const keskeytykset = oppivelvollisuudenKeskeytykset
     .filter((ovk) => ovk.voimassa || ovk.tulevaisuudessa)
-    .map((ovk) =>
-      ovk.loppu !== undefined
-        ? t("oppija__oppivelvollisuus_keskeytetty_value", {
-            alkuPvm: formatDate(ovk.alku),
-            loppuPvm: formatDate(ovk.loppu),
-          })
-        : t("oppija__oppivelvollisuus_keskeytetty_toistaiseksi_value", {
-            alkuPvm: formatDate(ovk.alku),
-          })
-    )
+    .map((ovk) => (
+      <>
+        {ovk.loppu !== undefined
+          ? t("oppija__oppivelvollisuus_keskeytetty_value", {
+              alkuPvm: formatDate(ovk.alku),
+              loppuPvm: formatDate(ovk.loppu),
+            })
+          : t("oppija__oppivelvollisuus_keskeytetty_toistaiseksi_value", {
+              alkuPvm: formatDate(ovk.alku),
+            })}
+
+        <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
+          <FlatButton
+            className={b("editkeskeytysbtn")}
+            onClick={() => openKeskeytysModal(ovk)}
+          >
+            <EditIcon
+              inline
+              title={t("oppija__muokkaa_oppivelvollisuuden_keskeytystä_btn")}
+            />
+          </FlatButton>
+        </VisibleForKäyttöoikeusrooli>
+      </>
+    ))
 
   const keskeytysToistaiseksi = oppivelvollisuudenKeskeytykset.some(
     isKeskeytysToistaiseksi
   )
 
-  const strs = !keskeytysToistaiseksi
+  const rows = !keskeytysToistaiseksi
     ? [
         t("oppija__oppivelvollisuus_voimassa_value", {
           date: formatNullableDate(oppivelvollisuusVoimassaAsti),
@@ -175,13 +214,13 @@ const oppivelvollisuusValue = (
       ]
     : keskeytykset
 
-  return strs.length > 1 ? (
+  return rows.length > 1 ? (
     <ul>
-      {strs.map((str, index) => (
-        <li key={index}>{str}</li>
+      {rows.map((row, index) => (
+        <li key={index}>{row}</li>
       ))}
     </ul>
   ) : (
-    <>{strs.join("")}</>
+    rows[0]
   )
 }
