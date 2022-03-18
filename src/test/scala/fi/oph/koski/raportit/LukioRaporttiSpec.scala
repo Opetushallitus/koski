@@ -27,7 +27,9 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
   private lazy val today = LocalDate.now
   private lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
+  private lazy val tSv: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "sv")
   private lazy val lukioRaportti = LukioRaportti(repository, t)
+  private lazy val lukioRaporttiRuotsiksi = LukioRaportti(repository, tSv)
 
   "Lukion suoritustietoraportti" - {
 
@@ -205,6 +207,11 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
           verifyOppijanRow(lukionEiTiedossaAineopiskelija, EiTiedossaOppiaineenOpiskelija.eiTiedossaKurssitRow, eiTiedossa, addOpiskeluoikeudenOid = false)
         }
       }
+    }
+
+    "Raportti latautuu eri lokalisaatiolla" in {
+      lazy val sheets = lukioRaporttiRuotsiksi.buildRaportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1), osasuoritustenAikarajaus = false)
+      sheets.forall(sheet => sheet.rows.flatten.nonEmpty) shouldBe true
     }
 
     "Opiskeluoikeus aikajaksojen siivous" - {

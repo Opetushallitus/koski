@@ -18,14 +18,15 @@ case class LukioDiaIbInternationalOpiskelijamaaratRaportti(db: DB) extends Query
     DataSheet(
       title = t.get("raportti-excel-opiskelijamäärä-sheet-name"),
       rows = runDbSync(
-        query(oppilaitosOids, päivä).as[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow],
+        query(oppilaitosOids, päivä, t.language).as[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow],
         timeout = 5.minutes
       ),
       columnSettings = columnSettings(t)
     )
   }
 
-  private def query(oppilaitosOids: Seq[String], päivä: LocalDate)  = {
+  private def query(oppilaitosOids: Seq[String], päivä: LocalDate, lang: String)  = {
+    val organisaatioNimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
    sql"""
 with oppija as (select
                   r_opiskeluoikeus.opiskeluoikeus_oid,
@@ -191,7 +192,7 @@ with oppija as (select
   group by oppilaitos_oid
 ) select
     r_organisaatio.organisaatio_oid oppilaitos_oid,
-    r_organisaatio.nimi oppilaitos_nimi,
+    r_organisaatio.#$organisaatioNimiSarake oppilaitos_nimi,
     kaikki.yhteensa kaikki_yhteensa,
     kaikki.valtionosuus_rahoitteinen kaikki_valtionosuus_rahoitteinen,
     kaikki.muuta_kautta_rahoitettu kaikki_muuta_kautta_rahoitettu,

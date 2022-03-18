@@ -203,9 +203,9 @@ case class AikuistenPerusopetusRaportti(
       muut = AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
         opiskeluoikeudenOid = row.opiskeluoikeus.opiskeluoikeusOid,
         lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
-        koulutustoimija = row.opiskeluoikeus.koulutustoimijaNimi,
-        oppilaitoksenNimi = row.opiskeluoikeus.oppilaitosNimi,
-        toimipiste = row.päätasonSuoritus.toimipisteNimi,
+        koulutustoimija = if(t.language == "sv") row.opiskeluoikeus.koulutustoimijaNimiSv else row.opiskeluoikeus.koulutustoimijaNimi,
+        oppilaitoksenNimi = if(t.language == "sv") row.opiskeluoikeus.oppilaitosNimiSv else row.opiskeluoikeus.oppilaitosNimi,
+        toimipiste =  if(t.language == "sv") row.päätasonSuoritus.toimipisteNimiSv else row.päätasonSuoritus.toimipisteNimi,
         opiskeluoikeuden_tunniste_lähdejärjestelmässä = lähdejärjestelmänId.flatMap(_.id),
         aikaleima = row.opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
         yksiloity = row.henkilo.yksiloity,
@@ -261,7 +261,7 @@ case class AikuistenPerusopetusRaportti(
         hetu = row.henkilo.hetu,
         sukinimi = row.henkilo.sukunimi,
         etunimet = row.henkilo.etunimet,
-        toimipiste = row.päätasonSuoritus.toimipisteNimi,
+        toimipiste = if(t.language == "sv") row.päätasonSuoritus.toimipisteNimiSv else row.päätasonSuoritus.toimipisteNimi,
         suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi
       ),
       kurssit = kurssienTiedot(row.osasuoritukset, kurssit)

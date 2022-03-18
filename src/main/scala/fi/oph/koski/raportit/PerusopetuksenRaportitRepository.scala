@@ -1,18 +1,18 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate
-
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
-
 import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
+
 import scala.concurrent.duration.DurationInt
 
 case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with RaportointikantaTableQueries {
@@ -22,17 +22,27 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
   type AikajaksoId = Long
   type Tunnisteet = (OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])
 
-  def perusopetuksenvuosiluokka(organisaatioOidit: Seq[Organisaatio.Oid], päivä: LocalDate, vuosiluokka: String): Seq[PerusopetuksenRaporttiRows] = {
+  def perusopetuksenvuosiluokka(
+    organisaatioOidit: Seq[Organisaatio.Oid],
+    päivä: LocalDate,
+    vuosiluokka: String,
+    t: LocalizationReader
+  ): Seq[PerusopetuksenRaporttiRows] = {
     val potentiaalisestiKeskeyttäneet = mahdollisestiKeskeyttäneet(organisaatioOidit, päivä, vuosiluokka)
     val tunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(organisaatioOidit, päivä, vuosiluokka).union(potentiaalisestiKeskeyttäneet)
     val opiskeluoikeusOids = tunnisteet.map(_._1)
     val paatasonSuoritusIds = tunnisteet.flatMap(_._2)
     val aikajaksoIds = tunnisteet.flatMap(_._3)
 
-    suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka)
+    suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, t)
   }
 
-  def peruskoulunPaattavatJaLuokalleJääneet(organisaatioOidit: Seq[Organisaatio.Oid], päivä: LocalDate, vuosiluokka: String): Seq[PerusopetuksenRaporttiRows] = {
+  def peruskoulunPaattavatJaLuokalleJääneet(
+    organisaatioOidit: Seq[Organisaatio.Oid],
+    päivä: LocalDate,
+    vuosiluokka: String,
+    t: LocalizationReader
+  ): Seq[PerusopetuksenRaporttiRows] = {
     val luokalleJäävienTunnisteet = queryLuokalleJäävienTunnisteet(organisaatioOidit, päivä)
     val luokalleJaavienOidit = luokalleJäävienTunnisteet.map(_._1)
     val peruskoulunPäättävienTunnisteet = queryPeruskoulunPäättäneidenTunnisteet(organisaatioOidit, päivä, luokalleJaavienOidit.distinct)
@@ -40,7 +50,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     val paatasonSuoritusIds = luokalleJäävienTunnisteet.flatMap(_._2).union(peruskoulunPäättävienTunnisteet.flatMap(_._2))
     val aikajaksoIds = luokalleJäävienTunnisteet.flatMap(_._3).union(peruskoulunPäättävienTunnisteet.flatMap(_._3))
 
-    suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka)
+    suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, t)
   }
 
   private def suoritustiedot(
@@ -48,7 +58,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     opiskeluoikeusOids: Seq[OpiskeluoikeusOid],
     paatasonSuoritusIds: Seq[PäätasonSuoritusId],
     aikajaksoIds: Seq[AikajaksoId],
-    vuosiluokka: String
+    vuosiluokka: String,
+    t: LocalizationReader
   ) = {
     val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = 5.minutes)
     val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.id inSet aikajaksoIds).result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
@@ -57,7 +68,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).mapValues(_.head)
     val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).toSeq)
     val luokat = runDbSync(luokkatiedotVuosiluokalleQuery(opiskeluoikeusOids, vuosiluokka).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).distinct.sorted.mkString(","))
-    val organisaatiohistoriat = fetchOrganisaatiohistoriat(päivä, opiskeluoikeusOids).groupBy(_.opiskeluoikeusOid)
+    val organisaatiohistoriat = fetchOrganisaatiohistoriat(päivä, opiskeluoikeusOids, t.language).groupBy(_.opiskeluoikeusOid)
 
     opiskeluoikeudet.flatMap { oo =>
       paatasonSuoritukset.getOrElse(oo.opiskeluoikeusOid, Nil).map { päätasonSuoritus =>
@@ -75,7 +86,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     }
   }
 
-  private def fetchOrganisaatiohistoriat(päivä: LocalDate, opiskeluoikeusOids: Seq[String]) = {
+  private def fetchOrganisaatiohistoriat(päivä: LocalDate, opiskeluoikeusOids: Seq[String], lang: String) = {
     implicit val getResult: GetResult[OrganisaatiohistoriaResult] = GetResult(r => OrganisaatiohistoriaResult(
       opiskeluoikeusOid = r.rs.getString("opiskeluoikeus_oid"),
       alku = r.getLocalDate("alku"),
@@ -85,15 +96,16 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
       koulutustoimijaOid = r.rs.getString("koulutustoimija_oid"),
       koulutustoimijaNimi = r.rs.getString("koulutustoimija_nimi")
     ))
+    val organisaatioNimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
     val query = sql"""
       select
         oh.opiskeluoikeus_oid,
         alku,
         loppu,
         oppilaitos.organisaatio_oid as oppilaitos_oid,
-        oppilaitos.nimi as oppilaitos_nimi,
+        oppilaitos.#$organisaatioNimiSarake as oppilaitos_nimi,
         koulutustoimija.organisaatio_oid as koulutustoimija_oid,
-        koulutustoimija.nimi as koulutustoimija_nimi
+        koulutustoimija.#$organisaatioNimiSarake as koulutustoimija_nimi
       from r_organisaatiohistoria oh
       join r_organisaatio oppilaitos on oppilaitos_oid = oppilaitos.organisaatio_oid
       join r_organisaatio koulutustoimija on koulutustoimija_oid = koulutustoimija.organisaatio_oid

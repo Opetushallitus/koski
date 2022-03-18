@@ -125,10 +125,12 @@ object RaportointiDatabaseSchema {
     val oppijaOid = column[String]("oppija_oid", StringIdentifierType)
     val oppilaitosOid = column[String]("oppilaitos_oid", StringIdentifierType)
     val oppilaitosNimi = column[String]("oppilaitos_nimi")
+    val oppilaitosNimiSv = column[String]("oppilaitos_nimi_sv")
     val oppilaitosKotipaikka = column[Option[String]]("oppilaitos_kotipaikka", StringIdentifierType)
     val oppilaitosnumero = column[Option[String]]("oppilaitosnumero", StringIdentifierType)
     val koulutustoimijaOid = column[String]("koulutustoimija_oid", StringIdentifierType)
     val koulutustoimijaNimi = column[String]("koulutustoimija_nimi")
+    val koulutustoimijaNimiSv = column[String]("koulutustoimija_nimi_sv")
     val koulutusmuoto = column[String]("koulutusmuoto", StringIdentifierType)
     val alkamispäivä = column[Option[Date]]("alkamispaiva")
     val päättymispäivä = column[Option[Date]]("paattymispaiva")
@@ -140,11 +142,11 @@ object RaportointiDatabaseSchema {
     val luokka = column[Option[String]]("luokka")
     val oppivelvollisuudenSuorittamiseenKelpaava = column[Boolean]("oppivelvollisuuden_suorittamiseen_kelpaava")
     val data = column[JValue]("data")
-    def * = (opiskeluoikeusOid, versionumero, aikaleima, sisältyyOpiskeluoikeuteenOid, oppijaOid,
-      oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi,
-      koulutusmuoto, alkamispäivä, päättymispäivä, viimeisinTila,
-      lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti, lähdejärjestelmäKoodiarvo, lähdejärjestelmäId, luokka,
-      oppivelvollisuudenSuorittamiseenKelpaava, data) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
+    def * = (opiskeluoikeusOid :: versionumero :: aikaleima :: sisältyyOpiskeluoikeuteenOid :: oppijaOid ::
+      oppilaitosOid :: oppilaitosNimi :: oppilaitosNimiSv :: oppilaitosKotipaikka :: oppilaitosnumero :: koulutustoimijaOid ::
+      koulutustoimijaNimi :: koulutustoimijaNimiSv :: koulutusmuoto :: alkamispäivä :: päättymispäivä :: viimeisinTila ::
+      lisätiedotHenkilöstökoulutus :: lisätiedotKoulutusvienti :: lähdejärjestelmäKoodiarvo :: lähdejärjestelmäId :: luokka ::
+      oppivelvollisuudenSuorittamiseenKelpaava :: data :: HNil).mappedWith(Generic[ROpiskeluoikeusRow])
   }
   class ROpiskeluoikeusTableTemp(tag: Tag) extends ROpiskeluoikeusTable(tag, Temp)
 
@@ -299,13 +301,14 @@ object RaportointiDatabaseSchema {
     val arviointiPäivä = column[Option[Date]]("arviointi_paiva")
     val toimipisteOid = column[String]("toimipiste_oid", StringIdentifierType)
     val toimipisteNimi = column[String]("toimipiste_nimi")
+    val toimipisteNimiSv = column[String]("toimipiste_nimi_sv")
     val data = column[JValue]("data")
     val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid", StringIdentifierType)
     def * = (päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliKoulutustyyppi,
       koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, koulutusmoduuliNimi, suorituskieliKoodiarvo, oppimääräKoodiarvo, alkamispäivä,
       vahvistusPäivä, arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
-      toimipisteOid, toimipisteNimi, data, sisältyyOpiskeluoikeuteenOid) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
+      toimipisteOid, toimipisteNimi, toimipisteNimiSv, data, sisältyyOpiskeluoikeuteenOid) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
   }
   class RPäätasonSuoritusTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, Temp)
 
@@ -411,20 +414,22 @@ object RaportointiDatabaseSchema {
     val turvakielto = column[Boolean]("turvakielto")
     val kotikunta = column[Option[String]]("kotikunta")
     val kotikuntaNimiFi = column[Option[String]]("kotikunta_nimi_fi")
+    val kotikuntaNimiSv = column[Option[String]]("kotikunta_nimi_sv")
     val yksiloity = column[Boolean]("yksiloity")
-    def * = (oppijaOid, masterOid, linkitetytOidit, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
+    def * = (oppijaOid, masterOid, linkitetytOidit, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, kotikuntaNimiSv, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
   class RHenkilöTableTemp(tag: Tag) extends RHenkilöTable(tag, Temp)
 
   class ROrganisaatioTable(tag: Tag, schema: Schema = Public) extends Table[ROrganisaatioRow](tag, schema.nameOpt, "r_organisaatio") {
     val organisaatioOid = column[String]("organisaatio_oid", O.PrimaryKey, StringIdentifierType)
     val nimi = column[String]("nimi")
+    val nimiSv = column[String]("nimi_sv")
     val organisaatiotyypit = column[String]("organisaatiotyypit", StringIdentifierType)
     val oppilaitostyyppi = column[Option[String]]("oppilaitostyyppi", StringIdentifierType)
     val oppilaitosnumero = column[Option[String]]("oppilaitosnumero", StringIdentifierType)
     val kotipaikka = column[Option[String]]("kotipaikka", StringIdentifierType)
     val yTunnus = column[Option[String]]("y_tunnus", StringIdentifierType)
-    def * = (organisaatioOid, nimi, organisaatiotyypit, oppilaitostyyppi, oppilaitosnumero, kotipaikka, yTunnus) <> (ROrganisaatioRow.tupled, ROrganisaatioRow.unapply)
+    def * = (organisaatioOid, nimi, nimiSv, organisaatiotyypit, oppilaitostyyppi, oppilaitosnumero, kotipaikka, yTunnus) <> (ROrganisaatioRow.tupled, ROrganisaatioRow.unapply)
   }
 
   class ROrganisaatioTableTemp(tag: Tag) extends ROrganisaatioTable(tag, Temp)
@@ -441,7 +446,8 @@ object RaportointiDatabaseSchema {
     val koodistoUri = column[String]("koodisto_uri", StringIdentifierType)
     val koodiarvo = column[String]("koodiarvo", StringIdentifierType)
     val nimi = column[String]("nimi")
-    def * = (koodistoUri, koodiarvo, nimi) <> (RKoodistoKoodiRow.tupled, RKoodistoKoodiRow.unapply)
+    val nimiSv = column[String]("nimi_sv")
+    def * = (koodistoUri, koodiarvo, nimi, nimiSv) <> (RKoodistoKoodiRow.tupled, RKoodistoKoodiRow.unapply)
   }
   class RKoodistoKoodiTableTemp(tag: Tag) extends RKoodistoKoodiTable(tag, Temp)
 
@@ -473,10 +479,12 @@ case class ROpiskeluoikeusRow(
   oppijaOid: String,
   oppilaitosOid: String,
   oppilaitosNimi: String,
+  oppilaitosNimiSv: String,
   oppilaitosKotipaikka: Option[String],
   oppilaitosnumero: Option[String],
   koulutustoimijaOid: String,
   koulutustoimijaNimi: String,
+  koulutustoimijaNimiSv: String,
   koulutusmuoto: String,
   alkamispäivä: Option[Date],
   päättymispäivä: Option[Date],
@@ -604,6 +612,7 @@ case class RPäätasonSuoritusRow(
   arviointiPäivä: Option[Date],
   toimipisteOid: String,
   toimipisteNimi: String,
+  toimipisteNimiSv: String,
   data: JValue,
   sisältyyOpiskeluoikeuteenOid: Option[String]
 ) extends RSuoritusRow {
@@ -701,12 +710,14 @@ case class RHenkilöRow(
   turvakielto: Boolean,
   kotikunta: Option[String] = None,
   kotikuntaNimiFi: Option[String] = None,
+  kotikuntaNimiSv: Option[String] = None,
   yksiloity: Boolean
 )
 
 case class ROrganisaatioRow(
   organisaatioOid: String,
   nimi: String,
+  nimiSv: String,
   organisaatiotyypit: String,
   oppilaitostyyppi: Option[String],
   oppilaitosnumero: Option[String],
@@ -722,7 +733,8 @@ case class ROrganisaatioKieliRow(
 case class RKoodistoKoodiRow(
   koodistoUri: String,
   koodiarvo: String,
-  nimi: String
+  nimi: String,
+  nimiSv: String
 )
 
 case class RaportointikantaStatusRow(

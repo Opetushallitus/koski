@@ -35,7 +35,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
   )
 
   def build(oppilaitosOids: List[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[AikuistenPerusopetuksenOppijamäärätRaporttiRow]
+    val raporttiQuery = query(validateOids(oppilaitosOids), päivä, t.language).as[AikuistenPerusopetuksenOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-oppimäärä-sheet-name"),
@@ -44,12 +44,14 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
     )
   }
 
-  private def query(oppilaitosOidit: List[String], päivä: LocalDate)(implicit u: KoskiSpecificSession) = {
+  private def query(oppilaitosOidit: List[String], päivä: LocalDate, lang: String)(implicit u: KoskiSpecificSession) = {
+    val oppilaitosNimiSarake = if(lang == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"
+    val koodistoNimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
     sql"""
     select
       r_opiskeluoikeus.oppilaitos_oid,
-      r_opiskeluoikeus.oppilaitos_nimi,
-      r_koodisto_koodi.nimi,
+      r_opiskeluoikeus.#$oppilaitosNimiSarake as oppilaitos_nimi,
+      r_koodisto_koodi.#$koodistoNimiSarake as nimi,
       count(distinct r_opiskeluoikeus.opiskeluoikeus_oid) as oppilaidenMääräYhteensä,
       count(distinct (case when opintojen_rahoitus = '1' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppilaidenMääräVOS,
       count(distinct (case when opintojen_rahoitus = '6' then r_opiskeluoikeus.opiskeluoikeus_oid end)) as oppilaidenMääräMuuKuinVOS,
@@ -85,7 +87,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
         or
         r_opiskeluoikeus.koulutustoimija_oid = any($käyttäjänKoulutustoimijaOidit)
       )
-    group by r_opiskeluoikeus.oppilaitos_oid, r_opiskeluoikeus.oppilaitos_nimi, r_koodisto_koodi.nimi
+    group by r_opiskeluoikeus.oppilaitos_oid, r_opiskeluoikeus.#$oppilaitosNimiSarake, r_koodisto_koodi.#$koodistoNimiSarake
   """
   }
 

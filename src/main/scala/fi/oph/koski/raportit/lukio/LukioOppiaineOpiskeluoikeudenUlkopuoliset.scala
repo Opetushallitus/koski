@@ -21,18 +21,18 @@ object LukioOppiaineOpiskeluoikeudenUlkopuoliset extends DatabaseConverters {
   ): DataSheet = {
     DataSheet(
       t.get("raportti-excel-opiskeluoikeudenulkop-sheet-name"),
-      rows = raportointiDatabase.runDbSync(queryOppimaara(oppilaitosOids, jaksonAlku, jaksonLoppu)),
+      rows = raportointiDatabase.runDbSync(queryOppimaara(oppilaitosOids, jaksonAlku, jaksonLoppu, t.language)),
       columnSettings(t)
     )
   }
 
-  def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
+  def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, lang: String) = {
     sql"""
       select
         oppija_oid,
         r_osasuoritus.opiskeluoikeus_oid,
         r_osasuoritus.koulutusmoduuli_koodiarvo as kurssikoodi,
-        r_osasuoritus.koulutusmoduuli_nimi as kurssin_nimi
+        COALESCE(r_osasuoritus.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, r_osasuoritus.koulutusmoduuli_nimi) as kurssin_nimi
       from osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella
       join r_opiskeluoikeus on r_opiskeluoikeus.opiskeluoikeus_oid = osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella.opiskeluoikeus_oid
       join r_osasuoritus on r_osasuoritus.osasuoritus_id = osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella.osasuoritus_id

@@ -69,7 +69,8 @@ object HenkilöLoader extends Logging {
       kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
       turvakielto = oppija.turvakielto,
       kotikunta = oppija.kotikunta,
-      kotikuntaNimiFi = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu),
+      kotikuntaNimiFi = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu, "fi"),
+      kotikuntaNimiSv = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu, "sv"),
       yksiloity =  oppija.yksilöity
       // TODO: Disabloitu ainakin väliaikaiseksi, kun kokeillaan SQL-pohjaista tapaa näiden laskemiseen.
       // Nyt jos tämä maksuttomuuden pidennys lasketaan tässä kohtaa, joudutaan käymään kokonaisuutena

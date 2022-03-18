@@ -36,7 +36,7 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
   )
 
   def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenOppimääränKurssikertymätRow]
+    val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan, t.language).as[AikuistenPerusopetuksenOppimääränKurssikertymätRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-oppimäärä-sheet-name"),
@@ -44,13 +44,13 @@ case class AikuistenPerusopetuksenOppimääränKurssikertymät(db: DB) extends Q
       columnSettings = columnSettings(t)
     )
   }
-
-  private def query(oppilaitosOidit: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSpecificSession) = {
+  private def query(oppilaitosOidit: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, lang: String)(implicit u: KoskiSpecificSession) = {
+    val oppilaitosNimiSarake = if(lang == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"
     sql"""
       with paatason_suoritus as (
         select
           r_opiskeluoikeus.oppilaitos_oid,
-          r_opiskeluoikeus.oppilaitos_nimi,
+          r_opiskeluoikeus.#$oppilaitosNimiSarake as oppilaitos_nimi,
           r_paatason_suoritus.paatason_suoritus_id,
           r_opiskeluoikeus.opiskeluoikeus_oid oo_opiskeluoikeus_oid,
           r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid,

@@ -32,7 +32,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
   )
 
   def build(oppilaitosOids: Seq[String], date: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = query(oppilaitosOids, date).as[PerusopetuksenLisäopetusOppijamäärätRaporttiRow]
+    val raporttiQuery = query(oppilaitosOids, date, t.language).as[PerusopetuksenLisäopetusOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-suoritukset-sheet-name"),
@@ -41,12 +41,13 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
     )
   }
 
-  private def query(oppilaitosOids: Seq[String], date: LocalDate)(implicit u: KoskiSpecificSession) = {
+  private def query(oppilaitosOids: Seq[String], date: LocalDate, lang: String)(implicit u: KoskiSpecificSession) = {
+    val nimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
     sql"""
     select
-      oppilaitos.nimi as oppilaitos_nimi,
+      oppilaitos.#$nimiSarake as oppilaitos_nimi,
       oh.oppilaitos_oid,
-      opetuskieli_koodisto.nimi as opetuskieli,
+      opetuskieli_koodisto.#$nimiSarake as opetuskieli,
       count(distinct oo.opiskeluoikeus_oid) as oppilaita,
       count(distinct (case when r_henkilo.aidinkieli not in ('fi', 'sv', 'se', 'ri', 'vk') then oo.opiskeluoikeus_oid end)) as vieraskielisiä,
       count(distinct (case when                   vaikeasti_vammainen and pidennetty_oppivelvollisuus then oo.opiskeluoikeus_oid end)) as pidennettyOppivelvollisuusJaVaikeastiVammainen,
@@ -76,7 +77,7 @@ case class PerusopetuksenLisäopetusOppijamäärätRaportti(db: DB, organisaatio
       and aikajakso.loppu >= $date
       and aikajakso.tila = 'lasna'
       and oo.sisaltyy_opiskeluoikeuteen_oid is null
-    group by oppilaitos.nimi, oh.oppilaitos_oid, opetuskieli_koodisto.nimi, r_paatason_suoritus.koulutusmoduuli_koodiarvo
+    group by oppilaitos.#$nimiSarake, oh.oppilaitos_oid, opetuskieli_koodisto.#$nimiSarake, r_paatason_suoritus.koulutusmoduuli_koodiarvo
   """
   }
 

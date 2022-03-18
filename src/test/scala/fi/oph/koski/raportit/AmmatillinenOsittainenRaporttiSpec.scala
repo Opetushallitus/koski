@@ -51,6 +51,14 @@ class AmmatillinenOsittainenRaporttiSpec
         expectedFileNamePrefix = "Ammatillinen_tutkinnon_osa_ja_osia"
       )
     }
+    "Raportin voi ladata eri lokalisaatiolla" in {
+      verifyRaportinLataaminen(
+        apiUrl = "api/raportit/ammatillinenosittainensuoritustietojentarkistus",
+        expectedRaporttiNimi = s"ammatillinenosittainensuoritustietojentarkistus",
+        expectedFileNamePrefix = "Ammatillinen_tutkinnon_osa_ja_osia",
+        lang = "sv"
+      )
+    }
     "Raportin tiedot" in {
       val rows = testiHenkilöRaporttiRows(alku = date(2016, 1, 1), loppu = date(2016, 5, 5), osasuoritustenAikarajaus = false)
       rows should equal(List(defaultExpectedRow))

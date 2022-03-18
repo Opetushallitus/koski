@@ -49,6 +49,9 @@ object AmmatillinenOsittainenRaportti {
     val vapaastiValittavatTutkinnonOsat = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "3"))
     val tutkintoaYksilöllisestiLaajentavatTutkinnonOsa = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "4"))
     val vahvistuspäivällisetTunnustetutAmmatillisenTutkinnonOsat = tunnustetut(ammatillisetTutkinnonOsat.filter(isVahvistusPäivällinen))
+    def oppilaitosNimiLokalisoitu(oo: ROpiskeluoikeusRow, lang: String): String = {
+      if(lang == "sv") oo.oppilaitosNimiSv else oo.oppilaitosNimi
+    }
 
     AmmatillinenOsittainRaporttiRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -57,8 +60,11 @@ object AmmatillinenOsittainenRaportti {
       sisältyyOpiskeluoikeuteenOid = opiskeluoikeus.sisältyyOpiskeluoikeuteenOid.getOrElse(""),
       ostettu = JsonSerializer.validateAndExtract[Boolean](opiskeluoikeus.data \ "ostettu").getOrElse(false),
       sisältyvätOpiskeluoikeudetOidit = sisältyvätOpiskeluoikeudet.map(_.opiskeluoikeusOid).mkString(","),
-      sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet.map(_.oppilaitosNimi).mkString(","),
-      linkitetynOpiskeluoikeudenOppilaitos = if (opiskeluoikeus.oppilaitosOid != oppilaitosOid) opiskeluoikeus.oppilaitosNimi else "",
+      sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet
+        .map(oo => oppilaitosNimiLokalisoitu(oo, t.language))
+        .mkString(","),
+      linkitetynOpiskeluoikeudenOppilaitos =
+        if (opiskeluoikeus.oppilaitosOid != oppilaitosOid) oppilaitosNimiLokalisoitu(opiskeluoikeus, t.language) else "",
       aikaleima = opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
       toimipisteOid = päätasonSuoritus.toimipisteOid,
       yksiloity = henkilö.yksiloity,

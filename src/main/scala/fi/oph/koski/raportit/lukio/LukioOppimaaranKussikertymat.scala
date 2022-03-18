@@ -21,7 +21,7 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
   ): DataSheet = {
     DataSheet(
       t.get("raportti-excel-oppimäärä-sheet-name"),
-      rows = raportointiDatabase.runDbSync(queryOppimaara(oppilaitosOids, jaksonAlku, jaksonLoppu)),
+      rows = raportointiDatabase.runDbSync(queryOppimaara(oppilaitosOids, jaksonAlku, jaksonLoppu, t.language)),
       columnSettings(t)
     )
   }
@@ -47,10 +47,11 @@ object LukioOppimaaranKussikertymat extends DatabaseConverters {
   def createIndex(s: Schema) =
     sqlu"create index on #${s.name}.lukion_oppimaaran_kurssikertyma(oppilaitos_oid, arviointi_paiva)"
 
-  def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
+  def queryOppimaara(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, lang: String) = {
+    val nimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
     sql"""
       select
-        nimi oppilaitos,
+        #$nimiSarake oppilaitos,
         kurssikertyma.*
       from (
         select

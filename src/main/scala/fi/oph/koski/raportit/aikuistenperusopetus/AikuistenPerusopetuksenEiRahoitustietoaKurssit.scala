@@ -25,7 +25,7 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
   )
 
   def build(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan).as[AikuistenPerusopetuksenEiRahoitustietoaKurssitRow]
+    val raporttiQuery = query(oppilaitosOids, aikaisintaan, viimeistaan, t.language).as[AikuistenPerusopetuksenEiRahoitustietoaKurssitRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-eirahoitustietoa-sheet-name"),
@@ -34,14 +34,14 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
     )
   }
 
-  private def query(oppilaitosOidit: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate)(implicit u: KoskiSpecificSession) = {
-
+  private def query(oppilaitosOidit: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, lang: String)(implicit u: KoskiSpecificSession) = {
+    val oppilaitosNimiSarake = if(lang == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"
     sql"""
           with paatason_suoritus as (
             select
               r_opiskeluoikeus.oppija_oid,
               r_opiskeluoikeus.oppilaitos_oid,
-              r_opiskeluoikeus.oppilaitos_nimi,
+              r_opiskeluoikeus.#$oppilaitosNimiSarake as oppilaitos_nimi,
               r_paatason_suoritus.paatason_suoritus_id,
               r_opiskeluoikeus.opiskeluoikeus_oid oo_opiskeluoikeus_oid,
               r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid,
@@ -60,7 +60,7 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
               paatason_suoritus.oppija_oid,
               oppilaitos_nimi oppilaitos_nimi,
               r_osasuoritus.koulutusmoduuli_koodiarvo kurssikoodi,
-              r_osasuoritus.koulutusmoduuli_nimi kurssin_nimi,
+              COALESCE(r_osasuoritus.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, r_osasuoritus.koulutusmoduuli_nimi) as kurssin_nimi,
               paatason_suoritus.suorituksen_tyyppi as paatason_suorituksen_tyyppi,
               r_osasuoritus.suorituksen_tyyppi as kurssin_suorituksen_tyyppi
             from paatason_suoritus

@@ -51,7 +51,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
   )
 
   def build(oppilaitosOids: List[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[EsiopetusRaporttiRow]
+    val raporttiQuery = query(validateOids(oppilaitosOids), päivä, t.language).as[EsiopetusRaporttiRow]
     DataSheet(
       title = t.get("raportti-excel-suoritukset-sheet-name"),
       rows = runDbSync(raporttiQuery, timeout = 5.minutes),
@@ -59,31 +59,36 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     )
   }
 
-  private def query(oppilaitosOidit: List[String], päivä: LocalDate)(implicit u: KoskiSpecificSession) =
+  private def query(oppilaitosOidit: List[String], päivä: LocalDate, lang: String)(implicit u: KoskiSpecificSession) = {
+    val koulutustoimijaNimiSarake = if(lang == "sv") "koulutustoimija_nimi_sv" else "koulutustoimija_nimi"
+    val oppilaitosNimiSarake = if(lang == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"
+    val toimipisteNimiSarake = if(lang == "sv") "toimipiste_nimi_sv" else "toimipiste_nimi"
+    val kotikuntaSarake = if(lang == "sv") "kotikunta_nimi_sv" else "kotikunta_nimi_fi"
+    val koodistoSarake = if(lang == "sv") "nimi_sv" else "nimi"
     sql"""
     select
       r_opiskeluoikeus.opiskeluoikeus_oid,
       lahdejarjestelma_koodiarvo,
       lahdejarjestelma_id,
       aikaleima,
-      koulutustoimija_nimi,
-      oppilaitos_nimi,
-      toimipiste_nimi,
+      #$koulutustoimijaNimiSarake as koulutustoimija_nimi,
+      #$oppilaitosNimiSarake as oppilaitos_nimi,
+      #$toimipisteNimiSarake toimipiste_nimi,
       r_opiskeluoikeus.alkamispaiva,
       r_opiskeluoikeus.paattymispaiva,
       viimeisin_tila,
       aikajakso.tila,
       r_paatason_suoritus.koulutusmoduuli_koodiarvo,
-      r_paatason_suoritus.koulutusmoduuli_nimi,
+      COALESCE(r_paatason_suoritus.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, r_paatason_suoritus.koulutusmoduuli_nimi) as koulutusmoduuli_nimi,
       r_paatason_suoritus.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero',
-      kielikoodi.nimi,
+      kielikoodi.#$koodistoSarake,
       r_paatason_suoritus.vahvistus_paiva,
       yksiloity,
       r_opiskeluoikeus.oppija_oid,
       hetu,
       etunimet,
       sukunimi,
-      kotikunta_nimi_fi,
+      #$kotikuntaSarake as kotikunta_nimi,
       pidennetty_oppivelvollisuus,
       tukimuodot,
       erityisen_tuen_paatos,
@@ -114,6 +119,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
         (r_opiskeluoikeus.koulutustoimija_oid = any($käyttäjänKoulutustoimijaOidit) and r_opiskeluoikeus.oppilaitos_oid = any($käyttäjänOstopalveluOidit))
       )
   """
+  }
 
   private def käyttäjänOrganisaatioOidit(implicit u: KoskiSpecificSession) = u.organisationOids(AccessType.read).toSeq
 

@@ -53,7 +53,6 @@ case class TOPKSAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
         oo.opiskeluoikeus_oid,
         oo.oppija_oid,
         oo.sisaltyy_opiskeluoikeuteen_oid,
-        oo.oppilaitos_nimi,
         oo.oppilaitos_oid,
         oo.viimeisin_tila,
         oo.alkamispaiva opiskeluoikeuden_alkamispaiva,
@@ -64,7 +63,6 @@ case class TOPKSAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
         pts.paatason_suoritus_id,
         COALESCE(pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, pts.koulutusmoduuli_nimi) as koulutusmoduuli_nimi,
         pts.vahvistus_paiva,
-        pts.toimipiste_nimi,
         pts.toimipiste_oid
       from r_opiskeluoikeus oo
       join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
@@ -79,7 +77,6 @@ case class TOPKSAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
         oo.opiskeluoikeus_oid,
         oo.oppija_oid,
         oo.sisaltyy_opiskeluoikeuteen_oid,
-        oo.oppilaitos_nimi,
         oo.oppilaitos_oid,
         oo.viimeisin_tila,
         oo.alkamispaiva opiskeluoikeuden_alkamispaiva,
@@ -90,7 +87,6 @@ case class TOPKSAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
         pts.paatason_suoritus_id,
         COALESCE(pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, pts.koulutusmoduuli_nimi) as koulutusmoduuli_nimi,
         pts.vahvistus_paiva,
-        pts.toimipiste_nimi,
         pts.toimipiste_oid
       from r_opiskeluoikeus oo
       join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid

@@ -35,7 +35,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
   )
 
   def build(oppilaitosOids: List[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[EsiopetuksenOppijamäärätRaporttiRow]
+    val raporttiQuery = query(validateOids(oppilaitosOids), päivä, t.language).as[EsiopetuksenOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
       title = t.get("raportti-excel-suoritukset-sheet-name"),
@@ -44,13 +44,15 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
     )
   }
 
-  private def query(oppilaitosOidit: List[String], päivä: LocalDate)(implicit u: KoskiSpecificSession) = {
+  private def query(oppilaitosOidit: List[String], päivä: LocalDate, lang: String)(implicit u: KoskiSpecificSession) = {
     val year = päivä.getYear
+    val oppilaitosNimiSarake = if(lang == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"
+    val koodistoNimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
 
     sql"""
     select
-      r_opiskeluoikeus.oppilaitos_nimi,
-      r_koodisto_koodi.nimi,
+      r_opiskeluoikeus.#$oppilaitosNimiSarake,
+      r_koodisto_koodi.#$koodistoNimiSarake,
       count(*) as esiopetusoppilaidenMäärä,
       count(case when aidinkieli != 'fi' and aidinkieli != 'sv' and aidinkieli != 'se' and aidinkieli != 'ri' and aidinkieli != 'vk' then 1 end) as vieraskielisiä,
       count(case when koulutusmoduuli_koodiarvo = '001101' then 1 end) as koulunesiopetuksessa,
@@ -87,7 +89,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
         or
         (r_opiskeluoikeus.koulutustoimija_oid = any($käyttäjänKoulutustoimijaOidit))
       )
-    group by r_opiskeluoikeus.oppilaitos_nimi, r_koodisto_koodi.nimi
+    group by r_opiskeluoikeus.#$oppilaitosNimiSarake, r_koodisto_koodi.#$koodistoNimiSarake
   """
   }
 
@@ -112,8 +114,8 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
     "vieraskielisiä" -> Column(t.get("raportti-excel-kolumni-esiopetusvieraskielisiä")),
     "koulunesiopetuksessa" -> Column(t.get("raportti-excel-kolumni-koulunesiopetuksessa")),
     "päiväkodinesiopetuksessa" -> Column(t.get("raportti-excel-kolumni-päiväkodinesiopetuksessa")),
-    "viisivuotiaita" -> Column(t.get("raportti-excel-kolumni-viisivuotiaita")),
-    "viisivuotiaitaEiPidennettyäOppivelvollisuutta" -> Column(t.get("raportti-excel-kolumni-viisivuotiaitaEiPidennettyäOppivelvollisuutta"), comment = Some(t.get("raportti-excel-kolumni-viisivuotiaitaEiPidennettyäOppivelvollisuutta-comment"))),
+    "viisivuotiaita" -> Column(t.get("raportti-excel-kolumni-viisivuotiaita"), comment = Some(t.get("raportti-excel-kolumni-viisivuotiaitaEiPidennettyäOppivelvollisuutta-comment"))),
+    "viisivuotiaitaEiPidennettyäOppivelvollisuutta" -> Column(t.get("raportti-excel-kolumni-viisivuotiaitaEiPidennettyäOppivelvollisuutta")),
     "pidennettyOppivelvollisuusJaVaikeastiVammainen" -> Column(t.get("raportti-excel-kolumni-pidennettyOppivelvollisuusJaVaikeastiVammainen")),
     "pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen" -> Column(t.get("raportti-excel-kolumni-pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen")),
     "virheellisestiSiirretytVaikeastiVammaiset" -> Column(t.get("raportti-excel-kolumni-virheellisestiSiirretytVaikeastiVammaiset"), comment = Some(t.get("raportti-excel-kolumni-virheellisestiSiirretytVaikeastiVammaiset-comment"))),

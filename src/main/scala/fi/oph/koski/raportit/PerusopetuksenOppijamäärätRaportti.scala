@@ -45,13 +45,13 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
 
   private def query(oppilaitosOids: Seq[String], date: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val kaikkiVuosiluokatLokalisoituTeksti = t.get("raportti-excel-default-value-kaikki-vuosiluokat")
-
+    val nimiSarake = if(t.language == "sv") "nimi_sv" else "nimi"
     sql"""
     with q as (
       select
-        oppilaitos.nimi as oppilaitos_nimi,
+        oppilaitos.#$nimiSarake as oppilaitos_nimi,
         oh.oppilaitos_oid,
-        opetuskieli_koodisto.nimi as opetuskieli,
+        opetuskieli_koodisto.#$nimiSarake as opetuskieli,
         pts.koulutusmoduuli_koodiarvo as vuosiluokka,
         count(distinct (case when not kotiopetus then oo.opiskeluoikeus_oid end)) as oppilaita,
         count(distinct (case when not kotiopetus and r_henkilo.aidinkieli not in ('fi', 'sv', 'se', 'ri', 'vk') then oo.opiskeluoikeus_oid end)) as vieraskielisiä,
@@ -87,7 +87,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         and aikajakso.loppu >= $date
         and aikajakso.tila = 'lasna'
         and oo.sisaltyy_opiskeluoikeuteen_oid is null
-      group by oppilaitos.nimi, oh.oppilaitos_oid, opetuskieli_koodisto.nimi, pts.koulutusmoduuli_koodiarvo
+      group by oppilaitos.#$nimiSarake, oh.oppilaitos_oid, opetuskieli_koodisto.#$nimiSarake, pts.koulutusmoduuli_koodiarvo
     ), totals as (
       select * from q
       union all

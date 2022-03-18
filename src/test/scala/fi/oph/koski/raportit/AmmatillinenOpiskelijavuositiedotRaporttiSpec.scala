@@ -149,6 +149,10 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
       verifyRaportinLataaminen(apiUrl = "api/raportit/ammatillinenopiskelijavuositiedot", expectedRaporttiNimi = AmmatillinenOpiskelijavuositiedot.toString, expectedFileNamePrefix = "opiskelijavuositiedot")
     }
 
+    "raportin lataaminen toimii eri lokalisaatiolla (ja tuottaa audit log viestin)" in {
+      verifyRaportinLataaminen(apiUrl = "api/raportit/ammatillinenopiskelijavuositiedot", expectedRaporttiNimi = AmmatillinenOpiskelijavuositiedot.toString, expectedFileNamePrefix = "opiskelijavuositiedot", lang = "sv")
+    }
+
     "käyttöoikeudet" - {
       "raportin lataaminen vaatii käyttöoikeudet organisaatioon" in {
         authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = omniaTallentaja) {

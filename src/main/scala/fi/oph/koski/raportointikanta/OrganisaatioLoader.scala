@@ -34,6 +34,7 @@ object OrganisaatioLoader extends Logging {
     val organisaatioRow = ROrganisaatioRow(
       organisaatioOid = oid,
       nimi = org.nimi.get("fi"),
+      nimiSv = org.nimi.get("sv"),
       organisaatiotyypit = org.organisaatiotyypit.sorted.mkString(","),
       oppilaitostyyppi = org.oppilaitostyyppi.map(_.split('#').head.split('_').last),
       oppilaitosnumero = org.oppilaitosnumero.map(_.koodiarvo),

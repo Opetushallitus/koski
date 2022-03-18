@@ -170,7 +170,9 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       sisältyyOpiskeluoikeuteenOid = opiskeluoikeus.sisältyyOpiskeluoikeuteenOid.getOrElse(""),
       ostettu = JsonSerializer.validateAndExtract[Boolean](opiskeluoikeus.data \ "ostettu").getOrElse(false),
       sisältyvätOpiskeluoikeudetOidit = sisältyvätOpiskeluoikeudet.map(_.opiskeluoikeusOid).mkString(","),
-      sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet.map(_.oppilaitosNimi).mkString(","),
+      sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet
+        .map(oo => if (t.language == "sv") oo.oppilaitosNimiSv else oo.oppilaitosNimi)
+        .mkString(","),
       aikaleima = opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
       toimipisteOidit = päätasonSuoritukset.map(_.toimipisteOid).sorted.distinct.mkString(","),
       yksiloity = henkilö.yksiloity,
