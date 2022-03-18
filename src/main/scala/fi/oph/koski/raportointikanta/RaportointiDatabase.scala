@@ -1,10 +1,5 @@
 package fi.oph.koski.raportointikanta
 
-import java.sql.Timestamp.{valueOf => toTimestamp}
-import java.sql.{Date, Timestamp}
-import java.time.LocalDateTime.now
-import java.time._
-
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, DatabaseUtilQueries, QueryMethods, RaportointiDatabaseConfig}
 import fi.oph.koski.log.Logging
@@ -20,6 +15,10 @@ import fi.oph.scalaschema.annotation.SyntheticProperty
 import org.postgresql.util.PSQLException
 import slick.dbio.DBIO
 
+import java.sql.Timestamp.{valueOf => toTimestamp}
+import java.sql.{Date, Timestamp}
+import java.time.LocalDateTime.now
+import java.time._
 import scala.concurrent.duration.DurationInt
 
 
@@ -143,6 +142,15 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet, timeout = 5.minutes)
   }
 
+  def cloneOpiskeluoikeudet(source: RaportointiDatabase): Unit = {
+    logger.info(s"Kopioidaan opiskeluoikeudet lähteestä '${source.schema.name}' kohteeseen '${schema.name}'")
+    runDbSync(sqlu"""INSERT INTO #${schema.name}.r_opiskeluoikeus SELECT * FROM #${source.schema.name}.r_opiskeluoikeus""")
+  }
+
+  def updateOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit = {
+    runDbSync(DBIO.sequence(opiskeluoikeudet.map(ROpiskeluoikeudet.insertOrUpdate)), timeout = 5.minutes)
+  }
+
   def loadMitätöidytOpiskeluoikeudet(rows: Seq[RMitätöityOpiskeluoikeusRow]): Unit = {
     runDbSync(RMitätöidytOpiskeluoikeudet ++= rows, timeout = 5.minutes)
   }
@@ -201,6 +209,17 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
 
   def status: RaportointikantaStatusResponse =
     RaportointikantaStatusResponse(schema.name, queryStatus)
+
+  def latestOpiskeluoikeusTimestamp: Option[Timestamp] =
+    try {
+      runDbSync(sql"""SELECT max(aikaleima) FROM #${schema.name}.r_opiskeluoikeus""".as(_.rs.getTimestamp(1)))
+        .headOption match {
+          case Some(null) => None // Tyhjä taulu
+          case r: Any => r
+        }
+    } catch {
+      case e: PSQLException if e.getMessage.contains("does not exist") => None // Taulua ei ole vielä luotu
+    }
 
   private def queryStatus = {
     if (statusTableExists) {
