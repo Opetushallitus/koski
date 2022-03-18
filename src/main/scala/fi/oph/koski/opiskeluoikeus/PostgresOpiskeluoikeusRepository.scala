@@ -161,8 +161,9 @@ class PostgresOpiskeluoikeusRepository(
   }
 
   private def syncHenkilötiedotAction(id: Int, oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilötiedot: Option[OppijaHenkilöWithMasterInfo]) = {
-    // TODO: Jos vst vapaatavoitteinen mitätöitiin, poista perustiedotIndexeristä.
     henkilötiedot match {
+      case _ if opiskeluoikeus.mitätöity && opiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus") =>
+        perustiedotSyncRepository.addDeleteToSyncQueue(id)
       case Some(henkilö) =>
         val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö)
         perustiedotSyncRepository.addToSyncQueue(perustiedot, true)
@@ -348,9 +349,26 @@ class PostgresOpiskeluoikeusRepository(
 
         validator.validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok =>
-            // TODO: Mitätöinti tietokannassa tapahtuu tässä, jos opiskeluoikeus.mitätöity=true, eli jos opiskeluoikeuden tiloissa esiintyy mitatoity.
-            if (tallennettavaOpiskeluoikeus.mitätöity && tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus")) {
-              throw new NotImplementedError()
+            if (
+              tallennettavaOpiskeluoikeus.mitätöity &&
+                tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus")
+            ) {
+              val (newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables
+                .OpiskeluoikeusTable
+                .updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
+              val diff: JArray = jsonDiff(oldRow.data, newData)
+
+              OpiskeluoikeusPoistoUtils.poistaOpiskeluOikeus(id, oid, tallennettavaOpiskeluoikeus, oldRow.oppijaOid)
+                .map(_ => Right(Updated(
+                  id,
+                  oid,
+                  uusiOpiskeluoikeus.lähdejärjestelmänId,
+                  oldRow.oppijaOid,
+                  nextVersionumero,
+                  diff,
+                  newData,
+                  vanhaOpiskeluoikeus
+                )))
             } else {
               val updatedValues@(newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
               val diff: JArray = jsonDiff(oldRow.data, newData)

@@ -14,6 +14,8 @@ import fi.oph.koski.util.SortOrder.Descending
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
+import scala.util.{Failure, Success, Try}
+
 object OpiskeluoikeudenPerustiedotIndexer {
   private val settings = Map(
     "analysis" -> Map(
@@ -103,7 +105,10 @@ class OpiskeluoikeudenPerustiedotIndexer(
     val rowsToBeSync = allRows.groupBy(_.opiskeluoikeusId).mapValues(_.sortBy(_.aikaleima)(DateOrdering.ascedingSqlTimestampOrdering).last).map(_._2).toSeq
     if (allRows.nonEmpty) {
       logger.debug(s"Syncing ${allRows.length} rows")
-      rowsToBeSync.groupBy(_.upsert) foreach { case (upsert, syncRows) =>
+      val (itemsToDelete, itemsToUpdate) = allRows.partition(r => r.data == JObject(List.empty))
+
+      deletePerustiedot(itemsToDelete.map(_.opiskeluoikeusId).toList)
+      itemsToUpdate.groupBy(_.upsert) foreach { case (upsert, syncRows) =>
         updatePerustiedotRaw(syncRows.map(_.data), upsert, refresh)
       }
       perustiedotSyncRepository.deleteFromQueue(allRows.map(_.id))
@@ -143,6 +148,26 @@ Will retry soon."""
         .map(_ \ "update" \ "_shards" \ "successful")
         .map(extract[Int](_))
       Right(itemResults.sum)
+    }
+  }
+
+  private def deletePerustiedot(itemIds: List[Int]): Either[HttpStatus, Int] = {
+    if (itemIds.isEmpty) {
+      return Right(0)
+    }
+
+    Try(deleteByIds(itemIds, true)) match {
+      case Success(i) => Right(i)
+      case Failure(err) =>
+        perustiedotSyncRepository.addDeletesToSyncQueue(itemIds)
+        val msg =
+          s"""
+              Elasticsearch indexing failed for ids ${itemIds.mkString(", ")}.
+              Exception from ES: ${err.getMessage}.
+              Will retry soon.
+              """
+        logger.error(msg)
+        Left(KoskiErrorCategory.internalError(msg))
     }
   }
 
