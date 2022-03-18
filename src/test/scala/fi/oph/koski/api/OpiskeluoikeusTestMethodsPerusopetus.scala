@@ -1,7 +1,6 @@
 package fi.oph.koski.api
 
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
@@ -14,7 +13,7 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends PutOpiskeluoikeusTestMethods[
 
   override def defaultOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
-    suoritukset = List(päättötodistusSuoritus),
+    suoritukset = List(vuosiluokkasuoritus, päättötodistusSuoritus),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
   )
 

@@ -57,7 +57,9 @@ class KoulusivistyskieliPerusopetusSpec extends AnyFreeSpec with KoskiHttpSpec w
   def äidinkieliJaKirjallisuus(kieli: String, arvosana: String, pakollinen: Boolean = true) = suoritus(äidinkieli(kieli).copy(pakollinen = pakollinen)).copy(arviointi = arviointi(arvosana, kuvaus = None))
 
   def oppimääränOpiskeluoikeusOppiaineilla(oppiaineet: OppiaineenTaiToiminta_AlueenSuoritus*) = defaultOpiskeluoikeus.copy(
-    suoritukset = List(perusopetuksenOppimääränSuoritus.copy(
+    suoritukset = List(
+      yhdeksännenLuokanSuoritus,
+      perusopetuksenOppimääränSuoritus.copy(
       osasuoritukset = Some(oppiaineet.toList)
     ))
   )

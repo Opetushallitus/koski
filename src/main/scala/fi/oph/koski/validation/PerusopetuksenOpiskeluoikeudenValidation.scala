@@ -9,7 +9,8 @@ object PerusopetuksenOpiskeluoikeusValidation {
     oo match {
       case s: PerusopetuksenOpiskeluoikeus => HttpStatus.fold(
         List(validateNuortenPerusopetuksenOpiskeluoikeudenTila(s),
-          validateVuosiluokanAlkamispäivät(s)
+          validateVuosiluokanAlkamispäivät(s),
+          validatePäätasonSuoritus(s)
         ))
       case _ => HttpStatus.ok
     }
@@ -41,12 +42,21 @@ object PerusopetuksenOpiskeluoikeusValidation {
         }
         else {
           KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenValmistunutTilaIlmanVahvistettuaPäättötodistusta()
-        },
-        validateValmistuneellaOpiskeluoikeudellaYhdeksäsLuokkaTaiSitäEiTarvita(oo)
+        }
       ))
     } else {
       HttpStatus.ok
     }
+  }
+
+  private def validatePäätasonSuoritus(oo: PerusopetuksenOpiskeluoikeus): HttpStatus = {
+    HttpStatus.fold(
+      oo.suoritukset.map {
+        case suoritus: NuortenPerusopetuksenOppimääränSuoritus if suoritus.vahvistettu =>
+          validateValmistuneellaOpiskeluoikeudellaYhdeksäsLuokkaTaiSitäEiTarvita(oo)
+        case _ => HttpStatus.ok
+      }
+    )
   }
 
   private def validateValmistuneellaOpiskeluoikeudellaYhdeksäsLuokkaTaiSitäEiTarvita(oo: PerusopetuksenOpiskeluoikeus) = {
