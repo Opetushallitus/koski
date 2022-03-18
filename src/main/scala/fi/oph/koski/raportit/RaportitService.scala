@@ -16,6 +16,7 @@ class RaportitService(application: KoskiApplication) {
   private val accessResolver = RaportitAccessResolver(application)
   private lazy val organisaatioService = application.organisaatioService
   private val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
+  private val lukio2019Repository = Lukio2019RaportitRepository(raportointiDatabase.db)
   private val lukioDiaIbInternationalOpiskelijaMaaratRaportti = LukioDiaIbInternationalOpiskelijamaaratRaportti(raportointiDatabase.db)
   private val ammatillisenRaportitRepository = AmmatillisenRaportitRepository(raportointiDatabase.db)
   private val aikuistenPerusopetusRepository = AikuistenPerusopetusRaporttiRepository(raportointiDatabase.db)
@@ -109,6 +110,18 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
+  def lukioraportti2019(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
+    OppilaitosRaporttiResponse(
+      sheets = LukioRaportti2019(lukio2019Repository, t)
+        .buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
+      workbookSettings = WorkbookSettings(
+        s"${t.get("raportti-excel-lukio-opiskeluoikeus-title")}_${request.oppilaitosOid}", Some(request.password)
+      ),
+      filename = s"${t.get("raportti-excel-lukio2019-opiskeluoikeus-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
   def lukioDiaIbInternationalOpiskelijaMaaratRaportti(
     request: RaporttiPäivältäRequest,
     t: LocalizationReader
@@ -139,6 +152,21 @@ class RaportitService(application: KoskiApplication) {
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-lukio-kurssikertymät-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-lukio-kurssikertymät-tiedoston-etuliite")}_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
+  def lukio2019KoulutuksenKurssikertyma(
+    request: AikajaksoRaporttiRequest,
+    t: LocalizationReader
+  ): OppilaitosRaporttiResponse = {
+    val oppilaitosOidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList
+    OppilaitosRaporttiResponse(
+      sheets = Seq(
+        Lukio2019OppimaaranOpintopistekertymat.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t)
+      ),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-lukio2019-opintopistekertymät-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-lukio2019-opintopistekertymät-tiedoston-etuliite")}_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",
       downloadToken = request.downloadToken
     )
   }

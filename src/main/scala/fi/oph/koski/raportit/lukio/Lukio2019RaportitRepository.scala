@@ -13,7 +13,7 @@ import slick.jdbc.GetResult
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
-case class LukioRaportitRepository(db: DB) extends QueryMethods with RaportointikantaTableQueries {
+case class Lukio2019RaportitRepository(db: DB) extends QueryMethods with RaportointikantaTableQueries {
 
   private val defaultTimeout = 5.minutes
   private type OpiskeluoikeusOid = String
@@ -29,7 +29,7 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
     alku: LocalDate,
     loppu: LocalDate,
     osasuoritustenAikarajaus: Boolean
-  ): Seq[LukioRaporttiRows] = {
+  ): Seq[Lukio2019RaporttiRows] = {
     val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitosOid, alku, loppu)
 
     val opiskeluoikeusOids = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.map(_._1)
@@ -46,13 +46,13 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
 
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
 
-    opiskeluoikeudet.foldLeft[Seq[LukioRaporttiRows]](Seq.empty) {
+    opiskeluoikeudet.foldLeft[Seq[Lukio2019RaporttiRows]](Seq.empty) {
       combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot)
     }
   }
 
   private def combineOpiskeluoikeusWith(
-    acc: Seq[LukioRaporttiRows],
+    acc: Seq[Lukio2019RaporttiRows],
     opiskeluoikeus: ROpiskeluoikeusRow,
     aikajaksot: Map[OpiskeluoikeusOid, Seq[ROpiskeluoikeusAikajaksoRow]],
     paatasonSuoritukset: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
@@ -60,7 +60,7 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
     henkilot: Map[OppijaOid, RHenkilöRow]
   ) = {
     paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).map(paatasonsuoritus =>
-      LukioRaporttiRows(
+      Lukio2019RaporttiRows(
         opiskeluoikeus,
         henkilot(opiskeluoikeus.oppijaOid),
         aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
@@ -90,17 +90,13 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
     where
       oo.oppilaitos_oid = $oppilaitos and
       oo.koulutusmuoto = 'lukiokoulutus' and
-      aikaj.alku <= $loppu and aikaj.loppu >= $alku
+      aikaj.alku <= $loppu and aikaj.loppu >= $alku and
+      pts.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero' in ('OPH-2267-2019', 'OPH-2263-2019')
     group by oo.opiskeluoikeus_oid"""
   }
 }
-/* HUOM tämä käyttöön filtteröimään pois lops2019-opiskeluoikeudet:
-      (pts.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero' is null or
-      	pts.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero' not in ('OPH-2267-2019', 'OPH-2263-2019'))
- */
 
-
-case class LukioRaporttiRows(
+case class Lukio2019RaporttiRows(
   opiskeluoikeus: ROpiskeluoikeusRow,
   henkilo: RHenkilöRow,
   aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow],
