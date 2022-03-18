@@ -118,7 +118,7 @@ object RaportointiDatabaseSchema {
   private val StringIdentifierType = SqlType("character varying collate \"C\"")
 
   class ROpiskeluoikeusTable(tag: Tag, schema: Schema = Public) extends Table[ROpiskeluoikeusRow](tag, schema.nameOpt, "r_opiskeluoikeus") {
-    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType, O.PrimaryKey)
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima", SqlType("timestamptz"))
     val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid", StringIdentifierType)

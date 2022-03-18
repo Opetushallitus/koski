@@ -1,23 +1,23 @@
 package fi.oph.koski.opiskeluoikeus
 
-import java.sql.{Date, Timestamp}
+import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
-import fi.oph.koski.db.KoskiTables._
-import fi.oph.koski.db.{DB, HenkilöRow, QueryMethods, OpiskeluoikeusRow, KoskiTables}
+import fi.oph.koski.db._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.servlet.InvalidRequestException
-import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util.Retry.retryWithInterval
+import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util.{PaginationSettings, QueryPagination, SortOrder}
-
 import rx.Observable.{create => createObservable}
 import rx.Observer
 import rx.functions.{Func0, Func2}
 import rx.lang.scala.Observable
 import rx.observables.SyncOnSubscribe.createStateful
+
+import java.sql.{Date, Timestamp}
 import scala.concurrent.duration.DurationInt
 
 class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
@@ -83,11 +83,15 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     }
   }
 
-  def mapKaikkiOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
-    (pageSize: Int)
-      (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  def mapOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
+    (pageSize: Int, since: Option[Timestamp])
+    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
   : Observable[A] = {
-    mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiSivuittainWithoutAccessCheck(OpiskeluOikeudet))(mapFn)
+    val query = since match {
+      case Some(s)  => OpiskeluOikeudet.filter(_.aikaleima > s)
+      case None     => OpiskeluOikeudet
+    }
+    mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiSivuittainWithoutAccessCheck(query))(mapFn)
   }
 
   private def mapKaikkiSivuittainWithoutAccessCheck[A]

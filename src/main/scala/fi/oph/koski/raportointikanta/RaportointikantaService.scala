@@ -24,8 +24,9 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       logger.info("Raportointikanta already loading, do nothing")
       false
     } else {
+      val update = raportointiDatabase.latestOpiskeluoikeusTimestamp.map(since => RaportointiDatabaseUpdate(sourceDb = raportointiDatabase, since))
       loadDatabase.dropAndCreateObjects
-      startLoading(scheduler, onEnd, pageSize, onAfterPage)
+      startLoading(update, scheduler, onEnd, pageSize, onAfterPage)
       logger.info(s"Started loading raportointikanta (force: $force)")
       true
     }
@@ -40,12 +41,13 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private def loadOpiskeluoikeudet(
     db: RaportointiDatabase,
+    update: Option[RaportointiDatabaseUpdate],
     pageSize: Int,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSpecificSession.systemUser
-    OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, db, pageSize, onAfterPage)
+    OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, db, update, pageSize, onAfterPage)
   }
 
   def loadHenkilöt(db: RaportointiDatabase = raportointiDatabase): Int =
@@ -86,14 +88,18 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   }
 
   private def startLoading(
+    update: Option[RaportointiDatabaseUpdate],
     scheduler: Scheduler,
     onEnd: () => Unit,
     pageSize: Int,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ) = {
-    logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name}")
+    update match {
+      case Some(u) => logger.info(s"Start updating raportointikanta in ${loadDatabase.schema.name} with new opiskeluoikeudet since ${u.since} from ${u.sourceDb.schema.name}")
+      case None => logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name} (full reload)")
+    }
     putLoadTimeMetric(None) // To store metric more often, Cloudwatch metric does not support missing data more than 24 hours
-    loadOpiskeluoikeudet(loadDatabase, pageSize, onAfterPage)
+    loadOpiskeluoikeudet(loadDatabase, update, pageSize, onAfterPage)
       .subscribeOn(scheduler)
       .subscribe(
         onNext = doNothing,
