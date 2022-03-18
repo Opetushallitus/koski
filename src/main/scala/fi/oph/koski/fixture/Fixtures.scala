@@ -23,6 +23,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     reloadRaportointikanta: Boolean = false
   ): Unit = synchronized {
     if (shouldUseFixtures) {
+      val fixtureNameHasChanged = fixtureState.name != currentFixtureState.name
       application.cacheManager.invalidateAllCaches
       application.suostumuksenPeruutusService.deleteAll()
       currentFixtureState = fixtureState
@@ -31,7 +32,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       application.valpasLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.tiedonsiirtoService.index.deleteAll()
 
-      if (reloadRaportointikanta) {
+      if (reloadRaportointikanta || fixtureNameHasChanged) {
         raportointikantaService.loadRaportointikanta(force = true)
         Wait.until { raportointikantaService.isLoadComplete }
       }

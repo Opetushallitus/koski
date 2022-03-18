@@ -153,7 +153,7 @@ object RaportointiDatabaseSchema {
   class RMitätöityOpiskeluoikeusTable(tag: Tag, schema: Schema = Public)
     extends Table[RMitätöityOpiskeluoikeusRow](tag, schema.nameOpt, "r_mitatoitu_opiskeluoikeus") {
 
-    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType, O.PrimaryKey)
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima", SqlType("timestamptz"))
     val oppijaOid = column[String]("oppija_oid", StringIdentifierType)
@@ -282,7 +282,7 @@ object RaportointiDatabaseSchema {
   class EsiopetusOpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, Temp)
 
   class RPäätasonSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RPäätasonSuoritusRow](tag, schema.nameOpt, "r_paatason_suoritus") {
-    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val päätasonSuoritusId = column[Long]("paatason_suoritus_id", O.PrimaryKey)
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val suorituksenTyyppi = column[String]("suorituksen_tyyppi", StringIdentifierType)
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
@@ -313,7 +313,7 @@ object RaportointiDatabaseSchema {
   class RPäätasonSuoritusTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, Temp)
 
   class ROsasuoritusTable(tag: Tag, schema: Schema = Public) extends Table[ROsasuoritusRow](tag, schema.nameOpt, "r_osasuoritus") {
-    val osasuoritusId = column[Long]("osasuoritus_id")
+    val osasuoritusId = column[Long]("osasuoritus_id", O.PrimaryKey)
     val ylempiOsasuoritusId = column[Option[Long]]("ylempi_osasuoritus_id")
     val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)

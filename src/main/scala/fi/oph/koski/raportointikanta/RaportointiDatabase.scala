@@ -1,9 +1,5 @@
 package fi.oph.koski.raportointikanta
 
-import java.sql.Timestamp.{valueOf => toTimestamp}
-import java.sql.{Date, Timestamp}
-import java.time.LocalDateTime.now
-import java.time._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, DatabaseUtilQueries, QueryMethods, RaportointiDatabaseConfig}
 import fi.oph.koski.log.Logging
@@ -168,9 +164,18 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       "r_mitatoitu_opiskeluoikeus",
     )
 
+    val päivitettävätIdSekvenssit = List(
+      ("r_opiskeluoikeus_aikajakso", "id")
+    )
+
     kloonattavatTaulut.foreach { taulu =>
       logger.info(s"Kopioidaan rivit ${source.schema.name}.${taulu} --> ${schema.name}.${taulu}")
       runDbSync(sqlu"""INSERT INTO #${schema.name}.#${taulu} SELECT * FROM #${source.schema.name}.#${taulu}""")
+    }
+
+    päivitettävätIdSekvenssit.foreach { seq =>
+      val (taulu, col) = seq
+      runDbSync(sql"""SELECT setval('#${schema.name}.#${taulu}_#${col}_seq', (SELECT max(#${col}) FROM #${schema.name}.#${taulu}))""".as[Long])
     }
   }
 
@@ -193,20 +198,35 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
   def loadOrganisaatioHistoria(organisaatioHistoriat: Seq[ROrganisaatioHistoriaRow]): Unit =
     runDbSync(ROrganisaatioHistoriat ++= organisaatioHistoriat)
 
-  def updateOrganisaatioHistoria(organisaatioHistoriat: Seq[ROrganisaatioHistoriaRow]): Unit =
-    runDbSync(DBIO.sequence(organisaatioHistoriat.map(ROrganisaatioHistoriat.insertOrUpdate)))
+  def updateOrganisaatioHistoria(organisaatioHistoriat: Seq[ROrganisaatioHistoriaRow]): Unit = {
+    val opiskeluoikeusOids = organisaatioHistoriat.map(_.opiskeluoikeusOid).toSet
+    runDbSync(DBIO.seq(
+      ROrganisaatioHistoriat.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete,
+      ROrganisaatioHistoriat ++= organisaatioHistoriat
+    ))
+  }
 
   def loadOpiskeluoikeusAikajaksot(jaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Unit =
     runDbSync(ROpiskeluoikeusAikajaksot ++= jaksot)
 
-  def updateOpiskeluoikeusAikajaksot(jaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Unit =
-    runDbSync(DBIO.sequence(jaksot.map(ROpiskeluoikeusAikajaksot.insertOrUpdate)))
+  def updateOpiskeluoikeusAikajaksot(jaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Unit = {
+    val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
+    runDbSync(DBIO.seq(
+      ROpiskeluoikeusAikajaksot.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete,
+      ROpiskeluoikeusAikajaksot ++= jaksot,
+    ))
+  }
 
   def loadEsiopetusOpiskeluoikeusAikajaksot(jaksot: Seq[EsiopetusOpiskeluoikeusAikajaksoRow]): Unit =
     runDbSync(EsiopetusOpiskeluoikeusAikajaksot ++= jaksot)
 
-  def updateEsiopetusOpiskeluoikeusAikajaksot(jaksot: Seq[EsiopetusOpiskeluoikeusAikajaksoRow]): Unit =
-    runDbSync(DBIO.sequence(jaksot.map(EsiopetusOpiskeluoikeusAikajaksot.insertOrUpdate)))
+  def updateEsiopetusOpiskeluoikeusAikajaksot(jaksot: Seq[EsiopetusOpiskeluoikeusAikajaksoRow]): Unit = {
+    val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
+    runDbSync(DBIO.seq(
+      EsiopetusOpiskeluoikeusAikajaksot.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete,
+      EsiopetusOpiskeluoikeusAikajaksot ++= jaksot,
+    ))
+  }
 
   def loadPäätasonSuoritukset(suoritukset: Seq[RPäätasonSuoritusRow]): Unit =
     runDbSync(RPäätasonSuoritukset ++= suoritukset)
@@ -223,14 +243,24 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
   def loadMuuAmmatillinenRaportointi(rows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow]): Unit =
     runDbSync(MuuAmmatillinenOsasuoritusRaportointi ++= rows, timeout = 5.minutes)
 
-  def updateMuuAmmatillinenRaportointi(rows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow]): Unit =
-    runDbSync(DBIO.sequence(rows.map(MuuAmmatillinenOsasuoritusRaportointi.insertOrUpdate)))
+  def updateMuuAmmatillinenRaportointi(rows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow]): Unit = {
+    val opiskeluoikeusOids = rows.map(_.opiskeluoikeusOid).toSet
+    runDbSync(DBIO.seq(
+      MuuAmmatillinenOsasuoritusRaportointi.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete,
+      MuuAmmatillinenOsasuoritusRaportointi ++= rows,
+    ))
+  }
 
   def loadTOPKSAmmatillinenRaportointi(rows: Seq[TOPKSAmmatillinenRaportointiRow]): Unit =
     runDbSync(TOPKSAmmatillinenOsasuoritusRaportointi ++= rows, timeout = 5.minutes)
 
-  def updateTOPKSAmmatillinenRaportointi(rows: Seq[TOPKSAmmatillinenRaportointiRow]): Unit =
-    runDbSync(DBIO.sequence(rows.map(TOPKSAmmatillinenOsasuoritusRaportointi.insertOrUpdate)))
+  def updateTOPKSAmmatillinenRaportointi(rows: Seq[TOPKSAmmatillinenRaportointiRow]): Unit = {
+    val opiskeluoikeusOids = rows.map(_.opiskeluoikeudenOid).toSet
+    runDbSync(DBIO.seq(
+      TOPKSAmmatillinenOsasuoritusRaportointi.filter(_.opiskeluoikeudenOid inSet opiskeluoikeusOids).delete,
+      TOPKSAmmatillinenOsasuoritusRaportointi ++= rows,
+    ))
+  }
 
   def loadHenkilöt(henkilöt: Seq[RHenkilöRow]): Unit =
     runDbSync(RHenkilöt ++= henkilöt)

@@ -14,17 +14,19 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
   private val eventBridgeClient = KoskiEventBridgeClient.apply(application.config)
 
-  def loadRaportointikanta(force: Boolean,
+  def loadRaportointikanta(
+    force: Boolean,
     scheduler: Scheduler = defaultScheduler,
     onEnd: () => Unit = () => (),
     pageSize: Int = OpiskeluoikeusLoader.DefaultBatchSize,
-    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => (),
+    skipUnchangedData: Boolean = false,
   ): Boolean = {
     if (isLoading && !force) {
       logger.info("Raportointikanta already loading, do nothing")
       false
     } else {
-      val update = raportointiDatabase.latestOpiskeluoikeusTimestamp.map(since => RaportointiDatabaseUpdate(sourceDb = raportointiDatabase, since))
+      val update = if (skipUnchangedData) raportointiDatabase.latestOpiskeluoikeusTimestamp.map(since => RaportointiDatabaseUpdate(sourceDb = raportointiDatabase, since)) else None
       loadDatabase.dropAndCreateObjects
       startLoading(update, scheduler, onEnd, pageSize, onAfterPage)
       logger.info(s"Started loading raportointikanta (force: $force)")

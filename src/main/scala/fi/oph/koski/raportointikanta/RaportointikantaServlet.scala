@@ -14,7 +14,10 @@ class RaportointikantaServlet(implicit val application: KoskiApplication) extend
 
   get("/load") {
     logger.info("load raportointikanta")
-    service.loadRaportointikanta(getOptionalBooleanParam("force").getOrElse(false))
+    service.loadRaportointikanta(
+      force = getOptionalBooleanParam("force").getOrElse(false),
+      skipUnchangedData = !getOptionalBooleanParam("fullReload").getOrElse(false),
+    )
     renderObject(Map("status" -> "loading"))
   }
 
