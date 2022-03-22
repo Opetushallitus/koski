@@ -37,10 +37,14 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   }
 
   def loadRaportointikantaAndExit(): Unit = {
-    loadRaportointikanta(force = true, defaultScheduler, onEnd = () => {
-      logger.info(s"Ended loading raportointikanta, shutting down...")
-      shutdown
-    })
+    loadRaportointikanta(
+      force = true,
+      skipUnchangedData = true,
+      scheduler = defaultScheduler,
+      onEnd = () => {
+        logger.info(s"Ended loading raportointikanta, shutting down...")
+        shutdown
+      })
   }
 
   private def loadOpiskeluoikeudet(
