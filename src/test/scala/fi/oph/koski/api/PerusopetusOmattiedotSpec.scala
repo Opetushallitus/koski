@@ -62,7 +62,10 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     }
     "kun suoritus on valmistunut alle 5 päivää sitten" - {
       "piilotetaan arvosanat" in {
-        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4))))))
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(
+          yhdeksännenLuokanSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4)))),
+          päättötodistusSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(4))))
+        ))
         putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
@@ -72,7 +75,10 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
       }
     }
     "kun suoritus on valmistut vähintään 5 päivää sitten" - {
-      val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5))))))
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(
+        yhdeksännenLuokanSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5)))),
+        päättötodistusSuoritus.copy(vahvistus = vahvistus.map(_.copy(päivä = LocalDate.now().minusDays(5))))
+      ))
       "palautetaan arvosanat" in {
         putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
@@ -192,7 +198,7 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
     def verify[A](päätasonSuoritus: PerusopetuksenPäätasonSuoritus, hetu: String)(verifyResponse: => A): A = {
       val pakollinenOppiaine = suoritus(oppiaine("GE").copy(pakollinen = true, laajuus = vuosiviikkotuntia(8))).copy(arviointi = arviointi(9))
       val valinnainenOppiaine = suoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(8))).copy(arviointi = arviointi(8))
-      val opiskeluoikeus = defaultOpiskeluoikeus.withSuoritukset(List(päätasonSuoritus.withOsasuoritukset(Some(List(pakollinenOppiaine, valinnainenOppiaine)))))
+      val opiskeluoikeus = defaultOpiskeluoikeus.withSuoritukset(List(yhdeksännenLuokanSuoritus, päätasonSuoritus.withOsasuoritukset(Some(List(pakollinenOppiaine, valinnainenOppiaine)))))
       val henkilö = defaultHenkilö.copy(hetu = hetu)
 
       putOpiskeluoikeus(opiskeluoikeus, henkilö) {

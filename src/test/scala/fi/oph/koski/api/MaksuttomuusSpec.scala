@@ -179,8 +179,10 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
 
         "Perusopetuksen vahvistettu oppimäärä ilman opiskeluoikeuden valmistumista" in {
           val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(
-            suoritukset = List(perusopetuksenOppimääränSuoritus.copy(
-              vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 1, 1))
+            suoritukset = List(
+              yhdeksännenLuokanSuoritus,
+              perusopetuksenOppimääränSuoritus.copy(
+                vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 1, 1))
             )),
             alkamispäivä = date(2010, 8, 1),
             päättymispäivä = None,

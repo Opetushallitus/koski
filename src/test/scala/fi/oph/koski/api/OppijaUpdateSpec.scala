@@ -5,7 +5,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste, suoritus}
-import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
+import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste}
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -89,10 +89,10 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
           resetFixtures
           val oo = PerusopetuksenOpiskeluoikeus(
             oppilaitos = Some(jyväskylänNormaalikoulu),
-            suoritukset = List(perusopetuksenOppimääränSuoritus),
+            suoritukset = List(yhdeksännenLuokanSuoritus, perusopetuksenOppimääränSuoritus),
             tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
           )
-          createOpiskeluoikeus(oppija, oo).suoritukset.head.koulutusmoduuli.asInstanceOf[Koulutus].koulutustyyppi.get.koodiarvo should equal("16")
+          createOpiskeluoikeus(oppija, oo).suoritukset.find(_.isInstanceOf[PerusopetuksenOppimääränSuoritus]).get.koulutusmoduuli.asInstanceOf[Koulutus].koulutustyyppi.get.koodiarvo should equal("16")
         }
 
         "aikuisten perusopetus" in {

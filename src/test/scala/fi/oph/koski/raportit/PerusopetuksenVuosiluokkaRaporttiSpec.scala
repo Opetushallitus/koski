@@ -185,7 +185,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       }
 
       "Ei tulosta tulosta päättötodistusta oppijoilla joilla ei ole yhdeksännen luokan opintoja" in {
-        withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus)) {
+        withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus), Some(perusopetuksenOpiskeluoikeudenLisätiedot.copy(vuosiluokkiinSitoutumatonOpetus = true))) {
           val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 6, 1), "9", t)
           result.map(_.oppijaOid) shouldNot contain(KoskiSpecificMockOppijat.vuosiluokkalainen.oid)
         }
@@ -449,10 +449,12 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     kahdeksannenLuokanSuoritus.copy(alkamispäivä = alku, vahvistus = loppu.map(vahvistusPaikkakunnalla(_)).getOrElse(None), koulutusmoduuli = PerusopetuksenLuokkaAste(vuosiluokka, perusopetuksenDiaarinumero))
   }
 
-  private def withAdditionalSuoritukset(oppija: LaajatOppijaHenkilöTiedot, vuosiluokanSuoritus: List[PerusopetuksenPäätasonSuoritus])(f: => Any) = {
+  private def withAdditionalSuoritukset(oppija: LaajatOppijaHenkilöTiedot, vuosiluokanSuoritus: List[PerusopetuksenPäätasonSuoritus], lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None)(f: => Any) = {
     resetFixtures
     val oo = getOpiskeluoikeudet(oppija.oid).collect { case oo: PerusopetuksenOpiskeluoikeus => oo }.head
-    val lisatyllaVuosiluokanSuorituksella = oo.copy(suoritukset = (vuosiluokanSuoritus ::: oo.suoritukset), tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä))))
+    val lisatyllaVuosiluokanSuorituksella = oo.copy(suoritukset = (vuosiluokanSuoritus ::: oo.suoritukset),
+      lisätiedot = lisätiedot,
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä))))
     putOppija(Oppija(oppija, List(lisatyllaVuosiluokanSuorituksella))) {
       verifyResponseStatusOk()
       reloadRaportointikanta

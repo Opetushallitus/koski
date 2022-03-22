@@ -3,6 +3,7 @@ package fi.oph.koski.oppivelvollisuustieto
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.PerusopetusExampleData.yhdeksännenLuokanSuoritus
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
@@ -402,7 +403,10 @@ class OppivelvollisuustietoSpec
   private def perusopetuksenOppimäärä(vahvistus: Option[LocalDate]): Opiskeluoikeus = {
     PerusopetusExampleData.opiskeluoikeus(
       päättymispäivä = None,
-      suoritukset = List(PerusopetusExampleData.perusopetuksenOppimääränSuoritus.copy(vahvistus = vahvistus.flatMap(ExampleData.vahvistusPaikkakunnalla(_))))
+      suoritukset = List(
+        yhdeksännenLuokanSuoritus,
+        PerusopetusExampleData.perusopetuksenOppimääränSuoritus.copy(vahvistus = vahvistus.flatMap(ExampleData.vahvistusPaikkakunnalla(_)))
+      )
     )
   }
 
