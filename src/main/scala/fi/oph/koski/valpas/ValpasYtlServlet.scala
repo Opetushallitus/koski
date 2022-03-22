@@ -13,11 +13,6 @@ class ValpasYtlServlet(implicit val application: KoskiApplication) extends Valpa
   private val ytlService = new ValpasYtlService(application)
 
   post("/oppijat") {
-    // TODO: Disabloi tuotannossa toistaiseksi varmuuden vuoksi. Poista, kun valmista.
-    if (application.config.getString("opintopolku.virkailija.url") == "https://virkailija.opintopolku.fi") {
-      haltWithStatus(ValpasErrorCategory.notImplemented())
-    }
-
     withJsonBody { json =>
       YtlRequest.parseBulk(json) match {
         case Right((oidit, hetut, _)) =>
