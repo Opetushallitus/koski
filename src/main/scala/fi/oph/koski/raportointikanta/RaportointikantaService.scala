@@ -26,7 +26,9 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       logger.info("Raportointikanta already loading, do nothing")
       false
     } else {
-      val update = if (skipUnchangedData) raportointiDatabase.latestOpiskeluoikeusTimestamp.map(since => RaportointiDatabaseUpdate(sourceDb = raportointiDatabase, since)) else None
+      val latestOpiskeluoikeusTimestamp = raportointiDatabase.latestOpiskeluoikeusTimestamp
+      logger.info(s"Latest opiskeluoikeus update in ${raportointiDatabase.schema.name}: ${latestOpiskeluoikeusTimestamp}")
+      val update = if (skipUnchangedData) latestOpiskeluoikeusTimestamp.map(since => RaportointiDatabaseUpdate(sourceDb = raportointiDatabase, since)) else None
       loadDatabase.dropAndCreateObjects
       startLoading(update, scheduler, onEnd, pageSize, onAfterPage)
       logger.info(s"Started loading raportointikanta (force: $force)")
