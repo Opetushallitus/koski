@@ -71,15 +71,22 @@ with
         when opiskeluoikeus_kaikki.mitatoity then $aikaleima::timestamptz < opiskeluoikeus_kaikki.aikaleima
         else false
       end "mitätöityAikaleimanJälkeen",
-      opiskeluoikeus_kaikki.data
+      opiskeluoikeus_kaikki.data,
+      opiskeluoikeus_kaikki.opiskeluoikeus_oid
     from
       opiskeluoikeus_kaikki
       inner join opiskeluoikeus_kaikki o2 on o2.oppija_master_oid = opiskeluoikeus_kaikki.oppija_master_oid and o2.palauta is true
   )
 select
-  *
+  "opiskeluoikeusOid",
+  "masterOppijaOid",
+  versionumero,
+  aikaleima,
+  "mitätöity",
+  "mitätöityAikaleimanJälkeen",
+  data
 from opiskeluoikeus_palautettavat
-order by "masterOppijaOid"
+order by "masterOppijaOid", opiskeluoikeus_oid
     """)).as[OppijanOpiskeluoikeusRow])
   }
 
