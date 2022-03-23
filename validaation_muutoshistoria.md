@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 22.2.2022
+- VST:n vapaatavoitteiselle opiskeluoikeudelle sallitaan tila mitatoity, jotta opiskeluoikeus voidaan mitätöidä.
+
 ## 14.2.2022
 - Valmistuneen TUVA opiskeluoikeuden pääsuorituksen laajuus oltava välillä 4-38 viikkoa.
 - Valmistuneen TUVA opiskeluoikeuden osasuoritusten laajuudet on oltava sallitulla välillä.

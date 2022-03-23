@@ -31,7 +31,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
       sql"""
            select oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, paattymispaiva, lahdejarjestelma_koodi, lahdejarjestelma_id, mitatoity_aikaleima, suostumus_peruttu_aikaleima
            from poistettu_opiskeluoikeus
-           order by coalesce(mitatoity_aikaleima, suostumus_peruttu_aikaleima);
+           order by coalesce(mitatoity_aikaleima, suostumus_peruttu_aikaleima) desc;
          """.as[PoistettuOpiskeluoikeusRow]
     )
   }
