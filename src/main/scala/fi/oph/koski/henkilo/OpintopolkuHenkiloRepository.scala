@@ -36,6 +36,8 @@ case class LaajatOppijaHenkilöTiedot(
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
   def kaikkiOidit: List[String] = oid :: linkitetytOidit
 
+  override def ilmanHetua: HenkilönTunnisteet = this.copy(hetu = None)
+
   def laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella: Boolean = {
     kotikunta match {
       case Some(k) => oppivelvollisuudenUlkopuolisetKunnat.contains(k)
@@ -61,6 +63,8 @@ case class SuppeatOppijaHenkilöTiedot(
   @SyntheticProperty
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
   def vanhatHetut: List[String] = Nil
+
+  override def ilmanHetua: HenkilönTunnisteet = this.copy(hetu = None)
 }
 
 trait OppijaHenkilö extends HenkilönTunnisteet {
@@ -86,6 +90,7 @@ trait HenkilönTunnisteet {
   def hetu: Option[String]
   def linkitetytOidit: List[String]
   def vanhatHetut: List[String]
+  def ilmanHetua: HenkilönTunnisteet
 }
 
 case class Yhteystiedot(

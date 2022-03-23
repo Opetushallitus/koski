@@ -2,6 +2,7 @@ package fi.oph.koski.virta
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
+import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpConnectionException}
 import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
@@ -71,10 +72,12 @@ case class MockVirtaClient(config: Config) extends VirtaClient {
 
   override def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = {
     hakuehto match {
-      case VirtaHakuehtoHetu("250390-680P") | VirtaHakuehtoHetu("010469-999W") =>
+      case VirtaHakuehtoHetu("250390-680P") =>
         throw new HttpConnectionException("MockVirtaClient testing henkilötiedot failure", "POST", "http://localhost:666/")
-      case VirtaHakuehtoHetu(hetu) =>
-        loadXml(s"$mockDataDir/henkilotiedot/$hetu.xml")
+      case VirtaHakuehtoHetu(hetu) => Hetu.validate(hetu, false) match {
+        case Left(_) => throw new HttpConnectionException("MockVirtaClient testing henkilötiedot failure", "POST", "http://localhost:666/")
+        case Right(hetu) => loadXml(s"$mockDataDir/henkilotiedot/$hetu.xml")
+      }
       case _ =>
         throw new RuntimeException("henkilötiedot must be searched by VirtaHakuehtoHetu")
     }
@@ -82,9 +85,12 @@ case class MockVirtaClient(config: Config) extends VirtaClient {
 
   private def haeOpintotiedot(virtaHakuehto: VirtaHakuehto) = {
     val tunnus = virtaHakuehto match {
-      case VirtaHakuehtoHetu("250390-680P") | VirtaHakuehtoHetu("010469-999W") =>
+      case VirtaHakuehtoHetu("250390-680P") =>
         throw new HttpConnectionException("MockVirtaClient testing opintotiedot failure", "POST", "http://localhost:666/")
-      case VirtaHakuehtoHetu(hetu) => hetu
+      case VirtaHakuehtoHetu(hetu) => Hetu.validate(hetu, false) match {
+        case Left(_) => throw new HttpConnectionException("MockVirtaClient testing opintotiedot failure", "POST", "http://localhost:666/")
+        case Right(hetu) => hetu
+      }
       case VirtaHakuehtoKansallinenOppijanumero(oid) => oid
     }
     loadXml(s"$mockDataDir/opintotiedot/$tunnus.xml")
