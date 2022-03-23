@@ -1,4 +1,5 @@
 import React from 'baret'
+import Bacon from 'baconjs'
 import {
   addContext,
   modelData,
@@ -59,8 +60,9 @@ const OpiskeluoikeudenSuostumuksenPeruminen = ({opiskeluoikeus}) => {
   const suoritusjakoTehty = Atom(true)
 
   const opiskeluoikeusOid = modelData(opiskeluoikeus, 'oid')
-  Http.post(`/koski/api/opiskeluoikeus/suostumuksenperuutus/suoritusjakoTehty/${opiskeluoikeusOid}`, {})
-    .onValue((v) => suoritusjakoTehty.modify(() => v.tehty))
+  Http.post(`/koski/api/opiskeluoikeus/suostumuksenperuutus/suoritusjakoTehty/${opiskeluoikeusOid}`, {},
+    { errorMapper: (e) => e.httpStatus === 401 ? null : new Bacon.Error(e)}
+  ).onValue((v) => suoritusjakoTehty.modify(() => v.tehty))
 
   return (
     <div className='suostumuksen-peruuttaminen'>
