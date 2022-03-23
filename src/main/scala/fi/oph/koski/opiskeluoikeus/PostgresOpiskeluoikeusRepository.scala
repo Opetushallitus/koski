@@ -330,7 +330,7 @@ class PostgresOpiskeluoikeusRepository(
           diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
-          Right(Created(opiskeluoikeusId, oid, opiskeluoikeus.lähdejärjestelmänId, oppija, VERSIO_1, diff, row.data))
+          Right(Created(opiskeluoikeusId, oid, opiskeluoikeus.lähdejärjestelmänId, oppija, VERSIO_1))
         }
     }
   }
@@ -353,20 +353,14 @@ class PostgresOpiskeluoikeusRepository(
               tallennettavaOpiskeluoikeus.mitätöity &&
                 tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus")
             ) {
-              val (newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables
-                .OpiskeluoikeusTable
-                .updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
-              val diff: JArray = jsonDiff(oldRow.data, newData)
-
-              OpiskeluoikeusPoistoUtils.poistaOpiskeluOikeus(id, oid, tallennettavaOpiskeluoikeus, oldRow.oppijaOid)
+              OpiskeluoikeusPoistoUtils
+                .poistaOpiskeluOikeus(id, oid, tallennettavaOpiskeluoikeus, nextVersionumero, oldRow.oppijaOid, true)
                 .map(_ => Right(Updated(
                   id,
                   oid,
                   uusiOpiskeluoikeus.lähdejärjestelmänId,
                   oldRow.oppijaOid,
                   nextVersionumero,
-                  diff,
-                  newData,
                   vanhaOpiskeluoikeus
                 )))
             } else {
@@ -374,7 +368,7 @@ class PostgresOpiskeluoikeusRepository(
               val diff: JArray = jsonDiff(oldRow.data, newData)
               diff.values.length match {
                 case 0 =>
-                  DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero, diff, newData)))
+                  DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero)))
                 case _ =>
                   for {
                     rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(_.updateableFields).update(updatedValues)
@@ -384,7 +378,7 @@ class PostgresOpiskeluoikeusRepository(
                     rowsUpdated match {
                       case 1 =>
                         verifyHistoria(newData, hist)
-                        Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
+                        Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, vanhaOpiskeluoikeus))
                       case x: Int =>
                         throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
                     }

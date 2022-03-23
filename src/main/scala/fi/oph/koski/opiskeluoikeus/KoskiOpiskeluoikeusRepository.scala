@@ -48,24 +48,22 @@ sealed trait CreateOrUpdateResult {
   def lähdejärjestelmänId: Option[LähdejärjestelmäId]
   def oppijaOid: Henkilö.Oid
   def versionumero: Int
-  def diff: JValue
-  def data: JValue
 
   def henkilötiedot: Option[OppijaHenkilöWithMasterInfo]
 }
 
-case class Created(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppija: OppijaHenkilöWithMasterInfo, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue) extends CreateOrUpdateResult {
+case class Created(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppija: OppijaHenkilöWithMasterInfo, versionumero: Opiskeluoikeus.Versionumero) extends CreateOrUpdateResult {
   def changed = true
   def created = true
   override def oppijaOid: Oid = oppija.henkilö.oid
   override def henkilötiedot: Option[OppijaHenkilöWithMasterInfo] = Some(oppija)
 }
-case class Updated(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue, old: KoskeenTallennettavaOpiskeluoikeus) extends CreateOrUpdateResult {
+case class Updated(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero, old: KoskeenTallennettavaOpiskeluoikeus) extends CreateOrUpdateResult {
   def changed = true
   def created = false
   override def henkilötiedot = None
 }
-case class NotChanged(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue) extends CreateOrUpdateResult {
+case class NotChanged(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero) extends CreateOrUpdateResult {
   def changed = false
   def created = false
   override def henkilötiedot = None
