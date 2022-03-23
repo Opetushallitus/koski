@@ -1,4 +1,4 @@
-package fi.oph.koski.raportit.lukio
+package fi.oph.koski.raportit.lukio.lops2021
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._

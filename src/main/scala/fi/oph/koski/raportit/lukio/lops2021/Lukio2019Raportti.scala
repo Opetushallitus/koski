@@ -1,10 +1,11 @@
-package fi.oph.koski.raportit.lukio
+package fi.oph.koski.raportit.lukio.lops2021
 
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.YleissivistäväUtils._
 import fi.oph.koski.raportit._
+import fi.oph.koski.raportit.lukio.{LukioOppiaineenKurssienVälilehtiStaattisetKolumnit, LukioRaportinOppiaineenKurssitRow, LukioRaporttiKaikkiOppiaineetVälilehtiRow, LukioRaporttiOppiaineetVälilehtiMuut}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
