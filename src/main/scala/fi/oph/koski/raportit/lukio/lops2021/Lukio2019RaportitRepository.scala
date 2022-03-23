@@ -1,9 +1,7 @@
-package fi.oph.koski.raportit.lukio
+package fi.oph.koski.raportit.lukio.lops2021
 
-import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.DB
-import fi.oph.koski.localization.LocalizationReader
+import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.raportit.YleissivistäväRaporttiRows
 import fi.oph.koski.raportointikanta._

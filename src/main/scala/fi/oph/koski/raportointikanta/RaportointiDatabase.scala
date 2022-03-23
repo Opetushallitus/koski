@@ -9,7 +9,8 @@ import fi.oph.koski.db.{DB, DatabaseUtilQueries, QueryMethods, RaportointiDataba
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
-import fi.oph.koski.raportit.lukio.{Lukio2019OppimaaranOpintopistekertymat, LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
+import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineRahoitusmuodonMukaan, Lukio2019OppimaaranOpintopistekertymat}
+import fi.oph.koski.raportit.lukio.{LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.DateOrdering.{ascedingSqlTimestampOrdering, sqlDateOrdering}
@@ -117,10 +118,16 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createIndex(schema),
       LukioOppiaineenOppimaaranKurssikertymat.createMaterializedView(schema),
       LukioOppiaineenOppimaaranKurssikertymat.createIndex(schema),
+      Lukio2019AineopintojenOpintopistekertymat.createMaterializedView(schema),
+      Lukio2019AineopintojenOpintopistekertymat.createIndex(schema),
       LukioOppiaineRahoitusmuodonMukaan.createMaterializedView(schema),
       LukioOppiaineRahoitusmuodonMukaan.createIndex(schema),
+      Lukio2019OppiaineRahoitusmuodonMukaan.createMaterializedView(schema),
+      Lukio2019OppiaineRahoitusmuodonMukaan.createIndex(schema),
       LukioOppiaineEriVuonnaKorotetutKurssit.createMaterializedView(schema),
       LukioOppiaineEriVuonnaKorotetutKurssit.createIndex(schema),
+      Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createMaterializedView(schema),
+      Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createIndex(schema),
       Oppivelvollisuustiedot.createMaterializedView(schema, valpasRajapäivätService),
       Oppivelvollisuustiedot.createIndexes(schema)
     )

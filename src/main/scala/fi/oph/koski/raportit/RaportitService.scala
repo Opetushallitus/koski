@@ -7,6 +7,7 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.raportit.aikuistenperusopetus._
 import fi.oph.koski.raportit.lukio._
+import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019MuutaKauttaRahoitetut, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset, Lukio2019OppimaaranOpintopistekertymat, Lukio2019RahoitusmuotoEiTiedossa, Lukio2019RaportitRepository, LukioRaportti2019}
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 
@@ -156,14 +157,19 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def lukio2019KoulutuksenKurssikertyma(
+  def lukio2019KoulutuksenOpintopistekertyma(
     request: AikajaksoRaporttiRequest,
     t: LocalizationReader
   ): OppilaitosRaporttiResponse = {
     val oppilaitosOidit = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList
     OppilaitosRaporttiResponse(
       sheets = Seq(
-        Lukio2019OppimaaranOpintopistekertymat.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t)
+        Lukio2019OppimaaranOpintopistekertymat.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        Lukio2019AineopintojenOpintopistekertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        Lukio2019MuutaKauttaRahoitetut.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        Lukio2019RahoitusmuotoEiTiedossa.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t)
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-lukio2019-opintopistekertymät-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-lukio2019-opintopistekertymät-tiedoston-etuliite")}_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx",

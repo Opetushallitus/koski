@@ -118,7 +118,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val r = parseAikajaksoRaporttiRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, r.lang)
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=lukio2019opintopistekertymat&oppilaitosOid=${r.oppilaitosOid}&alku=${r.alku}&loppu=${r.loppu}&lang=${r.lang}")))
-    writeExcel(raportitService.lukio2019KoulutuksenKurssikertyma(r, t), t)
+    writeExcel(raportitService.lukio2019KoulutuksenOpintopistekertyma(r, t), t)
   }
 
   get("/lukiodiaibinternationalopiskelijamaarat") {
