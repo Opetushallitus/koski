@@ -165,7 +165,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     )
 
     val päivitettävätIdSekvenssit = List(
-      ("r_opiskeluoikeus_aikajakso", "id")
+      ("r_opiskeluoikeus_aikajakso", "id"),
     )
 
     kloonattavatTaulut.foreach { taulu =>
@@ -181,6 +181,11 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       runDbSync(sql"""SELECT setval('#${schema.name}.#${taulu}_#${col}_seq', (SELECT max(#${col}) FROM #${schema.name}.#${taulu}))""".as[Long])
     }
   }
+
+  def getLatestPäätasonSuoritusId: Long =
+    runDbSync(sql"""SELECT max(paatason_suoritus_id) FROM #${schema.name}.r_paatason_suoritus""".as[Option[Long]])
+      .head
+      .getOrElse(0)
 
   def updateOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit = {
     runDbSync(DBIO.sequence(opiskeluoikeudet.map(ROpiskeluoikeudet.insertOrUpdate)), timeout = 5.minutes)

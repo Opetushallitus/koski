@@ -32,7 +32,10 @@ object OpiskeluoikeusLoader extends Logging {
   ): Observable[LoadResult] = {
     db.setStatusLoadStarted(statusName)
     db.setStatusLoadStarted(mitätöidytStatusName)
-    update.foreach(u => db.cloneUpdateableTables(u.sourceDb))
+    update.foreach(u => {
+      db.cloneUpdateableTables(u.sourceDb)
+      suoritusIds.set(db.getLatestPäätasonSuoritusId)
+    })
 
     var loopCount = 0
     val result = opiskeluoikeusQueryRepository.mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update.map(_.since)) { batch =>
