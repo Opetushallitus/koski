@@ -20,9 +20,12 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
 
   private def convertSuoritus(suoritus: Elem) = converter.convertSuoritus(None, suoritus, List(suoritus))
 
+  // Tällä päivämäärällä palautuu organisaation nimi " -vanha" loppuliitteellä MockOrganisaatioRepositorystä
+  private val organisaatioVanhallaNimelläPvm = LocalDate.of(2010, 10, 10)
+
   def baseSuoritus: Elem = suoritusWithOrganisaatio(None)
-  def suoritusWithOrganisaatio(organisaatio: Option[Elem]): Elem = <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-49.3400" avain="1114935190">
-    <virta:SuoritusPvm>2014-05-30</virta:SuoritusPvm>
+  def suoritusWithOrganisaatio(organisaatio: Option[Elem], suoritusPvm: String = "2014-05-30"): Elem = <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="Kul-49.3400" avain="1114935190">
+    <virta:SuoritusPvm>{suoritusPvm}</virta:SuoritusPvm>
     <virta:Laajuus>
       <virta:Opintopiste>5.000000</virta:Opintopiste>
     </virta:Laajuus>
@@ -43,13 +46,25 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
 
   val virtaOpiskeluoikeudet: Elem = opiskeluoikeusWithOrganisaatio(None)
 
-  def opiskeluoikeusWithOrganisaatio(organisaatio: Option[Elem]): Elem = <virta:Opiskeluoikeudet>
+  def opiskeluoikeusWithOrganisaatio(organisaatio: Option[Elem], tilallinen: Boolean = true, päättynyt: Boolean = false): Elem = <virta:Opiskeluoikeudet>
     <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O1">
       <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
-      <virta:Tila>
-        <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
-        <virta:Koodi>1</virta:Koodi>
-      </virta:Tila>
+      {
+        if(tilallinen){
+          <virta:Tila>
+            <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+            <virta:Koodi>1</virta:Koodi>
+          </virta:Tila>
+        }
+      }
+      {
+        if (tilallinen && päättynyt) {
+          <virta:Tila>
+            <virta:AlkuPvm>{organisaatioVanhallaNimelläPvm.toString}</virta:AlkuPvm>
+            <virta:Koodi>3</virta:Koodi>
+          </virta:Tila>
+        }
+      }
       <virta:Tyyppi>1</virta:Tyyppi>
       <virta:Myontaja>10076</virta:Myontaja>
       {if (organisaatio.isDefined) organisaatio.get}
@@ -66,6 +81,20 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       </virta:Laajuus>
     </virta:Opiskeluoikeus>
   </virta:Opiskeluoikeudet>
+
+  def opiskeluoikeusSuorituksella(suoritusPvm: String = "2014-05-30"): Elem = <virta:Opiskelija avain="lut-student-xxx">
+    <virta:Henkilotunnus>xxxxxx-xxxx</virta:Henkilotunnus>
+    {opiskeluoikeusWithOrganisaatio(None, tilallinen = false)}
+    <virta:Opintosuoritukset>
+    {suoritusWithOrganisaatio(None, suoritusPvm)}
+    </virta:Opintosuoritukset>
+  </virta:Opiskelija>
+
+  def convertOpiskeluoikeusWithOrganisaatio(organisaatioXml: Option[Elem], päättynyt: Boolean = false) =
+    converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(organisaatioXml, päättynyt = päättynyt)).head
+
+  def convertOpiskeluoikeusWithOrganisaatioAndSuoritus(suoritusPvm: String = "2014-05-30") =
+    converter.convertToOpiskeluoikeudet(opiskeluoikeusSuorituksella(suoritusPvm)).head
 
   def withArvosana(arvosana: Elem, suoritus: Elem = baseSuoritus): Elem = suoritus.copy(child = for (subNode <- suoritus.child) yield subNode match {
     case <Arvosana>{ contents @ _* }</Arvosana> => arvosana
@@ -92,8 +121,6 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     }
 
     "Lähdeorganisaatio" - {
-      def convertOpiskeluoikeusWithOrganisaatio(organisaatioXml: Option[Elem]) =
-        converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(organisaatioXml)).head
 
       "kun opiskeluoikeudella ei ole lähdeorganisaatiota" in {
         val opiskeluoikeus = convertOpiskeluoikeusWithOrganisaatio(None)
@@ -136,6 +163,20 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         opiskeluoikeus.oppilaitos.get.nimi.get should be(Finnish("Aalto-yliopisto", Some("Aalto-universitetet"), Some("Aalto University")))
       }
     }
+  }
+
+  "Oppilaitoksen nimi" - {
+
+    "haetaan viimeisimmän vahvistetun suorituksen päivämäärällä kun opiskeluoikeudella ole tiloja" in {
+      val opiskeluoikeus = convertOpiskeluoikeusWithOrganisaatioAndSuoritus(suoritusPvm = organisaatioVanhallaNimelläPvm.toString)
+      opiskeluoikeus.oppilaitos.get.nimi.get should be(Finnish("Aalto-yliopisto -vanha", Some("Aalto-universitetet -vanha"), Some("Aalto University -vanha")))
+    }
+
+    "haetaan opiskeluoikeuden päättymisen päivämäärällä" in {
+      val opiskeluoikeus = convertOpiskeluoikeusWithOrganisaatio(None, päättynyt = true)
+      opiskeluoikeus.oppilaitos.get.nimi.get should be(Finnish("Aalto-yliopisto -vanha", Some("Aalto-universitetet -vanha"), Some("Aalto University -vanha")))
+    }
+
   }
 
   "Suoritusten konvertointi" - {
