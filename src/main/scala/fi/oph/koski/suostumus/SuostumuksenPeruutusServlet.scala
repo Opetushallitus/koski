@@ -6,8 +6,8 @@ import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, KoskiSpecific
 import fi.oph.koski.log.KoskiAuditLogMessageField.{apply => _}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import org.json4s.JsonAST.{JBool, JObject, JString}
-import org.json4s.{JField}
+import org.json4s.JsonAST.{JBool, JNothing, JObject, JString}
+import org.json4s.JField
 
 class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with Logging with NoCache {
@@ -37,12 +37,15 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
         renderObject(
           peruutetutSuostumukset.map(peruttuOo =>
             JObject(
-              JField("Opiskeluoikeuden oid", JString(peruttuOo.oid)),
-              JField("Oppijan oid", JString(peruttuOo.oppijaOid)),
-              JField("Opiskeluoikeuden päättymispäivä", JString(peruttuOo.päättymispäivä.getOrElse("").toString)),
-              JField("Suostumus peruttu", JString(peruttuOo.aikaleima.toString)),
-              JField("Oppilaitoksen oid", JString(peruttuOo.oppilaitosOid.getOrElse(""))),
-              JField("Oppilaitoksen nimi", JString(peruttuOo.oppilaitosNimi.getOrElse(""))),
+              List(
+                Some(JField("Opiskeluoikeuden oid", JString(peruttuOo.oid))),
+                Some(JField("Oppijan oid", JString(peruttuOo.oppijaOid))),
+                Some(JField("Opiskeluoikeuden päättymispäivä", JString(peruttuOo.päättymispäivä.getOrElse("").toString))),
+                peruttuOo.suostumusPeruttuAikaleima.map(sp => JField("Suostumus peruttu", JString(sp.toString))),
+                peruttuOo.mitätöityAikaleima.map(m => JField("Mitätöity", JString(m.toString))),
+                Some(JField("Oppilaitoksen oid", JString(peruttuOo.oppilaitosOid.getOrElse("")))),
+                Some(JField("Oppilaitoksen nimi", JString(peruttuOo.oppilaitosNimi.getOrElse(""))))
+              ).flatten
             )
           )
         )

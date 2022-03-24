@@ -204,9 +204,10 @@ object KoskiTables {
     val päättymispäivä = column[Option[Date]]("paattymispaiva")
     val lähdejärjestelmäKoodi = column[Option[String]]("lahdejarjestelma_koodi")
     val lähdejärjestelmäId = column[Option[String]]("lahdejarjestelma_id")
-    val aikaleima = column[Timestamp]("aikaleima")
+    val mitätöityAikaleima = column[Option[Timestamp]]("mitatoity_aikaleima")
+    val suostumusPeruttuAikaleima = column[Option[Timestamp]]("suostumus_peruttu_aikaleima")
 
-    def * = (oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, aikaleima) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
+    def * = (oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, mitätöityAikaleima, suostumusPeruttuAikaleima) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
   }
 
   val Preferences = TableQuery[PreferencesTable]
@@ -325,11 +326,14 @@ case class MyDataJakoRow(asiakas: String, oppijaOid: String, voimassaAsti: Date,
 
 case class OidVersionTimestamp(oid: String, versionumero: Int, aikaleima: LocalDateTime)
 
-case class PoistettuOpiskeluoikeusRow(oid: String,
-                                      oppijaOid: String,
-                                      oppilaitosNimi: Option[String],
-                                      oppilaitosOid: Option[String],
-                                      päättymispäivä: Option[Date],
-                                      lähdejärjestelmäKoodi: Option[String],
-                                      lähdejärjestelmäId: Option[String],
-                                      aikaleima: Timestamp)
+case class PoistettuOpiskeluoikeusRow(
+  oid: String,
+  oppijaOid: String,
+  oppilaitosNimi: Option[String],
+  oppilaitosOid: Option[String],
+  päättymispäivä: Option[Date],
+  lähdejärjestelmäKoodi: Option[String],
+  lähdejärjestelmäId: Option[String],
+  mitätöityAikaleima: Option[Timestamp],
+  suostumusPeruttuAikaleima: Option[Timestamp]
+)

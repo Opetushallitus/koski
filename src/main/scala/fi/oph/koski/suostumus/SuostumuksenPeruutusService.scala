@@ -2,17 +2,13 @@ package fi.oph.koski.suostumus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiTables, PoistettuOpiskeluoikeusRow, QueryMethods}
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, KoskiOperation, Logging}
+import fi.oph.koski.log._
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusPoistoUtils
+import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema.{Opiskeluoikeus, SuostumusPeruttavissaOpiskeluoikeudelta}
-import slick.dbio
-import slick.dbio.Effect.Write
-import org.json4s._
-
-import java.sql.{Date, Timestamp}
-import java.time.{Instant, LocalDate}
+import slick.jdbc.GetResult
 
 case class SuostumuksenPeruutusService(protected val application: KoskiApplication) extends Logging with QueryMethods {
   import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -25,7 +21,19 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   val eiLisättyjäRivejä = 0
 
   def listaaPerututSuostumukset() = {
-    runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.sortBy(_.aikaleima.desc).result)
+    implicit val getResult: GetResult[PoistettuOpiskeluoikeusRow] = {
+      GetResult[PoistettuOpiskeluoikeusRow](r =>
+        PoistettuOpiskeluoikeusRow(r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<)
+      )
+    }
+
+    runDbSync(
+      sql"""
+           select oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, paattymispaiva, lahdejarjestelma_koodi, lahdejarjestelma_id, mitatoity_aikaleima, suostumus_peruttu_aikaleima
+           from poistettu_opiskeluoikeus
+           order by coalesce(mitatoity_aikaleima, suostumus_peruttu_aikaleima) desc;
+         """.as[PoistettuOpiskeluoikeusRow]
+    )
   }
 
   def peruutaSuostumus(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
@@ -37,12 +45,12 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
         ).find (_.oid.contains(oid)) match {
           case Some(oo) =>
             val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
-            runDbSync(DBIO.seq(
-              opiskeluoikeudenPoistonQuery(oid),
-              poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo, henkilö),
-              opiskeluoikeudenHistorianPoistonQuery(opiskeluoikeudenId)
-            ).transactionally)
-            perustiedotIndexer.deleteByIds(List(opiskeluoikeudenId), true)
+            runDbSync(
+              DBIO.seq(
+                OpiskeluoikeusPoistoUtils.poistaOpiskeluOikeus(opiskeluoikeudenId, oid, oo, oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1), henkilö.oid, false),
+                application.perustiedotSyncRepository.addDeleteToSyncQueue(opiskeluoikeudenId)
+              )
+            )
             AuditLog.log(KoskiAuditLogMessage(KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
             HttpStatus.ok
           case None =>
@@ -51,29 +59,6 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
         }
       case None => KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
     }
-  }
-
-  private def opiskeluoikeudenPoistonQuery(oid: String): dbio.DBIOAction[Int, NoStream, Write] = {
-    KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.updateableFieldsPoisto).update((JObject.apply(), 0, None, None, None, None, "", true, "", Date.valueOf(LocalDate.now()), None, List(), true))
-  }
-
-  private def opiskeluoikeudenHistorianPoistonQuery(id: Int): dbio.DBIOAction[Int, NoStream, Write] = {
-    KoskiTables.OpiskeluoikeusHistoria.filter(_.opiskeluoikeusId === id).delete
-  }
-
-  private def poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(opiskeluoikeus: Opiskeluoikeus, oppija: LaajatOppijaHenkilöTiedot): dbio.DBIOAction[Int, NoStream, Write] = {
-    val timestamp = Timestamp.from(Instant.now())
-
-    KoskiTables.PoistetutOpiskeluoikeudet.insertOrUpdate(PoistettuOpiskeluoikeusRow(
-      opiskeluoikeus.oid.get,
-      oppija.oid,
-      opiskeluoikeus.oppilaitos.map(_.nimi.map(_.get("fi"))).flatten,
-      opiskeluoikeus.oppilaitos.map(_.oid),
-      opiskeluoikeus.päättymispäivä.map(Date.valueOf),
-      opiskeluoikeus.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
-      opiskeluoikeus.lähdejärjestelmänId.map(_.id).flatten,
-      timestamp
-    ))
   }
 
   def suoritusjakoTekemättäWithAccessCheck(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {

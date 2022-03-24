@@ -162,6 +162,8 @@ class PostgresOpiskeluoikeusRepository(
 
   private def syncHenkilötiedotAction(id: Int, oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilötiedot: Option[OppijaHenkilöWithMasterInfo]) = {
     henkilötiedot match {
+      case _ if opiskeluoikeus.mitätöity && opiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus") =>
+        perustiedotSyncRepository.addDeleteToSyncQueue(id)
       case Some(henkilö) =>
         val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö)
         perustiedotSyncRepository.addToSyncQueue(perustiedot, true)
@@ -328,7 +330,7 @@ class PostgresOpiskeluoikeusRepository(
           diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
-          Right(Created(opiskeluoikeusId, oid, opiskeluoikeus.lähdejärjestelmänId, oppija, VERSIO_1, diff, row.data))
+          Right(Created(opiskeluoikeusId, oid, opiskeluoikeus.lähdejärjestelmänId, oppija, VERSIO_1))
         }
     }
   }
@@ -347,25 +349,41 @@ class PostgresOpiskeluoikeusRepository(
 
         validator.validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok =>
-            val updatedValues@(newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
-            val diff: JArray = jsonDiff(oldRow.data, newData)
-            diff.values.length match {
-              case 0 =>
-                DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero, diff, newData)))
-              case _ =>
-                for {
-                  rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(_.updateableFields).update(updatedValues)
-                  _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
-                  hist <- historyRepository.findByOpiskeluoikeusOidAction(oid, nextVersionumero)
-                } yield {
-                  rowsUpdated match {
-                    case 1 =>
-                      verifyHistoria(newData, hist)
-                      Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
-                    case x: Int =>
-                      throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
+            if (
+              tallennettavaOpiskeluoikeus.mitätöity &&
+                tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus")
+            ) {
+              OpiskeluoikeusPoistoUtils
+                .poistaOpiskeluOikeus(id, oid, tallennettavaOpiskeluoikeus, nextVersionumero, oldRow.oppijaOid, true)
+                .map(_ => Right(Updated(
+                  id,
+                  oid,
+                  uusiOpiskeluoikeus.lähdejärjestelmänId,
+                  oldRow.oppijaOid,
+                  nextVersionumero,
+                  vanhaOpiskeluoikeus
+                )))
+            } else {
+              val updatedValues@(newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
+              val diff: JArray = jsonDiff(oldRow.data, newData)
+              diff.values.length match {
+                case 0 =>
+                  DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero)))
+                case _ =>
+                  for {
+                    rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(_.updateableFields).update(updatedValues)
+                    _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
+                    hist <- historyRepository.findByOpiskeluoikeusOidAction(oid, nextVersionumero)
+                  } yield {
+                    rowsUpdated match {
+                      case 1 =>
+                        verifyHistoria(newData, hist)
+                        Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, vanhaOpiskeluoikeus))
+                      case x: Int =>
+                        throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
+                    }
                   }
-                }
+              }
             }
           case nonOk => DBIO.successful(Left(nonOk))
         }
