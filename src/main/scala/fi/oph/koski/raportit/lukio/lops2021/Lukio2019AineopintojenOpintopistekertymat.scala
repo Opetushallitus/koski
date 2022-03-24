@@ -35,18 +35,18 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
         sum(laajuus) filter (where suoritettu) suoritettuja,
         sum(laajuus) filter (where tunnustettu) tunnustettuja,
         sum(laajuus) filter (where tunnustettu_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa,
-        sum(laajuus) filter (where pakollinen or (valtakunnallinen and syventava)) pakollisia_tai_valtakunnallisia_syventavia,
+        sum(laajuus) filter (where pakollinen or valtakunnallinen) pakollisia_tai_valtakunnallisia,
         sum(laajuus) filter (where pakollinen) pakollisia,
-        sum(laajuus) filter (where valtakunnallinen and syventava) valtakunnallisia_syventavia,
-        sum(laajuus) filter (where suoritettu and (pakollinen or (valtakunnallinen and syventava))) suoritettuja_pakollisia_ja_valtakunnallisia_syventavia,
+        sum(laajuus) filter (where valtakunnallinen) valtakunnallisia,
+        sum(laajuus) filter (where suoritettu and (pakollinen or valtakunnallinen)) suoritettuja_pakollisia_ja_valtakunnallisia,
         sum(laajuus) filter (where pakollinen and suoritettu) suoritettuja_pakollisia,
-        sum(laajuus) filter (where suoritettu and valtakunnallinen and syventava) suoritettuja_valtakunnallisia_syventavia,
-        sum(laajuus) filter (where tunnustettu and (pakollinen or (syventava and valtakunnallinen))) tunnustettuja_pakollisia_ja_valtakunnallisia_syventavia,
+        sum(laajuus) filter (where suoritettu and valtakunnallinen) suoritettuja_valtakunnallisia,
+        sum(laajuus) filter (where tunnustettu and (pakollinen or valtakunnallinen)) tunnustettuja_pakollisia_ja_valtakunnallisia,
         sum(laajuus) filter (where tunnustettu and pakollinen) tunnustettuja_pakollisia,
-        sum(laajuus) filter (where tunnustettu and valtakunnallinen and syventava) tunnustettuja_valtakunnallisia_syventavia,
-        sum(laajuus) filter (where tunnustettu_rahoituksen_piirissa and (pakollinen or (valtakunnallinen and syventava))) tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus,
+        sum(laajuus) filter (where tunnustettu and valtakunnallinen) tunnustettuja_valtakunnallisia,
+        sum(laajuus) filter (where tunnustettu_rahoituksen_piirissa and (pakollinen or valtakunnallinen)) tunnustut_pakolliset_ja_valtakunnalliset_rahoitus,
         sum(laajuus) filter (where tunnustettu_rahoituksen_piirissa and pakollinen) pakollisia_tunnustettuja_rahoituksen_piirissa,
-        sum(laajuus) filter (where valtakunnallinen and syventava and tunnustettu_rahoituksen_piirissa) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa,
+        sum(laajuus) filter (where valtakunnallinen and tunnustettu_rahoituksen_piirissa) valtakunnallisia_tunnustettuja_rahoituksen_piirissa,
         sum(laajuus) filter (where korotettu_eri_vuonna) eri_vuonna_korotettuja
       from (
         select
@@ -57,7 +57,6 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
           tunnustettu_rahoituksen_piirissa,
           koulutusmoduuli_kurssin_tyyppi,
           koulutusmoduuli_kurssin_tyyppi = 'pakollinen' as pakollinen,
-          koulutusmoduuli_kurssin_tyyppi = 'syventava' as syventava,
           koulutusmoduuli_paikallinen = false as valtakunnallinen,
           osasuoritus.koulutusmoduuli_laajuus_arvo as laajuus,
           opintojen_rahoitus,
@@ -98,18 +97,18 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
           sum(suoritettuja) suoritettuja,
           sum(tunnustettuja) tunnustettuja,
           sum(tunnustettuja_rahoituksen_piirissa) tunnustettuja_rahoituksen_piirissa,
-          sum(pakollisia_tai_valtakunnallisia_syventavia) pakollisia_tai_valtakunnallisia_syventavia,
+          sum(pakollisia_tai_valtakunnallisia) pakollisia_tai_valtakunnallisia,
           sum(pakollisia) pakollisia,
-          sum(valtakunnallisia_syventavia) valtakunnallisia_syventavia,
-          sum(suoritettuja_pakollisia_ja_valtakunnallisia_syventavia) suoritettuja_pakollisia_ja_valtakunnallisia_syventavia,
+          sum(valtakunnallisia) valtakunnallisia,
+          sum(suoritettuja_pakollisia_ja_valtakunnallisia) suoritettuja_pakollisia_ja_valtakunnallisia,
           sum(suoritettuja_pakollisia) suoritettuja_pakollisia,
-          sum(suoritettuja_valtakunnallisia_syventavia) suoritettuja_valtakunnallisia_syventavia,
-          sum(tunnustettuja_pakollisia_ja_valtakunnallisia_syventavia) tunnustettuja_pakollisia_ja_valtakunnallisia_syventavia,
+          sum(suoritettuja_valtakunnallisia) suoritettuja_valtakunnallisia,
+          sum(tunnustettuja_pakollisia_ja_valtakunnallisia) tunnustettuja_pakollisia_ja_valtakunnallisia,
           sum(tunnustettuja_pakollisia) tunnustettuja_pakollisia,
-          sum(tunnustettuja_valtakunnallisia_syventavia) tunnustettuja_valtakunnallisia_syventavia,
-          sum(tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus) tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus,
+          sum(tunnustettuja_valtakunnallisia) tunnustettuja_valtakunnallisia,
+          sum(tunnustut_pakolliset_ja_valtakunnalliset_rahoitus) tunnustut_pakolliset_ja_valtakunnalliset_rahoitus,
           sum(pakollisia_tunnustettuja_rahoituksen_piirissa) pakollisia_tunnustettuja_rahoituksen_piirissa,
-          sum(valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa) valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa,
+          sum(valtakunnallisia_tunnustettuja_rahoituksen_piirissa) valtakunnallisia_tunnustettuja_rahoituksen_piirissa,
           sum(eri_vuonna_korotettuja) eri_vuonna_korotettuja
         from lukion_aineopintojen_opintopistekertyma
           where oppilaitos_oid = any($oppilaitosOids)
@@ -119,17 +118,14 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
       left join (
         select
           oppilaitos_oid,
-          count(*) yhteensa
+          sum(r_osasuoritus.koulutusmoduuli_laajuus_arvo) yhteensa
         from osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella
           join r_osasuoritus on r_osasuoritus.osasuoritus_id = osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella.osasuoritus_id
           where oppilaitos_oid = any($oppilaitosOids)
             and osasuorituksen_tyyppi in ('lukionvaltakunnallinenmoduuli', 'lukionpaikallinenopintojakso')
             and paatason_suorituksen_tyyppi = 'lukionaineopinnot'
             and (osasuorituksen_arviointi_paiva between $aikaisintaan and $viimeistaan)
-            and (
-              koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
-              or (koulutusmoduuli_kurssin_tyyppi = 'syventava' and koulutusmoduuli_paikallinen = false)
-            )
+            and koulutusmoduuli_kurssin_tyyppi = 'pakollinen'
             and (
               tunnustettu = false
               or tunnustettu_rahoituksen_piirissa
@@ -140,7 +136,7 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
       left join (
         select
           oppilaitos_oid,
-          count(*) yhteensa
+          sum(koulutusmoduuli_laajuus_arvo) yhteensa
         from lukion_aineopintojen_moduulien_rahoitusmuodot
         where opintojen_rahoitus = '6'
           and oppilaitos_oid = any($oppilaitosOids)
@@ -151,7 +147,7 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
       left join (
         select
           oppilaitos_oid,
-          count(*) yhteensa
+          sum(koulutusmoduuli_laajuus_arvo) yhteensa
         from lukion_aineopintojen_moduulien_rahoitusmuodot
         where opintojen_rahoitus is null
           and oppilaitos_oid = any($oppilaitosOids)
@@ -172,18 +168,18 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
       suoritettujaOpintopisteita = rs.getInt("suoritettuja"),
       tunnustettujaOpintopisteita = rs.getInt("tunnustettuja"),
       tunnustettujaOpintopisteita_rahoituksenPiirissa = rs.getInt("tunnustettuja_rahoituksen_piirissa"),
-      pakollisia_tai_valtakunnallisiaSyventavia = rs.getInt("pakollisia_tai_valtakunnallisia_syventavia"),
+      pakollisia_tai_valtakunnallisia = rs.getInt("pakollisia_tai_valtakunnallisia"),
       pakollisiaOpintopisteita = rs.getInt("pakollisia"),
-      valtakunnallisestiSyventaviaOpintopisteita = rs.getInt("valtakunnallisia_syventavia"),
-      suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia = rs.getInt("suoritettuja_pakollisia_ja_valtakunnallisia_syventavia"),
+      valtakunnallisiaOpintopisteita = rs.getInt("valtakunnallisia"),
+      suoritettujaPakollisia_ja_suoritettujaValtakunnallisia = rs.getInt("suoritettuja_pakollisia_ja_valtakunnallisia"),
       suoritettujaPakollisiaOpintopisteita = rs.getInt("suoritettuja_pakollisia"),
-      suoritettujaValtakunnallisiaSyventaviaOpintopisteita = rs.getInt("suoritettuja_valtakunnallisia_syventavia"),
-      tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisiaSyventavia = rs.getInt("tunnustettuja_pakollisia_ja_valtakunnallisia_syventavia"),
+      suoritettujaValtakunnallisiaOpintopisteita = rs.getInt("suoritettuja_valtakunnallisia"),
+      tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisia = rs.getInt("tunnustettuja_pakollisia_ja_valtakunnallisia"),
       tunnustettujaPakollisiaOpintopisteita = rs.getInt("tunnustettuja_pakollisia"),
-      tunnustettujaValtakunnallisiaSyventaviaOpintopisteita = rs.getInt("tunnustettuja_valtakunnallisia_syventavia"),
-      tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia = rs.getInt("tunnustut_pakolliset_ja_valtakunnalliset_syventavat_rahoitus"),
+      tunnustettujaValtakunnallisiaOpintopisteita = rs.getInt("tunnustettuja_valtakunnallisia"),
+      tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisia = rs.getInt("tunnustut_pakolliset_ja_valtakunnalliset_rahoitus"),
       tunnustettuja_rahoituksenPiirissa_pakollisia = rs.getInt("pakollisia_tunnustettuja_rahoituksen_piirissa"),
-      tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva = rs.getInt("valtakunnallisia_syventavia_tunnustettuja_rahoituksen_piirissa"),
+      tunnustettuja_rahoituksenPiirissa_valtakunnallisia = rs.getInt("valtakunnallisia_tunnustettuja_rahoituksen_piirissa"),
       suoritetutTaiRahoitetut_muutaKauttaRahoitetut = rs.getInt("muuta_kautta_rahoitetut"),
       suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa = rs.getInt("rahoitusmuoto_ei_tiedossa"),
       suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla = rs.getInt("opiskeluoikeuden_ulkopuoliset"),
@@ -198,18 +194,18 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
     "suoritettujaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-yhteensäSuoritettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-yhteensäSuoritettujaSuorituksia-lukio-comment"))),
     "tunnustettujaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksia"), comment = Some(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksia-lukio-comment"))),
     "tunnustettujaOpintopisteita_rahoituksenPiirissa" -> Column(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä"), comment = Some(t.get("raportti-excel-kolumni-yhteensäTunnistettujaSuorituksiaRahoituksenPiirissä-lukio-comment"))),
-    "pakollisia_tai_valtakunnallisiaSyventavia" -> Column(t.get("raportti-excel-kolumni-pakollisiaTaiValtakunnallisiaSyventavia"), comment = Some(t.get("raportti-excel-kolumni-pakollisiaTaiValtakunnallisiaSyventavia-comment"))),
+    "pakollisia_tai_valtakunnallisia" -> Column(t.get("raportti-excel-kolumni-pakollisiaTaiValtakunnallisia"), comment = Some(t.get("raportti-excel-kolumni-pakollisiaTaiValtakunnallisia-comment"))),
     "pakollisiaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-pakollisiaKursseja"), comment = Some(t.get("raportti-excel-kolumni-pakollisiaKursseja-comment"))),
-    "valtakunnallisestiSyventaviaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-valtakunnallisestiSyventaviaKursseja"), comment = Some(t.get("raportti-excel-kolumni-valtakunnallisestiSyventaviaKursseja-comment"))),
-    "suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia" -> Column(t.get("raportti-excel-kolumni-suoritettujaPakollisiaJaSuoritettujaValtakunnallisiaSyventavia"), comment = Some(t.get("raportti-excel-kolumni-suoritettujaPakollisiaJaSuoritettujaValtakunnallisiaSyventavia-comment"))),
+    "valtakunnallisiaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-valtakunnallisestiKursseja"), comment = Some(t.get("raportti-excel-kolumni-valtakunnallisestiKursseja-comment"))),
+    "suoritettujaPakollisia_ja_suoritettujaValtakunnallisia" -> Column(t.get("raportti-excel-kolumni-suoritettujaPakollisiaJaSuoritettujaValtakunnallisia"), comment = Some(t.get("raportti-excel-kolumni-suoritettujaPakollisiaJaSuoritettujaValtakunnallisia-comment"))),
     "suoritettujaPakollisiaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-suoritettujaPakollisiaKursseja"), comment = Some(t.get("raportti-excel-kolumni-suoritettujaPakollisiaKursseja-comment"))),
-    "suoritettujaValtakunnallisiaSyventaviaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-suoritettujaValtakunnallisiaSyventaviaKursseja"), comment = Some(t.get("raportti-excel-kolumni-suoritettujaValtakunnallisiaSyventaviaKursseja-comment"))),
-    "tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisiaSyventavia" -> Column(t.get("raportti-excel-kolumni-tunnustettujaPakollisiaJaTunnustettujaValtakunnallisiaSyventavia"), comment = Some(t.get("raportti-excel-kolumni-tunnustettujaPakollisiaJaTunnustettujaValtakunnallisiaSyventavia-comment"))),
+    "suoritettujaValtakunnallisiaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-suoritettujaValtakunnallisiaKursseja"), comment = Some(t.get("raportti-excel-kolumni-suoritettujaValtakunnallisiaKursseja-comment"))),
+    "tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisia" -> Column(t.get("raportti-excel-kolumni-tunnustettujaPakollisiaJaTunnustettujaValtakunnallisia"), comment = Some(t.get("raportti-excel-kolumni-tunnustettujaPakollisiaJaTunnustettujaValtakunnallisia-comment"))),
     "tunnustettujaPakollisiaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-tunnustettujaPakollisiaKursseja"), comment = Some(t.get("raportti-excel-kolumni-tunnustettujaPakollisiaKursseja-comment"))),
-    "tunnustettujaValtakunnallisiaSyventaviaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-tunnustettujaValtakunnallisiaSyventaviaKursseja"), comment = Some(t.get("raportti-excel-kolumni-tunnustettujaValtakunnallisiaSyventaviaKursseja-comment"))),
-    "tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia" -> Column(t.get("raportti-excel-kolumni-tunnustettujaRahoituksenPiirissaPakollisiaJaValtakunnallisiaSyventavia"), comment = Some(t.get("raportti-excel-kolumni-tunnustettujaRahoituksenPiirissaPakollisiaJaValtakunnallisiaSyventavia-comment"))),
+    "tunnustettujaValtakunnallisiaOpintopisteita" -> Column(t.get("raportti-excel-kolumni-tunnustettujaValtakunnallisiaOpintopisteita"), comment = Some(t.get("raportti-excel-kolumni-tunnustettujaValtakunnallisiaOpintopisteita-comment"))),
+    "tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisia" -> Column(t.get("raportti-excel-kolumni-tunnustettujaRahoituksenPiirissaPakollisiaJaValtakunnallisia"), comment = Some(t.get("raportti-excel-kolumni-tunnustettujaRahoituksenPiirissaPakollisiaJaValtakunnallisia-comment"))),
     "tunnustettuja_rahoituksenPiirissa_pakollisia" -> Column(t.get("raportti-excel-kolumni-tunnustettujaRahoituksenPiirissaPakollisia"), comment = Some(t.get("raportti-excel-kolumni-tunnustettujaRahoituksenPiirissaPakollisia-comment"))),
-    "tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva" -> Column(t.get("raportti-excel-kolumni-tunnustettujaRahoituksenPiirissaValtakunnallisiaSyventaiva"), comment = Some(t.get("raportti-excel-kolumni-tunnustettujaRahoituksenPiirissaValtakunnallisiaSyventaiva-comment"))),
+    "tunnustettuja_rahoituksenPiirissa_valtakunnallisia" -> Column(t.get("raportti-excel-kolumni-tunnustettujaRahoituksenPiirissaValtakunnallisia"), comment = Some(t.get("raportti-excel-kolumni-tunnustettujaRahoituksenPiirissaValtakunnallisia-comment"))),
     "suoritetutTaiRahoitetut_muutaKauttaRahoitetut" -> Column(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut"), comment = Some(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutMuutaKauttaRahoitetut-lukio-comment"))),
     "suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa" -> Column(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa"), comment = Some(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutEiRahoitusTietoa-lukio-comment"))),
     "suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla" -> Column(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa"), comment = Some(t.get("raportti-excel-kolumni-suoritetutTaiRahoituksenPiirissäTunnustetutArviointipäiväEiTiedossa-lukio-comment"))),
@@ -224,18 +220,18 @@ case class Lukio2019OpintopistekertymaAineopiskelijaRow(
   suoritettujaOpintopisteita: Int,
   tunnustettujaOpintopisteita: Int,
   tunnustettujaOpintopisteita_rahoituksenPiirissa: Int,
-  pakollisia_tai_valtakunnallisiaSyventavia: Int,
+  pakollisia_tai_valtakunnallisia: Int,
   pakollisiaOpintopisteita: Int,
-  valtakunnallisestiSyventaviaOpintopisteita: Int,
-  suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia: Int,
+  valtakunnallisiaOpintopisteita: Int,
+  suoritettujaPakollisia_ja_suoritettujaValtakunnallisia: Int,
   suoritettujaPakollisiaOpintopisteita: Int,
-  suoritettujaValtakunnallisiaSyventaviaOpintopisteita: Int,
-  tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisiaSyventavia: Int,
+  suoritettujaValtakunnallisiaOpintopisteita: Int,
+  tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisia: Int,
   tunnustettujaPakollisiaOpintopisteita: Int,
-  tunnustettujaValtakunnallisiaSyventaviaOpintopisteita: Int,
-  tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia: Int,
+  tunnustettujaValtakunnallisiaOpintopisteita: Int,
+  tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisia: Int,
   tunnustettuja_rahoituksenPiirissa_pakollisia: Int,
-  tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva: Int,
+  tunnustettuja_rahoituksenPiirissa_valtakunnallisia: Int,
   suoritetutTaiRahoitetut_muutaKauttaRahoitetut: Int,
   suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa: Int,
   suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla: Int,

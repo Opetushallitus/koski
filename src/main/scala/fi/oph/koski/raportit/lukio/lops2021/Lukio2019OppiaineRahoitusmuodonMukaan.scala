@@ -63,12 +63,13 @@ object Lukio2019OppiaineRahoitusmuodonMukaan extends DatabaseConverters {
         osasuoritus.koulutusmoduuli_koodiarvo,
         osasuoritus.koulutusmoduuli_nimi,
         osasuoritus.arviointi_paiva,
-        aikajakso.opintojen_rahoitus
+        aikajakso.opintojen_rahoitus,
+        osasuoritus.koulutusmoduuli_laajuus_arvo
       from #${s.name}.r_paatason_suoritus paatason_suoritus
         join #${s.name}.r_osasuoritus osasuoritus on paatason_suoritus.paatason_suoritus_id = osasuoritus.paatason_suoritus_id
         join #${s.name}.r_opiskeluoikeus opiskeluoikeus on paatason_suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
         join #${s.name}.r_opiskeluoikeus_aikajakso aikajakso on paatason_suoritus.opiskeluoikeus_oid = aikajakso.opiskeluoikeus_oid
-        where paatason_suoritus.suorituksen_tyyppi = 'lukionaineopinnots'
+        where paatason_suoritus.suorituksen_tyyppi = 'lukionaineopinnot'
           and (osasuoritus.arviointi_paiva between aikajakso.alku and aikajakso.loppu)
           and osasuoritus.suorituksen_tyyppi in ('lukionvaltakunnallinenmoduuli', 'lukionpaikallinenopintojakso')
           and osasuoritus.arviointi_arvosana_koodiarvo != 'O'

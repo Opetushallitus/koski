@@ -7,7 +7,7 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.raportit.aikuistenperusopetus._
 import fi.oph.koski.raportit.lukio._
-import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019MuutaKauttaRahoitetut, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset, Lukio2019OppimaaranOpintopistekertymat, Lukio2019RahoitusmuotoEiTiedossa, Lukio2019RaportitRepository, LukioRaportti2019}
+import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019MuutaKauttaRahoitetut, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset, Lukio2019OppimaaranOpintopistekertymat, Lukio2019RahoitusmuotoEiTiedossa, Lukio2019RaportitRepository, Lukio2019Raportti}
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 
@@ -113,7 +113,7 @@ class RaportitService(application: KoskiApplication) {
 
   def lukioraportti2019(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
     OppilaitosRaporttiResponse(
-      sheets = LukioRaportti2019(lukio2019Repository, t)
+      sheets = Lukio2019Raportti(lukio2019Repository, t)
         .buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
       workbookSettings = WorkbookSettings(
         s"${t.get("raportti-excel-lukio-opiskeluoikeus-title")}_${request.oppilaitosOid}", Some(request.password)
