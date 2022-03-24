@@ -14,10 +14,8 @@ import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import {lang} from '../i18n/i18n'
-import {currentLocation} from '../util/location.js'
 
-// Muuta takaisin constiksi kun lops2021-raportit valmiit
-let kaikkiRaportitKategorioittain = [
+const kaikkiRaportitKategorioittain = [
   {
     id: 'esiopetus',
     tab: 'raporttikategoria-tab-esiopetus',
@@ -139,6 +137,33 @@ let kaikkiRaportitKategorioittain = [
     ]
   },
   {
+    id: 'lukio2019',
+    tab: 'raporttikategoria-tab-lukio2019',
+    heading: 'raporttikategoria-heading-lukio2019',
+    raportit: [
+      {
+        id: 'lukionsuoritustietojentarkistus',
+        name: 'raportti-tab-lukionsuoritustietojentarkistus',
+        component: Lukio2019raportti
+      },
+      {
+        id: 'lukiokurssikertyma',
+        name: 'raportti-tab-lukio2019opintopistekertyma',
+        component: Lukio2019Opintopistekertyma
+      },
+      {
+        id: 'lukiodiaibinternationalopiskelijamaarat',
+        name: 'raportti-tab-lukiodiaibinternationalopiskelijamaarat',
+        component: LukioDiaIBInternationalOpiskelijamaarat
+      },
+      {
+        id: 'luvaopiskelijamaarat',
+        name: 'raportti-tab-luvaopiskelijamaarat',
+        component: LuvaOpiskelijamaaratRaportti
+      }
+    ]
+  },
+  {
     id: 'muut',
     tab: 'raporttikategoria-tab-muut',
     heading: 'raportti-tab-paallekkaisetopiskeluoikeudet',
@@ -152,37 +177,6 @@ let kaikkiRaportitKategorioittain = [
     ]
   }
 ]
-if (currentLocation().params.lops2021raportit === 'true') {
-  kaikkiRaportitKategorioittain.push(
-      {
-        id: 'lukio2019',
-        tab: 'raporttikategoria-tab-lukio2019',
-        heading: 'raporttikategoria-heading-lukio2019',
-        raportit: [
-          {
-            id: 'lukionsuoritustietojentarkistus',
-            name: 'raportti-tab-lukionsuoritustietojentarkistus',
-            component: Lukio2019raportti
-          },
-          {
-            id: 'lukiokurssikertyma',
-            name: 'raportti-tab-lukio2019opintopistekertyma',
-            component: Lukio2019Opintopistekertyma
-          },
-          {
-            id: 'lukiodiaibinternationalopiskelijamaarat',
-            name: 'raportti-tab-lukiodiaibinternationalopiskelijamaarat',
-            component: LukioDiaIBInternationalOpiskelijamaarat
-          },
-          {
-            id: 'luvaopiskelijamaarat',
-            name: 'raportti-tab-luvaopiskelijamaarat',
-            component: LuvaOpiskelijamaaratRaportti
-          }
-        ]
-      }
-  )
-}
 
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map(tab => {
