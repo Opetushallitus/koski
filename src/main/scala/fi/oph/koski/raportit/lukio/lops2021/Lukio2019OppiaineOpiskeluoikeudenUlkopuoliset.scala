@@ -57,7 +57,7 @@ object Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset extends DatabaseConverters 
       opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
       oppijaOid = rs.getString("oppija_oid"),
       moduulikoodi = rs.getString("moduulikoodi"),
-      moduulinNimi = rs.getString("kmoduulin_nimi")
+      moduulinNimi = rs.getString("moduulin_nimi")
     )
   })
 
