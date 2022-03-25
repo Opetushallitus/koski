@@ -1,3 +1,28 @@
+# Virta datan käsittely
+
+## Ongelmien selvittäminen
+
+Ongelmien selvittämisen voi aloittaa lataamalla virkailijan käyttöliittymän yläosasta VirtaXML
+linkistä Virran palauttaman XML:n. Huomioitavaa on se, että XML:ssä on sekä HETU:lla haettu Virta XML,
+että oppijanumerolla haettu XML. Tästä syystä XML ei ole validi vaan se pitää pilkkoa juuri elementeistä
+kahtia. Huomaa, että nämä kaksi XML:ää voivat erota toisistaan. Erojen selvittämiseen voi käyttää
+[virtaXmlSplitAndPrettyPrint.py](../../../../../scripts/virtaXmlSplitAndPrettyPrint.py), jolle annetaan
+käyttöliittymästä ladatta XML, jonka scripti tallentaa kahdeksi tiedostoksi, joiden erot voi helposti
+tarkistaa esim. käyttäen `diff` komentoa.
+
+### Lokaalissa ympäristö
+Lokaalisti helpoin tapa on korvata jokin olemassa oleva XML tiedosto, tutkittavalla virta XML-tiedostolla,
+josta olet valinnut tutkittavan juuri elementin ja poistanut toisen, sekä muuttanut hetun vastaamaan tiedoston
+nimeä.
+
+Toinen vaihtoehto on generoida hetu ja nimetä XML hetun mukaan, sekä päivittää hetu XML:ään. Tämän lisäksi
+pitää lisätä henkilötiedot XML, johon voit ottaa mallia olemassa olevista.
+
+Lokaalisti ajettaessa on myös hyvä huomata, että organisaatio Mock palauttaa hyvin rajallisesti
+oppilaitoksia. Näin ollen oppilaitokset eivät yleensä vastaa tuotannossa näkyviä.
+
+## Tietoa testi oppijoista
+
 100869-192W (virta-testiympäristössä: 290492-9455)
 
 Valmistunut diplomi-insinööri
@@ -40,3 +65,5 @@ Monimutkainen tapaus, yhdistelmä erilaisia ei tutkintoon johtavia opiskeluoikeu
 251087-532T: Erillisoikeus         <Tyyppi>18</Tyyppi>
 150191-326F: Erikoistumiskoulutus     <Tyyppi>19</Tyyppi>
 
+200990-228R: Yksinkertainen kandin ja maisterin rakenne, jossa yksi maisterin tutkintoon sisältyvistä opinnoista on
+kandintutkinnon opintoavaimella.

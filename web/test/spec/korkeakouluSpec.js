@@ -27,6 +27,7 @@ describe('Korkeakoulutus', function() {
       })
     })
   })
+
   describe('Maisteri, jolla ensisijainen opiskeluoikeus', function() {
     before(
       Authentication().login(),
@@ -40,6 +41,7 @@ describe('Korkeakoulutus', function() {
       })
     })
   })
+
   describe('Keskeneräinen tutkinto', function() {
     before(
       page.openPage,
@@ -54,6 +56,7 @@ describe('Korkeakoulutus', function() {
       ])
     })
   })
+
   describe('AMK, keskeyttänyt', function() {
     before(
       page.openPage,
@@ -139,5 +142,41 @@ describe('Korkeakoulutus', function() {
     it('Näytetään lisätiedoissa', function () {
       expect(extractAsText(S('.lisätiedot'))).to.include('Järjestävä organisaatio Yrkeshögskolan Arcada\n')
     })
+  })
+
+  describe('Sisältyvyys on vahvempi sidos kuin opiskeluoikeusAvain valittaessa mihin tutkintoon opintosuoritus kuuluu', function() {
+    before(
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('200990-228R')
+    )
+
+    describe('Molemmat tutkinnot', function() {
+      it('näkyvät välilehden alaotsikossa', function() {
+        expect(opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()).to.deep.equal([
+          'korkeakoulututkinto 2014—2016, päättynyt',
+          'korkeakoulututkinto 2014—2015, päättynyt'
+        ])
+      })
+    })
+    describe('Maisterin tutkinto', function() {
+      it('näytetään oppilaitos ja tutkinto', function() {
+        expect(opinnot.getTutkinto(0)).to.equal('Tekniikan koulutus (UUSI2005), Diplomi-insinöörin tutkinto Konetekniikan koulutusohjelma')
+        expect(opinnot.getOppilaitos(0)).to.equal('Aalto-yliopisto')
+      })
+    })
+    describe('Kandin tutkinto', function() {
+      it('näytetään oppilaitos ja tutkinto', function() {
+        expect(opinnot.getTutkinto(1)).to.equal('Tekniikan koulutus (UUSI2005), Tekniikan kandidaatin tutkinto Konetekniikan koulutusohjelma')
+        expect(opinnot.getOppilaitos(1)).to.equal('Aalto-yliopisto')
+      })
+    })
+    describe('Sisältyvä toisen opiskeluoikeusavaimen kurssi näkyvissä maisterin tutkinnossa', function() {
+      before(opinnot.expandAll)
+      it('toimii', function() {
+        expect(S('.korkeakoulututkinnonsuoritus:eq(0) .tutkinnon-osa:eq(0) .suoritus:eq(0) .nimi').text()).to.equal('Simuloinnin ja optimoinnin peruskurssi')
+        expect(S('.korkeakoulututkinnonsuoritus:eq(0) .tutkinnon-osa:eq(1) .suoritus:eq(0) .nimi').text()).to.equal('Diplomityö')
+      })
+    })
+
   })
 })
