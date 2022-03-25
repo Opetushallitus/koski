@@ -90,15 +90,12 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
     where
       oo.oppilaitos_oid = $oppilaitos and
       oo.koulutusmuoto = 'lukiokoulutus' and
-      aikaj.alku <= $loppu and aikaj.loppu >= $alku
+      aikaj.alku <= $loppu and aikaj.loppu >= $alku and
+      (pts.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero' is null or
+      	pts.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero' not in ('OPH-2267-2019', 'OPH-2263-2019'))
     group by oo.opiskeluoikeus_oid"""
   }
 }
-/* HUOM tämä käyttöön filtteröimään pois lops2019-opiskeluoikeudet:
-      (pts.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero' is null or
-      	pts.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero' not in ('OPH-2267-2019', 'OPH-2263-2019'))
- */
-
 
 case class LukioRaporttiRows(
   opiskeluoikeus: ROpiskeluoikeusRow,

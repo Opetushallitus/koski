@@ -341,6 +341,10 @@ object OpiskeluoikeusLoader extends Logging {
       },
       koulutusmoduuliKurssinTyyppi = os.koulutusmoduuli match {
         case l: LukionKurssi2015 => Some(l.kurssinTyyppi.koodiarvo)
+        case l: LukionModuuli2019 => l.pakollinen match {
+          case true => Some("pakollinen")
+          case false => None
+        }
         case _ => None
       },
       vahvistusPäivä = os.vahvistus.map(v => Date.valueOf(v.päivä)),

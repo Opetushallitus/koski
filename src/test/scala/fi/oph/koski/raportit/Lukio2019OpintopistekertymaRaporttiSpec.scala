@@ -2,59 +2,24 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{PutOpiskeluoikeusTestMethods, TestMethodsLukio}
-import fi.oph.koski.documentation.ExampleData.{suomenKieli}
+import fi.oph.koski.documentation.ExampleData.suomenKieli
 import fi.oph.koski.documentation.ExamplesLukio2019.{lops2019perusteenDiaarinumero, lukionOppimäärä2019}
-import fi.oph.koski.documentation.{Lukio2019ExampleData}
+import fi.oph.koski.documentation.{ExampleData, Lukio2019ExampleData}
 import fi.oph.koski.documentation.Lukio2019ExampleData.{moduulinSuoritusOppiaineissa, muuModuuliOppiaineissa, numeerinenArviointi, numeerinenLukionOppiaineenArviointi, oppiaineenSuoritus, paikallinenOpintojakso, paikallisenOpintojaksonSuoritus}
-import fi.oph.koski.documentation.LukioExampleData.nuortenOpetussuunnitelma
+import fi.oph.koski.documentation.LukioExampleData.{nuortenOpetussuunnitelma, opiskeluoikeusAktiivinen}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
-import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopinnotOpiskeluoikeudenUlkopuolisetRow, Lukio2019ModuulinRahoitusmuotoRow, Lukio2019OpintopistekertymaAineopiskelijaRow, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteetRow, LukioOpintopistekertymaOppimaaraRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{LocalizedString, LukionOpiskeluoikeus, LukionOppiaineenSuoritus2019, LukionOppiaineidenOppimäärienSuoritus2019, LukionOppiaineidenOppimäärät2019, LukionOppimääränSuoritus2019, Oppija, OsaamisenTunnustaminen, PaikallinenKoodi, PaikallinenLukionOppiaine2019}
+import fi.oph.koski.schema.{LocalizedString, LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LukionOppiaineenSuoritus2019, LukionOppiaineidenOppimäärienSuoritus2019, LukionOppiaineidenOppimäärät2019, LukionOppimääränSuoritus2019, Oppija, OsaamisenTunnustaminen, PaikallinenKoodi, PaikallinenLukionOppiaine2019}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate.{of => date}
 import java.time.LocalDate
-
-object TestData {
-  lazy val tunnustus = Some(OsaamisenTunnustaminen(
-    osaaminen = None,
-    selite = LocalizedString.finnish("osaamisen tunnustaminen")
-  ))
-
-  lazy val oppiaineSuoritukset: List[LukionOppiaineenSuoritus2019] = List(
-    oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
-      moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1").copy(laajuus = Lukio2019ExampleData.laajuus(2))).copy(arviointi = numeerinenArviointi(8, date(2000, 1, 1))),
-      moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2").
-        copy(laajuus = Lukio2019ExampleData.laajuus(2))).copy(arviointi = numeerinenArviointi(8, date(2000, 1, 1)), tunnustettu = tunnustus),
-    ))),
-    oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", LocalizedString.finnish("Tanssi ja liike")), LocalizedString.finnish("Tanssi ja liike"), pakollinen = false)).copy(arviointi = numeerinenLukionOppiaineenArviointi(8)).copy(osasuoritukset = Some(List(
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT234", "Tanssin taito", "Perinteiset suomalaiset tanssit, valssi jne").copy(laajuus = Lukio2019ExampleData.laajuus(1), pakollinen = false)).copy(arviointi = numeerinenArviointi(10, date(2000, 1, 1))),
-    )))
-  )
-
-  lazy val oppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
-    koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019perusteenDiaarinumero),
-    oppimäärä = nuortenOpetussuunnitelma,
-    suorituskieli = suomenKieli,
-    toimipiste = jyväskylänNormaalikoulu,
-    osasuoritukset = Some(oppiaineSuoritukset)
-  )
-
-  lazy val oppimääränSuoritus = LukionOppimääränSuoritus2019(
-    koulutusmoduuli = lukionOppimäärä2019,
-    oppimäärä = nuortenOpetussuunnitelma,
-    suorituskieli = suomenKieli,
-    vahvistus = None,
-    toimipiste = jyväskylänNormaalikoulu,
-    osasuoritukset = Some(oppiaineSuoritukset),
-  )
-}
 
 class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[LukionOpiskeluoikeus]]
@@ -65,15 +30,27 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    val opiskelija = KoskiSpecificMockOppijat.teija
+    val opiskelijaSuppea = KoskiSpecificMockOppijat.teija
+    val opiskelijaRahoituspuljaus = KoskiSpecificMockOppijat.eero
 
     val oppimäärä = defaultOpiskeluoikeus.copy(
-      suoritukset = List(TestData.oppimääränSuoritus),
+      suoritukset = List(Lukio2019RaaportitTestData.oppimääränSuoritus),
     )
     val aine = defaultOpiskeluoikeus.copy(
-      suoritukset = List(TestData.oppiaineidenOppimäärienSuoritus),
+      suoritukset = List(Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus),
     )
-    putOppija(Oppija(opiskelija, List(oppimäärä, aine))) {
+
+    val aineMuutakauttaRahoitettu = defaultOpiskeluoikeus.copy(
+      suoritukset = List(Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus),
+      tila = LukionOpiskeluoikeudenTila(List(
+        LukionOpiskeluoikeusjakso(alku = date(2000, 1, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.muutaKauttaRahoitettu)),
+      ))
+    )
+
+    putOppija(Oppija(opiskelijaSuppea, List(oppimäärä, aine))) {
+      verifyResponseStatusOk()
+    }
+    putOppija(Oppija(opiskelijaRahoituspuljaus, List(aineMuutakauttaRahoitettu))) {
       verifyResponseStatusOk()
     }
     reloadRaportointikanta
@@ -95,13 +72,13 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
         jyväskylänOppimäärä.oppilaitosOid shouldBe(MockOrganisaatiot.jyväskylänNormaalikoulu)
       }
       "Suoritettuja" in {
-        jyväskylänOppimäärä.suoritettujaOpintopisteita shouldBe(3)
+        jyväskylänOppimäärä.suoritettujaOpintopisteita shouldBe(4)
       }
       "Tunnustettuja" in {
-        jyväskylänOppimäärä.tunnustettujaOpintopisteita shouldBe(2)
+        jyväskylänOppimäärä.tunnustettujaOpintopisteita shouldBe(4)
       }
       "Kursseja yhteensä" in {
-        jyväskylänOppimäärä.opintopisteitaYhteensa shouldBe(5)
+        jyväskylänOppimäärä.opintopisteitaYhteensa shouldBe(8)
       }
       "Tunnustettuja rahoituksen piirissa" in {
         jyväskylänOppimäärä.tunnustettujaOpintopisteita_rahoituksenPiirissa shouldBe(0)
@@ -112,55 +89,55 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
         jyväskylänAineopiskelijat.oppilaitosOid shouldBe(MockOrganisaatiot.jyväskylänNormaalikoulu)
       }
       "Yhteensä" in {
-        jyväskylänAineopiskelijat.opintopisteitaYhteensa shouldBe(5)
+        jyväskylänAineopiskelijat.opintopisteitaYhteensa shouldBe(16)
       }
       "Suoritettuja" in {
-        jyväskylänAineopiskelijat.suoritettujaOpintopisteita shouldBe(3)
+        jyväskylänAineopiskelijat.suoritettujaOpintopisteita shouldBe(8)
       }
       "Tunnustettuja" in {
-        jyväskylänAineopiskelijat.tunnustettujaOpintopisteita shouldBe(2)
+        jyväskylänAineopiskelijat.tunnustettujaOpintopisteita shouldBe(8)
       }
       "Tunnustettuja rahoituksen piirissä" in {
         jyväskylänAineopiskelijat.tunnustettujaOpintopisteita_rahoituksenPiirissa shouldBe(0)
       }
-      "Pakollisia tai valtakunnallinen ja syventava" in {
-        jyväskylänAineopiskelijat.pakollisia_tai_valtakunnallisiaSyventavia shouldBe(0)
+      "Pakollisia tai valtakunnallinen" in {
+        jyväskylänAineopiskelijat.pakollisia_tai_valtakunnallisia shouldBe(12)
       }
       "Pakollisia" in {
-        jyväskylänAineopiskelijat.pakollisiaOpintopisteita shouldBe(0)
+        jyväskylänAineopiskelijat.pakollisiaOpintopisteita shouldBe(12)
       }
-      "Valtakunnallisia syventavia" in {
-        jyväskylänAineopiskelijat.valtakunnallisestiSyventaviaOpintopisteita shouldBe(0)
+      "Valtakunnallisia" in {
+        jyväskylänAineopiskelijat.valtakunnallisiaOpintopisteita shouldBe(12)
       }
-      "Suoritettuja pakollisia ja suoritettuja valtakunnallisia syventavia" in {
-        jyväskylänAineopiskelijat.suoritettujaPakollisia_ja_suoritettujaValtakunnallisiaSyventavia shouldBe(0)
+      "Suoritettuja pakollisia ja suoritettuja valtakunnallisia" in {
+        jyväskylänAineopiskelijat.suoritettujaPakollisia_ja_suoritettujaValtakunnallisia shouldBe(4)
       }
       "Suoritettuja pakollisia" in {
-        jyväskylänAineopiskelijat.suoritettujaPakollisiaOpintopisteita shouldBe(0)
+        jyväskylänAineopiskelijat.suoritettujaPakollisiaOpintopisteita shouldBe(4)
       }
-      "Suoritettuja valtakunnallisia syventavia" in {
-        jyväskylänAineopiskelijat.suoritettujaValtakunnallisiaSyventaviaOpintopisteita shouldBe(0)
+      "Suoritettuja valtakunnallisia" in {
+        jyväskylänAineopiskelijat.suoritettujaValtakunnallisiaOpintopisteita shouldBe(4)
       }
-      "Tunnustettuja pakollisia ja tunnustettuja valtakunnallisia syventavia" in {
-        jyväskylänAineopiskelijat.tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisiaSyventavia shouldBe(0)
+      "Tunnustettuja pakollisia ja tunnustettuja valtakunnallisia" in {
+        jyväskylänAineopiskelijat.tunnustettujaPakollisia_ja_tunnustettujaValtakunnallisia shouldBe(8)
       }
       "Tunnustettuja pakollisia" in {
-        jyväskylänAineopiskelijat.tunnustettujaPakollisiaOpintopisteita shouldBe(0)
+        jyväskylänAineopiskelijat.tunnustettujaPakollisiaOpintopisteita shouldBe(8)
       }
-      "Tunnustettuja valtakunnallisia syventavia" in {
-        jyväskylänAineopiskelijat.tunnustettujaValtakunnallisiaSyventaviaOpintopisteita shouldBe(0)
+      "Tunnustettuja valtakunnallisia" in {
+        jyväskylänAineopiskelijat.tunnustettujaValtakunnallisiaOpintopisteita shouldBe(8)
       }
-      "Tunnustettuja rahoituksen piirissä pakollisista ja valtakunnallisesti syventävistä kursseista" in {
-        jyväskylänAineopiskelijat.tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisiaSyventavia shouldBe(0)
+      "Tunnustettuja rahoituksen piirissä pakollisista ja valtakunnallisesti kursseista" in {
+        jyväskylänAineopiskelijat.tunnustettujaRahoituksenPiirissa_pakollisia_ja_valtakunnallisia shouldBe(0)
       }
       "Tunnustettuja rahoituksen piirissa pakollisia" in {
         jyväskylänAineopiskelijat.tunnustettuja_rahoituksenPiirissa_pakollisia shouldBe(0)
       }
-      "Tunnustettuja rahoituksen piirissa valtakunnallisesti syventavia" in {
-        jyväskylänAineopiskelijat.tunnustettuja_rahoituksenPiirissa_valtakunnallisiaSyventaiva shouldBe(0)
+      "Tunnustettuja rahoituksen piirissa valtakunnallisia" in {
+        jyväskylänAineopiskelijat.tunnustettuja_rahoituksenPiirissa_valtakunnallisia shouldBe(0)
       }
       "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - muuta kautta rahoitetut" in {
-        jyväskylänAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut shouldBe 0
+        jyväskylänAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut shouldBe 2
       }
       "Suoritetut tai rahoituksen piirissä oleviksi merkityt tunnustetut kurssit - rahoitusmuoto ei tiedossa" in {
         jyväskylänAineopiskelijat.suoritetutTaiRahoitetut_rahoitusmuotoEiTiedossa shouldBe 0
@@ -169,12 +146,12 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
         jyväskylänAineopiskelijat.suoritetutTaiRahoitetut_eiOpiskeluoikeudenSisalla shouldBe 0
       }
       "Suoritetut kurssit, joiden arviointia nostettu myöhempänä vuonna kuin jona ensimmäinen arviointi annettu" in {
-        jyväskylänAineopiskelijat.eriVuonnaKorotettujaOpintopisteita shouldBe 0
+        jyväskylänAineopiskelijat.eriVuonnaKorotettujaOpintopisteita shouldBe 4
       }
     }
     "Muuta kautta rahoitetuttujen välilehti" - {
-      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
-        jyväskylänMuutaKauttaRahoitetut.length shouldBe jyväskylänAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut
+      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri jaettuna yleisimmällä moduulien laajuudella (2)" in {
+        jyväskylänMuutaKauttaRahoitetut.length shouldBe jyväskylänAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut/2
       }
     }
     "Rahoitusmuoto ei tiedossa -välilehti" - {
@@ -188,8 +165,8 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
       }
     }
     "Eri vuonna korotetut kurssit -välilehti" - {
-      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
-        jyväskylänOpiskeluoikeudenEriVuonnaArvioidut.length shouldBe 0
+      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri jaettuna yleisimmällä moduulien laajuudella (2)" in {
+        jyväskylänOpiskeluoikeudenEriVuonnaArvioidut.length shouldBe jyväskylänAineopiskelijat.eriVuonnaKorotettujaOpintopisteita / 2
       }
     }
   }
