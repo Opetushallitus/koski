@@ -139,6 +139,18 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         opiskeluoikeus.oppilaitos.get.nimi.get should be(Finnish("Helsingin yliopisto", Some("Helsingfors universitet"), Some("University of Helsinki")))
       }
 
+      "kun opiskeluoikeudella on fuusioitunut myöntäjä organisaatio" in {
+        val opiskeluoikeus: KorkeakoulunOpiskeluoikeus = convertOpiskeluoikeusWithOrganisaatio(Some(
+          <virta:Organisaatio>
+            <virta:Rooli>5</virta:Rooli>
+            <virta:Koodi>01901</virta:Koodi>
+            <virta:Osuus>1</virta:Osuus>
+          </virta:Organisaatio>
+        ))
+
+        opiskeluoikeus.oppilaitos.get.nimi.get should be(Finnish("Helsingin yliopisto", Some("Helsingfors universitet"), Some("University of Helsinki")))
+      }
+
       "kun opiskeluoikeuden lähdeorganisaatio on kuraa" in {
         val opiskeluoikeus: KorkeakoulunOpiskeluoikeus = convertOpiskeluoikeusWithOrganisaatio(Some(
           <virta:Organisaatio>
@@ -193,6 +205,18 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         val suoritus = covertSuoritusWithOrganisaatio(Some(
           <virta:Organisaatio>
             <virta:Rooli>3</virta:Rooli>
+            <virta:Koodi>01901</virta:Koodi>
+            <virta:Osuus>1</virta:Osuus>
+          </virta:Organisaatio>
+        ))
+
+        suoritus.toimipiste.nimi.get should be(Finnish("Helsingin yliopisto", Some("Helsingfors universitet"), Some("University of Helsinki")))
+      }
+
+      "kun suorituksella on fuusioitunut myöntäjä organisaatio" in {
+        val suoritus = covertSuoritusWithOrganisaatio(Some(
+          <virta:Organisaatio>
+            <virta:Rooli>5</virta:Rooli>
             <virta:Koodi>01901</virta:Koodi>
             <virta:Osuus>1</virta:Osuus>
           </virta:Organisaatio>
