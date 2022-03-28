@@ -454,7 +454,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def optionalOppilaitos(node: Node, päivä: Option[LocalDate]): Option[Oppilaitos] = {
     val numerot = oppilaitosnumero(node)
-    val oppilaitos = if (siirtoOpiskelija(node)) {
+    val oppilaitos = if (siirtoOpiskelija(node) || hyväksilukuPäivämäärä(node).nonEmpty) {
       findOppilaitos(numerot.fuusioitunutMyöntäjä, päivä)
         .orElse(findOppilaitos(numerot.nykyinen, päivä))
     } else {
@@ -567,6 +567,9 @@ object VirtaXMLConverterUtils {
   def siirtoOpiskelija(node: Node): Boolean =
     (node \\ "SiirtoOpiskelija").headOption.isDefined
 
+  def hyväksilukuPäivämäärä(node: Node): Option[LocalDate] =
+    (node \\ "HyvaksilukuPvm").headOption.map(d => date(d.text))
+
   def oppilaitosnumero(node: Node): Oppilaitosnumerot =
     Oppilaitosnumerot(
       nykyinen = nykyinenOppilaitosnumero(node),
@@ -576,6 +579,7 @@ object VirtaXMLConverterUtils {
     )
 
   private def fuusioituneenMyöntäjänOrganisaationOppilaitosnumero(node: Node): Option[String] =
+    // 2022-03-29: tällä hetkellä tätä roolia ei tietojen mukaan siirretä Virrasta
     findRoolinKoodi(node, OrganisaationRooli.FuusioitunutMyöntäjä)
 
   private def lähdeorganisaationOppilaitosnumero(node: Node): Option[String] =
