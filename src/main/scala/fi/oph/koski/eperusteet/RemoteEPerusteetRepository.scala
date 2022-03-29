@@ -1,12 +1,14 @@
 package fi.oph.koski.eperusteet
 
 import cats.effect.IO
+import cats.implicits.catsSyntaxPartialOrder
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 import scala.concurrent.duration.DurationInt
+
 
 class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: String)(implicit cacheInvalidator: CacheManager) extends EPerusteetRepository {
   private val http: Http = Http(ePerusteetRoot, "eperusteet")
@@ -19,7 +21,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
       (perusteetKoulutusviennillä) <- http.get(uri"/api/perusteet?sivukoko=100&nimi=${query}&koulutusvienti=true")(Http.parseJson[EPerusteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data)
 
-    runIO(program)
+    runIO(program).sortBy(_.koulutusvienti).map(_.ilmanKoulutusvientiTietoa())
   }
 
   def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste] = {
@@ -28,7 +30,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
       (perusteetKoulutusviennillä) <- http.get(uri"/api/perusteet?koulutusvienti=true&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data)
 
-    runIO(program)
+    runIO(program).sortBy(_.koulutusvienti).map(_.ilmanKoulutusvientiTietoa())
   }
 
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste] = if (koulutustyypit.isEmpty) {
@@ -39,7 +41,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
       (perusteetKoulutusviennillä) <- http.get(s"/api/perusteet?koulutusvienti=true&${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}".toUri)(Http.parseJson[EPerusteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data)
 
-    runIO(program)
+    runIO(program).sortBy(_.koulutusvienti).map(_.ilmanKoulutusvientiTietoa())
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
@@ -58,7 +60,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
       (perusteetKoulutusviennillä) <- http.get(uri"/api/perusteet?koulutusvienti=true&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteRakenteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data)
 
-    runIO(program)
+    runIO(program).sortBy(_.koulutusvienti)
   }
 
   def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne] = {

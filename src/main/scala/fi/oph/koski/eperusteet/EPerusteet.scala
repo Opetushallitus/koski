@@ -8,8 +8,11 @@ case class EPeruste(
   id: Long,
   nimi: Map[String, String],
   diaarinumero: String,
-  koulutukset: List[EPerusteKoulutus]
-)
+  koulutukset: List[EPerusteKoulutus],
+  koulutusvienti: Option[Boolean]
+) {
+  def ilmanKoulutusvientiTietoa(): EPeruste = this.copy(koulutusvienti = None)
+}
 
 case class EPerusteKoulutus(
   nimi: Map[String, String],
