@@ -133,6 +133,18 @@ describe('Korkeakoulutus', function() {
     })
   })
 
+  describe('Hyväksiluettu suoritus', function () {
+    before(
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('141199-418X'),
+      opinnot.expandAll
+    )
+    it ('Näytetään nykyinen oppilaitos', function () {
+      expect(extractAsText(S('.suoritus-taulukko tbody:nth-child(3) .suoritus .nimi'))).to.equal('Opiskelutaidot')
+      expect(extractAsText(S('.suoritus-taulukko tbody:nth-child(3) .toimipiste .value'))).to.equal('Aalto-yliopisto')
+    })
+  })
+
   describe('Järjestävä organisaatio', function () {
     before(
       page.openPage,
@@ -175,6 +187,22 @@ describe('Korkeakoulutus', function() {
       it('toimii', function() {
         expect(S('.korkeakoulututkinnonsuoritus:eq(0) .tutkinnon-osa:eq(0) .suoritus:eq(0) .nimi').text()).to.equal('Simuloinnin ja optimoinnin peruskurssi')
         expect(S('.korkeakoulututkinnonsuoritus:eq(0) .tutkinnon-osa:eq(1) .suoritus:eq(0) .nimi').text()).to.equal('Diplomityö')
+      })
+    })
+
+  })
+
+  describe('Fuusioitunut myöntäjä', function() {
+    before(
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('080795-884U'),
+      opinnot.expandAll
+    )
+
+    describe('ja hyväksiluettu opintosuoritus', function() {
+      it('näkyy oikein', function() {
+        expect(extractAsText(S('.suoritus-taulukko tbody:nth-child(4) .suoritus .nimi'))).to.equal('Insinöörimatematiikka C 2')
+        expect(extractAsText(S('.suoritus-taulukko tbody:nth-child(4) .toimipiste .value'))).to.equal('Lahden ammattikorkeakoulu')
       })
     })
 

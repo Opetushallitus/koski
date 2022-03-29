@@ -450,14 +450,16 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def oppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Oppilaitos =
-    optionalOppilaitos(node, vahvistusPäivä).getOrElse(throw new RuntimeException(s"Nykyistä tai lähdeoppilaitosta ei löydy: ${oppilaitosnumero(node)}"))
+    optionalOppilaitos(node, vahvistusPäivä).getOrElse(throw new RuntimeException(s"Nykyistä, lähde tai fuusioitunutta myöntäjäoppilaitosta ei löydy: ${oppilaitosnumero(node)}"))
 
   private def optionalOppilaitos(node: Node, päivä: Option[LocalDate]): Option[Oppilaitos] = {
     val numerot = oppilaitosnumero(node)
-    val oppilaitos = if (siirtoOpiskelija(node)) {
-      findOppilaitos(numerot.nykyinen, päivä)
+    val oppilaitos = if (siirtoOpiskelija(node) || hyväksilukuPäivämäärä(node).nonEmpty) {
+      findOppilaitos(numerot.fuusioitunutMyöntäjä, päivä)
+        .orElse(findOppilaitos(numerot.nykyinen, päivä))
     } else {
       findOppilaitos(numerot.lähde, päivä)
+        .orElse(findOppilaitos(numerot.fuusioitunutMyöntäjä, päivä))
         .orElse(findOppilaitos(numerot.nykyinen, päivä))
     }
 
@@ -565,12 +567,20 @@ object VirtaXMLConverterUtils {
   def siirtoOpiskelija(node: Node): Boolean =
     (node \\ "SiirtoOpiskelija").headOption.isDefined
 
+  def hyväksilukuPäivämäärä(node: Node): Option[LocalDate] =
+    (node \\ "HyvaksilukuPvm").headOption.map(d => date(d.text))
+
   def oppilaitosnumero(node: Node): Oppilaitosnumerot =
     Oppilaitosnumerot(
       nykyinen = nykyinenOppilaitosnumero(node),
       lähde = lähdeorganisaationOppilaitosnumero(node),
-      järjestävä = järjestävänOrganisaationOppilaitosnumero(node)
+      järjestävä = järjestävänOrganisaationOppilaitosnumero(node),
+      fuusioitunutMyöntäjä = fuusioituneenMyöntäjänOrganisaationOppilaitosnumero(node)
     )
+
+  private def fuusioituneenMyöntäjänOrganisaationOppilaitosnumero(node: Node): Option[String] =
+    // 2022-03-29: tällä hetkellä tätä roolia ei tietojen mukaan siirretä Virrasta
+    findRoolinKoodi(node, OrganisaationRooli.FuusioitunutMyöntäjä)
 
   private def lähdeorganisaationOppilaitosnumero(node: Node): Option[String] =
     findRoolinKoodi(node, OrganisaationRooli.Lähde)
@@ -578,7 +588,7 @@ object VirtaXMLConverterUtils {
   private def järjestävänOrganisaationOppilaitosnumero(node: Node): Option[String] =
     findRoolinKoodi(node, OrganisaationRooli.Järjestävä)
 
-  private def findRoolinKoodi(node: Node, rooli: OrganisaationRooli.Value) = {
+  private def findRoolinKoodi(node: Node, rooli: OrganisaationRooli.Value): Option[String] = {
     def isRooli(org: Node) =
       OrganisaationRooli.parse((org \ "Rooli").text)
         .contains(rooli)
@@ -596,9 +606,10 @@ object VirtaXMLConverterUtils {
 case class Oppilaitosnumerot(
   nykyinen: Option[String],
   lähde: Option[String],
-  järjestävä: Option[String]
+  järjestävä: Option[String],
+  fuusioitunutMyöntäjä: Option[String]
 ) {
-  def asList = List(lähde, nykyinen).flatten
+  def asList = List(lähde, nykyinen, fuusioitunutMyöntäjä).flatten
 }
 
 // https://wiki.eduuni.fi/display/CSCVIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaationrooli,Organisationensroll
