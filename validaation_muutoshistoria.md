@@ -1,5 +1,7 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## FOO
+
 ## 22.2.2022
 - VST:n vapaatavoitteiselle opiskeluoikeudelle sallitaan tila mitatoity, jotta opiskeluoikeus voidaan mitätöidä.
 
