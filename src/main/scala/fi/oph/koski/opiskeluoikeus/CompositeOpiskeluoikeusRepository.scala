@@ -1,10 +1,9 @@
 package fi.oph.koski.opiskeluoikeus
 
 import java.time.LocalDate
-
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.executors.GlobalExecutionContext
-import fi.oph.koski.henkilo.{HenkilönTunnisteet, PossiblyUnverifiedHenkilöOid}
+import fi.oph.koski.henkilo.{HenkilönTunnisteet, Hetu, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -57,11 +56,17 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
 
   def findByOppija(tunnisteet: HenkilönTunnisteet, useVirta: Boolean, useYtr: Boolean)(implicit user: KoskiSpecificSession): WithWarnings[Seq[Opiskeluoikeus]] = {
     val oid = tunnisteet.oid
-    val virtaResultFuture = Future { if (useVirta) virta.findByOppija(tunnisteet) else Nil }.transform(mapFailureToVirtaUnavailable(_, oid))
-    val ytrResultFuture = Future { if (useYtr) ytr.findByOppija(tunnisteet) else Nil }.transform(mapFailureToYtrUnavailable(_, oid))
+    val isValidHetu = Hetu.validate(tunnisteet.hetu.getOrElse(""), false) match {
+        case Right(_) => true
+        case _ => false
+    }
+
     val mainResult = main.findByOppijaOids(tunnisteet.oid :: tunnisteet.linkitetytOidit)
-    val virtaResult = Futures.await(virtaResultFuture)
+    val ytrResultFuture = Future { if (useYtr) ytr.findByOppija(tunnisteet) else Nil }.transform(mapFailureToYtrUnavailable(_, oid))
     val ytrResult = Futures.await(ytrResultFuture)
+
+    val virtaResultFuture = Future { if (useVirta) virta.findByOppija(if (isValidHetu) { tunnisteet } else { tunnisteet.ilmanHetua }) else Nil }.transform(mapFailureToVirtaUnavailable(_, oid))
+    val virtaResult = Futures.await(virtaResultFuture)
     WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
   }
 

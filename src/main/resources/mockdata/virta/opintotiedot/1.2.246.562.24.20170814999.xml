@@ -1,0 +1,1352 @@
+<?xml version="1.0"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="63527">
+          <virta:KansallinenOppijanumero>1.2.246.562.24.20170814999</virta:KansallinenOppijanumero>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="66795" opiskelijaAvain="63527">
+              <virta:AlkuPvm>2014-08-19</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-12-21</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-19</virta:AlkuPvm>
+                <virta:LoppuPvm>2017-12-21</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2017-12-22</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Kryolabanalyytikko koulutus">
+                <virta:AlkuPvm>2014-08-19</virta:AlkuPvm>
+                <virta:LoppuPvm>2017-12-21</virta:LoppuPvm>
+                <virta:Koulutuskoodi>652401</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">11</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>210</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2016-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2016-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2017-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2017-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2016-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2014-08-19</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2017-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2017-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="2678707" koulutusmoduulitunniste="14BA 7B00BB72-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2014-12-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kryoplasma ja analyytikon ty&#xF6;</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2833610" koulutusmoduulitunniste="14BA 7B00CM19-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-11-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Yrkessvenska f&#xF6;r analytiker, skriftlig</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678715" koulutusmoduulitunniste="14BA 7B00BB83-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2014-12-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kryoanalytiikan ty&#xF6;tavat ja ty&#xF6;turvallisuus</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678720" koulutusmoduulitunniste="14BA 7B00BB88-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2014-11-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kryokemia, solubiologia ja genetiikka I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678725" koulutusmoduulitunniste="14BA 7B00BC44-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-03-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Anemioiden ja pahanlaatuisten veritautien diagnostiikka</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678729" koulutusmoduulitunniste="14BA 7B00BC50-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-10-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliinisen kemian perustutkimukset III</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678732" koulutusmoduulitunniste="14BA 7B00BC30-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-03-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kudosleikkeiden valmistaminen ja kudosten tunnistus</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678736" koulutusmoduulitunniste="14BA 7B00BC00-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-06-02</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliininen fysiologia I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2929449" koulutusmoduulitunniste="14BA 7B00BC06-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-02-06</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Harjoittelu kliinisen mikroKryologian laboratoriossa</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>7</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2959247" koulutusmoduulitunniste="14BA 7B00BJ04-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-07-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Laadun kehitt&#xE4;minen erikoisalakohtaisesti</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3116119" koulutusmoduulitunniste="14BA 7B00BJ09-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-11-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliininen laboratoriol&#xE4;&#xE4;ketiede ja moniammatillinen yhteisty&#xF6; osa II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678743" koulutusmoduulitunniste="14BA N-KV585S1-3003" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-03-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Saksan kielen jatkokurssi 1</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="TUTKINTO-66795" koulutusmoduulitunniste="BA Kryoanalyytikkokoulutus" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-12-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>213</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>1</virta:Laji>
+              <virta:Nimi>Kryoanalyytikko (AMK)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutuskoodi>652401</virta:Koulutuskoodi>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678706">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678707">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678708">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678709">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678710">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2820676">
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2833610">
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678711">
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678712">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678713">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678714">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678715">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678716">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678717">
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678718">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678719">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678720">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678721">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678722">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678723">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678724">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678725">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678009">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678726">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678727">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678728">
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678729">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2821147">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678730">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678731">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3089051">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678732">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678733">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678010">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678734">
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678735">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678736">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678737">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678011">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678738">
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2865595">
+                <virta:Opintopiste>9</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2929449">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2817881">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2866836">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678742">
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678739">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2959247">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678740">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678741">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3020080">
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2981954">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3116119">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3116055">
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3058402">
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3058405">
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3058409">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2678743">
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3064323">
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="2986110">
+                <virta:Opintopiste>11</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3039980">
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="3116220">
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678709" koulutusmoduulitunniste="14BA 7B00BB75-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2014-12-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Informaatioj&#xE4;rjestelm&#xE4;t ja viestint&#xE4;taidot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678712" koulutusmoduulitunniste="14BA 7B00BB79-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-11-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>N&#xE4;ytteenottotoiminta ja vierianalytiikka</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678717" koulutusmoduulitunniste="14BA 7B00BB85-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-05-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Analyysitekniikat ja automaatio</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678722" koulutusmoduulitunniste="14BA 7B00BB89-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-05-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Immunologia ja tautioppi</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678726" koulutusmoduulitunniste="14BA 7B00BB94-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-06-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Immunohematologia</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678730" koulutusmoduulitunniste="14BA 7B00BC26-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-05-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliinisen mikrologian perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678010" koulutusmoduulitunniste="14BA 7B00BC31-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-09-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Histologiset v&#xE4;rj&#xE4;ykset, immunohistokemia ja molekyylipatologia</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678011" koulutusmoduulitunniste="14BA 7B00BC02-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-04-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliininen fysiologia III ja neurofysiologia</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2866836" koulutusmoduulitunniste="14BA 7B00BC08-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-12-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Harjoittelu kliinisen fysiologian ja neurofysiologian laboratoriossa</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>7</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678741" koulutusmoduulitunniste="14BA 7B00BJ06-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-05-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Ty&#xF6;organisaatioiden toiminta ja l&#xE4;hijohtaminen laboratoriossa osa I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3058402" koulutusmoduulitunniste="14BA I-66795-1)" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-04-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>UK</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Placement at Institute Fur Laboratoriumsmedizin Singen</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2017-06-16</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2986110" koulutusmoduulitunniste="14BA 7B00BC19-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-05-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>11</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Opinn&#xE4;ytety&#xF6;n idea-ja suunnitelmaseminaarit, itsen&#xE4;inen ty&#xF6;skentelyvaihe</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678706" koulutusmoduulitunniste="14BA 7B00BB70-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2014-12-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Orientaatio opiskeluun ja sosiaali-ja terveysalan ammattiin</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2820676" koulutusmoduulitunniste="14BA 7B00CM17-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-11-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Yrkessvenska f&#xF6;r analytiker, muntlig</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678714" koulutusmoduulitunniste="14BA 7B00BB82-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-01-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Matematiikka ja kemia</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678719" koulutusmoduulitunniste="14BA 7B00BB87-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2014-10-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Anatomia ja fysiologia</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678724" koulutusmoduulitunniste="14BA 7B00BC23-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-05-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Hematologian perusteet ja perustutkimukset</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678728" koulutusmoduulitunniste="14BA 7B00BC49-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-11-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliinisen kemian perustutkimukset II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3089051" koulutusmoduulitunniste="14BA 7B00BC28-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-10-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliinisen mikroKryologian erityisalueet</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678735" koulutusmoduulitunniste="14BA 7B00BB99-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-10-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Soluviljelymenetelm&#xE4;t ja puhdastilaty&#xF6;skentely</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2865595" koulutusmoduulitunniste="14BA 7B00BC05-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-04-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>9</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Harjoittelu kliinisen hematologian, immunohematologian ja kemian laboratoriotuotannossa</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>7</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678739" koulutusmoduulitunniste="14BA 7B00BJ03-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-02-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Tilastotiede ja analyyttinen laatu</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2981954" koulutusmoduulitunniste="14BA 7B00BJ08-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-10-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliininen laboratoriol&#xE4;&#xE4;ketiede ja moniammatillinen yhteisty&#xF6; osa I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3058409" koulutusmoduulitunniste="14BA I-66795-10 FH 18448" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-05-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>UK</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Orientation Programme and German Seminar Schwenningen</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2017-06-16</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3116220" koulutusmoduulitunniste="14BA T-66795" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-11-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Laerdal Virtual Phlebotomy&gt;&gt;K&#xE4;ytt&#xF6;oppaan laatiminen</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>1</virta:Opinnaytetyo>
+              <virta:Hankkeistettu>1</virta:Hankkeistettu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678708" koulutusmoduulitunniste="14BA 7B00BB73-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-01-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Ensiapu, kliiniset hoitotoiminnot ja potilasturvallisuus</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678711" koulutusmoduulitunniste="14BA 7B00BB78-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-01-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Preanalytiikka ja n&#xE4;ytteenottotoiminta</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678716" koulutusmoduulitunniste="14BA 7B00BB84-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-02-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Perusmenetelm&#xE4;t ja analyysitekniikat</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678721" koulutusmoduulitunniste="14BA 7B00BJ94-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-11-30</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kryokemia, solubiologia ja genetiikka II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678009" koulutusmoduulitunniste="14BA 7B00BC25-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-07-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Hemostaasi-ja hyytymisj&#xE4;rjestelm&#xE4;n tutkiminen ja laadunohjaus hematologian tutkimuksissa</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2821147" koulutusmoduulitunniste="14BA 7B00BF19-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliinisen kemian erikoistutkimukset</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678733" koulutusmoduulitunniste="14BA 7B00BC29-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-05-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliinisen sytologian perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678737" koulutusmoduulitunniste="14BA 7B00BC01-3001" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-05-02</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliininen fysiologia II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2817881" koulutusmoduulitunniste="14BA 7B00BC07-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-11-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Harjoittelu patologian laboratoriossa</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>7</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678740" koulutusmoduulitunniste="14BA 7B00BJ05-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-05-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Yritt&#xE4;jyys Kryoanalyytikassa</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3116055" koulutusmoduulitunniste="14BA 7B00BJ10" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-11-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kryoanalytiikan valinnainen / syvent&#xE4;v&#xE4; osaaminen</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3064323" koulutusmoduulitunniste="14BA NN00CU60-3001" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-07-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Intercultural Experiences and Competences</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678710" koulutusmoduulitunniste="14BA 7B00BB76-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-02-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Professional English for Medical Laboratory Scientists</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678713" koulutusmoduulitunniste="14BA 7B00BB81-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-03-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Asiakaspalvelu, ammatilliset vuorovaikutustaidot ja ohjaus Kryoanalyytikon ty&#xF6;ss&#xE4;</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678718" koulutusmoduulitunniste="14BA 7B00BB86-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-05-01</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>N&#xE4;ytelogistiikka, analyysimenetelm&#xE4;t ja automaatiolinjastot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678723" koulutusmoduulitunniste="14BA 7B00BB90-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-12-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Farmakologia ja l&#xE4;&#xE4;kelaskut</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678727" koulutusmoduulitunniste="14BA 7B00BC51-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-04-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Kliinisen kemian perustutkimukset I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678731" koulutusmoduulitunniste="14BA 7B00BC27-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-01-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Bakteriologia</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678734" koulutusmoduulitunniste="14BA 7B00BB98-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-05-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Molekyylilogian perusteet ja perusmenetelm&#xE4;t</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678738" koulutusmoduulitunniste="14BA 7B00BC04-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2015-11-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Preanalytiikan ja vieritestien perusharjoittelu ja potilastutkimukset</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>7</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="2678742" koulutusmoduulitunniste="14BA 7B00BJ02-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2016-03-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Tutkimusty&#xF6;n perusteet ja tiedonhankintataidot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3020080" koulutusmoduulitunniste="14BA 7B00BJ07-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-11-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Ty&#xF6;organisaatioiden toiminta ja l&#xE4;hijohtaminen laboratoriossa osa II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3058405" koulutusmoduulitunniste="14BA I-66795-2)" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-05-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>UK</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Placement at Molecular Medicine Lab Hochschule Furtwangen University</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2017-06-16</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3039980" koulutusmoduulitunniste="14BA 7B00BC20-3002" opiskelijaAvain="63527" opiskeluoikeusAvain="66795">
+              <virta:SuoritusPvm>2017-11-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Opinn&#xE4;ytety&#xF6;n raportointi ja esitysseminaarit</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">11</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
