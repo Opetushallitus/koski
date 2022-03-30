@@ -8,6 +8,8 @@ import fi.oph.koski.schema.{Opiskeluoikeusjakso}
 object DateValidation {
   type NamedDates = (String, Iterable[LocalDate])
 
+   // Turha rivi
+
   def validateDateOrder(first: NamedDates, second: NamedDates, errorCategory: ErrorCategory): HttpStatus = {
     HttpStatus.fold(for (left <- first._2; right <- second._2) yield {
       HttpStatus.validate(left.compareTo(right) <= 0)(errorCategory(first._1 + " (" + left + ") oltava sama tai aiempi kuin " + second._1 + " (" + right + ")"))
