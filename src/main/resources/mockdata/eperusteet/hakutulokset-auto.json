@@ -322,6 +322,218 @@
       }
     },
     {
+      "id": 3397363,
+      "globalVersion": {
+        "aikaleima": 1523348722217
+      },
+      "nimi": {
+        "_tunniste": "7cf67401-93d4-447e-a3dd-1e84b43977f1",
+        "fi": "Autoalan perustutkinto, Koulutusvientikokeilu",
+        "sv": "Grundexamen inom bilbranschen, Pedagogiskt exportexperiment",
+        "en": "Vehicle Technology, VQ, Educational export experiment",
+        "_id": "4310283"
+      },
+      "koulutustyyppi": "koulutustyyppi_1",
+      "koulutukset": [
+        {
+          "nimi": {
+            "_tunniste": "cbc4c2f0-49e7-4533-9c1d-9bfdbef9372d",
+            "fi": "Autoalan perustutkinto, Koulutusvientikokeilu",
+            "sv": "Grundexamen inom bilbranschen, Pedagogiskt exportexperiment",
+            "en": "Vehicle Technology, VQ, Educational export experiment",
+            "_id": "4310981"
+          },
+          "koulutuskoodiArvo": "351301",
+          "koulutuskoodiUri": "koulutus_351301",
+          "koulutusalakoodi": "koulutusalaoph2002_5",
+          "opintoalakoodi": "opintoalaoph2002_509"
+        }
+      ],
+      "kielet": [
+        "sv",
+        "fi"
+      ],
+      "kuvaus": null,
+      "maarayskirje": {
+        "id": 3492830,
+        "url": {
+          "fi": "http://www.oph.fi/download/188831_OPH-2762-2017_Autoalan_pt.pdf"
+        }
+      },
+      "muutosmaaraykset": [],
+      "diaarinumero": "OPH-4792-2017",
+      "voimassaoloAlkaa": 1533070800000,
+      "siirtymaPaattyy": null,
+      "voimassaoloLoppuu": null,
+      "paatospvm": 1514498400000,
+      "luotu": 1509102669133,
+      "muokattu": 1523348722217,
+      "tila": "valmis",
+      "tyyppi": "normaali",
+      "koulutusvienti": true,
+      "korvattavatDiaarinumerot": [],
+      "osaamisalat": [
+        {
+          "nimi": {
+            "fi": "Autotekniikan osaamisala",
+            "sv": "Kompetensområdet för bilteknik"
+          },
+          "arvo": "1722",
+          "uri": "osaamisala_1722",
+          "koodisto": "osaamisala",
+          "versio": null
+        },
+        {
+          "nimi": {
+            "fi": "Automyynnin osaamisala",
+            "sv": "Kompetensområdet för bilförsäljning"
+          },
+          "arvo": "1721",
+          "uri": "osaamisala_1721",
+          "koodisto": "osaamisala",
+          "versio": null
+        },
+        {
+          "nimi": {
+            "sv": "Kompetensområdet för reservdelsförsäljning",
+            "fi": "Varaosamyynnin osaamisala"
+          },
+          "arvo": "1724",
+          "uri": "osaamisala_1724",
+          "koodisto": "osaamisala",
+          "versio": null
+        },
+        {
+          "nimi": {
+            "sv": "Kompetensområdet för bilplåtslagning",
+            "fi": "Autokorinkorjauksen osaamisala"
+          },
+          "arvo": "1719",
+          "uri": "osaamisala_1719",
+          "koodisto": "osaamisala",
+          "versio": null
+        },
+        {
+          "nimi": {
+            "sv": "Kompetensområdet för billackering",
+            "fi": "Automaalauksen osaamisala"
+          },
+          "arvo": "1720",
+          "uri": "osaamisala_1720",
+          "koodisto": "osaamisala",
+          "versio": null
+        },
+        {
+          "nimi": {
+            "sv": "Kompetensområdet för reparation av motordrivna småmaskiner",
+            "fi": "Moottorikäyttöisten pienkoneiden korjauksen osaamisala"
+          },
+          "arvo": "1723",
+          "uri": "osaamisala_1723",
+          "koodisto": "osaamisala",
+          "versio": null
+        }
+      ],
+      "tyotehtavatJoissaVoiToimia": {
+        "fi": "<p>Ajoneuvokauppaan, asennuksiin, korjauksiin ja huoltotöihin liittyviä tyypillisiä työpaikkoja ovat auto- ja autotarvikeliikkeet ja autokorjaamot. Ajoneuvoasentajilla, autokorinkorjaajilla ja automaalareilla on varsinaisten korjaamotöiden lisäksi valmiudet työskentelyyn autoteollisuudessa ja esimerkiksi erilaisia ajoneuvokoreja, erikoisajoneuvoja ja asuntovaunuja valmistavassa teollisuudessa.</p>",
+        "_id": "4314043"
+      },
+      "suorittaneenOsaaminen": {
+        "fi": "<p>Autoalan tehtävänä on yhteiskunnan yksityisen ja joukkoliikenteen sekä tavarakuljetusten ja muiden logististen palvelujen ja ihmisten liikkumiseen liittyvien harrastusten turvaaminen. Alalle koulutetaan ajoneuvoasentajia, autokorinkorjaajia, automaalareita, automyyjiä, varaosamyyjiä ja pienkoneasentajia.</p>",
+        "_id": "4314042"
+      },
+      "suoritustavat": [
+        {
+          "suoritustapakoodi": "reformi",
+          "laajuusYksikko": "OSAAMISPISTE"
+        }
+      ],
+      "kvliite": {
+        "id": 3436221,
+        "suorittaneenOsaaminen": {
+          "_tunniste": "b8e09dd3-37ac-4986-a3bb-7e6fd48201bd",
+          "fi": "<p>Autoalan tehtävänä on yhteiskunnan yksityisen ja joukkoliikenteen sekä tavarakuljetusten ja muiden logististen palvelujen ja ihmisten liikkumiseen liittyvien harrastusten turvaaminen. Alalle koulutetaan ajoneuvoasentajia, autokorinkorjaajia, automaalareita, automyyjiä, varaosamyyjiä ja pienkoneasentajia.</p>",
+          "_id": "4314042"
+        },
+        "tyotehtavatJoissaVoiToimia": {
+          "_tunniste": "d44aebe7-5557-4caf-bb8a-5ca8caefc5e8",
+          "fi": "<p>Ajoneuvokauppaan, asennuksiin, korjauksiin ja huoltotöihin liittyviä tyypillisiä työpaikkoja ovat auto- ja autotarvikeliikkeet ja autokorjaamot. Ajoneuvoasentajilla, autokorinkorjaajilla ja automaalareilla on varsinaisten korjaamotöiden lisäksi valmiudet työskentelyyn autoteollisuudessa ja esimerkiksi erilaisia ajoneuvokoreja, erikoisajoneuvoja ja asuntovaunuja valmistavassa teollisuudessa.</p>",
+          "_id": "4314043"
+        },
+        "tutkinnonVirallinenAsema": null,
+        "tutkintotodistuksenAntaja": {
+          "_tunniste": "7c54b8ec-ccb2-4b9d-a6ea-aabe189f5f25",
+          "se": "Koulutuksen järjestäjä, jolla on opetus- ja kulttuuriministeriön myöntämä tutkintojen ja koulutuksen järjestämislupa.",
+          "fi": "<p>Koulutuksen järjestäjä, jolla on opetus- ja kulttuuriministeriön myöntämä tutkintojen ja koulutuksen järjestämislupa.</p>",
+          "sv": "<p>Utbildningsanordnare som av undervisnings- och kulturministeriet beviljats anordnartillstånd för examina och utbildning.</p>",
+          "ru": "Koulutuksen järjestäjä, jolla on opetus- ja kulttuuriministeriön myöntämä tutkintojen ja koulutuksen järjestämislupa.",
+          "en": "<p>An education provider with an authorisation to provide education and award qualifications granted by the Ministry of Education and Culture.</p>",
+          "_id": "3275484"
+        },
+        "_arvosanaAsteikko": "3",
+        "jatkoopintoKelpoisuus": {
+          "_tunniste": "6b0e5edd-516e-4827-842d-14a767584bab",
+          "fi": "<p>Tutkinto tuottaa kelpoisuuden korkeakouluopintoihin.</p>",
+          "sv": "<p>Examen ger behörighet för högskolestudier.</p>",
+          "en": "<p>The qualification confers eligibility for higher education studies.</p>",
+          "_id": "3275480"
+        },
+        "kansainvalisetSopimukset": null,
+        "saadosPerusta": {
+          "_tunniste": "09db8920-7b56-4ad8-917d-141de613476c",
+          "fi": "<p>Laki ammatillisesta koulutuksesta 531/2017 ja sitä täydentävät asetukset</p>",
+          "sv": "<p>Lag om yrkesutbildning 531/2017 och förordningar som kompletterar den</p>",
+          "en": "<p>Vocational Education and Training Act 531/2017 and the decrees that complement it.</p>",
+          "_id": "3275482"
+        },
+        "pohjakoulutusvaatimukset": {
+          "_tunniste": "c54c49e0-7e59-42ef-b044-4da2a810d719",
+          "fi": "<p>Tutkinnon suorittamiselle ei ole asetettu muodollisia koulutusvaatimuksia.</p>",
+          "sv": "<p>Det finns inga formella krav på grundutbildning för att avlägga av examen.</p>",
+          "en": "<p>No formal qualifications are required to take the competence test.</p>",
+          "_id": "3275481"
+        },
+        "lisatietoja": {
+          "_tunniste": "74c4f194-233c-4bc7-a40a-d75388fd5226",
+          "fi": "<p>Opetushallitus</p>\n\n<p>PL 380, 00531 Helsinki</p>\n\n<p>www.oph.fi</p>",
+          "sv": "<p>Utbildningsstyrelsen</p>\n\n<p>PB 380, 00531 Helsingfors</p>\n\n<p>www.oph.fi</p>",
+          "_id": "3273239"
+        },
+        "tutkintotodistuksenSaaminen": {
+          "_tunniste": "f502ddbd-5cff-4554-b7e5-532fc3b08483",
+          "fi": "<p>Tutkinnon osien edellyttämä ammattitaito osoitetaan tekemällä käytännön työtehtäviä aidoissa tilanteissa ja työprosesseissa (näyttö). Opiskelijan osaamista arvioivat monipuolisesti opettaja ja työelämän edustaja vertaamalla sitä tutkinnon perusteissa määrättyyn osaamiseen. Koulutuksen järjestäjä antaa opiskelijalle tutkintotodistuksen, kun tutkinto on suoritettu hyväksytysti Opetushallituksen määräämien tutkinnon perusteiden mukaisesti.</p>",
+          "sv": "<p>Den yrkesskicklighet som krävs i examensdelarna visas genom att utföra praktiska arbetsuppgifter i genuina arbetssituationer och arbetsprocesser (yrkesprov). Den studerandes kunnande bedöms mångsidigt av en lärare och en representant för arbetslivet genom att jämföra det med det kunnande som är fastställt i examensgrunderna. Utbildningsanordnaren ger den studerande ett examensbetyg då examen är avlagd och godkänd enligt de examensgrunder som Utbildningsstyrelsen fastställt.</p>",
+          "en": "<p>The vocational skills required for completing the modules are demonstrated by performing practical tasks in authentic situations and work processes (demonstration of knowledge and skills). The student's knowledge and skills are assessed diversely by a teacher and a working life representative and compared to the competence defined in the qualification requirements. The education provider awards the student a qualification certificate once the qualification has been completed acceptably in accordance to the qualification requirements laid down by the Finnish National Agency for Education.</p>",
+          "_id": "3275485"
+        },
+        "tutkinnonTaso": null,
+        "tutkinnostaPaattavaViranomainen": {
+          "_tunniste": "5d0f18cb-d854-4dd2-8a19-391628fa8f4a",
+          "se": "Opetus- ja kulttuuriministeriö, Opetushallitus, opetus- ja kulttuuriministeriön alainen keskusvirasto",
+          "fi": "<p>Opetus- ja kulttuuriministeriö</p>\n\n<p>Opetushallitus, opetus- ja kulttuuriministeriön alainen keskusvirasto</p>",
+          "sv": "<p>Undervisnings- och kulturministeriet</p>\n\n<p>Utbildningsstyrelsen, centralt ämbetsverk som är underställt undervisnings- och kulturministeriet</p>",
+          "ru": "Opetus- ja kulttuuriministeriö, Opetushallitus, opetus- ja kulttuuriministeriön alainen keskusvirasto",
+          "en": "<p>Ministry of Education and Culture</p>\n\n<p>Finnish National Agency for Education, the national agency subordinate to the Ministry of Education and Culture</p>",
+          "_id": "3275483"
+        }
+      },
+      "perusteprojekti": {
+        "id": 3397346,
+        "nimi": "Autoalan perustutkinto 2018",
+        "_peruste": "3397336",
+        "diaarinumero": "xx",
+        "paatosPvm": null,
+        "toimikausiAlku": null,
+        "toimikausiLoppu": null,
+        "tehtavaluokka": null,
+        "tehtava": null,
+        "yhteistyotaho": null,
+        "tila": "julkaistu",
+        "ryhmaOid": "1.2.246.562.28.49096661214",
+        "esikatseltavissa": false
+      }
+    },
+    {
       "id": 1013059,
       "nimi": {
         "fi": "Autoalan työnjohdon erikoisammattitutkinto",

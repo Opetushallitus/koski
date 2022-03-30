@@ -1,7 +1,6 @@
 package fi.oph.koski.eperusteet
 
 import cats.effect.IO
-import cats.implicits.catsSyntaxPartialOrder
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.http.Http._
@@ -21,7 +20,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
       (perusteetKoulutusviennillä) <- http.get(uri"/api/perusteet?sivukoko=100&nimi=${query}&koulutusvienti=true")(Http.parseJson[EPerusteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data)
 
-    runIO(program).sortBy(_.koulutusvienti).map(_.ilmanKoulutusvientiTietoa())
+    runIO(program).sortBy(_.koulutusvienti)
   }
 
   def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste] = {
@@ -30,7 +29,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
       (perusteetKoulutusviennillä) <- http.get(uri"/api/perusteet?koulutusvienti=true&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data)
 
-    runIO(program).sortBy(_.koulutusvienti).map(_.ilmanKoulutusvientiTietoa())
+    runIO(program).sortBy(_.koulutusvienti)
   }
 
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste] = if (koulutustyypit.isEmpty) {
@@ -41,7 +40,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
       (perusteetKoulutusviennillä) <- http.get(s"/api/perusteet?koulutusvienti=true&${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}".toUri)(Http.parseJson[EPerusteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data)
 
-    runIO(program).sortBy(_.koulutusvienti).map(_.ilmanKoulutusvientiTietoa())
+    runIO(program).sortBy(_.koulutusvienti)
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
