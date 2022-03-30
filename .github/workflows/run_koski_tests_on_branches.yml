@@ -48,6 +48,17 @@ jobs:
           cd ..
           make lint
 
+  checkdoc_koski:
+    name: Check that validaation_muustohistoria.md has been updated
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with: { fetch-depth: 0 }
+
+      - name: Check validation and documentation changes
+        run: |
+          make checkdoc
+
   run_backend_tests:
     name: Run Koski backend tests
     runs-on: ubuntu-20.04
