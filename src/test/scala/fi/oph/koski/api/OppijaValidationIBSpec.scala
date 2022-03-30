@@ -13,6 +13,8 @@ import java.time.LocalDate.{of => date}
 
 class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] {
 
+  // turha muutos testiin
+
   def tag = implicitly[reflect.runtime.universe.TypeTag[IBOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = opiskeluoikeus
 
