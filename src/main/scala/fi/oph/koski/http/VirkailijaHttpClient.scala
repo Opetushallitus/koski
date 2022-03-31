@@ -42,6 +42,7 @@ object VirkailijaCredentials {
 
 object VirkailijaHttpClient {
   private val DefaultSessionCookieName = "JSESSIONID"
+  private val DefaultServiceUrlSuffix = "j_spring_cas_security_check"
 
   private def defaultClient(serviceUrl: String): Client[IO] = Http.retryingClient(serviceUrl)
 
@@ -51,18 +52,22 @@ object VirkailijaHttpClient {
   def apply(serviceConfig: ServiceConfig, serviceUrl: String, sessionCookieName: String): Http =
     apply(serviceConfig, serviceUrl, defaultClient(serviceUrl), sessionCookieName)
 
+  def apply(serviceConfig: ServiceConfig, serviceUrl: String, sessionCookieName: String, serviceUrlSuffix: String): Http =
+    apply(serviceConfig, serviceUrl, defaultClient(serviceUrl), sessionCookieName, serviceUrlSuffix)
+
   def apply(
     serviceConfig: ServiceConfig,
     serviceUrl: String,
     client: Client[IO],
-    sessionCookieName: String = DefaultSessionCookieName
+    sessionCookieName: String = DefaultSessionCookieName,
+    serviceUrlSuffix: String = DefaultServiceUrlSuffix
   ): Http = {
     val VirkailijaCredentials(username, password) = VirkailijaCredentials(serviceConfig)
     val casAuthenticatingClient = if (serviceConfig.useCas) {
       val casClient = new CasClient(serviceConfig.virkailijaUrl + "/cas", client, OpintopolkuCallerId.koski)
       CasAuthenticatingClient(
         casClient,
-        CasParams(serviceUrl, username, password),
+        CasParams(serviceUrl, serviceUrlSuffix, username, password),
         client,
         OpintopolkuCallerId.koski,
         sessionCookieName
