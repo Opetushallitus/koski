@@ -61,10 +61,10 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSu
 
   def htmlErrorObjectScript(status: HttpStatus): Elem =
     <script type="text/javascript">
-      {CommentedPCData("""
+      {CommentedPCData(js"""
         window.koskiError = {
-          httpStatus: """ + status.statusCode + """,
-          text: '""" + status.errorString.getOrElse(localizations.get("httpStatus." + status.statusCode).get(lang)).replace("'", "\\'") + """',
+          httpStatus: ${status.statusCode},
+          text: ${status.errorString.getOrElse(localizations.get("httpStatus." + status.statusCode).get(lang)).replace("'", "\\'")},
           topLevel: true
         }
       """)}
