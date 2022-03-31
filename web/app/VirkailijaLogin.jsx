@@ -42,6 +42,8 @@ const Login = () => {
   )
 }
 
+Login.displayName = 'Login'
+
 ReactDOM.render(
   (<div>
     <TopBar user={null} />

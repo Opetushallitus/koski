@@ -120,6 +120,8 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus = ({suori
   )
 }
 
+UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus.displayName = 'UusiTutkintokoulutukseenValmentavanKoulutuksenOsasuoritus'
+
 const LisääOsasuoritus = ({suoritusPrototype, setExpanded, lisääText, koulutusModuuliTyyppi, className}) => {
 
   const valinnainenOsasuoritus = koulutusModuuliTyyppi === 'tutkintokoulutukseenvalmentavankoulutuksenvalinnaisenkoulutusosa'
@@ -149,6 +151,8 @@ const LisääOsasuoritus = ({suoritusPrototype, setExpanded, lisääText, koulut
     </div>
   )
 }
+
+LisääOsasuoritus.displayName = 'LisääOsasuoritus'
 
 const LisääPaikallinen = ({suoritusPrototype, setExpanded, lisääText, lisääTitle}) => {
   const showModal = Atom(false)
@@ -204,3 +208,5 @@ const LisääPaikallinen = ({suoritusPrototype, setExpanded, lisääText, lisä�
     </div>
   )
 }
+
+LisääPaikallinen.displayName = 'LisääPaikallinen'

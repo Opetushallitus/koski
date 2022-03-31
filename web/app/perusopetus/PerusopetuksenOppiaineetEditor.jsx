@@ -78,6 +78,8 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   </div>)
 }
 
+PerusopetuksenOppiaineetEditor.displayName = 'PerusopetuksenOppiaineetEditor'
+
 const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
   const wrongOsasuorituksetTemplateP = fetchOsasuorituksetTemplate(model, !isToimintaAlueittain(model))
   const hasWrongPrefillP = wrongOsasuorituksetTemplateP.map(wrongOsasuorituksetTemplate =>
@@ -129,6 +131,8 @@ const SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus, uusiPerusopetuks
   </span>)
 }
 
+SimpleOppiaineetEditor.displayName = 'SimpleOppiaineetEditor'
+
 const KäyttäytymisenArvioEditor = ({model}) => {
   let edit = model.context.edit
   let käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
@@ -138,8 +142,9 @@ const KäyttäytymisenArvioEditor = ({model}) => {
       <Editor model={model} path="käyttäytymisenArvio"/>
     }
   </div>) : null
-
 }
+
+KäyttäytymisenArvioEditor.displayName = 'KäyttäytymisenArvioEditor'
 
 const isPerusopetukseenValmistava = model => model.value.classes.includes('perusopetukseenvalmistavanopetuksensuoritus')
 const createOppiaineenSuoritus = (suoritukset, preferredClassF = proto => isToimintaAlueittain(proto) ? 'toiminta_alueensuoritus' : 'oppiaineensuoritus') => {

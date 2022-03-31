@@ -32,3 +32,5 @@ const Tab = ({
         <span className="tabs-item-caret" />
     </span>
 )
+
+Tabs.displayName = 'Tabs'

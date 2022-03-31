@@ -6,7 +6,7 @@ import Text from '../i18n/Text'
 import {t} from '../i18n/i18n'
 import FocusLock from 'react-focus-lock'
 
-export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okTextKey = 'Ok', cancelTextKey = 'Peruuta', validP = Bacon.constant(true), fullscreen = false}) => {
+const ModalDialog = ({className, onDismiss, onSubmit, children, submitOnEnterKey, okTextKey = 'Ok', cancelTextKey = 'Peruuta', validP = Bacon.constant(true), fullscreen = false}) => {
   submitOnEnterKey = parseBool(submitOnEnterKey, true)
   let submittedAtom = Atom(false)
   let keyE = Bacon.fromEvent(document, 'keyup')
@@ -43,3 +43,7 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
     )
     : <Modal/>
 }
+
+ModalDialog.displayName = 'ModalDialog'
+
+export default ModalDialog

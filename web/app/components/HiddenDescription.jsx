@@ -7,6 +7,8 @@ const descriptions = [
 
 const descriptionElm = (id) => <div hidden={true} aria-hidden={true} id={id}><Text name={id}/></div>
 
+descriptionElm.displayName = 'descriptionElm'
+
 const ariaDescription = descriptions.reduce((obj, cur) => ({...obj, [cur]: descriptionElm(cur)}), {})
 
 export const HiddenDescription = ({id}) => {
@@ -14,3 +16,5 @@ export const HiddenDescription = ({id}) => {
   if (!elm) throw `No description declared for ${id}`
   return elm
 }
+
+HiddenDescription.displayName = 'HiddenDescription'

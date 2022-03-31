@@ -18,6 +18,8 @@ export const StringEditor = ({model, placeholder, autoFocus}) => {
     : <span className="inline string">{!data ? '' : splitToRows(data)}</span>
 }
 
+StringEditor.displayName = 'StringEditor'
+
 let splitToRows = (data) => data.replace(/\r\n*/g, '\n').split('\n').map((line, k) => <span key={k}>{k > 0 ? <br/> : null}{line}</span>)
 
 const buildRegex = model => new RegExp(model.regularExpression)

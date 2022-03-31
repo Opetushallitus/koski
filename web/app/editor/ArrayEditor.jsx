@@ -45,6 +45,8 @@ export const ArrayEditor = ({model, reverse}) => {
   )
 }
 
+ArrayEditor.displayName = 'ArrayEditor'
+
 ArrayEditor.validateModel = (model) => {
   if (model.optional && !model.value) return
   if (!model.value) return [{key: 'missing'}]

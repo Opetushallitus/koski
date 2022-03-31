@@ -37,10 +37,14 @@ const SuoritusjakoTopBar = () => {
   )
 }
 
+SuoritusjakoTopBar.displayName = 'SuoritusjakoTopBar'
+
 const ChangeLang = () =>
  (<span className='change-lang' onClick={() => lang === 'sv' ? setLang('fi') : setLang('sv')}>
     {lang === 'sv' ? 'Suomeksi' : 'På svenska'}
   </span>)
+
+ChangeLang.displayName = 'ChangeLang'
 
 const contentP = locationP.flatMapLatest(() => tiedotP().map(oppija =>
     oppija
@@ -86,3 +90,5 @@ const Oppija = ({oppija}) => {
       </div>
     )
 }
+
+Oppija.displayName = 'Oppija'

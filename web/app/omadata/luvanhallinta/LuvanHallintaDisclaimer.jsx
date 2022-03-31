@@ -16,3 +16,5 @@ export const LuvanHallintaDisclaimer = () => (
     </p>
   </div>
 )
+
+LuvanHallintaDisclaimer.displayName = 'LuvanHallintaDisclaimer'

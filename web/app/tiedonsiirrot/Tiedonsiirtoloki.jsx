@@ -21,3 +21,5 @@ export const tiedonsiirtolokiContentP = (queryString) => {
 }
 
 export const OppilaitosTitle = ({oppilaitos}) => oppilaitos ? <span>{' '}<Text name="oppilaitoksessa"/>{` ${t(oppilaitos.nimi)}`}</span> : null
+
+OppilaitosTitle.displayName = 'OppilaitosTitle'

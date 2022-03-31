@@ -17,6 +17,8 @@ const doUpdate = (secret, expirationDate) => Http.post(`${ApiBaseUrl}/update`, {
 export const SuoritusjakoLinkPlaceholder = ({transition}) =>
   <div className={`suoritusjako-link--placeholder${transition === 'enter' ? ' transition-enter' : ''}`}/>
 
+SuoritusjakoLinkPlaceholder.displayName = 'SuoritusjakoLinkPlaceholder'
+
 export class SuoritusjakoLink extends React.Component {
   constructor(props) {
     super(props)

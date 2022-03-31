@@ -44,6 +44,8 @@ export const KelaOppijaHaku = ({}) => {
   )
 }
 
+KelaOppijaHaku.displayName = 'KelaOppijaHaku'
+
 const hetuRegex = new RegExp('^([012][0-9]|3[01])(0[1-9]|1[0-2])([0-9]{2})(A|-|\\+)([0-9]{3})([0-9A-FHJ-NPR-Y])$')
 const isValidHetu = str => hetuRegex.test(str)
 const capitalizeHetu = (h) => /\d{6}[+\-A]\d{3}[0-9A-Z]/i.test(h) ? h.toUpperCase() : h

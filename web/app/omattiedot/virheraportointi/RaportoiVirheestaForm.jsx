@@ -48,6 +48,8 @@ const OppilaitosPicker = ({oppilaitosAtom}) => {
   )
 }
 
+OppilaitosPicker.displayName = 'OppilaitosPicker'
+
 export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
   const hasAcceptedDisclaimer = Atom(false)
   const selectedOppilaitosA = Atom()
@@ -118,3 +120,5 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
     </div>
   )
 }
+
+RaportoiVirheestäForm.displayName = 'RaportoiVirheestäForm'

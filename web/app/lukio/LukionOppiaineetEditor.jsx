@@ -80,6 +80,8 @@ export const LukionOppiaineetEditor = ({
   )
 }
 
+LukionOppiaineetEditor.displayName = 'LukionOppiaineetEditor'
+
 export const paikallisiaLukionOppiaineitaTaiOsasuorituksia = oppiaineet => oppiaineet.some(aine => isPaikallinen(modelLookup(aine, 'koulutusmoduuli')) || paikallisiaOsasuorituksia(aine))
 export const paikallisiaOsasuorituksia = oppiaine => modelItems(oppiaine, 'osasuoritukset').some(osasuoritus => isPaikallinen(modelLookup(osasuoritus, 'koulutusmoduuli')))
 
@@ -99,6 +101,8 @@ export const OsasuorituksetYhteensa = ({suorituksetModel, oppiaineet}) => {
     </div>
   )
 }
+
+OsasuorituksetYhteensa.displayName = 'OsasuorituksetYhteensa'
 
 export const paikallinenOsasuoritusTaiOppiaineText = päätasonSuoritus => (isLukioOps2019(päätasonSuoritus) || isPreIbLukioOps2019(päätasonSuoritus) || isLuvaOps2019(päätasonSuoritus)) ?
   'Paikallinen opintojakso tai oppiaine' : 'Paikallinen kurssi tai oppiaine'

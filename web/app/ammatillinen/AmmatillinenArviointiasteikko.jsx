@@ -17,6 +17,8 @@ export const AmmatillinenArviointiasteikko = ({model}) => {
     : null
 }
 
+AmmatillinenArviointiasteikko.displayName = 'AmmatillinenArviointiasteikko'
+
 const isAmmatillinenPaatasonSuoritus = model => model.value.classes.includes('ammatillinenpaatasonsuoritus')
 
 const kaytossaOlevaAsteikko = model => {

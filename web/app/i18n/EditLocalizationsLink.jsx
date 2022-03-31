@@ -13,3 +13,5 @@ export const EditLocalizationsLink = () => {
 
   return <span>{showEdit.map((show) => show && <a className="edit-localizations" onClick={onClick}><Text name="Muokkaa käännöksiä"/></a>)}</span>
 }
+
+EditLocalizationsLink.displayName = 'EditLocalizationsLink'

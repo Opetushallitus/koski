@@ -27,9 +27,13 @@ const Korkeakoulusuoritukset = ({opiskeluoikeus}) => {
   )
 }
 
+Korkeakoulusuoritukset.displayName = 'Korkeakoulusuoritukset'
+
 const IrrallisetOpintojaksot = ({opiskeluoikeus}) => {
   const model = addContext(opiskeluoikeus, {suoritus: opiskeluoikeus})
   return <OmatTiedotSuoritustaulukko suorituksetModel={modelLookup(model, 'suoritukset')}/>
 }
+
+IrrallisetOpintojaksot.displayName = 'IrrallisetOpintojaksot'
 
 export {Korkeakoulusuoritukset}

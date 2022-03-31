@@ -73,6 +73,8 @@ export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, 
     : <span className="inline enum">{useHyphenate ? hyphenate(modelTitle(model)) : modelTitle(model)}</span>
 }
 
+EnumEditor.displayName = 'EnumEditor'
+
 let zeroValue = {title: t('Ei valintaa'), value: 'eivalintaa'}
 
 EnumEditor.fetchAlternatives = (model) => {

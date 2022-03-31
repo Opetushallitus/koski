@@ -68,3 +68,5 @@ export const LuvaEditor = ({suorituksetModel}) => {
     </div>
   )
 }
+
+LuvaEditor.displayName = 'LuvaEditor'

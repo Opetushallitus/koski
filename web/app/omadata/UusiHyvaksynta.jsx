@@ -20,7 +20,7 @@ const getBirthDate = (editorResponse) => {
 }
 
 
-export default ({memberName, logoutURL, onAuthorization, authorizationGiven}) => (
+const UusiHyvaksynta = ({memberName, logoutURL, onAuthorization, authorizationGiven}) => (
   <div className='acceptance-container'>
     <div className='heading'><h1><Text name='Henkilökohtaisten tietojen käyttö'/></h1></div>
     <div className='user'>
@@ -38,3 +38,7 @@ export default ({memberName, logoutURL, onAuthorization, authorizationGiven}) =>
 
   </div>
 )
+
+UusiHyvaksynta.displayName = 'UusiHyvaksynta'
+
+export default UusiHyvaksynta

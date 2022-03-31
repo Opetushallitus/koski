@@ -71,6 +71,8 @@ const Kayttolupa = ({kayttolupa, removeCallback}) => {
   )
 }
 
+Kayttolupa.displayName = 'Kayttolupa'
+
 const Kayttotarkoitus = ({purpose}) => (
   <div className='kayttotarkoitus'>
     <div className='headline-container'>
@@ -80,9 +82,13 @@ const Kayttotarkoitus = ({purpose}) => (
   </div>
 )
 
+Kayttotarkoitus.displayName = 'Kayttotarkoitus'
+
 const NoMyDataPermissions = () => (
   <li className='no-permission'>
     <Text name={'Et ole tällä hetkellä antanut millekään palveluntarjoajalle lupaa nähdä opintotietojasi Oma Opintopolusta. ' +
     'Luvan myöntäminen tapahtuu kyseisen palvelutarjoajan sivun kautta.'}/>
   </li>
 )
+
+NoMyDataPermissions.displayName = 'NoMyDataPermissions'

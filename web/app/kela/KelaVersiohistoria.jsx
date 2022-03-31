@@ -40,6 +40,8 @@ export const KelaVersiohistoria = ({opiskeluoikeus, oppijaOid}) => {
   )
 }
 
+KelaVersiohistoria.displayName = 'KelaVersiohistoria'
+
 export const PalaaVersiohistoriastaLink = ({henkilo}) => {
   const hetu = henkilo.hetu
   const showReturnLink = window.location.href.includes('kela/versiohistoria/')
@@ -54,3 +56,5 @@ export const PalaaVersiohistoriastaLink = ({henkilo}) => {
     </div>
   )
 }
+
+PalaaVersiohistoriastaLink.displayName = 'PalaaVersiohistoriastaLink'

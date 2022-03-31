@@ -19,3 +19,5 @@ export const SuoritusjakoHeader = ({oppija}) => {
     </header>
   )
 }
+
+SuoritusjakoHeader.displayName = 'SuoritusjakoHeader'

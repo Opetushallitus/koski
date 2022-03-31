@@ -16,3 +16,5 @@ export const HeaderInfo = ({oppija, varoitukset}) => (
     </div>)}
   </div>
 )
+
+HeaderInfo.displayName = 'HeaderInfo'

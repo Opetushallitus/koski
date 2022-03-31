@@ -17,6 +17,8 @@ export const LocalizedStringEditor = ({model, ...rest}) => {
   return <span className={'localized-string ' + usedLanguage}><StringEditor {...{model: stringModel, ...rest}} /></span>
 }
 
+LocalizedStringEditor.displayName = 'LocalizedStringEditor'
+
 let languagePriority = [lang, 'fi', 'sv', 'en']
 
 let getUsedLanguage = (m) => {

@@ -95,6 +95,7 @@ const TyössäoppimisjaksoEditor = ({model}) => {
   )
 }
 TyössäoppimisjaksoEditor.readOnly = true
+TyössäoppimisjaksoEditor.displayName = 'TyössäoppimisjaksoEditor'
 TyössäoppimisjaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
 const SisältäväOpiskeluoikeusEditor = ({model}) => {
@@ -107,6 +108,8 @@ const SisältäväOpiskeluoikeusEditor = ({model}) => {
   }
   return <span><span className="id"><Editor model={model} path="oid"/></span><span className="oppilaitos">{'('}<Editor model={model} path="oppilaitos"/>{')'}</span></span>
 }
+
+SisältäväOpiskeluoikeusEditor.displayName = 'SisältäväOpiskeluoikeusEdutor'
 
 const OsaamisalajaksoEditor = ({model}) => {
   const wrappedModel = wrapOptional(model)
@@ -122,6 +125,8 @@ const OsaamisalajaksoEditor = ({model}) => {
     </span>
   )
 }
+
+OsaamisalajaksoEditor.displayName = 'OsaamisalajaksoEditor'
 
 const fetchOsaamisalat = diaari => () => Http.cachedGet(`/koski/api/editor/koodit/osaamisalat/osaamisala/${encodeURIComponent(diaari)}`)
 

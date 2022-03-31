@@ -23,6 +23,8 @@ export const KelaHenkilo = ({henkilo}) => {
   )
 }
 
+KelaHenkilo.displayName = 'KelaHenkilo'
+
 export const KelaOpiskeluoikeus = ({opiskeluoikeus, henkilo}) => {
   const removeFromTableView = ['suoritukset', 'alkamispäivä', 'päättymispäivä', 'oid', 'versionumero', 'arvioituPäättymispäivä', 'oppilaitos', 'koulutustoimija', 'tyyppi', 'aikaleima']
   return (
@@ -38,6 +40,8 @@ export const KelaOpiskeluoikeus = ({opiskeluoikeus, henkilo}) => {
   )
 }
 
+KelaOpiskeluoikeus.displayName = 'KelaOpiskeluoikeus'
+
 export const OpiskeluoikeusOtsikko = ({opiskeluoikeus, oppijaOid}) => {
   const oppilaitoksenNimi = opiskeluoikeus.oppilaitos && t(opiskeluoikeus.oppilaitos.nimi || {})
   return (
@@ -52,6 +56,8 @@ export const OpiskeluoikeusOtsikko = ({opiskeluoikeus, oppijaOid}) => {
     </h3>
   )
 }
+
+OpiskeluoikeusOtsikko.displayName = 'OpiskeluoikeusOtsikko'
 
 export const opiskeluoikeudenTilaString = opiskeluoikeus => {
   const alkamispaiva =  opiskeluoikeus.alkamispäivä && yearFromIsoDateString(opiskeluoikeus.alkamispäivä) || ''
@@ -74,6 +80,8 @@ const Voimassaoloaika = ({opiskeluoikeus}) => {
     </div>
   )
 }
+
+Voimassaoloaika.displayName = 'Voimassaoloaika'
 
 const paattymispaiva = opiskeluoikeus => {
   if (opiskeluoikeus.päättymispäivä) {

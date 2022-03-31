@@ -95,3 +95,5 @@ export const UusiOppiaineDropdown = (
     }
   </div>)
 }
+
+UusiOppiaineDropdown.displayName = 'UusiOppiaineDropdown'

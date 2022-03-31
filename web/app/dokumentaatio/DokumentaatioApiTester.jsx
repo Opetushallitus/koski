@@ -80,6 +80,8 @@ const QueryParameters = ({operation, queryParametersAtom}) => {
   )
 }
 
+QueryParameters.displayName = 'QueryParameters'
+
 const PostDataExamples = ({operation, postDataAtom}) => {
   const selectedValueA = Atom(operation.examples[0])
 
@@ -100,6 +102,8 @@ const PostDataExamples = ({operation, postDataAtom}) => {
   )
 }
 
+PostDataExamples.displayName = 'PostDataExamples'
+
 const ApiOperationTesterParameters = ({operation, queryParametersAtom, postDataAtom}) => {
   if (operation.examples.length > 0) {
     return <PostDataExamples operation={operation} postDataAtom={postDataAtom}/>
@@ -109,6 +113,8 @@ const ApiOperationTesterParameters = ({operation, queryParametersAtom, postDataA
     return <div></div>
   }
 }
+
+ApiOperationTesterParameters.displayName = 'ApiOperationTesterParameters'
 
 const ApiOperationTester = ({operation}) => {
   const queryParametersAtom = Atom([])
@@ -176,6 +182,8 @@ const ApiOperationTester = ({operation}) => {
   )
 }
 
+ApiOperationTester.displayName = 'ApiOperationTester'
+
 
 const ApiOperationStatusCodeRow = ({errorCategory}) => {
   const expandedA = Atom(false)
@@ -204,6 +212,8 @@ const ApiOperationStatusCodeRow = ({errorCategory}) => {
   )
 }
 
+ApiOperationStatusCodeRow.displayName = 'ApiOperationStatusCodeRow'
+
 const ApiOperationStatusCodes = ({errorCategories}) => {
   return (
     <table>
@@ -223,6 +233,8 @@ const ApiOperationStatusCodes = ({errorCategories}) => {
     </table>
   )
 }
+
+ApiOperationStatusCodes.displayName = 'ApiOperationStatusCodes'
 
 const ApiOperation = ({operation}) => {
   const expandedA = Atom(false)
@@ -249,6 +261,10 @@ const ApiOperation = ({operation}) => {
   )
 }
 
+ApiOperation.displayName = 'ApiOperation'
+
 export const ApiOperations = ({operations}) => {
   return <div>{R.addIndex(R.map)((operation, key) => <ApiOperation key={key} operation={operation}/>, operations)}</div>
 }
+
+ApiOperations.displayName = 'ApiOperations'

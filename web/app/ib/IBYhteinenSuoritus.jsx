@@ -29,7 +29,11 @@ const YhteisetEditorit = ({model}) => (
   </div>
 )
 
+YhteisetEditorit.displayName = 'YhteisetEditorit'
+
 const CreativityActionService = ({model}) => <YhteisetEditorit model={model}/>
+
+CreativityActionService.displayName = 'CreativityActionService'
 
 const TheoryOfKnowledge = ({model}) => (
   <div>
@@ -37,6 +41,8 @@ const TheoryOfKnowledge = ({model}) => (
     <KurssitEditor model={wrapOptional(model)}/>
   </div>
 )
+
+TheoryOfKnowledge.displayName = 'TheoryOfKnowledge'
 
 const ExtendedEssay = ({model}) => {
   const tunniste = (
@@ -70,6 +76,8 @@ const ExtendedEssay = ({model}) => {
     </div>
   )
 }
+
+ExtendedEssay.displayName = 'ExtendedEssay'
 
 export {
   TheoryOfKnowledge,

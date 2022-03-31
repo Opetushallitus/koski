@@ -48,3 +48,5 @@ export const HeaderButtons = ({uiModeA, oppija}) => (
     />
   </div>
 )
+
+HeaderButtons.displayName = 'HeaderButtons'

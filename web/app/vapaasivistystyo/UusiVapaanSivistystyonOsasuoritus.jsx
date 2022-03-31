@@ -158,6 +158,8 @@ export const UusiVapaanSivistystyonOsasuoritus = ({suoritusPrototypes, setExpand
   )
 }
 
+UusiVapaanSivistystyonOsasuoritus.displayName = 'UusiVapaanSivistystyonOsasuoritus'
+
 const LisääKoodistosta = ({
   suoritusPrototype,
   koodistoUri,
@@ -187,6 +189,8 @@ const LisääKoodistosta = ({
   )
 }
 
+LisääKoodistosta.displayName = 'LisääKoodistosta'
+
 const LisääOsaAlue = ({
   suoritusPrototype,
   selectionText,
@@ -212,6 +216,8 @@ const LisääOsaAlue = ({
     </div>
   )
 }
+
+LisääOsaAlue.displayName = 'LisääOsaAlue'
 
 const LisääPaikallinen = ({suoritusPrototype, setExpanded, lisääText, lisääTitle}) => {
   const showModal = Atom(false)
@@ -310,3 +316,5 @@ const LisääPaikallinen = ({suoritusPrototype, setExpanded, lisääText, lisä�
     </div>
   )
 }
+
+LisääPaikallinen.displayName = 'LisääPaikallinen'

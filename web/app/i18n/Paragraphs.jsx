@@ -16,3 +16,5 @@ export const Paragraphs = ({ name, ignoreMissing, lang }) => {
         </React.Fragment>
     )
 }
+
+Paragraphs.displayName = 'Paragraphs'

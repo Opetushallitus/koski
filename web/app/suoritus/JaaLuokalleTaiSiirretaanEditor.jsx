@@ -30,3 +30,5 @@ export const JääLuokalleTaiSiirretäänEditor = ({model}) => {
   }
   return null
 }
+
+JääLuokalleTaiSiirretäänEditor.displayName = 'JääLuokalleTaiSiirretäänEditor'

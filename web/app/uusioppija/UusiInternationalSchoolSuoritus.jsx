@@ -28,6 +28,8 @@ const GradeDropDown = ({gradeAtom, without}) => {
   return <KoodistoDropdown className='property international-school-grade' title='Grade' options={gradesP} selected={gradeAtom} enableFilter={true} />
 }
 
+GradeDropDown.displayName = 'GradeDropDown'
+
 const byGrade = (a, b) =>
   a.koodiarvo === 'explorer'
     ? -1 : b.koodiarvo === 'explorer'

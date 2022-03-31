@@ -27,3 +27,5 @@ export const SelectAlternativeByEnumValueEditor = ({ model, path, className }) =
         }
   </span>)
 }
+
+SelectAlternativeByEnumValueEditor.displayName = 'SelectAlternativeByEnumValueEditor'

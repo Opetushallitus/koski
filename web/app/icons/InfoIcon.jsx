@@ -6,4 +6,6 @@ export const InfoIcon = () => (
     </svg>
 )
 
+InfoIcon.displayName = 'InfoIcon'
+
 export default InfoIcon

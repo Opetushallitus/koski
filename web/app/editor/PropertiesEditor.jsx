@@ -71,6 +71,8 @@ const ErrorDecorator = ({editor, model, parentKey}) => {
   return [<React.Fragment key={'editor-' + parentKey}>{editor}</React.Fragment>].concat(errorMsgs)
 }
 
+ErrorDecorator.displayName = 'ErrorDecorator'
+
 export const PropertyTitle = ({property}) => {
   let description = property.description && property.description.join(' ')
   if (property.title === 'Koulusivistyskieli') {
@@ -85,6 +87,8 @@ export const PropertyTitle = ({property}) => {
     return <Text name={property.title}/>
   }
 }
+
+PropertyTitle.displayName = 'PropertyTitle'
 
 export const shouldShowProperty = (context) => (property) => {
   if (!context.edit && modelEmpty(property.model)) return false

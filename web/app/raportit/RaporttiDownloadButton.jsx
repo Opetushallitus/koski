@@ -1,7 +1,7 @@
 import React from 'baret'
 import Text from '../i18n/Text'
 
-export default ({inProgressP, disabled, onSubmit}) => (
+const RaporttiDownloadButton = ({inProgressP, disabled, onSubmit}) => (
   <div className='raportti-download-button'>
     {inProgressP.map((inProgress) =>
       inProgress
@@ -10,3 +10,7 @@ export default ({inProgressP, disabled, onSubmit}) => (
     )}
   </div>
 )
+
+RaporttiDownloadButton.displayName = 'RaporttiDownloadButton'
+
+export default RaporttiDownloadButton

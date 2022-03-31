@@ -10,9 +10,13 @@ export const TopBar = ({user, titleKey, inRaamit, location}) => {
   )
 }
 
+TopBar.displayName = 'TopBar'
+
 const RaamitTopBar = ({location, user}) => {
   return (<header id="topbar" className="inraamit topbarnav">
     <NavList location={location} user={user}/>
     <InvalidationNotification/>
   </header>)
 }
+
+RaamitTopBar.displayName = 'RaamitTopBar'

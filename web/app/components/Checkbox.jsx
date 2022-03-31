@@ -23,4 +23,6 @@ const Checkbox = ({id, onChange, checked, label, LabelComponent, listStylePositi
   </div>
 )
 
+Checkbox.displayName = 'Checkbox'
+
 export default Checkbox

@@ -24,3 +24,5 @@ export const SuullisenKielitaidonKoePropertyTitle = ({}) => (
     </Infobox>
   </>
 )
+
+SuullisenKielitaidonKoePropertyTitle.displayName = 'SuullisenKielitaidonKoePropertyTitle'

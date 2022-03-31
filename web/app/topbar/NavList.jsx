@@ -1,7 +1,7 @@
 import React from 'baret'
 import {naviLink} from '../tiedonsiirrot/Tiedonsiirrot'
 
-export default ({location, user}) => {
+const NavList = ({location, user}) => {
   if (!user) {
     return null
   }
@@ -20,6 +20,12 @@ export default ({location, user}) => {
   </ul>)
 }
 
+NavList.displayName = 'NavList'
+
 const KelaNavLink = ({location}) => (
   <li>{naviLink('/koski/kela', 'Kela', location.path, '', (path, loc) => loc.startsWith(path))}</li>
 )
+
+KelaNavLink.displayName = 'KelaNavLink'
+
+export default NavList

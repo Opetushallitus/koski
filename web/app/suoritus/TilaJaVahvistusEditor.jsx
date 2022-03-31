@@ -40,6 +40,8 @@ export const TilaJaVahvistusEditor = ({model}) => {
   )
 }
 
+TilaJaVahvistusEditor.displayName = 'TilaJaVahvistusEditor'
+
 const MerkitseKeskeneräiseksiButton = ({model}) => {
   if (!model.context.edit || suoritusKesken(model)) return null
   var opiskeluoikeudenTila = modelData(model.context.opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila.koodiarvo')
@@ -49,6 +51,8 @@ const MerkitseKeskeneräiseksiButton = ({model}) => {
   let valmistunut = opiskeluoikeudenTila === 'valmistunut'
   return <button className="koski-button merkitse-kesken" title={valmistunut ? t('Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on Valmistunut.') : ''} disabled={valmistunut} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
 }
+
+MerkitseKeskeneräiseksiButton.displayName = 'MerkitseKeskeneräiseksiButton'
 
 const MerkitseValmiiksiButton = ({model}) => {
   if (!model.context.edit || !suoritusKesken(model) || ( isYsiluokka(model) && !jääLuokalle(model))) return null
@@ -88,5 +92,7 @@ const MerkitseValmiiksiButton = ({model}) => {
     }
   </span>)
 }
+
+MerkitseValmiiksiButton.displayName = 'MerkitseValmiiksiButton'
 
 export const eiTiedossaOppiaine = suoritus => modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo') === 'XX'

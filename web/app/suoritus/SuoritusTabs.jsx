@@ -47,6 +47,8 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
     </div>
   )}
 
+SuoritusTabs.displayName = 'SuoritusTabs'
+
 export const assignTabNames = (suoritukset) => {
   suoritukset = R.reverse(suoritukset) // they are in reverse chronological-ish order
   let tabNamesInUse = {}

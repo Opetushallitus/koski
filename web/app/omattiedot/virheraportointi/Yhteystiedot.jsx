@@ -26,11 +26,23 @@ const Yhteystieto = ({henkilö, yhteystieto}) => {
   )
 }
 
+Yhteystieto.displayName = 'Yhteystieto'
+
 const EiYhteystietoa = () => <Text name={'Oppilaitokselle ei löytynyt yhteystietoja.'}/>
 
 const MuuVirhe = () => <Text name={'httpStatus.500'}/>
 
-const wrapAsSection = Component => Component ? <div><hr/>{Component}</div> : Component
+const wrapAsSection = Component => {
+  if(Component) {
+    Component.displayName = `wrapAsSection(${Component.displayName})`
+    return <div><hr/>{Component}</div>
+  } else {
+    return Component
+  }
+}
+
+EiYhteystietoa.displayName = 'EiYhteystietoa'
+MuuVirhe.displayName = 'MuuVirhe'
 
 export const Yhteystiedot = ({henkilö, yhteystietoP, isLoadingA}) => {
   const results = Bacon.combineWith(yhteystietoP.skipErrors(), isLoadingA, (yhteystieto, loading) =>
@@ -47,3 +59,5 @@ export const Yhteystiedot = ({henkilö, yhteystietoP, isLoadingA}) => {
 
   return <div>{Bacon.mergeAll(results, errors).map(wrapAsSection)}</div>
 }
+
+Yhteystiedot.displayName = 'Yhteystiedot'

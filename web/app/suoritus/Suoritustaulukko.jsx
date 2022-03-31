@@ -166,6 +166,8 @@ const SingleColumnRowTable = ({className, children, colSpan = 1}) => (
   </tbody>
 )
 
+SingleColumnRowTable.displayName = 'SingleColumnRowTable'
+
 export const suorituksenTilaSymbol = (suoritus) => isValinnanMahdollisuus(suoritus)
   ? ''
   : suoritusValmis(suoritus) ? '' : ''

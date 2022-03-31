@@ -9,3 +9,5 @@ export const OmaÄidinkieliEditor = ({model}) => (<PropertiesEditor
     p.key === 'arvosana' ? <EnumEditor model={p.model} sortBy={sortGrades}/> : getDefault()
   }
 />)
+
+OmaÄidinkieliEditor.displayName = 'OmaÄidinkieliEditor'

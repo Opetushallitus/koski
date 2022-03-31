@@ -24,6 +24,8 @@ export const LukionOppiaineenOppimaaranSuoritus = ({model}) => (
   </section>
 )
 
+LukionOppiaineenOppimaaranSuoritus.displayName = 'LukionOppiaineenOppimaaranSuoritus'
+
 export const OmatTiedotLukionOppiaineenOppimaaranSuoritus = ({model}) => (
   <section>
     <table className='omattiedot-suoritukset'>
@@ -35,3 +37,5 @@ export const OmatTiedotLukionOppiaineenOppimaaranSuoritus = ({model}) => (
     {paikallisiaOsasuorituksia(model) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
   </section>
 )
+
+OmatTiedotLukionOppiaineenOppimaaranSuoritus.displayName = 'OmatTiedotLukionOppiaineenOppimaaranSuoritus'

@@ -41,7 +41,9 @@ const OmatTiedotOppiaineryhmä = ({title, aineet, useOppiaineLaajuus, customOsas
   </React.Fragment>
 )
 
-export default ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
+OmatTiedotOppiaineryhmä.displayName = 'OmatTiedotOppiaineryhmä'
+
+const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
   const {suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
@@ -80,3 +82,7 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
     </div>
   ) : null
 }
+
+OmatTiedotRyhmiteltyOppiaineet.className = 'OmatTiedotRyhmiteltyOppiaineet'
+
+export default OmatTiedotRyhmiteltyOppiaineet

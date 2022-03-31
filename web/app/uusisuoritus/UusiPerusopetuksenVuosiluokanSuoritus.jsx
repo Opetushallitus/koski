@@ -67,6 +67,8 @@ const UusiPerusopetuksenVuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallb
   </div>)
 }
 
+UusiPerusopetuksenVuosiluokanSuoritusPopup.displayName = 'UusiPerusopetuksenVuosiluokanSuoritusPopup'
+
 UusiPerusopetuksenVuosiluokanSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
   return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0 && !nuortenPerusopetuksenOppiaineenOppimääränSuoritus(opiskeluoikeus)
 }

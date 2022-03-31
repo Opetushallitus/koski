@@ -48,6 +48,8 @@ export const UusiOppija = ({hetu, oid}) => {
   )
 }
 
+UusiOppija.displayName = 'UusiOppija'
+
 const toCreateOppija = (henkilö, opiskeluoikeus) => {
   return {
     henkilö,

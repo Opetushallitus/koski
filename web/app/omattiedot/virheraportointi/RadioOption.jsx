@@ -20,6 +20,8 @@ const RadioOption = ({selectedOppilaitosA, label, value, styleModifier, checked}
   </li>
 )
 
+RadioOption.displayName = 'RadioOption'
+
 const OppilaitosOption = ({oppilaitos, selectedOppilaitosA}) => (
   <RadioOption
     selectedOppilaitosA={selectedOppilaitosA}
@@ -27,6 +29,8 @@ const OppilaitosOption = ({oppilaitos, selectedOppilaitosA}) => (
     value={oppilaitos.oid}
   />
 )
+
+OppilaitosOption.displayName = 'OppilaitosOption'
 
 const MuuOppilaitosOptions = ({selectedOppilaitosA, isSelected}) => (
   <RadioOption
@@ -37,6 +41,8 @@ const MuuOppilaitosOptions = ({selectedOppilaitosA, isSelected}) => (
     checked={isSelected}
   />
 )
+
+MuuOppilaitosOptions.displayName = 'MuuOppilaitosOptions'
 
 export {
   OtherOppilaitosValue,

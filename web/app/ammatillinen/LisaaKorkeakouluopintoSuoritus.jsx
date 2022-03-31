@@ -21,6 +21,8 @@ export const LisääKorkeakouluopintoSuoritus = ({parentSuoritus, suoritusProtot
     : <div className='korkeakouluopinto'><a className="add-link" onClick={add}><Text name='Lisää korkeakouluopintoja'/></a></div>
 }
 
+LisääKorkeakouluopintoSuoritus.displayName = 'LisääKorkeakouluopintoSuoritus'
+
 export const koodistoNimi = koodisto => koodistoValues(koodisto).map('.0').map(x => x.nimi[lang] || x.nimi.fi)
 
 export const createSuoritusWithTutkinnonOsanRyhmä = (suoritusPrototype, tutkinnonOsanRyhmänNimi, suorituksenNimi) => {

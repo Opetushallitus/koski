@@ -53,6 +53,8 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
   </ModalDialog>)
 }
 
+MerkitseSuoritusValmiiksiPopup.displayName = 'MerkitseSuoritusValmiiksiPopup'
+
 let setOrgToContext = (vahvistus) => {
   let myöntäjäOrganisaatio = modelLookup(vahvistus, 'myöntäjäOrganisaatio')
   return addContext(vahvistus, { myöntäjäOrganisaatio })

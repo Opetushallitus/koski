@@ -39,3 +39,5 @@ export const OpiskeluoikeusTabs = ({opiskeluoikeudet, henkilo}) => {
     </div>
   )
 }
+
+OpiskeluoikeusTabs.displayName = 'OpiskeluoikeusTabs'

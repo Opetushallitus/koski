@@ -118,3 +118,5 @@ export const OppijaHaku = () => {
     </div>
   )
 }
+
+OppijaHaku.displayName = 'OppijaHaku'

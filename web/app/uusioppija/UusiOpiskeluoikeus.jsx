@@ -155,12 +155,16 @@ const VarhaiskasvatuksenJärjestämismuotoPicker = ({varhaiskasvatusAtom, järje
   </React.Fragment>)
 }
 
+VarhaiskasvatuksenJärjestämismuotoPicker.displayName = 'VarhaiskasvatuksenJärjestämismuotoPicker'
+
 const VarhaiskasvatusCheckbox = ({varhaiskasvatusAtom}) => {
   const varhaiskasvatusOnChange = () => varhaiskasvatusAtom.modify(v => !v)
   return (<label className='varhaiskasvatus-checkbox'><Text name='Päiväkodin esiopetus ostopalveluna tai palvelusetelinä'/>
     <Checkbox id='varhaiskasvatus-checkbox' onChange={varhaiskasvatusOnChange} label='Esiopetus ostetaan oman organisaation ulkopuolelta' listStylePosition='inside'/>
   </label>)
 }
+
+VarhaiskasvatusCheckbox.displayName = 'VarhaiskasvatusCheckbox'
 
 const VarhaiskasvatuksenJärjestämismuoto = ({järjestämismuotoAtom}) => {
   const järjestysMuotoP = koodistoValues('vardajarjestamismuoto/JM02,JM03')
@@ -172,6 +176,8 @@ const VarhaiskasvatuksenJärjestämismuoto = ({järjestämismuotoAtom}) => {
       selected={järjestämismuotoAtom}/>
   </label>)
 }
+
+VarhaiskasvatuksenJärjestämismuoto.displayName = 'VarhaiskasvatuksenJärjestämismuoto'
 
 const Oppilaitos = ({showVarhaiskasvatusToimipisteetP, oppilaitosAtom, organisaatiotyypitAtom}) => {
   const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE', VARHAISKASVATUKSEN_TOIMIPAIKKA]
@@ -198,6 +204,8 @@ const Oppilaitos = ({showVarhaiskasvatusToimipisteetP, oppilaitosAtom, organisaa
   </label>)
 }
 
+Oppilaitos.displayName = 'Oppilaitos'
+
 const Suorituskieli = ({suorituskieliAtom, suorituskieletP}) => <KoodistoDropdown className="suorituskieli" title={t('Suorituskieli')} selected={suorituskieliAtom} options={suorituskieletP}/>
 const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypitP}) => (<KoodistoDropdown
   className="opiskeluoikeudentyyppi"
@@ -206,11 +214,16 @@ const OpiskeluoikeudenTyyppi = ({opiskeluoikeudenTyyppiAtom, opiskeluoikeustyypi
   selected={opiskeluoikeudenTyyppiAtom}
 />)
 
+Suorituskieli.displayName = 'Suorituskieli'
+OpiskeluoikeudenTyyppi.displayName = 'OpiskeluoikeudenTyyppi'
+
 const Aloituspäivä = ({dateAtom}) => {
   return (<label className='aloituspaiva'><Text name="Aloituspäivä"/>
     <DateInput value={dateAtom.get()} valueCallback={(value) => dateAtom.set(value)} validityCallback={(valid) => !valid && dateAtom.set(undefined)} />
   </label>)
 }
+
+Aloituspäivä.displayName = 'Aloituspäivä'
 
 const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
   return (<KoodistoDropdown
@@ -219,6 +232,8 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
     options={opiskeluoikeudenTilatP}
     selected={tilaAtom}/>)
 }
+
+OpiskeluoikeudenTila.displayName = 'OpiskeluoikeudenTila'
 
 const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) => {
   const options = Bacon.combineWith(tyyppiAtom, opintojenRahoituksetP, (tyyppi, rahoitukset) =>
@@ -237,6 +252,8 @@ const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) =>
   )
 }
 
+OpintojenRahoitus.displayName = 'OpintojenRahoitus'
+
 const MaksuttomuusRadioButtons = ({maksuttomuusAtom}) => {
   return (
     <RadioButtons
@@ -246,6 +263,8 @@ const MaksuttomuusRadioButtons = ({maksuttomuusAtom}) => {
     />
   )
 }
+
+MaksuttomuusRadioButtons.displayName = 'MaksuttomuusRadioButtons'
 
 const TuvaJärjestämisLupa = ({tuvaJärjestämislupaAtom, tuvaJärjestämislupaP}) => {
   return (
@@ -257,6 +276,8 @@ const TuvaJärjestämisLupa = ({tuvaJärjestämislupaAtom, tuvaJärjestämislupa
     />
   )
 }
+
+TuvaJärjestämisLupa.displayName = 'TuvaJärjestämisLupa'
 
 const makeOpiskeluoikeus = (
   alkamispäivä,

@@ -134,6 +134,8 @@ export const ExpandAllRows = ({allExpandedP, toggleExpandAll}) => (
   </thead>
 )
 
+ExpandAllRows.displayName = 'ExpandAllRows'
+
 /*
  *
  * Shared column types
@@ -163,6 +165,8 @@ export const SuoritusColumn = {
     </td>)
   }
 }
+
+SuoritusColumn.displayName = 'SuoritusColumn'
 
 export const TutkintokertaColumn = {
   shouldShow: ({parentSuoritus}) => isYlioppilastutkinto(parentSuoritus),

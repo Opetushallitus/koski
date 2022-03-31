@@ -51,6 +51,8 @@ export const ArvosanaEditor = ({model, notFoundText}) => {
   }</span>)
 }
 
+ArvosanaEditor.displayName = 'ArvosanaEditor'
+
 export const resolveArvosanaModel = suoritus => {
   let arviointi = parasArviointi(suoritus)
   let arvosana = arviointi ? modelLookup(arviointi, 'arvosana') : null

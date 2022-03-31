@@ -15,3 +15,5 @@ export const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOs
       <LisaaTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={lisättävätTutkinnonOsat.osat} placeholder={placeholder}/>
   </span>)
 }
+
+LisääRakenteeseenKuuluvaTutkinnonOsa.displayName = 'LisääRakenteeseenKuuluvaTutkinnonOsa'

@@ -16,6 +16,8 @@ export const UusiTutkintokoulutukseenValmentavanKoulutuksenSuoritus = ({suoritus
   )
 }
 
+UusiTutkintokoulutukseenValmentavanKoulutuksenSuoritus.displayName = 'UusiTutkintokoulutukseenValmentavanKoulutuksenSuoritus'
+
 const makeSuoritus = (oppilaitos, peruste, suorituskieli) => {
   if (oppilaitos) {
     return (

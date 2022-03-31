@@ -16,3 +16,5 @@ export const LuvanHallintaHeadline = ({birthday}) => (
     </h3>
   </div>
 )
+
+LuvanHallintaHeadline.displayName = 'LuvanHallintaHeadline'

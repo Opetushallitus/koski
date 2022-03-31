@@ -60,3 +60,5 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
     }
   </span>)
 }
+
+OrganisaatioHenkilöEditor.displayName = 'OrganisaatioHenkilöEditor'

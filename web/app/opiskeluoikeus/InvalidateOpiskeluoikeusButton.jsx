@@ -3,7 +3,7 @@ import {modelData} from '../editor/EditorModel'
 import {invalidateOpiskeluoikeus} from '../virkailija/VirkailijaOppijaView'
 import ButtonWithConfirmation from '../components/ButtonWithConfirmation'
 
-export default ({opiskeluoikeus}) => (
+const InvalidateOpiskeluoikeusButton = ({opiskeluoikeus}) => (
   <ButtonWithConfirmation
     text='Mitätöi opiskeluoikeus'
     confirmationText='Vahvista mitätöinti, operaatiota ei voi peruuttaa'
@@ -13,3 +13,7 @@ export default ({opiskeluoikeus}) => (
     confirmationClassName='confirm-invalidate invalidate-opiskeluoikeus__confirm'
   />
 )
+
+InvalidateOpiskeluoikeusButton.displayName = 'InvalidateOpiskeluoikeusButton'
+
+export default InvalidateOpiskeluoikeusButton

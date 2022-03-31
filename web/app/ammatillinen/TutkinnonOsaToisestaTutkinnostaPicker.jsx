@@ -20,5 +20,7 @@ const TutkinnonOsaToisestaTutkinnostaPicker = ({tutkintoAtom, tutkinnonOsaAtom, 
     }
   </div>)
 
+TutkinnonOsaToisestaTutkinnostaPicker.displayName = 'TutkinnonOsaToisestaTutkinnostaPicker'
+
 export default TutkinnonOsaToisestaTutkinnostaPicker
 

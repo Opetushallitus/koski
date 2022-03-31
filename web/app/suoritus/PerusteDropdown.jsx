@@ -34,6 +34,8 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
   </span>)
 }
 
+PerusteDropdown.displayName = 'PerusteDropdown'
+
 export const diaarinumerot = suoritusTyyppi =>
   suoritusTyyppi
     ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/suorituksentyyppi/${suoritusTyyppi.koodiarvo}`)

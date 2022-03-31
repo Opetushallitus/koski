@@ -16,3 +16,5 @@ export const HeaderHuollettavanTiedotSection = ({uiModeA}) => (
   </section>
 )
 
+HeaderHuollettavanTiedotSection.displayName = 'HeaderHuollettavanTiedotSection'
+

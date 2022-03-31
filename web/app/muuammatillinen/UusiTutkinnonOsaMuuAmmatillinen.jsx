@@ -94,3 +94,5 @@ export const UusiTutkinnonOsaMuuAmmatillinen = ({groupId, suoritusPrototypes, se
     }
   </span>)
 }
+
+UusiTutkinnonOsaMuuAmmatillinen.displayName = 'UusiTutkinnonOsaMuuAmmatillinen'

@@ -8,8 +8,10 @@ const ChangeLang = () =>
     {lang === 'sv' ? 'Suomeksi' : 'På svenska'}
   </span>)
 
+ChangeLang.displayName = 'ChangeLang'
 
-export default () => (
+
+const Header = () => (
   <div className='header'>
     <div className='title'>
       <img src='/koski/images/opintopolku_logo.svg' alt='' />
@@ -22,3 +24,7 @@ export default () => (
 
   </div>
 )
+
+Header.displayName = 'Header'
+
+export default Header

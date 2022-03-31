@@ -33,6 +33,8 @@ export const KoulutusmoduuliEditor = ({model}) => {
   )
 }
 
+KoulutusmoduuliEditor.displayName = 'KoulutusmoduuliEditor'
+
 const TunnisteEditor = ({model}) => {
   const overrideEdit = (model.context.editAll || (model.context.edit && isMuutaAmmatillistaPäätasonSuoritus(model.context.suoritus))) ? true : false
   const päätasonsuoritus = model.context.suoritus
@@ -58,3 +60,5 @@ const TunnisteEditor = ({model}) => {
         <InternationalSchoolLevel model={model} />
       </React.Fragment>
 }
+
+TunnisteEditor.displayName = 'TunnisteEditor'

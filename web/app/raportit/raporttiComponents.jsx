@@ -15,6 +15,8 @@ export const LyhytKuvaus = ({ children }) => children
     )
     : null
 
+LyhytKuvaus.displayName = 'LyhytKuvaus'
+
 export const PaivaValinta = ({ paivaAtom, ohje }) => (
     <div className="parametri">
         <label><Text name="select-date"/></label>
@@ -26,6 +28,8 @@ export const PaivaValinta = ({ paivaAtom, ohje }) => (
         {ohje && <div className="ohje">{ohje}</div>}
     </div>
 )
+
+PaivaValinta.displayName = 'PaivaValinta'
 
 export const AikajaksoValinta = ({ alkuAtom, loppuAtom, ohje }) => (
     <div className="parametri">
@@ -49,6 +53,8 @@ export const AikajaksoValinta = ({ alkuAtom, loppuAtom, ohje }) => (
     </div>
 )
 
+AikajaksoValinta.displayName = 'AikajaksoValinta'
+
 export const Listavalinta = ({ label, help, options, atom, seamless }) => (
     <div className={`parametri ${seamless ? 'parametri-seamless' : ''}`}>
         {label && <label><Text name={label} /></label>}
@@ -61,6 +67,8 @@ export const Listavalinta = ({ label, help, options, atom, seamless }) => (
     </div>
 )
 
+Listavalinta.displayName = 'Listavalinta'
+
 export const Vinkit = ({ children }) => children
     ? (
         <div className="vinkit">
@@ -69,6 +77,8 @@ export const Vinkit = ({ children }) => children
         </div>
     )
     : null
+
+Vinkit.displayName = 'Vinkit'
 
 export const RaportinLataus = ({
     password,
@@ -96,3 +106,5 @@ export const RaportinLataus = ({
         <RaporttiDownloadButton inProgressP={inProgressP} disabled={submitEnabledP.not()} onSubmit={e => { e.preventDefault(); submitBus.push(); return false }} />
     </div>
 )
+
+RaportinLataus.displayName = 'RaportinLataus'

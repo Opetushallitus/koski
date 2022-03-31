@@ -6,3 +6,5 @@ export const Varoitukset = ({varoitukset}) => {
     {varoitukset.map(v => <div className="varoitus" key={v}><Text name={`warning:${v}`}/></div>)}
   </div>)
 }
+
+Varoitukset.displayName = 'Varoitukset'

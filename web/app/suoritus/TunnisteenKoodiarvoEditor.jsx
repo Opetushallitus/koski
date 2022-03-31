@@ -25,6 +25,8 @@ export const TunnisteenKoodiarvoEditor = ({model}) => {
   )
 }
 
+TunnisteenKoodiarvoEditor.displayName = 'TunnisteenKoodiarvoEditor'
+
 const TutkintoKoodiDropdown = ({options, onSelectionChanged, selected}) => (
   <Dropdown options={options}
             selected={selected}
@@ -33,11 +35,15 @@ const TutkintoKoodiDropdown = ({options, onSelectionChanged, selected}) => (
             displayValue={k => k.koodiarvo}/>
 )
 
+TutkintoKoodiDropdown.displayName = 'TutkintoKoodiDropdown'
+
 const hideTunnisteenKoodiarvo = model => {
   return model.context.kansalainen || !diaarinumerollinen(model) || model.value.classes.includes('lukionoppiaineidenoppimaarat2019')
 }
 
 const Koodiarvo = ({model}) => <span>{modelData(model, 'koodiarvo')}</span>
+
+Koodiarvo.displayName = 'Koodiarvo'
 
 const diaarinumerollinen = model => model.value.classes.includes('diaarinumerollinen')
 

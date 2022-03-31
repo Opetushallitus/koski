@@ -2,7 +2,7 @@ import React from 'baret'
 import Text from '../../i18n/Text'
 import { userP } from '../../util/user'
 
-export default ({ logoutURL }) => (
+const Logout = ({ logoutURL }) => (
   <div>
     <div className='username'>
       <img src='/koski/images/profiili.svg' alt='user-icon' />
@@ -15,3 +15,7 @@ export default ({ logoutURL }) => (
       </div>
   </div>
 )
+
+Logout.displayName = 'Logout'
+
+export default Logout

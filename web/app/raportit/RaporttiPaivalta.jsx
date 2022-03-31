@@ -55,3 +55,5 @@ export const RaporttiPaivalta = ({
     </section>
   )
 }
+
+RaporttiPaivalta.displayName = 'RaporttiPaivalta'

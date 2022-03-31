@@ -381,6 +381,8 @@ const RaportitContent = ({
   )
 }
 
+RaportitContent.displayName = 'RaportitContent'
+
 const RaporttiValitsin = ({ raportitP, selectedP, onSelect }) => (
   <div className="raportti-valitsin">
     {raportitP.map(raportit => raportit.length < 2 ? null : (
@@ -402,6 +404,8 @@ const RaporttiValitsin = ({ raportitP, selectedP, onSelect }) => (
   </div>
 )
 
+RaporttiValitsin.displayName = 'RaporttiValitsin'
+
 const OrganisaatioValitsin = ({ raporttiP, selectedP, onSelect }) => {
   const organisaatiotP = raporttiP.map(raportti => raportti ? raportti.organisaatiot : [])
 
@@ -417,6 +421,8 @@ const OrganisaatioValitsin = ({ raporttiP, selectedP, onSelect }) => {
     </div>
   )
 }
+
+OrganisaatioValitsin.displayName = 'OrganisaatioValitsin'
 
 function PaallekkaisetOpiskeluoikeudet({ stateP }) {
   return (

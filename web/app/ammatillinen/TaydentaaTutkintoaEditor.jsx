@@ -36,4 +36,6 @@ const TutkintoPicker = ({model}) => {
    </div>)
 }
 
+TäydentääTutkintoaEditor.displayName = 'TäydentääTutkintoaEditor'
+
 export default TäydentääTutkintoaEditor

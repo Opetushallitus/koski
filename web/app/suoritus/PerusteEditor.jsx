@@ -22,6 +22,7 @@ export const PerusteEditor = ({model}) => {
 }
 
 PerusteEditor.handlesOptional= () => true
+PerusteEditor.displayName = 'PerusteEditor'
 
 const perusteLinkki = (peruste, perusteEditor) => {
   const map404 = { errorMapper: (e) => e.httpStatus === 404 ? Bacon.never() : Bacon.Error(e) }

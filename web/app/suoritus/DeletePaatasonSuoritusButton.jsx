@@ -2,7 +2,7 @@ import React from 'react'
 import {deletePäätasonSuoritus} from '../virkailija/VirkailijaOppijaView'
 import ButtonWithConfirmation from '../components/ButtonWithConfirmation'
 
-export default ({opiskeluoikeus, päätasonSuoritus}) => (
+const DeletePaatasonSuoritusButton = ({opiskeluoikeus, päätasonSuoritus}) => (
   <div className='delete-paatason-suoritus-container'>
     <ButtonWithConfirmation
       text='Poista suoritus'
@@ -14,3 +14,7 @@ export default ({opiskeluoikeus, päätasonSuoritus}) => (
     />
   </div>
 )
+
+DeletePaatasonSuoritusButton.displayName = 'DeletePaatasonSuoritusButton'
+
+export default DeletePaatasonSuoritusButton

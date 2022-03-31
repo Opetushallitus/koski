@@ -34,11 +34,15 @@ export const HuollettavaDropdown = ({oppija, oppijaSelectionBus}) => {
   )
 }
 
+HuollettavaDropdown.displayName = 'HuollettavaDropdown'
+
 const HuoltajaInfo = ({}) => (
   <Infobox>
     <Text name='Alaikäisten huollettavien tiedot haetaan Digi- ja väestötietovirastolta.' className='huoltaja-info'/><br/>
     <a href='https://www.suomi.fi/ohjeet-ja-tuki/tietoa-valtuuksista/toisen-henkilon-puolesta-asiointi' target='_blank' className='huoltaja-info'>{t('Lisätietoa')}</a>
   </Infobox>
 )
+
+HuoltajaInfo.displayName = 'HuoltajaInfo'
 
 const aakkosjarjestys = (a, b) => a.etunimet.localeCompare(b.etunimet)

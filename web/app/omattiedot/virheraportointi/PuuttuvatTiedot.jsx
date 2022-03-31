@@ -18,3 +18,5 @@ export const PuuttuvatTiedot = () => (
     </ul>
   </div>
 )
+
+PuuttuvatTiedot.displayName = 'PuuttuvatTiedot'

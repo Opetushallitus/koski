@@ -114,6 +114,8 @@ const YhteensäSuoritettu = ({suoritukset, laajuusYksikkö}) => {
   )
 }
 
+YhteensäSuoritettu.displayName = 'YhteensäSuoritettu'
+
 const SingleColumnRowTable = ({children, className = '', colSpan = 1}) => (
   <tbody className={className}>
   <tr>
@@ -123,3 +125,5 @@ const SingleColumnRowTable = ({children, className = '', colSpan = 1}) => (
   </tr>
   </tbody>
 )
+
+SingleColumnRowTable.displayName = 'SingleColumnRowTable'

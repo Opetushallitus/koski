@@ -49,6 +49,8 @@ const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
   )
 }
 
+NäyttöPopup.displayName = 'NäyttöPopup'
+
 const YksittäinenNäyttöEditor = ({edit, model, popupVisibleA}) => {
   return (<div>
     {edit && <a className="edit-value" onClick={() => popupVisibleA.set(true)}><Text name="Muokkaa"/></a>}
@@ -92,6 +94,8 @@ export class AmmatillinenNäyttöEditor extends React.Component {
     )
   }
 }
+
+YksittäinenNäyttöEditor.displayName = 'YksittäinenNäyttöEditor'
 
 AmmatillinenNäyttöEditor.handlesOptional = () => true
 AmmatillinenNäyttöEditor.writeOnly = true

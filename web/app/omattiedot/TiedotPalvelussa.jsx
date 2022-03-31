@@ -11,3 +11,5 @@ export const TiedotPalvelussa = () => (
     </ul>
   </div>
 )
+
+TiedotPalvelussa.displayname = 'TiedotPalvelussa'

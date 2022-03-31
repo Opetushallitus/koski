@@ -97,3 +97,5 @@ export const AikajaksoRaporttiAikarajauksella = ({
     </section>
   )
 }
+
+AikajaksoRaporttiAikarajauksella.displayName = 'AikajaksoRaporttiAikarajauksella'

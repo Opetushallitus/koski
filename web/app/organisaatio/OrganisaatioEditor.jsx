@@ -18,3 +18,4 @@ export const OrganisaatioEditor = ({model, organisaatioTyypit, showAll}) => {
 OrganisaatioEditor.validateModel = (model) => {
   if(!modelData(model, 'oid')) return [{key: 'missing.oid'}]
 }
+OrganisaatioEditor.displayName = 'OrganisaatioEditor'

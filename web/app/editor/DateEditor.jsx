@@ -19,6 +19,7 @@ export const DateEditor = ({model, isAllowedDate}) => {
     : <span className="inline date">{dateValue && formatFinnishDate(dateValue)}</span>
 }
 
+DateEditor.displayName = 'DateEditor'
 DateEditor.createEmpty = (d) => modelSetData(d, '')
 DateEditor.canShowInline = () => true
 DateEditor.handlesOptional = () => true

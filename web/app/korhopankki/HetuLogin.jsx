@@ -113,4 +113,6 @@ const HetuLogin = ( { loginUrl = '/koski/cas/oppija', redirectUrl = null } ) => 
   )
 }
 
+HetuLogin.displayName = 'HetuLogin'
+
 export default HetuLogin

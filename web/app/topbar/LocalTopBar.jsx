@@ -5,7 +5,7 @@ import Text from '../i18n/Text'
 import NavList from './NavList'
 import InvalidationNotification from '../components/InvalidationNotification'
 
-export default ({location, user, titleKey}) => {
+const LocalTopBar = ({location, user, titleKey}) => {
   return (
     <header id='topbar' className={'local' + (user && user.isViranomainen ? ' viranomainen' : '')}>
       <div id='logo'><Text name="Opintopolku.fi"/></div>
@@ -23,3 +23,7 @@ export default ({location, user, titleKey}) => {
     </header>
   )
 }
+
+LocalTopBar.displayName = 'LocalTopBar'
+
+export default LocalTopBar

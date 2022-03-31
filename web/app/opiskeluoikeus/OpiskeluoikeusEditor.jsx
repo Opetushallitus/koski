@@ -83,6 +83,8 @@ export const OpiskeluoikeusEditor = ({model}) => {
   } />)
 }
 
+OpiskeluoikeusEditor.displayName = 'OpiskeluoikeusEditor'
+
 const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
   <div className="opiskeluoikeuden-tiedot">
 
@@ -113,6 +115,8 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
     }
   </div>
 )
+
+OpiskeluoikeudenTiedot.displayName = 'OpiskeluoikeudenTiedot'
 
 const showEsiopetusKoulutustoimija = opiskeluoikeus => property =>
   property.key === 'koulutustoimija' && modelData(opiskeluoikeus, 'järjestämismuoto')
@@ -147,6 +151,8 @@ export const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
   </div>)
 }
 
+OpiskeluoikeudenVoimassaoloaika.displayName = 'OpiskeluoikeudenVoimassaoloaika'
+
 const Suoritukset = ({opiskeluoikeus}) => {
   const opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
 
@@ -159,6 +165,8 @@ const Suoritukset = ({opiskeluoikeus}) => {
     </div>
   )
 }
+
+Suoritukset.displayName = 'Suoritukset'
 
 const TabulatedSuoritukset = ({model}) => {
   const suoritukset = modelItems(model, 'suoritukset')
@@ -179,6 +187,8 @@ const TabulatedSuoritukset = ({model}) => {
     </div>
   )
 }
+
+TabulatedSuoritukset.displayName = 'TabulatedSuoritukset'
 
 const isPerusopetuksenOppiaineenOppimäärä = suoritus =>
   ['perusopetuksenoppiaineenoppimaara', 'nuortenperusopetuksenoppiaineenoppimaara'].includes(suorituksenTyyppi(suoritus))

@@ -82,4 +82,6 @@ const Oppija = ({oppija}) => (
   </div>
 )
 
+Oppija.displayName = 'Oppija'
+
 patchSaavutettavuusLeima()

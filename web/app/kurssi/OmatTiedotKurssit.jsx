@@ -50,6 +50,8 @@ export const KurssitListMobile = ({oppiaine, oppiaineenKeskiarvo, customTitle, c
   )
 }
 
+KurssitListMobile.displayName = 'KurssitListMobile'
+
 class MobileKurssi extends React.Component {
   constructor(props) {
     super(props)

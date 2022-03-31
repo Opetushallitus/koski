@@ -3,7 +3,7 @@ import {UserInfo} from './UserInfo'
 import Link from '../components/Link'
 import Text from '../i18n/Text'
 
-export default ({user}) => {
+const OmatTiedotTopBar = ({user}) => {
   return (
     <header id='topbar' className="local topbar-omattiedot">
       <div className='topbar-content-wrapper'>
@@ -17,3 +17,7 @@ export default ({user}) => {
     </header>
   )
 }
+
+OmatTiedotTopBar.displayName = 'OmatTiedotTopBar'
+
+export default OmatTiedotTopBar

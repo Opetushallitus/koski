@@ -62,6 +62,8 @@ const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallba
   </ModalDialog>)
 }
 
+UusiPerusopetuksenOppiaineenSuoritusPopup.displayName = 'UusiPerusopetuksenOppiaineenSuoritusPopup'
+
 UusiPerusopetuksenOppiaineenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
   return ['aikuistenperusopetus', 'perusopetus'].includes(modelData(opiskeluoikeus, 'tyyppi.koodiarvo')) &&
     !!modelItems(opiskeluoikeus, 'suoritukset')

@@ -21,6 +21,8 @@ const LanderInfo = () => (
   </div>
 )
 
+LanderInfo.displayName = 'LanderInfo'
+
 ReactDOM.render((
   <div>
     <LanderInfo/>

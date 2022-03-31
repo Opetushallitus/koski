@@ -19,3 +19,5 @@ export const HeaderName = ({henkilö}) => {
     </div>
   )
 }
+
+HeaderName.displayName = 'HeaderName'

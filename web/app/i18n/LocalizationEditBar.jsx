@@ -5,7 +5,7 @@ import Text from './Text'
 import * as R from 'ramda'
 import Atom from 'bacon.atom'
 
-export default ({user}) => {
+const LocalizationEditBar = ({user}) => {
   if (!user.hasLocalizationWriteAccess) {
     return null
   }
@@ -29,6 +29,8 @@ export default ({user}) => {
   </div>)
 }
 
+LocalizationEditBar.displayName = 'LocalizationEditBar'
+
 const EditAllTexts = () => {
   return (<div className="localization-edit-all">
     <table>
@@ -45,3 +47,7 @@ const EditAllTexts = () => {
     </table>
   </div>)
 }
+
+EditAllTexts.displayName = 'EditAllTexts'
+
+export default LocalizationEditBar

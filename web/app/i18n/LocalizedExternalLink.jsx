@@ -9,3 +9,5 @@ export const LocalizedExternalLink = ({options, children}) => (
     <ExternalLinkIcon />
   </a>
 )
+
+LocalizedExternalLink.displayName = 'LocalizedExternalLink'

@@ -113,3 +113,5 @@ const KurssitListDesktop = ({oppiaine, oppiaineenKeskiarvo, customKurssitSortFn}
     </td>
   ]
 )
+
+KurssitListDesktop.displayName = 'KurssitListDesktop'

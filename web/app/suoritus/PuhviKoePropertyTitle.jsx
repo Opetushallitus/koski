@@ -11,3 +11,5 @@ export const PuhviKoePropertyTitle = ({}) => (
     </Infobox>
   </>
 )
+
+PuhviKoePropertyTitle.displayName = 'PuhviKoePropertyTitle'

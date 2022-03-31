@@ -10,3 +10,5 @@ export const HeaderSuoritusjakoSection = ({uiModeA, opiskeluoikeudet}) => (
     </Popup>
   </section>
 )
+
+HeaderSuoritusjakoSection.displayName = 'HeaderSuoritusjakoSection'

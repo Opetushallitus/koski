@@ -245,6 +245,8 @@ const HenkilöUiLink = ({henkilö, yksilöity}) => {
   </a>)
 }
 
+HenkilöUiLink.displayName = 'HenkilöUiLink'
+
 const globalSaveKeyEvent = Bacon.fromEvent(window, 'keydown')
   .filter(e => (e.getModifierState('Meta') || e.getModifierState('Control')) && e.keyCode==83)
   .doAction('.preventDefault')
@@ -274,6 +276,8 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   </div></div>
   )
 }
+
+EditBar.displayName = 'EditBar'
 
 const opiskeluoikeusInvalidated = () => {
   setInvalidationNotification('Opiskeluoikeus mitätöity')

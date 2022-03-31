@@ -96,7 +96,9 @@ const RyhmättömätAineet = (
   </React.Fragment>
 )
 
-export default ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditableKoulutusmoduuliProperties}) => {
+RyhmättömätAineet.displayName = 'RyhmättömätAineet'
+
+const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
@@ -173,3 +175,7 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditab
     </div>
   ) : null
 }
+
+RyhmiteltyOppiaineetEditor.displayName = 'RyhmiteltyOppiaineetEditor'
+
+export default RyhmiteltyOppiaineetEditor

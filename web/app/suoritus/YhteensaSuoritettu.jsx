@@ -69,6 +69,8 @@ export const YhteensäSuoritettu = ({suoritukset, laajuusP, laajuusYksikkö=null
   )
 }
 
+YhteensäSuoritettu.displayName = 'YhteensäSuoritettu'
+
 const lasketaanOsasuorituksista = (suoritus) => (
   isKorkeakouluOpintosuoritus(suoritus)
   || isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(suoritus)

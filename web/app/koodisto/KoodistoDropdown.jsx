@@ -15,7 +15,7 @@ import Text from '../i18n/Text'
   selectionText: shown when no selection
   showKoodiarvo: true/false
  */
-export default ({ className, title, options, selected, enableFilter, selectionText, showKoodiarvo = false}) => {
+const KoodistoDropdown = ({ className, title, options, selected, enableFilter, selectionText, showKoodiarvo = false}) => {
   showKoodiarvo = parseBool(showKoodiarvo)
   options = toObservable(options)
   let onChange = (value) => { selected.set(value) }
@@ -36,3 +36,7 @@ export default ({ className, title, options, selected, enableFilter, selectionTe
     }))
   }</label>)
 }
+
+KoodistoDropdown.displayValue = 'KoodistoDropdown'
+
+export default KoodistoDropdown

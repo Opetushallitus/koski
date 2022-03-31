@@ -36,6 +36,8 @@ const Nimi = ({oppiaine}) => {
   )
 }
 
+Nimi.displayName = 'Nimi'
+
 const KoulutusmoduuliPropertiesEditor = ({oppiaine, additionalEditableProperties}) => {
   if (!oppiaine.context.edit) return null
 
@@ -55,6 +57,8 @@ const KoulutusmoduuliPropertiesEditor = ({oppiaine, additionalEditableProperties
     </span>
   )
 }
+
+KoulutusmoduuliPropertiesEditor.displayName = 'KoulutusmoduuliPropertiesEditor'
 
 const kurssienKeskiarvo = suoritetutKurssit => {
   const numeerinenArvosana = kurssi => parseInt(R.last(kurssi.arviointi).arvosana.koodiarvo)
@@ -102,6 +106,8 @@ const Arviointi = ({oppiaine, suoritetutKurssit, footnote, showKeskiarvo = true}
     </div>
   )
 }
+
+Arviointi.displayName = 'Arviointi'
 
 export {
   Nimi,

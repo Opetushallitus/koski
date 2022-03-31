@@ -78,3 +78,5 @@ export const CopyableText = (
     </div>
   )
 }
+
+CopyableText.displayName = 'CopyableText'

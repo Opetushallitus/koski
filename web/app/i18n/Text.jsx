@@ -6,7 +6,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import {buildClassNames} from '../components/classnames'
 
-export default ({name, ignoreMissing, lang, edit, className, ...rest}) => {
+const Text = ({name, ignoreMissing, lang, edit, className, ...rest}) => {
   let editP = edit == undefined ? editAtom : Bacon.constant(parseBool(edit))
 
   if (typeof name != 'string') {
@@ -20,6 +20,8 @@ export default ({name, ignoreMissing, lang, edit, className, ...rest}) => {
       : t(name, ignoreMissing, lang))
   }</span>)
 }
+
+Text.displayName = 'Text'
 
 const TextEditor = ({name, lang}) => {
   let currentValue = t(name, false, lang)
@@ -43,3 +45,5 @@ const TextEditor = ({name, lang}) => {
 
   return (<span className={classNameP} contentEditable="true" suppressContentEditableWarning="true" onKeyUp={onInput} onInput={onInput} onClick={onClick}>{currentValue}</span>)
 }
+
+export default Text

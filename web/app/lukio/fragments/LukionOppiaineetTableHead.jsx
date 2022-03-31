@@ -22,6 +22,8 @@ export const LukionOppiaineetTableHead = ({
   </thead>
 )
 
+LukionOppiaineetTableHead.displayName = 'LukionOppiaineetTableHead'
+
 export const OmatTiedotLukionOppiaineetTableHead = ({arvosanaHeader = <Text name='Arvosana'/>}) => (
   <thead>
   <tr>
@@ -30,3 +32,5 @@ export const OmatTiedotLukionOppiaineetTableHead = ({arvosanaHeader = <Text name
   </tr>
   </thead>
 )
+
+OmatTiedotLukionOppiaineetTableHead.displayName = 'OmatTiedotLukionOppiaineetTableHead'

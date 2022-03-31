@@ -19,7 +19,7 @@ import {
 } from './UusiDIATutkinnonSuoritus'
 import {UusiInternationalSchoolVuosiluokanSuoritus} from './UusiInternationalSchoolVuosiluokanSuoritus'
 
-export default ({opiskeluoikeus, callback}) => {
+const UusiSuoritusLink = ({opiskeluoikeus, callback}) => {
   return (<span className="add-suoritus tab">{
     opiskeluoikeus.context.edit && !onLopputilassa(opiskeluoikeus) && findPopUps(opiskeluoikeus).map((PopUp, i) => {
       let addingAtom = Atom(false)
@@ -53,6 +53,8 @@ export default ({opiskeluoikeus, callback}) => {
   }</span>)
 }
 
+UusiSuoritusLink.displayName = 'UusiSuoritusLink'
+
 const popups = [
   UusiPerusopetuksenOppiaineenOppimääränSuoritus,
   UusiPerusopetuksenVuosiluokanSuoritus,
@@ -68,3 +70,5 @@ const popups = [
 ]
 
 const findPopUps = (opiskeluoikeus) => popups.filter(popup => popup.canAddSuoritus(opiskeluoikeus))
+
+export default UusiSuoritusLink

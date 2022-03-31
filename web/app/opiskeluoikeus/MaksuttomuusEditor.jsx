@@ -29,3 +29,5 @@ export const MaksuttomuusEditor = ({model}) => {
     )
   }
 }
+
+MaksuttomuusEditor.displayName = 'MaksuttomuusEditor'

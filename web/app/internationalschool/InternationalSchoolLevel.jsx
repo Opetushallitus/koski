@@ -14,6 +14,8 @@ export const InternationalSchoolLevel = ({model}) => {
     : (<span className='international-school-level'>{` (${internationalSchoolLevel(model)})`}</span>)
 }
 
+InternationalSchoolLevel.displayName = 'InternationalSchoolLevel'
+
 const internationalSchoolLevel = model => {
   switch (suorituksenTyyppi(model.context.suoritus)) {
     case 'internationalschoolpypvuosiluokka': return 'PYP'
@@ -31,4 +33,6 @@ const DiplomaTypeEditor = ({model}) => {
   })
   return <KoodistoDropdown className='internationalschooldiplomatype' options={koodistoValues('internationalschooldiplomatype')} selected={diplomaTypeAtom}/>
 }
+
+DiplomaTypeEditor.displayName = 'DiplomaTypeEditor'
 

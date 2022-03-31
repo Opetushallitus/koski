@@ -71,3 +71,5 @@ export const KurssitEditor = ({model, customTitle, customAlternativesCompletionF
     </span>
   )
 }
+
+KurssitEditor.displayName = 'KurssitEditor'

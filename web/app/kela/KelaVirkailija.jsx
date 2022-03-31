@@ -69,3 +69,5 @@ const KelaOpinnot = ({oppija}) => {
     </div>
   )
 }
+
+KelaOpinnot.displayName = 'KelaOpinnot'

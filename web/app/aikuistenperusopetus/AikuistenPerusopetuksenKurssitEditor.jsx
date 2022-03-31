@@ -58,16 +58,22 @@ export const AikuistenPerusopetuksenKurssitEditor = ({model}) => {
   )
 }
 
+AikuistenPerusopetuksenKurssitEditor.displayName = 'AikuistenPerusopetuksenKurssitEditor'
+
 const KurssitOtsikko = ({model}) => {
   let suorituksiaTehty = modelItems(model, 'osasuoritukset').filter(arvioituTaiVahvistettu).length > 0
   return (model.context.edit || suorituksiaTehty) && <h5><Text name="Kurssit"/></h5>
 }
+
+KurssitOtsikko.displayName = 'KurssitOtsikko'
 
 const Kurssit = ({model}) => (
   <ul>
     {modelItems(model, 'osasuoritukset').map((kurssi, index) => <KurssiEditor key={index} kurssi={kurssi}/>)}
   </ul>
 )
+
+Kurssit.displayName = 'Kurssit'
 
 const UusiKurssi = ({name, model, showUusiKurssiAtom, kurssinSuoritusProto, customAlternativesCompletionFn, classname}) => (
   <span className={classname}>
@@ -84,6 +90,8 @@ const UusiKurssi = ({name, model, showUusiKurssiAtom, kurssinSuoritusProto, cust
     }
   </span>
 )
+
+UusiKurssi.displayName = 'UusiKurssi'
 
 const oppiaineMyösAlkuvaiheessaP = (model) => {
   const oppiaineenKoodiarvo = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')

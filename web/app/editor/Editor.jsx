@@ -134,3 +134,4 @@ const getModelEditor = (model, props) => {
   var ModelEditor = getEditorFunction(model)
   return <ModelEditor model={model} {...props} />
 }
+getModelEditor.displayName = 'getModelEditor'

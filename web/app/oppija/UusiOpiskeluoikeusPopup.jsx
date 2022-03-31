@@ -19,3 +19,5 @@ export const UusiOpiskeluoikeusPopup = ({resultCallback}) => {
     </ModalDialog>
   </form>)
 }
+
+UusiOpiskeluoikeusPopup.displayName = 'UusiOpiskeluoikeusPopup'

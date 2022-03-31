@@ -56,6 +56,8 @@ export const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addT
   </span>)
 }
 
+LisääPaikallinenTutkinnonOsa.displayName = 'LisääPaikallinenTutkinnonOsa'
+
 const isTutkinnonosaaPienempiKokonaisuus = k => k && k.value && k.value.classes[0] === 'tutkinnonosaapienempikokonaisuus'
 
 const lisääTutkinnonOsaTexts = (lisättävätTutkinnonOsat, paikallinenKoulutusmoduuli) => {

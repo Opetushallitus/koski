@@ -11,3 +11,5 @@ export const OpiskeluoikeudenTila = ({opiskeluoikeus}) => (
     {')'}
   </span>
 )
+
+OpiskeluoikeudenTila.displayName = 'OpiskeluoikeudenTila'

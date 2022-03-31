@@ -28,6 +28,8 @@ export const LukukausiIlmoittautuminenEditor = ({model}) => {
   </table>)
 }
 
+LukukausiIlmoittautuminenEditor.displayName = 'LukukausiIlmoittautuminenEditor'
+
 const isActive = item => {
   const loppu = modelData(item, 'loppu')
   const alku = modelData(item, 'alku')

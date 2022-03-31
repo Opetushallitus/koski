@@ -33,6 +33,8 @@ export const UusiInternationalSchoolVuosiluokanSuoritus = ({opiskeluoikeus, resu
   </div>)
 }
 
+UusiInternationalSchoolVuosiluokanSuoritus.displayName = 'UusiInternationalSchoolVuosiluokanSuoritus'
+
 UusiInternationalSchoolVuosiluokanSuoritus.canAddSuoritus = opiskeluoikeus =>
   modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'internationalschool' &&
   modelItems(opiskeluoikeus, 'suoritukset').length < 13

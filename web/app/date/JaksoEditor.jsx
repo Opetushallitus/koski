@@ -19,7 +19,7 @@ export class JaksoEditor extends React.Component {
 
 export const InlineJaksoEditor = ({model}) => <JaksoEditor model={model} className="inline"/>
 InlineJaksoEditor.validateModel = JaksoEditor.validateModel
-
+InlineJaksoEditor.displayName = 'InlineJaksoEditor'
 
 JaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 JaksoEditor.isEmpty = recursivelyEmpty

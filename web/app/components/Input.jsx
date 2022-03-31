@@ -11,4 +11,6 @@ const Input = ({id, type, disabled, value, autofocus = false}) => (
   </input>
 )
 
+Input.displayName = 'Input'
+
 export default Input

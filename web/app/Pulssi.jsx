@@ -133,6 +133,8 @@ const KoulutusmuotoTilasto = ({tilasto}) => {
   )
 }
 
+KoulutusmuotoTilasto.displayName = 'KoulutusmuotoTilasto'
+
 ReactDOM.render(
     (<div>
       <Pulssi/>

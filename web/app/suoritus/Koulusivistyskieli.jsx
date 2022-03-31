@@ -18,3 +18,5 @@ export const KoulusivistyskieliPropertyTitle = ({}) => (
     </Infobox>
   </>
 )
+
+KoulusivistyskieliPropertyTitle.displayName = 'KoulusivistyskieliPropertyTitle'

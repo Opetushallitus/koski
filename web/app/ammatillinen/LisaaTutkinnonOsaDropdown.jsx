@@ -14,4 +14,6 @@ const LisaaTutkinnonOsaDropdown = ({selectedAtom, osat, placeholder, title}) => 
   />)
 }
 
+LisaaTutkinnonOsaDropdown.displayName = 'LisaaTutkinnonOsaDropdown'
+
 export default LisaaTutkinnonOsaDropdown

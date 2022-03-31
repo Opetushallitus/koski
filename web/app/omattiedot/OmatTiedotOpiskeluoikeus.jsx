@@ -96,6 +96,8 @@ const OpiskeluoikeudenSuostumuksenPeruminen = ({opiskeluoikeus}) => {
   )
 }
 
+OpiskeluoikeudenSuostumuksenPeruminen.displayName = 'OpiskeluoikeudenSuostumuksenPeruminen'
+
 const OpiskeluoikeudenTiedot = ({opiskeluoikeus}) => {
   const additionalInformation = modelLookup(opiskeluoikeus, 'lisätiedot')
   const additionalInfoPropertyFilter = prop => !!modelData(prop.model)
@@ -123,6 +125,8 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus}) => {
     </div>
   )
 }
+
+OpiskeluoikeudenTiedot.displayName = 'OpiskeluoikeudenTiedot'
 
 class OpiskeluoikeudenLisätiedot extends React.Component {
   constructor(props){
@@ -163,6 +167,8 @@ const Suoritukset = ({opiskeluoikeus}) => {
     </div>
   )
 }
+
+Suoritukset.displayName = 'Suoritukset'
 
 class TabulatedSuoritukset extends React.Component {
   constructor(props) {
@@ -214,3 +220,5 @@ const SuoritusTabs = ({selectedTabIndex, suoritukset, onChange}) => {
     </div>
   )
 }
+
+SuoritusTabs.displayName = 'SuoritusTabs'

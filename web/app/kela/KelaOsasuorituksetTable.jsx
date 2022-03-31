@@ -31,6 +31,8 @@ export const KelaOsasuorituksetTable = ({osasuoritukset, path, nested, piilotaAr
   )
 }
 
+KelaOsasuorituksetTable.displayName = 'KelaOsasuorituksetTable'
+
 const ExpandableOsasuoritus = ({osasuoritus, path, piilotaArviointiSarakkeet}) => {
   const expandedAtom = Atom(R.length(osasuoritus.osasuoritukset || []) > 0)
   const laajuus = osasuoritus.koulutusmoduuli.laajuus?.arvo || laskeLaajuusOsasuorituksista(osasuoritus)
@@ -79,6 +81,8 @@ const ExpandableOsasuoritus = ({osasuoritus, path, piilotaArviointiSarakkeet}) =
     </tbody>
   )
 }
+
+ExpandableOsasuoritus.displayName = 'ExpandableOsasuoritus'
 
 const suorituksenNimi = koulutusmoduuli => {
   const koodiarvo = t(koulutusmoduuli.tunniste.nimi)

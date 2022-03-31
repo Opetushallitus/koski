@@ -51,6 +51,8 @@ const OmatTiedotSuoritustaulukko = ({suorituksetModel, nested, parentSuoritus: p
   )
 }
 
+OmatTiedotSuoritustaulukko.displayName = 'OmatTiedotSuoritustaulukko'
+
 const arvosanaColumn = parentSuoritus => isYlioppilastutkinto(parentSuoritus)
   ? YtrArvosanaColumn(parentSuoritus)
   : ArvosanaColumn
@@ -81,12 +83,16 @@ const YtrArvosanaColumn = (parentSuoritus) => {
   }
 }
 
+YtrArvosanaColumn.displayName = 'YtrArvosanaColumn'
+
 const KoesuoritusLink = ({copyOfExamPaper, kokeenNimi, parentSuoritus}) =>
   copyOfExamPaper
     ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}${parentSuoritus.context.huollettava ? '?huollettava=' + parentSuoritus.context.oppijaOid : ''}`} rel="noopener noreferrer">
         <Text className='show-koesuoritus-text' name='Näytä koesuoritus' aria-label={t(kokeenNimi) + '. ' + t('Näytä koesuoritus')}/>
       </a>)
     : null
+
+KoesuoritusLink.displayName = 'KoesuoritusLink'
 
 const SuoritusGroup = ({groups, groupId, columns, nested, parentSuoritus, laajuusYksikkö}) => {
   const groupItems = groups.grouped[groupId]
@@ -120,6 +126,8 @@ const SuoritusGroup = ({groups, groupId, columns, nested, parentSuoritus, laajuu
     </div>
   )
 }
+
+SuoritusGroup.displayName = 'SuoritusGroup'
 
 class Suoritus extends React.Component {
   constructor(props) {

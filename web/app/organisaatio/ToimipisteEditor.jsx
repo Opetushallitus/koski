@@ -5,3 +5,4 @@ export const ToimipisteEditor = ({model}) => {
   return <OrganisaatioEditor model={model} organisaatioTyypit={['TOIMIPISTE']} />
 }
 ToimipisteEditor.validateModel = OrganisaatioEditor.validateModel
+ToimipisteEditor.displayName = 'ToimipisteEditor'

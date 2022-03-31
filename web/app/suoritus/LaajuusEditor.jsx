@@ -65,4 +65,6 @@ const LaajuudenYksikköEditor = ({model, compact, showReadonlyScope}) => {
       : null
 }
 
+LaajuudenYksikköEditor.displayName = 'LaajuudenYksikköEditor'
+
 const yksikköAlternativesBasedOnPrototypes = model => fetchAlternativesBasedOnPrototypes(oneOfPrototypes(model), 'yksikkö').startWith([]).map(alts => alts.map(m => modelLookup(m, 'yksikkö').value))

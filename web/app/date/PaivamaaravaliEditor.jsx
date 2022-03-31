@@ -20,3 +20,4 @@ PäivämääräväliEditor.validateModel = (model) => {
   if (!alkuData || !loppuData || new Date(alkuData) <= new Date(loppuData)) return
   return [{key: 'invalid.daterange'}]
 }
+PäivämääräväliEditor.displayName = 'PäivämääräväliEditor'

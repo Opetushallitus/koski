@@ -18,6 +18,8 @@ export const Infobox = ({children}) => {
   )
 }
 
+Infobox.displayName = 'Infobox'
+
 const InfoText = ({onClick, children}) => (
   <>
     <div className='info-content-shield' onClick={onClick}/>
@@ -27,3 +29,5 @@ const InfoText = ({onClick, children}) => (
     </span>
   </>
 )
+
+InfoText.displayName = 'InfoText'

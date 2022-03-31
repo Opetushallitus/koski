@@ -85,3 +85,5 @@ export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescr
     </section>
   )
 }
+
+AikuistenPerusopetuksenRaportit.displayName = 'AikuistenPerusopetuksenRaportit'

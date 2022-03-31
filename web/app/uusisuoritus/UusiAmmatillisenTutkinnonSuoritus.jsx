@@ -117,7 +117,10 @@ const Popup = (isValmistava) => ({opiskeluoikeus, resultCallback}) => {
   </ModalDialog>)
 }
 
+Popup.displayName = 'Popup'
+
 export const UusiAmmatillisenTutkinnonSuoritus = Popup(false)
+UusiAmmatillisenTutkinnonSuoritus.displayName = 'UusiAmmatillisenTutkinnonSuoritus'
 UusiAmmatillisenTutkinnonSuoritus.canAddSuoritus = (opiskeluoikeus) => {
   return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus'
     && !hasAmmatillinenTutkinto(opiskeluoikeus)
@@ -126,6 +129,7 @@ UusiAmmatillisenTutkinnonSuoritus.canAddSuoritus = (opiskeluoikeus) => {
 UusiAmmatillisenTutkinnonSuoritus.addSuoritusTitle = () => <Text name="lisää ammatillisen tutkinnon suoritus"/>
 
 export const UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus = Popup(true)
+UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.displayName = 'UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus'
 UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.canAddSuoritus = (opiskeluoikeus) => {
   return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus'
     && !hasValmistavaTutkinto(opiskeluoikeus)

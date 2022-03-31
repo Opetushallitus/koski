@@ -21,3 +21,5 @@ export const OppilaitoksenYhteystieto = ({yhteystieto, message}) => (
     </div>
   </div>
 )
+
+OppilaitoksenYhteystieto.displayName = 'OppilaitoksenYhteystieto'

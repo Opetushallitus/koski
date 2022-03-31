@@ -39,3 +39,5 @@ export const UusiRyhmiteltyOppiaineDropdown = ({model, aineryhmä, optionsFilter
     />
   )
 }
+
+UusiRyhmiteltyOppiaineDropdown.displayName = 'UusiRyhmiteltyOppiaineDropdown'

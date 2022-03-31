@@ -33,3 +33,5 @@ export const OppijaEditor = ({model}) => {
       </ul>
     </div>)
 }
+
+OppijaEditor.displayName = 'OppijaEditor'

@@ -65,6 +65,8 @@ export const Error = ({error}) => {
   </div>)
 }
 
+Error.displayName = 'Error'
+
 export const TopLevelError = ({error}) => {
   console.log('render top-level error', error)
   return (<div className="error content-area">
@@ -72,5 +74,7 @@ export const TopLevelError = ({error}) => {
     <div className="error-message">{errorText(error)} <a href="/koski"><Text name="Yritä uudestaan"/></a>{'.'}</div>
   </div>)
 }
+
+TopLevelError.displayName = 'TopLevelError'
 
 export const isTopLevel = (error) => error.httpStatus === 404 || error.topLevel

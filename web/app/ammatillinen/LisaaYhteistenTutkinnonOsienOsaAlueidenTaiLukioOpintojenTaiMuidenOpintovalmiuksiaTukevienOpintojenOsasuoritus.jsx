@@ -36,6 +36,8 @@ export const LisääYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuiden
   </div>)
 }
 
+LisääYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus.displayName = 'LisääYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus'
+
 const LisääYhteinenTutkinnonOsa = ({suoritusPrototypes, setExpanded}) => {
   const yhteisenTutkinnonOsanOsanPrototype = suoritusPrototypes.find(isYhteinenTutkinnonOsanOsa)
   const yhteisetTutkinnonOsatP = koodistoValues('ammatillisenoppiaineet').map(oppiaineet => { return {osat: oppiaineet, paikallinenOsa: true, osanOsa: true} })
@@ -47,11 +49,17 @@ const LisääYhteinenTutkinnonOsa = ({suoritusPrototypes, setExpanded}) => {
   )))
 }
 
+LisääYhteinenTutkinnonOsa.displayName = 'LisääYhteinenTutkinnonOsa'
+
 const LisääLukioOpinto = ({suoritusPrototypes, setExpanded}) =>
   <LisääPaikallinen suoritusPrototype={suoritusPrototypes.find(isLukioOpintojenSuoritus)} setExpanded={setExpanded} headerText='Lisää lukio-opinto' className='lukio-opinto' />
 
+LisääLukioOpinto.displayName = 'LisääLukioOpinto'
+
 const LisääMuuOpintovalmiuksiaTukevaOpinto = ({suoritusPrototypes, setExpanded}) =>
   <LisääPaikallinen suoritusPrototype={suoritusPrototypes.find(isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus)} setExpanded={setExpanded} headerText='Lisää muu opintovalmiuksia tukeva opinto' className='muu-opintovalmiuksia-tukeva-opinto'/>
+
+LisääMuuOpintovalmiuksiaTukevaOpinto.displayName = 'LisääMuuOpintovalmiuksiaTukevaOpinto'
 
 const LisääPaikallinen = ({suoritusPrototype, setExpanded, headerText, className}) => {
   const koulutusmoduuliPrototype = koulutusModuuliprototypes(suoritusPrototype).find(isPaikallinen)
@@ -90,6 +98,8 @@ const LisääPaikallinen = ({suoritusPrototype, setExpanded, headerText, classNa
     ) }
   </span>)
 }
+
+LisääPaikallinen.displayName = 'LisääPaikallinen'
 
 const selectKoulutusModuuliProto = suoritusPrototype => selectedItem =>
   tutkinnonOsanOsaAlueenKoulutusmoduuli(valtakunnallisetKoulutusmoduuliPrototypes(suoritusPrototype), selectedItem.data)

@@ -45,6 +45,8 @@ const ArvosteluInfo = ({model}) => (
   </section>
 )
 
+ArvosteluInfo.displayName = 'ArvosteluInfo'
+
 const KäyttäytymisenArvio = ({model}) => {
   const käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
   const shouldShow = käyttäytymisenArvioModel && modelData(käyttäytymisenArvioModel)
@@ -55,6 +57,8 @@ const KäyttäytymisenArvio = ({model}) => {
       </section>
     ) : null
 }
+
+KäyttäytymisenArvio.displayName = 'KäyttäytymisenArvio'
 
 const GroupedOppiaineet = ({model}) => {
   const groups = [pakollisetTitle, valinnaisetTitle]
@@ -76,6 +80,8 @@ const GroupedOppiaineet = ({model}) => {
     )
   })
 }
+
+GroupedOppiaineet.displayName = 'GroupedOppiaineet'
 
 const Oppiainetaulukko = ({model, suoritukset, showLaajuus}) => {
   const showArvosana = arvioituTaiVahvistettu(model) || !model.value.classes.includes('perusopetuksenoppimaaransuoritus')
@@ -164,6 +170,8 @@ const Oppiainetaulukko = ({model, suoritukset, showLaajuus}) => {
     </table>
   )
 }
+
+Oppiainetaulukko.displayName = 'Oppiainetaulukko'
 
 class OppiaineRow extends React.Component {
   constructor(props) {

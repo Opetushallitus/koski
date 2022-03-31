@@ -64,6 +64,8 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabl
   </ModalDialog>)
 }
 
+OpiskeluoikeudenUusiTilaPopup.displayName = 'OpiskeluoikeudenUusiTilaPopup'
+
 const getKoodiarvo = t => t && t.data && t.data.koodiarvo
 const fetchTilat = model => EnumEditor.fetchAlternatives(model).map(alts => {
   const opiskeluoikeudenTyyppi = modelData(model.context.opiskeluoikeus, 'tyyppi')

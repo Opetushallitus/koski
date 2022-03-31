@@ -23,6 +23,8 @@ export const TabulatedSuorituksetView = ({suoritukset, path}) => {
   )
 }
 
+TabulatedSuorituksetView.displayName = 'TabulatedSuorituksetView'
+
 const SuoritusTabs = ({suoritukset, selectedIndex, setCurrentIndex}) => {
   return (
     <div className='tabs'>
@@ -40,6 +42,8 @@ const SuoritusTabs = ({suoritukset, selectedIndex, setCurrentIndex}) => {
     </div>
   )
 }
+
+SuoritusTabs.displayName = 'SuoritusTabs'
 
 const SuoritusView = ({suoritus, path}) => {
   const properties = R.omit(['osasuoritukset', 'vahvistus', 'koulutusmoduuli'], suoritus)
@@ -60,6 +64,8 @@ const SuoritusView = ({suoritus, path}) => {
   )
 }
 
+SuoritusView.displayName = 'SuoritusView'
+
 const SuorituksenVahvistus = ({vahvistus}) => (
   <div className={'suoritus vahvistus' + (vahvistus ? ' valmis' : ' kesken')}>
     <span className='status'>{t(vahvistus ? 'Suoritus valmis' : 'Suoritus kesken').toUpperCase()}</span>
@@ -74,6 +80,8 @@ const SuorituksenVahvistus = ({vahvistus}) => (
   </div>
 )
 
+SuorituksenVahvistus.displayName = 'SuorituksenVahvistus'
+
 const OsasuoritustenYhteislaajuus = ({osasuoritukset}) => {
   const laajuudenYksikko = findLaajuudenYksikkoTakeFirst(osasuoritukset)
   const yhteislaajuus = R.sum(osasuoritukset.map(osasuoritus => {
@@ -87,6 +95,8 @@ const OsasuoritustenYhteislaajuus = ({osasuoritukset}) => {
     </div>
   )
 }
+
+OsasuoritustenYhteislaajuus.displayName = 'OsasuoritustenYhteislaajuus'
 
 const tabName = suoritus => {
   const tunnisteenNimi = suoritus.koulutusmoduuli.tunniste && t(suoritus.koulutusmoduuli.tunniste.nimi) || undefined

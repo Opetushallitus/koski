@@ -32,3 +32,5 @@ export const UusiInternationalSchoolOppiaineDropdown = ({model}) => {
     />
   )
 }
+
+UusiInternationalSchoolOppiaineDropdown.displayName = 'UusiInternationalSchoolOppiaineDropdown'

@@ -23,6 +23,8 @@ export const OmatTiedotEditor = ({model}) => {
   )
 }
 
+OmatTiedotEditor.displayName = 'OmatTiedotEditor'
+
 
 const Oppilaitokset = ({oppilaitos, oppijaOid}) => {
   return (
@@ -38,6 +40,8 @@ const Oppilaitokset = ({oppilaitos, oppijaOid}) => {
     </div>
   )
 }
+
+Oppilaitokset.displayName = 'Oppilaitokset'
 
 class Opiskeluoikeus extends React.Component {
   constructor(props) {

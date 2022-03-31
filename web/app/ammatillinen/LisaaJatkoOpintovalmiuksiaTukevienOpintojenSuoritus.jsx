@@ -22,3 +22,5 @@ export const LisääJatkoOpintovalmiuksiaTukevienOpintojenSuoritus = ({parentSuo
         <Text name='Lisää yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja' /></a>
        </div>)
 }
+
+LisääJatkoOpintovalmiuksiaTukevienOpintojenSuoritus.displayName = 'LisääJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'

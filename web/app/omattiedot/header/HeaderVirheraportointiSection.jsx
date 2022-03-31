@@ -15,6 +15,8 @@ export const HeaderVirheraportointiSection = ({uiModeA, oppija}) => (
   </section>
 )
 
+HeaderVirheraportointiSection.displayName = 'HeaderVirheraportointiSection'
+
 export const virheRaportointiTitle = oppija => {
   return oppija.context.huollettava ? 'Onko suorituksissa virhe' : 'Onko suorituksissasi virhe?'
 }

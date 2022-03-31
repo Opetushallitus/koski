@@ -73,6 +73,8 @@ export const UusiKurssiDropdown = (
   </div>)
 }
 
+UusiKurssiDropdown.displayName = 'UusiKurssiDropdown'
+
 const fetchKurssiKoodit = (oppiaine, kurssiPrototypes) => {
   const oppiaineKoodisto = modelData(oppiaine, 'tunniste.koodistoUri')
   const oppiaineKoodiarvo = modelData(oppiaine, 'tunniste.koodiarvo')

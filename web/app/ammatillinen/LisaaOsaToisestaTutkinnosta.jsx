@@ -32,3 +32,5 @@ export const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suori
     }
   </span>)
 }
+
+LisääOsaToisestaTutkinnosta.displayName = 'LisääOsaToisestaTutkinnosta'

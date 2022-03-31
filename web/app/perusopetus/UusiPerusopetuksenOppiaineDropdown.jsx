@@ -14,3 +14,5 @@ export const UusiPerusopetuksenOppiaineDropdown = ({ suoritukset = [], organisaa
     enableFilter={enableFilter}
   />
 )
+
+UusiPerusopetuksenOppiaineDropdown.displayName = 'UusiPerusopetuksenOppiaineDropdown'

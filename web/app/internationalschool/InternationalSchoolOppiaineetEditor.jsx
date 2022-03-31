@@ -30,3 +30,5 @@ const Oppiaineet = ({aineet, päätasonSuoritusModel}) => (
     </tr>
   </React.Fragment>
 )
+
+Oppiaineet.displayName = 'Oppiaineet'

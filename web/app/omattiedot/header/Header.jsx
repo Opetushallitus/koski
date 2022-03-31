@@ -38,3 +38,5 @@ export const Header = ({oppija, oppijaSelectionBus}) => {
     </header>
   )
 }
+
+Header.displayName = 'Header'

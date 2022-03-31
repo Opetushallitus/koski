@@ -16,6 +16,8 @@ export const KeyValueTable = ({object, path}) => {
   )
 }
 
+KeyValueTable.displayName = 'KeyValueTable'
+
 const rowInTable = ({key, value, path}, index) => {
   const ReactComponentForDisplayingValue = spesificComponent(key, value) || componentForType[R.type(value)]
 
@@ -35,11 +37,17 @@ export const NumberView = ({value}) => <span>{value == 0 ? '' : value}</span>
 export const BooleanView = ({value}) => <Text name={value ? 'kyllä' : 'ei'}/>
 export const DateView = ({value}) => <span>{ value && formatFinnishDate(parseISODate(value)) || ''}</span>
 
+NumberView.displayName = 'NumberView'
+BooleanView.displayName = 'BooleanView'
+DateView.displayName = 'DateView'
+
 export const TextView = ({value}) => {
   return R.type(value) === 'Object' //assume its LocalizedString
     ? <span>{t(value)}</span>
     : <Text name={value}/>
 }
+
+TextView.displayName = 'TextView'
 
 const ArrayView = ({value}) => {
   return (
@@ -56,6 +64,8 @@ const ArrayView = ({value}) => {
   )
 }
 
+ArrayView.displayName = 'ArrayView'
+
 const ObjectView = ({value, path}) => {
   const hideKeys = ['alku', 'loppu', 'koodistoVersio', 'koodistoUri', 'lyhytNimi']
   const optionalAikajaksoInline = isAikajakso(value) && <AikajaksoInline value={value}/>
@@ -68,6 +78,8 @@ const ObjectView = ({value, path}) => {
     </table>
   )
 }
+
+ObjectView.displayName = 'ObjectView'
 
 const iterator = (obj, currentPath) => {
   return Object.entries(obj).map(([key, value]) => ({key, value, path: currentPath + '.' + key}))
@@ -108,6 +120,8 @@ const OrganisaationNimi = ({value}) => {
   return <span>{nimi}</span>
 }
 
+OrganisaationNimi.displayName = 'OrganisaationNimi'
+
 const Koodistoviite = ({value}) => {
   const nimi = t(value.nimi || {}) || value.koodiarvo || ''
   return (
@@ -117,6 +131,8 @@ const Koodistoviite = ({value}) => {
   )
 }
 
+Koodistoviite.displayName = 'Koodistoviite'
+
 const Laajuus = ({value}) => (
   <>
     <span>{value.arvo}</span>
@@ -124,6 +140,8 @@ const Laajuus = ({value}) => (
     <Koodistoviite value={value.yksikkö}/>
   </>
 )
+
+Laajuus.displayName = 'Laajuus'
 
 const Tilat = ({ value }) => {
   const jaksot = [].concat(value.opiskeluoikeusjaksot).reverse()
@@ -155,6 +173,8 @@ const Tilat = ({ value }) => {
   )
 }
 
+Tilat.displayName = 'Tilat'
+
 const OsaamisalaJaksotInline = ({value}) => {
   const osaamisalaJaksot = value
   return (
@@ -169,6 +189,8 @@ const OsaamisalaJaksotInline = ({value}) => {
   )
 }
 
+OsaamisalaJaksotInline.displayName = 'OsaamisalaJaksotInline'
+
 const AikajaksoInline = ({value}) => {
   return (
     <tr>
@@ -180,6 +202,8 @@ const AikajaksoInline = ({value}) => {
     </tr>
   )
 }
+
+AikajaksoInline.displayName = 'AikajaksoInline'
 
 const isAikajakso = obj => obj.alku || obj.loppu
 

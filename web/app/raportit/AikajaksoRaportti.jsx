@@ -49,3 +49,5 @@ export const AikajaksoRaportti = ({stateP, apiEndpoint, shortDescription, dateIn
     </section>
   )
 }
+
+AikajaksoRaportti.displayName = 'AikajaksoRaportti'

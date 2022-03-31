@@ -26,3 +26,5 @@ export const VirtaVirheetPopup = ({virheet, onDismiss}) => {
     }
   </ModalDialog>)
 }
+
+VirtaVirheetPopup.displayName = 'VirtaVirheetPopup'

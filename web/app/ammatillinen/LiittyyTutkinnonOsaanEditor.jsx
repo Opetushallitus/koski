@@ -8,6 +8,8 @@ import {Editor} from '../editor/Editor'
 const LiittyyTutkinnonOsaanEditor = ({model}) =>
   model.context.edit ? <LiittyyTutkinnonOsaanPicker model={model} /> : <Editor model={model} />
 
+LiittyyTutkinnonOsaanEditor.displayName = 'LiittyyTutkinnonOsaanEditor'
+
 class LiittyyTutkinnonOsaanPicker extends React.Component {
   constructor(props) {
     super(props)

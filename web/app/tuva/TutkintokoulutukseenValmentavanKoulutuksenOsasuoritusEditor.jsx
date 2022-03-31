@@ -53,3 +53,5 @@ export const TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor = ({
     </tbody>
   )
 }
+
+TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor.displayName = 'TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor'

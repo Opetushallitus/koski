@@ -108,6 +108,8 @@ export const OrganisaatioDropdown = ({
     )
 }
 
+OrganisaatioDropdown.displayName = 'OrganisaatioDropdown'
+
 const Input = ({ display, onChange, ...rest }) => (
     <div className="input-container">
         <input
@@ -120,6 +122,8 @@ const Input = ({ display, onChange, ...rest }) => (
         />
     </div>
 )
+
+Input.displayName = 'Input'
 
 const Options = ({ organisaatiot, selected, onSelect, isOpen, isChild }) => (
     <ul
@@ -166,3 +170,5 @@ const Options = ({ organisaatiot, selected, onSelect, isOpen, isChild }) => (
         })}
     </ul>
 )
+
+Options.displayName = 'Options'

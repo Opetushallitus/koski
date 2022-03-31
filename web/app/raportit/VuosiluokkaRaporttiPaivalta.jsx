@@ -61,6 +61,8 @@ export const VuosiluokkaRaporttiPaivalta = ({stateP, apiEndpoint, shortDescripti
   )
 }
 
+VuosiluokkaRaporttiPaivalta.displayName = 'VuosiluokkaRaporttiPaivalta'
+
 const VuosiluokkaDropdown = ({value, vuosiluokat}) => (
   <div>
     {value.map(v => (
@@ -73,3 +75,5 @@ const VuosiluokkaDropdown = ({value, vuosiluokat}) => (
       />))}
   </div>
 )
+
+VuosiluokkaDropdown.displayName = 'VuosiluokkaDropdown'

@@ -19,6 +19,8 @@ const RadioButton = ({
     </label>
 )
 
+RadioButton.displayName = 'RadioButton'
+
 const RadioButtons = ({
     options,
     keyValue = o => o.key,
@@ -45,5 +47,7 @@ const RadioButtons = ({
         </div>
     )
 }
+
+RadioButtons.displayName = 'RadioButtons'
 
 export default RadioButtons

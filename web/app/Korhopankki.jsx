@@ -25,6 +25,8 @@ const MockUsers = () =>
     </tbody>
   </table>)
 
+MockUsers.displayName = 'MockUsers'
+
 ReactDOM.render((
   <div>
     <HetuLogin loginUrl={getParam('login')} redirectUrl={getParam('redirect')} />

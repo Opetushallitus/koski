@@ -13,6 +13,8 @@ const JsonExampleTable = ({contents}) => {
   return <table className="json" dangerouslySetInnerHTML={{__html: (contents)}}></table>
 }
 
+JsonExampleTable.displayName = 'JsonExampleTable'
+
 const JsonExample = ({category, example}) => {
   const expandedA = Atom(false)
 
@@ -28,10 +30,14 @@ const JsonExample = ({category, example}) => {
   )
 }
 
+JsonExample.displayName = 'JsonExample'
+
 const naviLink = (path, textKey, location, linkClassName, isSelected = (p, l) => p === l) => {
   const className = `${textKey.toLowerCase().replace(/ /g,'')} navi-link-container${isSelected(path, location) ? ' selected' : ''}`
   return (<span className={className}><Link href={path} className={linkClassName}><Text name={textKey}/></Link></span>)
 }
+
+naviLink.displayName = 'naviLink'
 
 const dokumentaatioContentP = (location, contentP) => contentWithLoadingIndicator(contentP).map((content) => ({
   content: (

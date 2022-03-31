@@ -22,6 +22,8 @@ const Ingressi = () => (
   </div>
 )
 
+Ingressi.displayName = 'Ingressi'
+
 const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove}) => (
   <div>
     {!R.isEmpty(suoritusjaot) && (
@@ -45,6 +47,8 @@ const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove}) => (
   </div>
 )
 
+SuoritusjakoList.displayName = 'SuoritusjakoList'
+
 const CreateNewSuoritusjakoButton = ({selectedSuoritusIds, onClick, onSuccess, onError}) => {
   const clickAction = () => {
     onClick()
@@ -62,6 +66,8 @@ const CreateNewSuoritusjakoButton = ({selectedSuoritusIds, onClick, onSuccess, o
     </div>
   )
 }
+
+CreateNewSuoritusjakoButton.displayName = 'CreateNewSuoritusjakoButton'
 
 const NewSuoritusjako = ({opiskeluoikeudet, selectedSuoritusIds, onSuccess, showForm, canCancelForm, setRef}) => {
   const isPending = Atom(false)
@@ -99,6 +105,8 @@ const NewSuoritusjako = ({opiskeluoikeudet, selectedSuoritusIds, onSuccess, show
     </div>
   )
 }
+
+NewSuoritusjako.displayName = 'NewSuoritusjako'
 
 export class SuoritusjakoForm extends React.Component {
   constructor(props) {

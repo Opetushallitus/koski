@@ -28,3 +28,5 @@ export const SuostumuksenPeruutusPopup = ({opiskeluoikeusOid, onDismiss}) => {
       listStylePosition='inside'/>
   </ModalDialog>)
 }
+
+SuostumuksenPeruutusPopup.displayName = 'SuostumuksenPeruutusPopup'

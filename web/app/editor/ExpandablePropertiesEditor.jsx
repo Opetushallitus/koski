@@ -24,6 +24,8 @@ export const ExpandablePropertiesEditor = ({model, propertyName, propertyFilter 
     : null
 }
 
+ExpandablePropertiesEditor.displayName = 'ExpandablePropertiesEditor'
+
 export class Expandable extends React.Component {
   constructor() {
     super()
