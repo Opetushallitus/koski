@@ -1,6 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.util.JsStringInterpolation.{JsStringInterpolation, setWindowVar}
 import org.scalatra.ScalatraServlet
 
 import scala.xml.Unparsed
@@ -67,7 +68,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     scriptBundleName = "koski-lander.js",
     raamit = oppijaRaamit,
     scripts = <script id="auth">
-      {Unparsed(s"""window.kansalaisenAuthUrl="login/oppija"""")}
+      {setWindowVar("kansalaisenAuthUrl", "login/oppija")}
     </script>,
     responsive = true
   )

@@ -14,6 +14,8 @@ object ChainingSyntax {
   implicit final def stringOps(s: String): StringChainingOps = new StringChainingOps(s)
 
   implicit final def localDateOps(d: LocalDate): LocalDateChainingOps = new LocalDateChainingOps(d)
+
+  implicit final def iteratorOps[T](i: Iterator[T]): IteratorChainingOps[T] = new IteratorChainingOps(i)
 }
 
 final class ChainingOps[A](private val self: A) extends AnyVal {
@@ -50,4 +52,25 @@ final class StringChainingOps(private val self: String) extends AnyVal {
 final class LocalDateChainingOps(private val self: LocalDate) extends AnyVal {
   def isEqualOrAfter(d: LocalDate): Boolean = !self.isBefore(d)
   def isEqualOrBefore(d: LocalDate): Boolean = !self.isAfter(d)
+}
+
+final class IteratorChainingOps[T](private val self: Iterator[T]) extends AnyVal {
+  def interleave(other: Iterator[T]): Iterator[T] =
+    new Iterator[T] {
+      private var nextSelf: Boolean = true
+
+      def hasNext: Boolean = self.hasNext || other.hasNext
+
+      override def next(): T =
+        if (nextSelf && self.hasNext) {
+          nextSelf = false
+          self.next()
+        } else if (other.hasNext) {
+          nextSelf = true
+          other.next()
+        } else {
+          throw new IndexOutOfBoundsException("Both iterators are empty")
+        }
+    }
+
 }

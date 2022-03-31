@@ -1,17 +1,17 @@
 package fi.oph.koski.html
 
-import java.io.File
-import java.net.URLDecoder
-
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.servlet.{KoskiSpecificBaseServlet, LanguageSupport}
+import fi.oph.koski.util.JsStringInterpolation._
 import fi.oph.koski.util.XML.CommentedPCData
 import org.scalatra.servlet.RichRequest
 
+import java.io.File
+import java.net.URLDecoder
 import scala.xml.NodeSeq.Empty
 import scala.xml.{Elem, NodeSeq, Unparsed}
 
@@ -32,9 +32,11 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSu
         <div id="oppija-raamit-header-here"><!-- oppija-raamit header is inserted here --></div>
         <div data-inraamit={raamit.toString} id="content" class="koski-content"></div>
         <script id="localization">
-          {Unparsed("window.koskiLocalizationMap="+JsonSerializer.writeWithRoot(localizations.localizations))}
+          {setWindowVar("koskiLocalizationMap", localizations.localizations)}
         </script>
-        <script>{Unparsed("window.environment='" + Environment.currentEnvironment(application.config) + "'")}</script>
+        <script>
+          {setWindowVar("environment", Environment.currentEnvironment(application.config))}
+        </script>
         {scripts}
         <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
         <!-- oppija-raamit footer is inserted here -->
@@ -59,10 +61,10 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSu
 
   def htmlErrorObjectScript(status: HttpStatus): Elem =
     <script type="text/javascript">
-      {CommentedPCData("""
+      {CommentedPCData(js"""
         window.koskiError = {
-          httpStatus: """ + status.statusCode + """,
-          text: '""" + status.errorString.getOrElse(localizations.get("httpStatus." + status.statusCode).get(lang)).replace("'", "\\'") + """',
+          httpStatus: ${status.statusCode},
+          text: ${status.errorString.getOrElse(localizations.get("httpStatus." + status.statusCode).get(lang)).replace("'", "\\'")},
           topLevel: true
         }
       """)}
@@ -84,22 +86,26 @@ case object Virkailija extends Raamit {
 case class Oppija(session: Option[KoskiSpecificSession], request: RichRequest, loginUrl: String) extends Raamit {
   override def script: NodeSeq = {
     <script>
-      {Unparsed(s"""
+      {jsAtom"""
         Service = {
           getUser: function() { return Promise.resolve($user) },
-          login: function() { window.location = '$loginUrl' },
+          login: function() { window.location = $loginUrl },
           logout: function() { window.location = '/koski/user/logout' }
         }
-      """)}
+      """}
     </script> ++
     <script defer="defer" id="apply-raamit" type="text/javascript" src="/oppija-raamit/js/apply-raamit.js"></script>
   }
 
-  private def user = session.map(s => s"""{"name":"${s.user.name}", "oid": "${s.oid}"}""")
-    .orElse(nimitiedotCookiesta).getOrElse("null")
+  private def user: Option[CasUser] =
+    session
+      .map(CasUser.apply)
+      .orElse(casUserFromCookie)
 
-  private def nimitiedotCookiesta =
-    request.cookies.get("eisuorituksia").map(c => URLDecoder.decode(c, "UTF-8"))
+  private def casUserFromCookie: Option[CasUser] =
+    request.cookies.get("eisuorituksia")
+      .map(c => URLDecoder.decode(c, "UTF-8"))
+      .map(name => CasUser(name))
 
   override def toString: String = "oppija"
 
@@ -109,4 +115,16 @@ case class Oppija(session: Option[KoskiSpecificSession], request: RichRequest, l
 case object EiRaameja extends Raamit {
   override def script: NodeSeq = Empty
   override def toString: String = ""
+}
+
+case class CasUser(
+  name: String,
+  oid: Option[String] = None,
+)
+
+object CasUser {
+  def apply(session: KoskiSpecificSession): CasUser = CasUser(
+    name = session.user.name,
+    oid = Some(session.oid),
+  )
 }

@@ -5,6 +5,7 @@ import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
+import fi.oph.koski.util.JsStringInterpolation.setWindowVar
 import org.scalatra.ScalatraServlet
 
 import scala.xml.Unparsed
@@ -22,12 +23,20 @@ class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends
 
     htmlIndex(
       scriptBundleName = "koski-korhopankki.js",
-      scripts = <script id="auth">{Unparsed(s"window.mockUsers=$oppijat")}</script>,
+      scripts = <script id="auth">{setWindowVar("mockUsers", oppijat)}</script>,
       responsive = true
     )
   }
 
-  private def oppijat = application.fixtureCreator.defaultOppijat.sortBy(_.henkilö.etunimet).flatMap { o =>
-    o.henkilö.hetu.filter(_.nonEmpty).map(h => s"""{'hetu': '$h', 'nimi': '${o.henkilö.etunimet} ${o.henkilö.sukunimi}'}""")
-  }.distinct.mkString("[", ",", "]")
+  private def oppijat =
+    application.fixtureCreator
+      .defaultOppijat
+      .filter(_.henkilö.hetu.isDefined)
+      .sortBy(_.henkilö.etunimet)
+      .map(h => KorhopankkiOppija(h.henkilö.hetu, s"${h.henkilö.etunimet} ${h.henkilö.sukunimi}"))
 }
+
+case class KorhopankkiOppija(
+  hetu: Option[String],
+  nimi: String,
+)
