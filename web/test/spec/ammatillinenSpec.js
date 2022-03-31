@@ -73,6 +73,17 @@ describe('Ammatillinen koulutus', function() {
             'Väliaikaisesti keskeytynyt'
           ])
         })
+
+        describe('Koulutusvienti', () => {
+          before((done) => {
+            addOppija.enterTutkinto('auto')().then(done)
+          })
+          it('Näytetään myös koulutusviennin kautta tuodut tutkinnot', function() {
+            expect(addOppija.tutkinnot()).to.equal('Autoalan perustutkinto 39/011/2014 Autoalan työnjohdon erikoisammattitutkinto 40/011/2001 Auto- ja kuljetusalan työnjohdon ammattitutkinto 30/011/2015 Automaatioasentajan ammattitutkinto 3/011/2013 Automaatioyliasentajan erikoisammattitutkinto 9/011/2008 Puutavaran autokuljetuksen ammattitutkinto 27/011/2008 Sähkö- ja automaatiotekniikan perustutkinto 77/011/2014 Autoalan perustutkinto OPH-2762-2017 Automekaanikon erikoisammattitutkinto OPH-1886-2017 Autoalan perustutkinto, Koulutusvientikokeilu OPH-4792-2017')
+          })
+        })
+
+
       })
 
       describe('Kun lisätään oppija', function() {
@@ -95,7 +106,7 @@ describe('Ammatillinen koulutus', function() {
           before(
             editor.edit
           )
-          it("ei ole mahdollista", function() {
+          it('ei ole mahdollista', function() {
             expect(lisääSuoritus.isLinkVisible('lisää ammatillisen tutkinnon suoritus')).to.equal(false)
           })
         })
@@ -336,7 +347,7 @@ describe('Ammatillinen koulutus', function() {
         before(
           Authentication().login(),
           openPage('/koski/uusioppija#hetu=230872-7258', function() {return addOppija.isVisible()}),
-          addOppija.enterValidDataAmmatillinen({sukunimi: "error"}),
+          addOppija.enterValidDataAmmatillinen({sukunimi: 'error'}),
           addOppija.submit)
 
         it('Näytetään virheilmoitus', wait.until(page.isErrorShown))
@@ -1074,7 +1085,7 @@ describe('Ammatillinen koulutus', function() {
           )
 
           it('haetaan kaikki osaamisalat', function() {
-            var osaamisalat = textsOf(toArray(S('.osaamisala .options li')));
+            var osaamisalat = textsOf(toArray(S('.osaamisala .options li')))
 
             expect(osaamisalat.slice(0, 5)).to.deep.equal([
               'Ei valintaa',
@@ -1823,7 +1834,7 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Päätason suorituksen poistaminen', function() {
-      before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect("250989-419V"), editor.edit)
+      before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('250989-419V'), editor.edit)
 
       describe('Mitätöintilinkki', function() {
         it('Näytetään', function() {
@@ -2472,7 +2483,7 @@ describe('Ammatillinen koulutus', function() {
         editor.edit,
         editor.property('tila').removeItem(0),
         opinnot.valitseSuoritus(undefined, 'Luonto- ja ympäristöalan perustutkinto, osittainen'),
-        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
       )
 
       describe('Keskeneräisellä yhteisen tutkinnon osalla', function () {
@@ -2562,7 +2573,7 @@ describe('Ammatillinen koulutus', function() {
           secondOpinnot.tutkinnonOsat().tutkinnonOsa(0).poistaTutkinnonOsa,
 
           TilaJaVahvistusIndeksillä(1).merkitseValmiiksi,
-          TilaJaVahvistusIndeksillä(1).lisääVahvistus('1.1.2000'),
+          TilaJaVahvistusIndeksillä(1).lisääVahvistus('1.1.2000')
         )
 
         it('Voidaan vahvistaa muualta ostettu opiskeluoikeus', function () {

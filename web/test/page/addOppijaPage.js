@@ -561,6 +561,9 @@ function AddOppijaPage() {
     opiskeluoikeudenTilat: function () {
       return pageApi.getInputOptions(".opiskeluoikeudentila .dropdown");
     },
+    tutkinnot: function () {
+      return extractAsText(S("[data-test-id='tutkinto-autocomplete'] .results"));
+    },
     selectPeruste: function (peruste) {
       return selectFromDropdown(".peruste .dropdown", peruste);
     },
