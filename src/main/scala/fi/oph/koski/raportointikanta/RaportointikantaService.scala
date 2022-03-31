@@ -57,7 +57,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   ): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSpecificSession.systemUser
-    OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, db, update, pageSize, onAfterPage)
+    OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, application.suostumuksenPeruutusService, db, update, pageSize, onAfterPage)
   }
 
   def loadHenkilöt(db: RaportointiDatabase = raportointiDatabase): Int =

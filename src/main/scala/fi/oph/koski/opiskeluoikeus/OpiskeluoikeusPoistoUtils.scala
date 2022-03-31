@@ -30,7 +30,11 @@ object OpiskeluoikeusPoistoUtils {
   }
 
   private def opiskeluoikeudenPoistonQuery(oid: String, versionumero: Versionumero): dbio.DBIOAction[Int, NoStream, Write] = {
-    KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.updateableFieldsPoisto).update((JObject.apply(), versionumero, None, None, None, None, "", true, "", Date.valueOf(LocalDate.now()), None, List(), true))
+    KoskiTables.OpiskeluOikeudet.filter(_.oid === oid)
+      .map(_.updateableFieldsPoisto)
+      .update(
+        (JObject.apply(), versionumero, None, None, None, None, "", true, "", Date.valueOf(LocalDate.now()), None, List(), true)
+      )
   }
 
   private def opiskeluoikeudenHistorianPoistonQuery(id: Int): dbio.DBIOAction[Int, NoStream, Write] = {
@@ -52,8 +56,11 @@ object OpiskeluoikeusPoistoUtils {
       opiskeluoikeus.päättymispäivä.map(Date.valueOf),
       opiskeluoikeus.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       opiskeluoikeus.lähdejärjestelmänId.flatMap(_.id),
-      mitätöityAikaleima = if(mitätöity) Some(timestamp) else None,
-      suostumusPeruttuAikaleima = if(mitätöity) None else Some(timestamp)
+      mitätöityAikaleima = if (mitätöity) Some(timestamp) else None,
+      suostumusPeruttuAikaleima = if (mitätöity) None else Some(timestamp),
+      koulutusmuoto = opiskeluoikeus.tyyppi.koodiarvo,
+      suoritustyypit = opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo),
+      versio = opiskeluoikeus.versionumero
     ))
   }
 

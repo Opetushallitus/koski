@@ -1,7 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.api.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
-import fi.oph.koski.db.KoskiTables.OpiskeluOikeudet
+import fi.oph.koski.db.KoskiTables.{OpiskeluOikeudet, PoistetutOpiskeluoikeudet}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -476,35 +476,47 @@ class RaportointikantaSpec
   }
 
   "Mitätöityjen opiskeluoikeuksien lataus" - {
-    "Kaikki mitätöidyt poistamattomat opiskeluoikeudet ladataan erilliseen tauluun" in {
+    "Kaikki mitätöidyt poistamattomat, mitätöidyt poistetut sekä peruttujen suostumusten opiskeluoikeudet ladataan erilliseen tauluun" in {
       val mitätöidytPoistamattomatKoskessa = runDbSync(
         OpiskeluOikeudet.filter(_.mitätöity).filterNot(_.poistettu).sortBy(_.oid).result
+      )
+      val mitätöidytPoistetutTaiPerututSuostumuksetKoskessa = runDbSync(
+        PoistetutOpiskeluoikeudet.result
       )
       val mitätöidytRaportointikannassa = mainRaportointiDb.runDbSync(
         mainRaportointiDb.RMitätöidytOpiskeluoikeudet.sortBy(_.opiskeluoikeusOid).result
       )
-      val mitätöintipäivä = LocalDate.now()
 
-      mitätöidytRaportointikannassa.length should equal(mitätöidytPoistamattomatKoskessa.length)
+      val mitätöidytKoskessa =
+        mitätöidytPoistamattomatKoskessa.map(OpiskeluoikeusLoader.buildRowMitätöity).map(_.right.get) ++
+        mitätöidytPoistetutTaiPerututSuostumuksetKoskessa.map(OpiskeluoikeusLoader.buildRowMitätöity).map(_.right.get)
 
-      mitätöidytRaportointikannassa should equal(
-        (mitätöidytPoistamattomatKoskessa zip mitätöidytRaportointikannassa).map(t => RMitätöityOpiskeluoikeusRow(
-          opiskeluoikeusOid = t._1.oid,
-          versionumero = t._1.versionumero,
-          aikaleima = t._1.aikaleima,
-          oppijaOid = t._1.oppijaOid,
-          mitätöity = mitätöintipäivä,
-          tyyppi = t._1.oppijaOid match {
-            case "1.2.246.562.24.00000000001" => "perusopetus"
-            case "1.2.246.562.24.00000000013" => "ammatillinenkoulutus"
-            case _ => "???"
-          },
-          päätasonSuoritusTyypit = t._1.oppijaOid match {
-            case "1.2.246.562.24.00000000001" => List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
-            case "1.2.246.562.24.00000000013" => List("ammatillinentutkinto")
-            case _ => List("???")
-          },
-        ))
+      mitätöidytKoskessa.distinct.length should equal(mitätöidytKoskessa.length)
+      mitätöidytRaportointikannassa.length should equal(mitätöidytKoskessa.length)
+
+      mitätöidytRaportointikannassa.sortBy(_.opiskeluoikeusOid) should equal(
+        (mitätöidytKoskessa zip mitätöidytRaportointikannassa)
+          .sortBy(_._1.opiskeluoikeusOid)
+          .map(t => RMitätöityOpiskeluoikeusRow(
+            opiskeluoikeusOid = t._1.opiskeluoikeusOid,
+            versionumero = t._1.versionumero,
+            aikaleima = t._1.aikaleima,
+            oppijaOid = t._1.oppijaOid,
+            mitätöity = t._1.mitätöity,
+            suostumusPeruttu = t._1.suostumusPeruttu,
+            tyyppi = t._1.oppijaOid match {
+              case "1.2.246.562.24.00000000001" => "perusopetus"
+              case "1.2.246.562.24.00000000013" => "ammatillinenkoulutus"
+              case "1.2.246.562.24.00000000127" => "vapaansivistystyonkoulutus"
+              case _ => "???"
+            },
+            päätasonSuoritusTyypit = t._1.oppijaOid match {
+              case "1.2.246.562.24.00000000001" => List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
+              case "1.2.246.562.24.00000000013" => List("ammatillinentutkinto")
+              case "1.2.246.562.24.00000000127" => List("vstvapaatavoitteinenkoulutus")
+              case _ => List("???")
+            },
+          ))
       )
     }
 
@@ -518,6 +530,19 @@ class RaportointikantaSpec
       )
 
       opiskeluoikeusOiditRaportointikannassa.exists(mitätöidytOpiskeluoikeusOidit.contains) should be(false)
+    }
+
+    "Poistettuja opiskeluoikeuksia ei ladata varsinaiseen opiskeluoikeudet-tauluun" in {
+      val mitätöidytPoistetutTaiPerututSuostumuksetOpiskeluoikeusOidit = runDbSync(
+        PoistetutOpiskeluoikeudet.result
+      ).map(_.oid)
+
+      val opiskeluoikeusOiditRaportointikannassa = mainRaportointiDb.runDbSync(
+        mainRaportointiDb.ROpiskeluoikeudet.map(_.opiskeluoikeusOid).result
+      )
+
+      opiskeluoikeusOiditRaportointikannassa
+        .exists(mitätöidytPoistetutTaiPerututSuostumuksetOpiskeluoikeusOidit.contains) should be(false)
     }
 
     "Jo ladatun opiskeluoikeuden mitätöinti kesken latauksen ei vaikuta lopputulokseen" in {

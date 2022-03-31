@@ -206,8 +206,11 @@ object KoskiTables {
     val lähdejärjestelmäId = column[Option[String]]("lahdejarjestelma_id")
     val mitätöityAikaleima = column[Option[Timestamp]]("mitatoity_aikaleima")
     val suostumusPeruttuAikaleima = column[Option[Timestamp]]("suostumus_peruttu_aikaleima")
+    val koulutusmuoto = column[String]("koulutusmuoto")
+    val suoritustyypit = column[List[String]]("suoritustyypit")
+    val versio = column[Option[Int]]("versio")
 
-    def * = (oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, mitätöityAikaleima, suostumusPeruttuAikaleima) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
+    def * = (oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, mitätöityAikaleima, suostumusPeruttuAikaleima, koulutusmuoto, suoritustyypit, versio) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
   }
 
   val Preferences = TableQuery[PreferencesTable]
@@ -335,5 +338,8 @@ case class PoistettuOpiskeluoikeusRow(
   lähdejärjestelmäKoodi: Option[String],
   lähdejärjestelmäId: Option[String],
   mitätöityAikaleima: Option[Timestamp],
-  suostumusPeruttuAikaleima: Option[Timestamp]
+  suostumusPeruttuAikaleima: Option[Timestamp],
+  koulutusmuoto: String,
+  suoritustyypit: List[String],
+  versio: Option[Int]
 )
