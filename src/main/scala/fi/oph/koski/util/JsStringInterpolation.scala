@@ -31,6 +31,9 @@ object JsStringInterpolation {
       case o: Object => write(o)
     }
   }
+
+  def setWindowVar(name: String, value: Any) =
+    jsAtom"""window[$name] = $value;"""
 }
 
 case class RawJsString(str: String)

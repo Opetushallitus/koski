@@ -32,9 +32,11 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSu
         <div id="oppija-raamit-header-here"><!-- oppija-raamit header is inserted here --></div>
         <div data-inraamit={raamit.toString} id="content" class="koski-content"></div>
         <script id="localization">
-          {Unparsed("window.koskiLocalizationMap="+JsonSerializer.writeWithRoot(localizations.localizations))}
+          {setWindowVar("koskiLocalizationMap", localizations.localizations)}
         </script>
-        <script>{Unparsed("window.environment='" + Environment.currentEnvironment(application.config) + "'")}</script>
+        <script>
+          {setWindowVar("environment", Environment.currentEnvironment(application.config))}
+        </script>
         {scripts}
         <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
         <!-- oppija-raamit footer is inserted here -->
