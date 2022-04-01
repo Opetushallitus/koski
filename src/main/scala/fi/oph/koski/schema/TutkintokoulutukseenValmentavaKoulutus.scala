@@ -19,11 +19,11 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeus(
   tila: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila,
   lisätiedot: Option[TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
-  suoritukset: List[TutkintokoulutukseenValmentavanKoulutuksenSuoritus],
+  suoritukset: List[TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus],
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.tuva,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
   @KoodistoUri("tuvajarjestamislupa")
-  @ReadOnly("Järjestämislupaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
+  @ReadOnly("")
   järjestämislupa: Koodistokoodiviite
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -53,6 +53,10 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
 
+trait TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus
+
+@Title("Tutkintokoulutukseen valmentavan koulutuksen suoritustiedot")
+@Description("Tutkintokoulutukseen valmentavan koulutuksen suoritustiedot.")
 case class TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   @KoodistoUri("suorituksentyyppi")
@@ -67,8 +71,8 @@ case class TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus
-  with Arvioinniton with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with Suoritus
+) extends TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
+  with Todistus with Arvioinniton with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with Suoritus
 
 @Description("Tutkintokoulutukseen valmentavan koulutuksen tunnistetiedot")
 case class TutkintokoulutukseenValmentavanKoulutus(
