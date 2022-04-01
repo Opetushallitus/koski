@@ -76,7 +76,7 @@ describe('Ammatillinen koulutus', function() {
 
         describe('Koulutusvienti', () => {
           before((done) => {
-            addOppija.enterTutkinto('auto')().then(done)
+            addOppija.enterTutkinto('auto')().then(wait.until(addOppija.tutkinnotIsVisible)).then(done)
           })
           it('Näytetään myös koulutusviennin kautta tuodut tutkinnot', function() {
             expect(addOppija.tutkinnot()).to.equal('Autoalan perustutkinto 39/011/2014 Autoalan työnjohdon erikoisammattitutkinto 40/011/2001 Auto- ja kuljetusalan työnjohdon ammattitutkinto 30/011/2015 Automaatioasentajan ammattitutkinto 3/011/2013 Automaatioyliasentajan erikoisammattitutkinto 9/011/2008 Puutavaran autokuljetuksen ammattitutkinto 27/011/2008 Sähkö- ja automaatiotekniikan perustutkinto 77/011/2014 Autoalan perustutkinto OPH-2762-2017 Automekaanikon erikoisammattitutkinto OPH-1886-2017 Autoalan perustutkinto, Koulutusvientikokeilu OPH-4792-2017')

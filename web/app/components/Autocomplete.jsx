@@ -50,7 +50,7 @@ export default class Autocomplete extends BaconComponent {
     </li>)
     let newItem = createNewItem(query || '')
     let itemElems = items.concat(newItem ? [newItem] : []).map(createItemElement)
-    let results = itemElems.length ? <ul ref="results" className='results'>{itemElems}</ul> : null
+    let results = itemElems.length ? <ul ref="results" className='results' data-test-id='autocomplete-results'>{itemElems}</ul> : null
     return (
       <div ref='autocomplete' className='autocomplete'>
         <input type="text"
