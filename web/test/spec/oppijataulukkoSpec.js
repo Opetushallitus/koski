@@ -189,6 +189,7 @@ describe('Oppijataulukko', function() {
       it('Oletusjärjestys nouseva nimen mukaan', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([
           'e, erikois',
+          'ErityinenTutkinto, NuortenPerusopetus',
           'Hetuton, Heikki',
           "k, kotiopetus",
           'Kelalle, Useita',
@@ -244,6 +245,7 @@ describe('Oppijataulukko', function() {
             'Kelalle, Useita',
             "k, kotiopetus",
             'Hetuton, Heikki',
+            'ErityinenTutkinto, NuortenPerusopetus',
             'e, erikois'
           ])
         })

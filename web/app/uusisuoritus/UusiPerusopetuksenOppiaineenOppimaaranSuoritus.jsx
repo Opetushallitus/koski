@@ -49,6 +49,7 @@ const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallba
                   resultCallback={oppiaine => pushModelValue(oppiaineenSuoritus, oppiaine.value, 'koulutusmoduuli')}
                   pakollinen={true} enableFilter={false}
                   suoritukset={modelItems(opiskeluoikeus, 'suoritukset')}
+                  allowSelectingDuplicates={true}
                 />
                 : getDefault()
             }

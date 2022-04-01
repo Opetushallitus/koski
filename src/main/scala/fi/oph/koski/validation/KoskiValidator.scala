@@ -535,6 +535,7 @@ class KoskiValidator(
         :: validateArvioinnit(suoritus)
         :: validateLaajuus(suoritus)
         :: validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus, opiskeluoikeus)
+        :: validateSuoritustenLuokkaAsteet(suoritus, opiskeluoikeus)
         :: validateOppiaineet(suoritus)
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
         :: validateTutkinnonosanRyhmä(suoritus)
@@ -926,6 +927,33 @@ class KoskiValidator(
         HttpStatus.ok
       }
   }
+
+  private def validateSuoritustenLuokkaAsteet(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = HttpStatus.fold(
+    suoritus match {
+      case s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus =>
+        if (s.luokkaAste.isDefined && s.suoritustapa.koodiarvo == "koulutus") {
+          KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenLuokkaAsteIlmanErityistäTutkintoa("""Luokka-aste voi olla valittuna vain nuorten perusopetuksen suorituksille, jos suoritustavaksi on valittu erityinen tutkinto""")
+        } else {
+          HttpStatus.ok
+        }
+      case _ => HttpStatus.ok
+    },
+    opiskeluoikeus match {
+      case oo: PerusopetuksenOpiskeluoikeus =>
+        val nuortenPerusopetuksenErityinenTutkintoSuoritukset = oo.suoritukset.collect({ case s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus => s }).filter(_.suoritustapa.koodiarvo == "erityinentutkinto")
+        val groupedNuortenPerusopetuksenErityinenTutkintoSuoritukset = nuortenPerusopetuksenErityinenTutkintoSuoritukset.groupBy(_.koulutusmoduuli.tunniste.koodiarvo)
+        val duplikaatitLuokkaAsteet = groupedNuortenPerusopetuksenErityinenTutkintoSuoritukset.flatMap({
+          case (avain, suoritukset) if suoritukset.map(_.luokkaAste).distinct.size != suoritukset.size => List(avain)
+          case _ => List.empty
+        })
+        if (duplikaatitLuokkaAsteet.nonEmpty) {
+          KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenLuokkaAsteSamaUseammassaSuorituksessa("""Samaa luokka-astetta ei voi olla useammalla nuorten perusopetuksen erityisen tutkinnon suorituksella.""")
+        } else {
+          HttpStatus.ok
+        }
+      case _ => HttpStatus.ok
+    }
+  )
 
   private def validateOppiaineet(suoritus: Suoritus) = suoritus match {
     case _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus | _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus | _: LukionOppiaineenOppimääränSuoritus2015 =>

@@ -1,3 +1,7 @@
+## 5.4.2022
+
+- Nuorten perusopetuksen oppiaineen oppimäärän suoritukseen on lisätty valinnainen kenttä "luokkaAste"
+
 ## 10.3.2022
 - TUVA-tietomallin opiskeluoikeuden tilan opiskeluoikeusjaksoihin lisätty valinnainen kenttä opintojenRahoitus.
 - TUVA-tietomallin osasuoritusten arviointi-kentät muutettu käyttämään uutta koodistoa arviointiasteikkotuva.

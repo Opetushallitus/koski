@@ -2294,5 +2294,7 @@
   "Paikallisen osasuorituksen nimi": "Paikallisen osasuorituksen nimi",
   "Perusopetuksen oppimäärään sisältyvät opinnot": "Perusopetuksen oppimäärään sisältyvät opinnot",
   "Perusopetuksen valmistavan opetuksen opinnot": "Perusopetuksen valmistavan opetuksen opinnot",
-  "description:Laajuus vuosiviikkotunneissa" : "Laajuus vuosiviikkotunneissa"
+  "description:Laajuus vuosiviikkotunneissa" : "Laajuus vuosiviikkotunneissa",
+  "luokkaAstettaEiVoiValitaKoulutusSuoritukselle": "Luokka-astetta ei voi valita suoritukselle, jos suoritustapana on koulutus",
+  "oppiaineenOppimaara": "Oppiaineen oppimäärä"
 }
