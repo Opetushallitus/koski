@@ -475,8 +475,10 @@ object PerusopetuksenOppiaineenArviointi {
 case class PerusopetuksenToiminta_Alue(
   @Description("Toiminta-alueen tunniste")
   @KoodistoUri("perusopetuksentoimintaalue")
-  tunniste: Koodistokoodiviite
-) extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
+  tunniste: Koodistokoodiviite,
+  @Description("Laajuus vuosiviikkotunneissa")
+  laajuus: Option[LaajuusVuosiviikkotunneissa] = None
+) extends KoodistostaLöytyväKoulutusmoduuli with KoulutusmoduuliValinnainenLaajuus
 
 @Description("Nuorten perusopetuksen tunnistetiedot")
 case class NuortenPerusopetus(
