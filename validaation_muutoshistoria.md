@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 1.4.2022
+- Mitätöity opiskeluoikeus jättää väliin opiskeluoikeuden validoinnin.
+
 # 22.3.2022
 - Muuta 16.3.2022 tehty validaatio estämään perusopetuksen oppimäärän vahvistaminen opiskeluoikeuden valmistuneeksi
   merkitsemisen sijasta

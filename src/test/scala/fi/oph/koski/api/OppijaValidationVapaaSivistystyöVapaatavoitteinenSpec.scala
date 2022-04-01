@@ -137,7 +137,36 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
           }
         }
       }
+      "Kun opiskeluoikeus on mitätöity" - {
+        "Ei validointivirhettä, jos päätason suoritus vahvistettu, eikä tila ole 'Hyväksytysti suoritettu'" in {
+          putOpiskeluoikeus(mitätöityOpiskeluoikeus(vahvistettuPäätasonSuoritusKeskeytynytOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus))) {
+            verifyResponseStatusOk()
+          }
+        }
+        "Ei validointivirhettä, jos päätason suoritus vahvistamaton, eikä tila ole 'Keskeytynyt'" in {
+          putOpiskeluoikeus(mitätöityOpiskeluoikeus(vahvistamatonPäätasaonSuoritusHyväksyttyOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus))) {
+            verifyResponseStatusOk()
+          }
+        }
+        "Ei validointivirhettä, jos päätason suorituksella ei ole vähintään yhtä arvioitua osasuoritusta" in {
+          putOpiskeluoikeus(mitätöityOpiskeluoikeus(päätasoArvioimattomallaOsasuorituksella(VapaatavoitteinenOpiskeluoikeus))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
     }
+  }
+
+  private def mitätöityOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus) = {
+    oo.copy(
+      tila = VapaanSivistystyönOpiskeluoikeudenTila(
+        oo.tila.opiskeluoikeusjaksot ++
+          List(
+            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusMitätöity)
+          )
+      ),
+      versionumero = oo.versionumero.map(_ + 1).orElse(Some(1))
+    )
   }
 
   private def vahvistettuPäätasonSuoritusKeskeytynytOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus) = {
