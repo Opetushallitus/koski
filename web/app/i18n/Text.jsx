@@ -46,4 +46,6 @@ const TextEditor = ({name, lang}) => {
   return (<span className={classNameP} contentEditable="true" suppressContentEditableWarning="true" onKeyUp={onInput} onInput={onInput} onClick={onClick}>{currentValue}</span>)
 }
 
+TextEditor.displayName = 'TextEditor'
+
 export default Text

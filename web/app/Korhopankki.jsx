@@ -7,29 +7,46 @@ import Text from './i18n/Text'
 import { currentLocation } from './util/location'
 
 const getParam = (parameter) => {
-  return currentLocation().params ?
-    currentLocation().params[parameter] :
-    undefined
+  return currentLocation().params
+    ? currentLocation().params[parameter]
+    : undefined
 }
 
-
-const MockUsers = () =>
-  (<table className='mock-users'>
+const MockUsers = () => (
+  <table className="mock-users">
     <thead>
-      <tr><th><Text name='Hetu'/></th><th><Text name='Nimi'/></th></tr>
+      <tr>
+        <th>
+          <Text name="Hetu" />
+        </th>
+        <th>
+          <Text name="Nimi" />
+        </th>
+      </tr>
     </thead>
     <tbody>
-    {window.mockUsers.map(user => (<tr key={user.hetu + '-' + user.nimi}>
-      <td>{user.hetu}</td><td>{user.nimi}</td>
-    </tr>))}
+      {window.mockUsers.map((user) => (
+        <tr key={user.hetu + '-' + user.nimi}>
+          <td>{user.hetu}</td>
+          <td>{user.nimi}</td>
+        </tr>
+      ))}
     </tbody>
-  </table>)
+  </table>
+)
 
 MockUsers.displayName = 'MockUsers'
 
-ReactDOM.render((
-  <div>
-    <HetuLogin loginUrl={getParam('login')} redirectUrl={getParam('redirect')} />
-    <MockUsers/>
-  </div>
-), document.getElementById('content'))
+function KorhopankkiContainer() {
+  return (
+    <div>
+      <HetuLogin
+        loginUrl={getParam('login')}
+        redirectUrl={getParam('redirect')}
+      />
+      <MockUsers />
+    </div>
+  )
+}
+
+ReactDOM.render(<KorhopankkiContainer />, document.getElementById('content'))
