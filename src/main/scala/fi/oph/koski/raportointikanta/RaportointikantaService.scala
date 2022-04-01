@@ -14,38 +14,50 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
   private val eventBridgeClient = KoskiEventBridgeClient.apply(application.config)
 
-  def loadRaportointikanta(force: Boolean,
+  def loadRaportointikanta(
+    force: Boolean,
     scheduler: Scheduler = defaultScheduler,
     onEnd: () => Unit = () => (),
     pageSize: Int = OpiskeluoikeusLoader.DefaultBatchSize,
-    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
+    onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => (),
+    skipUnchangedData: Boolean = false,
   ): Boolean = {
     if (isLoading && !force) {
       logger.info("Raportointikanta already loading, do nothing")
       false
     } else {
+      val latestOpiskeluoikeusTimestamp = raportointiDatabase.latestOpiskeluoikeusTimestamp
+      logger.info(s"Latest opiskeluoikeus update in ${raportointiDatabase.schema.name}: ${latestOpiskeluoikeusTimestamp}")
+      val update = if (skipUnchangedData) latestOpiskeluoikeusTimestamp.map(since => RaportointiDatabaseUpdate(sourceDb = raportointiDatabase, since)) else None
       loadDatabase.dropAndCreateObjects
-      startLoading(scheduler, onEnd, pageSize, onAfterPage)
+      startLoading(update, scheduler, onEnd, pageSize, onAfterPage)
       logger.info(s"Started loading raportointikanta (force: $force)")
       true
     }
   }
 
-  def loadRaportointikantaAndExit(): Unit = {
-    loadRaportointikanta(force = true, defaultScheduler, onEnd = () => {
-      logger.info(s"Ended loading raportointikanta, shutting down...")
-      shutdown
-    })
+  def loadRaportointikantaAndExit(fullReload: Boolean): Unit = {
+    // TODO: Poista jälkimmäinen ehto, kun tätä halutaan alkaa ajamaan myös tuotantoympäristössä
+    val skipUnchangedData = !fullReload && application.config.getString("opintopolku.virkailija.url") != "https://virkailija.opintopolku.fi"
+    loadRaportointikanta(
+      force = true,
+      skipUnchangedData = skipUnchangedData,
+      scheduler = defaultScheduler,
+      onEnd = () => {
+        logger.info(s"Ended loading raportointikanta, shutting down...")
+        shutdown
+      })
   }
 
   private def loadOpiskeluoikeudet(
     db: RaportointiDatabase,
+    update: Option[RaportointiDatabaseUpdate],
     pageSize: Int,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSpecificSession.systemUser
-    OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, db, pageSize, onAfterPage)
+    OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, db, update, pageSize, onAfterPage)
   }
 
   def loadHenkilöt(db: RaportointiDatabase = raportointiDatabase): Int =
@@ -86,14 +98,18 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   }
 
   private def startLoading(
+    update: Option[RaportointiDatabaseUpdate],
     scheduler: Scheduler,
     onEnd: () => Unit,
     pageSize: Int,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ) = {
-    logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name}")
+    update match {
+      case Some(u) => logger.info(s"Start updating raportointikanta in ${loadDatabase.schema.name} with new opiskeluoikeudet since ${u.since} from ${u.sourceDb.schema.name}")
+      case None => logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name} (full reload)")
+    }
     putLoadTimeMetric(None) // To store metric more often, Cloudwatch metric does not support missing data more than 24 hours
-    loadOpiskeluoikeudet(loadDatabase, pageSize, onAfterPage)
+    loadOpiskeluoikeudet(loadDatabase, update, pageSize, onAfterPage)
       .subscribeOn(scheduler)
       .subscribe(
         onNext = doNothing,

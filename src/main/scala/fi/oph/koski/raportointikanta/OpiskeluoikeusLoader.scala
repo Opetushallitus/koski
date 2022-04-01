@@ -26,15 +26,21 @@ object OpiskeluoikeusLoader extends Logging {
   def loadOpiskeluoikeudet(
     opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
     db: RaportointiDatabase,
+    update: Option[RaportointiDatabaseUpdate] = None,
     batchSize: Int = DefaultBatchSize,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
   ): Observable[LoadResult] = {
     db.setStatusLoadStarted(statusName)
     db.setStatusLoadStarted(mitätöidytStatusName)
+    update.foreach(u => {
+      db.cloneUpdateableTables(u.sourceDb)
+      suoritusIds.set(db.getLatestPäätasonSuoritusId)
+    })
+
     var loopCount = 0
-    val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize) { batch =>
+    val result = opiskeluoikeusQueryRepository.mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update.map(_.since)) { batch =>
       if (batch.nonEmpty) {
-        val result = loadBatch(db, batch)
+        val result = if (update.isDefined) updateBatch(db, batch) else loadBatch(db, batch)
         onAfterPage(loopCount, batch)
         loopCount = loopCount + 1
         result
@@ -58,6 +64,15 @@ object OpiskeluoikeusLoader extends Logging {
     resultOlemassaolevatOot ++ resultMitätöidyt
   }
 
+  private def updateBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow]): Seq[LoadResult] = {
+    val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
+
+    val resultOlemassaolevatOot = updateBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
+    val resultMitätöidyt = updateBatchMitätöidytOpiskeluoikeudet(db, mitätöidytOot)
+
+    resultOlemassaolevatOot ++ resultMitätöidyt
+  }
+
   private def loadBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
     val loadBatchStartTime = System.nanoTime()
 
@@ -65,6 +80,7 @@ object OpiskeluoikeusLoader extends Logging {
       .map(row => buildRow(row))
       .seq
       .partition(_.isLeft)
+
     db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
     db.loadOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
     val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
@@ -89,9 +105,55 @@ object OpiskeluoikeusLoader extends Logging {
     result
   }
 
+  private def updateBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
+    val loadBatchStartTime = System.nanoTime()
+
+    val (errors, outputRows) = oot.par
+      .map(row => buildRow(row))
+      .seq
+      .partition(_.isLeft)
+
+    db.updateOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
+    db.updateOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
+
+    val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
+    db.updateOpiskeluoikeusAikajaksot(aikajaksoRows)
+
+    val esiopetusOpiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.esiopetusOpiskeluoikeusAikajaksoRows)
+    db.updateEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows)
+
+    val päätasonSuoritusRows = outputRows.flatMap(_.right.get.rPäätasonSuoritusRows)
+    db.updatePäätasonSuoritukset(päätasonSuoritusRows)
+
+    val osasuoritusRows = outputRows.flatMap(_.right.get.rOsasuoritusRows)
+    db.updateOsasuoritukset(osasuoritusRows)
+
+    val muuAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.muuAmmatillinenOsasuoritusRaportointiRows)
+    db.updateMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows)
+
+    val topksAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.topksAmmatillinenRaportointiRows)
+    db.updateTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows)
+
+    db.setLastUpdate(statusName)
+    db.updateStatusCount(statusName, outputRows.size)
+    val result = errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
+
+    val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
+    val toOpiskeluoikeusUnsafeDuration: Long = outputRows.map(_.right.get.toOpiskeluoikeusUnsafeDuration).sum / 1000000
+    logger.info(s"Batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
+    result
+  }
+
   private def loadBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
     val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(buildRowMitätöity).seq.partition(_.isLeft)
     db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
+    db.updateStatusCount(mitätöidytStatusName, outputRows.size)
+    errors.map(_.left.get)
+  }
+
+  private def updateBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
+    val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(buildRowMitätöity).seq.partition(_.isLeft)
+    db.updateMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
     db.updateStatusCount(mitätöidytStatusName, outputRows.size)
     errors.map(_.left.get)
   }
@@ -429,4 +491,9 @@ case class OutputRows(
   muuAmmatillinenOsasuoritusRaportointiRows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow],
   topksAmmatillinenRaportointiRows: Seq[TOPKSAmmatillinenRaportointiRow],
   toOpiskeluoikeusUnsafeDuration: Long = 0
+)
+
+case class RaportointiDatabaseUpdate(
+  sourceDb: RaportointiDatabase,
+  since: Timestamp,
 )

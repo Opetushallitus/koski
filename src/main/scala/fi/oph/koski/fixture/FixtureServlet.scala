@@ -6,7 +6,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
 class FixtureServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   post("/reset") {
-    application.fixtureCreator.resetFixtures()
+    application.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
     "ok"
   }
 

@@ -37,7 +37,7 @@ class OppivelvollisuustietoSpec
         insert(master, lukionOppimäärä(vahvistus = None))
         insert(slave1, ammatillinenTutkinto(vahvistus = None, lisääMaksuttomuus = false), perusopetuksenOppimäärä(Some(date(2020, 12, 31))))
         insert(slave2, ammatillinenTutkinto(vahvistus = None, lisääMaksuttomuus = false), lukionOppimäärä(vahvistus = None, lisääMaksuttomuus = false))
-        reloadRaportointikanta
+        updateRaportointikanta
         queryTestioidit should equal(Nil)
       }
       "Master oidilla perusopetuksen oppimäärä suoritettu ennen uuden oppivelvollisuuslain voimaantuloa -> ei rivejä" in {
@@ -45,25 +45,25 @@ class OppivelvollisuustietoSpec
         insert(master, perusopetuksenOppimäärä(Some(date(2020, 12, 31))))
         insert(slave1, ammatillinenTutkinto(vahvistus = None, lisääMaksuttomuus = false))
         insert(slave2, ammatillinenTutkinto(vahvistus = None, lisääMaksuttomuus = false), lukionOppimäärä(vahvistus = None, lisääMaksuttomuus = false))
-        reloadRaportointikanta
+        updateRaportointikanta
         queryTestioidit should equal(Nil)
       }
       "Henkilö on liian vanha" in {
         resetFixtures
         insert(oppivelvollisuustietoLiianVanha, lukionOppimäärä(vahvistus = None, lisääMaksuttomuus = false))
-        reloadRaportointikanta
+        updateRaportointikanta
         queryOids(oppivelvollisuustietoLiianVanha.oid) shouldBe(Nil)
       }
       "Henkilö on suorittanut aikuisten perusopetuksen oppimäärän ennen vuotta 2021" in {
         resetFixtures
         insert(oikeusOpiskelunMaksuttomuuteen, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen)
-        reloadRaportointikanta
+        updateRaportointikanta
         queryOids(oikeusOpiskelunMaksuttomuuteen.oid) shouldBe(Nil)
       }
       "Henkilö on suorittanut international schoolin ysiluokan ennen vuotta 2021" in {
         resetFixtures
         insert(oikeusOpiskelunMaksuttomuuteen, ExamplesInternationalSchool.opiskeluoikeus)
-        reloadRaportointikanta
+        updateRaportointikanta
         queryOids(oikeusOpiskelunMaksuttomuuteen.oid) shouldBe(Nil)
       }
     }
@@ -75,7 +75,7 @@ class OppivelvollisuustietoSpec
           insert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1))))
           insert(slave2, lukionOppimäärä(vahvistus = None))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
         "Lukion oppimaaralla vahvistus" in {
@@ -83,7 +83,7 @@ class OppivelvollisuustietoSpec
           insert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
           insert(slave1, ammatillinenTutkinto(vahvistus = None))
           insert(slave2, lukionOppimäärä(vahvistus = Some(date(2019, 1, 1))))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
         "Molemmilla vahvistus" in {
@@ -91,7 +91,7 @@ class OppivelvollisuustietoSpec
           insert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1))))
           insert(slave2, lukionOppimäärä(vahvistus = Some(date(2019, 1, 1))))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
@@ -101,7 +101,7 @@ class OppivelvollisuustietoSpec
           insert(master, lukionOppimäärä(vahvistus = Some(date(2018, 1, 1))))
           insert(slave1, lukionOppimäärä(vahvistus = Some(date(2019, 1, 1))))
           insert(slave2, lukionOppimäärä(vahvistus = Some(date(2020, 1, 1))))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
       }
@@ -112,7 +112,7 @@ class OppivelvollisuustietoSpec
           insert(master, ammatillinenTutkinto(vahvistus = Some(date(2030, 1, 1))))
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2023, 1, 1))))
           insert(slave2, ammatillinenTutkinto(vahvistus = Some(date(2024, 1, 1))))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2023, 1, 1))
         }
         "Syntymäaika päättää molemmat aikaisemmin" in {
@@ -120,7 +120,7 @@ class OppivelvollisuustietoSpec
           insert(master, ammatillinenTutkinto(vahvistus = None))
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2025, 1, 1))))
           insert(slave2, ammatillinenTutkinto(vahvistus = Some(date(2024, 12, 31))))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
@@ -128,7 +128,7 @@ class OppivelvollisuustietoSpec
           insert(master, ammatillinenTutkinto(vahvistus = Some(date(2021, 1, 1))))
           insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2025, 1, 1))))
           insert(slave2, ammatillinenTutkinto(vahvistus = None))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
         }
       }
@@ -139,7 +139,7 @@ class OppivelvollisuustietoSpec
           insert(master, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
           insert(slave1, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2025, 1, 1))))
           insert(slave2, internationalSchoolToinenAste(vahvistusGrade12 = None))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
         }
       }
@@ -150,7 +150,7 @@ class OppivelvollisuustietoSpec
           insert(master, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
           insert(slave1, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2025, 1, 1))))
           insert(slave2, lukionOppimäärä(vahvistus = None))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
         }
       }
@@ -161,7 +161,7 @@ class OppivelvollisuustietoSpec
           insert(master, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
           insert(slave1, ammatillinenTutkinto(vahvistus = None))
           insert(slave2, lukionOppimäärä(vahvistus = None))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
         }
       }
@@ -172,7 +172,7 @@ class OppivelvollisuustietoSpec
           insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 3, 3))))
           insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
           insert(slave2, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
         }
       }
@@ -183,7 +183,7 @@ class OppivelvollisuustietoSpec
           insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
           insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
           insert(slave2, ibTutkinto(ibTutkinnonVahvistus = None))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
         }
       }
@@ -194,7 +194,7 @@ class OppivelvollisuustietoSpec
           insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
           insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
           insert(slave2, lukionOppimäärä(vahvistus = None))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
         }
       }
@@ -205,7 +205,7 @@ class OppivelvollisuustietoSpec
           insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
           insert(slave1, ammatillinenTutkinto(vahvistus = None))
           insert(slave2, lukionOppimäärä(vahvistus = None))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
         }
       }
@@ -216,7 +216,7 @@ class OppivelvollisuustietoSpec
           insert(master, diaTutkinto(diaTutkinnonVahvistus = Some(date(2021, 1, 1))))
           insert(slave1, diaTutkinto(diaTutkinnonVahvistus = Some(date(2025, 1, 1))))
           insert(slave2, diaTutkinto(diaTutkinnonVahvistus = None))
-          reloadRaportointikanta
+          updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
         }
       }
@@ -225,7 +225,7 @@ class OppivelvollisuustietoSpec
         "Käytetään syntymäaikaa" in {
           resetFixtures
           insert(oikeusOpiskelunMaksuttomuuteen, perusopetuksenOppimäärä(vahvistus = Some(date(2021, 6, 1))))
-          reloadRaportointikanta
+          updateRaportointikanta
           queryOids(oikeusOpiskelunMaksuttomuuteen.oid) should equal(List(
             Oppivelvollisuustieto(
               oikeusOpiskelunMaksuttomuuteen.oid,
@@ -258,7 +258,7 @@ class OppivelvollisuustietoSpec
         insert(slave1, ammatillinenTutkintoMaksuttomuusJaksoilla(vahvistus = None,
           maksuttomuusJaksot = maksuttomuusJaksot,
           maksuttomuudenPidennyksenJaksot = pidennyksetSlave))
-        reloadRaportointikanta
+        updateRaportointikanta
 
         val queryResult = queryOids(List(master.oid, slave1.oid))
         queryResult should contain(Oppivelvollisuustieto(

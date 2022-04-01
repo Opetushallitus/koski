@@ -23,6 +23,11 @@ trait RaportointikantaTestMethods extends KoskiHttpSpec {
   )
 
   def reloadRaportointikanta(): Unit = {
+    authGet("api/raportointikanta/load?force=true&fullReload=true") { verifyResponseStatusOk() }
+    Wait.until(loadComplete)
+  }
+
+  def updateRaportointikanta(): Unit = {
     authGet("api/raportointikanta/load?force=true") { verifyResponseStatusOk() }
     Wait.until(loadComplete)
   }

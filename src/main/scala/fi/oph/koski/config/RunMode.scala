@@ -8,4 +8,6 @@ object RunMode extends Enumeration {
     case Some(_) => GENERATE_RAPORTOINTIKANTA
     case None => NORMAL
   }
+
+  def fullReload: Boolean = sys.env.get("GENERATE_RAPORTOINTIKANTA").contains("full")
 }
