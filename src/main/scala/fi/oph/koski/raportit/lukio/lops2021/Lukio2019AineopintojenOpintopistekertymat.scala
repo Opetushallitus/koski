@@ -3,6 +3,7 @@ package fi.oph.koski.raportit.lukio.lops2021
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.localization.LocalizationReader
+import fi.oph.koski.raportit.lukio.LukioOppiaineenOppimaaranKurssikertymat.Oppimäärä
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import slick.jdbc.GetResult
@@ -17,11 +18,12 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
     jaksonAlku: LocalDate,
     jaksonLoppu: LocalDate,
     raportointiDatabase: RaportointiDatabase,
-    t: LocalizationReader
+    t: LocalizationReader,
+    oppimäärä: Oppimäärä
   ): DataSheet = {
     DataSheet(
-      t.get("raportti-excel-aineopiskelijat-sheet-name"),
-      rows = raportointiDatabase.runDbSync(queryAineopiskelija(oppilaitosOids, jaksonAlku, jaksonLoppu)),
+      oppimäärä.sheetTitle(t),
+      rows = raportointiDatabase.runDbSync(queryAineopiskelija(oppilaitosOids, jaksonAlku, jaksonLoppu, oppimäärä)),
       columnSettings(t)
     )
   }
@@ -31,6 +33,7 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
       create materialized view #${s.name}.lukion_aineopintojen_opintopistekertyma as select
         oppilaitos_oid,
         arviointi_paiva,
+        oppimaara_koodiarvo,
         sum(laajuus) yhteensa,
         sum(laajuus) filter (where suoritettu) suoritettuja,
         sum(laajuus) filter (where tunnustettu) tunnustettuja,
@@ -52,6 +55,7 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
         select
           oppilaitos_oid,
           osasuoritus.arviointi_paiva,
+          oppimaara_koodiarvo,
           tunnustettu,
           tunnustettu = false as suoritettu,
           tunnustettu_rahoituksen_piirissa,
@@ -75,14 +79,15 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
       ) moduulit
     group by
       oppilaitos_oid,
-      arviointi_paiva
+      arviointi_paiva,
+      oppimaara_koodiarvo
     """
 
   def createIndex(s: Schema) =
     sqlu"create index on #${s.name}.lukion_aineopintojen_opintopistekertyma(oppilaitos_oid, arviointi_paiva)"
 
 
-  private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate) = {
+  private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, oppimäärä: Oppimäärä) = {
     sql"""
       select
         r_organisaatio.nimi oppilaitos,
@@ -113,6 +118,7 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
         from lukion_aineopintojen_opintopistekertyma
           where oppilaitos_oid = any($oppilaitosOids)
             and arviointi_paiva between $aikaisintaan and $viimeistaan
+            and (oppimaara_koodiarvo = ${oppimäärä.arvo} or (${oppimäärä.arvo} = 'nuortenops' and oppimaara_koodiarvo is null))
           group by oppilaitos_oid
       ) aineopintojen_opintopistekertymat
       left join (
