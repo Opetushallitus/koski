@@ -1,6 +1,3 @@
-## 14.3.2022
-- TUVA-opiskeluoikeuden järjestämislupa ei saa muuttua.
-
 ## 10.3.2022
 - TUVA-tietomallin opiskeluoikeuden tilan opiskeluoikeusjaksoihin lisätty valinnainen kenttä opintojenRahoitus.
 - TUVA-tietomallin osasuoritusten arviointi-kentät muutettu käyttämään uutta koodistoa arviointiasteikkotuva.
@@ -59,6 +56,10 @@
 Ammatillisen osasuorituksen lisätieto kun koodiarvona "mukautettu"
 "keskiarvoSisältääMukautettujaArvosanoja"
 "PerusopetuksenToiminta_AlueenSuoritus"
+
+## 30.11.2021
+- Lukion opiskeluoikeuteen lisätty kenttä oppimääräSuoritettu. Se täytetään automaattisesti, jos opiskeluikeudessa on
+  oppimäärän vahvistettu suoritus.
 
 ## 8.9.2021
 - Lukion aiemman kuin 2019 opetussuunnitelman perusteiden mukaisiin opintoihin saa siirtää maksuttomuustiedon, jos

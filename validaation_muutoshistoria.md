@@ -1,5 +1,20 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+# 22.3.2022
+- Muuta 16.3.2022 tehty validaatio estämään perusopetuksen oppimäärän vahvistaminen opiskeluoikeuden valmistuneeksi
+  merkitsemisen sijasta
+
+# 16.3.2022
+- Estä perusopetuksessa opiskeluoikeuden valmistuneeksi merkitseminen, jos mukana ei ole 9. luokan
+  suoritusta, paitsi jos lisätiedoissa on merkitty vuosiluokkiin sitomaton opetus tai jos lisätiedon kotiopetus aikajakso
+  on voimassa päättötodistuksen vahvistuspäivänä tai päättötodistuksessa on suoritustapana erityinen tutkinto
+
+## 14.3.2022
+- TUVA-opiskeluoikeuden järjestämislupa ei saa muuttua.
+
+# 8.3.2022
+- Perusopetuksen opiskeluoikeuden päättymispäivä ei voi olla vuosiluokan suorituksen alkamispäivää ennen
+
 ## 22.2.2022
 - VST:n vapaatavoitteiselle opiskeluoikeudelle sallitaan tila mitatoity, jotta opiskeluoikeus voidaan mitätöidä.
 
@@ -8,6 +23,10 @@
 - Valmistuneen TUVA opiskeluoikeuden osasuoritusten laajuudet on oltava sallitulla välillä.
 - Valmistuneen TUVA opiskeluoikeuden osasuoritusten rakenne oltava sallittu.
   - Opiskeluoikeudella on olemassa pakollinen osasuoritus Opiskelu- ja urasuunnittelutaidot sekä suoritukset kahdesta muusta koulutuksen osasta.
+
+## 28.1.2022
+- Sallitaan 1.8.2021 tai myöhemmin alkaneet lukio-opinnot aiemmalla kuin 2019 opetussuunnitelmalla, jos opiskelee
+  aikuisten opetussuunnitelman mukaan.
 
 ## 27.1.2022
 - Pre-IB 2015 opintojen maksuttomuusvalidointi laajennettu sallimaan kaikki vuonna 2021 aloitetut suoritukset.
@@ -38,9 +57,36 @@
 
 - Pääsuoritustasoinen `lukionOppimääräSuoritettu`-kenttä deprekoitu eikä sitä saa enää siirtää. Kentän korvannut opiskeluoikeustason kenttä `oppimääräSuoritettu`
 
+## 16.12.2021
+- Lukion 2019 opetussuunnitelman mukaisessa opiskeluoikeudessa, jossa aineopintoja ja oppimäärä on merkitty
+  suoritetuksi: Validoi, että opintopisteitä on tarpeeksi. Aikuisten oppimäärässä pitää olla vähintään 88 op,
+  nuorilla vähintään 150 op, joista vähintään 20 op valinnaisia.
+
+## 30.11.2021
+- Lukion opiskeluoikeuden uusi oppimääräSuoritettu-kenttä ei voi olla true:
+  - jos ei ole vahvistettuja päätason suorituksia
+  - jos 2019-opetussuunnitelman mukaisissa oppimärän opinnoissa ei ole tarpeeksi opintopisteitä
+    (nuorilla 150 op, joista 20 op valinnaisia, aikuisilla 88 op)
+- Lukion 2019-opetussuunnitelman mukaisessa opiskeluoikeudessa oppiaineen oppimäärän suorituksen
+  lukionOppimääräSuoritettu-kenttä on deprekoitu, eikä sitä saa enää siirtää
+
+## 22.11.2021
+- Salli maksuttomuustieto 2015 opetussuunnitelman mukaisissa Pre IB-opinnoissa, jos ne on aloitettu 1.8.2021 tai myöhemmin
+
+## 15.11.2021
+- Salli maksuttomuustieto 2019-opetussuunnitelman mukaisissa Pre-IB-opinnoissa
+
 ## 14.10.2021
 
 - Ammatillisen koulutuksen Yhteisille tutkinnon osille (YhteinenTutkinnonOsa-rakenne) sallitaan tunnisteen koodiarvoiksi myös '600001' ja '600002'
+
+## 12.10.2021
+- Lukion 2019 opetussuunnitelman mukaisessa opiskeluoikeudessa salli paikallisen oppiaineen arviointina 'S' myös
+  silloin, kun sen laajuus on yli 2 op.
+
+## 11.10.2021
+- Maksuttomuusvalidointi velvoitti maksuttomuustiedon siirtämiseen aina, jos perusopetus oli
+  päättynyt ennen vuotta 2021 johonkin muuhun syyhyn kuin valmistumiseen, kuten eroamiseen. Tämä on korjattu.
 
 ## 4.10.2021
 
@@ -89,12 +135,59 @@
   uuden oppivelvollisuuslain piirissä. Tämä perustuu oppijan ikään ja siihen, onko oppijalla Koskessa merkintä
   peruskoulusta valmistumisesta siten, että hänen oppivelvollisuutensa on tullut valmiiksi vanhan lain mukaan.
 
+## 19.7.2021
+- Estä 'eronnut'/'katsotaan eronneeksi' tilan käyttö, jos suoritus on vahvistettu
+
+## 24.6.2021
+- Estetään oppilaitoksen muutos opiskeluoikeudessa, poislukien jotkut poikkeustapaukset.
+  - Jos koulutustoimija muuttuu, voi samalla vaihtaa myös aktiivista oppilaitosta
+  - Muuto sallitaan myös, jos vanha oppilaitos on passiivinen
+  - Muutos sallitaan myös, jos koulutustoimija pysyy samana, vanha oppilaitos on aktiivinen ja
+    opiskeluoikeus on joskus ollut osana oppilaitosta, johon opiskeluoikeutta ollaan nyt siirtämässä.
+
+## 16.6.2021
+- Perusopetuksessa ja lukion 2015-opetussuunnitelman mukaisessa opetuksessa äidinkielen
+  omaisen oppiaineen kieli tulee olla suomi tai ruotsi. Lukion 2019 opetussuunnitelman mukaisissa
+  opinnoissa tämä validointi oli jo.
+
+## 19.5.2021
+- Nuorten perusopetuksen opiskeluoikeutta ei voida päättää tilaan 'valmistunut', jos opiskeluoikeudelta
+  puuttuu vahvistettu päättötodistus
+
+## 18.5.2021
+- Lukion valmistavan koulutuksen suorituksella ei voi 1.8.2021 jälkeen olla
+  luva2015-opetussuunnitelman mukaisia suorituksia
+- Lukioon valmistavassa koulutuksessa 1.8.2021 tai myöhemmin alkaneiden kurssien tulee käyttää vuoden 2021
+  opetussuunnitelmaa
+
 ## 28.4.2021
 
 - Perusopetuksen laajuus vaaditaan pakollisille oppiaineille 1.8.2020 tai sen jälkeen vahvistetuilta vuosiluokan
   suorituksilta ja päättötodistuksilta. Laajuutta ei kuitenkaan vaadita jos suoritustapana on erityinen tutkinto tai
   kotiopetusjakso on voimassa suorituksen vahvistuspäivänä.
 - Yksittäiseltä oppiaineelta ei vaadita laajuutta mikäli sen suoritustapa on erityinen tutkinto.
+
+## 20.4.2021
+- Lukion 2019 -opetussuunnitelman mukaisissa opinnoissa äidinkielenomaisen kielen opinnoissa sallitaan vain suomi
+  tai ruotsi.
+
+## 13.4.2021
+- Lukioon valmistavan koulutuksen suorituksella ei voi olla sekä lukion 2015 että lukion 2019
+  opetussuunnitelmien mukaisia osasuorituksia
+
+## 13.4.2021
+- 1.8.2020 tai myöhemmin vahvistetuissa perusopetuksen vuosiluokkien tai koko oppimäärän suorituksissa
+  on laajuus pakollinen
+
+## 24.3.2021
+- Lukion 2019-opetussuunnitelman liikunnan oppiaineessa sallitaan arvosana S riippumatta
+  sen moduulien laajuudesta.
+- Lukion 2019-opetussuunnitelman muissa oppiaineissa sallitaan arvosana S, jos oppiaineen laajuus on 2 op
+  tai vähemmän
+
+## 26.1.2021
+- Perusopetuksen kahden eri vuosiluokan samat alkamispäivät estävässä validaatiossa otetaan huomioon oikein myös
+  KOSKI-palveluun jo tallennetut suoritukset, joita ei ole mukana tiedonsiirrossa.
 
 ## 8.1.2021
 
