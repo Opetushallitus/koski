@@ -2,19 +2,16 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{PutOpiskeluoikeusTestMethods, TestMethodsLukio}
-import fi.oph.koski.documentation.ExampleData.suomenKieli
-import fi.oph.koski.documentation.ExamplesLukio2019.{lops2019perusteenDiaarinumero, lukionOppimäärä2019}
-import fi.oph.koski.documentation.{ExampleData, Lukio2019ExampleData}
-import fi.oph.koski.documentation.Lukio2019ExampleData.{moduulinSuoritusOppiaineissa, muuModuuliOppiaineissa, numeerinenArviointi, numeerinenLukionOppiaineenArviointi, oppiaineenSuoritus, paikallinenOpintojakso, paikallisenOpintojaksonSuoritus}
-import fi.oph.koski.documentation.LukioExampleData.{nuortenOpetussuunnitelma, opiskeluoikeusAktiivinen}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.koski.documentation.ExamplesLukio2019.{lops2019AikuistenPerusteenDiaarinumero}
+import fi.oph.koski.documentation.{ExampleData}
+import fi.oph.koski.documentation.LukioExampleData.{aikuistenOpetussuunnitelma, opiskeluoikeusAktiivinen}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopinnotOpiskeluoikeudenUlkopuolisetRow, Lukio2019ModuulinRahoitusmuotoRow, Lukio2019OpintopistekertymaAineopiskelijaRow, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteetRow, LukioOpintopistekertymaOppimaaraRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{LocalizedString, LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LukionOppiaineenSuoritus2019, LukionOppiaineidenOppimäärienSuoritus2019, LukionOppiaineidenOppimäärät2019, LukionOppimääränSuoritus2019, Oppija, OsaamisenTunnustaminen, PaikallinenKoodi, PaikallinenLukionOppiaine2019}
+import fi.oph.koski.schema.{LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LukionOppiaineidenOppimäärät2019, Oppija}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
@@ -32,12 +29,19 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
     super.beforeAll()
     val opiskelijaSuppea = KoskiSpecificMockOppijat.teija
     val opiskelijaRahoituspuljaus = KoskiSpecificMockOppijat.eero
+    val aikuisOpiskelija = KoskiSpecificMockOppijat.aikuisOpiskelija
 
     val oppimäärä = defaultOpiskeluoikeus.copy(
       suoritukset = List(Lukio2019RaaportitTestData.oppimääränSuoritus),
     )
     val aine = defaultOpiskeluoikeus.copy(
       suoritukset = List(Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus),
+    )
+    val aikuistenOpsilla = defaultOpiskeluoikeus.copy(
+      suoritukset = List(Lukio2019RaaportitTestData.oppiaineidenOppimäärienSuoritus.copy(
+        oppimäärä = aikuistenOpetussuunnitelma,
+        koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019AikuistenPerusteenDiaarinumero)
+      ))
     )
 
     val aineMuutakauttaRahoitettu = defaultOpiskeluoikeus.copy(
@@ -51,6 +55,9 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
       verifyResponseStatusOk()
     }
     putOppija(Oppija(opiskelijaRahoituspuljaus, List(aineMuutakauttaRahoitettu))) {
+      verifyResponseStatusOk()
+    }
+    putOppija(Oppija(aikuisOpiskelija, List(aikuistenOpsilla))) {
       verifyResponseStatusOk()
     }
     reloadRaportointikanta
@@ -149,6 +156,23 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
         jyväskylänAineopiskelijat.eriVuonnaKorotettujaOpintopisteita shouldBe 4
       }
     }
+    "Aikuisaineopiskelijan välilehti" - {
+      "Oppilaitoksen Oid" in {
+        jyväskylänAikuisAineopiskelijat.oppilaitosOid shouldBe(MockOrganisaatiot.jyväskylänNormaalikoulu)
+      }
+      "Yhteensä" in {
+        jyväskylänAikuisAineopiskelijat.opintopisteitaYhteensa shouldBe(8)
+      }
+      "Suoritettuja" in {
+        jyväskylänAikuisAineopiskelijat.suoritettujaOpintopisteita shouldBe(4)
+      }
+      "Tunnustettuja" in {
+        jyväskylänAikuisAineopiskelijat.tunnustettujaOpintopisteita shouldBe(4)
+      }
+      "Tunnustettuja rahoituksen piirissä" in {
+        jyväskylänAineopiskelijat.tunnustettujaOpintopisteita_rahoituksenPiirissa shouldBe(0)
+      }
+    }
     "Muuta kautta rahoitetuttujen välilehti" - {
       "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri jaettuna yleisimmällä moduulien laajuudella (2)" in {
         jyväskylänMuutaKauttaRahoitetut.length shouldBe jyväskylänAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut/2
@@ -165,8 +189,8 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
       }
     }
     "Eri vuonna korotetut kurssit -välilehti" - {
-      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri jaettuna yleisimmällä moduulien laajuudella (2)" in {
-        jyväskylänOpiskeluoikeudenEriVuonnaArvioidut.length shouldBe jyväskylänAineopiskelijat.eriVuonnaKorotettujaOpintopisteita / 2
+      "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri jaettuna yleisimmällä moduulien laajuudella (2) plus yksi aikuisten opsista" in {
+        jyväskylänOpiskeluoikeudenEriVuonnaArvioidut.length shouldBe jyväskylänAineopiskelijat.eriVuonnaKorotettujaOpintopisteita / 2 + 1
       }
     }
   }
@@ -181,6 +205,12 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
 
   lazy val jyväskylänAineopiskelijat = raportti.collectFirst {
     case d: DataSheet if d.title == t.get("raportti-excel-aineopiskelijat-sheet-name") => d.rows.collect {
+      case r: Lukio2019OpintopistekertymaAineopiskelijaRow => r
+    }
+  }.get.find(_.oppilaitos == "Jyväskylän normaalikoulu").get
+
+  lazy val jyväskylänAikuisAineopiskelijat = raportti.collectFirst {
+    case d: DataSheet if d.title == t.get("raportti-excel-aineopiskelijat-aikuisten-ops-sheet-name") => d.rows.collect {
       case r: Lukio2019OpintopistekertymaAineopiskelijaRow => r
     }
   }.get.find(_.oppilaitos == "Jyväskylän normaalikoulu").get

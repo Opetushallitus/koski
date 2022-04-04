@@ -6,6 +6,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.raportit.aikuistenperusopetus._
+import fi.oph.koski.raportit.lukio.LukioOppiaineenOppimaaranKurssikertymat.{AikuistenOppimäärä, NuortenOppimäärä}
 import fi.oph.koski.raportit.lukio._
 import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019MuutaKauttaRahoitetut, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset, Lukio2019OppimaaranOpintopistekertymat, Lukio2019RahoitusmuotoEiTiedossa, Lukio2019RaportitRepository, Lukio2019Raportti}
 import fi.oph.koski.schema.LocalizedString
@@ -145,7 +146,8 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         LukioOppimaaranKussikertymat.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
-        LukioOppiaineenOppimaaranKurssikertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        LukioOppiaineenOppimaaranKurssikertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t, NuortenOppimäärä),
+        LukioOppiaineenOppimaaranKurssikertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t, AikuistenOppimäärä),
         LukioMuutaKauttaRahoitetut.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
         LukioRahoitusmuotoEiTiedossa.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
         LukioOppiaineOpiskeluoikeudenUlkopuoliset.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
@@ -165,7 +167,8 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         Lukio2019OppimaaranOpintopistekertymat.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
-        Lukio2019AineopintojenOpintopistekertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
+        Lukio2019AineopintojenOpintopistekertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t, NuortenOppimäärä),
+        Lukio2019AineopintojenOpintopistekertymat.datasheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t, AikuistenOppimäärä),
         Lukio2019MuutaKauttaRahoitetut.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
         Lukio2019RahoitusmuotoEiTiedossa.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),
         Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset.dataSheet(oppilaitosOidit, request.alku, request.loppu, raportointiDatabase, t),

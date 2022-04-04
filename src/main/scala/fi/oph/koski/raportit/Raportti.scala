@@ -139,6 +139,10 @@ case object LukioKurssikertyma extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo
 }
 
+case object LukioOpintopistekertyma extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo
+}
+
 case object LukioDiaIbInternationalOpiskelijamaarat extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo
 }

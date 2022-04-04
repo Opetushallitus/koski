@@ -147,7 +147,7 @@ const kaikkiRaportitKategorioittain = [
         component: Lukio2019raportti
       },
       {
-        id: 'lukiokurssikertyma',
+        id: 'lukioopintopistekertyma',
         name: 'raportti-tab-lukio2019opintopistekertyma',
         component: Lukio2019Opintopistekertyma
       },

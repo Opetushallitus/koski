@@ -12,16 +12,30 @@ import java.time.LocalDate
 
 object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
 
+  trait Oppimäärä {
+    def arvo: String
+    def sheetTitle(t: LocalizationReader): String
+  }
+  object NuortenOppimäärä extends Oppimäärä {
+    def arvo = "nuortenops"
+    def sheetTitle(t: LocalizationReader) = t.get("raportti-excel-aineopiskelijat-sheet-name")
+  }
+  object AikuistenOppimäärä extends Oppimäärä {
+    def arvo = "aikuistenops"
+    def sheetTitle(t: LocalizationReader) = t.get("raportti-excel-aineopiskelijat-aikuisten-ops-sheet-name")
+  }
+
   def datasheet(
     oppilaitosOids: List[String],
     jaksonAlku: LocalDate,
     jaksonLoppu: LocalDate,
     raportointiDatabase: RaportointiDatabase,
-    t: LocalizationReader
+    t: LocalizationReader,
+    oppimäärä: Oppimäärä
   ): DataSheet = {
     DataSheet(
-      t.get("raportti-excel-aineopiskelijat-sheet-name"),
-      rows = raportointiDatabase.runDbSync(queryAineopiskelija(oppilaitosOids, jaksonAlku, jaksonLoppu, t.language)),
+      oppimäärä.sheetTitle(t),
+      rows = raportointiDatabase.runDbSync(queryAineopiskelija(oppilaitosOids, jaksonAlku, jaksonLoppu, t.language, oppimäärä)),
       columnSettings(t)
     )
   }
@@ -31,6 +45,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       create materialized view #${s.name}.lukion_oppiaineen_oppimaaran_kurssikertyma as select
         oppilaitos_oid,
         arviointi_paiva,
+        oppimaara_koodiarvo,
         count(*) yhteensa,
         count(*) filter (where suoritettu) suoritettuja,
         count(*) filter (where tunnustettu) tunnustettuja,
@@ -52,6 +67,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
         select
           oppilaitos_oid,
           osasuoritus.arviointi_paiva,
+          oppimaara_koodiarvo,
           tunnustettu,
           tunnustettu = false as suoritettu,
           tunnustettu_rahoituksen_piirissa,
@@ -75,14 +91,15 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       ) kurssit
     group by
       oppilaitos_oid,
-      arviointi_paiva
+      arviointi_paiva,
+      oppimaara_koodiarvo
     """
 
   def createIndex(s: Schema) =
     sqlu"create index on #${s.name}.lukion_oppiaineen_oppimaaran_kurssikertyma(oppilaitos_oid, arviointi_paiva)"
 
 
-  private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, lang: String) = {
+  private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, lang: String, oppimäärä: Oppimäärä) = {
     val nimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
     sql"""
       select
@@ -114,6 +131,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
         from lukion_oppiaineen_oppimaaran_kurssikertyma
           where oppilaitos_oid = any($oppilaitosOids)
             and arviointi_paiva between $aikaisintaan and $viimeistaan
+            and (oppimaara_koodiarvo = ${oppimäärä.arvo} or (${oppimäärä.arvo} = 'nuortenops' and oppimaara_koodiarvo is null))
           group by oppilaitos_oid
       ) oppimaaran_kurssikertymat
       left join (
