@@ -2,19 +2,16 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{PutOpiskeluoikeusTestMethods, TestMethodsLukio}
-import fi.oph.koski.documentation.ExampleData.suomenKieli
-import fi.oph.koski.documentation.ExamplesLukio2019.{lops2019AikuistenPerusteenDiaarinumero, lops2019perusteenDiaarinumero, lukionOppimäärä2019}
-import fi.oph.koski.documentation.{ExampleData, Lukio2019ExampleData}
-import fi.oph.koski.documentation.Lukio2019ExampleData.{moduulinSuoritusOppiaineissa, muuModuuliOppiaineissa, numeerinenArviointi, numeerinenLukionOppiaineenArviointi, oppiaineenSuoritus, paikallinenOpintojakso, paikallisenOpintojaksonSuoritus}
-import fi.oph.koski.documentation.LukioExampleData.{aikuistenOpetussuunnitelma, nuortenOpetussuunnitelma, opiskeluoikeusAktiivinen}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.koski.documentation.ExamplesLukio2019.{lops2019AikuistenPerusteenDiaarinumero}
+import fi.oph.koski.documentation.{ExampleData}
+import fi.oph.koski.documentation.LukioExampleData.{aikuistenOpetussuunnitelma, opiskeluoikeusAktiivinen}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopinnotOpiskeluoikeudenUlkopuolisetRow, Lukio2019ModuulinRahoitusmuotoRow, Lukio2019OpintopistekertymaAineopiskelijaRow, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteetRow, LukioOpintopistekertymaOppimaaraRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{LocalizedString, LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LukionOppiaineenSuoritus2019, LukionOppiaineidenOppimäärienSuoritus2019, LukionOppiaineidenOppimäärät2019, LukionOppimäärä, LukionOppimääränSuoritus2019, Oppija, OsaamisenTunnustaminen, PaikallinenKoodi, PaikallinenLukionOppiaine2019}
+import fi.oph.koski.schema.{LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LukionOppiaineidenOppimäärät2019, Oppija}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
