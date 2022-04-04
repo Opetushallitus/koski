@@ -22,7 +22,7 @@ class RemoteMigriService (implicit val application: KoskiApplication) extends Lo
     runIO(client.post(uri"/valinta-tulos-service/cas/migri/hakemukset/", List(oid))(json4sEncoderOf[List[String]]) {
       case (200, text, _) => Right(text)
       case (status, text, _) =>
-        logger.error(s"valinta-tulos-service returned status $status: $text")
+        logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} and oid $oid from ${application.config.getString("opintopolku.virkailija.url")}")
         Left(KoskiErrorCategory.internalError("Virhe kutsuttaessa valinta-tulos-servicea"))
     })
   }
