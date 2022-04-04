@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 4.4.2022
+- Opiskeluoikeuden vammaisuusjaksojen täytyy sisältyä pidennetyn oppivelvollisuuden aikajaksoon.
+  - Jos vammaisuusjakson loppupäivää ei ole määritelty, validoidaan että jakson alkupäivä sisältyy pidennetyn oppivelvollisuuden aikajaksoon.
+
 # 22.3.2022
 - Muuta 16.3.2022 tehty validaatio estämään perusopetuksen oppimäärän vahvistaminen opiskeluoikeuden valmistuneeksi
   merkitsemisen sijasta
@@ -15,7 +19,7 @@
 # 8.3.2022
 - Perusopetuksen opiskeluoikeuden päättymispäivä ei voi olla vuosiluokan suorituksen alkamispäivää ennen
 
-## 22.2.2022
+## 22.3.2022
 - VST:n vapaatavoitteiselle opiskeluoikeudelle sallitaan tila mitatoity, jotta opiskeluoikeus voidaan mitätöidä.
 
 ## 14.2.2022

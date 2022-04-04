@@ -486,15 +486,16 @@ class KoskiValidator(
     }
   }
 
-  private def validateOpiskeluoikeudenLisätiedot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-    opiskeluoikeus.lisätiedot match {
-      case Some(e: ErityisenKoulutustehtävänJaksollinen) => validateErityisenKoulutustehtävänJakso(e)
-      case _ => HttpStatus.ok
-    }
+  private def validateOpiskeluoikeudenLisätiedot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    HttpStatus.fold(
+      validateErityisenKoulutustehtävänJakso(opiskeluoikeus.lisätiedot),
+      validateVammaisuusJaksot(opiskeluoikeus.lisätiedot),
+      validateVaikeastiVammaisuusJaksot(opiskeluoikeus.lisätiedot)
+    )
   }
 
-  private def validateErityisenKoulutustehtävänJakso(lisätiedot: ErityisenKoulutustehtävänJaksollinen) = {
-    def validateKoodiarvo(koodistokoodiviite: Koodistokoodiviite) = {
+  private def validateErityisenKoulutustehtävänJakso(lisätiedot: Option[OpiskeluoikeudenLisätiedot]): HttpStatus = {
+    def validateKoodiarvo(koodistokoodiviite: Koodistokoodiviite): HttpStatus = {
       val vanhentuneetTehtäväKoodiarvot = Set(
         "ib", "kielijakansainvalisyys", "matematiikka-luonnontiede-ymparisto-tekniikka", "steiner", "taide", "urheilu", "muu"
       )
@@ -508,14 +509,53 @@ class KoskiValidator(
       }
     }
 
-    lisätiedot.erityisenKoulutustehtävänJaksot match {
-      case Some(e) => HttpStatus.fold(e.map(_.tehtävä).map(validateKoodiarvo))
+    lisätiedot match {
+      case Some(lisätiedot: ErityisenKoulutustehtävänJaksollinen) =>
+        lisätiedot
+          .erityisenKoulutustehtävänJaksot
+          .map(jaksot => HttpStatus.fold(jaksot.map(_.tehtävä).map(validateKoodiarvo)))
+          .getOrElse(HttpStatus.ok)
       case _ => HttpStatus.ok
     }
   }
 
-  private lazy val osaAikainenErityisopetusKoodistokoodiviite =
-    koodistoPalvelu.validateRequired(Koodistokoodiviite("1", "perusopetuksentukimuoto"))
+  private def validateVammaisuusJaksot(lisätiedot: Option[OpiskeluoikeudenLisätiedot]): HttpStatus = {
+    lisätiedot match {
+      case Some(lisätiedot: Vammainen) =>
+        lisätiedot
+          .vammainen
+          .map(aikajaksot => validatePidennettyOppivelvollisuusJakso(lisätiedot, aikajaksot))
+          .getOrElse(HttpStatus.ok)
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateVaikeastiVammaisuusJaksot(lisätiedot: Option[OpiskeluoikeudenLisätiedot]): HttpStatus = {
+    lisätiedot match {
+      case Some(lisätiedot: VaikeastiVammainen) =>
+        lisätiedot
+          .vaikeastiVammainen
+          .map(aikajaksot => validatePidennettyOppivelvollisuusJakso(lisätiedot, aikajaksot))
+          .getOrElse(HttpStatus.ok)
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validatePidennettyOppivelvollisuusJakso(
+    opiskeluoikeudenLisätiedot: OpiskeluoikeudenLisätiedot,
+    vammaisuusJaksot: List[Aikajakso]
+  ): HttpStatus = {
+    def sisältyy(tämä: Jakso, tuo: Jakso): Boolean =
+      tämä.contains(tuo.alku) && (tämä.loppu.isEmpty || tuo.loppu.isEmpty || tuo.loppu.exists(d => tämä.contains(d)))
+
+    opiskeluoikeudenLisätiedot match {
+      case p: PidennettyOppivelvollisuus => HttpStatus.validate(
+        vammaisuusJaksot
+          .forall(vammaisuusJakso => p.pidennettyOppivelvollisuus.exists(jakso => sisältyy(jakso, vammaisuusJakso)))
+      )(KoskiErrorCategory.badRequest.validation.date.vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella())
+      case _ => HttpStatus.ok
+    }
+  }
 
   private def validateSuoritus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, parent: List[Suoritus])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {
     val arviointipäivät: List[LocalDate] = suoritus.arviointi.toList.flatten.flatMap(_.arviointipäivä)

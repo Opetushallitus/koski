@@ -85,6 +85,8 @@ object KoskiErrorCategory {
 
         val alkamispäivä = subcategory("alkamispäivä", "Opiskeluoikeuden alkamispäivä ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää")
         val päättymispäivämäärä = subcategory("päättymispäivämäärä", "Opiskeluoikeuden päättymispäivä ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää")
+
+        val vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella = subcategory("vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella", "Vammaisuustiedon aikajakso on pidennetyn oppivelvollisuuden aikajakson ulkopuolella tai pidennetyn oppivelvollisuuden aikajakso puuttuu.")
       }
       val date = new Date
 

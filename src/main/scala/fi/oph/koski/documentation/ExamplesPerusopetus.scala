@@ -35,7 +35,10 @@ object ExamplesPerusopetus {
           NuortenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       ),
-      lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None)))))
+      lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+        pidennettyOppivelvollisuus = Some(Aikajakso(date(2014, 6, 6), None)),
+        vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None))))
+      )
     ))
   )
 

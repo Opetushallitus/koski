@@ -78,3 +78,7 @@ trait MaksuttomuusTieto extends OpiskeluoikeudenLisätiedot {
   final def withOikeuttaMaksuttomuuteenPidennetty(oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]]): MaksuttomuusTieto =
     shapeless.lens[MaksuttomuusTieto].field[Option[List[OikeuttaMaksuttomuuteenPidennetty]]]("oikeuttaMaksuttomuuteenPidennetty").set(this)(oikeuttaMaksuttomuuteenPidennetty)
 }
+
+trait PidennettyOppivelvollisuus {
+  def pidennettyOppivelvollisuus: Option[Aikajakso]
+}

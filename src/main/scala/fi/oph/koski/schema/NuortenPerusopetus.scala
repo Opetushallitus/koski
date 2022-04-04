@@ -179,6 +179,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   with Kotiopetuksellinen
   with Vammainen
   with VaikeastiVammainen
+  with PidennettyOppivelvollisuus
 
 trait Tukimuodollinen {
   @KoodistoUri("perusopetuksentukimuoto")

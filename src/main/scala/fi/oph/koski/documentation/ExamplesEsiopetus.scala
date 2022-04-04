@@ -26,8 +26,8 @@ object ExamplesEsiopetus {
   lazy val esiopetusaikaisetLisätiedot = EsiopetuksenOpiskeluoikeudenLisätiedot(
     tukimuodot = Some(List(osaAikainenErityisopetus)),
     pidennettyOppivelvollisuus = Some(Aikajakso(date(2006, 8, 15), Some(date(2016, 6, 4)))),
-    vammainen = Some(List(Aikajakso(date(2006, 8, 14), None))),
-    vaikeastiVammainen = Some(List(Aikajakso(date(2006, 6, 6), None))),
+    vammainen = Some(List(Aikajakso(date(2006, 8, 15), None))),
+    vaikeastiVammainen = Some(List(Aikajakso(date(2006, 8, 15), None))),
     majoitusetu = Some(Aikajakso(date(2006, 8, 14), Some(date(2012, 8, 14)))),
     kuljetusetu = Some(Aikajakso(date(2006, 8, 14), Some(date(2012, 8, 14)))),
     sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2006, 9, 1), Some(date(2013, 9, 1))))),

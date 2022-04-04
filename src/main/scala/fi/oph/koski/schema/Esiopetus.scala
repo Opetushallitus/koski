@@ -91,6 +91,7 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   with Kuljetusetuinen
   with Vammainen
   with VaikeastiVammainen
+  with PidennettyOppivelvollisuus
 
 case class EsiopetuksenSuoritus(
   @Title("Koulutus")
