@@ -8,8 +8,11 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.json4s.JValue
+import org.scalatra.auth.strategy.BasicAuthStrategy.BasicAuthRequest
 
 class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresLuovutuspalvelu with NoCache {
+  lazy val migriService =
+    if (application.config.getString("opintopolku.virkailija.url") == "mock") new MockMigriService else new RemoteMigriService
 
   post("/hetu") {
     withJsonBody{ json =>
@@ -20,6 +23,12 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
   post("/oid") {
     withJsonBody { json =>
       renderEither(extractAndValidateOid(json).flatMap(haeOidilla))
+    }()
+  }
+
+  post("/valinta/oid") {
+    withJsonBody { json =>
+      renderEither(extractAndValidateOid(json).flatMap(valintaTiedotOidilla))
     }()
   }
 
@@ -42,6 +51,11 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
     application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = true, useVirta = true, useYtr = true)(koskiSession)
       .flatMap(_.warningsToLeft)
       .flatMap(convertToMigriSchema)
+
+  private def valintaTiedotOidilla(oid: String): Either[HttpStatus, String] = {
+    val basicAuthRequest = new BasicAuthRequest(request)
+    migriService.get(oid, basicAuthRequest)
+  }
 
   private def convertToMigriSchema(oppija: Oppija): Either[HttpStatus, MigriOppija] =
     ConvertMigriSchema.convert(oppija).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
