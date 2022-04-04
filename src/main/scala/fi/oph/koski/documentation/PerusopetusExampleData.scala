@@ -2,8 +2,8 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.ExamplesPerusopetus.toimintaAlueenSuoritus
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
@@ -242,6 +242,21 @@ object PerusopetusExampleData {
     vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4)),
     suoritustapa = suoritustapaKoulutus,
     osasuoritukset = kaikkiAineet,
+    suorituskieli = suomenKieli
+  )
+
+  val päättötodistusToimintaAlueilla = NuortenPerusopetuksenOppimääränSuoritus(
+    koulutusmoduuli = perusopetus,
+    toimipiste = jyväskylänNormaalikoulu,
+    vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4)),
+    suoritustapa = suoritustapaKoulutus,
+    osasuoritukset = Some(List(
+      toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S", Some(Finnish("Motoriset taidot kehittyneet hyvin perusopetuksen aikana")))),
+      toimintaAlueenSuoritus("2").copy(arviointi = arviointi("S", kuvaus = None)),
+      toimintaAlueenSuoritus("3").copy(arviointi = arviointi("S", kuvaus = None)),
+      toimintaAlueenSuoritus("4").copy(arviointi = arviointi("S", kuvaus = None)),
+      toimintaAlueenSuoritus("5").copy(arviointi = arviointi("S", kuvaus = None))
+    )),
     suorituskieli = suomenKieli
   )
 }

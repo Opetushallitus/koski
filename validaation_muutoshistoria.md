@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 4.4.2022
+- Perusopetuksen aineilta vaaditaan laajuus myös toiminta-alueittain opiskelevien tapauksessa, kun suoritus on vahvistettu 1.8.2020 jälkeen.
+
 ## 1.4.2022
 - Mitätöity opiskeluoikeus jättää väliin opiskeluoikeuden validoinnin.
 
