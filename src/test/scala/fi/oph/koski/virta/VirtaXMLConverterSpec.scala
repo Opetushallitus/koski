@@ -61,7 +61,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         if (tilallinen && päättynyt) {
           <virta:Tila>
             <virta:AlkuPvm>{organisaatioVanhallaNimelläPvm.toString}</virta:AlkuPvm>
-            <virta:Koodi>3</virta:Koodi>
+            <virta:Koodi>5</virta:Koodi>
           </virta:Tila>
         }
       }
@@ -187,6 +187,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     "haetaan opiskeluoikeuden päättymisen päivämäärällä" in {
       val opiskeluoikeus = convertOpiskeluoikeusWithOrganisaatio(None, päättynyt = true)
       opiskeluoikeus.oppilaitos.get.nimi.get should be(Finnish("Aalto-yliopisto -vanha", Some("Aalto-universitetet -vanha"), Some("Aalto University -vanha")))
+      opiskeluoikeus.suoritukset.head.toimipiste.nimi.get should be(Finnish("Aalto-yliopisto -vanha", Some("Aalto-universitetet -vanha"), Some("Aalto University -vanha")))
     }
 
   }

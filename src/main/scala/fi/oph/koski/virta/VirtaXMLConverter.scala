@@ -112,7 +112,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     if (tutkintoonJohtava(opiskeluoikeusNode)) {
       fixPäätasonSuoritusIfNecessary(suoritukset, opiskeluoikeusNode, tila)
     } else {
-      addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
+      addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode, None)
     }
   }
 
@@ -122,16 +122,22 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       val opiskeluoikeudenTutkinto = tutkinto(jakso.koulutuskoodi)
       suoritukset.exists(_.koulutusmoduuli.tunniste == opiskeluoikeudenTutkinto.tunniste)
     }
+    def viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi, jaksonNimi(opiskeluoikeusNode))
 
     if (suoritusLöytyyKoulutuskoodilla) { // suoritus löytyy virta datasta vain jos se on valmis
       moveOpintojaksotUnderPäätasonSuoritusIfNecessary(suoritukset)
     } else if (opiskeluoikeusJaksot.nonEmpty && !päättynyt(tila)) {
       val viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi, jaksonNimi(opiskeluoikeusNode))
       addKeskeneräinenTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
+    } else if (opiskeluoikeusJaksot.nonEmpty) {
+      val opiskeluoikeusTila = tila.opiskeluoikeusjaksot.lastOption.map(_.tila)
+      logger.info(s"Opiskeluoikeus on päättynyt. Opiskeluoikeus(avain: ${avain(opiskeluoikeusNode)}, tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}')")
+      val viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi, jaksonNimi(opiskeluoikeusNode))
+      addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode, Some(viimeisinTutkinto))
     } else {
       val opiskeluoikeusTila = tila.opiskeluoikeusjaksot.lastOption.map(_.tila)
       logger.info(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeus(avain: ${avain(opiskeluoikeusNode)}, tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}')")
-      addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
+      addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode, None)
     }
   }
 
@@ -168,7 +174,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def addMuuKorkeakoulunSuoritus(
     tila: KorkeakoulunOpiskeluoikeudenTila,
     suoritukset: List[KorkeakouluSuoritus],
-    opiskeluoikeusNode: Node
+    opiskeluoikeusNode: Node,
+    viimeisinTutkinto: Option[Korkeakoulututkinto]
   ): List[KorkeakouluSuoritus] = {
     val virtaOpiskeluoikeudenTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeusNode)
 
@@ -182,7 +189,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       (suoritukset, None)
     }
 
-    val vahvistusPäivä = tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(_.alku)
+    val vahvistusPäivä = tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku)
     val oppilaitoksenNimiPäivä = getOppilaitoksenNimiPäivä(
       tila.opiskeluoikeusjaksot.lastOption,
       suoritukset.flatMap(_.vahvistus).sortBy(_.päivä)(DateOrdering.localDateOrdering).lastOption.map(_.päivä)
@@ -203,7 +210,21 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         toimipiste = org
       )
     }
-    muuKorkeakoulunSuoritus.toList ++ päätasonSuoritukset
+
+    val tutkinnonSuoritus = optionalOppilaitos(opiskeluoikeusNode, oppilaitoksenNimiPäivä).flatMap { org =>
+      viimeisinTutkinto.map { tutkinto =>
+        KorkeakoulututkinnonSuoritus(
+          koulutusmoduuli = tutkinto,
+          arviointi = None,
+          vahvistus = päivämääräVahvistus(vahvistusPäivä, org),
+          suorituskieli = None,
+          osasuoritukset = osasuoritukset,
+          toimipiste = org
+        )
+      }
+    }
+
+    tutkinnonSuoritus.orElse(muuKorkeakoulunSuoritus).toList ++ päätasonSuoritukset
   }
 
   private def päivämääräVahvistus(vahvistusPäivä: Option[LocalDate], organisaatio: Organisaatio): Option[Päivämäärävahvistus] =
@@ -250,8 +271,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     tutkintoonJohtavienTyyppienKoodiarvot.contains(ooTyyppi)
   }
 
-  private def päättynyt(tila: KorkeakoulunOpiskeluoikeudenTila) =
-    tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "3")
+  private def päättynyt(tila: KorkeakoulunOpiskeluoikeudenTila): Boolean =
+    tila.opiskeluoikeusjaksot.lastOption.exists(_.opiskeluoikeusPäättynyt)
 
   private def lukuvuosiMaksuTiedot(n: Node) = KorkeakoulunOpiskeluoikeudenLukuvuosimaksu(
     alku = alkuPvm(n),
