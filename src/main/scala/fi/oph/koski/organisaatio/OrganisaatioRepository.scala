@@ -110,7 +110,7 @@ object OrganisaatioRepository {
       case "mock" =>
         MockOrganisaatioRepository
       case url =>
-        val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/organisaatio-service", sessionCookieName = "SESSION")
+        val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/organisaatio-service", sessionCookieName = "SESSION", false)
         new RemoteOrganisaatioRepository(http, koodisto)
     }
   }

@@ -10,16 +10,16 @@ import org.http4s.client.Client
 case class VirkailijaCredentials(username: String, password: String) extends NotLoggable
 
 object VirkailijaCredentials {
-  def apply(serviceConfig: ServiceConfig): VirkailijaCredentials = {
-    if (Environment.usesAwsSecretsManager) {
+  def apply(serviceConfig: ServiceConfig, ignoreAws: Boolean): VirkailijaCredentials = {
+    if (Environment.usesAwsSecretsManager && !ignoreAws) {
       VirkailijaCredentials.fromSecretsManager
     } else {
       VirkailijaCredentials(serviceConfig.username, serviceConfig.password)
     }
   }
 
-  def apply(config: Config): VirkailijaCredentials = {
-    if (Environment.usesAwsSecretsManager) {
+  def apply(config: Config, ignoreAws: Boolean): VirkailijaCredentials = {
+    if (Environment.usesAwsSecretsManager && !ignoreAws) {
       VirkailijaCredentials.fromSecretsManager
     } else {
       VirkailijaCredentials.fromConfig(config)
@@ -46,23 +46,24 @@ object VirkailijaHttpClient {
 
   private def defaultClient(serviceUrl: String): Client[IO] = Http.retryingClient(serviceUrl)
 
-  def apply(serviceConfig: ServiceConfig, serviceUrl: String): Http =
-    apply(serviceConfig, serviceUrl, defaultClient(serviceUrl))
+  def apply(serviceConfig: ServiceConfig, serviceUrl: String, ignoreAws: Boolean): Http =
+    apply(serviceConfig, serviceUrl, defaultClient(serviceUrl), ignoreAws)
 
-  def apply(serviceConfig: ServiceConfig, serviceUrl: String, sessionCookieName: String): Http =
-    apply(serviceConfig, serviceUrl, defaultClient(serviceUrl), sessionCookieName)
+  def apply(serviceConfig: ServiceConfig, serviceUrl: String, sessionCookieName: String, ignoreAws: Boolean): Http =
+    apply(serviceConfig, serviceUrl, defaultClient(serviceUrl), ignoreAws, sessionCookieName)
 
-  def apply(serviceConfig: ServiceConfig, serviceUrl: String, sessionCookieName: String, serviceUrlSuffix: String): Http =
-    apply(serviceConfig, serviceUrl, defaultClient(serviceUrl), sessionCookieName, serviceUrlSuffix)
+  def apply(serviceConfig: ServiceConfig, serviceUrl: String, sessionCookieName: String, serviceUrlSuffix: String, ignoreAws: Boolean): Http =
+    apply(serviceConfig, serviceUrl, defaultClient(serviceUrl), ignoreAws, sessionCookieName, serviceUrlSuffix)
 
   def apply(
     serviceConfig: ServiceConfig,
     serviceUrl: String,
     client: Client[IO],
+    ignoreAws: Boolean,
     sessionCookieName: String = DefaultSessionCookieName,
     serviceUrlSuffix: String = DefaultServiceUrlSuffix
   ): Http = {
-    val VirkailijaCredentials(username, password) = VirkailijaCredentials(serviceConfig)
+    val VirkailijaCredentials(username, password) = VirkailijaCredentials(serviceConfig, ignoreAws)
     val casAuthenticatingClient = if (serviceConfig.useCas) {
       val casClient = new CasClient(serviceConfig.virkailijaUrl + "/cas", client, OpintopolkuCallerId.koski)
       CasAuthenticatingClient(
