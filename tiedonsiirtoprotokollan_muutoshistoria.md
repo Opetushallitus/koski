@@ -1,3 +1,5 @@
+bar
+
 ## 14.3.2022
 - TUVA-opiskeluoikeuden järjestämislupa ei saa muuttua.
 
