@@ -48,7 +48,7 @@ jobs:
           cd ..
           make lint
 
-  checkdoc_koski:
+  checkdoc_koski_validation:
     name: Check that validaation_muustohistoria.md has been updated
     runs-on: ubuntu-20.04
     steps:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Check validation and documentation changes
         run: |
-          make checkdoc
+          make checkdoc_validation
 
   run_backend_tests:
     name: Run Koski backend tests

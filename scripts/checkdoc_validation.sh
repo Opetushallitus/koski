@@ -13,6 +13,7 @@ function check_changes() {
   if has_validation_changes; then
     if ! has_validaation_muustohistoria_changes; then
       echo "ERROR! Branch has validation changes but no changes to validaation_muutoshistoria.md:"
+      echo
       git log --name-only HEAD...origin/master
       exit 1
     fi
