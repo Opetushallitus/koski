@@ -18,7 +18,7 @@ object HuollettavatRepository {
       case "mock" =>
         new MockHuollettavatRepository
       case url =>
-        val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/vtj-service")
+        val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/vtj-service", false)
         new RemoteHuollettavatRepository(http)
     }
   }
