@@ -9,9 +9,9 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusPoistoUtils
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema.{Opiskeluoikeus, SuostumusPeruttavissaOpiskeluoikeudelta}
 import slick.jdbc.GetResult
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 
 case class SuostumuksenPeruutusService(protected val application: KoskiApplication) extends Logging with QueryMethods {
-  import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
   lazy val db = application.masterDatabase.db
   lazy val perustiedotIndexer = application.perustiedotIndexer
@@ -23,18 +23,21 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   def listaaPerututSuostumukset() = {
     implicit val getResult: GetResult[PoistettuOpiskeluoikeusRow] = {
       GetResult[PoistettuOpiskeluoikeusRow](r =>
-        PoistettuOpiskeluoikeusRow(r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<)
+        PoistettuOpiskeluoikeusRow(r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.nextArray[String]().toList,r.<<)
       )
     }
 
     runDbSync(
       sql"""
-           select oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, paattymispaiva, lahdejarjestelma_koodi, lahdejarjestelma_id, mitatoity_aikaleima, suostumus_peruttu_aikaleima
+           select oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, paattymispaiva, lahdejarjestelma_koodi, lahdejarjestelma_id, mitatoity_aikaleima, suostumus_peruttu_aikaleima, koulutusmuoto, suoritustyypit, versio
            from poistettu_opiskeluoikeus
            order by coalesce(mitatoity_aikaleima, suostumus_peruttu_aikaleima) desc;
          """.as[PoistettuOpiskeluoikeusRow]
     )
   }
+
+  def etsiPoistetut(oids: Seq[String]): Seq[PoistettuOpiskeluoikeusRow] =
+    runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(r => r.oid inSet oids).result)
 
   def peruutaSuostumus(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
     henkilöRepository.findByOid(user.oid) match {

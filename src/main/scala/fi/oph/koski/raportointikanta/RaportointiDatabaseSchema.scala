@@ -157,7 +157,8 @@ object RaportointiDatabaseSchema {
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima", SqlType("timestamptz"))
     val oppijaOid = column[String]("oppija_oid", StringIdentifierType)
-    val mitätöity = column[LocalDate]("mitatoitu")
+    val mitätöity = column[Option[LocalDate]]("mitatoitu")
+    val suostumusPeruttu = column[Option[LocalDate]]("suostumus_peruttu")
     val tyyppi = column[String]("tyyppi", StringIdentifierType)
     val päätasonSuoritusTyypit = column[List[String]]("paatason_suoritus_tyypit")
 
@@ -167,6 +168,7 @@ object RaportointiDatabaseSchema {
       aikaleima,
       oppijaOid,
       mitätöity,
+      suostumusPeruttu,
       tyyppi,
       päätasonSuoritusTyypit
     ) <> (RMitätöityOpiskeluoikeusRow.tupled, RMitätöityOpiskeluoikeusRow.unapply)
@@ -503,7 +505,8 @@ case class RMitätöityOpiskeluoikeusRow(
   versionumero: Int,
   aikaleima: Timestamp,
   oppijaOid: String,
-  mitätöity: LocalDate,
+  mitätöity: Option[LocalDate],
+  suostumusPeruttu: Option[LocalDate],
   tyyppi: String,
   päätasonSuoritusTyypit: List[String]
 )

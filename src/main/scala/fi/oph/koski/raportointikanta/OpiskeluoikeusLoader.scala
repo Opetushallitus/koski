@@ -1,12 +1,13 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.{OpiskeluoikeusRow, PoistettuOpiskeluoikeusRow}
 import fi.oph.koski.json.JsonManipulation
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
 import fi.oph.koski.schema._
+import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.validation.MaksuttomuusValidation
 import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
@@ -25,6 +26,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   def loadOpiskeluoikeudet(
     opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
+    suostumuksenPeruutusService: SuostumuksenPeruutusService,
     db: RaportointiDatabase,
     update: Option[RaportointiDatabaseUpdate] = None,
     batchSize: Int = DefaultBatchSize,
@@ -40,7 +42,7 @@ object OpiskeluoikeusLoader extends Logging {
     var loopCount = 0
     val result = opiskeluoikeusQueryRepository.mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update.map(_.since)) { batch =>
       if (batch.nonEmpty) {
-        val result = if (update.isDefined) updateBatch(db, batch) else loadBatch(db, batch)
+        val result = if (update.isDefined) updateBatch(db, suostumuksenPeruutusService, batch) else loadBatch(db, suostumuksenPeruutusService, batch)
         onAfterPage(loopCount, batch)
         loopCount = loopCount + 1
         result
@@ -55,22 +57,34 @@ object OpiskeluoikeusLoader extends Logging {
     result.doOnEach(progressLogger)
   }
 
-  private def loadBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow]): Seq[LoadResult] = {
+  private def loadBatch(
+    db: RaportointiDatabase,
+    suostumuksenPeruutusService: SuostumuksenPeruutusService,
+    batch: Seq[OpiskeluoikeusRow]
+  ): Seq[LoadResult] = {
     val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
+    val (poistetutOot, mitätöidytEiPoistetutOot) = mitätöidytOot.partition(_.poistettu)
 
     val resultOlemassaolevatOot = loadBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
-    val resultMitätöidyt = loadBatchMitätöidytOpiskeluoikeudet(db, mitätöidytOot)
+    val resultMitätöidyt = loadBatchMitätöidytOpiskeluoikeudet(db, mitätöidytEiPoistetutOot)
+    val resultPoistetut = loadBatchPoistetutOpiskeluoikeudet(db, suostumuksenPeruutusService, poistetutOot)
 
-    resultOlemassaolevatOot ++ resultMitätöidyt
+    resultOlemassaolevatOot ++ resultMitätöidyt ++ resultPoistetut
   }
 
-  private def updateBatch(db: RaportointiDatabase, batch: Seq[OpiskeluoikeusRow]): Seq[LoadResult] = {
+  private def updateBatch(
+    db: RaportointiDatabase,
+    suostumuksenPeruutusService: SuostumuksenPeruutusService,
+    batch: Seq[OpiskeluoikeusRow]
+  ): Seq[LoadResult] = {
     val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
+    val (poistetutOot, mitätöidytEiPoistetutOot) = mitätöidytOot.partition(_.poistettu)
 
     val resultOlemassaolevatOot = updateBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
-    val resultMitätöidyt = updateBatchMitätöidytOpiskeluoikeudet(db, mitätöidytOot)
+    val resultMitätöidyt = updateBatchMitätöidytOpiskeluoikeudet(db, mitätöidytEiPoistetutOot)
+    val resultPoistetut = updateBatchPoistetutOpiskeluoikeudet(db, suostumuksenPeruutusService, poistetutOot)
 
-    resultOlemassaolevatOot ++ resultMitätöidyt
+    resultOlemassaolevatOot ++ resultMitätöidyt ++ resultPoistetut
   }
 
   private def loadBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
@@ -156,6 +170,42 @@ object OpiskeluoikeusLoader extends Logging {
     db.updateMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
     db.updateStatusCount(mitätöidytStatusName, outputRows.size)
     errors.map(_.left.get)
+  }
+
+  private def loadBatchPoistetutOpiskeluoikeudet(
+    db: RaportointiDatabase,
+    suostumuksenPeruutusService: SuostumuksenPeruutusService,
+    oot: Seq[OpiskeluoikeusRow]
+  ): Seq[LoadErrorResult] = {
+    if (oot.nonEmpty) {
+      val (errors, outputRows) = suostumuksenPeruutusService
+        .etsiPoistetut(oot.map(_.oid))
+        .map(buildRowMitätöity)
+        .partition(_.isLeft)
+      db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
+      db.updateStatusCount(mitätöidytStatusName, outputRows.size)
+      errors.map(_.left.get)
+    } else {
+      Seq.empty
+    }
+  }
+
+  private def updateBatchPoistetutOpiskeluoikeudet(
+    db: RaportointiDatabase,
+    suostumuksenPeruutusService: SuostumuksenPeruutusService,
+    oot: Seq[OpiskeluoikeusRow]
+  ): Seq[LoadErrorResult] = {
+    if (oot.nonEmpty) {
+      val (errors, outputRows) = suostumuksenPeruutusService
+        .etsiPoistetut(oot.map(_.oid))
+        .map(buildRowMitätöity)
+        .partition(_.isLeft)
+      db.updateMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
+      db.updateStatusCount(mitätöidytStatusName, outputRows.size)
+      errors.map(_.left.get)
+    } else {
+      Seq.empty
+    }
   }
 
   private def progressLogger: Subscriber[LoadResult] = new Subscriber[LoadResult] {
@@ -460,7 +510,7 @@ object OpiskeluoikeusLoader extends Logging {
     }
   }
 
-  private def buildRowMitätöity(raw: OpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
+  private[raportointikanta] def buildRowMitätöity(raw: OpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
     for {
       oo <- raw.toOpiskeluoikeus(KoskiSpecificSession.systemUser).left.map(e => LoadErrorResult(raw.oid, "[mitätöity] " + e.toString()))
       mitätöityPvm <- oo.mitätöintiPäivä.toRight(LoadErrorResult(raw.oid, "Mitätöintipäivämäärän haku epäonnistui"))
@@ -469,9 +519,33 @@ object OpiskeluoikeusLoader extends Logging {
       versionumero = raw.versionumero,
       aikaleima = raw.aikaleima,
       oppijaOid = raw.oppijaOid,
-      mitätöity = mitätöityPvm,
+      mitätöity = Some(mitätöityPvm),
+      suostumusPeruttu = None,
       tyyppi = raw.koulutusmuoto,
       päätasonSuoritusTyypit = oo.suoritukset.map(_.tyyppi.koodiarvo).distinct
+    )
+  }
+
+  private[raportointikanta] def buildRowMitätöity(row: PoistettuOpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
+    val aikaleima = row
+      .mitätöityAikaleima
+      .orElse(row.suostumusPeruttuAikaleima)
+      .toRight(LoadErrorResult(
+        row.oid,
+        "Poistetun opiskeluoikeuden aikaleimaa ei ollut olemassa"
+      ))
+
+    aikaleima.map(al =>
+      RMitätöityOpiskeluoikeusRow(
+        opiskeluoikeusOid = row.oid,
+        versionumero = row.versio.getOrElse(0),
+        aikaleima = al,
+        oppijaOid = row.oppijaOid,
+        mitätöity = row.mitätöityAikaleima.map(_.toLocalDateTime.toLocalDate),
+        suostumusPeruttu = row.suostumusPeruttuAikaleima.map(_.toLocalDateTime.toLocalDate),
+        tyyppi = row.koulutusmuoto,
+        päätasonSuoritusTyypit = row.suoritustyypit
+      )
     )
   }
 }
