@@ -359,8 +359,11 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
       "Toiminta-alueittain opiskeltu" - {
         "Osasuorituksilla tulee olla laajuus > 0" in {
-          verify(päättötodistusToimintaAlueilla.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1)))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Oppiaineen koskioppiaineetyleissivistava/GE laajuus puuttuu"))
+          putOpiskeluoikeus(
+            defaultOpiskeluoikeus.copy(
+              suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusToimintaAlueilla.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))))
+            )) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.toiminta_alueenLaajuusPuuttuu("Toiminta-alueen perusopetuksentoimintaalue/1 laajuus puuttuu"))
           }
         }
       }

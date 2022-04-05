@@ -251,11 +251,7 @@ object PerusopetusExampleData {
     vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4)),
     suoritustapa = suoritustapaKoulutus,
     osasuoritukset = Some(List(
-      toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S", Some(Finnish("Motoriset taidot kehittyneet hyvin perusopetuksen aikana")))),
-      toimintaAlueenSuoritus("2").copy(arviointi = arviointi("S", kuvaus = None)),
-      toimintaAlueenSuoritus("3").copy(arviointi = arviointi("S", kuvaus = None)),
-      toimintaAlueenSuoritus("4").copy(arviointi = arviointi("S", kuvaus = None)),
-      toimintaAlueenSuoritus("5").copy(arviointi = arviointi("S", kuvaus = None))
+      toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S", Some(Finnish("Motoriset taidot kehittyneet hyvin perusopetuksen aikana"))))
     )),
     suorituskieli = suomenKieli
   )

@@ -15,7 +15,7 @@ import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
-import fi.oph.koski.schema.{OppiaineenTaiToiminta_AlueenSuoritus, VapaanSivistystyönPäätasonSuoritus, _}
+import fi.oph.koski.schema.{VapaanSivistystyönPäätasonSuoritus, _}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.TutkintoRepository
@@ -1127,7 +1127,7 @@ class KoskiValidator(
              if o.koulutusmoduuli.pakollinen && o.suoritustapa.forall(_.koodiarvo != "erityinentutkinto") =>
              HttpStatus.validate(o.koulutusmoduuli.laajuusArvo(0.0) > 0) { KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Oppiaineen ${suorituksenTunniste(o)} laajuus puuttuu") }
            case ta: PerusopetuksenToiminta_AlueenSuoritus =>
-             HttpStatus.validate(ta.koulutusmoduuli.laajuusArvo(0.0) > 0) { KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Oppiaineen ${suorituksenTunniste(ta)} laajuus puuttuu") }
+             HttpStatus.validate(ta.koulutusmoduuli.laajuusArvo(0.0) > 0) { KoskiErrorCategory.badRequest.validation.laajuudet.toiminta_alueenLaajuusPuuttuu(s"Toiminta-alueen ${suorituksenTunniste(ta)} laajuus puuttuu") }
          })
      case _ => HttpStatus.ok
    }
