@@ -9,6 +9,7 @@ import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.annotation.Deprecated
 
+// foo
 case class KorkeakoulunOpiskeluoikeus(
   oid: Option[String] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
