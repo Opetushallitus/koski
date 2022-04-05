@@ -31,6 +31,7 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
   }
 
   get("/") {
+    requireVirkailijaOrPalvelukäyttäjä
     if (session.hasGlobalReadAccess) {
       val peruutetutSuostumukset = application.suostumuksenPeruutusService.listaaPerututSuostumukset()
       if (peruutetutSuostumukset.nonEmpty) {
