@@ -87,6 +87,7 @@ class KoskiValidator(
 
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
     opiskeluoikeus match {
+      case opiskeluoikeus if opiskeluoikeus.mitätöity => Right(opiskeluoikeus)
       case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
         updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
           (validateAccess(opiskeluoikeus)

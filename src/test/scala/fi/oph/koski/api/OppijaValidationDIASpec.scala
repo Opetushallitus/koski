@@ -174,8 +174,7 @@ class OppijaValidationDIASpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
         opiskeluoikeusEronnut,
         opiskeluoikeusKatsotaanEronneeksi,
         opiskeluoikeusValiaikaisestiKeskeytynyt,
-        opiskeluoikeusPeruutettu,
-        opiskeluoikeusMitätöity
+        opiskeluoikeusPeruutettu
       ).foreach(verifyRahoitusmuotoKielletty)
     }
   }
