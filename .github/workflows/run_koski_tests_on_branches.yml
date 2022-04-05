@@ -59,6 +59,17 @@ jobs:
         run: |
           make checkdoc_validation
 
+  checkdoc_koski_schema:
+    name: Check that tiedonsiirtoprotokollan_muustohistoria.md has been updated
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with: { fetch-depth: 0 }
+
+      - name: Check schema and documentation changes
+        run: |
+          make checkdoc_schema
+
   run_backend_tests:
     name: Run Koski backend tests
     runs-on: ubuntu-20.04

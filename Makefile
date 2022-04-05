@@ -134,6 +134,10 @@ snyk: # javascript dependency vulnerability check
 checkdoc_validation:
 	./scripts/checkdoc_validation.sh
 
+.PHONY: checkdoc_schema
+checkdoc_schema:
+	./scripts/checkdoc_schema.sh
+
 .PHONY: mvndeps
 mvndeps:
 	mvn dependency:tree|less
