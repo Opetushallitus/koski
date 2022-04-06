@@ -357,6 +357,16 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           }
         }
       }
+      "Toiminta-alueittain opiskeltu" - {
+        "Osasuorituksilla tulee olla laajuus > 0" in {
+          putOpiskeluoikeus(
+            defaultOpiskeluoikeus.copy(
+              suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusToimintaAlueilla.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))))
+            )) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.toiminta_alueenLaajuusPuuttuu("Toiminta-alueen perusopetuksentoimintaalue/1 laajuus puuttuu"))
+          }
+        }
+      }
     }
     "Suorituksen vahvistuspäivä on ennen 1.8.2020" - {
       "Vuosiluokan suoritus" - {
@@ -369,6 +379,13 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       "Päättötodistus" - {
         "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
           verify(päättötodistusSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 7, 31)))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+      "Toiminta-alueittain opiskeltu" - {
+        "Laajuutta ei vaadita osasuorituksilta" in {
+          verify(päättötodistusToimintaAlueilla.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 7, 31)))) {
             verifyResponseStatusOk()
           }
         }
