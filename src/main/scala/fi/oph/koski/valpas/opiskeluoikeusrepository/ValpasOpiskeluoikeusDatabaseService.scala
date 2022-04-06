@@ -298,6 +298,54 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
       )
   )
+  , hakeutumisvalvottava_peruskouluun_valmistava_opiskeluoikeus AS (
+    SELECT
+      DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
+      ov_kelvollinen_opiskeluoikeus.oppilaitos_oid,
+      ov_kelvollinen_opiskeluoikeus.master_oid
+    FROM
+      ov_kelvollinen_opiskeluoikeus
+      LEFT JOIN r_opiskeluoikeus_aikajakso aikajakson_keskella
+        ON aikajakson_keskella.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+        AND $tarkastelupäivä BETWEEN aikajakson_keskella.alku AND aikajakson_keskella.loppu
+    WHERE
+      $haePerusopetuksenHakeutumisvalvontatiedot IS TRUE
+      -- (0) henkilö on oppivelvollinen: hakeutumisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
+      -- oppivelvollisuus on päättynyt
+      AND ov_kelvollinen_opiskeluoikeus.henkilo_on_oppivelvollinen
+      -- (1) oppijalla on peruskouluun valmistava opiskeluoikeus
+      AND ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'perusopetukseenvalmistavaopetus'
+      -- (2) oppija täyttää 17 vuotta tänä vuonna. Peruskouluun valmistavassa vain heitä hakeutumisvalvotaan.
+      AND ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
+      AND (
+        -- (5a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
+        -- Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
+        (
+          (aikajakson_keskella.tila IS NOT NULL
+            AND aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}'))
+        )
+        -- TAI:
+        OR (
+          -- (5b.1) opiskeluoikeus on päättynyt menneisyydessä
+          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
+          -- (5b.2) ministeriön määrittelemä aikaraja ei ole kulunut umpeen henkilön valmistumis-/eroamisajasta.
+          AND (
+            (
+              -- keväällä valmistunut/eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+              (ov_kelvollinen_opiskeluoikeus.paattymispaiva
+                BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+              AND $tarkastelupäivä <= $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+            )
+            OR (
+              -- tai muuna aikana valmistunut/eronnut ja tarkastellaan heille määrättyä rajapäivää aiemmin
+              (ov_kelvollinen_opiskeluoikeus.paattymispaiva
+                NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+              AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
+            )
+          )
+        )
+      )
+  )
   , hakeutumisvalvottava_international_schoolin_opiskeluoikeus AS (
     SELECT
       DISTINCT ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid,
@@ -535,6 +583,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       *
     FROM
       hakeutumisvalvottava_peruskoulun_opiskeluoikeus
+    UNION ALL
+    SELECT
+      *
+    FROM
+      hakeutumisvalvottava_peruskouluun_valmistava_opiskeluoikeus
     UNION ALL
     SELECT
       *

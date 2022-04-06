@@ -220,7 +220,23 @@ const ryhmä = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
       ),
     }
   } else {
-    return ryhmäValue
+    if (
+      oo.muuOpetusTiedot &&
+      oo.tyyppi.koodiarvo == "perusopetukseenvalmistavaopetus"
+    ) {
+      const valo = t("hakutilanne__valo")
+      return {
+        value: `${valo}`,
+        filterValues: [valo],
+        display: (
+          <>
+            <span className={b("valo")}>{`${valo}`}</span>
+          </>
+        ),
+      }
+    } else {
+      return ryhmäValue
+    }
   }
 }
 

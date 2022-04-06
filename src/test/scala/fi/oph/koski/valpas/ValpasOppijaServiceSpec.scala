@@ -587,6 +587,42 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
         )
       )
     ),
+    (
+      ValpasMockOppijat.perusopetukseenValmistautuva17VuottaTäyttävä,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.perusopetukseenValmistavanOpetuksenOpiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          muuOpetusTiedot = Some(ExpectedDataMuuOpetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.perusopetukseenValmistavastaValmistunut17Vuotias,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.perusopetukseenValmistavanOpetuksenOpiskeluoikeusValmistunut,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          muuOpetusTiedot = Some(ExpectedDataMuuOpetusTiedot("valmistunut", "valmistunut")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.perusopetukseenValmistavastaEronnut17Vuotias,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.perusopetukseenValmistavanOpetuksenOpiskeluoikeusEronnut,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          muuOpetusTiedot = Some(ExpectedDataMuuOpetusTiedot("eronnut", "eronnut")),
+        )
+      )
+    ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
@@ -896,6 +932,30 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
           onHakeutumisvalvovaOppilaitos = true,
           onSuorittamisvalvovaOppilaitos = false,
           perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.perusopetukseenValmistautuva17VuottaTäyttävä,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.perusopetukseenValmistavanOpetuksenOpiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          muuOpetusTiedot = Some(ExpectedDataMuuOpetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.perusopetukseenValmistavastaEronnut17Vuotias,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.perusopetukseenValmistavanOpetuksenOpiskeluoikeusEronnut,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          muuOpetusTiedot = Some(ExpectedDataMuuOpetusTiedot("eronnut", "eronnut")),
         )
       )
     ),
