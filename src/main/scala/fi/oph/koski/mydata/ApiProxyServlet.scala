@@ -41,7 +41,8 @@ class ApiProxyServlet(implicit val application: KoskiApplication) extends KoskiS
               )
             })
           } else {
-            logger.info(s"Student ${oppijaHenkilö.oid} has not authorized $memberId to access their student data")
+            //Aiheuttaa merkittävän määrän turhaa logitusta HSL:n hakiessa näitä tietoja jatkuvasti -> debug
+            logger.debug(s"Student ${oppijaHenkilö.oid} has not authorized $memberId to access their student data")
             Left(KoskiErrorCategory.forbidden.forbiddenXRoadHeader())
           }
         }

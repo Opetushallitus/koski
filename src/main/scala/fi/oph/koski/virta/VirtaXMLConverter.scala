@@ -230,6 +230,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def päivämääräVahvistus(vahvistusPäivä: Option[LocalDate], organisaatio: Organisaatio): Option[Päivämäärävahvistus] =
     vahvistusPäivä.map(pvm => Päivämäärävahvistus(pvm, organisaatio))
 
+  // https://wiki.eduuni.fi/display/CSCVIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Opintosuorituksenlaji,Studieprestationensart
   def convertSuoritus(opiskeluoikeusNode: Option[Node], suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = try {
     laji(suoritus) match {
       case "1" => // tutkinto
@@ -255,6 +256,9 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         tutkinnonSuoritus
       case "2" => // opintojakso
         Some(convertOpintojaksonSuoritus(suoritus, allNodes))
+      case "3" => // ei huomioitava
+        logger.debug("Tuntematon laji: 3")
+        None
       case laji: String =>
         logger.info("Tuntematon laji: " + laji)
         None
