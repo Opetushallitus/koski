@@ -587,7 +587,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
         )
       )
     ),
-  ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
+  ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
   private val hakeutumisvelvollisetRajapäivänJälkeen = List(
@@ -899,7 +899,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
         )
       )
     ),
-  ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
+  ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   // Stadin ammattiopistosta löytyvät suorittamisvalvottavat oppijat 5.9.2021
   private val suorittamisvalvottavatAmis = List(
@@ -1178,7 +1178,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
       ),
     ),
 
-  ).sortBy(item => (item._1.sukunimi.toLowerCase, item._1.etunimet.toLowerCase))
+  ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla palauttaa vain annetun oppijanumeron mukaisen oppijan" in {
     val (expectedOppija, expectedData) = hakeutumisvelvolliset(1)
@@ -1317,6 +1317,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
 
   "getHakeutumisvalvottavatOppijatSuppeatTiedot palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa ennen syksyn rajapäivää" in {
     val oppijat = oppijaSuppeatTiedotService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitos, HakeutumisvalvontaTieto.Perusopetus)(defaultSession).toOption.get.map(_.oppija)
+      .sortBy(o => (o.henkilö.sukunimi, o.henkilö.etunimet))
 
     oppijat.map(_.henkilö.oid) shouldBe hakeutumisvelvolliset.map(_._1.oid)
 
@@ -1332,7 +1333,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
   "getHakeutumisvalvottavatOppijatSuppeatTiedot palauttaa yhden oppilaitoksen oppijat oikein käyttäjälle, jolla globaalit oikeudet, tarkasteltaessa ennen syksyn rajapäivää" in {
     val oppijat = oppijaSuppeatTiedotService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitos, HakeutumisvalvontaTieto.Perusopetus)(session(ValpasMockUsers.valpasOphHakeutuminenPääkäyttäjä))
       .toOption.get.map(_.oppija)
-    //FAILING
+      .sortBy(o => (o.henkilö.sukunimi, o.henkilö.etunimet))
     oppijat.map(_.henkilö.oid) shouldBe hakeutumisvelvolliset.map(_._1.oid)
 
     (oppijat zip hakeutumisvelvolliset).foreach { actualAndExpected =>
@@ -1348,6 +1349,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
     rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 10, 1))
 
     val oppijat = oppijaSuppeatTiedotService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitos, HakeutumisvalvontaTieto.Perusopetus)(defaultSession).toOption.get.map(_.oppija)
+      .sortBy(o => (o.henkilö.sukunimi, o.henkilö.etunimet))
 
     oppijat.map(_.henkilö.oid) shouldBe hakeutumisvelvollisetRajapäivänJälkeen.map(_._1.oid)
 
@@ -1362,6 +1364,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
 
   "getSuorittamisvalvottavatOppijatSuppeatTiedot palauttaa yhden oppilaitoksen oppijat oikein tarkasteltaessa syksyn alussa" in {
     val oppijat = oppijaSuppeatTiedotService.getSuorittamisvalvottavatOppijatSuppeatTiedot(amisOppilaitos)((session(ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu))).toOption.get.map(_.oppija)
+      .sortBy(o => (o.henkilö.sukunimi, o.henkilö.etunimet))
 
     oppijat.map(_.henkilö.oid) shouldBe suorittamisvalvottavatAmis.map(_._1.oid)
 
