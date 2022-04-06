@@ -40,6 +40,10 @@
 - Ammatillinen näyttötutkintoon valmistava koulutus voi olla merkittynä vahvistetuksi, vaikka opiskeluoikeus päättyisi tilaan "katsotaan eronneeksi"
 
 ## 18.1.2022
+- Varhaiskasvatuksen opiskeluoikeuksilla oppilaitosta ei voi vaihtaa, paitsi jos oppilaitos on epäaktiivinen tai se löytyy jo organisaatiohistoriasta.
+- Ammatillisen suorituksen suoritustyyppiä ei voi vaihtaa.s
+
+## 18.1.2022
 - Ammatillisen opiskeluoikeuden tutkintokoodin ja suoritustavan muuttamiseen liittyvä, 13.12.2021 luotu validaatio ollut virheellinen; Validaatio korjattu. Ammatillisen opiskeluoikeuden tutkintokoodia (suorituksen koulutusmoduulin koodiarvo) ja suoritustapaa ei voi vaihtaa ammatillisen opiskeluoikeuden luonnin jälkeen.
 - Validaatio liittyen oppilaitoksen vaihtoon ollut virheellinen. Oppilaitosta, joka on aktiivinen, ei voi vaihtaa jos koulutustoimija pysyy samana.
 
@@ -84,12 +88,20 @@
 - Ammatillisen koulutuksen Yhteisille tutkinnon osille (YhteinenTutkinnonOsa-rakenne) sallitaan tunnisteen koodiarvoiksi myös '600001' ja '600002'
 
 ## 12.10.2021
+- Vapaatavoitteisella vapaan sivistystyön opiskeluoikeudella ei voi olla päättävänä tilana "hyväksytysti suoritettu"
+  kun suoritus on vahvistamaton; eikä "keskeytynyt" kun suoritus on vahvistettu.
+
+## 12.10.2021
 - Lukion 2019 opetussuunnitelman mukaisessa opiskeluoikeudessa salli paikallisen oppiaineen arviointina 'S' myös
   silloin, kun sen laajuus on yli 2 op.
 
 ## 11.10.2021
 - Maksuttomuusvalidointi velvoitti maksuttomuustiedon siirtämiseen aina, jos perusopetus oli
   päättynyt ennen vuotta 2021 johonkin muuhun syyhyn kuin valmistumiseen, kuten eroamiseen. Tämä on korjattu.
+
+## 5.10.2021
+
+- Vapaatavoitteiselle vapaan sivistystyön koulutuksen opiskeluoikeudella sallitaan vain päättävät tilat.
 
 ## 4.10.2021
 
@@ -148,6 +160,9 @@
   - Muutos sallitaan myös, jos koulutustoimija pysyy samana, vanha oppilaitos on aktiivinen ja
     opiskeluoikeus on joskus ollut osana oppilaitosta, johon opiskeluoikeutta ollaan nyt siirtämässä.
 
+## 22.6.2021
+- Vahvistetulla vapaan sivistystyön vapaatavoitteisella koulutuksella tulee olla arvioituja osasuoritukssia
+
 ## 16.6.2021
 - Perusopetuksessa ja lukion 2015-opetussuunnitelman mukaisessa opetuksessa äidinkielen
   omaisen oppiaineen kieli tulee olla suomi tai ruotsi. Lukion 2019 opetussuunnitelman mukaisissa
@@ -187,6 +202,13 @@
   sen moduulien laajuudesta.
 - Lukion 2019-opetussuunnitelman muissa oppiaineissa sallitaan arvosana S, jos oppiaineen laajuus on 2 op
   tai vähemmän
+
+## 10.2.2021
+
+- Vahvistetulla kansanopistojen oppivelvollisille suunnatulla vapaan sivistystyön suorituksella tulee olla
+  osasuorituksia 53 laajuusyksikön edestä.
+- Vahvistetulla kansanopistojen oppivelvollisille suunnatun vapaan sivistystyön suorituksella tulee olla
+  osaamiskokonaisuuksia, joiden yhteenlaskettu laajuus on vähintään 4.
 
 ## 26.1.2021
 - Perusopetuksen kahden eri vuosiluokan samat alkamispäivät estävässä validaatiossa otetaan huomioon oikein myös
