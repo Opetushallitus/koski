@@ -11,6 +11,7 @@ target/
 .settings
 .cache
 .java-version
+.DS_Store
 postgres
 postgresql/data
 node_modules

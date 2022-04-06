@@ -7,6 +7,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
   lazy val rakenteet: List[EPerusteRakenne] = List(
     "rakenne-autoalan-perustutkinto",
     "rakenne-autoalan-perustutkinto2017",
+    "rakenne-autoalan-perustutkinto2017-koulutusvientikokeilu",
     "rakenne-luonto-ja-ymparistoala",
     "rakenne-autoalan-tyonjohto",
     "rakenne-perusopetus",
@@ -36,15 +37,16 @@ object MockEPerusteetRepository extends EPerusteetRepository {
 
   def findPerusteet(query: String): List[EPeruste] = {
     // Hakee aina samoilla kriteereillä "auto"
-    JsonSerializer.extract[EPerusteet](JsonFiles.readFile("src/main/resources/mockdata/eperusteet/hakutulokset-auto.json"), ignoreExtras = true).data.filter(_.nimi("fi").toLowerCase.contains(query.toLowerCase))
+    JsonSerializer.extract[EPerusteet](JsonFiles.readFile("src/main/resources/mockdata/eperusteet/hakutulokset-auto.json"), ignoreExtras = true)
+    .data.filter(_.nimi("fi").toLowerCase.contains(query.toLowerCase)).sortBy(_.koulutusvienti)
   }
 
   def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste] = {
-    rakenteet.filter(_.diaarinumero == diaarinumero).map(_.toEPeruste)
+    rakenteet.filter(_.diaarinumero == diaarinumero).map(_.toEPeruste).sortBy(_.koulutusvienti)
   }
 
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste] = {
-    rakenteet.filter(r => koulutustyypit.map(k => s"${k.koodistoUri}_${k.koodiarvo}").contains(r.koulutustyyppi)).map(_.toEPeruste)
+    rakenteet.filter(r => koulutustyypit.map(k => s"${k.koodistoUri}_${k.koodiarvo}").contains(r.koulutustyyppi)).map(_.toEPeruste).sortBy(_.koulutusvienti)
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {

@@ -5,7 +5,7 @@ import Http from '../util/http'
 import {t} from '../i18n/i18n'
 
 export default ({tutkintoAtom, oppilaitosP, title, ...rest}) => {
-  return (<div className="tutkinto-autocomplete">
+  return (<div className="tutkinto-autocomplete" data-test-id="tutkinto-autocomplete">
     <label className='tutkinto'>
       {title}
       <Autocomplete

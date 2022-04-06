@@ -16,6 +16,7 @@ case class EPerusteRakenne(
   voimassaoloLoppuu: Option[String],
   siirtymaPaattyy: Option[String],
   koulutukset: List[EPerusteKoulutus],
+  koulutusvienti: Option[Boolean],
   suoritustavat: Option[List[ESuoritustapa]],
   tutkinnonOsat: Option[List[ETutkinnonOsa]],
   osaamisalat: List[EOsaamisala],
@@ -23,7 +24,7 @@ case class EPerusteRakenne(
   luotu: Option[Long],
   muokattu: Option[Long]
 ) {
-  def toEPeruste: EPeruste = EPeruste(id, nimi, diaarinumero, koulutukset)
+  def toEPeruste: EPeruste = EPeruste(id, nimi, diaarinumero, koulutukset, koulutusvienti)
   def voimassaoloLoppunut(vertailupäivämäärä: LocalDate = LocalDate.now()) = voimassaoloLoppuuLocalDate match {
     case Some(loppupäivämäärä) => vertailupäivämäärä.isAfter(loppupäivämäärä)
     case None => false
@@ -44,7 +45,6 @@ case class EPerusteRakenne(
     voimassaoloLoppunut(vertailupäivämäärä)
   }
 }
-
 
 case class ESuoritustapa(
   suoritustapakoodi: String,

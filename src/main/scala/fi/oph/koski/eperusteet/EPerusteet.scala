@@ -8,7 +8,8 @@ case class EPeruste(
   id: Long,
   nimi: Map[String, String],
   diaarinumero: String,
-  koulutukset: List[EPerusteKoulutus]
+  koulutukset: List[EPerusteKoulutus],
+  koulutusvienti: Option[Boolean]
 )
 
 case class EPerusteKoulutus(
