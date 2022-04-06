@@ -40,56 +40,8 @@
 - Ammatillinen näyttötutkintoon valmistava koulutus voi olla merkittynä vahvistetuksi, vaikka opiskeluoikeus päättyisi tilaan "katsotaan eronneeksi"
 
 ## 18.1.2022
-
-    Tässä on tehty monta eri validaatiomuutosta.
-
-    commit 19cfcfa232a2de44a608e1bbdeb23daf8ab7b1ed (from ae9a8ef2dfd4ec568fb253e08b912bffc25011f4)
-    Merge: ae9a8ef2d 4a851ea1f
-    Author: Jalmari Ikävalko <tzaeru@gmail.com>
-    Date:   Tue Jan 18 12:29:34 2022 +0200
-
-        Merge pull request #1684 from Opetushallitus/1622-validaatio-organisaation-vaihto-varhaiskasvatuksen-toimipaikka
-
-        TOR-1622 - validaatio varhaiskasvatuksen toimipisteen vaihdosta
-
-    src/main/resources/reference.conf
-    src/main/scala/fi/oph/koski/config/KoskiApplication.scala
-    src/main/scala/fi/oph/koski/documentation/AmmatillinenExampleData.scala
-    src/main/scala/fi/oph/koski/documentation/ExamplesAmmatillinen.scala
-    src/main/scala/fi/oph/koski/eperusteet/RemoteEPerusteetRepository.scala
-    src/main/scala/fi/oph/koski/fixture/KoskiSpecificDatabaseFixtureCreator.scala
-    src/main/scala/fi/oph/koski/opiskeluoikeus/OpiskeluoikeusChangeValidator.scala
-    src/main/scala/fi/oph/koski/opiskeluoikeus/PostgresOpiskeluoikeusRepository.scala
-    src/main/scala/fi/oph/koski/opiskeluoikeus/PostgresOpiskeluoikeusRepositoryV2.scala
-    src/main/scala/fi/oph/koski/schema/Opiskeluoikeus.scala
-    src/main/scala/fi/oph/koski/tiedonsiirto/ExamplesTiedonsiirto.scala
-    src/main/scala/fi/oph/koski/validation/AmmatillinenValidation.scala
-    src/main/scala/fi/oph/koski/validation/KoskiValidator.scala
-    src/test/resources/backwardcompatibility/ammatillinen-full_2022-01-17.json
-    src/test/resources/backwardcompatibility/ammatillinen-oppisopimus_2022-01-17.json
-    src/test/resources/backwardcompatibility/ammatillinen-osatoisestatutkinnosta_2022-01-17.json
-    src/test/resources/backwardcompatibility/ammatillinen-paikallinen_2022-01-17.json
-    src/test/resources/backwardcompatibility/ammatillinen-reforminmukainenperustutkinto_2022-01-17.json
-    src/test/resources/backwardcompatibility/ammatillinen-tunnustettu_2022-01-17.json
-    src/test/resources/backwardcompatibility/tiedonsiirto-epaonnistunut2_2022-01-17.json
-    src/test/resources/backwardcompatibility/tiedonsiirto-epaonnistunut3_2020-02-03.json
-    src/test/resources/backwardcompatibility/tiedonsiirto-epaonnistunut3_2020-03-17.json
-    src/test/resources/backwardcompatibility/tiedonsiirto-epaonnistunut3_2020-07-06.json
-    src/test/resources/backwardcompatibility/tiedonsiirto-epaonnistunut3_2020-07-13.json
-    src/test/resources/backwardcompatibility/tiedonsiirto-epaonnistunut3_2022-01-17.json
-    src/test/resources/backwardcompatibility/tiedonsiirto-epaonnistunut_2022-01-17.json
-    src/test/resources/backwardcompatibility/tiedonsiirto-onnistunut_2022-01-17.json
-    src/test/resources/backwardcompatibility/tiedonsiirto-vainsyntymaaika_2022-01-17.json
-    "src/test/scala/fi/oph/koski/api/K\303\244ytt\303\266oikeusryhm\303\244tSpec.scala"
-    src/test/scala/fi/oph/koski/api/OppijaUpdateSpec.scala
-    src/test/scala/fi/oph/koski/api/OppijaValidationAmmatillinenSpec.scala
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266VapaatavoitteinenSpec.scala"
-    src/test/scala/fi/oph/koski/api/SuoritusjakoSpec.scala
-    src/test/scala/fi/oph/koski/api/SuostumuksenPeruutusSpec.scala
-    src/test/scala/fi/oph/koski/api/TiedonsiirtoSpec.scala
-    src/test/scala/fi/oph/koski/perftest/TiedonsiirtoFixtureDataInserter.scala
-    web/test/spec/ammatillinenArviointiasteikkoSpec.js
-    web/test/spec/ammatillinenSpec.js
+- Varhaiskasvatuksen opiskeluoikeuksilla oppilaitosta ei voi vaihtaa, paitsi jos oppilaitos on epäaktiivinen tai se löytyy jo organisaatiohistoriasta.
+- Ammatillisen suorituksen suoritustyyppiä ei voi vaihtaa.s
 
 ## 18.1.2022
 - Ammatillisen opiskeluoikeuden tutkintokoodin ja suoritustavan muuttamiseen liittyvä, 13.12.2021 luotu validaatio ollut virheellinen; Validaatio korjattu. Ammatillisen opiskeluoikeuden tutkintokoodia (suorituksen koulutusmoduulin koodiarvo) ja suoritustapaa ei voi vaihtaa ammatillisen opiskeluoikeuden luonnin jälkeen.
@@ -131,77 +83,13 @@
 ## 15.11.2021
 - Salli maksuttomuustieto 2019-opetussuunnitelman mukaisissa Pre-IB-opinnoissa
 
-## 16.11.2021
-
-    Onko tässä joku oikea validaatiomuutos?
-
-    commit a4057c2d3d9dd20714a6823aabddd55397b8309e (from 422448cbba8875f62919411eb513ec083dac97dd)
-    Merge: 422448cbb dcc45d096
-    Author: Jalmari Ikävalko <tzaeru@gmail.com>
-    Date:   Tue Nov 16 14:21:39 2021 +0200
-
-        Merge pull request #1621 from Opetushallitus/tor-1370-vst-suostumuksen-käsittely
-
-        tor-1370 VST suostumuksen käsittely
-
-    sandbox/read_only_koski.sql
-    src/main/resources/db/migration/V74__create_poistettu_opiskeluoikeus.sql
-    src/main/resources/db/migration/V75__add_suoritusjako_tehty_to_opiskeluoikeus.sql
-    src/main/resources/localization/koski-default-texts.json
-    src/main/scala/ScalatraBootstrap.scala
-    src/main/scala/fi/oph/koski/config/KoskiApplication.scala
-    src/main/scala/fi/oph/koski/db/KoskiTables.scala
-    src/main/scala/fi/oph/koski/fixture/DatabaseFixtureCreator.scala
-    src/main/scala/fi/oph/koski/fixture/Fixtures.scala
-    src/main/scala/fi/oph/koski/http/KoskiErrorCategory.scala
-    src/main/scala/fi/oph/koski/kela/KelaOppijaConverter.scala
-    src/main/scala/fi/oph/koski/log/AuditLog.scala
-    src/main/scala/fi/oph/koski/opiskeluoikeus/CompositeOpiskeluoikeusRepository.scala
-    src/main/scala/fi/oph/koski/opiskeluoikeus/KoskiOpiskeluoikeusRepository.scala
-    src/main/scala/fi/oph/koski/opiskeluoikeus/PostgresOpiskeluoikeusRepository.scala
-    src/main/scala/fi/oph/koski/oppija/KoskiOppijaFacade.scala
-    src/main/scala/fi/oph/koski/perustiedot/OpiskeluoikeudenPerustiedotIndexer.scala
-    src/main/scala/fi/oph/koski/schema/Suoritus.scala
-    "src/main/scala/fi/oph/koski/schema/VapaanSivistysty\303\266VapaatavoitteinenKoulutus.scala"
-    src/main/scala/fi/oph/koski/suoritusjako/SuoritusjakoService.scala
-    src/main/scala/fi/oph/koski/suostumus/SuostumuksenPeruutusService.scala
-    src/main/scala/fi/oph/koski/suostumus/SuostumuksenPeruutusServlet.scala
-    src/main/scala/fi/oph/koski/validation/KoskiValidator.scala
-    src/main/scala/fi/oph/koski/validation/SuostumuksenPeruutusValidaatiot.scala
-    src/test/scala/fi/oph/koski/api/OpiskeluoikeusValidationSpec.scala
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266VapaatavoitteinenSpec.scala"
-    src/test/scala/fi/oph/koski/api/SuostumuksenPeruutusSpec.scala
-    web/app/omattiedot/OmatTiedotOpiskeluoikeus.jsx
-    web/app/omattiedot/SuostumuksenPeruutusPopup.jsx
-    web/app/opiskeluoikeus/OpiskeluoikeusEditor.jsx
-    web/app/style/opiskeluoikeus.less
-    web/test/runner.html
-    web/test/spec/suostumuksenPeruutusSpec.js
-
 ## 14.10.2021
 
 - Ammatillisen koulutuksen Yhteisille tutkinnon osille (YhteinenTutkinnonOsa-rakenne) sallitaan tunnisteen koodiarvoiksi myös '600001' ja '600002'
 
 ## 12.10.2021
-
-    commit d4a13dbb55f946f4d0d7016eb480043b01f9fe94 (from 3db05d966ca7bf99aea02ee5fe8c919206098a77)
-    Merge: 3db05d966 3b6d3e32c
-    Author: Jalmari Ikävalko <tzaeru@gmail.com>
-    Date:   Tue Oct 12 13:17:47 2021 +0300
-
-        Merge pull request #1595 from Opetushallitus/tor-1556-vst-vapaatavoitteisen-tiedonsiirtovalidaatiot-ja-vahvistus-puljaus
-
-        tor-1556 - Vapaatavoitteisen VST:n suorituksen vahvistuksen puljaus ja validaatiot
-
-    "src/main/scala/fi/oph/koski/documentation/ExamplesVapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/http/KoskiErrorCategory.scala
-    src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala
-    "src/main/scala/fi/oph/koski/validation/VapaaSivistysty\303\266Validation.scala"
-    src/test/resources/backwardcompatibility/vapaasivistystyo-vapaatavoitteinenkoulutus_2021-10-08.json
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266MuutSpec.scala"
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266VapaatavoitteinenSpec.scala"
-    web/test/page/addOppijaPage.js
-    web/test/spec/vapaaSivistystyoSpec.js
+- Vapaatavoitteisella vapaan sivistystyön opiskeluoikeudella ei voi olla päättävänä tilana "hyväksytysti suoritettu"
+  kun suoritus on vahvistamaton; eikä "keskeytynyt" kun suoritus on vahvistettu.
 
 ## 12.10.2021
 - Lukion 2019 opetussuunnitelman mukaisessa opiskeluoikeudessa salli paikallisen oppiaineen arviointina 'S' myös
@@ -213,26 +101,7 @@
 
 ## 5.10.2021
 
-    commit 797d0898931b3f78cd5260f3a8f98849ee8c366b (from 34367b064897dc64b3f62361cf8c9525ffa666e1)
-    Merge: 34367b064 e2fc60478
-    Author: Jalmari Ikävalko <tzaeru@gmail.com>
-    Date:   Tue Oct 5 13:09:51 2021 +0300
-
-        Merge pull request #1576 from Opetushallitus/tor-1509-vst-vapaatavoitteista-alkupäivämäärä-pois
-
-        TOR-1509 - VST:n vapaatavoitteiselle ei siirrettä aloituspäivämäärää; vain lopettavat tilat sallittu
-
-    "src/main/scala/fi/oph/koski/documentation/ExamplesVapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/http/KoskiErrorCategory.scala
-    "src/main/scala/fi/oph/koski/validation/VapaaSivistysty\303\266Validation.scala"
-    src/test/resources/backwardcompatibility/vapaasivistystyo-vapaatavoitteinenkoulutus_2021-10-04.json
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266Spec.scala"
-    web/app/opiskeluoikeus/OpiskeluoikeudenUusiTilaPopup.jsx
-    web/app/opiskeluoikeus/opiskeluoikeus.js
-    web/app/uusioppija/UusiOpiskeluoikeus.jsx
-    web/test/page/addOppijaPage.js
-    web/test/spec/vapaaSivistystyoSpec.js
-
+- Vapaatavoitteiselle vapaan sivistystyön koulutuksen opiskeluoikeudella sallitaan vain päättävät tilat.
 
 ## 4.10.2021
 
@@ -274,34 +143,6 @@
 
 - Vanha opsin mukaisessa Luva-koulutuksessa sallitaan laajuudet vain kursseina. Uuden opsin mukaisessa koulutuksessa vain opintopisteinä.
 
-## 30.7.2021
-
-    commit e1ba803a60dc3c3a6790048a1103ed454c8e9aa6 (from 39e174371d28b7db65392fda4c05f58941933f21)
-    Merge: 39e174371 840948e48
-    Author: Aleksi Saarela <30666971+suarela@users.noreply.github.com>
-    Date:   Fri Jul 30 11:56:04 2021 +0300
-
-        Merge pull request #1490 from Opetushallitus/tor-1468-vst
-
-        Tor 1468 VST päivityksiä
-
-    src/main/resources/localization/koski-default-texts.json
-    "src/main/scala/fi/oph/koski/documentation/ExamplesVapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/documentation/KoskiTiedonSiirtoHtml.scala
-    src/main/scala/fi/oph/koski/http/KoskiErrorCategory.scala
-    src/main/scala/fi/oph/koski/schema/Suoritus.scala
-    "src/main/scala/fi/oph/koski/schema/VapaaSivistysty\303\266.scala"
-    "src/main/scala/fi/oph/koski/schema/VapaanSivistysty\303\266nLukutaitokoulutus.scala"
-    src/main/scala/fi/oph/koski/validation/KoskiValidator.scala
-    "src/main/scala/fi/oph/koski/validation/VapaaSivistysty\303\266Validation.scala"
-    src/test/resources/backwardcompatibility/vapaasivistystyo-lukutaitokoulutus_2021-07-27.json
-    src/test/resources/backwardcompatibility/vapaasivistystyo-oppivelvollisillesuunnattukoulutus_2021-07-27.json
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266Spec.scala"
-    web/app/suoritus/SuoritustaulukkoCommon.jsx
-    web/app/vapaasivistystyo/VapaanSivistystyonSuoritustaulukko.jsx
-    web/test/spec/vapaaSivistystyoSpec.js
-
-
 ## 1.5.2021 - 8.9.2021
 
 - Maksuttommuustietojen siirron validaatioita on kehitetty useammassa vaiheessa. Maksuttomuustiedon
@@ -320,62 +161,7 @@
     opiskeluoikeus on joskus ollut osana oppilaitosta, johon opiskeluoikeutta ollaan nyt siirtämässä.
 
 ## 22.6.2021
-
-    commit a8352b7cc8a7cef058d65d23a13029f60988e2a3 (from 2b0d520666349b90811734b1ce15d58257ced42c)
-    Merge: 2b0d52066 5ffe90ed9
-    Author: Jalmari Ikävalko <tzaeru@gmail.com>
-    Date:   Tue Jun 22 13:14:13 2021 +0300
-
-        Merge pull request #1451 from Opetushallitus/tor-1171-vst-muut-koulutukset-tietomalli
-
-        TOR-1171 VST muut (vapaatavoitteiset) koulutukset tietomalli
-
-    src/main/resources/localization/koski-default-texts.json
-    src/main/resources/mockdata/koodisto/koodistot/arviointiasteikkovstvapaatavoitteinen.json
-    src/main/resources/mockdata/koodisto/koodit/arviointiasteikkovstvapaatavoitteinen.json
-    src/main/resources/mockdata/koodisto/koodit/koulutus.json
-    src/main/resources/mockdata/koodisto/koodit/suorituksentyyppi.json
-    "src/main/scala/fi/oph/koski/documentation/ExamplesVapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/fixture/KoskiSpecificDatabaseFixtureCreator.scala
-    src/main/scala/fi/oph/koski/henkilo/KoskiSpecificMockOppijat.scala
-    src/main/scala/fi/oph/koski/http/KoskiErrorCategory.scala
-    src/main/scala/fi/oph/koski/koodisto/Koodistot.scala
-    "src/main/scala/fi/oph/koski/schema/VapaanSivistysty\303\266VapaatavoitteinenKoulutus.scala"
-    "src/main/scala/fi/oph/koski/validation/VapaaSivistysty\303\266Validation.scala"
-    src/test/resources/backwardcompatibility/vapaasivistystyo-vapaatavoitteinenkoulutus_2021-06-21.json
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266Spec.scala"
-
-## 21.6.2021
-
-    commit 627870099e9ced52ad2f62465f2d1cd28c5f9445 (from 69a5c3915c35d6995ec42399146ea6156742800b)
-    Merge: 69a5c3915 b2c575451
-    Author: Jalmari Ikävalko <tzaeru@gmail.com>
-    Date:   Mon Jun 21 16:08:07 2021 +0300
-
-        Merge pull request #1447 from Opetushallitus/vst-koto-korjauksia
-
-        VST-KOTO -korjauksia - lisätty eperusteet, nimiä vaihdeltu, korjattu koodistoja, yms
-
-    src/main/resources/mockdata/eperusteet/rakenne-vst-maahanmuuttajien-kotoutumiskoulutus.json
-    src/main/resources/mockdata/koodisto/koodit/arviointiasteikkokehittyvankielitaidontasot.json
-    src/main/resources/mockdata/koodisto/koodit/koulutustyyppi.json
-    src/main/resources/mockdata/koodisto/koodit/suorituksentyyppi.json
-    src/main/resources/mockdata/koodisto/koodit/vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus.json
-    "src/main/scala/fi/oph/koski/documentation/ExamplesVapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/eperusteet/MockEPerusteetRepository.scala
-    src/main/scala/fi/oph/koski/http/KoskiErrorCategory.scala
-    src/main/scala/fi/oph/koski/schema/Lukio2019.scala
-    src/main/scala/fi/oph/koski/schema/Suoritus.scala
-    "src/main/scala/fi/oph/koski/schema/VapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/tutkinto/Koulutustyyppi.scala
-    src/main/scala/fi/oph/koski/validation/KoskiValidator.scala
-    "src/main/scala/fi/oph/koski/validation/VapaaSivistysty\303\266Validation.scala"
-    src/test/resources/backwardcompatibility/vapaasivistystyo-maahanmuuttajienkotoutuskoulutus_2021-06-17.json
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266Spec.scala"
-    web/app/uusioppija/UusiVapaanSivistystyonSuoritus.jsx
-    web/app/vapaasivistystyo/UusiVapaanSivistystyonOsasuoritus.jsx
-    web/app/vapaasivistystyo/VapaanSivistystyonSuoritustaulukko.jsx
-    web/test/spec/vapaaSivistystyoSpec.js
+- Vahvistetulla vapaan sivistystyön vapaatavoitteisella koulutuksella tulee olla arvioituja osasuoritukssia
 
 ## 16.6.2021
 - Perusopetuksessa ja lukion 2015-opetussuunnitelman mukaisessa opetuksessa äidinkielen
@@ -399,46 +185,6 @@
   kotiopetusjakso on voimassa suorituksen vahvistuspäivänä.
 - Yksittäiseltä oppiaineelta ei vaadita laajuutta mikäli sen suoritustapa on erityinen tutkinto.
 
-## 26.4.2021
-
-    commit ce4087ccff1b2a85f39e432ecd97f9e1b028a67a (from e982652e0b2e6d191d8ca84a870efe001206ee22)
-    Merge: e982652e0 d73dc3ce8
-    Author: Aleksi Saarela <30666971+suarela@users.noreply.github.com>
-    Date:   Mon Apr 26 13:47:41 2021 +0300
-
-        Merge pull request #1305 from Opetushallitus/tor-1342-kali
-
-        VST korjauksia ja mahdollisuus luoda käyttöliittymässä uusi VST:n opiskeluoikeus KOPS-suorituksella
-
-    src/main/scala/fi/oph/koski/oppilaitos/OppilaitosServlet.scala
-    src/main/scala/fi/oph/koski/organisaatio/Oppilaitostyyppi.scala
-    "src/main/scala/fi/oph/koski/schema/VapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/validation/KoskiValidator.scala
-    web/app/uusioppija/UusiOpiskeluoikeus.jsx
-    web/app/uusioppija/UusiVapaanSivistystyonSuoritus.jsx
-    web/test/page/addOppijaPage.js
-    web/test/runner.html
-    web/test/spec/vapaaSivistystyoSpec.js
-
-## 23.4.2021
-
-    commit 9d386ba7627be920075d7b57dab65b22d39bc76a (from ba5f02d1847b9d76ab7c2f18bf754c62b8b2f4df)
-    Merge: ba5f02d18 c036941dd
-    Author: Aleksi Saarela <30666971+suarela@users.noreply.github.com>
-    Date:   Fri Apr 23 11:38:08 2021 +0300
-
-        Merge pull request #1302 from Opetushallitus/tor-1348
-
-        VST:n koulutusten laajuuksien muutos, validaatiosääntöjen hiomista
-
-    "src/main/scala/fi/oph/koski/documentation/ExamplesVapaaSivistysty\303\266.scala"
-    "src/main/scala/fi/oph/koski/schema/VapaaSivistysty\303\266.scala"
-    "src/main/scala/fi/oph/koski/schema/VapaanSivistysty\303\266nLukutaitokoulutus.scala"
-    src/main/scala/fi/oph/koski/validation/KoskiValidator.scala
-    src/test/resources/backwardcompatibility/vapaasivistystyo-lukutaitokoulutus_2021-04-22.json
-    src/test/resources/backwardcompatibility/vapaasivistystyo-maahanmuuttajienkotoutuskoulutus_2021-04-22.json
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266Spec.scala"
-
 ## 20.4.2021
 - Lukion 2019 -opetussuunnitelman mukaisissa opinnoissa äidinkielenomaisen kielen opinnoissa sallitaan vain suomi
   tai ruotsi.
@@ -457,74 +203,12 @@
 - Lukion 2019-opetussuunnitelman muissa oppiaineissa sallitaan arvosana S, jos oppiaineen laajuus on 2 op
   tai vähemmän
 
-## 23.3.2021
-
-    commit 296d41fdd56b13b21fb4b98caf59dd25c1e4e113 (from 0d4176abe8a72b1f0d9bf3ca319fc0f13ae52549)
-    Merge: 0d4176abe 4367d98d0
-    Author: Jalmari Ikävalko <tzaeru@gmail.com>
-    Date:   Tue Mar 23 17:05:15 2021 +0200
-
-        Merge pull request #1226 from Opetushallitus/tor-1170-vst-koto
-
-        Tor-1170 VST KOTO - Oppijan esimerkkia laajennettu. Validaatioita muillekin kokonaisuuksille.
-
-    src/main/resources/localization/koski-default-texts.json
-    src/main/resources/mockdata/koodisto/koodistot/arviointiasteikkovstkoto.json
-    src/main/resources/mockdata/koodisto/koodit/suorituksentyyppi.json
-    "src/main/scala/fi/oph/koski/documentation/ExamplesVapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/http/KoskiErrorCategory.scala
-    src/main/scala/fi/oph/koski/koodisto/Koodistot.scala
-    "src/main/scala/fi/oph/koski/schema/VapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/validation/KoskiValidator.scala
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266Spec.scala"
-
-## 18.3.2021
-
-    commit 2ab6741a0f3b919fbc4d7e15611fa618367b12f0 (from 92602a4d99c595d7bbd5234184109c20854f35ff)
-    Merge: 92602a4d9 ab335b99c
-    Author: Jalmari Ikävalko <tzaeru@gmail.com>
-    Date:   Thu Mar 18 13:23:52 2021 +0200
-
-        Merge pull request #1207 from Opetushallitus/tor-1170-vst-koto
-
-        Tor 1170 vst koto
-
-    src/main/resources/localization/koski-default-texts.json
-    src/main/resources/mockdata/koodisto/koodistot/arviointiasteikkovstkoto.json
-    src/main/resources/mockdata/koodisto/koodistot/vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus.json
-    src/main/resources/mockdata/koodisto/koodistot/vstmaahanmuuttajienkotoutumiskoulutus.json
-    src/main/resources/mockdata/koodisto/koodit/arviointiasteikkovstkoto.json
-    src/main/resources/mockdata/koodisto/koodit/koulutus.json
-    src/main/resources/mockdata/koodisto/koodit/suorituksentyyppi.json
-    src/main/resources/mockdata/koodisto/koodit/vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus.json
-    src/main/scala/fi/oph/koski/documentation/ExampleData.scala
-    "src/main/scala/fi/oph/koski/documentation/ExamplesVapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/fixture/KoskiSpecificDatabaseFixtureCreator.scala
-    src/main/scala/fi/oph/koski/henkilo/KoskiSpecificMockOppijat.scala
-    src/main/scala/fi/oph/koski/http/KoskiErrorCategory.scala
-    src/main/scala/fi/oph/koski/koodisto/Koodistot.scala
-    src/main/scala/fi/oph/koski/schema/Laajuus.scala
-    "src/main/scala/fi/oph/koski/schema/VapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/validation/KoskiValidator.scala
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266Spec.scala"
-
 ## 10.2.2021
 
-    commit 39072cded873e560e8c3e0041afe8b1db91f87e0 (from 00fde473ced057e49414c856fac6b4bbba4f8a58)
-    Merge: 00fde473c 5cef3e88c
-    Author: Jalmari Ikävalko <tzaeru@gmail.com>
-    Date:   Wed Feb 10 12:55:57 2021 +0200
-
-        Merge pull request #1128 from Opetushallitus/tor-1770-suoritusten-määrän-validointi
-
-        Tor-1170 VST päätason suoritusten osasuoritusten yhteenlasketun laajuuden validointi
-
-    src/main/resources/mockdata/koodisto/koodit/koulutus.json
-    "src/main/scala/fi/oph/koski/documentation/ExamplesVapaaSivistysty\303\266.scala"
-    src/main/scala/fi/oph/koski/http/KoskiErrorCategory.scala
-    src/main/scala/fi/oph/koski/validation/KoskiValidator.scala
-    src/test/resources/backwardcompatibility/vapaasivistystyo-oppivelvollisillesuunnattukoulutus_2021-02-02.json
-    "src/test/scala/fi/oph/koski/api/OppijaValidationVapaaSivistysty\303\266Spec.scala"
+- Vahvistetulla kansanopistojen oppivelvollisille suunnatulla vapaan sivistystyön suorituksella tulee olla
+  osasuorituksia 53 laajuusyksikön edestä.
+- Vahvistetulla kansanopistojen oppivelvollisille suunnatun vapaan sivistystyön suorituksella tulee olla
+  osaamiskokonaisuuksia, joiden yhteenlaskettu laajuus on vähintään 4.
 
 ## 26.1.2021
 - Perusopetuksen kahden eri vuosiluokan samat alkamispäivät estävässä validaatiossa otetaan huomioon oikein myös
