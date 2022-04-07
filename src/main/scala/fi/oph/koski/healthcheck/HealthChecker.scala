@@ -89,7 +89,7 @@ trait HealthCheck extends Logging {
   }
 
   def casCheck: HttpStatus = {
-    val VirkailijaCredentials(username, password) = VirkailijaCredentials(application.config, false)
+    val VirkailijaCredentials(username, password) = VirkailijaCredentials(application.config, true)
 
     def authenticate = try {
       Some(application.casService.authenticateVirkailija(username, Password(password)))

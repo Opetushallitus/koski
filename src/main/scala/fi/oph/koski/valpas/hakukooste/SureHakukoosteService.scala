@@ -47,7 +47,7 @@ class SureHakukoosteService(
       ServiceConfig.apply(config, "opintopolku.virkailija"),
       baseUrl,
       client,
-      false
+      true
     )
   }
 

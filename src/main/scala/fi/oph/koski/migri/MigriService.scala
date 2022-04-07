@@ -18,7 +18,7 @@ class RemoteMigriService (implicit val application: KoskiApplication) extends Lo
       "/valinta-tulos-service",
       sessionCookieName = "session",
       serviceUrlSuffix = "auth/login",
-      true)
+      false)
 
     runIO(client.post(uri"/valinta-tulos-service/cas/migri/hakemukset/", List(oid))(json4sEncoderOf[List[String]]) {
       case (200, text, _) => Right(text)
