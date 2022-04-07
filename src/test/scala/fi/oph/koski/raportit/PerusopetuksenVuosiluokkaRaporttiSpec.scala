@@ -137,7 +137,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         rows.length should equal(1)
         val row = rows.head
 
-        row.uskonto should equal("5")
+        row.elamankatsomustieto should equal("5")
+        row.uskonto should equal("Oppiaine puuttuu")
         row.uskonnonOppimaara should equal("")
       }
     }
@@ -296,6 +297,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     kieliB = "8",
     kieliBOppimaara = "ruotsi",
     uskonto = "10",
+    elamankatsomustieto = "Oppiaine puuttuu",
     uskonnonOppimaara = "Ortodoksinen uskonto",
     historia = "8",
     yhteiskuntaoppi = "10",
