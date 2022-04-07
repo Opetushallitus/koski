@@ -27,7 +27,9 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
       implicit val context: ExtractionContext = strictDeserialization
       val validationResult = SchemaValidatingExtractor.extract[PäätasonSuoritus](oppijaJson) match {
         case Right(t) => Right(t)
-        case Left(errors: List[ValidationError]) => Left(KoskiErrorCategory.badRequest.validation.jsonSchema.apply(JsonErrorMessage(errors)))
+        case Left(errors: List[ValidationError]) =>
+          logger.error(s"Virhe poistettaessa päätason suoritusta: $errors")
+          Left(KoskiErrorCategory.badRequest.validation.jsonSchema.apply(JsonErrorMessage(errors)))
       }
 
       val result = validationResult.flatMap(
