@@ -8,11 +8,14 @@ import fi.oph.koski.log.Logging
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
+import java.sql.Timestamp
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
 
 class RaportointikantaService(application: KoskiApplication) extends Logging {
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
   private val eventBridgeClient = KoskiEventBridgeClient.apply(application.config)
+  private val safeTimeLimitForNewOpintooikeusDetection: FiniteDuration = 1.hour
 
   def loadRaportointikanta(
     force: Boolean,
@@ -27,8 +30,16 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       false
     } else {
       val latestOpiskeluoikeusTimestamp = raportointiDatabase.latestOpiskeluoikeusTimestamp
-      logger.info(s"Latest opiskeluoikeus update in ${raportointiDatabase.schema.name}: ${latestOpiskeluoikeusTimestamp}")
-      val update = if (skipUnchangedData) latestOpiskeluoikeusTimestamp.map(since => RaportointiDatabaseUpdate(sourceDb = raportointiDatabase, since)) else None
+      logger.info(s"Latest opiskeluoikeus update in ${raportointiDatabase.schema.name}: ${latestOpiskeluoikeusTimestamp.getOrElse("n/a")} (will be used with a safe limit of ${safeTimeLimitForNewOpintooikeusDetection.toMinutes} minutes)")
+      val update = if (skipUnchangedData) {
+        latestOpiskeluoikeusTimestamp.map(since =>
+          RaportointiDatabaseUpdate(
+            sourceDb = raportointiDatabase,
+            since = new Timestamp(since.getTime - safeTimeLimitForNewOpintooikeusDetection.toMillis)
+          ))
+      } else {
+        None
+      }
       loadDatabase.dropAndCreateObjects
       startLoading(update, scheduler, onEnd, pageSize, onAfterPage)
       logger.info(s"Started loading raportointikanta (force: $force)")
