@@ -28,7 +28,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
   private val baseUrl = "/oppijanumerorekisteri-service"
   private val totalTimeout = 1.minutes
 
-  private val oidServiceHttp = VirkailijaHttpClient(makeServiceConfig(config), baseUrl, false)
+  private val oidServiceHttp = VirkailijaHttpClient(makeServiceConfig(config), baseUrl, true)
 
   private val postRetryingOidServiceHttp = {
     // Osa POST-metodilla ONR:ään tehtävistä kyselyistä on oikeasti idempotentteja,
@@ -45,7 +45,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
       makeServiceConfig(config),
       baseUrl,
       client,
-      false
+      true
     )
   }
 

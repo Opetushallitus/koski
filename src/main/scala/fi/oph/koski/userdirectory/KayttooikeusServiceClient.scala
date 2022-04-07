@@ -9,7 +9,7 @@ import fi.oph.koski.json.Json4sHttp4s
 import cats.syntax.parallel._
 
 case class KäyttöoikeusServiceClient(config: Config) {
-  private val http = VirkailijaHttpClient(makeServiceConfig(config), "/kayttooikeus-service", false)
+  private val http = VirkailijaHttpClient(makeServiceConfig(config), "/kayttooikeus-service", true)
 
   private def makeServiceConfig(config: Config) = ServiceConfig.apply(
     config,

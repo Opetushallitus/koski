@@ -16,7 +16,7 @@ object KoodistoMuokkausPalvelu {
 class KoodistoMuokkausPalvelu(serviceConfig: ServiceConfig) extends Logging {
   import fi.oph.koski.json.Json4sHttp4s._
 
-  val secureHttp = VirkailijaHttpClient(serviceConfig, "/koodisto-service", sessionCookieName = "SESSION", false)
+  val secureHttp = VirkailijaHttpClient(serviceConfig, "/koodisto-service", sessionCookieName = "SESSION", true)
 
   def updateKoodisto(koodisto: Koodisto): Unit = {
     runIO(secureHttp.put(uri"/koodisto-service/rest/codes/save", koodisto)(json4sEncoderOf[Koodisto])(Http.unitDecoder))

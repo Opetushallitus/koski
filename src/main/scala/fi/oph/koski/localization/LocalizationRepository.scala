@@ -126,7 +126,7 @@ class ReadOnlyRemoteLocalizationRepository(virkalijaRoot: String, val localizati
 }
 
 class RemoteLocalizationRepository(config: Config, val localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
-  private val http = VirkailijaHttpClient(ServiceConfig.apply(config, "localization", "opintopolku.virkailija"), "/lokalisointi", false)
+  private val http = VirkailijaHttpClient(ServiceConfig.apply(config, "localization", "opintopolku.virkailija"), "/lokalisointi", true)
 
   override def fetchLocalizations(): JValue = runIO(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=${localizationConfig.localizationCategory}")(Http.parseJson[JValue]))
 
