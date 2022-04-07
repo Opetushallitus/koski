@@ -1,40 +1,48 @@
 package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigFactory}
-import fi.oph.koski.http.Http
-import fi.oph.koski.http.Http._
 import fi.oph.koski.log.Logging
-import software.amazon.awssdk.services.appconfig.AppConfigClient
-import software.amazon.awssdk.services.appconfig.model._
+import software.amazon.awssdk.services.appconfigdata.AppConfigDataClient
+import software.amazon.awssdk.services.appconfigdata.model.{GetLatestConfigurationRequest, StartConfigurationSessionRequest}
 
 case class EcsMetadataResponse(DockerId: String)
 
 object AppConfig extends Logging {
   lazy private val envName = sys.env.getOrElse("ENV_NAME", "local")
 
-  lazy private val appConfigClient: AppConfigClient = AppConfigClient.builder
+  lazy private val appConfigClient: AppConfigDataClient = AppConfigDataClient.builder
     .build
 
-  lazy private val clientId: String = {
-    sys.env.get("ECS_CONTAINER_METADATA_URI_V4") match {
-      case Some(metadataEndpoint) =>
-        val http = Http(metadataEndpoint, "ecsMetadata")
-        runIO(http.get(uri"")(Http.parseJson[EcsMetadataResponse])).DockerId
-      case None => "local"
-    }
+  lazy private val configurationSessionRequest =
+    StartConfigurationSessionRequest.builder
+      .applicationIdentifier("koski")
+      .environmentIdentifier(envName)
+      .configurationProfileIdentifier(envName)
+      .build
+
+  lazy private val configurationSession =
+    appConfigClient.startConfigurationSession(configurationSessionRequest)
+
+  private def getLatestConfigurationRequest = {
+    val token = configurationToken.getOrElse(configurationSession.initialConfigurationToken())
+    GetLatestConfigurationRequest.builder
+      .configurationToken(token)
+      .build
   }
 
-  lazy private val appConfigClientRequest: GetConfigurationRequest = GetConfigurationRequest.builder
-    .application("koski")
-    .environment(envName)
-    .configuration(envName)
-    .clientId(clientId)
-    .build
+  private var configurationToken: Option[String] = None
+  private var configuration: Option[Config] = None
 
-  def createConfig: Config = {
-    val configContent = appConfigClient.getConfiguration(appConfigClientRequest)
-        .content()
-        .asUtf8String()
-    ConfigFactory.parseString(configContent)
+  def loadConfig: Option[Config] = {
+    val config = appConfigClient.getLatestConfiguration(getLatestConfigurationRequest)
+    configurationToken = Some(config.nextPollConfigurationToken)
+
+    val configContent = config.configuration().asUtf8String()
+
+    if (configContent.nonEmpty) {
+      configuration = Some(ConfigFactory.parseString(configContent))
     }
+
+    configuration
+  }
 }
