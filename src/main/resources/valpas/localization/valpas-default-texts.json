@@ -41,6 +41,7 @@
   "hakutilanne__ei_oikeuksia_title": "Virhe",
   "hakutilanne__ei_oikeuksia_teksti": "Sinulla ei ole oikeuksia nähdä yhdenkään oppilaitoksen tietoja",
   "hakutilanne__vsop": "vsop",
+  "hakutilanne__valo": "valo",
   "perusopetus_suoritettu__valmistuu_tulevaisuudessa": "Tulevaisuudessa",
   "perusopetus_suoritettu__valmistuu_tulevaisuudessa_pvm": "Valmistuu {{päivämäärä}}",
   "ilmoittaminen_drawer__title": "Oppilaiden ilmoittaminen asuinkunnalle",

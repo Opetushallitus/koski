@@ -1383,6 +1383,20 @@ object ValpasOpiskeluoikeusExampleData {
     )),
   )
 
+  def perusopetukseenValmistavanOpetuksenOpiskeluoikeusValmistunut = perusopetukseenValmistavanOpetuksenOpiskeluoikeus.copy(
+    tila = PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(List(
+      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2019, 9, 4), opiskeluoikeusLäsnä),
+      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2021, 5, 31), opiskeluoikeusValmistunut)
+    )),
+  )
+
+  def perusopetukseenValmistavanOpetuksenOpiskeluoikeusEronnut = perusopetukseenValmistavanOpetuksenOpiskeluoikeus.copy(
+    tila = PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(List(
+      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2019, 9, 5), opiskeluoikeusLäsnä),
+      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2021, 8, 27), opiskeluoikeusEronnut)
+    )),
+  )
+
   def ibOpiskeluoikeusPreIbSuoritus = {
     val maksuttomuus: Option[List[Maksuttomuus]] = Some(List(
       Maksuttomuus(alku = date(2021, 6, 1), loppu = None, maksuton = true),

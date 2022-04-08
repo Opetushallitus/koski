@@ -5,7 +5,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (38)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (41)"
 export const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -35,6 +35,9 @@ export const jklNormaalikouluTableContent = `
   Oppivelvollisuus-keskeytetty-ei-opiskele Valpas         | 1.10.2005   | 9C | 15.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollisuus-keskeytetty-määräajaksi Valpas         | 18.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollisuus-keskeytetty-toistaiseksi Valpas        | 15.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Perusopetukseen-valmistautuva-17-vuotta-täyttävä Valpas | 6.1.2004    | valo  | –       | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Perusopetukseen-valmistavasta-eronnut-17-vuotta-täyttävä Valpas     | 21.6.2004 | valo  | – | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Perusopetukseen-valmistavasta-valmistunut-17-vuotta-täyttävä Valpas | 29.5.2004 | valo  | – | Ei hakemusta         | –                           | –                         | –                                                                          |
   Päällekkäisiä Oppivelvollisuuksia                       | 6.6.2005    | 9B | –          | Hakenut open_in_new  | Hyväksytty (2 hakukohdetta) | doneOmnia                 | –                                                                          |
   SuorittaaPreIB Valpas                                   | 19.7.2004   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, IB-tutkinto                                  |
   Turvakielto Valpas                                      | 29.9.2004   | 9C | –          | Hakenut open_in_new  | warningEi opiskelupaikkaa   | –                         | –                                                                          |
