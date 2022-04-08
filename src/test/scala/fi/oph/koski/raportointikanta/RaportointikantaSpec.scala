@@ -121,10 +121,10 @@ class RaportointikantaSpec
     }
 
     "Force load" in {
-      authGet("api/raportointikanta/load")(verifyResponseStatusOk())
+      authGet("api/raportointikanta/load?fullReload=true")(verifyResponseStatusOk())
       Wait.until(isLoading)
       val loadStarted = getLoadStartedTime
-      authGet("api/raportointikanta/load?force=true")(verifyResponseStatusOk())
+      authGet("api/raportointikanta/load?force=true&fullReload=true")(verifyResponseStatusOk())
       loadStarted before getLoadStartedTime should be(true)
 
       // Varmista, että raportointikanta ei jää epämääräiseen virhetilaan ennen muita testejä. Ilman sleeppiä
