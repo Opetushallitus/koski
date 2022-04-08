@@ -14,8 +14,8 @@ import scala.util.Random
 abstract class ValpasOpiskeluoikeusInserterScenario {
   def lähdejärjestelmät = List("primus", "winnova", "helmi", "winha", "peppi", "studentaplus", "rediteq")
   def lähdejärjestelmäId = Some(LähdejärjestelmäId(Some(UUID.randomUUID().toString), Koodistokoodiviite(lähdejärjestelmät(Random.nextInt(lähdejärjestelmät.length)), "lahdejarjestelma")))
-  val alkamispäivä = date(2020, 8, 15)
-  val valmistumispäivä = date(2021, 6, 4)
+  val alkamispäivä = date(2021, 8, 15)
+  val valmistumispäivä = date(2022, 6, 4)
   val peruskoulut = new RandomValpasPeruskouluOid()
   val luokka = "9A"
 
