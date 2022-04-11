@@ -132,6 +132,12 @@ object AikajaksoRowBuilder {
         case _ => false
       },
       oppisopimusJossainPäätasonSuorituksessa = oppisopimusAikajaksot(o).exists(_.contains(päivä)),
+      maksuton = lisätietoVoimassaPäivänä {
+        case l: MaksuttomuusTieto => l.maksuttomuus.map(ms => ms.filter(_.maksuton))
+      },
+      maksullinen = lisätietoVoimassaPäivänä {
+        case l: MaksuttomuusTieto => l.maksuttomuus.map(ms => ms.filterNot(_.maksuton))
+      },
       oikeuttaMaksuttomuuteenPidennetty = lisätietoVoimassaPäivänä {
         case l: MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty
       },
@@ -220,7 +226,8 @@ object AikajaksoRowBuilder {
           aol.vaativanErityisenTuenErityinenTehtävä,
           aol.vaikeastiVammainen,
           aol.vammainenJaAvustaja,
-          aol.vankilaopetuksessa
+          aol.vankilaopetuksessa,
+          aol.maksuttomuus
         ) ++
           aol.opiskeluvalmiuksiaTukevatOpinnot.map(_.map(j => Aikajakso(j.alku, Some(j.loppu)))).toList.flatten ++
           aol.osaAikaisuusjaksot.map(_.map(j => Aikajakso(j.alku, j.loppu))).toList.flatten ++
@@ -229,7 +236,8 @@ object AikajaksoRowBuilder {
       case apol: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot =>
         toSeq(
           apol.sisäoppilaitosmainenMajoitus,
-          apol.vaikeastiVammainen
+          apol.vaikeastiVammainen,
+          apol.maksuttomuus
         ) ++
           apol.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
       case pol: PerusopetuksenOpiskeluoikeudenLisätiedot =>
@@ -251,7 +259,8 @@ object AikajaksoRowBuilder {
           poll.sisäoppilaitosmainenMajoitus,
           poll.vammainen,
           poll.vaikeastiVammainen,
-          poll.koulukoti
+          poll.koulukoti,
+          poll.maksuttomuus
         ) ++ Seq(
           poll.majoitusetu,
           poll.kuljetusetu,
@@ -262,22 +271,26 @@ object AikajaksoRowBuilder {
       case lol: LukionOpiskeluoikeudenLisätiedot =>
         toSeq(
           lol.sisäoppilaitosmainenMajoitus,
-          lol.erityisenKoulutustehtävänJaksot
+          lol.erityisenKoulutustehtävänJaksot,
+          lol.maksuttomuus
         ) ++
           lol.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
       case isol: InternationalSchoolOpiskeluoikeudenLisätiedot =>
         toSeq(
-          isol.erityisenKoulutustehtävänJaksot
+          isol.erityisenKoulutustehtävänJaksot,
+          isol.maksuttomuus
         ) ++
           isol.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
       case dol: DIAOpiskeluoikeudenLisätiedot =>
         toSeq(
-          dol.erityisenKoulutustehtävänJaksot
+          dol.erityisenKoulutustehtävänJaksot,
+          dol.maksuttomuus
         ) ++
           dol.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
       case lvol: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot =>
         toSeq(
-          lvol.sisäoppilaitosmainenMajoitus
+          lvol.sisäoppilaitosmainenMajoitus,
+          lvol.maksuttomuus
         ) ++
           lvol.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
       case eol: EsiopetuksenOpiskeluoikeudenLisätiedot =>
