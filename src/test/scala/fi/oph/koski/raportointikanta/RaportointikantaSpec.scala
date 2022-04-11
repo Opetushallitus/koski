@@ -445,6 +445,29 @@ class RaportointikantaSpec
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-12-16"), Date.valueOf("2016-12-16"), "valmistunut", Date.valueOf("2016-12-16"), osaAikaisuus = 80, opiskeluoikeusPäättynyt = true)
         ))
       }
+      "Maksuttomuus, maksullisuus ja oikeutta maksuttomuuteen pidennetty" in {
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+          tila = AmmatillinenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+            AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.of(2016, 1, 15), tila = Läsnä),
+          )),
+          lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+            hojks = None,
+            maksuttomuus = Some(List(
+              Maksuttomuus(LocalDate.of(2016, 1, 15), Some(LocalDate.of(2018, 1, 15)), true),
+              Maksuttomuus(LocalDate.of(2018, 1, 16), None, false)
+            )),
+            oikeuttaMaksuttomuuteenPidennetty = Some(List(
+              OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2017, 1, 15), LocalDate.of(2018, 1, 15))
+            ))
+          ))
+        )
+        val aikajaksoRows = AikajaksoRowBuilder.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
+        aikajaksoRows should equal(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2017-01-14"), "lasna", Date.valueOf("2016-01-15"), maksuton = true, maksullinen = false, oikeuttaMaksuttomuuteenPidennetty = false),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-01-15"), Date.valueOf("2018-01-15"), "lasna", Date.valueOf("2016-01-15"), maksuton = true, maksullinen = false, oikeuttaMaksuttomuuteenPidennetty = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2018-01-16"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"), maksuton = false, maksullinen = true, oikeuttaMaksuttomuuteenPidennetty = false),
+        ))
+      }
     }
 
     "Suoritusrivien rakennus" - {
