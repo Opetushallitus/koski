@@ -1,0 +1,461 @@
+{
+  "cleanForTesting": true,
+  "ignoreKoskiValidator": true,
+  "henkilö" : {
+    "oid" : "1.2.246.562.24.56711111111",
+    "hetu" : "091087-789S",
+    "syntymäaika" : "1990-1-1",
+    "etunimet" : "Olen Rikki",
+    "kutsumanimi" : "Rikki",
+    "sukunimi" : "Testidata",
+    "äidinkieli" : {
+      "koodiarvo" : "FI",
+      "nimi" : {
+        "fi" : "suomi",
+        "sv" : "finska",
+        "en" : "Finnish"
+      },
+      "lyhytNimi" : {
+        "fi" : "suomi",
+        "sv" : "finska",
+        "en" : "Finnish"
+      },
+      "koodistoUri" : "kieli",
+      "koodistoVersio" : 1
+    },
+    "kansalaisuus" : [ {
+      "koodiarvo" : "246",
+      "nimi" : {
+        "fi" : "Suomi",
+        "sv" : "Finland",
+        "en" : "Finland"
+      },
+      "lyhytNimi" : {
+        "fi" : "FI",
+        "sv" : "FI",
+        "en" : "FI"
+      },
+      "koodistoUri" : "maatjavaltiot2",
+      "koodistoVersio" : 2
+    } ],
+    "turvakielto" : false
+  },
+  "opiskeluoikeudet" : [ {
+    "versionumero" : 1,
+    "aikaleima" : "2021-08-20T13:23:36.391031",
+    "lähdejärjestelmänId" : {
+      "id" : "92362",
+      "lähdejärjestelmä" : {
+        "koodiarvo" : "primus",
+        "nimi" : {
+          "fi" : "primus"
+        },
+        "koodistoUri" : "lahdejarjestelma",
+        "koodistoVersio" : 1
+      }
+    },
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.51720121923",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10054",
+        "nimi" : {
+          "fi" : "Omnia",
+          "sv" : "Omnia",
+          "en" : "Omnia"
+        },
+        "lyhytNimi" : {
+          "fi" : "Omnia",
+          "sv" : "Omnia",
+          "en" : "Omnia"
+        },
+        "koodistoUri" : "oppilaitosnumero",
+        "koodistoVersio" : 1
+      },
+      "nimi" : {
+        "fi" : "Omnia",
+        "sv" : "Omnia",
+        "en" : "Omnia"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "049",
+        "nimi" : {
+          "fi" : "Espoo",
+          "sv" : "Esbo"
+        },
+        "koodistoUri" : "kunta",
+        "koodistoVersio" : 2
+      }
+    },
+    "koulutustoimija" : {
+      "oid" : "1.2.246.562.10.53642770753",
+      "nimi" : {
+        "fi" : "Espoon seudun koulutuskuntayhtymä Omnia"
+      },
+      "yTunnus" : "0502454-6",
+      "kotipaikka" : {
+        "koodiarvo" : "049",
+        "nimi" : {
+          "fi" : "Espoo",
+          "sv" : "Esbo"
+        },
+        "koodistoUri" : "kunta",
+        "koodistoVersio" : 2
+      }
+    },
+    "arvioituPäättymispäivä" : "2022-09-30",
+    "ostettu" : false,
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2021-08-17",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä",
+            "sv" : "Närvarande",
+            "en" : "Present"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "nimi" : {
+            "fi" : "Valtionosuusrahoitteinen koulutus",
+            "sv" : "Statsandelsfinansierad utbildning"
+          },
+          "koodistoUri" : "opintojenrahoitus",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "309902",
+          "nimi" : {
+            "fi" : "Lukion oppimäärä",
+            "sv" : "Gymnasiets lärokurs"
+          },
+          "koodistoUri" : "koulutus",
+          "koodistoVersio" : 12
+        },
+        "perusteenDiaarinumero" : "OPH-2263-2019"
+      },
+      "oppimäärä" : {
+        "koodiarvo" : "nuortenops",
+        "nimi" : {
+          "fi" : "Lukio suoritetaan nuorten opetussuunnitelman mukaan",
+          "sv" : "Gymnasiet genomförs enligt läroplanen för unga"
+        },
+        "koodistoUri" : "lukionoppimaara",
+        "koodistoVersio" : 1
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "lyhytNimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä",
+            "sv" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2020-05-15",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä",
+            "sv" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta",
+          "koodistoVersio" : 2
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
+            }
+          }
+        } ]
+      },
+      "suoritettuErityisenäTutkintona" : false,
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi",
+          "sv" : "finska",
+          "en" : "Finnish"
+        },
+        "lyhytNimi" : {
+          "fi" : "suomi",
+          "sv" : "finska",
+          "en" : "Finnish"
+        },
+        "koodistoUri" : "kieli",
+        "koodistoVersio" : 1
+      },
+      "omanÄidinkielenOpinnot" : {
+        "arvosana" : {
+          "koodiarvo" : "8",
+          "nimi" : {
+            "fi" : "hyvä",
+            "sv" : "god"
+          },
+          "lyhytNimi" : {
+            "fi" : "8"
+          },
+          "koodistoUri" : "arviointiasteikkoyleissivistava",
+          "koodistoVersio" : 1
+        },
+        "kieli" : {
+          "koodiarvo" : "SE",
+          "nimi" : {
+            "fi" : "saame, lappi",
+            "sv" : "samiska",
+            "en" : "Northern Sami"
+          },
+          "lyhytNimi" : {
+            "fi" : "saame, lappi",
+            "sv" : "samiska",
+            "en" : "Northern Sami"
+          },
+          "koodistoUri" : "kielivalikoima",
+          "koodistoVersio" : 1
+        },
+        "laajuus" : {
+          "arvo" : 3.0,
+          "yksikkö" : {
+            "koodiarvo" : "2",
+            "nimi" : {
+              "fi" : "opintopistettä",
+              "sv" : "studiepoäng",
+              "en" : "ECTS credits"
+            },
+            "lyhytNimi" : {
+              "fi" : "op",
+              "sv" : "sp",
+              "en" : "ECTS cr"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko",
+            "koodistoVersio" : 1
+          }
+        },
+        "hyväksytty" : true
+      },
+      "puhviKoe" : {
+        "arvosana" : {
+          "koodiarvo" : "7",
+          "nimi" : {
+            "fi" : "tyydyttävä",
+            "sv" : "nöjaktig"
+          },
+          "lyhytNimi" : {
+            "fi" : "7"
+          },
+          "koodistoUri" : "arviointiasteikkoyleissivistava",
+          "koodistoVersio" : 1
+        },
+        "päivä" : "2019-08-30",
+        "hyväksytty" : true
+      },
+      "suullisenKielitaidonKokeet" : [ {
+        "kieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti",
+            "sv" : "engelska",
+            "en" : "English"
+          },
+          "lyhytNimi" : {
+            "fi" : "englanti",
+            "sv" : "engelska",
+            "en" : "English"
+          },
+          "koodistoUri" : "kielivalikoima",
+          "koodistoVersio" : 1
+        },
+        "arvosana" : {
+          "koodiarvo" : "6",
+          "nimi" : {
+            "fi" : "kohtalainen",
+            "sv" : "hjälplig"
+          },
+          "lyhytNimi" : {
+            "fi" : "6"
+          },
+          "koodistoUri" : "arviointiasteikkoyleissivistava",
+          "koodistoVersio" : 1
+        },
+        "taitotaso" : {
+          "koodiarvo" : "B1.1",
+          "nimi" : {
+            "fi" : "B1.1"
+          },
+          "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot",
+          "koodistoVersio" : 1
+        },
+        "päivä" : "2019-09-03",
+        "hyväksytty" : true
+      }, {
+        "kieli" : {
+          "koodiarvo" : "ES",
+          "nimi" : {
+            "fi" : "espanja",
+            "sv" : "spanska",
+            "en" : "Spanish"
+          },
+          "lyhytNimi" : {
+            "fi" : "espanja",
+            "sv" : "spanska",
+            "en" : "Spanish"
+          },
+          "koodistoUri" : "kielivalikoima",
+          "koodistoVersio" : 1
+        },
+        "arvosana" : {
+          "koodiarvo" : "S",
+          "nimi" : {
+            "fi" : "hyväksytty",
+            "sv" : "godkänd"
+          },
+          "lyhytNimi" : {
+            "fi" : "S"
+          },
+          "koodistoUri" : "arviointiasteikkoyleissivistava",
+          "koodistoVersio" : 1
+        },
+        "taitotaso" : {
+          "koodiarvo" : "yli_C1.1",
+          "nimi" : {
+            "fi" : "Yli C1.1"
+          },
+          "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot",
+          "koodistoVersio" : 1
+        },
+        "kuvaus" : {
+          "fi" : "Puhetaito äidinkielen tasolla"
+        },
+        "päivä" : "2019-09-03",
+        "hyväksytty" : true
+      } ],
+      "todistuksellaNäkyvätLisätiedot" : {
+        "fi" : "Osallistunut kansalliseen etäopetuskokeiluun"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "lukionoppimaara",
+        "nimi" : {
+          "fi" : "Lukion oppimäärä",
+          "sv" : "Gymnasiets lärokurs",
+          "en" : "General upper secondary education  syllabus"
+        },
+        "koodistoUri" : "suorituksentyyppi",
+        "koodistoVersio" : 1
+      },
+      "ryhmä" : "AH",
+      "koulusivistyskieli" : [ {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      } ]
+    } ],
+    "lisätiedot" : {
+      "henkilöstökoulutus" : false,
+      "koulutusvienti" : false
+    },
+    "tyyppi" : {
+      "koodiarvo" : "lukiokoulutus",
+      "nimi" : {
+        "fi" : "Lukiokoulutus",
+        "sv" : "Gymnasieutbildning"
+      },
+      "lyhytNimi" : {
+        "fi" : "Lukiokoulutus"
+      },
+      "koodistoUri" : "opiskeluoikeudentyyppi",
+      "koodistoVersio" : 1
+    },
+    "alkamispäivä" : "2021-08-17"
+  }]
+}

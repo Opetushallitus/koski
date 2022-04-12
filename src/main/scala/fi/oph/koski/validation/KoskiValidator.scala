@@ -13,7 +13,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.schema.KoskiSchema.{lenientDeserialization, strictDeserialization}
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
 import fi.oph.koski.schema.{VapaanSivistystyönPäätasonSuoritus, _}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
@@ -22,8 +22,9 @@ import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.util.Timing
 import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
 import fi.oph.koski.validation.DateValidation._
+import fi.oph.scalaschema.ExtractionContext
 import mojave._
-import org.json4s.{JArray, JValue}
+import org.json4s.{DefaultFormats, JArray, JBool, JNothing, JValue}
 
 // scalastyle:off line.size.limit
 // scalastyle:off number.of.methods
@@ -57,10 +58,7 @@ class KoskiValidator(
 
   def extractAndValidateOppija(parsedJson: JValue)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     timed("extractAndValidateOppija", 200) {
-      val extractionResult: Either[HttpStatus, Oppija] = {
-        validatingAndResolvingExtractor.extract[Oppija](strictDeserialization)(parsedJson)
-      }
-      extractionResult.right.flatMap(validateOpiskeluoikeudet)
+      extractOppija(parsedJson).right.flatMap(validateOpiskeluoikeudet)
     }
   }
 
@@ -72,8 +70,14 @@ class KoskiValidator(
     }
   }
 
+  def extractOppija(parsedJson: JValue, deserialization: ExtractionContext = strictDeserialization): Either[HttpStatus, Oppija] = {
+    timed("extractOppija")(
+      validatingAndResolvingExtractor.extract[Oppija](deserialization)(parsedJson)
+    )
+  }
+
   def extractOpiskeluoikeus(parsedJson: JValue): Either[HttpStatus, Opiskeluoikeus] = {
-    timed("extract")(
+    timed("extractOpiskeluoikeus")(
       validatingAndResolvingExtractor.extract[Opiskeluoikeus](strictDeserialization)(parsedJson)
     )
   }

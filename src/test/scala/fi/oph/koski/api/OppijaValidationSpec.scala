@@ -1,6 +1,9 @@
 package fi.oph.koski.api
 
+import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.config.Environment
+import fi.oph.koski.config.KoskiApplication.defaultConfig
 import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, _}
 import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistus}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
@@ -20,6 +23,7 @@ import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
+import scala.io.Source
 
 class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   "Opiskeluoikeuden lisääminen" - {
@@ -416,6 +420,19 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
         putOpiskeluoikeusWithSomeMergedJson(Map("tyyppi" -> Map("nimi" -> Map.empty[String, String]))) {
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
         }
+      }
+    }
+
+    "Kentät cleanForTesting ja ignoreKoskiValidator" - {
+      "Kun kentät määritelty, local-ympäristöön voidaan ladata 'rikkinäinen' opiskeluoikeus" in {
+        val json = JsonMethods.parse(Source.fromFile("src/test/resources/rikkinäinen_opiskeluoikeus.json").mkString)
+        val oid = putOppija(json, headers = authHeaders() ++ jsonContent) {
+          verifyResponseStatusOk()
+          implicit val formats = DefaultFormats
+          (JsonMethods.parse(body) \ "henkilö" \ "oid").extract[String]
+        }
+        val oo = lastOpiskeluoikeus(oid)
+        oo.suoritukset.length should equal (1)
       }
     }
   }

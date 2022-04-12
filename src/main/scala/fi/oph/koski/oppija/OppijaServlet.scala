@@ -3,19 +3,22 @@ package fi.oph.koski.oppija
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.SensitiveAndRedundantDataFilter
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
+import fi.oph.koski.schema.KoskiSchema.{lenientDeserialization}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
-import fi.oph.koski.util.{Pagination, Timing, WithWarnings, XML}
+import fi.oph.koski.util.{Pagination, Timing, XML}
 import fi.oph.koski.virta.{VirtaHakuehtoHetu, VirtaHakuehtoKansallinenOppijanumero}
+
 import javax.servlet.http.HttpServletRequest
-import org.json4s.JsonAST.{JObject, JString}
-import org.json4s.{JArray, JValue}
+import org.json4s.JsonAST.{JBool, JObject, JString}
+import org.json4s.{DefaultFormats, JArray, JValue}
 import org.scalatra.ContentEncodingSupport
 
 class OppijaServlet(implicit val application: KoskiApplication)
@@ -34,8 +37,13 @@ class OppijaServlet(implicit val application: KoskiApplication)
 
   private def putSingle(allowUpdate: Boolean) = {
     withTracking { withJsonBody { (oppijaJson: JValue) =>
-      val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(session, AccessType.write)
-      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(session, application, request).putSingle(validationResult, oppijaJson, allowUpdate)
+      val cleanedJson = cleanForTesting(oppijaJson)
+      val validationResult: Either[HttpStatus, Oppija] = if (skipValidation(cleanedJson)) {
+        application.validator.extractOppija(cleanedJson, lenientDeserialization)
+      } else {
+        application.validator.extractAndValidateOppija(cleanedJson)(session, AccessType.write)
+      }
+      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(session, application, request).putSingle(validationResult, cleanedJson, allowUpdate)
       renderEither[HenkilönOpiskeluoikeusVersiot](result)
     }(parseErrorHandler = handleUnparseableJson)}
   }
@@ -122,6 +130,38 @@ class OppijaServlet(implicit val application: KoskiApplication)
         application.tiedonsiirtoService.storeTiedonsiirtoResult(session, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), KoskiErrorCategory.internalError().errors)))
         logger.error(e)("virhe aiheutti unparseableJson merkinnän tiedonsiirtoihin")
         throw e
+    }
+  }
+
+  private def skipValidation(oppijaJson: JValue) = {
+    val ignoreFlagInJson = extract[Boolean]((oppijaJson \ "ignoreKoskiValidator").map {
+      case pass: JBool => pass
+      case _ => JBool(false)
+    })
+
+    application.config.getString("env") == "local" && ignoreFlagInJson
+  }
+
+  private def cleanForTesting(oppijaJson: JValue) = {
+    val cleanForTesting = extract[Boolean]((oppijaJson \ "cleanForTesting").map {
+      case pass: JBool => pass
+      case _ => JBool(false)
+    })
+
+    val shouldClean = application.config.getString("env") == "local" && cleanForTesting
+
+    if (shouldClean) {
+      implicit val formats = DefaultFormats
+      oppijaJson.replace(List("henkilö"), (oppijaJson \ "henkilö").removeField {
+        case ("oid", _) => true
+        case ("kansalaisuus", _) => true
+        case ("äidinkieli", _) => true
+        case ("syntymäaika", _) => true
+        case ("turvakielto", _) => true
+        case _ => false
+      })
+    } else {
+      oppijaJson
     }
   }
 }
