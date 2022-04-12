@@ -14,7 +14,7 @@ object ExamplesEsiopetus {
   lazy val osaAikainenErityisopetus = Koodistokoodiviite("1", Some("Osa-aikainen erityisopetus"), "perusopetuksentukimuoto")
 
   lazy val lisätiedot = EsiopetuksenOpiskeluoikeudenLisätiedot(
-    pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+    pidennettyOppivelvollisuus = Some(Aikajakso(date(2014, 8, 15), Some(date(2016, 6, 4)))),
     vammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
     vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None))),
     majoitusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),

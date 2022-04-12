@@ -51,6 +51,10 @@ trait VaikeastiVammainen {
   def vaikeastiVammainen: Option[List[Aikajakso]]
 }
 
+trait PidennettyOppivelvollisuus extends Vammainen with VaikeastiVammainen {
+  def pidennettyOppivelvollisuus: Option[Aikajakso]
+}
+
 trait Majoitusetuinen {
   def majoitusetu: Option[Aikajakso]
 }
