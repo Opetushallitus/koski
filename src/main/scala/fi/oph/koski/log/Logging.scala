@@ -25,8 +25,24 @@ case class LoggerWithContext(
   def info(msg: => String) = logger.info(fmt(msg))
   def warn(msg: => String) = logger.warn(fmt(msg))
   def warn(e: Throwable)(msg: => String) = logger.warn(e)(fmt(msg))
-  def error(msg: => String) = logger.error(fmt(msg))
-  def error(e: Throwable)(msg: => String) = logger.error(e)(fmt(msg))
+  def error(msg: => String) = {
+    logger.error("Error")
+    logger.error(msg.take(1000))
+    logger.error(fmt(msg))
+    logger.error(msg)
+  }
+  def error(e: Throwable)(msg: => String) = {
+    logger.error("Error in Throwable")
+    logger.error("Message 1000 chars" + msg.take(1000))
+    logger.error("e to string length: " + e.toString.size.toString)
+    logger.error("Stacktrace elements length: " + e.getStackTrace.map(_.toString.length).sum.toString)
+    for(line <- e.getStackTrace){
+      logger.error(line.toString)
+    }
+    logger.error(fmt(msg))
+    logger.error(fmt(e.toString))
+    logger.error(e)(fmt(msg))
+  }
 
   def withUserContext(context: LogUserContext) = this.copy(context = Some(context))
 
