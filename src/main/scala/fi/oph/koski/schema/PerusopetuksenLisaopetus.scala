@@ -143,6 +143,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   with Vammainen
   with VaikeastiVammainen
   with MaksuttomuusTieto
+  with PidennettyOppivelvollisuus
 
 @Description("Perusopetuksen lisäopetuksen suoritustiedot")
 case class PerusopetuksenLisäopetuksenSuoritus(

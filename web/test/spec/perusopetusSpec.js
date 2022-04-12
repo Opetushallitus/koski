@@ -204,7 +204,7 @@ describe('Perusopetus', function() {
             'Tila 4.6.2016 Valmistunut\n' +
             '15.8.2008 Läsnä\n' +
             'Lisätiedot\n' +
-            'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
+            'Pidennetty oppivelvollisuus 15.8.2010 — 4.6.2016\n' +
             'Erityisen tuen päätös 15.8.2008 — 4.6.2016\n' +
             'Opiskelee toiminta-alueittain kyllä\n' +
             'Opiskelee erityisryhmässä kyllä\n' +
@@ -1143,44 +1143,44 @@ describe('Perusopetus', function() {
         })
 
         describe('Päivämäärän syöttö', function() {
-          var pidennettyOppivelvollisuusProperty = editor.property('pidennettyOppivelvollisuus')
-          var pidennettyOppivelvollisuus = pidennettyOppivelvollisuusProperty.toPäivämääräväli()
+          var joustavaPerusopetusProperty = editor.property('joustavaPerusopetus')
+          var joustavaPerusopetus = joustavaPerusopetusProperty.toPäivämääräväli()
 
-          before(editor.edit, opinnot.expandAll, pidennettyOppivelvollisuusProperty.addValue)
+          before(editor.edit, opinnot.expandAll, joustavaPerusopetusProperty.addValue)
 
           describe('Virheellinen päivämäärä', function() {
-            before(pidennettyOppivelvollisuus.setAlku('34.9.2000'))
+            before(joustavaPerusopetus.setAlku('34.9.2000'))
             it('Estää tallennuksen', function() {
               expect(opinnot.onTallennettavissa()).to.equal(false)
             })
           })
           describe('Oikeellinen päivämäärä', function() {
-            before(pidennettyOppivelvollisuus.setAlku(currentDateStr), editor.saveChanges, wait.until(page.isSavedLabelShown))
+            before(joustavaPerusopetus.setAlku(currentDateStr), editor.saveChanges, wait.until(page.isSavedLabelShown))
             it('Tallennus onnistuu', function() {
-              expect(pidennettyOppivelvollisuus.getAlku()).to.equal(currentDateStr)
+              expect(joustavaPerusopetus.getAlku()).to.equal(currentDateStr)
             })
           })
 
-          after(editor.edit, pidennettyOppivelvollisuusProperty.removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
+          after(editor.edit, joustavaPerusopetusProperty.removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
         })
 
         describe('Virheellinen päivämääräväli', function() {
-          var pidennettyOppivelvollisuusProperty = editor.property('pidennettyOppivelvollisuus')
-          var pidennettyOppivelvollisuus = pidennettyOppivelvollisuusProperty.toPäivämääräväli()
+          var joustavaPerusopetusProperty = editor.property('joustavaPerusopetus')
+          var joustavaPerusopetus = joustavaPerusopetusProperty.toPäivämääräväli()
 
           before(
             editor.edit,
             opinnot.expandAll,
-            pidennettyOppivelvollisuusProperty.addValue,
-            pidennettyOppivelvollisuus.setAlku(currentDateStr),
-            pidennettyOppivelvollisuus.setLoppu('1.2.2008')
+            joustavaPerusopetusProperty.addValue,
+            joustavaPerusopetus.setAlku(currentDateStr),
+            joustavaPerusopetus.setLoppu('1.2.2008')
           )
 
           it('Estää tallennuksen', function() {
-            expect(pidennettyOppivelvollisuus.isValid()).to.equal(false)
+            expect(joustavaPerusopetus.isValid()).to.equal(false)
             expect(opinnot.onTallennettavissa()).to.equal(false)
           })
-          after(pidennettyOppivelvollisuus.setLoppu(currentDateStr), editor.saveChanges, wait.until(page.isSavedLabelShown))
+          after(joustavaPerusopetus.setLoppu(currentDateStr), editor.saveChanges, wait.until(page.isSavedLabelShown))
         })
 
         // Ks. https://github.com/Opetushallitus/koski/pull/876 : väliaikaisesti disabloitu
@@ -3326,7 +3326,9 @@ describe('Perusopetus', function() {
           'Tila 4.6.2016 Valmistunut\n' +
           '15.8.2008 Läsnä\n' +
           'Lisätiedot\n' +
-          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016')
+          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
+          'Muu kuin vaikeimmin kehitysvammainen 15.8.2008 —'
+        )
       })
 
       it('näyttää suorituksen tiedot', function() {

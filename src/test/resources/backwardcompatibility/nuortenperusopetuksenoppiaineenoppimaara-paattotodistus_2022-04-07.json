@@ -1,10 +1,9 @@
 {
-  "ignoreKoskiValidator" : true,
   "henkilö" : {
-    "hetu" : "220109-784L",
-    "etunimet" : "Kaisa",
-    "kutsumanimi" : "Kaisa",
-    "sukunimi" : "Koululainen"
+    "hetu" : "010101-123N",
+    "etunimet" : "Eero",
+    "kutsumanimi" : "Eero",
+    "sukunimi" : "Esimerkki"
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
@@ -39,7 +38,7 @@
     },
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2006-08-13",
+        "alku" : "2015-08-15",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -49,7 +48,7 @@
           "koodistoVersio" : 1
         }
       }, {
-        "alku" : "2007-06-03",
+        "alku" : "2016-06-04",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -61,49 +60,27 @@
       } ]
     },
     "lisätiedot" : {
+      "aloittanutEnnenOppivelvollisuutta" : false,
       "pidennettyOppivelvollisuus" : {
-        "alku" : "2008-08-15",
-        "loppu" : "2016-06-04"
+        "alku" : "2014-06-06"
       },
-      "tukimuodot" : [ {
-        "koodiarvo" : "1",
-        "nimi" : {
-          "fi" : "Osa-aikainen erityisopetus"
-        },
-        "koodistoUri" : "perusopetuksentukimuoto"
-      } ],
-      "vammainen" : [ {
-        "alku" : "2010-08-14"
-      } ],
+      "vuosiluokkiinSitoutumatonOpetus" : false,
       "vaikeastiVammainen" : [ {
         "alku" : "2014-06-06"
-      } ],
-      "majoitusetu" : {
-        "alku" : "2011-08-14",
-        "loppu" : "2012-08-14"
-      },
-      "kuljetusetu" : {
-        "alku" : "2011-08-14",
-        "loppu" : "2012-08-14"
-      },
-      "sisäoppilaitosmainenMajoitus" : [ {
-        "alku" : "2012-09-01",
-        "loppu" : "2013-09-01"
-      } ],
-      "koulukoti" : [ {
-        "alku" : "2011-08-14"
       } ]
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
-        "perusteenDiaarinumero" : "102/011/2014",
         "tunniste" : {
-          "koodiarvo" : "001101",
-          "koodistoUri" : "koulutus"
+          "koodiarvo" : "AI",
+          "koodistoUri" : "koskioppiaineetyleissivistava"
         },
-        "kuvaus" : {
-          "fi" : "Kaksikielinen esiopetus (suomi-portugali)"
-        }
+        "kieli" : {
+          "koodiarvo" : "AI1",
+          "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+        },
+        "pakollinen" : true,
+        "perusteenDiaarinumero" : "104/011/2014"
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
@@ -135,33 +112,15 @@
           "koodistoUri" : "kunta"
         }
       },
-      "suorituskieli" : {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
+      "arviointi" : [ {
+        "arvosana" : {
+          "koodiarvo" : "9",
+          "koodistoUri" : "arviointiasteikkoyleissivistava"
         },
-        "koodistoUri" : "kieli"
-      },
-      "muutSuorituskielet" : [ {
-        "koodiarvo" : "SV",
-        "nimi" : {
-          "fi" : "ruotsi"
-        },
-        "koodistoUri" : "kieli"
+        "hyväksytty" : true
       } ],
-      "osaAikainenErityisopetus" : [ {
-        "koodiarvo" : "LV1",
-        "nimi" : {
-          "fi" : "Osa-aikainen erityisopetus lukuvuoden aikana"
-        },
-        "koodistoUri" : "osaaikainenerityisopetuslukuvuodenaikana"
-      } ],
-      "tyyppi" : {
-        "koodiarvo" : "esiopetuksensuoritus",
-        "koodistoUri" : "suorituksentyyppi"
-      },
       "vahvistus" : {
-        "päivä" : "2007-06-03",
+        "päivä" : "2016-06-04",
         "paikkakunta" : {
           "koodiarvo" : "179",
           "nimi" : {
@@ -235,13 +194,28 @@
             }
           }
         } ]
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "erityinentutkinto",
+        "koodistoUri" : "perusopetuksensuoritustapa"
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "nuortenperusopetuksenoppiaineenoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
       }
     } ],
     "tyyppi" : {
-      "koodiarvo" : "esiopetus",
+      "koodiarvo" : "perusopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
-    "alkamispäivä" : "2006-08-13",
-    "päättymispäivä" : "2007-06-03"
+    "alkamispäivä" : "2015-08-15",
+    "päättymispäivä" : "2016-06-04"
   } ]
 }

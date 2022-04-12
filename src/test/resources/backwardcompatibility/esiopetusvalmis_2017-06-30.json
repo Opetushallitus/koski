@@ -1,5 +1,6 @@
 {
   "ignoreJsonEquality": true,
+  "ignoreKoskiValidator" : true,
   "henkilö" : {
     "hetu" : "220109-784L",
     "etunimet" : "Kaisa",

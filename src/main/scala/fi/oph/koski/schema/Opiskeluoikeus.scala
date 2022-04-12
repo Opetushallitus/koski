@@ -223,6 +223,8 @@ trait Jakso extends Alkupäivällinen with DateContaining {
 
   def contains(d: LocalDate): Boolean = !d.isBefore(alku) && (loppu.isEmpty || !d.isAfter(loppu.get))
 
+  def contains(j: Jakso): Boolean = contains(j.alku) && (loppu.isEmpty || j.loppu.exists(d => contains(d)))
+
   def overlaps(other: Jakso): Boolean =
     contains(other.alku) || other.loppu.exists(contains) || other.contains(alku) || loppu.exists(other.contains)
 }

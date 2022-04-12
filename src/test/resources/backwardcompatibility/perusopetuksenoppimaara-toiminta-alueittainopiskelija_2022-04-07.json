@@ -1,5 +1,4 @@
 {
-  "ignoreKoskiValidator" : true,
   "henkilö" : {
     "hetu" : "220109-784L",
     "etunimet" : "Kaisa",
@@ -11,10 +10,30 @@
       "oid" : "1.2.246.562.10.14613773812",
       "oppilaitosnumero" : {
         "koodiarvo" : "00204",
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "lyhytNimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
         "koodistoUri" : "oppilaitosnumero"
       },
       "nimi" : {
-        "fi" : "Jyväskylän normaalikoulu"
+        "fi" : "Jyväskylän normaalikoulu",
+        "sv" : "Jyväskylän normaalikoulu",
+        "en" : "Jyväskylän normaalikoulu"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "179",
+        "nimi" : {
+          "fi" : "Jyväskylä",
+          "sv" : "Jyväskylä"
+        },
+        "koodistoUri" : "kunta"
       }
     },
     "tila" : {
@@ -41,19 +60,11 @@
       } ]
     },
     "lisätiedot" : {
-      "perusopetuksenAloittamistaLykätty" : true,
       "aloittanutEnnenOppivelvollisuutta" : false,
       "pidennettyOppivelvollisuus" : {
-        "alku" : "2008-08-15",
+        "alku" : "2010-08-15",
         "loppu" : "2016-06-04"
       },
-      "tukimuodot" : [ {
-        "koodiarvo" : "1",
-        "nimi" : {
-          "fi" : "Osa-aikainen erityisopetus"
-        },
-        "koodistoUri" : "perusopetuksentukimuoto"
-      } ],
       "erityisenTuenPäätös" : {
         "alku" : "2008-08-15",
         "loppu" : "2016-06-04",
@@ -66,15 +77,7 @@
         "opiskeleeToimintaAlueittain" : true,
         "erityisryhmässä" : true
       } ],
-      "tehostetunTuenPäätökset" : [ {
-        "alku" : "2008-08-15",
-        "loppu" : "2016-06-04"
-      } ],
       "joustavaPerusopetus" : {
-        "alku" : "2008-08-15",
-        "loppu" : "2016-06-04"
-      },
-      "kotiopetus" : {
         "alku" : "2008-08-15",
         "loppu" : "2016-06-04"
       },
@@ -85,10 +88,6 @@
         "alku" : "2017-07-14",
         "loppu" : "2017-10-18"
       } ],
-      "ulkomailla" : {
-        "alku" : "2008-08-15",
-        "loppu" : "2016-06-04"
-      },
       "ulkomaanjaksot" : [ {
         "alku" : "2008-08-15",
         "loppu" : "2016-06-04"
@@ -108,10 +107,6 @@
         "loppu" : "2016-06-04"
       },
       "kuljetusetu" : {
-        "alku" : "2008-08-15",
-        "loppu" : "2016-06-04"
-      },
-      "oikeusMaksuttomaanAsuntolapaikkaan" : {
         "alku" : "2008-08-15",
         "loppu" : "2016-06-04"
       },
@@ -136,10 +131,30 @@
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
           "koodiarvo" : "00204",
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "lyhytNimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
           "koodistoUri" : "oppilaitosnumero"
         },
         "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu"
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä",
+            "sv" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
         }
       },
       "vahvistus" : {
@@ -155,10 +170,30 @@
           "oid" : "1.2.246.562.10.14613773812",
           "oppilaitosnumero" : {
             "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
             "koodistoUri" : "oppilaitosnumero"
           },
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu"
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
           }
         },
         "myöntäjäHenkilöt" : [ {
@@ -170,10 +205,30 @@
             "oid" : "1.2.246.562.10.14613773812",
             "oppilaitosnumero" : {
               "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
               "koodistoUri" : "oppilaitosnumero"
             },
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu"
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
             }
           }
         } ]

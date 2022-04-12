@@ -104,7 +104,7 @@ function OpinnotPage() {
     },
     avaaLisaysDialogi: function() {
       if (!S('.lisaa-opiskeluoikeusjakso-modal .modal-content').is(':visible')) {
-        return click(S('.opiskeluoikeuden-tiedot .add-item a'))()
+        return click(S('.opiskeluoikeuden-tiedot .tila .add-item a'))()
       }
     },
     suljeLisaysDialogi: function() {
