@@ -1,5 +1,7 @@
 import {addContext, modelData, modelItems, modelLookup, removeCommonPath} from '../editor/EditorModel'
 import React from 'baret'
+import { pathOr } from 'ramda'
+import {t} from '../i18n/i18n'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {Editor} from '../editor/Editor'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor'
@@ -97,6 +99,17 @@ SuoritusEditor.validateModel = model => {
       : []
   )
 
+  const validateLuokkaAsteSallittuVainErityiselleTutkinnolle = suoritus => {
+    const luokkaAste = modelLookup(suoritus, 'luokkaAste')
+    const suoritustapa = modelLookup(suoritus, 'suoritustapa')
+    const isErityinenTutkinto = pathOr('', ['value', 'value'], suoritustapa) === 'perusopetuksensuoritustapa_erityinentutkinto'
+    const isVuosiluokkaSelected = pathOr('eivalintaa', ['value', 'value'], luokkaAste) !== 'eivalintaa'
+    if(!isErityinenTutkinto && isVuosiluokkaSelected) {
+      return [{path: 'luokkaAste', key: 'luokkaAsteInvalid', message: <Text name={t('luokkaAstettaEiVoiValitaKoulutusSuoritukselle')}/>}]
+    }
+    return []
+  }
+
   const validationError = (suoritus, virheviesti) => {
     const subPath = removeCommonPath(suoritus.path, model.path)
     return [{
@@ -106,5 +119,5 @@ SuoritusEditor.validateModel = model => {
     }]
   }
 
-  return validateSuoritus(model).concat(validateValmisOsittaisenAmmatillisenTutkinnonSuoritus(model))
+  return validateSuoritus(model).concat(validateValmisOsittaisenAmmatillisenTutkinnonSuoritus(model)).concat(validateLuokkaAsteSallittuVainErityiselleTutkinnolle(model))
 }

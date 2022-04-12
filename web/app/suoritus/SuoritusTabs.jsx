@@ -1,5 +1,5 @@
 import React from 'baret'
-import * as R from 'ramda'
+import { pathOr, reverse } from 'ramda'
 import {modelData, modelTitle} from '../editor/EditorModel.js'
 import Link from '../components/Link'
 import {currentLocation} from '../util/location.js'
@@ -7,6 +7,7 @@ import {navigateTo} from '../util/location'
 import {modelLookup, pushModel} from '../editor/EditorModel'
 import {suorituksenTyyppi, suoritusTitle, suoritusValmis} from './Suoritus'
 import Text from '../i18n/Text'
+import {t} from '../i18n/i18n'
 import {isPerusopetuksenOppimäärä, luokkaAste} from '../perusopetus/Perusopetus'
 import UusiSuoritusLink from '../uusisuoritus/UusiSuoritusLink'
 import {isPaikallinen} from './Koulutusmoduuli'
@@ -27,6 +28,9 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
     }
   }
 
+  const opiskeluoikeudenSuoritukset = modelData(model, 'suoritukset')
+  const isNuortenPerusopetuksenOppiaineenOppimaara = Array.isArray(opiskeluoikeudenSuoritukset) && opiskeluoikeudenSuoritukset.length > 0 && opiskeluoikeudenSuoritukset.every(suoritus => suoritus.tyyppi.koodiarvo === 'nuortenperusopetuksenoppiaineenoppimaara')
+
   return (<div className="suoritus-tabs"><ul>
       {
         suoritukset.map((suoritusModel, i) => {
@@ -37,8 +41,13 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
             selected && 'selected',
             isPaikallinen(modelLookup(suoritusModel, 'koulutusmoduuli')) && 'paikallinen'
           ])
+          const luokkaAsteLookup = modelData(suoritusModel, 'luokkaAste')
+          const suoritustapa = modelLookup(suoritusModel, 'suoritustapa')
+          const isErityinenTutkinto = pathOr('', ['value', 'value'], suoritustapa) === 'perusopetuksensuoritustapa_erityinentutkinto'
+          const hasLuokkaAste = luokkaAsteLookup !== undefined
+          const onYsiLuokkaTaiTyhja = !hasLuokkaAste || hasLuokkaAste && luokkaAsteLookup.koodiarvo === '9'
           return (<li className={classNames} key={i}>
-            { selected ? titleEditor : <Link href={ urlForTab(suoritukset, i) } exitHook={false}> {titleEditor} </Link> }
+            { selected ? titleEditor : <Link href={ urlForTab(suoritukset, i) } exitHook={false}> {titleEditor} </Link> }{isNuortenPerusopetuksenOppiaineenOppimaara && isErityinenTutkinto && <><br/><small>{onYsiLuokkaTaiTyhja ? t('oppiaineenOppimaara') : t(luokkaAsteLookup.nimi)}</small></>}
           </li>)
         })
       }
@@ -48,7 +57,7 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
   )}
 
 export const assignTabNames = (suoritukset) => {
-  suoritukset = R.reverse(suoritukset) // they are in reverse chronological-ish order
+  suoritukset = reverse(suoritukset) // they are in reverse chronological-ish order
   let tabNamesInUse = {}
   for (var i in suoritukset) {
     let suoritus = suoritukset[i]

@@ -5,7 +5,7 @@ import fi.oph.koski.documentation.ExampleData.{suomenKieli, _}
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenDiaarinumero
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
 
 
@@ -45,6 +45,53 @@ class OppijaValidationNuortenPerusopetuksenOppiaineenOppimaaraSpec extends Tutki
 
       putOpiskeluoikeus(eitiedossa) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tyhjänOppiaineenVahvistus(""""Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi"""))
+      }
+    }
+  }
+
+  "Sama luokka-aste moneen kertaan samalle oppiaineelle" - {
+    "ei voi lisätä" in {
+      val eitiedossa = defaultOpiskeluoikeus.copy(suoritukset = List(NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+        koulutusmoduuli = EiTiedossaOppiaine(),
+        toimipiste = jyväskylänNormaalikoulu,
+        arviointi = PerusopetusExampleData.arviointi(9),
+        luokkaAste = perusopetuksenLuokkaAste("8"),
+        suoritustapa = PerusopetusExampleData.suoritustapaErityinenTutkinto,
+        vahvistus = None,
+        suorituskieli = suomenKieli
+      ),
+        NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+          koulutusmoduuli = EiTiedossaOppiaine(),
+          toimipiste = jyväskylänNormaalikoulu,
+          arviointi = PerusopetusExampleData.arviointi(9),
+          luokkaAste = perusopetuksenLuokkaAste("8"),
+          suoritustapa = PerusopetusExampleData.suoritustapaErityinenTutkinto,
+          vahvistus = None,
+          suorituskieli = suomenKieli
+        )))
+
+      putOpiskeluoikeus(eitiedossa) {
+        verifyResponseStatus(400, HttpStatus(400, KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenLuokkaAsteSamaUseammassaSuorituksessa("""Samaa luokka-astetta ei voi olla useammalla nuorten perusopetuksen erityisen tutkinnon suorituksella.""").errors ++ KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenLuokkaAsteSamaUseammassaSuorituksessa("""Samaa luokka-astetta ei voi olla useammalla nuorten perusopetuksen erityisen tutkinnon suorituksella.""").errors))
+      }
+
+
+    }
+  }
+
+  "Luokka-aste muulle kuin erityiselle tutkinnolle" - {
+    "ei voi lisätä" in {
+      val eitiedossa = defaultOpiskeluoikeus.copy(suoritukset = List(NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+        koulutusmoduuli = EiTiedossaOppiaine(),
+        toimipiste = jyväskylänNormaalikoulu,
+        arviointi = PerusopetusExampleData.arviointi(9),
+        luokkaAste = Some(Koodistokoodiviite("8", "perusopetuksenluokkaaste")),
+        suoritustapa = PerusopetusExampleData.suoritustapaKoulutus,
+        vahvistus = vahvistus,
+        suorituskieli = suomenKieli
+      )))
+
+      putOpiskeluoikeus(eitiedossa) {
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*opiskeluoikeudet.0.suoritukset.0.luokkaAste.*".r))
       }
     }
   }

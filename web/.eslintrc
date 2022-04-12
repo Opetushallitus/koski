@@ -22,7 +22,7 @@
     "no-extra-semi": 1,
     "no-undef": 2,
     "no-unreachable": 2,
-    "no-unused-vars": 1,
+    "no-unused-vars": [1, { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
     "no-trailing-spaces": 1,
     "no-multiple-empty-lines": 1,
     "no-constant-condition": 1,

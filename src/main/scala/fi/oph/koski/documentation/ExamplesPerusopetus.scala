@@ -154,4 +154,34 @@ object ExamplesPerusopetus {
     vahvistus = vahvistusPaikkakunnalla(),
     suorituskieli = suomenKieli
   )
+
+  lazy val useampiNuortenPerusopetuksenOppiaineenOppimääränSuoritusSamassaOppiaineessaEriLuokkaAsteella = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+        koulutusmoduuli = PerusopetusExampleData.äidinkieli("AI1", diaarinumero = Some(perusopetuksenDiaarinumero)),
+        toimipiste = jyväskylänNormaalikoulu,
+        arviointi = arviointi(9),
+        suoritustapa = suoritustapaErityinenTutkinto,
+        luokkaAste = Some(Koodistokoodiviite("6", "perusopetuksenluokkaaste")),
+        vahvistus = vahvistusPaikkakunnalla(),
+        suorituskieli = suomenKieli
+      ),
+      NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+        koulutusmoduuli = PerusopetusExampleData.äidinkieli("AI1", diaarinumero = Some(perusopetuksenDiaarinumero)),
+        toimipiste = jyväskylänNormaalikoulu,
+        arviointi = arviointi(9),
+        suoritustapa = suoritustapaErityinenTutkinto,
+        luokkaAste = Some(Koodistokoodiviite("7", "perusopetuksenluokkaaste")),
+        vahvistus = vahvistusPaikkakunnalla(),
+        suorituskieli = suomenKieli
+      )),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+      )
+    )
+  )
 }

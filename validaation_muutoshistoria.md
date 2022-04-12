@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 7.4.2022
+- Nuorten perusopetuksen oppimäärän suorituksessa luokka-astetta voi käyttää vain erityisen tutkinnon kanssa.
+
 ## 4.4.2022
 - Perusopetuksen aineilta vaaditaan laajuus myös toiminta-alueittain opiskelevien tapauksessa, kun suoritus on vahvistettu 1.8.2020 jälkeen.
 

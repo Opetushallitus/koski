@@ -387,6 +387,12 @@ case class NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,
+  @Description("Luokka-asteen tunniste (1-9). Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse.")
+  @Tooltip("Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse")
+  @Title("Luokka-aste")
+  @KoodistoUri("perusopetuksenluokkaaste")
+  @OnlyWhen("suoritustapa/koodiarvo", "erityinentutkinto")
+  luokkaAste: Option[Koodistokoodiviite] = None,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,

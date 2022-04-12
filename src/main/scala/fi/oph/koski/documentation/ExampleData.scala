@@ -25,6 +25,7 @@ object ExampleData {
   val jyväskylä = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "179", nimi = Some("Jyväskylä"))
   val suomi = Koodistokoodiviite(koodistoUri = "maatjavaltiot2", koodiarvo = "246", nimi = Some("Suomi"))
   val ruotsi = Koodistokoodiviite(koodistoUri = "maatjavaltiot2", koodiarvo = "752", nimi = Some("Ruotsi"))
+  def perusopetuksenLuokkaAste(aste: String) = Some(Koodistokoodiviite(aste, "perusopetuksenluokkaaste"))
   def vahvistus(päivä: LocalDate = date(2016, 6, 4), org: Organisaatio = jyväskylänNormaalikoulu, paikkakunta: Option[Koodistokoodiviite] = None) =
     Some(HenkilövahvistusValinnaisellaPaikkakunnalla(päivä = päivä, myöntäjäOrganisaatio = org, paikkakunta = paikkakunta, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
   def vahvistusPaikkakunnalla(päivä: LocalDate = date(2016, 6, 4), org: Organisaatio = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä) =
