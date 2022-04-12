@@ -78,17 +78,14 @@ object AmmatillinenValidation {
     val vanhanSuoritustavat = suoritustavat(vanhaOpiskeluoikeus)
     val uudenSuoritustavat = suoritustavat(uusiOpiskeluoikeus)
 
-    // Pieni oikominen; jos suoritustapoja/tutkintokoodeja olisi kolmesta tai useammasta päätason suorituksesta, tämä ei välttämättä
-    // nappaisi kaikkia muutoksia. Mutta päätason suorituksia ei pitäisi voida olla kahta enempää, eikä samantyyppisiä
-    // päätason suorituksia yhtä enempää.
-    val samojaSuoritustapojaLöytyy = vanhanSuoritustavat.count(tapa => uudenSuoritustavat.contains(tapa))
-    val suoritusTavatLöytyvät = samojaSuoritustapojaLöytyy == vanhanSuoritustavat.length
+    // Päätason suorituksia on enemmän kuin 1 vain näyttötutkinto + näyttöön valmistavan tapauksessa,
+    // joka on hiljalleen poistumassa käytöstä. Jotta voidaan tukea päätason suorituksen poistoa,
+    // kun halutaan poistaa virheellisesti lisätty näyttöön valmistavan suoritus, riittää, että
+    // 1 tutkintokoodi mätsää.
+    val suoritusTavatLöytyvät = vanhanSuoritustavat.isEmpty || vanhanSuoritustavat.exists(koodi => uudenSuoritustavat.contains(koodi))
     val tutkintokooditLöytyvät = checkTutkintokooditLöytyvät(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, ePerusteet)
 
-    val salliNäytönJaValmistavanPoikkeusPoistettaessaSuoritusta =
-      samojaSuoritustapojaLöytyy == 1 && näyttötutkintoJaNäyttöönValmistavaLöytyvät(vanhaOpiskeluoikeus)
-
-    if ((suoritusTavatLöytyvät && tutkintokooditLöytyvät) || salliNäytönJaValmistavanPoikkeusPoistettaessaSuoritusta) {
+    if (suoritusTavatLöytyvät && tutkintokooditLöytyvät) {
       HttpStatus.ok
     } else {
       KoskiErrorCategory.badRequest.validation.ammatillinen.muutettuSuoritustapaaTaiTutkintokoodia()
@@ -102,13 +99,17 @@ object AmmatillinenValidation {
     val vanhanTutkintokoodit = tutkintokoodit(vanhaOpiskeluoikeus)
     val uudenTutkintokoodit = tutkintokoodit(uusiOpiskeluoikeus)
 
-    if (vanhanTutkintokoodit.count(koodi => uudenTutkintokoodit.contains(koodi)) != vanhanTutkintokoodit.length) {
+    // Päätason suorituksia on enemmän kuin 1 vain näyttötutkinto + näyttöön valmistavan tapauksessa,
+    // joka on hiljalleen poistumassa käytöstä. Jotta voidaan tukea päätason suorituksen poistoa,
+    // kun halutaan poistaa virheellisesti lisätty näyttöön valmistavan suoritus, riittää, että
+    // 1 tutkintokoodi mätsää.
+    if (vanhanTutkintokoodit.isEmpty || vanhanTutkintokoodit.exists(koodi => uudenTutkintokoodit.contains(koodi))) {
+      true
+   } else {
       val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, ePerusteet)
       val uudenTutkintokooditEperusteeettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, ePerusteet)
 
       vanhanTutkintokooditEperusteettomat.count(koodi => uudenTutkintokooditEperusteeettomat.contains(koodi)) == vanhanTutkintokooditEperusteettomat.length
-    } else {
-      true
     }
   }
 

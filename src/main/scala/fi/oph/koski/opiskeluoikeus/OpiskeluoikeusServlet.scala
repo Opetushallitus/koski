@@ -28,13 +28,18 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
       val validationResult = SchemaValidatingExtractor.extract[PäätasonSuoritus](oppijaJson) match {
         case Right(t) => Right(t)
         case Left(errors: List[ValidationError]) =>
-          logger.error(s"Virhe poistettaessa päätason suoritusta: $errors")
+          logger.error(s"Scheman validaatiovirhe poistettaessa päätason suoritusta: $errors")
           Left(KoskiErrorCategory.badRequest.validation.jsonSchema.apply(JsonErrorMessage(errors)))
       }
 
       val result = validationResult.flatMap(
         application.oppijaFacade.invalidatePäätasonSuoritus(getStringParam("oid"), _, getIntegerParam("versionumero"))
       )
+
+      if (result.isLeft) {
+        logger.error(s"Validaatiovirhe poistettaessa päätason suoritusta: $result")
+      }
+
       renderEither[HenkilönOpiskeluoikeusVersiot](result)
     }(parseErrorHandler = haltWithStatus)
   }
