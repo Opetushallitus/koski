@@ -20,7 +20,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
       "Korjaa tämän testin md5-tarkastusluvut vasta kun olet varma siitä että nykyinen toteutus voidaan viedä eteenpäin." in {
       val dir = "./src/main/scala/fi/oph/koski/raportointikanta"
       val expectedChecksums = Map(
-        "AikajaksoRowBuilder.scala"                                 -> "4f6e0347174cebb42d8b41473a2a89b9",
+        "AikajaksoRowBuilder.scala"                                 -> "4ad00ba7d178ded3ab275d0f3c06f44a",
         "HenkiloLoader.scala"                                       -> "8bb9b09ac2dd771c741dff417b34f79e",
         "KoodistoLoader.scala"                                      -> "86c90ec069d1c5ec5ee9faa65fb1399e",
         "KoskiEventBridgeClient.scala"                              -> "f8a09d358ebb3fe2ed4d8875ccccef12",

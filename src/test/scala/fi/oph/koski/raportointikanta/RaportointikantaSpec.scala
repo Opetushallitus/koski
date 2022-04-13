@@ -146,6 +146,8 @@ class RaportointikantaSpec
     val esiopetuksenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](esiopetuksenJson).right.get.opiskeluoikeudet.head.asInstanceOf[EsiopetuksenOpiskeluoikeus].copy(oid = Some(oid))
     val lukionJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/lukio-paattotodistus_2020-09-10.json")
     val lukionOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](lukionJson).right.get.opiskeluoikeudet.head.asInstanceOf[LukionOpiskeluoikeus].copy(oid = Some(oid))
+    val vstJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/vapaasivistystyo-oppivelvollisillesuunnattukoulutus_2021-07-27.json")
+    val vstOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](vstJson).right.get.opiskeluoikeudet.head.asInstanceOf[VapaanSivistystyönOpiskeluoikeus].copy(oid = Some(oid))
 
     val Läsnä = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila")
     val Loma =  Koodistokoodiviite("loma", "koskiopiskeluoikeudentila")
@@ -467,6 +469,25 @@ class RaportointikantaSpec
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-01-15"), Date.valueOf("2018-01-14"), "lasna", Date.valueOf("2016-01-15"), maksuton = false, maksullinen = true, oikeuttaMaksuttomuuteenPidennetty = false),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2018-01-15"), Date.valueOf("2019-01-15"), "lasna", Date.valueOf("2016-01-15"), maksuton = true, maksullinen = false, oikeuttaMaksuttomuuteenPidennetty = true),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2019-01-16"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"), maksuton = true, maksullinen = false, oikeuttaMaksuttomuuteenPidennetty = false),
+        ))
+      }
+      "Vapaan sivistystyön opiskeluoikeuden lisätiedot" in {
+        val opiskeluoikeus = vstOpiskeluoikeus.copy(
+          tila = VapaanSivistystyönOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+            VapaanSivistystyönOpiskeluoikeusjakso(alku = LocalDate.of(2016, 1, 15), tila = Läsnä)
+          )),
+          lisätiedot = Some(
+            VapaanSivistystyönOpiskeluoikeudenLisätiedot(
+              maksuttomuus = Some(List(Maksuttomuus(LocalDate.of(2017, 1, 15), Some(LocalDate.of(2018, 1, 15)), true)))
+            )
+          )
+        )
+        val aikajaksoRows = AikajaksoRowBuilder.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
+
+        aikajaksoRows should equal(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2017-01-14"), "lasna", Date.valueOf("2016-01-15"), maksuton = false),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-01-15"), Date.valueOf("2018-01-15"), "lasna", Date.valueOf("2016-01-15"), maksuton = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2018-01-16"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"), maksuton = false)
         ))
       }
     }
