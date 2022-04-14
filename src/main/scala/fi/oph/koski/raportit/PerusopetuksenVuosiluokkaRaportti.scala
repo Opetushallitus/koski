@@ -187,7 +187,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       }
       .getOrElse(t.get("raportti-excel-default-value-oppiaine-puuttuu"))
   }
-  
+
   private def getOppiaineenOppimäärä(koodistoKoodi: String, t: LocalizationReader)(osasuoritukset: Seq[ROsasuoritusRow]): String = {
     osasuoritukset.filter(_.koulutusmoduuliKoodiarvo == koodistoKoodi) match {
       case Nil => t.get("raportti-excel-default-value-oppiaine-puuttuu")
@@ -304,8 +304,8 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "kieliB" -> CompactColumn(t.get("raportti-excel-kolumni-kieliB")),
     "kieliBOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-kieliBOppimaara")),
     "uskonto" -> CompactColumn(t.get("raportti-excel-kolumni-uskonto")),
-    "elamankatsomustieto" -> CompactColumn(t.get("raportti-excel-kolumni-elamankatsomustieto")),
     "uskonnonOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-uskonnonOppimaara")),
+    "elamankatsomustieto" -> CompactColumn(t.get("raportti-excel-kolumni-elamankatsomustieto")),
     "historia" -> CompactColumn(t.get("raportti-excel-kolumni-historia")),
     "yhteiskuntaoppi" -> CompactColumn(t.get("raportti-excel-kolumni-yhteiskuntaoppi")),
     "matematiikka" -> CompactColumn(t.get("raportti-excel-kolumni-matematiikka")),
@@ -382,8 +382,8 @@ private[raportit] case class PerusopetusRow(
   kieliB: String,
   kieliBOppimaara: String,
   uskonto: String,
-  elamankatsomustieto: String,
   uskonnonOppimaara: String,
+  elamankatsomustieto: String,
   historia: String,
   yhteiskuntaoppi: String,
   matematiikka: String,
