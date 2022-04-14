@@ -14,6 +14,24 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
   lazy val migriService =
     if (application.config.getString("opintopolku.virkailija.url") == "mock") new MockMigriService else new RemoteMigriService
 
+  // Overridetaan RequiresLuovutuspalvelu-traitin funktio.
+  // Poistetaan tämä kun uusi API avataan Migrille.
+  // See TOR-1679
+  before() {
+    if (application.config.getString("opintopolku.virkailija.url") == "https://virkailija.opintopolku.fi") {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+    } else {
+      getUser match {
+        case Left(status) if status.statusCode == 401 =>
+          haltWithStatus(status)
+        case _ =>
+          if (!koskiSessionOption.exists(_.hasLuovutuspalveluAccess)) {
+            haltWithStatus(KoskiErrorCategory.forbidden.vainViranomainen())
+          }
+      }
+    }
+  }
+
   post("/hetu") {
     withJsonBody{ json =>
       renderEither(extractAndValidateHetu(json).flatMap(haeHetulla))
