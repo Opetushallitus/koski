@@ -1,13 +1,19 @@
 package fi.oph.koski.healthcheck
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.html.ContentSecurityPolicy
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
+import fi.oph.koski.util.Cryptographic
 
 class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet{
   get("/") {
+    val nonce = Cryptographic.nonce
+
     val healthcheck = application.healthCheck.healthcheckWithExternalSystems
     val version = buildVersionProperties.map(_.getProperty("version", null)).filter(_ != null).getOrElse("local")
     val buildDate = buildVersionProperties.map(_.getProperty("buildDate", null)).filter(_ != null).getOrElse("")
+
+    // TODO: nämä inline style:t tuskin toimiva ilman unsafe-inline -csp:tä.
 
     val status = healthcheck.isOk match {
       case true =>
@@ -25,6 +31,9 @@ class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends
         </div>
     }
     <html lang={lang} style="text-align: center;">
+      <head>
+        {ContentSecurityPolicy.create(nonce)}
+      </head>
       {status}
     </html>
   }

@@ -1,12 +1,13 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.html.{EiRaameja, Raamit, Virkailija}
+import fi.oph.koski.html.{ContentSecurityPolicy, EiRaameja, Raamit, Virkailija}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodiMetadata}
 import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
 import fi.oph.koski.schema.{Henkilö, LocalizedString, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
+import fi.oph.koski.util.Cryptographic
 import fi.oph.scalaschema.ClassSchema
 import org.scalatra.ScalatraServlet
 
@@ -45,13 +46,17 @@ class DocumentationServlet(implicit val application: KoskiApplication)
     contentType = "text/html"
     val kieli = Some(params.get("kieli").getOrElse(lang).toUpperCase)
     val kielet = LocalizedString.languages
+
+    val nonce = Cryptographic.nonce
+
     findKoodisto match {
       case Some((koodisto, koodit)) =>
         <html lang={lang}>
           <head>
+            {ContentSecurityPolicy.create(nonce)}
             <title>Koodisto: { koodisto.koodistoUri } - Koski - Opintopolku.fi</title>
           </head>
-          <style>
+          <style nonce={nonce}>
             body {{ font-family: sans-serif; }}
             td, th {{ text-align: left; padding-right: 20px; }}
             a {{ margin-right: 10px; }}

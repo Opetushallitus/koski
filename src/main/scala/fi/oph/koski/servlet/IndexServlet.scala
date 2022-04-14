@@ -1,6 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.util.Cryptographic
 import fi.oph.koski.util.JsStringInterpolation.{JsStringInterpolation, setWindowVar}
 import org.scalatra.ScalatraServlet
 
@@ -64,13 +65,16 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   private def indexHtml =
     htmlIndex("koski-main.js", raamit = virkailijaRaamit)
 
-  private def landerHtml = htmlIndex(
-    scriptBundleName = "koski-lander.js",
-    raamit = oppijaRaamit,
-    scripts = <script id="auth">
-      {setWindowVar("kansalaisenAuthUrl", "/koski/login/oppija")}
-    </script>,
-    responsive = true
-  )
+  private def landerHtml = {
+    val nonce = Cryptographic.nonce
+    htmlIndex(
+      scriptBundleName = "koski-lander.js",
+      raamit = oppijaRaamit,
+      scripts = <script nonce={nonce} id="auth">
+        {setWindowVar("kansalaisenAuthUrl", "/koski/login/oppija")}
+      </script>,
+      responsive = true,
+      nonce = nonce
+    )
+  }
 }
-

@@ -1,12 +1,13 @@
 package fi.oph.koski.pulssi
 
 import java.time.LocalDateTime.now
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.html.EiRaameja
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
+import fi.oph.koski.util.Cryptographic
 import fi.oph.koski.util.FinnishDateFormat.finnishDateTimeFormat
+import org.eclipse.jetty.util.security.Credential.Crypt
 import org.scalatra.ScalatraServlet
 
 class PulssiHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet {
@@ -25,11 +26,12 @@ class PulssiHtmlServlet(implicit val application: KoskiApplication) extends Scal
     }
   }
 
-  private def raportti =
+  private def raportti = {
+    val nonce = Cryptographic.nonce
     <html lang={lang}>
       <head>
-        {commonHead() ++ piwikTrackingScriptLoader()}
-        <link rel="stylesheet" type="text/css" href="/koski/css/raportti.css"></link>
+        {commonHead(nonce = nonce) ++ piwikTrackingScriptLoader(nonce)}
+        <link nonce={nonce} rel="stylesheet" type="text/css" href="/koski/css/raportti.css"></link>
       </head>
       <body id="raportti">
         <h2>Koski-raportti</h2>
@@ -77,6 +79,7 @@ class PulssiHtmlServlet(implicit val application: KoskiApplication) extends Scal
         </ul>
       </body>
     </html>
+  }
 
   private def pulssi = application.koskiPulssi
   private def percent(x: Int, y: Int) = round(1)(x.toDouble / y.toDouble * 100)

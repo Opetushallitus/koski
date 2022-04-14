@@ -5,6 +5,7 @@ import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
+import fi.oph.koski.util.Cryptographic
 import fi.oph.koski.util.JsStringInterpolation.setWindowVar
 import org.scalatra.ScalatraServlet
 
@@ -21,10 +22,13 @@ class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends
       haltWithStatus(KoskiErrorCategory.unauthorized())
     }
 
+    val nonce = Cryptographic.nonce
+
     htmlIndex(
       scriptBundleName = "koski-korhopankki.js",
-      scripts = <script id="auth">{setWindowVar("mockUsers", oppijat)}</script>,
-      responsive = true
+      scripts = <script nonce={nonce} id="auth">{setWindowVar("mockUsers", oppijat)}</script>,
+      responsive = true,
+      nonce = nonce
     )
   }
 

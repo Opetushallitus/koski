@@ -1,9 +1,11 @@
 package fi.oph.koski.documentation
 
-import java.net.URLEncoder
+import fi.oph.koski.html.ContentSecurityPolicy
 
+import java.net.URLEncoder
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation._
+import fi.oph.koski.util.Cryptographic
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 import org.json4s.jackson.JsonMethods
@@ -25,10 +27,13 @@ object KoskiSchemaDocumentHtml {
     val focusSchema = schemaBacklog.map(_._1).find(focusEntities)
     val title = "Koski-tietomalli" + focusSchema.map(s => " - " + s.title).mkString
 
+    val nonce = Cryptographic.nonce
+
     <html lang={lang}>
       <head>
+        {ContentSecurityPolicy.create(nonce)}
         <title>{title}</title>
-        <link type="text/css" rel="stylesheet" href="/koski/css/schema-printable.css"/>
+        <link nonce={nonce} type="text/css" rel="stylesheet" href="/koski/css/schema-printable.css"/>
       </head>
       <body>
         <h1>{title}</h1>
