@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas.jest
 
-import fi.oph.koski.SharedJetty
+import fi.oph.koski.{KoskiApplicationForTests, SharedJetty}
 import fi.oph.koski.mocha.KoskiCommandLineSpec
 import org.scalatest.Tag
 import org.scalatest.freespec.AnyFreeSpec
@@ -10,10 +10,11 @@ abstract class ValpasFrontSpecBase extends AnyFreeSpec with KoskiCommandLineSpec
   def numberOfChunks: Int
 
   "Valpas front specs" taggedAs(ValpasFrontTag) in {
-    SharedJetty.start()
+    val sharedJetty = new SharedJetty(KoskiApplicationForTests)
+    sharedJetty.start()
     runTestCommand("valpas-front", Seq(
       "scripts/valpas-front-test.sh",
-      SharedJetty.hostUrl,
+      sharedJetty.hostUrl,
       chunkNumber.toString,
       numberOfChunks.toString,
     ))
