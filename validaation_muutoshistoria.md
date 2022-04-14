@@ -3,6 +3,8 @@
 ## 12.4.2022
 - Opiskeluoikeuden pidennetyn oppivelvollisuuden aikajakson täytyy sisältyä vammaisuusjaksojen aikajaksoihin.
   - Vammaisuuden ja vaikeasti vammaisuuden toisiinsa lomittuvat aikajaksot käsitellään yhtenäisenä aikajaksona validointia varten.
+  - Jos opiskeluoikeuden pidennetyn oppivelvollisuuden aikajakso alkaa ennen opiskeluoikeuden alkamispäivää,
+    käytetään opiskeluoikeuden alkamispäivää pidennetyn oppivelvollisuusjakson alkamispäivänä vammaisuusjaksojen validointia varten.
 
 ## 7.4.2022
 - Nuorten perusopetuksen oppimäärän suorituksessa luokka-astetta voi käyttää vain erityisen tutkinnon kanssa.

@@ -307,6 +307,25 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         verifyResponseStatusOk()
       }
     }
+
+    "Validointi onnistuu, vaikka pidennetyn oppivelvollisuuden jakso alkaa ennen opiskeluoikeuden ja vammaisuusjakson yhteistä alkupäivää" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(alku, opiskeluoikeusLäsnä)
+        )),
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(alku.minusDays(1), None)),
+            vammainen = Some(List(Aikajakso(alku, None))),
+            vaikeastiVammainen = None
+          )
+        )
+      )
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
   }
 
   private def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): EsiopetuksenOpiskeluoikeus = putOpiskeluoikeus(oo) {
