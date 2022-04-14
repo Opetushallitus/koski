@@ -48,7 +48,8 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   }
 
   def loadRaportointikantaAndExit(fullReload: Boolean): Unit = {
-    val skipUnchangedData = !fullReload
+    // TODO: Poista jälkimmäinen ehto, kun tätä halutaan alkaa ajamaan myös tuotantoympäristössä
+    val skipUnchangedData = !fullReload && application.config.getString("opintopolku.virkailija.url") != "https://virkailija.opintopolku.fi"
     loadRaportointikanta(
       force = true,
       skipUnchangedData = skipUnchangedData,
