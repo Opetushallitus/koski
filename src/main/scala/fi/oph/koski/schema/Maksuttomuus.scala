@@ -24,6 +24,8 @@ case class OikeuttaMaksuttomuuteenPidennetty (
   }
 
   def contains(d: LocalDate): Boolean = !d.isBefore(alku) && !d.isAfter(loppu)
+
+  override def toString: String = s"$alku – $loppu"
 }
 
 object OikeuttaMaksuttomuuteenPidennetty {
