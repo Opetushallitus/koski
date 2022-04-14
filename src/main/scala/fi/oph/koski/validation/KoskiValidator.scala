@@ -491,7 +491,7 @@ class KoskiValidator(
   private def validateOpiskeluoikeudenLisätiedot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(
       validateErityisenKoulutustehtävänJakso(opiskeluoikeus.lisätiedot),
-      validatePidennettyOppivelvollisuus(opiskeluoikeus.lisätiedot)
+      validatePidennettyOppivelvollisuus(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä)
     )
   }
 
@@ -520,7 +520,10 @@ class KoskiValidator(
     }
   }
 
-  private def validatePidennettyOppivelvollisuus(lisätiedot: Option[OpiskeluoikeudenLisätiedot]): HttpStatus = {
+  private def validatePidennettyOppivelvollisuus(
+    lisätiedot: Option[OpiskeluoikeudenLisätiedot],
+    opiskeluoikeudenAlkamispäivä: Option[LocalDate]
+  ): HttpStatus = {
 
     // Yhdistää päällekkäiset aikajaksot sekä sellaiset jaksot, jotka alkavat seuraavana päivänä edellisen jakson päättymisestä
     // Palauttaa annetuista aikajaksoista yhdistetyt pisimmät mahdolliset yhtenäiset aikajaksot
@@ -543,7 +546,13 @@ class KoskiValidator(
     lisätiedot match {
       case Some(lt: PidennettyOppivelvollisuus) =>
         validatePidennettyOppivelvollisuusJakso(
-          lt.pidennettyOppivelvollisuus,
+          // Jos pidennetty oppivelvollisuusjakso alkaa ennen opiskeluoikeuden alkamispäivää,
+          // käytä validointiin pidennetyn oppivelvollisuuden alkupäivänä opiskeluoikeuden alkupäivää.
+          if (
+            lt.pidennettyOppivelvollisuus.exists(po => opiskeluoikeudenAlkamispäivä.exists(d => po.alku.isBefore(d)))
+          ) {
+            lt.pidennettyOppivelvollisuus.map(po => po.copy(alku = opiskeluoikeudenAlkamispäivä.getOrElse(po.alku)))
+          } else { lt.pidennettyOppivelvollisuus },
           foldAikajaksot(lt.vammainen, lt.vaikeastiVammainen)
         )
       case _ => HttpStatus.ok
