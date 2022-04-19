@@ -1,6 +1,6 @@
 package fi.oph.koski.oppija
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -8,7 +8,7 @@ import fi.oph.koski.json.SensitiveAndRedundantDataFilter
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
-import fi.oph.koski.schema.KoskiSchema.{lenientDeserialization}
+import fi.oph.koski.schema.KoskiSchema.{lenientDeserializationWithoutValidation}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
@@ -39,7 +39,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
     withTracking { withJsonBody { (oppijaJson: JValue) =>
       val cleanedJson = cleanForTesting(oppijaJson)
       val validationResult: Either[HttpStatus, Oppija] = if (skipValidation(cleanedJson)) {
-        application.validator.extractOppija(cleanedJson, lenientDeserialization)
+        application.validator.extractOppija(cleanedJson, lenientDeserializationWithoutValidation)
       } else {
         application.validator.extractAndValidateOppija(cleanedJson)(session, AccessType.write)
       }
@@ -139,7 +139,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
       case _ => JBool(false)
     })
 
-    application.config.getString("env") == "local" && ignoreFlagInJson
+    envIsLocalOrUnittest && ignoreFlagInJson
   }
 
   private def cleanForTesting(oppijaJson: JValue) = {
@@ -148,7 +148,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
       case _ => JBool(false)
     })
 
-    val shouldClean = application.config.getString("env") == "local" && cleanForTesting
+    val shouldClean = envIsLocalOrUnittest && cleanForTesting
 
     if (shouldClean) {
       implicit val formats = DefaultFormats
@@ -163,6 +163,11 @@ class OppijaServlet(implicit val application: KoskiApplication)
     } else {
       oppijaJson
     }
+  }
+
+  private def envIsLocalOrUnittest = {
+    val env = Environment.currentEnvironment(application.config)
+    env == Environment.Local || env == Environment.UnitTest
   }
 }
 
