@@ -27,6 +27,9 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSu
     <html lang={lang}>
       <head>
         {commonHead(responsive, allowIndexing, nonce) ++ raamit.script(nonce) ++ piwikTrackingScriptLoader(nonce, piwikHttpStatusCode)}
+        <script nonce={nonce}>
+          {setWindowVar("nonce", nonce)}
+        </script>
       </head>
       <body class={bodyClasses}>
         <!-- virkailija-raamit header is inserted here -->

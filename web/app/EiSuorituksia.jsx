@@ -1,6 +1,8 @@
+// eslint-disable-next-line no-undef
+__webpack_nonce__ = window.nonce
+import(/* webpackChunkName: "styles" */ './style/main.less')
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './style/main.less'
 import {EiSuorituksiaInfo} from './omattiedot/EiSuorituksiaInfo'
 import {t} from './i18n/i18n'
 
