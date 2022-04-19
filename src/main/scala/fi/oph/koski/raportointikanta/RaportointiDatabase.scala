@@ -20,7 +20,7 @@ import java.sql.Timestamp.{valueOf => toTimestamp}
 import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime.now
 import java.time._
-import scala.concurrent.duration.DurationInt
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 
 class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging with QueryMethods {
@@ -152,27 +152,29 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
   }
 
   def cloneUpdateableTables(source: RaportointiDatabase): Unit = {
+    case class Kloonaus(taulu: String, timeout: FiniteDuration = 15.minutes);
+
     val kloonattavatTaulut = List(
-      "r_opiskeluoikeus",
-      "r_organisaatiohistoria",
-      "esiopetus_opiskeluoik_aikajakso",
-      "r_opiskeluoikeus_aikajakso",
-      "r_paatason_suoritus",
-      "r_osasuoritus",
-      "muu_ammatillinen_raportointi",
-      "topks_ammatillinen_raportointi",
-      "r_mitatoitu_opiskeluoikeus",
+      Kloonaus("r_opiskeluoikeus"),
+      Kloonaus("r_organisaatiohistoria"),
+      Kloonaus("esiopetus_opiskeluoik_aikajakso"),
+      Kloonaus("r_opiskeluoikeus_aikajakso"),
+      Kloonaus("r_paatason_suoritus"),
+      Kloonaus("r_osasuoritus", 90.minutes),
+      Kloonaus("muu_ammatillinen_raportointi"),
+      Kloonaus("topks_ammatillinen_raportointi"),
+      Kloonaus("r_mitatoitu_opiskeluoikeus"),
     )
 
     val päivitettävätIdSekvenssit = List(
       ("r_opiskeluoikeus_aikajakso", "id"),
     )
 
-    kloonattavatTaulut.foreach { taulu =>
-      logger.info(s"Kopioidaan rivit ${source.schema.name}.${taulu} --> ${schema.name}.${taulu}")
+    kloonattavatTaulut.foreach { kloonaus =>
+      logger.info(s"Kopioidaan rivit ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu} (timeout-raja: ${kloonaus.timeout})")
       runDbSync(
-        sqlu"""INSERT INTO #${schema.name}.#${taulu} SELECT * FROM #${source.schema.name}.#${taulu}""",
-        timeout = 10.minutes,
+        sqlu"""INSERT INTO #${schema.name}.#${kloonaus.taulu} SELECT * FROM #${source.schema.name}.#${kloonaus.taulu}""",
+        timeout = kloonaus.timeout,
       )
     }
 
