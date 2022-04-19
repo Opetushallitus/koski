@@ -150,6 +150,7 @@ object KoskiSpecificMockOppijat {
   val tuva = koskiSpecificOppijat.oppija(suku = "Vaara", etu = "Turo", hetu = "270504A317P", syntymäaika = Some(LocalDate.of(2004, 5, 27)))
   val tuvaPerus = koskiSpecificOppijat.oppija(suku = "Vaara", etu = "Tuula", hetu = "040904A578H", syntymäaika = Some(LocalDate.of(2004, 9, 4)))
   val poistettuOpiskeluoikeus = koskiSpecificOppijat.oppija(suku = "Poistettu", etu = "Opiskeluoikeus", hetu = "140408-440H")
+  val hakkeri = koskiSpecificOppijat.oppija(suku = "Hakkeri</script><script>alert(1);", etu = "Paha", hetu = "110100A124W")
 
   val nuortenPerusopetuksenOppimääräErityinenTutkinto = koskiSpecificOppijat.oppija(suku = "ErityinenTutkinto", etu = "NuortenPerusopetus", hetu = "060675-2471")
 
