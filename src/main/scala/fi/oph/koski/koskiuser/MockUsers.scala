@@ -417,6 +417,13 @@ object MockUsers {
     )))
   )
 
+  val xssHyökkääjä = KoskiMockUser(
+    "Paha Hakkeri</script><script>alert(1);",
+    "xss-hakkeri",
+    "1.2.246.562.24.42042046666",
+    (lehtikuusentienToimipiste :: oppilaitokset).map(oppilaitosTallentaja)
+  )
+
   val users = List(
     kalle,
     pärre,
@@ -464,7 +471,8 @@ object MockUsers {
     esiopetusTallentaja,
     oppivelvollisuutietoRajapinta,
     varsinaisSuomiPalvelukäyttäjä,
-    ytlKäyttäjä
+    ytlKäyttäjä,
+    xssHyökkääjä,
   )
 }
 

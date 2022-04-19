@@ -16,6 +16,7 @@ object JsStringInterpolation {
       strings
         .interleave(expressions)
         .mkString("")
+        .replaceAll("""<\/?\W*script\W*>""", "")
     }
 
     def jsAtom(args: Any*): Atom[String] =
