@@ -4,9 +4,9 @@ import java.io.File
 import java.net.URL
 
 object LogConfiguration {
-  // The actual technical limit is currently docker's 16kB for line length in stdout. Set the limit to 15000, since
+  // The actual technical limit is currently docker's 16kB for line length in stdout. Set the limit to 14000, since
   // log4j might also add data to the entries.
-  val logMessageMaxLength: Int = 15000
+  val logMessageMaxLength: Int = 14000
 
   private val LocalLog4jConfigPath = "src/main/resources/log4j2-local.xml"
   private val TestLog4jConfigPath = "src/main/resources/log4j2-test.xml"

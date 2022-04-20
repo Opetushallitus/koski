@@ -31,22 +31,12 @@ case class LoggerWithContext(
   def withUserContext(context: LogUserContext) = this.copy(context = Some(context))
 
   private def fmt(msg: => String) = {
-    val cutMsg = cutToMaxLength(msg)
-
     context match {
       case Some(ctx) => ctx.userOption match {
-        case Some(user) => s"${user.username}(${user.oid})@${ctx.clientIp} " + cutMsg
-        case None =>  ctx.clientIp + " " + cutMsg
+        case Some(user) => s"${user.username}(${user.oid})@${ctx.clientIp} " + msg
+        case None =>  ctx.clientIp + " " + msg
       }
-      case None => cutMsg
-    }
-  }
-
-  private def cutToMaxLength(msg: => String) = {
-    if (msg.length > LogConfiguration.logMessageMaxLength) {
-      msg.take(LogConfiguration.logMessageMaxLength - 3) + "..."
-    } else {
-      msg
+      case None => msg
     }
   }
 }
