@@ -14,7 +14,7 @@
     },
     "stacktrace": {
       "$resolver": "pattern",
-      "pattern": "%ex{2}"
+      "pattern": "%ex{50}"
     }
   },
   "line_number": {
@@ -29,7 +29,8 @@
   "source_host": "${hostName}",
   "message": {
     "$resolver": "pattern",
-    "pattern": "%cm"
+    "pattern": "%cm%ex{none}",
+    "alwaysWriteExceptions": false
   },
   "thread_name": {
     "$resolver": "thread",
