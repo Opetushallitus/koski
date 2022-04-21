@@ -80,8 +80,8 @@ object OpiskeluoikeusLoader extends Logging {
     val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
     val (poistetutOot, mitätöidytEiPoistetutOot) = mitätöidytOot.partition(_.poistettu)
 
-    val resultOlemassaolevatOot = updateBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot)
-    val resultMitätöidyt = updateBatchMitätöidytOpiskeluoikeudet(db, mitätöidytEiPoistetutOot)
+    val resultOlemassaolevatOot = updateBatchOlemassaolevatOpiskeluoikeudet(db, olemassaolevatOot, mitätöidytOot.map(_.oid))
+    val resultMitätöidyt = updateBatchMitätöidytOpiskeluoikeudet(db, mitätöidytEiPoistetutOot, olemassaolevatOot.map(_.oid))
     val resultPoistetut = updateBatchPoistetutOpiskeluoikeudet(db, suostumuksenPeruutusService, poistetutOot)
 
     resultOlemassaolevatOot ++ resultMitätöidyt ++ resultPoistetut
@@ -119,7 +119,11 @@ object OpiskeluoikeusLoader extends Logging {
     result
   }
 
-  private def updateBatchOlemassaolevatOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
+  private def updateBatchOlemassaolevatOpiskeluoikeudet(
+    db: RaportointiDatabase,
+    oot: Seq[OpiskeluoikeusRow],
+    mitätöidytOot: Seq[Opiskeluoikeus.Oid],
+  ) = {
     val loadBatchStartTime = System.nanoTime()
 
     val (errors, outputRows) = oot.par
@@ -127,7 +131,7 @@ object OpiskeluoikeusLoader extends Logging {
       .seq
       .partition(_.isLeft)
 
-    db.updateOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
+    db.updateOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow), mitätöidytOot)
     db.updateOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
 
     val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
@@ -165,9 +169,13 @@ object OpiskeluoikeusLoader extends Logging {
     errors.map(_.left.get)
   }
 
-  private def updateBatchMitätöidytOpiskeluoikeudet(db: RaportointiDatabase, oot: Seq[OpiskeluoikeusRow]) = {
+  private def updateBatchMitätöidytOpiskeluoikeudet(
+    db: RaportointiDatabase,
+    oot: Seq[OpiskeluoikeusRow],
+    olemassaolevatOot: Seq[Opiskeluoikeus.Oid],
+  ) = {
     val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(buildRowMitätöity).seq.partition(_.isLeft)
-    db.updateMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
+    db.updateMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get), olemassaolevatOot)
     db.updateStatusCount(mitätöidytStatusName, outputRows.size)
     errors.map(_.left.get)
   }
@@ -200,7 +208,7 @@ object OpiskeluoikeusLoader extends Logging {
         .etsiPoistetut(oot.map(_.oid))
         .map(buildRowMitätöity)
         .partition(_.isLeft)
-      db.updateMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
+      db.updateMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get), Seq.empty)
       db.updateStatusCount(mitätöidytStatusName, outputRows.size)
       errors.map(_.left.get)
     } else {

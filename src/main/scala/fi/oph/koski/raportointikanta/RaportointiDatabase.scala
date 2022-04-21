@@ -8,7 +8,8 @@ import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineRahoitusmuodonMukaan, Lukio2019OppimaaranOpintopistekertymat}
 import fi.oph.koski.raportit.lukio.{LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
-import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.Opiskeluoikeus.Oid
+import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
 import fi.oph.koski.util.DateOrdering.{ascedingSqlTimestampOrdering, sqlDateOrdering}
 import fi.oph.koski.util.Retry
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
@@ -189,17 +190,27 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       .head
       .getOrElse(0)
 
-  def updateOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit = {
-    runDbSync(DBIO.sequence(opiskeluoikeudet.map(ROpiskeluoikeudet.insertOrUpdate)), timeout = 5.minutes)
-  }
+  def updateOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow], mitätöidytOpiskeluoikeudet: Seq[Oid]): Unit =
+    runDbSync(
+      DBIO.sequence(
+        opiskeluoikeudet.map(ROpiskeluoikeudet.insertOrUpdate) ++
+        Seq(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSetBind mitätöidytOpiskeluoikeudet).delete)
+      ),
+      timeout = 5.minutes
+    )
 
   def loadMitätöidytOpiskeluoikeudet(rows: Seq[RMitätöityOpiskeluoikeusRow]): Unit = {
     runDbSync(RMitätöidytOpiskeluoikeudet ++= rows, timeout = 5.minutes)
   }
 
-  def updateMitätöidytOpiskeluoikeudet(rows: Seq[RMitätöityOpiskeluoikeusRow]): Unit = {
-    runDbSync(DBIO.sequence(rows.map(RMitätöidytOpiskeluoikeudet.insertOrUpdate)), timeout = 5.minutes)
-  }
+  def updateMitätöidytOpiskeluoikeudet(rows: Seq[RMitätöityOpiskeluoikeusRow], olemassaolevatOot: Seq[Opiskeluoikeus.Oid]): Unit =
+    runDbSync(
+      DBIO.sequence(
+        rows.map(RMitätöidytOpiskeluoikeudet.insertOrUpdate) ++
+        Seq(RMitätöidytOpiskeluoikeudet.filter(_.opiskeluoikeusOid inSetBind olemassaolevatOot).delete)
+      ),
+      timeout = 5.minutes
+    )
 
   def oppijaOidsFromOpiskeluoikeudet: Seq[String] = {
     runDbSync(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result, timeout = 15.minutes)
