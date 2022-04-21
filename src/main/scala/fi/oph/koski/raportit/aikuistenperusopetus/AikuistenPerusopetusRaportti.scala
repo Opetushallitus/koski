@@ -230,6 +230,10 @@ case class AikuistenPerusopetusRaportti(
         ulkomaanjaksot = lisätiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         majoitusetu = lisätiedot.flatMap(_.majoitusetu).map(lengthInDaysInDateRange(_, alku, loppu)),
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
+        maksuttomuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
+        maksullisuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => !m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
+        oikeuttaMaksuttomuuteenPidennetty =
+          lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.filter(omp => omp.overlaps(OikeuttaMaksuttomuuteenPidennetty(alku, loppu))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
         yhteislaajuus = kurssit
           .map(_.laajuus).sum,
         yhteislaajuusSuoritetut = kurssit
@@ -331,6 +335,9 @@ case class AikuistenPerusopetusRaportti(
       CompactColumn(t.get("raportti-excel-kolumni-ulkomaanjaksot"), comment = Some(t.get("raportti-excel-kolumni-ulkomaanjaksot-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-majoitusetu"), comment = Some(t.get("raportti-excel-kolumni-majoitusetu-count-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-maksuttomuus"), comment = Some(t.get("raportti-excel-kolumni-maksuttomuus-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-maksullisuus"), comment = Some(t.get("raportti-excel-kolumni-maksullisuus-comment"))),
+      CompactColumn(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty"), comment = Some(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit-comment"))),
@@ -394,6 +401,9 @@ case class AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
   ulkomaanjaksot: Option[Int],
   majoitusetu: Option[Int],
   sisäoppilaitosmainenMajoitus: Option[Int],
+  maksuttomuus: Option[String],
+  maksullisuus: Option[String],
+  oikeuttaMaksuttomuuteenPidennetty: Option[String],
   yhteislaajuus: BigDecimal,
   yhteislaajuusSuoritetut: BigDecimal,
   yhteislaajuusHylätyt: BigDecimal,

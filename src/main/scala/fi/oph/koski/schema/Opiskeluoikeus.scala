@@ -227,6 +227,8 @@ trait Jakso extends Alkupäivällinen with DateContaining {
 
   def overlaps(other: Jakso): Boolean =
     contains(other.alku) || other.loppu.exists(contains) || other.contains(alku) || loppu.exists(other.contains)
+
+  override def toString: String = s"$alku – ${loppu.getOrElse("")}"
 }
 
 @Description("Aikajakson pituus (alku- ja loppupäivämäärä)")
