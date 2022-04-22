@@ -30,7 +30,6 @@ describe('TUVA', function () {
           'Lisätiedot\n' +
           'Koulutuksen maksuttomuus lisää uusi\n' +
           'Oikeutta maksuttomuuteen pidennetty lisää uusi\n' +
-          'Erityisen tuen päätökset lisää uusi\n' +
           'Ulkomaanjaksot lisää uusi\n' +
           'Muu kuin vaikeimmin kehitysvammainen lisää uusi\n' +
           'Vaikeimmin kehitysvammainen lisää uusi\n' +
