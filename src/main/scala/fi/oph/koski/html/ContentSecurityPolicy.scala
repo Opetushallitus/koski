@@ -36,7 +36,13 @@ object ContentSecurityPolicy {
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src
   private val childSrc = "child-src 'none'"
-  private val frameAncestors = "frame-ancestors 'none'" // Ignoroidaa meta-tagissä, jos siirretään headeriin, niin hyvä olla kuitenkin mukana
+
+  private def frameAncestors(allowFrameAncestors: Boolean): String =
+    allowFrameAncestors match {
+      case true => "frame-ancestors 'self'"
+      case _ => "frame-ancestors 'none'"
+    }
+
   private val frameSrc = "frame-src 'none'"
 
   private val manifestSrc = "manifest-src 'none'"
@@ -45,13 +51,13 @@ object ContentSecurityPolicy {
 
   private val workerSrc = "worker-src 'none'"
 
-  def headers(nonce: String): Map[String, String] = {
+  def headers(allowFrameAncestors: Boolean, nonce: String): Map[String, String] = {
     Map(
-      "Content-Security-Policy" -> createString(nonce)
+      "Content-Security-Policy" -> createString(allowFrameAncestors, nonce)
     )
   }
 
-  private def createString(nonce: String): String =
+  private def createString(allowRunningInFrame: Boolean, nonce: String): String =
     List(
       defaultSrc,
       scriptSrc(nonce),
@@ -64,7 +70,7 @@ object ContentSecurityPolicy {
       connectSrc,
       formAction,
       childSrc,
-      frameAncestors,
+      frameAncestors(allowRunningInFrame),
       frameSrc,
       manifestSrc,
       mediaSrc,

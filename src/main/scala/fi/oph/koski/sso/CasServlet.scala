@@ -1,6 +1,6 @@
 package fi.oph.koski.sso
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiSpecificAuthenticationSupport, UserLanguage}
@@ -15,6 +15,9 @@ import java.net.URLEncoder.encode
   *  This is where the user lands after a CAS login / logout
   */
 class CasServlet()(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSpecificAuthenticationSupport with NoCache {
+
+  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+
   private val koskiSessions = application.koskiSessionRepository
   private val casService = application.casService
   private val oppijaCreation = application.casOppijaCreationService

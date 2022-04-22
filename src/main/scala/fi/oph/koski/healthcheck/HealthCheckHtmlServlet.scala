@@ -1,9 +1,12 @@
 package fi.oph.koski.healthcheck
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
 
 class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet{
+
+  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+
   get("/")(nonce => {
     val healthcheck = application.healthCheck.healthcheckWithExternalSystems
     val version = buildVersionProperties.map(_.getProperty("version", null)).filter(_ != null).getOrElse("local")

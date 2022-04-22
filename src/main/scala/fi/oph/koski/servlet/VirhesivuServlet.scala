@@ -1,9 +1,12 @@
 package fi.oph.koski.servlet
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import org.scalatra.ScalatraServlet
 
 class VirhesivuServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with OmaOpintopolkuSupport {
+
+  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+
   get("/")(nonce => {
     response.setHeader("X-Virhesivu", "1") // for korhopankki/HetuLogin.jsx
     <html lang={lang}>

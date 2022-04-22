@@ -5,6 +5,9 @@ import fi.oph.koski.util.Cryptographic
 import org.scalatra.ScalatraBase
 
 trait ContentSecurityPolicyServlet extends ScalatraBase {
+
+  def allowFrameAncestors: Boolean
+
   def get(transformers: org.scalatra.RouteTransformer*)(action: String => scala.Any): org.scalatra.Route = {
     super.get(transformers:_*) {
       val nonce = setNonceHeader
@@ -14,7 +17,7 @@ trait ContentSecurityPolicyServlet extends ScalatraBase {
 
   protected def setNonceHeader: String = {
     val nonce = Cryptographic.nonce
-    ContentSecurityPolicy.headers(nonce).foreach {
+    ContentSecurityPolicy.headers(allowFrameAncestors, nonce).foreach {
       case (h, v) => response.setHeader(h, v)
     }
     nonce

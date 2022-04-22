@@ -10,6 +10,9 @@ import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU,
 import fi.oph.koski.servlet.OppijaHtmlServlet
 
 class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends OppijaHtmlServlet with RequiresKansalainen {
+
+  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+
   val s3config: YtrS3Config = {
     if (Environment.usesAwsSecretsManager) YtrS3Config.fromSecretsManager else YtrS3Config.fromConfig(application.config)
   }
