@@ -2119,7 +2119,7 @@
   "raportti-excel-kolumni-maksullisuus": "Maksullisuus",
   "raportti-excel-kolumni-maksullisuus-comment": "Opiskeluoikeuden maksullisuuden aikajaksot, jotka ovat olleet voimassa tulostusparametreissa valitun aikajakson aikana.",
   "raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty": "Oikeutta maksuttomuuteen pidennetty",
-  "raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty-comment": "Aikajaksot oikeuteen maksuttomuuden pidennyksestä, jotka ovat olleet voimassa tulostusparametreissa valitun aikajakson aikana.",
+  "raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty-comment": "Kaikki opiskeluoikeuden aikajaksot oikeuteen maksuttomuuden pidennyksestä.",
   "raportti-excel-default-value-valmis": "valmis",
   "raportti-excel-default-value-kesken": "kesken",
   "raportti-excel-default-value-valmistumassa": "Kesken, Valmistuu",
