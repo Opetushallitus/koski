@@ -7,6 +7,7 @@ import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineRahoitusmuodonMukaan, Lukio2019OppimaaranOpintopistekertymat}
 import fi.oph.koski.raportit.lukio.{LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
+import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader.logger
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Opiskeluoikeus.Oid
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
@@ -84,12 +85,15 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
   def dropAndCreateObjects: Unit = {
     logger.info(s"Creating database ${schema.name}")
     runDbSync(DBIO.sequence(
-      Seq(RaportointiDatabaseSchema.createSchemaIfNotExists(schema),
-      RaportointiDatabaseSchema.dropAllIfExists(schema)) ++
+      Seq(
+        RaportointiDatabaseSchema.createSchemaIfNotExists(schema),
+        RaportointiDatabaseSchema.dropAllIfExists(schema),
+      ) ++
       tables.map(_.schema.create) ++
-      Seq(RaportointiDatabaseSchema.createOtherIndexes(schema),
-      RaportointiDatabaseSchema.createRolesIfNotExists,
-      RaportointiDatabaseSchema.grantPermissions(schema))
+      Seq(
+        RaportointiDatabaseSchema.createRolesIfNotExists,
+        RaportointiDatabaseSchema.grantPermissions(schema),
+      )
     ).transactionally)
     logger.info(s"${schema.name} created")
   }
@@ -101,6 +105,14 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
 
   def createOpiskeluoikeusIndexes(): Unit = {
     runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes(schema), timeout = 120.minutes)
+  }
+
+  def createOtherIndexes(): Unit = {
+    val indexStartTime = System.currentTimeMillis
+    logger.info("Luodaan henkilö-, organisaatio- ja koodisto-indeksit")
+    runDbSync(RaportointiDatabaseSchema.createOtherIndexes(schema), timeout = 120.minutes)
+    val indexElapsedSeconds = (System.currentTimeMillis - indexStartTime)/1000
+    logger.info(s"Luotiin henkilö-, organisaatio- ja koodisto-indeksit, ${indexElapsedSeconds} s")
   }
 
   def createMaterializedViews(valpasRajapäivätService: ValpasRajapäivätService): Unit = {
@@ -172,11 +184,15 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     )
 
     kloonattavatTaulut.foreach { kloonaus =>
-      logger.info(s"Kopioidaan rivit ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu} (timeout-raja: ${kloonaus.timeout})")
+      val startTime = System.currentTimeMillis
+      val count = runDbSync(sql"""SELECT COUNT(*) FROM #${source.schema.name}.#${kloonaus.taulu}""".as[Long]).head
+      logger.info(s"Kopioidaan ${count} riviä ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu} (timeout-raja: ${kloonaus.timeout})")
       runDbSync(
         sqlu"""INSERT INTO #${schema.name}.#${kloonaus.taulu} SELECT * FROM #${source.schema.name}.#${kloonaus.taulu}""",
         timeout = kloonaus.timeout,
       )
+      val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000
+      logger.info(s"Kopioitiin rivit ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu}, ${elapsedSeconds} s")
     }
 
     päivitettävätIdSekvenssit.foreach { seq =>

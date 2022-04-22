@@ -152,6 +152,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loadHenkilöt(loadDatabase)
     loadOrganisaatiot(loadDatabase)
     loadKoodistot(loadDatabase)
+    loadDatabase.createOtherIndexes()
     loadDatabase.createCustomFunctions
     loadDatabase.createMaterializedViews(application.valpasRajapäivätService)
     swapRaportointikanta()
