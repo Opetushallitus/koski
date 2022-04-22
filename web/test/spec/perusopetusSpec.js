@@ -664,11 +664,21 @@ describe('Perusopetus', function() {
               äidinkieli.lisääKurssiDialog.valitseKurssi('AÄI7'),
               äidinkieli.lisääKurssiDialog.lisääKurssi,
               äidinkieli.kurssi('AÄI7').arvosana.setValue('8'),
+
+              äidinkieli.avaaLisääKurssiDialog,
+              äidinkieli.lisääKurssiDialog.valitseKurssi('IS21'),
+              äidinkieli.lisääKurssiDialog.lisääKurssi,
+              äidinkieli.kurssi('IS21').arvosana.setValue('8'),
+
+              äidinkieli.avaaLisääKurssiDialog,
+              äidinkieli.lisääKurssiDialog.valitseKurssi('IMO1'),
+              äidinkieli.lisääKurssiDialog.lisääKurssi,
+              äidinkieli.kurssi('IMO1').arvosana.setValue('8'),
               editor.saveChanges
             )
 
             it('Kurssin tiedot näytetään oikein', function() {
-              expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\nO LÄI8\n9 LÄI9\n9 AÄI1\n9 AÄI2\n9 AÄI3\n9 AÄI4\n9 AÄI5\n9 AÄI6\n9 AÄI7\n8')
+              expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\nO LÄI8\n9 LÄI9\n9 AÄI1\n9 AÄI2\n9 AÄI3\n9 AÄI4\n9 AÄI5\n9 AÄI6\n9 AÄI7\n8 IS21\n8 IMO1\n8')
             })
           })
 
@@ -3229,7 +3239,7 @@ describe('Perusopetus', function() {
             äidinkieli.avaaAlkuvaiheenLisääKurssiDialog
           )
           it('Näytetään kaikki alkuvaiheen äidinkielen kurssit', function() {
-            expect(äidinkieli.lisääKurssiDialog.kurssit().length).to.equal(50)
+            expect(äidinkieli.lisääKurssiDialog.kurssit().length).to.equal(52)
           })
 
           describe('Kun lisätään kurssi', function() {

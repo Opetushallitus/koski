@@ -1930,4 +1930,57 @@
     "codeElementVersion" : 1,
     "passive" : false
   } ]
-} ]
+}, {
+  "koodiUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_is21",
+  "koodiArvo": "IS21",
+  "metadata": [
+    {
+      "nimi": "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
+      "lyhytNimi": "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
+      "kieli": "EN"
+    },
+    {
+      "nimi": "Grunderna i språket: Utgångspunkter för studier i svenska",
+      "lyhytNimi": "Grunderna i språket: Utgångspunkter för studier i svenska",
+      "kieli": "SV"
+    },
+    {
+      "nimi": "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
+      "lyhytNimi": "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
+      "kieli": "FI"
+    }
+  ],
+  "versio": 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_imo1",
+  "koodiArvo": "IMO1",
+  "metadata": [
+    {
+      "nimi": "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
+      "lyhytNimi": "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
+      "kieli": "EN"
+    },
+    {
+      "nimi": "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
+      "lyhytNimi": "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
+      "kieli": "FI"
+    },
+    {
+      "nimi": "Utgångspunkter för studier i svenska och litteratur",
+      "lyhytNimi": "Utgångspunkter för studier i svenska och litteratur",
+      "kieli": "SV"
+    }
+  ],
+  "versio": 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}
+]
