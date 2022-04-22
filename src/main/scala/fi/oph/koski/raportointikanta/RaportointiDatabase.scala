@@ -7,7 +7,6 @@ import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineRahoitusmuodonMukaan, Lukio2019OppimaaranOpintopistekertymat}
 import fi.oph.koski.raportit.lukio.{LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
-import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader.logger
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.schema.Opiskeluoikeus.Oid
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
@@ -165,18 +164,27 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
   }
 
   def cloneUpdateableTables(source: RaportointiDatabase): Unit = {
-    case class Kloonaus(taulu: String, timeout: FiniteDuration = 15.minutes);
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+
+    val BATCH_SIZE = 10000000
+    val BATCH_WARNING_TIME_LIMIT = 10.minutes
+
+    case class Kloonaus(
+      taulu: String,
+      primaryKey: Option[String] = None,
+      timeout: FiniteDuration = 15.minutes,
+    );
 
     val kloonattavatTaulut = List(
-      Kloonaus("r_opiskeluoikeus"),
+      Kloonaus("r_opiskeluoikeus", Some("opiskeluoikeus_oid")),
       Kloonaus("r_organisaatiohistoria"),
       Kloonaus("esiopetus_opiskeluoik_aikajakso"),
-      Kloonaus("r_opiskeluoikeus_aikajakso"),
-      Kloonaus("r_paatason_suoritus"),
-      Kloonaus("r_osasuoritus", 90.minutes),
+      Kloonaus("r_opiskeluoikeus_aikajakso", Some("id")),
+      Kloonaus("r_paatason_suoritus", Some("paatason_suoritus_id")),
+      Kloonaus("r_osasuoritus", Some("osasuoritus_id")),
       Kloonaus("muu_ammatillinen_raportointi"),
       Kloonaus("topks_ammatillinen_raportointi"),
-      Kloonaus("r_mitatoitu_opiskeluoikeus"),
+      Kloonaus("r_mitatoitu_opiskeluoikeus", Some("opiskeluoikeus_oid")),
     )
 
     val päivitettävätIdSekvenssit = List(
@@ -186,11 +194,28 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     kloonattavatTaulut.foreach { kloonaus =>
       val startTime = System.currentTimeMillis
       val count = runDbSync(sql"""SELECT COUNT(*) FROM #${source.schema.name}.#${kloonaus.taulu}""".as[Long]).head
-      logger.info(s"Kopioidaan ${count} riviä ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu} (timeout-raja: ${kloonaus.timeout})")
-      runDbSync(
-        sqlu"""INSERT INTO #${schema.name}.#${kloonaus.taulu} SELECT * FROM #${source.schema.name}.#${kloonaus.taulu}""",
-        timeout = kloonaus.timeout,
-      )
+      val batchCount = (count / BATCH_SIZE).ceil.toInt
+      logger.info(s"Kopioidaan ${count} riviä ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu}")
+
+      Range.inclusive(0, batchCount).foreach(i => {
+        val batchStartTime = System.currentTimeMillis
+        val offset = i * BATCH_SIZE
+        val rowsCloned = runDbSync(
+          sql"""
+               INSERT INTO #${schema.name}.#${kloonaus.taulu}
+               SELECT * FROM #${source.schema.name}.#${kloonaus.taulu}
+               #${kloonaus.primaryKey.map(pk => s"ORDER BY $pk").getOrElse("")}
+               LIMIT $BATCH_SIZE OFFSET $offset
+          """.asUpdate,
+          timeout = kloonaus.timeout,
+        )
+        val elapsedSeconds = (System.currentTimeMillis - batchStartTime) / 1000
+        logger.info(s"Kopioitiin erä ${i + 1}/${batchCount + 1} (${rowsCloned} riviä), $elapsedSeconds s")
+        if (elapsedSeconds.toInt.seconds > BATCH_WARNING_TIME_LIMIT) {
+          logger.warn(s"Taulukloonauksen erä ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu} kesti yli $BATCH_WARNING_TIME_LIMIT")
+        }
+      })
+
       val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000
       logger.info(s"Kopioitiin rivit ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu}, ${elapsedSeconds} s")
     }
