@@ -1,13 +1,12 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.html.{ContentSecurityPolicy, EiRaameja, Raamit, Virkailija}
+import fi.oph.koski.html.{EiRaameja, Raamit, Virkailija}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodiMetadata}
 import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
 import fi.oph.koski.schema.{Henkilö, LocalizedString, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
-import fi.oph.koski.util.Cryptographic
 import fi.oph.scalaschema.ClassSchema
 import org.scalatra.ScalatraServlet
 
@@ -21,39 +20,39 @@ class DocumentationServlet(implicit val application: KoskiApplication)
 
   protected override def virkailijaRaamit: Raamit = if (virkailijaRaamitSet && isAuthenticated) Virkailija else EiRaameja
 
-  get("^/(|tietomalli|koodistot|rajapinnat/oppilashallintojarjestelmat|rajapinnat/luovutuspalvelu|rajapinnat/palveluvayla-omadata)$".r){
-    htmlIndex("koski-main.js", raamit = virkailijaRaamit, allowIndexing = true)
-  }
+  get("^/(|tietomalli|koodistot|rajapinnat/oppilashallintojarjestelmat|rajapinnat/luovutuspalvelu|rajapinnat/palveluvayla-omadata)$".r)(nonce => {
+    htmlIndex("koski-main.js", raamit = virkailijaRaamit, allowIndexing = true, nonce = nonce)
+  })
 
-  get("/koski-oppija-schema.html") {
+  get("/koski-oppija-schema.html")(nonce => {
     def isHenkilöSchema(s: ClassSchema) = classOf[Henkilö].isAssignableFrom(Class.forName(s.fullClassName))
+
     params.get("entity") match {
       case None => KoskiSchemaDocumentHtml.html(
         expandEntities = isHenkilöSchema,
         shallowEntities = const(true),
-        lang = lang
+        lang = lang,
+        nonce = nonce
       )
       case Some(focusEntityName) => KoskiSchemaDocumentHtml.html(
         focusEntities = { schema => schema.simpleName == focusEntityName },
         expandEntities = isHenkilöSchema,
         shallowEntities = { schema: ClassSchema => schema.fullClassName == classOf[OsaamisenTunnustaminen].getName },
-        lang = lang
+        lang = lang,
+        nonce = nonce
       )
     }
-  }
+  })
 
-  get("/koodisto/:name/:version") {
+  get("/koodisto/:name/:version")(nonce => {
     contentType = "text/html"
     val kieli = Some(params.get("kieli").getOrElse(lang).toUpperCase)
     val kielet = LocalizedString.languages
-
-    val nonce = Cryptographic.nonce
 
     findKoodisto match {
       case Some((koodisto, koodit)) =>
         <html lang={lang}>
           <head>
-            {ContentSecurityPolicy.create(nonce)}
             <title>Koodisto: { koodisto.koodistoUri } - Koski - Opintopolku.fi</title>
           </head>
           <style nonce={nonce}>
@@ -92,7 +91,7 @@ class DocumentationServlet(implicit val application: KoskiApplication)
         </html>
       case None => haltWithStatus(KoskiErrorCategory.notFound.koodistoaEiLöydy())
     }
-  }
+  })
 
   private def koodistonKuvausJaLinkki(koodisto: Koodisto, kieli: String): NodeSeq = {
     val KuvausLinkillä = "^(.*)(https?://[^ )]+)(.*)$".r

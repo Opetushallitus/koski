@@ -1,14 +1,10 @@
 package fi.oph.koski.healthcheck
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.html.ContentSecurityPolicy
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
-import fi.oph.koski.util.Cryptographic
 
 class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet{
-  get("/") {
-    val nonce = Cryptographic.nonce
-
+  get("/")(nonce => {
     val healthcheck = application.healthCheck.healthcheckWithExternalSystems
     val version = buildVersionProperties.map(_.getProperty("version", null)).filter(_ != null).getOrElse("local")
     val buildDate = buildVersionProperties.map(_.getProperty("buildDate", null)).filter(_ != null).getOrElse("")
@@ -65,10 +61,9 @@ class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends
     }
     <html lang={lang}>
       <head>
-        {ContentSecurityPolicy.create(nonce)}
         {style}
       </head>
       {status}
     </html>
-  }
+  })
 }

@@ -5,29 +5,26 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.html.EiRaameja
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
-import fi.oph.koski.util.Cryptographic
 import fi.oph.koski.util.FinnishDateFormat.finnishDateTimeFormat
-import org.eclipse.jetty.util.security.Credential.Crypt
 import org.scalatra.ScalatraServlet
 
 class PulssiHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet {
-  get("/") {
-    htmlIndex("koski-pulssi.js", raamit = EiRaameja, responsive = true)
-  }
+  get("/") (nonce => {
+    htmlIndex("koski-pulssi.js", raamit = EiRaameja, responsive = true, nonce = nonce)
+  })
 
-  get("/raportti") {
+  get("/raportti")(nonce => {
     if (!isAuthenticated) {
       redirectToVirkailijaLogin
     }
     if (koskiSessionOption.exists(_.hasGlobalReadAccess)) {
-      raportti
+      raportti(nonce)
     } else {
-      renderStatus(KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia dokumenttiin"))
+      renderStatus(KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia dokumenttiin"), nonce)
     }
-  }
+  })
 
-  private def raportti = {
-    val nonce = Cryptographic.nonce
+  private def raportti(nonce: String) = {
     <html lang={lang}>
       <head>
         {commonHead(nonce = nonce) ++ piwikTrackingScriptLoader(nonce)}

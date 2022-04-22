@@ -1,13 +1,11 @@
 package fi.oph.koski.html
 
-import scala.xml.Elem
-
 object ContentSecurityPolicy {
   private val defaultSrc = "default-src 'none'"
 
   // Huomaa, että unsafe-inline ja whitelistatut https: http: ovat käytössä vain vanhoilla selaimilla: uusissa
   // ne ignoroidaan ja vain nonce ja strict-dynamic ovat voimassa.
-  private def scriptSrc(nonce:String) = s"script-src 'nonce-${nonce}' 'unsafe-inline' 'strict-dynamic' https: http:"
+  private def scriptSrc(nonce: String) = s"script-src 'nonce-${nonce}' 'unsafe-inline' 'strict-dynamic' https: http:"
 
   // 'unsafe-inline': jätetty vanhoja nonceja tukemattomia selaimia varten: uudet selaimet ignoroivat sen.
   private def styleSrc(nonce: String) = s"style-src 'report-sample' 'nonce-${nonce}' 'unsafe-inline' 'self' fonts.googleapis.com"
@@ -47,8 +45,11 @@ object ContentSecurityPolicy {
 
   private val workerSrc = "worker-src 'none'"
 
-  def create(nonce: String): Elem =
-    <meta http-equiv="Content-Security-Policy" content={createString(nonce)} />
+  def headers(nonce: String): Map[String, String] = {
+    Map(
+      "Content-Security-Policy" -> createString(nonce)
+    )
+  }
 
   private def createString(nonce: String): String =
     List(

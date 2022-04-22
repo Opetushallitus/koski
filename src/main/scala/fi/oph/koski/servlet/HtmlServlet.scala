@@ -9,7 +9,7 @@ import fi.oph.koski.koskiuser.{AuthenticationSupport}
 import scala.reflect.runtime.{universe => ru}
 import scala.xml.Elem
 
-trait HtmlServlet extends KoskiSpecificBaseServlet with AuthenticationSupport with HtmlNodes {
+trait HtmlServlet extends KoskiSpecificBaseServlet with AuthenticationSupport with HtmlNodes with ContentSecurityPolicyServlet {
   lazy val buildVersionProperties = Option(getServletContext.getResourceAsStream("/buildversion.txt")).map { i =>
     val p = new Properties()
     p.load(i)

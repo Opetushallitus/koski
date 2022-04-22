@@ -15,11 +15,12 @@ class OmatTiedotHtmlServlet(implicit val application: KoskiApplication) extends 
     }
   }
 
-  get("/") {
+  get("/")(nonce =>{
     htmlIndex(
       scriptBundleName = "koski-omattiedot.js",
       raamit = oppijaRaamit,
-      responsive = true
+      responsive = true,
+      nonce = nonce
     )
-  }
+  })
 }

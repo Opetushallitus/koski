@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import org.scalatra.ScalatraServlet
 
 class EiSuorituksiaServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with OmaOpintopolkuSupport {
-  get("/") {
-    htmlIndex("koski-eisuorituksia.js", raamit = oppijaRaamit, responsive = true)
-  }
+  get("/")(nonce => {
+    htmlIndex("koski-eisuorituksia.js", raamit = oppijaRaamit, responsive = true, nonce = nonce)
+  })
 }

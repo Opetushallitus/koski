@@ -7,7 +7,7 @@ import fi.oph.koski.servlet.{VirkailijaHtmlServlet}
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
 
 class KoskiSpecificLogoutServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSpecificSSOSupport {
-  get("/") {
+  get("/")(nonce => {
     logger.info("Logged out")
 
     val virkailija = sessionOrStatus match {
@@ -29,7 +29,7 @@ class KoskiSpecificLogoutServlet(implicit val application: KoskiApplication) ext
         case _ => redirectToOppijaLogout(serviceRoot + "/koski")
       }
     }
-  }
+  })
 
   private def encode(param: String) = URLEncoder.encode(param, "UTF-8")
 }

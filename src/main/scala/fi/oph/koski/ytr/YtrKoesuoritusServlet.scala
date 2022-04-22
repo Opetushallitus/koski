@@ -16,17 +16,18 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
 
   private val koesuoritukset: KoesuoritusService = KoesuoritusService(s3config)
 
-  get("/:copyOfExamPaper") {
+  get("/:copyOfExamPaper")(nonce => {
     val examPaper = getStringParam("copyOfExamPaper")
     val hasAccess = hasAccessTo(examPaper)
     if (koesuoritukset.koesuoritusExists(examPaper) && hasAccess) {
+      // TODO: Vaatiikohan YTL koesuoritukset väljemmän CSP:n? Luultavasti on ainakin tyylejä, jotka vaatisivat noncen...
       contentType = if (examPaper.endsWith(".pdf")) "application/pdf" else "text/html"
       koesuoritukset.writeKoesuoritus(examPaper, response.getOutputStream)
     } else {
       logger.warn(s"Exam paper $examPaper not found, hasAccess: $hasAccess")
       haltWithStatus(KoskiErrorCategory.notFound.suoritustaEiLöydy())
     }
-  }
+  })
 
   private def hasAccessTo(examPaper: String): Boolean = {
     logger.debug(s"Tarkistetaan ${if (isHuollettava) "huollettavan" else "oma"} koesuoritus access")

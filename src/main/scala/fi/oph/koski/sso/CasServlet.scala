@@ -23,7 +23,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
   protected def onFailure: String = params.get("onFailure").getOrElse("/koski/virhesivu")
   protected def onUserNotFound: String = params.get("onUserNotFound").getOrElse("/koski/eisuorituksia")
 
-  get("/oppija") {
+  get("/oppija")(nonce => {
     if (application.config.getString("login.security") == "mock") {
       request.header("hetu") match {
         case Some(hetu) =>
@@ -67,9 +67,9 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
           redirectAfterLogin
       }
     }
-  }
+  })
 
-  get("/virkailija") {
+  get("/virkailija")(nonce => {
     params.get("ticket") match {
       case Some(ticket) =>
         try {
@@ -94,7 +94,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
         // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.
         redirectAfterLogin
     }
-  }
+  })
 
   // Return url for cas logout
   post("/*") {

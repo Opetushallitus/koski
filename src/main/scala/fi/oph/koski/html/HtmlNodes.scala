@@ -5,7 +5,6 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.servlet.{KoskiSpecificBaseServlet, LanguageSupport}
-import fi.oph.koski.util.Cryptographic
 import fi.oph.koski.util.JsStringInterpolation._
 import fi.oph.koski.util.XML.CommentedPCData
 import org.scalatra.servlet.RichRequest
@@ -13,7 +12,7 @@ import org.scalatra.servlet.RichRequest
 import java.io.File
 import java.net.URLDecoder
 import scala.xml.NodeSeq.Empty
-import scala.xml.{Elem, NodeSeq, Unparsed}
+import scala.xml.{Elem, NodeSeq}
 
 trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSupport {
   def application: KoskiApplication
@@ -21,7 +20,7 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSu
   def localizations: LocalizationRepository = application.koskiLocalizationRepository
 
   def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamit: Raamit = EiRaameja, scripts: NodeSeq = Empty, responsive: Boolean = false, allowIndexing: Boolean = false,
-    nonce: String = Cryptographic.nonce
+    nonce: String
   ): Elem = {
     val bodyClasses = scriptBundleName.replace("koski-", "").replace(".js", "") + "-page"
     <html lang={lang}>
@@ -53,7 +52,6 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSu
     <title>Koski - Opintopolku.fi</title> ++
     <meta http-equiv="X-UA-Compatible" content="IE=edge" /> ++
     <meta charset="UTF-8" /> ++
-    {ContentSecurityPolicy.create(nonce)} ++
     {if (responsive) <meta name="viewport" content="width=device-width,initial-scale=1" /> else NodeSeq.Empty} ++
     {if (allowIndexing) NodeSeq.Empty else <meta name="robots" content="noindex" />} ++
     <link nonce={nonce} rel="shortcut icon" href="/koski/favicon.ico" /> ++

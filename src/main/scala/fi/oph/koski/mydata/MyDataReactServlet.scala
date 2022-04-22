@@ -30,25 +30,25 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
     }
   }
 
-  get("/valtuutus/:memberCode") {
-      landerHtml
-  }
+  get("/valtuutus/:memberCode")(landerHtml)
 
-  get("/kayttooikeudet") {
+  get("/kayttooikeudet")(nonce => {
     htmlIndex(
       scriptBundleName = "koski-kayttooikeudet.js",
       raamit = oppijaRaamit,
-      responsive = true
+      responsive = true,
+      nonce = nonce
     )
-  }
+  })
 
-  get("/error/:message") {
+  get("/error/:message")(nonce => {
     status = 404
-    landerHtml
-  }
+    landerHtml(nonce)
+  })
 
-  private def landerHtml = htmlIndex(
+  private def landerHtml(nonce: String) = htmlIndex(
     scriptBundleName = "koski-omadata.js",
-    responsive = true
+    responsive = true,
+    nonce = nonce
   )
 }
