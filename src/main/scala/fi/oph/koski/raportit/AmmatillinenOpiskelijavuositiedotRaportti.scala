@@ -1,13 +1,12 @@
 package fi.oph.koski.raportit
 
-import java.sql.Timestamp
 import java.time.temporal.ChronoUnit
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportointikanta._
-import fi.oph.koski.schema.{LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio, Osaamisalajakso}
+import fi.oph.koski.schema.{Aikajakso, AmmatillisenOpiskeluoikeudenLisätiedot, LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio, Osaamisalajakso}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
 import scala.math.{min, max}
 
@@ -58,7 +57,10 @@ case class OpiskelijavuositiedotRow(
   vankilaopetuksessaPäivät: Int,
   oppisopimusJossainPäätasonSuorituksessaPäivät: Int,
   lisätiedotHenkilöstökoulutus: Boolean,
-  lisätiedotKoulutusvienti: Boolean
+  lisätiedotKoulutusvienti: Boolean,
+  maksuttomuus: Option[String],
+  maksullisuus: Option[String],
+  oikeuttaMaksuttomuuteenPidennetty: Option[String]
 )
 
 object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
@@ -122,7 +124,10 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     "vankilaopetuksessaPäivät" -> Column(t.get("raportti-excel-kolumni-vankilaopetuksessaPäivät"), width = Some(2000)),
     "oppisopimusJossainPäätasonSuorituksessaPäivät" -> Column(t.get("raportti-excel-kolumni-oppisopimusJossainPäätasonSuorituksessaPäivät"), width = Some(2000)),
     "lisätiedotHenkilöstökoulutus" -> Column(t.get("raportti-excel-kolumni-lisätiedotHenkilöstökoulutus"), width = Some(2000)),
-    "lisätiedotKoulutusvienti" -> Column(t.get("raportti-excel-kolumni-lisätiedotKoulutusvienti"), width = Some(2000))
+    "lisätiedotKoulutusvienti" -> Column(t.get("raportti-excel-kolumni-lisätiedotKoulutusvienti"), width = Some(2000)),
+    "maksuttomuus" -> Column(t.get("raportti-excel-kolumni-maksuttomuus"), width = Some(2000)),
+    "maksullisuus" -> Column(t.get("raportti-excel-kolumni-maksullisuus"), width = Some(2000)),
+    "oikeuttaMaksuttomuuteenPidennetty" -> Column(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty"), width = Some(2000))
   )
 
   def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, t: LocalizationReader): String =
@@ -163,6 +168,8 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
         .sortBy(_.koulutusmoduuliKoodiarvo)
         .map(ps => (ps.koulutusmoduuliKoodiarvo, ps.koulutusModuulistaKäytettäväNimi(t.language).getOrElse("")))
         .unzip
+    val lisätiedot = JsonSerializer.extract[Option[AmmatillisenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
+
     OpiskelijavuositiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
@@ -212,7 +219,10 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       vankilaopetuksessaPäivät = aikajaksoPäivät(aikajaksot, _.vankilaopetuksessa),
       oppisopimusJossainPäätasonSuorituksessaPäivät = aikajaksoPäivät(aikajaksot, _.oppisopimusJossainPäätasonSuorituksessa),
       lisätiedotHenkilöstökoulutus = opiskeluoikeus.lisätiedotHenkilöstökoulutus,
-      lisätiedotKoulutusvienti = opiskeluoikeus.lisätiedotKoulutusvienti
+      lisätiedotKoulutusvienti = opiskeluoikeus.lisätiedotKoulutusvienti,
+      maksuttomuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
+      maksullisuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => !m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
+      oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
     )
   }
 

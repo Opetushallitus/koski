@@ -1,13 +1,16 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
+import fi.oph.koski.api.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers._
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
+import fi.oph.koski.schema.{AmmatillisenOpiskeluoikeudenLisätiedot, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty, Oppija}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -20,10 +23,30 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
     with RaportointikantaTestMethods
     with OpiskeluoikeusTestMethods
     with Matchers
-    with BeforeAndAfterAll {
+    with BeforeAndAfterAll
+    with DirtiesFixtures
+    with OpiskeluoikeusTestMethodsAmmatillinen {
 
-  override protected def beforeAll(): Unit = {
-    super.beforeAll()
+  override protected def alterFixture(): Unit = {
+    putOppija(Oppija(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa, List(
+      AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis().copy(
+        lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+          hojks = None,
+          maksuttomuus = Some(List(
+            Maksuttomuus(LocalDate.of(2014, 2, 1), Some(LocalDate.of(2015, 1, 31)), true),
+            Maksuttomuus(LocalDate.of(2015, 2, 1), Some(LocalDate.of(2016, 1, 31)), true),
+            Maksuttomuus(LocalDate.of(2016, 2, 1), None, true),
+          )),
+          oikeuttaMaksuttomuuteenPidennetty = Some(List(
+            OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2014, 2, 1), LocalDate.of(2015, 1, 31)),
+            OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2015, 2, 1), LocalDate.of(2016, 1, 31)),
+            OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2016, 2, 1), LocalDate.of(2016, 3, 1)),
+          ))
+        ))
+      )
+    ))) {
+      verifyResponseStatusOk()
+    }
     reloadRaportointikanta
   }
 
@@ -55,6 +78,18 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
       rivi.arvioituPäättymispäivä should equal(Some(LocalDate.parse("2015-05-31")))
       rivi.ostettu should equal(false)
       rivi.yksiloity should equal(true)
+    }
+
+    "raportti sisältää maksuttomuuden tiedot" in {
+      val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"), t)
+
+      val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid).oid.get
+      val riviOpt = result.find(_.opiskeluoikeusOid == opiskeluoikeusOid)
+      riviOpt shouldBe defined
+      val rivi = riviOpt.get
+
+      rivi.maksuttomuus shouldBe Some("2015-02-01 – 2016-01-31, 2016-02-01 – ")
+      rivi.oikeuttaMaksuttomuuteenPidennetty shouldBe Some("2014-02-01 – 2015-01-31, 2015-02-01 – 2016-01-31, 2016-02-01 – 2016-03-01")
     }
 
     "ostettu" in {
