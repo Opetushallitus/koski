@@ -1,6 +1,6 @@
 package fi.oph.koski.oppija
 
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.{KoskiApplication}
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -139,7 +139,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
       case _ => JBool(false)
     })
 
-    envIsLocalOrUnittest && ignoreFlagInJson
+    loginEnvIsMock && ignoreFlagInJson
   }
 
   private def cleanForTesting(oppijaJson: JValue) = {
@@ -148,7 +148,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
       case _ => JBool(false)
     })
 
-    val shouldClean = envIsLocalOrUnittest && cleanForTesting
+    val shouldClean = loginEnvIsMock && cleanForTesting
 
     if (shouldClean) {
       implicit val formats = DefaultFormats
@@ -165,9 +165,9 @@ class OppijaServlet(implicit val application: KoskiApplication)
     }
   }
 
-  private def envIsLocalOrUnittest = {
-    val env = Environment.currentEnvironment(application.config)
-    env == Environment.Local || env == Environment.UnitTest
+  private def loginEnvIsMock = {
+    val sec = application.config.getString("login.security")
+    sec == "mock"
   }
 }
 

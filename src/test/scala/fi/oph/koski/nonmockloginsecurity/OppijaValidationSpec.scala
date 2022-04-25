@@ -1,7 +1,8 @@
-package fi.oph.koski.api
+package fi.oph.koski.nonmockloginsecurity
 
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.config.KoskiApplication.defaultConfig
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
@@ -10,9 +11,9 @@ import org.scalatest.freespec.AnyFreeSpec
 
 import scala.io.Source
 
-class OppijaValidationNonMockEnvSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   override def defaultKoskiApplication = KoskiApplication(defaultConfig.withValue(
-    "env", fromAnyRef("not-local")
+    "login.security", fromAnyRef("not-mock")
   ))
 
   "Kentät cleanForTesting ja ignoreKoskiValidator" - {

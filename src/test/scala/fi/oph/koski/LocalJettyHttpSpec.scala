@@ -23,7 +23,7 @@ object LocalJettyHttpSpec extends Logging {
       sharedJetty
     case Some(port) =>
       logger.info(s"Using external jetty on port $port")
-      new JettyLauncher(port, KoskiApplicationForTests)
+      new JettyLauncher(port, defaultKoskiApplication)
   }
 
   var running = false

@@ -1,9 +1,6 @@
 package fi.oph.koski.api
 
-import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.config.Environment
-import fi.oph.koski.config.KoskiApplication.defaultConfig
 import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, _}
 import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistus}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
