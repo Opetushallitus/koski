@@ -232,8 +232,7 @@ case class AikuistenPerusopetusRaportti(
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         maksuttomuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
         maksullisuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => !m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
-        oikeuttaMaksuttomuuteenPidennetty =
-          lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.filter(omp => omp.overlaps(OikeuttaMaksuttomuuteenPidennetty(alku, loppu))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
+        oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
         yhteislaajuus = kurssit
           .map(_.laajuus).sum,
         yhteislaajuusSuoritetut = kurssit
