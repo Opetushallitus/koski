@@ -8,6 +8,7 @@ import org.scalatest.matchers.should.Matchers
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.koski.util.Wait
 
 trait OpiskeluoikeudenMitätöintiJaPoistoTestMethods extends HttpSpecification with DatabaseTestMethods with Matchers {
   def ensimmäinenMitätöitävissäolevaOpiskeluoikeusIdJärjestyksessä: OpiskeluoikeusRow = runDbSync(
@@ -26,5 +27,9 @@ trait OpiskeluoikeudenMitätöintiJaPoistoTestMethods extends HttpSpecification 
     KoskiApplicationForTests.fixtureCreator.koskiSpecificFixtureState.databaseFixtureCreator.asInstanceOf[KoskiSpecificDatabaseFixtureCreator].peruutaSuostumusOpiskeluoikeudelta(
       oppijaOid, opiskeluoikeusOid
     ) should be(true)
+  }
+
+  def päivitäOpiskeluoikeus(oo: OpiskeluoikeusRow) = {
+    runDbSync(OpiskeluOikeudet.insertOrUpdate(oo))
   }
 }

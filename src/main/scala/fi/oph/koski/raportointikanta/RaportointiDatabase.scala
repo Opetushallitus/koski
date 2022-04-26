@@ -8,7 +8,8 @@ import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineRahoitusmuodonMukaan, Lukio2019OppimaaranOpintopistekertymat}
 import fi.oph.koski.raportit.lukio.{LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineRahoitusmuodonMukaan, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat}
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
-import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.Opiskeluoikeus.Oid
+import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
 import fi.oph.koski.util.DateOrdering.{ascedingSqlTimestampOrdering, sqlDateOrdering}
 import fi.oph.koski.util.Retry
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
@@ -70,25 +71,31 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     // Raportointikannan swappaaminen saattaa epäonnistua timeouttiin, jos esim. käyttäjä on juuri ajamassa
     // hidasta raporttia. Parempi yrittää uudestaan, eikä lopettaa monen tunnin operaatiota vain tästä syystä.
     Retry.retryWithInterval(5, 30000) {
-      runDbSync(DBIO.seq(
+      runDbSync(
+        DBIO.seq(
           RaportointiDatabaseSchema.dropSchema(Public),
           RaportointiDatabaseSchema.moveSchema(Temp, Public),
           RaportointiDatabaseSchema.createRolesIfNotExists,
           RaportointiDatabaseSchema.grantPermissions(Public)
-        ).transactionally)
-      }
+        ).transactionally,
+        timeout = 5.minutes
+      )
+    }
     logger.info("RaportointiDatabase schema swapped")
   }
 
   def dropAndCreateObjects: Unit = {
     logger.info(s"Creating database ${schema.name}")
     runDbSync(DBIO.sequence(
-      Seq(RaportointiDatabaseSchema.createSchemaIfNotExists(schema),
-      RaportointiDatabaseSchema.dropAllIfExists(schema)) ++
+      Seq(
+        RaportointiDatabaseSchema.createSchemaIfNotExists(schema),
+        RaportointiDatabaseSchema.dropAllIfExists(schema),
+      ) ++
       tables.map(_.schema.create) ++
-      Seq(RaportointiDatabaseSchema.createOtherIndexes(schema),
-      RaportointiDatabaseSchema.createRolesIfNotExists,
-      RaportointiDatabaseSchema.grantPermissions(schema))
+      Seq(
+        RaportointiDatabaseSchema.createRolesIfNotExists,
+        RaportointiDatabaseSchema.grantPermissions(schema),
+      )
     ).transactionally)
     logger.info(s"${schema.name} created")
   }
@@ -100,6 +107,14 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
 
   def createOpiskeluoikeusIndexes(): Unit = {
     runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes(schema), timeout = 120.minutes)
+  }
+
+  def createOtherIndexes(): Unit = {
+    val indexStartTime = System.currentTimeMillis
+    logger.info("Luodaan henkilö-, organisaatio- ja koodisto-indeksit")
+    runDbSync(RaportointiDatabaseSchema.createOtherIndexes(schema), timeout = 120.minutes)
+    val indexElapsedSeconds = (System.currentTimeMillis - indexStartTime)/1000
+    logger.info(s"Luotiin henkilö-, organisaatio- ja koodisto-indeksit, ${indexElapsedSeconds} s")
   }
 
   def createMaterializedViews(valpasRajapäivätService: ValpasRajapäivätService): Unit = {
@@ -152,18 +167,27 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
   }
 
   def cloneUpdateableTables(source: RaportointiDatabase): Unit = {
-    case class Kloonaus(taulu: String, timeout: FiniteDuration = 15.minutes);
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+
+    val BATCH_SIZE = 10000000
+    val BATCH_WARNING_TIME_LIMIT = 10.minutes
+
+    case class Kloonaus(
+      taulu: String,
+      primaryKey: Option[String] = None,
+      timeout: FiniteDuration = 15.minutes,
+    );
 
     val kloonattavatTaulut = List(
-      Kloonaus("r_opiskeluoikeus"),
+      Kloonaus("r_opiskeluoikeus", Some("opiskeluoikeus_oid")),
       Kloonaus("r_organisaatiohistoria"),
       Kloonaus("esiopetus_opiskeluoik_aikajakso"),
-      Kloonaus("r_opiskeluoikeus_aikajakso"),
-      Kloonaus("r_paatason_suoritus"),
-      Kloonaus("r_osasuoritus", 90.minutes),
+      Kloonaus("r_opiskeluoikeus_aikajakso", Some("id")),
+      Kloonaus("r_paatason_suoritus", Some("paatason_suoritus_id")),
+      Kloonaus("r_osasuoritus", Some("osasuoritus_id")),
       Kloonaus("muu_ammatillinen_raportointi"),
       Kloonaus("topks_ammatillinen_raportointi"),
-      Kloonaus("r_mitatoitu_opiskeluoikeus"),
+      Kloonaus("r_mitatoitu_opiskeluoikeus", Some("opiskeluoikeus_oid")),
     )
 
     val päivitettävätIdSekvenssit = List(
@@ -171,11 +195,32 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     )
 
     kloonattavatTaulut.foreach { kloonaus =>
-      logger.info(s"Kopioidaan rivit ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu} (timeout-raja: ${kloonaus.timeout})")
-      runDbSync(
-        sqlu"""INSERT INTO #${schema.name}.#${kloonaus.taulu} SELECT * FROM #${source.schema.name}.#${kloonaus.taulu}""",
-        timeout = kloonaus.timeout,
-      )
+      val startTime = System.currentTimeMillis
+      val count = runDbSync(sql"""SELECT COUNT(*) FROM #${source.schema.name}.#${kloonaus.taulu}""".as[Long]).head
+      val batchCount = (count / BATCH_SIZE).ceil.toInt
+      logger.info(s"Kopioidaan ${count} riviä ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu}")
+
+      Range.inclusive(0, batchCount).foreach(i => {
+        val batchStartTime = System.currentTimeMillis
+        val offset = i * BATCH_SIZE
+        val rowsCloned = runDbSync(
+          sql"""
+               INSERT INTO #${schema.name}.#${kloonaus.taulu}
+               SELECT * FROM #${source.schema.name}.#${kloonaus.taulu}
+               #${kloonaus.primaryKey.map(pk => s"ORDER BY $pk").getOrElse("")}
+               LIMIT $BATCH_SIZE OFFSET $offset
+          """.asUpdate,
+          timeout = kloonaus.timeout,
+        )
+        val elapsedSeconds = (System.currentTimeMillis - batchStartTime) / 1000
+        logger.info(s"Kopioitiin erä ${i + 1}/${batchCount + 1} (${rowsCloned} riviä), $elapsedSeconds s")
+        if (elapsedSeconds.toInt.seconds > BATCH_WARNING_TIME_LIMIT) {
+          logger.warn(s"Taulukloonauksen erä ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu} kesti yli $BATCH_WARNING_TIME_LIMIT")
+        }
+      })
+
+      val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000
+      logger.info(s"Kopioitiin rivit ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu}, ${elapsedSeconds} s")
     }
 
     päivitettävätIdSekvenssit.foreach { seq =>
@@ -189,17 +234,27 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       .head
       .getOrElse(0)
 
-  def updateOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit = {
-    runDbSync(DBIO.sequence(opiskeluoikeudet.map(ROpiskeluoikeudet.insertOrUpdate)), timeout = 5.minutes)
-  }
+  def updateOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow], mitätöidytOpiskeluoikeudet: Seq[Oid]): Unit =
+    runDbSync(
+      DBIO.sequence(
+        opiskeluoikeudet.map(ROpiskeluoikeudet.insertOrUpdate) ++
+        Seq(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSetBind mitätöidytOpiskeluoikeudet).delete)
+      ),
+      timeout = 5.minutes
+    )
 
   def loadMitätöidytOpiskeluoikeudet(rows: Seq[RMitätöityOpiskeluoikeusRow]): Unit = {
     runDbSync(RMitätöidytOpiskeluoikeudet ++= rows, timeout = 5.minutes)
   }
 
-  def updateMitätöidytOpiskeluoikeudet(rows: Seq[RMitätöityOpiskeluoikeusRow]): Unit = {
-    runDbSync(DBIO.sequence(rows.map(RMitätöidytOpiskeluoikeudet.insertOrUpdate)), timeout = 5.minutes)
-  }
+  def updateMitätöidytOpiskeluoikeudet(rows: Seq[RMitätöityOpiskeluoikeusRow], olemassaolevatOot: Seq[Opiskeluoikeus.Oid]): Unit =
+    runDbSync(
+      DBIO.sequence(
+        rows.map(RMitätöidytOpiskeluoikeudet.insertOrUpdate) ++
+        Seq(RMitätöidytOpiskeluoikeudet.filter(_.opiskeluoikeusOid inSetBind olemassaolevatOot).delete)
+      ),
+      timeout = 5.minutes
+    )
 
   def oppijaOidsFromOpiskeluoikeudet: Seq[String] = {
     runDbSync(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result, timeout = 15.minutes)

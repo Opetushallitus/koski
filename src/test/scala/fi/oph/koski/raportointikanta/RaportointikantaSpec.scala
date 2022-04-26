@@ -636,9 +636,58 @@ class RaportointikantaSpec
 
       opiskeluoikeusOiditRaportointikannassa should contain(ensimmäinenVSTVapaatavoitteinenOpiskeluoikeusIdJärjestyksessä.oid)
     }
+
+    "Mitätöity opiskeluoikeus päivittyy oikein inkrementaalisessa päivityksessä" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+
+      val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
+      val alkuperäinenMitätöityOpiskeluoikeusCount = mitätöityOpiskeluoikeusCount
+
+      mitätöiOpiskeluoikeus(ensimmäinenMitätöitävissäolevaOpiskeluoikeusIdJärjestyksessä.oid)
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      opiskeluoikeusCount should be(alkuperäinenOpiskeluoikeusCount - 1)
+      mitätöityOpiskeluoikeusCount should be (alkuperäinenMitätöityOpiskeluoikeusCount + 1)
+    }
+
+    "Poistettu opiskeluoikeus päivittyy oikein inkrementaalisessa päivityksessä" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+
+      val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
+      val alkuperäinenMitätöityOpiskeluoikeusCount = mitätöityOpiskeluoikeusCount
+
+      val poistettava = ensimmäinenPoistettavissaolevaOpiskeluoikeusIdJärjestyksessä
+      poistaOpiskeluoikeus(poistettava.oppijaOid, poistettava.oid)
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      opiskeluoikeusCount should be(alkuperäinenOpiskeluoikeusCount - 1)
+      mitätöityOpiskeluoikeusCount should be (alkuperäinenMitätöityOpiskeluoikeusCount + 1)
+    }
+
+    "Mitätöinnin peruutus päivittyy oikein inkrementaalisessa päivityksessä" in {
+      KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true)
+      val opiskeluoikeus = ensimmäinenMitätöitävissäolevaOpiskeluoikeusIdJärjestyksessä
+
+      mitätöiOpiskeluoikeus(opiskeluoikeus.oid)
+      päivitäRaportointikantaInkrementaalisesti()
+
+      päivitäOpiskeluoikeus(opiskeluoikeus) // Palauta alkuperäiseen tilaan
+      
+      val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
+      val alkuperäinenMitätöityOpiskeluoikeusCount = mitätöityOpiskeluoikeusCount
+
+      päivitäRaportointikantaInkrementaalisesti()
+
+      opiskeluoikeusCount should be(alkuperäinenOpiskeluoikeusCount + 1)
+      mitätöityOpiskeluoikeusCount should be (alkuperäinenMitätöityOpiskeluoikeusCount - 1)
+    }
+
   }
 
   private def opiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROpiskeluoikeudet.length.result)
+  private def mitätöityOpiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RMitätöidytOpiskeluoikeudet.length.result)
   private def henkiloCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.length.result)
   private def organisaatioCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROrganisaatiot.length.result)
   private def koodistoKoodiCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RKoodistoKoodit.length.result)
@@ -649,6 +698,13 @@ class RaportointikantaSpec
 
   private def getLoadStartedTime: Timestamp = authGet("api/raportointikanta/status") {
     JsonSerializer.extract[Timestamp](JsonMethods.parse(body) \ "etl" \ "startedTime")
+  }
+
+  def päivitäRaportointikantaInkrementaalisesti() = {
+    val loadResult = KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false, skipUnchangedData = true)
+    loadResult should be(true)
+    Wait.until(isLoading)
+    Wait.until(loadComplete)
   }
 }
 

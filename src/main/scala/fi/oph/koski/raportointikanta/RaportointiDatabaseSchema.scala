@@ -53,6 +53,7 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id, suorituksen_tyyppi, arviointi_paiva)",
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(sisaltyy_opiskeluoikeuteen_oid)",
 
     sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoik_aikajakso(opiskeluoikeus_oid)",
 
@@ -68,8 +69,6 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_organisaatio(oppilaitosnumero)",
 
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_koodisto_koodi(koodisto_uri, koodiarvo)",
-
-    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(sisaltyy_opiskeluoikeuteen_oid)"
   )
 
   def dropAllIfExists(s: Schema) = DBIO.seq(
