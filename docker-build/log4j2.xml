@@ -31,6 +31,13 @@
     <Logger name="fi.oph.koski.tiedonsiirto.IPTracking" level="INFO" additivity="false">
       <AppenderRef ref="iptracking" />
     </Logger>
+    <!-- Content-Security-Policy reporting logs -->
+    <Logger name="fi.oph.koski.frontendvalvonta.ReportUriService" level="INFO" additivity="false">
+      <AppenderRef ref="cspreporturi" />
+    </Logger>
+    <Logger name="fi.oph.koski.frontendvalvonta.ReportToService" level="INFO" additivity="false">
+      <AppenderRef ref="frontendreportto" />
+    </Logger>
     <!-- Suppress unwanted logging -->
     <Logger name="org.reflections" level="WARN" />
     <Logger name="org.eclipse.jetty.webapp" level="WARN" />
@@ -80,6 +87,13 @@
       <JsonTemplateLayout eventTemplateUri="classpath:MaskedLogstashJsonEventLayoutV1.json">
         <EventTemplateAdditionalField key="log_type" value="iptracking" />
       </JsonTemplateLayout>
+    </Console>
+    <!-- Content-Security-Policy reporting logs -->
+    <Console name="cspreporturi">
+      <PatternLayout pattern="%m%n" />
+    </Console>
+    <Console name="frontendreportto">
+      <PatternLayout pattern="%m%n" />
     </Console>
   </Appenders>
 </Configuration>

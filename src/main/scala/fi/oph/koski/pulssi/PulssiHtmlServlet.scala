@@ -2,6 +2,7 @@ package fi.oph.koski.pulssi
 
 import java.time.LocalDateTime.now
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.html.EiRaameja
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
@@ -10,7 +11,9 @@ import org.scalatra.ScalatraServlet
 
 class PulssiHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet {
 
-  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   get("/") (nonce => {
     htmlIndex("koski-pulssi.js", raamit = EiRaameja, responsive = true, nonce = nonce)

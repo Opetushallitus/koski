@@ -1,6 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
 import fi.oph.koski.util.JsStringInterpolation.setWindowVar
@@ -8,7 +9,9 @@ import org.scalatra.ScalatraServlet
 
 class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with KoskiSpecificSSOSupport {
 
-  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   get("/")(nonce => {
     redirectToOppijaLogin

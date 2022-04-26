@@ -1,6 +1,7 @@
 package fi.oph.koski.sso
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiSpecificAuthenticationSupport, UserLanguage}
@@ -16,7 +17,9 @@ import java.net.URLEncoder.encode
   */
 class CasServlet()(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSpecificAuthenticationSupport with NoCache {
 
-  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   private val koskiSessions = application.koskiSessionRepository
   private val casService = application.casService

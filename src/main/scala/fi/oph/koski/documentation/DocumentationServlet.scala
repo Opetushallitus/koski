@@ -1,6 +1,7 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.html.{EiRaameja, Raamit, Virkailija}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodiMetadata}
@@ -20,7 +21,9 @@ class DocumentationServlet(implicit val application: KoskiApplication)
 
   protected override def virkailijaRaamit: Raamit = if (virkailijaRaamitSet && isAuthenticated) Virkailija else EiRaameja
 
-  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   get("^/(|tietomalli|koodistot|rajapinnat/oppilashallintojarjestelmat|rajapinnat/luovutuspalvelu|rajapinnat/palveluvayla-omadata)$".r)(nonce => {
     htmlIndex("koski-main.js", raamit = virkailijaRaamit, allowIndexing = true, nonce = nonce)

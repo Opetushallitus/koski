@@ -1,6 +1,7 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresKansalainen}
@@ -11,7 +12,9 @@ import fi.oph.koski.servlet.OppijaHtmlServlet
 
 class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends OppijaHtmlServlet with RequiresKansalainen {
 
-  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   val s3config: YtrS3Config = {
     if (Environment.usesAwsSecretsManager) YtrS3Config.fromSecretsManager else YtrS3Config.fromConfig(application.config)

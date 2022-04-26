@@ -1,11 +1,14 @@
 package fi.oph.koski.healthcheck
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
 
 class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet{
 
-  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   get("/")(nonce => {
     val healthcheck = application.healthCheck.healthcheckWithExternalSystems

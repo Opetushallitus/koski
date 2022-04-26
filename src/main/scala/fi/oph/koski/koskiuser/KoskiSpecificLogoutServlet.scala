@@ -2,12 +2,15 @@ package fi.oph.koski.koskiuser
 
 import java.net.URLEncoder
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
 
 class KoskiSpecificLogoutServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSpecificSSOSupport {
 
-  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   get("/")(nonce => {
     logger.info("Logged out")

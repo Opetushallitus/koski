@@ -1,6 +1,7 @@
 package fi.oph.koski.mydata
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
 import fi.oph.koski.servlet.{OmaOpintopolkuSupport, OppijaHtmlServlet}
 import org.scalatra.ScalatraServlet
@@ -11,7 +12,10 @@ import scala.util.matching.Regex
 class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet
   with OppijaHtmlServlet with KoskiSpecificAuthenticationSupport with OmaOpintopolkuSupport with MyDataSupport {
 
-  def allowFrameAncestors: Boolean = Environment.isLocalDevelopmentEnvironment(application.config)
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+
 
   val nonErrorPage: Regex = "^(?!/error)\\S+$".r
 
