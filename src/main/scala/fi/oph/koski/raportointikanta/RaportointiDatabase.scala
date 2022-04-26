@@ -71,13 +71,16 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     // Raportointikannan swappaaminen saattaa epäonnistua timeouttiin, jos esim. käyttäjä on juuri ajamassa
     // hidasta raporttia. Parempi yrittää uudestaan, eikä lopettaa monen tunnin operaatiota vain tästä syystä.
     Retry.retryWithInterval(5, 30000) {
-      runDbSync(DBIO.seq(
+      runDbSync(
+        DBIO.seq(
           RaportointiDatabaseSchema.dropSchema(Public),
           RaportointiDatabaseSchema.moveSchema(Temp, Public),
           RaportointiDatabaseSchema.createRolesIfNotExists,
           RaportointiDatabaseSchema.grantPermissions(Public)
-        ).transactionally)
-      }
+        ).transactionally,
+        timeout = 5.minutes
+      )
+    }
     logger.info("RaportointiDatabase schema swapped")
   }
 
