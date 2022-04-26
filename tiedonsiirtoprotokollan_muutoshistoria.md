@@ -1,3 +1,6 @@
+## 22.4.2022
+- TUVA-tietomallin perusopetuksen järjestämisluvan lisätiedoista poistettu tarpeettomana kenttä erityisen tuen päätöksistä.
+
 ## 5.4.2022
 
 - Nuorten perusopetuksen oppiaineen oppimäärän suoritukseen on lisätty valinnainen kenttä "luokkaAste"
