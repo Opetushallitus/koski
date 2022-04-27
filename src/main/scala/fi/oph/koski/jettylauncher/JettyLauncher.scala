@@ -2,7 +2,6 @@ package fi.oph.koski.jettylauncher
 
 import java.lang.management.ManagementFactory
 import java.nio.file.{Files, Paths}
-
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
@@ -20,6 +19,8 @@ import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
 import fi.oph.koski.util.ChainingSyntax._
+
+import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 object JettyLauncher extends App with Logging {
   LogConfiguration.configureLogging()
@@ -83,12 +84,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   setupGzipForStaticResources()
   setupJMX()
   setupPrometheusMetrics()
-  if (Environment.isLocalDevelopmentEnvironment(config) && config.hasPath("oppijaRaamitProxy")) {
-    setupOppijaRaamitProxy()
-  }
-  if (Environment.isLocalDevelopmentEnvironment(config) && config.hasPath("virkailijaRaamitProxy")) {
-    setupVirkailijaRaamitProxy()
-  }
+
   handlers.addHandler(rootContext)
 
   def start(): Server = {
@@ -116,9 +112,10 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     val context = new WebAppContext()
     context.setAttribute("koski.application", application)
     context.setParentLoaderPriority(true)
-    context.setContextPath("/koski")
+    context.setContextPath("/")
     context.setResourceBase(verifyResourceBase())
     context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false")
+
     if (Environment.isLocalDevelopmentEnvironment(config)) {
       // Avoid random SIGBUS errors when static files memory-mapped by Jetty (and being sent to client)
       // are modified (by "make watch"). Can be reproduced somewhat reliably with Java 8 by editing
@@ -156,18 +153,6 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   private def setupPrometheusMetrics(): Unit = {
     rootContext.addServlet(new ServletHolder(new MetricsServlet), "/metrics")
   }
-
-  private def setupOppijaRaamitProxy(): Unit = {
-    val holder = rootContext.addServlet(classOf[HttpsSupportingTransparentProxyServlet], "/oppija-raamit/*")
-    holder.setInitParameter("proxyTo", config.getString("oppijaRaamitProxy"))
-    holder.setInitParameter("prefix", "/oppija-raamit")
-  }
-
-  private def setupVirkailijaRaamitProxy(): Unit = {
-    val holder = rootContext.addServlet(classOf[HttpsSupportingTransparentProxyServlet], "/virkailija-raamit/*")
-    holder.setInitParameter("proxyTo", config.getString("virkailijaRaamitProxy"))
-    holder.setInitParameter("prefix", "/virkailija-raamit")
-  }
 }
 
 class ManagedQueuedThreadPool(maxThreads: Int) extends QueuedThreadPool(maxThreads) with QueuedThreadPoolMXBean
@@ -177,10 +162,4 @@ trait QueuedThreadPoolMXBean {
   def getBusyThreads: Int
   def getMinThreads: Int
   def getMaxThreads: Int
-}
-
-class HttpsSupportingTransparentProxyServlet extends ProxyServlet.Transparent {
-  override protected def newHttpClient(): HttpClient = {
-    new HttpClient(new SslContextFactory.Client)
-  }
 }

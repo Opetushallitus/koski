@@ -1,5 +1,5 @@
 import fi.oph.koski.cache.CacheServlet
-import fi.oph.koski.config.{KoskiApplication, RunMode}
+import fi.oph.koski.config.{Environment, KoskiApplication, RunMode}
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
 import fi.oph.koski.elasticsearch.ElasticSearchServlet
@@ -26,6 +26,7 @@ import fi.oph.koski.permission.PermissionCheckServlet
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotServlet
 import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
+import fi.oph.koski.raamit.RaamiProxyServlet
 import fi.oph.koski.raportit.RaportitServlet
 import fi.oph.koski.raportointikanta.{RaportointikantaService, RaportointikantaServlet}
 import fi.oph.koski.servlet._
@@ -44,6 +45,7 @@ import fi.oph.koski.valpas.sso.ValpasOppijaCasServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytl.YtlServlet
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
+
 import javax.servlet.ServletContext
 import org.scalatra._
 
@@ -66,90 +68,100 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
 
     val initTasks = application.init() // start parallel initialization tasks
 
-    mount("/", new IndexServlet)
-    mount("/omattiedot", new OmatTiedotHtmlServlet)
-    mount("/login", new VirkailijaLoginPageServlet)
-    mount("/login/oppija", new OppijaLoginPageServlet)
-    mount("/pulssi", new PulssiHtmlServlet)
-    mount("/documentation", new RedirectServlet("/dokumentaatio", true))
-    mount("/dokumentaatio", new DocumentationServlet)
-    mount("/eisuorituksia", new EiSuorituksiaServlet)
-    mount("/opinnot", new SuoritusjakoHtmlServlet)
-    mount("/virhesivu", new VirhesivuServlet)
-    mount("/api/documentation", new DocumentationApiServlet)
-    mount("/api/editor", new EditorServlet)
-    mount("/api/editor/koodit", new EditorKooditServlet)
-    mount("/api/elaketurvakeskus", new ElaketurvakeskusServlet)
-    mount("/api/elasticsearch", new ElasticSearchServlet)
-    mount("/api/healthcheck", new HealthCheckApiServlet)
-    mount("/api/status", new StatusApiServlet)
-    mount("/api/henkilo", new HenkilötiedotServlet)
-    mount("/api/koodisto", new KoodistoServlet)
-    mount("/api/omattiedot", new OmatTiedotServlet)
-    mount("/api/suoritusjako", new SuoritusjakoServlet)
-    mount("/api/suoritusjakoV2", new SuoritusjakoServletV2)
-    mount("/api/opiskeluoikeus", new OpiskeluoikeusServlet)
-    mount("/api/opiskeluoikeus/perustiedot", new OpiskeluoikeudenPerustiedotServlet)
-    mount("/api/opiskeluoikeus/validate", new OpiskeluoikeusValidationServlet)
-    mount("/api/opiskeluoikeus/historia", new KoskiHistoryServlet)
-    mount("/api/opiskeluoikeus/suostumuksenperuutus", new SuostumuksenPeruutusServlet)
-    mount("/api/oppija", new OppijaServlet)
-    mount("/api/v2/oppija", new OppijaServletV2)
-    mount("/api/oppilaitos", new OppilaitosServlet)
-    mount("/api/oppivelvollisuustieto", new OppivelvollisuustietoServlet)
-    mount("/api/organisaatio", new OrganisaatioServlet)
-    mount("/api/permission", new PermissionCheckServlet)
-    mount("/api/pulssi", new PulssiServlet)
-    mount("/api/preferences", new PreferencesServlet)
-    mount("/api/tiedonsiirrot", new TiedonsiirtoServlet)
-    mount("/api/tutkinnonperusteet", new TutkinnonPerusteetServlet)
-    mount("/api/localization", new KoskiSpecificLocalizationServlet)
-    mount("/api/raportit", new RaportitServlet)
-    mount("/api/raportointikanta", new RaportointikantaServlet)
-    mount("/api/sure", new SureServlet)
-    mount("/api/luovutuspalvelu", new LuovutuspalveluServlet)
-    mount("/api/luovutuspalvelu/valvira", new ValviraServlet)
-    mount("/api/luovutuspalvelu/kela", new KelaServlet)
-    mount("/api/luovutuspalvelu/migri", new MigriServlet)
-    mount("/api/luovutuspalvelu/ytl", new YtlServlet)
-    mount("/api/palveluvayla", new PalveluvaylaServlet)
-    mount("/api/luovutuspalvelu/haku", new TilastokeskusServlet)
-    mount("/api/omadata/oppija", new ApiProxyServlet)
-    mount("/api/omadata", new MyDataServlet)
-    mount("/api/omaopintopolkuloki", new OmaOpintoPolkuLokiServlet)
-    mount("/api/ytrkoesuoritukset", new YtrKoesuoritusApiServlet)
-    mount("/omadata", new MyDataReactServlet)
-    mount("/koesuoritus", new YtrKoesuoritusServlet)
-    mount("/healthcheck", new HealthCheckHtmlServlet)
-    mount("/user", new UserServlet)
+    mount("/koski", new IndexServlet)
+    mount("/koski/omattiedot", new OmatTiedotHtmlServlet)
+    mount("/koski/login", new VirkailijaLoginPageServlet)
+    mount("/koski/login/oppija", new OppijaLoginPageServlet)
+    mount("/koski/pulssi", new PulssiHtmlServlet)
+    mount("/koski/documentation", new RedirectServlet("/koski/dokumentaatio", true))
+    mount("/koski/dokumentaatio", new DocumentationServlet)
+    mount("/koski/eisuorituksia", new EiSuorituksiaServlet)
+    mount("/koski/opinnot", new SuoritusjakoHtmlServlet)
+    mount("/koski/virhesivu", new VirhesivuServlet)
+    mount("/koski/api/documentation", new DocumentationApiServlet)
+    mount("/koski/api/editor", new EditorServlet)
+    mount("/koski/api/editor/koodit", new EditorKooditServlet)
+    mount("/koski/api/elaketurvakeskus", new ElaketurvakeskusServlet)
+    mount("/koski/api/elasticsearch", new ElasticSearchServlet)
+    mount("/koski/api/healthcheck", new HealthCheckApiServlet)
+    mount("/koski/api/status", new StatusApiServlet)
+    mount("/koski/api/henkilo", new HenkilötiedotServlet)
+    mount("/koski/api/koodisto", new KoodistoServlet)
+    mount("/koski/api/omattiedot", new OmatTiedotServlet)
+    mount("/koski/api/suoritusjako", new SuoritusjakoServlet)
+    mount("/koski/api/suoritusjakoV2", new SuoritusjakoServletV2)
+    mount("/koski/api/opiskeluoikeus", new OpiskeluoikeusServlet)
+    mount("/koski/api/opiskeluoikeus/perustiedot", new OpiskeluoikeudenPerustiedotServlet)
+    mount("/koski/api/opiskeluoikeus/validate", new OpiskeluoikeusValidationServlet)
+    mount("/koski/api/opiskeluoikeus/historia", new KoskiHistoryServlet)
+    mount("/koski/api/opiskeluoikeus/suostumuksenperuutus", new SuostumuksenPeruutusServlet)
+    mount("/koski/api/oppija", new OppijaServlet)
+    mount("/koski/api/v2/oppija", new OppijaServletV2)
+    mount("/koski/api/oppilaitos", new OppilaitosServlet)
+    mount("/koski/api/oppivelvollisuustieto", new OppivelvollisuustietoServlet)
+    mount("/koski/api/organisaatio", new OrganisaatioServlet)
+    mount("/koski/api/permission", new PermissionCheckServlet)
+    mount("/koski/api/pulssi", new PulssiServlet)
+    mount("/koski/api/preferences", new PreferencesServlet)
+    mount("/koski/api/tiedonsiirrot", new TiedonsiirtoServlet)
+    mount("/koski/api/tutkinnonperusteet", new TutkinnonPerusteetServlet)
+    mount("/koski/api/localization", new KoskiSpecificLocalizationServlet)
+    mount("/koski/api/raportit", new RaportitServlet)
+    mount("/koski/api/raportointikanta", new RaportointikantaServlet)
+    mount("/koski/api/sure", new SureServlet)
+    mount("/koski/api/luovutuspalvelu", new LuovutuspalveluServlet)
+    mount("/koski/api/luovutuspalvelu/valvira", new ValviraServlet)
+    mount("/koski/api/luovutuspalvelu/kela", new KelaServlet)
+    mount("/koski/api/luovutuspalvelu/migri", new MigriServlet)
+    mount("/koski/api/luovutuspalvelu/ytl", new YtlServlet)
+    mount("/koski/api/palveluvayla", new PalveluvaylaServlet)
+    mount("/koski/api/luovutuspalvelu/haku", new TilastokeskusServlet)
+    mount("/koski/api/omadata/oppija", new ApiProxyServlet)
+    mount("/koski/api/omadata", new MyDataServlet)
+    mount("/koski/api/omaopintopolkuloki", new OmaOpintoPolkuLokiServlet)
+    mount("/koski/api/ytrkoesuoritukset", new YtrKoesuoritusApiServlet)
+    mount("/koski/omadata", new MyDataReactServlet)
+    mount("/koski/koesuoritus", new YtrKoesuoritusServlet)
+    mount("/koski/healthcheck", new HealthCheckHtmlServlet)
+    mount("/koski/user", new UserServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
-      mount("/user/login", new LocalLoginServlet)
+      mount("/koski/user/login", new LocalLoginServlet)
     }
-    mount("/user/logout", new KoskiSpecificLogoutServlet)
-    mount("/user/redirect", new LogoutRedirectServlet)
-    mount("/cas", new CasServlet)
-    mount("/cas/valpas", new ValpasOppijaCasServlet)
-    mount("/cache", new CacheServlet)
+    mount("/koski/user/logout", new KoskiSpecificLogoutServlet)
+    mount("/koski/user/redirect", new LogoutRedirectServlet)
+    mount("/koski/cas", new CasServlet)
+    mount("/koski/cas/valpas", new ValpasOppijaCasServlet)
+    mount("/koski/cache", new CacheServlet)
 
-    mount("/valpas/localization", new ValpasBootstrapServlet)
-    mount("/valpas/api", new ValpasRootApiServlet)
-    mount("/valpas/api/kuntailmoitus", new ValpasKuntailmoitusApiServlet)
-    mount("/valpas/api/luovutuspalvelu/kela", new ValpasKelaServlet)
-    mount("/valpas/api/rouhinta", new ValpasRouhintaApiServlet)
-    mount("/valpas/api/kansalainen", new ValpasKansalainenApiServlet)
-    mount("/valpas/api/luovutuspalvelu/ytl", new ValpasYtlServlet)
-    mount("/valpas/logout", new ValpasLogoutServlet)
+    mount("/koski/valpas/localization", new ValpasBootstrapServlet)
+    mount("/koski/valpas/api", new ValpasRootApiServlet)
+    mount("/koski/valpas/api/kuntailmoitus", new ValpasKuntailmoitusApiServlet)
+    mount("/koski/valpas/api/luovutuspalvelu/kela", new ValpasKelaServlet)
+    mount("/koski/valpas/api/rouhinta", new ValpasRouhintaApiServlet)
+    mount("/koski/valpas/api/kansalainen", new ValpasKansalainenApiServlet)
+    mount("/koski/valpas/api/luovutuspalvelu/ytl", new ValpasYtlServlet)
+    mount("/koski/valpas/logout", new ValpasLogoutServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
-      mount("/valpas/login", new LocalLoginServlet)
+      mount("/koski/valpas/login", new LocalLoginServlet)
     }
     if (application.config.getString("opintopolku.virkailija.url") == "mock") {
-      mount("/valpas/test", new ValpasTestApiServlet)
+      mount("/koski/valpas/test", new ValpasTestApiServlet)
+    }
+
+    if (Environment.isLocalDevelopmentEnvironment(application.config) && application.config.hasPath("oppijaRaamitProxy")) {
+      val proxyPrefix = "/oppija-raamit"
+      mount(proxyPrefix, new RaamiProxyServlet(application.config.getString("oppijaRaamitProxy"), "", application))
+    }
+
+    if (Environment.isLocalDevelopmentEnvironment(application.config) && application.config.hasPath("virkailijaRaamitProxy")) {
+      val proxyPrefix = "/virkailija-raamit"
+      mount(proxyPrefix, new RaamiProxyServlet(application.config.getString("virkailijaRaamitProxy"), "", application))
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete
 
     if (application.fixtureCreator.shouldUseFixtures) {
-      context.mount(new FixtureServlet, "/fixtures")
+      context.mount(new FixtureServlet, "/koski/fixtures")
       timed("Loading fixtures")(application.fixtureCreator.resetFixtures(reloadRaportointikanta = true))
     }
   }
