@@ -3,6 +3,7 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioHierarkiaJaKayttooikeusrooli}
+import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
@@ -41,17 +42,57 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/oppijat/:organisaatio") {
     val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
-      oppijaSuppeatTiedotService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitosOid, HakeutumisvalvontaTieto.Perusopetus)
+      oppijaSuppeatTiedotService.getHakeutumisvalvottavatOppijatSuppeatTiedot(
+        oppilaitosOid,
+        HakeutumisvalvontaTieto.Perusopetus,
+      )
         .tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
     )
+  }
+
+  post("/oppijat/:organisaatio/hakutiedot") {
+    val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
+    withJsonBody { (body: JValue) => {
+      val oppijat = application
+        .validatingAndResolvingExtractor
+        .extract[Oppijalista](strictDeserialization)(body)
+
+      renderEither(oppijat.flatMap(o =>
+        oppijaSuppeatTiedotService.getHakeutumisvalvottavatOppijatSuppeatTiedot(
+          oppilaitosOid,
+          HakeutumisvalvontaTieto.Perusopetus,
+          haeHakutilanteet = o.oppijaOids,
+        ).tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
+      ))
+    } } (parseErrorHandler = handleUnparseableJson)
   }
 
   get("/oppijat-nivelvaihe/:organisaatio") {
     val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
-      oppijaSuppeatTiedotService.getHakeutumisvalvottavatOppijatSuppeatTiedot(oppilaitosOid, HakeutumisvalvontaTieto.Nivelvaihe)
+      oppijaSuppeatTiedotService.getHakeutumisvalvottavatOppijatSuppeatTiedot(
+        oppilaitosOid,
+        HakeutumisvalvontaTieto.Nivelvaihe,
+      )
         .tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
     )
+  }
+
+  post("/oppijat-nivelvaihe/:organisaatio/hakutiedot") {
+    val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
+    withJsonBody { (body: JValue) => {
+      val oppijat = application
+        .validatingAndResolvingExtractor
+        .extract[Oppijalista](strictDeserialization)(body)
+
+      renderEither(oppijat.flatMap(o =>
+        oppijaSuppeatTiedotService.getHakeutumisvalvottavatOppijatSuppeatTiedot(
+          oppilaitosOid,
+          HakeutumisvalvontaTieto.Nivelvaihe,
+          haeHakutilanteet = o.oppijaOids,
+        ).tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
+      ))
+    } } (parseErrorHandler = handleUnparseableJson)
   }
 
   get("/oppijat/:organisaatio/ilmoitukset") {
@@ -169,3 +210,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
     haltWithStatus(status)
   }
 }
+
+case class Oppijalista(
+  oppijaOids: List[String],
+)

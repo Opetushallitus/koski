@@ -240,7 +240,7 @@ class ValpasKuntailmoitusService(
     // Tämä hakeminen aiheuttaa monta SQL-queryä. Tätä voisi optimoida, mutta käytännössä tähän metodiin ei toistaiseksi
     // koskaan päädytä kuin yhden oppijan näkymästä, koska listanäkymässä ilmoituksia tehtäessä tekijän
     // oppilaitos on aina tiedossa.
-    HttpStatus.foldEithers(oppijaOidit.map(oppijaOid => oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoilla(oppijaOid)).toSeq)
+    HttpStatus.foldEithers(oppijaOidit.map(oppijaOid => oppijaLaajatTiedotService.getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppijaOid)).toSeq)
   }
 
   private def tarkistaOikeudetJaJärjestäOppijat(

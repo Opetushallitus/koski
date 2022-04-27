@@ -7,7 +7,7 @@ import fi.oph.koski.huoltaja.{HuollettavienHakuEpäonnistui, HuollettavienHakuOn
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.{LocalizedString, Organisaatio}
+import fi.oph.koski.schema.{Henkilö, LocalizedString, Organisaatio}
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.UuidUtils
@@ -128,16 +128,27 @@ class ValpasOppijaService(
   )
 
   def getHakeutumisvalvottavatOppijatLaajatTiedot
-    (oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value)
+    (oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value, haeHakutilanteet: Seq[Henkilö.Oid])
     (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] =
-    getHakeutumisvalvottavatOppijatLaajatTiedotHakutilanteilla(
-      ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
-      oppilaitosOid,
-      hakeutumisvalvontaTieto
-    ).map(poistaKuntailmoitetutOpiskeluoikeudet(säästäJosOpiskeluoikeusVoimassa = false))
+  : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+    (if (haeHakutilanteet.nonEmpty) {
+      getHakeutumisvalvottavatOppijatLaajatTiedotHakutilanteilla(
+        ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
+        oppilaitosOid,
+        hakeutumisvalvontaTieto,
+        haeHakutilanteet,
+      ).map(_.filter(o => haeHakutilanteet.contains(o.oppija.henkilö.oid)))
+    } else {
+      getHakeutumisvalvottavatOppijatLaajatTiedotIlmanHakutilanteita(
+        ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
+        oppilaitosOid,
+        hakeutumisvalvontaTieto
+      )
+    })
+      .map(poistaKuntailmoitetutOpiskeluoikeudet(säästäJosOpiskeluoikeusVoimassa = false))
       .map(lisätiedotRepository.readForOppijat)
       .map(_.map(oppijaLisätiedotTuple => oppijaLisätiedotTuple._1.withLisätiedot(oppijaLisätiedotTuple._2)))
+  }
 
   def getSuorittamisvalvottavatOppijatLaajatTiedot
     (oppilaitosOid: ValpasOppilaitos.Oid)
@@ -306,13 +317,21 @@ class ValpasOppijaService(
     s"oppilaitos: ${oppilaitosOid}"
 
   private def getHakeutumisvalvottavatOppijatLaajatTiedotHakutilanteilla
-    (rooli: ValpasRooli.Role, oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value)
+    (rooli: ValpasRooli.Role, oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value, oppijatJoilleHaetaanHakutiedot: Seq[Henkilö.Oid])
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
 
     getOppijatLaajatTiedot(rooli, oppilaitosOid, hakeutumisvalvontaTieto)
-      .map(fetchHautIlmanYhteystietoja(errorClue))
+      .map(fetchHautIlmanYhteystietoja(errorClue, oppijatJoilleHaetaanHakutiedot))
+  }
+
+  private def getHakeutumisvalvottavatOppijatLaajatTiedotIlmanHakutilanteita
+    (rooli: ValpasRooli.Role, oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value)
+    (implicit session: ValpasSession)
+  : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+    getOppijatLaajatTiedot(rooli, oppilaitosOid, hakeutumisvalvontaTieto)
+      .map(oppijat => oppijat.map(OppijaHakutilanteillaLaajatTiedot.apply))
   }
 
   private def getOppijatLaajatTiedotIlmanHakutilanteita
@@ -331,8 +350,6 @@ class ValpasOppijaService(
     )
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[ValpasOppijaLaajatTiedot]] = {
-    val errorClue = oppilaitosOidErrorClue(oppilaitosOid)
-
     accessResolver.assertAccessToOrg(rooli, oppilaitosOid)
       .map(_ => opiskeluoikeusDbService.getOppijatByOppilaitos(oppilaitosOid, hakeutumisvalvontaTieto))
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
@@ -350,7 +367,7 @@ class ValpasOppijaService(
       .map(_.filter(oppijaRow => oppijaOids.contains(oppijaRow.oppijaOid)))
       .flatMap(results => HttpStatus.foldEithers(results.map(asValpasOppijaLaajatTiedot)))
       .map(accessResolver.filterByOppijaAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN))
-      .map(fetchHautYhteystiedoilla(errorClue))
+      .map(fetchHautYhteystiedoilla(errorClue, oppijaOids))
       .flatMap(oppijat => HttpStatus.foldEithers(oppijat.map(withVirallisetYhteystiedot)))
       .map(oppijat => oppijat.map(_.validate(koodistoviitepalvelu)))
   }
@@ -410,7 +427,7 @@ class ValpasOppijaService(
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
     val rooli = roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.find(accessResolver.accessToAnyOrg)
 
-    getOppijaLaajatTiedotYhteystiedoilla(oppijaOid, rooli)
+    getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppijaOid, rooli)
       .flatMap(withKuntailmoitukset)
       .map(withOikeusTehdäKuntailmoitus)
   }
@@ -430,7 +447,7 @@ class ValpasOppijaService(
     }
   }
 
-  def getOppijaLaajatTiedotYhteystiedoilla
+  def getOppijaLaajatTiedotHakuJaYhteystiedoilla
     (oppijaOid: ValpasHenkilö.Oid, rooli: Option[ValpasRooli.Role] = None)
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
@@ -563,12 +580,17 @@ class ValpasOppijaService(
     OppijaHakutilanteillaLaajatTiedot.apply(oppija = oppija, yhteystietoryhmänNimi = localizationRepository.get("oppija__yhteystiedot"), haut = Right(Seq.empty))
   }
 
-  private def fetchHautIlmanYhteystietoja(errorClue: String)(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] =
-    fetchHautYhteystiedoilla(errorClue)(oppijat)
+  private def fetchHautIlmanYhteystietoja(errorClue: String, oppijatJoilleHaetaanHakutiedot: Seq[Henkilö.Oid])(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] =
+    fetchHautYhteystiedoilla(errorClue, oppijatJoilleHaetaanHakutiedot)(oppijat)
       .map(oppija => oppija.copy(yhteystiedot = Seq.empty))
 
-  private def fetchHautYhteystiedoilla(errorClue: String)(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
-    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = oppijat.map(_.henkilö.oid).toSet, ainoastaanAktiivisetHaut = true, errorClue = errorClue)
+  private def fetchHautYhteystiedoilla(errorClue: String, oppijatJoilleHaetaanHakutiedot: Seq[Henkilö.Oid])(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
+    val oppijaOids = oppijat
+      .map(_.henkilö.oid)
+      .filter(oppijatJoilleHaetaanHakutiedot.contains)
+      .toSet
+
+    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = oppijaOids, ainoastaanAktiivisetHaut = true, errorClue = errorClue)
 
     hakukoosteet.map(_.groupBy(_.oppijaOid))
       .fold(

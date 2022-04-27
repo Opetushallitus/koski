@@ -1,10 +1,9 @@
 package fi.oph.koski.valpas
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Organisaatio, OrganisaatioWithOid}
+import fi.oph.koski.schema.{Henkilö, Koodistokoodiviite, LocalizedString, Organisaatio, OrganisaatioWithOid}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{HakeutumisvalvontaTieto, ValpasHakutilanne, ValpasHakutilanneLaajatTiedot, ValpasHakutoive, ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusMuuOpetusLaajatTiedot, ValpasOpiskeluoikeusPerusopetuksenJälkeinenLaajatTiedot, ValpasOpiskeluoikeusPerusopetusLaajatTiedot, ValpasOpiskeluoikeusPerusopetusTiedot, ValpasOpiskeluoikeusTiedot, ValpasOppija, ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasPäätasonSuoritus}
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
@@ -279,10 +278,10 @@ class ValpasOppijaSuppeatTiedotService(
   valpasOppijaService: ValpasOppijaService
 ) {
   def getHakeutumisvalvottavatOppijatSuppeatTiedot
-    (oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value)
+    (oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value, haeHakutilanteet: Seq[Henkilö.Oid] = Seq.empty)
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
-    valpasOppijaService.getHakeutumisvalvottavatOppijatLaajatTiedot(oppilaitosOid, hakeutumisvalvontaTieto)
+    valpasOppijaService.getHakeutumisvalvottavatOppijatLaajatTiedot(oppilaitosOid, hakeutumisvalvontaTieto, haeHakutilanteet)
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
 
   def getSuorittamisvalvottavatOppijatSuppeatTiedot
