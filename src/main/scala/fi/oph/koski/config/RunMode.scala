@@ -11,5 +11,5 @@ object RunMode extends Enumeration {
     case None => NORMAL
   }
 
-  def fullReload: Boolean = sys.env.get("GENERATE_RAPORTOINTIKANTA").contains("full")
+  def isFullReload: Boolean = sys.env.get("GENERATE_RAPORTOINTIKANTA").contains("full")
 }
