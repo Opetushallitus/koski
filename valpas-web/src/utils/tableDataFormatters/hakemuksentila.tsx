@@ -17,13 +17,15 @@ export const hakemuksenTilaValue = (
   oppija: OppijaHakutilanteillaSuppeatTiedot,
   basePath: string
 ): Value => {
-  const { hakutilanteet, hakutilanneError } = oppija
+  const { hakutilanteet, hakutilanneError, isLoadingHakutilanteet } = oppija
   const oppijaOid = oppija.oppija.henkilö.oid
 
   const hakemuksenTilaValue = hakemuksenTilaT(
     hakutilanteet.length,
-    hakutilanneError
+    hakutilanneError,
+    isLoadingHakutilanteet
   )
+
   return {
     value: hakemuksenTilaValue,
     display: hakemuksenTilaDisplay(
@@ -38,9 +40,11 @@ export const hakemuksenTilaValue = (
 
 const hakemuksenTilaT = (
   hakemusCount: number,
-  hakutilanneError?: string
+  hakutilanneError?: string,
+  isLoadingHakutilanteet?: boolean
 ): Translation => {
-  if (hakutilanneError) return t("oppija__hakuhistoria_virhe")
+  if (isLoadingHakutilanteet) return t("Ladataan")
+  else if (hakutilanneError) return t("oppija__hakuhistoria_virhe")
   else if (hakemusCount == 0) return t("hakemuksentila__ei_hakemusta")
   else if (hakemusCount == 1) return t("hakemuksentila__hakenut")
   else return t("hakemuksentila__n_hakua", { lukumäärä: hakemusCount })

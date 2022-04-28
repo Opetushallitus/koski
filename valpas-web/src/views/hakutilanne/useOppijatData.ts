@@ -1,12 +1,17 @@
+import * as A from "fp-ts/Array"
 import * as E from "fp-ts/Either"
-import { useCallback } from "react"
+import { useCallback, useMemo } from "react"
 import {
   fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset,
   fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache,
   fetchNivelvaiheenOppijat,
   fetchNivelvaiheenOppijatCache,
+  fetchNivelvaiheenOppijatHakutiedoilla,
+  fetchNivelvaiheenOppijatHakutiedoillaCache,
   fetchOppijat,
   fetchOppijatCache,
+  fetchOppijatHakutiedoilla,
+  fetchOppijatHakutiedoillaCache,
   fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset,
   fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache,
   setMuuHaku,
@@ -15,10 +20,12 @@ import { ApiError, ApiResponse } from "../../api/apiFetch"
 import {
   ApiMethodHook,
   useApiMethod,
+  useApiSequence,
   useApiWithParams,
   useLocalDataCopy,
+  useOnApiSuccess,
 } from "../../api/apiHooks"
-import { isError, isLoading } from "../../api/apiUtils"
+import { isError, isLoading, isSuccess } from "../../api/apiUtils"
 import { ApiCache } from "../../api/cache"
 import { OpiskeluoikeusSuppeatTiedot } from "../../state/apitypes/opiskeluoikeus"
 import {
@@ -27,7 +34,10 @@ import {
   OppijaHakutilanteillaSuppeatTiedot,
 } from "../../state/apitypes/oppija"
 import { Oid } from "../../state/common"
+import { useSafeState } from "../../state/useSafeState"
 import { upsert } from "../../utils/arrays"
+
+const HAKUTIEDOT_FETCH_LIST_SIZE = 100
 
 export type UseOppijatDataApi = {
   data: OppijaHakutilanteillaSuppeatTiedot[] | null
@@ -45,39 +55,92 @@ export type UseOppijatDataApiReload = {
 }
 
 const oppijatFetchHook = (
-  fetchFn: (
+  fetchOppijatFn: (
     organisaatioOid: Oid
   ) => Promise<ApiResponse<OppijaHakutilanteillaSuppeatTiedot[]>>,
-  cache: ApiCache<
+  oppijatCache: ApiCache<
     OppijaHakutilanteillaSuppeatTiedot[],
     [organisaatioOid: string]
+  >,
+  fetchHakutiedotFn: (
+    organisaatioOid: Oid,
+    oppijaOids: Oid[]
+  ) => Promise<ApiResponse<OppijaHakutilanteillaSuppeatTiedot[]>>,
+  hakutiedotCache: ApiCache<
+    OppijaHakutilanteillaSuppeatTiedot[],
+    [organisaatioOid: Oid, oppijaOids: Oid[]]
   >
 ) => (organisaatioOid?: Oid): UseOppijatDataApi & UseOppijatDataApiReload => {
+  const [oppijaOids, setOppijaOids] = useSafeState<Oid[]>([])
+
   const oppijatFetch = useApiWithParams(
-    fetchFn,
+    fetchOppijatFn,
     organisaatioOid ? [organisaatioOid] : undefined,
     // @ts-ignore
-    cache
+    oppijatCache
   )
+
+  const hakutiedotFetches = useApiSequence(
+    fetchHakutiedotFn,
+    oppijaOids,
+    useCallback(
+      (oids) => {
+        const [oppijaOids, pendingOppijaOids] = A.splitAt(
+          HAKUTIEDOT_FETCH_LIST_SIZE
+        )(oids)
+        if (A.isNonEmpty(oppijaOids) && organisaatioOid) {
+          const fetchParams: Parameters<typeof fetchOppijatHakutiedoilla> = [
+            organisaatioOid,
+            oppijaOids,
+          ]
+          return [fetchParams, pendingOppijaOids]
+        }
+        return null
+      },
+      [organisaatioOid]
+    ),
+    hakutiedotCache
+  )
+
+  const hakutiedotFlattened = useMemo(
+    () => A.flatten(hakutiedotFetches.filter(isSuccess).map((h) => h.data)),
+    [hakutiedotFetches]
+  )
+
+  useOnApiSuccess(oppijatFetch, (suppeatTiedot) => {
+    setOppijaOids(suppeatTiedot.data.map((x) => x.oppija.henkilö.oid))
+  })
 
   const reload = useCallback(() => {
     if (organisaatioOid) {
-      cache.clearAll()
+      oppijatCache.clearAll()
       oppijatFetch.call(organisaatioOid)
     }
   }, [oppijatFetch, organisaatioOid])
 
   return {
-    ...useOppijatDataAPI(organisaatioOid, oppijatFetch, cache),
+    ...useOppijatDataAPI(
+      organisaatioOid,
+      oppijatFetch,
+      oppijatCache,
+      hakutiedotFlattened
+    ),
     reload,
   }
 }
 
-export const useOppijatData = oppijatFetchHook(fetchOppijat, fetchOppijatCache)
+export const useOppijatData = oppijatFetchHook(
+  fetchOppijat,
+  fetchOppijatCache,
+  fetchOppijatHakutiedoilla,
+  fetchOppijatHakutiedoillaCache
+)
 
 export const useNivelvaiheenOppijatData = oppijatFetchHook(
   fetchNivelvaiheenOppijat,
-  fetchNivelvaiheenOppijatCache
+  fetchNivelvaiheenOppijatCache,
+  fetchNivelvaiheenOppijatHakutiedoilla,
+  fetchNivelvaiheenOppijatHakutiedoillaCache
 )
 
 export const useHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
@@ -113,9 +176,26 @@ const useOppijatDataAPI = (
   cache: ApiCache<
     OppijaHakutilanteillaSuppeatTiedot[],
     [organisaatioOid: string]
-  >
+  >,
+  hakutiedotResults?: OppijaHakutilanteillaSuppeatTiedot[]
 ): UseOppijatDataApi => {
   const [localData, setLocalData] = useLocalDataCopy(oppijatFetch)
+
+  // Yhdistä erikseen haetut hakutilanteet Valpas-kannoista haettuihin datoihin
+  const mergedData = useMemo(
+    () =>
+      localData?.map((d) => {
+        const hakutilanne = hakutiedotResults?.find(
+          oppijaOidEqualsTo(d.oppija.henkilö.oid)
+        )
+        return {
+          ...d,
+          hakutilanteet: hakutilanne?.hakutilanteet || d.hakutilanteet,
+          isLoadingHakutilanteet: !hakutilanne,
+        }
+      }) || null,
+    [hakutiedotResults, localData]
+  )
 
   const saveMuuHakuState = useApiMethod(setMuuHaku)
   const storeMuuHakuState = useCallback(
@@ -132,8 +212,8 @@ const useOppijatDataAPI = (
         value
       )
 
-      if (E.isRight(response) && localData) {
-        const oppija = localData.find(oppijaOidEqualsTo(oppijaOid))
+      if (E.isRight(response) && mergedData) {
+        const oppija = mergedData.find(oppijaOidEqualsTo(oppijaOid))
 
         if (oppija) {
           const lisätiedot: OpiskeluoikeusLisätiedot[] = upsert(
@@ -152,7 +232,7 @@ const useOppijatDataAPI = (
           )
 
           setLocalData(
-            upsert(localData, oppijaOidEqualsTo(oppijaOid), {
+            upsert(mergedData, oppijaOidEqualsTo(oppijaOid), {
               ...oppija,
               lisätiedot,
             })
@@ -160,11 +240,11 @@ const useOppijatDataAPI = (
         }
       }
     },
-    [cache, localData, organisaatioOid, saveMuuHakuState, setLocalData]
+    [cache, mergedData, organisaatioOid, saveMuuHakuState, setLocalData]
   )
 
   return {
-    data: localData,
+    data: mergedData,
     setMuuHaku: storeMuuHakuState,
     isLoading: isLoading(oppijatFetch),
     errors: isError(oppijatFetch) ? oppijatFetch.errors : undefined,
