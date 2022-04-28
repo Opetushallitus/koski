@@ -20,6 +20,7 @@ import { useBasePath } from "../../state/basePath"
 import { Oid } from "../../state/common"
 import { nonNull } from "../../utils/arrays"
 import {
+  loadingValue,
   nullableDateValue,
   nullableKoulutustyyppiValue,
   nullableValue,
@@ -151,9 +152,15 @@ const oppijatiedotToTableRow = (
         ),
         nullableDateValue(oo.perusopetuksenJälkeinenTiedot?.alkamispäivä),
         nullableDateValue(oo.perusopetuksenJälkeinenTiedot?.päättymispäivä),
-        hakemuksenTilaValue(tiedot, basePath),
-        valintatilaValue(tiedot.hakutilanteet),
-        opiskelupaikanVastaanottotietoValue(tiedot.hakutilanteet),
+        tiedot.isLoadingHakutilanteet
+          ? loadingValue(true)
+          : hakemuksenTilaValue(tiedot, basePath),
+        tiedot.isLoadingHakutilanteet
+          ? loadingValue(false)
+          : valintatilaValue(tiedot.hakutilanteet),
+        tiedot.isLoadingHakutilanteet
+          ? loadingValue(false)
+          : opiskelupaikanVastaanottotietoValue(tiedot.hakutilanteet),
         toisenAsteenOpiskeluoikeudetValue(tiedot, oo),
         muuHakuSwitchValue(tiedot, oo, onSetMuuHaku),
       ],
