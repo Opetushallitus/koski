@@ -1,6 +1,8 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import { Spinner } from "../../components/icons/Spinner"
 import { Value } from "../../components/tables/DataTable"
+import { t } from "../../i18n/i18n"
 import { HenkilöTiedot } from "../../state/apitypes/henkilo"
 import {
   Suorituksentyyppi,
@@ -53,3 +55,8 @@ export const oppijanNimiValue = (urlBackRef: keyof OppijaPathBackRefs) => (
     display: näytäLinkki ? <Link to={linkTo}>{value}</Link> : undefined,
   }
 }
+
+export const loadingValue = (showSpinner: boolean): Value => ({
+  value: t("Ladataan"),
+  display: showSpinner ? <Spinner /> : " ",
+})
