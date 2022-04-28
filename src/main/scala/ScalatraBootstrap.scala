@@ -156,7 +156,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
 
   private def generateRaportointikanta(application: KoskiApplication): Unit = {
     val service = new RaportointikantaService(application)
-    service.loadRaportointikantaAndExit(fullReload = true)
+    service.loadRaportointikantaAndExit(fullReload = RunMode.isFullReload)
   }
 
   override def destroy(context: ServletContext): Unit = ()

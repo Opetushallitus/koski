@@ -234,7 +234,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       .head
       .getOrElse(0)
 
-  def updateOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow], mitätöidytOpiskeluoikeudet: Seq[Oid]): Unit =
+  def updateOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow], mitätöidytOpiskeluoikeudet: Seq[Oid]): Unit = {
     runDbSync(
       DBIO.sequence(
         opiskeluoikeudet.map(ROpiskeluoikeudet.insertOrUpdate) ++
@@ -242,6 +242,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
       ),
       timeout = 5.minutes
     )
+  }
 
   def loadMitätöidytOpiskeluoikeudet(rows: Seq[RMitätöityOpiskeluoikeusRow]): Unit = {
     runDbSync(RMitätöidytOpiskeluoikeudet ++= rows, timeout = 5.minutes)
@@ -296,14 +297,24 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
   def loadPäätasonSuoritukset(suoritukset: Seq[RPäätasonSuoritusRow]): Unit =
     runDbSync(RPäätasonSuoritukset ++= suoritukset)
 
-  def updatePäätasonSuoritukset(suoritukset: Seq[RPäätasonSuoritusRow]): Unit =
-    runDbSync(DBIO.sequence(suoritukset.map(RPäätasonSuoritukset.insertOrUpdate)), timeout = 5.minutes)
+  def updatePäätasonSuoritukset(suoritukset: Seq[RPäätasonSuoritusRow]): Unit = {
+    val opiskeluoikeusOids = suoritukset.map(_.opiskeluoikeusOid).toSet
+    runDbSync(DBIO.seq(
+      RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete,
+      RPäätasonSuoritukset ++= suoritukset,
+    ), timeout = 5.minutes)
+  }
 
   def loadOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit =
     runDbSync(ROsasuoritukset ++= suoritukset, timeout = 5.minutes)
 
-  def updateOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit =
-    runDbSync(DBIO.sequence(suoritukset.map(ROsasuoritukset.insertOrUpdate)), timeout = 10.minutes)
+  def updateOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit = {
+    val opiskeluoikeusOids = suoritukset.map(_.opiskeluoikeusOid).toSet
+    runDbSync(DBIO.seq(
+      ROsasuoritukset.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete,
+      ROsasuoritukset ++= suoritukset,
+    ), timeout = 10.minutes)
+  }
 
   def loadMuuAmmatillinenRaportointi(rows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow]): Unit =
     runDbSync(MuuAmmatillinenOsasuoritusRaportointi ++= rows, timeout = 5.minutes)
