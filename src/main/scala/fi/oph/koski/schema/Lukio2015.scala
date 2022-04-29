@@ -70,11 +70,8 @@ case class LukionOppiaineenOppimääränSuoritus2015(
   ryhmä: Option[String] = None
 ) extends LukionPäätasonSuoritus2015 with OppiaineenOppimääränSuoritus  {
   def oppimääränKoodiarvo: Option[String] = {
-    println("Tänne päädyttiin")
     koulutusmoduuli match {
     case diaari: Diaarinumerollinen =>
-      println(diaari)
-      println(onAikuistenOps(diaari.perusteenDiaarinumero.getOrElse("")))
       diaari.perusteenDiaarinumero.map(peruste => if (onAikuistenOps(peruste)) "aikuistenops" else "nuortenops")
     case _ => None
   }}
