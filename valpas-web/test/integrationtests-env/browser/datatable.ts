@@ -1,15 +1,18 @@
 import * as A from "fp-ts/Array"
+import { By } from "selenium-webdriver"
 import { $, $$ } from "./core"
+import { driver } from "./driver"
 import { clearTextInput, setTextInput } from "./forms"
-import { shortTimeout } from "./timeouts"
+import { mediumTimeout, shortTimeout } from "./timeouts"
 import { eventually } from "./utils"
 
 export const dataTableEventuallyEquals = async (
   selector: string,
   displayValues: string,
   columnSeparator = "\t",
-  timeout = shortTimeout
+  timeout = mediumTimeout
 ) => {
+  await waitTableLoadingHasFinished(selector)
   await dataTableCellsEventuallyEquals(
     `${selector} .table__body .table__td`,
     displayValues,
@@ -24,6 +27,7 @@ export const dataTableHeadersEventuallyEquals = async (
   columnSeparator = "\t",
   timeout = shortTimeout
 ) => {
+  await waitTableLoadingHasFinished(selector)
   await dataTableCellsEventuallyEquals(
     `${selector} .table__body .table__th`,
     displayValues,
@@ -77,3 +81,10 @@ export const toggleTableSort = async (selector: string, nthColumn: number) => {
 
 export const getExpectedRowCount = (displayValues: string) =>
   displayValues.split("\n").filter((row) => row.trim().length > 0).length
+
+export const waitTableLoadingHasFinished = async (tableSelector: string) => {
+  const selector = `${tableSelector} .spinner`
+  eventually(async () => {
+    expect((await driver.findElements(By.css(selector))).length).toEqual(0)
+  })
+}

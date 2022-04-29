@@ -1434,7 +1434,11 @@ object ValpasOpiskeluoikeusExampleData {
       kahdeksannenLuokanSuoritus.copy(
         toimipiste = saksalainenKoulu,
         alkamispäivä = Some(date(2019, 8, 15)),
-        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+        vahvistus = vahvistusPaikkakunnalla(
+          päivä = date(2020, 5, 30),
+          org = saksalainenKoulu,
+          kunta = helsinki,
+        ),
       ),
       yhdeksännenLuokanSuoritus.copy(
         toimipiste = saksalainenKoulu,

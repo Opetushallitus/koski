@@ -17,6 +17,7 @@ import {
   getTableContents,
   setTableTextFilter,
   toggleTableSort,
+  waitTableLoadingHasFinished,
 } from "../integrationtests-env/browser/datatable"
 import { isCheckboxChecked } from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
@@ -32,6 +33,7 @@ import {
   aapajoenKouluOid,
   internationalSchoolOid,
   ressunLukioOid,
+  saksalainenKouluOid,
 } from "./oids"
 import { selectOrganisaatioByNimi } from "./organisaatiovalitsin-helpers"
 
@@ -58,6 +60,11 @@ const internationalSchoolHakutilannePath = nivelvaiheenHakutilannePathWithOrg.hr
   {
     organisaatioOid: internationalSchoolOid,
   }
+)
+
+const saksalainenKouluHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
+  "/virkailija",
+  { organisaatioOid: saksalainenKouluOid }
 )
 
 describe("Nivelvaiheen hakutilannenäkymä", () => {
@@ -98,13 +105,15 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
     )
   })
 
-  it("Näyttää tyhjän listan virheittä, jos ei oppijoita", async () => {
+  it("Näyttää tyhjän listan virheittä, jos ei oppijoita x", async () => {
     await loginAs(nivelvaiheenHakutilannePath, "valpas-monta")
-    await urlIsEventually(pathToUrl(internationalSchoolHakutilannePath))
+    await urlIsEventually(pathToUrl(saksalainenKouluHakutilannePath))
     await textEventuallyEquals(
       ".card__header",
       "Hakeutumisvelvollisia oppijoita (0)"
     )
+
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {
@@ -128,6 +137,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
       ".card__header",
       "Hakeutumisvelvollisia oppijoita (0)"
     )
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Toimii koulutustoimijatason käyttäjällä", async () => {
@@ -156,6 +166,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
       ".card__header",
       "Hakeutumisvelvollisia oppijoita (0)"
     )
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota", async () => {
@@ -177,6 +188,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
 
     await clickElement(".oppijaview__backbutton a")
     await urlIsEventually(pathToUrl(ressunLukioHakutilannePath))
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa filttereiden tai järjestyksen tilaa", async () => {
@@ -189,6 +201,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
     await toggleTableSort(selector, 1)
 
     // Ota snapshot talteen taulukon tilasta
+    await waitTableLoadingHasFinished(".hakutilanne")
     const contentsBefore = await getTableContents(selector)
 
     // Käy jossakin oppijanäkymässä
@@ -198,6 +211,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
 
     // Taulukon tilan pitäisi olla sama kuin aiemmin
     await urlIsEventually(pathToUrl(ressunLukioHakutilannePath))
+    await waitTableLoadingHasFinished(".hakutilanne")
     const contentsAfter = await getTableContents(selector)
     expect(contentsAfter).toEqual(contentsBefore)
   })
@@ -212,6 +226,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
       )
     }
 
+    await waitTableLoadingHasFinished(".hakutilanne")
     const getState = () => Promise.all([0, 1, 2, 3].map(isMuuHakuChecked))
 
     await loadPage()
@@ -255,6 +270,7 @@ describe("Nivelvaiheen hakutilannenäkymä", () => {
 
     const stateAfterOrgChange = await getState()
 
+    await waitTableLoadingHasFinished(".hakutilanne")
     expect(stateBeforeOrgChange).toEqual(stateAfterOrgChange)
   })
 })

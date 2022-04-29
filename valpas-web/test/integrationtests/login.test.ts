@@ -11,6 +11,7 @@ import {
   pathToUrl,
   urlIsEventually,
 } from "../integrationtests-env/browser/core"
+import { waitTableLoadingHasFinished } from "../integrationtests-env/browser/datatable"
 import { allowNetworkError } from "../integrationtests-env/browser/fail-on-console"
 import {
   defaultLogin,
@@ -67,17 +68,22 @@ describe("Login / Logout / kirjautuminen", () => {
       "valpas-jkl-normaali"
     )
 
-    await expectElementEventuallyVisible(
-      ".hakutilanne tbody tr td:first-child a"
-    )
+    await waitTableLoadingHasFinished(".hakutilanne")
 
     // Salavihkainen logout (ei poista selaimesta keksiä)
     require("jest-fetch-mock").dontMock()
     await fetch(pathToApiUrl("/test/logout/valpas-jkl-normaali"))
 
     // Yritä selailla eteenpäin ja päädy kirjautumiseen
-    allowNetworkError("/valpas/api/oppija/", "401 (Unauthorized)")
-    await clickElement(".hakutilanne tbody tr td:first-child a")
+    allowNetworkError("/valpas/api/", "401 (Unauthorized)")
+
+    const linkSelector = ".hakutilanne tbody tr td:first-child a"
+    try {
+      await clickElement(linkSelector)
+    } catch (e) {
+      // Ignore stale elements
+    }
+
     await expectElementEventuallyVisible("article.page#login-app", longTimeout)
   })
 })
