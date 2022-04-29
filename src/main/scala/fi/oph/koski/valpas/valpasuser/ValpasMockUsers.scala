@@ -257,7 +257,7 @@ object ValpasMockUsers {
       nivelvaiheenKäyttäjä(jyväskylänNormaalikoulu) ++ kuntakäyttäjä(helsinginKaupunki) ++
       nivelvaiheenKäyttäjä(ressunLukio) ++ kuntakäyttäjä(pyhtäänKunta) ++
       peruskoulunKäyttäjä(kulosaarenAlaAste) ++ nivelvaiheenKäyttäjä(stadinAmmattiopisto) ++
-      peruskoulunKäyttäjä(aapajoenKoulu)
+      peruskoulunKäyttäjä(aapajoenKoulu) ++ peruskoulunKäyttäjä(saksalainenKoulu)
   )
 
   val valpasKela = ValpasMockUser(

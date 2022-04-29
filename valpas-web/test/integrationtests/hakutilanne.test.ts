@@ -31,6 +31,7 @@ import {
   internationalSchoolOid,
   jyväskylänNormaalikouluOid,
   kulosaarenAlaAsteOid,
+  saksalainenKouluOid,
 } from "./oids"
 import {
   selectOrganisaatio,
@@ -86,6 +87,13 @@ const internationalSchoolHakutilannePath = hakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: internationalSchoolOid,
+  }
+)
+
+const saksalainenKouluHakutilannePath = hakutilannePathWithOrg.href(
+  "/virkailija",
+  {
+    organisaatioOid: saksalainenKouluOid,
   }
 )
 
@@ -295,6 +303,17 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       internationalSchoolTableContent,
+      "|"
+    )
+  })
+
+  it("Epäonnistunut hakutietojen haku näyttää virheilmoituksen", async () => {
+    await loginAs(hakutilannePath, "valpas-monta")
+    await urlIsEventually(pathToUrl(saksalainenKouluHakutilannePath))
+    await setTableTextFilter(".hakutilanne", 1, "sure-haut-aina-epäonnistuvat")
+    await dataTableEventuallyEquals(
+      ".hakutilanne",
+      "Sure-haut-aina-epäonnistuvat Valpas  | 18.7.2004 | 9C  | – | Virhe oppijan hakuhistorian hakemisessa | – | – | – |",
       "|"
     )
   })

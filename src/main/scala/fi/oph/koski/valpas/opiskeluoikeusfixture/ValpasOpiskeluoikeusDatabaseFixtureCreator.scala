@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.documentation.DIAExampleData.saksalainenKoulu
 import fi.oph.koski.fixture.DatabaseFixtureCreator
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema._
@@ -195,5 +196,6 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.perusopetukseenValmistautuva17VuottaTäyttävä, ValpasOpiskeluoikeusExampleData.perusopetukseenValmistavanOpetuksenOpiskeluoikeus),
     (ValpasMockOppijat.perusopetukseenValmistavastaValmistunut17Vuotias, ValpasOpiskeluoikeusExampleData.perusopetukseenValmistavanOpetuksenOpiskeluoikeusValmistunut),
     (ValpasMockOppijat.perusopetukseenValmistavastaEronnut17Vuotias, ValpasOpiskeluoikeusExampleData.perusopetukseenValmistavanOpetuksenOpiskeluoikeusEronnut),
+    (ValpasMockOppijat.sureHautAinaEpäonnistuvaOppija, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021SaksalainenKouluOpiskeluoikeus),
   )
 }

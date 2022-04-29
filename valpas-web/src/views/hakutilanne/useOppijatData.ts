@@ -191,6 +191,7 @@ const useOppijatDataAPI = (
         return {
           ...d,
           hakutilanteet: hakutilanne?.hakutilanteet || d.hakutilanteet,
+          hakutilanneError: hakutilanne?.hakutilanneError,
           isLoadingHakutilanteet: !hakutilanne,
         }
       }) || null,

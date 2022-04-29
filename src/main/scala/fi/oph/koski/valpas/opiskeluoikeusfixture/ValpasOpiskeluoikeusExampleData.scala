@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.stadinAmmattiopisto
+import fi.oph.koski.documentation.DIAExampleData.saksalainenKoulu
 
 import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData._
@@ -1423,4 +1424,28 @@ object ValpasOpiskeluoikeusExampleData {
     )
   }
 
+  def oppivelvollinenYsiluokkaKeskenKeväällä2021SaksalainenKouluOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(saksalainenKoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritusKesken.copy(
+        toimipiste = saksalainenKoulu,
+      ),
+      kahdeksannenLuokanSuoritus.copy(
+        toimipiste = saksalainenKoulu,
+        alkamispäivä = Some(date(2019, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2020, 5, 30)),
+      ),
+      yhdeksännenLuokanSuoritus.copy(
+        toimipiste = saksalainenKoulu,
+        alkamispäivä = Some(date(2020, 8, 15)),
+        vahvistus = None
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä)
+      )
+    )
+  )
 }
