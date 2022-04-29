@@ -236,9 +236,12 @@ object AikajaksoRowBuilder {
       case apol: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot =>
         toSeq(
           apol.sisäoppilaitosmainenMajoitus,
+          apol.vammainen,
           apol.vaikeastiVammainen,
           apol.maksuttomuus
-        ) ++
+        ) ++ Seq(
+          apol.majoitusetu
+        ).flatten ++
           apol.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
       case pol: PerusopetuksenOpiskeluoikeudenLisätiedot =>
         toSeq(
@@ -260,6 +263,7 @@ object AikajaksoRowBuilder {
           poll.vammainen,
           poll.vaikeastiVammainen,
           poll.koulukoti,
+          poll.kotiopetusjaksot,
           poll.maksuttomuus
         ) ++ Seq(
           poll.majoitusetu,
@@ -304,6 +308,40 @@ object AikajaksoRowBuilder {
           eol.majoitusetu,
           eol.kuljetusetu
         ).flatten ++ aikajaksotErityisenTuenPäätöksistä(eol.erityisenTuenPäätös, eol.erityisenTuenPäätökset)
+      case vstol: VapaanSivistystyönOpiskeluoikeudenLisätiedot =>
+        toSeq(
+          vstol.maksuttomuus
+        ) ++ vstol.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
+      case tall: TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot =>
+        toSeq(
+          tall.maksuttomuus,
+          tall.majoitus,
+          tall.sisäoppilaitosmainenMajoitus,
+          tall.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
+          tall.erityinenTuki,
+          tall.vaativanErityisenTuenErityinenTehtävä,
+          tall.vaikeastiVammainen,
+          tall.vammainenJaAvustaja,
+          tall.vankilaopetuksessa,
+        ) ++ tall.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu))) ++
+          tall.osaAikaisuusjaksot.map(_.map(j => Aikajakso(j.alku, j.loppu))).toList.flatten
+      case tlll: TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot =>
+        toSeq(
+          tlll.maksuttomuus,
+          tlll.sisäoppilaitosmainenMajoitus
+        ) ++ tlll.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
+      case tpll: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot =>
+        toSeq(
+          tpll.maksuttomuus,
+          tpll.vammainen,
+          tpll.vaikeastiVammainen,
+          tpll.sisäoppilaitosmainenMajoitus,
+          tpll.koulukoti
+        ) ++ Seq(
+          tpll.majoitusetu,
+          tpll.kuljetusetu,
+          tpll.pidennettyOppivelvollisuus
+        ).flatten ++ tpll.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
     }.getOrElse(Nil)
 
     val jaksot = lisätiedotAikajaksot ++ oppisopimusAikajaksot(o)
