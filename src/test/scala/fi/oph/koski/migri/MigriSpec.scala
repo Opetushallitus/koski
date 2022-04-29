@@ -203,11 +203,11 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
   "valinta-tulosten haku ohjautuu oikealle servicelle oikeilla parametreilla" in {
     post(
       "api/luovutuspalvelu/migri/valinta/oid",
-      JsonSerializer.writeWithRoot(MigriOidRequest("1.2.246.562.24.00000000000")),
+      JsonSerializer.writeWithRoot(MigriOidsRequest(List("1.2.246.562.24.00000000000"))),
       headers = authHeaders(user) ++ jsonContent
     ) {
       val response = JsonSerializer.parse[String](body)
-      response should equal ("1.2.246.562.24.00000000000LasseLasse")
+      response should equal ("List(1.2.246.562.24.00000000000)LasseLasse")
     }
   }
 

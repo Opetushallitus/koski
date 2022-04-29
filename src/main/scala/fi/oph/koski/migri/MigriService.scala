@@ -8,11 +8,11 @@ import fi.oph.koski.log.Logging
 import org.scalatra.auth.strategy.BasicAuthStrategy.BasicAuthRequest
 
 trait MigriService {
-  def get(oid: String, basicAuthRequest: BasicAuthRequest): Either[HttpStatus, String]
+  def get(oids: List[String], basicAuthRequest: BasicAuthRequest): Either[HttpStatus, String]
 }
 
 class RemoteMigriService (implicit val application: KoskiApplication) extends Logging with MigriService {
-  def get(oid: String, basicAuthRequest: BasicAuthRequest) = {
+  def get(oids: List[String], basicAuthRequest: BasicAuthRequest) = {
     val config = ServiceConfig(application.config.getString("opintopolku.virkailija.url"), basicAuthRequest.username, basicAuthRequest.password, true)
     val client = VirkailijaHttpClient(config,
       "/valinta-tulos-service",
@@ -20,18 +20,18 @@ class RemoteMigriService (implicit val application: KoskiApplication) extends Lo
       serviceUrlSuffix = "auth/login",
       false)
 
-    runIO(client.post(uri"/valinta-tulos-service/cas/migri/hakemukset/", List(oid))(json4sEncoderOf[List[String]]) {
+    runIO(client.post(uri"/valinta-tulos-service/cas/migri/hakemukset/", oids)(json4sEncoderOf[List[String]]) {
       case (200, text, _) => Right(text)
       case (status, text, _) =>
-        logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} and oid $oid from ${application.config.getString("opintopolku.virkailija.url")}")
+        logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} and first oid ${oids.headOption} from ${application.config.getString("opintopolku.virkailija.url")}")
         Left(KoskiErrorCategory.internalError("Virhe kutsuttaessa valinta-tulos-servicea"))
     })
   }
 }
 
 class MockMigriService (implicit val application: KoskiApplication) extends Logging with MigriService {
-  def get(oid: String, basicAuthRequest: BasicAuthRequest): Either[HttpStatus, String] = {
+  def get(oids: List[String], basicAuthRequest: BasicAuthRequest): Either[HttpStatus, String] = {
     // Hyvin tynkä toteutus, lähinnä tarkistetaan, että BasicAuthRequest tulee testistä perille oikeanlaisena
-    Right(oid + basicAuthRequest.username + basicAuthRequest.password)
+    Right(oids + basicAuthRequest.username + basicAuthRequest.password)
   }
 }
