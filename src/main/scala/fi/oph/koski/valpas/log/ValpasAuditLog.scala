@@ -28,6 +28,30 @@ object ValpasAuditLog {
     ))
   }
 
+  def auditLogOppilaitosKatsominenHakutiedoilla
+    (oppilaitosOid: ValpasOppilaitos.Oid, oppijaOids: Seq[ValpasHenkilö.Oid])(implicit session: ValpasSession)
+  : Unit = {
+    val grouped = oppijaOids
+      .grouped(oidejaEnintäänAuditlogEntryssä)
+      .toList
+
+    grouped
+      .zipWithIndex
+      .foreach(t => {
+        val (oppijaOidsSlice, index) = t
+        AuditLog.log(ValpasAuditLogMessage(
+          ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN_HAKUTIEDOILLA,
+          session,
+          Map(
+            ValpasAuditLogMessageField.juuriOrganisaatio -> oppilaitosOid,
+            ValpasAuditLogMessageField.oppijaHenkilöOidList -> oppijaOidsSlice.mkString(","),
+            ValpasAuditLogMessageField.sivu -> s"${index + 1}",
+            ValpasAuditLogMessageField.sivuLukumäärä -> s"${grouped.length}",
+          )
+        ))
+      })
+  }
+
   def auditLogKuntaKatsominen
     (kuntaOid: Organisaatio.Oid)(implicit session: ValpasSession)
   : Unit = {
@@ -252,6 +276,7 @@ object ValpasOperation extends Enumeration {
   type ValpasOperation = Value
   val VALPAS_OPPIJA_KATSOMINEN,
       VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN,
+      VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN_HAKUTIEDOILLA,
       VALPAS_KUNNAT_OPPIJAT_KATSOMINEN,
       VALPAS_OPPIJA_KUNTAILMOITUS,
       VALPAS_OPPIJA_HAKU,

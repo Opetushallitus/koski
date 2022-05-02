@@ -62,7 +62,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
           oppilaitosOid,
           HakeutumisvalvontaTieto.Perusopetus,
           haeHakutilanteet = o.oppijaOids,
-        ).tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
+        ).tap(_ => auditLogOppilaitosKatsominenHakutiedoilla(oppilaitosOid, o.oppijaOids))
       ))
     } } (parseErrorHandler = handleUnparseableJson)
   }
