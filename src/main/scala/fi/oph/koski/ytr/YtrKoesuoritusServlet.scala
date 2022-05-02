@@ -15,6 +15,7 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
   val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+  override val unsafeAllowInlineStyles: Boolean = true
 
   val s3config: YtrS3Config = {
     if (Environment.usesAwsSecretsManager) YtrS3Config.fromSecretsManager else YtrS3Config.fromConfig(application.config)

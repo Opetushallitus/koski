@@ -10,8 +10,15 @@ object FrontendValvontaHeaders {
   // ne ignoroidaan ja vain nonce ja strict-dynamic ovat voimassa.
   private def scriptSrc(nonce: String) = s"script-src 'report-sample' 'nonce-${nonce}' 'unsafe-inline' 'strict-dynamic' https: http:"
 
-  // 'unsafe-inline': jätetty vanhoja nonceja tukemattomia selaimia varten: uudet selaimet ignoroivat sen.
-  private def styleSrc(nonce: String) = s"style-src 'report-sample' 'nonce-${nonce}' 'unsafe-inline' 'self' fonts.googleapis.com"
+  // YTL:n koesuorituskopioissa on inline-tyylejä, sitä varten mahdollisuus luoda header ilman noncea
+  private def styleSrc(unsafeAllowInlineStyles: Boolean = false, nonce: String) = {
+    val noncePart = if (unsafeAllowInlineStyles) { "" } else { s"'nonce-${nonce}'"}
+    List(
+      // 'unsafe-inline': jätetty noncen kanssakin vanhoja nonceja tukemattomia selaimia varten: uudet selaimet ignoroivat sen.
+      s"style-src 'report-sample' 'unsafe-inline' 'self' fonts.googleapis.com",
+      noncePart
+    ).mkString(" ")
+  }
 
   private val objectSrc = "object-src 'none'"
 
@@ -24,10 +31,10 @@ object FrontendValvontaHeaders {
   private val reportTo = s"report-to ${cspEndPointGroup}"
   private val reportUri = s"report-uri ${uriForReportUri}"
 
-  // Raameissa on data-fontti, siksi tarvitaan.
-  private val fontSrc = "font-src 'self' data: fonts.gstatic.com fonts.googleapis.com"
+  // Raameissa on data-fontti, siksi tarvitaan. YTL:n koesuorituskopioissa ladataan fontteja digabi.github.io:sta.
+  private val fontSrc = "font-src 'self' data: fonts.gstatic.com fonts.googleapis.com digabi.github.io"
 
-  // Raameissa on data-imageja, siksi tarvitaan
+  // Raameissa ja YTL:n koesuorituksissa on data-imageja, siksi tarvitaan
   private val imgSrc = "img-src 'self' data: analytiikka.opintopolku.fi"
 
   private val connectSrc = "connect-src 'self'"
@@ -50,14 +57,14 @@ object FrontendValvontaHeaders {
 
   private val workerSrc = "worker-src 'none'"
 
-  def headers(allowFrameAncestors: Boolean, mode: FrontendValvontaMode, nonce: String): Map[String, String] = {
+  def headers(allowFrameAncestors: Boolean, mode: FrontendValvontaMode, unsafeAllowInlineStyles: Boolean, nonce: String): Map[String, String] = {
     if (mode != FrontendValvontaMode.DISABLED) {
       val key = mode match {
         case FrontendValvontaMode.REPORT_ONLY => s"Content-Security-Policy-Report-Only"
         case FrontendValvontaMode.ENABLED => s"Content-Security-Policy"
       }
       Map(
-        key -> createString(allowFrameAncestors, nonce),
+        key -> createString(allowFrameAncestors, unsafeAllowInlineStyles, nonce),
         "Report-To" -> s"""{ "group": "${cspEndPointGroup}", "max_age": 10886400, "endpoints": [ { "url": "${uriForReportTo}" } ] }"""
       )
     } else {
@@ -65,11 +72,11 @@ object FrontendValvontaHeaders {
     }
   }
 
-  private def createString(allowRunningInFrame: Boolean, nonce: String): String =
+  private def createString(allowRunningInFrame: Boolean, unsafeAllowInlineStyles: Boolean, nonce: String): String =
     List(
       defaultSrc,
       scriptSrc(nonce),
-      styleSrc(nonce),
+      styleSrc(unsafeAllowInlineStyles, nonce),
       objectSrc,
       baseUri,
       fontSrc,
