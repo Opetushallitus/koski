@@ -2,8 +2,8 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
+
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.ExamplesLukio.{aikuistenOpsinPerusteet2004, aikuistenOpsinPerusteet2015}
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -16,7 +16,6 @@ object ExamplesLukio {
   def oppija(opiskeluoikeus: LukionOpiskeluoikeus) = Oppija(exampleHenkilö, List(opiskeluoikeus))
 
   val aikuistenOpsinPerusteet2015 = "70/011/2015"
-  val aikuistenOpsinPerusteet2004 = "4/011/2004"
 
   lazy val erityisenKoulutustehtävänJakso = ErityisenKoulutustehtävänJakso(date(2012, 9, 1), Some(date(2013, 9, 1)), Koodistokoodiviite("103", Some("Kieliin painottuva koulutus"), "erityinenkoulutustehtava"))
   lazy val ulkomaanjakso = Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla")

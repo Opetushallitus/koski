@@ -1,58 +1,22 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.{PutOpiskeluoikeusTestMethods, TestMethodsLukio}
-import fi.oph.koski.documentation.ExamplesLukio.{aikuistenOpsinPerusteet2015, aineopiskelija}
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, YleissivistavakoulutusExampleData}
-import fi.oph.koski.documentation.ExampleData.suomenKieli
-import fi.oph.koski.documentation.LukioExampleData.{kurssisuoritus, lukionOppiaine, numeerinenArviointi, opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt, valtakunnallinenKurssi, valtakunnallinenVanhanOpsinKurssi}
 import fi.oph.koski.fixture.LukioKurssikertymaRaporttiFixtures
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.raportit.lukio.{LukioKurssikertymaAineopiskelijaRow, LukioKurssikertymaOppimaaraRow, LukioKurssinRahoitusmuotoRow, LukioOppiaineEriVuonnaKorotetutKurssitRow, LukioOppiaineOpiskeluoikeudenUlkopuolisetRow}
+import fi.oph.koski.raportit.lukio.{LukioKurssikertymaAineopiskelijaRow, LukioKurssikertymaOppimaaraRow, LukioKurssinRahoitusmuotoRow, LukioMuutaKauttaRahoitetut, LukioOppiaineEriVuonnaKorotetutKurssit, LukioOppiaineEriVuonnaKorotetutKurssitRow, LukioOppiaineOpiskeluoikeudenUlkopuoliset, LukioOppiaineOpiskeluoikeudenUlkopuolisetRow, LukioOppiaineenOppimaaranKurssikertymat, LukioOppimaaranKussikertymat, LukioRahoitusmuotoEiTiedossa}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LukionOppiaineenOppimääränSuoritus2015, LukionPäätasonSuoritus, Oppija}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
-class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll with PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] {
-  def tag = implicitly[reflect.runtime.universe.TypeTag[LukionOpiskeluoikeus]]
-
-  override def defaultOpiskeluoikeus = TestMethodsLukio.lukionOpiskeluoikeus
+class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
 
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-
-    val aikuisOpiskelija = KoskiSpecificMockOppijat.aikuisOpiskelija
-    val opiskeluOikeusAikuistenOpsilla = aineopiskelija.copy(
-      lähdejärjestelmänId = Some(AmmatillinenExampleData.primusLähdejärjestelmäId("l-0303032")),
-      oppilaitos = Some(YleissivistavakoulutusExampleData.ressunLukio),
-      tila = LukionOpiskeluoikeudenTila(
-        List(
-          LukionOpiskeluoikeusjakso(alku = LukioKurssikertymaRaporttiFixtures.raportinAikajaksoAlku, tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-        )
-      ),
-      suoritukset = List(
-        LukionOppiaineenOppimääränSuoritus2015(
-          koulutusmoduuli = lukionOppiaine("HI", diaarinumero = Some(aikuistenOpsinPerusteet2015)),
-          suorituskieli = suomenKieli,
-          toimipiste = YleissivistavakoulutusExampleData.ressunLukio,
-          osasuoritukset = Some(List(
-            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("HI1")).copy(arviointi = numeerinenArviointi(7, päivä = LukioKurssikertymaRaporttiFixtures.raportinAikajaksoAlku))
-          ))
-        )
-      )
-    )
-
-    putOppija(Oppija(aikuisOpiskelija, List(opiskeluOikeusAikuistenOpsilla))) {
-      verifyResponseStatusOk()
-    }
-
     reloadRaportointikanta
   }
 
@@ -161,17 +125,6 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
         ressunAineopiskelijat.eriVuonnaKorotettujaKursseja shouldBe 1
       }
     }
-    "Aikuisaineopiskelijan välilehti" - {
-      "Oppilaitoksen Oid" in {
-        ressunAikuisAineopiskelijat.oppilaitosOid shouldBe(MockOrganisaatiot.ressunLukio)
-      }
-      "Yhteensä" in {
-        ressunAikuisAineopiskelijat.kurssejaYhteensa shouldBe(1)
-      }
-      "Suoritettuja" in {
-        ressunAikuisAineopiskelijat.suoritettujaKursseja shouldBe(1)
-      }
-    }
     "Muuta kautta rahoitetuttujen välilehti" - {
       "Listan pituus sama kuin aineopiskelijoiden välilehdellä oleva laskuri" in {
         ressunMuutaKauttaRahoitetut.length shouldBe ressunAineopiskelijat.suoritetutTaiRahoitetut_muutaKauttaRahoitetut
@@ -204,12 +157,6 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
 
   lazy val ressunAineopiskelijat = raportti.collectFirst {
     case d: DataSheet if d.title == t.get("raportti-excel-aineopiskelijat-sheet-name") => d.rows.collect {
-      case r: LukioKurssikertymaAineopiskelijaRow => r
-    }
-  }.get.find(_.oppilaitos == "Ressun lukio").get
-
-  lazy val ressunAikuisAineopiskelijat = raportti.collectFirst {
-    case d: DataSheet if d.title == t.get("raportti-excel-aineopiskelijat-aikuisten-ops-sheet-name") => d.rows.collect {
       case r: LukioKurssikertymaAineopiskelijaRow => r
     }
   }.get.find(_.oppilaitos == "Ressun lukio").get

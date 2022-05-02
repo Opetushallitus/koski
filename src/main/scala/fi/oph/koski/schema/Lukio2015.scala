@@ -1,16 +1,9 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.documentation.ExamplesLukio.{aikuistenOpsinPerusteet2004, aikuistenOpsinPerusteet2015}
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, MinItems, OnlyWhen, Title}
 
-trait LukionPäätasonSuoritus2015 extends LukionPäätasonSuoritus with Todistus with Ryhmällinen {
-  def onAikuistenOps(diaari: String) = {
-    List(aikuistenOpsinPerusteet2015, aikuistenOpsinPerusteet2004).contains(diaari)
-  }
-
-  def oppimääränKoodiarvo: Option[String]
-}
+trait LukionPäätasonSuoritus2015 extends LukionPäätasonSuoritus with Todistus with Ryhmällinen
 
 @Description("Lukion oppimäärän suoritustiedot")
 @Title("Lukion oppimäärän suoritus")
@@ -40,9 +33,7 @@ case class LukionOppimääränSuoritus2015(
   with KoulusivistyskieliKieliaineesta
   with Oppimäärällinen
   with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
-  with LukionOppimääränSuoritus {
-  def oppimääränKoodiarvo = Some(oppimäärä.koodiarvo)
-}
+  with LukionOppimääränSuoritus
 
 @Description("Lukion oppiaineen oppimäärän suoritustiedot")
 @Title("Lukion oppiaineen oppimäärän suoritus")
@@ -68,14 +59,7 @@ case class LukionOppiaineenOppimääränSuoritus2015(
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus2015 with OppiaineenOppimääränSuoritus  {
-  def oppimääränKoodiarvo: Option[String] = {
-    koulutusmoduuli match {
-    case diaari: Diaarinumerollinen =>
-      diaari.perusteenDiaarinumero.map(peruste => if (onAikuistenOps(peruste)) "aikuistenops" else "nuortenops")
-    case _ => None
-  }}
-}
+) extends LukionPäätasonSuoritus2015 with OppiaineenOppimääränSuoritus
 
 trait LukionOppimääränOsasuoritus2015 extends LukionOppimääränPäätasonOsasuoritus
 
