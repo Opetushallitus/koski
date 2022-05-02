@@ -313,7 +313,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     runDbSync(DBIO.seq(
       ROsasuoritukset.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete,
       ROsasuoritukset ++= suoritukset,
-    ), timeout = 10.minutes)
+    ), timeout = 60.minutes)
   }
 
   def loadMuuAmmatillinenRaportointi(rows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow]): Unit =
