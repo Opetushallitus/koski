@@ -372,28 +372,28 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
     "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 1.0,
     "Yhteislaajuus (tunnustetut kurssit)" -> 1.0,
     "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 1.0,
-    "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8.0 kurssia",
+    "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8,0 kurssia",
     "XX Ei tiedossa valtakunnallinen" -> "",
-    "A1 Englanti valtakunnallinen" -> "Arvosana 9, 9.0 kurssia",
-    "B1 Ruotsi valtakunnallinen" -> "Arvosana 7, 5.0 kurssia",
-    "B3 Latina valtakunnallinen" -> "Arvosana 9, 2.0 kurssia",
-    "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 9, 15.0 kurssia (joista 1.0 hylättyjä)",
-    "BI Biologia valtakunnallinen" -> "Arvosana 9, 7.5 kurssia",
-    "GE Maantieto valtakunnallinen" -> "Arvosana 8, 2.0 kurssia",
-    "FY Fysiikka valtakunnallinen" -> "Arvosana 8, 13.0 kurssia",
-    "KE Kemia valtakunnallinen" -> "Arvosana 8, 8.0 kurssia",
-    "KT Islam valtakunnallinen" -> "Arvosana 8, 3.0 kurssia",
-    "FI Filosofia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia",
-    "PS Psykologia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia",
-    "HI Historia valtakunnallinen" -> "Arvosana 7, 4.0 kurssia",
-    "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 8, 2.0 kurssia",
-    "LI Liikunta valtakunnallinen" -> "Arvosana 9, 3.0 kurssia",
-    "MU Musiikki valtakunnallinen" -> "Arvosana 8, 1.0 kurssia",
-    "KU Kuvataide valtakunnallinen" -> "Arvosana 9, 2.0 kurssia",
-    "TE Terveystieto valtakunnallinen" -> "Arvosana 9, 1.0 kurssia",
-    "ITT Tanssi ja liike paikallinen" -> "Arvosana 10, 1.0 kurssia",
-    "TO Teemaopinnot valtakunnallinen" -> "Arvosana S, 1.0 kurssia",
-    "OA Oman äidinkielen opinnot valtakunnallinen" -> "Arvosana S, 1.0 kurssia"
+    "A1 Englanti valtakunnallinen" -> "Arvosana 9, 9,0 kurssia",
+    "B1 Ruotsi valtakunnallinen" -> "Arvosana 7, 5,0 kurssia",
+    "B3 Latina valtakunnallinen" -> "Arvosana 9, 2,0 kurssia",
+    "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 9, 15,0 kurssia (joista 1,0 hylättyjä)",
+    "BI Biologia valtakunnallinen" -> "Arvosana 9, 7,5 kurssia",
+    "GE Maantieto valtakunnallinen" -> "Arvosana 8, 2,0 kurssia",
+    "FY Fysiikka valtakunnallinen" -> "Arvosana 8, 13,0 kurssia",
+    "KE Kemia valtakunnallinen" -> "Arvosana 8, 8,0 kurssia",
+    "KT Islam valtakunnallinen" -> "Arvosana 8, 3,0 kurssia",
+    "FI Filosofia valtakunnallinen" -> "Arvosana 8, 1,0 kurssia",
+    "PS Psykologia valtakunnallinen" -> "Arvosana 9, 1,0 kurssia",
+    "HI Historia valtakunnallinen" -> "Arvosana 7, 4,0 kurssia",
+    "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 8, 2,0 kurssia",
+    "LI Liikunta valtakunnallinen" -> "Arvosana 9, 3,0 kurssia",
+    "MU Musiikki valtakunnallinen" -> "Arvosana 8, 1,0 kurssia",
+    "KU Kuvataide valtakunnallinen" -> "Arvosana 9, 2,0 kurssia",
+    "TE Terveystieto valtakunnallinen" -> "Arvosana 9, 1,0 kurssia",
+    "ITT Tanssi ja liike paikallinen" -> "Arvosana 10, 1,0 kurssia",
+    "TO Teemaopinnot valtakunnallinen" -> "Arvosana S, 1,0 kurssia",
+    "OA Oman äidinkielen opinnot valtakunnallinen" -> "Arvosana S, 1,0 kurssia"
   )
 
   lazy val expectedLukiolainenHistorianKurssitRow = Map(
@@ -484,7 +484,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
-      "A1 Englanti valtakunnallinen" -> "Arvosana 7, 3.0 kurssia"
+      "A1 Englanti valtakunnallinen" -> "Arvosana 7, 3,0 kurssia"
     )
 
     lazy val matematiikanOppiaineRow = default + (
@@ -494,7 +494,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
-      "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 8, 5.0 kurssia"
+      "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 8, 5,0 kurssia"
     )
 
     lazy val historiaOppiaineenRow = default + (
@@ -504,7 +504,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
-      "HI Historia valtakunnallinen" -> "Arvosana 9, 4.0 kurssia"
+      "HI Historia valtakunnallinen" -> "Arvosana 9, 4,0 kurssia"
     )
 
     lazy val kemiaOppiaineenRow = default + (
@@ -514,7 +514,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
-      "KE Kemia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia"
+      "KE Kemia valtakunnallinen" -> "Arvosana 8, 1,0 kurssia"
     )
 
     lazy val filosofiaOppiaineenRow = default + (
@@ -525,7 +525,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
       "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
-      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
+      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1,0 kurssia"
     )
 
     lazy val eiSuorituksiaKurssitRow = Map(
