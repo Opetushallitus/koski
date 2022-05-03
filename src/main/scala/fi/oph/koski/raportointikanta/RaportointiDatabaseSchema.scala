@@ -28,6 +28,11 @@ object RaportointiDatabaseSchema {
   def dropSchema(s: Schema) =
     sqlu"DROP SCHEMA #${s.name} CASCADE"
 
+  // Laita tähän vain ne indeksit, jotka tarvitaan inkrementaalisen generoinnin nopeuttamiseksi.
+  def createIndexesForIncrementalUpdate(s: Schema) = DBIO.seq(
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
+  )
+
   def createOpiskeluoikeusIndexes(s: Schema) = DBIO.seq(
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_opiskeluoikeus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(oppija_oid)",
@@ -50,7 +55,6 @@ object RaportointiDatabaseSchema {
 
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_osasuoritus(osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id)",
-    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id, suorituksen_tyyppi, arviointi_paiva)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(sisaltyy_opiskeluoikeuteen_oid)",

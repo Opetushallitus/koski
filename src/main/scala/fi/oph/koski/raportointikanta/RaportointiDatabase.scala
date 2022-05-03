@@ -105,6 +105,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     logger.info((tables.flatMap(_.schema.createStatements) ++ "\n").mkString(";\n"))
   }
 
+  def createIndexesForIncrementalUpdate(): Unit = {
+    runDbSync(RaportointiDatabaseSchema.createIndexesForIncrementalUpdate(schema), timeout = 120.minutes)
+  }
+
   def createOpiskeluoikeusIndexes(): Unit = {
     runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes(schema), timeout = 120.minutes)
   }
