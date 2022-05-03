@@ -30,6 +30,24 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
         }
       }
 
+      "API maskaa hetut ja salaiset opintojen jako-URLit" in {
+        ReportUriLogTester.clearMessages
+
+        post(
+          "api/frontendvalvonta/report-uri",
+          reportUriSample(blockedUri = "/koski/kela/110399-443S", scriptSample = "foo('110399-443S'); bar('/koski/opinnot/1234abcd989af84abe89')"),
+          headers = jsonContent
+        ){
+          verifyResponseStatusOk()
+          val logMessages = ReportUriLogTester.getLogMessages
+          logMessages.length should be(1)
+
+          val expected = JsonMethods.parse(reportUriSample(blockedUri = "/koski/kela/******-****", scriptSample = "foo('******-****'); bar('/koski/opinnot/1234abcd************************')"))
+            .merge(JObject("cspreporturi" -> JBool(true)))
+          JsonMethods.parse(logMessages(0)) should equal(expected)
+        }
+      }
+
       "API ei hyväksy requestiä väärällä content-typellä" in {
         ReportUriLogTester.clearMessages
 
@@ -50,7 +68,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
 
         post(
           "api/frontendvalvonta/report-uri",
-          reportUriSample("F" * 32000),
+          reportUriSample(scriptSample = "F" * 32000),
           headers = jsonContent
         ){
           verifyResponseStatus(403, Nil)
@@ -76,6 +94,28 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
 
           val expected: JValue = (for {
             JArray(objList) <- JsonMethods.parse(reportToSample())
+            objValue <- objList
+          } yield objValue.merge(JObject("frontendreportto" -> JBool(true))))
+            .head
+
+          JsonMethods.parse(logMessages(0)) should equal(expected)
+        }
+      }
+
+      "API maskaa hetut ja salaiset opintojen jako-URLit" in {
+        ReportToLogTester.clearMessages
+
+        post(
+          "api/frontendvalvonta/report-to",
+          reportToSample(blockedUri = "/koski/kela/110399-443S", scriptSample = "foo('110399-443S'); bar('/koski/opinnot/1234abcd989af84abe89')"),
+          headers = jsonContent
+        ){
+          verifyResponseStatusOk()
+          val logMessages = ReportToLogTester.getLogMessages
+          logMessages.length should be(1)
+
+          val expected: JValue = (for {
+            JArray(objList) <- JsonMethods.parse(reportToSample(blockedUri = "/koski/kela/******-****", scriptSample = "foo('******-****'); bar('/koski/opinnot/1234abcd************************')"))
             objValue <- objList
           } yield objValue.merge(JObject("frontendreportto" -> JBool(true))))
             .head
@@ -118,7 +158,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
 
         post(
           "api/frontendvalvonta/report-to",
-          reportToSample("F" * 32000),
+          reportToSample(scriptSample = "F" * 32000),
           headers = jsonContent
         ){
           verifyResponseStatus(403, Nil)
@@ -130,7 +170,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
     }
   }
 
-  private def reportUriSample(scriptSample: String =""): String =
+  private def reportUriSample(blockedUri: String = "https://bar.org", scriptSample: String =""): String =
     s"""
        |{
        |  "csp-report": {
@@ -140,7 +180,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
        |    "effective-directive": "frame-src",
        |    "original-policy": "default-src 'self'; frame-src https://*.foo.org; report-uri /report",
        |    "disposition": "enforce",
-       |    "blocked-uri": "https://bar.org",
+       |    "blocked-uri": "${blockedUri}",
        |    "line-number": 1,
        |    "source-file": "https://virkailija.opintopolku.fi/koski/virkailija/foo",
        |    "status-code": 200,
@@ -149,13 +189,12 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
        |}
        |""".stripMargin
 
-
-  private def reportToSample(scriptSample: String =""): String =
+  private def reportToSample(blockedUri: String = "https://bar.org", scriptSample: String =""): String =
     s"""
        |[{
        |  "age": 12345,
        |  "body": {
-       |    "blocked-uri": "https://bar.org",
+       |    "blocked-uri": "${blockedUri}",
        |    "disposition": "enforce",
        |    "document-uri": "https://virkailija.opintopolku.fi/koski/virkailija/foo",
        |    "effective-directive": "frame-src",

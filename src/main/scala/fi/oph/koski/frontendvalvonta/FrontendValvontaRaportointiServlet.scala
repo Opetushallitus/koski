@@ -1,6 +1,6 @@
 package fi.oph.koski.frontendvalvonta
 
-import fi.oph.koski.log.Logging
+import fi.oph.koski.log.{LogUtils, Logging, MaskedSlf4jRequestLogWriter}
 import fi.oph.koski.servlet.{CacheControlSupport, NoCache, TimedServlet}
 import org.json4s.jackson.JsonMethods
 import org.scalatra.{ContentEncodingSupport, ScalatraServlet}
@@ -15,13 +15,19 @@ class FrontendValvontaRaportointiServlet extends ScalatraServlet with Logging wi
   post("/report-uri") {
     checkBodySize
     checkContentTypeAndEncoding(List("application/json", "application/csp-report"))
-    reportUriService.report(JsonMethods.parse(request.body))
+    val maskedBody = MaskedSlf4jRequestLogWriter.maskSensitiveInformationFrontendUris(
+      LogUtils.maskSensitiveInformation(request.body)
+    )
+    reportUriService.report(JsonMethods.parse(maskedBody))
   }
 
   post("/report-to") {
     checkBodySize
     checkContentTypeAndEncoding(List("application/json", "application/reports+json"))
-    reportToService.report(JsonMethods.parse(request.body))
+    val maskedBody = MaskedSlf4jRequestLogWriter.maskSensitiveInformationFrontendUris(
+      LogUtils.maskSensitiveInformation(request.body)
+    )
+    reportToService.report(JsonMethods.parse(maskedBody))
   }
 
   private def checkBodySize: Unit = {
