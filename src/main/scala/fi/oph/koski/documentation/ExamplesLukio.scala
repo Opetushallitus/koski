@@ -16,6 +16,10 @@ object ExamplesLukio {
   def oppija(opiskeluoikeus: LukionOpiskeluoikeus) = Oppija(exampleHenkilö, List(opiskeluoikeus))
 
   val aikuistenOpsinPerusteet2015 = "70/011/2015"
+  val aikuistenOpsinPerusteet2004 = "4/011/2004"
+
+  val nuortenOpsinPerusteet2015 = "60/011/2015"
+  val nuortenOpsinPerusteet2003 = "33/011/2003"
 
   lazy val erityisenKoulutustehtävänJakso = ErityisenKoulutustehtävänJakso(date(2012, 9, 1), Some(date(2013, 9, 1)), Koodistokoodiviite("103", Some("Kieliin painottuva koulutus"), "erityinenkoulutustehtava"))
   lazy val ulkomaanjakso = Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla")
