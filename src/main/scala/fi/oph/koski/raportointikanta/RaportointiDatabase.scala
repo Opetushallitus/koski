@@ -229,8 +229,14 @@ class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging wit
     }
   }
 
-  def getLatestPäätasonSuoritusId: Long =
-    runDbSync(sql"""SELECT max(paatason_suoritus_id) FROM #${schema.name}.r_paatason_suoritus""".as[Option[Long]])
+  def getLatestSuoritusId: Long =
+    runDbSync(
+      sql"""
+        SELECT greatest(
+          (SELECT max(paatason_suoritus_id) FROM #${schema.name}.r_paatason_suoritus),
+          (SELECT max(osasuoritus_id) FROM #${schema.name}.r_osasuoritus)
+        )
+      """.as[Option[Long]])
       .head
       .getOrElse(0)
 

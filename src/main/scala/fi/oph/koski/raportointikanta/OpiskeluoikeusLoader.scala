@@ -36,7 +36,7 @@ object OpiskeluoikeusLoader extends Logging {
     db.setStatusLoadStarted(mitätöidytStatusName)
     update.foreach(u => {
       db.cloneUpdateableTables(u.sourceDb)
-      suoritusIds.set(db.getLatestPäätasonSuoritusId)
+      suoritusIds.set(db.getLatestSuoritusId)
     })
 
     var loopCount = 0
