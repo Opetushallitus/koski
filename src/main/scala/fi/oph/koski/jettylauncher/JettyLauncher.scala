@@ -8,19 +8,13 @@ import fi.oph.koski.config.{AppConfig, Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLogWriter}
 import io.prometheus.client.exporter.MetricsServlet
-import org.eclipse.jetty.client.HttpClient
 import org.eclipse.jetty.jmx.MBeanContainer
-import org.eclipse.jetty.proxy.ProxyServlet
 import org.eclipse.jetty.server._
 import org.eclipse.jetty.server.handler.gzip.GzipHandler
 import org.eclipse.jetty.server.handler.{HandlerCollection, StatisticsHandler}
 import org.eclipse.jetty.servlet.{ServletContextHandler, ServletHolder}
-import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
-import fi.oph.koski.util.ChainingSyntax._
-
-import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 object JettyLauncher extends App with Logging {
   LogConfiguration.configureLogging()
