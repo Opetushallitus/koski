@@ -66,11 +66,11 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   def casVirkailijaServiceUrl = {
-    serviceRoot + "/cas/virkailija"
+    serviceRoot + "/koski/cas/virkailija"
   }
 
   def casOppijaServiceUrl = {
-    serviceRoot + "/cas/oppija"
+    serviceRoot + "/koski/cas/oppija"
   }
 
   def redirectAfterLogin = {
@@ -99,7 +99,7 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def redirectToVirkailijaLogout = {
     if (ssoConfig.isCasSsoUsed) {
-      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + serviceRoot + "/virkailija")
+      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + serviceRoot + "/koski/virkailija")
     } else {
       redirect(localLoginPage)
     }

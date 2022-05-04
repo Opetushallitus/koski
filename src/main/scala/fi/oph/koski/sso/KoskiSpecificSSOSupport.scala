@@ -8,9 +8,9 @@ trait KoskiSpecificSSOSupport extends SSOSupport {
       case 80 | 443 => ""
       case port: Int => ":" + port
     }
-    protocol + "://" + host + portStr + "/koski"
+    protocol + "://" + host + portStr
   }
 
-  def localLoginPage: String = "/login"
-  def localOppijaLoginPage: String = "/login/oppija/local"
+  def localLoginPage: String = "/koski/login"
+  def localOppijaLoginPage: String = "/koski/login/oppija/local"
 }

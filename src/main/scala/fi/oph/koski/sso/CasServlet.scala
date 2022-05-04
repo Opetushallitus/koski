@@ -19,9 +19,9 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
   private val casService = application.casService
   private val oppijaCreation = application.casOppijaCreationService
 
-  protected def onSuccess: String = params.get("onSuccess").getOrElse("/omattiedot")
-  protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
-  protected def onUserNotFound: String = params.get("onUserNotFound").getOrElse("/eisuorituksia")
+  protected def onSuccess: String = params.get("onSuccess").getOrElse("/koski/omattiedot")
+  protected def onFailure: String = params.get("onFailure").getOrElse("/koski/virhesivu")
+  protected def onUserNotFound: String = params.get("onUserNotFound").getOrElse("/koski/eisuorituksia")
 
   get("/oppija") {
     if (application.config.getString("login.security") == "mock") {

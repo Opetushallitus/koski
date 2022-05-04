@@ -21,9 +21,9 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
       landerHtml
     } else {
       val url = if (koskiSessionOption.exists(_.user.kansalainen)) {
-        "/omattiedot"
+        "/koski/omattiedot"
       } else {
-        "/virkailija"
+        "/koski/virkailija"
       }
       redirect(url)
     }
@@ -31,7 +31,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
 
   get("/virkailija") {
     if (koskiSessionOption.exists(_.hasKelaAccess)) {
-      redirect("/kela")
+      redirect("/koski/kela")
     } else {
       indexHtml
     }
@@ -68,7 +68,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     scriptBundleName = "koski-lander.js",
     raamit = oppijaRaamit,
     scripts = <script id="auth">
-      {setWindowVar("kansalaisenAuthUrl", "login/oppija")}
+      {setWindowVar("kansalaisenAuthUrl", "/koski/login/oppija")}
     </script>,
     responsive = true
   )

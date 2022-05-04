@@ -22,16 +22,16 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
 
   <servlet-mapping>
     <servlet-name>default</servlet-name>
-    <url-pattern>/buildversion.txt</url-pattern>
-    <url-pattern>/favicon.ico</url-pattern>
-    <url-pattern>/js/*</url-pattern>
-    <url-pattern>/css/*</url-pattern>
-    <url-pattern>/external_css/*</url-pattern>
-    <url-pattern>/fonts/*</url-pattern>
-    <url-pattern>/images/*</url-pattern>
-    <url-pattern>/test/*</url-pattern>
-    <url-pattern>/json-schema-viewer/*</url-pattern>
-    <url-pattern>/wsdl/*</url-pattern>
+    <url-pattern>/koski/buildversion.txt</url-pattern>
+    <url-pattern>/koski/favicon.ico</url-pattern>
+    <url-pattern>/koski/js/*</url-pattern>
+    <url-pattern>/koski/css/*</url-pattern>
+    <url-pattern>/koski/external_css/*</url-pattern>
+    <url-pattern>/koski/fonts/*</url-pattern>
+    <url-pattern>/koski/images/*</url-pattern>
+    <url-pattern>/koski/test/*</url-pattern>
+    <url-pattern>/koski/json-schema-viewer/*</url-pattern>
+    <url-pattern>/koski/wsdl/*</url-pattern>
   </servlet-mapping>
 
   <filter>

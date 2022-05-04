@@ -16,7 +16,7 @@ module.exports = {
     kayttooikeudet: './app/Kayttooikeudet.jsx'
   },
   output: {
-    path: __dirname + '/../target/webapp',
+    path: __dirname + '/../target/webapp/koski',
     filename: 'js/koski-[name].js'
   },
   stats: 'normal',
@@ -78,7 +78,7 @@ module.exports = {
         {from: 'node_modules/lodash/lodash.js', to: 'test/lib'},
         {from: 'node_modules/q/q.js', to: 'test/lib'},
         {from: 'node_modules/html2canvas/dist/html2canvas.js', to: 'test/lib'},
-        {from: 'WEB-INF', to: 'WEB-INF'},
+        {from: 'WEB-INF', to: '../WEB-INF'},
         {from: 'node_modules/codemirror/lib/codemirror.js', to: 'js/codemirror'},
         {from: 'node_modules/codemirror/mode/javascript/javascript.js', to: 'js/codemirror'},
         {from: 'node_modules/codemirror/lib/codemirror.css', to: 'css/codemirror'}
