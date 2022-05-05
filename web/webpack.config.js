@@ -13,7 +13,9 @@ module.exports = {
     omadata: './app/omadata/HyvaksyntaLanding.jsx',
     eisuorituksia: './app/EiSuorituksia.jsx',
     korhopankki: './app/Korhopankki.jsx',
-    kayttooikeudet: './app/Kayttooikeudet.jsx'
+    kayttooikeudet: './app/Kayttooikeudet.jsx',
+    applyStyles: './app/applyStyles.js',
+    applyPulssiStyles: './app/applyPulssiStyles.js'
   },
   output: {
     path: __dirname + '/../target/webapp/koski',
