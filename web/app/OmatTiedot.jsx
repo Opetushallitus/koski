@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-undef
 __webpack_nonce__ = window.nonce
-import './applyStyles'
+import(/* webpackChunkName: "styles" */ './style/main.less')
 import './polyfills/polyfills.js'
 import './polyfills/omattiedot-polyfills.js'
 import React from 'react'
