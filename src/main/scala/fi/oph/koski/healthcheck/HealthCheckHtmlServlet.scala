@@ -1,31 +1,75 @@
 package fi.oph.koski.healthcheck
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
 
 class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet{
-  get("/") {
+
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+
+  get("/")(nonce => {
     val healthcheck = application.healthCheck.healthcheckWithExternalSystems
     val version = buildVersionProperties.map(_.getProperty("version", null)).filter(_ != null).getOrElse("local")
     val buildDate = buildVersionProperties.map(_.getProperty("buildDate", null)).filter(_ != null).getOrElse("")
 
+    val style = <style nonce={nonce}>
+      body {{
+        text-align: center;
+      }}
+      .healthcheck-ok {{
+        height: 100%;
+        background: #528a1e;
+        background: linear-gradient(to bottom, darkgreen 0%,green 100%);
+        color: white;
+        font-family: sans-serif;
+      }}
+      .healthcheck-ok-heading {{
+        font-size: 20vw;
+        margin-bottom: 4vw;
+      }}
+      .healthcheck-fail {{
+        height: 100%;
+        background: red;
+      }}
+      .healthcheck-fail-heading {{
+        font-size: 20vw;
+        margin-bottom: 0;
+      }}
+      .healthcheck-fail-errors {{
+        font-size: 4vw;
+        list-style: none;
+        line-height: 5vw;
+        padding-left: 0;
+      }}
+      .healthcheck-version {{
+        font-size: 4vw;
+        padding-bottom: 4vw;
+      }}
+    </style>
+
     val status = healthcheck.isOk match {
       case true =>
-        <div style="height: 100%; background: #528a1e; background: linear-gradient(to bottom, darkgreen 0%,green 100%); color: white; font-family: sans-serif;">
-          <h1 style="font-size: 20vw; margin-bottom: 4vw;">OK</h1>
-          <div style="font-size: 4vw; padding-bottom: 4vw;">{version} — {buildDate}</div>
+        <div class="healthcheck-ok">
+          <h1 class="healthcheck-ok-heading">OK</h1>
+          <div class="healthcheck-version">{version} — {buildDate}</div>
         </div>
       case false =>
-        <div style="height: 100%; background: red;">
-          <h1 style="font-size: 20vw; margin-bottom: 0;">FAIL</h1>
-          <ul style="font-size: 4vw; list-style: none; line-height: 5vw; padding-left: 0;">
+        <div class="healthcheck-fail">
+          <h1 class="healthcheck-fail-heading">FAIL</h1>
+          <ul class="healthcheck-fail-errors" >
             {healthcheck.errors.map(_.key).distinct.map(e => <li>{e}</li>)}
           </ul>
-          <div style="font-size: 4vw; padding-bottom: 4vw;">{version} — {buildDate}</div>
+          <div class="healthcheck-version">{version} — {buildDate}</div>
         </div>
     }
-    <html lang={lang} style="text-align: center;">
+    <html lang={lang}>
+      <head>
+        {style}
+      </head>
       {status}
     </html>
-  }
+  })
 }

@@ -74,7 +74,7 @@
     "q": "^1.5.1",
     "set-value": "^4.0.1",
     "snyk": "1.683",
-    "style-loader": "^0.21.0",
+    "style-loader": "^0.23.1",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.11",
     "yargs-parser": "^13.1.2"
@@ -82,7 +82,7 @@
   "scripts": {
     "eslint": "eslint app --ext .js --ext .jsx --max-warnings=0",
     "build:prod": "webpack -p --bail --define process.env.NODE_ENV=\"'production'\"",
-    "watch": "webpack -d --progress --colors --watch --define process.env.NODE_ENV=${NODE_ENV:=undefined}",
+    "watch": "webpack --devtool inline-source-map --progress --colors --watch --define process.env.NODE_ENV=${NODE_ENV:=undefined}",
     "unit-test": "mocha --require @babel/register --reporter spec ./test/unit-test",
     "unit-test-watch": "mocha -w --require @babel/register --reporter spec ./test/unit-test",
     "test": "node/node test/mocha-chrome-wrapper.js ${MOCHA_URL:=http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'",

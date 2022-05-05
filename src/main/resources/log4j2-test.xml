@@ -19,6 +19,13 @@
     <Logger name="fi.vm.sade.auditlog.Audit" level="INFO" additivity="false">
       <AppenderRef ref="Audit" />
     </Logger>
+    <!-- Content-Security-Policy reporting logs -->
+    <Logger name="fi.oph.koski.frontendvalvonta.ReportUriService" level="INFO" additivity="false">
+      <AppenderRef ref="ReportUri" />
+    </Logger>
+    <Logger name="fi.oph.koski.frontendvalvonta.ReportToService" level="INFO" additivity="false">
+      <AppenderRef ref="ReportTo" />
+    </Logger>
     <!-- Log tests -->
     <Logger name="fi.oph.koski.log.LogMaskingPatternConverterSpec" level="INFO" additivity="false">
       <AppenderRef ref="PluginTest" />
@@ -63,6 +70,12 @@
     </Stub>
     <Stub name="PluginTestMaskedJSON">
       <JsonTemplateLayout eventTemplateUri="classpath:MaskedLogstashJsonEventLayoutV1.json" />
+    </Stub>
+    <Stub name="ReportUri">
+      <PatternLayout pattern="%m" />
+    </Stub>
+    <Stub name="ReportTo">
+      <PatternLayout pattern="%m" />
     </Stub>
   </Appenders>
 </Configuration>

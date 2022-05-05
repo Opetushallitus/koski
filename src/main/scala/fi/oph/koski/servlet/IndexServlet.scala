@@ -1,24 +1,26 @@
 package fi.oph.koski.servlet
 
-import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.util.JsStringInterpolation.{JsStringInterpolation, setWindowVar}
+import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
+import fi.oph.koski.util.JsStringInterpolation.setWindowVar
 import org.scalatra.ScalatraServlet
 
-import scala.xml.Unparsed
-
-
-
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with OmaOpintopolkuSupport {
+
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+
   before("/.+".r) {
     if (!isAuthenticated) {
       redirectToVirkailijaLogin
     }
   }
 
-  get("/") {
+  get("/")(nonce => {
     if (!isAuthenticated) {
       setLangCookieFromDomainIfNecessary
-      landerHtml
+      landerHtml(nonce)
     } else {
       val url = if (koskiSessionOption.exists(_.user.kansalainen)) {
         "/koski/omattiedot"
@@ -27,50 +29,40 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
       }
       redirect(url)
     }
-  }
+  })
 
-  get("/virkailija") {
+  get("/virkailija")(nonce => {
     if (koskiSessionOption.exists(_.hasKelaAccess)) {
       redirect("/koski/kela")
     } else {
-      indexHtml
+      indexHtml(nonce)
     }
+  })
+
+  get("/validointi")(indexHtml)
+
+  get("/uusioppija")(indexHtml)
+
+  get("/oppija/:oid")(indexHtml)
+
+  get("/tiedonsiirrot*")(indexHtml)
+
+  get("/raportit*")(indexHtml)
+
+  get("/kela*")(indexHtml)
+
+  private def indexHtml(nonce: String) =
+    htmlIndex("koski-main.js", raamit = virkailijaRaamit, nonce = nonce)
+
+  private def landerHtml(nonce: String) = {
+    htmlIndex(
+      scriptBundleName = "koski-lander.js",
+      raamit = oppijaRaamit,
+      scripts = <script nonce={nonce} id="auth">
+        {setWindowVar("kansalaisenAuthUrl", "/koski/login/oppija")}
+      </script>,
+      responsive = true,
+      nonce = nonce
+    )
   }
-
-  get("/validointi") {
-    indexHtml
-  }
-
-  get("/uusioppija") {
-    indexHtml
-  }
-
-  get("/oppija/:oid") {
-    indexHtml
-  }
-
-  get("/tiedonsiirrot*") {
-    indexHtml
-  }
-
-  get("/raportit*") {
-    indexHtml
-  }
-
-  get("/kela*") {
-    indexHtml
-  }
-
-  private def indexHtml =
-    htmlIndex("koski-main.js", raamit = virkailijaRaamit)
-
-  private def landerHtml = htmlIndex(
-    scriptBundleName = "koski-lander.js",
-    raamit = oppijaRaamit,
-    scripts = <script id="auth">
-      {setWindowVar("kansalaisenAuthUrl", "/koski/login/oppija")}
-    </script>,
-    responsive = true
-  )
 }
-

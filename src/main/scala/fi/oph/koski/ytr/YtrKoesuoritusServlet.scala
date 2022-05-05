@@ -1,6 +1,7 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresKansalainen}
@@ -10,23 +11,30 @@ import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU,
 import fi.oph.koski.servlet.OppijaHtmlServlet
 
 class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends OppijaHtmlServlet with RequiresKansalainen {
+
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+  override val unsafeAllowInlineStyles: Boolean = true
+
   val s3config: YtrS3Config = {
     if (Environment.usesAwsSecretsManager) YtrS3Config.fromSecretsManager else YtrS3Config.fromConfig(application.config)
   }
 
   private val koesuoritukset: KoesuoritusService = KoesuoritusService(s3config)
 
-  get("/:copyOfExamPaper") {
+  get("/:copyOfExamPaper")(nonce => {
     val examPaper = getStringParam("copyOfExamPaper")
     val hasAccess = hasAccessTo(examPaper)
     if (koesuoritukset.koesuoritusExists(examPaper) && hasAccess) {
+      // TODO: Vaatiikohan YTL koesuoritukset väljemmän CSP:n? Luultavasti on ainakin tyylejä, jotka vaatisivat noncen...
       contentType = if (examPaper.endsWith(".pdf")) "application/pdf" else "text/html"
       koesuoritukset.writeKoesuoritus(examPaper, response.getOutputStream)
     } else {
       logger.warn(s"Exam paper $examPaper not found, hasAccess: $hasAccess")
       haltWithStatus(KoskiErrorCategory.notFound.suoritustaEiLöydy())
     }
-  }
+  })
 
   private def hasAccessTo(examPaper: String): Boolean = {
     logger.debug(s"Tarkistetaan ${if (isHuollettava) "huollettavan" else "oma"} koesuoritus access")

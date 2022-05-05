@@ -1,6 +1,8 @@
+// eslint-disable-next-line no-undef
+__webpack_nonce__ = window.nonce
+import(/* webpackChunkName: "styles" */ './style/main.less')
 import './polyfills/polyfills.js'
 import './polyfills/omattiedot-polyfills.js'
-import './style/main.less'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'

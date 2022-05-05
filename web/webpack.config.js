@@ -17,7 +17,8 @@ module.exports = {
   },
   output: {
     path: __dirname + '/../target/webapp/koski',
-    filename: 'js/koski-[name].js'
+    filename: 'js/koski-[name].js',
+    publicPath: '/koski/'
   },
   stats: 'normal',
   resolve: {

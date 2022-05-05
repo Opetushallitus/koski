@@ -9,8 +9,8 @@ import scala.xml.Node
 trait PiwikNodes {
   def piwikSiteId: String
 
-  def piwikTrackingScriptLoader(piwikHttpStatusCode: Option[Int] = None): Seq[Node] =
-    <script type="text/javascript">
+  def piwikTrackingScriptLoader(nonce: String, piwikHttpStatusCode: Option[Int] = None): Seq[Node] =
+    <script nonce={nonce} type="text/javascript">
       {CommentedPCData(js"""
       window._paq = window._paq || []
       _paq.push(['trackPageView', ${mkPageTitleForJsEval(piwikHttpStatusCode)}])
@@ -18,8 +18,8 @@ trait PiwikNodes {
       """)}
     </script>
 
-  def piwikTrackErrorObject: Seq[Node] =
-    <script type="text/javascript">
+  def piwikTrackErrorObject(nonce: String): Seq[Node] =
+    <script nonce={nonce} type="text/javascript">
       {CommentedPCData(
       """
       window.koskiError && window._paq && _paq.push(['trackEvent', 'LoadError', JSON.stringify({

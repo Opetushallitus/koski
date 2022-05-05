@@ -1,7 +1,9 @@
+// eslint-disable-next-line no-undef
+__webpack_nonce__ = window.nonce
+import(/* webpackChunkName: "styles" */ './style/main.less')
 import './polyfills/polyfills.js'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './style/main.less'
 import HetuLogin from './korhopankki/HetuLogin'
 import Text from './i18n/Text'
 import { currentLocation } from './util/location'

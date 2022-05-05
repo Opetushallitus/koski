@@ -1,8 +1,8 @@
 package fi.oph.koski.pulssi
 
 import java.time.LocalDateTime.now
-
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.html.EiRaameja
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
@@ -10,26 +10,31 @@ import fi.oph.koski.util.FinnishDateFormat.finnishDateTimeFormat
 import org.scalatra.ScalatraServlet
 
 class PulssiHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet {
-  get("/") {
-    htmlIndex("koski-pulssi.js", raamit = EiRaameja, responsive = true)
-  }
 
-  get("/raportti") {
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+
+  get("/") (nonce => {
+    htmlIndex("koski-pulssi.js", raamit = EiRaameja, responsive = true, nonce = nonce)
+  })
+
+  get("/raportti")(nonce => {
     if (!isAuthenticated) {
       redirectToVirkailijaLogin
     }
     if (koskiSessionOption.exists(_.hasGlobalReadAccess)) {
-      raportti
+      raportti(nonce)
     } else {
-      renderStatus(KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia dokumenttiin"))
+      renderStatus(KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia dokumenttiin"), nonce)
     }
-  }
+  })
 
-  private def raportti =
+  private def raportti(nonce: String) = {
     <html lang={lang}>
       <head>
-        {commonHead() ++ piwikTrackingScriptLoader()}
-        <link rel="stylesheet" type="text/css" href="/koski/css/raportti.css"></link>
+        {commonHead(nonce = nonce) ++ piwikTrackingScriptLoader(nonce)}
+        <link nonce={nonce} rel="stylesheet" type="text/css" href="/koski/css/raportti.css"></link>
       </head>
       <body id="raportti">
         <h2>Koski-raportti</h2>
@@ -77,6 +82,7 @@ class PulssiHtmlServlet(implicit val application: KoskiApplication) extends Scal
         </ul>
       </body>
     </html>
+  }
 
   private def pulssi = application.koskiPulssi
   private def percent(x: Int, y: Int) = round(1)(x.toDouble / y.toDouble * 100)

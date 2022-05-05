@@ -1,6 +1,7 @@
 package fi.oph.koski.mydata
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
 import fi.oph.koski.servlet.{OmaOpintopolkuSupport, OppijaHtmlServlet}
 import org.scalatra.ScalatraServlet
@@ -10,6 +11,11 @@ import scala.util.matching.Regex
 
 class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet
   with OppijaHtmlServlet with KoskiSpecificAuthenticationSupport with OmaOpintopolkuSupport with MyDataSupport {
+
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+
 
   val nonErrorPage: Regex = "^(?!/error)\\S+$".r
 
@@ -30,25 +36,25 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
     }
   }
 
-  get("/valtuutus/:memberCode") {
-      landerHtml
-  }
+  get("/valtuutus/:memberCode")(landerHtml)
 
-  get("/kayttooikeudet") {
+  get("/kayttooikeudet")(nonce => {
     htmlIndex(
       scriptBundleName = "koski-kayttooikeudet.js",
       raamit = oppijaRaamit,
-      responsive = true
+      responsive = true,
+      nonce = nonce
     )
-  }
+  })
 
-  get("/error/:message") {
+  get("/error/:message")(nonce => {
     status = 404
-    landerHtml
-  }
+    landerHtml(nonce)
+  })
 
-  private def landerHtml = htmlIndex(
+  private def landerHtml(nonce: String) = htmlIndex(
     scriptBundleName = "koski-omadata.js",
-    responsive = true
+    responsive = true,
+    nonce = nonce
   )
 }

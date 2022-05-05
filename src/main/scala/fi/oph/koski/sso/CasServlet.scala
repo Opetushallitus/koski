@@ -1,6 +1,7 @@
 package fi.oph.koski.sso
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiSpecificAuthenticationSupport, UserLanguage}
@@ -15,6 +16,11 @@ import java.net.URLEncoder.encode
   *  This is where the user lands after a CAS login / logout
   */
 class CasServlet()(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSpecificAuthenticationSupport with NoCache {
+
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+
   private val koskiSessions = application.koskiSessionRepository
   private val casService = application.casService
   private val oppijaCreation = application.casOppijaCreationService
@@ -23,7 +29,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
   protected def onFailure: String = params.get("onFailure").getOrElse("/koski/virhesivu")
   protected def onUserNotFound: String = params.get("onUserNotFound").getOrElse("/koski/eisuorituksia")
 
-  get("/oppija") {
+  get("/oppija")(nonce => {
     if (application.config.getString("login.security") == "mock") {
       request.header("hetu") match {
         case Some(hetu) =>
@@ -67,9 +73,9 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
           redirectAfterLogin
       }
     }
-  }
+  })
 
-  get("/virkailija") {
+  get("/virkailija")(nonce => {
     params.get("ticket") match {
       case Some(ticket) =>
         try {
@@ -94,7 +100,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
         // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.
         redirectAfterLogin
     }
-  }
+  })
 
   // Return url for cas logout
   post("/*") {

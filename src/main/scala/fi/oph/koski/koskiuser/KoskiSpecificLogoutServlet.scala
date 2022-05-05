@@ -1,13 +1,18 @@
 package fi.oph.koski.koskiuser
 
 import java.net.URLEncoder
-
-import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.servlet.{VirkailijaHtmlServlet}
+import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
+import fi.oph.koski.servlet.VirkailijaHtmlServlet
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
 
 class KoskiSpecificLogoutServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with KoskiSpecificSSOSupport {
-  get("/") {
+
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+
+  get("/")(nonce => {
     logger.info("Logged out")
 
     val virkailija = sessionOrStatus match {
@@ -29,7 +34,7 @@ class KoskiSpecificLogoutServlet(implicit val application: KoskiApplication) ext
         case _ => redirectToOppijaLogout(serviceRoot + "/koski")
       }
     }
-  }
+  })
 
   private def encode(param: String) = URLEncoder.encode(param, "UTF-8")
 }

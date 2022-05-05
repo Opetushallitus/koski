@@ -1,16 +1,22 @@
 package fi.oph.koski.servlet
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import org.scalatra.ScalatraServlet
 
 class VirhesivuServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with OmaOpintopolkuSupport {
-  get("/") {
+
+  val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+  val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
+    FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
+
+  get("/")(nonce => {
     response.setHeader("X-Virhesivu", "1") // for korhopankki/HetuLogin.jsx
     <html lang={lang}>
       <head>
         <title>Koski - Virhe</title>
-        <link type="text/css" rel="stylesheet" href="/koski/css/virhesivu.css"/>
-        {oppijaRaamit.script}
+        <link nonce="{nonce}" type="text/css" rel="stylesheet" href="/koski/css/virhesivu.css"/>
+        {oppijaRaamit.script(nonce)}
       </head>
       <body>
         <div class="odottamaton-virhe">
@@ -19,5 +25,5 @@ class VirhesivuServlet(implicit val application: KoskiApplication) extends Scala
         </div>
       </body>
     </html>
-  }
+  })
 }

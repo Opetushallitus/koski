@@ -1,7 +1,6 @@
 package fi.oph.koski.documentation
 
 import java.net.URLEncoder
-
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema._
@@ -15,7 +14,7 @@ import scala.xml.{Elem, Node}
 
 object KoskiSchemaDocumentHtml {
   def mainSchema = KoskiSchema.schema
-  def html(shallowEntities: ClassSchema => Boolean = const(false), focusEntities: ClassSchema => Boolean = const(false), expandEntities: ClassSchema => Boolean = const(true), lang: String) = {
+  def html(shallowEntities: ClassSchema => Boolean = const(false), focusEntities: ClassSchema => Boolean = const(false), expandEntities: ClassSchema => Boolean = const(true), lang: String, nonce: String) = {
     val backlog: List[(String, Option[List[Breadcrumb]])] = buildBacklog(mainSchema, Some(Nil), new ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities, focusEntities, expandEntities).toList
       .sortBy(-_._2.toList.length) // Nones last
     val schemaBacklog = backlog.map {
@@ -28,7 +27,7 @@ object KoskiSchemaDocumentHtml {
     <html lang={lang}>
       <head>
         <title>{title}</title>
-        <link type="text/css" rel="stylesheet" href="/koski/css/schema-printable.css"/>
+        <link nonce={nonce} type="text/css" rel="stylesheet" href="/koski/css/schema-printable.css"/>
       </head>
       <body>
         <h1>{title}</h1>
