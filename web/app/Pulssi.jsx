@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-undef
-__webpack_nonce__ = window.nonce
-import(/* webpackChunkName: "pulssi-styles" */ './style/pulssi.less')
+import './style/pulssi.less'
 import './polyfills/polyfills.js'
 import Bacon from 'baconjs'
 import React from 'react'
