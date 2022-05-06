@@ -77,6 +77,32 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
           logMessages.length should be(0)
         }
       }
+
+      "API poistaa muun Kosken logituksen sotkevat kentät JSON:sta" in {
+        ReportUriLogTester.clearMessages
+
+        val reportWithMaliciousFields = reportUriSample(extraContent =
+          """,
+            |"logSeq": 1,
+            |"log_type": "app"
+            |""".stripMargin)
+        val expectedCleanedReport = reportUriSample()
+
+        post(
+          "api/frontendvalvonta/report-uri",
+          reportWithMaliciousFields,
+          headers = jsonContent
+        ){
+          verifyResponseStatusOk()
+
+          val logMessages = ReportUriLogTester.getLogMessages
+          logMessages.length should be(1)
+
+          val expected = JsonMethods.parse(expectedCleanedReport)
+            .merge(JObject("cspreporturi" -> JBool(true)))
+          JsonMethods.parse(logMessages(0)) should equal(expected)
+        }
+      }
     }
 
     "ReportTo" - {
@@ -167,10 +193,40 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
           logMessages.length should be(0)
         }
       }
+
+      "API poistaa muun Kosken logituksen sotkevat kentät JSON:sta" in {
+        ReportToLogTester.clearMessages
+
+        val reportWithMaliciousFields = reportToSample(extraContent =
+          """,
+            |"logSeq": 1,
+            |"log_type": "app"
+            |""".stripMargin)
+        val expectedCleanedReport = reportToSample()
+
+        post(
+          "api/frontendvalvonta/report-to",
+          reportWithMaliciousFields,
+          headers = jsonContent
+        ){
+          verifyResponseStatusOk()
+
+          val logMessages = ReportToLogTester.getLogMessages
+          logMessages.length should be(1)
+
+          val expected: JValue = (for {
+            JArray(objList) <- JsonMethods.parse(expectedCleanedReport)
+            objValue <- objList
+          } yield objValue.merge(JObject("frontendreportto" -> JBool(true))))
+            .head
+
+          JsonMethods.parse(logMessages(0)) should equal(expected)
+        }
+      }
     }
   }
 
-  private def reportUriSample(blockedUri: String = "https://bar.org", scriptSample: String =""): String =
+  private def reportUriSample(blockedUri: String = "https://bar.org", scriptSample: String ="", extraContent:String = ""): String =
     s"""
        |{
        |  "csp-report": {
@@ -186,10 +242,11 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
        |    "status-code": 200,
        |    "script-sample": "${scriptSample}"
        |  }
+       |  ${extraContent}
        |}
        |""".stripMargin
 
-  private def reportToSample(blockedUri: String = "https://bar.org", scriptSample: String =""): String =
+  private def reportToSample(blockedUri: String = "https://bar.org", scriptSample: String ="", extraContent:String = ""): String =
     s"""
        |[{
        |  "age": 12345,
@@ -208,6 +265,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
        |  "type": "csp",
        |  "url": "https://foo.bar:1234/report-to",
        |  "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36"
+       |  ${extraContent}
        |}]
        |""".stripMargin
 
