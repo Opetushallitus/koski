@@ -5,7 +5,7 @@ import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
 import fi.oph.koski.elasticsearch.ElasticSearchServlet
 import fi.oph.koski.etk.ElaketurvakeskusServlet
 import fi.oph.koski.fixture.FixtureServlet
-import fi.oph.koski.frontendvalvonta.FrontendValvontaRaportointiServlet
+import fi.oph.koski.frontendvalvonta.{FrontendValvontaMode, FrontendValvontaRaportointiServlet}
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
@@ -149,7 +149,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
       mount("/koski/valpas/test", new ValpasTestApiServlet)
     }
 
-    mount("/koski/api/frontendvalvonta", new FrontendValvontaRaportointiServlet)
+    if (FrontendValvontaMode(application.config.getString("frontend-valvonta.mode")) != FrontendValvontaMode.DISABLED) {
+      mount("/koski/api/frontendvalvonta", new FrontendValvontaRaportointiServlet)
+    }
 
     if (Environment.isLocalDevelopmentEnvironment(application.config) && application.config.hasPath("oppijaRaamitProxy")) {
       val proxyPrefix = "/oppija-raamit"
