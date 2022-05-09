@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 9.5.2022
+- Perusopetuksen aineilta ei vaadita enää laajuutta toiminta-alueittain opiskelevilla, vaikka suoritus olisi
+  vahvistettu 1.8.2020 jälkeen.
+
 ## 12.4.2022
 - Opiskeluoikeuden pidennetyn oppivelvollisuuden aikajakson täytyy sisältyä vammaisuusjaksojen aikajaksoihin.
   - Vammaisuuden ja vaikeasti vammaisuuden toisiinsa lomittuvat aikajaksot käsitellään yhtenäisenä aikajaksona validointia varten.
