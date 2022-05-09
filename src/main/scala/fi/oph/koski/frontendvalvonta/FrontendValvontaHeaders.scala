@@ -11,6 +11,7 @@ object FrontendValvontaHeaders {
   private def scriptSrc(nonce: String) = s"script-src 'report-sample' 'nonce-${nonce}' 'unsafe-inline' 'strict-dynamic' https: http:"
 
   // YTL:n koesuorituskopioissa on inline-tyylejä, sitä varten mahdollisuus luoda header ilman noncea
+  // JSON-schema-viewer:ssä on myös jquery-koodin luomia inline-tyylejä
   private def styleSrc(unsafeAllowInlineStyles: Boolean = false, nonce: String) = {
     val noncePart = if (unsafeAllowInlineStyles) { "" } else { s"'nonce-${nonce}'"}
     List(
@@ -22,7 +23,13 @@ object FrontendValvontaHeaders {
 
   private val objectSrc = "object-src 'none'"
 
-  private val baseUri = "base-uri 'none'"
+  // JSON-schema-viewer asettaa baseUri:n
+  private def baseUri(unsafeAllowBaseUri: Boolean = false) = {
+    unsafeAllowBaseUri match {
+      case true => "base-uri 'self'"
+      case _ => "base-uri 'none'"
+    }
+  }
 
   private val uriForReportTo = s"/koski/api/frontendvalvonta/report-to"
   private val uriForReportUri = s"/koski/api/frontendvalvonta/report-uri"
@@ -57,14 +64,14 @@ object FrontendValvontaHeaders {
 
   private val workerSrc = "worker-src 'none'"
 
-  def headers(allowFrameAncestors: Boolean, mode: FrontendValvontaMode, unsafeAllowInlineStyles: Boolean, nonce: String): Map[String, String] = {
+  def headers(allowFrameAncestors: Boolean, mode: FrontendValvontaMode, unsafeAllowInlineStyles: Boolean, unsafeAllowBaseUri: Boolean, nonce: String): Map[String, String] = {
     if (mode != FrontendValvontaMode.DISABLED) {
       val key = mode match {
         case FrontendValvontaMode.REPORT_ONLY => s"Content-Security-Policy-Report-Only"
         case FrontendValvontaMode.ENABLED => s"Content-Security-Policy"
       }
       Map(
-        key -> createString(allowFrameAncestors, unsafeAllowInlineStyles, nonce),
+        key -> createString(allowFrameAncestors, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce),
         "Report-To" -> s"""{ "group": "${cspEndPointGroup}", "max_age": 10886400, "endpoints": [ { "url": "${uriForReportTo}" } ] }"""
       )
     } else {
@@ -72,13 +79,13 @@ object FrontendValvontaHeaders {
     }
   }
 
-  private def createString(allowRunningInFrame: Boolean, unsafeAllowInlineStyles: Boolean, nonce: String): String =
+  private def createString(allowRunningInFrame: Boolean, unsafeAllowInlineStyles: Boolean, unsafeAllowBaseUri: Boolean, nonce: String): String =
     List(
       defaultSrc,
       scriptSrc(nonce),
       styleSrc(unsafeAllowInlineStyles, nonce),
       objectSrc,
-      baseUri,
+      baseUri(unsafeAllowBaseUri),
       fontSrc,
       imgSrc,
       connectSrc,
