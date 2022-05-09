@@ -576,7 +576,7 @@
             <resource>
               <directory>${basedir}/target/webapp</directory>
               <excludes>
-                <exclude>test/**</exclude>
+                <exclude>**/test/**</exclude>
               </excludes>
             </resource>
             <resource>
