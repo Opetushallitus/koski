@@ -2,6 +2,7 @@ package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.db.DatabaseConverters
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.documentation.ExamplesLukio
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
@@ -45,7 +46,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
       create materialized view #${s.name}.lukion_oppiaineen_oppimaaran_kurssikertyma as select
         oppilaitos_oid,
         arviointi_paiva,
-        oppimaara_koodiarvo,
+        perusteen_diaarinumero,
         count(*) yhteensa,
         count(*) filter (where suoritettu) suoritettuja,
         count(*) filter (where tunnustettu) tunnustettuja,
@@ -67,7 +68,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
         select
           oppilaitos_oid,
           osasuoritus.arviointi_paiva,
-          oppimaara_koodiarvo,
+          paatason_suoritus.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero' as perusteen_diaarinumero,
           tunnustettu,
           tunnustettu = false as suoritettu,
           tunnustettu_rahoituksen_piirissa,
@@ -92,7 +93,7 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     group by
       oppilaitos_oid,
       arviointi_paiva,
-      oppimaara_koodiarvo
+      perusteen_diaarinumero
     """
 
   def createIndex(s: Schema) =
@@ -101,6 +102,14 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
 
   private def queryAineopiskelija(oppilaitosOids: List[String], aikaisintaan: LocalDate, viimeistaan: LocalDate, lang: String, oppimäärä: Oppimäärä) = {
     val nimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
+    val tunnetutPerusteet = List(ExamplesLukio.aikuistenOpsinPerusteet2015, ExamplesLukio.aikuistenOpsinPerusteet2004,
+      ExamplesLukio.nuortenOpsinPerusteet2003, ExamplesLukio.nuortenOpsinPerusteet2015)
+    val halututPerusteet = if (oppimäärä.arvo == "nuortenops") {
+      List(ExamplesLukio.nuortenOpsinPerusteet2015, ExamplesLukio.nuortenOpsinPerusteet2003)
+    } else {
+      List(ExamplesLukio.aikuistenOpsinPerusteet2015, ExamplesLukio.aikuistenOpsinPerusteet2004)
+    }
+
     sql"""
       select
         r_organisaatio.#$nimiSarake oppilaitos,
@@ -131,7 +140,11 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
         from lukion_oppiaineen_oppimaaran_kurssikertyma
           where oppilaitos_oid = any($oppilaitosOids)
             and arviointi_paiva between $aikaisintaan and $viimeistaan
-            and (oppimaara_koodiarvo = ${oppimäärä.arvo} or (${oppimäärä.arvo} = 'nuortenops' and oppimaara_koodiarvo is null))
+            and (
+              --- halutaan saada suoritukset, joiden diaarinumero ei tiedossa, nuorten aineopiskelijoiden välilehdelle
+              (${oppimäärä.arvo} = 'nuortenops' and (perusteen_diaarinumero is null or not (perusteen_diaarinumero = any($tunnetutPerusteet))))
+              or (perusteen_diaarinumero = any($halututPerusteet))
+            )
           group by oppilaitos_oid
       ) oppimaaran_kurssikertymat
       left join (
