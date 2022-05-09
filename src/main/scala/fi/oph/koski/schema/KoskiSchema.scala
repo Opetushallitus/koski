@@ -13,6 +13,7 @@ object KoskiSchema {
   lazy val lenientDeserialization = ExtractionContext(schemaFactory, ignoreUnexpectedProperties = true)
   lazy val lenientDeserializationWithIgnoringNonValidatingListItems =
     ExtractionContext(schemaFactory, ignoreUnexpectedProperties = true, ignoreNonValidatingListItems = true)
+  lazy val lenientDeserializationWithoutValidation = ExtractionContext(schemaFactory, ignoreUnexpectedProperties = true, validate = false)
 
   def createSchema(clazz: Class[_]) = schemaFactory.createSchema(clazz) match {
     case s: AnyOfSchema => s

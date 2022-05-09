@@ -1,6 +1,6 @@
 package fi.oph.koski.mocha
 
-import fi.oph.koski.SharedJetty
+import fi.oph.koski.{KoskiApplicationForTests, SharedJetty}
 import fi.oph.koski.util.Files
 import org.scalatest.Tag
 import org.scalatest.freespec.AnyFreeSpec
@@ -9,9 +9,10 @@ trait KoskiParallelMochaSpec extends AnyFreeSpec with KoskiCommandLineSpec {
   def runnerNumber: Int
   "Mocha tests" taggedAs(Tag("parallelmocha")) in {
     val specs = SplitMochaSpecs.takeSpecsForRunner(runnerNumber)
-    SharedJetty.start()
+    val sharedJetty = new SharedJetty(KoskiApplicationForTests)
+    sharedJetty.start()
     //specFiles parameter makes runner.html to only load given spec.js files
-    runTestCommand("mocha-chrome", Seq("scripts/mocha-chrome-test.sh", SharedJetty.baseUrl + s"/test/runner.html?specFiles=$specs"))
+    runTestCommand("mocha-chrome", Seq("scripts/mocha-chrome-test.sh", sharedJetty.baseUrl + s"/test/runner.html?specFiles=$specs"))
   }
 }
 
