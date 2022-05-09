@@ -82,7 +82,25 @@ js-unit-test-watch:
 
 .PHONY: backtest
 backtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.browserstack,\
+	fi.oph.koski.cache,fi.oph.koski.editor,fi.oph.koski.environment,\
+	fi.oph.koski.etk,fi.oph.koski.henkilo,fi.oph.koski.http,\
+	fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto,\
+	fi.oph.koski.koskiuser,fi.oph.koski.localization,fi.oph.koski.log,\
+	fi.oph.koski.luovutuspalvelu,fi.oph.koski.migration,fi.oph.koski.migri,\
+	fi.oph.koski.mocha,fi.oph.koski.mydata,fi.oph.koski.omaopintopolkuloki,\
+	fi.oph.koski.opiskeluoikeus,fi.oph.koski.oppilaitos,fi.oph.koski.oppivelvollisuustieto,\
+	fi.oph.koski.organisaatio,fi.oph.koski.perftest,fi.oph.koski.raportit,\
+	fi.oph.koski.raportointikanta,fi.oph.koski.schedule,fi.oph.koski.schema,\
+	fi.oph.koski.sso,fi.oph.koski.sure,fi.oph.koski.tools,\
+	fi.oph.koski.userdirectory,fi.oph.koski.util,fi.oph.koski.valpas,\
+	fi.oph.koski.valvira,fi.oph.koski.versioning,fi.oph.koski.virta,\
+	fi.oph.koski.ytl,fi.oph.koski.ytr,fi.oph.koski.ytl,fi.oph.koski.meta,\
+	fi.oph.koski.ytl,fi.oph.koski.api,fi.oph.koski.frontendvalvonta"
+
+.PHONY: backtestnonmock
+backtestnonmock:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.nonmockloginsecurity"
 
 .PHONY: fronttest
 fronttest:
@@ -93,7 +111,7 @@ screenshot:
 	ls -t web/target/screenshots|head -1|xargs -I{} open web/target/screenshots/{}
 
 .PHONY: test
-test: backtest fronttest
+test: backtest fronttest backtestnonmock
 
 ### Running application and database
 

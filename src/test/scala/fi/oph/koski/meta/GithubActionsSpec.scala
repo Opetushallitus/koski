@@ -13,19 +13,25 @@ class GithubActionsSpec extends AnyFreeSpec with Matchers {
 
   "Github Actions" - {
     "Tarkistetaan, että tiedostossa run_koski_tests_on_branches.yml on mainittu kaikki testipaketit" in {
-      val branchYaml = Source.fromFile(".github/workflows/run_koski_tests_on_branches.yml").mkString
-      val missing = testPackages.filter(
-        !branchYaml.contains(_)
-      ).toList
-      withClue(s"Missing packages from tests: $missing") { missing.length should be (0) }
+      checkTestIntegrity(".github/workflows/run_koski_tests_on_branches.yml")
     }
 
     "Tarkistetaan, että tiedostossa test_build_deploy_master.yml on mainittu kaikki testipaketit" in {
-      val branchYaml = Source.fromFile(".github/workflows/test_build_deploy_master.yml").mkString
-      val missing = testPackages.filter(
-        !branchYaml.contains(_)
-      ).toList
-      withClue(s"Missing packages from tests: $missing") { missing.length should be (0) }
+      checkTestIntegrity(".github/workflows/test_build_deploy_master.yml")
     }
+  }
+
+  "Local" - {
+    "Tarkistetaan, että tiedostossa Makefile on mainittu kaikki testipaketit" in {
+      checkTestIntegrity("Makefile")
+    }
+  }
+
+  private def checkTestIntegrity(path: String) = {
+    val sourceFile = Source.fromFile(path)
+    val source = sourceFile.mkString
+    sourceFile.close()
+    val missing = testPackages.filter(!source.contains(_)).toList
+    withClue(s"Missing packages from tests: $missing") { missing.length should be (0) }
   }
 }
