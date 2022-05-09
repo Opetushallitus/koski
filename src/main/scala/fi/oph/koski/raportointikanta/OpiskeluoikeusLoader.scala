@@ -36,7 +36,8 @@ object OpiskeluoikeusLoader extends Logging {
     db.setStatusLoadStarted(mitätöidytStatusName)
     update.foreach(u => {
       db.cloneUpdateableTables(u.sourceDb)
-      suoritusIds.set(db.getLatestPäätasonSuoritusId)
+      createIndexesForIncrementalUpdate(db)
+      suoritusIds.set(db.getLatestSuoritusId)
     })
 
     var loopCount = 0
@@ -48,6 +49,7 @@ object OpiskeluoikeusLoader extends Logging {
         result
       } else {
         // Last batch processed; finalize
+        if (update.isEmpty) createIndexesForIncrementalUpdate(db)
         createIndexes(db)
         db.setStatusLoadCompleted(statusName)
         db.setStatusLoadCompleted(mitätöidytStatusName)
@@ -253,6 +255,14 @@ object OpiskeluoikeusLoader extends Logging {
       val rate = (opiskeluoikeusCount + errors) / Math.max(1.0, elapsedSeconds)
       logger.info(s"${if (done) "Ladattiin" else "Ladattu tähän mennessä"} $opiskeluoikeusCount opiskeluoikeutta, $suoritusCount suoritusta, $errors virhettä, ${(rate*60).round} opiskeluoikeutta/min")
     }
+  }
+
+  private def createIndexesForIncrementalUpdate(raportointiDatabase: RaportointiDatabase): Unit = {
+    val indexStartTime = System.currentTimeMillis
+    logger.info("Luodaan osa indekseistä opiskeluoikeuksille...")
+    raportointiDatabase.createIndexesForIncrementalUpdate()
+    val indexElapsedSeconds = (System.currentTimeMillis - indexStartTime)/1000
+    logger.info(s"Luotiin osa indekseistä opiskeluoikeuksille, ${indexElapsedSeconds} s")
   }
 
   private def createIndexes(raportointiDatabase: RaportointiDatabase): Unit = {
