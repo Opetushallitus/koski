@@ -1,5 +1,6 @@
 package fi.oph.koski.valpas
 
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
@@ -29,6 +30,26 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       AuditLogTester.verifyAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN.toString,
         "target" -> Map(ValpasAuditLogMessageField.juuriOrganisaatio.toString -> oppilaitosOid)))
+    }
+  }
+
+  "Oppilaitoksen oppijalistan hakeminen hakutiedoilla tuottaa rivin auditlogiin" taggedAs(ValpasBackendTag) in {
+    val oppilaitosOid = MockOrganisaatiot.jyväskylänNormaalikoulu
+    val oppijaOids = List(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
+    post(
+      getOppijaListHakutiedoillaUrl(oppilaitosOid),
+      JsonSerializer.writeWithRoot(Oppijalista(oppijaOids)),
+      headers = authHeaders(defaultUser) ++ jsonContent,
+    ) {
+      verifyResponseStatusOk()
+      AuditLogTester.verifyAuditLogMessage(Map(
+        "operation" -> ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN_HAKUTIEDOILLA.toString,
+        "target" -> Map(
+          ValpasAuditLogMessageField.juuriOrganisaatio.toString -> oppilaitosOid,
+          ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> oppijaOids.mkString(","),
+          ValpasAuditLogMessageField.sivu.toString -> "1",
+          ValpasAuditLogMessageField.sivuLukumäärä.toString -> "1",
+        )))
     }
   }
 
@@ -84,6 +105,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   def getOppijaUrl(oppijaOid: String) = s"/valpas/api/oppija/$oppijaOid"
 
   def getOppijaListUrl(organisaatioOid: String) = s"/valpas/api/oppijat/$organisaatioOid"
+  def getOppijaListHakutiedoillaUrl(organisaatioOid: String) = s"/valpas/api/oppijat/$organisaatioOid/hakutiedot"
 
   def withoutVariatingEntries[T](headers: Map[String, T]) =
     headers.filterKeys(_ != "Date")

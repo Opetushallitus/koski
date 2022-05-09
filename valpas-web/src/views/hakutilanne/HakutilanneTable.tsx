@@ -28,6 +28,7 @@ import { Oid } from "../../state/common"
 import { perusopetuksenJälkeisetOpiskeluoikeustiedot } from "../../state/opiskeluoikeustiedot"
 import { formatDate } from "../../utils/date"
 import {
+  loadingValue,
   nullableDateValue,
   oppijanNimiValue,
 } from "../../utils/tableDataFormatters/commonFormatters"
@@ -174,9 +175,15 @@ const oppijaToTableData = (
         nullableDateValue(henkilö.syntymäaika),
         ryhmä(opiskeluoikeus),
         perusopetusSuoritettu(opiskeluoikeus),
-        hakemuksenTilaValue(oppija, basePath),
-        valintatilaValue(oppija.hakutilanteet),
-        opiskelupaikanVastaanottotietoValue(oppija.hakutilanteet),
+        oppija.isLoadingHakutilanteet
+          ? loadingValue(true)
+          : hakemuksenTilaValue(oppija, basePath),
+        oppija.isLoadingHakutilanteet
+          ? loadingValue(false)
+          : valintatilaValue(oppija.hakutilanteet),
+        oppija.isLoadingHakutilanteet
+          ? loadingValue(false)
+          : opiskelupaikanVastaanottotietoValue(oppija.hakutilanteet),
         fromNullableValue(
           perusopetuksenJälkeisetOpiskeluoikeustiedot(
             oppija.oppija.opiskeluoikeudet

@@ -13,6 +13,7 @@ import {
   getTableContents,
   setTableTextFilter,
   toggleTableSort,
+  waitTableLoadingHasFinished,
 } from "../integrationtests-env/browser/datatable"
 import { isCheckboxChecked } from "../integrationtests-env/browser/forms"
 import { loginAs } from "../integrationtests-env/browser/reset"
@@ -31,6 +32,7 @@ import {
   internationalSchoolOid,
   jyväskylänNormaalikouluOid,
   kulosaarenAlaAsteOid,
+  saksalainenKouluOid,
 } from "./oids"
 import {
   selectOrganisaatio,
@@ -89,6 +91,13 @@ const internationalSchoolHakutilannePath = hakutilannePathWithOrg.href(
   }
 )
 
+const saksalainenKouluHakutilannePath = hakutilannePathWithOrg.href(
+  "/virkailija",
+  {
+    organisaatioOid: saksalainenKouluOid,
+  }
+)
+
 const kulosaarenOppijaOid = "1.2.246.562.24.00000000029"
 const viikinNormaalikouluOid = "1.2.246.562.10.81927839589"
 
@@ -118,6 +127,8 @@ describe("Hakutilannenäkymä", () => {
       ".card__header",
       "Hakeutumisvelvollisia oppijoita (0)"
     )
+
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {
@@ -138,6 +149,8 @@ describe("Hakutilannenäkymä", () => {
       ".card__header",
       "Hakeutumisvelvollisia oppijoita (5)"
     )
+
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Toimii koulutustoimijatason käyttäjällä", async () => {
@@ -168,6 +181,7 @@ describe("Hakutilannenäkymä", () => {
     ]
 
     expect(organisaatiot).toEqual(expectedOrganisaatiot)
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Toimii passivoidun organisaation käyttäjällä", async () => {
@@ -205,6 +219,7 @@ describe("Hakutilannenäkymä", () => {
 
     await clickElement(".oppijaview__backbutton a")
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa filttereiden tai järjestyksen tilaa", async () => {
@@ -216,6 +231,7 @@ describe("Hakutilannenäkymä", () => {
     await toggleTableSort(selector, 1)
 
     // Ota snapshot talteen taulukon tilasta
+    await waitTableLoadingHasFinished(".hakutilanne")
     const contentsBefore = await getTableContents(selector)
 
     // Käy jossakin oppijanäkymässä
@@ -226,6 +242,7 @@ describe("Hakutilannenäkymä", () => {
     // Taulukon tilan pitäisi olla sama kuin aiemmin
     await urlIsEventually(pathToUrl(jklHakutilannePath))
     const contentsAfter = await getTableContents(selector)
+    await waitTableLoadingHasFinished(".hakutilanne")
     expect(contentsAfter).toEqual(contentsBefore)
   })
 
@@ -239,6 +256,8 @@ describe("Hakutilannenäkymä", () => {
 
     await clickElement(".oppijaview__backbutton a")
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath), 5000)
+
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Muu haku -täppä toimii ja tallentuu", async () => {
@@ -260,6 +279,8 @@ describe("Hakutilannenäkymä", () => {
     const stateAfterReload = await getState()
 
     expect(stateAfterReload).toEqual(stateBeforeReload)
+
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Organisaation vaihtaminen muistaa muu haku -valinnat", async () => {
@@ -286,6 +307,8 @@ describe("Hakutilannenäkymä", () => {
     const stateAfterOrgChange = await getState()
 
     expect(stateBeforeOrgChange).toEqual(stateAfterOrgChange)
+
+    await waitTableLoadingHasFinished(".hakutilanne")
   })
 
   it("Näyttää listan oppijoista international schoolille", async () => {
@@ -295,6 +318,17 @@ describe("Hakutilannenäkymä", () => {
     await dataTableEventuallyEquals(
       ".hakutilanne",
       internationalSchoolTableContent,
+      "|"
+    )
+  })
+
+  it("Epäonnistunut hakutietojen haku näyttää virheilmoituksen", async () => {
+    await loginAs(hakutilannePath, "valpas-monta")
+    await urlIsEventually(pathToUrl(saksalainenKouluHakutilannePath))
+    await setTableTextFilter(".hakutilanne", 1, "sure-haut-aina-epäonnistuvat")
+    await dataTableEventuallyEquals(
+      ".hakutilanne",
+      "Sure-haut-aina-epäonnistuvat Valpas  | 18.7.2004 | 9C  | – | Virhe oppijan hakuhistorian hakemisessa | – | – | – |",
       "|"
     )
   })

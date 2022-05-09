@@ -21,7 +21,7 @@ abstract class ValpasOpiskeluoikeusInserterScenario {
 
 
   def opiskeluoikeudet(x: Int) = {
-    val peruskoulu = Oppilaitos(peruskoulut.next, None, None)
+    val peruskoulu = Oppilaitos(peruskoulut.next.oppilaitos, None, None)
 
     val yhdeksännenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
       koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero),

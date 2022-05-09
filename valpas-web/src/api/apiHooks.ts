@@ -13,7 +13,7 @@ import {
 import { useSafeState } from "../state/useSafeState"
 import { pluck } from "../utils/objects"
 import { ApiFailure, ApiResponse, ApiSuccess } from "./apiFetch"
-import { isSuccess, isSuccessAndFinished } from "./apiUtils"
+import { isError, isSuccess, isSuccessAndFinished } from "./apiUtils"
 import { ApiCache } from "./cache"
 
 export type ApiLoading = null
@@ -54,6 +54,87 @@ export const useApiWithParams = <T, P extends any[]>(
     }
   }, [JSON.stringify(params)]) // eslint-disable-line react-hooks/exhaustive-deps
   return api
+}
+
+/**
+ * Tekee peräkkäisiä asynkronisia kutsuja funktiolla `fetchFn`, joka saa parametrinsa joka iteraatiolla
+ * kutsuttavalta `getNext`-funktiolta. Sekvenssi loppuu, kunnes hook unmountataan tai `getNext` palauttaa arvon
+ * null. Hookille annetaan parametrina alkutila `initialState`, jonka `getNext` saa ensimmäisellä iteraatiolla.
+ * getNext palauttaa tuplen, jonka sisältö on [fetchFn:lle annettavat parametrit, seuraavalle iteraation tila]
+ * tai null, jos ei haluta enää tehdä uusia kutsuja.
+ *
+ * Hook palauttaa listan tehdyistä ja mahdollisesti käynnissä olevista kutsuista.
+ * Kutsujan vastuu on yhdistää itse listasta saadut datat ja/tai virheet kutsupaikallaan.
+ * 
+ * Esimerkki:
+  
+  const numberFetches = useApiSequence(
+    fetchPhoneNumberForName,
+    ["Alice", "Bob", "Celestia"],
+    useCallback(
+      (names) => {
+        const [nextName, ...rest] = names
+        if (nextName) {
+          const fetchParams: Parameters<typeof fetchPhoneNumberForName> = [nextName]
+          return [fetchParams, rest]
+        }
+        return null
+      },
+      []
+    ),
+  )
+
+  const numbers = useMemo(
+    () => A.flatten(numberFetches.filter(isSuccess).map((r) => r.data)),
+    [numberFetches]
+  )
+  
+ *
+ */
+export const useApiSequence = <T, P extends any[], S>(
+  fetchFn: (...params: P) => Promise<ApiResponse<T>>,
+  initialState: S,
+  getNext: (state: S) => [P, S] | null,
+  cache?: ApiCache<T, P>
+): ApiMethodState<T>[] => {
+  const api = useApiMethod(fetchFn, cache)
+  const doFetch = api.call
+  const [results, setResults] = useSafeState<ApiMethodState<T>[]>([])
+
+  useOnApiSuccess(api, (result) => {
+    setResults([...results, result])
+  })
+
+  useOnApiError(api, (result) => {
+    setResults([...results, result])
+  })
+
+  useEffect(() => {
+    setResults([])
+  }, [initialState, setResults])
+
+  useEffect(() => {
+    let state = initialState
+    let cancelled = false
+
+    const runNext = async () => {
+      const next = getNext(state)
+      if (next !== null && !cancelled) {
+        const [params, nextState] = next
+        await doFetch(...params)
+        state = nextState
+        setTimeout(runNext)
+      }
+    }
+
+    runNext()
+
+    return () => {
+      cancelled = true
+    }
+  }, [doFetch, getNext, initialState])
+
+  return results
 }
 
 /**
@@ -173,6 +254,24 @@ export const useOnApiSuccess = <T, P extends any[]>(
       }
     } else {
       dataRef.current = null
+    }
+  }, [hook, handler])
+}
+
+export const useOnApiError = <T, P extends any[]>(
+  hook: ApiMethodHook<T, P>,
+  handler: (hook: ApiMethodStateError) => void
+) => {
+  const errorsRef = useRef(isError(hook) ? hook.errors : null)
+
+  useEffect(() => {
+    if (isError(hook)) {
+      if (hook.errors !== errorsRef.current) {
+        errorsRef.current = hook.errors
+        handler(hook)
+      }
+    } else {
+      errorsRef.current = null
     }
   }, [hook, handler])
 }

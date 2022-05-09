@@ -1914,7 +1914,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
     val alku = rajapäivätService.tarkastelupäivä
 
     val keskeytykset = oppijaLaajatTiedotService
-      .getOppijaLaajatTiedotYhteystiedoilla(oppija.oid)(kuntaSession)
+      .getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppija.oid)(kuntaSession)
       .map(_.oppivelvollisuudenKeskeytykset)
 
     keskeytykset shouldBe Right(Seq.empty)
@@ -1938,7 +1938,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
     result shouldBe Right(expectedKeskeytys)
 
     val keskeytykset2 = oppijaLaajatTiedotService
-      .getOppijaLaajatTiedotYhteystiedoilla(oppija.oid)(kuntaSession)
+      .getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppija.oid)(kuntaSession)
       .map(_.oppivelvollisuudenKeskeytykset)
 
     keskeytykset2 shouldBe Right(List(expectedKeskeytys))
@@ -1970,7 +1970,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
     result shouldBe Right(expectedKeskeytys)
 
     val keskeytykset = oppijaLaajatTiedotService
-      .getOppijaLaajatTiedotYhteystiedoilla(oppija.oid)(kuntaSession)
+      .getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppija.oid)(kuntaSession)
       .map(_.oppivelvollisuudenKeskeytykset)
 
     keskeytykset shouldBe Right(List(expectedKeskeytys))

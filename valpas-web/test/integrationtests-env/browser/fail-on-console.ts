@@ -6,7 +6,7 @@ export const BAD_REQUEST = "400 (Bad Request)"
 
 const errorLogLevels = [logging.Level.SEVERE, logging.Level.WARNING]
 
-type NetworkErrorCase = [string, string]
+type NetworkErrorCase = [string | RegExp, string]
 const globalAllowedNetworkErrors: NetworkErrorCase[] = [
   // Virkailijanäkymä:
   ["/valpas/api/user", UNAUTHORIZED],
@@ -22,6 +22,7 @@ const globalAllowedNetworkErrors: NetworkErrorCase[] = [
     "",
     "SharedArrayBuffer will require cross-origin isolation as of M91, around May 2021.",
   ],
+  [new RegExp("/valpas/api/oppijat/[\\d\\.]+/hakutiedot"), UNAUTHORIZED],
 ]
 let testCaseSpecificAllowedNetworkErrors: NetworkErrorCase[] = []
 
@@ -51,7 +52,15 @@ function isAllowedError(message: string) {
     ...testCaseSpecificAllowedNetworkErrors,
   ].some(
     ([pathSlice, messageSlice]) =>
-      message.split(" ")[0]?.includes(pathSlice) &&
-      message.includes(messageSlice)
+      matches(message, pathSlice) && message.includes(messageSlice)
   )
+}
+
+function matches(message: string, pattern: string | RegExp): boolean {
+  const slice = message.split(" ")[0]
+  if (typeof pattern === "string") {
+    return Boolean(slice?.includes(pattern))
+  } else {
+    return Boolean(slice?.match(pattern))
+  }
 }

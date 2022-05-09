@@ -30,6 +30,7 @@ export type OppijaHakutilanteillaSuppeatTiedot = {
   kuntailmoitukset: KuntailmoitusSuppeatTiedot[]
   oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
   lisätiedot: OpiskeluoikeusLisätiedot[]
+  isLoadingHakutilanteet?: boolean // Frontendin käyttämä apuproperty
 }
 
 export type OppijaLaajatTiedot = {

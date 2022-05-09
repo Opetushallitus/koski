@@ -89,6 +89,28 @@ export const fetchOppijat = (organisaatioOid: Oid) =>
 export const fetchOppijatCache = createPreferLocalCache(fetchOppijat)
 
 /**
+ * Hae suppeat tiedot oppijoista hakutiedoilla annetun listan oppijoista
+ */
+export const fetchOppijatHakutiedoilla = (
+  organisaatioOid: Oid,
+  oppijaOids: Oid[]
+) =>
+  handleExpiredSession(
+    apiPost<OppijaHakutilanteillaSuppeatTiedot[]>(
+      `valpas/api/oppijat/${organisaatioOid}/hakutiedot`,
+      {
+        body: {
+          oppijaOids,
+        },
+      }
+    )
+  )
+
+export const fetchOppijatHakutiedoillaCache = createPreferLocalCache(
+  fetchOppijatHakutiedoilla
+)
+
+/**
  * Hae suppeat tiedot nivelvaiheen oppijoista
  */
 export const fetchNivelvaiheenOppijat = (organisaatioOid: Oid) =>
@@ -100,6 +122,28 @@ export const fetchNivelvaiheenOppijat = (organisaatioOid: Oid) =>
 
 export const fetchNivelvaiheenOppijatCache = createPreferLocalCache(
   fetchNivelvaiheenOppijat
+)
+
+/**
+ * Hae suppeat tiedot nivelvaiheen oppijoista hakutiedoilla annetun listan oppijoista
+ */
+export const fetchNivelvaiheenOppijatHakutiedoilla = (
+  organisaatioOid: Oid,
+  oppijaOids: Oid[]
+) =>
+  handleExpiredSession(
+    apiPost<OppijaHakutilanteillaSuppeatTiedot[]>(
+      `valpas/api/oppijat-nivelvaihe/${organisaatioOid}/hakutiedot`,
+      {
+        body: {
+          oppijaOids,
+        },
+      }
+    )
+  )
+
+export const fetchNivelvaiheenOppijatHakutiedoillaCache = createPreferLocalCache(
+  fetchNivelvaiheenOppijatHakutiedoilla
 )
 
 /**

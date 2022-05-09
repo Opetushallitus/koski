@@ -16,6 +16,7 @@ import {
   getTableContents,
   setTableTextFilter,
   toggleTableSort,
+  waitTableLoadingHasFinished,
 } from "../integrationtests-env/browser/datatable"
 import {
   loginAs,
@@ -133,6 +134,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await loginAs(suorittaminenListaPath, "valpas-viikin-normaalikoulu-2-aste")
     await urlIsEventually(pathToUrl(viikinNormaalikouluSuorittaminenPath))
     await textEventuallyEquals(".card__header", "Oppivelvolliset (0)")
+    await waitTableLoadingHasFinished(".suorittaminen")
   })
 
   it("Vaihtaa taulun sisällön organisaatiovalitsimesta", async () => {
@@ -145,6 +147,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await selectOrganisaatio(1)
     await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
     await textEventuallyEquals(".card__header", "Oppivelvolliset (15)")
+    await waitTableLoadingHasFinished(".suorittaminen")
   })
 
   it("Toimii koulutustoimijatason käyttäjällä", async () => {
@@ -175,6 +178,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     ]
 
     expect(organisaatiot).toEqual(expectedOrganisaatiot)
+    await waitTableLoadingHasFinished(".suorittaminen")
   })
 
   it("Toimii passivoidun organisaation käyttäjällä", async () => {
@@ -183,6 +187,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await selectOrganisaatioByNimi("LAKKAUTETTU: Aapajoen koulu")
     await urlIsEventually(pathToUrl(aapajokiSuorittaminenPath))
     await textEventuallyEquals(".card__header", "Oppivelvolliset (0)")
+    await waitTableLoadingHasFinished(".suorittaminen")
   })
 
   it("Käyminen oppijakohtaisessa näkymässä ei hukkaa valittua organisaatiota, filttereiden tai järjestyksen tilaa", async () => {
@@ -197,6 +202,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     await toggleTableSort(selector, 1)
 
     // Ota snapshot talteen taulukon tilasta
+    await waitTableLoadingHasFinished(".suorittaminen")
     const contentsBefore = await getTableContents(selector)
 
     // Käy jossakin oppijanäkymässä
@@ -208,6 +214,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     // Taulukon tilan pitäisi olla sama kuin aiemmin
     await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
+    await waitTableLoadingHasFinished(".suorittaminen")
     const contentsAfter = await getTableContents(selector)
     expect(contentsAfter).toEqual(contentsBefore)
   })
@@ -231,6 +238,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await goToLocation(suorittaminenKuntailmoitusListaJklPath)
     await expectElementEventuallyVisible(oppijaRowSelector)
+    await waitTableLoadingHasFinished(".suorittaminen")
   })
 
   it("Kuntailmoituksen tekeminen oppijasta, jolla ei ole voimassaolevaa opiskeluoikeuttaa, poistaa rivin listasta ja lisää uuden rivin ilmoituslistaan", async () => {
@@ -252,6 +260,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await goToLocation(suorittaminenKuntailmoitusListaJklPath)
     await expectElementEventuallyVisible(oppijaRowSelector)
+    await waitTableLoadingHasFinished(".suorittaminen")
   })
 })
 
