@@ -1,0 +1,3851 @@
+{
+  "henkilö": {
+    "oid": "1.2.246.562.24.00000000064",
+    "hetu": "170186-854H",
+    "etunimet": "Ida",
+    "sukunimi": "International",
+    "kutsumanimi": "Ida"
+  },
+  "opiskeluoikeudet": [
+    {
+      "oid": "1.2.246.562.15.88408121346",
+      "versionumero": 1,
+      "aikaleima": "2022-04-25T13:30:13.059046",
+      "oppilaitos": {
+        "oid": "1.2.246.562.10.67636414343",
+        "oppilaitosnumero": {
+          "koodiarvo": "03510",
+          "nimi": {
+            "fi": "International School of Helsinki",
+            "sv": "International School of Helsinki",
+            "en": "International School of Helsinki"
+          },
+          "lyhytNimi": {
+            "fi": "International School of Helsinki",
+            "sv": "International School of Helsinki",
+            "en": "International School of Helsinki"
+          },
+          "koodistoUri": "oppilaitosnumero"
+        },
+        "nimi": {
+          "fi": "International School of Helsinki",
+          "sv": "International School of Helsinki",
+          "en": "International School of Helsinki"
+        },
+        "kotipaikka": {
+          "koodiarvo": "091",
+          "nimi": {
+            "fi": "Helsinki",
+            "sv": "Helsingfors"
+          },
+          "koodistoUri": "kunta"
+        }
+      },
+      "koulutustoimija": {
+        "oid": "1.2.246.562.10.27056241949",
+        "nimi": {
+          "fi": "Helsingin kansainvälisen koulun vanhempainyhdistys ry"
+        },
+        "yTunnus": "0276078-3",
+        "kotipaikka": {
+          "koodiarvo": "091",
+          "nimi": {
+            "fi": "Helsinki",
+            "sv": "Helsingfors"
+          },
+          "koodistoUri": "kunta"
+        }
+      },
+      "tila": {
+        "opiskeluoikeusjaksot": [
+          {
+            "alku": "2004-08-15",
+            "tila": {
+              "koodiarvo": "lasna",
+              "nimi": {
+                "fi": "Läsnä",
+                "sv": "Närvarande",
+                "en": "Present"
+              },
+              "koodistoUri": "koskiopiskeluoikeudentila",
+              "koodistoVersio": 1
+            }
+          },
+          {
+            "alku": "2018-06-30",
+            "tila": {
+              "koodiarvo": "valmistunut",
+              "nimi": {
+                "fi": "Valmistunut",
+                "sv": "Utexaminerad",
+                "en": "Graduated"
+              },
+              "koodistoUri": "koskiopiskeluoikeudentila",
+              "koodistoVersio": 1
+            }
+          }
+        ]
+      },
+      "suoritukset": [
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "explorer",
+              "nimi": {
+                "fi": "Grade explorer",
+                "en": "Grade explorer"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2006-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LA",
+                  "nimi": {
+                    "fi": "Language Arts",
+                    "en": "Language Arts"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MA",
+                  "nimi": {
+                    "fi": "Mathematics",
+                    "en": "Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PE",
+                  "nimi": {
+                    "fi": "Physical Education",
+                    "en": "Physical Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "VA",
+                  "nimi": {
+                    "fi": "Visual Art",
+                    "en": "Visual Art"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MU",
+                  "nimi": {
+                    "fi": "Music",
+                    "en": "Music"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "ICT",
+                  "nimi": {
+                    "fi": "ICT",
+                    "en": "ICT"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LIB",
+                  "nimi": {
+                    "fi": "Library",
+                    "en": "Library"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolpypvuosiluokka",
+            "nimi": {
+              "fi": "International school PYP vuosiluokka",
+              "sv": "International school PYP årskurs",
+              "en": "International school PYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2005-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "1",
+              "nimi": {
+                "fi": "Grade 1",
+                "en": "Grade 1"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2007-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LA",
+                  "nimi": {
+                    "fi": "Language Arts",
+                    "en": "Language Arts"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MA",
+                  "nimi": {
+                    "fi": "Mathematics",
+                    "en": "Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "FMT",
+                  "nimi": {
+                    "fi": "Finnish Mother Tongue",
+                    "en": "Finnish Mother Tongue"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PE",
+                  "nimi": {
+                    "fi": "Physical Education",
+                    "en": "Physical Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "VA",
+                  "nimi": {
+                    "fi": "Visual Art",
+                    "en": "Visual Art"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MU",
+                  "nimi": {
+                    "fi": "Music",
+                    "en": "Music"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "ICT",
+                  "nimi": {
+                    "fi": "ICT",
+                    "en": "ICT"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LIB",
+                  "nimi": {
+                    "fi": "Library",
+                    "en": "Library"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolpypvuosiluokka",
+            "nimi": {
+              "fi": "International school PYP vuosiluokka",
+              "sv": "International school PYP årskurs",
+              "en": "International school PYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2006-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "2",
+              "nimi": {
+                "fi": "Grade 2",
+                "en": "Grade 2"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2008-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LA",
+                  "nimi": {
+                    "fi": "Language Arts",
+                    "en": "Language Arts"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MA",
+                  "nimi": {
+                    "fi": "Mathematics",
+                    "en": "Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "FMT",
+                  "nimi": {
+                    "fi": "Finnish Mother Tongue",
+                    "en": "Finnish Mother Tongue"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PE",
+                  "nimi": {
+                    "fi": "Physical Education",
+                    "en": "Physical Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "VA",
+                  "nimi": {
+                    "fi": "Visual Art",
+                    "en": "Visual Art"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MU",
+                  "nimi": {
+                    "fi": "Music",
+                    "en": "Music"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "ICT",
+                  "nimi": {
+                    "fi": "ICT",
+                    "en": "ICT"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LIB",
+                  "nimi": {
+                    "fi": "Library",
+                    "en": "Library"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolpypvuosiluokka",
+            "nimi": {
+              "fi": "International school PYP vuosiluokka",
+              "sv": "International school PYP årskurs",
+              "en": "International school PYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2007-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "3",
+              "nimi": {
+                "fi": "Grade 3",
+                "en": "Grade 3"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2009-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LA",
+                  "nimi": {
+                    "fi": "Language Arts",
+                    "en": "Language Arts"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MA",
+                  "nimi": {
+                    "fi": "Mathematics",
+                    "en": "Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "FMT",
+                  "nimi": {
+                    "fi": "Finnish Mother Tongue",
+                    "en": "Finnish Mother Tongue"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PE",
+                  "nimi": {
+                    "fi": "Physical Education",
+                    "en": "Physical Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "VA",
+                  "nimi": {
+                    "fi": "Visual Art",
+                    "en": "Visual Art"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MU",
+                  "nimi": {
+                    "fi": "Music",
+                    "en": "Music"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "ICT",
+                  "nimi": {
+                    "fi": "ICT",
+                    "en": "ICT"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LIB",
+                  "nimi": {
+                    "fi": "Library",
+                    "en": "Library"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolpypvuosiluokka",
+            "nimi": {
+              "fi": "International school PYP vuosiluokka",
+              "sv": "International school PYP årskurs",
+              "en": "International school PYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2008-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "4",
+              "nimi": {
+                "fi": "Grade 4",
+                "en": "Grade 4"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2010-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LA",
+                  "nimi": {
+                    "fi": "Language Arts",
+                    "en": "Language Arts"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MA",
+                  "nimi": {
+                    "fi": "Mathematics",
+                    "en": "Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "FMT",
+                  "nimi": {
+                    "fi": "Finnish Mother Tongue",
+                    "en": "Finnish Mother Tongue"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PE",
+                  "nimi": {
+                    "fi": "Physical Education",
+                    "en": "Physical Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "VA",
+                  "nimi": {
+                    "fi": "Visual Art",
+                    "en": "Visual Art"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MU",
+                  "nimi": {
+                    "fi": "Music",
+                    "en": "Music"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "ICT",
+                  "nimi": {
+                    "fi": "ICT",
+                    "en": "ICT"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LIB",
+                  "nimi": {
+                    "fi": "Library",
+                    "en": "Library"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolpypvuosiluokka",
+            "nimi": {
+              "fi": "International school PYP vuosiluokka",
+              "sv": "International school PYP årskurs",
+              "en": "International school PYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2009-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "5",
+              "nimi": {
+                "fi": "Grade 5",
+                "en": "Grade 5"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2011-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LA",
+                  "nimi": {
+                    "fi": "Language Arts",
+                    "en": "Language Arts"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MA",
+                  "nimi": {
+                    "fi": "Mathematics",
+                    "en": "Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PE",
+                  "nimi": {
+                    "fi": "Physical Education",
+                    "en": "Physical Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "VA",
+                  "nimi": {
+                    "fi": "Visual Art",
+                    "en": "Visual Art"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MU",
+                  "nimi": {
+                    "fi": "Music",
+                    "en": "Music"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "ICT",
+                  "nimi": {
+                    "fi": "ICT",
+                    "en": "ICT"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LIB",
+                  "nimi": {
+                    "fi": "Library",
+                    "en": "Library"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolpypoppiaine",
+                "nimi": {
+                  "fi": "International school PYP oppiaine",
+                  "sv": "International school PYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolpypvuosiluokka",
+            "nimi": {
+              "fi": "International school PYP vuosiluokka",
+              "sv": "International school PYP årskurs",
+              "en": "International school PYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2010-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "6",
+              "nimi": {
+                "fi": "Grade 6",
+                "en": "Grade 6"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2012-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LL",
+                  "nimi": {
+                    "fi": "Language and Literature",
+                    "en": "Language and Literature"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "EN",
+                  "nimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "lyhytNimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LAC",
+                  "nimi": {
+                    "fi": "Language Acquisition",
+                    "en": "Language Acquisition"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "FI",
+                  "nimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "lyhytNimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LAC",
+                  "nimi": {
+                    "fi": "Language Acquisition",
+                    "en": "Language Acquisition"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "FR",
+                  "nimi": {
+                    "fi": "ranska",
+                    "sv": "franska",
+                    "en": "French"
+                  },
+                  "lyhytNimi": {
+                    "fi": "ranska",
+                    "sv": "franska",
+                    "en": "French"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "IS",
+                  "nimi": {
+                    "fi": "Individuals and Societies",
+                    "en": "Individuals and Societies"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "SCI",
+                  "nimi": {
+                    "fi": "Sciences",
+                    "en": "Sciences"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MA",
+                  "nimi": {
+                    "fi": "Mathematics",
+                    "en": "Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "DR",
+                  "nimi": {
+                    "fi": "Drama",
+                    "en": "Drama"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PHE",
+                  "nimi": {
+                    "fi": "Physical and Health Education",
+                    "en": "Physical and Health Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolmypvuosiluokka",
+            "nimi": {
+              "fi": "International school MYP vuosiluokka",
+              "sv": "International school MYP årskurs",
+              "en": "International school MYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2011-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "7",
+              "nimi": {
+                "fi": "Grade 7",
+                "en": "Grade 7"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2013-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LL",
+                  "nimi": {
+                    "fi": "Language and Literature",
+                    "en": "Language and Literature"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "EN",
+                  "nimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "lyhytNimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LAC",
+                  "nimi": {
+                    "fi": "Language Acquisition",
+                    "en": "Language Acquisition"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "ES",
+                  "nimi": {
+                    "fi": "espanja",
+                    "sv": "spanska",
+                    "en": "Spanish"
+                  },
+                  "lyhytNimi": {
+                    "fi": "espanja",
+                    "sv": "spanska",
+                    "en": "Spanish"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LAC",
+                  "nimi": {
+                    "fi": "Language Acquisition",
+                    "en": "Language Acquisition"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "FI",
+                  "nimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "lyhytNimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "IS",
+                  "nimi": {
+                    "fi": "Individuals and Societies",
+                    "en": "Individuals and Societies"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "SCI",
+                  "nimi": {
+                    "fi": "Sciences",
+                    "en": "Sciences"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MA",
+                  "nimi": {
+                    "fi": "Mathematics",
+                    "en": "Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MU",
+                  "nimi": {
+                    "fi": "Music",
+                    "en": "Music"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PHE",
+                  "nimi": {
+                    "fi": "Physical and Health Education",
+                    "en": "Physical and Health Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "DE",
+                  "nimi": {
+                    "fi": "Design",
+                    "en": "Design"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolmypvuosiluokka",
+            "nimi": {
+              "fi": "International school MYP vuosiluokka",
+              "sv": "International school MYP årskurs",
+              "en": "International school MYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2012-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "8",
+              "nimi": {
+                "fi": "Grade 8",
+                "en": "Grade 8"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2014-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LL",
+                  "nimi": {
+                    "fi": "Language and Literature",
+                    "en": "Language and Literature"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "FI",
+                  "nimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "lyhytNimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LL",
+                  "nimi": {
+                    "fi": "Language and Literature",
+                    "en": "Language and Literature"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "EN",
+                  "nimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "lyhytNimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LAC",
+                  "nimi": {
+                    "fi": "Language Acquisition",
+                    "en": "Language Acquisition"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "ES",
+                  "nimi": {
+                    "fi": "espanja",
+                    "sv": "spanska",
+                    "en": "Spanish"
+                  },
+                  "lyhytNimi": {
+                    "fi": "espanja",
+                    "sv": "spanska",
+                    "en": "Spanish"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "IS",
+                  "nimi": {
+                    "fi": "Individuals and Societies",
+                    "en": "Individuals and Societies"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "SCI",
+                  "nimi": {
+                    "fi": "Sciences",
+                    "en": "Sciences"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MA",
+                  "nimi": {
+                    "fi": "Mathematics",
+                    "en": "Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MU",
+                  "nimi": {
+                    "fi": "Music",
+                    "en": "Music"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PHE",
+                  "nimi": {
+                    "fi": "Physical and Health Education",
+                    "en": "Physical and Health Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "DE",
+                  "nimi": {
+                    "fi": "Design",
+                    "en": "Design"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolmypvuosiluokka",
+            "nimi": {
+              "fi": "International school MYP vuosiluokka",
+              "sv": "International school MYP årskurs",
+              "en": "International school MYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2013-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "9",
+              "nimi": {
+                "fi": "Grade 9",
+                "en": "Grade 9"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2015-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LL",
+                  "nimi": {
+                    "fi": "Language and Literature",
+                    "en": "Language and Literature"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "EN",
+                  "nimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "lyhytNimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LAC",
+                  "nimi": {
+                    "fi": "Language Acquisition",
+                    "en": "Language Acquisition"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "FR",
+                  "nimi": {
+                    "fi": "ranska",
+                    "sv": "franska",
+                    "en": "French"
+                  },
+                  "lyhytNimi": {
+                    "fi": "ranska",
+                    "sv": "franska",
+                    "en": "French"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "IS",
+                  "nimi": {
+                    "fi": "Individuals and Societies",
+                    "en": "Individuals and Societies"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "SCI",
+                  "nimi": {
+                    "fi": "Sciences",
+                    "en": "Sciences"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "EMA",
+                  "nimi": {
+                    "fi": "Extended Mathematics",
+                    "en": "Extended Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PHE",
+                  "nimi": {
+                    "fi": "Physical and Health Education",
+                    "en": "Physical and Health Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolmypvuosiluokka",
+            "nimi": {
+              "fi": "International school MYP vuosiluokka",
+              "sv": "International school MYP årskurs",
+              "en": "International school MYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2014-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "10",
+              "nimi": {
+                "fi": "Grade 10",
+                "en": "Grade 10"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2016-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LL",
+                  "nimi": {
+                    "fi": "Language and Literature",
+                    "en": "Language and Literature"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "EN",
+                  "nimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "lyhytNimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "LAC",
+                  "nimi": {
+                    "fi": "Language Acquisition",
+                    "en": "Language Acquisition"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "FR",
+                  "nimi": {
+                    "fi": "ranska",
+                    "sv": "franska",
+                    "en": "French"
+                  },
+                  "lyhytNimi": {
+                    "fi": "ranska",
+                    "sv": "franska",
+                    "en": "French"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "IS",
+                  "nimi": {
+                    "fi": "Individuals and Societies",
+                    "en": "Individuals and Societies"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "SCI",
+                  "nimi": {
+                    "fi": "Sciences",
+                    "en": "Sciences"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "EMA",
+                  "nimi": {
+                    "fi": "Extended Mathematics",
+                    "en": "Extended Mathematics"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MU",
+                  "nimi": {
+                    "fi": "Music",
+                    "en": "Music"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PHE",
+                  "nimi": {
+                    "fi": "Physical and Health Education",
+                    "en": "Physical and Health Education"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolmypoppiaine",
+                "nimi": {
+                  "fi": "International school MYP oppiaine",
+                  "sv": "International school MYP läroämne"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschoolmypvuosiluokka",
+            "nimi": {
+              "fi": "International school MYP vuosiluokka",
+              "sv": "International school MYP årskurs",
+              "en": "International school MYP class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2015-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "11",
+              "nimi": {
+                "fi": "Grade 11",
+                "en": "Grade 11"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            },
+            "diplomaType": {
+              "koodiarvo": "ib",
+              "nimi": {
+                "fi": "IB Diploma",
+                "en": "IB Diploma"
+              },
+              "koodistoUri": "internationalschooldiplomatype",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2017-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "A",
+                  "nimi": {
+                    "fi": "Language A: literature",
+                    "sv": "Language A: literature",
+                    "en": "Language A: literature"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "FI",
+                  "nimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "lyhytNimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                },
+                "taso": {
+                  "koodiarvo": "SL",
+                  "nimi": {
+                    "fi": "Standard Level",
+                    "en": "Standard Level"
+                  },
+                  "lyhytNimi": {
+                    "fi": "SL",
+                    "en": "SL"
+                  },
+                  "koodistoUri": "oppiaineentasoib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "A2",
+                  "nimi": {
+                    "fi": "Language A: language and literature",
+                    "sv": "Language A: language and literature",
+                    "en": "Language A: language and literature"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "EN",
+                  "nimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "lyhytNimi": {
+                    "fi": "englanti",
+                    "sv": "engelska",
+                    "en": "English"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "HIS",
+                  "nimi": {
+                    "fi": "History",
+                    "sv": "History",
+                    "en": "History"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                },
+                "taso": {
+                  "koodiarvo": "HL",
+                  "nimi": {
+                    "fi": "Higher Level",
+                    "en": "Higher Level"
+                  },
+                  "lyhytNimi": {
+                    "fi": "HL",
+                    "en": "HL"
+                  },
+                  "koodistoUri": "oppiaineentasoib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PSY",
+                  "nimi": {
+                    "fi": "Psychology",
+                    "sv": "Psychology",
+                    "en": "Psychology"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "ESS",
+                  "nimi": {
+                    "fi": "Environmental systems and societies",
+                    "en": "Environmental systems and societies"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                },
+                "taso": {
+                  "koodiarvo": "SL",
+                  "nimi": {
+                    "fi": "Standard Level",
+                    "en": "Standard Level"
+                  },
+                  "lyhytNimi": {
+                    "fi": "SL",
+                    "en": "SL"
+                  },
+                  "koodistoUri": "oppiaineentasoib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MATST",
+                  "nimi": {
+                    "fi": "Mathematical studies",
+                    "sv": "Mathematical studies",
+                    "en": "Mathematical studies"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "HAWB",
+                  "nimi": {
+                    "fi": "Fitness and Well-Being",
+                    "en": "Fitness and Well-Being"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "TOK",
+                  "nimi": {
+                    "fi": "Theory of knowledge",
+                    "sv": "Theory of knowledge",
+                    "en": "Theory of knowledge"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolcorerequirements",
+                "nimi": {
+                  "fi": "International school core requirements oppiaine",
+                  "sv": "International school core requirements läroämne",
+                  "en": "International school core requirements subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschooldiplomavuosiluokka",
+            "nimi": {
+              "fi": "International school diploma vuosiluokka",
+              "sv": "International school diploma årskurs",
+              "en": "International school diploma class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2016-08-15"
+        },
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "12",
+              "nimi": {
+                "fi": "Grade 12",
+                "en": "Grade 12"
+              },
+              "koodistoUri": "internationalschoolluokkaaste",
+              "koodistoVersio": 1
+            },
+            "diplomaType": {
+              "koodiarvo": "ib",
+              "nimi": {
+                "fi": "IB Diploma",
+                "en": "IB Diploma"
+              },
+              "koodistoUri": "internationalschooldiplomatype",
+              "koodistoVersio": 1
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.67636414343",
+            "nimi": {
+              "fi": "International School of Helsinki",
+              "sv": "International School of Helsinki",
+              "en": "International School of Helsinki"
+            },
+            "kotipaikka": {
+              "koodiarvo": "091",
+              "nimi": {
+                "fi": "Helsinki",
+                "sv": "Helsingfors"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2018-06-30"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "A",
+                  "nimi": {
+                    "fi": "Language A: literature",
+                    "sv": "Language A: literature",
+                    "en": "Language A: literature"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "FI",
+                  "nimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "lyhytNimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                },
+                "taso": {
+                  "koodiarvo": "SL",
+                  "nimi": {
+                    "fi": "Standard Level",
+                    "en": "Standard Level"
+                  },
+                  "lyhytNimi": {
+                    "fi": "SL",
+                    "en": "SL"
+                  },
+                  "koodistoUri": "oppiaineentasoib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "B",
+                  "nimi": {
+                    "fi": "B-language",
+                    "sv": "B-language",
+                    "en": "B-language"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                },
+                "kieli": {
+                  "koodiarvo": "FI",
+                  "nimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "lyhytNimi": {
+                    "fi": "suomi",
+                    "sv": "finska",
+                    "en": "Finnish"
+                  },
+                  "koodistoUri": "kielivalikoima",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "PSY",
+                  "nimi": {
+                    "fi": "Psychology",
+                    "sv": "Psychology",
+                    "en": "Psychology"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                },
+                "taso": {
+                  "koodiarvo": "HL",
+                  "nimi": {
+                    "fi": "Higher Level",
+                    "en": "Higher Level"
+                  },
+                  "lyhytNimi": {
+                    "fi": "HL",
+                    "en": "HL"
+                  },
+                  "koodistoUri": "oppiaineentasoib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "CHE",
+                  "nimi": {
+                    "fi": "Chemistry",
+                    "sv": "Chemistry",
+                    "en": "Chemistry"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                },
+                "taso": {
+                  "koodiarvo": "HL",
+                  "nimi": {
+                    "fi": "Higher Level",
+                    "en": "Higher Level"
+                  },
+                  "lyhytNimi": {
+                    "fi": "HL",
+                    "en": "HL"
+                  },
+                  "koodistoUri": "oppiaineentasoib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "BIO",
+                  "nimi": {
+                    "fi": "Biology",
+                    "sv": "Biology",
+                    "en": "Biology"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                },
+                "taso": {
+                  "koodiarvo": "HL",
+                  "nimi": {
+                    "fi": "Higher Level",
+                    "en": "Higher Level"
+                  },
+                  "lyhytNimi": {
+                    "fi": "HL",
+                    "en": "HL"
+                  },
+                  "koodistoUri": "oppiaineentasoib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "MAI",
+                  "nimi": {
+                    "fi": "Mathematics: Applications and Interpretation",
+                    "en": "Mathematics: Applications and Interpretation"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                },
+                "taso": {
+                  "koodiarvo": "SL",
+                  "nimi": {
+                    "fi": "Standard Level",
+                    "en": "Standard Level"
+                  },
+                  "lyhytNimi": {
+                    "fi": "SL",
+                    "en": "SL"
+                  },
+                  "koodistoUri": "oppiaineentasoib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "HAWB",
+                  "nimi": {
+                    "fi": "Fitness and Well-Being",
+                    "en": "Fitness and Well-Being"
+                  },
+                  "koodistoUri": "oppiaineetinternationalschool",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschooldiplomaoppiaine",
+                "nimi": {
+                  "fi": "International school diploma oppiaine",
+                  "sv": "International school diploma läroämne",
+                  "en": "International school diploma subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "TOK",
+                  "nimi": {
+                    "fi": "Theory of knowledge",
+                    "sv": "Theory of knowledge",
+                    "en": "Theory of knowledge"
+                  },
+                  "koodistoUri": "oppiaineetib",
+                  "koodistoVersio": 1
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "internationalschoolcorerequirements",
+                "nimi": {
+                  "fi": "International school core requirements oppiaine",
+                  "sv": "International school core requirements läroämne",
+                  "en": "International school core requirements subject"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "internationalschooldiplomavuosiluokka",
+            "nimi": {
+              "fi": "International school diploma vuosiluokka",
+              "sv": "International school diploma årskurs",
+              "en": "International school diploma class"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          },
+          "alkamispäivä": "2017-08-15"
+        }
+      ],
+      "lisätiedot": {
+        "ulkomaanjaksot": [
+          {
+            "alku": "2012-09-01",
+            "loppu": "2013-09-01",
+            "maa": {
+              "koodiarvo": "752",
+              "nimi": {
+                "fi": "Ruotsi",
+                "sv": "Sverige",
+                "en": "Sweden"
+              },
+              "lyhytNimi": {
+                "fi": "SE",
+                "sv": "SE",
+                "en": "SE"
+              },
+              "koodistoUri": "maatjavaltiot2",
+              "koodistoVersio": 2
+            },
+            "kuvaus": {
+              "fi": "Harjoittelua ulkomailla"
+            }
+          }
+        ]
+      },
+      "tyyppi": {
+        "koodiarvo": "internationalschool",
+        "nimi": {
+          "fi": "International school",
+          "sv": "International school"
+        },
+        "lyhytNimi": {
+          "fi": "International school",
+          "sv": "International school"
+        },
+        "koodistoUri": "opiskeluoikeudentyyppi",
+        "koodistoVersio": 1
+      },
+      "alkamispäivä": "2004-08-15",
+      "päättymispäivä": "2018-06-30"
+    }
+  ]
+}
