@@ -1,3 +1,6 @@
+## 10.5.2022
+- Kela APIn tietomalli on järjestetty uudelleen siten, että eri opiskeluoikeudet on erotettu toisistaan ja niitä voi tarkastella erikseen json-skeemassa. Ei toiminnallisia muutoksia APIn käyttöön.
+
 ## 22.4.2022
 - TUVA-tietomallin perusopetuksen järjestämisluvan lisätiedoista poistettu tarpeettomana kenttä erityisen tuen päätöksistä.
 

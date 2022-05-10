@@ -56,7 +56,7 @@ case class KelaPerusopetuksenPäätasonMuuSuoritus(
   osasuoritukset: Option[List[KelaPerusopetuksenOsasuoritus]],
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
   jääLuokalle: Option[Boolean]
 ) extends KelaPerusopetuksenPäätasonSuoritus {
@@ -74,7 +74,7 @@ case class KelaPerusopetuksenOppiaineenOppimääränSuoritus(
   @KoodistoKoodiarvo("nuortenperusopetuksenoppiaineenoppimaara")
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
   jääLuokalle: Option[Boolean]
 ) extends KelaPerusopetuksenPäätasonSuoritus {
@@ -92,7 +92,7 @@ case class KelaPerusopetuksenOsasuoritus(
   koulutusmoduuli: KelaPerusopetuksenOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArvionti]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   yksilöllistettyOppimäärä: Option[Boolean]
 ) extends Osasuoritus with YksilöllistettyOppimäärä {
@@ -114,16 +114,16 @@ case class KelaPerusopetuksenOsasuorituksenArvionti(
 
 case class KelaPerusopetuksenSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
   perusteenDiaarinumero: Option[String],
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
   pakollinen: Option[Boolean],
-  kieli: Option[schema.Koodistokoodiviite]
+  kieli: Option[KelaKoodistokoodiviite]
 ) extends SuorituksenKoulutusmoduuli
 
 case class KelaPerusopetuksenOsasuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
   pakollinen: Option[Boolean],
-  kieli: Option[schema.Koodistokoodiviite]
+  kieli: Option[KelaKoodistokoodiviite]
 ) extends OsasuorituksenKoulutusmoduuli

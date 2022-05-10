@@ -43,7 +43,7 @@ case class KelaVapaanSivistystyönPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaVapaanSivistystyönOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
   def withEmptyArvosana: KelaVapaanSivistystyönPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
@@ -58,7 +58,7 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKototutumisenSuoritus(
   osasuoritukset: Option[List[KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus]],
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
   def withEmptyArvosana: KelaVapaanSivistystyönMaahanmuuttajienKototutumisenSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
@@ -75,7 +75,7 @@ case class KelaVapaanSivistystyönOsasuoritus(
   arviointi: Option[List[KelaVSTOsasuorituksenArviointi]],
   osasuoritukset: Option[List[KelaVapaanSivistystyönOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withEmptyArvosana: KelaVapaanSivistystyönOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
@@ -89,7 +89,7 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus(
   arviointi: Option[List[VSTMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi]],
   osasuoritukset: Option[List[KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withEmptyArvosana: KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
@@ -99,14 +99,14 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKototutumisenOsasuoritus(
 
 case class KelaVapaanSivistystyönSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
   perusteenDiaarinumero: Option[String],
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
 ) extends SuorituksenKoulutusmoduuli
 
 case class KelaVapaanSivistystyönOsasuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
 ) extends OsasuorituksenKoulutusmoduuli
 
 

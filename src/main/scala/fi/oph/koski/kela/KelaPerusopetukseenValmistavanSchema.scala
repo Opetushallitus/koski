@@ -39,8 +39,8 @@ case class KelaPerusopetukseenValmistavanPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaPerusopetukseenValmistavanOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
-  kokonaislaajuus: Option[schema.Laajuus]
+  tila: Option[KelaKoodistokoodiviite],
+  kokonaislaajuus: Option[KelaLaajuus]
 ) extends Suoritus {
   def withEmptyArvosana: KelaPerusopetukseenValmistavanPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
@@ -52,7 +52,7 @@ case class KelaPerusopetukseenValmistavanOsasuoritus(
   koulutusmoduuli: KelaPerusopetukseenValmistavanOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArvionti]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   luokkaAste: Option[KelaKoodistokoodiviite],
 ) extends Osasuoritus {
   def withEmptyArvosana: KelaPerusopetukseenValmistavanOsasuoritus = copy(
@@ -63,12 +63,12 @@ case class KelaPerusopetukseenValmistavanOsasuoritus(
 case class KelaPerusopetukseenValmistavanSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
 ) extends SuorituksenKoulutusmoduuli
 
 case class KelaPerusopetukseenValmistavanOsasuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
   pakollinen: Option[Boolean],
-  kieli: Option[schema.Koodistokoodiviite],
+  kieli: Option[KelaKoodistokoodiviite],
 ) extends OsasuorituksenKoulutusmoduuli

@@ -55,7 +55,7 @@ case class KelaAikuistenPerusopetuksenPäätasonSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaaranalkuvaihe")
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
 ) extends KelaaikuistenPerusopetuksenSuoritus {
   def withEmptyArvosana: KelaAikuistenPerusopetuksenPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
@@ -70,7 +70,7 @@ case class KelaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   osasuoritukset: Option[List[KelaAikuistenPerusopetuksenOsasuoritus]],
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
 ) extends KelaaikuistenPerusopetuksenSuoritus {
   def withEmptyArvosana: KelaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
@@ -87,7 +87,7 @@ case class KelaAikuistenPerusopetuksenOsasuoritus(
   arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArvionti]],
   osasuoritukset: Option[List[KelaAikuistenPerusopetuksenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   tunnustettu: Option[KelaAikuistenPerusopetuksenOsaamisenTunnustaminen],
 ) extends Osasuoritus {
   def withEmptyArvosana: KelaAikuistenPerusopetuksenOsasuoritus = copy(
@@ -104,16 +104,16 @@ case class KelaAikuistenPerusopetuksenOsaamisenTunnustaminen(
 
 case class KelaAikuistenPerusopetuksenSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
   perusteenDiaarinumero: Option[String],
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
   pakollinen: Option[Boolean],
-  kieli: Option[schema.Koodistokoodiviite],
+  kieli: Option[KelaKoodistokoodiviite],
 ) extends SuorituksenKoulutusmoduuli
 
 case class KelaAikuistenPerusopetuksenOsasuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
   pakollinen: Option[Boolean],
-  kieli: Option[schema.Koodistokoodiviite],
+  kieli: Option[KelaKoodistokoodiviite],
 ) extends OsasuorituksenKoulutusmoduuli

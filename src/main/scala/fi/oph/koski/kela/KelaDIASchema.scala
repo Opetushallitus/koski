@@ -48,7 +48,7 @@ case class KelaDIAPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaDIAOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite]
+  tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
   def withOsasuorituksetVastaavuusKopioitu: KelaDIAPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(os => os.map(_.withVastaavuusKopioitu))
@@ -64,7 +64,7 @@ case class KelaDIAOsasuoritus(
   arviointi: Option[List[KelaDIAOsasuorituksenArvionti]],
   osasuoritukset: Option[List[KelaDIAOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   vastaavuusTodistuksenTiedot: Option[VastaavuusTodistuksenTiedot],
   @fi.oph.koski.schema.annotation.Deprecated("Kentässä ei palaudu tietoja blah blah")
   vastaavuustodistuksenTiedot: Option[VastaavuusTodistuksenTiedot]
@@ -92,18 +92,18 @@ case class KelaDIAOsasuorituksenArvionti(
 
 case class KelaDIASuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
 ) extends SuorituksenKoulutusmoduuli
 
 case class KelaDIAOsasuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
-  kieli: Option[schema.Koodistokoodiviite],
+  laajuus: Option[KelaLaajuus],
+  kieli: Option[KelaKoodistokoodiviite],
   osaAlue: Option[KelaKoodistokoodiviite],
-  kurssinTyyppi: Option[schema.Koodistokoodiviite],
-  oppimäärä: Option[schema.Koodistokoodiviite]
+  kurssinTyyppi: Option[KelaKoodistokoodiviite],
+  oppimäärä: Option[KelaKoodistokoodiviite]
 ) extends OsasuorituksenKoulutusmoduuli
 
 case class VastaavuusTodistuksenTiedot(
-  lukioOpintojenLaajuus: schema.Laajuus
+  lukioOpintojenLaajuus: KelaLaajuus
 )

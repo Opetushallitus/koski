@@ -44,7 +44,7 @@ case class KelaInternationalSchoolPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaInternationalSchoolOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate]
 ) extends Suoritus {
   def withEmptyArvosana: KelaInternationalSchoolPäätasonSuoritus = copy(

@@ -24,7 +24,6 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
 
   def findKelaOppijaByHetu(hetu: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
-    //Kela ei ole kiinnostunut tässä tapauksessa korkeakoulujen opiskeluoikeuksista
 
     val masterHenkilöFut: Future[Either[HttpStatus, LaajatOppijaHenkilöTiedot]] = Future(
       application
@@ -34,7 +33,9 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
         .toRight(
           KoskiErrorCategory
             .notFound
-            .oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
+            .oppijaaEiLöydyTaiEiOikeuksia(
+              "Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."
+            )
         )
     )
 
@@ -42,7 +43,8 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
       .map { masterHenkilö =>
         masterHenkilö.map(hlö => application.ytr.findByOppija(hlö))
           .map(oos => oos.map {
-            case yo: schema.YlioppilastutkinnonOpiskeluoikeus => KelaYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(yo)
+            case yo: schema.YlioppilastutkinnonOpiskeluoikeus =>
+              KelaYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(yo)
           })
       }
 
@@ -72,7 +74,6 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
     } yield teePalautettavatKelaOppijat(h, oos, ytl)).flatMap(identity)
 
     oppija.foreach(auditLogOpiskeluoikeusKatsominen(_)(koskiSession))
-
     oppija
   }
 
@@ -131,15 +132,18 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
       .map(JsonSerializer.serializeWithUser(koskiSession))
   }
 
-  def opiskeluoikeudenHistoria(opiskeluoikeusOid: String)(implicit koskiSession: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
-    val history: Option[List[OpiskeluoikeusHistoryPatch]] = application.historyRepository.findByOpiskeluoikeusOid(opiskeluoikeusOid)(koskiSession)
-    history.foreach { _ => auditLogHistoryView(opiskeluoikeusOid)(koskiSession)}
+  def opiskeluoikeudenHistoria(opiskeluoikeusOid: String)
+    (implicit koskiSession: KoskiSpecificSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
+    val history: Option[List[OpiskeluoikeusHistoryPatch]] = application
+      .historyRepository
+      .findByOpiskeluoikeusOid(opiskeluoikeusOid)(koskiSession)
+    history.foreach { _ => auditLogHistoryView(opiskeluoikeusOid)(koskiSession) }
     history
   }
 
-  //FIXME:
-  def findKelaOppijaVersion(oppijaOid: String, opiskeluoikeusOid: String, version: Int)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
-   application.oppijaFacade.findVersion(oppijaOid, opiskeluoikeusOid, version)
+  def findKelaOppijaVersion(oppijaOid: String, opiskeluoikeusOid: String, version: Int)
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
+    application.oppijaFacade.findVersion(oppijaOid, opiskeluoikeusOid, version)
       .map(t => schema.Oppija(t._1.toHenkilötiedotJaOid, t._2))
       .flatMap(KelaOppijaConverter.convertOppijaToKelaOppija)
   }
@@ -168,8 +172,22 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   }
 
   private def auditLogOpiskeluoikeusKatsominen(oppija: KelaOppija)(koskiSession: KoskiSpecificSession): Unit =
-    AuditLog.log(KoskiAuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(KoskiAuditLogMessageField.oppijaHenkiloOid -> oppija.henkilö.oid)))
+    AuditLog
+      .log(
+        KoskiAuditLogMessage(
+          KoskiOperation.OPISKELUOIKEUS_KATSOMINEN,
+          koskiSession,
+          Map(KoskiAuditLogMessageField.oppijaHenkiloOid -> oppija.henkilö.oid)
+        )
+      )
 
   private def auditLogHistoryView(opiskeluoikeusOid: String)(koskiSession: KoskiSpecificSession): Unit =
-    AuditLog.log(KoskiAuditLogMessage(KoskiOperation.MUUTOSHISTORIA_KATSOMINEN, koskiSession, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> opiskeluoikeusOid)))
+    AuditLog
+      .log(
+        KoskiAuditLogMessage(
+          KoskiOperation.MUUTOSHISTORIA_KATSOMINEN,
+          koskiSession,
+          Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> opiskeluoikeusOid)
+        )
+      )
 }

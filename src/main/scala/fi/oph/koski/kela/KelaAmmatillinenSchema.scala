@@ -46,6 +46,7 @@ case class KelaAmmatillisenOpiskeluoikeusjakso(
 case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
   majoitus: Option[List[schema.Aikajakso]],
   sisäoppilaitosmainenMajoitus: Option[List[schema.Aikajakso]],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[schema.Aikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityinenTuki: Option[List[schema.Aikajakso]],
@@ -64,12 +65,12 @@ case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
 @Title("Ammatillisen koulutuksen suoritus")
 case class KelaAmmatillinenPäätasonSuoritus(
   koulutusmoduuli: KelaAmmatillisenSuorituksenKoulutusmoduuli,
-  suoritustapa: Option[schema.Koodistokoodiviite],
+  suoritustapa: Option[KelaKoodistokoodiviite],
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaAmmatillinenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   osaamisala: Option[List[schema.Osaamisalajakso]],
   toinenOsaamisala: Option[Boolean],
   alkamispäivä: Option[LocalDate],
@@ -77,7 +78,7 @@ case class KelaAmmatillinenPäätasonSuoritus(
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]],
   koulutussopimukset: Option[List[Koulutussopimusjakso]],
-  tutkintonimike: Option[List[schema.Koodistokoodiviite]],
+  tutkintonimike: Option[List[KelaKoodistokoodiviite]],
   toinenTutkintonimike: Option[Boolean],
 ) extends Suoritus {
   def withEmptyArvosana = copy(
@@ -88,15 +89,15 @@ case class KelaAmmatillinenPäätasonSuoritus(
 @Title("Ammatillisen koulutuksen osasuoritus")
 case class KelaAmmatillinenOsasuoritus(
   koulutusmoduuli: KelaAmmatillisenOsasuorituksenKoulutusmoduuli,
-  liittyyTutkinnonOsaan: Option[schema.Koodistokoodiviite],
+  liittyyTutkinnonOsaan: Option[KelaKoodistokoodiviite],
   arviointi: Option[List[KelaAmmatillisenOsasuorituksenArvionti]],
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaAmmatillinenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   tutkinto: Option[Tutkinto],
-  tutkinnonOsanRyhmä: Option[schema.Koodistokoodiviite],
+  tutkinnonOsanRyhmä: Option[KelaKoodistokoodiviite],
   osaamisala: Option[List[schema.Osaamisalajakso]],
   alkamispäivä: Option[LocalDate],
   tunnustettu: Option[KelaAmmatillinenOsaamisenTunnustaminen],
@@ -117,7 +118,10 @@ case class KelaAmmatillisenOsasuorituksenArvionti(
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArvionti {
-  def withEmptyArvosana: KelaAmmatillisenOsasuorituksenArvionti = copy(arvosana = None, hyväksytty = arvosana.map(schema.AmmatillinenKoodistostaLöytyväArviointi.hyväksytty))
+  def withEmptyArvosana: KelaAmmatillisenOsasuorituksenArvionti = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(schema.AmmatillinenKoodistostaLöytyväArviointi.hyväksytty)
+  )
 }
 
 case class KelaAmmatillinenOsaamisenTunnustaminen(
@@ -128,21 +132,21 @@ case class KelaAmmatillinenOsaamisenTunnustaminen(
 
 case class KelaAmmatillisenSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
   perusteenDiaarinumero: Option[String],
   perusteenNimi: Option[schema.LocalizedString],
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
   pakollinen: Option[Boolean],
   kuvaus: Option[schema.LocalizedString],
-  kieli: Option[schema.Koodistokoodiviite],
+  kieli: Option[KelaKoodistokoodiviite],
 ) extends SuorituksenKoulutusmoduuli
 
 case class KelaAmmatillisenOsasuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
   perusteenNimi: Option[schema.LocalizedString],
   pakollinen: Option[Boolean],
-  kieli: Option[schema.Koodistokoodiviite],
+  kieli: Option[KelaKoodistokoodiviite],
 ) extends OsasuorituksenKoulutusmoduuli
 
 case class Hojks(
