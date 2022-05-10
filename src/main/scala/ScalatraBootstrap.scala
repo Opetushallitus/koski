@@ -51,6 +51,9 @@ import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 import javax.servlet.ServletContext
 import org.scalatra._
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
 class ScalatraBootstrap extends LifeCycle with Logging with Timing {
   override def init(context: ServletContext): Unit = try {
     val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
@@ -175,7 +178,13 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
 
   private def generateRaportointikanta(application: KoskiApplication): Unit = {
     val service = new RaportointikantaService(application)
-    service.loadRaportointikantaAndExit(fullReload = RunMode.isFullReload)
+    val generating = Future {
+      service.loadRaportointikantaAndExit(fullReload = RunMode.isFullReload)
+    }
+    generating.failed.map(error => {
+      logger.error(error)("Raportointikannan generointi keskeytyi odottamattomasti")
+      service.shutdown
+    })
   }
 
   override def destroy(context: ServletContext): Unit = ()

@@ -168,7 +168,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private val tietokantaUpload = "database-upload"
 
-  private def shutdown = {
+  def shutdown = {
     Thread.sleep(60000) //Varmistetaan, että kaikki logit ehtivät varmasti siirtyä Cloudwatchiin ennen sulkemista.
     sys.exit()
   }
