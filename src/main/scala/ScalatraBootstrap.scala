@@ -9,6 +9,7 @@ import fi.oph.koski.frontendvalvonta.{FrontendValvontaMode, FrontendValvontaRapo
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
+import fi.oph.koski.jsonschemaviewer.JsonSchemaViewerHtmlServlet
 import fi.oph.koski.kela.KelaServlet
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.KoskiSpecificLocalizationServlet
@@ -124,6 +125,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/koski/omadata", new MyDataReactServlet)
     mount("/koski/koesuoritus", new YtrKoesuoritusServlet)
     mount("/koski/healthcheck", new HealthCheckHtmlServlet)
+    mount("/koski/json-schema-viewer", new JsonSchemaViewerHtmlServlet)
     mount("/koski/user", new UserServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
       mount("/koski/user/login", new LocalLoginServlet)

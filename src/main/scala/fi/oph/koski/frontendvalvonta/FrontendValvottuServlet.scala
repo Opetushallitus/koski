@@ -9,6 +9,7 @@ trait FrontendValvottuServlet extends ScalatraBase {
   def allowFrameAncestors: Boolean
   def frontendValvontaMode: FrontendValvontaMode
   def unsafeAllowInlineStyles: Boolean = false
+  def unsafeAllowBaseUri: Boolean = false
 
   def get(transformers: org.scalatra.RouteTransformer*)(action: String => scala.Any): org.scalatra.Route = {
     super.get(transformers: _*) {
@@ -19,7 +20,7 @@ trait FrontendValvottuServlet extends ScalatraBase {
 
   protected def setNonceHeader: String = {
     val nonce = Cryptographic.nonce
-    FrontendValvontaHeaders.headers(allowFrameAncestors, frontendValvontaMode, unsafeAllowInlineStyles, nonce).foreach {
+    FrontendValvontaHeaders.headers(allowFrameAncestors, frontendValvontaMode, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce).foreach {
       case (h, v) => response.setHeader(h, v)
     }
     nonce
