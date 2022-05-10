@@ -168,7 +168,7 @@ case class Työssäoppimisjakso(
   työssäoppimispaikka: Option[schema.LocalizedString],
   paikkakunta: KelaKoodistokoodiviite,
   maa: KelaKoodistokoodiviite,
-  laajuus: schema.Laajuus
+  laajuus: KelaLaajuus
 )
 
 case class Järjestämismuoto (
@@ -249,4 +249,9 @@ case class Toimipiste(
   oid: String,
   nimi: Option[schema.LocalizedString] = None,
   kotipaikka: Option[KelaKoodistokoodiviite] = None
+)
+
+case class KelaLaajuus(
+  arvo: Double,
+  yksikkö: KelaKoodistokoodiviite
 )
