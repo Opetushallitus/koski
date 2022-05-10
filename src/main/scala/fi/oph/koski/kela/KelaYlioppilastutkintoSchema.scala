@@ -31,9 +31,9 @@ object KelaYlioppilastutkinnonOpiskeluoikeus {
     ),
     suoritukset = yo.suoritukset.map(s => KelaYlioppilastutkinnonPäätasonSuoritus(
       KelaYlioppilastutkinnonSuorituksenKoulutusmoduuli(
-        s.koulutusmoduuli.tunniste,
+        KelaKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste),
         s.koulutusmoduuli.perusteenDiaarinumero,
-        s.koulutusmoduuli.koulutustyyppi
+        s.koulutusmoduuli.koulutustyyppi.map(KelaKoodistokoodiviite.fromKoskiSchema)
       ),
       s.toimipiste.map(t => Toimipiste(
         t.oid,
@@ -43,11 +43,11 @@ object KelaYlioppilastutkinnonOpiskeluoikeus {
       vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
       osasuoritukset = s.osasuoritukset.map(opt => opt.map(os => KelaYlioppilastutkinnonOsasuoritus(
         KelaYlioppilastutkinnonOsasuorituksenKoulutusmoduuli(
-          os.koulutusmoduuli.tunniste
+          KelaKoodistokoodiviite.fromKoskiSchema(os.koulutusmoduuli.tunniste)
         ),
         os.arviointi.map(opt => opt.map(a => KelaOsasuorituksenArvionti(None, Some(a.hyväksytty), a.arviointipäivä))),
         os.tyyppi,
-        os.tila,
+        os.tila.map(KelaKoodistokoodiviite.fromKoskiSchema),
         Some(KelaYlioppilastutkinnonTutkintokerta(
           os.tutkintokerta.koodiarvo,
           os.tutkintokerta.vuosi,
@@ -55,7 +55,7 @@ object KelaYlioppilastutkinnonOpiskeluoikeus {
         ))
       ))),
       tyyppi = s.tyyppi,
-      tila = s.tila,
+      tila = s.tila.map(KelaKoodistokoodiviite.fromKoskiSchema),
       alkamispäivä = s.alkamispäivä,
       pakollisetKokeetSuoritettu = Some(s.pakollisetKokeetSuoritettu)
     )),
@@ -93,7 +93,7 @@ case class KelaYlioppilastutkinnonPäätasonSuoritus(
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaYlioppilastutkinnonOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
   pakollisetKokeetSuoritettu: Option[Boolean],
 ) extends Suoritus
@@ -103,18 +103,18 @@ case class KelaYlioppilastutkinnonOsasuoritus(
   koulutusmoduuli: KelaYlioppilastutkinnonOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaOsasuorituksenArvionti]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   tutkintokerta: Option[KelaYlioppilastutkinnonTutkintokerta],
 ) extends Osasuoritus
 
 case class KelaYlioppilastutkinnonSuorituksenKoulutusmoduuli(
-  tunniste: schema.Koodistokoodiviite,
+  tunniste: KelaKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
 ) extends SuorituksenKoulutusmoduuli
 
 case class KelaYlioppilastutkinnonOsasuorituksenKoulutusmoduuli(
-  tunniste: schema.Koodistokoodiviite,
+  tunniste: KelaKoodistokoodiviite,
 ) extends OsasuorituksenKoulutusmoduuli
 
 case class KelaYlioppilastutkinnonTutkintokerta(

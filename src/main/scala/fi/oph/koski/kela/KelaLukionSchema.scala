@@ -43,11 +43,11 @@ case class KelaLukionOpiskeluoikeudenLisätiedot(
 case class KelaLukionPäätasonSuoritus(
   koulutusmoduuli: KelaLukionSuorituksenKoulutusmoduuli,
   toimipiste: Option[Toimipiste],
-  oppimäärä: Option[schema.Koodistokoodiviite],
+  oppimäärä: Option[KelaKoodistokoodiviite],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaLukionOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite]
+  tila: Option[KelaKoodistokoodiviite]
 ) extends Suoritus {
   def withEmptyArvosana = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
@@ -60,7 +60,7 @@ case class KelaLukionOsasuoritus(
   arviointi: Option[List[KelaLukionOsasuorituksenArvionti]],
   osasuoritukset: Option[List[KelaLukionOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[KelaKoodistokoodiviite],
   tunnustettu: Option[KelaLukionOsaamisenTunnustaminen],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
@@ -90,19 +90,19 @@ case class KelaLukionOsaamisenTunnustaminen(
 
 case class KelaLukionSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
   perusteenDiaarinumero: Option[String],
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  koulutustyyppi: Option[KelaKoodistokoodiviite],
   pakollinen: Option[Boolean],
-  kieli: Option[schema.Koodistokoodiviite],
-  oppimäärä: Option[schema.Koodistokoodiviite]
+  kieli: Option[KelaKoodistokoodiviite],
+  oppimäärä: Option[KelaKoodistokoodiviite]
 ) extends SuorituksenKoulutusmoduuli
 
 case class KelaLukionOsasuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
+  laajuus: Option[KelaLaajuus],
   pakollinen: Option[Boolean],
-  kieli: Option[schema.Koodistokoodiviite],
-  kurssinTyyppi: Option[schema.Koodistokoodiviite],
-  oppimäärä: Option[schema.Koodistokoodiviite]
+  kieli: Option[KelaKoodistokoodiviite],
+  kurssinTyyppi: Option[KelaKoodistokoodiviite],
+  oppimäärä: Option[KelaKoodistokoodiviite]
 ) extends OsasuorituksenKoulutusmoduuli

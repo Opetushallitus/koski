@@ -286,7 +286,7 @@ class KelaSpec
           ylioppilastutkinto.suoritukset.head.osasuoritukset.get.length shouldBe 5
           ylioppilastutkinto.suoritukset.head.osasuoritukset.get.head shouldBe KelaYlioppilastutkinnonOsasuoritus(
             koulutusmoduuli = KelaYlioppilastutkinnonOsasuorituksenKoulutusmoduuli(
-              Koodistokoodiviite("A", "koskiyokokeet")
+              KelaKoodistokoodiviite("A", Some(Finnish("Äidinkielen koe, suomi", Some("Provet i modersmålet, finska"), None)), None, Some("koskiyokokeet"),Some(1))
             ),
             arviointi = Some(List(KelaOsasuorituksenArvionti(None, Some(true), None))),
             tyyppi = Koodistokoodiviite("ylioppilastutkinnonkoe", "suorituksentyyppi"),
