@@ -43,7 +43,10 @@ trait YleissivistävänKoulutuksenArviointi extends KoodistostaLöytyväArvioint
   @KoodistoUri("arviointiasteikkoyleissivistava")
   def arvosana: Koodistokoodiviite
   def arvioitsijat = None
-  def hyväksytty = arvosana.koodiarvo match {
+  def hyväksytty = YleissivistävänKoulutuksenArviointi.hyväksytty(arvosana)
+}
+object YleissivistävänKoulutuksenArviointi {
+  def hyväksytty(arvosana: Koodistokoodiviite): Boolean = arvosana.koodiarvo match {
     case "H" => false
     case "4" => false
     case "O" => false
