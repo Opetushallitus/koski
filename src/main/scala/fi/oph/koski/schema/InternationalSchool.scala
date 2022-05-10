@@ -251,7 +251,10 @@ trait InternationalSchoolArviointi extends KoodistostaLöytyväArviointi {
   def päivä: Option[LocalDate]
   override def arviointipäivä: Option[LocalDate] = päivä
   override def arvioitsijat: Option[List[Arvioitsija]] = None
-  override def hyväksytty: Boolean = !hylätyt.contains(arvosana.koodiarvo)
+  override def hyväksytty: Boolean = InternationalSchoolArviointi.hyväksytty(arvosana)
+}
+object InternationalSchoolArviointi{
+  def hyväksytty(arvosana: Koodistokoodiviite) = !hylätyt.contains(arvosana.koodiarvo)
   private val hylätyt = List("1", "2", "F", "fail")
 }
 
