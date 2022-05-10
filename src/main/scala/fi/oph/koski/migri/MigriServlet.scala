@@ -6,7 +6,7 @@ import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.schema.Oppija
-import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
+import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, RawJsonResponse}
 import org.json4s.JValue
 import org.scalatra.auth.strategy.BasicAuthStrategy.BasicAuthRequest
 
@@ -75,7 +75,7 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
       .flatMap(_.warningsToLeft)
       .flatMap(convertToMigriSchema)
 
-  private def valintaTiedotOideilla(oids: List[String]): Either[HttpStatus, String] = {
+  private def valintaTiedotOideilla(oids: List[String]): Either[HttpStatus, RawJsonResponse] = {
     val basicAuthRequest = new BasicAuthRequest(request)
     migriService.get(oids, basicAuthRequest)
   }

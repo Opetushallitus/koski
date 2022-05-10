@@ -64,6 +64,8 @@ trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
     val pretty = Option(request.getHeader("accept")).exists(_.contains("text/html"))
     val tag = implicitly[TypeTag[T]]
     tag.tpe match {
+      case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[RawJsonResponse].getName) =>
+        x.asInstanceOf[RawJsonResponse].response
       case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[PaginatedResponse[_]].getName) =>
         // Here's some special handling for PaginatedResponse (scala-schema doesn't support parameterized case classes yet)
         val typeArg = t.args.head
@@ -74,8 +76,10 @@ trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
           "paginationSettings" -> JsonSerializer.serialize(paginated.paginationSettings),
           "mayHaveMore" -> JBool(paginated.mayHaveMore)
         ))
-      case t =>
+      case t: Any =>
         JsonSerializer.write(x, pretty)
     }
   }
 }
+
+case class RawJsonResponse(response: String)
