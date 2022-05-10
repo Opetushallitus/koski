@@ -1,0 +1,370 @@
+{
+  "henkilö": {
+    "oid": "1.2.246.562.24.00000000105",
+    "hetu": "231158-467R",
+    "etunimet": "Lukutaitokouluttautuja",
+    "sukunimi": "Vapaa-Sivistys",
+    "kutsumanimi": "Lukutaitokouluttautuja"
+  },
+  "opiskeluoikeudet": [
+    {
+      "oid": "1.2.246.562.15.85397451536",
+      "versionumero": 1,
+      "aikaleima": "2022-04-25T13:30:13.981143",
+      "oppilaitos": {
+        "oid": "1.2.246.562.10.31915273374",
+        "oppilaitosnumero": {
+          "koodiarvo": "01694",
+          "nimi": {
+            "fi": "Varsinais-Suomen kansanopisto",
+            "sv": "Varsinais-Suomen kansanopisto",
+            "en": "Varsinais-Suomen kansanopisto"
+          },
+          "lyhytNimi": {
+            "fi": "Varsinais-Suomen kansanopisto",
+            "sv": "Varsinais-Suomen kansanopisto",
+            "en": "Varsinais-Suomen kansanopisto"
+          },
+          "koodistoUri": "oppilaitosnumero"
+        },
+        "nimi": {
+          "fi": "Varsinais-Suomen kansanopisto",
+          "sv": "Varsinais-Suomen kansanopisto",
+          "en": "Varsinais-Suomen kansanopisto"
+        },
+        "kotipaikka": {
+          "koodiarvo": "577",
+          "nimi": {
+            "fi": "Paimio",
+            "sv": "Pemar"
+          },
+          "koodistoUri": "kunta"
+        }
+      },
+      "koulutustoimija": {
+        "oid": "1.2.246.562.10.44330177021",
+        "nimi": {
+          "fi": "Varsinais-Suomen Aikuiskoulutussäätiö sr"
+        },
+        "yTunnus": "0136193-2",
+        "kotipaikka": {
+          "koodiarvo": "577",
+          "nimi": {
+            "fi": "Paimio",
+            "sv": "Pemar"
+          },
+          "koodistoUri": "kunta"
+        }
+      },
+      "arvioituPäättymispäivä": "2022-05-31",
+      "tila": {
+        "opiskeluoikeusjaksot": [
+          {
+            "alku": "2021-09-01",
+            "tila": {
+              "koodiarvo": "lasna",
+              "nimi": {
+                "fi": "Läsnä",
+                "sv": "Närvarande",
+                "en": "Present"
+              },
+              "koodistoUri": "koskiopiskeluoikeudentila",
+              "koodistoVersio": 1
+            }
+          }
+        ]
+      },
+      "suoritukset": [
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "999911",
+              "nimi": {
+                "fi": "Kansanopistojen vapaan sivistystyön lukutaitokoulutus",
+                "sv": "Kansanopistojen vapaan sivistystyön lukutaitokoulutus"
+              },
+              "lyhytNimi": {
+                "fi": "Kansanopistojen vapaan sivistystyön lukutaitokoulutus",
+                "sv": "Kansanopistojen vapaan sivistystyön lukutaitokoulutus"
+              },
+              "koodistoUri": "koulutus",
+              "koodistoVersio": 12
+            },
+            "laajuus": {
+              "arvo": 80.0,
+              "yksikkö": {
+                "koodiarvo": "2",
+                "nimi": {
+                  "fi": "opintopistettä",
+                  "sv": "studiepoäng",
+                  "en": "ECTS credits"
+                },
+                "lyhytNimi": {
+                  "fi": "op",
+                  "sv": "sp",
+                  "en": "ECTS cr"
+                },
+                "koodistoUri": "opintojenlaajuusyksikko"
+              }
+            },
+            "perusteenDiaarinumero": "OPH-2984-2017",
+            "koulutustyyppi": {
+              "koodiarvo": "35",
+              "nimi": {
+                "fi": "Vapaan sivistystyön lukutaitokoulutust st",
+                "sv": "Vapaan sivistystyön lukutaitokoulutus"
+              },
+              "lyhytNimi": {
+                "fi": "Vapaan sivistystyön lukutaitokoulutus",
+                "sv": "Vapaan sivistystyön lukutaitokoulutus"
+              },
+              "koodistoUri": "koulutustyyppi",
+              "koodistoVersio": 2
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.38515028629",
+            "nimi": {
+              "fi": "Itä-Suomen yliopisto",
+              "sv": "Östra Finlands Universitet",
+              "en": "University of Eastern Finland"
+            },
+            "kotipaikka": {
+              "koodiarvo": "999",
+              "nimi": {
+                "fi": "Ei tiedossa (kunta)",
+                "sv": "Okänd kommun",
+                "en": "Not known"
+              },
+              "lyhytNimi": {
+                "fi": "Ei tiedossa (kunta)",
+                "sv": "Okänd kommun"
+              },
+              "koodistoUri": "kunta"
+            }
+          },
+          "vahvistus": {
+            "päivä": "2022-05-31"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
+                  "nimi": {
+                    "fi": "Vapaan sivistystyön lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen kokonaisuuden suoritus",
+                    "sv": "Vapaan sivistystyön lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen kokonaisuuden suoritus",
+                    "en": "Vapaan sivistystyön lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen kokonaisuuden suoritus"
+                  },
+                  "koodistoUri": "vstlukutaitokoulutuksenkokonaisuus",
+                  "koodistoVersio": 1
+                },
+                "laajuus": {
+                  "arvo": 20.0,
+                  "yksikkö": {
+                    "koodiarvo": "2",
+                    "nimi": {
+                      "fi": "opintopistettä",
+                      "sv": "studiepoäng",
+                      "en": "ECTS credits"
+                    },
+                    "lyhytNimi": {
+                      "fi": "op",
+                      "sv": "sp",
+                      "en": "ECTS cr"
+                    },
+                    "koodistoUri": "opintojenlaajuusyksikko",
+                    "koodistoVersio": 1
+                  }
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true,
+                  "päivä": "2021-10-30"
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "vstlukutaitokoulutuksenkokonaisuudensuoritus",
+                "nimi": {
+                  "fi": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+                  "sv": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+                  "en": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
+                  "nimi": {
+                    "fi": "Vapaan sivistystyön lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen suoritus",
+                    "sv": "Vapaan sivistystyön lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen suoritus",
+                    "en": "Vapaan sivistystyön lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen suoritus"
+                  },
+                  "koodistoUri": "vstlukutaitokoulutuksenkokonaisuus",
+                  "koodistoVersio": 1
+                },
+                "laajuus": {
+                  "arvo": 20.0,
+                  "yksikkö": {
+                    "koodiarvo": "2",
+                    "nimi": {
+                      "fi": "opintopistettä",
+                      "sv": "studiepoäng",
+                      "en": "ECTS credits"
+                    },
+                    "lyhytNimi": {
+                      "fi": "op",
+                      "sv": "sp",
+                      "en": "ECTS cr"
+                    },
+                    "koodistoUri": "opintojenlaajuusyksikko",
+                    "koodistoVersio": 1
+                  }
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true,
+                  "päivä": "2021-10-30"
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "vstlukutaitokoulutuksenkokonaisuudensuoritus",
+                "nimi": {
+                  "fi": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+                  "sv": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+                  "en": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
+                  "nimi": {
+                    "fi": "Vapaan sivistystyön lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen suoritus",
+                    "sv": "Vapaan sivistystyön lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen suoritus",
+                    "en": "Vapaan sivistystyön lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen suoritus"
+                  },
+                  "koodistoUri": "vstlukutaitokoulutuksenkokonaisuus",
+                  "koodistoVersio": 1
+                },
+                "laajuus": {
+                  "arvo": 20.0,
+                  "yksikkö": {
+                    "koodiarvo": "2",
+                    "nimi": {
+                      "fi": "opintopistettä",
+                      "sv": "studiepoäng",
+                      "en": "ECTS credits"
+                    },
+                    "lyhytNimi": {
+                      "fi": "op",
+                      "sv": "sp",
+                      "en": "ECTS cr"
+                    },
+                    "koodistoUri": "opintojenlaajuusyksikko",
+                    "koodistoVersio": 1
+                  }
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true,
+                  "päivä": "2021-10-30"
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "vstlukutaitokoulutuksenkokonaisuudensuoritus",
+                "nimi": {
+                  "fi": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+                  "sv": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+                  "en": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
+                  "nimi": {
+                    "fi": "Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus",
+                    "sv": "Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus",
+                    "en": "Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus"
+                  },
+                  "koodistoUri": "vstlukutaitokoulutuksenkokonaisuus",
+                  "koodistoVersio": 1
+                },
+                "laajuus": {
+                  "arvo": 20.0,
+                  "yksikkö": {
+                    "koodiarvo": "2",
+                    "nimi": {
+                      "fi": "opintopistettä",
+                      "sv": "studiepoäng",
+                      "en": "ECTS credits"
+                    },
+                    "lyhytNimi": {
+                      "fi": "op",
+                      "sv": "sp",
+                      "en": "ECTS cr"
+                    },
+                    "koodistoUri": "opintojenlaajuusyksikko",
+                    "koodistoVersio": 1
+                  }
+                }
+              },
+              "arviointi": [
+                {
+                  "hyväksytty": true,
+                  "päivä": "2021-10-30"
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "vstlukutaitokoulutuksenkokonaisuudensuoritus",
+                "nimi": {
+                  "fi": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+                  "sv": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+                  "en": "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus"
+                },
+                "koodistoUri": "suorituksentyyppi",
+                "koodistoVersio": 1
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "vstlukutaitokoulutus",
+            "nimi": {
+              "fi": "Vapaan sivistystyön lukutaitokoulutus",
+              "sv": "Vapaan sivistystyön lukutaitokoulutus",
+              "en": "Vapaan sivistystyön lukutaitokoulutus"
+            },
+            "koodistoUri": "suorituksentyyppi",
+            "koodistoVersio": 1
+          }
+        }
+      ],
+      "tyyppi": {
+        "koodiarvo": "vapaansivistystyonkoulutus",
+        "nimi": {
+          "fi": "Vapaan sivistystyön koulutus",
+          "sv": "Fritt bildningsarbete"
+        },
+        "lyhytNimi": {
+          "fi": "Vapaan sivistystyön koulutus"
+        },
+        "koodistoUri": "opiskeluoikeudentyyppi",
+        "koodistoVersio": 1
+      },
+      "alkamispäivä": "2021-09-01"
+    }
+  ]
+}
