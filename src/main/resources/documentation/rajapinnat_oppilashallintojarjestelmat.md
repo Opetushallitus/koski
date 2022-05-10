@@ -23,4 +23,4 @@ Opintopolun rajapintoihin on lisätty Cross-site Request Forgery -hyökkäyksilt
 - HTTP-otsake nimeltä `CSRF`. Arvo on vapaasti määriteltävä. Suositeltava arvo on sama kuin käytetty `Caller-Id`.
 - Eväste, jonka nimi on `CSRF`. Arvon on oltava sama kuin ylläolevan HTTP-otsakkeen.
 
-Tämä vaatimus koskee virkailija-aliverkkotunnukseen tehtäviä pyyntöjä (esim. https://virkailija.opintopolku.fi). CSRF-pakotus ei ole käytössä vanhempaa valpas-aliverkkotunnusta (kuten https://valpas.opintopolku.fi) käyttävissä rajapinnoissa. Kenttien lisääminen on kuitenkin suositeltavaa tulevaisuuden varalta.
+Tämä vaatimus koskee virkailija-aliverkkotunnukseen tehtäviä pyyntöjä (esim. https://virkailija.opintopolku.fi). CSRF-pakotus ei ole käytössä vanhempaa koski-aliverkkotunnusta (kuten https://koski.opintopolku.fi) käyttävissä rajapinnoissa. Kenttien lisääminen on kuitenkin suositeltavaa tulevaisuuden varalta.
