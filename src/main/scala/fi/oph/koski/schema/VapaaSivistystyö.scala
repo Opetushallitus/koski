@@ -158,7 +158,10 @@ trait VapaanSivistystyönKoulutuksenArviointi extends KoodistostaLöytyväArvioi
   @KoodistoUri("arviointiasteikkovst")
   def arvosana: Koodistokoodiviite
   def arvioitsijat = None
-  def hyväksytty = arvosana.koodiarvo == "Hyväksytty"
+  def hyväksytty = VapaanSivistystyönKoulutuksenArviointi.hyväksytty(arvosana)
+}
+object VapaanSivistystyönKoulutuksenArviointi {
+  def hyväksytty(arvosana: Koodistokoodiviite) = arvosana.koodiarvo == "Hyväksytty"
 }
 
 @Description("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")

@@ -184,7 +184,10 @@ trait IBArviointi extends KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
   def arvioitsijat: Option[List[Arvioitsija]] = None
   override def arvosanaKirjaimin: LocalizedString = arvosana.nimi.getOrElse(english(arvosana.koodiarvo))
-  def hyväksytty: Boolean = arvosana.koodiarvo match {
+  def hyväksytty: Boolean = IBArviointi.hyväksytty(arvosana)
+}
+object IBArviointi {
+  def hyväksytty(arvosana: Koodistokoodiviite): Boolean = arvosana.koodiarvo match {
     case "O" | "1" => false
     case _ => true
   }
@@ -195,7 +198,10 @@ trait CoreRequirementsArvionti extends IBArviointi {
   def arvosana: Koodistokoodiviite
   def päivä: Option[LocalDate]
   override def arviointipäivä: Option[LocalDate] = päivä
-  override def hyväksytty: Boolean = arvosana.koodiarvo match {
+  override def hyväksytty: Boolean = CoreRequirementsArvionti.hyväksytty(arvosana)
+}
+object CoreRequirementsArvionti {
+  def hyväksytty(arvosana: Koodistokoodiviite): Boolean = arvosana.koodiarvo match {
     case "f" => false
     case _ => true
   }

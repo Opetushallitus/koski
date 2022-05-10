@@ -1429,7 +1429,10 @@ trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArvi
   @KoodistoUri("arviointiasteikkoammatillinen15")
   override def arvosana: Koodistokoodiviite
   override def arvioitsijat: Option[List[SuorituksenArvioitsija]]
-  override def hyväksytty = arvosana.koodiarvo match {
+  override def hyväksytty = AmmatillinenKoodistostaLöytyväArviointi.hyväksytty(arvosana)
+}
+object AmmatillinenKoodistostaLöytyväArviointi{
+  def hyväksytty(arvosana: Koodistokoodiviite): Boolean = arvosana.koodiarvo match {
     case "0" => false
     case "Hylätty" => false
     case _ => true
