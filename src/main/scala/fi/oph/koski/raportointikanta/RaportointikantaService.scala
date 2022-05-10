@@ -132,7 +132,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
           //Without try-catch, in case of an exception the process just silently halts, this is a feature of java.util.concurrent.Executors
           try {
             loadRestAndSwap()
-            if (update.isEmpty) putUploadEvents() // TODO: Ota väliaikainen ehtolause pois
+            putUploadEvents()
             putLoadTimeMetric(Option(true))
             onEnd()
           } catch {
