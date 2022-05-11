@@ -17,9 +17,9 @@ import scala.collection.JavaConverters._
 class ExcelWriterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   "ExcelWriter" - {
 
-    "Erikoismerkit muutetaan välilyönneiksi välilehtien nimessä ja eivät aiheuta muualla virhettä" in {
+    "Simple Excel Writing test" in {
       noException shouldBe thrownBy(
-        withExcel(erikoismerkkienKäsittelyTestCase()) { wb =>
+        withExcel(TestCase()) { wb =>
           wb.getNumberOfSheets should equal(1)
           wb.getSheetAt(0).getSheetName should equal("       datasheet_title")
         }
@@ -27,13 +27,13 @@ class ExcelWriterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     }
   }
 
-  private lazy val erikoismerkit = "[]?*\\/:"
+  private lazy val data = "data"
 
-  private def erikoismerkkienKäsittelyTestCase() = {
-    val workbookSettings = WorkbookSettings(expectedExcelTitle, Some(""))
+  private def TestCase() = {
+    val workbookSettings = WorkbookSettings(expectedExcelTitle, Some("PASSWORD"))
     val dynamicRows= Seq(Seq("foo"))
-    val dynamicColumnSettings = Seq(Column(s"${erikoismerkit}bar", comment = Some(erikoismerkit)))
-    val dataSheet = DynamicDataSheet(s"${erikoismerkit}datasheet_title", dynamicRows, dynamicColumnSettings)
+    val dynamicColumnSettings = Seq(Column(s"${data}bar", comment = Some(data)))
+    val dataSheet = DynamicDataSheet(s"${data}datasheet_title", dynamicRows, dynamicColumnSettings)
     (workbookSettings, Seq(dataSheet))
   }
 
