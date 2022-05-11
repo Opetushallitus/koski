@@ -2,7 +2,7 @@ package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.cache.CacheManager
-import fi.oph.koski.db.{KoskiDatabase, RaportointiDatabaseConfig, ValpasDatabaseConfig}
+import fi.oph.koski.db.{KoskiDatabase, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig, ValpasDatabaseConfig}
 import fi.oph.koski.elasticsearch.{ElasticSearch, IndexManager}
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.executors.GlobalExecutionContext
@@ -72,6 +72,7 @@ class KoskiApplication(
   lazy val masterDatabase = KoskiDatabase.master(config)
   lazy val replicaDatabase = KoskiDatabase.replica(config)
   lazy val raportointiDatabase = new RaportointiDatabase(new RaportointiDatabaseConfig(config, schema = Public))
+  lazy val raportointiGenerointiDatabase = new RaportointiDatabase(new RaportointiGenerointiDatabaseConfig(config, schema = Public))
   lazy val valpasDatabase = new ValpasDatabase(new ValpasDatabaseConfig(config))
   lazy val raportointikantaService = new RaportointikantaService(this)
   lazy val virtaClient = VirtaClient(config)

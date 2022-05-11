@@ -2,7 +2,7 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiDatabaseConfig}
+import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import rx.lang.scala.schedulers.NewThreadScheduler
@@ -132,7 +132,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
           //Without try-catch, in case of an exception the process just silently halts, this is a feature of java.util.concurrent.Executors
           try {
             loadRestAndSwap()
-            if (update.isEmpty) putUploadEvents() // TODO: Ota väliaikainen ehtolause pois
+            putUploadEvents()
             putLoadTimeMetric(Option(true))
             onEnd()
           } catch {
@@ -163,12 +163,12 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private def swapRaportointikanta(): Unit = raportointiDatabase.dropPublicAndMoveTempToPublic
 
-  private lazy val loadDatabase = new RaportointiDatabase(new RaportointiDatabaseConfig(application.config, schema = Temp))
-  private lazy val raportointiDatabase = application.raportointiDatabase
+  private lazy val loadDatabase = new RaportointiDatabase(new RaportointiGenerointiDatabaseConfig(application.config, schema = Temp))
+  private lazy val raportointiDatabase = application.raportointiGenerointiDatabase
 
   private val tietokantaUpload = "database-upload"
 
-  private def shutdown = {
+  def shutdown = {
     Thread.sleep(60000) //Varmistetaan, että kaikki logit ehtivät varmasti siirtyä Cloudwatchiin ennen sulkemista.
     sys.exit()
   }

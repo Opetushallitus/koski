@@ -39,12 +39,25 @@ class KoskiReplicaConfig(val rootConfig: Config) extends DatabaseConfig {
   }
 }
 
-class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) extends DatabaseConfig {
+trait RaportointiDatabaseConfigBase extends DatabaseConfig {
+  val rootConfig: Config
+  val schema: Schema
+}
+
+class RaportointiDatabaseConfig(val rootConfig: Config, val schema: Schema) extends RaportointiDatabaseConfigBase {
   override val envVarForSecretId: String = DatabaseConfig.EnvVarForRaportointiDbSecret
 
   override protected def databaseSpecificConfig: Config =
     rootConfig.getConfig("dbs.raportointi")
       .withValue("poolName", fromAnyRef(s"koskiRaportointiPool-${schema.name}"))
+}
+
+class RaportointiGenerointiDatabaseConfig(val rootConfig: Config, val schema: Schema) extends RaportointiDatabaseConfigBase {
+  override val envVarForSecretId: String = DatabaseConfig.EnvVarForRaportointiDbSecret
+
+  override protected def databaseSpecificConfig: Config =
+    rootConfig.getConfig("dbs.raportointiGenerointi")
+      .withValue("poolName", fromAnyRef(s"koskiRaportointiGenerointiPool-${schema.name}"))
 }
 
 class ValpasDatabaseConfig(val rootConfig: Config) extends DatabaseConfig {
