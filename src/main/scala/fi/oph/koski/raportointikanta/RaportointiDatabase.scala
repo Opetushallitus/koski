@@ -1,7 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{DB, DatabaseUtilQueries, QueryMethods, RaportointiDatabaseConfig}
+import fi.oph.koski.db.{DB, DatabaseUtilQueries, QueryMethods, RaportointiDatabaseConfigBase}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.raportit.PaallekkaisetOpiskeluoikeudet
@@ -24,7 +24,7 @@ import java.time._
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 
-class RaportointiDatabase(config: RaportointiDatabaseConfig) extends Logging with QueryMethods {
+class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
   val schema: Schema = config.schema
 
   logger.info(s"Instantiating RaportointiDatabase for ${schema.name}")
