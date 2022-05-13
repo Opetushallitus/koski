@@ -9,6 +9,10 @@ import {buildClassNames} from '../components/classnames'
 export default ({name, ignoreMissing, lang, edit, className, ...rest}) => {
   let editP = edit == undefined ? editAtom : Bacon.constant(parseBool(edit))
 
+  if (name === null || name === undefined) {
+    return null
+  }
+
   if (typeof name != 'string') {
     console.error('Not a string', name)
     return <span>{'NOT A STRING'}</span>
