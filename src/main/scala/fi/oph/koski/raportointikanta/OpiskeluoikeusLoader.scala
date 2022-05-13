@@ -414,6 +414,7 @@ object OpiskeluoikeusLoader extends Logging {
       },
       oppimääräKoodiarvo = ps match {
         case o: Oppimäärällinen => Some(o.oppimäärä.koodiarvo)
+        //case l: LukionPäätasonSuoritus2015 => l.oppimääränKoodiarvo
         case _ => None
       },
       alkamispäivä = ps.alkamispäivä.map(v => Date.valueOf(v)),
