@@ -12,6 +12,10 @@ export const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOs
     addTutkinnonOsa(modelSetTitle(tutkinnonOsa, newItem.title))
   })
   return lisättävätTutkinnonOsat.osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
-      <LisaaTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={lisättävätTutkinnonOsat.osat} placeholder={placeholder}/>
+      <LisaaTutkinnonOsaDropdown
+        selectedAtom={selectedAtom}
+        osat={lisättävätTutkinnonOsat.osat}
+        placeholder={placeholder}
+      />
   </span>)
 }
