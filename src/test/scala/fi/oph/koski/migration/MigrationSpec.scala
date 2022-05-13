@@ -27,7 +27,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "LoaderUtils.scala"                                         -> "38d31b4d1cfa5e3892083bb39f7f0047",
         "MuuAmmatillinenRaporttiRowBuilder.scala"                   -> "31774fb0fbd06a775a07325e867a951f",
         "OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.scala" -> "4498412891d88ddd2daf422144664086",
-        "OpiskeluoikeusLoader.scala"                                -> "f0be4321ad6636aefb29aaed664dcedf",
+        "OpiskeluoikeusLoader.scala"                                -> "4dab9185f560e41bbbc4139c036afea3",
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "9e2e45da33ed335af4a7b0a31b139a7",
         "RaportointiDatabase.scala"                                 -> "9757acceca5de5350f245a563155c017",
