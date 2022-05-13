@@ -61,7 +61,7 @@ case class KelaIBMuuOsasuoritus(
   osasuoritukset: Option[List[KelaIBMuuOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
-  tunnustettu: Option[KelaIBOsaamisenTunnustaminen],
+  tunnustettu: Option[OsaamisenTunnustaminen],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
 ) extends KelaIBOsasuoritus {
@@ -80,7 +80,7 @@ case class KelaIBLukionOppiaineenOsasuoritus(
   @KoodistoKoodiarvo("lukionmuuopinto")
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
-  tunnustettu: Option[KelaIBOsaamisenTunnustaminen],
+  tunnustettu: Option[OsaamisenTunnustaminen],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
 ) extends KelaIBOsasuoritus {
@@ -97,7 +97,7 @@ case class KelaIBOsasuorituksenLukionModuulinSuoritus(
   @KoodistoKoodiarvo("lukionvaltakunnallinenmoduuli")
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
-  tunnustettu: Option[KelaIBOsaamisenTunnustaminen],
+  tunnustettu: Option[OsaamisenTunnustaminen],
 ) extends Osasuoritus with KelaPreIBLukioOsasuoritus {
   def withEmptyArvosana: KelaIBOsasuorituksenLukionModuulinSuoritus = copy(
     arviointi = arviointi.map(_.map(_.withEmptyArvosana))
@@ -110,7 +110,7 @@ case class KelaIBOsasuorituksenLukionMuunOpintojaksonSuoritus(
   arviointi: Option[List[KelaIBOsasuorituksenArvionti]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
-  tunnustettu: Option[KelaIBOsaamisenTunnustaminen],
+  tunnustettu: Option[OsaamisenTunnustaminen],
 ) extends Osasuoritus with KelaPreIBLukioOsasuoritus {
   def withEmptyArvosana: KelaIBOsasuorituksenLukionMuunOpintojaksonSuoritus = copy(
     arviointi = arviointi.map(_.map(_.withEmptyArvosana))
@@ -131,12 +131,6 @@ case class KelaIBOsasuorituksenArvionti(
     hyväksytty = arvosana.map(a => schema.IBArviointi.hyväksytty(a) && schema.CoreRequirementsArvionti.hyväksytty(a))
   )
 }
-
-case class KelaIBOsaamisenTunnustaminen(
-  osaaminen: Option[KelaIBMuuOsasuoritus],
-  selite: schema.LocalizedString,
-  rahoituksenPiirissä: Boolean
-) extends OsaamisenTunnustaminen
 
 case class KelaIBSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,

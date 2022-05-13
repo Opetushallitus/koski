@@ -88,19 +88,13 @@ case class KelaAikuistenPerusopetuksenOsasuoritus(
   osasuoritukset: Option[List[KelaAikuistenPerusopetuksenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
-  tunnustettu: Option[KelaAikuistenPerusopetuksenOsaamisenTunnustaminen],
+  tunnustettu: Option[OsaamisenTunnustaminen],
 ) extends Osasuoritus {
   def withEmptyArvosana: KelaAikuistenPerusopetuksenOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
   )
 }
-
-case class KelaAikuistenPerusopetuksenOsaamisenTunnustaminen(
-  osaaminen: Option[KelaAikuistenPerusopetuksenOsasuoritus],
-  selite: LocalizedString,
-  rahoituksenPiirissä: Boolean
-) extends OsaamisenTunnustaminen
 
 case class KelaAikuistenPerusopetuksenSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
