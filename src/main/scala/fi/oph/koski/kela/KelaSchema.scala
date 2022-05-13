@@ -10,7 +10,8 @@ import org.json4s.JValue
 import java.time.{LocalDate, LocalDateTime}
 
 object KelaSchema {
-  lazy val schemaJson: JValue = SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[KelaOppija]).asInstanceOf[ClassSchema])
+  lazy val schemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[KelaOppija]).asInstanceOf[ClassSchema])
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
   "aikuistenperusopetus",
@@ -27,8 +28,6 @@ object KelaSchema {
   "vapaansivistystyonkoulutus",
 //  "tuva"
   )
-
-  val schemassaEiTuetutSuoritustyypit: List[String] = List("vstmaahanmuuttajienkotoutumiskoulutus")
 }
 
 case class KelaOppija(
@@ -115,11 +114,13 @@ trait Suoritus{
   def koulutusmoduuli: SuorituksenKoulutusmoduuli
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
+  def withEmptyArvosana: Suoritus
 }
 
 trait Osasuoritus{
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
+  def withEmptyArvosana: Osasuoritus
 }
 
 trait YksilöllistettyOppimäärä {
@@ -209,27 +210,24 @@ case class OsaamisenHankkimistapajakso(
   osaamisenHankkimistapa: OsaamisenHankkimistapa
 )
 
-trait OsaamisenTunnustaminen{
-  def osaaminen: Option[Osasuoritus]
-  def selite: schema.LocalizedString
-  def rahoituksenPiirissä: Boolean
-}
+case class OsaamisenTunnustaminen(selite: schema.LocalizedString, rahoituksenPiirissä: Boolean)
 
-case class Vahvistus(
-  päivä: LocalDate
-)
+case class Vahvistus(päivä: LocalDate)
 
 trait OsasuorituksenArvionti{
   def arvosana: Option[schema.Koodistokoodiviite]
   def hyväksytty: Option[Boolean]
   def päivä: Option[LocalDate]
+  def withEmptyArvosana: OsasuorituksenArvionti
 }
 
 case class KelaOsasuorituksenArvionti(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti
+) extends OsasuorituksenArvionti {
+  override def withEmptyArvosana: KelaOsasuorituksenArvionti = copy(arvosana = None)
+}
 
 case class Oppilaitos(
   oid: String,
@@ -251,7 +249,4 @@ case class Toimipiste(
   kotipaikka: Option[KelaKoodistokoodiviite] = None
 )
 
-case class KelaLaajuus(
-  arvo: Double,
-  yksikkö: KelaKoodistokoodiviite
-)
+case class KelaLaajuus(arvo: Double, yksikkö: KelaKoodistokoodiviite)

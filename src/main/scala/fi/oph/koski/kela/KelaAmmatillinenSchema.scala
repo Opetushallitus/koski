@@ -100,7 +100,7 @@ case class KelaAmmatillinenOsasuoritus(
   tutkinnonOsanRyhmä: Option[KelaKoodistokoodiviite],
   osaamisala: Option[List[schema.Osaamisalajakso]],
   alkamispäivä: Option[LocalDate],
-  tunnustettu: Option[KelaAmmatillinenOsaamisenTunnustaminen],
+  tunnustettu: Option[OsaamisenTunnustaminen],
   toinenOsaamisala: Option[Boolean],
   toinenTutkintonimike: Option[Boolean],
   näyttö: Option[Näyttö],
@@ -123,12 +123,6 @@ case class KelaAmmatillisenOsasuorituksenArvionti(
     hyväksytty = arvosana.map(schema.AmmatillinenKoodistostaLöytyväArviointi.hyväksytty)
   )
 }
-
-case class KelaAmmatillinenOsaamisenTunnustaminen(
-  osaaminen: Option[KelaAmmatillinenOsasuoritus],
-  selite: LocalizedString,
-  rahoituksenPiirissä: Boolean
-) extends OsaamisenTunnustaminen
 
 case class KelaAmmatillisenSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,

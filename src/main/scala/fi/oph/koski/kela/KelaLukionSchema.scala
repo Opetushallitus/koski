@@ -61,7 +61,7 @@ case class KelaLukionOsasuoritus(
   osasuoritukset: Option[List[KelaLukionOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
-  tunnustettu: Option[KelaLukionOsaamisenTunnustaminen],
+  tunnustettu: Option[OsaamisenTunnustaminen],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
 ) extends Osasuoritus {
@@ -81,12 +81,6 @@ case class KelaLukionOsasuorituksenArvionti(
     hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
   )
 }
-
-case class KelaLukionOsaamisenTunnustaminen(
-  osaaminen: Option[KelaLukionOsasuoritus],
-  selite: LocalizedString,
-  rahoituksenPiirissä: Boolean
-) extends OsaamisenTunnustaminen
 
 case class KelaLukionSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
