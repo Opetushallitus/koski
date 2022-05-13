@@ -26,7 +26,7 @@ object KelaSchema {
   "perusopetus",
   "ylioppilastutkinto",
   "vapaansivistystyonkoulutus",
-//  "tuva"
+  "tuva"
   )
 }
 
