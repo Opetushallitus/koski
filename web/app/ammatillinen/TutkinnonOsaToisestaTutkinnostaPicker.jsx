@@ -14,7 +14,7 @@ const TutkinnonOsaToisestaTutkinnostaPicker = ({tutkintoAtom, tutkinnonOsaAtom, 
         let osatP = tutkinto
           ? fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero).map('.osat')
           : Bacon.constant([])
-        return (<LisaaTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={<Text name={tutkinnonOsaTitle}/>} osat={osatP}
+        return (<LisaaTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={tutkinnonOsaTitle} osat={osatP}
                                           placeholder={osatP.map('.length').map(len => len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa').map(t)}/>)
       })
     }

@@ -29,7 +29,7 @@ export default ({koulutusmoduuliNimiAtom, koulutusmoduuliKoodiAtom, koulutusmodu
         ift(koulutusmoduulityyppiAtom.map(k => k === ammatilliseenTehtäväänValmistavaKoulutus),
           <KoodistoDropdown
             className='ammatilliseentehtäväänvalmistavakoulutus'
-            title={t(ammatilliseenTehtäväänValmistavaKoulutus)}
+            title={ammatilliseenTehtäväänValmistavaKoulutus}
             options={ammatilliseentehtavaanvalmistavakoulutusP}
             selected={ammatilliseentehtavaanvalmistavakoulutusAtom}/>
         )
