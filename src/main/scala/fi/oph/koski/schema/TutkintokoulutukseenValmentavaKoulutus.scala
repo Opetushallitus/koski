@@ -80,7 +80,6 @@ case class TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
 
 @Description("Tutkintokoulutukseen valmentavan koulutuksen tunnistetiedot")
 case class TutkintokoulutukseenValmentavanKoulutus(
-  //TODO: itse keksitty uusi koodiarvo
   @KoodistoKoodiarvo("999908")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999908", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String] = Some("OPH-1488-2021"),
@@ -282,8 +281,12 @@ case class SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArvioi
   kuvaus: Option[LocalizedString],
   päivä: LocalDate
 ) extends TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi with SanallinenArviointi {
-  override def hyväksytty: Boolean = arvosana.koodiarvo == "Hyväksytty"
+  override def hyväksytty: Boolean =
+    SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi.hyväksytty(arvosana)
   override def arvioitsijat: Option[List[SuorituksenArvioitsija]] = None
+}
+object SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi {
+  def hyväksytty(arvosana: Koodistokoodiviite): Boolean = arvosana.koodiarvo == "Hyväksytty"
 }
 
 trait TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi
