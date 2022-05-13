@@ -257,8 +257,12 @@ class KelaSpec
       }
 
       "lukion oppijalle ja ylioppilastutkinnon suorittajalle" in {
-        val vanhaJson = JsonFiles.readFile("src/test/resources/kela_backwardcompatibility/kela-response-lukionsuorittaja-laaja_2022-05-03.json")
-
+        val vanhaJson = JsonFiles
+          .readFile("src/test/resources/kela_backwardcompatibility/kela-response-lukionsuorittaja-laaja_2022-05-03.json")
+          .removeField {
+            case ("osaaminen", _) => true
+            case _ => false
+          }
         postHetu(KoskiSpecificMockOppijat.ylioppilasLukiolainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
           verifyResponseStatusOk()
           val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -520,7 +524,12 @@ class KelaSpec
 
     "Laajoilla käyttöoikeuksilla haetut oppijat deserialisoituu ja serialisoituu täsmälleen samalla tavalla refaktoroinnin jälkeen" in {
       implicit val context: ExtractionContext = KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItems
-      val kelaKaikkiJson = JsonFiles.readFile("src/test/resources/kela_backwardcompatibility/kela-response-kaikki-oppijat-laajat_2022-05-03.json")
+      val kelaKaikkiJson = JsonFiles
+        .readFile("src/test/resources/kela_backwardcompatibility/kela-response-kaikki-oppijat-laajat_2022-05-03.json")
+        .removeField {
+          case ("osaaminen", _) => true
+          case _ => false
+        }
       val opiskeluoikeudet = SchemaValidatingExtractor.extract[List[KelaOppija]](kelaKaikkiJson)
       opiskeluoikeudet.right.get.size shouldBe 88
       JsonSerializer.serializeWithRoot[List[KelaOppija]](opiskeluoikeudet.right.get) shouldBe kelaKaikkiJson
@@ -528,7 +537,12 @@ class KelaSpec
 
     "Suppeilla käyttöoikeuksilla haetut oppijat deserialisoituu ja serialisoituu täsmälleen samalla tavalla refaktoroinnin jälkeen" in {
       implicit val context: ExtractionContext = KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItems
-      val kelaKaikkiSuppeatJson = JsonFiles.readFile("src/test/resources/kela_backwardcompatibility/kela-response-kaikki-oppijat-suppeat_2022-05-03.json")
+      val kelaKaikkiSuppeatJson = JsonFiles
+        .readFile("src/test/resources/kela_backwardcompatibility/kela-response-kaikki-oppijat-suppeat_2022-05-03.json")
+        .removeField {
+          case ("osaaminen", _) => true
+          case _ => false
+        }
       val opiskeluoikeudet = SchemaValidatingExtractor.extract[List[KelaOppija]](kelaKaikkiSuppeatJson)
       opiskeluoikeudet.right.get.size shouldBe 88
       JsonSerializer.serializeWithRoot[List[KelaOppija]](opiskeluoikeudet.right.get) shouldBe kelaKaikkiSuppeatJson
