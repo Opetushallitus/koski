@@ -15,7 +15,7 @@ case class KelaPerusopetukseenValmistavanOpiskeluoikeus(
   aikaleima: Option[LocalDateTime],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  sisältyyOpiskeluoikeuteen: Option[Sisältäväopiskeluoikeus],
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   tila: KelaOpiskeluoikeudenTila,
   suoritukset: List[KelaPerusopetukseenValmistavanPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus.koodiarvo)
@@ -50,7 +50,7 @@ case class KelaPerusopetukseenValmistavanPäätasonSuoritus(
 @Title("Perusopetukseen valmistavan koulutuksen osasuoritus")
 case class KelaPerusopetukseenValmistavanOsasuoritus(
   koulutusmoduuli: KelaPerusopetukseenValmistavanOsasuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArvionti]],
+  arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArviointi]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
   luokkaAste: Option[KelaKoodistokoodiviite],

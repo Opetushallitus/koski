@@ -25,7 +25,7 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  override def sisältyyOpiskeluoikeuteen: Option[Sisältäväopiskeluoikeus] = None
+  override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
   def withEmptyArvosana: KelaVapaanSivistystyönOpiskeluoikeus = copy(
     suoritukset = suoritukset.map(_.withEmptyArvosana)
   )
@@ -51,7 +51,7 @@ case class KelaVapaanSivistystyönPäätasonSuoritus(
 }
 
 @Title("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen suoritus")
-case class KelaVapaanSivistystyönMaahanmuuttajienKototutumisenSuoritus(
+case class KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus(
   koulutusmoduuli: KelaVapaanSivistystyönSuorituksenKoulutusmoduuli,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
@@ -60,7 +60,7 @@ case class KelaVapaanSivistystyönMaahanmuuttajienKototutumisenSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
 ) extends VstSuoritus {
-  def withEmptyArvosana: KelaVapaanSivistystyönMaahanmuuttajienKototutumisenSuoritus = copy(
+  def withEmptyArvosana: KelaVapaanSivistystyönMaahanmuuttajienKotoutumisenSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
   )
 }

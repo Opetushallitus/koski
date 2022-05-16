@@ -2,7 +2,6 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
-import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -16,7 +15,7 @@ case class KelaAmmatillinenOpiskeluoikeus(
   aikaleima: Option[LocalDateTime],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  sisältyyOpiskeluoikeuteen: Option[Sisältäväopiskeluoikeus],
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   arvioituPäättymispäivä: Option[LocalDate],
   ostettu: Option[Boolean],
   tila: KelaAmmatillisenOpiskeluoikeudenTila,
@@ -90,7 +89,7 @@ case class KelaAmmatillinenPäätasonSuoritus(
 case class KelaAmmatillinenOsasuoritus(
   koulutusmoduuli: KelaAmmatillisenOsasuorituksenKoulutusmoduuli,
   liittyyTutkinnonOsaan: Option[KelaKoodistokoodiviite],
-  arviointi: Option[List[KelaAmmatillisenOsasuorituksenArvionti]],
+  arviointi: Option[List[KelaAmmatillisenOsasuorituksenArviointi]],
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaAmmatillinenOsasuoritus]],
@@ -109,16 +108,17 @@ case class KelaAmmatillinenOsasuoritus(
 ) extends Osasuoritus {
   def withEmptyArvosana: KelaAmmatillinenOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
+    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana)),
+    näyttö = näyttö.map(_.withEmptyArvosana)
   )
 }
 
-case class KelaAmmatillisenOsasuorituksenArvionti(
+case class KelaAmmatillisenOsasuorituksenArviointi(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArvionti {
-  def withEmptyArvosana: KelaAmmatillisenOsasuorituksenArvionti = copy(
+  def withEmptyArvosana: KelaAmmatillisenOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.AmmatillinenKoodistostaLöytyväArviointi.hyväksytty)
   )
@@ -154,7 +154,9 @@ case class Näyttö(
   suoritusaika: Option[schema.NäytönSuoritusaika],
   työssäoppimisenYhteydessä: Boolean,
   arviointi: Option[NäytönArviointi],
-)
+) {
+  def withEmptyArvosana: Näyttö = copy(arviointi = arviointi.map(_.withEmptyArvosana))
+}
 
 case class NäytönSuorituspaikka(
   tunniste: KelaKoodistokoodiviite,
@@ -162,8 +164,15 @@ case class NäytönSuorituspaikka(
 )
 
 case class NäytönArviointi(
-  hyväksytty: Boolean
-)
+  @Description("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
+  arvosana: Option[schema.Koodistokoodiviite],
+  hyväksytty: Option[Boolean]
+) {
+  def withEmptyArvosana: NäytönArviointi = copy(
+    arvosana = None,
+    hyväksytty = arvosana.map(schema.AmmatillinenKoodistostaLöytyväArviointi.hyväksytty)
+  )
+}
 
 case class Tutkinto(
   tunniste: KelaKoodistokoodiviite,
@@ -173,6 +182,62 @@ case class Tutkinto(
 )
 
 case class AmmatillisenTutkinnonOsanLisätieto(
-  tunniste: KelaKoodistokoodiviite,
+  @KoodistoKoodiarvo("mukautettu")
+  tunniste: schema.Koodistokoodiviite,
   kuvaus: schema.LocalizedString
+)
+
+trait OsaamisenHankkimistapa {
+  def tunniste: KelaKoodistokoodiviite
+}
+
+case class OsaamisenHankkimistapaIlmanLisätietoja (
+  tunniste: KelaKoodistokoodiviite
+) extends OsaamisenHankkimistapa
+
+case class OppisopimuksellinenOsaamisenHankkimistapa (
+  tunniste: KelaKoodistokoodiviite,
+  oppisopimus: Oppisopimus
+) extends OsaamisenHankkimistapa
+
+case class OsaamisenHankkimistapajakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  osaamisenHankkimistapa: OsaamisenHankkimistapa
+)
+
+case class Työssäoppimisjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  työssäoppimispaikka: Option[schema.LocalizedString],
+  paikkakunta: KelaKoodistokoodiviite,
+  maa: KelaKoodistokoodiviite,
+  laajuus: KelaLaajuus
+)
+
+case class Koulutussopimusjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  työssäoppimispaikka: Option[schema.LocalizedString],
+  paikkakunta: KelaKoodistokoodiviite,
+  maa: KelaKoodistokoodiviite
+)
+
+case class Järjestämismuoto (
+  tunniste: KelaKoodistokoodiviite
+)
+
+case class Järjestämismuotojakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  järjestämismuoto: Järjestämismuoto
+)
+
+case class Oppisopimus(
+  työnantaja: Yritys
+)
+
+case class Yritys(
+  nimi: schema.LocalizedString,
+  yTunnus: String
 )

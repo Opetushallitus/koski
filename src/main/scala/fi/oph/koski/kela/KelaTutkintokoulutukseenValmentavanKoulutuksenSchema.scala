@@ -16,7 +16,7 @@ case class KelaTutkintokoulutukseenValmentavanOpiskeluoikeus(
   aikaleima: Option[LocalDateTime],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  sisältyyOpiskeluoikeuteen: Option[Sisältäväopiskeluoikeus],
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   arvioituPäättymispäivä: Option[LocalDate],
   tila: KelaTuvaOpiskeluoikeudenTila,
   suoritukset: List[KelaTuvaPäätasonSuoritus],

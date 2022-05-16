@@ -8,7 +8,8 @@ import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 
 // TODO: Poista KelaOppijaConverter sitten kun sitä ei enää käytetä.
-// Sen sijaan voit serialisoida KelaOppijan suoraan oppijan json-datasta.
+//  Käytössä tällä hetkellä vain Kelan käyttöliittymässä.
+//  KelaOppijaConverterin käytön sijaan voit serialisoida KelaOppijan suoraan oppijan json-datasta.
 object KelaOppijaConverter extends Logging {
 
   def convertOppijaToKelaOppija(oppija: schema.Oppija): Either[HttpStatus, KelaOppija] = {

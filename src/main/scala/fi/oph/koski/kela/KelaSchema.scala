@@ -3,7 +3,7 @@ package fi.oph.koski.kela
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.scalaschema.annotation.{Discriminator, SyntheticProperty}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, SyntheticProperty}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -60,7 +60,7 @@ trait KelaOpiskeluoikeus {
   def aikaleima: Option[LocalDateTime]
   def oppilaitos: Option[Oppilaitos]
   def koulutustoimija: Option[Koulutustoimija]
-  def sisältyyOpiskeluoikeuteen: Option[Sisältäväopiskeluoikeus]
+  def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def arvioituPäättymispäivä: Option[LocalDate]
   def tila: OpiskeluoikeudenTila
   def suoritukset: List[Suoritus]
@@ -77,7 +77,7 @@ trait KelaOpiskeluoikeus {
   def withEmptyArvosana: KelaOpiskeluoikeus
 }
 
-case class Sisältäväopiskeluoikeus(
+case class SisältäväOpiskeluoikeus(
   oid: String,
   oppilaitos: Oppilaitos
 )
@@ -155,78 +155,16 @@ case class Ulkomaanjakso(
   kuvaus: Option[schema.LocalizedString]
 )
 
-case class Koulutussopimusjakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  työssäoppimispaikka: Option[schema.LocalizedString],
-  paikkakunta: KelaKoodistokoodiviite,
-  maa: KelaKoodistokoodiviite
-)
-
-case class Työssäoppimisjakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  työssäoppimispaikka: Option[schema.LocalizedString],
-  paikkakunta: KelaKoodistokoodiviite,
-  maa: KelaKoodistokoodiviite,
-  laajuus: KelaLaajuus
-)
-
-case class Järjestämismuoto (
-  tunniste: KelaKoodistokoodiviite
-)
-
-case class Järjestämismuotojakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  järjestämismuoto: Järjestämismuoto
-)
-
-case class Oppisopimus(
-  työnantaja: Yritys
-)
-
-case class Yritys(
-  nimi: schema.LocalizedString,
-  yTunnus: String
-)
-
-trait OsaamisenHankkimistapa {
-  def tunniste: KelaKoodistokoodiviite
-}
-
-case class OsaamisenHankkimistapaIlmanLisätietoja (
-  tunniste: KelaKoodistokoodiviite
-) extends OsaamisenHankkimistapa
-
-case class OppisopimuksellinenOsaamisenHankkimistapa (
-  tunniste: KelaKoodistokoodiviite,
-  oppisopimus: Oppisopimus
-) extends OsaamisenHankkimistapa
-
-case class OsaamisenHankkimistapajakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  osaamisenHankkimistapa: OsaamisenHankkimistapa
-)
-
 case class OsaamisenTunnustaminen(selite: schema.LocalizedString, rahoituksenPiirissä: Boolean)
 
 case class Vahvistus(päivä: LocalDate)
 
 trait OsasuorituksenArvionti{
+  @Description("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   def arvosana: Option[schema.Koodistokoodiviite]
   def hyväksytty: Option[Boolean]
   def päivä: Option[LocalDate]
   def withEmptyArvosana: OsasuorituksenArvionti
-}
-
-case class KelaOsasuorituksenArvionti(
-  arvosana: Option[schema.Koodistokoodiviite],
-  hyväksytty: Option[Boolean],
-  päivä: Option[LocalDate]
-) extends OsasuorituksenArvionti {
-  override def withEmptyArvosana: KelaOsasuorituksenArvionti = copy(arvosana = None)
 }
 
 case class Oppilaitos(

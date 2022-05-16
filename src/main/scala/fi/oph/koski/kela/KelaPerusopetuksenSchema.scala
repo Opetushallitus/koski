@@ -16,7 +16,7 @@ case class KelaPerusopetuksenOpiskeluoikeus(
   aikaleima: Option[LocalDateTime],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  sisältyyOpiskeluoikeuteen: Option[Sisältäväopiskeluoikeus],
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   tila: KelaOpiskeluoikeudenTila,
   suoritukset: List[KelaPerusopetuksenPäätasonSuoritus],
   lisätiedot: Option[KelaPerusopetuksenOpiskeluoikeudenLisätiedot],
@@ -90,7 +90,7 @@ trait KelaPerusopetuksenPäätasonSuoritus extends Suoritus {
 @Title("Perusopetuksen osasuoritus")
 case class KelaPerusopetuksenOsasuoritus(
   koulutusmoduuli: KelaPerusopetuksenOsasuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArvionti]],
+  arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArviointi]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
@@ -101,12 +101,12 @@ case class KelaPerusopetuksenOsasuoritus(
   )
 }
 
-case class KelaPerusopetuksenOsasuorituksenArvionti(
+case class KelaPerusopetuksenOsasuorituksenArviointi(
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean],
   päivä: Option[LocalDate]
 ) extends OsasuorituksenArvionti {
-  def withEmptyArvosana: KelaPerusopetuksenOsasuorituksenArvionti = copy(
+  def withEmptyArvosana: KelaPerusopetuksenOsasuorituksenArviointi = copy(
     arvosana = None,
     hyväksytty = arvosana.map(schema.YleissivistävänKoulutuksenArviointi.hyväksytty)
   )

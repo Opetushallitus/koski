@@ -45,7 +45,7 @@ object KelaYlioppilastutkinnonOpiskeluoikeus {
         KelaYlioppilastutkinnonOsasuorituksenKoulutusmoduuli(
           KelaKoodistokoodiviite.fromKoskiSchema(os.koulutusmoduuli.tunniste)
         ),
-        os.arviointi.map(opt => opt.map(a => KelaOsasuorituksenArvionti(None, Some(a.hyväksytty), a.arviointipäivä))),
+        os.arviointi.map(opt => opt.map(a => KelaYlioppilastutkinnonOsasuorituksenArvionti(None, Some(a.hyväksytty), a.arviointipäivä))),
         os.tyyppi,
         os.tila.map(KelaKoodistokoodiviite.fromKoskiSchema),
         Some(KelaYlioppilastutkinnonTutkintokerta(
@@ -103,7 +103,7 @@ case class KelaYlioppilastutkinnonPäätasonSuoritus(
 @Title("Ylioppilastutkinnon osasuoritus")
 case class KelaYlioppilastutkinnonOsasuoritus(
   koulutusmoduuli: KelaYlioppilastutkinnonOsasuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaOsasuorituksenArvionti]],
+  arviointi: Option[List[KelaYlioppilastutkinnonOsasuorituksenArvionti]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
   tutkintokerta: Option[KelaYlioppilastutkinnonTutkintokerta],
@@ -126,3 +126,11 @@ case class KelaYlioppilastutkinnonTutkintokerta(
   vuosi: Int,
   vuodenaika: schema.LocalizedString
 )
+
+case class KelaYlioppilastutkinnonOsasuorituksenArvionti(
+  arvosana: Option[schema.Koodistokoodiviite],
+  hyväksytty: Option[Boolean],
+  päivä: Option[LocalDate]
+) extends OsasuorituksenArvionti {
+  override def withEmptyArvosana: KelaYlioppilastutkinnonOsasuorituksenArvionti = copy(arvosana = None)
+}

@@ -25,7 +25,7 @@ case class KelaInternationalSchoolOpiskeluoikeus(
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
-  override def sisältyyOpiskeluoikeuteen: Option[Sisältäväopiskeluoikeus] = None
+  override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
   def withEmptyArvosana: KelaInternationalSchoolOpiskeluoikeus = copy(
     suoritukset = suoritukset.map(_.withEmptyArvosana)
   )
