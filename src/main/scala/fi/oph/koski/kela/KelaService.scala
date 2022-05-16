@@ -26,7 +26,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   def findKelaOppijaByHetu(hetu: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
 
-    val (opiskeluoikeudet, ytrResult) = haeOpiskeluoikeudet(List(hetu))
+    val (opiskeluoikeudet, ytrResult) = haeOpiskeluoikeudet(List(hetu), true)
 
     val oppija = opiskeluoikeudet.headOption.map {
       case (hlö, oos) => teePalautettavatKelaOppijat(hlö, oos, ytrResult(hlö))
@@ -40,7 +40,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   }
 
   def streamOppijatByHetu(hetut: Seq[String])(implicit koskiSession: KoskiSpecificSession): Observable[JValue] = {
-    val (opiskeluoikeudet, ytrResult) = haeOpiskeluoikeudet(hetut)
+    val (opiskeluoikeudet, _) = haeOpiskeluoikeudet(hetut, false)
 
     Observable
       .from(
@@ -48,7 +48,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
           case (oppijaMasterOid, opiskeluoikeusRows) => teePalautettavatKelaOppijat(
             oppijaMasterOid,
             opiskeluoikeusRows,
-            ytrResult(oppijaMasterOid)
+            Seq.empty
           )
         }
       )
@@ -61,7 +61,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
       .map(JsonSerializer.serializeWithUser(koskiSession))
   }
 
-  private def haeOpiskeluoikeudet(hetut: Seq[String])(
+  private def haeOpiskeluoikeudet(hetut: Seq[String], haeYtr: Boolean)(
     implicit user: KoskiSpecificSession
   ): (Map[LaajatOppijaHenkilöTiedot, Seq[KelaOppijanOpiskeluoikeusRow]], Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]]) = {
     val masterHenkilötFut: Future[Map[String, LaajatOppijaHenkilöTiedot]] = Future(
@@ -70,16 +70,19 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
       )
     )
 
-    val ytrResultFut: Future[Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]]] =
-      masterHenkilötFut
-        .map { masterHenkilöt =>
-          masterHenkilöt.values
-            .map(hlö => hlö -> application.ytr.findByOppija(hlö).map {
-              case yo: YlioppilastutkinnonOpiskeluoikeus =>
-                KelaYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(yo)
-            }
-            ).toMap
-        }
+    val ytrResultFut: Future[Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]]] = {
+      if (haeYtr) {
+        masterHenkilötFut
+          .map { masterHenkilöt =>
+            masterHenkilöt.values
+              .map(hlö => hlö -> application.ytr.findByOppija(hlö).map {
+                case yo: YlioppilastutkinnonOpiskeluoikeus =>
+                  KelaYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(yo)
+              }
+              ).toMap
+          }
+      } else Future.successful(Map.empty)
+    }
 
     val opiskeluoikeudetFut: Future[Map[LaajatOppijaHenkilöTiedot, Seq[KelaOppijanOpiskeluoikeusRow]]] =
       masterHenkilötFut
