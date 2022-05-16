@@ -9,6 +9,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
 import fi.oph.koski.schema
+import fi.oph.koski.schema.YlioppilastutkinnonOpiskeluoikeus
 import fi.oph.koski.util.Futures
 import org.json4s.JsonAST.JValue
 import rx.lang.scala.Observable
@@ -25,93 +26,21 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
   def findKelaOppijaByHetu(hetu: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KelaOppija] = {
 
-    val masterHenkilöFut: Future[Either[HttpStatus, LaajatOppijaHenkilöTiedot]] = Future(
-      application
-        .opintopolkuHenkilöFacade
-        .findOppijaByHetu(hetu)
-        .flatMap(hlö => application.opintopolkuHenkilöFacade.findMasterOppija(hlö.oid))
-        .toRight(
-          KoskiErrorCategory
-            .notFound
-            .oppijaaEiLöydyTaiEiOikeuksia(
-              "Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."
-            )
-        )
-    )
+    val (opiskeluoikeudet, ytrResult) = haeOpiskeluoikeudet(List(hetu))
 
-    val ytrResultFut: Future[Either[HttpStatus, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]]] = masterHenkilöFut
-      .map { masterHenkilö =>
-        masterHenkilö.map(hlö => application.ytr.findByOppija(hlö))
-          .map(oos => oos.map {
-            case yo: schema.YlioppilastutkinnonOpiskeluoikeus =>
-              KelaYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(yo)
-          })
-      }
-
-    val opiskeluoikeudetFut: Future[Either[HttpStatus, Seq[KelaOppijanOpiskeluoikeusRow]]] = masterHenkilöFut
-      .map { masterHenkilö =>
-        masterHenkilö.map { henkilö =>
-          kelaOpiskeluoikeusRepository.getOppijanKaikkiOpiskeluoikeudet(
-            palautettavatOpiskeluoikeudenTyypit = KelaSchema.schemassaTuetutOpiskeluoikeustyypit,
-            oppijaMasterOids = List(henkilö.oid)
-          )
-        }
-      }
-
-    val (masterHenkilö, opiskeluoikeudet, ytrResult) = Futures.await(
-      future = for {
-        henkilö <- masterHenkilöFut
-        opiskeluoikeudet <- opiskeluoikeudetFut
-        ytrResult <- ytrResultFut
-      } yield (henkilö, opiskeluoikeudet, ytrResult),
-      atMost = 5.minutes
-    )
-
-    val oppija = (for {
-      h <- masterHenkilö
-      oos <- opiskeluoikeudet
-      ytl <- ytrResult
-    } yield teePalautettavatKelaOppijat(h, oos, ytl)).flatMap(identity)
-
+    val oppija = opiskeluoikeudet.headOption.map {
+      case (hlö, oos) => teePalautettavatKelaOppijat(hlö, oos, ytrResult(hlö))
+    }.toRight(
+      KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(
+        "Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."
+      )
+    ).flatMap(identity)
     oppija.foreach(auditLogOpiskeluoikeusKatsominen(_)(koskiSession))
     oppija
   }
 
   def streamOppijatByHetu(hetut: Seq[String])(implicit koskiSession: KoskiSpecificSession): Observable[JValue] = {
-    val masterHenkilötFut: Future[Map[String, LaajatOppijaHenkilöTiedot]] = Future(
-      application.opintopolkuHenkilöFacade.findMasterOppijat(
-        application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut).map(_.oid).toList
-      )
-    )
-
-    val ytrResultFut: Future[Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]]] =
-      masterHenkilötFut
-      .map { masterHenkilöt =>
-        masterHenkilöt.values
-          .map(hlö => hlö -> application.ytr.findByOppija(hlö).map {
-            case yo: schema.YlioppilastutkinnonOpiskeluoikeus =>
-              KelaYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(yo)
-          }).toMap
-      }
-
-    val opiskeluoikeudetFut: Future[Map[LaajatOppijaHenkilöTiedot, Seq[KelaOppijanOpiskeluoikeusRow]]] =
-      masterHenkilötFut
-      .map { masterHenkilöt =>
-        masterHenkilöt.values.map { henkilö =>
-          henkilö -> kelaOpiskeluoikeusRepository.getOppijanKaikkiOpiskeluoikeudet(
-            palautettavatOpiskeluoikeudenTyypit = KelaSchema.schemassaTuetutOpiskeluoikeustyypit,
-            oppijaMasterOids = List(henkilö.oid)
-          )
-        }.toMap
-      }
-
-    val (opiskeluoikeudet, ytrResult) = Futures.await(
-      future = for {
-        opiskeluoikeudet <- opiskeluoikeudetFut
-        ytrResult <- ytrResultFut
-      } yield (opiskeluoikeudet, ytrResult),
-      atMost = 20.minutes
-    )
+    val (opiskeluoikeudet, ytrResult) = haeOpiskeluoikeudet(hetut)
 
     Observable
       .from(
@@ -125,11 +54,52 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
       )
       .collect {
         case Right(kelaOppija) => kelaOppija
-        case Left(status) if (status
-          .statusCode != 404) => throw new RuntimeException("Error while streaming KelaOppija")
+        case Left(status) if (status.statusCode != 404) =>
+          throw new RuntimeException("Error while streaming KelaOppija")
       }
       .doOnEach(auditLogOpiskeluoikeusKatsominen(_)(koskiSession))
       .map(JsonSerializer.serializeWithUser(koskiSession))
+  }
+
+  private def haeOpiskeluoikeudet(hetut: Seq[String])(
+    implicit user: KoskiSpecificSession
+  ): (Map[LaajatOppijaHenkilöTiedot, Seq[KelaOppijanOpiskeluoikeusRow]], Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]]) = {
+    val masterHenkilötFut: Future[Map[String, LaajatOppijaHenkilöTiedot]] = Future(
+      application.opintopolkuHenkilöFacade.findMasterOppijat(
+        application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(hetut).map(_.oid).toList
+      )
+    )
+
+    val ytrResultFut: Future[Map[LaajatOppijaHenkilöTiedot, Seq[KelaYlioppilastutkinnonOpiskeluoikeus]]] =
+      masterHenkilötFut
+        .map { masterHenkilöt =>
+          masterHenkilöt.values
+            .map(hlö => hlö -> application.ytr.findByOppija(hlö).map {
+              case yo: YlioppilastutkinnonOpiskeluoikeus =>
+                KelaYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema(yo)
+            }
+            ).toMap
+        }
+
+    val opiskeluoikeudetFut: Future[Map[LaajatOppijaHenkilöTiedot, Seq[KelaOppijanOpiskeluoikeusRow]]] =
+      masterHenkilötFut
+        .map { masterHenkilöt =>
+          masterHenkilöt.values.map { henkilö =>
+            henkilö -> kelaOpiskeluoikeusRepository.getOppijanKaikkiOpiskeluoikeudet(
+              palautettavatOpiskeluoikeudenTyypit = KelaSchema.schemassaTuetutOpiskeluoikeustyypit,
+              oppijaMasterOids = List(henkilö.oid)
+            )
+          }.toMap
+        }
+
+    val (opiskeluoikeudet, ytrResult) = Futures.await(
+      future = for {
+        opiskeluoikeudet <- opiskeluoikeudetFut
+        ytrResult <- ytrResultFut
+      } yield (opiskeluoikeudet, ytrResult),
+      atMost = 20.minutes
+    )
+    (opiskeluoikeudet, ytrResult)
   }
 
   def opiskeluoikeudenHistoria(opiskeluoikeusOid: String)

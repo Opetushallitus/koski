@@ -16,9 +16,9 @@ case class KelaAikuistenPerusopetuksenOpiskeluoikeus(
   aikaleima: Option[LocalDateTime],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  sisältyyOpiskeluoikeuteen: Option[Sisältäväopiskeluoikeus],
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   tila: KelaOpiskeluoikeudenTila,
-  suoritukset: List[KelaaikuistenPerusopetuksenSuoritus],
+  suoritukset: List[KelaAikuistenPerusopetuksenSuoritus],
   lisätiedot: Option[KelaAikuistenPerusopetuksenOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
@@ -56,7 +56,7 @@ case class KelaAikuistenPerusopetuksenPäätasonSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
-) extends KelaaikuistenPerusopetuksenSuoritus {
+) extends KelaAikuistenPerusopetuksenSuoritus {
   def withEmptyArvosana: KelaAikuistenPerusopetuksenPäätasonSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
   )
@@ -71,20 +71,20 @@ case class KelaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
-) extends KelaaikuistenPerusopetuksenSuoritus {
+) extends KelaAikuistenPerusopetuksenSuoritus {
   def withEmptyArvosana: KelaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
   )
 }
 
-trait KelaaikuistenPerusopetuksenSuoritus extends Suoritus {
-  def withEmptyArvosana: KelaaikuistenPerusopetuksenSuoritus
+trait KelaAikuistenPerusopetuksenSuoritus extends Suoritus {
+  def withEmptyArvosana: KelaAikuistenPerusopetuksenSuoritus
 }
 
 @Title("Aikuisten perusopetuksen osasuoritus")
 case class KelaAikuistenPerusopetuksenOsasuoritus(
   koulutusmoduuli: KelaAikuistenPerusopetuksenOsasuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArvionti]],
+  arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArviointi]],
   osasuoritukset: Option[List[KelaAikuistenPerusopetuksenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],

@@ -65,6 +65,13 @@ class KelaSpec
         tuvaOpiskeluoikeus.suoritukset.head.osasuoritukset.get.length shouldBe 7
       }
     }
+    "Ei palauta mitätöityä opiskeluoikeutta" in {
+      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        oppija.opiskeluoikeudet.length should be(2)
+      }
+    }
   }
 
   "Usean oppijan rajapinta" - {
@@ -207,12 +214,13 @@ class KelaSpec
         case oo: KelaAikuistenPerusopetuksenOpiskeluoikeus => oo
       }
 
-      opiskeluoikeudet.foreach(_.suoritukset.foreach{
-        case suoritus: KelaAikuistenPerusopetuksenPäätasonSuoritus =>
+      opiskeluoikeudet
+        .flatMap(oo => oo.suoritukset.collect {
+          case suoritus: KelaAikuistenPerusopetuksenPäätasonSuoritus => suoritus
+        })
+        .foreach { suoritus =>
           suoritus.suoritustapa should equal(None)
-        case _: KelaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus =>
-          1 shouldBe 1
-      })
+        }
     }
   }
 
@@ -332,7 +340,7 @@ class KelaSpec
             koulutusmoduuli = KelaYlioppilastutkinnonOsasuorituksenKoulutusmoduuli(
               KelaKoodistokoodiviite("A", Some(Finnish("Äidinkielen koe, suomi", Some("Provet i modersmålet, finska"), None)), None, Some("koskiyokokeet"),Some(1))
             ),
-            arviointi = Some(List(KelaOsasuorituksenArvionti(None, Some(true), None))),
+            arviointi = Some(List(KelaYlioppilastutkinnonOsasuorituksenArvionti(None, Some(true), None))),
             tyyppi = Koodistokoodiviite("ylioppilastutkinnonkoe", "suorituksentyyppi"),
             tila = None,
             tutkintokerta = Some(KelaYlioppilastutkinnonTutkintokerta("2012K", 2012, Finnish("kevät", Some("vår"), None)))

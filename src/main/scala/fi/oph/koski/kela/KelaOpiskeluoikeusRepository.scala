@@ -42,7 +42,6 @@ with
       oid as opiskeluoikeus_oid,
       versionumero,
       aikaleima,
-      mitatoity,
       data
     from
       opiskeluoikeus
@@ -50,6 +49,7 @@ with
       left join linkitetty on linkitetty.oppija_master_oid = haettu_oppija.oppija_master_oid
     where opiskeluoikeus.koulutusmuoto = any($palautettavatOpiskeluoikeudenTyypit)
       and 'vstvapaatavoitteinenkoulutus' != any(suoritustyypit) -- VST vapaatavoitteiset ei palauteta Kelalle, koska muuten pitäisi jotenkin käsitellä suostumuksen peruutukset
+      and mitatoity = false
     order by oppija_master_oid
   )
   , opiskeluoikeus_palautettavat as (

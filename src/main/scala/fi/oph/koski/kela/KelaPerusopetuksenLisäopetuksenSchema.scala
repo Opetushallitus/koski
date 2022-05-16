@@ -16,7 +16,7 @@ case class KelaPerusopetuksenLisäopetuksenOpiskeluoikeus(
   aikaleima: Option[LocalDateTime],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  sisältyyOpiskeluoikeuteen: Option[Sisältäväopiskeluoikeus],
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   tila: KelaOpiskeluoikeudenTila,
   suoritukset: List[KelaPerusopetuksenLisäopetuksenPäätasonSuoritus],
   lisätiedot: Option[KelaPerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot],
@@ -66,7 +66,7 @@ case class KelaPerusopetuksenLisäopetuksenPäätasonSuoritus(
 @Title("Perusopetuksen lisäopetuksen osasuoritus")
 case class KelaPerusopetuksenLisäopetuksenOsasuoritus(
   koulutusmoduuli: KelaPerusopetuksenLisäopetuksenOsasuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArvionti]],
+  arviointi: Option[List[KelaPerusopetuksenOsasuorituksenArviointi]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
