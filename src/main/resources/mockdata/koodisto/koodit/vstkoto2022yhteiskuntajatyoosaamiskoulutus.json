@@ -1,0 +1,102 @@
+[
+  {
+    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_yhteiskunnanperusrakenteet",
+    "koodiArvo": "yhteiskunnanperusrakenteet",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunnan perusrakenteet ja maantuntemus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yhteiskunnan perusrakenteet ja maantuntemus",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Yhteiskunnan perusrakenteet ja maantuntemus",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_yhteiskunnanperuspalvelut",
+    "koodiArvo": "yhteiskunnanperuspalvelut",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunnan peruspalvelut",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yhteiskunnan peruspalvelut",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Yhteiskunnan peruspalvelut",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_ammattijakoulutus",
+    "koodiArvo": "ammattijakoulutus",
+    "metadata": [
+      {
+        "nimi": "Ammatti- ja koulutuspalvelut",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ammatti- ja koulutuspalvelut",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Ammatti- ja koulutuspalvelut",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_tyoelamatietous",
+    "koodiArvo": "tyoelamatietous",
+    "metadata": [
+      {
+        "nimi": "Työelämätietous",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Työelämätietous",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Työelämätietous",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus_tyossaoppiminen",
+    "koodiArvo": "tyossaoppiminen",
+    "metadata": [
+      {
+        "nimi": "Työssäoppiminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Työssäoppiminen",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Työssäoppiminen",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

@@ -1,0 +1,66 @@
+[
+  {
+    "koodiUri": "vstkoto2022kokonaisuus_yhteiskuntajatyoelamaosaaminen",
+    "koodiArvo": "yhteiskuntajatyoelamaosaaminen",
+    "metadata": [
+      {
+        "nimi": "Yhteiskunta- ja työelämäosaaminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstkoto2022kokonaisuus_valinnaisetopinnot",
+    "koodiArvo": "valinnaisetopinnot",
+    "metadata": [
+      {
+        "nimi": "Valinnaiset opinnot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Valfria studier",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Valinnaiset opinnot",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstkoto2022kokonaisuus_kielijaviestintaosaaminen",
+    "koodiArvo": "kielijaviestintaosaaminen",
+    "metadata": [
+      {
+        "nimi": "Kieli- ja viestintäosaaminen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstkoto2022kokonaisuus_ohjaus",
+    "koodiArvo": "ohjaus",
+    "metadata": [
+      {
+        "nimi": "Ohjaus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Handledning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Ohjaus",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

@@ -187,6 +187,8 @@ trait VSTTunnustettu {
   def tunnustettu: Option[VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen]
 }
 
+@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", "OPH-123-2021")
+@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", None)
 case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutus")
