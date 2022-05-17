@@ -85,6 +85,7 @@ class RaamiProxyServlet(val proxyHost: String, val proxyPrefix: String, val appl
 
     val httpResponse = responseRef.get();
     copyResponseHeaders(httpResponse, response)
+    response.setStatus(httpResponse.getStatus)
     response.getOutputStream().write(responseBuffer)
     httpClient.stop()
   }
