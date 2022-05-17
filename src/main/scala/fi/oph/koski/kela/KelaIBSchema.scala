@@ -50,75 +50,21 @@ case class KelaIBPäätasonSuoritus(
   )
 }
 
-trait KelaIBOsasuoritus extends Osasuoritus {
-  def withEmptyArvosana: KelaIBOsasuoritus
-}
-
 @Title("IB-tutkinnon osasuoritus")
-case class KelaIBMuuOsasuoritus(
+case class KelaIBOsasuoritus(
   koulutusmoduuli: KelaIBOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaIBOsasuorituksenArvionti]],
-  osasuoritukset: Option[List[KelaIBMuuOsasuoritus]],
+  osasuoritukset: Option[List[KelaIBOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
   tunnustettu: Option[OsaamisenTunnustaminen],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
-) extends KelaIBOsasuoritus {
-  def withEmptyArvosana: KelaIBMuuOsasuoritus = copy(
+) extends Osasuoritus {
+  def withEmptyArvosana: KelaIBOsasuoritus = copy(
     arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
   )
-}
-
-@Title("IB-tutkinnon lukion oppiaineen tai muiden opintojen osasuoritus")
-case class KelaIBLukionOppiaineenOsasuoritus(
-  koulutusmoduuli: KelaIBOsasuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaIBOsasuorituksenArvionti]],
-  osasuoritukset: Option[List[KelaPreIBLukioOsasuoritus]],
-  @KoodistoKoodiarvo("lukionoppiaine")
-  @KoodistoKoodiarvo("lukionmuuopinto")
-  tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
-  tunnustettu: Option[OsaamisenTunnustaminen],
-  suoritettuLukiodiplomina: Option[Boolean],
-  suoritettuSuullisenaKielikokeena: Option[Boolean]
-) extends KelaIBOsasuoritus {
-  def withEmptyArvosana: KelaIBLukionOppiaineenOsasuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana)),
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
-  )
-}
-
-@Title("Lukion moduulin suoritus")
-case class KelaIBOsasuorituksenLukionModuulinSuoritus(
-  koulutusmoduuli: KelaIBOsasuorituksenOsasuorituksenKieletönKoulutusmoduuli,
-  arviointi: Option[List[KelaIBOsasuorituksenArvionti]],
-  @KoodistoKoodiarvo("lukionvaltakunnallinenmoduuli")
-  tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
-  tunnustettu: Option[OsaamisenTunnustaminen],
-) extends Osasuoritus with KelaPreIBLukioOsasuoritus {
-  def withEmptyArvosana: KelaIBOsasuorituksenLukionModuulinSuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
-  )
-}
-
-@Title("Lukion muun opintojakson suoritus")
-case class KelaIBOsasuorituksenLukionMuunOpintojaksonSuoritus(
-  koulutusmoduuli: KelaIBOsasuorituksenKoulutusmoduuli,
-  arviointi: Option[List[KelaIBOsasuorituksenArvionti]],
-  tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
-  tunnustettu: Option[OsaamisenTunnustaminen],
-) extends Osasuoritus with KelaPreIBLukioOsasuoritus {
-  def withEmptyArvosana: KelaIBOsasuorituksenLukionMuunOpintojaksonSuoritus = copy(
-    arviointi = arviointi.map(_.map(_.withEmptyArvosana))
-  )
-}
-
-trait KelaPreIBLukioOsasuoritus {
-  def withEmptyArvosana: KelaPreIBLukioOsasuoritus
 }
 
 case class KelaIBOsasuorituksenArvionti(
@@ -150,24 +96,11 @@ case class KelaIBOsasuorituksenKoulutusmoduuli(
   oppimäärä: Option[KelaKoodistokoodiviite]
 ) extends OsasuorituksenKoulutusmoduuli
 
-case class KelaIBOsasuorituksenOsasuorituksenKoulutusmoduuli(
-  tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[KelaLaajuus],
-  pakollinen: Option[Boolean],
-  kieli: Option[KelaKoodistokoodiviite]
-) extends OsasuorituksenKoulutusmoduuli
-
-case class KelaIBOsasuorituksenOsasuorituksenKieletönKoulutusmoduuli(
-  tunniste: KelaKoodistokoodiviite,
-  laajuus: Option[KelaLaajuus],
-  pakollinen: Option[Boolean],
-) extends OsasuorituksenKoulutusmoduuli
-
 case class IBTheoryOfKnowledgeSuoritus(
   koulutusmoduuli: IBTheoryOfKnowledgeSuoritusKoulutusmoduuli,
   tila: Option[KelaKoodistokoodiviite],
   arviointi: Option[List[KelaIBOsasuorituksenArvionti]] = None,
-  osasuoritukset: Option[List[KelaIBMuuOsasuoritus]],
+  osasuoritukset: Option[List[KelaIBOsasuoritus]],
   tyyppi: KelaKoodistokoodiviite
 ) {
   def withEmptyArvosana: IBTheoryOfKnowledgeSuoritus = copy(
