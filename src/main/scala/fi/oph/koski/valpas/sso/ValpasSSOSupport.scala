@@ -8,17 +8,17 @@ trait ValpasSSOSupport extends SSOSupport {
     val host = request.getServerName()
     val portStr = request.getServerPort match {
       case 80 | 443 => ""
-      // Lokaalissa kehitysmoodissa ollaan cas-kontekstissa olevinaan portissa 1234, josta proxy ohjaa oikeaan porttiin
-      case port: Int if host == "localhost" => ":1234"
+      // Lokaalissa kehitysmoodissa ollaan cas-kontekstissa olevinaan portissa 7021, josta proxy ohjaa oikeaan porttiin
+      case port: Int if host == "localhost" => ":7021"
       case port: Int => ":" + port
     }
     protocol + "://" + host + portStr
   }
 
-  def valpasRoot = serviceRoot + "/valpas"
+  def valpasRoot = serviceRoot + "/koski/valpas/v2"
 
   def casValpasOppijaServiceUrl: String = serviceRoot + "/koski/cas/valpas/oppija"
 
-  def localLoginPage: String = valpasRoot + "/virkailija/"
-  def localOppijaLoginPage: String = valpasRoot + "/login/"
+  def localLoginPage: String = "/koski/valpas/v2/virkailija/"
+  def localOppijaLoginPage: String = "/koski/valpas/v2/login/"
 }

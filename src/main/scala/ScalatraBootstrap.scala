@@ -139,6 +139,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/koski/cas/valpas", new ValpasOppijaCasServlet)
     mount("/koski/cache", new CacheServlet)
 
+    mount("/koski/valpas/v2", new ValpasStaticServlet())
     mount("/koski/valpas/localization", new ValpasBootstrapServlet)
     mount("/koski/valpas/api", new ValpasRootApiServlet)
     mount("/koski/valpas/api/kuntailmoitus", new ValpasKuntailmoitusApiServlet)

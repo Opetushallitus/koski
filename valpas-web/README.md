@@ -80,9 +80,12 @@ Omalta koneelta ajaessa sisään voi kirjautua mm. tunnuksilla `valpas-helsinki`
 
 Mock-käyttäjät luodaan `ValpasMockUsers.scala` -tiedostossa
 
-## Virkailija-raamit
+## Virkailija- ja oppijaraamit
 
-Paikallisen palvelimen käynnistys untuvaopintopolusta ladattavien raamien kanssa:
+Ks. ohjeet Kosken käynnistmäisestä proxytettyjen raamien kanssa:
+https://github.com/Opetushallitus/koski/blob/master/documentation/raamien-ajo-lokaalisti.md
+
+Tämän jälkeen Valpas-buildin saa käyttämään Kosken hostaamia raameja:
 
 ```
 npm run start:raamit
