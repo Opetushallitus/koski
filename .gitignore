@@ -35,6 +35,7 @@ elastic-data
 fact_cache
 scripts/deploy.retry
 valpas-web/dist
+valpas-web/dist-nonce
 valpas-web/node/
 valpas-web/.parcel-cache/
 valpas-web/.last-build

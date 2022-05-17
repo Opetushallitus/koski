@@ -15,8 +15,8 @@ export const setBrowserDate = (date: ISODate) => {
 export const goToLocation = async (path: string) => {
   await driver.get(
     // TODO: Tutki miksi PUBLIC_URL ei asetu enää tänne
-    `http://localhost:1234${
-      process.env.PUBLIC_URL || "/valpas"
+    `${process.env.BACKEND_HOST || "http://localhost:7021"}${
+      process.env.PUBLIC_URL || "/koski/valpas/v2"
     }${path}?date=${browserDate}` + featureQuery()
   )
 }
@@ -46,10 +46,10 @@ export const urlIsEventually = async (
   }
 }
 
-export const pathToUrl = (path: string) => `http://localhost:1234/valpas${path}`
+export const pathToUrl = (path: string) => `${process.env.BACKEND_HOST || "http://localhost:7021"}/koski/valpas/v2${path}`
 
 export const pathToApiUrl = (path: string) =>
-  `http://localhost:1234/koski/valpas${path}`
+  `${process.env.BACKEND_HOST || "http://localhost:7021"}/koski/valpas${path}`
 
 export const $ = async (selector: string, timeout = shortTimeout) => {
   try {

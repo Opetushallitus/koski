@@ -1,7 +1,7 @@
 require("dotenv")
 const { spawn } = require("child_process")
 
-const runWithServer = process.env.RUN_WITHOUT_SERVER === undefined
+const runWithServer = process.env.RUN_WITH_SERVER !== undefined
 
 module.exports = runWithServer
   ? async () => {

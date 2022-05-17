@@ -1,5 +1,4 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const autoprefixer = require('autoprefixer')
 const ESLintPlugin = require('eslint-webpack-plugin')
 
 module.exports = {
@@ -18,7 +17,13 @@ module.exports = {
   output: {
     path: __dirname + '/../target/webapp/koski',
     filename: 'js/koski-[name].js',
-    publicPath: '/koski/'
+    publicPath: '/koski/',
+    /*
+      Webpack v4 käyttää oletuksena jsonpFunction:n nimenä "webpackJsonp".
+      Jos samalla sivustolla kutsutaan useita Webpackilla buildattuja sovelluksia, sovelluksen namespace menee sekaisin.
+      Korjauksena määritetään manuaalisesti jsonpFunction:n arvo. Webpack v5 tekee tämän automaattisesti
+    */
+    jsonpFunction: 'webpackJsonpKoski'
   },
   stats: 'normal',
   resolve: {

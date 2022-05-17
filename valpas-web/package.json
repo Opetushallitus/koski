@@ -8,18 +8,17 @@
     "npm": "7"
   },
   "scripts": {
-    "start": "node autoclear.js && parcel serve src/index.html",
+    "start": "node autoclear.js && PUBLIC_URL=/koski/valpas/v2 node watch.mjs",
     "start:watch": "concurrently npm:start npm:lint:types:watch",
-    "start:raamit": "node autoclear.js --dev-raamit && VIRKAILIJA_RAAMIT_HOST=\"https://virkailija.untuvaopintopolku.fi/\" OPPIJA_RAAMIT_HOST=\"https://untuvaopintopolku.fi/\" parcel serve src/index.html",
-    "start:local-oppijaraamit": "node autoclear.js --dev-local-oppijaraamit && OPPIJA_RAAMIT_HOST=\"http://localhost:8080/\" parcel serve src/index.html",
-    "start:integration": "node autoclear.js --integration && parcel serve src/index.html --no-hmr --no-cache",
+    "start:raamit": "node autoclear.js --dev-raamit && VIRKAILIJA_RAAMIT_HOST=true OPPIJA_RAAMIT_HOST=true PUBLIC_URL=/koski/valpas/v2 node watch.mjs",
+    "start:integration": "node autoclear.js --integration && PUBLIC_URL=/koski/valpas/v2 node watch.mjs",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "node autoclear.js --unittest && jest --runInBand src",
-    "test:integration": "jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
-    "test:integration:debug": "SHOW_BROWSER=true jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
-    "test:integration:browserstack": "jest --config jest.integrationtests.browserstack.config.js --runInBand test/integrationtests",
-    "build:local": "node autoclear.js && NODE_ENV=development parcel build src/index.html --no-scope-hoist",
-    "build:prod": "node autoclear.js --prod && parcel build src/index.html --public-url /valpas --no-scope-hoist",
+    "test:integration": "npm run build:local && jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
+    "test:integration:debug": "npm run build:local && SHOW_BROWSER=true jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
+    "test:integration:browserstack": "npm run build:local && jest --config jest.integrationtests.browserstack.config.js --runInBand test/integrationtests",
+    "build:local": "node autoclear.js && PUBLIC_URL=/valpas NODE_ENV=development parcel build src/index.html --public-url /valpas --no-scope-hoist && PUBLIC_URL=/koski/valpas/v2 parcel build src/index.html --public-url /koski/valpas/v2/assets --dist-dir dist-nonce --no-scope-hoist && node postbuild-exec.mjs",
+    "build:prod": "node autoclear.js --prod && PUBLIC_URL=/valpas parcel build src/index.html --public-url /valpas --no-scope-hoist && PUBLIC_URL=/koski/valpas/v2 parcel build src/index.html --public-url /koski/valpas/v2/assets --dist-dir dist-nonce --no-scope-hoist && node postbuild-exec.mjs",
     "lint": "npm run lint:types && npm run lint:format && npm run lint:problems",
     "lint:types": "tsc --noEmit",
     "lint:types:watch": "tsc --noEmit --watch --preserveWatchOutput",
@@ -27,7 +26,7 @@
     "lint:problems": "eslint . --ext .ts --ext .tsx",
     "fix": "npm run fix:format",
     "fix:format": "prettier --write ./src",
-    "clean": "jest --clearCache && rm -rf dist && rm -rf .parcel-cache"
+    "clean": "jest --clearCache && rm -rf dist && rm -rf dist-nonce && rm -rf ../target/webapp/koski/valpas && rm -rf .parcel-cache"
   },
   "repository": {
     "type": "git",
@@ -53,6 +52,7 @@
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "babel-jest": "^26.6.3",
+    "cheerio": "^1.0.0-rc.10",
     "chromedriver": "^100.0.0",
     "concurrently": "^6.0.0",
     "dotenv": "^8.2.0",
