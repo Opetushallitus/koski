@@ -1,0 +1,340 @@
+{
+  "henkilö" : {
+    "hetu" : "120706A8456",
+    "etunimet" : "Vesti",
+    "kutsumanimi" : "Vesti",
+    "sukunimi" : "Kotonen-Keskinen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.31915273374",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "01694",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Varsinais-Suomen kansanopisto"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2022-08-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.78513447389"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutus",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999910",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "OPH-XXX-2022"
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "kielijaviestintaosaaminen",
+            "koodistoUri" : "vstkoto2022kokonaisuus"
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkielitaitojensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "kuullunymmartaminen",
+              "koodistoUri" : "vstkoto2022kielijaviestintakoulutus"
+            },
+            "laajuus" : {
+              "arvo" : 10.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "A1.1",
+              "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+            },
+            "arviointipäivä" : "2022-10-01",
+            "hyväksytty" : true
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkielitaitojensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "luetunymmartaminen",
+              "koodistoUri" : "vstkoto2022kielijaviestintakoulutus"
+            },
+            "laajuus" : {
+              "arvo" : 10.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "B1.2",
+              "koodistoUri" : "arviointiasteikkokehittyvankielitaidontasot"
+            },
+            "arviointipäivä" : "2022-11-01",
+            "hyväksytty" : true
+          } ]
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "yhteiskuntajatyoelamaosaaminen",
+            "koodistoUri" : "vstkoto2022kokonaisuus"
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "yhteiskunnanperusrakenteet",
+              "koodistoUri" : "vstkoto2022yhteiskuntajatyoosaamiskoulutus"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          }
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "yhteiskunnanperuspalvelut",
+              "koodistoUri" : "vstkoto2022yhteiskuntajatyoosaamiskoulutus"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          }
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ammattijakoulutus",
+              "koodistoUri" : "vstkoto2022yhteiskuntajatyoosaamiskoulutus"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          }
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "tyossaoppiminen",
+              "koodistoUri" : "vstkoto2022yhteiskuntajatyoosaamiskoulutus"
+            },
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          }
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ohjaus",
+            "koodistoUri" : "vstkoto2022kokonaisuus"
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "2",
+              "nimi" : {
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
+              },
+              "lyhytNimi" : {
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "valinnaisetopinnot",
+            "koodistoUri" : "vstkoto2022kokonaisuus"
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "kuvaus" : {
+              "fi" : "Studiotekniikka"
+            },
+            "tunniste" : {
+              "koodiarvo" : "KOTO0023",
+              "nimi" : {
+                "fi" : "Studiotekniikka"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tyyppi" : {
+            "koodiarvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ]
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "vapaansivistystyonkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2022-08-01"
+  } ]
+}

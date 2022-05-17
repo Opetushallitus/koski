@@ -228,7 +228,10 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.tuva, ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusValmistunut),
       (KoskiSpecificMockOppijat.tuvaPerus, ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusEiValmistunut),
       (KoskiSpecificMockOppijat.poistettuOpiskeluoikeus, VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen),
-      (KoskiSpecificMockOppijat.nuortenPerusopetuksenOppimääräErityinenTutkinto, ExamplesPerusopetus.useampiNuortenPerusopetuksenOppiaineenOppimääränSuoritusSamassaOppiaineessaEriLuokkaAsteella)
+      (KoskiSpecificMockOppijat.nuortenPerusopetuksenOppimääräErityinenTutkinto, ExamplesPerusopetus.useampiNuortenPerusopetuksenOppiaineenOppimääränSuoritusSamassaOppiaineessaEriLuokkaAsteella),
+      (KoskiSpecificMockOppijat.vstKoto2022Aloittaja, ExamplesVapaaSivistystyöKotoutuskoulutus2022.Opiskeluoikeus.juuriAloittanut),
+      (KoskiSpecificMockOppijat.vstKoto2022Kesken, ExamplesVapaaSivistystyöKotoutuskoulutus2022.Opiskeluoikeus.keskeneräinen),
+      (KoskiSpecificMockOppijat.vstKoto2022Suorittanut, ExamplesVapaaSivistystyöKotoutuskoulutus2022.Opiskeluoikeus.suoritettu),
     )
   }
 
