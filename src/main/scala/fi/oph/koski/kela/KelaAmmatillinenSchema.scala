@@ -3,7 +3,7 @@ package fi.oph.koski.kela
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -17,7 +17,8 @@ case class KelaAmmatillinenOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   arvioituPäättymispäivä: Option[LocalDate],
-  ostettu: Option[Boolean],
+  @DefaultValue(false)
+  ostettu: Boolean = false,
   tila: KelaAmmatillisenOpiskeluoikeudenTila,
   suoritukset: List[KelaAmmatillinenPäätasonSuoritus],
   lisätiedot: Option[KelaAmmatillisenOpiskeluoikeudenLisätiedot],
