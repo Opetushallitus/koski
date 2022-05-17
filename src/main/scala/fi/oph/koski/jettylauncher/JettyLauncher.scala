@@ -109,6 +109,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     context.setContextPath("/")
     context.setResourceBase(verifyResourceBase())
     context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false")
+    context.setInitParameter("org.eclipse.jetty.servlet.Default.etags", "true")
 
     if (Environment.isLocalDevelopmentEnvironment(config)) {
       // Avoid random SIGBUS errors when static files memory-mapped by Jetty (and being sent to client)
