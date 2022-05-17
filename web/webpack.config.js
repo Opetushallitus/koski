@@ -1,5 +1,4 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const autoprefixer = require('autoprefixer')
 const ESLintPlugin = require('eslint-webpack-plugin')
 
 module.exports = {
