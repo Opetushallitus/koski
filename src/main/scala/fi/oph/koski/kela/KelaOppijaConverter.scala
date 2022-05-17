@@ -73,8 +73,8 @@ object KelaOppijaConverter extends Logging {
 
     SchemaValidatingExtractor
       .extract[KelaOpiskeluoikeus](JsonSerializer.serializeWithRoot(opiskeluoikeus)).right.get match {
-      case oo: KelaDIAOpiskeluoikeus => oo.withSuorituksetVastaavuusKopioitu.withEmptyArvosana
-      case oo: KelaOpiskeluoikeus => oo.withEmptyArvosana
+      case oo: KelaDIAOpiskeluoikeus => oo.withSuorituksetVastaavuusKopioitu.withOrganisaatiohistoria.withEmptyArvosana
+      case oo: KelaOpiskeluoikeus => oo.withOrganisaatiohistoria.withEmptyArvosana
     }
   }
 }
