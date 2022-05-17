@@ -12,9 +12,7 @@ const targetDir = path.join(
   "..",
   "target",
   "webapp",
-  "koski",
   "valpas",
-  "v2",
   "assets"
 )
 

@@ -6,7 +6,7 @@ let bundler = new Parcel({
   defaultConfig: "@parcel/config-default",
   defaultTargetOptions: {
     distDir: "dist-nonce",
-    publicUrl: "/koski/valpas/v2/assets",
+    publicUrl: "/valpas/assets",
   },
 })
 

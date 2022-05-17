@@ -15,7 +15,7 @@ window.Service = {
   },
 
   login() {
-    document.location.href = kansalainenOmatTiedotPath.href("/koski/valpas/v2")
+    document.location.href = kansalainenOmatTiedotPath.href("/valpas")
   },
 
   logout() {
