@@ -73,7 +73,10 @@ trait KelaOpiskeluoikeus {
   @SyntheticProperty
   def päättymispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku)
   def organisaatioHistoria: Option[List[OrganisaatioHistoria]]
+  @Description("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
+  def organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 
+  def withOrganisaatiohistoria: KelaOpiskeluoikeus
   def withEmptyArvosana: KelaOpiskeluoikeus
 }
 

@@ -21,12 +21,17 @@ case class KelaIBOpiskeluoikeus(
   lisätiedot: Option[KelaLukionOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ibtutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-  organisaatioHistoria: Option[List[OrganisaatioHistoria]]
+  organisaatioHistoria: Option[List[OrganisaatioHistoria]],
+  organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   def withEmptyArvosana: KelaIBOpiskeluoikeus = copy(
     suoritukset = suoritukset.map(_.withEmptyArvosana)
+  )
+  override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
+    organisaatioHistoria = organisaatiohistoria,
+    organisaatiohistoria = None
   )
 }
 

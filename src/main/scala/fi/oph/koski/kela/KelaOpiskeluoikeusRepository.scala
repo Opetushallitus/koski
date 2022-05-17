@@ -86,8 +86,8 @@ order by "masterOppijaOid", opiskeluoikeus_oid
     KelaOppijanOpiskeluoikeusRow(
       masterOppijaOid = r.rs.getString("masterOppijaOid"),
       opiskeluoikeus = opiskeluoikeus match {
-        case oo: KelaDIAOpiskeluoikeus => oo.withSuorituksetVastaavuusKopioitu.withEmptyArvosana
-        case oo: KelaOpiskeluoikeus => oo.withEmptyArvosana
+        case oo: KelaDIAOpiskeluoikeus => oo.withSuorituksetVastaavuusKopioitu.withOrganisaatiohistoria.withEmptyArvosana
+        case oo: KelaOpiskeluoikeus => oo.withOrganisaatiohistoria.withEmptyArvosana
       }
     )
   })

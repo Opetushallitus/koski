@@ -81,9 +81,11 @@ case class KelaYlioppilastutkinnonOpiskeluoikeus(
   override def lisätiedot = None
   override def sisältyyOpiskeluoikeuteen = None
   override def organisaatioHistoria = None
+  override def organisaatiohistoria = None
   override def aikaleima = None
 
   override def withEmptyArvosana: KelaOpiskeluoikeus = this
+  override def withOrganisaatiohistoria: KelaOpiskeluoikeus = this
 }
 
 @Title("Ylioppilastutkinnon suoritus")

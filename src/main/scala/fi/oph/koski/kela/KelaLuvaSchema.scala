@@ -22,12 +22,17 @@ case class KelaLuvaOpiskeluoikeus(
   lisätiedot: Option[KelaLuvaOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.luva.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-  organisaatioHistoria: Option[List[OrganisaatioHistoria]]
+  organisaatioHistoria: Option[List[OrganisaatioHistoria]],
+  organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 ) extends KelaOpiskeluoikeus {
   override def alkamispäivä: Option[LocalDate] = super.alkamispäivä
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   def withEmptyArvosana: KelaLuvaOpiskeluoikeus = copy(
     suoritukset = suoritukset.map(_.withEmptyArvosana)
+  )
+  override def withOrganisaatiohistoria: KelaOpiskeluoikeus = copy(
+    organisaatioHistoria = organisaatiohistoria,
+    organisaatiohistoria = None
   )
 }
 
