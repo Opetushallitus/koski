@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas.log
 
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogOperation, LogConfiguration}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogOperation}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.valpas.kansalainen.{KansalainenOppijatiedot, KansalaisnäkymänTiedot}
 import fi.oph.koski.valpas.{ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
@@ -150,12 +150,8 @@ object ValpasAuditLog {
 
   // Logeilla on 16kB maksimikoko tällä hetkellä, joten logientry on jaettava. Käytännössä jokaiseen entryyn tulee
   // datan lisäksi myös 0.5-1kB muuta dataa.
-  private val oidLengthInKoski = 26
-  private val hetuLength = 11
-  private val listSeparatorMaxLength = 2
-  private val maxAuditLogMessageLength = LogConfiguration.logMessageMaxLength - 1024
-  private val hetujaEnintäänAuditlogEntryssä = (maxAuditLogMessageLength / (hetuLength + listSeparatorMaxLength)).floor.toInt
-  private val oidejaEnintäänAuditlogEntryssä = (maxAuditLogMessageLength / (oidLengthInKoski + listSeparatorMaxLength)).floor.toInt
+  private val hetujaEnintäänAuditlogEntryssä = 1000
+  private val oidejaEnintäänAuditlogEntryssä = 500
 
   def auditLogRouhintahakuHetulistalla
     (hetut: Seq[String], palautetutOppijaOidit: Seq[String])
