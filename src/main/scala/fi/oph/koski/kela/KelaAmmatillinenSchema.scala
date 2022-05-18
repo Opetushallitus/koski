@@ -2,7 +2,7 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
+import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo, SensitiveData}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -170,7 +170,7 @@ case class NäytönSuorituspaikka(
 )
 
 case class NäytönArviointi(
-  @Description("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
+  @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   arvosana: Option[schema.Koodistokoodiviite],
   hyväksytty: Option[Boolean]
 ) {

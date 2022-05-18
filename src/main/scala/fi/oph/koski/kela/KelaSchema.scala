@@ -3,7 +3,8 @@ package fi.oph.koski.kela
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.scalaschema.annotation.{Description, Discriminator, SyntheticProperty}
+import fi.oph.koski.schema.annotation.Deprecated
+import fi.oph.scalaschema.annotation.{Description, Discriminator, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -73,7 +74,7 @@ trait KelaOpiskeluoikeus {
   @SyntheticProperty
   def päättymispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku)
   def organisaatioHistoria: Option[List[OrganisaatioHistoria]]
-  @Description("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
+  @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   def organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 
   def withOrganisaatiohistoria: KelaOpiskeluoikeus
@@ -162,8 +163,9 @@ case class OsaamisenTunnustaminen(selite: schema.LocalizedString, rahoituksenPii
 
 case class Vahvistus(päivä: LocalDate)
 
+@Title("Osasuorituksen arviointi")
 trait OsasuorituksenArvionti{
-  @Description("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
+  @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   def arvosana: Option[schema.Koodistokoodiviite]
   def hyväksytty: Option[Boolean]
   def päivä: Option[LocalDate]

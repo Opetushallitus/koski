@@ -39,7 +39,6 @@ case class KelaPerusopetukseenValmistavanOpiskeluoikeus(
 @Title("Perusopetukseen valmistavan koulutuksen suoritus")
 case class KelaPerusopetukseenValmistavanPäätasonSuoritus(
   koulutusmoduuli: KelaPerusopetukseenValmistavanSuorituksenKoulutusmoduuli,
-  suoritustapa: Option[KelaKoodistokoodiviite],
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaPerusopetukseenValmistavanOsasuoritus]],

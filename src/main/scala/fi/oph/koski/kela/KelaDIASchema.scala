@@ -3,6 +3,7 @@ package fi.oph.koski.kela
 import fi.oph.koski.schema
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
+import fi.oph.koski.schema.annotation.Deprecated
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -71,7 +72,7 @@ case class KelaDIAOsasuoritus(
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
   vastaavuusTodistuksenTiedot: Option[VastaavuusTodistuksenTiedot],
-  @fi.oph.koski.schema.annotation.Deprecated("Kentässä ei palaudu tietoja blah blah")
+  @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
   vastaavuustodistuksenTiedot: Option[VastaavuusTodistuksenTiedot]
 ) extends Osasuoritus {
   def withVastaavuusKopioitu: KelaDIAOsasuoritus = copy(

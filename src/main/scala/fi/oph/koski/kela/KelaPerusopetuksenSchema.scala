@@ -18,7 +18,7 @@ case class KelaPerusopetuksenOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   tila: KelaOpiskeluoikeudenTila,
-  suoritukset: List[KelaPerusopetuksenPäätasonSuoritus],
+  suoritukset: List[KelaPerusopetuksenSuoritus],
   lisätiedot: Option[KelaPerusopetuksenOpiskeluoikeudenLisätiedot],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
@@ -53,43 +53,19 @@ case class KelaPerusopetuksenOpiskeluoikeudenLisätiedot(
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Perusopetuksen suoritus")
-case class KelaPerusopetuksenPäätasonMuuSuoritus(
-  koulutusmoduuli: KelaPerusopetuksenSuorituksenKoulutusmoduuli,
-  suoritustapa: Option[KelaKoodistokoodiviite],
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
-  osasuoritukset: Option[List[KelaPerusopetuksenOsasuoritus]],
-  @KoodistoKoodiarvo("perusopetuksenoppimaara")
-  tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
-  alkamispäivä: Option[LocalDate],
-  jääLuokalle: Option[Boolean]
-) extends KelaPerusopetuksenPäätasonSuoritus {
-  def withEmptyArvosana: KelaPerusopetuksenPäätasonMuuSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
-  )
-}
-
-@Title("Perusopetuksen oppiaineen oppimäärän suoritus")
-case class KelaPerusopetuksenOppiaineenOppimääränSuoritus(
+case class KelaPerusopetuksenSuoritus(
   koulutusmoduuli: KelaPerusopetuksenSuorituksenKoulutusmoduuli,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaPerusopetuksenOsasuoritus]],
-  @KoodistoKoodiarvo("nuortenperusopetuksenoppiaineenoppimaara")
-  @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
   alkamispäivä: Option[LocalDate],
   jääLuokalle: Option[Boolean]
-) extends KelaPerusopetuksenPäätasonSuoritus {
-  def withEmptyArvosana: KelaPerusopetuksenOppiaineenOppimääränSuoritus = copy(
+) extends Suoritus {
+  def withEmptyArvosana: KelaPerusopetuksenSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
   )
-}
-
-trait KelaPerusopetuksenPäätasonSuoritus extends Suoritus {
-  def withEmptyArvosana: KelaPerusopetuksenPäätasonSuoritus
 }
 
 @Title("Perusopetuksen osasuoritus")

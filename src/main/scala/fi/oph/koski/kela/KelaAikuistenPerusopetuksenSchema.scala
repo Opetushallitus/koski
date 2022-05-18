@@ -51,39 +51,17 @@ case class KelaAikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Aikuisten perusopetuksen suoritus")
-case class KelaAikuistenPerusopetuksenPäätasonSuoritus(
-  koulutusmoduuli: KelaAikuistenPerusopetuksenSuorituksenKoulutusmoduuli,
-  suoritustapa: Option[KelaKoodistokoodiviite],
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
-  osasuoritukset: Option[List[KelaAikuistenPerusopetuksenOsasuoritus]],
-  @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaaranalkuvaihe")
-  @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
-  tyyppi: schema.Koodistokoodiviite,
-  tila: Option[KelaKoodistokoodiviite],
-) extends KelaAikuistenPerusopetuksenSuoritus {
-  def withEmptyArvosana: KelaAikuistenPerusopetuksenPäätasonSuoritus = copy(
-    osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
-  )
-}
-
-@Title("Aikuisten perusopetuksen oppiaineen oppimäärän suoritus")
-case class KelaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
+case class KelaAikuistenPerusopetuksenSuoritus(
   koulutusmoduuli: KelaAikuistenPerusopetuksenSuorituksenKoulutusmoduuli,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[KelaAikuistenPerusopetuksenOsasuoritus]],
-  @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
-) extends KelaAikuistenPerusopetuksenSuoritus {
-  def withEmptyArvosana: KelaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus = copy(
+) extends Suoritus {
+  def withEmptyArvosana: KelaAikuistenPerusopetuksenSuoritus = copy(
     osasuoritukset = osasuoritukset.map(_.map(_.withEmptyArvosana))
   )
-}
-
-trait KelaAikuistenPerusopetuksenSuoritus extends Suoritus {
-  def withEmptyArvosana: KelaAikuistenPerusopetuksenSuoritus
 }
 
 @Title("Aikuisten perusopetuksen osasuoritus")
