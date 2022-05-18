@@ -1,0 +1,393 @@
+{
+  "id" : 7675672,
+  "globalVersion" : {
+    "aikaleima" : 1623418711098
+  },
+  "nimi" : {
+    "_id" : "7723871",
+    "_tunniste" : "35be7734-99e9-4cae-b476-3f4354bfad81",
+    "fi" : "Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2022"
+  },
+  "koulutustyyppi" : "koulutustyyppi_30",
+  "toteutus" : "vapaasivistystyo",
+  "koulutukset" : [ ],
+  "kielet" : [ "fi" ],
+  "kuvaus" : null,
+  "maarayskirje" : null,
+  "muutosmaaraykset" : [ ],
+  "diaarinumero" : "OPH-XXX-2022",
+  "voimassaoloAlkaa" : 1623099600000,
+  "siirtymaPaattyy" : null,
+  "voimassaoloLoppuu" : null,
+  "paatospvm" : null,
+  "luotu" : 1619612188823,
+  "muokattu" : 1623418711067,
+  "tila" : "luonnos",
+  "tyyppi" : "normaali",
+  "koulutusvienti" : false,
+  "korvattavatDiaarinumerot" : [ ],
+  "osaamisalat" : [ ],
+  "tyotehtavatJoissaVoiToimia" : null,
+  "suorittaneenOsaaminen" : null,
+  "perusteenAikataulut" : [ {
+    "id" : 7675715,
+    "peruste" : {
+      "id" : 7675672,
+      "nimi" : {
+        "_id" : "7723871",
+        "_tunniste" : "35be7734-99e9-4cae-b476-3f4354bfad81",
+        "fi" : "Aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman perusteet 2022"
+      },
+      "tila" : "luonnos",
+      "tyyppi" : "normaali",
+      "koulutustyyppi" : "koulutustyyppi_30",
+      "esikatseltavissa" : false,
+      "voimassaoloAlkaa" : 1623099600000,
+      "voimassaoloLoppuu" : null
+    },
+    "tavoite" : {
+      "_id" : "7679026",
+      "_tunniste" : "17f89a77-06d4-4e24-98df-09c80e2a2cf7",
+      "fi" : "Peruste luotu"
+    },
+    "tapahtuma" : "luominen",
+    "tapahtumapaiva" : 1619612185205,
+    "julkinen" : false
+  } ],
+  "vapaasivistystyo" : {
+    "id" : 7675681,
+    "sisalto" : {
+      "id" : 7679071,
+      "lapset" : [ {
+        "id" : 7679072,
+        "perusteenOsa" : {
+          "id" : 7679012,
+          "luotu" : 1619612233406,
+          "muokattu" : 1619612388708,
+          "muokkaaja" : "1.2.246.562.24.77925329174",
+          "nimi" : {
+            "_id" : "7679027",
+            "_tunniste" : "9fa50d31-f47f-448a-909e-7ae8069420f3",
+            "fi" : "Opetussuunnitelma"
+          },
+          "tila" : "luonnos",
+          "teksti" : {
+            "_id" : "7679300",
+            "_tunniste" : "dcb37ad7-e54b-4218-8410-9f415d5ab3aa",
+            "fi" : "<p>Aikuisten maahanmuuttajien kotoutumiskoulutus tulee kotoutumislain mukaan antaa näiden Opetushallituksen antamien opetussuunnitelman perusteiden mukaisesti. Opetushallitus suosittelee, että näiden perusteiden pohjalta laa­ditaan koulutuksen järjestäjän oma opetussuunnitelma. Opetussuunnitelman hyväksyy kunkin oppilaitoksen tai muun koulutuksen tarjoajan sen omassa johtosäännössä tai vastaavassa säädöksessä päättämä taho. Aikuisten maa­hanmuuttajien&nbsp;&nbsp; kotoutumisen&nbsp;&nbsp;&nbsp; opetussuunnitelmaa &nbsp;laatiessaan&nbsp;koulutuksen järjestäjän tulee ottaa huomioon toiminta-alueensa kotoutumisohjelma ja aikaisemmista kotoutumiskoulutuksista saatu palaute. Opetussuunnitelmaan sisällytetään niitä seikkoja, jotka kullakin kotoutumispaikkakunnalla erityisesti edistävät kotoutumista.</p>"
+          },
+          "koodit" : [ ],
+          "liite" : false,
+          "osanTyyppi" : "tekstikappale"
+        },
+        "lapset" : [ ],
+        "_perusteenOsa" : "7679012"
+      }, {
+        "id" : 7679073,
+        "perusteenOsa" : {
+          "id" : 7679013,
+          "luotu" : 1619612261131,
+          "muokattu" : 1619612261131,
+          "muokkaaja" : "1.2.246.562.24.77925329174",
+          "nimi" : {
+            "_id" : "7679028",
+            "_tunniste" : "c2d7db42-0a12-4010-9215-789fe259c6b3",
+            "fi" : "Koulutuksen järjestämisen lähtökohdat"
+          },
+          "tila" : "luonnos",
+          "teksti" : null,
+          "koodit" : [ ],
+          "liite" : false,
+          "osanTyyppi" : "tekstikappale"
+        },
+        "lapset" : [ {
+          "id" : 7679074,
+          "perusteenOsa" : {
+            "id" : 7679015,
+            "luotu" : 1619683450631,
+            "muokattu" : 1619683450631,
+            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "nimi" : {
+              "_id" : "7681838",
+              "_tunniste" : "1a02a428-8e44-4084-9108-b2096982b65e",
+              "fi" : "Arvoperusta"
+            },
+            "tila" : "luonnos",
+            "teksti" : null,
+            "koodit" : [ ],
+            "liite" : false,
+            "osanTyyppi" : "tekstikappale"
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "7679015"
+        }, {
+          "id" : 7679075,
+          "perusteenOsa" : {
+            "id" : 7679016,
+            "luotu" : 1619683486537,
+            "muokattu" : 1619683486537,
+            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "nimi" : {
+              "_id" : "7681839",
+              "_tunniste" : "6a8d7b1b-43b8-4735-9fdd-3a54a69615d5",
+              "fi" : "Kotoutumiskoulutus osana kotoutumista"
+            },
+            "tila" : "luonnos",
+            "teksti" : null,
+            "koodit" : [ ],
+            "liite" : false,
+            "osanTyyppi" : "tekstikappale"
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "7679016"
+        }, {
+          "id" : 7679076,
+          "perusteenOsa" : {
+            "id" : 7679017,
+            "luotu" : 1619683525732,
+            "muokattu" : 1619683525732,
+            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "nimi" : {
+              "_id" : "7682190",
+              "_tunniste" : "01c9950f-5508-4703-8f03-c0659a8d8eb8",
+              "fi" : "Koulutuksen laajuus ja rakenne"
+            },
+            "tila" : "luonnos",
+            "teksti" : null,
+            "koodit" : [ ],
+            "liite" : false,
+            "osanTyyppi" : "tekstikappale"
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "7679017"
+        }, {
+          "id" : 7679077,
+          "perusteenOsa" : {
+            "id" : 7679018,
+            "luotu" : 1619683567645,
+            "muokattu" : 1619683567645,
+            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "nimi" : {
+              "_id" : "7682191",
+              "_tunniste" : "80163c0c-3ad6-4cf7-97fb-35c44274932e",
+              "fi" : "Lähtötason arviointi ja opintopolut kotoutumiskoulutuksessa"
+            },
+            "tila" : "luonnos",
+            "teksti" : null,
+            "koodit" : [ ],
+            "liite" : false,
+            "osanTyyppi" : "tekstikappale"
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "7679018"
+        }, {
+          "id" : 7679078,
+          "perusteenOsa" : {
+            "id" : 7679019,
+            "luotu" : 1619683607578,
+            "muokattu" : 1619683607578,
+            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "nimi" : {
+              "_id" : "7682192",
+              "_tunniste" : "675c7a48-b1e2-4cd2-9a24-0cc17875c916",
+              "fi" : "Yhteistyö eri tahojen kanssa"
+            },
+            "tila" : "luonnos",
+            "teksti" : null,
+            "koodit" : [ ],
+            "liite" : false,
+            "osanTyyppi" : "tekstikappale"
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "7679019"
+        } ],
+        "_perusteenOsa" : "7679013"
+      }, {
+        "id" : 7679079,
+        "perusteenOsa" : {
+          "id" : 7682230,
+          "luotu" : 1619683627250,
+          "muokattu" : 1619683627250,
+          "muokkaaja" : "1.2.246.562.24.77925329174",
+          "nimi" : {
+            "_id" : "7682193",
+            "_tunniste" : "916b7080-8fc6-44bd-8826-e92acbfe6f8b",
+            "fi" : "Koulutuksen toteuttaminen"
+          },
+          "tila" : "luonnos",
+          "teksti" : null,
+          "koodit" : [ ],
+          "liite" : false,
+          "osanTyyppi" : "tekstikappale"
+        },
+        "lapset" : [ {
+          "id" : 7682260,
+          "perusteenOsa" : {
+            "id" : 7682231,
+            "luotu" : 1619683655875,
+            "muokattu" : 1619683655875,
+            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "nimi" : {
+              "_id" : "7682194",
+              "_tunniste" : "333a34ce-5457-4275-9964-0fbcc01da185",
+              "fi" : "Oppimiskäsitys"
+            },
+            "tila" : "luonnos",
+            "teksti" : null,
+            "koodit" : [ ],
+            "liite" : false,
+            "osanTyyppi" : "tekstikappale"
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "7682231"
+        }, {
+          "id" : 7682261,
+          "perusteenOsa" : {
+            "id" : 7682232,
+            "luotu" : 1619683682704,
+            "muokattu" : 1619683682704,
+            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "nimi" : {
+              "_id" : "7682195",
+              "_tunniste" : "d3bf1853-3f0d-4e34-ac6c-66e6f2ac13e8",
+              "fi" : "Oppimisympäristö ja työtavat"
+            },
+            "tila" : "luonnos",
+            "teksti" : null,
+            "koodit" : [ ],
+            "liite" : false,
+            "osanTyyppi" : "tekstikappale"
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "7682232"
+        }, {
+          "id" : 7682262,
+          "perusteenOsa" : {
+            "id" : 7682233,
+            "luotu" : 1619683711409,
+            "muokattu" : 1619683711409,
+            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "nimi" : {
+              "_id" : "7682196",
+              "_tunniste" : "426c5f29-43ec-4095-bb83-9c8da1978596",
+              "fi" : "Toimintakulttuuri"
+            },
+            "tila" : "luonnos",
+            "teksti" : null,
+            "koodit" : [ ],
+            "liite" : false,
+            "osanTyyppi" : "tekstikappale"
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "7682233"
+        } ],
+        "_perusteenOsa" : "7682230"
+      }, {
+        "id" : 7723770,
+        "perusteenOsa" : {
+          "id" : 7723780,
+          "luotu" : 1623320093694,
+          "muokattu" : 1623320093694,
+          "muokkaaja" : "1.2.246.562.24.77925329174",
+          "nimi" : {
+            "_id" : "7723790",
+            "_tunniste" : "25196f81-6280-42fd-a65a-05c4320b697b",
+            "fi" : "Kotoutumiskoulutuksen tavoitteet ja keskeiset sisällöt"
+          },
+          "tila" : "luonnos",
+          "teksti" : null,
+          "koodit" : [ ],
+          "liite" : false,
+          "osanTyyppi" : "tekstikappale"
+        },
+        "lapset" : [ {
+          "id" : 7723771,
+          "perusteenOsa" : {
+            "id" : 7723781,
+            "luotu" : 1623320105544,
+            "muokattu" : 1623320678963,
+            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "nimi" : {
+              "_id" : "7723791",
+              "_tunniste" : "97a3850c-f74c-4774-9ce2-5757609285d8",
+              "fi" : "Suomen kieli ja viestintätaidot"
+            },
+            "tila" : "luonnos",
+            "nimiKoodi" : {
+              "id" : 7723840,
+              "nimi" : {
+                "fi" : "Suomen kieli ja viestintätaidot"
+              },
+              "arvo" : "05",
+              "uri" : "tavoitesisaltoalueenotsikko_05",
+              "koodisto" : "tavoitesisaltoalueenotsikko",
+              "versio" : 1,
+              "temporary" : false
+            },
+            "kuvaus" : {
+              "_id" : "7723792",
+              "_tunniste" : "b3bf2093-fd3b-4dac-8b5c-db52cb8f7bb5",
+              "fi" : "<p>Kotoutumiskoulutuksen suomen kielen ja viestintätaitojen tavoitteena on, että opiskelijat saavuttavat keskimäärin kielitaidon tasojen kuvausasteikossa (liite 1) määritellyn taitotason B1.1 eli toimivan peruskielitaidon. Kielitaidon eri osa­ alueiden osaamista kuvaava kielitaitoprofiili voi vaihdella opiskelijakohtaisesti. Opiskelija voi siis henkilökohtaisen opiskelusuunnitelmansa ja opintopolkunsa mukaisesti joillakin kielitaidon osa-alueilla ylittää tai alittaa kotoutumiskoulu­ tuksen tavoitetason.</p><p>Kotoutumisprosessin onnistumisen keskeinen edellytys on toimiva suomen tai ruotsin kielen taito. Suomen kielen ja viestintätaitojen opetus perustuu toimin­nalliseen kielitaitokäsitykseen, jonka mukaan opiskelija nähdään sosiaalisena toimijana, joka käyttää kieltä omiin viestintätarpeisiinsa.</p><p>Aikuisen maahanmuuttajan kielellisessä selviytymisessä viestintätaidot ovat kotoutumiskoulutuksen aikana, kielitaidon kehittymisen varhaisvaiheessa ensi­sijaisia verrattuna esimerkiksi kielelliseen tarkkuuteen. Pragmaattinen kompe­tenssi (keskustelu- ja vuorovaikutusstrategiat) ja sosiolingvistinen kompetenssi (tilanteeseen sopivuus; kohteliaisuus, rekisterit) korostuvat. Kohdekielinen ympäristö antaa kieli- ja viestintätaitojen harjoitteluun paljon mahdollisuuksia, joita tulisi hyödyntää koko koulutuksen ajan, jotta kotoutuja oppii arvioimaan omia taitojaan ja kielenkäyttötarpeitaan.</p><p>Suomen kielen ja viestintätaitojen tavoitteet ja sisällöt on esitelty kielitaitota­soille A1, A2, B1.1. Keskeiset sisällöt on jaettu kullakin kielitaitotasolla kolmeen osaan: aihealueisiin, viestintätaitoihin ja kielenkäyttötarkoituksiin eli funktioi­hin. Aihealueet ja niihin liittyvä sanasto toistuvat ja syvenevät tasolta toiselle, ja näin tasot muodostavat jatkumon. Monipuolisten aihealueiden tarkoituksena on myös, että oppija saa tarvitsemiaan kiellisia valmiuksia työelämä- ja yhteistuntataitojen kartuttamiseen. Tarkastelemalla aihealueita ja viestitätilanteita rinnakkain saa kuvan siitä, millaisista tilanteista oppijan odotetaan kullakin taitotasolla aihepiirin puitteissa selviävän. Oppimisen kannalta on tärkeää, että keskeinen sanasto toistuu monen kanavan kautta ja että sanastoa opetetaan systemaattisesti konkreettisesta kohti käsitteellisempää. KIelenkäyttötarkoitukset ja viestintätaidot kehittyvät tasolta toiselle ja tarjoavat oppijalle yhä monipuolisempia ilmaisukeinoja. Seuraamalla kielenkäyttötarkoituksia ja viestintätaitoja tasolta toiselle saa yleiskuvan sisällön progressiosta ja koulutuskokonaisuuden tavoitteista.</p><p></p>"
+            },
+            "taitotasot" : [ {
+              "id" : 7723850,
+              "nimi" : {
+                "id" : 7723841,
+                "nimi" : {
+                  "fi" : "Toimiva alkeiskielitaito (A1)"
+                },
+                "arvo" : "1001",
+                "uri" : "kotoutumiskoulutustavoitteet_1001",
+                "koodisto" : "kotoutumiskoulutustavoitteet",
+                "versio" : 1,
+                "temporary" : false
+              },
+              "tavoitteet" : {
+                "_id" : "7723795",
+                "_tunniste" : "ce9d3702-ee64-4dde-bb0a-9562f739fcd9",
+                "fi" : "<p>Kuullun ymmärtämisen tavoitteena on, että opiskelija pystyy seuraamaan hyvin hidasta, huolellisesti äännettyä puhetta ja ymmärtämään kasvokkain annettuja neuvoja. Opiskelija pystyy puhumaan yksinkertaisella kielellä välittömistä tar­peista ja hyvin tutuista aiheista. Luetun ymmärtämisen tavoitteena on, että opiskelija pystyy ymmärtämään erittäin lyhyitä, yksinkertaisia tekstin osia. Opiskelija tunnistaa tutut nimet, sanat ja aivan tavalliset ilmaukset kaikkein yleisimmissä arkipäivän tilanteissa. Kirjoittamisen tavoitteena on, että opiskelija pystyy kirjoittamaan yksinkertaisia, irrallisia ilmauksia ja lauseita.</p>"
+              },
+              "kielenkayttotarkoitus" : {
+                "_id" : "7723794",
+                "_tunniste" : "def15264-9c07-4712-8bd8-1c01908a469d",
+                "fi" : "<ul><li><p>yksinkertainen kysyminen ja vastaaminen</p></li><li><p>esittäytyminen</p></li><li><p>nimeäminen</p></li><li><p>tervehtiminen</p></li><li><p>kuulumisten kertominen ja kysyminen</p></li><li><p>kiittäminen ja anteeksi pyytäminen</p></li><li><p>kysyminen</p></li><li><p>tiedon etsiminen</p></li><li><p>kuvaileminen</p></li></ul>"
+              },
+              "aihealueet" : {
+                "_id" : "7723793",
+                "_tunniste" : "971c6306-d702-4035-9957-59d4167ecdae",
+                "fi" : "<ul><li><p>ihminen ja lähipiiri</p></li><li><p>(henkilötiedot, perhe, ystävät, koti ja asumi­ nen)</p></li><li><p>arkielämä ja asiointi</p></li><li><p>(päivärytmi, ostosten teko ja palvelujen käyt­täminen, pankki, posti jne., ruoka, vaatteet, liikenne)</p></li><li><p>peruspalvelut</p></li><li><p>(päiväkoti ja koulu, viranomaisasiointi, kirjasto)</p></li><li><p>terveys ja hyvinvointi</p></li><li><p>(vointi, ruumiinosat, sairastuminen ja tapatur­ mat, hätätapauksessa toimiminen)</p></li><li><p>yhteiskunta ja ympäristö</p></li><li><p>(maantuntemus, historia, poliittinen järjestel­ mä, yhdenvertaisuus, elinkeinorakenne, luonto ja ilmasto)</p></li><li><p>vapaa-aika ja harrastukset</p></li><li><p>(omat harrastukset ja kiinnostuksen kohteet, kulttuuritarjonta, tapakulttuuri)</p></li><li><p>työ ja koulutus</p></li><li><p>(koulutusjärjestelmä, ammatit, työnhaku ja työmarkkinat, työelämä (loma, palkka, työtur­ vallisuus yms.), työkulttuuri)</p></li><li><p>ajankohtaiset aiheet (joukkoviestimet)</p></li><li><p>opiskeluvalmiudet ja tiedonhaku</p></li><li><p>(kohdekielisen ympäristön hyödyntäminen, erilaiset opiskelutavat, tiedonhaku, opiskelusanosto)</p></li></ul>"
+              },
+              "viestintataidot" : {
+                "_id" : "7723796",
+                "_tunniste" : "b2e248c0-c868-414d-bdde-58dfdf8a4cc4",
+                "fi" : "<ul><li><p>osaa antaa perustiedot itsestään ja vastata itseään koskeviin yksinkertaisiin kysymyksiin</p></li><li><p>osaa elämään ja arkipäivään liittyvää sanastoa</p></li><li><p>tulee auttavasti toimeen tavallisimmissa vuoro- vaikutustilanteissa</p></li><li><p>reagoi yksinkertaisiin kehotuksiin</p></li><li><p>osaa kirjoittaa lyhyen viestin</p></li><li><p>ymmärtää lukiessaan sanoja ja tekstin osasia jokapäiväisistä teksteistä</p></li><li><p>osaa ilmaista välittömät tarpeensa fraasein</p></li><li><p>osaa ääntää sana- ja lauseketasolla jokseenkin ymmärrettävästi</p></li><li><p>osaa tehdä havaintoja ja poimia informaatiota kielen käytöstä omassa lähiympäristössä (kyl­tit, opasteet, asiakaspalvelun fraasit, kartat)</p></li><li><p>tunnistaa visuaalisesti joitakin tekstilajeja,</p></li><li><p>esimerkiksi hintalappu, kuitti, ruokalista, kauppalista</p></li><li><p>osaa poimia yksittäisiä tietoja autenttisista teksteistä</p></li><li><p>osaa ilmaista, ymmärtääkö</p></li><li><p>osaa pyytää toistamaan</p></li></ul>"
+              },
+              "opiskelijantaidot" : null
+            } ],
+            "osanTyyppi" : "koto_kielitaitotaso"
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "7723781"
+        }, {
+          "id" : 7723772,
+          "perusteenOsa" : {
+            "id" : 7723782,
+            "luotu" : 1623320497505,
+            "muokattu" : 1623320497505,
+            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "nimi" : null,
+            "tila" : "luonnos",
+            "nimiKoodi" : null,
+            "kuvaus" : null,
+            "taitotasot" : [ ],
+            "osanTyyppi" : "koto_opinto"
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "7723782"
+        } ],
+        "_perusteenOsa" : "7723780"
+      } ]
+    },
+    "laajuus" : null
+  }
+}

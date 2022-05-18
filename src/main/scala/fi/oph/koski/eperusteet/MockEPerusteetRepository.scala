@@ -28,6 +28,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-sosiaali-ja-terveysala",
     "rakenne-vst-oppivelvollisille-suunnattu",
     "rakenne-vst-maahanmuuttajien-kotoutumiskoulutus",
+    "rakenne-vst-maahanmuuttajien-kotoutumiskoulutus-2022",
     "rakenne-vst-lukutaitokoulutus",
     "rakenne-tieto-ja-viestintätekniikan-perustutkinto",
     "rakenne-tutkintokoulutukseen-valmentava-koulutus"
