@@ -256,7 +256,9 @@ describe('Kela', function () {
         opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'),
         opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
         editor.edit,
-        editor.property('suoritustapa').setValue('Erityinen tutkinto'),
+        opinnot.avaaLisätiedot,
+        editor.property('ulkomaanjaksot').addItem,
+        editor.property('ulkomaanjaksot').propertyBySelector('.alku').setValue('18.5.2022'),
         editor.saveChanges
       )
 
@@ -269,7 +271,7 @@ describe('Kela', function () {
         )
 
         it('Näytetään uusin versio (2) ja tämän hetkinen versio näytetään valittuna versiohistorian listassa', function () {
-          expect(extractAsText(S('.suoritustapa'))).to.equal('Suoritustapa Erityinen tutkinto')
+          expect(extractAsText(S('.ulkomaanjaksot'))).to.equal('Ulkomaanjaksot 18.5.2022 -')
           expect(kela.getValittuVersioVersiohistoriasta()).to.be.a('string').and.satisfy(str => str.startsWith('2 '))
         })
 
@@ -281,7 +283,7 @@ describe('Kela', function () {
           )
 
           it('Näytetään valitun version opiskeluoikeus ja valittu versio on valittuna versiohistorian listassa', function () {
-            expect(extractAsText(S('.suoritustapa'))).to.equal('Suoritustapa Koulutus')
+            // expect(extractAsText(S('.suoritustapa'))).to.equal('Suoritustapa Koulutus')
             expect(kela.getValittuVersioVersiohistoriasta()).to.be.a('string').and.satisfy(str => str.startsWith('1 '))
           })
         })

@@ -207,23 +207,6 @@ class KelaSpec
     }
   }
 
-  "Perusopetuksen oppiaineen oppimäärän suorituksesta ei välitetä suoritustapaa Kelalle" in {
-    postHetu(KoskiSpecificMockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa.hetu.get) {
-      verifyResponseStatusOk()
-      val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet.map{
-        case oo: KelaAikuistenPerusopetuksenOpiskeluoikeus => oo
-      }
-
-      opiskeluoikeudet
-        .flatMap(oo => oo.suoritukset.collect {
-          case suoritus: KelaAikuistenPerusopetuksenPäätasonSuoritus => suoritus
-        })
-        .foreach { suoritus =>
-          suoritus.suoritustapa should equal(None)
-        }
-    }
-  }
-
   "Vapaan sivistystyön opiskeluoikeuksista ei välitetä vapaatavoitteisin koulutuksen suorituksia" in {
     postHetu(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.hetu.get) {
       verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
@@ -411,28 +394,6 @@ class KelaSpec
         }
       }
 
-      "Pre-IB oppijalle" in {
-
-        val vanhaJson = JsonFiles.readFile("src/test/resources/kela_backwardcompatibility/kela-response-preibsuorittaja-laaja_2022-05-03.json")
-
-        postHetu(KoskiSpecificMockOppijat.ibPreIB2019.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
-          verifyResponseStatusOk()
-          val oppija = JsonSerializer.parse[KelaOppija](body)
-
-          oppija.opiskeluoikeudet.length should be(1)
-
-          val ooSiivottu = kopioiOppijaIlmanSyntymäaikaa(oppija, oppija.opiskeluoikeudet.head match {
-            case x: KelaIBOpiskeluoikeus =>
-              x.copy(
-                oid = Some("1.2.246.562.15.47951241752"),
-                aikaleima = Some(LocalDateTime.parse("2022-04-25T13:30:12.724341"))
-              )
-          })
-
-          JsonSerializer.serializeWithRoot[KelaOppija](ooSiivottu) shouldBe vanhaJson
-        }
-      }
-
       "International school -oppijalle" in {
         val vanhaJson = JsonFiles.readFile("src/test/resources/kela_backwardcompatibility/kela-response-internationalschoolsuorittaja-laaja_2022-05-03.json")
 
@@ -455,7 +416,12 @@ class KelaSpec
       }
 
       "perusopetuksen ja perusopetukseen valmistavan oppijalle" in {
-        val vanhaJson = JsonFiles.readFile("src/test/resources/kela_backwardcompatibility/kela-response-perussuorittaja-laaja_2022-05-03.json")
+        val vanhaJson = JsonFiles
+          .readFile("src/test/resources/kela_backwardcompatibility/kela-response-perussuorittaja-laaja_2022-05-03.json")
+          .removeField {
+            case ("suoritustapa", _) => true
+            case _ => false
+          }
 
         postHetu(KoskiSpecificMockOppijat.koululainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
           verifyResponseStatusOk()
@@ -486,7 +452,12 @@ class KelaSpec
       }
 
       "perusopetuksen lisäopetuksen oppijalle" in {
-        val vanhaJson = JsonFiles.readFile("src/test/resources/kela_backwardcompatibility/kela-response-perusopetuksenlisaopetussuorittaja-laaja_2022-05-03.json")
+        val vanhaJson = JsonFiles
+          .readFile("src/test/resources/kela_backwardcompatibility/kela-response-perusopetuksenlisaopetussuorittaja-laaja_2022-05-03.json")
+          .removeField {
+            case ("suoritustapa", _) => true
+            case _ => false
+          }
 
         postHetu(KoskiSpecificMockOppijat.kymppiluokkalainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
           verifyResponseStatusOk()
@@ -507,8 +478,12 @@ class KelaSpec
       }
 
       "aikuisten perusopetuksen oppijalle" in {
-        val vanhaJson = JsonFiles.readFile("src/test/resources/kela_backwardcompatibility/kela-response-aikuistenperussuorittaja-laaja_2022-05-03.json")
-
+        val vanhaJson = JsonFiles
+          .readFile("src/test/resources/kela_backwardcompatibility/kela-response-aikuistenperussuorittaja-laaja_2022-05-03.json")
+          .removeField {
+            case ("suoritustapa", _) => true
+            case _ => false
+          }
         postHetu(KoskiSpecificMockOppijat.aikuisOpiskelija.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
           verifyResponseStatusOk()
           val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -576,6 +551,7 @@ class KelaSpec
         .readFile("src/test/resources/kela_backwardcompatibility/kela-response-kaikki-oppijat-laajat_2022-05-03.json")
         .removeField {
           case ("osaaminen", _) => true
+          case ("suoritustapa", _) => true
           case _ => false
         }
       val opiskeluoikeudet = SchemaValidatingExtractor.extract[List[KelaOppija]](kelaKaikkiJson)
@@ -589,6 +565,7 @@ class KelaSpec
         .readFile("src/test/resources/kela_backwardcompatibility/kela-response-kaikki-oppijat-suppeat_2022-05-03.json")
         .removeField {
           case ("osaaminen", _) => true
+          case ("suoritustapa", _) => true
           case _ => false
         }
       val opiskeluoikeudet = SchemaValidatingExtractor.extract[List[KelaOppija]](kelaKaikkiSuppeatJson)
