@@ -115,3 +115,5 @@ trait OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli extends Koulutus
     shapeless.lens[OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli].field[Option[LaajuusOpintopisteissä]]("laajuus").set(this)(laajuus)
   }
 }
+
+trait OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli extends OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli

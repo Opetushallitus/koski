@@ -177,6 +177,7 @@ class KoskiValidator(
       suoritus.withOsasuoritukset(suoritus.osasuoritukset.map(_.map { os =>
         lazy val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(1.0)).map(BigDecimal.decimal).sum.toDouble
         os.withKoulutusmoduuli(os.koulutusmoduuli match {
+          case k: OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli => k
           case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli if yhteislaajuus > 0 => k.withLaajuus(yhteislaajuus)
           case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli => k.withLaajuusNone()
           case k => k
