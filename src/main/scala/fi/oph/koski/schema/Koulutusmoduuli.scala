@@ -104,16 +104,22 @@ trait Oppimäärä extends Koulutusmoduuli {
   def oppimäärä: Koodistokoodiviite
 }
 
-trait OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli extends KoulutusmoduuliValinnainenLaajuus {
-  def laajuus: Option[LaajuusOpintopisteissä]
+trait OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[A <: Laajuus]
+  extends KoulutusmoduuliValinnainenLaajuus {
+  def laajuus: Option[A]
+  def makeLaajuus(laajuusArvo: Double): A
 
-  final def withLaajuus(laajuusArvo: Double): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.withLaajuus(Some(LaajuusOpintopisteissä(laajuusArvo)))
-  final def withLaajuusNone(): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = this.withLaajuus(None)
+  final def withLaajuus(laajuusArvo: Double): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[A] =
+    this.withLaajuus(Some(makeLaajuus(laajuusArvo)))
+  final def withLaajuusNone(): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[A] = this.withLaajuus(None)
 
-  final def withLaajuus(laajuus: Option[LaajuusOpintopisteissä]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli = {
+  final def withLaajuus(laajuus: Option[A]): OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[A] = {
     import mojave._
-    shapeless.lens[OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli].field[Option[LaajuusOpintopisteissä]]("laajuus").set(this)(laajuus)
+    shapeless
+      .lens[OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[A]]
+      .field[Option[A]]("laajuus")
+      .set(this)(laajuus)
   }
 }
 
-trait OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli extends OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
+trait OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli[A <: Laajuus] extends OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[A]

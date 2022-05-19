@@ -28,6 +28,52 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
         }
       }
 
+      "suoritusten laajuudet lasketaan automaattisesti oikein" in {
+        val oo = tuvaOpiskeluOikeusValmistunut.copy(
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = None).copy( // laajuus lasketaan ja täytetään automaattisesti
+            osasuoritukset = Some(
+              List(
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ),
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(2)),
+                  koodistoviite = "tutkintokoulutukseenvalmentava",
+                  arviointiPäivä = Some(date(2021, 9, 1))
+                ),
+                tuvaKoulutuksenValinnaisenOsanSuoritus(
+                  arviointiPäivä = Some(date(2021, 9, 1)),
+                  laajuus = None // laajuus lasketaan ja täytetään automaattisesti
+                ).copy(
+                  osasuoritukset = Some(
+                    List(
+                      tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                        kurssinNimi = "Ohjelmointi 1",
+                        paikallinenKoodi = "ohj1",
+                        paikallisenKoodinNimi = "Paikallinen ohjelmointikurssi",
+                        laajuusViikoissa = 4
+                      ),
+                      tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                        kurssinNimi = "Ohjelmointi 2",
+                        paikallinenKoodi = "ohj2",
+                        paikallisenKoodinNimi = "Paikallinen ohjelmointikurssi",
+                        laajuusViikoissa = 4
+                      ),
+                    )
+                  )
+                )
+              )
+            )
+          ))
+        )
+
+        val tuva = putAndGetOpiskeluoikeus(oo, tuvaHenkilöValmis)
+        tuva.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe 12.0
+        tuva.suoritukset.head.osasuoritusLista.last.koulutusmoduuli.laajuusArvo(0.0) shouldBe 8.0
+      }
+
       "valmistuneen päätason suorituksen laajuus liian pieni (ja osasuorituksia puuttuu)" in {
         val oo = tuvaOpiskeluOikeusValmistunut.copy(
           suoritukset = List(tuvaPäätasonSuoritus(laajuus = Some(3)).copy(
@@ -189,6 +235,15 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
     }
 
   }
+
+  def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus, henkilö: Henkilö): TutkintokoulutukseenValmentavanOpiskeluoikeus = putOpiskeluoikeus(
+    oo,
+    henkilö = henkilö,
+    headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+  ) {
+    verifyResponseStatusOk()
+    getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
+  }.asInstanceOf[TutkintokoulutukseenValmentavanOpiskeluoikeus]
 
   override def defaultOpiskeluoikeus: TutkintokoulutukseenValmentavanOpiskeluoikeus = tuvaOpiskeluOikeusValmistunut
 }

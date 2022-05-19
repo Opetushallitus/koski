@@ -67,11 +67,11 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
   )
 
   def tuvaKoulutuksenValinnaisenOsanSuoritus(
-    laajuus: Double,
+    laajuus: Option[Double],
     arviointiPäivä: Option[LocalDate] = None
   ) = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(
     koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
-      laajuus = Some(LaajuusViikoissa(laajuus))
+      laajuus = laajuus.map(LaajuusViikoissa(_))
     ),
     arviointi = tuvaSanallinenArviointi(arviointiPäivä),
     suorituskieli = Some(suomenKieli),
@@ -200,34 +200,22 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
               )
             ),
             tuvaKoulutuksenValinnaisenOsanSuoritus(
-              laajuus = 5,
+              laajuus = Some(5),
               arviointiPäivä = Some(date(2021, 12, 1))
             ).copy(
               osasuoritukset = Some(
                 List(
-                  TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus(
-                    koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus(
-                      nimi = finnish("Valinnainen kurssi 1"),
-                      tunniste = PaikallinenKoodi("VALKU1", finnish("Paikallinen kurssisuoritus")),
-                      laajuus = Some(
-                        LaajuusViikoissa(2)
-                      )
-                    ),
-                    arviointi = tuvaSanallinenArviointi(Some(date(2021, 12, 1))),
-                    tunnustettu = None,
-                    suorituskieli = Some(suomenKieli)
+                  tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                    kurssinNimi = "Valinnainen kurssi 1",
+                    paikallinenKoodi = "VALKU1",
+                    paikallisenKoodinNimi = "Paikallinen kurssisuoritus",
+                    laajuusViikoissa = 2
                   ),
-                  TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus(
-                    koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus(
-                      nimi = finnish("Valinnainen kurssi 2"),
-                      tunniste = PaikallinenKoodi("VALKU2", finnish("Paikallinen kurssisuoritus")),
-                      laajuus = Some(
-                        LaajuusViikoissa(3)
-                      )
-                    ),
-                    arviointi = tuvaSanallinenArviointi(Some(date(2021, 12, 1))),
-                    tunnustettu = None,
-                    suorituskieli = Some(suomenKieli)
+                  tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                    kurssinNimi = "Valinnainen kurssi 2",
+                    paikallinenKoodi = "VALKU2",
+                    paikallisenKoodinNimi = "Paikallinen kurssisuoritus",
+                    laajuusViikoissa = 3
                   )
                 )
               )
@@ -237,6 +225,26 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
       )
     )
   )
+
+  def tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+    kurssinNimi: String,
+    paikallinenKoodi: String,
+    paikallisenKoodinNimi: String,
+    laajuusViikoissa: Int
+  ): TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus = {
+    TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus(
+      koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus(
+        nimi = finnish(kurssinNimi),
+        tunniste = PaikallinenKoodi(paikallinenKoodi, finnish(paikallisenKoodinNimi)),
+        laajuus = Some(
+          LaajuusViikoissa(laajuusViikoissa)
+        )
+      ),
+      arviointi = tuvaSanallinenArviointi(Some(date(2021, 12, 1))),
+      tunnustettu = None,
+      suorituskieli = Some(suomenKieli)
+    )
+  }
 
   lazy val tuvaOpiskeluOikeusEiValmistunut = TutkintokoulutukseenValmentavanOpiskeluoikeus(
     lähdejärjestelmänId = None,

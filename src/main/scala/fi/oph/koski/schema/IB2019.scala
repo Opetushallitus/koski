@@ -29,10 +29,11 @@ case class PreIBSuoritus2019(
   with PuhviKokeellinen2019
   with SuullisenKielitaidonKokeellinen2019
   with Ryhmällinen
-  with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus
+  with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusOpintopisteissä]
   with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
-trait PreIBSuorituksenOsasuoritus2019 extends Suoritus with OpintopistelaajuuksienYhteislaskennallinenSuoritus
+trait PreIBSuorituksenOsasuoritus2019
+  extends Suoritus with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 
 trait IBSuoritus2019 extends IBSuoritus
 
@@ -86,9 +87,13 @@ case class MuidenLukioOpintojenPreIBSuoritus2019(
   override def suorituskieli: Option[Koodistokoodiviite] = None
 }
 
-trait PreIBMuutSuorituksetTaiVastaavat2019 extends Koulutusmoduuli with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
+trait PreIBMuutSuorituksetTaiVastaavat2019
+  extends Koulutusmoduuli with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusOpintopisteissä]
 
-trait PreIBLukionOppiaine2019 extends Koulutusmoduuli with Valinnaisuus with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
+trait PreIBLukionOppiaine2019
+  extends Koulutusmoduuli
+    with Valinnaisuus
+    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusOpintopisteissä]
 
 trait PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 extends IBSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton {
   def koulutusmoduuli: PreIBLukionModuuliTaiPaikallinenOpintojakso2019

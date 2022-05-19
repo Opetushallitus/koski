@@ -18,7 +18,9 @@ case class VapaanSivistystyönLukutaitokoulutuksenSuoritus(
   override val osasuoritukset: Option[List[VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with OpintopistelaajuuksienYhteislaskennallinenSuoritus
+) extends VapaanSivistystyönPäätasonSuoritus
+    with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+    with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 
 @Description("Vapaan sivistystyön lukutaitokoulutuksen tunnistetiedot")
 case class VapaanSivistystyönLukutaitokoulutus(
@@ -29,7 +31,11 @@ case class VapaanSivistystyönLukutaitokoulutus(
  @ReadOnly("Täytetään tiedonsiirrossa automaattisesti osasuoritusten yhteislaajuudella")
  @Tooltip("Lasketaan automaattisesti tallentamisen jälkeen osasuoritusten laajuuksista")
  laajuus: Option[LaajuusOpintopisteissä] = None
-) extends DiaarinumerollinenKoulutus with Tutkinto with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
+) extends DiaarinumerollinenKoulutus
+    with Tutkinto
+    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusOpintopisteissä] {
+  override def makeLaajuus(laajuusArvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(laajuusArvo)
+}
 
 @Title("Lukutaitokoulutuksen kokonaisuuden suoritus")
 case class VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(
