@@ -26,8 +26,8 @@ case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuorit
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
 ) extends VapaanSivistystyönPäätasonSuoritus
   with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
-  with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus
-  with OpintopistelaajuuksienYhteislaskennallinenSuoritus
+  with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusOpintopisteissä]
+  with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 
 @Description("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen (OPS 2022) tunnistetiedot")
 case class VSTKotoutumiskoulutus2022(
@@ -36,7 +36,9 @@ case class VSTKotoutumiskoulutus2022(
   perusteenDiaarinumero: Option[String] = Some("OPH-XXX-2022"), // TODO: Oikea diaarinumero
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   laajuus: Option[LaajuusOpintopisteissä] = None
-) extends DiaarinumerollinenKoulutus with Tutkinto with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
+) extends DiaarinumerollinenKoulutus
+  with Tutkinto
+  with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuliLaajuusOpintopisteissä
 
 @Title("Vapaan sivistystyön kotoutumiskoulutuksen arviointi")
 @Description("Hyväksytty arviointi tarkoittaa osasuorituksen suoritusta")
@@ -152,7 +154,7 @@ case class VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi(
 
 @Title("VST-KOTO yhteiskunta- ja työelämäosaaminen")
 @Description("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen yhteiskunta- ja työelämäosaamisen osasuoritus")
-case class VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus(
+case class VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022(
   @Title("Kotoutumiskoulutuksen yhteyskunta- ja työelämäosaaminen")
   koulutusmoduuli: VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenKoulutusmoduuli2022 = VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenKoulutusmoduuli2022(),
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus")
@@ -191,7 +193,7 @@ case class VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituks
 
 @Title("VST-KOTO ohjaus")
 @Description("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen osasuoritus")
-case class VSTKotoutumiskoulutuksenOhjauksenSuoritus(
+case class VSTKotoutumiskoulutuksenOhjauksenSuoritus2022(
   @Title("Kotoutumiskoulutuksen ohjaus")
   koulutusmoduuli: VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 = VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022(),
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus")

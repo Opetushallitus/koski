@@ -160,11 +160,11 @@ object ExamplesVapaaSivistystyöKotoutuskoulutus2022 {
   }
 
   object YhteiskuntaJaTyöelämä {
-    lazy val tyhjä: VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus =
-      VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus()
+    lazy val tyhjä: VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 =
+      VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022()
 
-    lazy val keskeneräinen: VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus =
-      VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus(
+    lazy val keskeneräinen: VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 =
+      VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022(
         osasuoritukset = Some(List(
           Alaosasuoritukset.yhteiskunnanPerusrakenteet,
           Alaosasuoritukset.yhteyskunnanPeruspalvelut,
@@ -173,8 +173,8 @@ object ExamplesVapaaSivistystyöKotoutuskoulutus2022 {
         ))
       )
 
-    lazy val suoritettu: VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus =
-      VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus(
+    lazy val suoritettu: VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 =
+      VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022(
         osasuoritukset = Some(List(
           Alaosasuoritukset.yhteiskunnanPerusrakenteet,
           Alaosasuoritukset.yhteyskunnanPeruspalvelut,
@@ -209,16 +209,16 @@ object ExamplesVapaaSivistystyöKotoutuskoulutus2022 {
   }
 
   object Ohjaus {
-    lazy val tyhjä: VSTKotoutumiskoulutuksenOhjauksenSuoritus =
-      VSTKotoutumiskoulutuksenOhjauksenSuoritus()
+    lazy val tyhjä: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 =
+      VSTKotoutumiskoulutuksenOhjauksenSuoritus2022()
 
-    lazy val keskeneräinen: VSTKotoutumiskoulutuksenOhjauksenSuoritus =
-      VSTKotoutumiskoulutuksenOhjauksenSuoritus(
+    lazy val keskeneräinen: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 =
+      VSTKotoutumiskoulutuksenOhjauksenSuoritus2022(
         koulutusmoduuli = VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022(laajuus = Some(LaajuusOpintopisteissä(4))),
       )
 
-    lazy val suoritettu: VSTKotoutumiskoulutuksenOhjauksenSuoritus =
-      VSTKotoutumiskoulutuksenOhjauksenSuoritus(
+    lazy val suoritettu: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 =
+      VSTKotoutumiskoulutuksenOhjauksenSuoritus2022(
         koulutusmoduuli = VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022(laajuus = Some(LaajuusOpintopisteissä(7))),
       )
   }
