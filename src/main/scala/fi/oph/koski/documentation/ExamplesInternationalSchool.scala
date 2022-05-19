@@ -156,7 +156,7 @@ object ExamplesInternationalSchool {
       diplomaOppiaineenSuoritus(diplomaIBOppiaine("HIS", Some("HL")), diplomaArviointi(4)),
       diplomaOppiaineenSuoritus(diplomaIBOppiaine("PSY"), diplomaArviointi(3)),
       diplomaOppiaineenSuoritus(diplomaIBOppiaine("ESS", Some("SL")), diplomaArviointi(3)),
-      diplomaOppiaineenSuoritus(diplomaIBOppiaine("MATST"), diplomaArviointi(4)),
+      diplomaOppiaineenSuoritus(diplomaIBOppiaine("MATST"), diplomaArviointi("S")),
       diplomaOppiaineenSuoritus(FitnessAndWellBeing(Koodistokoodiviite("HAWB", "oppiaineetinternationalschool")), Some(PassFailOppiaineenArviointi(Koodistokoodiviite("pass", "arviointiasteikkointernationalschool")))),
       diplomaTOKSuoritus(tokArvionti("D"))
     ))

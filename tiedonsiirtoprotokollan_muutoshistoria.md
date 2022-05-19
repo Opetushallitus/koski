@@ -1,3 +1,8 @@
+## 19.5.2022
+- Korjattu sallitut koodiarvot international school opiskeluoikeudelle koodistosta `arviointiasteikkoib`.
+  - International school IB oppiaineen arviointi ja numeerinen international school oppiaineen arviointi.
+  - Lisätty json-skeemaan hyväksytyt arvosanan koodiarvot `S` ja `F`. Poistettu json-skeemasta epävalidit koodiarvot `pass`/`fail` kyseisiltä arvioinneilta.
+
 ## 22.4.2022
 - TUVA-tietomallin perusopetuksen järjestämisluvan lisätiedoista poistettu tarpeettomana kenttä erityisen tuen päätöksistä.
 
