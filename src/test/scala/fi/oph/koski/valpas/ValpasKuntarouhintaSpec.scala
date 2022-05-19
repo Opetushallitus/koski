@@ -3,11 +3,14 @@ package fi.oph.koski.valpas
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.koskiuser.AuthenticationUser
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.helsinginKaupunki
+import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaService
-import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUsers, ValpasSession}
 
 object ValpasKuntarouhintaSpec {
   val tarkastelupäivä = date(2021, 5, 20)
@@ -149,6 +152,11 @@ class ValpasKuntarouhintaSpec extends ValpasRouhintaTestBase {
           )
         }
       }
+    }
+
+    "Audit-log toimii myös isolla oppijamäärällä" in {
+      val oids = Range.inclusive(1, 10000).map(n => s"1.2.246.562.10.000000${"%05d".format(n)}")
+      ValpasAuditLog.auditLogRouhintahakuKunnalla(helsinginKaupunki, oids)(session(defaultUser))
     }
   }
 

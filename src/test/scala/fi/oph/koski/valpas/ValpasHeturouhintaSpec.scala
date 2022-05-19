@@ -1,7 +1,9 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.organisaatio.MockOrganisaatiot.helsinginKaupunki
 import fi.oph.koski.raportit.{DataSheet, Sheet}
+import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.rouhinta.{ValpasRouhintaPelkkäHetuSheetRow, ValpasRouhintaService}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
@@ -137,6 +139,11 @@ class ValpasHeturouhintaSpec extends ValpasRouhintaTestBase {
       "Virheelliset hetut sisältää oikeat hetut" in {
         virheelliset.map(_.hetu) should contain theSameElementsAs virheellisetHetut
       }
+    }
+
+    "Audit-log toimii myös isolla oppijamäärällä" in {
+      val hetut = Range.inclusive(0, 9999).map(n => s"123456-${"%04d".format(n)}")
+      ValpasAuditLog.auditLogRouhintahakuHetulistalla(hetut, hetut)(session(defaultUser))
     }
   }
 
