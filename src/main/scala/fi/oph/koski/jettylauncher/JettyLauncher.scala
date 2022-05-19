@@ -74,10 +74,10 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
 
   server.setHandler(handlers)
 
+  setupPrometheusMetrics()
   setupKoskiApplicationContext()
   setupGzipForStaticResources()
   setupJMX()
-  setupPrometheusMetrics()
 
   handlers.addHandler(rootContext)
 
@@ -145,7 +145,10 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   }
 
   private def setupPrometheusMetrics(): Unit = {
-    rootContext.addServlet(new ServletHolder(new MetricsServlet), "/metrics")
+    val metricsServletContext = new ServletContextHandler()
+    metricsServletContext.setContextPath("/metrics")
+    metricsServletContext.addServlet(new ServletHolder(new MetricsServlet), "")
+    handlers.addHandler(metricsServletContext)
   }
 }
 
