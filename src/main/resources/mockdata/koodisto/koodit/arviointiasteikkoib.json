@@ -88,4 +88,17 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-} ]
+},
+{
+  "koodiUri": "arviointiasteikkoib_f",
+  "koodiArvo": "F",
+  "metadata": [
+    {
+      "nimi": "fail",
+      "lyhytNimi": "fail",
+      "kieli": "EN"
+    }
+  ],
+  "versio": 1
+}
+]
