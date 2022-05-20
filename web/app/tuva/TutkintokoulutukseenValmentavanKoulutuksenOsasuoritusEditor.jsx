@@ -17,7 +17,7 @@ export const TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor = ({
 
   return (
     <tbody className={'tuva-osasuoritus tuva-osasuoritus-' + nestedLevel}>
-    <tr>
+    <tr className={'tuva-osasuoritusrivi-' + nestedLevel}>
       {
         columns.map(column => column.renderData({model, expanded, onExpand, showTila: true, hasProperties: true}))
       }
