@@ -15,10 +15,10 @@ trait ValpasSSOSupport extends SSOSupport {
     protocol + "://" + host + portStr
   }
 
-  def valpasRoot = serviceRoot + "/koski/valpas/v2"
+  def valpasRoot = serviceRoot + "/valpas"
 
   def casValpasOppijaServiceUrl: String = serviceRoot + "/koski/cas/valpas/oppija"
 
-  def localLoginPage: String = "/koski/valpas/v2/virkailija/"
-  def localOppijaLoginPage: String = "/koski/valpas/v2/login/"
+  def localLoginPage: String = "/valpas/virkailija/"
+  def localOppijaLoginPage: String = "/valpas/login/"
 }

@@ -20,8 +20,8 @@ npm install
 
 - `npm start` kääntää lähdekoodin, jää kuuntelemaan muutoksia ja kopioi tiedostot ../target/webapp/ -hakemistoon
   Koskessa hostaamista varten. Kun Koski on käynnissä, löytyy Valpas:
-  - Virkailijan näkymä: http://localhost:7021/koski/valpas/v2/virkailija
-  - Oppijan näkymä: http://localhost:7021/koski/valpas/v2
+  - Virkailijan näkymä: http://localhost:7021/valpas/virkailija
+  - Oppijan näkymä: http://localhost:7021/valpas
 - `npm test` ajaa kaikki testit
   - `npm run test:unit` ajaa vain
   - `npm run test:integration` ajaa vain integraatiotestit (polun `test/integrationtests` alla olevat testit, jotka vaativan backendin)

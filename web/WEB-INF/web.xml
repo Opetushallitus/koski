@@ -35,7 +35,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <url-pattern>/koski/json-schema-viewer/images/*</url-pattern>
     <url-pattern>/koski/json-schema-viewer/jquery/*</url-pattern>
     <url-pattern>/koski/wsdl/*</url-pattern>
-    <url-pattern>/koski/valpas/v2/assets/*</url-pattern>
+    <url-pattern>/valpas/assets/*</url-pattern>
   </servlet-mapping>
 
   <filter>

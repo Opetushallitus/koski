@@ -28,7 +28,7 @@ export default ({ user, kansalainen }: LocalRaamitProps) => {
     <div id="localraamit" className={b({ kansalainen })}>
       <div id="logo">Opintopolku.fi</div>
       <h1>
-        <a href="/koski/valpas/v2/">
+        <a href="/valpas/">
           <T id="title__Valpas" />
         </a>
       </h1>

@@ -13,7 +13,7 @@ class ValpasStaticServlet(implicit val application: KoskiApplication) extends Sc
 
   get("/*")(nonce => {
     contentType = "text/html"
-    Source.fromInputStream(getServletContext.getResource("/koski/valpas/v2/index.html.template").openStream())(Codec.UTF8).mkString.replaceAll("<%==VALPAS_CSP_NONCE==%>", nonce)
+    Source.fromInputStream(getServletContext.getResource("/valpas/index.html.template").openStream())(Codec.UTF8).mkString.replaceAll("<%==VALPAS_CSP_NONCE==%>", nonce)
   })
 
 }
