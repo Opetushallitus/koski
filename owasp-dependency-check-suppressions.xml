@@ -51,4 +51,9 @@
     <packageUrl regex="true">^pkg:maven/org\.apache\.logging\.log4j/log4j\-slf4j\-impl@.*$</packageUrl>
     <cve>CVE-2021-44832</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[file name: gson-2.5.jar. Maven dependency, not in production.]]></notes>
+    <packageUrl regex="true">^pkg:maven/com\.google\.code\.gson/gson@.*$</packageUrl>
+    <cpe>cpe:/a:google:gson</cpe>
+  </suppress>
 </suppressions>
