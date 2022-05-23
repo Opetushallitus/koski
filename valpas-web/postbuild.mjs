@@ -25,13 +25,19 @@ const targetIndexHtml = path.resolve(targetDir, "..", "index.html.template")
 
 async function copy(source, dist) {
   const elements = await fs.readdir(source)
-  elements.forEach(async (element) => {
+  for (const element of elements) {
     if ((await fs.lstat(path.join(source, element))).isFile()) {
-      await fs.copyFile(path.join(source, element), path.join(dist, element))
+      const fullSourcePath = path.join(source, element)
+      const fullTargetPath = path.join(dist, element)
+      if (fullSourcePath !== sourceIndexHtml) {
+        await fs.copyFile(fullSourcePath, fullTargetPath)
+      } else {
+        console.log(`Skipped copying template source ${element} to ${dist} to avoid hosting non-templated HTML`)
+      }
     } else {
       await copy(path.join(source, element), path.join(dist, element))
     }
-  })
+  }
 }
 
 async function copyDist() {
