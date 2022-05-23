@@ -1,7 +1,7 @@
 {
   "id" : 7534950,
   "globalVersion" : {
-    "aikaleima" : 1628051119080
+    "aikaleima" : 1650969352242
   },
   "nimi" : {
     "_id" : "7788280",
@@ -11,7 +11,16 @@
   },
   "koulutustyyppi" : "koulutustyyppi_40",
   "toteutus" : "tutkintoonvalmentava",
-  "koulutukset" : [ ],
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Tutkintokoulutukseen valmentava koulutus",
+      "sv" : "Utbildning som handleder för examensutbildning"
+    },
+    "koulutuskoodiArvo" : "999908",
+    "koulutuskoodiUri" : "koulutus_999908",
+    "koulutusalakoodi" : null,
+    "opintoalakoodi" : null
+  } ],
   "kielet" : [ "sv", "fi" ],
   "kuvaus" : {
     "_id" : "7534933",
@@ -26,7 +35,7 @@
   "voimassaoloLoppuu" : null,
   "paatospvm" : 1620248400000,
   "luotu" : 1610688380032,
-  "muokattu" : 1628051119081,
+  "muokattu" : 1650969352242,
   "tila" : "valmis",
   "tyyppi" : "normaali",
   "koulutusvienti" : false,
@@ -35,7 +44,7 @@
   "tyotehtavatJoissaVoiToimia" : null,
   "suorittaneenOsaaminen" : null,
   "perusteenAikataulut" : [ {
-    "id" : 7534990,
+    "id" : 7534991,
     "peruste" : {
       "id" : 7534950,
       "nimi" : {
@@ -52,12 +61,12 @@
       "voimassaoloLoppuu" : null
     },
     "tavoite" : {
-      "_id" : "7534934",
-      "_tunniste" : "bc81169b-f996-4b50-bde8-2e6985502978",
-      "fi" : "Peruste luotu"
+      "_id" : "7534935",
+      "_tunniste" : "e2ae199a-9e87-46db-9e8a-ffe55c9f365e",
+      "fi" : "Peruste astuu voimaan"
     },
-    "tapahtuma" : "luominen",
-    "tapahtumapaiva" : 1610688369525,
+    "tapahtuma" : "tavoite",
+    "tapahtumapaiva" : 1659301200000,
     "julkinen" : false
   }, {
     "id" : 7792510,
@@ -85,7 +94,7 @@
     "tapahtumapaiva" : 1627765200000,
     "julkinen" : false
   }, {
-    "id" : 7534991,
+    "id" : 7534990,
     "peruste" : {
       "id" : 7534950,
       "nimi" : {
@@ -102,12 +111,12 @@
       "voimassaoloLoppuu" : null
     },
     "tavoite" : {
-      "_id" : "7534935",
-      "_tunniste" : "e2ae199a-9e87-46db-9e8a-ffe55c9f365e",
-      "fi" : "Peruste astuu voimaan"
+      "_id" : "7534934",
+      "_tunniste" : "bc81169b-f996-4b50-bde8-2e6985502978",
+      "fi" : "Peruste luotu"
     },
-    "tapahtuma" : "tavoite",
-    "tapahtumapaiva" : 1659301200000,
+    "tapahtuma" : "luominen",
+    "tapahtumapaiva" : 1610688369525,
     "julkinen" : false
   } ],
   "tutkintoonvalmentava" : {
@@ -119,8 +128,8 @@
         "perusteenOsa" : {
           "id" : 7535030,
           "luotu" : 1610688449693,
-          "muokattu" : 1622806051017,
-          "muokkaaja" : "1.2.246.562.24.72805652720",
+          "muokattu" : 1639902055267,
+          "muokkaaja" : "1.2.246.562.24.52232041128",
           "nimi" : {
             "_id" : "7785813",
             "_tunniste" : "c1c3af66-0133-41af-b727-9ade01b84922",
@@ -129,10 +138,10 @@
           },
           "tila" : "luonnos",
           "teksti" : {
-            "_id" : "7786083",
+            "_id" : "8229554",
             "_tunniste" : "82a5fae5-9bfe-44f0-bb87-2e7da1603f6c",
             "fi" : "<p>Tutkintokoulutukseen valmentava koulutus on tarkoitettu&nbsp;oppivelvollisuusikäisille sekä muille&nbsp;vailla&nbsp;toisen asteen tutkintoa oleville oppijoille, jotka tarvitsevat valmentavaa koulutusta.&nbsp;Perusopetuksen lisäopetuksen,&nbsp;lukiokoulutukseen valmistavan koulutuksen ja ammatilliseen koulutukseen valmentavan koulutuksen yhdistävän nivelvaiheen&nbsp;koulutuksen&nbsp;tavoitteena on antaa opiskelijalle&nbsp;valmiudet opiskella tutkintotavoitteisessa&nbsp;koulutuksessa.&nbsp;&nbsp;</p><p>Opetushallitus&nbsp;määrää koulutuksen osista (<a href=\"https://eperusteet.opintopolku.fi/beta/#/fi/tutkintoonvalmentava/7534950/tekstikappale/7534975\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">luku 1.4</a>) ja niiden tavoitteista, keskeisistä sisällöistä ja arvioinnista&nbsp;(<a href=\"https://eperusteet.opintopolku.fi/beta/#/fi/tutkintoonvalmentava/7534950/tekstikappale/7535290\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">luku 5</a>),&nbsp;henkilökohtaiseen opiskelusuunnitelmaan merkittävistä tiedoista&nbsp;(<a href=\"https://eperusteet.opintopolku.fi/beta/#/fi/tutkintoonvalmentava/7534950/tekstikappale/7534979\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">luku 2.2)</a> sekä todistukseen&nbsp;merkittävistä tiedoista (<a href=\"https://eperusteet.opintopolku.fi/beta/#/fi/tutkintoonvalmentava/7534950/tekstikappale/7535156\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">luku 3.3</a>)&nbsp; (<abbr data-viite=\"161620794851571\">1215/2020, 12 § ja 16 §</abbr>) .&nbsp;Näiden lisäksi koulutuksen&nbsp;perusteissa&nbsp;kuvataan&nbsp;koulutuksen arvopohja&nbsp;sekä&nbsp;opinto-ohjauksen,&nbsp;oppimisen&nbsp;tuen&nbsp;ja&nbsp;arvioinnin&nbsp;toteuttaminen.&nbsp;&nbsp;Koulutuksen järjestäjä&nbsp;laatii perusteiden pohjalta&nbsp;suunnitelman koulutuksen toteuttamisesta. Suunnitelman sisältöä ohjeistetaan&nbsp;<a href=\"https://eperusteet.opintopolku.fi/beta/#/fi/tutkintoonvalmentava/7534950/tekstikappale/7535152\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">luvussa 2.5.&nbsp;</a></p>",
-            "sv" : "<p>Utbildning som handleder för examensutbildning är avsedd för läropliktiga och för andra som saknar en examen på andra stadiet och som har behov av handledande utbildning. Den handledande utbildningen i övergångsskedet för samman påbyggnadsundervisningen i grundläggande utbildningen, utbildningen som förbereder för gymnasieutbildning samt utbildningen som handleder för yrkesutbildning. Målet för den handledande utbildningen är att ge den studerande färdigheter att studera inom utbildning som leder till en examen.</p><p>Utbildningsstyrelsen fastställer utbildningsdelarna (kapitel 1.4) och deras mål, centrala innehåll och bedömning (kapitel 5) samt uppgifter som ska antecknas i den personliga studieplanen (kapitel 2.2) och betygsanteckningar (kapitel 3.3, 16 §). I utbildningsgrunderna beskrivs utöver dessa även utbildningens värdegrund samt hur studiehandledningen, stödet för lärandet och bedömningen ska genomföras. Utbildningsanordnaren ska utifrån dessa grunder utarbeta en plan för genomförandet av utbildningen. Närmare anvisningar för planens innehåll anges i kapitel 2.5.</p>"
+            "sv" : "<p>Utbildning som handleder för examensutbildning är avsedd för läropliktiga och för andra som saknar en examen på andra stadiet och som har behov av handledande utbildning. Den handledande utbildningen i övergångsskedet för samman påbyggnadsundervisningen i grundläggande utbildningen, utbildningen som förbereder för gymnasieutbildning samt utbildningen som handleder för yrkesutbildning. Målet för den handledande utbildningen är att ge den studerande färdigheter att studera inom utbildning som leder till en examen.</p><p>Utbildningsstyrelsen fastställer utbildningsdelarna <a href=\"https://eperusteet.opintopolku.fi/beta/#/sv/tutkintoonvalmentava/7534950/tekstikappale/7534975\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">(kapitel 1.4)</a> och deras mål, centrala innehåll och bedömning <a href=\"https://eperusteet.opintopolku.fi/beta/#/sv/tutkintoonvalmentava/7534950/tekstikappale/7535290\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">(kapitel 5)</a> samt uppgifter som ska antecknas i den personliga studieplanen <a href=\"https://eperusteet.opintopolku.fi/beta/#/sv/tutkintoonvalmentava/7534950/tekstikappale/7534979\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">(kapitel 2.2)</a> och betygsanteckningar (<a href=\"https://eperusteet.opintopolku.fi/beta/#/fi/tutkintoonvalmentava/7534950/tekstikappale/7535156\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">kapitel 3.3</a>, 16 §). I utbildningsgrunderna beskrivs utöver dessa även utbildningens värdegrund samt hur studiehandledningen, stödet för lärandet och bedömningen ska genomföras. Utbildningsanordnaren ska utifrån dessa grunder utarbeta en plan för genomförandet av utbildningen. Närmare anvisningar för planens innehåll anges <a href=\"https://eperusteet.opintopolku.fi/beta/#/sv/tutkintoonvalmentava/7534950/tekstikappale/7535152\" target=\"_blank\" rel=\"noopener noreferrer nofollow\">i kapitel 2.5.</a></p>"
           },
           "koodit" : [ ],
           "liite" : false,
@@ -907,11 +916,11 @@
           "perusteenOsa" : {
             "id" : 7535560,
             "luotu" : 1610690435100,
-            "muokattu" : 1623059688096,
-            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "muokattu" : 1650969125595,
+            "muokkaaja" : "1.2.246.562.24.71880188605",
             "nimi" : {
-              "_id" : "7788540",
-              "_tunniste" : "4388772c-1214-4a71-a64e-b81b2be4a02d",
+              "_id" : "8332019",
+              "_tunniste" : "6e60834b-3529-4933-a209-f849b61be432",
               "fi" : "Opiskelu- ja urasuunnittelutaidot",
               "sv" : "Studiefärdigheter och karriärplaneringsfärdigheter"
             },
@@ -931,7 +940,7 @@
             "laajuusMinimi" : 2,
             "laajuusMaksimi" : 10,
             "koulutusOsanKoulutustyyppi" : "tutkintokoulutukseenvalmentava",
-            "koulutusOsanTyyppi" : null,
+            "koulutusOsanTyyppi" : "yhteinen",
             "kuvaus" : {
               "_id" : "7786630",
               "_tunniste" : "8539cac3-f6c8-4622-8a6c-d56771983557",
@@ -1022,20 +1031,33 @@
           "perusteenOsa" : {
             "id" : 7535561,
             "luotu" : 1610693268745,
-            "muokattu" : 1623009722731,
-            "muokkaaja" : "1.2.246.562.24.72805652720",
+            "muokattu" : 1650969157751,
+            "muokkaaja" : "1.2.246.562.24.71880188605",
             "nimi" : {
-              "_id" : "7787619",
-              "_tunniste" : "1a573ca9-5df9-4564-a852-53e1e3950f24",
+              "_id" : "8332150",
+              "_tunniste" : "6d588cfc-67b6-4f13-918f-32054e9d0f44",
+              "en" : "Perustaitojen vahvistaminen",
               "fi" : "Perustaitojen vahvistaminen",
-              "sv" : "Stärkande av grundläggande färdigheter"
+              "sv" : "Perustaitojen vahvistaminen"
             },
             "tila" : "luonnos",
-            "nimiKoodi" : null,
+            "nimiKoodi" : {
+              "id" : 8332160,
+              "nimi" : {
+                "en" : "Perustaitojen vahvistaminen",
+                "fi" : "Perustaitojen vahvistaminen",
+                "sv" : "Perustaitojen vahvistaminen"
+              },
+              "arvo" : "107",
+              "uri" : "koulutuksenosattuva_107",
+              "koodisto" : "koulutuksenosattuva",
+              "versio" : 1,
+              "temporary" : false
+            },
             "laajuusMinimi" : 1,
             "laajuusMaksimi" : 30,
             "koulutusOsanKoulutustyyppi" : "perusopetus",
-            "koulutusOsanTyyppi" : null,
+            "koulutusOsanTyyppi" : "valinnainen",
             "kuvaus" : {
               "_id" : "7787533",
               "_tunniste" : "82d9324f-0e2c-4a00-a422-6c39b1a73d1d",
@@ -1091,20 +1113,33 @@
           "perusteenOsa" : {
             "id" : 7535562,
             "luotu" : 1610693475421,
-            "muokattu" : 1623009634622,
-            "muokkaaja" : "1.2.246.562.24.72805652720",
+            "muokattu" : 1650969196619,
+            "muokkaaja" : "1.2.246.562.24.71880188605",
             "nimi" : {
-              "_id" : "7787680",
-              "_tunniste" : "a6498a45-f09f-4887-8cd2-fbfd6ad7cb27",
+              "_id" : "8332151",
+              "_tunniste" : "8284e09e-4042-481a-8c82-373a1d02421d",
+              "en" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
               "fi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
-              "sv" : "Studier inom gymnasieutbildning och studier som förbereder för dem"
+              "sv" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen"
             },
             "tila" : "luonnos",
-            "nimiKoodi" : null,
+            "nimiKoodi" : {
+              "id" : 8332161,
+              "nimi" : {
+                "en" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+                "fi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+                "sv" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen"
+              },
+              "arvo" : "106",
+              "uri" : "koulutuksenosattuva_106",
+              "koodisto" : "koulutuksenosattuva",
+              "versio" : 1,
+              "temporary" : false
+            },
             "laajuusMinimi" : 1,
             "laajuusMaksimi" : 30,
             "koulutusOsanKoulutustyyppi" : "lukiokoulutus",
-            "koulutusOsanTyyppi" : null,
+            "koulutusOsanTyyppi" : "valinnainen",
             "kuvaus" : {
               "_id" : "7787562",
               "_tunniste" : "02706a3f-b243-45a2-8271-3991fb6e81e7",
@@ -1165,20 +1200,33 @@
           "perusteenOsa" : {
             "id" : 7535563,
             "luotu" : 1610693860652,
-            "muokattu" : 1623057796505,
-            "muokkaaja" : "1.2.246.562.24.72805652720",
+            "muokattu" : 1650969227984,
+            "muokkaaja" : "1.2.246.562.24.71880188605",
             "nimi" : {
-              "_id" : "7787618",
-              "_tunniste" : "d764ff97-73bc-4256-866f-832f61aeb3e0",
+              "_id" : "8332152",
+              "_tunniste" : "65a99cd7-3580-49b1-ac11-8adaea3cf022",
+              "en" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
               "fi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
-              "sv" : "Studier inom yrkesutbildning och studier som förbereder för dem"
+              "sv" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"
             },
             "tila" : "luonnos",
-            "nimiKoodi" : null,
+            "nimiKoodi" : {
+              "id" : 8332162,
+              "nimi" : {
+                "en" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+                "fi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+                "sv" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"
+              },
+              "arvo" : "105",
+              "uri" : "koulutuksenosattuva_105",
+              "koodisto" : "koulutuksenosattuva",
+              "versio" : 1,
+              "temporary" : false
+            },
             "laajuusMinimi" : 1,
             "laajuusMaksimi" : 30,
             "koulutusOsanKoulutustyyppi" : "ammatillinenkoulutus",
-            "koulutusOsanTyyppi" : null,
+            "koulutusOsanTyyppi" : "valinnainen",
             "kuvaus" : {
               "_id" : "7788449",
               "_tunniste" : "df883783-56af-40f6-bb43-e10c8f9efa60",
@@ -1239,17 +1287,17 @@
           "perusteenOsa" : {
             "id" : 7535564,
             "luotu" : 1610694142001,
-            "muokattu" : 1623059728839,
-            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "muokattu" : 1650969263245,
+            "muokkaaja" : "1.2.246.562.24.71880188605",
             "nimi" : {
-              "_id" : "7788541",
-              "_tunniste" : "193b3f5f-72f6-434d-a7a4-235878db59bd",
+              "_id" : "8332153",
+              "_tunniste" : "ff6a664c-f450-48b1-afbc-89be89a9ceb8",
               "fi" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
               "sv" : "Arbetslivsfärdigheter och lärande i arbetslivet"
             },
             "tila" : "luonnos",
             "nimiKoodi" : {
-              "id" : 7788177,
+              "id" : 8332163,
               "nimi" : {
                 "fi" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
                 "sv" : "Arbetslivsfärdigheter och lärande i arbetslivet"
@@ -1263,7 +1311,7 @@
             "laajuusMinimi" : 1,
             "laajuusMaksimi" : 20,
             "koulutusOsanKoulutustyyppi" : "tutkintokoulutukseenvalmentava",
-            "koulutusOsanTyyppi" : null,
+            "koulutusOsanTyyppi" : "valinnainen",
             "kuvaus" : {
               "_id" : "7787682",
               "_tunniste" : "a570bd1a-56d5-43ad-89b1-8562c8c0fd89",
@@ -1344,17 +1392,17 @@
           "perusteenOsa" : {
             "id" : 7535565,
             "luotu" : 1610694380075,
-            "muokattu" : 1623059749727,
-            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "muokattu" : 1650969306187,
+            "muokkaaja" : "1.2.246.562.24.71880188605",
             "nimi" : {
-              "_id" : "7788542",
-              "_tunniste" : "aff50c6d-2980-4604-89cc-375716853731",
+              "_id" : "8332154",
+              "_tunniste" : "0aa74012-f5fb-4487-8542-5f56b599e38a",
               "fi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
               "sv" : "Vardagskompetens och delaktighet i samhället"
             },
             "tila" : "luonnos",
             "nimiKoodi" : {
-              "id" : 7788178,
+              "id" : 8332164,
               "nimi" : {
                 "fi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
                 "sv" : "Vardagskompetens och delaktighet i samhället"
@@ -1368,7 +1416,7 @@
             "laajuusMinimi" : 1,
             "laajuusMaksimi" : 20,
             "koulutusOsanKoulutustyyppi" : "tutkintokoulutukseenvalmentava",
-            "koulutusOsanTyyppi" : null,
+            "koulutusOsanTyyppi" : "valinnainen",
             "kuvaus" : {
               "_id" : "7787770",
               "_tunniste" : "c7168b85-431b-4fcc-939a-2564f9e02707",
@@ -1454,17 +1502,17 @@
           "perusteenOsa" : {
             "id" : 7535567,
             "luotu" : 1610694845009,
-            "muokattu" : 1623059766193,
-            "muokkaaja" : "1.2.246.562.24.77925329174",
+            "muokattu" : 1650969352221,
+            "muokkaaja" : "1.2.246.562.24.71880188605",
             "nimi" : {
-              "_id" : "7788543",
-              "_tunniste" : "522c895e-46bd-41be-89e8-af58595d5883",
+              "_id" : "8332155",
+              "_tunniste" : "48e1504c-7254-479f-95f0-eed7f4eca3fe",
               "fi" : "Valinnaiset koulutuksen osat",
               "sv" : "Valbara utbildningsdelar"
             },
             "tila" : "luonnos",
             "nimiKoodi" : {
-              "id" : 7788179,
+              "id" : 8332165,
               "nimi" : {
                 "fi" : "Valinnaiset koulutuksen osat",
                 "sv" : "Valbara utbildningsdelar"
@@ -1478,7 +1526,7 @@
             "laajuusMinimi" : 1,
             "laajuusMaksimi" : 10,
             "koulutusOsanKoulutustyyppi" : "tutkintokoulutukseenvalmentava",
-            "koulutusOsanTyyppi" : null,
+            "koulutusOsanTyyppi" : "valinnainen",
             "kuvaus" : {
               "_id" : "7787872",
               "_tunniste" : "f2d96386-212f-4a39-b941-0a1e97baf019",
