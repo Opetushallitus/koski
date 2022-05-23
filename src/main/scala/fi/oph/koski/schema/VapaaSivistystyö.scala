@@ -59,7 +59,9 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+) extends VapaanSivistystyönPäätasonSuoritus
+    with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusOpintopisteissä]
+    with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 @Description("Vapaan sivistystyön oppivelvollisuuskoulutuksen tunnistetiedot")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
@@ -69,7 +71,12 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
   koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto with Laajuudeton
 
-trait OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus extends Suoritus with Vahvistukseton with Arvioinniton with Välisuoritus with OpintopistelaajuuksienYhteislaskennallinenSuoritus
+trait OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus
+  extends Suoritus
+    with Vahvistukseton
+    with Arvioinniton
+    with Välisuoritus
+    with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 
 @Title("Osaamiskokonaisuuden suoritus")
 case class OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
@@ -89,9 +96,13 @@ case class OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumis
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "vstvalinnainensuuntautuminen", koodistoUri = "suorituksentyyppi")
 ) extends OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus
 
-trait OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli {
+trait OppivelvollisilleSuunnatunVapaanSivistystyönOsasuorituksenKoulutusmoduuli
+  extends KoulutusmoduuliValinnainenLaajuus
+    with KoodistostaLöytyväKoulutusmoduuli
+    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusOpintopisteissä] {
   @Description("Laajuus lasketaan yhteen opintokokonaisuuksien laajuuksista automaattisesti tietoja siirrettäessä")
   def laajuus: Option[LaajuusOpintopisteissä]
+  override def makeLaajuus(laajuusArvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(laajuusArvo)
 }
 
 @Title("Valinnaiset suuntautumisopinnot")
@@ -189,7 +200,9 @@ case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuorit
   override val osasuoritukset: Option[List[VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with OpintopistelaajuuksienYhteislaskennallinenSuoritus
+) extends VapaanSivistystyönPäätasonSuoritus
+  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 
 @Description("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen tunnistetiedot")
 case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(
@@ -198,7 +211,11 @@ case class VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus(
  perusteenDiaarinumero: Option[String] = None,
  koulutustyyppi: Option[Koodistokoodiviite] = None,
  laajuus: Option[LaajuusOpintopisteissä] = None
-) extends DiaarinumerollinenKoulutus with Tutkinto with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli
+) extends DiaarinumerollinenKoulutus
+  with Tutkinto
+  with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusOpintopisteissä] {
+  override def makeLaajuus(laajuusArvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(laajuusArvo)
+}
 
 trait VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus extends Suoritus with Vahvistukseton
 

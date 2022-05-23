@@ -173,27 +173,40 @@ class KoskiValidator(
     )
 
   private def fillOsasuoritustenLaajuudet(suoritus: PäätasonSuoritus): PäätasonSuoritus = suoritus match {
-    case _: OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus =>
+    case _: OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[_] =>
       suoritus.withOsasuoritukset(suoritus.osasuoritukset.map(_.map { os =>
-        lazy val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(1.0)).map(BigDecimal.decimal).sum.toDouble
+        lazy val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0.0)).map(BigDecimal.decimal).sum.toDouble
         os.withKoulutusmoduuli(os.koulutusmoduuli match {
-          case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli if yhteislaajuus > 0 => k.withLaajuus(yhteislaajuus)
-          case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli => k.withLaajuusNone()
+          case k: OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli[_] => k
+          case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[_] if yhteislaajuus > 0 => k.withLaajuus(yhteislaajuus)
+          case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[_] => k.withLaajuusNone()
           case k => k
         })
       }))
     case _ => suoritus
   }
 
-  private def fillPäätasonSuorituksenLaajuus(suoritus: PäätasonSuoritus): PäätasonSuoritus = suoritus match {
-    case koto: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus => laajuusYlimpienOsasuoritustenLaajuuksista(koto)
-    case lukutaito: VapaanSivistystyönLukutaitokoulutuksenSuoritus => laajuusYlimpienOsasuoritustenLaajuuksista(lukutaito)
-    case _ => suoritus
+  private def fillPäätasonSuorituksenLaajuus(suoritus: PäätasonSuoritus): PäätasonSuoritus = {
+    def yhteislaajuus: Double =
+      suoritus.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0.0)).map(BigDecimal.decimal).sum.toDouble
+
+    suoritus match {
+      case koto: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus =>
+        laajuusYlimpienOsasuoritustenLaajuuksista(koto, yhteislaajuus, l => LaajuusOpintopisteissä(l))
+      case lukutaito: VapaanSivistystyönLukutaitokoulutuksenSuoritus =>
+        laajuusYlimpienOsasuoritustenLaajuuksista(lukutaito, yhteislaajuus, l => LaajuusOpintopisteissä(l))
+      case tuva: TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus =>
+        laajuusYlimpienOsasuoritustenLaajuuksista(tuva, yhteislaajuus, l => LaajuusViikoissa(l))
+      case _ => suoritus
+    }
   }
 
-  private def laajuusYlimpienOsasuoritustenLaajuuksista[A <: OpintopistelaajuuksienYhteislaskennallinenSuoritus with PäätasonSuoritus](s: A): PäätasonSuoritus = {
-    val yhteislaajuus = s.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0)).map(BigDecimal.decimal).sum.toDouble
-    val laajuus = if (yhteislaajuus > 0) Some(LaajuusOpintopisteissä(yhteislaajuus)) else None
+  private def laajuusYlimpienOsasuoritustenLaajuuksista[A <: Laajuus](
+    s: OpintopistelaajuuksienYhteislaskennallinenSuoritus[A] with PäätasonSuoritus,
+    yhteislaajuus: Double,
+    toLaajuus: Double => A
+  ): PäätasonSuoritus = {
+    val laajuus = if (yhteislaajuus > 0) Some(toLaajuus(yhteislaajuus)) else None
     s.withKoulutusmoduuli(s.koulutusmoduuli.withLaajuus(laajuus))
   }
 

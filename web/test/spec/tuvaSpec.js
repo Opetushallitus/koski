@@ -86,24 +86,6 @@ describe('TUVA', function () {
           expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat')
         })
 
-        describe('Osasuorituksen laajuus ja arvosana', function () {
-          before(
-            editor.edit,
-            opinnot.avaaKaikki,
-            function () {
-              return tuva.selectOsasuoritus('Valinnaiset koulutuksen osat')().property('laajuus').setValue(2)()
-            },
-            function () {
-              return tuva.selectOsasuoritus('Valinnaiset koulutuksen osat')().lisääArvosana('Hyväksytty')()
-            },
-            editor.saveChanges,
-            opinnot.avaaKaikki
-          )
-          it('voidaan lisätä', function () {
-            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 viikkoa Hyväksytty')
-          })
-        })
-
         describe('Valinnainen paikallinen osasuoritus', function () {
           before(
             editor.edit,
@@ -119,7 +101,22 @@ describe('TUVA', function () {
             opinnot.avaaKaikki
           )
           it('voidaan lisätä', function () {
-            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 viikkoa Hyväksytty')
+            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 viikkoa')
+          })
+        })
+
+        describe('Osasuorituksen laajuus ja arvosana', function () {
+          before(
+            editor.edit,
+            opinnot.avaaKaikki,
+            function () {
+              return tuva.selectOsasuoritus('Valinnaiset koulutuksen osat')().lisääArvosana('Hyväksytty', '.tuva-osasuoritusrivi-1 .dropdown-wrapper')()
+            },
+            editor.saveChanges,
+            opinnot.avaaKaikki
+          )
+          it('voidaan lisätä', function () {
+            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 viikkoa Hyväksytty') //  2 viikkoa
           })
         })
       })

@@ -2,6 +2,10 @@
 - Korjattu sallitut koodiarvot international school opiskeluoikeudelle koodistosta `arviointiasteikkoib`.
   - International school IB oppiaineen arviointi ja numeerinen international school oppiaineen arviointi.
   - Lisätty json-skeemaan hyväksytyt arvosanan koodiarvot `S` ja `F`. Poistettu json-skeemasta epävalidit koodiarvot `pass`/`fail` kyseisiltä arvioinneilta.
+- TUVA-opiskeluoikeudelle lisätty uusi sallittu rahoitusmuoto työvoimakoulutus.
+- TUVA-opiskeluoikeuden osasuorituksista lasketaan päätason suorituksen laajuus.
+  - Osasuoritusten osasuorituksien laajuudet lasketaan vastaavasti osasuorituksen laajuudeksi.
+  - Koski voi ylikirjoittaa tiedonsiirrossa annetut laajuudet.
 
 ## 22.4.2022
 - TUVA-tietomallin perusopetuksen järjestämisluvan lisätiedoista poistettu tarpeettomana kenttä erityisen tuen päätöksistä.

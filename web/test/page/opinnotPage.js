@@ -682,10 +682,11 @@ function TUVASuoritukset(prev) {
         click(`${className} a`)()
       }
     },
-    lisääArvosana: function(hakusana) {
+    lisääArvosana: function(hakusana, selector) {
+      var _selector = selector ? selector : '.arvosana .dropdown-wrapper';
       return function () {
-        return Page(findSingle('.arvosana .dropdown-wrapper', selectedOsasuoritus))
-          .setInputValue(".dropdown, .autocomplete", hakusana)()
+        return Page(findFirst(_selector, selectedOsasuoritus))
+          .setInputValue('.dropdown, .autocomplete', hakusana)()
           .then(wait.forAjax)
       }
     },

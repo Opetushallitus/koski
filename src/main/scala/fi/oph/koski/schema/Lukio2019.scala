@@ -5,7 +5,13 @@ import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
-trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019 with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus {
+trait LukionPäätasonSuoritus2019
+  extends LukionPäätasonSuoritus
+    with Todistus
+    with Arvioinniton
+    with PuhviKokeellinen2019
+    with SuullisenKielitaidonKokeellinen2019
+    with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusOpintopisteissä] {
   def koulutusmoduuli: Koulutusmoduuli with Diaarinumerollinen
   @KoodistoUri("lukionoppimaara")
   @Title("Opetussuunnitelma")
@@ -99,7 +105,9 @@ case class LukionOppiaineidenOppimäärätKoodi2019(
   override def toString = s"$koodiarvo"
 }
 
-trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOsasuoritus with OpintopistelaajuuksienYhteislaskennallinenSuoritus {
+trait LukionOppimääränOsasuoritus2019
+  extends LukionOppimääränPäätasonOsasuoritus
+    with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä] {
   @Title("Moduulit ja paikalliset opintojaksot")
   override def osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]] = None
 
@@ -185,9 +193,13 @@ case class LukionModuulinSuoritusMuissaOpinnoissa2019(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli", koodistoUri = "suorituksentyyppi")
 ) extends LukionModuulinSuoritus2019 with LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019
 
-trait MuutSuorituksetTaiVastaavat2019 extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli with PreIBMuutSuorituksetTaiVastaavat2019 {
+trait MuutSuorituksetTaiVastaavat2019
+  extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus
+    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusOpintopisteissä]
+    with PreIBMuutSuorituksetTaiVastaavat2019 {
   @KoodistoUri("lukionmuutopinnot")
   def tunniste: Koodistokoodiviite
+  override def makeLaajuus(laajuusArvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(laajuusArvo)
 }
 
 @Title("Muut suoritukset 2019")
@@ -316,9 +328,14 @@ case class LukionPaikallinenOpintojakso2019(
 ) extends LukionModuuliTaiPaikallinenOpintojakso2019 with PaikallinenKoulutusmoduuli with StorablePreference  with PreIBPaikallinenOpintojakso2019
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot 2019")
-trait LukionOppiaine2019 extends LukionOppiaine with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli with KoulutusmoduuliValinnainenLaajuus with PreIBLukionOppiaine2019 {
+trait LukionOppiaine2019
+  extends LukionOppiaine
+    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusOpintopisteissä]
+    with KoulutusmoduuliValinnainenLaajuus
+    with PreIBLukionOppiaine2019 {
   def laajuus: Option[LaajuusOpintopisteissä]
   override def perusteenDiaarinumero: Option[String] = None
+  override def makeLaajuus(laajuusArvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(laajuusArvo)
 }
 
 @Title("Paikallinen oppiaine 2019")

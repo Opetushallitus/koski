@@ -50,10 +50,14 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   @KoodistoUri("opintojenrahoitus")
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("10")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
 
-trait TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus
+trait TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus
+  extends KoskeenTallennettavaPäätasonSuoritus
+    with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusViikoissa]
+    with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusViikoissa]
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen suoritustiedot")
 @Description("Tutkintokoulutukseen valmentavan koulutuksen suoritustiedot.")
@@ -82,9 +86,15 @@ case class TutkintokoulutukseenValmentavanKoulutus(
   perusteenDiaarinumero: Option[String] = Some("OPH-1488-2021"),
   koulutustyyppi: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("40", "koulutustyyppi")),
   laajuus: Option[LaajuusViikoissa] = None
-) extends DiaarinumerollinenKoulutus with Tutkinto with KoulutusmoduuliValinnainenLaajuus
+) extends DiaarinumerollinenKoulutus
+    with Tutkinto
+    with KoulutusmoduuliValinnainenLaajuus
+    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusViikoissa] {
+  override def makeLaajuus(laajuusArvo: Double): LaajuusViikoissa = LaajuusViikoissa(laajuusArvo)
+}
 
-trait TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus extends Suoritus with MahdollisestiTunnustettu
+trait TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus
+  extends OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusViikoissa] with MahdollisestiTunnustettu
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen osasuoritus")
 @Description("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen tiedot")
@@ -109,8 +119,11 @@ case class TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
 ) extends Suoritus with Vahvistukseton with TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen
 
 trait TutkintokoulutukseenValmentavanKoulutuksenMuuOsa
-  extends KoulutusmoduuliValinnainenLaajuus with KoodistostaLöytyväKoulutusmoduuli {
+  extends KoulutusmoduuliValinnainenLaajuus
+    with KoodistostaLöytyväKoulutusmoduuli
+    with OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli[LaajuusViikoissa] {
   def laajuus: Option[LaajuusViikoissa]
+  override def makeLaajuus(laajuusArvo: Double): LaajuusViikoissa = LaajuusViikoissa(laajuusArvo)
 }
 
 @Title("Opiskelu- ja urasuunnittelutaidot")
@@ -225,8 +238,10 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
   ),
   @DefaultValue(None)
   laajuus: Option[LaajuusViikoissa] = None
-) extends KoulutusmoduuliValinnainenLaajuus {
+) extends KoulutusmoduuliValinnainenLaajuus
+    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusViikoissa] {
   def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
+  override def makeLaajuus(laajuusArvo: Double): LaajuusViikoissa = LaajuusViikoissa(laajuusArvo)
 }
 
 @Title("Valinnaisten tutkintokoulutukseen valmentavan koulutuksen opintojen osasuoritukset")
@@ -243,13 +258,19 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsas
   @KoodistoKoodiarvo("tutkintokoulutukseenvalmentava")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "tutkintokoulutukseenvalmentava", koodistoUri = "suorituksentyyppi"),
 
-) extends KurssinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu
+) extends KurssinSuoritus
+    with MahdollisestiSuorituskielellinen
+    with MahdollisestiTunnustettu
+    with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusViikoissa]
 
 case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus(
   nimi: LocalizedString,
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusViikoissa]
 ) extends KoulutusmoduuliValinnainenLaajuus
+    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusViikoissa] {
+  override def makeLaajuus(laajuusArvo: Double): LaajuusViikoissa = LaajuusViikoissa(laajuusArvo)
+}
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen sanallinen arviointi")
 @Description("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen hyväksytty/hylätty arviointi")
