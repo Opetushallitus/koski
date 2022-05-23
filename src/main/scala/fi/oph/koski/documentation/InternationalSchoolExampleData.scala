@@ -92,6 +92,7 @@ object InternationalSchoolExampleData {
   )
 
   def diplomaArviointi(arvosana: Int): Option[InternationalSchoolIBOppiaineenArviointi] = Some(InternationalSchoolIBOppiaineenArviointi(arvosana = Koodistokoodiviite(arvosana.toString, "arviointiasteikkoib")))
+  def diplomaArviointi(arvosana: String): Option[InternationalSchoolIBOppiaineenArviointi] = Some(InternationalSchoolIBOppiaineenArviointi(arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoib")))
   def arviointi(arvosana: Int): Option[NumeerinenInternationalSchoolOppiaineenArviointi] = Some(NumeerinenInternationalSchoolOppiaineenArviointi(Koodistokoodiviite(arvosana.toString, "arviointiasteikkoib")))
   def arviointi(arvosana: String) = Some(SanallinenInternationalSchoolOppiaineenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkointernationalschool")))
   def tokArvionti(arvosana: String) = Some(InternationalSchoolCoreRequirementsArviointi(arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkocorerequirementsib")))
