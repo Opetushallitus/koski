@@ -131,7 +131,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
   private def setupGzipForStaticResources(): Unit = {
     val gzip = new GzipHandler
     gzip.setIncludedMimeTypes("text/css", "text/html", "application/javascript")
-    gzip.setIncludedPaths("/koski/css/*", "/koski/external_css/*", "/koski/js/*", "/koski/json-schema-viewer/*")
+    gzip.setIncludedPaths("/koski/css/*", "/koski/external_css/*", "/koski/js/*", "/koski/json-schema-viewer/*", "/valpas/assets/*")
     gzip.setHandler(server.getHandler)
     server.setHandler(gzip)
   }
