@@ -22,6 +22,7 @@ import UusiEsiopetuksenSuoritus from './UusiEsiopetuksenSuoritus.jsx'
 import UusiAikuistenPerusopetuksenSuoritus from './UusiAikuistenPerusopetuksenSuoritus'
 import UusiLukionSuoritus from './UusiLukionSuoritus'
 import {sallitutRahoituskoodiarvot} from '../lukio/lukio'
+import {tuvaSallitutRahoituskoodiarvot} from '../tuva/tuva'
 import UusiIBSuoritus from './UusiIBSuoritus'
 import UusiDIASuoritus from './UusiDIASuoritus'
 import {VARHAISKASVATUKSEN_TOIMIPAIKKA} from './esiopetuksenSuoritus'
@@ -221,10 +222,16 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
 }
 
 const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) => {
-  const options = Bacon.combineWith(tyyppiAtom, opintojenRahoituksetP, (tyyppi, rahoitukset) =>
-    koodiarvoMatch('aikuistenperusopetus', 'lukiokoulutus', 'internationalschool', 'ibtutkinto', 'tuva')(tyyppi)
-      ? rahoitukset.filter(v => sallitutRahoituskoodiarvot.includes(v.koodiarvo))
-      : rahoitukset
+
+  const options = Bacon.combineWith(tyyppiAtom, opintojenRahoituksetP, (tyyppi, rahoitukset) => {
+      if (koodiarvoMatch('aikuistenperusopetus', 'lukiokoulutus', 'internationalschool', 'ibtutkinto')(tyyppi)) {
+        return rahoitukset.filter(v => sallitutRahoituskoodiarvot.includes(v.koodiarvo))
+      } else if (koodiarvoMatch('tuva')(tyyppi)) {
+        return rahoitukset.filter(v => tuvaSallitutRahoituskoodiarvot.includes(v.koodiarvo))
+      } else {
+        return rahoitukset
+      }
+    }
   )
 
   return (
