@@ -22,7 +22,7 @@ function create_version() {
     (cd $BASE_DIR/target/dist && mvn install -DskipTests=true)
   else
     (cd $BASE_DIR/target/dist && mvn versions:set -DnewVersion=$version)
-    (cd $BASE_DIR/target/dist && make clean && mvn deploy -DskipTests=true)
+    (cd $BASE_DIR/target/dist && make clean && mvn verify -DskipTests=true)
   fi
 }
 

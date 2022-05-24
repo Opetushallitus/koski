@@ -582,10 +582,6 @@
                 <exclude>**/test/**</exclude>
               </excludes>
             </resource>
-            <resource>
-              <directory>${basedir}/valpas-web/dist</directory>
-              <targetPath>VALPAS-WEB</targetPath>
-            </resource>
           </webResources>
         </configuration>
       </plugin>
@@ -755,43 +751,6 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>uberjar</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-war-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>default-war</id>
-                <phase>none</phase>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <archive>
-                <manifest>
-                  <mainClass>fi.oph.koski.jettylauncher.JettyLauncher</mainClass>
-                </manifest>
-              </archive>
-              <descriptors>
-                <descriptor>src/main/assembly/assembly.xml</descriptor>
-              </descriptors>
-            </configuration>
           </plugin>
         </plugins>
       </build>
