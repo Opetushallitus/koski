@@ -45,26 +45,27 @@ class KelaSpec
         response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo))
       }
     }
-    "Palauttaa TUVA opiskeluoikeuden tiedot" in {
-      postHetu(KoskiSpecificMockOppijat.tuva.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
-        verifyResponseStatusOk()
-        val oppija = JsonSerializer.parse[KelaOppija](body)
-        oppija.opiskeluoikeudet.length should be(1)
-
-        val tuvaOpiskeluoikeus = oppija.opiskeluoikeudet.last match {
-          case x: KelaTutkintokoulutukseenValmentavanOpiskeluoikeus => x
-        }
-        tuvaOpiskeluoikeus.oppilaitos.get.oid shouldBe "1.2.246.562.10.52251087186"
-        tuvaOpiskeluoikeus.koulutustoimija.get.oid shouldBe "1.2.246.562.10.346830761110"
-        tuvaOpiskeluoikeus.järjestämislupa.koodiarvo shouldBe "ammatillinen"
-        tuvaOpiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo shouldBe "valmistunut"
-        tuvaOpiskeluoikeus.suoritukset.length shouldBe 1
-        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.tunniste.koodiarvo shouldBe "999908"
-        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.perusteenDiaarinumero.get shouldBe "OPH-1488-2021"
-        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.laajuus.get.arvo shouldBe 12.0
-        tuvaOpiskeluoikeus.suoritukset.head.osasuoritukset.get.length shouldBe 7
-      }
-    }
+// TODO: poista testi kommenteista sitten kun TUVA on kytketty päälle Kela-APIn kanssa
+//    "Palauttaa TUVA opiskeluoikeuden tiedot" in {
+//      postHetu(KoskiSpecificMockOppijat.tuva.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+//        verifyResponseStatusOk()
+//        val oppija = JsonSerializer.parse[KelaOppija](body)
+//        oppija.opiskeluoikeudet.length should be(1)
+//
+//        val tuvaOpiskeluoikeus = oppija.opiskeluoikeudet.last match {
+//          case x: KelaTutkintokoulutukseenValmentavanOpiskeluoikeus => x
+//        }
+//        tuvaOpiskeluoikeus.oppilaitos.get.oid shouldBe "1.2.246.562.10.52251087186"
+//        tuvaOpiskeluoikeus.koulutustoimija.get.oid shouldBe "1.2.246.562.10.346830761110"
+//        tuvaOpiskeluoikeus.järjestämislupa.koodiarvo shouldBe "ammatillinen"
+//        tuvaOpiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo shouldBe "valmistunut"
+//        tuvaOpiskeluoikeus.suoritukset.length shouldBe 1
+//        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.tunniste.koodiarvo shouldBe "999908"
+//        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.perusteenDiaarinumero.get shouldBe "OPH-1488-2021"
+//        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.laajuus.get.arvo shouldBe 12.0
+//        tuvaOpiskeluoikeus.suoritukset.head.osasuoritukset.get.length shouldBe 7
+//      }
+//    }
     "Ei palauta mitätöityä opiskeluoikeutta" in {
       postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()
@@ -115,26 +116,27 @@ class KelaSpec
         verifyResponseStatus(400, KoskiErrorCategory.badRequest("Liian monta hetua, enintään 1000 sallittu"))
       }
     }
-    "Palauttaa TUVA opiskeluoikeuden tiedot" in {
-      postHetut(List(KoskiSpecificMockOppijat.tuvaPerus.hetu.get), user = MockUsers.kelaLaajatOikeudet) {
-        verifyResponseStatusOk()
-        val oppija = JsonSerializer.parse[List[KelaOppija]](body).head
-        oppija.opiskeluoikeudet.length should be(1)
-
-        val tuvaOpiskeluoikeus = oppija.opiskeluoikeudet.last match {
-          case x: KelaTutkintokoulutukseenValmentavanOpiskeluoikeus => x
-        }
-        tuvaOpiskeluoikeus.oppilaitos.get.oid shouldBe "1.2.246.562.10.52251087186"
-        tuvaOpiskeluoikeus.koulutustoimija.get.oid shouldBe "1.2.246.562.10.346830761110"
-        tuvaOpiskeluoikeus.järjestämislupa.koodiarvo shouldBe "perusopetus"
-        tuvaOpiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo shouldBe "lasna"
-        tuvaOpiskeluoikeus.suoritukset.length shouldBe 1
-        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.tunniste.koodiarvo shouldBe "999908"
-        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.perusteenDiaarinumero.get shouldBe "OPH-1488-2021"
-        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.laajuus shouldBe None
-        tuvaOpiskeluoikeus.suoritukset.head.osasuoritukset.get.length shouldBe 3
-      }
-    }
+// TODO: poista testi kommenteista sitten kun TUVA on kytketty päälle Kela-APIn kanssa
+//    "Palauttaa TUVA opiskeluoikeuden tiedot" in {
+//      postHetut(List(KoskiSpecificMockOppijat.tuvaPerus.hetu.get), user = MockUsers.kelaLaajatOikeudet) {
+//        verifyResponseStatusOk()
+//        val oppija = JsonSerializer.parse[List[KelaOppija]](body).head
+//        oppija.opiskeluoikeudet.length should be(1)
+//
+//        val tuvaOpiskeluoikeus = oppija.opiskeluoikeudet.last match {
+//          case x: KelaTutkintokoulutukseenValmentavanOpiskeluoikeus => x
+//        }
+//        tuvaOpiskeluoikeus.oppilaitos.get.oid shouldBe "1.2.246.562.10.52251087186"
+//        tuvaOpiskeluoikeus.koulutustoimija.get.oid shouldBe "1.2.246.562.10.346830761110"
+//        tuvaOpiskeluoikeus.järjestämislupa.koodiarvo shouldBe "perusopetus"
+//        tuvaOpiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo shouldBe "lasna"
+//        tuvaOpiskeluoikeus.suoritukset.length shouldBe 1
+//        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.tunniste.koodiarvo shouldBe "999908"
+//        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.perusteenDiaarinumero.get shouldBe "OPH-1488-2021"
+//        tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.laajuus shouldBe None
+//        tuvaOpiskeluoikeus.suoritukset.head.osasuoritukset.get.length shouldBe 3
+//      }
+//    }
   }
 
   "Kelan käyttöoikeudet" - {

@@ -27,7 +27,8 @@ object KelaSchema {
   "perusopetus",
   "ylioppilastutkinto",
   "vapaansivistystyonkoulutus",
-  "tuva"
+// TODO: poista seuraava rivi kommenteista jotta Kela API alkaa palauttaa TUVA opiskeluoikeuksia
+//  "tuva"
   )
 }
 
