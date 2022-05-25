@@ -67,12 +67,22 @@ trait OrganisaatioRepository extends Logging {
 
   def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioWithOid] = {
     OrganisaatioHierarkia.flatten(findAllHierarkiat)
-      .filter(_.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA))
+      .filter(o =>
+        o.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskoulut) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskouluasteenErityiskoulut) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.perusJaLukioasteenKoulut)
+      )
       .map(_.toOrganisaatio)
   }
 
   def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] = {
-    filter(_.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA))
+    filter(o =>
+      o.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskoulut) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskouluasteenErityiskoulut) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.perusJaLukioasteenKoulut)
+    )
   }
 
   def findKunnat(): Seq[OrganisaatioHierarkia] = {

@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalvelu, päiväkodinEsiopetuksenTunniste}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{oidOrganisaatio, päiväkotiTouhula, päiväkotiVironniemi}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{kulosaarenAlaAste, oidOrganisaatio, päiväkotiTouhula, päiväkotiVironniemi}
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.ysiluokkalainen
 import fi.oph.koski.http.KoskiErrorCategory
@@ -63,9 +63,15 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
         }
       }
 
-      "ei voi luoda perusopetuksessa järjestettävien esiopetuksen opiskeluoikeuksia organisaatiohierarkiansa ulkopuolelle" in {
+      "voi luoda perusopetuksessa järjestettävän esiopetuksen opiskeluoikeuden organisaatiohierarkian ulkopuoliselle peruskoululle" in {
+        putOpiskeluoikeus(peruskouluEsiopetus(kulosaarenAlaAste, ostopalvelu), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "ei voi luoda perusopetuksessa järjestettävien esiopetuksen opiskeluoikeuksia organisaatiohierarkiansa ulkopuolelle varhaiskasvatuksen toimipisteeseen" in {
         putOpiskeluoikeus(peruskouluEsiopetus(päiväkotiTouhula, ostopalvelu), headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Varhaiskasvatustoimipisteeseen voi tallentaa vain päiväkodin esiopetusta (koulutus $päiväkodinEsiopetuksenTunniste)"))
         }
       }
 
