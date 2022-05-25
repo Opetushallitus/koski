@@ -14,7 +14,7 @@
     },
     "stacktrace": {
       "$resolver": "pattern",
-      "pattern": "%ex{50}"
+      "pattern": "%ex{20}"
     }
   },
   "line_number": {
