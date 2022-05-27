@@ -42,27 +42,27 @@ describe('Omat tiedot - TUVA', function () {
         expect(opinnot.tutkinnonOsat().laajuudetYhteensä()).to.equal('12')
         expect(extractAsText(S('.tuva-osasuoritus-1'))).to.equal(
           // Opiskelu- ja urasuunnittelutaidot
-          'Opiskelu- ja urasuunnittelutaidot 2 viikkoa Hyväksytty\n' +
+          'Opiskelu- ja urasuunnittelutaidot 2 vk Hyväksytty\n' +
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.9.2021\n\n' +
           // Perustaitojen vahvistaminen
-          'Perustaitojen vahvistaminen 1 viikkoa Hyväksytty\n' +
+          'Perustaitojen vahvistaminen 1 vk Hyväksytty\n' +
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.9.2021\n\n' +
           // Ammatillisen koulutuksen opinnot ja niihin valmentautuminen
-          'Ammatillisen koulutuksen opinnot ja niihin valmentautuminen 1 viikkoa Hyväksytty\n' +
+          'Ammatillisen koulutuksen opinnot ja niihin valmentautuminen 1 vk Hyväksytty\n' +
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.10.2021\n\n' +
           // Työelämätaidot ja työpaikalla tapahtuva oppiminen
-          'Työelämätaidot ja työpaikalla tapahtuva oppiminen 1 viikkoa Hyväksytty\n' +
+          'Työelämätaidot ja työpaikalla tapahtuva oppiminen 1 vk Hyväksytty\n' +
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.10.2021\n\n' +
           // Arjen ja yhteiskunnallisen osallisuuden taidot
-          'Arjen ja yhteiskunnallisen osallisuuden taidot 1 viikkoa Hyväksytty\n' +
+          'Arjen ja yhteiskunnallisen osallisuuden taidot 1 vk Hyväksytty\n' +
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.11.2021\n\n' +
           // Lukiokoulutuksen opinnot ja niihin valmentautuminen
-          'Lukiokoulutuksen opinnot ja niihin valmentautuminen 1 viikkoa Hyväksytty\n' +
+          'Lukiokoulutuksen opinnot ja niihin valmentautuminen 1 vk Hyväksytty\n' +
           'Suorituskieli suomi\n' +
           'Tunnustettu\n' +
           'Nimi Englannin kieli ja maailmani\n' +
@@ -74,12 +74,12 @@ describe('Omat tiedot - TUVA', function () {
           'Rahoituksen piirissä ei\n' +
           'Arviointipäivä 1.11.2021\n\n' +
           // Valinnaiset koulutuksen osat
-          'Valinnaiset koulutuksen osat 5 viikkoa Hyväksytty\n' +
+          'Valinnaiset koulutuksen osat 5 vk Hyväksytty\n' +
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.12.2021\n' +
           'Valinnaisen koulutuksen osan paikallinen osasuoritus Laajuus Arvosana\n' +
-          'Valinnainen kurssi 1 2 viikkoa Hyväksytty\n' +
-          'Valinnainen kurssi 2 3 viikkoa Hyväksytty'
+          'Valinnainen kurssi 1 2 vk Hyväksytty\n' +
+          'Valinnainen kurssi 2 3 vk Hyväksytty'
         )
       })
     })

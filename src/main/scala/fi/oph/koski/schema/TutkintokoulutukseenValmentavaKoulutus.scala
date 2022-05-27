@@ -85,6 +85,8 @@ case class TutkintokoulutukseenValmentavanKoulutus(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999908", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String] = Some("OPH-1488-2021"),
   koulutustyyppi: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("40", "koulutustyyppi")),
+  @DefaultValue(None)
+  @ReadOnly("Laajuus lasketaan automaattisesti osasuoritusten laajuuksista.")
   laajuus: Option[LaajuusViikoissa] = None
 ) extends DiaarinumerollinenKoulutus
     with Tutkinto
@@ -237,6 +239,7 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
     nimi = Some(LocalizedString.unlocalized("Valinnaiset koulutuksen osat"))
   ),
   @DefaultValue(None)
+  @ReadOnly("Laajuus lasketaan automaattisesti osasuoritusten laajuuksista.")
   laajuus: Option[LaajuusViikoissa] = None
 ) extends KoulutusmoduuliValinnainenLaajuus
     with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusViikoissa] {
