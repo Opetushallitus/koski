@@ -4,7 +4,7 @@ import {numberToString} from '../util/format'
 
 export class NumberEditor extends React.Component {
   render() {
-    let {model} = this.props
+    let {model, disabled} = this.props
     let wrappedModel = wrapOptional(model)
     let onChange = (event) => pushModelValue(wrappedModel, event.target.value ? { data: parseNumber(event.target.value) } : undefined)
 
@@ -12,7 +12,7 @@ export class NumberEditor extends React.Component {
     let value = numberToString(data, model.scale)
     let error = !modelValid(model)
 
-    return wrapWithUnitOfMeasure(wrappedModel.unitOfMeasure, wrappedModel.context.edit
+    return wrapWithUnitOfMeasure(wrappedModel.unitOfMeasure, wrappedModel.context.edit && !disabled
       ? <input type="text"  defaultValue={value} onChange={ onChange } className={'editor-input inline number' + (error ? ' error' : '')}/>
       : <span className="inline number">{value}</span>)
   }

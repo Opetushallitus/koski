@@ -16,13 +16,13 @@ import {hyphenate} from '../util/hyphenate'
 
 export class LaajuusEditor extends React.Component {
   render() {
-    let { model, compact, showReadonlyScope = true } = this.props
+    let { model, compact, showReadonlyScope = true, disabled } = this.props
     let wrappedModel = wrapOptional(model)
     return (
       <span>
         <span className="property laajuus arvo">
           <span className={modelValid(wrappedModel) ? 'value' : 'value error'}>
-            <Editor model={wrappedModel} path="arvo"/>
+            <Editor model={wrappedModel} path="arvo" disabled={disabled}/>
           </span>
         </span>
         <LaajuudenYksikköEditor { ... {model, compact, showReadonlyScope}}/>

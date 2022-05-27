@@ -15,11 +15,13 @@ export const TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor = ({
   const editableProperties = suoritusProperties(model).filter(p => p.key !== 'osasuoritukset')
   const osasuoritukset = modelLookup(model, 'osasuoritukset')
 
+  const laajuusReadOnly = model && model.value.classes.includes('tutkintokoulutukseenvalmentavankoulutuksenvalinnaisenosansuoritus')
+
   return (
     <tbody className={'tuva-osasuoritus tuva-osasuoritus-' + nestedLevel}>
     <tr className={'tuva-osasuoritusrivi-' + nestedLevel}>
       {
-        columns.map(column => column.renderData({model, expanded, onExpand, showTila: true, hasProperties: true}))
+        columns.map(column => column.renderData({model, expanded, onExpand, showTila: true, hasProperties: true, disabled: laajuusReadOnly}))
       }
       {
         model.context.edit && (
