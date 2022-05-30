@@ -13,7 +13,7 @@ object OpiskeluoikeusLoaderPerfTester extends App {
       .loadOpiskeluoikeudet(
         application.opiskeluoikeusQueryRepository,
         application.suostumuksenPeruutusService,
-        application.raportointiDatabase
+        application.raportointiDatabase,
       )
     loadResults.toBlocking.foreach(lr => println(s"${lr}"))
   }

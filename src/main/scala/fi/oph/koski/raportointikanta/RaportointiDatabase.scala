@@ -355,17 +355,6 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def status: RaportointikantaStatusResponse =
     RaportointikantaStatusResponse(schema.name, queryStatus)
 
-  def latestOpiskeluoikeusTimestamp: Option[Timestamp] =
-    try {
-      runDbSync(sql"""SELECT max(aikaleima) FROM #${schema.name}.r_opiskeluoikeus""".as(_.rs.getTimestamp(1)))
-        .headOption match {
-          case Some(null) => None // Tyhjä taulu
-          case r: Any => r
-        }
-    } catch {
-      case e: PSQLException if e.getMessage.contains("does not exist") => None // Taulua ei ole vielä luotu
-    }
-
   private def queryStatus = {
     if (statusTableExists) {
       try {
