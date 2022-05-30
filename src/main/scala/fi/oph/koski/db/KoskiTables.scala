@@ -11,6 +11,7 @@ import fi.oph.koski.schema.{FilterNonAnnotationableSensitiveData, TutkinnonOsanS
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
+import slick.lifted.ProvenShape
 
 object KoskiTables {
   class OpiskeluoikeusTable(tag: Tag) extends Table[OpiskeluoikeusRow](tag, "opiskeluoikeus") {
@@ -213,6 +214,20 @@ object KoskiTables {
     def * = (oid, oppija_oid, oppilaitos_nimi, oppilaitos_oid, päättymispäivä, lähdejärjestelmäKoodi, lähdejärjestelmäId, mitätöityAikaleima, suostumusPeruttuAikaleima, koulutusmuoto, suoritustyypit, versio) <> (PoistettuOpiskeluoikeusRow.tupled, PoistettuOpiskeluoikeusRow.unapply)
   }
 
+  class PäivitettyOpiskeluoikeusTable(tag: Tag) extends Table[PäivitettyOpiskeluoikeusRow] (tag, "paivitetty_opiskeluoikeus") {
+    val id = column[Option[Int]]("id", O.AutoInc, O.PrimaryKey)
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
+    val aikaleima = column[Timestamp]("aikaleima")
+    val prosessoitu = column[Boolean]("prosessoitu")
+
+    def * : ProvenShape[PäivitettyOpiskeluoikeusRow] = (
+      id,
+      opiskeluoikeusOid,
+      aikaleima,
+      prosessoitu,
+    ) <> (PäivitettyOpiskeluoikeusRow.tupled, PäivitettyOpiskeluoikeusRow.unapply)
+  }
+
   val Preferences = TableQuery[PreferencesTable]
 
   val SuoritusJako = TableQuery[SuoritusjakoTable]
@@ -236,6 +251,8 @@ object KoskiTables {
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
   val PoistetutOpiskeluoikeudet = TableQuery[PoistettuOpiskeluoikeusTable]
+
+  val PäivitetytOpiskeluoikeudet = TableQuery[PäivitettyOpiskeluoikeusTable]
 
   def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = {
     val query = if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
@@ -342,4 +359,11 @@ case class PoistettuOpiskeluoikeusRow(
   koulutusmuoto: String,
   suoritustyypit: List[String],
   versio: Option[Int]
+)
+
+case class PäivitettyOpiskeluoikeusRow(
+  id: Option[Int] = None,
+  opiskeluoikeusOid: Opiskeluoikeus.Oid,
+  aikaleima: Timestamp,
+  prosessoitu: Boolean = false,
 )
