@@ -180,12 +180,19 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
   private def generateRaportointikanta(application: KoskiApplication): Unit = {
     val service = new RaportointikantaService(application)
     val generating = Future {
-      service.loadRaportointikantaAndExit(fullReload = RunMode.isFullReload)
+      service.loadRaportointikantaAndExit(fullReload = RunMode.isFullReload, forceReload = getForceMode)
     }
     generating.failed.map(error => {
       logger.error(error)("Raportointikannan generointi keskeytyi odottamattomasti")
       service.shutdown
     })
+  }
+
+  private def getForceMode: Boolean = sys.env.get("FORCE_RAPORTOINTIKANTA") match {
+    case Some("true") => true
+    case Some("false") => false
+    case Some(s) => throw new RuntimeException(s"Odottamaton arvo muuttujalla FORCE_RAPORTOINTIKANTA: ${s} (sallitut arvot: true, false)")
+    case None => false
   }
 
   override def destroy(context: ServletContext): Unit = ()

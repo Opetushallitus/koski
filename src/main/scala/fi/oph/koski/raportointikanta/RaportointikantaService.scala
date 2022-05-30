@@ -47,10 +47,10 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     }
   }
 
-  def loadRaportointikantaAndExit(fullReload: Boolean): Unit = {
+  def loadRaportointikantaAndExit(fullReload: Boolean, forceReload: Boolean): Unit = {
     val skipUnchangedData = !fullReload
     loadRaportointikanta(
-      force = true,
+      force = forceReload,
       skipUnchangedData = skipUnchangedData,
       scheduler = defaultScheduler,
       onEnd = () => {
