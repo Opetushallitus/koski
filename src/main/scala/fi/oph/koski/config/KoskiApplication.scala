@@ -142,6 +142,7 @@ class KoskiApplication(
   lazy val prometheusRepository = PrometheusRepository(config)
   lazy val koskiPulssi = KoskiPulssi(this)
   lazy val koskiLocalizationRepository = LocalizationRepository(config, new KoskiLocalizationConfig)
+  lazy val päivitetytOpiskeluoikeudetJono = new PäivitetytOpiskeluoikeudetJonoService(this)
   lazy val valpasLocalizationRepository = LocalizationRepository(config, new ValpasLocalizationConfig)
   lazy val valpasRajapäivätService = ValpasRajapäivätService(config)
   lazy val valpasOppijaLaajatTiedotService = new ValpasOppijaService(this)
