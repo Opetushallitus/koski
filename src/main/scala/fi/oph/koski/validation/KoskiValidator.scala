@@ -429,6 +429,10 @@ class KoskiValidator(
       case _ => organisaationKoulutustoimija
     }
     HttpStatus.validate(user.hasAccess(organisaatio.oid, koulutustoimija, accessType)) {
+      logger.warn("organisaationKoulutustoimija: " + organisaationKoulutustoimija.getOrElse("Ei arvoa"))
+      logger.warn("opiskeluoikeudenKoulutustoimija: " + opiskeluoikeudenKoulutustoimija.getOrElse("Ei arvoa"))
+      logger.warn("koulutustoimija: " + koulutustoimija.getOrElse("Ei arvoa"))
+      logger.warn("accessType: " + accessType)
       KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
     }
   }
