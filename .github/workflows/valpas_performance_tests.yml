@@ -56,6 +56,7 @@ jobs:
           export PERFTEST_THREADS=30
           export PERFTEST_ROUNDS=850
           export WARMUP_ROUNDS=0
+          export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
           export KOSKI_VALPAS_ORGANISAATIOT_FILENAME="valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt"
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
 
@@ -100,6 +101,7 @@ jobs:
           export PERFTEST_THREADS=20
           export PERFTEST_ROUNDS=5000
           export WARMUP_ROUNDS=0
+          export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
           export KOSKI_VALPAS_OPPIJAOIDIT_FILENAME="valpas_qa_oppija_oidit.txt"
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppijaGetter"
 
