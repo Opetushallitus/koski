@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 1.6.2022
+- Tutkintokoulutukseen valmentavan koulutuksen ja vapaan sivistystyön oppivelvollisille suunnatun koulutuksen
+  opiskeluoikeuksissa ei sallita arvioimattomia osasuorituksia, jos opiskeluoikeus on päättynyt katsotaan
+  eronneeksi -tilaan.
+
 ## 9.5.2022
 - Perusopetuksen aineilta ei vaadita enää laajuutta toiminta-alueittain opiskelevilla, vaikka suoritus olisi
   vahvistettu 1.8.2020 jälkeen.

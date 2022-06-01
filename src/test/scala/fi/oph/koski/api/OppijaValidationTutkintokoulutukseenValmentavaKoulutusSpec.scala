@@ -2,8 +2,10 @@ package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus._
+import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
+import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
@@ -212,6 +214,49 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
         putOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuvaOsasuorituksiaLiianVähän())
         }
+      }
+    }
+
+    "Katsotaan eronneeksi tilaan päättyneellä opiskeluoikeudella ei saa olla arvioimattomia osasuorituksia" in {
+      val oo = tuvaOpiskeluOikeusValmistunut.copy(
+        tila = tuvaTilaKatsotaanEronneeksi,
+        suoritukset = List(
+          tuvaPäätasonSuoritus(laajuus = Some(12)).copy(
+            vahvistus = None,
+            osasuoritukset = Some(
+              List(
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaAmmatillisenKoulutuksenOpinnot(laajuus = Some(1)),
+                  arviointiPäivä = Some(date(2021, 10, 1)),
+                  koodistoviite = "tuvaammatillinenkoulutus"
+                ),
+                tuvaKoulutuksenMuunOsanSuoritus(
+                  koulutusmoduuli = tuvaLukiokoulutuksenOpinnot(laajuus = Some(1)),
+                  arviointiPäivä = None,
+                  koodistoviite = "tuvalukiokoulutus"
+                ).copy(
+                  tunnustettu = Some(
+                    OsaamisenTunnustaminen(
+                      osaaminen = Some(
+                        LukioExampleData.kurssisuoritus(
+                          LukioExampleData.valtakunnallinenKurssi("ENA1")
+                        ).copy(arviointi = LukioExampleData.numeerinenArviointi(8))
+                      ),
+                      selite = finnish("Tunnustettu lukion kurssi")
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+
+      putOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.tila.eronneeksiKatsotunOpiskeluoikeudenArvioinnit(
+            "Katsotaan eronneeksi -tilaan päättyvällä opiskeluoikeudella ei saa olla osasuorituksia, joista puuttuu arviointi"
+          ))
       }
     }
 

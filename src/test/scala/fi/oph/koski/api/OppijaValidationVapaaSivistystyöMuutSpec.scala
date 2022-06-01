@@ -1,6 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä}
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.http.KoskiErrorCategory
@@ -99,6 +100,29 @@ class OppijaValidationVapaaSivistystyöMuutSpec extends AnyFreeSpec with PutOpis
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus("Päätason suoritus koulutus/999909 on vahvistettu, mutta sillä on hyväksytyksi arvioituja osaamiskokonaisuuksia, joiden laajuus on alle 4 opintopistettä"))
           }
         }
+      }
+    }
+    "Katsotaan eronneeksi tilaan päättyneellä opiskeluoikeudella ei saa olla arvioimattomia osasuorituksia" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+          VapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä),
+          VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 6, 1), opiskeluoikeusKatsotaanEronneeksi)
+        )),
+        suoritukset = List(suoritusKOPS.copy(
+        osasuoritukset = Some(List(
+          osaamiskokonaisuudenSuoritus("1002", List(
+            opintokokonaisuudenSuoritus(
+              opintokokonaisuus("A01", "Arjen rahankäyttö", "Arjen rahankäyttö", 2.0)
+            ),
+            opintokokonaisuudenSuoritus(
+              opintokokonaisuus("M01", "Mielen liikkeet", "Mielen liikkeet ja niiden havaitseminen", 51)
+            ).copy(arviointi = None)
+          ))
+        ))
+      )))
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.eronneeksiKatsotunOpiskeluoikeudenArvioinnit("Katsotaan eronneeksi -tilaan päättyvällä opiskeluoikeudella ei saa olla osasuorituksia, joista puuttuu arviointi"))
       }
     }
   }
