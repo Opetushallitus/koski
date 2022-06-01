@@ -605,6 +605,7 @@ class KoskiValidator(
         :: validateToimipiste(opiskeluoikeus, suoritus)
         :: validateStatus(suoritus, opiskeluoikeus)
         :: validateArvioinnit(suoritus)
+        :: validateArviointienOlemassaolo(suoritus, opiskeluoikeus)
         :: validateLaajuus(suoritus)
         :: validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus, opiskeluoikeus)
         :: validateSuoritustenLuokkaAsteet(suoritus, opiskeluoikeus)
@@ -835,6 +836,19 @@ class KoskiValidator(
   private def validateValmiinSuorituksenStatus(suoritus: Suoritus) = {
     suoritus.rekursiivisetOsasuoritukset.find(_.kesken).fold(HttpStatus.ok) { keskeneräinenOsasuoritus =>
       KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus))
+    }
+  }
+
+  private def validateArviointienOlemassaolo(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    lazy val katsotaanEronneeksi = opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == "katsotaaneronneeksi")
+    lazy val arviointejaPuuttuu = suoritus.rekursiivisetOsasuoritukset.exists(_.arviointiPuuttuu)
+
+    suoritus match {
+      case _: TutkintokoulutukseenValmentavanKoulutuksenSuoritus |
+           _: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus
+        if katsotaanEronneeksi && arviointejaPuuttuu =>
+        KoskiErrorCategory.badRequest.validation.tila.eronneeksiKatsotunOpiskeluoikeudenArvioinnit()
+      case _ => HttpStatus.ok
     }
   }
 
