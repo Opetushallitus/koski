@@ -39,7 +39,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   }
 
   get("/paivitysaika") {
-    raportitService.viimeisinPäivitys
+    raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika
   }
 
   // TODO: Tarpeeton kun uusi raporttikäli saadaan käyttöön, voi poistaa

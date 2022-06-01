@@ -8,9 +8,11 @@ import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.raportit.aikuistenperusopetus._
 import fi.oph.koski.raportit.lukio.LukioOppiaineenOppimaaranKurssikertymat.{AikuistenOppimäärä, NuortenOppimäärä}
 import fi.oph.koski.raportit.lukio._
-import fi.oph.koski.raportit.lukio.lops2021.{Lukio2019AineopintojenOpintopistekertymat, Lukio2019MuutaKauttaRahoitetut, Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet, Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset, Lukio2019OppimaaranOpintopistekertymat, Lukio2019RahoitusmuotoEiTiedossa, Lukio2019RaportitRepository, Lukio2019Raportti}
+import fi.oph.koski.raportit.lukio.lops2021._
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
+
+import java.time.LocalDateTime
 
 class RaportitService(application: KoskiApplication) {
   private val raportointiDatabase = application.raportointiDatabase
@@ -35,7 +37,15 @@ class RaportitService(application: KoskiApplication) {
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
 
-  def viimeisinPäivitys = raportointiDatabase.status.startedTime.get.toLocalDateTime
+  def viimeisinOpiskeluoikeuspäivitystenVastaanottoaika: LocalDateTime = {
+    val status = raportointiDatabase.status
+    status
+      .statuses
+      .find(_.name == "opiskeluoikeudet")
+      .flatMap(_.dueTime)
+      .getOrElse(status.startedTime.get)
+      .toLocalDateTime
+  }
 
   def paallekkaisetOpiskeluoikeudet(
     request: AikajaksoRaporttiRequest,

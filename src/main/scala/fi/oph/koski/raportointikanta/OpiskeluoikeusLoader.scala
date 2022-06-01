@@ -8,6 +8,7 @@ import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryService, PäivitetytOpisk
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
+import fi.oph.koski.util.TimeConversions.toTimestamp
 import fi.oph.koski.validation.MaksuttomuusValidation
 import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
@@ -33,8 +34,10 @@ object OpiskeluoikeusLoader extends Logging {
     batchSize: Int = DefaultBatchSize,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
   ): Observable[LoadResult] = {
-    db.setStatusLoadStarted(statusName)
-    db.setStatusLoadStarted(mitätöidytStatusName)
+    val dueTime = update.map(_.dueTime).map(toTimestamp)
+    db.setStatusLoadStarted(statusName, dueTime)
+    db.setStatusLoadStarted(mitätöidytStatusName, dueTime)
+
     update.foreach(u => {
       u.service.alustaKaikkiKäsiteltäviksi()
       db.cloneUpdateableTables(u.previousRaportointiDatabase)

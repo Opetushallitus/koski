@@ -466,7 +466,8 @@ object RaportointiDatabaseSchema {
     val lastUpdate = column[Timestamp]("last_update", O.SqlType("timestamp default now()"))
     val loadStarted = column[Option[Timestamp]]("load_started", O.Default(None))
     val loadCompleted = column[Option[Timestamp]]("load_completed", O.Default(None))
-    def * = (name, count, lastUpdate, loadStarted, loadCompleted) <> (RaportointikantaStatusRow.tupled, RaportointikantaStatusRow.unapply)
+    val dueTime = column[Option[Timestamp]]("due_time", O.Default(None))
+    def * = (name, count, lastUpdate, loadStarted, loadCompleted, dueTime) <> (RaportointikantaStatusRow.tupled, RaportointikantaStatusRow.unapply)
   }
   class RaportointikantaStatusTableTemp(tag: Tag) extends RaportointikantaStatusTable(tag, Temp)
 }
@@ -754,7 +755,8 @@ case class RaportointikantaStatusRow(
   count: Int,
   lastUpdate: Timestamp,
   loadStarted: Option[Timestamp],
-  loadCompleted: Option[Timestamp]
+  loadCompleted: Option[Timestamp],
+  dueTime: Option[Timestamp],
 )
 
 case class MuuAmmatillinenOsasuoritusRaportointiRow(
