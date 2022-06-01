@@ -22,6 +22,7 @@ object ValpasRandomPerusopetuksenOppilaitoksetGetterScenario extends PerfTestSce
           uriPattern=Some("valpas/api/oppijat/_/hakutiedot"),
         ))
   }
+  override def bodyValidator: Boolean = !this.body.contains("hakutilanneError")
 }
 
 object ValpasRandomPerusopetuksenOppilaitoksetGetter extends App {

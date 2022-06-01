@@ -31,7 +31,7 @@ object PerfTestRunner extends Logging {
     logger.info("**** Finished test ****")
     val failures: Int = stats.summary.failedCount
     if (failures > 0) {
-      throw new RuntimeException(s"Test failed: $failures failures")
+      throw new RuntimeException(s"Test failed: $failures failures and ${stats.summary.successCount} successes")
     }
   }
 
@@ -71,7 +71,7 @@ object PerfTestRunner extends Logging {
                       if (scenario.readBody) {
                         toDevNull(scenario.response.inputStream)
                       }
-                      true
+                      scenario.bodyValidator
                     }
                   }
                 } catch {

@@ -13,6 +13,7 @@ trait PerfTestScenario extends KoskidevHttpSpecification with EnvVariables with 
   def maximumExpectedDurationMs: Int = Int.MaxValue
   def name = getClass.getSimpleName
   def readBody: Boolean = false
+  def bodyValidator: Boolean = true
 
   override def logger = super.logger
 }
