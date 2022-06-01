@@ -2,10 +2,9 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.Lukio2019ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.{nuortenOpetussuunnitelma, opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt, laajuus => _}
+import fi.oph.koski.documentation.LukioExampleData.{aikuistenOpetussuunnitelma, nuortenOpetussuunnitelma, opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt, laajuus => _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{uusiLukio, uusiLukionAineopiskelija}
@@ -17,6 +16,7 @@ object ExamplesLukio2019 {
   val lops2019AikuistenPerusteenDiaarinumero = Some("OPH-2267-2019")
 
   val lukionOppimäärä2019: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = lops2019perusteenDiaarinumero)
+  val lukionAikuistenOppimäärä2019: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = lops2019AikuistenPerusteenDiaarinumero)
 
   val oppiainesuoritukset = oppiainesuorituksetRiittääValmistumiseenNuorilla
 
@@ -49,6 +49,20 @@ object ExamplesLukio2019 {
     ryhmä = Some("AH")
   )
 
+  lazy val aikuistenOppimääränSuoritus = LukionOppimääränSuoritus2019(
+    koulutusmoduuli = lukionAikuistenOppimäärä2019,
+    oppimäärä = aikuistenOpetussuunnitelma,
+    suorituskieli = suomenKieli,
+    vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+    toimipiste = jyväskylänNormaalikoulu,
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
+    puhviKoe = puhviKoe,
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti, suullisenKielitaidonKoeEspanja)),
+    todistuksellaNäkyvätLisätiedot = Some("Osallistunut kansalliseen etäopetuskokeiluun"),
+    osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia),
+    ryhmä = Some("AH")
+  )
+
   lazy val vahvistamatonOppimääränSuoritus = oppimääränSuoritus.copy(vahvistus = None)
 
   lazy val oppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
@@ -58,6 +72,15 @@ object ExamplesLukio2019 {
     toimipiste = jyväskylänNormaalikoulu,
     suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja)),
     osasuoritukset = Some(oppiainesuoritukset)
+  )
+
+  lazy val aikuistenOppiaineidenOppimäärienSuoritus = LukionOppimääränSuoritus2019(
+    koulutusmoduuli = lukionAikuistenOppimäärä2019,
+    oppimäärä = aikuistenOpetussuunnitelma,
+    suorituskieli = suomenKieli,
+    toimipiste = jyväskylänNormaalikoulu,
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja)),
+    osasuoritukset = Some(oppiainesuoritukset),
   )
 
   lazy val opiskeluoikeus: LukionOpiskeluoikeus =
@@ -143,6 +166,11 @@ object Lukio2019ExampleData {
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY124", "Keittiöfysiikka 2", "Haastava kokeellinen keittiöfysiikka, liekitys ja lämpöreaktiot").copy(pakollinen = false)).copy(arviointi = sanallinenArviointi("S"))
     ))),
   )
+
+  def aikuistenOppiainesuoritusHistoria: List[LukionOppiaineenSuoritus2019] = List(oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("HI")).copy(osasuoritukset = Some(List(
+    moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("HI2")),
+    moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("HI3")),
+  ))))
 
   def oppiainesuorituksetRiittääValmistumiseenNuorilla: List[LukionOppiaineenSuoritus2019] = oppiainesuorituksetRiittääValmistumiseenAikuisilla ::: List(
     oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")).copy(arviointi = numeerinenLukionOppiaineenArviointi(4)),

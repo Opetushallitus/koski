@@ -1,11 +1,12 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.api.TestMethodsLukio.päättötodistusSuoritus
 import fi.oph.koski.documentation.ExampleData.{englanti, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, ruotsinKieli, suomenKieli, vahvistusPaikkakunnalla, valtionosuusRahoitteinen}
-import fi.oph.koski.documentation.ExamplesLukio2019.{aktiivinenOpiskeluoikeus, oppiaineidenOppimäärienSuoritus, oppimääränSuoritus, vahvistamatonOppimääränSuoritus}
+import fi.oph.koski.documentation.ExamplesLukio2019.{aikuistenOppiaineidenOppimäärienSuoritus, aktiivinenOpiskeluoikeus, oppiaineidenOppimäärienSuoritus, oppimääränSuoritus, vahvistamatonOppimääränSuoritus}
 import fi.oph.koski.documentation.Lukio2019ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.opiskeluoikeusAktiivinen
-import fi.oph.koski.documentation.{ExampleData, ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
+import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
+import fi.oph.koski.documentation.{ExampleData, ExamplesLukio, ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
@@ -68,7 +69,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
 
         val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
         opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.getLaajuus should equal(None)
-     }
+      }
 
       "Moduulin oletuslaajuus on 2" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
@@ -86,7 +87,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       "Jos oppiaineella ei ole osasuorituksia laajuus on 0" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
           osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(4)).copy(osasuoritukset = None)
-        ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail))))
+          ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail))))
 
         val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
         opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(0)
@@ -126,7 +127,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike")).copy(arviointi = numeerinenLukionOppiaineenArviointi(8)).copy(osasuoritukset = Some(List(
             paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT231", "Tanssin alkeet", "Rytmissä pysyminen")).copy(arviointi = numeerinenArviointi(7)),
             paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT234", "Tanssin taito", "Perinteiset suomalaiset tanssit, valssi jne").copy(laajuus = laajuus(50))).copy(arviointi = numeerinenArviointi(10))
-        ))))
+          ))))
 
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(osasuoritukset))))) {
           verifyResponseStatus(400,
@@ -305,7 +306,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     }
 
     "suoritustasolla estää osasuoritusten lisäämisen oppiaineisiin" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true,osasuoritukset = Some(List(
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
         oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
@@ -525,7 +526,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           osasuoritukset = Some(List(
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("KE1", 2.0f)).copy(arviointi = numeerinenArviointi(7))
           ))
-      ))))))) {
+        ))))))) {
         verifyResponseStatusOk()
       }
     }
@@ -729,7 +730,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           osasuoritukset = Some(List(
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("OP1")).copy(arviointi = sanallinenArviointi("S")),
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("OP2")).copy(arviointi = sanallinenArviointi("H"))
-         ))
+          ))
         )
       )))))) {
         verifyResponseStatusOk()
@@ -896,19 +897,19 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         val moduulit = opiskeluoikeus.suoritukset.head.osasuoritusLista.flatMap(_.osasuoritusLista.map(_.koulutusmoduuli))
 
         val odotetutModuulit = List(
-          vieraanKielenModuuliOppiaineissa("RUA1"  , 2, Some("SV")),
-          vieraanKielenModuuliOppiaineissa("RUB11" , 2, Some("SV")),
-          vieraanKielenModuuliOppiaineissa("RUÄ1"  , 2, Some("SV")),
-          vieraanKielenModuuliOppiaineissa("FINA1" , 2, Some("FI")),
+          vieraanKielenModuuliOppiaineissa("RUA1", 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("RUB11", 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("RUÄ1", 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("FINA1", 2, Some("FI")),
           vieraanKielenModuuliOppiaineissa("FINB11", 2, Some("FI")),
-          vieraanKielenModuuliOppiaineissa("FIM1"  , 2, Some("FI")),
-          vieraanKielenModuuliOppiaineissa("SMA1"  , 2, Some("SE")),
-          vieraanKielenModuuliOppiaineissa("SMB31" , 2, Some("SE")),
-          vieraanKielenModuuliOppiaineissa("LAB21" , 2, Some("LA")),
-          vieraanKielenModuuliOppiaineissa("LAB31" , 2, Some("LA")),
-          vieraanKielenModuuliOppiaineissa("ENA1"  , 2, Some("EN")),
-          vieraanKielenModuuliOppiaineissa("VKA1"  , 2, Some("ES")),
-          vieraanKielenModuuliOppiaineissa("VKB21" , 2, Some("PL"))
+          vieraanKielenModuuliOppiaineissa("FIM1", 2, Some("FI")),
+          vieraanKielenModuuliOppiaineissa("SMA1", 2, Some("SE")),
+          vieraanKielenModuuliOppiaineissa("SMB31", 2, Some("SE")),
+          vieraanKielenModuuliOppiaineissa("LAB21", 2, Some("LA")),
+          vieraanKielenModuuliOppiaineissa("LAB31", 2, Some("LA")),
+          vieraanKielenModuuliOppiaineissa("ENA1", 2, Some("EN")),
+          vieraanKielenModuuliOppiaineissa("VKA1", 2, Some("ES")),
+          vieraanKielenModuuliOppiaineissa("VKB21", 2, Some("PL"))
         )
 
         moduulit should equal(odotetutModuulit)
@@ -967,19 +968,19 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         val moduulit = opiskeluoikeus.suoritukset.head.osasuoritusLista.flatMap(_.osasuoritusLista.map(_.koulutusmoduuli))
 
         val odotetutModuulit = List(
-          vieraanKielenModuuliOppiaineissa("RUA1"  , 2, Some("SV")),
-          vieraanKielenModuuliOppiaineissa("RUB11" , 2, Some("SV")),
-          vieraanKielenModuuliOppiaineissa("RUÄ1"  , 2, Some("SV")),
-          vieraanKielenModuuliOppiaineissa("FINA1" , 2, Some("FI")),
+          vieraanKielenModuuliOppiaineissa("RUA1", 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("RUB11", 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("RUÄ1", 2, Some("SV")),
+          vieraanKielenModuuliOppiaineissa("FINA1", 2, Some("FI")),
           vieraanKielenModuuliOppiaineissa("FINB11", 2, Some("FI")),
-          vieraanKielenModuuliOppiaineissa("FIM1"  , 2, Some("FI")),
-          vieraanKielenModuuliOppiaineissa("SMA1"  , 2, Some("SE")),
-          vieraanKielenModuuliOppiaineissa("SMB31" , 2, Some("SE")),
-          vieraanKielenModuuliOppiaineissa("LAB21" , 2, Some("LA")),
-          vieraanKielenModuuliOppiaineissa("LAB31" , 2, Some("LA")),
-          vieraanKielenModuuliOppiaineissa("ENA1"  , 2, Some("EN")),
-          vieraanKielenModuuliOppiaineissa("VKA1"  , 2, Some("ES")),
-          vieraanKielenModuuliOppiaineissa("VKB21" , 2, Some("PL"))
+          vieraanKielenModuuliOppiaineissa("FIM1", 2, Some("FI")),
+          vieraanKielenModuuliOppiaineissa("SMA1", 2, Some("SE")),
+          vieraanKielenModuuliOppiaineissa("SMB31", 2, Some("SE")),
+          vieraanKielenModuuliOppiaineissa("LAB21", 2, Some("LA")),
+          vieraanKielenModuuliOppiaineissa("LAB31", 2, Some("LA")),
+          vieraanKielenModuuliOppiaineissa("ENA1", 2, Some("EN")),
+          vieraanKielenModuuliOppiaineissa("VKA1", 2, Some("ES")),
+          vieraanKielenModuuliOppiaineissa("VKB21", 2, Some("PL"))
         )
 
         moduulit should equal(odotetutModuulit)
@@ -1035,17 +1036,17 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         val moduulit = opiskeluoikeus.suoritukset.head.osasuoritusLista.head.osasuoritusLista.map(_.koulutusmoduuli)
 
         val odotetutModuulit = List(
-          vieraanKielenModuuliMuissaOpinnoissa("RUA1"  , 2, "SV"),
-          vieraanKielenModuuliMuissaOpinnoissa("RUB11" , 2, "SV"),
-          vieraanKielenModuuliMuissaOpinnoissa("RUÄ1"  , 2, "SV"),
-          vieraanKielenModuuliMuissaOpinnoissa("FINA1" , 2, "FI"),
+          vieraanKielenModuuliMuissaOpinnoissa("RUA1", 2, "SV"),
+          vieraanKielenModuuliMuissaOpinnoissa("RUB11", 2, "SV"),
+          vieraanKielenModuuliMuissaOpinnoissa("RUÄ1", 2, "SV"),
+          vieraanKielenModuuliMuissaOpinnoissa("FINA1", 2, "FI"),
           vieraanKielenModuuliMuissaOpinnoissa("FINB11", 2, "FI"),
-          vieraanKielenModuuliMuissaOpinnoissa("FIM1"  , 2, "FI"),
-          vieraanKielenModuuliMuissaOpinnoissa("SMA1"  , 2, "SE"),
-          vieraanKielenModuuliMuissaOpinnoissa("SMB31" , 2, "SE"),
-          vieraanKielenModuuliMuissaOpinnoissa("LAB21" , 2, "LA"),
-          vieraanKielenModuuliMuissaOpinnoissa("LAB31" , 2, "LA"),
-          vieraanKielenModuuliMuissaOpinnoissa("ENA1"  , 2, "EN")
+          vieraanKielenModuuliMuissaOpinnoissa("FIM1", 2, "FI"),
+          vieraanKielenModuuliMuissaOpinnoissa("SMA1", 2, "SE"),
+          vieraanKielenModuuliMuissaOpinnoissa("SMB31", 2, "SE"),
+          vieraanKielenModuuliMuissaOpinnoissa("LAB21", 2, "LA"),
+          vieraanKielenModuuliMuissaOpinnoissa("LAB31", 2, "LA"),
+          vieraanKielenModuuliMuissaOpinnoissa("ENA1", 2, "EN")
         )
 
         moduulit should equal(odotetutModuulit)
@@ -1655,7 +1656,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus))
       val opiskeluoikeus: LukionOpiskeluoikeus = putAndGetOpiskeluoikeus(oo).asInstanceOf[LukionOpiskeluoikeus]
 
-      opiskeluoikeus.oppimääräSuoritettu.get should equal (true)
+      opiskeluoikeus.oppimääräSuoritettu.get should equal(true)
     }
 
     "Ei täytetä automaattisesti 'true'ksi kun kyseessä oppiaineen oppimäärä" in {
@@ -1664,7 +1665,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       )))
       val opiskeluoikeus: LukionOpiskeluoikeus = putAndGetOpiskeluoikeus(oo).asInstanceOf[LukionOpiskeluoikeus]
 
-      opiskeluoikeus.oppimääräSuoritettu should equal (None)
+      opiskeluoikeus.oppimääräSuoritettu should equal(None)
     }
 
     "Ei täytetä automaattisesti, jos oppimäärän suoritusta ei ole vahvistettu" in {
@@ -1674,10 +1675,10 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         )),
         suoritukset = List(oppimääränSuoritus.copy(
           vahvistus = None
-      )))
+        )))
       val opiskeluoikeus: LukionOpiskeluoikeus = putAndGetOpiskeluoikeus(oo).asInstanceOf[LukionOpiskeluoikeus]
 
-      opiskeluoikeus.oppimääräSuoritettu.isDefined should equal (false)
+      opiskeluoikeus.oppimääräSuoritettu.isDefined should equal(false)
     }
 
     "Jos nuorten oppimäärän suoritus sisältää alle 150 op, oppimäärää ei voi merkitä suoritetuksi" in {
@@ -1728,7 +1729,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
           osasuoritukset = Some(oppiainesuorituksetEiRiitäValmistumiseen),
           vahvistus = None
-      )))
+        )))
 
       putOpiskeluoikeus(oo) {
         verifyResponseStatus(400,
@@ -1761,6 +1762,38 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       verifyResponseStatus(400,
         KoskiErrorCategory.badRequest.validation.rakenne.deprekoituLukionAineopintojenPäätasonSuorituksenKenttä()
       )
+    }
+  }
+
+  "Historian kurssien konversiot kun perusteen diaarinumero 'OPH-2267-2019' (Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019)" - {
+    "Oppimäärä, perusteen diaarina 'OPH-2267-2019'" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(false),
+        suoritukset = List(aikuistenOppiaineidenOppimäärienSuoritus.copy(
+          osasuoritukset = Some(aikuistenOppiainesuoritusHistoria)
+        ),
+        ), tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot = defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(opiskeluoikeusjakso => opiskeluoikeusjakso.copy(tila = opiskeluoikeusAktiivinen))))
+      val result = putAndGetOpiskeluoikeus(oo)
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should equal("Itsenäisen Suomen historia")
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should equal("Kansainväliset suhteet")
+
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("sv") should equal("Det självständiga Finlands historia")
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("sv") should equal("Internationella relationer")
+    }
+
+    "Perusteen diaarinumerona jokin muu kuin 'OPH-2267-2019'; Konversiota ei tehdä" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        oppimääräSuoritettu = Some(false),
+        suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+          osasuoritukset = Some(aikuistenOppiainesuoritusHistoria)
+        ),
+        ), tila = defaultOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot = defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(opiskeluoikeusjakso => opiskeluoikeusjakso.copy(tila = opiskeluoikeusAktiivinen))))
+      val result = putAndGetOpiskeluoikeus(oo)
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should not equal("Itsenäisen Suomen historia")
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should not equal("Kansainväliset suhteet")
+
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("sv") should not equal("Det självständiga Finlands historia")
+      result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("sv") should not equal("Internationella relationer")
     }
   }
 
