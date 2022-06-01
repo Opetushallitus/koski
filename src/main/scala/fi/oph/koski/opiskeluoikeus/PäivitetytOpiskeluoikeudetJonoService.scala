@@ -44,6 +44,9 @@ class PäivitetytOpiskeluoikeudetJonoService(application: KoskiApplication) {
 
   def poistaKaikki(): Unit =
     master.poistaKaikki()
+
+  def poistaVanhat(aikaraja: ZonedDateTime): Unit =
+    master.poistaVanhat(aikaraja)
 }
 
 trait PäivitetytOpiskeluoikeudetDbService extends QueryMethods {

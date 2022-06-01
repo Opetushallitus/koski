@@ -123,6 +123,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     pageSize: Int,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ) = {
+    val startTime = ZonedDateTime.now()
     update match {
       case Some(u) => logger.info(s"Start updating raportointikanta in ${loadDatabase.schema.name} with new opiskeluoikeudet until ${u.dueTime} from ${u.previousRaportointiDatabase.schema.name}")
       case None => logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name} (full reload)")
@@ -145,7 +146,11 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
           //Without try-catch, in case of an exception the process just silently halts, this is a feature of java.util.concurrent.Executors
           try {
             loadRestAndSwap()
-            päivitetytOpiskeluoikeudetJonoService.poistaKäsitellyt()
+            if (update.isDefined) {
+              päivitetytOpiskeluoikeudetJonoService.poistaKäsitellyt()
+            } else {
+              päivitetytOpiskeluoikeudetJonoService.poistaVanhat(startTime)
+            }
             putUploadEvents()
             putLoadTimeMetric(Option(true))
             onEnd()
