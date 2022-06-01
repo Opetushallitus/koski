@@ -13,13 +13,15 @@ object Migration extends Logging {
 
   private def doMigrate(config: DatabaseConfig, locations: String): Unit = {
     logger.info(s"Running migrations for ${config.dbname} from $locations")
+    createFlyway(config, locations).migrate()
+  }
 
+  private def createFlyway(config: DatabaseConfig, locations: String) = {
     val flyway = new Flyway
     flyway.setLocations(locations)
     flyway.setDataSource(config.url(useSecretsManagerProtocol = false), config.user, config.password)
     flyway.setSchemas(config.schemaName)
     flyway.setValidateOnMigrate(false)
-
-    flyway.migrate
+    flyway
   }
 }

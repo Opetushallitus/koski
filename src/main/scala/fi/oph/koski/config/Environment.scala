@@ -30,4 +30,7 @@ object Environment {
 
   def skipFixtures: Boolean =
     sys.env.getOrElse("SKIP_FIXTURES", "") == "true"
+
+  def forceLocalMigration: Option[String] =
+    sys.env.get("FORCE_LOCAL_MIGRATION")
 }
