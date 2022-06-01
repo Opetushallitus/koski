@@ -182,7 +182,7 @@ jobs:
       - name: Run perftest valpas-organisaatio-listaus
         run: |
           export PERFTEST_THREADS=30
-          export PERFTEST_ROUNDS=1000
+          export PERFTEST_ROUNDS=1700
           export WARMUP_ROUNDS=50
           export KOSKI_VALPAS_ORGANISAATIOT_FILENAME="valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt"
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
