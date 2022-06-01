@@ -45,7 +45,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
   def shouldUseFixtures = {
     val useFixtures: Boolean = Environment.currentEnvironment(application.config) match {
       case Environment.UnitTest => true
-      case Environment.Local => Environment.isUsingLocalDevelopmentServices(application)
+      case Environment.Local => Environment.isUsingLocalDevelopmentServices(application) && !Environment.skipFixtures
       case _ => false
     }
 

@@ -27,4 +27,7 @@ object Environment {
   }
 
   def currentEnvironment(config: Config): String = config.getString("env")
+
+  def skipFixtures: Boolean =
+    sys.env.getOrElse("SKIP_FIXTURES", "") == "true"
 }
