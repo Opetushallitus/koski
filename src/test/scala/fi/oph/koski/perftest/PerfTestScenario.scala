@@ -9,10 +9,12 @@ trait PerfTestScenario extends KoskidevHttpSpecification with EnvVariables with 
   def warmupRoundCount: Int = env("WARMUP_ROUNDS", "20").toInt
   def serverCount: Int = env("KOSKI_SERVER_COUNT", "2").toInt
   def threadCount: Int = env("PERFTEST_THREADS", "10").toInt
+  def successThresholdPercentage: Int = env("PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE", "100").toInt
   def operation(round: Int): List[Operation]
   def maximumExpectedDurationMs: Int = Int.MaxValue
   def name = getClass.getSimpleName
   def readBody: Boolean = false
+  def bodyValidator: Boolean = true
 
   override def logger = super.logger
 }

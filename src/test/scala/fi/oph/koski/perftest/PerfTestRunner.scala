@@ -30,8 +30,13 @@ object PerfTestRunner extends Logging {
     scenarios.map(scenario => startScenario(scenario, group, stats, scenario.threadCount, scenario.roundCount)).foreach(_())
     logger.info("**** Finished test ****")
     val failures: Int = stats.summary.failedCount
-    if (failures > 0) {
-      throw new RuntimeException(s"Test failed: $failures failures")
+    val successes: Int = stats.summary.successCount
+    val successPercentage: Int = stats.summary.successPercentage
+    val successThresholdPercentage: Int = scenarios.map(_.successThresholdPercentage).max
+    if(successPercentage < successThresholdPercentage) {
+      throw new RuntimeException(s"Test failed: $successPercentage% succeeded, while success threshold was $successThresholdPercentage%. $failures failures and $successes successes in total.")
+    } else {
+      logger.info(s"Test passed: $successPercentage% succeeded, while success threshold was $successThresholdPercentage%. $failures failures and $successes successes in total.")
     }
   }
 
@@ -71,7 +76,7 @@ object PerfTestRunner extends Logging {
                       if (scenario.readBody) {
                         toDevNull(scenario.response.inputStream)
                       }
-                      true
+                      scenario.bodyValidator
                     }
                   }
                 } catch {
@@ -114,21 +119,31 @@ object PerfTestRunner extends Logging {
   }
 }
 
-case class Stats(startTimestamp: Long, timestamp: Long = currentTimeMillis(), successCount: Int = 0, failedCount: Int = 0, elapsedMsTotal: Long = 0) {
-  def addSuccess(elapsedMs: Long) = this.copy(successCount = successCount + 1).addElapsed(elapsedMs)
-  def addFailure(elapsedMs: Long) = this.copy(failedCount = failedCount + 1).addElapsed(elapsedMs)
+case class Stats(
+  startTimestamp: Long,
+  timestamp: Long = currentTimeMillis(),
+  successCount: Int = 0,
+  failedCount: Int = 0,
+  elapsedMsTotal: Long = 0,
+  successPercentage: Int = 0
+) {
+  def addSuccess(elapsedMs: Long) = this.copy(successCount = successCount + 1).addElapsed(elapsedMs).addSuccessPercentage()
+  def addFailure(elapsedMs: Long) = this.copy(failedCount = failedCount + 1).addElapsed(elapsedMs).addSuccessPercentage()
   def addResult(success: Boolean, elapsedMs: Long) = if (success) addSuccess(elapsedMs) else addFailure(elapsedMs)
   def totalCount = { successCount + failedCount }
   def averageDuration = { elapsedMsTotal / totalCount }
   def requestsPerSec = { totalCount * 1000 / (timestamp - startTimestamp) }
   private def addElapsed(elapsed: Long) = this.copy(elapsedMsTotal = elapsedMsTotal + elapsed, timestamp = currentTimeMillis)
+  private def addSuccessPercentage(): Stats = if(totalCount > 0) {
+    this.copy(successPercentage = math.round(successCount.toDouble / totalCount.toDouble * 100).toInt)
+  } else { this.copy(successPercentage = 0) }
   def +(other: Stats) = Stats(
     startTimestamp,
     Math.max(timestamp, other.timestamp),
     successCount + other.successCount,
     failedCount + other.failedCount,
     elapsedMsTotal + other.elapsedMsTotal
-  )
+  ).addSuccessPercentage()
 }
 
 class StatsCollector {
