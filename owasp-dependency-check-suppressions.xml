@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-  <suppress until="2022-06-01Z">
+  <suppress until="2022-09-01Z">
     <notes>Medium level issues in the org.apache.xmlbeans:xmlbeans:jar:2.6.0 which is dependency of
       org.apache.poi:poi-ooxml:jar:3.17. Ticket for fix https://jira.eduuni.fi/browse/TOR-1373.</notes>
     <cve>CVE-2019-12415</cve>
