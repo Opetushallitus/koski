@@ -65,6 +65,10 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     }
   }
 
+  def teeTestimerkintäSähköpostinotifikaatiotaVarten(): Unit = {
+    teeLogimerkintäSähköpostinotifikaatiotaVarten("[TÄMÄ ON TESTIVIESTI]")
+  }
+
   private def teeLogimerkintäSähköpostinotifikaatiotaVarten(oid: String): Unit = {
     logger.warn(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${oid}. Ks. tarkemmat tiedot ${application.config.getString("opintopolku.virkailija.url")}/koski/api/opiskeluoikeus/suostumuksenperuutus")
   }

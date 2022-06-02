@@ -76,6 +76,29 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       RootLogTester.getLogMessages.find(_.startsWith("Kansalainen")).get should equal(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${vapaatavoitteinenOpiskeluoikeusOid}. Ks. tarkemmat tiedot mock/koski/api/opiskeluoikeus/suostumuksenperuutus")
     }
 
+    "Sähköpostinotifikaatiota varten voi tehdä testimerkinnän" in {
+      RootLogTester.clearMessages
+      get(s"/api/opiskeluoikeus/suostumuksenperuutus/testimerkinta", headers = authHeaders(MockUsers.paakayttaja)) {
+        verifyResponseStatusOk()
+      }
+
+      RootLogTester.getLogMessages.find(_.startsWith("Kansalainen")).get should equal(s"Kansalainen perui suostumuksen. Opiskeluoikeus [TÄMÄ ON TESTIVIESTI]. Ks. tarkemmat tiedot mock/koski/api/opiskeluoikeus/suostumuksenperuutus")
+    }
+
+    "Testimerkintää ei voi tehdä ilman loginia" in {
+      RootLogTester.clearMessages
+      get(s"/api/opiskeluoikeus/suostumuksenperuutus/testimerkinta") {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated("Käyttäjä ei ole tunnistautunut."))
+      }
+    }
+
+    "Testimerkintää ei voi tehdä kansalaisen tunnuksilla" in {
+      RootLogTester.clearMessages
+      get(s"/api/opiskeluoikeus/suostumuksenperuutus/testimerkinta", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu) ) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainVirkailija("Sallittu vain virkailija-käyttäjille"))
+      }
+    }
+
     "Opiskeluoikeudesta jää raatorivi opiskeluoikeustauluun" in {
       resetFixtures()
       post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu)) {}
