@@ -54,6 +54,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
                 application.perustiedotSyncRepository.addDeleteToSyncQueue(opiskeluoikeudenId)
               )
             )
+            teeLogimerkintäSähköpostinotifikaatiotaVarten(oid)
             AuditLog.log(KoskiAuditLogMessage(KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
             HttpStatus.ok
           case None =>
@@ -62,6 +63,10 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
         }
       case None => KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
     }
+  }
+
+  private def teeLogimerkintäSähköpostinotifikaatiotaVarten(oid: String): Unit = {
+    logger.warn(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${oid}. Ks. tarkemmat tiedot ${application.config.getString("opintopolku.virkailija.url")}/koski/api/opiskeluoikeus/suostumuksenperuutus")
   }
 
   def suoritusjakoTekemättäWithAccessCheck(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
