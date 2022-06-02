@@ -8,8 +8,11 @@ import java.time.LocalDate
 /*
   Päätason suoritus
 */
+object VSTKoto2022Peruste {
+  val diaarinumero = "OPH-649-2022"
+}
 
-@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", "OPH-XXX-2022") // TODO: Oikea diaarinumero
+@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", VSTKoto2022Peruste.diaarinumero)
 @Title("Oppivelvollisille suunnattu maahanmuuttajien kotoutumiskoulutuksen suoritus 2022")
 case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022(
   toimipiste: OrganisaatioWithOid,
@@ -33,7 +36,7 @@ case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuorit
 case class VSTKotoutumiskoulutus2022(
   @KoodistoKoodiarvo("999910")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999910", koodistoUri = "koulutus"),
-  perusteenDiaarinumero: Option[String] = Some("OPH-XXX-2022"), // TODO: Oikea diaarinumero
+  perusteenDiaarinumero: Option[String] = Some(VSTKoto2022Peruste.diaarinumero),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends DiaarinumerollinenKoulutus
