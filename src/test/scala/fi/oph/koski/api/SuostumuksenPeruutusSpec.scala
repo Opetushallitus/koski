@@ -9,7 +9,7 @@ import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
 import fi.oph.koski.documentation.VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.{paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet, varsinaisSuomiPalvelukäyttäjä}
-import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
+import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation, RootLogTester}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{VapaanSivistystyönOpiskeluoikeus, VapaanSivistystyönOpiskeluoikeusjakso}
 import org.json4s.{JObject, JString}
@@ -65,6 +65,38 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
           KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> vapaatavoitteinenOpiskeluoikeus.oid.get
         ),
       ))
+    }
+
+    "Suostumuksen peruutuksesta tehdään määrämuotoinen log-merkintä sähköpostinotifikaation lähetystä varten" in {
+      resetFixtures()
+
+      RootLogTester.clearMessages
+      post(s"/api/opiskeluoikeus/suostumuksenperuutus/$vapaatavoitteinenOpiskeluoikeusOid", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu)) {}
+
+      RootLogTester.getLogMessages.find(_.startsWith("Kansalainen")).get should equal(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${vapaatavoitteinenOpiskeluoikeusOid}. Ks. tarkemmat tiedot mock/koski/api/opiskeluoikeus/suostumuksenperuutus")
+    }
+
+    "Sähköpostinotifikaatiota varten voi tehdä testimerkinnän" in {
+      RootLogTester.clearMessages
+      get(s"/api/opiskeluoikeus/suostumuksenperuutus/testimerkinta", headers = authHeaders(MockUsers.paakayttaja)) {
+        verifyResponseStatusOk()
+      }
+
+      RootLogTester.getLogMessages.find(_.startsWith("Kansalainen")).get should equal(s"Kansalainen perui suostumuksen. Opiskeluoikeus [TÄMÄ ON TESTIVIESTI]. Ks. tarkemmat tiedot mock/koski/api/opiskeluoikeus/suostumuksenperuutus")
+    }
+
+    "Testimerkintää ei voi tehdä ilman loginia" in {
+      RootLogTester.clearMessages
+      get(s"/api/opiskeluoikeus/suostumuksenperuutus/testimerkinta") {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated("Käyttäjä ei ole tunnistautunut."))
+      }
+    }
+
+    "Testimerkintää ei voi tehdä kansalaisen tunnuksilla" in {
+      RootLogTester.clearMessages
+      get(s"/api/opiskeluoikeus/suostumuksenperuutus/testimerkinta", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu) ) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainVirkailija("Sallittu vain virkailija-käyttäjille"))
+      }
     }
 
     "Opiskeluoikeudesta jää raatorivi opiskeluoikeustauluun" in {

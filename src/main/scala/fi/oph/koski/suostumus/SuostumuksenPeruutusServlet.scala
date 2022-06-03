@@ -57,4 +57,10 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
       KoskiErrorCategory.forbidden.vainVirkailija()
     }
   }
+
+  get("/testimerkinta") {
+    requireVirkailijaOrPalvelukäyttäjä
+    application.suostumuksenPeruutusService.teeTestimerkintäSähköpostinotifikaatiotaVarten()
+    renderObject(JObject("testimerkintä" -> JBool(true)))
+  }
 }
