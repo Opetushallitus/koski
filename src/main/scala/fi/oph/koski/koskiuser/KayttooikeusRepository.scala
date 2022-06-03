@@ -55,11 +55,13 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
 
   private def hierarkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
     if (organisaatioHierarkia.varhaiskasvatuksenJärjestäjä && organisaatioHierarkia.toKoulutustoimija.isDefined) {
-      organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map { päiväkoti =>
+      organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map {
+        case (toimipiste, onVarhaiskasvatuksenToimipiste) =>
         KäyttöoikeusVarhaiskasvatusToimipiste(
           koulutustoimija = organisaatioHierarkia.toKoulutustoimija.get,
-          ulkopuolinenOrganisaatio = päiväkoti.toOidOrganisaatio,
-          organisaatiokohtaisetPalveluroolit = k.organisaatiokohtaisetPalveluroolit
+          ulkopuolinenOrganisaatio = toimipiste.toOidOrganisaatio,
+          organisaatiokohtaisetPalveluroolit = k.organisaatiokohtaisetPalveluroolit,
+          onVarhaiskasvatuksenToimipiste = onVarhaiskasvatuksenToimipiste
         )
       }
     } else {

@@ -305,7 +305,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   private def validateOrganisaatioOid(oppilaitosOid: String) =
     OrganisaatioOid.validateOrganisaatioOid(oppilaitosOid) match {
       case Left(error) => haltWithStatus(error)
-      case Right(oid) if !session.hasReadAccess(oid) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
+      case Right(oid) if !session.hasRaporttiReadAccess(oid) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
       case Right(oid) => oid
     }
 

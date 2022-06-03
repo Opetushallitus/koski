@@ -65,7 +65,7 @@ trait OrganisaatioRepository extends Logging {
   def findAllFlattened: List[OrganisaatioHierarkia] = OrganisaatioHierarkia.flatten(findAllHierarkiat)
   def findAllHierarkiat: List[OrganisaatioHierarkia]
 
-  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioWithOid] = {
+  def findAllVarhaiskasvatusToimipisteet: List[(OrganisaatioWithOid, Boolean)] = {
     OrganisaatioHierarkia.flatten(findAllHierarkiat)
       .filter(o =>
         o.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA) ||
@@ -73,7 +73,7 @@ trait OrganisaatioRepository extends Logging {
         o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskouluasteenErityiskoulut) ||
         o.oppilaitostyyppi.contains(Oppilaitostyyppi.perusJaLukioasteenKoulut)
       )
-      .map(_.toOrganisaatio)
+      .map(o => (o.toOrganisaatio, o.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA)))
   }
 
   def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] = {
