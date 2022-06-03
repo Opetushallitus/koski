@@ -1,4 +1,4 @@
-name: Run performance tests
+name: Run Valpas performance tests
 on:
   workflow_dispatch:
 
