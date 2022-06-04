@@ -7,10 +7,6 @@ env:
   KOSKI_SERVER_COUNT: 2
   KOSKI_USER: ${{ secrets.KOSKI_USER_USERNAME }}
   KOSKI_PASS: ${{ secrets.KOSKI_USER_PASSWORD }}
-
-  TILASTOKESKUS_USER: ${{ secrets.TILASTOKESKUS_PERFTEST_USER }}
-  TILASTOKESKUS_PASS: ${{ secrets.TILASTOKESKUS_PERFTEST_PASS }}
-
   KOSKI_BASE_URL: https://koski.testiopintopolku.fi/koski
   VIRKAILIJA: https://virkailija.testiopintopolku.fi
 
