@@ -2302,5 +2302,16 @@
   "Perusopetuksen valmistavan opetuksen opinnot": "Perusopetuksen valmistavan opetuksen opinnot",
   "description:Laajuus vuosiviikkotunneissa" : "Laajuus vuosiviikkotunneissa",
   "luokkaAstettaEiVoiValitaKoulutusSuoritukselle": "Luokka-astetta ei voi valita suoritukselle, jos suoritustapana on koulutus",
-  "oppiaineenOppimaara": "Oppiaineen oppimäärä"
+  "oppiaineenOppimaara": "Oppiaineen oppimäärä",
+  "description:VST-KOTO kieli- ja viestintäosaamisen osasuoritus" : "VST-KOTO kieli- ja viestintäosaamisen osasuoritus",
+  "description:Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen..." : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen osasuoritus",
+  "Kotoutumiskoulutuksen yhteyskunta- ja työelämäosaaminen" : "Kotoutumiskoulutuksen yhteyskunta- ja työelämäosaaminen",
+  "description:Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen (OPS..." : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen (OPS 2022) tunnistetiedot",
+  "description:Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen osasuorituksen..." : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen osasuorituksen alaosasuoritus",
+  "description:Hyväksytty arviointi tarkoittaa osasuorituksen suoritusta" : "Hyväksytty arviointi tarkoittaa osasuorituksen suoritusta",
+  "description:Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten..." : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen osasuoritus",
+  "Kotoutumiskoulutuksen kieli- ja viestintäosaaminen" : "Kotoutumiskoulutuksen kieli- ja viestintäosaaminen",
+  "Vapaan sivistystyön maahanmuuttajien kotoutumiskoultuksen valinnaisten opintojen osasuoritus" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoultuksen valinnaisten opintojen osasuoritus",
+  "description:Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen osasuoritus" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen osasuoritus",
+  "description:Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen yhteiskunta-..." : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen yhteiskunta- ja työelämäosaamisen osasuoritus"
 }

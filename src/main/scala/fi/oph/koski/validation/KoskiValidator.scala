@@ -92,7 +92,7 @@ class KoskiValidator(
 
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
     opiskeluoikeus match {
-      case opiskeluoikeus if opiskeluoikeus.mitätöity => Right(opiskeluoikeus)
+      case opiskeluoikeus: Opiskeluoikeus if opiskeluoikeus.mitätöity => Right(opiskeluoikeus)
       case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
         updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
           (validateAccess(opiskeluoikeus)
@@ -122,7 +122,8 @@ class KoskiValidator(
                 TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
                 SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService),
                 Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus),
-                AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, ePerusteet, config)
+                AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, ePerusteet, config),
+                VSTKotoutumiskoulutus2022Validation.validate(opiskeluoikeus),
               )
             } match {
             case HttpStatus.ok => Right(opiskeluoikeus)
@@ -177,7 +178,8 @@ class KoskiValidator(
       suoritus.withOsasuoritukset(suoritus.osasuoritukset.map(_.map { os =>
         lazy val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0.0)).map(BigDecimal.decimal).sum.toDouble
         os.withKoulutusmoduuli(os.koulutusmoduuli match {
-          case k: OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli[_] => k
+          case k: OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli[_] =>
+            k
           case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[_] if yhteislaajuus > 0 => k.withLaajuus(yhteislaajuus)
           case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[_] => k.withLaajuusNone()
           case k => k
@@ -192,6 +194,8 @@ class KoskiValidator(
 
     suoritus match {
       case koto: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus =>
+        laajuusYlimpienOsasuoritustenLaajuuksista(koto, yhteislaajuus, l => LaajuusOpintopisteissä(l))
+      case koto: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 =>
         laajuusYlimpienOsasuoritustenLaajuuksista(koto, yhteislaajuus, l => LaajuusOpintopisteissä(l))
       case lukutaito: VapaanSivistystyönLukutaitokoulutuksenSuoritus =>
         laajuusYlimpienOsasuoritustenLaajuuksista(lukutaito, yhteislaajuus, l => LaajuusOpintopisteissä(l))
@@ -621,6 +625,7 @@ class KoskiValidator(
         :: LukionYhteisetValidaatiot.validateLukionPäätasonSuoritus(suoritus)
         :: LukioonValmistavanKoulutuksenValidaatiot.validateLukioonValmistava2019(suoritus)
         :: VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonSuoritus(suoritus, opiskeluoikeus)
+        :: VSTKotoutumiskoulutus2022Validation.validate(suoritus)
         :: TutkintokoulutukseenValmentavaKoulutusValidation.validateTuvaSuoritus(suoritus, opiskeluoikeus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))

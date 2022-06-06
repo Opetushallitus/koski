@@ -1482,6 +1482,21 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenkielitaitojensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkielitaitojensuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieli- ja viestintätaitojen suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieli- ja viestintätaitojen suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieli- ja viestintätaitojen suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
   "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
   "metadata" : [ {

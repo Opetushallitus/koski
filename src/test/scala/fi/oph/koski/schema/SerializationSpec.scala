@@ -78,6 +78,11 @@ class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers w
                    _: MuidenLukioOpintojenPreIBSuoritus2019 |
                    _: PreIBLukionModuulinSuoritus2019 |
                    _: PreIBLukionPaikallisenOpintojaksonSuoritus2019 => true
+              case _: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuudenSuoritus |
+                   _: VapaanSivistystyönMaahanmuuttajienKuntoutuskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenOsasuoritus |
+                   _: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus |
+                   _: VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022 |
+                   _: VSTKotoutumiskoulutuksenAlaosasuoritus2022 => true
               case _ => false
             }
 
