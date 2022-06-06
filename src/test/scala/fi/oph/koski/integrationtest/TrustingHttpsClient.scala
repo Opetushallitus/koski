@@ -13,7 +13,7 @@ object TrustingHttpsClient {
       .custom
       .setSSLSocketFactory(makeSslConnectionSocketFactory)
       .disableRedirectHandling
-      .setDefaultRequestConfig(RequestConfig.custom.setCookieSpec(CookieSpecs.STANDARD).build)
+      .disableCookieManagement
       .build
   }
 

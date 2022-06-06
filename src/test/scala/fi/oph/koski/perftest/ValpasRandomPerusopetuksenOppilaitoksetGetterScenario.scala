@@ -12,17 +12,24 @@ object ValpasRandomPerusopetuksenOppilaitoksetGetterScenario extends PerfTestSce
   oids.next // To check before start
   def operation(x: Int) = {
     val data = oids.next
-    List(Operation(uri = s"valpas/api/oppijat/${data.oppilaitos}", uriPattern=Some("valpas/api/oppijat/_"))) ++
+    List(Operation(uri = s"valpas/api/oppijat/${data.oppilaitos}", uriPattern = Some("valpas/api/oppijat/_"))) ++
       data.oppijat
         .grouped(HAKUTIEDOT_FETCH_LIST_SIZE)
         .map(oppijaOids => Operation(
           method = "POST",
           uri = s"valpas/api/oppijat/${data.oppilaitos}/hakutiedot",
           body = JsonSerializer.writeWithRoot(Oppijalista(oppijaOids)).getBytes(Charset.forName("UTF-8")),
-          uriPattern=Some("valpas/api/oppijat/_/hakutiedot"),
+          uriPattern = Some("valpas/api/oppijat/_/hakutiedot"),
         ))
   }
-  override def bodyValidator: Boolean = !this.body.contains("hakutilanneError")
+
+  override def bodyValidator: Boolean = {
+    val bodyContainsError = this.body.contains("hakutilanneError")
+    if (bodyContainsError) {
+      logger.error(this.body)
+    }
+    !bodyContainsError
+  }
 }
 
 object ValpasRandomPerusopetuksenOppilaitoksetGetter extends App {
