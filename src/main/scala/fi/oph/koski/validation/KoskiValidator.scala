@@ -13,7 +13,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.KoskiSchema.{lenientDeserialization, strictDeserialization}
+import fi.oph.koski.schema.KoskiSchema.{lenientDeserialization, schema, strictDeserialization}
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
 import fi.oph.koski.schema.{VapaanSivistystyönPäätasonSuoritus, _}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
@@ -1171,36 +1171,36 @@ class KoskiValidator(
       }
     }
 
-    def yhteistenValidaatiot(suoritus: Suoritus): HttpStatus = {
-      suoritus match {
-        case s: AmmatillisenTutkinnonSuoritus => {
-          s.koulutusmoduuli.koulutustyyppi match {
-            case Some(tyyppi) => {
-              if (tyyppi == ammatillinenPerustutkinto)
-                HttpStatus.fold(List(validateOnOsaAlueita(s),
-                  validateYhteistenOsienLaajuus(s),
-                  validateYhteislaajuus(s),
-                  validateEiSamojaKoodeja(s),
-                  validateYhteistenOsienKoodit(s)))
-              else HttpStatus.ok
-            }
-            case _ => HttpStatus.ok
-          }
-        }
-        case _ => HttpStatus.ok
-      }
+    def yhteistenValidaatiot(suoritus: AmmatillisenTutkinnonSuoritus): HttpStatus = {
+      HttpStatus.fold(List(validateOnOsaAlueita(suoritus),
+        validateYhteistenOsienLaajuus(suoritus),
+        validateYhteislaajuus(suoritus),
+        validateEiSamojaKoodeja(suoritus),
+        validateYhteistenOsienKoodit(suoritus)))
     }
 
-    // Ei validoida, jos kyseessä kuoriopiskeluoikeus eli linkitetty opiskeluoikeus
-    if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
-      val oids = koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(opiskeluoikeus.oid.get)(KoskiSpecificSession.systemUser).right.getOrElse(List())
-      if (linkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, oids)) {
-        HttpStatus.ok
-      } else {
-        yhteistenValidaatiot(suoritus)
-      }
-    } else {
-      yhteistenValidaatiot(suoritus)
+    suoritus match {
+      case s: AmmatillisenTutkinnonSuoritus if s.koulutusmoduuli.koulutustyyppi.contains(ammatillinenPerustutkinto) =>
+        val validaationTulos = yhteistenValidaatiot(s)
+
+        if (validaationTulos.isOk) {
+          validaationTulos
+        } else {
+          // Jätetään validaation tulokset huomioimatta, jos kyseessä kuoriopiskeluoikeus eli linkitetty opiskeluoikeus.
+          // Tämä tutkiminen tehdään vasta validaatioiden jälkeen, koska linkitysten tutkiminen aiheuttaa ylimääräisiä
+          // tietokantakyselyitä.
+          if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
+            val oids = koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(opiskeluoikeus.oid.get)(KoskiSpecificSession.systemUser).right.getOrElse(List())
+            if (linkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, oids)) {
+              HttpStatus.ok
+            } else {
+              validaationTulos
+            }
+          } else {
+            validaationTulos
+          }
+        }
+      case _ => HttpStatus.ok
     }
   }
 
