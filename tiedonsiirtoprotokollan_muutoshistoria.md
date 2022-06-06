@@ -1,4 +1,9 @@
+## 6.6.2022
+
+- Lisätty vapaan sivistystyön kotoutumiskoulutuksen opetussuunnitelman 2022 mukainen tietomalli
+
 ## 19.5.2022
+
 - Korjattu sallitut koodiarvot international school opiskeluoikeudelle koodistosta `arviointiasteikkoib`.
   - International school IB oppiaineen arviointi ja numeerinen international school oppiaineen arviointi.
   - Lisätty json-skeemaan hyväksytyt arvosanan koodiarvot `S` ja `F`. Poistettu json-skeemasta epävalidit koodiarvot `pass`/`fail` kyseisiltä arvioinneilta.
@@ -8,6 +13,7 @@
   - Koski voi ylikirjoittaa tiedonsiirrossa annetut laajuudet.
 
 ## 22.4.2022
+
 - TUVA-tietomallin perusopetuksen järjestämisluvan lisätiedoista poistettu tarpeettomana kenttä erityisen tuen päätöksistä.
 
 ## 5.4.2022
@@ -15,19 +21,23 @@
 - Nuorten perusopetuksen oppiaineen oppimäärän suoritukseen on lisätty valinnainen kenttä "luokkaAste"
 
 ## 10.3.2022
+
 - TUVA-tietomallin opiskeluoikeuden tilan opiskeluoikeusjaksoihin lisätty valinnainen kenttä opintojenRahoitus.
 - TUVA-tietomallin osasuoritusten arviointi-kentät muutettu käyttämään uutta koodistoa arviointiasteikkotuva.
 - TUVA-tietomallin perusopetuksen lisätiedoista korvattu vanhentunut ulkomailla-kenttä kentällä ulkomaanjaksot.
 
 ## 8.3.2022
-- Korvattu koodiston *suorituksentyyppituva* käyttö TUVA tietomallin osasuorituksen tyypissä koodistolla *suorituksentyyppi*.
+
+- Korvattu koodiston _suorituksentyyppituva_ käyttö TUVA tietomallin osasuorituksen tyypissä koodistolla _suorituksentyyppi_.
   - Koodistokoodit siirretty uuteen koodistoon ja vanhat koodiarvot osin päivitetty.
 - Poistettu nimi-kenttä TUVA-osasuoritusten koulutusmoduuleista tarpeettomana.
 
 ## 7.2.2022
+
 - Lisätty tietomalli Tutkintokoulutukseen valmentava koulutus (TUVA)
 
 ## 13.1.2022
+
 - Seuraavat kentät on merkätty redundanteiksi. Nämä kentät tiputetaan hiljaisesti pois siirroissa, eikä niitä sisällytetä Koskesta saataviin tietoihin:
   - Kaikkien opiskeluoikeuksien lisätiedoissa:
     - oikeusMaksuttomaanAsuntolapaikkaan
@@ -66,49 +76,59 @@
       - tukimuodot
 
 ## x.12.2021
+
 - Sensitiiviseksi merkitty seuraavat:
-"alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy"
-"yksilöllistettyOppimäärä"
-Ammatillisen osasuorituksen lisätieto kun koodiarvona "mukautettu"
-"keskiarvoSisältääMukautettujaArvosanoja"
-"PerusopetuksenToiminta_AlueenSuoritus"
+  "alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy"
+  "yksilöllistettyOppimäärä"
+  Ammatillisen osasuorituksen lisätieto kun koodiarvona "mukautettu"
+  "keskiarvoSisältääMukautettujaArvosanoja"
+  "PerusopetuksenToiminta_AlueenSuoritus"
 
 ## 30.11.2021
+
 - Lukion opiskeluoikeuteen lisätty kenttä oppimääräSuoritettu. Se täytetään automaattisesti, jos opiskeluikeudessa on
   oppimäärän vahvistettu suoritus.
 
 ## 8.9.2021
+
 - Lukion aiemman kuin 2019 opetussuunnitelman perusteiden mukaisiin opintoihin saa siirtää maksuttomuustiedon, jos
-opiskeluoikeus on alkanut 1.1.2021 tai myöhemmin.
+  opiskeluoikeus on alkanut 1.1.2021 tai myöhemmin.
 
 ## 1.5.2021 - 1.8.2021
+
 - Uuden oppivelvollisuuslain mukaisiin peruskoulun jälkeisten opintojen opiskeluoikeuksiin on lisätty mahdollisuus siirtää
-tieto koulutuksen maksuttomuudesta opiskeluoikeuden lisätiedoissa.
+  tieto koulutuksen maksuttomuudesta opiskeluoikeuden lisätiedoissa.
 
 ## 22.12.2020
+
 - Lisätty tietomalliluonnos Vapaan sivistystyön oppivelvollisuuslinjoille. Tämä on vielä luonnos kommentointia varten ja
-tunnettuja selvityksessä olevista avoimista kysymyksistä johtuvia puutteita on vielä useita.
+  tunnettuja selvityksessä olevista avoimista kysymyksistä johtuvia puutteita on vielä useita.
 
 ## 29.10.2020
+
 - Lisätty tietomalli Pre-IB-opinnoille lukion opetussuunnitelman 2019 mukaan
 - Poistettu Lukion opetussuunnitelman 2019 suorituksentyyppikoodistosta 2019 jälkiliite. Eri vuosien opetussuunnitelmat
-erotellaan vain koulutusmoduulin sisällöllä.
+  erotellaan vain koulutusmoduulin sisällöllä.
 
 ## 6.10.2020
+
 - Lukion 2019 opetussuunnitelmassa suullisen kielitaidon kokeen koodisto vaihdettu kieli-koodistosta
-kielivalikoima-koodistoon
+  kielivalikoima-koodistoon
 - Lukion 2019 opetussuunnitelmassa valtakunnallisia moduuleita ei voi enää lisätä temaattisiin opintoihin
 - Lukion 2019 opetussuunnitelmassa valtakunnallisia moduuleita ei voi enää lisätä paikallisiin oppiaineisiin
 
 ## 24.8.2020
+
 - poistettu toistaiseksi lukion 2019 opetussuunnitelman integraatio osana Pre IB -opintojen suorituksia.
 
 ## 13.8.2020
+
 - Lisätty uusi Kela-rajapinta. Ei ole vielä käytössä tuotantoympäristössä.
 - Lisätty ensimmäinen versio lukion 2019 opetussuunnitelman mukaisista suorituksista. Uusien suoritustyyppien tallennus
-ei ole vielä mahdollista tuotantoympäristössä.
+  ei ole vielä mahdollista tuotantoympäristössä.
 
 ## 17.6.2020
+
 - Deprekoitu esiopetuksen, perusopetuksen ja perusopetuksen lisäopetuksen opiskeluoikeuden lisätiedoista kenttä "tukimuodot"
 - Lisätty perusopetuksen ja perusopetuksen lisäopetuksen opiskeluoikeuden erityisen tuen ja tehostetun tuen päätöksiin (toistaiseksi deprekoinnilla piilotettu) kenttä tukimuodoista
 - Lisätty esiopetuksen suoritustietoihin (toistaiseksi deprekoinnilla piilotettu) osaAikainenErityisopetus, joka käyttää koodistoa osaaikainenerityisopetuslukuvuodenaikana
@@ -116,57 +136,70 @@ ei ole vielä mahdollista tuotantoympäristössä.
 - Lisätty perusopetuksen lisäopetuksen suoritukseen (toistaiseksi deprekoinnilla piilotettu) kenttä osaAikainenErityisopetus
 
 ## 15.5.2020
+
 - Lisätty perusopetukseen valmistavan opiskeluoikeuden tila "Loma"
 
 ## 7.4.2020
+
 - Lisätty koulusivistyskieli-kenttä ylioppilastutkinnon, nuorten perusopetuksen oppimäärän ja lukion oppimäärän suoritukseen
 
 ## 27.3.2020
+
 - Lisätty korkeakoulun opiskeluoikeuden lisätietoihin optionaalinen kenttä järjestäväOrganisaatio
 
 ## 26.3.2020
+
 - Lisätty suoritustapa-rakenne nuorten perusopetuksen vuosiluokansuoritukseen
 
 ## 5.3.2020
+
 - Lisätty kenttä oman äidinkielen opinnot suorituksiin
-    - Aikuisten perusopetuksen oppimäärän suoritus
-    - Aikuisten perusopetuksen alkuvaiheen suoritus
-    - Lukion oppimäärän suoritus
-    - Nuorten perusopetuksen vuosiluokan suoritus
-    - Nuorten perusopetuksen oppimäärän suoritus
-    - Perusopetukseen valmistavan opetuksen suoritus
+  - Aikuisten perusopetuksen oppimäärän suoritus
+  - Aikuisten perusopetuksen alkuvaiheen suoritus
+  - Lukion oppimäärän suoritus
+  - Nuorten perusopetuksen vuosiluokan suoritus
+  - Nuorten perusopetuksen oppimäärän suoritus
+  - Perusopetukseen valmistavan opetuksen suoritus
 
 ## 14.1.2020
+
 - Lisätty esiopetuksen opiskeluoikeuteen kenttä järjestämismuoto
 
 ## 4.12.2019
+
 - Lisätty esiopetuksen opiskeluoikeuden lisätietoihin kentät:
-    - tukimuodot
-    - majoitusetu
-    - kuljetusetu
-    - koulukoti
+  - tukimuodot
+  - majoitusetu
+  - kuljetusetu
+  - koulukoti
 
 ## 6.11.2019
+
 - Lisätty mahdollisuus siirtää kokonaisuuksia "Korkeakouluopintoja" ja "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja" osasuorituksina päätason suoritukselle Ammatillisen tutkinnon osa/osia.
 
 ## 19.9.2019
+
 - Lisätty suoritustapa-kenttä nuorten perusopetuksen oppiaineen suoritukseen valmistavassa opetuksessa
 - Yhteisen tutkinnon osan osa-alueita voi lisätä osasuorituksiksi suorituksiin:
   - Muun ammatillisen koulutuksen suoritus
   - Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus
 
 ## 4.9.2019
+
 - Perusopetukseen valmistavan koulutuksen suoritukseen lisätty kokonaislaajuus
 - Perusopetukseen valmistavan koulutuksen suorituksesta poistettu Nuorten perusopetuksen oppiaineen suoritus
 - Perusopetukseen valmistavan koulutuksen suoritukseen lisätty Nuorten perusopetuksen oppiaineen suoritus valmistavassa opetuksessa
 
 ## 9.8.2019
+
 - Lisätty kentät vammainen, vaikeastiVammainen ja sisäoppilaitosmainenMajoitus esiopetuksen lisätietoihin
 
 ## 6.6.2019
+
 - Lisätty kenttä työssäoppimispaikanYTunnus ammatillisen koulutuksen koulutusopimukseen
 
 ## 31.5.2019
+
 - Aikuisten perusopetuksen opiskeluoikeuden voi asettaa valmistunut tilaan, vaikka oppimäärän alkuvaiheella ei olisi vahvistusta.
 
 ## 28.4.2019
@@ -212,15 +245,15 @@ ei ole vielä mahdollista tuotantoympäristössä.
 
 ## 12.6.2018
 
-  - Lisätty mahdollisuus suorittaa muita lukion opintoja (Esimerkiksi lukiodiplomi, taiteiden väliset opinnot, teemaopinnot) Pre IB -suorituksen osasuorituksina
+- Lisätty mahdollisuus suorittaa muita lukion opintoja (Esimerkiksi lukiodiplomi, taiteiden väliset opinnot, teemaopinnot) Pre IB -suorituksen osasuorituksina
 
 ## 18.5.2018
 
-  - Lisätty tunnustettu-rakenne aikuisten perusopetuksen kursseihin
+- Lisätty tunnustettu-rakenne aikuisten perusopetuksen kursseihin
 
 ## 11.4.2018
 
-  - Muutettu Valma-koulutusta niin, että yhteisen tutkinnon osan osa-alueen suoritukset voi/pitää siirtää suoraan päätason suorituksen alle
+- Muutettu Valma-koulutusta niin, että yhteisen tutkinnon osan osa-alueen suoritukset voi/pitää siirtää suoraan päätason suorituksen alle
 
 ## 19.3.2018
 
@@ -228,39 +261,39 @@ ei ole vielä mahdollista tuotantoympäristössä.
 
 ## 6.3.2018
 
- - Sallitaan saman oppiaineen suoritus useampaan kertaan perusopetuksen alkuvaiheessa
+- Sallitaan saman oppiaineen suoritus useampaan kertaan perusopetuksen alkuvaiheessa
 
 ## 2.3.2018
 
- - Lisätty validointi: ammatillisen päätason suorituksen alla ei voi käyttää useampaa kuin yhtä numeerista arviointiasteikkoa
+- Lisätty validointi: ammatillisen päätason suorituksen alla ei voi käyttää useampaa kuin yhtä numeerista arviointiasteikkoa
 
 ## 1.3.2018
 
-  - Lisätty mahdollisuus syöttää yhteisen tutkinnon osan osa-alueen suorituksia Valma-kouluksen osan suoritukseen
+- Lisätty mahdollisuus syöttää yhteisen tutkinnon osan osa-alueen suorituksia Valma-kouluksen osan suoritukseen
 
 ## 21.2.2018
 
-  - Aikuisten perusopetuksen oppiaineiden ja kurssien laajuudet voi antaa kursseina
+- Aikuisten perusopetuksen oppiaineiden ja kurssien laajuudet voi antaa kursseina
 
 ## 12.2.2018
 
-  - Näytön arvioinnin kentät arvioinnistaPäättäneet ja arviointikeskusteluunOsallistuneet muutettu valinnaisiksi
+- Näytön arvioinnin kentät arvioinnistaPäättäneet ja arviointikeskusteluunOsallistuneet muutettu valinnaisiksi
 
 ## 25.1.2018
 
-  - Lisätty aikuisten perusopetuksen oppimäärän ja alkuvaiheen suorituksiin valinnainen luokka-kenttä
+- Lisätty aikuisten perusopetuksen oppimäärän ja alkuvaiheen suorituksiin valinnainen luokka-kenttä
 
 ## 22.1.2018
 
-  - Lisätty Perusopetuksen lisäopetuksen suoritukseen valinnainen luokka-kenttä
+- Lisätty Perusopetuksen lisäopetuksen suoritukseen valinnainen luokka-kenttä
 
 ## 12.1.2018
 
-  - Sallitaan saman valinnaisen tutkinnonosan suoritus useampaan kertaan
+- Sallitaan saman valinnaisen tutkinnonosan suoritus useampaan kertaan
 
 ## 19.12.2017
 
-  - Poistettu laajuus ammatillisen päätason suorituksen koulutussopimukset-kentästä
+- Poistettu laajuus ammatillisen päätason suorituksen koulutussopimukset-kentästä
 
 ## 18.12.2017
 
@@ -298,6 +331,7 @@ ei ole vielä mahdollista tuotantoympäristössä.
 - Sallitaan saman valinnaisen oppiaineen esiintyminen useampaan kertaan perusopetuksessa
 
 ## 14.11.2017
+
 - Ammatillisen reformin mukaiset muutokset
   - Lisätty koulutussopimukset kaikille ammatillisen päätason suorituksille
   - Lisätty osaamisenhankkimistavat ammatillisen tutkinnon-, ammatillisen tutkinnon osittaiselle- ja näyttötutkintoon valmistavan koulutuksen suorituksille
@@ -364,7 +398,6 @@ Validointimuutoksia:
 
 - Ammatillisen koulutuksen osien laajuuksien summia ei tarkisteta
 
-
 ## 29.9.2017
 
 - Opiskeluoikeuden päättymispäivän sekä suorituksen vahvistuksen ja arvioinnin voi asettaa tulevaisuuteen
@@ -394,10 +427,10 @@ Validointimuutoksia:
 Luetellaan muutoksia, jotka on toteutettu aiemmin, mutta joita ei ole merkitty muutoshistoriaan.
 
 - Lisätty ammatillisen opiskeluoikeuden lisätietoja: vaikeastiVammainen, vammainenJaAvustaja, majoitus,
-sisäoppilaitosmainenMajoitus, vaativanErityisentuenYhteydessäJärjestettäväMajoitus, vankilaopetuksessa, osaAikaisuus,
- poissaolojaksot, henkilöstökoulutus
+  sisäoppilaitosmainenMajoitus, vaativanErityisentuenYhteydessäJärjestettäväMajoitus, vankilaopetuksessa, osaAikaisuus,
+  poissaolojaksot, henkilöstökoulutus
 - Lisätty perusopetuksen opiskeluoikeuden lisätietoja: vaikeastiKehitysvammainen, majoitusetu, kuljetusetu,
-oikeusMaksuttomaanAsuntolapaikkaan
+  oikeusMaksuttomaanAsuntolapaikkaan
 - Lisätty lukiokoulutuksen opiskeluoikeuden lisätietoja: oikeusMaksuttomaanAsuntolapaikkaan
 
 ## 28.8.2017
@@ -443,17 +476,21 @@ oikeusMaksuttomaanAsuntolapaikkaan
 - Hyväksytään perusopetuksen oppiaineen oppimäärän suorituksessa vain aikuisten perusopetuksen diaarinumerot (ei nuorten)
 
 ## 4.7.2017
+
 - Erotettu aikuisten perusopetuksen oppimäärän suoritus omaksi suoritustyypikseen
 - Lisätty tutkintonimikkeet ja toinenTutkintonimike-flägi osittaisen ammatillisen tutkinnon suoritukseen
 
 ## 30.6.2017
+
 - Tutkinnonosan ryhmätieto pakolliseksi ammatillisissa perustutkinnoissa
 
 ## 29.6.2017
+
 - Muutettu järjestämismuoto listaksi järjestämismuotojaksoja
 - Muutettu perusteenDiaarinumero ja suorituskieli pakollisiksi päätason suorituksissa
 
 ## 28.6.2017
+
 - Poistettu työssäoppimisjaksot tutkinnonosan tasolta
 
 ## 14.6.2017
@@ -505,7 +542,7 @@ oikeusMaksuttomaanAsuntolapaikkaan
 
 ## 4.4.2017
 
- - Lisätty ulkomaanjaksot LUVA-koulutuksen lisätietoihin
+- Lisätty ulkomaanjaksot LUVA-koulutuksen lisätietoihin
 
 ## 29.3.2017
 
@@ -649,6 +686,7 @@ Koodisto `ammatillisennaytonarvioinnistapaattaneet` ja `ammatillisennaytonarvioi
 - Lisätty kuvaus näyttötutkintoon valmistavan koulutuksen osaan
 
 ## 28.9.2016
+
 - Lisätty näytön tiedot Valman ja Telman osasuorituksiin
 - Lisätty mahdollisuus syöttää muita kuin peruskoulun oppiaineen suorituksia lisäopetukseen
 - Lisätty mahdollisuus syöttää lisäopetus toiminta-alueittain
@@ -661,6 +699,7 @@ Koodisto `ammatillisennaytonarvioinnistapaattaneet` ja `ammatillisennaytonarvioi
 - Lisätty alkamispäivä Valma- ja Telma-koulutusten osien suorituksiin
 
 ## 27.9.2016
+
 - Lisätty perusopetuksen valinnainen paikallinen oppiaine
 - Lisätty uusi yleisivistävä arviointikoodi: valinnainen
 - Lisätty perusopetuksen vuosiluokan todistuksen sekä päättötodistuksen liitteet
@@ -673,11 +712,13 @@ Koodisto `ammatillisennaytonarvioinnistapaattaneet` ja `ammatillisennaytonarvioi
 - Lisätty valinnainen kielikylpykieli perusopetuksen oppimäärän suoritukseen
 
 ## 26.9.2016
+
 - Lisätty IB oppiaineen suorituksen arviointi
 - Lisätty IB core aineille oma arviointiasteikko
 - Lisätty IB-tutkinnon lisäpisteet
 
 ## 23.9.2016
+
 - Lisätty IB kurssin kuvaus
 - Lisätty Pre-IB oppiaineen suorituksen arviointi
 - Lisätty suoritettuLukiodiplomina kenttä lukion kurssin suoritukseen
@@ -685,9 +726,11 @@ Koodisto `ammatillisennaytonarvioinnistapaattaneet` ja `ammatillisennaytonarvioi
 - Lisätty Luvan opiskeluoikeuden lisätiedot
 
 ## 21.9.2016
+
 - Lisätty kurssinTyyppi kenttä lukion kurssin suoritukseen (pakollinen, syventävä, soveltava)
 
 ## 20.9.2016
+
 - Oppiaineiden suorituksissa ei vaadita vahvistusta, vaikka suoritus olisi valmis
 - IB-tutkintojen tiedot lisätty (työversio)
 - Lukion opiskeluoikeuden lisätiedoista poistettu majoitukseen liittyvät tiedot
@@ -698,6 +741,7 @@ Koodisto `ammatillisennaytonarvioinnistapaattaneet` ja `ammatillisennaytonarvioi
 - Lisätty lukion oppimäärän suoritukseen lisätiedot (suullisen kielitaidon koe, lukiodiplomi, täydentävä opiskelu, muu)
 
 ## 4.7.2016
+
 - Valma ja telma siirretty ammatillisen opiskeluoikeuden alle
 - Valman ja telman osasuorituksiin voi sisällyttää lisätietoja samalla tavalla, kuin ammatillisen tutkinnon osan suoritukseen
 - Valma ja telma lisätty mahdollisiksi opintojen tavoitteiksi ammatilliseen opiskeluoikeuteen
@@ -733,6 +777,7 @@ Koodisto `ammatillisennaytonarvioinnistapaattaneet` ja `ammatillisennaytonarvioi
 - Lisätty työhön ja itsenäiseen elämään valmentava koulutus
 
 ## 20.6.2016
+
 - Lisätty lukion oppiaineen oppimäärän suoritus
 - Lisätty ulkomainen vaihtoopiskelija lukion opiskeluoikeuden lisätietoihin
 - Lisätty alle 18 vuotiaan aikuisten lukiokoulutuksen aloittamisen syy lukion opiskeluoikeuden lisätietoihin
