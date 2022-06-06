@@ -26,6 +26,10 @@ object OpiskeluoikeusLoader extends Logging {
   private val statusName = "opiskeluoikeudet"
   private val mitätöidytStatusName = "mitätöidyt_opiskeluoikeudet"
 
+  // opiskeluOikeudenLatausEpäonnistui ja mitätöityError sisältö käytössä AWS hälytyksessä
+  private val opiskeluOikeudenLatausEpäonnistui = "Opiskeluoikeuden lataus epaonnistui"
+  private val mitätöityError = "[mitatoity]"
+
   def loadOpiskeluoikeudet(
     opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
     suostumuksenPeruutusService: SuostumuksenPeruutusService,
@@ -240,7 +244,7 @@ object OpiskeluoikeusLoader extends Logging {
     override def onNext(r: LoadResult) = {
       r match {
         case LoadErrorResult(oid, error) =>
-          logger.warn(s"Opiskeluoikeuden lataus epäonnistui: $oid $error")
+          logger.warn(s"$opiskeluOikeudenLatausEpäonnistui: $oid $error")
           errors += 1
         case LoadProgressResult(o, s) => {
           opiskeluoikeusCount += o
@@ -541,7 +545,7 @@ object OpiskeluoikeusLoader extends Logging {
 
   private[raportointikanta] def buildRowMitätöity(raw: OpiskeluoikeusRow): Either[LoadErrorResult, RMitätöityOpiskeluoikeusRow] = {
     for {
-      oo <- raw.toOpiskeluoikeus(KoskiSpecificSession.systemUser).left.map(e => LoadErrorResult(raw.oid, "[mitätöity] " + e.toString()))
+      oo <- raw.toOpiskeluoikeus(KoskiSpecificSession.systemUser).left.map(e => LoadErrorResult(raw.oid, mitätöityError + " " + e.toString()))
       mitätöityPvm <- oo.mitätöintiPäivä.toRight(LoadErrorResult(raw.oid, "Mitätöintipäivämäärän haku epäonnistui"))
     } yield RMitätöityOpiskeluoikeusRow(
       opiskeluoikeusOid = raw.oid,
