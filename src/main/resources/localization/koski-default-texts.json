@@ -2316,8 +2316,8 @@
   "description:Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen yhteiskunta-..." : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen yhteiskunta- ja työelämäosaamisen osasuoritus",
   "tooltip:Opintokokonaisuus" : "Opintokokonaisuus",
   "description:Opintokokonaisuus" : "Opintokokonaisuus",
-  "eperusteet_opintopolku_url_fi_fragment" : "/#/fi/opintokokonaisuus/",
-  "infoLinkUrl:eperusteet_opintopolku_url_fi" : "https://eperusteet.opintopolku.fi/#/fi",
+  "eperusteet_opintopolku_url_fragment" : "/#/fi/opintokokonaisuus/",
+  "infoLinkUrl:eperusteet_opintopolku_url" : "https://eperusteet.opintopolku.fi/#/fi",
   "infoLinkTitle:opintokokonaisuudet_eperusteissa" : "Opintokokonaisuudet ePerusteissa",
   "infoDescription:opintokokonaisuuden_tarkemmat_tiedot_eperusteissa" : "Näet opintokokonaisuuksien tarkemmat tiedot ePerusteissa."
 }

@@ -19,9 +19,7 @@ case class VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
-) extends VapaanSivistystyönPäätasonSuoritus with SuostumusPeruttavissaOpiskeluoikeudelta {
-  def ilmanOpintokokonaisuutta() = this.copy(koulutusmoduuli = koulutusmoduuli.copy(opintokokonaisuus = None))
-}
+) extends VapaanSivistystyönPäätasonSuoritus with SuostumusPeruttavissaOpiskeluoikeudelta
 
 @Description("Vapaatavoitteisen vapaan sivistystyön koulutuksen tunnistetiedot")
 case class VapaanSivistystyönVapaatavoitteinenKoulutus(
@@ -34,7 +32,7 @@ case class VapaanSivistystyönVapaatavoitteinenKoulutus(
   @Tooltip("Opintokokonaisuus")
   @InfoDescription("opintokokonaisuuden_tarkemmat_tiedot_eperusteissa")
   @InfoLinkTitle("opintokokonaisuudet_eperusteissa")
-  @InfoLinkUrl("eperusteet_opintopolku_url_fi")
+  @InfoLinkUrl("eperusteet_opintopolku_url")
   opintokokonaisuus: Option[Koodistokoodiviite] = None,
 ) extends Koulutus with Tutkinto
 

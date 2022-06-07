@@ -120,8 +120,11 @@ export const modelData = (mainModel, path) => {
   }
 }
 
-export const modelTitle = (mainModel, path) => {
+export const modelTitle = (mainModel, path = undefined, titleFormatter = undefined) => {
   let model = modelLookup(mainModel, path)
+  if(model && titleFormatter !== undefined) {
+    return titleFormatter(model)
+  }
   return (model && (model.title || (model.value && model.value.title) || (model.value && '' + modelData(model)))) || ''
 }
 

@@ -9,6 +9,7 @@ import {flatMapArray} from '../util/util'
 import {KoulusivistyskieliPropertyTitle} from '../suoritus/Koulusivistyskieli'
 import {PuhviKoePropertyTitle} from '../suoritus/PuhviKoePropertyTitle'
 import {SuullisenKielitaidonKoePropertyTitle} from '../suoritus/SuullisenKielitaidonKoePropertyTitle'
+import { PropertyInfo } from './PropertyInfo'
 
 export class PropertiesEditor extends React.Component {
   render() {
@@ -45,10 +46,10 @@ export class PropertiesEditor extends React.Component {
           {
             property.complexObject
               ? (<td className="complex" colSpan="2">
-              <div className="label"><PropertyTitle property={property}/></div>
+              <div className="label"><PropertyTitle property={property}/><PropertyInfo property={property}/></div>
               <div className={valueClass}>{ valueEditor }</div>
             </td>)
-              : [<td className="label" key="label"><PropertyTitle property={property}/></td>,
+              : [<td className="label" key="label"><PropertyTitle property={property}/><PropertyInfo property={property}/></td>,
               <td className={valueClass} key="value">{ valueEditor }</td>
             ]
           }
@@ -85,6 +86,7 @@ export const PropertyTitle = ({property}) => {
     return <Text name={property.title}/>
   }
 }
+
 
 export const shouldShowProperty = (context) => (property) => {
   if (!context.edit && modelEmpty(property.model)) return false
