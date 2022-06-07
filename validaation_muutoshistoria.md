@@ -13,6 +13,10 @@
   opiskeluoikeuksissa ei sallita arvioimattomia osasuorituksia, jos opiskeluoikeus on päättynyt katsotaan
   eronneeksi -tilaan.
 
+## 31.5.2022
+
+- Vapaan sivistystyön opiskeluoikeuksissa, joissa päätason suoritus on vapaatavoitteisen koulutuksen suoritus, on nyt pakollisena tietona opetussuunnitelma. Opintohallintojärjestelmistä siirrettäessä pakotus astuu voimaan 1.8.2022 alkaen.
+
 ## 9.5.2022
 - Perusopetuksen aineilta ei vaadita enää laajuutta toiminta-alueittain opiskelevilla, vaikka suoritus olisi
   vahvistettu 1.8.2020 jälkeen.
