@@ -23,7 +23,7 @@ object VapaaSivistystyöExample {
   val opiskeluoikeusHyväksytystiSuoritettu = Koodistokoodiviite("hyvaksytystisuoritettu", Some("Hyväksytysti suoritettu"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusKeskeytynyt = Koodistokoodiviite("keskeytynyt", Some("Keskeytynyt"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusMitätöity = Koodistokoodiviite("mitatoity", Some("Mitätöity"), "koskiopiskeluoikeudentila", Some(1))
-
+  val exampleOpintokokonaisuus = Koodistokoodiviite("1138", Some("Kuvallisen ilmaisun perusteet ja välineet"), "opintokokonaisuudet", Some(1))
   lazy val opiskeluoikeusKOPS = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
@@ -62,6 +62,16 @@ object VapaaSivistystyöExample {
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
     suoritukset = List(suoritusVapaatavoitteinenKoulutus)
+  )
+
+  lazy val opiskeluoikeusVapaatavoitteinenIlmanOpintokokonaisuutta = VapaanSivistystyönOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2022, 5, 31)),
+    tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+      VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
+    )),
+    lisätiedot = None,
+    oppilaitos = Some(varsinaisSuomenKansanopisto),
+    suoritukset = List(suoritusVapaatavoitteinenKoulutus.ilmanOpintokokonaisuutta())
   )
 
   lazy val suoritusKOPS = OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
@@ -160,7 +170,7 @@ object VapaaSivistystyöExample {
   lazy val suoritusVapaatavoitteinenKoulutus = VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
     toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopisto),
     tyyppi = Koodistokoodiviite(koodiarvo = "vstvapaatavoitteinenkoulutus", koodistoUri = "suorituksentyyppi"),
-    koulutusmoduuli = VapaanSivistystyönVapaatavoitteinenKoulutus(laajuus = Some(LaajuusOpintopisteissä(5))),
+    koulutusmoduuli = VapaanSivistystyönVapaatavoitteinenKoulutus(laajuus = Some(LaajuusOpintopisteissä(5)), opintokokonaisuus = Some(exampleOpintokokonaisuus)),
     vahvistus = vahvistus(päivä = date(2022, 5, 31)),
     suorituskieli = suomenKieli,
     todistuksellaNäkyvätLisätiedot = None,

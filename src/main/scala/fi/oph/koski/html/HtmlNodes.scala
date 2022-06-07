@@ -28,6 +28,7 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSu
         {commonHead(responsive, allowIndexing, nonce) ++ raamit.script(nonce) ++ piwikTrackingScriptLoader(nonce, piwikHttpStatusCode)}
         <script nonce={nonce}>
           {setWindowVar("nonce", nonce)}
+          {setWindowVar("ePerusteetBaseUrl", application.config.getString("eperusteet.baseUrl"))}
         </script>
       </head>
       <body class={bodyClasses}>
