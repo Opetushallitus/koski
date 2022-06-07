@@ -71,7 +71,7 @@ describe('TUVA', function () {
             opinnot.avaaKaikki
           )
           it('voidaan lisätä', function () {
-            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Opiskelu- ja urasuunnittelutaidot 2 viikkoa Hyväksytty')
+            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Opiskelu- ja urasuunnittelutaidot 2 vk Hyväksytty')
           })
         })
       })
@@ -101,7 +101,7 @@ describe('TUVA', function () {
             opinnot.avaaKaikki
           )
           it('voidaan lisätä', function () {
-            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 viikkoa')
+            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 vk')
           })
         })
 
@@ -116,7 +116,7 @@ describe('TUVA', function () {
             opinnot.avaaKaikki
           )
           it('voidaan lisätä', function () {
-            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 viikkoa Hyväksytty') //  2 viikkoa
+            expect(extractAsText(S('.suoritus-taulukko'))).to.include('Valinnaiset koulutuksen osat 2 vk Hyväksytty') //  2 vk
           })
         })
       })
@@ -132,7 +132,7 @@ describe('TUVA', function () {
 
       describe('Suoritusten yhteislaajuus', function () {
         it('lasketaan oikein', function () {
-          expect(extractAsText(S('.yhteislaajuus'))).to.equal('Yhteensä 4 viikkoa')
+          expect(extractAsText(S('.yhteislaajuus'))).to.equal('Yhteensä 4 vk')
         })
       })
     })

@@ -37,7 +37,7 @@ object ExampleData {
   lazy val laajuusKursseissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "4", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("kurssia")))
   lazy val laajuusTunneissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "5", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("tuntia")))
   lazy val laajuusOsaamispisteissä: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("osaamispistettä")))
-  lazy val laajuusViikoissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("viikkoa")))
+  lazy val laajuusViikoissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "8", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("viikkoa"), lyhytNimi = Some("vk"), koodistoVersio = None))
 
   lazy val valtionosuusRahoitteinen: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "opintojenrahoitus")
   lazy val muutaKauttaRahoitettu: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenrahoitus")

@@ -199,7 +199,7 @@ export const LaajuusColumn = {
   renderHeader: ({laajuusYksikkö}) => {
     return <th key='laajuus' className='laajuus' scope='col'><Text name='Laajuus'/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>
   },
-  renderData: ({model, showScope}) => <td key='laajuus' className='laajuus'><Editor model={model} path='koulutusmoduuli.laajuus' compact='true' showReadonlyScope={showScope}/></td>
+  renderData: ({model, showScope, disabled}) => <td key='laajuus' className='laajuus'><Editor disabled={disabled} model={model} path='koulutusmoduuli.laajuus' compact='true' showReadonlyScope={showScope}/></td>
 }
 
 export const ArvosanaColumn = {
