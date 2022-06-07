@@ -1,5 +1,4 @@
 {
-  "ignoreKoskiValidator" : true,
   "henkilö" : {
     "hetu" : "231158-467R",
     "etunimet" : "Lukutaitokouluttautuja",
@@ -60,6 +59,14 @@
             },
             "koodistoUri" : "opintojenlaajuusyksikko"
           }
+        },
+        "opintokokonaisuus" : {
+          "koodiarvo" : "1138",
+          "nimi" : {
+            "fi" : "Kuvallisen ilmaisun perusteet ja välineet"
+          },
+          "koodistoUri" : "opintokokonaisuudet",
+          "koodistoVersio" : 1
         }
       },
       "vahvistus" : {
