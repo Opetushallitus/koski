@@ -196,6 +196,8 @@ object VapaaSivistystyöExampleData {
   val exampleHenkilöLukutaito = asUusiOppija(KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKotoutus)
   val exampleHenkilöVapaatavoitteinenKoulutus = asUusiOppija(KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKotoutus)
 
+  lazy val varsinaisSuomenAikuiskoulutussäätiö: Koulutustoimija = Koulutustoimija(MockOrganisaatiot.varsinaisSuomenAikuiskoulutussäätiö, Some("Varsinais-Suomen Aikuiskoulutussäätiö sr"), Some("0136193-2"), Some(Koodistokoodiviite("577", None, "kunta", None)))
+
   lazy val varsinaisSuomenKansanopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.varsinaisSuomenKansanopisto, Some(Koodistokoodiviite("01694", None, "oppilaitosnumero", None)), Some("Varsinais-Suomen kansanopisto"))
 
   lazy val varsinaisSuomenKansanopistoToimipiste: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste)
