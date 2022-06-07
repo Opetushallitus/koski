@@ -8,6 +8,10 @@ import org.scalatra.ScalatraServlet
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with OmaOpintopolkuSupport {
 
   val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
+
+  // Salli framet, koska Kosken raporttien Excel-tiedostojen lataaminen käyttää niitä
+  override val allowFrameSrcSelf: Boolean = true
+
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
