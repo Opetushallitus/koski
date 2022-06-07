@@ -1,16 +1,35 @@
 package fi.oph.koski.kela
 
-import java.time.{LocalDate, LocalDateTime}
-
-import fi.oph.koski.koskiuser.Rooli
+import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{OikeuttaMaksuttomuuteenPidennetty, VSTKehittyvänKielenTaitotasonArviointi}
-import fi.oph.koski.schema.annotation.SensitiveData
+import fi.oph.koski.schema.annotation.KoodistoUri
+import fi.oph.koski.schema.annotation.Deprecated
+import fi.oph.scalaschema.annotation.{Description, Discriminator, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
+import java.time.{LocalDate, LocalDateTime}
+
 object KelaSchema {
-  lazy val schemaJson: JValue = SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[KelaOppija]).asInstanceOf[ClassSchema])
+  lazy val schemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[KelaOppija]).asInstanceOf[ClassSchema])
+
+  val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
+  "aikuistenperusopetus",
+  "ammatillinenkoulutus",
+  "ibtutkinto",
+  "diatutkinto",
+  "internationalschool",
+  "lukiokoulutus",
+  "luva",
+  "perusopetukseenvalmistavaopetus",
+  "perusopetuksenlisaopetus",
+  "perusopetus",
+  "ylioppilastutkinto",
+  "vapaansivistystyonkoulutus",
+// TODO: poista seuraava rivi kommenteista jotta Kela API alkaa palauttaa TUVA opiskeluoikeuksia
+//  "tuva"
+  )
 }
 
 case class KelaOppija(
@@ -26,39 +45,66 @@ case class Henkilo(
   sukunimi: String,
   kutsumanimi: String
 )
+object Henkilo {
+  def fromOppijaHenkilö(oppijaHenkilö: OppijaHenkilö) = Henkilo(
+    oid = oppijaHenkilö.oid,
+    hetu = oppijaHenkilö.hetu,
+    syntymäaika = oppijaHenkilö.syntymäaika,
+    etunimet = oppijaHenkilö.etunimet,
+    sukunimi = oppijaHenkilö.sukunimi,
+    kutsumanimi = oppijaHenkilö.kutsumanimi
+  )
+}
 
-case class KelaOpiskeluoikeus(
-  oid: Option[String],
-  versionumero: Option[Int],
-  aikaleima: Option[LocalDateTime],
-  oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija],
-  sisältyyOpiskeluoikeuteen: Option[Sisältäväopiskeluoikeus],
-  arvioituPäättymispäivä: Option[LocalDate],
-  ostettu: Option[Boolean],
-  tila: OpiskeluoikeudenTila,
-  suoritukset: List[Suoritus],
-  lisätiedot: Option[OpiskeluoikeudenLisätiedot],
-  tyyppi: Koodistokoodiviite,
-  alkamispäivä: Option[LocalDate],
-  päättymispäivä: Option[LocalDate],
-  organisaatioHistoria: Option[List[OrganisaatioHistoria]]
-)
+trait KelaOpiskeluoikeus {
+  def oid: Option[String]
+  def versionumero: Option[Int]
+  def aikaleima: Option[LocalDateTime]
+  def oppilaitos: Option[Oppilaitos]
+  def koulutustoimija: Option[Koulutustoimija]
+  def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
+  def arvioituPäättymispäivä: Option[LocalDate]
+  def tila: OpiskeluoikeudenTila
+  def suoritukset: List[Suoritus]
+  def lisätiedot: Option[OpiskeluoikeudenLisätiedot]
+  @KoodistoUri("opiskeluoikeudentyyppi")
+  @Discriminator
+  def tyyppi: schema.Koodistokoodiviite
+  @SyntheticProperty
+  def alkamispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
+  @SyntheticProperty
+  def päättymispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku)
+  def organisaatioHistoria: Option[List[OrganisaatioHistoria]]
+  @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
+  def organisaatiohistoria: Option[List[OrganisaatioHistoria]]
 
-case class Sisältäväopiskeluoikeus(
+  def withOrganisaatiohistoria: KelaOpiskeluoikeus
+  def withEmptyArvosana: KelaOpiskeluoikeus
+}
+
+case class SisältäväOpiskeluoikeus(
   oid: String,
   oppilaitos: Oppilaitos
 )
 
-case class OpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
-)
+case class KelaOpiskeluoikeudenTila(
+  opiskeluoikeusjaksot: List[KelaOpiskeluoikeusjakso]
+) extends OpiskeluoikeudenTila
 
-case class Opiskeluoikeusjakso(
+trait OpiskeluoikeudenTila {
+  def opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
+}
+
+case class KelaOpiskeluoikeusjakso(
   alku: LocalDate,
-  tila: Koodistokoodiviite,
-  opintojenRahoitus: Option[Koodistokoodiviite]
-)
+  tila: KelaKoodistokoodiviite,
+) extends Opiskeluoikeusjakso
+
+trait Opiskeluoikeusjakso {
+  def alku: LocalDate
+  def tila: KelaKoodistokoodiviite
+  def opiskeluoikeusPäättynyt = schema.KoskiOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
+}
 
 case class OrganisaatioHistoria(
   muutospäivä: LocalDate,
@@ -66,306 +112,85 @@ case class OrganisaatioHistoria(
   koulutustoimija: Option[Koulutustoimija]
 )
 
-case class OpiskeluoikeudenLisätiedot(
-  majoitus: Option[List[schema.Aikajakso]],
-  sisäoppilaitosmainenMajoitus: Option[List[schema.Aikajakso]],
-  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[schema.Aikajakso]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  erityinenTuki: Option[List[schema.Aikajakso]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  vaativanErityisenTuenErityinenTehtävä: Option[List[schema.Aikajakso]],
-  ulkomaanjaksot: Option[List[Ulkomaanjakso]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  hojks: Option[Hojks],
-  osaAikaisuusjaksot: Option[List[schema.OsaAikaisuusJakso]],
-  opiskeluvalmiuksiaTukevatOpinnot: Option[List[schema.OpiskeluvalmiuksiaTukevienOpintojenJakso]],
-  vankilaopetuksessa: Option[List[schema.Aikajakso]],
-  ulkomainenVaihtoopiskelija: Option[Boolean],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  koulukoti: Option[List[schema.Aikajakso]],
-  majoitusetu: Option[schema.Aikajakso],
-  ulkomailla: Option[schema.Aikajakso],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tehostetunTuenPäätös: Option[schema.TehostetunTuenPäätös],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tehostetunTuenPäätökset: Option[List[schema.TehostetunTuenPäätös]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  joustavaPerusopetus: Option[schema.Aikajakso],
-  maksuttomuus: Option[List[schema.Maksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[schema.OikeuttaMaksuttomuuteenPidennetty]]
-)
+trait OpiskeluoikeudenLisätiedot
 
-case class Suoritus(
-  koulutusmoduuli: SuorituksenKoulutusmoduuli,
-  suoritustapa: Option[Koodistokoodiviite],
-  toimipiste: Option[Toimipiste],
-  oppimäärä: Option[Koodistokoodiviite],
-  vahvistus: Option[Vahvistus],
-  osasuoritukset: Option[List[Osasuoritus]],
-  tyyppi: Koodistokoodiviite,
-  tila: Option[Koodistokoodiviite],
-  osaamisala: Option[List[schema.Osaamisalajakso]],
-  toinenOsaamisala: Option[Boolean],
-  alkamispäivä: Option[LocalDate],
-  järjestämismuodot: Option[List[Järjestämismuotojakso]],
-  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
-  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]],
-  koulutussopimukset: Option[List[Koulutussopimusjakso]],
-  tutkintonimike: Option[List[Koodistokoodiviite]],
-  toinenTutkintonimike: Option[Boolean],
-  theoryOfKnowledge: Option[IBTheoryOfKnowledgeSuoritus],
-  extendedEssay: Option[IBExtendedEssaySuoritus],
-  creativityActionService: Option[IBCASSuoritus],
-  jääLuokalle: Option[Boolean],
-  pakollisetKokeetSuoritettu: Option[Boolean],
-  kokonaislaajuus: Option[schema.Laajuus]
-)
+trait Suoritus{
+  def osasuoritukset: Option[List[Osasuoritus]]
+  def koulutusmoduuli: SuorituksenKoulutusmoduuli
+  @Discriminator
+  def tyyppi: schema.Koodistokoodiviite
+  def withEmptyArvosana: Suoritus
+}
 
-case class Osasuoritus(
-  koulutusmoduuli: OsasuorituksenKoulutusmoduuli,
-  liittyyTutkinnonOsaan: Option[Koodistokoodiviite],
-  arviointi: Option[List[OsasuorituksenArviointi]],
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
-  osasuoritukset: Option[List[Osasuoritus]],
-  tyyppi: Koodistokoodiviite,
-  tila: Option[Koodistokoodiviite],
-  tutkinto: Option[Tutkinto],
-  tutkinnonOsanRyhmä: Option[Koodistokoodiviite],
-  osaamisala: Option[List[schema.Osaamisalajakso]],
-  alkamispäivä: Option[LocalDate],
-  tunnustettu: Option[OsaamisenTunnustaminen],
-  toinenOsaamisala: Option[Boolean],
-  toinenTutkintonimike: Option[Boolean],
-  näyttö: Option[Näyttö],
-  vastaavuusTodistuksenTiedot: Option[VastaavuusTodistuksenTiedot],
-  suoritettuLukiodiplomina: Option[Boolean],
-  suoritettuSuullisenaKielikokeena: Option[Boolean],
-  luokkaAste: Option[Koodistokoodiviite],
-  tutkintokerta: Option[YlioppilastutkinnonTutkintokerta],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  yksilöllistettyOppimäärä: Option[Boolean],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
-)
+trait Osasuoritus{
+  @Discriminator
+  def tyyppi: schema.Koodistokoodiviite
+  def withEmptyArvosana: Osasuoritus
+}
 
-case class SuorituksenKoulutusmoduuli(
-  tunniste: Koodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
-  perusteenDiaarinumero: Option[String],
-  perusteenNimi: Option[schema.LocalizedString],
-  koulutustyyppi: Option[Koodistokoodiviite],
-  pakollinen: Option[Boolean],
-  kuvaus: Option[schema.LocalizedString],
-  kieli: Option[Koodistokoodiviite],
-  diplomaType: Option[Koodistokoodiviite],
-  oppimäärä: Option[Koodistokoodiviite]
-)
+trait YksilöllistettyOppimäärä {
+  def yksilöllistettyOppimäärä: Option[Boolean]
+}
 
-case class OsasuorituksenKoulutusmoduuli(
-  tunniste: Koodistokoodiviite,
-  laajuus: Option[schema.Laajuus],
-  perusteenNimi: Option[schema.LocalizedString],
-  pakollinen: Option[Boolean],
-  kuvaus: Option[schema.LocalizedString],
-  kieli: Option[Koodistokoodiviite],
-  osaAlue: Option[Koodistokoodiviite],
-  taso: Option[Koodistokoodiviite],
-  ryhmä: Option[Koodistokoodiviite],
-  kurssinTyyppi: Option[Koodistokoodiviite],
-  oppimäärä: Option[Koodistokoodiviite]
-)
+trait SuorituksenKoulutusmoduuli
 
-case class Koodistokoodiviite(
+trait OsasuorituksenKoulutusmoduuli
+
+case class KelaKoodistokoodiviite(
   koodiarvo: String,
   nimi: Option[schema.LocalizedString],
   lyhytNimi: Option[schema.LocalizedString],
   koodistoUri: Option[String],
   koodistoVersio: Option[Int]
 )
+object KelaKoodistokoodiviite{
+  def fromKoskiSchema(kv: schema.Koodistokoodiviite) = KelaKoodistokoodiviite(
+    kv.koodiarvo,
+    kv.nimi,
+    kv.lyhytNimi,
+    Some(kv.koodistoUri),
+    kv.koodistoVersio
+  )
+}
 
 case class Ulkomaanjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  maa: Option[Koodistokoodiviite],
+  maa: Option[KelaKoodistokoodiviite],
   kuvaus: Option[schema.LocalizedString]
 )
 
-case class Koulutussopimusjakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  työssäoppimispaikka: Option[schema.LocalizedString],
-  paikkakunta: Koodistokoodiviite,
-  maa: Koodistokoodiviite
-)
+case class OsaamisenTunnustaminen(selite: schema.LocalizedString, rahoituksenPiirissä: Boolean)
 
-case class Työssäoppimisjakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  työssäoppimispaikka: Option[schema.LocalizedString],
-  paikkakunta: Koodistokoodiviite,
-  maa: Koodistokoodiviite,
-  laajuus: schema.Laajuus
-)
+case class Vahvistus(päivä: LocalDate)
 
-case class Järjestämismuoto (
-  tunniste: Koodistokoodiviite
-)
-
-case class Järjestämismuotojakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  järjestämismuoto: Järjestämismuoto
-)
-
-case class Oppisopimus(
-  työnantaja: Yritys
-)
-
-case class Yritys(
-  nimi: schema.LocalizedString,
-  yTunnus: String
-)
-
-trait OsaamisenHankkimistapa {
-  def tunniste: Koodistokoodiviite
+@Title("Osasuorituksen arviointi")
+trait OsasuorituksenArvionti{
+  @Deprecated("Ei palauteta Kela-API:ssa. Kenttä on näkyvissä skeemassa vain teknisistä syistä.")
+  def arvosana: Option[schema.Koodistokoodiviite]
+  def hyväksytty: Option[Boolean]
+  def päivä: Option[LocalDate]
+  def withEmptyArvosana: OsasuorituksenArvionti
 }
-
-case class OsaamisenHankkimistapaIlmanLisätietoja (
-  tunniste: Koodistokoodiviite
-) extends OsaamisenHankkimistapa
-
-case class OppisopimuksellinenOsaamisenHankkimistapa (
-  tunniste: Koodistokoodiviite,
-  oppisopimus: Oppisopimus
-) extends OsaamisenHankkimistapa
-
-case class OsaamisenHankkimistapajakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  osaamisenHankkimistapa: OsaamisenHankkimistapa
-)
-
-case class OsaamisenTunnustaminen(
-  osaaminen: Option[Osasuoritus],
-  selite: schema.LocalizedString,
-  rahoituksenPiirissä: Boolean
-)
-
-case class Vahvistus(
-  päivä: LocalDate
-)
-
-case class Arviointi(
-  hyväksytty: Boolean,
-  päivä: Option[LocalDate]
-)
-
-case class OsasuorituksenArviointi(
-  hyväksytty: Boolean,
-  päivä: Option[LocalDate],
-  kuullunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
-  puhumisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
-  luetunYmmärtämisenTaitotaso: Option[VSTKielenTaitotasonArviointi],
-  kirjoittamisenTaitotaso: Option[VSTKielenTaitotasonArviointi]
-)
-
-case class VSTKielenTaitotasonArviointi(
-  taso: Koodistokoodiviite
-)
 
 case class Oppilaitos(
   oid: String,
-  oppilaitosnumero: Option[Koodistokoodiviite],
+  oppilaitosnumero: Option[KelaKoodistokoodiviite],
   nimi: Option[schema.LocalizedString],
-  kotipaikka: Option[Koodistokoodiviite]
+  kotipaikka: Option[KelaKoodistokoodiviite]
 )
 
 case class Koulutustoimija(
   oid: String,
   nimi: Option[schema.LocalizedString],
   yTunnus: Option[String],
-  kotipaikka: Option[Koodistokoodiviite]
+  kotipaikka: Option[KelaKoodistokoodiviite]
 )
 
 case class Toimipiste(
   oid: String,
   nimi: Option[schema.LocalizedString] = None,
-  kotipaikka: Option[Koodistokoodiviite] = None
+  kotipaikka: Option[KelaKoodistokoodiviite] = None
 )
 
-case class Hojks(
-  opetusryhmä: Koodistokoodiviite,
-  alku: Option[LocalDate],
-  loppu: Option[LocalDate]
-)
-
-case class Näyttö(
-  suorituspaikka: Option[NäytönSuorituspaikka],
-  suoritusaika: Option[schema.NäytönSuoritusaika],
-  työssäoppimisenYhteydessä: Boolean,
-  arviointi: Option[NäytönArviointi],
-)
-
-case class NäytönSuorituspaikka(
-  tunniste: Koodistokoodiviite,
-  kuvaus: schema.LocalizedString
-)
-
-case class NäytönArviointi(
-  hyväksytty: Boolean
-)
-
-case class Tutkinto(
-  tunniste: Koodistokoodiviite,
-  perusteenDiaarinumero: Option[String],
-  perusteenNimi: Option[schema.LocalizedString],
-  koulutustyyppi: Option[Koodistokoodiviite]
-)
-
-case class IBTheoryOfKnowledgeSuoritus(
-  koulutusmoduuli: IBTheoryOfKnowledgeSuoritusKoulutusmoduuli,
-  tila: Option[Koodistokoodiviite],
-  arviointi: Option[List[Arviointi]] = None,
-  osasuoritukset: Option[List[Osasuoritus]],
-  tyyppi: Koodistokoodiviite
-)
-
-case class IBTheoryOfKnowledgeSuoritusKoulutusmoduuli(
-  tunniste: Koodistokoodiviite,
-  pakollinen: Boolean
-)
-
-case class IBExtendedEssaySuoritus(
-  koulutusmoduuli: IBExtendedEssaySuoritusKoulutusmoduuli,
-  tila: Option[Koodistokoodiviite],
-  arviointi: Option[List[Arviointi]] = None,
-  tyyppi: Koodistokoodiviite
-)
-
-case class IBExtendedEssaySuoritusKoulutusmoduuli(
-  tunniste: Koodistokoodiviite,
-  pakollinen: Boolean
-)
-
-case class IBCASSuoritus(
-  koulutusmoduuli: SuorituksenKoulutusmoduuli,
-  arviointi: Option[List[Arviointi]] = None,
-  tyyppi: Koodistokoodiviite,
-  tila: Option[Koodistokoodiviite]
-)
-
-case class YlioppilastutkinnonTutkintokerta(
-  koodiarvo: String,
-  vuosi: Int,
-  vuodenaika: schema.LocalizedString
-)
-
-case class VastaavuusTodistuksenTiedot(
-  lukioOpintojenLaajuus: schema.Laajuus
-)
-
-case class AmmatillisenTutkinnonOsanLisätieto(
-  tunniste: Koodistokoodiviite,
-  kuvaus: schema.LocalizedString
-)
+case class KelaLaajuus(arvo: Double, yksikkö: KelaKoodistokoodiviite)
