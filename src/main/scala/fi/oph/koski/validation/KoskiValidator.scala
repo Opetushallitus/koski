@@ -1,7 +1,7 @@
 package fi.oph.koski.validation
 
 import java.lang.Character.isDigit
-import java.time.{Instant, LocalDate, ZoneId}
+import java.time.{LocalDate}
 import com.typesafe.config.Config
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
 import fi.oph.koski.eperusteet.EPerusteetRepository
@@ -13,7 +13,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.KoskiSchema.{lenientDeserialization, schema, strictDeserialization}
+import fi.oph.koski.schema.KoskiSchema.{strictDeserialization}
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
 import fi.oph.koski.schema.{VapaanSivistystyönPäätasonSuoritus, _}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
@@ -24,7 +24,7 @@ import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrderin
 import fi.oph.koski.validation.DateValidation._
 import fi.oph.scalaschema.ExtractionContext
 import mojave._
-import org.json4s.{DefaultFormats, JArray, JBool, JNothing, JValue}
+import org.json4s.{JArray, JValue}
 
 // scalastyle:off line.size.limit
 // scalastyle:off number.of.methods
@@ -125,6 +125,7 @@ class KoskiValidator(
                 Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus),
                 AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, ePerusteet, config),
                 VSTKotoutumiskoulutus2022Validation.validate(opiskeluoikeus),
+                VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus)
               )
             } match {
             case HttpStatus.ok => Right(opiskeluoikeus)
