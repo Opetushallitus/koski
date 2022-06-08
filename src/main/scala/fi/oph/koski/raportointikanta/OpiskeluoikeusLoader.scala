@@ -1,21 +1,23 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.db.{OpiskeluoikeusRow, PoistettuOpiskeluoikeusRow}
+import fi.oph.koski.db.{DB, OpiskeluoikeusRow, PoistettuOpiskeluoikeusRow}
 import fi.oph.koski.json.JsonManipulation
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryService, PäivitetytOpiskeluoikeudetJonoService}
 import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
+import fi.oph.koski.util.TimeConversions.toTimestamp
 import fi.oph.koski.validation.MaksuttomuusValidation
 import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
 
 import java.sql.{Date, Timestamp}
 import java.time.temporal.ChronoField
+import java.time.{LocalDateTime, ZonedDateTime}
 import java.util.concurrent.atomic.AtomicLong
-import scala.concurrent.duration.DurationInt
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.util.Try
 
 object OpiskeluoikeusLoader extends Logging {
@@ -32,18 +34,26 @@ object OpiskeluoikeusLoader extends Logging {
     batchSize: Int = DefaultBatchSize,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit = (_, _) => ()
   ): Observable[LoadResult] = {
-    db.setStatusLoadStarted(statusName)
-    db.setStatusLoadStarted(mitätöidytStatusName)
+    val dueTime = update.map(_.dueTime).map(toTimestamp)
+    db.setStatusLoadStarted(statusName, dueTime)
+    db.setStatusLoadStarted(mitätöidytStatusName, dueTime)
+
     update.foreach(u => {
-      db.cloneUpdateableTables(u.sourceDb)
+      u.service.alustaKaikkiKäsiteltäviksi()
+      db.cloneUpdateableTables(u.previousRaportointiDatabase)
       createIndexesForIncrementalUpdate(db)
       suoritusIds.set(db.getLatestSuoritusId)
     })
 
     var loopCount = 0
-    val result = opiskeluoikeusQueryRepository.mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update.map(_.since)) { batch =>
+
+    val result = mapOpiskeluoikeudetSivuittainWithoutAccessCheck(batchSize, update, opiskeluoikeusQueryRepository) { batch =>
       if (batch.nonEmpty) {
-        val result = if (update.isDefined) updateBatch(db, suostumuksenPeruutusService, batch) else loadBatch(db, suostumuksenPeruutusService, batch)
+        val result = if (update.isDefined) {
+          updateBatch(db, suostumuksenPeruutusService, batch)
+        } else {
+          loadBatch(db, suostumuksenPeruutusService, batch)
+        }
         onAfterPage(loopCount, batch)
         loopCount = loopCount + 1
         result
@@ -567,6 +577,22 @@ object OpiskeluoikeusLoader extends Logging {
       )
     )
   }
+
+  def mapOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
+    (
+      pageSize: Int,
+      update: Option[RaportointiDatabaseUpdate],
+      opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
+    )
+    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+  : Observable[A] =
+    update match {
+      case Some(update) =>
+        update.loader.load(pageSize, update)(mapFn)
+      case _ =>
+        opiskeluoikeusQueryRepository.mapOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)(mapFn)
+    }
+
 }
 
 sealed trait LoadResult
@@ -587,6 +613,16 @@ case class OutputRows(
 )
 
 case class RaportointiDatabaseUpdate(
-  sourceDb: RaportointiDatabase,
-  since: Timestamp,
-)
+  previousRaportointiDatabase: RaportointiDatabase,
+  readReplicaDb: DB,
+  dueTime: ZonedDateTime,
+  sleepDuration: FiniteDuration,
+  service: PäivitetytOpiskeluoikeudetJonoService,
+) {
+  def dueTimeExpired: Boolean = {
+    dueTime.toLocalDateTime.isBefore(LocalDateTime.now())
+  }
+
+  val loader: PäivitettyOpiskeluoikeusLoader =
+    new PäivitettyOpiskeluoikeusLoader(readReplicaDb, service)
+}

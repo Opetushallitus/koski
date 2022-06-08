@@ -11,7 +11,10 @@ object Environment {
   def isLocalDevelopmentEnvironment(config: Config): Boolean = currentEnvironment(config) == Local
 
   def isUsingLocalDevelopmentServices(app: KoskiApplication): Boolean =
-    app.masterDatabase.isLocal && app.config.getString("opintopolku.virkailija.url") == "mock"
+    app.masterDatabase.isLocal && isMockEnvironment(app.config)
+
+  def isMockEnvironment(config: Config): Boolean =
+    config.getString("opintopolku.virkailija.url") == "mock"
 
   def isServerEnvironment(config: Config): Boolean = !Set(Local, UnitTest).contains(currentEnvironment(config))
 
@@ -24,4 +27,10 @@ object Environment {
   }
 
   def currentEnvironment(config: Config): String = config.getString("env")
+
+  def skipFixtures: Boolean =
+    sys.env.getOrElse("SKIP_FIXTURES", "") == "true"
+
+  def forceLocalMigration: Option[String] =
+    sys.env.get("FORCE_LOCAL_MIGRATION")
 }

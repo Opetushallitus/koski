@@ -340,8 +340,16 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def setLastUpdate(name: String, time: LocalDateTime = now): Unit =
     runDbSync(sqlu"update #${schema.name}.raportointikanta_status set last_update=${toTimestamp(time)} where name = $name")
 
-  def setStatusLoadStarted(name: String): Unit =
-    runDbSync(sqlu"insert into #${schema.name}.raportointikanta_status (name, load_started, load_completed) values ($name, now(), null) on conflict (name) do update set load_started = now(), load_completed = null")
+  def setStatusLoadStarted(name: String, dueTime: Option[Timestamp] = None): Unit =
+    runDbSync(sqlu"""
+      insert into #${schema.name}.raportointikanta_status
+        (name, load_started, load_completed, due_time)
+        values ($name, now(), null, $dueTime)
+      on conflict (name) do update set
+        load_started = now(),
+        load_completed = null,
+        due_time = $dueTime
+    """)
 
   def updateStatusCount(name: String, count: Int): Unit =
     runDbSync(sqlu"update #${schema.name}.raportointikanta_status set count=count + $count, load_completed=now() where name = $name")
@@ -354,17 +362,6 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 
   def status: RaportointikantaStatusResponse =
     RaportointikantaStatusResponse(schema.name, queryStatus)
-
-  def latestOpiskeluoikeusTimestamp: Option[Timestamp] =
-    try {
-      runDbSync(sql"""SELECT max(aikaleima) FROM #${schema.name}.r_opiskeluoikeus""".as(_.rs.getTimestamp(1)))
-        .headOption match {
-          case Some(null) => None // Tyhjä taulu
-          case r: Any => r
-        }
-    } catch {
-      case e: PSQLException if e.getMessage.contains("does not exist") => None // Taulua ei ole vielä luotu
-    }
 
   private def queryStatus = {
     if (statusTableExists) {

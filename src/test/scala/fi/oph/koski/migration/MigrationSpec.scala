@@ -10,7 +10,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
   "Migraatiot" - {
     "Havaittiin uusi tietokannan migraatiotiedosto. Migraatiot, varsinkin jos koskevat Kosken suurimpia tauluja, on hyvä testata tietokantareplikaa vasten.\n" +
       "Korjaa tämän testin odottama tiedostomäärä, kun olet varma että migraatiot voi viedä eteenpäin.\nDokumentaatio: documentation/tietokantamigraatiot.md" in {
-      new File("./src/main/resources/db/migration").listFiles.length should equal (82)
+      new File("./src/main/resources/db/migration").listFiles.length should equal (84)
     }
   }
 
@@ -27,13 +27,14 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "LoaderUtils.scala"                                         -> "38d31b4d1cfa5e3892083bb39f7f0047",
         "MuuAmmatillinenRaporttiRowBuilder.scala"                   -> "31774fb0fbd06a775a07325e867a951f",
         "OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.scala" -> "4498412891d88ddd2daf422144664086",
-        "OpiskeluoikeusLoader.scala"                                -> "4dab9185f560e41bbbc4139c036afea3",
+        "OpiskeluoikeusLoader.scala"                                -> "e92826ae79d5f5562b9af62ba286c4cf",
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "9e2e45da33ed335af4a7b0a31b139a7",
-        "RaportointiDatabase.scala"                                 -> "9757acceca5de5350f245a563155c017",
+        "PäivitettyOpiskeluoikeusLoader.scala"                      -> "371a5f5801e865116bed2ee543241c92",
+        "RaportointiDatabase.scala"                                 -> "cebf82c7dc48aac0f319712b168a2677",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "f40e7c556d42a721d64479d011c562c5",
-        "RaportointikantaService.scala"                             -> "17d0ac119892262c99f10bd23dc66a46",
+        "RaportointiDatabaseSchema.scala"                           -> "711ac76834a54c5784acdd555a9fafe8",
+        "RaportointikantaService.scala"                             -> "f17e69b7619011ad97be89a118eb8f6f",
         "RaportointikantaServlet.scala"                             -> "2eaa7fc778aac5db6aaca76de5745e06",
         "RaportointikantaTableQueries.scala"                        -> "b97f971fa7a5896ec3c4d69882ca705d",
         "TOPKSAmmatillinenRaporttiRowBuilder.scala"                 -> "a9c26a13385ff576810f3ef831240437",

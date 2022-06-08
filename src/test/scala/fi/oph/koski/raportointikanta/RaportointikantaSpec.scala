@@ -20,7 +20,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.sql.{Date, Timestamp}
-import java.time.LocalDate
+import java.time.{LocalDate, ZonedDateTime}
 
 class RaportointikantaSpec
   extends AnyFreeSpec
@@ -695,7 +695,7 @@ class RaportointikantaSpec
       päivitäRaportointikantaInkrementaalisesti()
 
       päivitäOpiskeluoikeus(opiskeluoikeus) // Palauta alkuperäiseen tilaan
-      
+
       val alkuperäinenOpiskeluoikeusCount = opiskeluoikeusCount
       val alkuperäinenMitätöityOpiskeluoikeusCount = mitätöityOpiskeluoikeusCount
 
@@ -704,7 +704,6 @@ class RaportointikantaSpec
       opiskeluoikeusCount should be(alkuperäinenOpiskeluoikeusCount + 1)
       mitätöityOpiskeluoikeusCount should be (alkuperäinenMitätöityOpiskeluoikeusCount - 1)
     }
-
   }
 
   private def opiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROpiskeluoikeudet.length.result)
@@ -726,6 +725,10 @@ class RaportointikantaSpec
     loadResult should be(true)
     Wait.until(isLoading)
     Wait.until(loadComplete)
+
+    withClue("Päivitysjono on inkrementaalisen päivityksen jälkeen tyhjä") {
+      KoskiApplicationForTests.päivitetytOpiskeluoikeudetJono.kaikki.isEmpty should equal(true)
+    }
   }
 }
 

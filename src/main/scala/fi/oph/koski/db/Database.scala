@@ -16,7 +16,13 @@ trait Database extends Logging {
 
   if ((config.isLocal || Environment.isLocalDevelopmentEnvironment(config.rootConfig)) && util.databaseIsLarge) {
     // Prevent running migrations against a (large) remote database when running locally
-    logger.error("Migration not allowed with a large database in local development environment")
+    val forceMigration = Environment.forceLocalMigration.contains(config.host)
+    if (forceMigration) {
+      Migration.migrateSchema(config)
+    } else {
+      val hint = s"If you really want to run this migration set environment variable FORCE_LOCAL_MIGRATION=${config.host}"
+      logger.error(s"Migration not allowed with a large database in local development environment. $hint")
+    }
   } else {
     Migration.migrateSchema(config)
   }

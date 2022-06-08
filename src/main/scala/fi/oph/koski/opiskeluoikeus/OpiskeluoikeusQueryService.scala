@@ -84,20 +84,15 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
   }
 
   def mapOpiskeluoikeudetSivuittainWithoutAccessCheck[A]
-    (pageSize: Int, since: Option[Timestamp])
+    (pageSize: Int)
     (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
-  : Observable[A] = {
-    val query = since match {
-      case Some(s)  => OpiskeluOikeudet.filter(_.aikaleima > s)
-      case None     => OpiskeluOikeudet
-    }
-    mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiSivuittainWithoutAccessCheck(query))(mapFn)
-  }
+  : Observable[A] =
+    mapKaikkiSivuittainWithoutAccessCheck(pageSize)(kaikkiSivuittainWithoutAccessCheck(OpiskeluOikeudet))(mapFn)
 
   private def mapKaikkiSivuittainWithoutAccessCheck[A]
     (pageSize: Int)
-      (queryFn: PaginationSettings => Seq[OpiskeluoikeusRow])
-      (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
+    (queryFn: PaginationSettings => Seq[OpiskeluoikeusRow])
+    (mapFn: Seq[OpiskeluoikeusRow] => Seq[A])
   : Observable[A] = {
     processByPage[OpiskeluoikeusRow, A](page => queryFn(PaginationSettings(page, pageSize)), mapFn)
   }
@@ -168,22 +163,31 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     }
   }
 
-  private def processByPage[A, B](loadRows: Int => Seq[A], processRows: Seq[A] => Seq[B]): Observable[B] = {
+  private def processByPage[A, B](
+    loadRows: Int => Seq[A],
+    processRows: Seq[A] => Seq[B],
+  ): Observable[B] = {
     import rx.lang.scala.JavaConverters._
+
     def loadRowsInt(page: Int): (Seq[B], Int, Boolean) = {
       val rows = loadRows(page)
-      (processRows(rows), page, rows.isEmpty)
+      (
+        /* loadResults = */ processRows(rows),
+        /* nextPage =    */ if (rows.isEmpty) page else page + 1,
+        /* done =        */ rows.isEmpty
+      )
     }
+
     createObservable(createStateful[(Seq[B], Int, Boolean), Seq[B]](
       (() => loadRowsInt(0)): Func0[_ <: (Seq[B], Int, Boolean)],
       ((state, observer) => {
-        val (loadResults, page, done) = state
+        val (loadResults, nextPage, done) = state
         observer.onNext(loadResults)
         if (done) {
           observer.onCompleted()
           (Nil, 0, true)
         } else {
-          loadRowsInt(page + 1)
+          loadRowsInt(nextPage)
         }
       }): Func2[_ >: (Seq[B], Int, Boolean), _ >: Observer[_ >: Seq[B]], _ <: (Seq[B], Int, Boolean)]
     )).asScala.flatMap(Observable.from(_))

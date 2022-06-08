@@ -2,20 +2,21 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig}
+import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
+import fi.oph.koski.opiskeluoikeus.PäivitetytOpiskeluoikeudetJonoService
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
-import java.sql.Timestamp
+import java.time.ZonedDateTime
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
 
 class RaportointikantaService(application: KoskiApplication) extends Logging {
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
   private val eventBridgeClient = KoskiEventBridgeClient.apply(application.config)
-  private val safeTimeLimitForNewOpintooikeusDetection: FiniteDuration = 1.hour
+  private val päivitetytOpiskeluoikeudetJonoService = application.päivitetytOpiskeluoikeudetJono
 
   def loadRaportointikanta(
     force: Boolean,
@@ -29,14 +30,14 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       logger.info("Raportointikanta already loading, do nothing")
       false
     } else {
-      val latestOpiskeluoikeusTimestamp = raportointiDatabase.latestOpiskeluoikeusTimestamp
-      logger.info(s"Latest opiskeluoikeus update in ${raportointiDatabase.schema.name}: ${latestOpiskeluoikeusTimestamp.getOrElse("n/a")} (will be used with a safe limit of ${safeTimeLimitForNewOpintooikeusDetection.toMinutes} minutes)")
       val update = if (skipUnchangedData) {
-        latestOpiskeluoikeusTimestamp.map(since =>
-          RaportointiDatabaseUpdate(
-            sourceDb = raportointiDatabase,
-            since = new Timestamp(since.getTime - safeTimeLimitForNewOpintooikeusDetection.toMillis)
-          ))
+        Some(RaportointiDatabaseUpdate(
+          previousRaportointiDatabase = raportointiDatabase,
+          readReplicaDb = application.replicaDatabase.db,
+          dueTime = getDueTime,
+          sleepDuration = sleepDuration,
+          service = päivitetytOpiskeluoikeudetJonoService,
+        ))
       } else {
         None
       }
@@ -67,7 +68,14 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   ): Observable[LoadResult] = {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSpecificSession.systemUser
-    OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, application.suostumuksenPeruutusService, db, update, pageSize, onAfterPage)
+    OpiskeluoikeusLoader.loadOpiskeluoikeudet(
+      application.opiskeluoikeusQueryRepository,
+      application.suostumuksenPeruutusService,
+      db,
+      update,
+      pageSize,
+      onAfterPage,
+    )
   }
 
   def loadHenkilöt(db: RaportointiDatabase = raportointiDatabase): Int =
@@ -115,12 +123,18 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     pageSize: Int,
     onAfterPage: (Int, Seq[OpiskeluoikeusRow]) => Unit
   ) = {
+    val startTime = ZonedDateTime.now()
     update match {
-      case Some(u) => logger.info(s"Start updating raportointikanta in ${loadDatabase.schema.name} with new opiskeluoikeudet since ${u.since} from ${u.sourceDb.schema.name}")
+      case Some(u) => logger.info(s"Start updating raportointikanta in ${loadDatabase.schema.name} with new opiskeluoikeudet until ${u.dueTime} from ${u.previousRaportointiDatabase.schema.name}")
       case None => logger.info(s"Start loading raportointikanta into ${loadDatabase.schema.name} (full reload)")
     }
     putLoadTimeMetric(None) // To store metric more often, Cloudwatch metric does not support missing data more than 24 hours
-    loadOpiskeluoikeudet(loadDatabase, update, pageSize, onAfterPage)
+    loadOpiskeluoikeudet(
+      loadDatabase,
+      update,
+      pageSize,
+      onAfterPage,
+    )
       .subscribeOn(scheduler)
       .subscribe(
         onNext = doNothing,
@@ -132,6 +146,11 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
           //Without try-catch, in case of an exception the process just silently halts, this is a feature of java.util.concurrent.Executors
           try {
             loadRestAndSwap()
+            if (update.isDefined) {
+              päivitetytOpiskeluoikeudetJonoService.poistaKäsitellyt()
+            } else {
+              päivitetytOpiskeluoikeudetJonoService.poistaVanhat(startTime)
+            }
             putUploadEvents()
             putLoadTimeMetric(Option(true))
             onEnd()
@@ -159,6 +178,21 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     raportointiDatabase.vacuumAnalyze()
   }
 
+  private def getDueTime: ZonedDateTime =
+    if (isMockEnvironment) ZonedDateTime.now().plusSeconds(5) else nextMidnight
+
+  private def nextMidnight: ZonedDateTime = {
+    val now = ZonedDateTime.now()
+    ZonedDateTime.of(
+      now.getYear, now.getMonthValue, now.getDayOfMonth,
+      0, 0, 0, 0,
+      now.getZone
+    ).plusDays(1)
+  }
+
+  private val sleepDuration: FiniteDuration =
+    if (isMockEnvironment) 1.seconds else 5.minutes
+
   protected lazy val defaultScheduler: Scheduler = NewThreadScheduler()
 
   private def swapRaportointikanta(): Unit = raportointiDatabase.dropPublicAndMoveTempToPublic
@@ -167,6 +201,9 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private lazy val raportointiDatabase = application.raportointiGenerointiDatabase
 
   private val tietokantaUpload = "database-upload"
+
+  protected lazy val isMockEnvironment: Boolean =
+    application.config.getString("opintopolku.virkailija.url") == "mock"
 
   def shutdown = {
     Thread.sleep(60000) //Varmistetaan, että kaikki logit ehtivät varmasti siirtyä Cloudwatchiin ennen sulkemista.

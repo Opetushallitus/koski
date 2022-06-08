@@ -31,6 +31,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.valpasLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.tiedonsiirtoService.index.deleteAll()
+      application.päivitetytOpiskeluoikeudetJono.poistaKaikki()
 
       if (reloadRaportointikanta || fixtureNameHasChanged) {
         raportointikantaService.loadRaportointikanta(force = true)
@@ -44,7 +45,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
   def shouldUseFixtures = {
     val useFixtures: Boolean = Environment.currentEnvironment(application.config) match {
       case Environment.UnitTest => true
-      case Environment.Local => Environment.isUsingLocalDevelopmentServices(application)
+      case Environment.Local => Environment.isUsingLocalDevelopmentServices(application) && !Environment.skipFixtures
       case _ => false
     }
 
