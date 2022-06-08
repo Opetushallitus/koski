@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 8.6.2022
+- Mitätöitäessä opiskeluoikeuksia ei ole n. 1.4.2022 alkaen täydennetty puuttuvia tietoja, kuten oppilaitosta,
+  yhteenlaskettuja laajuuksia, perusteen nimeä jne. automaattisesti opiskeluoikeuteen ennen sen tallentamista.
+  Tämä on nyt korjattu ja tiedot täydennetään myös mitätöinnin yhteydessä.
+
 ## 1.6.2022
 - Tutkintokoulutukseen valmentavan koulutuksen ja vapaan sivistystyön oppivelvollisille suunnatun koulutuksen
   opiskeluoikeuksissa ei sallita arvioimattomia osasuorituksia, jos opiskeluoikeus on päättynyt katsotaan
