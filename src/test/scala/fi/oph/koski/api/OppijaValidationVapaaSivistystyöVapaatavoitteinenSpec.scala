@@ -94,7 +94,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         }
 
         "Jos päätason suoritus vahvistamaton, tilan tulee olla 'Keskeytynyt'" in {
-          putOpiskeluoikeus(vahvistamatonPäätasaonSuoritusHyväksyttyOpiskeluoikeus(lähdejärjestelmällinen), headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+          putOpiskeluoikeus(vahvistamatonPäätasonSuoritusHyväksyttyOpiskeluoikeus(lähdejärjestelmällinen), headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla vapaan sivistystyön vapaatavoitteisella koulutuksella ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'"))
           }
         }
@@ -120,10 +120,10 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         }
 
         "Jos päätason suoritus vahvistamaton, tilan tulee olla 'Keskeytynyt'" in {
-          putOpiskeluoikeus(vahvistamatonPäätasaonSuoritusHyväksyttyOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus)) {
+          putOpiskeluoikeus(vahvistamatonPäätasonSuoritusHyväksyttyOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus)) {
             verifyResponseStatusOk()
           }
-          putOpiskeluoikeus(vahvistamatonPäätasaonSuoritusHyväksyttyOpiskeluoikeus(kasvatettuVersiota)) {
+          putOpiskeluoikeus(vahvistamatonPäätasonSuoritusHyväksyttyOpiskeluoikeus(kasvatettuVersiota)) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla vapaan sivistystyön vapaatavoitteisella koulutuksella ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'"))
           }
         }
@@ -139,23 +139,38 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
       }
       "Kun opiskeluoikeus on mitätöity" - {
         "Ei validointivirhettä, jos päätason suoritus vahvistettu, eikä tila ole 'Hyväksytysti suoritettu'" in {
-          putOpiskeluoikeus(mitätöityOpiskeluoikeus(vahvistettuPäätasonSuoritusKeskeytynytOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus))) {
+          resetFixtures()
+          val oo = putAndGetOpiskeluoikeus(vahvistettuPäätasonSuoritusKeskeytynytOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus))
+
+          putOpiskeluoikeus(mitätöityOpiskeluoikeus(oo)) {
             verifyResponseStatusOk()
           }
         }
         "Ei validointivirhettä, jos päätason suoritus vahvistamaton, eikä tila ole 'Keskeytynyt'" in {
-          putOpiskeluoikeus(mitätöityOpiskeluoikeus(vahvistamatonPäätasaonSuoritusHyväksyttyOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus))) {
+          resetFixtures()
+          val oo = putAndGetOpiskeluoikeus(vahvistamatonPäätasonSuoritusHyväksyttyOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus))
+
+          putOpiskeluoikeus(mitätöityOpiskeluoikeus(oo)) {
             verifyResponseStatusOk()
           }
         }
         "Ei validointivirhettä, jos päätason suorituksella ei ole vähintään yhtä arvioitua osasuoritusta" in {
-          putOpiskeluoikeus(mitätöityOpiskeluoikeus(päätasoArvioimattomallaOsasuorituksella(VapaatavoitteinenOpiskeluoikeus))) {
+          resetFixtures()
+          val oo = putAndGetOpiskeluoikeus(päätasoArvioimattomallaOsasuorituksella(VapaatavoitteinenOpiskeluoikeus))
+
+          putOpiskeluoikeus(mitätöityOpiskeluoikeus(oo)) {
             verifyResponseStatusOk()
           }
         }
       }
     }
   }
+
+  private def putAndGetOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus =
+    putOpiskeluoikeus(oo) {
+      verifyResponseStatusOk()
+      getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
+    }.asInstanceOf[VapaanSivistystyönOpiskeluoikeus]
 
   private def mitätöityOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus) = {
     oo.copy(
@@ -164,8 +179,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
           List(
             VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusMitätöity)
           )
-      ),
-      versionumero = oo.versionumero.map(_ + 1).orElse(Some(1))
+      )
     )
   }
 
@@ -177,7 +191,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
     )
   }
 
-  private def vahvistamatonPäätasaonSuoritusHyväksyttyOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus) = {
+  private def vahvistamatonPäätasonSuoritusHyväksyttyOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus) = {
     oo.copy(
       suoritukset = List(suoritusVapaatavoitteinenKoulutus.copy(
         vahvistus = None
