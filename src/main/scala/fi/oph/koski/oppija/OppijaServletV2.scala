@@ -20,7 +20,7 @@ class OppijaServletV2(implicit val application: KoskiApplication) extends KoskiS
 
   private def putSingle(allowUpdate: Boolean) = {
     withTracking { withJsonBody { (oppijaJson: JValue) =>
-      val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(session, AccessType.write)
+      val validationResult: Either[HttpStatus, Oppija] = application.validator.extractUpdateFieldsAndValidateOppija(oppijaJson)(session, AccessType.write)
       val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContextV2(session, application, request).putSingle(validationResult, oppijaJson, allowUpdate)
       renderEither[HenkilönOpiskeluoikeusVersiot](result)
     }(parseErrorHandler = handleUnparseableJson)}

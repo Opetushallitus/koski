@@ -108,7 +108,7 @@ class BackwardCompatibilitySpec extends AnyFreeSpec with TestEnvironment with Ma
         case Left(errors) => fail("Backwards compatibility problem: " + errors)
         case Right(oppija) =>
           if (!skipKoskiValidator) {
-            koskiValidator.validateAsJson(oppija) match {
+            koskiValidator.updateFieldsAndValidateAsJson(oppija) match {
               case Right(_) => //ok
               case Left(err) => fail("Validation error: " + err.toString)
             }

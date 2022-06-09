@@ -21,8 +21,8 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
   implicit val accessType = AccessType.write
   val raportointiDatabase = application.raportointiDatabase
 
-  protected def validateOpiskeluoikeus[T: TypeTag](oo: T, session: KoskiSpecificSession = user): T =
-    validator.extractAndValidateOpiskeluoikeus(JsonSerializer.serialize(oo))(session, AccessType.write) match {
+  protected def updateFieldsAndValidateOpiskeluoikeus[T: TypeTag](oo: T, session: KoskiSpecificSession = user): T =
+    validator.extractUpdateFieldsAndValidateOpiskeluoikeus(JsonSerializer.serialize(oo))(session, AccessType.write) match {
       case Right(opiskeluoikeus) => opiskeluoikeus.asInstanceOf[T]
       case Left(status) => throw new RuntimeException("Fixture insert failed for " + JsonSerializer.write(oo) + ": " + status)
     }
@@ -94,7 +94,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
           )
         }
 
-        validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
+        validator.updateFieldsAndValidateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
           case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet.head)
           case Left(status) => throw new RuntimeException(
             s"Fixture insert failed for ${henkilö.etunimet} ${henkilö.sukunimi} with data ${JsonSerializer.write(oikeus)}: ${status}"

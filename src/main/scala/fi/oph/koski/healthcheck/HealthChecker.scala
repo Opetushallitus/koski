@@ -27,7 +27,7 @@ trait HealthCheck extends Logging {
   private val koodistoPalvelu = KoodistoPalvelu.withoutCache(application.config)
   private val ePerusteet = application.ePerusteet
   private def healthcheckOppija: Either[HttpStatus, Oppija] =
-    application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
+    application.validator.updateFieldsAndValidateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
 
   def healthcheckWithExternalSystems: HttpStatus = {
     logger.debug("Performing healthcheck")

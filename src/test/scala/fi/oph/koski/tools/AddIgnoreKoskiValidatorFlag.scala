@@ -49,7 +49,7 @@ object AddIgnoreKoskiValidatorFlag extends App {
     case _ => false
   }.isDefined
 
-  def failsAtKoskiValidator(oppija: Oppija) = koskiValidator.validateAsJson(oppija).isLeft
+  def failsAtKoskiValidator(oppija: Oppija) = koskiValidator.updateFieldsAndValidateAsJson(oppija).isLeft
 
   def fullName(fileName: String) = dirName + "/" + fileName
 

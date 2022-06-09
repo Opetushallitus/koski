@@ -21,7 +21,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
   protected def oppijat = KoskiSpecificMockOppijat.defaultOppijat
 
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
-    val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus(tutkinto = tietoJaViestintäTekniikanPerustutkinnonSuoritus(stadinToimipiste)))
+    val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = updateFieldsAndValidateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus(tutkinto = tietoJaViestintäTekniikanPerustutkinnonSuoritus(stadinToimipiste)))
     val opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validOpiskeluoikeus.copy(
       suoritukset = validOpiskeluoikeus.suoritukset.map{
         case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
@@ -31,7 +31,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       }
     )
 
-    val validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken())
+    val validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = updateFieldsAndValidateOpiskeluoikeus(AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken())
     val rakenteessaMontaKoulutuskoodiaOpiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus.copy(
       suoritukset = validRakenteessaMontaKoulutuskoodiaOpiskeluoikeus.suoritukset.map{
         case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
@@ -46,19 +46,19 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
       (
         KoskiSpecificMockOppijat.organisaatioHistoriallinen,
-        validateOpiskeluoikeus(PerusopetusOppijaMaaratRaporttiFixtures.eriOppilaitoksessa).copy(
+        updateFieldsAndValidateOpiskeluoikeus(PerusopetusOppijaMaaratRaporttiFixtures.eriOppilaitoksessa).copy(
           organisaatiohistoria = PerusopetusOppijaMaaratRaporttiFixtures.organisaatiohistoria
         )
       ),
       (
         KoskiSpecificMockOppijat.organisaatioHistoriallinen,
-        validateOpiskeluoikeus(PerusopetusOppijaMaaratRaporttiFixtures.eriOppilaitoksessaLisäopetus).copy(
+        updateFieldsAndValidateOpiskeluoikeus(PerusopetusOppijaMaaratRaporttiFixtures.eriOppilaitoksessaLisäopetus).copy(
           organisaatiohistoria = PerusopetusOppijaMaaratRaporttiFixtures.organisaatiohistoria
         )
       ),
       (KoskiSpecificMockOppijat.tunnisteenKoodiarvoPoistettu, opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu),
-      (KoskiSpecificMockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus, hkiTallentaja)),
-      (KoskiSpecificMockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(
+      (KoskiSpecificMockOppijat.eskari, updateFieldsAndValidateOpiskeluoikeus(ostopalveluOpiskeluoikeus, hkiTallentaja)),
+      (KoskiSpecificMockOppijat.eskari, updateFieldsAndValidateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(
         suoritukset = List(päiväkotisuoritus(oppilaitos(päiväkotiMajakka))),
         tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
           ostopalveluOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(j => j.copy(alku = j.alku.minusDays(1)))

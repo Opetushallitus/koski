@@ -34,7 +34,7 @@ case class VirtaOpiskeluoikeusRepository(
 
   private def validate(opiskeluoikeus: KorkeakoulunOpiskeluoikeus): Unit = {
     val oppija = Oppija(UusiHenkilö("010101-123N", "tuntematon", Some("tuntematon"), "tuntematon"), List(opiskeluoikeus))
-    validator.foreach(_.validateAsJson(oppija)(KoskiSpecificSession.systemUser, AccessType.read).left.foreach { status: HttpStatus =>
+    validator.foreach(_.updateFieldsAndValidateAsJson(oppija)(KoskiSpecificSession.systemUser, AccessType.read).left.foreach { status: HttpStatus =>
       logger.warn("Ulkoisesta järjestelmästä saatu opiskeluoikeus sisältää validointivirheitä " + status)
     })
   }
