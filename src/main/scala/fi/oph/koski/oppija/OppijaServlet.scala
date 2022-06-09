@@ -41,7 +41,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
       val validationResult: Either[HttpStatus, Oppija] = if (skipValidation(cleanedJson)) {
         application.validator.extractOppija(cleanedJson, lenientDeserializationWithoutValidation)
       } else {
-        application.validator.extractAndValidateOppija(cleanedJson)(session, AccessType.write)
+        application.validator.extractUpdateFieldsAndValidateOppija(cleanedJson)(session, AccessType.write)
       }
       val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(session, application, request).putSingle(validationResult, cleanedJson, allowUpdate)
       renderEither[HenkilönOpiskeluoikeusVersiot](result)
@@ -52,7 +52,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
     withTracking { withJsonBody { parsedJson =>
       val putter = UpdateContext(session, application, request)
 
-      val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(session, AccessType.write)
+      val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractUpdateFieldsAndValidateBatch(parsedJson.asInstanceOf[JArray])(session, AccessType.write)
 
       val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map { results =>
         putter.putSingle(results._1, results._2, true)

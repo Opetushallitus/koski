@@ -605,7 +605,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
           val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).validateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
         }
 
         "Ei sallita siirtoa, jos eperusteissa rakenteen voimassaolo on päättynyt ja siirtymäaikaa ei ole määritelty kun validaatio on voimassa" in {
@@ -614,7 +614,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
           val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).validateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
         }
 
         "Sallitaan siirto, kun validaatio ei vielä voimassa" in {
@@ -623,7 +623,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
           val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().plusDays(1).toString))
-          mockKoskiValidator(config).validateAsJson(oppija).isRight should equal (true)
+          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
         }
       }
     }

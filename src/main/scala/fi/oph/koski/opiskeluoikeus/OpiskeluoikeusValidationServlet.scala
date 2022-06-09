@@ -37,7 +37,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
       var result = if (extractOnly) {
         context.extractOpiskeluoikeus(row)
       } else {
-        context.validateOpiskeluoikeus(row)
+        context.updateFieldsAndValidateOpiskeluoikeus(row)
       }
       if (validateHistory) result = result + context.validateHistory(row)
       if (validateHenkilö) result = result + context.validateHenkilö(row)
@@ -95,8 +95,8 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: Opiskel
     renderValidationResult(row, validator.extractOpiskeluoikeus(row.data))
   }
 
-  def validateOpiskeluoikeus(row: OpiskeluoikeusRow): ValidationResult = {
-    renderValidationResult(row, validator.extractAndValidateOpiskeluoikeus(row.data)(user, AccessType.read))
+  def updateFieldsAndValidateOpiskeluoikeus(row: OpiskeluoikeusRow): ValidationResult = {
+    renderValidationResult(row, validator.extractUpdateFieldsAndValidateOpiskeluoikeus(row.data)(user, AccessType.read))
   }
 
   private def renderValidationResult(row: OpiskeluoikeusRow, validationResult: Either[HttpStatus, Opiskeluoikeus]) = {
@@ -118,7 +118,7 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: Opiskel
   }
 
   def validateAll(row: OpiskeluoikeusRow): ValidationResult = {
-    validateOpiskeluoikeus(row) + validateHistory(row) + validateHenkilö(row)
+    updateFieldsAndValidateOpiskeluoikeus(row) + validateHistory(row) + validateHenkilö(row)
   }
 }
 

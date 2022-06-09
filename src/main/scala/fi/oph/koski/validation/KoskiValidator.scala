@@ -41,31 +41,31 @@ class KoskiValidator(
   config: Config
 ) extends Timing {
 
-  def validateAsJson(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
+  def updateFieldsAndValidateAsJson(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     val serialized = timed("Oppija serialization", 500) {
       JsonSerializer.serialize(oppija)
     }
-    extractAndValidateOppija(serialized)
+    extractUpdateFieldsAndValidateOppija(serialized)
   }
 
-  def extractAndValidateBatch(oppijatJson: JArray)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): List[(Either[HttpStatus, Oppija], JValue)] = {
+  def extractUpdateFieldsAndValidateBatch(oppijatJson: JArray)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): List[(Either[HttpStatus, Oppija], JValue)] = {
     timed("extractAndValidateBatch") {
       oppijatJson.arr.par.map { oppijaJson =>
-        (extractAndValidateOppija(oppijaJson), oppijaJson)
+        (extractUpdateFieldsAndValidateOppija(oppijaJson), oppijaJson)
       }.toList
     }
   }
 
-  def extractAndValidateOppija(parsedJson: JValue)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
+  def extractUpdateFieldsAndValidateOppija(parsedJson: JValue)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     timed("extractAndValidateOppija", 200) {
-      extractOppija(parsedJson).right.flatMap(validateOpiskeluoikeudet)
+      extractOppija(parsedJson).right.flatMap(updateFieldsAndValidateOpiskeluoikeudet)
     }
   }
 
-  def extractAndValidateOpiskeluoikeus(parsedJson: JValue)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
+  def extractUpdateFieldsAndValidateOpiskeluoikeus(parsedJson: JValue)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
     timed("extractAndValidateOpiskeluoikeus") {
       extractOpiskeluoikeus(parsedJson).right.flatMap { opiskeluoikeus =>
-        validateOpiskeluoikeus(opiskeluoikeus, None)
+        updateFieldsAndValidateOpiskeluoikeus(opiskeluoikeus, None)
       }
     }
   }
@@ -82,15 +82,15 @@ class KoskiValidator(
     )
   }
 
-  private def validateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    val results: Seq[Either[HttpStatus, Opiskeluoikeus]] = oppija.opiskeluoikeudet.map(validateOpiskeluoikeus(_, Some(oppija.henkilö)))
+  private def updateFieldsAndValidateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
+    val results: Seq[Either[HttpStatus, Opiskeluoikeus]] = oppija.opiskeluoikeudet.map(updateFieldsAndValidateOpiskeluoikeus(_, Some(oppija.henkilö)))
     HttpStatus.foldEithers(results).right.flatMap {
       case Nil => Left(KoskiErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista())
       case opiskeluoikeudet => Right(oppija.copy(opiskeluoikeudet = opiskeluoikeudet))
     }
   }
 
-  private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
+  private def updateFieldsAndValidateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
     opiskeluoikeus match {
       case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus if opiskeluoikeus.mitätöity =>
         updateFields(opiskeluoikeus, lipsuTarvittaessaVirheistäMitätöinnissä = true)
