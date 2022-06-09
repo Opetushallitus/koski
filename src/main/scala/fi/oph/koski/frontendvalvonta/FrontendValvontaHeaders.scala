@@ -56,7 +56,11 @@ object FrontendValvontaHeaders {
       case _ => "frame-ancestors 'none'"
     }
 
-  private val frameSrc = "frame-src 'none'"
+  private def frameSrc(allowFrameSrcSelf: Boolean): String =
+    allowFrameSrcSelf match {
+      case true => "frame-src 'self'"
+      case _ => "frame-src 'none'"
+    }
 
   private val manifestSrc = "manifest-src 'none'"
 
@@ -68,14 +72,14 @@ object FrontendValvontaHeaders {
   // Käyttöönotto vaatisi myös muutoksia fronttikoodiin.
   private val requireTrustedTypesFor = "require-trusted-types-for 'script'"
 
-  def headers(allowFrameAncestors: Boolean, mode: FrontendValvontaMode, unsafeAllowInlineStyles: Boolean, unsafeAllowBaseUri: Boolean, nonce: String): Map[String, String] = {
+  def headers(allowFrameAncestors: Boolean, allowFrameSrcSelf: Boolean, mode: FrontendValvontaMode, unsafeAllowInlineStyles: Boolean, unsafeAllowBaseUri: Boolean, nonce: String): Map[String, String] = {
     if (mode != FrontendValvontaMode.DISABLED) {
       val key = mode match {
         case FrontendValvontaMode.REPORT_ONLY => s"Content-Security-Policy-Report-Only"
         case FrontendValvontaMode.ENABLED => s"Content-Security-Policy"
       }
       Map(
-        key -> createString(allowFrameAncestors, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce),
+        key -> createString(allowFrameAncestors, allowFrameSrcSelf, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce),
         "Report-To" -> s"""{ "group": "${cspEndPointGroup}", "max_age": 10886400, "endpoints": [ { "url": "${uriForReportTo}" } ] }"""
       )
     } else {
@@ -83,7 +87,7 @@ object FrontendValvontaHeaders {
     }
   }
 
-  private def createString(allowRunningInFrame: Boolean, unsafeAllowInlineStyles: Boolean, unsafeAllowBaseUri: Boolean, nonce: String): String =
+  private def createString(allowRunningInFrame: Boolean, allowFrameSrcSelf: Boolean, unsafeAllowInlineStyles: Boolean, unsafeAllowBaseUri: Boolean, nonce: String): String =
     List(
       defaultSrc,
       scriptSrc(nonce),
@@ -96,7 +100,7 @@ object FrontendValvontaHeaders {
       formAction,
       childSrc,
       frameAncestors(allowRunningInFrame),
-      frameSrc,
+      frameSrc(allowFrameSrcSelf),
       manifestSrc,
       mediaSrc,
       workerSrc,
