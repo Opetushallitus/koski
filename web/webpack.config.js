@@ -21,12 +21,12 @@ module.exports = {
   },
   stats: 'normal',
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         include: [__dirname + '/app'],
         use: {
           loader: 'babel-loader',
@@ -35,6 +35,11 @@ module.exports = {
             presets: ['@babel/preset-env', '@babel/preset-react']
           }
         }
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        include: [__dirname + '/app'],
+        use: ['ts-loader']
       },
       {
         test: /\.less$/,
