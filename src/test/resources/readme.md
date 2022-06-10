@@ -10,14 +10,28 @@ Oppilaitosten muuttuessa tiedostoon laitettavat rivit voi hakea raportointitieto
 with oppilaitokset as (
     select unnest(string_to_array(
         -- Tähän riville kaikki oppilaitos-oidit välilyönnillä erotettuna:
-        '1.2.246.562.10.67636414343 1.2.246.562.10.14613773812 1.2.246.562.10.62858797335',
-        ' '
-    )) as oppilaitos_oid)
+            '1.2.246.562.10.10059380252 1.2.246.562.10.10097597065 1.2.246.562.10.102806581210 ...',
+            ' '
+        )) as oppilaitos_oid
+)
+   , loytyvat_oppijat as (
+        select unnest(string_to_array(
+            -- Tähän riville kaikki oppija-oidit, jotka löytyvät Valppaasta (valpas_qa_oppija_oidit.txt) välilyönnillä erotettuna:
+                '1.2.246.562.24.50770631005 1.2.246.562.24.10001511889 1.2.246.562.24.10001665997  ...',
+                ' '
+            )) as oppija_oid
+    )
 select
     concat(
-        oppilaitos_oid,
-        ' ',
-        (select string_agg(oppija_oid, ' ') from r_opiskeluoikeus where oppilaitos_oid = oppilaitokset.oppilaitos_oid)
-    ) as row
+            oppilaitos_oid,
+            ' ',
+            (select
+                 string_agg(distinct r_opiskeluoikeus.oppija_oid, ' ')
+             from
+                 r_opiskeluoikeus
+                     join loytyvat_oppijat on r_opiskeluoikeus.oppija_oid = loytyvat_oppijat.oppija_oid
+             where
+                 oppilaitos_oid = oppilaitokset.oppilaitos_oid)
+        ) as row
 from oppilaitokset;
 ```
