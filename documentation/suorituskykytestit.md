@@ -21,6 +21,9 @@ luotiin QA-ympäristössä Koskeen .
 
 Kyseiset oidit löytyvät [testien resursseista](../src/test/resources/valpas_qa_oppija_oidit.txt).
 
+Huom! Jos muutat kyseisiä oideja, niin suorituskykytestien listanäkymäkyselyiden testidata pitää päivittää myös.
+Ohjeet siihen ovat [erillisessä READMEssä](../src/test/resources/readme.md).
+
 #### Datan lisääminen testiympäristöissä Koskeen
 
 Koska Valppaassa näkyy kerrallaan vain yhden vuoden oppijat, tulee Koskessa olevat opiskeluoikeudet data päivittää
