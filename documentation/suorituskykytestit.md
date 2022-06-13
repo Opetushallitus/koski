@@ -19,10 +19,49 @@ haku- ja valintapalvelusta löytyvään dataan. Linkitys tapahtuu oppija oideill
 tuotantoa vastaava data, jolloin noin 60000 oppijan oideja vastaavat 9. luokan opiskeluoikeudet
 luotiin QA-ympäristössä Koskeen .
 
-Kyseiset oidit löytyvät [testien resursseista](../src/test/resources/valpas_qa_oppija_oidit.txt).
+#### valpas_qa_oppija_oidit.txt
 
-Huom! Jos muutat kyseisiä oideja, niin suorituskykytestien listanäkymäkyselyiden testidata pitää päivittää myös.
-Ohjeet siihen ovat [erillisessä READMEssä](../src/test/resources/readme.md).
+Testauksessa käytettävät oppijaoidit löytyvät [testien resursseista](../src/test/resources/valpas_qa_oppija_oidit.txt).
+
+#### valpas_qa_peruskoulujen_oidit.txt
+
+Oidit pitää lisäksi päivittää oppilaitostensa kanssa tiedostoon [valpas_qa_peruskoulujen_oidit.txt](../src/test/resources/valpas_qa_peruskoulujen_oidit.txt).
+
+Tiedosto sisältää joka rivillä ensin oppilaitoksen oidin ja sen jälkeen oppilaitoksesta haettavien oppijoiden oidit.
+
+Ilman näitä oppija-oideja jää Sure-rajapinnan listahaut testaamatta.
+
+Oppijoiden muuttuessa tiedostoon laitettavat rivit voi hakea raportointitietokannasta sql-kyselyllä:
+
+```sql
+with oppilaitokset as (
+    select unnest(string_to_array(
+        -- Tähän riville kaikki oppilaitos-oidit välilyönnillä erotettuna:
+            '1.2.246.562.10.10059380252 1.2.246.562.10.10097597065 1.2.246.562.10.102806581210 ...',
+            ' '
+        )) as oppilaitos_oid
+)
+   , loytyvat_oppijat as (
+        select unnest(string_to_array(
+            -- Tähän riville kaikki oppija-oidit, jotka löytyvät Valppaasta (valpas_qa_oppija_oidit.txt) välilyönnillä erotettuna:
+                '1.2.246.562.24.50770631005 1.2.246.562.24.10001511889 1.2.246.562.24.10001665997  ...',
+                ' '
+            )) as oppija_oid
+    )
+select
+    concat(
+            oppilaitos_oid,
+            ' ',
+            (select
+                 string_agg(distinct r_opiskeluoikeus.oppija_oid, ' ')
+             from
+                 r_opiskeluoikeus
+                     join loytyvat_oppijat on r_opiskeluoikeus.oppija_oid = loytyvat_oppijat.oppija_oid
+             where
+                 oppilaitos_oid = oppilaitokset.oppilaitos_oid)
+        ) as row
+from oppilaitokset;
+```
 
 #### Datan lisääminen testiympäristöissä Koskeen
 
