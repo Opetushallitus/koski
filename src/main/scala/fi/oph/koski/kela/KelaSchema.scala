@@ -1,5 +1,7 @@
 package fi.oph.koski.kela
 
+import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.KoodistoUri
@@ -14,22 +16,23 @@ object KelaSchema {
   lazy val schemaJson: JValue =
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[KelaOppija]).asInstanceOf[ClassSchema])
 
-  val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
-  "aikuistenperusopetus",
-  "ammatillinenkoulutus",
-  "ibtutkinto",
-  "diatutkinto",
-  "internationalschool",
-  "lukiokoulutus",
-  "luva",
-  "perusopetukseenvalmistavaopetus",
-  "perusopetuksenlisaopetus",
-  "perusopetus",
-  "ylioppilastutkinto",
-  "vapaansivistystyonkoulutus",
-// TODO: poista seuraava rivi kommenteista jotta Kela API alkaa palauttaa TUVA opiskeluoikeuksia
-//  "tuva"
-  )
+  def schemassaTuetutOpiskeluoikeustyypit(config: Config): List[String] = List(
+    "aikuistenperusopetus",
+    "ammatillinenkoulutus",
+    "ibtutkinto",
+    "diatutkinto",
+    "internationalschool",
+    "lukiokoulutus",
+    "luva",
+    "perusopetukseenvalmistavaopetus",
+    "perusopetuksenlisaopetus",
+    "perusopetus",
+    "ylioppilastutkinto",
+    "vapaansivistystyonkoulutus",
+    // Poistetaan tämä kun TUVA-opiskeluoikeudet avataan Kela APIin.
+    // See TOR-1677
+    if (Environment.isProdEnvironment(config)) "" else "tuva"
+  ).filter(_.nonEmpty)
 }
 
 case class KelaOppija(
