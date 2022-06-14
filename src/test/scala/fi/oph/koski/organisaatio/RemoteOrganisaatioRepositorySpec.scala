@@ -40,7 +40,17 @@ class RemoteOrganisaatioRepositorySpec extends AnyFreeSpec with TestEnvironment 
     "hakee kaikki päiväkodit" in {
       val organisaatioHierarkia = organisaatioHierarkiaJson.extract[OrganisaatioHakuTulos].organisaatiot.map(MockOrganisaatioRepository.convertOrganisaatio)
       val päiväkotiCount = OrganisaatioHierarkia.flatten(organisaatioHierarkia).count(_.organisaatiotyypit.contains(VARHAISKASVATUKSEN_TOIMIPAIKKA))
-      orgRepository.findAllVarhaiskasvatusToimipisteet.length should equal(päiväkotiCount)
+      orgRepository.findAllVarhaiskasvatusToimipisteet.count(_.varhaiskasvatuksenOrganisaatioTyyppi) should equal(päiväkotiCount)
+    }
+
+    "hakee varhaiskasvatuksen toimipisteitä jotka eivät ole päiväkoteja" in {
+      val organisaatioHierarkia = organisaatioHierarkiaJson.extract[OrganisaatioHakuTulos].organisaatiot.map(MockOrganisaatioRepository.convertOrganisaatio)
+      val muuKuinPäiväkotiCount = OrganisaatioHierarkia.flatten(organisaatioHierarkia).count(o =>
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskoulut) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskouluasteenErityiskoulut) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.perusJaLukioasteenKoulut)
+      )
+      orgRepository.findAllVarhaiskasvatusToimipisteet.count(o => !o.varhaiskasvatuksenOrganisaatioTyyppi) should equal(muuKuinPäiväkotiCount)
     }
   }
 

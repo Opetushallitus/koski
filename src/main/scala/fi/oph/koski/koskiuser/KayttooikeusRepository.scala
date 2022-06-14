@@ -1,6 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
+import fi.oph.koski.organisaatio.OrganisaatioRepository.VarhaiskasvatusToimipisteResult
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.util.Timing
@@ -56,13 +57,13 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
   private def hierarkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
     if (organisaatioHierarkia.varhaiskasvatuksenJärjestäjä && organisaatioHierarkia.toKoulutustoimija.isDefined) {
       organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map {
-        case (toimipiste, onVarhaiskasvatuksenToimipiste) =>
-        KäyttöoikeusVarhaiskasvatusToimipiste(
-          koulutustoimija = organisaatioHierarkia.toKoulutustoimija.get,
-          ulkopuolinenOrganisaatio = toimipiste.toOidOrganisaatio,
-          organisaatiokohtaisetPalveluroolit = k.organisaatiokohtaisetPalveluroolit,
-          onVarhaiskasvatuksenToimipiste = onVarhaiskasvatuksenToimipiste
-        )
+        case v: VarhaiskasvatusToimipisteResult =>
+          KäyttöoikeusVarhaiskasvatusToimipiste(
+            koulutustoimija = organisaatioHierarkia.toKoulutustoimija.get,
+            ulkopuolinenOrganisaatio = v.organisaatio.toOidOrganisaatio,
+            organisaatiokohtaisetPalveluroolit = k.organisaatiokohtaisetPalveluroolit,
+            onVarhaiskasvatuksenToimipiste = v.varhaiskasvatuksenOrganisaatioTyyppi
+          )
       }
     } else {
       Nil
