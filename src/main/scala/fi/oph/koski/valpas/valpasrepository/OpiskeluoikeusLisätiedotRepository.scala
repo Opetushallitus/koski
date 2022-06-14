@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.valpasrepository
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
@@ -61,7 +62,7 @@ class OpiskeluoikeusLisätiedotRepository(valpasDatabase: ValpasDatabase, config
   }
 
   def truncate(): Unit = {
-    if (config.getString("opintopolku.virkailija.url") == "mock") {
+    if (Environment.isMockEnvironment(config)) {
       runDbSync(OpiskeluoikeusLisätiedot.delete)
     } else {
       throw new RuntimeException("Opiskeluoikeuden lisätietoja ei voi tyhjentää tuotantotilassa")

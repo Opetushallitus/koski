@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.valpasrepository
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
@@ -86,7 +87,7 @@ class OppivelvollisuudenKeskeytysRepository(database: ValpasDatabase, config: Co
   }
 
   def truncate(): Unit = {
-    if (config.getString("opintopolku.virkailija.url") == "mock") {
+    if (Environment.isMockEnvironment(config)) {
       runDbSync(OppivelvollisuudenKeskeytyshistoria.delete)
       runDbSync(OppivelvollisuudenKeskeytys.delete)
     } else {

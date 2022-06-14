@@ -1,7 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -202,8 +202,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
 
   private val tietokantaUpload = "database-upload"
 
-  protected lazy val isMockEnvironment: Boolean =
-    application.config.getString("opintopolku.virkailija.url") == "mock"
+  protected lazy val isMockEnvironment: Boolean = Environment.isMockEnvironment(application.config)
 
   def shutdown = {
     Thread.sleep(60000) //Varmistetaan, että kaikki logit ehtivät varmasti siirtyä Cloudwatchiin ennen sulkemista.
