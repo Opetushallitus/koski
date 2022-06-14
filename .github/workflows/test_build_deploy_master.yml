@@ -93,7 +93,8 @@ jobs:
         run: docker-compose up -d
 
       - name: Run backend tests (api)
-        run: mvn test -DmembersOnlySuites="fi.oph.koski.api,\
+        run: |
+          mvn test -DmembersOnlySuites="fi.oph.koski.api, \
           fi.oph.koski.browserstack,fi.oph.koski.cache"
 
   run_backend_tests_nonmock:
@@ -186,20 +187,21 @@ jobs:
         run: docker-compose up -d
 
       - name: Run backend tests (other)
-        run: mvn test -DmembersOnlySuites="fi.oph.koski.browserstack,\
-          fi.oph.koski.cache,fi.oph.koski.editor,fi.oph.koski.environment,\
-          fi.oph.koski.etk,fi.oph.koski.henkilo,fi.oph.koski.http,\
-          fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto,\
-          fi.oph.koski.koskiuser,fi.oph.koski.localization,fi.oph.koski.log,\
-          fi.oph.koski.luovutuspalvelu,fi.oph.koski.migration,fi.oph.koski.migri,\
-          fi.oph.koski.mocha,fi.oph.koski.mydata,fi.oph.koski.omaopintopolkuloki,\
-          fi.oph.koski.opiskeluoikeus,fi.oph.koski.oppilaitos,fi.oph.koski.oppivelvollisuustieto,\
-          fi.oph.koski.organisaatio,fi.oph.koski.perftest,fi.oph.koski.raportit,\
-          fi.oph.koski.raportointikanta,fi.oph.koski.schedule,fi.oph.koski.schema,\
-          fi.oph.koski.sso,fi.oph.koski.sure,fi.oph.koski.tools,\
-          fi.oph.koski.userdirectory,fi.oph.koski.util,fi.oph.koski.valpas,\
-          fi.oph.koski.valvira,fi.oph.koski.versioning,fi.oph.koski.virta,\
-          fi.oph.koski.ytl,fi.oph.koski.ytr, fi.oph.koski.ytl,fi.oph.koski.meta,\
+        run: |
+          mvn test -DmembersOnlySuites="fi.oph.koski.browserstack, \
+          fi.oph.koski.cache,fi.oph.koski.editor,fi.oph.koski.environment, \
+          fi.oph.koski.etk,fi.oph.koski.henkilo,fi.oph.koski.http, \
+          fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto, \
+          fi.oph.koski.koskiuser,fi.oph.koski.localization,fi.oph.koski.log, \
+          fi.oph.koski.luovutuspalvelu,fi.oph.koski.migration,fi.oph.koski.migri, \
+          fi.oph.koski.mocha,fi.oph.koski.mydata,fi.oph.koski.omaopintopolkuloki, \
+          fi.oph.koski.opiskeluoikeus,fi.oph.koski.oppilaitos,fi.oph.koski.oppivelvollisuustieto, \
+          fi.oph.koski.organisaatio,fi.oph.koski.perftest,fi.oph.koski.raportit, \
+          fi.oph.koski.raportointikanta,fi.oph.koski.schedule,fi.oph.koski.schema, \
+          fi.oph.koski.sso,fi.oph.koski.sure,fi.oph.koski.tools, \
+          fi.oph.koski.userdirectory,fi.oph.koski.util,fi.oph.koski.valpas, \
+          fi.oph.koski.valvira,fi.oph.koski.versioning,fi.oph.koski.virta, \
+          fi.oph.koski.ytl,fi.oph.koski.ytr, fi.oph.koski.ytl,fi.oph.koski.meta, \
           fi.oph.koski.frontendvalvonta"
 
   run_frontend_tests_0:
