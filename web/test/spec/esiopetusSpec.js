@@ -10,14 +10,14 @@ describe('Esiopetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
-        expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
-        expect(opinnot.getTutkinto()).to.equal('Peruskoulun esiopetus')
+        expect(opinnot.getOppilaitos(1)).to.equal('Jyväskylän normaalikoulu')
+        expect(opinnot.getTutkinto(1)).to.equal('Peruskoulun esiopetus')
       })
     })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.esiopetuksensuoritus .koulutusmoduuli .tunniste').text()).to.equal('Peruskoulun esiopetus')
+        expect(S('.esiopetuksensuoritus .koulutusmoduuli .tunniste').text()).to.equal('Peruskoulun esiopetusPeruskoulun esiopetus')
       })
     })
   })
@@ -317,19 +317,27 @@ describe('Esiopetus', function() {
   })
 
   describe('Tietojen muuttaminen', function() {
+    var indexEditor = opinnot.opiskeluoikeusEditor(1)
+
     before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
 
     describe('Kurssin kuvauksen ja sanallisen arvion muuttaminen', function() {
-      var kuvaus = editor.subEditor('.osasuoritukset tbody').propertyBySelector('.kuvaus')
+      var kuvaus = indexEditor.subEditor('.osasuoritukset tbody').propertyBySelector('.kuvaus')
 
-      before(editor.edit, opinnot.expandAll, kuvaus.setValue('Uusi kuvaus'), editor.saveChanges, opinnot.expandAll)
+      before(
+        click('.toggle-edit'),
+        opinnot.expandAll,
+        kuvaus.setValue('Uusi kuvaus'),
+        indexEditor.saveChanges,
+        opinnot.expandAll
+      )
       it('Toimii', function() {
         expect(kuvaus.getValue()).to.equal('Uusi kuvaus')
       })
     })
 
     describe('Päätason suorituksen poistaminen', function() {
-      before(editor.edit)
+      before(indexEditor.edit)
 
       describe('Mitätöintilinkki', function() {
         it('Ei näytetä', function() {
@@ -340,17 +348,19 @@ describe('Esiopetus', function() {
   })
 
   describe('Aloituspäivä', function() {
+    var indexEditor = opinnot.opiskeluoikeusEditor(1)
+
     before(page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
 
     describe('Opiskeluoikeuden aloituspäivän muuttaminen', function() {
       before(
-        editor.edit,
+        indexEditor.edit,
         opinnot.expandAll,
         Page(function() {return S('#content')}).setInputValue('.tila .opiskeluoikeusjakso:last-child .date input', '1.1.2005')
       )
       it('Toimii', function() {
         expect(S('.tila .opiskeluoikeusjakso:last-child .date input').val()).to.equal('1.1.2005')
-        expect(S('.opiskeluoikeuden-voimassaoloaika .alkamispäivä .date').html()).to.equal('1.1.2005')
+        expect(S('li:nth-child(2) .opiskeluoikeuden-voimassaoloaika .alkamispäivä .date').html()).to.equal('1.1.2005')// li:nth-child(2)
       })
     })
   })

@@ -338,32 +338,35 @@ describe('Oppijataulukko', function() {
     before(Authentication().login('esiopetus'), page.openPage, wait.until(page.isReady))
 
     it('ei näytetä kuin oman koulun esiopetusoppijat', function() {
-      expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Eskari, Essi', 'Kelalle, Useita', 'Lisä-Eskari, Essiina' ])
-      expect(page.opiskeluoikeudeTotal()).to.equal('3')
+      expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Eskari, Essi', 'Eskari, Essi', 'Kelalle, Useita', 'Lisä-Eskari, Essiina' ])
+      expect(page.opiskeluoikeudeTotal()).to.equal('4')
     })
   })
 
   describe('Varhaiskasvatuksen järjestäjä', function() {
     before(Authentication().login('hki-tallentaja'), page.openPage, wait.until(page.isReady))
+    var organisaatiovalitsin = OrganisaatioHaku(page.oppijataulukko.tableElem)
 
-    describe('voi hakea ostopalvelutoimipisteistä joihin on tallennettu opiskeluoikeuksia', function() {
-      before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('oppilaitos', 'Päiväkoti Touhula'))
+    describe('ei voi hakea yksittäisistä ostopalvelutoimipisteistä joihin on tallennettu opiskeluoikeuksia', function() {
+      before(
+        page.oppijataulukko.filterBy('tyyppi'),
+        page.oppijataulukko.filterBy('tila'),
+        organisaatiovalitsin.enter()
+      )
 
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal(['Eskari, Essi'])
-        expect(page.opiskeluoikeudeTotal()).to.equal('1')
+        expect(organisaatiovalitsin.oppilaitokset()).not.to.deep.include(
+          'Päiväkoti Touhula'
+        )
       })
     })
 
-    var organisaatiovalitsin = OrganisaatioHaku(page.oppijataulukko.tableElem)
     describe('voi filtteröidä hakusanalla Ostopalvelu/palveluseteli', function() {
       before(organisaatiovalitsin.enter('Ostopalvelu/palveluseteli'))
 
-      it('näyttää vain oppilaitokset joihin tallennettu dataa', function() {
+      it('näyttää vain Ostopalvelu/palveluseteli -valinnan eikä aliorganisaatioita sille', function() {
         expect(organisaatiovalitsin.oppilaitokset()).to.deep.equal([
-          'Ostopalvelu/palveluseteli Päiväkoti Majakka Päiväkoti Touhula',
-          'Päiväkoti Majakka',
-          'Päiväkoti Touhula'
+          'Ostopalvelu/palveluseteli',
         ])
       })
     })
@@ -372,9 +375,9 @@ describe('Oppijataulukko', function() {
       before(organisaatiovalitsin.select('Ostopalvelu/palveluseteli'))
 
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal(['Eskari, Essi', 'Eskari, Essi'])
-        expect(page.oppijataulukko.oppilaitokset().slice().sort()).to.deep.equal(['Päiväkoti Majakka', 'Päiväkoti Touhula'])
-        expect(page.opiskeluoikeudeTotal()).to.equal('2')
+        expect(page.oppijataulukko.names()).to.deep.equal(['Eskari, Essi', 'Eskari, Essi', 'Eskari, Essi'])
+        expect(page.oppijataulukko.oppilaitokset().slice().sort()).to.deep.equal(['Jyväskylän normaalikoulu', 'Päiväkoti Majakka', 'Päiväkoti Touhula'])
+        expect(page.opiskeluoikeudeTotal()).to.equal('3')
       })
     })
   })

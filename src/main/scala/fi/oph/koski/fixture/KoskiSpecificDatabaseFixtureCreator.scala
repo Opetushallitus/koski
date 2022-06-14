@@ -3,14 +3,14 @@ package fi.oph.koski.fixture
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, puuteollisuudenPerustutkinnonSuoritus, puuteollisuudenPerustutkinto, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus}
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
-import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, päiväkotisuoritus}
+import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, peruskoulusuoritus, päiväkotisuoritus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinki, oppilaitos}
 import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiMockUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.organisaatio.MockOrganisaatiot.päiväkotiMajakka
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, päiväkotiMajakka}
 import fi.oph.koski.schema._
 
 import java.net.InetAddress
@@ -63,6 +63,12 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
           ostopalveluOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(j => j.copy(alku = j.alku.minusDays(1)))
         )
+      ), hkiTallentaja)),
+      (KoskiSpecificMockOppijat.eskari, updateFieldsAndValidateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(
+        suoritukset = List(peruskoulusuoritus(oppilaitos(jyväskylänNormaalikoulu)).copy(vahvistus = None)),
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          ostopalveluOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(j => j.copy(alku = date(2022, 6, 7)))
+        ),
       ), hkiTallentaja)),
       (KoskiSpecificMockOppijat.rikkinäinenOpiskeluoikeus, MaksuttomuusRaporttiFixtures.opiskeluoikeusAmmatillinenMaksuttomuuttaPidennetty.copy(
         tyyppi = OpiskeluoikeudenTyyppi.ammatillinenkoulutus.copy(

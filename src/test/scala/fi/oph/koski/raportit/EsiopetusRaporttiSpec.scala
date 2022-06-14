@@ -104,7 +104,7 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
         getOppilaitokset(raportti) should equal(List("Päiväkoti Majakka", "Päiväkoti Touhula"))
         getRows(raportti).flatMap(_.ostopalveluTaiPalveluseteli) should equal(List("JM02", "JM02"))
 
-        val ostopalveluOrganisaatiot = s"$päiväkotiMajakka,$päiväkotiTouhula"
+        val ostopalveluOrganisaatiot = s"$jyväskylänNormaalikoulu,$päiväkotiMajakka,$päiväkotiTouhula"
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$ostopalveluOrganisaatiot&paiva=2006-08-13&lang=fi")))
       }
 
