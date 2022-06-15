@@ -68,6 +68,14 @@ class OpiskeluoikeudenPerustiedotRepository(
           Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid))
         })
       )
+      case OpiskeluoikeusQueryFilter.VarhaiskasvatuksenToimipiste(toimipisteet) => List(
+        ElasticSearch.anyFilter(toimipisteet.map{ toimipiste =>
+          ElasticSearch.allFilter(List(
+            Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid)),
+            Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> "esiopetuksensuoritus"))
+          ))
+        })
+      )
       case _ => Nil
     }
 

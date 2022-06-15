@@ -376,9 +376,13 @@ class RaportitService(application: KoskiApplication) {
           organisaatiotyypit = organisaatio.organisaatiotyypit,
           raportit = organisaatio.oid match {
             case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString)
-            case oid: String => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(organisaatio, koulutusmuodot).map(_.toString)
+            case _: String => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(organisaatio, koulutusmuodot).map(_.toString)
           },
-          children = buildOrganisaatioJaRaporttiTyypit(organisaatio.children, koulutusmuodot)
+          children = organisaatio.oid match {
+            case organisaatioService.ostopalveluRootOid => Nil
+            case _ => buildOrganisaatioJaRaporttiTyypit(organisaatio.children, koulutusmuodot)
+          }
+
         )
       })
       .toList

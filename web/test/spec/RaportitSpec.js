@@ -215,6 +215,30 @@ describe('Raporttien luominen', function() {
     })
   })
 
+  describe('Organisaatiovalitsin koulutustoimijan käyttäjällä', function() {
+    const esiopetuksenOrganisaatiot = [ 'Helsingin kaupunki', 'Kulosaaren ala-aste', 'Ostopalvelu/palveluseteli' ]
+    const perusopetuksenOrganisaatiot = [ 'Helsingin kaupunki', 'Kulosaaren ala-aste', 'Stadin ammatti- ja aikuisopisto' ]
+
+    before(
+      Authentication().login('hki-tallentaja'),
+      page.openPage(),
+      page.odotaRaporttikategoriat()
+    )
+
+    it('Valittavat organisaatiot oikein esiopetukselle', function() {
+      expect(page.valittavatOrganisaatiot()).to.deep.equal(esiopetuksenOrganisaatiot)
+    })
+
+    describe('Valittavat organisaatiot oikein perusopetukselle', function() {
+      before(
+        page.valitseRaporttikategoria(1), // Perusopetus
+      )
+      it('Ostopalvelu ei valittavana', function() {
+        expect(page.valittavatOrganisaatiot()).to.deep.equal(perusopetuksenOrganisaatiot)
+      })
+    })
+  })
+
   describe('Organisaatiovalitsimen hakutoiminto', function() {
     before(
       Authentication().login('kalle'),

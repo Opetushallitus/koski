@@ -46,6 +46,7 @@ describe('Huollettavien tiedot', function () {
             'Päiväkoti Touhula',
             'Päiväkoti Majakka'
           ], [
+            'Peruskoulun esiopetus (2022—, läsnä)',
             'Peruskoulun esiopetus (2006—2007, valmistunut)',
             'Päiväkodin esiopetus (2006—, läsnä)',
             'Päiväkodin esiopetus (2006—, läsnä)'

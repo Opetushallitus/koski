@@ -30,7 +30,7 @@ class VarhaiskasvatusPerustiedotSpec
         perustieto <- perustiedot
         etunimet <- perustieto.henkilö.map(_.etunimet)
         oppilaitos <- perustieto.oppilaitos.nimi.map(_.get("fi"))
-      } yield (etunimet, oppilaitos)).sorted should equal(List((eero.etunimet, "Päiväkoti Majakka"), (eskari.etunimet, "Päiväkoti Majakka"), (eskari.etunimet, "Päiväkoti Touhula")))
+      } yield (etunimet, oppilaitos)).sorted should equal(List((eero.etunimet, "Päiväkoti Majakka"), (eskari.etunimet, "Jyväskylän normaalikoulu"), (eskari.etunimet, "Päiväkoti Majakka"), (eskari.etunimet, "Päiväkoti Touhula")))
     }
 
     "Ei voi hakea muiden luomia organisaatiohierarkian ulkopuolisia perustietoja" in {

@@ -61,10 +61,15 @@ class KoskiSpecificSession(
   def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO))
   def hasReadAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.read)
 
-  def hasReadAccess(organisaatio: Organisaatio.Oid): Boolean =
-    hasReadAccess(organisaatio, None) || varhaiskasvatusKoulutustoimijat.exists(koulutustoimija =>
-      hasReadAccess(organisaatio, Some(koulutustoimija))
-    )
+  def hasRaporttiReadAccess(organisaatio: Organisaatio.Oid): Boolean = {
+    hasReadAccess(organisaatio, None) ||
+      varhaiskasvatusKäyttöoikeudet
+        .filter(_.onVarhaiskasvatuksenToimipiste)
+        .exists(oikeus =>
+           oikeus.ulkopuolinenOrganisaatio.oid == organisaatio &&
+             hasReadAccess(organisaatio, Some(oikeus.koulutustoimija.oid))
+        )
+  }
 
   def hasWriteAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.write) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
   def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.tiedonsiirronMitätöinti)
@@ -87,7 +92,7 @@ class KoskiSpecificSession(
 
   def hasVarhaiskasvatusAccess(koulutustoimijaOid: Organisaatio.Oid, organisaatioOid: Organisaatio.Oid, accessType: AccessType.Value): Boolean = {
     val oikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(accessType))
-    globalAccess.contains(accessType)|| oikeudet.exists { case KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, organisaatio, _) =>
+    globalAccess.contains(accessType)|| oikeudet.exists { case KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, organisaatio, _, _) =>
       koulutustoimijaOid == koulutustoimija.oid && organisaatioOid == organisaatio.oid
     }
   }

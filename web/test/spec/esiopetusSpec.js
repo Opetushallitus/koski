@@ -10,14 +10,14 @@ describe('Esiopetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
-        expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
-        expect(opinnot.getTutkinto()).to.equal('Peruskoulun esiopetus')
+        expect(opinnot.getOppilaitos(1)).to.equal('Jyväskylän normaalikoulu')
+        expect(opinnot.getTutkinto(1)).to.equal('Peruskoulun esiopetus')
       })
     })
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.esiopetuksensuoritus .koulutusmoduuli .tunniste').text()).to.equal('Peruskoulun esiopetus')
+        expect(S('.esiopetuksensuoritus .koulutusmoduuli .tunniste').text()).to.equal('Peruskoulun esiopetusPeruskoulun esiopetus')
       })
     })
   })
@@ -127,15 +127,36 @@ describe('Esiopetus', function() {
 
         it('vain oman organisaation ulkopuoliset varhaiskasvatustoimipisteet näytetään', function () {
           expect(addOppija.toimipisteet()).to.deep.equal([
+            'Helsingin normaalilyseo',
+            'Helsingin yliopiston Viikin normaalikoulu',
+            'International School of Helsinki',
+            'Joensuun normaalikoulu  (lakkautettu)',
+            'Rantakylän normaalikoulu',
+            'Savonlinnan normaalikoulu  (lakkautettu)',
+            'Tulliportin normaalikoulu',
+            'Jyväskylän normaalikoulu',
+            'Helsingin Saksalainen koulu',
             'Tarina',
+            'Heinlahden ala-aste  (lakkautettu)',
+            'Hirvikosken koulu',
+            'Huutjärven koulu',
             'Ip-Huutjärvi',
             'Ip-Suur-Ahvenkoski',
+            'Purolan koulu  (lakkautettu)',
+            'Pyttis svenska skola',
             'Päiväkoti Majakka',
             'Päiväkoti Måsarna',
             'Päiväkoti Touhula',
+            'Siltakylän ala-aste  (lakkautettu)',
+            'Suur-Ahvenkosken koulu',
+            'Hämeenlinnan normaalikoulu  (lakkautettu)',
             'ARPELAN ESIOPETUS',
             'ARPELAN PÄIVÄKOTI',
+            'Aapajoen koulu  (lakkautettu)',
+            'Aapajärven koulu  (lakkautettu)',
+            'Arpelan koulu',
             'HANNULAN KOULUN ESKARI',
+            'Hannulan koulu',
             'ISOPALON PÄIVÄKOTI',
             'JUHANNUSSAAREN PÄIVÄKOTI',
             'KAAKAMON PÄIVÄKOTI',
@@ -147,11 +168,32 @@ describe('Esiopetus', function() {
             'KOKKOKANKAAN ESKRI',
             'KOKKOKANKAAN PÄIVÄKOTI',
             'KYLÄJOEN ESIOPETUS POIKKIKAIRA',
+            'Kaakamon koulu',
+            'Kantojärven koulu  (lakkautettu)',
+            'Karungin koulu',
+            'Kivirannan koulu',
+            'Kokkokankaan koulu',
+            'Kukkolan koulu  (lakkautettu)',
+            'Kyläjoen koulu',
+            'Liakan koulu  (lakkautettu)',
+            'Mustarannan koulu  (lakkautettu)',
+            'Nikunmäen koulu  (lakkautettu)',
             'NÄÄTSAAREN ESKARI',
+            'Näätsaaren koulu',
             'PIRKKIÖN ESKARI',
             'PIRKKIÖN PÄIVÄKOTI',
             'PUTAAN VUOROPÄIVÄKOTI',
-            'SEMINAARIN ESKARI'
+            'Pirkkiön koulu',
+            'Putaan koulu',
+            'Raumon koulu',
+            'SEMINAARIN ESKARI',
+            'Sattajärven koulu  (lakkautettu)',
+            'Suensaaren koulu  (lakkautettu)',
+            'Tornion Seminaarin koulu',
+            'Tornionseudun koulu  (lakkautettu)',
+            'Vojakkalan koulu  (lakkautettu)',
+            'Yliliakan koulu  (lakkautettu)',
+            'Yliraumon koulu  (lakkautettu)'
           ])
         })
 
@@ -227,22 +269,75 @@ describe('Esiopetus', function() {
         })
       })
     })
+
+    describe('Lisääminen organisaatiohierarkian ulkopuolelle peruskoulun esiopetukselle', function () {
+      before(prepareForNewOppija('hki-tallentaja', '230872-7258'))
+
+      describe('Kun kyseessä on koulutustoimija joka on myös varhaiskasvatuksen järjestäjä', function() {
+        it('Varhaiskasvatus organisaatiohierarkian ulkopuolelle valitsin näytetään', function() {
+          expect(isElementVisible(findSingle('#varhaiskasvatus-checkbox'))).to.equal(true)
+        })
+      })
+
+      describe('Kun valitaan oman organisaatiohierarkian ulkopuolelle tallentaminen', function () {
+        before(
+          addOppija.selectVarhaiskasvatusOrganisaationUlkopuolelta(true),
+          addOppija.enterOppilaitos('')
+        )
+
+
+        describe('Kun syötetään loput datat peruskoulun esiopetukselle', function() {
+          before(
+            addOppija.selectJärjestämismuoto('Ostopalvelu, kunnan tai kuntayhtymän järjestämä'),
+            addOppija.enterValidDataEsiopetus({oppilaitos: 'Hirvikosken koulu'})
+        )
+
+          it('lisää nappi enabloituu', function () {
+            expect(addOppija.isEnabled()).to.equal(true)
+          })
+
+          describe('Kun painetaan Lisää-nappia', function () {
+            before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Peruskoulun esiopetus'))
+
+            it('lisätty oppija näytetään', function () {
+              expect(opinnot.getTutkinto()).to.equal('Peruskoulun esiopetus')
+              expect(opinnot.getOppilaitos()).to.equal('Hirvikosken koulu')
+              expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('102/011/2014')
+              expect(extractAsText(S('.tunniste-koodiarvo'))).to.equal('001101')
+            })
+
+            it('koulutusmoduuli ja järjestämismuoto näytetään', function () {
+              expect(editor.property('koulutustoimija').getValue()).to.equal('Helsingin kaupunki')
+              expect(editor.property('järjestämismuoto').getValue()).to.equal('Ostopalvelu, kunnan tai kuntayhtymän järjestämä')
+            })
+          })
+        })
+      })
+    })
   })
 
   describe('Tietojen muuttaminen', function() {
+    var indexEditor = opinnot.opiskeluoikeusEditor(1)
+
     before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
 
     describe('Kurssin kuvauksen ja sanallisen arvion muuttaminen', function() {
-      var kuvaus = editor.subEditor('.osasuoritukset tbody').propertyBySelector('.kuvaus')
+      var kuvaus = indexEditor.subEditor('.osasuoritukset tbody').propertyBySelector('.kuvaus')
 
-      before(editor.edit, opinnot.expandAll, kuvaus.setValue('Uusi kuvaus'), editor.saveChanges, opinnot.expandAll)
+      before(
+        click('.toggle-edit'),
+        opinnot.expandAll,
+        kuvaus.setValue('Uusi kuvaus'),
+        indexEditor.saveChanges,
+        opinnot.expandAll
+      )
       it('Toimii', function() {
         expect(kuvaus.getValue()).to.equal('Uusi kuvaus')
       })
     })
 
     describe('Päätason suorituksen poistaminen', function() {
-      before(editor.edit)
+      before(indexEditor.edit)
 
       describe('Mitätöintilinkki', function() {
         it('Ei näytetä', function() {
@@ -253,17 +348,19 @@ describe('Esiopetus', function() {
   })
 
   describe('Aloituspäivä', function() {
+    var indexEditor = opinnot.opiskeluoikeusEditor(1)
+
     before(page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
 
     describe('Opiskeluoikeuden aloituspäivän muuttaminen', function() {
       before(
-        editor.edit,
+        indexEditor.edit,
         opinnot.expandAll,
         Page(function() {return S('#content')}).setInputValue('.tila .opiskeluoikeusjakso:last-child .date input', '1.1.2005')
       )
       it('Toimii', function() {
         expect(S('.tila .opiskeluoikeusjakso:last-child .date input').val()).to.equal('1.1.2005')
-        expect(S('.opiskeluoikeuden-voimassaoloaika .alkamispäivä .date').html()).to.equal('1.1.2005')
+        expect(S('li:nth-child(2) .opiskeluoikeuden-voimassaoloaika .alkamispäivä .date').html()).to.equal('1.1.2005')// li:nth-child(2)
       })
     })
   })

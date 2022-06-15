@@ -74,10 +74,10 @@ object Käyttöoikeus {
         val filteredRoolit = globalPalveluroolit.filter(palvelurooliFilter)
         if (filteredRoolit.isEmpty) Set.empty else Set(KäyttöoikeusViranomainen(filteredRoolit))
       }
-      case KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, ulkopuolinenOrganisaatio, organisaatiokohtaisetPalveluroolit) =>
+      case KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, ulkopuolinenOrganisaatio, organisaatiokohtaisetPalveluroolit, onVarhaiskasvatuksenToimipiste) =>
       {
         val filteredRoolit = organisaatiokohtaisetPalveluroolit.filter(palvelurooliFilter)
-        if (filteredRoolit.isEmpty) Set.empty else Set(KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, ulkopuolinenOrganisaatio, filteredRoolit))
+        if (filteredRoolit.isEmpty) Set.empty else Set(KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, ulkopuolinenOrganisaatio, filteredRoolit, onVarhaiskasvatuksenToimipiste))
       }
       case _ => Set.empty
     }
@@ -158,9 +158,19 @@ trait OrgKäyttöoikeus extends Käyttöoikeus {
   def globalPalveluroolit: List[Palvelurooli] = Nil
 }
 
-case class KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija: Koulutustoimija, ulkopuolinenOrganisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli]) extends OrgKäyttöoikeus
+case class KäyttöoikeusVarhaiskasvatusToimipiste(
+  koulutustoimija: Koulutustoimija,
+  ulkopuolinenOrganisaatio: OrganisaatioWithOid,
+  organisaatiokohtaisetPalveluroolit: List[Palvelurooli],
+  onVarhaiskasvatuksenToimipiste: Boolean
+) extends OrgKäyttöoikeus
 
-case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends OrgKäyttöoikeus
+case class KäyttöoikeusOrg(
+  organisaatio: OrganisaatioWithOid,
+  organisaatiokohtaisetPalveluroolit: List[Palvelurooli],
+  juuri: Boolean,
+  oppilaitostyyppi: Option[String]
+) extends OrgKäyttöoikeus
 
 case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
   def globalAccessType: List[AccessType.Value] = if (globalPalveluroolit.exists(r => r.palveluName == "KOSKI" && Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))) {

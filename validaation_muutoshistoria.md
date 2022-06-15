@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 14.6.2022
+- Sallitaan peruskoulut esiopetuksen opiskeluoikeuden oppilaitoksina, kun järjestämismuotona on ostopalvelu tai palveluseteli.
+
 ## 8.6.2022
 - Mitätöitäessä opiskeluoikeuksia ei ole n. 1.4.2022 alkaen täydennetty puuttuvia tietoja, kuten oppilaitosta,
   yhteenlaskettuja laajuuksia, perusteen nimeä jne. automaattisesti opiskeluoikeuteen ennen sen tallentamista.

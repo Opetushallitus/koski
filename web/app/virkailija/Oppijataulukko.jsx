@@ -108,6 +108,7 @@ export class Oppijataulukko extends React.Component {
                 selectedOrg={{ oid: params['toimipiste'], nimi: params['toimipisteNimi']}}
                 onSelectionChanged={(org) => {this.filterBus.push(org ? { toimipiste: org.oid, toimipisteNimi: t(org.nimi) } : { toimipiste: null, toimipisteNimi: null })}}
                 noSelectionText={t('kaikki')}
+                shouldShowChildren={org => org.oid !== 'OSTOPALVELUTAIPALVELUSETELI'}
               />
             </th>
             <SortingTableHeader field='alkamispäivä' titleKey='Aloitus pvm'>

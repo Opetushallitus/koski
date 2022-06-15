@@ -1,6 +1,7 @@
 package fi.oph.koski.raportit
 
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.UserWithPassword
@@ -117,6 +118,16 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
       "ei voi ladata raporttia jos raportin opiskeluoikeuden tyyppiin ei ole oikeuksia" in {
         authGet(s"api/raportit/lukionsuoritustietojentarkistus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = perusopetusTallentaja) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+        }
+      }
+      "koulutustoimijan oikeuksilla voi ladata esiopetuksen ostopalveluiden raportin" in {
+        authGet(s"api/raportit/esiopetus?oppilaitosOid=${KoskiApplicationForTests.organisaatioService.ostopalveluRootOid}&paiva=2022-06-07&lang=fi&password=dummy", user = helsinkiTallentaja) {
+          verifyResponseStatusOk()
+        }
+      }
+      "koulutustoimijan oikeuksilla ei voi ladata perusopetuksen raporttia peruskoululle, joka on esiopetuksen ostopalvelun oppilaitos (eikä koulutustoimijan oma organisaatio)" in {
+        authGet(s"api/raportit/perusopetuksenvuosiluokka?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&paiva=2022-06-07&vuosiluokka=9&lang=fi&password=dummy", user = helsinkiTallentaja) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
         }
       }
     }

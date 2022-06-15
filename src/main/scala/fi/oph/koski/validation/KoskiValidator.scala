@@ -3,7 +3,7 @@ package fi.oph.koski.validation
 import java.lang.Character.isDigit
 import java.time.{Instant, LocalDate, ZoneId}
 import com.typesafe.config.Config
-import fi.oph.koski.documentation.ExamplesEsiopetus.päiväkodinEsiopetuksenTunniste
+import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -309,7 +309,10 @@ class KoskiValidator(
 
   private def validateAndAddVarhaiskasvatusKoulutustoimija(oo: EsiopetuksenOpiskeluoikeus)(implicit user: KoskiSpecificSession) = {
     val koulutustoimija = inferKoulutustoimija(user)
-    (päiväkodinEsiopetus(oo), järjestettyOmanOrganisaationUlkopuolella(oo.oppilaitos, oo.koulutustoimija.orElse(koulutustoimija.toOption))) match {
+    (
+      päiväkodinTaiPeruskoulunEsiopetus(oo),
+      järjestettyOmanOrganisaationUlkopuolella(oo.oppilaitos, oo.koulutustoimija.orElse(koulutustoimija.toOption))
+    ) match {
       case (true, true) =>
         if (oo.koulutustoimija.isDefined && user.hasVarhaiskasvatusAccess(oo.koulutustoimija.get.oid, oo.getOppilaitos.oid, AccessType.write)) {
           Right(oo)
@@ -317,7 +320,7 @@ class KoskiValidator(
           koulutustoimija.map(oo.withKoulutustoimija)
         }
       case (false, true) =>
-        Left(KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
+        Left(KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Järjestämismuoto sallittu vain päiväkodissa tai peruskoulussa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste tai $peruskoulunEsiopetuksenTunniste)"))
       case _ =>
         Left(KoskiErrorCategory.badRequest.validation.organisaatio.järjestämismuoto())
     }
@@ -327,8 +330,10 @@ class KoskiValidator(
     koulutustoimija.forall(kt => organisaatioRepository.findKoulutustoimijaForOppilaitos(oppilaitos).forall(_.oid != kt.oid))
   }
 
-  private def päiväkodinEsiopetus(oo: EsiopetuksenOpiskeluoikeus) = {
-    oo.suoritukset.forall(päiväkodissaJärjestettyEsiopetuksenSuoritus)
+  private def päiväkodinTaiPeruskoulunEsiopetus(oo: EsiopetuksenOpiskeluoikeus): Boolean = {
+    oo.suoritukset.forall(s =>
+      päiväkodissaJärjestettyEsiopetuksenSuoritus(s) || peruskoulussaJärjestettyEsiopetuksenSuoritus(s)
+    )
   }
 
   private def inferKoulutustoimija(user: KoskiSpecificSession) = {
@@ -1080,8 +1085,11 @@ class KoskiValidator(
     case _ => HttpStatus.ok
   }
 
-  private def päiväkodissaJärjestettyEsiopetuksenSuoritus(suoritus: EsiopetuksenSuoritus) =
+  private def päiväkodissaJärjestettyEsiopetuksenSuoritus(suoritus: EsiopetuksenSuoritus): Boolean =
     suoritus.koulutusmoduuli.tunniste.koodiarvo == päiväkodinEsiopetuksenTunniste
+
+  private def peruskoulussaJärjestettyEsiopetuksenSuoritus(suoritus: EsiopetuksenSuoritus): Boolean =
+    suoritus.koulutusmoduuli.tunniste.koodiarvo == peruskoulunEsiopetuksenTunniste
 
   private def päätasonSuoritusTyypitEnabled(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     val disabled = config.getStringList("features.disabledPäätasonSuoritusTyypit")

@@ -2,12 +2,12 @@ package fi.oph.koski.organisaatio
 
 import java.lang.System.currentTimeMillis
 import java.time.LocalDate
-
 import com.typesafe.config.Config
 import fi.oph.koski.cache._
 import fi.oph.koski.http.{ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
+import fi.oph.koski.organisaatio.OrganisaatioRepository.VarhaiskasvatusToimipisteResult
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
 
@@ -65,14 +65,27 @@ trait OrganisaatioRepository extends Logging {
   def findAllFlattened: List[OrganisaatioHierarkia] = OrganisaatioHierarkia.flatten(findAllHierarkiat)
   def findAllHierarkiat: List[OrganisaatioHierarkia]
 
-  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioWithOid] = {
+  def findAllVarhaiskasvatusToimipisteet: List[VarhaiskasvatusToimipisteResult] = {
     OrganisaatioHierarkia.flatten(findAllHierarkiat)
-      .filter(_.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA))
-      .map(_.toOrganisaatio)
+      .filter(o =>
+        o.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA) ||
+          o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskoulut) ||
+          o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskouluasteenErityiskoulut) ||
+          o.oppilaitostyyppi.contains(Oppilaitostyyppi.perusJaLukioasteenKoulut)
+      )
+      .map(o => VarhaiskasvatusToimipisteResult(
+        o.toOrganisaatio,
+        o.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA)
+      ))
   }
 
   def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] = {
-    filter(_.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA))
+    filter(o =>
+      o.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskoulut) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskouluasteenErityiskoulut) ||
+        o.oppilaitostyyppi.contains(Oppilaitostyyppi.perusJaLukioasteenKoulut)
+    )
   }
 
   def findKunnat(): Seq[OrganisaatioHierarkia] = {
@@ -105,6 +118,11 @@ trait OrganisaatioRepository extends Logging {
 }
 
 object OrganisaatioRepository {
+  case class VarhaiskasvatusToimipisteResult(
+    organisaatio: OrganisaatioWithOid,
+    varhaiskasvatuksenOrganisaatioTyyppi: Boolean
+  )
+
   def apply(config: Config, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) = {
     config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
