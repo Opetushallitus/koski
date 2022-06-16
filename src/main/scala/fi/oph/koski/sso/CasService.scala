@@ -1,6 +1,7 @@
 package fi.oph.koski.sso
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.http.{Http, OpintopolkuCallerId}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.userdirectory.Password
@@ -23,7 +24,7 @@ class CasService(config: Config) extends Logging {
   )
 
   private val mockUsernameForAllVirkailijaTickets = {
-    if (config.getString("opintopolku.virkailija.url") == "mock" && config.hasPath("mock.casClient.usernameForAllVirkailijaTickets")) {
+    if (Environment.isMockEnvironment(config) && config.hasPath("mock.casClient.usernameForAllVirkailijaTickets")) {
       Some(config.getString("mock.casClient.usernameForAllVirkailijaTickets"))
     } else {
       None

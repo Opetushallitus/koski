@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.valpasrepository
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
@@ -279,7 +280,7 @@ class ValpasKuntailmoitusRepository(
   }
 
   def truncate(): Unit = {
-    if (config.getString("opintopolku.virkailija.url") == "mock") {
+    if (Environment.isMockEnvironment(config)) {
       runDbSync(Ilmoitukset.delete)
     } else {
       throw new RuntimeException("Ilmoituksia ei voi tyhjentää tuotantotilassa")

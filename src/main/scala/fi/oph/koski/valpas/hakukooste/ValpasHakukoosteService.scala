@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.hakukooste
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
@@ -26,7 +27,7 @@ object ValpasHakukoosteService {
   def apply(config: Config, validatingAndResolvingExtractor: ValidatingAndResolvingExtractor): ValpasHakukoosteService = {
     if (!config.getBoolean("valpas.hakukoosteEnabled")) {
       new DisabledHakukoosteService()
-    } else if (config.getString("opintopolku.virkailija.url") == "mock") {
+    } else if (Environment.isMockEnvironment(config)) {
       new MockHakukoosteService()
     } else {
       new SureHakukoosteService(config, validatingAndResolvingExtractor)

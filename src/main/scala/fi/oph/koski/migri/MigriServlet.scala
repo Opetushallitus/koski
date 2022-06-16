@@ -1,6 +1,6 @@
 package fi.oph.koski.migri
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -12,13 +12,13 @@ import org.scalatra.auth.strategy.BasicAuthStrategy.BasicAuthRequest
 
 class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresLuovutuspalvelu with NoCache {
   lazy val migriService =
-    if (application.config.getString("opintopolku.virkailija.url") == "mock") new MockMigriService else new RemoteMigriService
+    if (Environment.isMockEnvironment(application.config)) new MockMigriService else new RemoteMigriService
 
   // Overridetaan RequiresLuovutuspalvelu-traitin funktio.
   // Poistetaan tämä kun uusi API avataan Migrille.
   // See TOR-1679
   before() {
-    if (application.config.getString("opintopolku.virkailija.url") == "https://virkailija.opintopolku.fi") {
+    if (Environment.isProdEnvironment(application.config)) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     } else {
       getUser match {

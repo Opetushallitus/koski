@@ -1,6 +1,6 @@
 package fi.oph.koski.suostumus
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{KoskiTables, PoistettuOpiskeluoikeusRow, QueryMethods}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -103,7 +103,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
 
   // Kutsutaan vain fixtureita resetoitaessa
   def deleteAll() = {
-    if (application.config.getString("opintopolku.virkailija.url") == "mock") {
+    if (Environment.isMockEnvironment(application.config)) {
       runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.delete)
     } else {
       throw new RuntimeException("Peruutettujen suostumusten taulua ei voi tyhjentää tuotantotilassa")

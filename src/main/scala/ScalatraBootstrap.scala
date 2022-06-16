@@ -151,7 +151,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     if (!SSOConfig(application.config).isCasSsoUsed) {
       mount("/koski/valpas/login", new LocalLoginServlet)
     }
-    if (application.config.getString("opintopolku.virkailija.url") == "mock") {
+    if (Environment.isMockEnvironment(application.config)) {
       mount("/koski/valpas/test", new ValpasTestApiServlet)
     }
 
