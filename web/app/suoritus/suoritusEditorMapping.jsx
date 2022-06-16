@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelData, modelLookup} from '../editor/EditorModel'
+import {hasModelProperty, modelData, modelLookup} from '../editor/EditorModel'
 
 import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
@@ -25,6 +25,7 @@ import {AikuistenPerusopetuksenKurssitEditor} from '../aikuistenperusopetus/Aiku
 import {Suoritustaulukko} from './Suoritustaulukko'
 import {VapaanSivistystyonSuoritustaulukko} from '../vapaasivistystyo/VapaanSivistystyonSuoritustaulukko'
 import {TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko} from '../tuva/TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko'
+import { VstVapaaTavoitteinenKoulutusmoduuliEditor } from './VstVapaaTavoitteinenKoulutusmoduuliEditor'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -159,10 +160,16 @@ export const resolveOsasuorituksetEditor = (mdl) => {
 }
 
 export const resolvePropertyEditor = (property, model) => {
+  const oneOf = (...classes) => classes.some(c => model.value.classes.includes(c))
   switch (property.key) {
     case 'suorituskieli': return <Editor model={modelLookup(model, 'suorituskieli')} sortBy={sortLanguages}/>
     case 'arviointi': return <ArvosanaEditor model={model}/>
-
+    case 'koulutusmoduuli':
+      if (oneOf('vapaansivistystyonpaatasonsuoritus') && hasModelProperty(property.model, 'opintokokonaisuus')) {
+        return <VstVapaaTavoitteinenKoulutusmoduuliEditor model={property.model}/>
+      } else {
+        return null
+      }
     // IB
     case 'theoryOfKnowledge': return <TheoryOfKnowledge model={property.model}/>
     case 'creativityActionService': return <CreativityActionService model={property.model}/>

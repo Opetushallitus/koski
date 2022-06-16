@@ -1,7 +1,7 @@
 import React from 'baret'
 import * as R from 'ramda'
 import Bacon from 'baconjs'
-import {modelTitle} from './EditorModel.js'
+import {modelData, modelTitle} from './EditorModel.js'
 import {modelLookup, wrapOptional} from './EditorModel'
 import Http from '../util/http'
 import DropDown from '../components/Dropdown'
@@ -12,17 +12,43 @@ import {buildClassNames} from '../components/classnames'
 import {hyphenate} from '../util/hyphenate'
 import {sortGrades} from '../util/sorting'
 
-export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, displayValue = option => option.title, showEmptyOption, className}) => {
-  if (!sortBy) sortBy = model.alternativesPath && model.alternativesPath.includes('arviointi') ? sortGrades : R.identity
+export const EnumEditor = ({
+  model,
+  inline,
+  asRadiogroup,
+  disabledValue,
+  sortBy,
+  fetchAlternatives = EnumEditor.fetchAlternatives,
+  displayValue = (option) => option.title,
+  titleFormatter = undefined,
+  asHyperlink = undefined,
+  showEmptyOption,
+  className
+}) => {
+  if (!sortBy)
+    {sortBy =
+      model.alternativesPath && model.alternativesPath.includes('arviointi')
+        ? sortGrades
+        : R.identity}
   let wrappedModel = wrapOptional(model)
   showEmptyOption = parseBool(showEmptyOption, wrappedModel.optional)
   inline = parseBool(inline)
 
   let alternativesP = fetchAlternatives(wrappedModel, sortBy).map(sortBy)
   let valid = modelValid(model)
-  let classNameP = alternativesP.startWith('loading').map(xs => buildClassNames([className, xs === 'loading' && 'loading', !valid && 'error']))
+  let classNameP = alternativesP
+    .startWith('loading')
+    .map((xs) =>
+      buildClassNames([
+        className,
+        xs === 'loading' && 'loading',
+        !valid && 'error'
+      ])
+    )
 
-  let alternativesWithZeroValueP = alternativesP.map(xs => showEmptyOption ? R.prepend(zeroValue, xs) : xs)
+  let alternativesWithZeroValueP = alternativesP.map((xs) =>
+    showEmptyOption ? R.prepend(zeroValue, xs) : xs
+  )
 
   let defaultValue = wrappedModel.value || zeroValue
 
@@ -30,50 +56,79 @@ export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, 
     pushModel(modelSetValue(wrappedModel, option))
   }
 
-  let labelClass = alternative => {
-    return 'alternative'
-        + (disabledValue === alternative.value ? ' disabled' : '')
-        + (wrappedModel.value && wrappedModel.value.value === alternative.value ? ' checked' : '')
+  let labelClass = (alternative) => {
+    return (
+      'alternative' +
+      (disabledValue === alternative.value ? ' disabled' : '') +
+      (wrappedModel.value && wrappedModel.value.value === alternative.value
+        ? ' checked'
+        : '')
+    )
   }
 
   // note: never used when editing
-  const useHyphenate = (model.path.length > 0) && (model.path[model.path.length-1] === 'arvosana')
+  const useHyphenate =
+    model.path.length > 0 && model.path[model.path.length - 1] === 'arvosana'
+  const koodistoUri = wrappedModel?.value?.data?.koodistoUri
+  const hasModelData = modelData(model) !== undefined
 
-  return wrappedModel.context.edit
-    ? asRadiogroup
-      ? (
-          <ul className={classNameP}>
-            {
-              alternativesP.map(alternatives =>
-                alternatives.map(alternative =>
-                  (<li key={ alternative.value }>
-                    <label className={labelClass(alternative)}>
-                      <input disabled={disabledValue === alternative.value} type="radio" name="alternative" value={ alternative.value } onChange={() => onChange(alternative)}/>
-                      {alternative.title}
-                    </label>
-                  </li>)
-                )
-              )
-            }
-          </ul>
-        )
-      : (
-           <span className={classNameP.map(n => 'dropdown-wrapper ' + n)}>
-             <DropDown
-               inline={inline}
-               options={alternativesWithZeroValueP}
-               keyValue={ option => option.value }
-               displayValue={displayValue}
-               onSelectionChanged={option => onChange(option)}
-               selected={defaultValue}
-               enableFilter={true}
-             />
-           </span>
-        )
-    : <span className="inline enum">{useHyphenate ? hyphenate(modelTitle(model)) : modelTitle(model)}</span>
+  return wrappedModel.context.edit ? (
+    asRadiogroup ? (
+      <ul className={classNameP}>
+        {alternativesP.map((alternatives) =>
+          alternatives.map((alternative) => (
+            <li key={alternative.value}>
+              <label className={labelClass(alternative)}>
+                <input
+                  disabled={disabledValue === alternative.value}
+                  type="radio"
+                  name="alternative"
+                  value={alternative.value}
+                  onChange={() => onChange(alternative)}
+                />
+                {alternative.title}
+              </label>
+            </li>
+          ))
+        )}
+      </ul>
+    ) : (
+      <span className={classNameP.map((n) => 'dropdown-wrapper ' + n)}>
+        <DropDown
+          inline={inline}
+          options={alternativesWithZeroValueP}
+          keyValue={(option) => option.value}
+          displayValue={displayValue}
+          onSelectionChanged={(option) => onChange(option)}
+          selected={defaultValue}
+          enableFilter={true}
+        />
+      </span>
+    )
+  ) : asHyperlink && hasModelData ? (
+    <a
+      className="inline enum"
+      data-test-id={`hyperlink-for-${koodistoUri || 'unknown'}-enum-editor`}
+      href={asHyperlink(model).url || '#'}
+      target={asHyperlink(model).target || '_self'}
+    >
+      {useHyphenate
+        ? hyphenate(modelTitle(model, undefined, titleFormatter))
+        : modelTitle(model, undefined, titleFormatter)}
+    </a>
+  ) : (
+    <span
+      className="inline enum"
+      data-test-id={`span-for-${koodistoUri || 'unknown'}-enum-editor`}
+    >
+      {useHyphenate
+        ? hyphenate(modelTitle(model, undefined, titleFormatter))
+        : modelTitle(model, undefined, titleFormatter)}
+    </span>
+  )
 }
 
-let zeroValue = {title: t('Ei valintaa'), value: 'eivalintaa'}
+export const zeroValue = {title: t('Ei valintaa'), value: 'eivalintaa'}
 
 EnumEditor.fetchAlternatives = (model) => {
   let alternativesPath = model.alternativesPath

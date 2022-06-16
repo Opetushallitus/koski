@@ -6,7 +6,7 @@ describe('VST', function () {
   var addOppija = AddOppijaPage()
   var page = KoskiPage()
 
-  describe('Opiskeluoikeuden lisääminen oppivelollisten suorituksella', function () {
+  describe('Opiskeluoikeuden lisääminen oppivelvollisten suorituksella', function () {
     before(
       prepareForNewOppija('kalle', '230872-7258'),
       addOppija.enterValidDataVSTKOPS(),
@@ -127,7 +127,7 @@ describe('VST', function () {
     })
   })
 
-  describe('Opiskeluoikeuden lisääminen lukutaito koulutuksella', function () {
+  describe('Opiskeluoikeuden lisääminen lukutaitokoulutuksella', function () {
     before(
       prepareForNewOppija('kalle', '230872-7258'),
       addOppija.enterValidDataVSTLukutaito(),
@@ -182,7 +182,8 @@ describe('VST', function () {
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.selectOppilaitos('Varsinais-Suomen'),
         addOppija.selectOpiskeluoikeudenTyyppi('Vapaan'),
-        addOppija.selectOppimäärä('Vapaan sivistystyön vapaatavoitteinen koulutus')
+        addOppija.selectOppimäärä('Vapaan sivistystyön vapaatavoitteinen koulutus'),
+        addOppija.selectOpintokokonaisuus('1138 Kuvallisen ilmaisun perusteet ja välineet')
       )
 
       it('Näytetään tilavaihtoehtoina Hyväksytysti suoritettu ja Keskeytynyt', function() {
@@ -190,6 +191,21 @@ describe('VST', function () {
           'Hyväksytysti suoritettu',
           'Keskeytynyt'
         ])
+      })
+    })
+
+    describe('Opintokokonaisuus', function () {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataVSTVapaatavoitteinen(),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Vapaan sivistystyön koulutus')
+      )
+
+      it('Näytetään opintokokonaisuuden nimi oikein', function() {
+        expect(extractAsText(S("[data-test-id='hyperlink-for-opintokokonaisuudet-enum-editor']"))).to.deep.equal('1138 Kuvallisen ilmaisun perusteet ja välineet')
+      })
+      it('Näytetään opintokokonaisuuden linkki ePerusteisiin oikein', function() {
+        expect(hrefOf(S("[data-test-id='hyperlink-for-opintokokonaisuudet-enum-editor']"))).to.deep.equal('https://eperusteet.opintopolku.fi/#/fi/opintokokonaisuus/1138')
       })
     })
 

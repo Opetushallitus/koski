@@ -2,7 +2,9 @@ package fi.oph.koski.schema.annotation
 
 import fi.oph.koski.koskiuser.Rooli.Role
 import fi.oph.scalaschema._
-import org.json4s.JsonAST
+import fi.oph.scalaschema.annotation.AnyToJson
+import org.json4s.JsonAST.{JObject, JString}
+import org.json4s.{JValue, JsonAST}
 
 /* This property can be used to represent the whole entity */
 case class Representative() extends RepresentationalMetadata
@@ -34,6 +36,11 @@ case class Example(text: String) extends RepresentationalMetadata
 case class SensitiveData(roles: Set[Role]) extends RepresentationalMetadata
 
 case class Tooltip(text: String) extends RepresentationalMetadata
+
+/* These properties are used to show information modal next to the property label */
+case class InfoDescription(description: String) extends RepresentationalMetadata
+case class InfoLinkTitle(linkTitle: String) extends RepresentationalMetadata
+case class InfoLinkUrl(url: String) extends RepresentationalMetadata
 
 /* Numeric field should be rendered using this scale */
 case class Scale(numberOfDigits: Int) extends RepresentationalMetadata

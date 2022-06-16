@@ -1,0 +1,1940 @@
+[
+  {
+    "koodiUri": "opintokokonaisuudet_1138",
+    "metadata": [
+      {
+        "nimi": "Kuvallisen ilmaisun perusteet ja välineet",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1138"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1140",
+    "metadata": [
+      {
+        "nimi": "Kuvallinen viestintä",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1140"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1105",
+    "metadata": [
+      {
+        "nimi": "Digimaalaus ja konseptitaide",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1105"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1080",
+    "metadata": [
+      {
+        "nimi": "Vedic Art",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1080"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1078",
+    "metadata": [
+      {
+        "nimi": "PSYP130 Persoonallisuuspsykologia, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1078"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1104",
+    "metadata": [
+      {
+        "nimi": "Oma projekti",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1104"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1077",
+    "metadata": [
+      {
+        "nimi": "PSYP140 Kliininen psykologia I: Terveyden ja mielenterveyden psykologia I, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1077"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1075",
+    "metadata": [
+      {
+        "nimi": "PSYP201 Psykologian tutkimusmenetelmät, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1075"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1137",
+    "metadata": [
+      {
+        "nimi": "Sarjakuva ja kuvittaminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1137"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1106",
+    "metadata": [
+      {
+        "nimi": "Kuvallinen viestintä",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1106"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1126",
+    "metadata": [
+      {
+        "nimi": "Digitaalinen julkaiseminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1126"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1125",
+    "metadata": [
+      {
+        "nimi": "Animaatio ja videoeditointi",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1125"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1003",
+    "metadata": [
+      {
+        "nimi": "Matemaattiset perustaidot ja ongelmanratkaisutaidot",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundläggande matematiska färdigheter och problemlösningsförmåga",
+        "lyhytNimi": null,
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1003"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1103",
+    "metadata": [
+      {
+        "nimi": "Taiteen historia (avoin amk, Xamk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1103"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1101",
+    "metadata": [
+      {
+        "nimi": "Gameplay ja Level Design",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1101"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1099",
+    "metadata": [
+      {
+        "nimi": "Multilineaarinen kerronta",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1099"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1117",
+    "metadata": [
+      {
+        "nimi": "Näyttely tai presentaatio",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1117"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1116",
+    "metadata": [
+      {
+        "nimi": "Luonnoskirja ja portfolio",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1116"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1145",
+    "metadata": [
+      {
+        "nimi": "Dramaturgia ja käsikirjoittaminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1145"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1144",
+    "metadata": [
+      {
+        "nimi": "Tila ja perspektiivi",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1144"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1093",
+    "metadata": [
+      {
+        "nimi": "Piirustus ja maalaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1093"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1122",
+    "metadata": [
+      {
+        "nimi": "Graafinen suunnittelu ja typografia",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1122"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1090",
+    "metadata": [
+      {
+        "nimi": "Taiteen historia (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1090"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1120",
+    "metadata": [
+      {
+        "nimi": "Visuaalinen viestintä",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1120"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1150",
+    "metadata": [
+      {
+        "nimi": "Digitaalinen piirtäminen ja maalaaminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1150"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1038",
+    "metadata": [
+      {
+        "nimi": "Liikunta",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1038"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1025",
+    "metadata": [
+      {
+        "nimi": "B1-taso: Arki- ja asiatekstien kirjoittaminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1025"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1036",
+    "metadata": [
+      {
+        "nimi": "Työssäoppiminen, vapaaehtoistyö, järjestötoiminta, opintopiiritoiminta",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1036"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1024",
+    "metadata": [
+      {
+        "nimi": "B1-taso: Lukeminen ja tekstinymmärtäminen III",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1024"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1033",
+    "metadata": [
+      {
+        "nimi": "B2.2: Analysoiva kirjoittaminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1033"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1132",
+    "metadata": [
+      {
+        "nimi": "Esitys- ja kuvitustekniikat (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1132"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1022",
+    "metadata": [
+      {
+        "nimi": "B1-taso: Kuullun ymmärtäminen ja ymmärtämisen strategiat III",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1022"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1032",
+    "metadata": [
+      {
+        "nimi": "B2.2-taso: Asiatekstin ymmärtäminen II",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1032"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1020",
+    "metadata": [
+      {
+        "nimi": "A2-taso: Lukeminen ja tekstinymmärtäminen II",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1020"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1031",
+    "metadata": [
+      {
+        "nimi": "B2.2-taso: Puhuminen, vuorovaikutus ja puhe-esitys II",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1031"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1019",
+    "metadata": [
+      {
+        "nimi": "A2-taso: Puhuminen ja vuorovaikutus II",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1019"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1029",
+    "metadata": [
+      {
+        "nimi": "B2.1-taso: Asiatekstin kirjoittaminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1029"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1018",
+    "metadata": [
+      {
+        "nimi": "A2-taso: Kuullun ymmärtäminen ja ymmärtämisen strategiat II",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1018"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1026",
+    "metadata": [
+      {
+        "nimi": "B2.1-taso: Kuullun ymmärtäminen ja ymmärtämisen strategiat III",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1026"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1017",
+    "metadata": [
+      {
+        "nimi": "A2-taso: Kielenoppimisen strategiat II",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1017"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1130",
+    "metadata": [
+      {
+        "nimi": "Oma projekti",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1130"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1001",
+    "metadata": [
+      {
+        "nimi": "Studie- och arbetslivsfärdigheter och självkännedom",
+        "lyhytNimi": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Opiskelu-, itsetuntemus- ja työelämätaidot",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1001"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1058",
+    "metadata": [
+      {
+        "nimi": "Englannin kertauskurssi",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1058"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1136",
+    "metadata": [
+      {
+        "nimi": "Väri ja pinta (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1136"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1000",
+    "metadata": [
+      {
+        "nimi": "Arjen taidot ja elämänhallinta",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vardagsfärdigheter och livskompetens",
+        "lyhytNimi": null,
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1000"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1057",
+    "metadata": [
+      {
+        "nimi": "Opintojen ohjaus ja orientaatio opintoihin",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1057"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1054",
+    "metadata": [
+      {
+        "nimi": "KTKP050 Vuorovaikutus ja yhteistyö, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1054"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1050",
+    "metadata": [
+      {
+        "nimi": "KTKP010 Oppiminen ja ohjaus, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1050"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1049",
+    "metadata": [
+      {
+        "nimi": "Kasvatustieteen perusopintojen ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1049"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1134",
+    "metadata": [
+      {
+        "nimi": "Taiteen historia (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1134"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1048",
+    "metadata": [
+      {
+        "nimi": "Liikunta ja luontoliikunta",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1048"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1042",
+    "metadata": [
+      {
+        "nimi": "Ihmisen toiminnan ympäristövaikutukset ja ympäristövaikuttaminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1042"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1040",
+    "metadata": [
+      {
+        "nimi": "Tieteellinen kirjoittaminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1040"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1157",
+    "metadata": [
+      {
+        "nimi": "Oma projekti",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1157"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1007",
+    "metadata": [
+      {
+        "nimi": "UTTRYCK, KREATIVITET OCH SCENARBETE",
+        "lyhytNimi": null,
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1007"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1107",
+    "metadata": [
+      {
+        "nimi": "Digimaalaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1107"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1015",
+    "metadata": [
+      {
+        "nimi": "A1-taso: Lukeminen ja tekstinymmärtäminen I",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1015"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1013",
+    "metadata": [
+      {
+        "nimi": "A1-taso: Kuullun ymmärtäminen ja puheeseen reagointi",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1013"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1010",
+    "metadata": [
+      {
+        "nimi": "Ensiavun perusteet",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1010"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1109",
+    "metadata": [
+      {
+        "nimi": "Hahmosuunnittelu",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1109"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1041",
+    "metadata": [
+      {
+        "nimi": "Tieto- ja viestintätekniikka",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1041"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1039",
+    "metadata": [
+      {
+        "nimi": "Akateemiset opiskelutaidot ja pääsykoeohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1039"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1037",
+    "metadata": [
+      {
+        "nimi": "ATK",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1037"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1035",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntataito",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1035"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1108",
+    "metadata": [
+      {
+        "nimi": "Konseptitaide",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1108"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1034",
+    "metadata": [
+      {
+        "nimi": "Orientaatio ja opintojen ohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1034"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1092",
+    "metadata": [
+      {
+        "nimi": "Oma projekti",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1092"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1030",
+    "metadata": [
+      {
+        "nimi": "B2.2-taso: Keskustelun ja vuorovaikutuksen ymmärtäminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1030"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1091",
+    "metadata": [
+      {
+        "nimi": "Portfolio ja näyttely",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1091"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1111",
+    "metadata": [
+      {
+        "nimi": "Kuvittaminen ja tarinankerronta",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1111"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1068",
+    "metadata": [
+      {
+        "nimi": "YMPS1051 Ympäristön kemikalisoituminen ja päästöjen hallinta",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1068"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1084",
+    "metadata": [
+      {
+        "nimi": "Esitys- ja kuvitustekniikat (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1084"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1067",
+    "metadata": [
+      {
+        "nimi": "YMPS1006 Maailmanlaajuiset ympäristöongelmat",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1067"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1066",
+    "metadata": [
+      {
+        "nimi": "Ympäristötieteen perusopintojen ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1066"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1065",
+    "metadata": [
+      {
+        "nimi": "Opistosta eteenpäin!",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1065"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1081",
+    "metadata": [
+      {
+        "nimi": "Kuvataide",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1081"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1063",
+    "metadata": [
+      {
+        "nimi": "Making Effective Presentations",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1063"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1009",
+    "metadata": [
+      {
+        "nimi": "Huovutuskurssi",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1009"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1061",
+    "metadata": [
+      {
+        "nimi": "Korean kielen alkeet",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1061"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1142",
+    "metadata": [
+      {
+        "nimi": "Sarjakuva- ja hahmoimprot",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1142"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1008",
+    "metadata": [
+      {
+        "nimi": "ÖVRIGA ÄMNEN",
+        "lyhytNimi": null,
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1008"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1060",
+    "metadata": [
+      {
+        "nimi": "Kiinan kielen alkeet",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1060"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1139",
+    "metadata": [
+      {
+        "nimi": "Sarjakuvailmaisun perusteet ja välineet",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1139"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1059",
+    "metadata": [
+      {
+        "nimi": "Japanin kielen alkeet",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1059"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1028",
+    "metadata": [
+      {
+        "nimi": "B2.1-taso: Asiatekstin ymmärtäminen I",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1028"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1027",
+    "metadata": [
+      {
+        "nimi": "B2.1-taso: Puhuminen, vuorovaikutus ja puhe-esitys I",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1027"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1023",
+    "metadata": [
+      {
+        "nimi": "B1-taso: Puhuminen ja vuorovaikutus III",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1023"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1089",
+    "metadata": [
+      {
+        "nimi": "Graafisen suunnittelun ohjelmat (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1089"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1021",
+    "metadata": [
+      {
+        "nimi": "A2-taso: Kirjoittaminen II",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1021"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1016",
+    "metadata": [
+      {
+        "nimi": "A1 taso: Kirjoittaminen 1",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1016"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1088",
+    "metadata": [
+      {
+        "nimi": "Tuotegrafiikka (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1088"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1014",
+    "metadata": [
+      {
+        "nimi": "A1-taso: Puhuminen ja vuorovaikutus I",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1014"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1012",
+    "metadata": [
+      {
+        "nimi": "A1-taso: Kielenoppimisen strategiat I",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1012"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1073",
+    "metadata": [
+      {
+        "nimi": "Psykologian perusopintojen ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1073"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1085",
+    "metadata": [
+      {
+        "nimi": "Kuvallinen viestintä",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1085"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1011",
+    "metadata": [
+      {
+        "nimi": "Hygieniapassikoulutus ja -testi",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1011"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1072",
+    "metadata": [
+      {
+        "nimi": "Tilastomenetelmien peruskurssi TILP150, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1072"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1158",
+    "metadata": [
+      {
+        "nimi": "Taiteen historia (avoin amk, Xamk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1158"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1096",
+    "metadata": [
+      {
+        "nimi": "Peligrafiikan menetelmät ja ohjelmistot",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1096"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1155",
+    "metadata": [
+      {
+        "nimi": "Sarjakuva ja kuvittaminen ammattina",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1155"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1154",
+    "metadata": [
+      {
+        "nimi": "Graafinen suunnittelu",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1154"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1095",
+    "metadata": [
+      {
+        "nimi": "Kuvallinen viestintä",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1095"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1152",
+    "metadata": [
+      {
+        "nimi": "Piirustus ja sisältöaiheen kuvitus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1152"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1151",
+    "metadata": [
+      {
+        "nimi": "Kuvitustekniikat",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1151"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1046",
+    "metadata": [
+      {
+        "nimi": "Literacies of the 21st Century",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1046"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1045",
+    "metadata": [
+      {
+        "nimi": "Positiivinen psykologia",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1045"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1119",
+    "metadata": [
+      {
+        "nimi": "Taiteen historia (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1119"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1044",
+    "metadata": [
+      {
+        "nimi": "Oleminen ja Oivaltaminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1044"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1043",
+    "metadata": [
+      {
+        "nimi": "Ihminen, toiminta ja sosiaaliset ilmiöt",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1043"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1114",
+    "metadata": [
+      {
+        "nimi": "Graafinen suunnittelu ja typografia",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1114"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1113",
+    "metadata": [
+      {
+        "nimi": "Digitaalinen julkaiseminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1113"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1006",
+    "metadata": [
+      {
+        "nimi": "DANSTEKNIK OCH RÖRELSE, PRAKTIK",
+        "lyhytNimi": null,
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1006"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1005",
+    "metadata": [
+      {
+        "nimi": "Opiskelu- ja urasuunnittelutaidot",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiefärdigheter och karriärplaneringsfärdigheter",
+        "lyhytNimi": null,
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1005"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1004",
+    "metadata": [
+      {
+        "nimi": "Aktivt medborgarskap",
+        "lyhytNimi": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Aktiivinen kansalaisuus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1004"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1002",
+    "metadata": [
+      {
+        "nimi": "Interaktions- och kommunikationsfärdigheter",
+        "lyhytNimi": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Vuorovaikutus- ja viestintätaidot",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1002"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1064",
+    "metadata": [
+      {
+        "nimi": "Eettisen kuluttamisen lähtökohdat",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1064"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1062",
+    "metadata": [
+      {
+        "nimi": "Akateemiset tekstinkäsittelytaidot",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1062"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1056",
+    "metadata": [
+      {
+        "nimi": "Projektiopinnot",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1056"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1123",
+    "metadata": [
+      {
+        "nimi": "Piirustus ja maalaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1123"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1055",
+    "metadata": [
+      {
+        "nimi": "Yleissivistävät opinnot (torstaivieraat)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1055"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1053",
+    "metadata": [
+      {
+        "nimi": "KTKP040 Tieteellinen ajattelu ja tieto, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1053"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1052",
+    "metadata": [
+      {
+        "nimi": "KTKP030 Osaaminen ja asiantuntijuus, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1052"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1051",
+    "metadata": [
+      {
+        "nimi": "Kasvatus, yhteiskunta ja muutos, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1051"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1121",
+    "metadata": [
+      {
+        "nimi": "Kuvallinen viestintä",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1121"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1047",
+    "metadata": [
+      {
+        "nimi": "Toiminnalliset vuorovaikutustaidot",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1047"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1131",
+    "metadata": [
+      {
+        "nimi": "Graafisen suunnittelun ohjelmat (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1131"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1079",
+    "metadata": [
+      {
+        "nimi": "Minä, taide ja ympäristö",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1079"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1076",
+    "metadata": [
+      {
+        "nimi": "PSYP120 Neuropsykologia I: Kognitiivisen neurotieteen ja neuropsykologian perusteet, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1076"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1074",
+    "metadata": [
+      {
+        "nimi": "PSYP110 Kehityspsykologia, ryhmänohjaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1074"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1071",
+    "metadata": [
+      {
+        "nimi": "YMPS1053 Ympäristötieteen kirjallisuus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1071"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1070",
+    "metadata": [
+      {
+        "nimi": "YMPS1009 Ympäristöekologia ja luonnonsuojelu",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1070"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1069",
+    "metadata": [
+      {
+        "nimi": "YMPS1052 Ympäristö ja yhteiskunta",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1069"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1086",
+    "metadata": [
+      {
+        "nimi": "Taidegrafiikka",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1086"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1143",
+    "metadata": [
+      {
+        "nimi": "Kuvankäsittely, sekä verkko-ja printtijulkaiseminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1143"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1141",
+    "metadata": [
+      {
+        "nimi": "Sarjakuvapäivä- ja luonnoskirjat",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1141"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1149",
+    "metadata": [
+      {
+        "nimi": "Satukirjakuvitus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1149"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1112",
+    "metadata": [
+      {
+        "nimi": "Animaatio ja videoeditointi",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1112"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1153",
+    "metadata": [
+      {
+        "nimi": "Animaatio, pilapiirtäminen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1153"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1148",
+    "metadata": [
+      {
+        "nimi": "Stripit, sarjakuvanovellit ja -romaanit",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1148"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1147",
+    "metadata": [
+      {
+        "nimi": "Sarjakuvan historia, sarjakuvasta kirjoittaminen ja sarjakuvajournalismi",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1147"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1110",
+    "metadata": [
+      {
+        "nimi": "Piirustus ja maalaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1110"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1146",
+    "metadata": [
+      {
+        "nimi": "Väri ja sommittelu",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1146"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1087",
+    "metadata": [
+      {
+        "nimi": "Kolmiulotteinen sommittelu",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1087"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1083",
+    "metadata": [
+      {
+        "nimi": "Väri ja pinta (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1083"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1135",
+    "metadata": [
+      {
+        "nimi": "Tuotegrafiikka (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1135"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1082",
+    "metadata": [
+      {
+        "nimi": "Kuvataide (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1082"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1098",
+    "metadata": [
+      {
+        "nimi": "Game Design ja konseptuaalinen suunnittelu",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1098"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1128",
+    "metadata": [
+      {
+        "nimi": "Luonnoskirja ja portfolio",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1128"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1097",
+    "metadata": [
+      {
+        "nimi": "Unity -pelimoottori",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1097"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1127",
+    "metadata": [
+      {
+        "nimi": "Valokuvaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1127"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1094",
+    "metadata": [
+      {
+        "nimi": "XR ja Game Design",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1094"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1102",
+    "metadata": [
+      {
+        "nimi": "Mixed Reality ja User Experience",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1102"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1133",
+    "metadata": [
+      {
+        "nimi": "Kuvataide (avoin amk)",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1133"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1100",
+    "metadata": [
+      {
+        "nimi": "World Design ja spatiaalinen ilmaisu",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1100"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1129",
+    "metadata": [
+      {
+        "nimi": "Näyttely tai presentaatio",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1129"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1115",
+    "metadata": [
+      {
+        "nimi": "Valokuvaus",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1115"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1156",
+    "metadata": [
+      {
+        "nimi": "Tutustuminen työelämään",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1156"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1118",
+    "metadata": [
+      {
+        "nimi": "Oma projekti",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1118"
+  },
+  {
+    "koodiUri": "opintokokonaisuudet_1124",
+    "metadata": [
+      {
+        "nimi": "Kuvittaminen ja tarinankerronta",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1124"
+  }
+]

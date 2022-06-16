@@ -55,6 +55,9 @@ export default ({opiskeluoikeusAtom}) => {
     onTuvaOpiskeluoikeus.set(tyyppi ? tyyppi.koodiarvo === 'tuva' : false)
   })
 
+  const opintokokonaisuusAtom = Atom()
+  const suoritustyyppiAtom = Atom()
+
   const opiskeluoikeustyypitP = oppilaitosAtom
     .flatMapLatest((oppilaitos) => (oppilaitos ? Http.cachedGet(`/koski/api/oppilaitos/opiskeluoikeustyypit/${oppilaitos.oid}`) : []))
     .toProperty()
@@ -98,6 +101,8 @@ export default ({opiskeluoikeusAtom}) => {
     maksuttomuusTiedonVoiValitaP,
     onTuvaOpiskeluoikeus,
     tuvaJärjestämislupaAtom,
+    suoritustyyppiAtom,
+    opintokokonaisuusAtom,
     makeOpiskeluoikeus
   )
 
@@ -127,7 +132,7 @@ export default ({opiskeluoikeusAtom}) => {
         if (tyyppi === 'ibtutkinto') return <UusiIBSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi === 'diatutkinto') return <UusiDIASuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi === 'internationalschool') return <UusiInternationalSchoolSuoritus suoritusAtom={suoritusAtom} dateAtom={dateAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-        if (tyyppi === 'vapaansivistystyonkoulutus') return <UusiVapaanSivistystyonSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom}/>
+        if (tyyppi === 'vapaansivistystyonkoulutus') return <UusiVapaanSivistystyonSuoritus suoritusAtom={suoritusAtom} opintokokonaisuusAtom={opintokokonaisuusAtom} suoritustyyppiAtom={suoritustyyppiAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom}/>
         if (tyyppi === 'luva') return <UusiLukioonValmistavanKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom}/>
         if (tyyppi === 'tuva') return <UusiTutkintokoulutukseenValmentavanKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
       })
@@ -221,6 +226,7 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
     selected={tilaAtom}/>)
 }
 
+
 const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) => {
 
   const options = Bacon.combineWith(tyyppiAtom, opintojenRahoituksetP, (tyyppi, rahoitukset) => {
@@ -277,7 +283,9 @@ const makeOpiskeluoikeus = (
   maksuttomuus,
   maksuttomuusTiedonVoiValita,
   onTuvaOpiskeluoikeus,
-  tuvaJärjestämislupa
+  tuvaJärjestämislupa,
+  suoritustyyppi,
+  opintokokonaisuus
 ) => {
   const makeOpiskeluoikeusjakso = () => {
     const opiskeluoikeusjakso = alkamispäivä && tila && {alku: formatISODate(alkamispäivä), tila}
@@ -305,6 +313,10 @@ const makeOpiskeluoikeus = (
       : {}
     const järjestämislupa = onTuvaOpiskeluoikeus ? { järjestämislupa: tuvaJärjestämislupa ? tuvaJärjestämislupa : {} } : {}
     const tuvaOletusLisätiedot = onTuvaOpiskeluoikeus ? getTuvaLisätiedot(tuvaJärjestämislupa) : {}
+
+    if(opintokokonaisuus && tyyppi.koodiarvo === 'vapaansivistystyonkoulutus' && suoritustyyppi.koodiarvo === 'vstvapaatavoitteinenkoulutus') {
+      suoritus.koulutusmoduuli.opintokokonaisuus = opintokokonaisuus
+    }
 
     const opiskeluoikeus =  {
       tyyppi: tyyppi,

@@ -131,6 +131,9 @@ object KoskiErrorCategory {
         val tuvaOsasuorituksiaLiianVähän = subcategory("tuvaOsasuorituksiaLiianVähän", "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksia on oltava vähintään kolmesta eri koulutuksen osasta.")
         val vstKoto2012Alkamispäivä = subcategory("vstKotoAlkamispäivä2012", "Vapaan sivistystyön kotiutumiskoulutuksen suorituksella ei voi olla 1.8.2022 jälkeen aloitettuja aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman 2012 mukaisia suorituksia")
         val vstKoto2022Alkamispäivä = subcategory("vstKotoAlkamispäivä2022", "Vapaan sivistystyön kotiutumiskoulutuksen suorituksella ei voi olla ennen 1.8.2022 aloitettuja kotoutumiskoulutuksen opetussuunnitelman 2022 mukaisia suorituksia")
+        val vstPuuttuvaOpintokokonaisuus = subcategory("vstOpintokokonaisuusEiSaaOllaTyhja", "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeuden opintokokonaisuus ei saa olla tyhjä.")
+        val vstPuuttuvaOpintokokonaisuusDeadline = subcategory("vstOpintokokonaisuusEiSaaOllaTyhjaDeadlinenJalkeen", "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeuden opintokokonaisuus on pakollinen tieto 1.8.2022 jälkeen.")
+        val vstOpintokokonaisuusVainVapaaTavoitteisessaKoulutuksessa = subcategory("vstOpintokokonaisuusSaaOllaVainVapaatavoitteisessaKoulutuksessa", "Opiskeluoikeuden opintokokonaisuus saa olla määritelty vain vapaan sivistystyön vapaatavoitteisissa koulutuksissa")
       }
       val rakenne = new Rakenne
 

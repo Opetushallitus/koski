@@ -2,7 +2,10 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.documentation.VapaaSivistystyöExample.{opiskeluoikeusHyväksytystiSuoritettu, opiskeluoikeusKeskeytynyt}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema._
+
+import java.time.LocalDate
 
 object VapaaSivistystyöValidation {
   def validateVapaanSivistystyönPäätasonSuoritus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
@@ -28,6 +31,28 @@ object VapaaSivistystyöValidation {
             }
           }
         ))
+      }
+      case _ => HttpStatus.ok
+    }
+  }
+
+  def validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSpecificSession): HttpStatus = {
+    (opiskeluoikeus.lähdejärjestelmänId, opiskeluoikeus) match {
+      // Frontissa estä muokkaus, jos opintokokonaisuus puuttuu vapaatavoitteiselta koulutukselta
+      case (None, oo: VapaanSivistystyönOpiskeluoikeus) => oo.suoritukset.headOption match {
+        case Some(vs: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus) if vs.koulutusmoduuli.opintokokonaisuus.isEmpty => KoskiErrorCategory.badRequest.validation.rakenne.vstPuuttuvaOpintokokonaisuus()
+        case Some(_) => HttpStatus.ok
+      }
+      // Muissa järjestelmissä sallitaan opintokokonaisuuden puuttuminen, kunhan siirtymäajan deadlinea ei ole saavutettu
+      case (Some(_), oo: VapaanSivistystyönOpiskeluoikeus) => oo.suoritukset.headOption match {
+        case Some(vs: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus) if vs.koulutusmoduuli.opintokokonaisuus.isEmpty =>
+          // Alustavasti 1.8.2022 alkaen validoidaan, että VST-opiskeluoikeudelta löytyy opintokokonaisuus
+          if (LocalDate.now().isAfter(LocalDate.of(2022, 8, 1))) {
+            KoskiErrorCategory.badRequest.validation.rakenne.vstPuuttuvaOpintokokonaisuusDeadline()
+          } else {
+            HttpStatus.ok
+          }
+        case Some(_) => HttpStatus.ok
       }
       case _ => HttpStatus.ok
     }

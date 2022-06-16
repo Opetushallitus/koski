@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.scalaschema.annotation.{Description, Title}
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{InfoDescription, InfoLinkTitle, InfoLinkUrl, KoodistoKoodiarvo, KoodistoUri, Tooltip}
 
 import java.time.LocalDate
 
@@ -23,10 +23,17 @@ case class VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
 
 @Description("Vapaatavoitteisen vapaan sivistystyön koulutuksen tunnistetiedot")
 case class VapaanSivistystyönVapaatavoitteinenKoulutus(
-@KoodistoKoodiarvo("099999")
+  @KoodistoKoodiarvo("099999")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("099999", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
-  laajuus: Option[LaajuusOpintopisteissä] = None
+  laajuus: Option[LaajuusOpintopisteissä] = None,
+  @KoodistoUri("opintokokonaisuudet")
+  @Description("Opintokokonaisuus")
+  @Tooltip("Opintokokonaisuus")
+  @InfoDescription("opintokokonaisuuden_tarkemmat_tiedot_eperusteissa")
+  @InfoLinkTitle("opintokokonaisuudet_eperusteissa")
+  @InfoLinkUrl("eperusteet_opintopolku_url")
+  opintokokonaisuus: Option[Koodistokoodiviite] = None,
 ) extends Koulutus with Tutkinto
 
 @Title("Vapaatavoitteisen vapaan sivistystyön koulutuksen osasuorituksen suoritus")

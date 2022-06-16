@@ -123,6 +123,7 @@ object Koodistot {
     KoodistoAsetus("moduulikoodistolops2021"),
     KoodistoAsetus("yhteystietojenalkupera"),
     KoodistoAsetus("yhteystietotyypit"),
+    KoodistoAsetus("opintokokonaisuudet")
   )
   val muutKoodistot = muutKoodistoAsetukset.map(_.koodisto)
 

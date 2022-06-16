@@ -1,19 +1,18 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{primusLähdejärjestelmäId, winnovaLähdejärjestelmäId}
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä, opiskeluoikeusValiaikaisestiKeskeytynyt, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.varsinaisSuomiPalvelukäyttäjä
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate.{of => date}
-import scala.Left
 
 class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] with KoskiHttpSpec {
   def tag = implicitly[reflect.runtime.universe.TypeTag[VapaanSivistystyönOpiskeluoikeus]]
@@ -62,6 +61,13 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         putOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
         }
+      }
+    }
+
+    "Opiskeluoikeuden opintokokonaisuus ei voi olla tyhjä" in {
+      val oo = VapaatavoitteinenOpiskeluoikeusIlmanOpintokokonaisuutta
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vstPuuttuvaOpintokokonaisuus())
       }
     }
 
@@ -212,4 +218,5 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
   override def defaultOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = opiskeluoikeusKOPS
   def KOTOOPiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = opiskeluoikeusKOTO
   def VapaatavoitteinenOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = opiskeluoikeusVapaatavoitteinen
+  def VapaatavoitteinenOpiskeluoikeusIlmanOpintokokonaisuutta: VapaanSivistystyönOpiskeluoikeus = opiskeluoikeusVapaatavoitteinenIlmanOpintokokonaisuutta
 }

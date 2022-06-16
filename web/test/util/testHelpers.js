@@ -315,6 +315,10 @@ function htmlOf(el) {
   return S(el).clone().wrap('<div>').parent().html()
 }
 
+function hrefOf(el) {
+  return S(el)[0].href
+}
+
 function isJQuery(el) {
   return typeof(el.children) == "function"
 }

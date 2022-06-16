@@ -159,7 +159,8 @@ function AddOppijaPage() {
           '.' +
           (1 + new Date().getMonth()) +
           '.' +
-          new Date().getFullYear()
+          new Date().getFullYear(),
+        opintokokonaisuus: '1138 Kuvallisen ilmaisun perusteet ja välineet'
       })
       return function () {
         return api
@@ -170,6 +171,7 @@ function AddOppijaPage() {
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectOpiskeluoikeudenTila(params.tila))
           .then(api.selectAloituspäivä(params.alkamispäivä))
+          .then(api.selectOpintokokonaisuus(params.opintokokonaisuus))
       }
     },
     enterValidDataAmmatillinen: function (params) {
@@ -531,6 +533,9 @@ function AddOppijaPage() {
     },
     selectOpiskeluoikeudenTyyppi: function (tyyppi) {
       return pageApi.setInputValue('.opiskeluoikeudentyyppi .dropdown', tyyppi)
+    },
+    selectOpintokokonaisuus: function (kokonaisuus) {
+      return selectFromDropdown('.opintokokonaisuus .dropdown', kokonaisuus)
     },
     oppimäärät: function () {
       return pageApi.getInputOptions('.oppimaara .dropdown')

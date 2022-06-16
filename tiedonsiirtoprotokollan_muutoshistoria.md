@@ -2,6 +2,9 @@
 
 - Lisätty vapaan sivistystyön kotoutumiskoulutuksen opetussuunnitelman 2022 mukainen tietomalli
 
+## 23.5.2022
+- VST-opiskeluoikeuksiin on lisätty linkitys paikallisiin opetussuunnitelmiin ePerusteissa
+
 ## 19.5.2022
 
 - Korjattu sallitut koodiarvot international school opiskeluoikeudelle koodistosta `arviointiasteikkoib`.
