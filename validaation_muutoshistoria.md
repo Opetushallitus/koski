@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 16.6.2022
+- Aikuisten lukiokoulutuksen uudessa opintosuunnitelmassa (2019) Historian kurssien HI2 ja HI3 nimet on korjattu vastaamaan Opetushallituksen laatimaa opetussuunnitelmaa.
+
 ## 14.6.2022
 - Sallitaan peruskoulut esiopetuksen opiskeluoikeuden oppilaitoksina, kun järjestämismuotona on ostopalvelu tai palveluseteli.
 
