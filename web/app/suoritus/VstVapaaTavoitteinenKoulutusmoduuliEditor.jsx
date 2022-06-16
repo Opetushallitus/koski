@@ -26,12 +26,13 @@ const formatOpintokokonaisuusDisplayValue = (option) => {
   if(isZeroValue(option)) {
     return option.title
   }
-  if(!hasKoodiarvo(option)) {
+  if(!hasKoodiarvo(option.data)) {
     return option.title
   }
   return `${option.data.koodiarvo} ${option.title}`
 }
 const formatOpintokokonaisuusTitle = (option) => {
+  console.log(option)
   if(option === undefined) {
     return zeroValue.title
   }
