@@ -32,7 +32,6 @@ const formatOpintokokonaisuusDisplayValue = (option) => {
   return `${option.data.koodiarvo} ${option.title}`
 }
 const formatOpintokokonaisuusTitle = (option) => {
-  console.log(option)
   if(option === undefined) {
     return zeroValue.title
   }
