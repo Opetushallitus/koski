@@ -1,5 +1,5 @@
 import React from 'baret'
-import {modelLookup} from '../editor/EditorModel.js'
+import {modelLookup} from '../editor/EditorModel'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {pushRemoval} from '../editor/EditorModel'
 import {suoritusProperties} from '../suoritus/SuoritustaulukkoCommon'

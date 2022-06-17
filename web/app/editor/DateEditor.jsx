@@ -1,6 +1,6 @@
 import React from 'react'
 import * as R from 'ramda'
-import {modelData, pushModelValue} from './EditorModel.js'
+import {modelData, pushModelValue} from './EditorModel.ts'
 import {formatISODate, parseISODate, formatFinnishDate} from '../date/date.js'
 import DateInput from '../date/DateInput'
 import {wrapOptional} from './EditorModel'

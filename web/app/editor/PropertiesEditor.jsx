@@ -1,5 +1,5 @@
 import React from 'react'
-import {addContext, modelEmpty, modelItems} from './EditorModel.js'
+import {addContext, modelEmpty, modelItems} from './EditorModel.ts'
 import {Editor} from './Editor'
 import {ArrayEditor} from './ArrayEditor'
 import {checkOnlyWhen, modelErrorMessages, modelProperties} from './EditorModel'

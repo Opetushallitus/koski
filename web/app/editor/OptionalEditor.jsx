@@ -1,6 +1,6 @@
 import React from 'react'
 import * as R from 'ramda'
-import {modelEmpty} from './EditorModel.js'
+import {modelEmpty} from './EditorModel.ts'
 import {Editor} from './Editor'
 import {optionalPrototypeModel, pushModel, resetOptionalModel} from './EditorModel'
 import Text from '../i18n/Text'

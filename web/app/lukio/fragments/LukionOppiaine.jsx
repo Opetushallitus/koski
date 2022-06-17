@@ -2,7 +2,7 @@ import React from 'react'
 import * as R from 'ramda'
 
 import {t} from '../../i18n/i18n'
-import {modelData, modelLookup, modelTitle} from '../../editor/EditorModel.js'
+import {modelData, modelLookup, modelTitle} from '../../editor/EditorModel'
 import {FootnoteHint} from '../../components/footnote'
 import {isKieliaine, isLukio2019Oppiaine, isLukionMatematiikka, isPaikallinen} from '../../suoritus/Koulutusmoduuli'
 import {Editor} from '../../editor/Editor'

@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelData, modelSetValue} from './EditorModel.js'
+import {modelData, modelSetValue} from './EditorModel.ts'
 import {pushModel} from './EditorModel'
 import Text from '../i18n/Text'
 

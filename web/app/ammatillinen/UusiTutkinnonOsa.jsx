@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import {modelData} from '../editor/EditorModel.js'
+import {modelData} from '../editor/EditorModel'
 import {
   ensureArrayKey,
   modelLookup,

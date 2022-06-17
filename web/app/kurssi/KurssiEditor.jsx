@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelData, modelLookup, modelTitle} from '../editor/EditorModel.js'
+import {modelData, modelLookup, modelTitle} from '../editor/EditorModel'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'

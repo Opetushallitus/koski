@@ -1,7 +1,6 @@
 import React from 'baret'
-import {modelLookup} from '../editor/EditorModel.js'
+import {modelLookup, modelErrorMessages, pushRemoval} from '../editor/EditorModel'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
-import {modelErrorMessages, pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
 import {
   isValinnanMahdollisuus,

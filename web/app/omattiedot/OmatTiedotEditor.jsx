@@ -1,5 +1,5 @@
 import React from 'baret'
-import {addContext, modelData} from '../editor/EditorModel.js'
+import {addContext, modelData} from '../editor/EditorModel'
 import {näytettäväPäätasonSuoritusTitle} from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import {modelItems, modelTitle} from '../editor/EditorModel'
 import {OpiskeluoikeudenTila} from './fragments/OpiskeluoikeudenTila'
