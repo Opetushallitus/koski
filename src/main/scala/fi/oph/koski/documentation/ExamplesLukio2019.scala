@@ -53,7 +53,6 @@ object ExamplesLukio2019 {
     koulutusmoduuli = lukionAikuistenOppimäärä2019,
     oppimäärä = aikuistenOpetussuunnitelma,
     suorituskieli = suomenKieli,
-    vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
     toimipiste = jyväskylänNormaalikoulu,
     omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
     puhviKoe = puhviKoe,
@@ -74,14 +73,28 @@ object ExamplesLukio2019 {
     osasuoritukset = Some(oppiainesuoritukset)
   )
 
-  lazy val aikuistenOppiaineidenOppimäärienSuoritus = LukionOppimääränSuoritus2019(
-    koulutusmoduuli = lukionAikuistenOppimäärä2019,
+  lazy val aikuistenOppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
+    koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019AikuistenPerusteenDiaarinumero),
     oppimäärä = aikuistenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
     suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja)),
-    osasuoritukset = Some(oppiainesuoritukset),
+    osasuoritukset = Some(oppiainesuoritukset)
   )
+
+  lazy val aikuistenOppimäärienSuoritus = LukionOppimääränSuoritus2019(
+    koulutusmoduuli = lukionAikuistenOppimäärä2019,
+    oppimäärä = aikuistenOpetussuunnitelma,
+    suorituskieli = suomenKieli,
+    toimipiste = jyväskylänNormaalikoulu,
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
+    puhviKoe = puhviKoe,
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti, suullisenKielitaidonKoeEspanja)),
+    todistuksellaNäkyvätLisätiedot = Some("Osallistunut kansalliseen etäopetuskokeiluun"),
+    osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia),
+    ryhmä = Some("AH")
+  )
+
 
   lazy val opiskeluoikeus: LukionOpiskeluoikeus =
     LukionOpiskeluoikeus(
@@ -93,6 +106,30 @@ object ExamplesLukio2019 {
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       suoritukset = List(oppimääränSuoritus)
+    )
+
+  lazy val lukionAikuistenOppiaineetOpiskeluoikeus: LukionOpiskeluoikeus =
+    LukionOpiskeluoikeus(
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        )
+      ),
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      suoritukset = List(aikuistenOppimääränSuoritus)
+    )
+
+  lazy val lukionAikuistenOppimääräOpiskeluoikeus: LukionOpiskeluoikeus =
+    LukionOpiskeluoikeus(
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        )
+      ),
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      suoritukset = List(aikuistenOppimääränSuoritus)
     )
 
   lazy val aktiivinenOpiskeluoikeus: LukionOpiskeluoikeus =
