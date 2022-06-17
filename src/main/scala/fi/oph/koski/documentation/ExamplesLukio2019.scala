@@ -95,7 +95,6 @@ object ExamplesLukio2019 {
     ryhmä = Some("AH")
   )
 
-
   lazy val opiskeluoikeus: LukionOpiskeluoikeus =
     LukionOpiskeluoikeus(
       tila = LukionOpiskeluoikeudenTila(
@@ -108,7 +107,7 @@ object ExamplesLukio2019 {
       suoritukset = List(oppimääränSuoritus)
     )
 
-  lazy val lukionAikuistenOppiaineetOpiskeluoikeus: LukionOpiskeluoikeus =
+  lazy val aikuistenLukionOppiaineetOpiskeluoikeus: LukionOpiskeluoikeus =
     LukionOpiskeluoikeus(
       tila = LukionOpiskeluoikeudenTila(
         List(
@@ -120,7 +119,19 @@ object ExamplesLukio2019 {
       suoritukset = List(aikuistenOppimääränSuoritus)
     )
 
-  lazy val lukionAikuistenOppimääräOpiskeluoikeus: LukionOpiskeluoikeus =
+  lazy val aikuistenLukionOppiaineidenOppimääräOpiskeluoikeus: LukionOpiskeluoikeus =
+    LukionOpiskeluoikeus(
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        )
+      ),
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      suoritukset = List(aikuistenOppiaineidenOppimäärienSuoritus)
+    )
+
+  lazy val aikuistenLukionOppimääräOpiskeluoikeus: LukionOpiskeluoikeus =
     LukionOpiskeluoikeus(
       tila = LukionOpiskeluoikeudenTila(
         List(

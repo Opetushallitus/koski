@@ -1767,12 +1767,12 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
 
   "Historian kurssien konversiot kun perusteen diaarinumero 'OPH-2267-2019' (Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019)" - {
     "Lukion oppimäärä, perusteen diaarina 'OPH-2267-2019'" in {
-      val oo = ExamplesLukio2019.lukionAikuistenOppimääräOpiskeluoikeus.copy(
+      val oo = ExamplesLukio2019.aikuistenLukionOppimääräOpiskeluoikeus.copy(
         oppimääräSuoritettu = Some(false),
         suoritukset = List(aikuistenOppimäärienSuoritus.copy(
           osasuoritukset = Some(aikuistenOppiainesuoritusHistoria)
         ),
-        ), tila = ExamplesLukio2019.lukionAikuistenOppimääräOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot = defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(opiskeluoikeusjakso => opiskeluoikeusjakso.copy(tila = opiskeluoikeusAktiivinen))))
+        ), tila = ExamplesLukio2019.aikuistenLukionOppimääräOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot = defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(opiskeluoikeusjakso => opiskeluoikeusjakso.copy(tila = opiskeluoikeusAktiivinen))))
       val result = putAndGetOpiskeluoikeus(oo)
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should equal("Itsenäisen Suomen historia")
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should equal("Kansainväliset suhteet")
@@ -1781,13 +1781,13 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("sv") should equal("Internationella relationer")
     }
 
-    "Lukion oppiaineet, perusteen diaarina 'OPH-2267-2019'" in {
-      val oo = ExamplesLukio2019.lukionAikuistenOppiaineetOpiskeluoikeus.copy(
+    "Lukion oppiaineiden oppimäärä, perusteen diaarina 'OPH-2267-2019'" in {
+      val oo = ExamplesLukio2019.aikuistenLukionOppiaineidenOppimääräOpiskeluoikeus.copy(
         oppimääräSuoritettu = Some(false),
         suoritukset = List(aikuistenOppiaineidenOppimäärienSuoritus.copy(
           osasuoritukset = Some(aikuistenOppiainesuoritusHistoria)
         ),
-        ), tila = ExamplesLukio2019.lukionAikuistenOppiaineetOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot = defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(opiskeluoikeusjakso => opiskeluoikeusjakso.copy(tila = opiskeluoikeusAktiivinen))))
+        ), tila = ExamplesLukio2019.aikuistenLukionOppimääräOpiskeluoikeus.tila.copy(opiskeluoikeusjaksot = defaultOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(opiskeluoikeusjakso => opiskeluoikeusjakso.copy(tila = opiskeluoikeusAktiivinen))))
       val result = putAndGetOpiskeluoikeus(oo)
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI2").get.koulutusmoduuli.nimi.get("fi") should equal("Itsenäisen Suomen historia")
       result.suoritukset.head.osasuoritusLista.head.osasuoritusLista.find(_.koulutusmoduuli.tunniste.koodiarvo == "HI3").get.koulutusmoduuli.nimi.get("fi") should equal("Kansainväliset suhteet")
