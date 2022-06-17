@@ -587,16 +587,27 @@ class KoskiValidator(
 
     lisätiedot match {
       case Some(lt: PidennettyOppivelvollisuus) =>
-        validatePidennettyOppivelvollisuusJakso(
-          // Jos pidennetty oppivelvollisuusjakso alkaa ennen opiskeluoikeuden alkamispäivää,
+        val vammaisuusjaksot = foldAikajaksot(lt.vammainen, lt.vaikeastiVammainen)
+        HttpStatus.validate(
+          validatePidennettyOppivelvollisuusJakso(
+            lt.pidennettyOppivelvollisuus,
+            vammaisuusjaksot
+          ).isOk
+        ) {
+          // Jos validointi ei onnistunut alkuperäisillä päivämäärillä,
+          // ja pidennetty oppivelvollisuusjakso alkaa ennen opiskeluoikeuden alkamispäivää,
           // käytä validointiin pidennetyn oppivelvollisuuden alkupäivänä opiskeluoikeuden alkupäivää.
           if (
             lt.pidennettyOppivelvollisuus.exists(po => opiskeluoikeudenAlkamispäivä.exists(d => po.alku.isBefore(d)))
           ) {
-            lt.pidennettyOppivelvollisuus.map(po => po.copy(alku = opiskeluoikeudenAlkamispäivä.getOrElse(po.alku)))
-          } else { lt.pidennettyOppivelvollisuus },
-          foldAikajaksot(lt.vammainen, lt.vaikeastiVammainen)
-        )
+            validatePidennettyOppivelvollisuusJakso(
+              lt.pidennettyOppivelvollisuus.map(po => po.copy(alku = opiskeluoikeudenAlkamispäivä.getOrElse(po.alku))),
+              vammaisuusjaksot
+            )
+          } else {
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella()
+          }
+        }
       case _ => HttpStatus.ok
     }
   }
