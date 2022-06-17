@@ -1,6 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
-import {modelData, modelTitle} from '../editor/EditorModel.js'
+import {modelData, modelTitle} from '../editor/EditorModel'
 import Link from '../components/Link'
 import {currentLocation} from '../util/location.js'
 import {yearFromIsoDateString} from '../date/date'

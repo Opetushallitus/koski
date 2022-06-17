@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelData} from './EditorModel.js'
+import {modelData} from './EditorModel.ts'
 import {wrapOptional} from './EditorModel'
 import {pushModelValue, modelValid} from './EditorModel'
 import {t} from '../i18n/i18n'

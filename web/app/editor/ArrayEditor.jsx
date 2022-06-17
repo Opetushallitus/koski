@@ -1,5 +1,5 @@
 import React from 'react'
-import {contextualizeSubModel, modelItems} from './EditorModel.js'
+import {contextualizeSubModel, modelItems} from './EditorModel.ts'
 import {Editor} from './Editor'
 import {wrapOptional} from './EditorModel'
 import {pushRemoval, pushModel, modelLookup} from './EditorModel'

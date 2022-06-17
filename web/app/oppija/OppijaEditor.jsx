@@ -1,5 +1,5 @@
 import React from 'baret'
-import {addContext, modelData} from '../editor/EditorModel.js'
+import {addContext, modelData} from '../editor/EditorModel'
 import {currentLocation} from '../util/location.js'
 import {OpiskeluoikeusEditor} from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import {modelItems} from '../editor/EditorModel'
