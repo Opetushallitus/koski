@@ -38,8 +38,8 @@ case class KelaInternationalSchoolOpiskeluoikeus(
 
 case class KelaInternationalSchoolOpiskeluoikeudenLisätiedot(
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
-  maksuttomuus: Option[List[schema.Maksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[schema.OikeuttaMaksuttomuuteenPidennetty]]
+  maksuttomuus: Option[List[KelaMaksuttomuus]],
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("International school suoritus")

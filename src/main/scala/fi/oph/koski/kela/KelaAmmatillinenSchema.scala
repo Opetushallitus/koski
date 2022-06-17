@@ -49,22 +49,22 @@ case class KelaAmmatillisenOpiskeluoikeusjakso(
 ) extends Opiskeluoikeusjakso
 
 case class KelaAmmatillisenOpiskeluoikeudenLisätiedot(
-  majoitus: Option[List[schema.Aikajakso]],
-  sisäoppilaitosmainenMajoitus: Option[List[schema.Aikajakso]],
+  majoitus: Option[List[KelaAikajakso]],
+  sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[schema.Aikajakso]],
+  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  erityinenTuki: Option[List[schema.Aikajakso]],
+  erityinenTuki: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  vaativanErityisenTuenErityinenTehtävä: Option[List[schema.Aikajakso]],
+  vaativanErityisenTuenErityinenTehtävä: Option[List[KelaAikajakso]],
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   hojks: Option[Hojks],
-  osaAikaisuusjaksot: Option[List[schema.OsaAikaisuusJakso]],
-  opiskeluvalmiuksiaTukevatOpinnot: Option[List[schema.OpiskeluvalmiuksiaTukevienOpintojenJakso]],
-  vankilaopetuksessa: Option[List[schema.Aikajakso]],
-  maksuttomuus: Option[List[schema.Maksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[schema.OikeuttaMaksuttomuuteenPidennetty]]
+  osaAikaisuusjaksot: Option[List[KelaOsaAikaisuusJakso]],
+  opiskeluvalmiuksiaTukevatOpinnot: Option[List[KelaOpiskeluvalmiuksiaTukevienOpintojenJakso]],
+  vankilaopetuksessa: Option[List[KelaAikajakso]],
+  maksuttomuus: Option[List[KelaMaksuttomuus]],
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Ammatillisen koulutuksen suoritus")
@@ -76,7 +76,7 @@ case class KelaAmmatillinenPäätasonSuoritus(
   osasuoritukset: Option[List[KelaAmmatillinenOsasuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   tila: Option[KelaKoodistokoodiviite],
-  osaamisala: Option[List[schema.Osaamisalajakso]],
+  osaamisala: Option[List[KelaOsaamisalajakso]],
   toinenOsaamisala: Option[Boolean],
   alkamispäivä: Option[LocalDate],
   järjestämismuodot: Option[List[Järjestämismuotojakso]],
@@ -103,7 +103,7 @@ case class KelaAmmatillinenOsasuoritus(
   tila: Option[KelaKoodistokoodiviite],
   tutkinto: Option[Tutkinto],
   tutkinnonOsanRyhmä: Option[KelaKoodistokoodiviite],
-  osaamisala: Option[List[schema.Osaamisalajakso]],
+  osaamisala: Option[List[KelaOsaamisalajakso]],
   alkamispäivä: Option[LocalDate],
   tunnustettu: Option[OsaamisenTunnustaminen],
   toinenOsaamisala: Option[Boolean],
@@ -157,7 +157,7 @@ case class Hojks(
 
 case class Näyttö(
   suorituspaikka: Option[NäytönSuorituspaikka],
-  suoritusaika: Option[schema.NäytönSuoritusaika],
+  suoritusaika: Option[NäytönSuoritusaika],
   työssäoppimisenYhteydessä: Boolean,
   arviointi: Option[NäytönArviointi],
 ) {
@@ -167,6 +167,11 @@ case class Näyttö(
 case class NäytönSuorituspaikka(
   tunniste: KelaKoodistokoodiviite,
   kuvaus: schema.LocalizedString
+)
+
+case class NäytönSuoritusaika(
+  alku: LocalDate,
+  loppu: LocalDate
 )
 
 case class NäytönArviointi(

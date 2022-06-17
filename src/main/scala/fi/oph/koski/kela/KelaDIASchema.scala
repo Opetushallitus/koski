@@ -43,8 +43,8 @@ case class KelaDIAOpiskeluoikeus(
 case class KelaDIAOpiskeluoikeudenLisätiedot(
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
   ulkomainenVaihtoopiskelija: Option[Boolean],
-  maksuttomuus: Option[List[schema.Maksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[schema.OikeuttaMaksuttomuuteenPidennetty]]
+  maksuttomuus: Option[List[KelaMaksuttomuus]],
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("DIA-tutkinnon suoritus")

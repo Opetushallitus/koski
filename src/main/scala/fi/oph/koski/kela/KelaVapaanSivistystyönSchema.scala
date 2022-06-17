@@ -37,8 +37,8 @@ case class KelaVapaanSivistystyönOpiskeluoikeus(
 }
 
 case class KelaVapaanSivistystyönOpiskeluoikeudenLisätiedot(
-  maksuttomuus: Option[List[schema.Maksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[schema.OikeuttaMaksuttomuuteenPidennetty]]
+  maksuttomuus: Option[List[KelaMaksuttomuus]],
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Vapaan sivistystyön suoritus")

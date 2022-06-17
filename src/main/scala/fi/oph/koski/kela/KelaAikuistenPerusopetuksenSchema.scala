@@ -2,9 +2,9 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{LocalizedString, OpiskeluoikeudenTyyppi}
+import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
-import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -38,16 +38,16 @@ case class KelaAikuistenPerusopetuksenOpiskeluoikeus(
 }
 
 case class KelaAikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
-  sisäoppilaitosmainenMajoitus: Option[List[schema.Aikajakso]],
+  sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
-  majoitusetu: Option[schema.Aikajakso],
-  ulkomailla: Option[schema.Aikajakso],
+  majoitusetu: Option[KelaAikajakso],
+  ulkomailla: Option[KelaAikajakso],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tehostetunTuenPäätös: Option[schema.TehostetunTuenPäätös],
+  tehostetunTuenPäätös: Option[KelaTehostetunTuenPäätös],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tehostetunTuenPäätökset: Option[List[schema.TehostetunTuenPäätös]],
-  maksuttomuus: Option[List[schema.Maksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[schema.OikeuttaMaksuttomuuteenPidennetty]]
+  tehostetunTuenPäätökset: Option[List[KelaTehostetunTuenPäätös]],
+  maksuttomuus: Option[List[KelaMaksuttomuus]],
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Aikuisten perusopetuksen suoritus")

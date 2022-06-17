@@ -50,21 +50,21 @@ case class KelaTuvaOpiskeluoikeusjakso(
 
 @Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden järjestämisluvan lisätiedot")
 case class KelaTuvaOpiskeluoikeudenLisätiedot(
-  maksuttomuus: Option[List[schema.Maksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[schema.OikeuttaMaksuttomuuteenPidennetty]],
-  majoitus: Option[List[schema.Aikajakso]],
-  sisäoppilaitosmainenMajoitus: Option[List[schema.Aikajakso]],
+  maksuttomuus: Option[List[KelaMaksuttomuus]],
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]],
+  majoitus: Option[List[KelaAikajakso]],
+  sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[schema.Aikajakso]],
+  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  erityinenTuki: Option[List[schema.Aikajakso]],
+  erityinenTuki: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  vaativanErityisenTuenErityinenTehtävä: Option[List[schema.Aikajakso]],
+  vaativanErityisenTuenErityinenTehtävä: Option[List[KelaAikajakso]],
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
-  osaAikaisuusjaksot: Option[List[schema.OsaAikaisuusJakso]],
-  vankilaopetuksessa: Option[List[schema.Aikajakso]],
-  majoitusetu: Option[schema.Aikajakso],
-  koulukoti: Option[List[schema.Aikajakso]],
+  osaAikaisuusjaksot: Option[List[KelaOsaAikaisuusJakso]],
+  vankilaopetuksessa: Option[List[KelaAikajakso]],
+  majoitusetu: Option[KelaAikajakso],
+  koulukoti: Option[List[KelaAikajakso]],
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen suoritus")

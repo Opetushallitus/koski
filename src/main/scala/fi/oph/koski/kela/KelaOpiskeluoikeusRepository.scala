@@ -96,7 +96,7 @@ order by "masterOppijaOid", opiskeluoikeus_oid
     val json = KoskiTables.OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
 
     validatingAndResolvingExtractor.extract[KelaOpiskeluoikeus](
-      KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItems
+      KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItemsWithoutValidation
     )(json) match {
       case Right(oo) => oo
       case Left(errors) =>

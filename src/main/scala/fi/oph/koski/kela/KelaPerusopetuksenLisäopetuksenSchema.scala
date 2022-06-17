@@ -38,20 +38,20 @@ case class KelaPerusopetuksenLisäopetuksenOpiskeluoikeus(
 }
 
 case class KelaPerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
-  sisäoppilaitosmainenMajoitus: Option[List[schema.Aikajakso]],
+  sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  koulukoti: Option[List[schema.Aikajakso]],
-  majoitusetu: Option[schema.Aikajakso],
-  ulkomailla: Option[schema.Aikajakso],
+  koulukoti: Option[List[KelaAikajakso]],
+  majoitusetu: Option[KelaAikajakso],
+  ulkomailla: Option[KelaAikajakso],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tehostetunTuenPäätös: Option[schema.TehostetunTuenPäätös],
+  tehostetunTuenPäätös: Option[KelaTehostetunTuenPäätös],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tehostetunTuenPäätökset: Option[List[schema.TehostetunTuenPäätös]],
+  tehostetunTuenPäätökset: Option[List[KelaTehostetunTuenPäätös]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  joustavaPerusopetus: Option[schema.Aikajakso],
-  maksuttomuus: Option[List[schema.Maksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[schema.OikeuttaMaksuttomuuteenPidennetty]]
+  joustavaPerusopetus: Option[KelaAikajakso],
+  maksuttomuus: Option[List[KelaMaksuttomuus]],
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Perusopetuksen lisäopetuksen suoritus")
