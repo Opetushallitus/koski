@@ -12,7 +12,7 @@ object KoodistopoikkeustenKonversiot {
       oo.suoritukset.map {
         // 2015
         case oppi: LukionOppimääränSuoritus2015 => lukionOppimääränKonversiot2015(oppi)
-        case aine: LukionOppiaineenOppimääränSuoritus2015 => lukionOppiaineenOppimääränKonversiot(aine)
+        case aine: LukionOppiaineenOppimääränSuoritus2015 => lukionOppiaineenOppimääränKonversiot2015(aine)
         // 2019
         case oppi: LukionOppimääränSuoritus2019 => lukionOppimääränKonversiot2019(oppi)
         case aine: LukionOppiaineidenOppimäärienSuoritus2019 if aine.koulutusmoduuli.perusteenDiaarinumero.getOrElse("") == "OPH-2267-2019" => aine.withOsasuoritukset(lukionHistoriankurssienKonversio2019(aine.osasuoritukset))
@@ -36,7 +36,7 @@ object KoodistopoikkeustenKonversiot {
     )
   }
 
-  private def lukionOppiaineenOppimääränKonversiot(suoritus: LukionOppiaineenOppimääränSuoritus2015) = {
+  private def lukionOppiaineenOppimääränKonversiot2015(suoritus: LukionOppiaineenOppimääränSuoritus2015) = {
     suoritus.koulutusmoduuli match {
       case valtakunnallinen: LukionMuuValtakunnallinenOppiaine2015 if valtakunnallinen.perusteenDiaarinumero.getOrElse("") == "70/011/2015" =>
         suoritus.withOsasuoritukset(
@@ -92,19 +92,9 @@ object KoodistopoikkeustenKonversiot {
     suoritukset.map(suoritukset =>
       suoritukset.map(suoritus => {
         suoritus.koulutusmoduuli match {
-          case paikallinen: PaikallinenLukionOppiaine2019 if suoritus.koulutusmoduuli.tunniste.koodiarvo == "HI2" => suoritus.copy(
-            koulutusmoduuli = paikallinen.copy(
-              tunniste = paikallinen.tunniste.copy(nimi =
-                korjattuHistoria2Nimi)
-            )
-          )
-          case valtakunnallinen: PaikallinenLukionOppiaine2019 if suoritus.koulutusmoduuli.tunniste.koodiarvo == "HI3" => suoritus.copy(
-            koulutusmoduuli = valtakunnallinen.copy(
-              tunniste = valtakunnallinen.tunniste.copy(nimi =
-                korjattuHistoria3Nimi
-              )
-            )
-          )
+          case _: PaikallinenLukionOppiaine2019 if suoritus.koulutusmoduuli.tunniste.koodiarvo == "HI" => suoritus.copy(osasuoritukset = lukionHistoriankurssienOsasuoritustenKonversio2019Paikallinen(suoritus.osasuoritukset))
+          case _: PaikallinenLukionOppiaine2019 if suoritus.koulutusmoduuli.tunniste.koodiarvo == "HI" => suoritus.copy(osasuoritukset = lukionHistoriankurssienOsasuoritustenKonversio2019Paikallinen(suoritus.osasuoritukset))
+          case _: LukionMuuValtakunnallinenOppiaine2019 if suoritus.koulutusmoduuli.tunniste.koodiarvo == "HI" => suoritus.copy(osasuoritukset = lukionHistoriankurssienOsasuoritustenKonversio2019Paikallinen(suoritus.osasuoritukset))
           case _ => suoritus
         }
       })
@@ -124,9 +114,9 @@ object KoodistopoikkeustenKonversiot {
           case (paikallinenSuoritus: LukionPaikallisenOpintojaksonSuoritus2019, koulutusmoduuli: LukionPaikallinenOpintojakso2019)
             if osasuoritus.koulutusmoduuli.tunniste.koodiarvo == "HI2" =>
             paikallinenSuoritus.copy(koulutusmoduuli = koulutusmoduuli.copy(tunniste = koulutusmoduuli.tunniste.copy(nimi = korjattuHistoria2Nimi)))
-          case (paikallinenSUoritus: LukionPaikallisenOpintojaksonSuoritus2019, koulutusmoduuli: LukionPaikallinenOpintojakso2019)
+          case (paikallinenSuoritus: LukionPaikallisenOpintojaksonSuoritus2019, koulutusmoduuli: LukionPaikallinenOpintojakso2019)
             if osasuoritus.koulutusmoduuli.tunniste.koodiarvo == "HI3" =>
-            paikallinenSUoritus.copy(koulutusmoduuli = koulutusmoduuli.copy(tunniste = koulutusmoduuli.tunniste.copy(nimi = korjattuHistoria3Nimi)))
+            paikallinenSuoritus.copy(koulutusmoduuli = koulutusmoduuli.copy(tunniste = koulutusmoduuli.tunniste.copy(nimi = korjattuHistoria3Nimi)))
           case _: Any => osasuoritus
         }
       })
