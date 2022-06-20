@@ -191,6 +191,7 @@ trait VSTTunnustettu {
 }
 
 @OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", "OPH-123-2021")
+@OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", "1/011/2012")
 @OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", None)
 case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
