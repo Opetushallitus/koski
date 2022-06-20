@@ -4,9 +4,8 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.schema.annotation.Deprecated
-import fi.oph.scalaschema.annotation.{Description, Discriminator, SyntheticProperty, Title}
+import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, Tooltip, UnitOfMeasure}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, ReadFlattened, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -197,3 +196,55 @@ case class Toimipiste(
 )
 
 case class KelaLaajuus(arvo: Double, yksikkö: KelaKoodistokoodiviite)
+
+case class KelaAikajakso (
+  alku: LocalDate,
+  loppu: Option[LocalDate]
+) {
+  override def toString: String = s"$alku – ${loppu.getOrElse("")}"
+}
+
+case class KelaOsaAikaisuusJakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @UnitOfMeasure("%")
+  osaAikaisuus: Int
+) extends KelaJakso
+
+case class KelaMaksuttomuus(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  maksuton: Boolean
+) extends KelaJakso
+
+case class KelaTehostetunTuenPäätös(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  tukimuodot: Option[List[KelaKoodistokoodiviite]] = None
+) extends KelaJakso
+
+trait KelaJakso {
+  def alku: LocalDate
+  def loppu: Option[LocalDate]
+  override def toString: String = s"$alku – ${loppu.getOrElse("")}"
+}
+
+case class KelaOikeuttaMaksuttomuuteenPidennetty(
+  alku: LocalDate,
+  loppu: LocalDate
+) {
+  override def toString: String = s"$alku – $loppu"
+}
+
+@ReadFlattened
+case class KelaOsaamisalajakso(
+  osaamisala: KelaKoodistokoodiviite,
+  alku: Option[LocalDate] = None,
+  loppu: Option[LocalDate] = None
+)
+
+case class KelaOpiskeluvalmiuksiaTukevienOpintojenJakso(
+  alku: LocalDate,
+  loppu: LocalDate,
+  kuvaus: schema.LocalizedString
+)

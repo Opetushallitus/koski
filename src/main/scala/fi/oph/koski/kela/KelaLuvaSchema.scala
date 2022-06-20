@@ -1,7 +1,7 @@
 package fi.oph.koski.kela
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{LocalizedString, OpiskeluoikeudenTyyppi}
+import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -37,11 +37,11 @@ case class KelaLuvaOpiskeluoikeus(
 }
 
 case class KelaLuvaOpiskeluoikeudenLisätiedot(
-  sisäoppilaitosmainenMajoitus: Option[List[schema.Aikajakso]],
+  sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
   ulkomainenVaihtoopiskelija: Option[Boolean],
-  maksuttomuus: Option[List[schema.Maksuttomuus]],
-  oikeuttaMaksuttomuuteenPidennetty: Option[List[schema.OikeuttaMaksuttomuuteenPidennetty]]
+  maksuttomuus: Option[List[KelaMaksuttomuus]],
+  oikeuttaMaksuttomuuteenPidennetty: Option[List[KelaOikeuttaMaksuttomuuteenPidennetty]]
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Lukioon valmistavan koulutuksen suoritus")

@@ -69,7 +69,7 @@ object KelaOppijaConverter extends Logging {
   }
 
   private def convertOpiskeluoikeus(opiskeluoikeus: schema.Opiskeluoikeus): KelaOpiskeluoikeus = {
-    implicit val context: ExtractionContext = KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItems
+    implicit val context: ExtractionContext = KoskiSchema.lenientDeserializationWithIgnoringNonValidatingListItemsWithoutValidation
 
     SchemaValidatingExtractor
       .extract[KelaOpiskeluoikeus](JsonSerializer.serializeWithRoot(opiskeluoikeus)).right.get match {
