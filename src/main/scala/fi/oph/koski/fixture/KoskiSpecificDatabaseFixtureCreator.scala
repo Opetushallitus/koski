@@ -95,6 +95,40 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           ),
         )
       ),
+      (KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis().copy(
+          tyyppi = OpiskeluoikeudenTyyppi.ammatillinenkoulutus.copy(
+            // Normaalisti validaattori täyttää nimen, nyt esitäytetään se itse. Jos tätä ei tehdä, esim. Koski
+            // Pulssi menee sekaisin eikä tunnista opiskeluoikeutta ammatilliseksi opiskeluoikeudeksi.
+            nimi = Some(LocalizedString.finnish("Ammatillinen koulutus"))
+          ),
+        lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+          majoitus = Some(List(Aikajakso(alku = LocalDate.of(2022, 1, 1), loppu = Some(LocalDate.of(2020, 12, 31))))),
+          hojks = None
+        )),
+        suoritukset = List(
+          AmmatillinenExampleData.ympäristöalanPerustutkintoValmis().copy(
+            suoritustapa = Koodistokoodiviite("rikkinäinenKoodi", "ammatillisentutkinnonsuoritustapa"),
+            osasuoritukset = Some(List(
+              AmmatillinenExampleData
+                .tutkinnonOsanSuoritus(
+                  "100431",
+                  "Kestävällä tavalla toimiminen",
+                  AmmatillinenExampleData.ammatillisetTutkinnonOsat,
+                  AmmatillinenExampleData.k3,
+                  40
+                )
+                .copy(arviointi = Some(List(AmmatillinenExampleData
+                  .arviointi(AmmatillinenExampleData.k3)
+                  .copy(päivä = date(2015, 1, 1)))),
+                  lisätiedot = Some(List(
+                    AmmatillinenExampleData.lisätietoMuutosArviointiasteikossa,
+                    AmmatillinenExampleData.lisätietoOsaamistavoitteet
+                  ))
+                )
+            ))
+          )
+        )
+      ))
     )
   }
 
