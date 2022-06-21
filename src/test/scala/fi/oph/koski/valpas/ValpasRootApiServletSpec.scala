@@ -1,16 +1,32 @@
 package fi.oph.koski.valpas
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
-import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
+import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.{BeforeAndAfterEach, Tag}
+import java.time.LocalDate.{of => date}
+import java.time.LocalDateTime
 
 class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   override protected def beforeEach() {
+    super.beforeEach()
     AuditLogTester.clearMessages
+    KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
+  }
+
+  override protected def afterEach(): Unit = {
+    KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
+    super.afterEach()
   }
 
   "Oppijan lataaminen tuottaa rivin auditlogiin" taggedAs(ValpasBackendTag) in {
@@ -86,6 +102,59 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     "Ei palauta vain oppijanumerorekisteristä löytyvää oppijaa käyttäjälle, jolla ei ole kunta-oikeuksia" in {
       authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
         verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto("Käyttäjällä ei ole oikeuksia toimintoon"))
+      }
+    }
+
+    "Palauttaa oppijan, joka löytyy vain oppijanumerorekisteristä" in {
+      val expectedResult = ValpasLöytyiHenkilöhakuResult(
+        oid = ValpasMockOppijat.eiKoskessaOppivelvollinen.oid,
+        hetu = ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu,
+        etunimet = ValpasMockOppijat.eiKoskessaOppivelvollinen.etunimet,
+        sukunimi = ValpasMockOppijat.eiKoskessaOppivelvollinen.sukunimi,
+        vainOppijanumerorekisterissä = true
+      )
+
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatusOk()
+
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
+
+    "ei palauta vain oppijanumerorekisteristä löytyvää oppijaa hänen täytettyään 18 vuotta" in {
+      KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2023, 1, 25))
+
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
+      }
+    }
+    "ei palauta Ahvenanmaalla asuvaa vain oppijanumerorekisteristä löytyvää oppijaa" in {
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainen.hetu.get), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
+      }
+    }
+    "palauttaa turvakiellollisen vain oppijanumerorekisteristä löytyvän oppijan" in {
+      val expectedResult = ValpasLöytyiHenkilöhakuResult(
+        oid = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.oid,
+        hetu = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.hetu,
+        etunimet = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.etunimet,
+        sukunimi = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.sukunimi,
+        vainOppijanumerorekisterissä = true
+      )
+
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.hetu.get), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatusOk()
+
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
+    "ei palauta alle 18-vuotiasta ennen lain voimaantuloa syntynyttä vain oppijanumerorekisteristä löytyvää oppijaa" in {
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella.hetu.get), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
       }
     }
   }

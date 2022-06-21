@@ -139,19 +139,49 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
 
   private def asKuntaHenkilöhakuResult
     (henkilö: OppijaHenkilö)
-      (implicit session: ValpasSession)
+    (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasLöytyiHenkilöhakuResult] = {
-    oppijaLaajatTiedotService.getOppijaLaajatTiedot(ValpasRooli.KUNTA, henkilö.oid)
-      .map(ValpasLöytyiHenkilöhakuResult.apply)
+    oppijaLaajatTiedotService.getOppijaLaajatTiedotIlmanOikeustarkastusta(henkilö.oid) match {
+      case Right(Some(oppija)) =>
+        // Oli Koskessa, tarkista käyttöoikeudet ja palauta, jos ok
+        accessResolver.withOppijaAccessAsRole(ValpasRooli.KUNTA)(oppija)
+          .map(ValpasLöytyiHenkilöhakuResult.apply)
+      case Right(None) if onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö) =>
+        Right(ValpasLöytyiHenkilöhakuResult(henkilö, true))
+      case _ => Left(ValpasErrorCategory.forbidden.oppija())
+    }
+  }
+
+  private def onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
+    val onMahdollisestiLainPiirissä =
+      MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
+        henkilö.syntymäaika,
+        opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(henkilö.oid),
+        rajapäivätService
+      ).isEmpty
+    lazy val onAlle18VuotiasTarkastelupäivänä = rajapäivätService.onAlle18VuotiasTarkastelupäivänä(henkilö.syntymäaika)
+    lazy val näytäKotikunnanPerusteella = onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö)
+
+    onMahdollisestiLainPiirissä && onAlle18VuotiasTarkastelupäivänä && näytäKotikunnanPerusteella
+  }
+
+  private def onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö: OppijaHenkilö): Boolean = {
+    asLaajatOppijaHenkilöTiedot(henkilö) match {
+      case Some(o) if o.turvakielto || !o.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella =>
+        true
+      case _ =>
+        // TODO: mitä jos laajojen tietojen onr-haku epäonnistuu esim. sen ollessa väliaikaisesti alhaalla?
+        // Pitäisikö palauttaa joku virheilmoitus käyttöliittymään asti?
+        false
+    }
   }
 
   private def asSuorittaminenHenkilöhakuResult
     (henkilö: OppijaHenkilö)
     (implicit session: ValpasSession)
-  : Either[HttpStatus, ValpasLöytyiHenkilöhakuResult] = {
-    oppijaLaajatTiedotService.getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_SUORITTAMINEN, henkilö.oid)
-      .map(ValpasLöytyiHenkilöhakuResult.apply)
-  }
+  : Either[HttpStatus, ValpasLöytyiHenkilöhakuResult] =
+      oppijaLaajatTiedotService.getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_SUORITTAMINEN, henkilö.oid)
+        .map(ValpasLöytyiHenkilöhakuResult.apply)
 
   implicit private val getResultValpasLöytyiHenkilöhakuResult: GetResult[ValpasLöytyiHenkilöhakuResult] = GetResult(row =>
     ValpasLöytyiHenkilöhakuResult(
@@ -170,6 +200,16 @@ object ValpasLöytyiHenkilöhakuResult {
       etunimet = oppija.henkilö.etunimet,
       sukunimi = oppija.henkilö.sukunimi,
     )
+
+  def apply(oppija: OppijaHenkilö, vainOppijanumerorekisterissä: Boolean): ValpasLöytyiHenkilöhakuResult = {
+    ValpasLöytyiHenkilöhakuResult(
+      oid = oppija.oid,
+      hetu = oppija.hetu,
+      etunimet = oppija.etunimet,
+      sukunimi = oppija.sukunimi,
+      vainOppijanumerorekisterissä = vainOppijanumerorekisterissä
+    )
+  }
 }
 
 trait ValpasHenkilöhakuResult {
@@ -184,6 +224,7 @@ case class ValpasLöytyiHenkilöhakuResult(
   hetu: Option[String],
   etunimet: String,
   sukunimi: String,
+  vainOppijanumerorekisterissä: Boolean = false
 ) extends ValpasHenkilöhakuResult {
   def ok = true
 }

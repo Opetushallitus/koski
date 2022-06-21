@@ -76,6 +76,14 @@ abstract class ValpasRajapäivätService(config: Config) extends Logging {
   def kuntailmoitusAktiivisuusKuukausina: Long =
     config.getLong(ValpasRajapäivätService.kuntailmoitusAktiivisuusKuukausina)
 
+  def onAlle18VuotiasTarkastelupäivänä(syntymäaika: Option[LocalDate]): Boolean = {
+    syntymäaika match {
+      case Some(d) if d.plusYears(18).isAfter(tarkastelupäivä) => true
+      case Some(_) => false
+      case _ => false // Jos syntymäaika puuttuu, oletetaan täysi-ikäiseksi
+    }
+  }
+
   private val keväänValmistumisjaksoPituusPäivinä: Long =
     config.getLong(ValpasRajapäivätService.KeväänValmistumisjaksoPituusPäivinäPath)
 
