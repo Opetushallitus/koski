@@ -82,17 +82,40 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     "Hetu ei päädy lokiin - kunta" in {
       testHetunMaskausAccessLogissa(getHenkilöhakuKuntaUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
     }
+
+    "Ei palauta vain oppijanumerorekisteristä löytyvää oppijaa käyttäjälle, jolla ei ole kunta-oikeuksia" in {
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto("Käyttäjällä ei ole oikeuksia toimintoon"))
+      }
+    }
   }
 
   "Maksuttomuuskäyttäjän hetuhaku" - {
     "Hetu ei päädy lokiin - maksuttomuus" in {
       testHetunMaskausAccessLogissa(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
     }
-}
+
+    "Palauttaa ei löytynyt tuloksen oppijalla, joka löytyy vain oppijanumerorekisteristä" in {
+      val expectedResult = ValpasEiLöytynytHenkilöhakuResult()
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
+  }
 
   "Suorittamiskäyttäjän hetuhaku" - {
     "Hetu ei päädy lokiin - suorittaminen" in {
       testHetunMaskausAccessLogissa(getHenkilöhakuSuorittaminenUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
+    }
+
+    "Ei palauta oppijaa, joka löytyy vain oppijanumerorekisteristä" in {
+      authGet(getHenkilöhakuSuorittaminenUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
+      }
     }
   }
 
