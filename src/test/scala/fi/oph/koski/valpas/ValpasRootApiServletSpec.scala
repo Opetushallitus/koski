@@ -76,16 +76,24 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     }
   }
 
-  "Hetu ei päädy lokiin - kunta" in {
-    testHetunMaskausAccessLogissa(getHenkilöhakuKuntaUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
+
+  // Hetuhauille on suurelta osin kattavat testit Valpas-fronttitesteissä, siksi tässä on vain osa tapauksista
+  "Kunnan hetuhaku" - {
+    "Hetu ei päädy lokiin - kunta" in {
+      testHetunMaskausAccessLogissa(getHenkilöhakuKuntaUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
+    }
   }
 
-  "Hetu ei päädy lokiin - maksuttomuus" in {
-    testHetunMaskausAccessLogissa(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
-  }
+  "Maksuttomuuskäyttäjän hetuhaku" - {
+    "Hetu ei päädy lokiin - maksuttomuus" in {
+      testHetunMaskausAccessLogissa(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
+    }
+}
 
-  "Hetu ei päädy lokiin - suorittaminen" in {
-    testHetunMaskausAccessLogissa(getHenkilöhakuSuorittaminenUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
+  "Suorittamiskäyttäjän hetuhaku" - {
+    "Hetu ei päädy lokiin - suorittaminen" in {
+      testHetunMaskausAccessLogissa(getHenkilöhakuSuorittaminenUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
+    }
   }
 
   private def testHetunMaskausAccessLogissa(url: String) = {
