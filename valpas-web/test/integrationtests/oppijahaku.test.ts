@@ -317,7 +317,7 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä ei ole oppivelvollisuuden suorittamiseen kelpaavia opintoja paitsi International school jota ei tällä hetkellä Valppaassa näytetä", async () => {
+  it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä on oppivelvollisuuden suorittamiseen kelpaavia opintoja ainoastaan International schoolissa", async () => {
     await hakuLogin("valpas-maksuttomuus-hki")
     await fillQueryField("200405A780K", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
