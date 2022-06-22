@@ -32,7 +32,7 @@ case class OppijaHakutilanteillaLaajatTiedot(
   kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
   oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
   onOikeusTehdäKuntailmoitus: Option[Boolean],
-  lisätiedot: Seq[OpiskeluoikeusLisätiedot],
+  lisätiedot: Seq[OpiskeluoikeusLisätiedot]
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
@@ -373,15 +373,39 @@ class ValpasOppijaService(
   }
 
   def getOppijaLaajatTiedot
-    (rooli: ValpasRooli.Role, oppijaOid: ValpasHenkilö.Oid)
+    (rooli: ValpasRooli.Role, oppijaOid: ValpasHenkilö.Oid, haeMyösVainOppijanumerorekisterissäOleva: Boolean)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     val rajaaOVKelpoisiinOpiskeluoikeuksiin = !roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.contains(rooli)
 
-    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin)
-      .toRight(ValpasErrorCategory.forbidden.oppija())
-      .flatMap(asValpasOppijaLaajatTiedot)
-      .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
+    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin) match {
+      case Some(oppijaRow) =>
+        asValpasOppijaLaajatTiedot(oppijaRow)
+          .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
+      case None if haeMyösVainOppijanumerorekisterissäOleva =>
+        getKuntakäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
+      case _ =>
+        Left(ValpasErrorCategory.forbidden.oppija())
+    }
+  }
+
+  private def getKuntakäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
+    oppijaOid: ValpasHenkilö.Oid
+  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] =
+    getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
+      onKunnalleNäkyväVainOnrssäOlevaOppija,
+      oppijaOid
+    )
+
+  private def getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
+    onPalautettavaOppija: OppijaHenkilö => Boolean,
+    oppijaOid: ValpasHenkilö.Oid
+  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
+    henkilöRepository.findByOid(oppijaOid, findMasterIfSlaveOid = true) match {
+      case Some(henkilö) if onPalautettavaOppija(henkilö) =>
+        Right(ValpasOppijaLaajatTiedot(henkilö, rajapäivätService, onTallennettuKoskeen = false))
+      case _ => Left(ValpasErrorCategory.forbidden.oppija())
+    }
   }
 
   def onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
@@ -436,9 +460,9 @@ class ValpasOppijaService(
     if (roolit.isEmpty) {
       Left(ValpasErrorCategory.forbidden.oppija())
     } else if (laajimmatRoolit.nonEmpty) {
-      getOppijaLaajatTiedot(laajimmatRoolit.head, oppijaOid)
+      getOppijaLaajatTiedot(laajimmatRoolit.head, oppijaOid, haeMyösVainOppijanumerorekisterissäOleva = false)
     } else {
-      getOppijaLaajatTiedot(roolit.head, oppijaOid)
+      getOppijaLaajatTiedot(roolit.head, oppijaOid, haeMyösVainOppijanumerorekisterissäOleva = false)
     }
   }
 
@@ -456,9 +480,11 @@ class ValpasOppijaService(
     (oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
+    val haeMyösVainOppijanumerorekisterissäOleva = accessResolver.accessToAnyOrg(ValpasRooli.KUNTA)
+
     val rooli = roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.find(accessResolver.accessToAnyOrg)
 
-    getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppijaOid, rooli)
+    getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppijaOid, rooli, haeMyösVainOppijanumerorekisterissäOleva)
       .flatMap(withKuntailmoitukset)
       .map(withOikeusTehdäKuntailmoitus)
   }
@@ -479,12 +505,15 @@ class ValpasOppijaService(
   }
 
   def getOppijaLaajatTiedotHakuJaYhteystiedoilla
-    (oppijaOid: ValpasHenkilö.Oid, rooli: Option[ValpasRooli.Role] = None)
+    (oppijaOid: ValpasHenkilö.Oid, rooli: Option[ValpasRooli.Role] = None, haeMyösVainOppijanumerorekisterissäOleva: Boolean = false)
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
+    if (rooli.isEmpty && haeMyösVainOppijanumerorekisterissäOleva) {
+      throw new InternalError("Ei voi tapahtua: vain onr:ssä olevat haetaan vain kuntakäyttäjälle, jolloin roolinkin pitää olla määritelty")
+    }
     (rooli match {
       case None => getOppijaLaajatTiedot(oppijaOid)
-      case Some(r) => getOppijaLaajatTiedot(r, oppijaOid)
+      case Some(r) => getOppijaLaajatTiedot(r, oppijaOid, haeMyösVainOppijanumerorekisterissäOleva)
     })
       .map(fetchHakuYhteystiedoilla)
       .flatMap(withVirallisetYhteystiedot)
@@ -554,7 +583,7 @@ class ValpasOppijaService(
       .headOption
       .toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       .map(_.oppijaOid)
-      .flatMap(getOppijaLaajatTiedot) // Tarkasta oikeus katsoa oppijan tietoja getOppijaLaajatTiedot avulla
+      .flatMap(o => getOppijaLaajatTiedot(o)) // Tarkasta oikeus katsoa oppijan tietoja getOppijaLaajatTiedot avulla
       .map(_ => ovKeskeytyshistoria)
   }
 
@@ -741,15 +770,19 @@ class ValpasOppijaService(
   private def withOikeusTehdäKuntailmoitus(
     oppija: OppijaHakutilanteillaLaajatTiedot
   )(implicit session: ValpasSession): OppijaHakutilanteillaLaajatTiedot = {
-    val onOikeus = application.valpasKuntailmoitusService.withOikeusTehdäKuntailmoitusOppijalle(oppija.oppija)
-      .fold(_ => false, _ => true)
+    val onOikeus = if (oppija.oppija.henkilö.onTallennettuKoskeen) {
+      application.valpasKuntailmoitusService.withOikeusTehdäKuntailmoitusOppijalle(oppija.oppija)
+        .fold(_ => false, _ => true)
+    } else {
+      false
+    }
     oppija.copy(onOikeusTehdäKuntailmoitus = Some(onOikeus))
   }
 
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {
     HttpStatus.justStatus(
       accessResolver.assertAccessToOrg(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, key.oppilaitosOid)
-        .flatMap(_ => getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, key.oppijaOid))
+        .flatMap(_ => getOppijaLaajatTiedot(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, key.oppijaOid, haeMyösVainOppijanumerorekisterissäOleva = false))
         .flatMap(accessResolver.withOppijaAccessAsOrganisaatio(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, key.oppilaitosOid))
         .flatMap(accessResolver.withOpiskeluoikeusAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(key.opiskeluoikeusOid))
         .flatMap(_ => lisätiedotRepository.setMuuHaku(key, value).toEither)

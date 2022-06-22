@@ -168,6 +168,32 @@ object HakukoosteExampleData {
           pisteet = Some(9)
         ),
       ))),
+    haku(
+      ValpasMockOppijat.eiKoskessaOppivelvollinen,
+      Vector(Vector(
+        hakutoive(
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.ressunLukio,
+          hakukohdeNimi = "Lukio",
+          koulutusNimi = "Lukiokoulutus",
+          valintatila = Some("VARALLA"),
+          alinHyvaksyttyPistemaara = Some(8.99),
+          pisteet = Some(9)
+        ),
+      ))),
+    haku(
+      ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia,
+      Vector(Vector(
+        hakutoive(
+          hakukohdeOid = generateOid(),
+          hakukohdeOrganisaatio = MockOrganisaatiot.ressunLukio,
+          hakukohdeNimi = "Lukio",
+          koulutusNimi = "Lukiokoulutus",
+          valintatila = Some("VARALLA"),
+          alinHyvaksyttyPistemaara = Some(8.99),
+          pisteet = Some(9)
+        ),
+      ))),
   ).flatten
 
   def haku(
