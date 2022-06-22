@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.documentation.ExamplesLukio.{aikuistenOpsinPerusteet2004, aikuistenOpsinPerusteet2015}
 import fi.oph.koski.schema.annotation._
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, MinItems, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MinItems, NotWhen, OnlyWhen, Title}
 
 trait LukionPäätasonSuoritus2015 extends LukionPäätasonSuoritus with Todistus with Ryhmällinen {
   def onAikuistenOps(diaari: String) = {
@@ -14,6 +14,7 @@ trait LukionPäätasonSuoritus2015 extends LukionPäätasonSuoritus with Todistu
 
 @Description("Lukion oppimäärän suoritustiedot")
 @Title("Lukion oppimäärän suoritus")
+@NotWhen("koulutusmoduuli/perusteenDiaarinumero", List("OPH-2263-2019", "OPH-2267-2019"))
 case class LukionOppimääränSuoritus2015(
   @Title("Koulutus")
   koulutusmoduuli: LukionOppimäärä,
@@ -46,6 +47,7 @@ case class LukionOppimääränSuoritus2015(
 
 @Description("Lukion oppiaineen oppimäärän suoritustiedot")
 @Title("Lukion oppiaineen oppimäärän suoritus")
+@NotWhen("koulutusmoduuli/perusteenDiaarinumero", List("OPH-2263-2019", "OPH-2267-2019"))
 case class LukionOppiaineenOppimääränSuoritus2015(
   @Title("Oppiaine")
   koulutusmoduuli: LukionOppiaineTaiEiTiedossaOppiaine2015,
