@@ -246,12 +246,19 @@ export const modelTitle = (
   path?: PathExpr,
   titleFormatter?: (m: EditorModel) => string
 ): string => {
-  let model = modelLookup(mainModel, path)
-  if(model && titleFormatter !== undefined) {
-    return titleFormatter(model)
+  let model = modelLookup(mainModel, path);
+  if (model && titleFormatter !== undefined) {
+    return titleFormatter(model);
   }
-  // @ts-expect-error
-  return (model && (model.title || (model.value && model.value.title) || (model.value && '' + modelData(model)))) || ''
+  return (
+    (model &&
+      (model.title ||
+        // @ts-expect-error
+        (model.value && model.value.title) ||
+        // @ts-expect-error
+        (model.value && "" + modelData(model)))) ||
+    ""
+  );
 };
 
 export const modelEmpty = (mainModel: EditorModel, path?: PathExpr) => {
@@ -825,7 +832,11 @@ const contextualizeProperty =
     return R.mergeRight(property, {
       model,
       owner: mainModel,
-    }) as any as ContextualizedObjectModelProperty<M, T>; // TODO: Siivoa tyypitys
+      editable:
+        property.editable === undefined
+          ? mainModel.editable
+          : property.editable,
+    }) as any as ContextualizedObjectModelProperty<M, T>;
   };
 
 let arrayKeyCounter = 0;
@@ -938,10 +949,10 @@ export function resolvePrototypeReference<T extends object>(
   model: undefined,
   context?: T
 ): undefined;
-export function resolvePrototypeReference<M extends EditorModel, T extends object>(
-  model: M,
-  context?: T
-): M & Contextualized<T>;
+export function resolvePrototypeReference<
+  M extends EditorModel,
+  T extends object
+>(model: M, context?: T): M & Contextualized<T>;
 export function resolvePrototypeReference<T extends object>(
   model?: EditorModel,
   context?: T

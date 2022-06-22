@@ -85,6 +85,7 @@ export type ObjectModelProperty = {
   key: string;
   title: string;
   model: EditorModel;
+  editable?: boolean;
 };
 
 export type ContextualizedObjectModelProperty<
@@ -95,6 +96,7 @@ export type ContextualizedObjectModelProperty<
   title: string;
   owner: M;
   model: M;
+  editable?: boolean;
 };
 
 // PrototypeModel

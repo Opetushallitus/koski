@@ -43,7 +43,7 @@ Editor.setupContext = (model, {editorMapping, changeBus, editBus, saveChangesBus
     if (saveChangesBus) model = addContext(model, {saveChangesBus})
     if (editBus) model = addContext(model, {editBus})
   }
-  edit = parseBool(edit)
+  edit = !model.readOnly && parseBool(edit)
   if (edit !== model.context.edit) {
     model = addContext(model, { edit })
   }

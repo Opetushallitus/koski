@@ -241,7 +241,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (obj == None) {
       throw new RuntimeException("None value not allowed for ClassSchema")
     }
-    val objectContext = newContext(obj)
+    val objectContext = newContext(obj, metadata)
     val sensitiveDataFilter = SensitiveAndRedundantDataFilter(context.user)
 
     val properties: List[EditorProperty] = schema.properties
@@ -280,7 +280,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (property.metadata.contains(FlattenInUI())) props += ("flatten" -> JBool(true))
     if (property.metadata.contains(ComplexObject())) props += ("complexObject" -> JBool(true))
     if (property.metadata.contains(Tabular())) props += ("tabular" -> JBool(true))
-    if (!readOnly) props += ("editable" -> JBool(true))
+    if (readOnly) props += ("readOnly" -> JBool(true))
     if (SensitiveAndRedundantDataFilter(context.user).shouldHideField(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
     KoskiSpecificSchemaLocalization.deprecated(property)
@@ -338,7 +338,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
   def prototypeKey = sanitizeName(schema.simpleName)
 
-  private def newContext(obj: AnyRef): ModelBuilderContext = {
+  private def newContext(obj: AnyRef, metadata: List[Metadata]): ModelBuilderContext = {
     def orgWriteAccess = obj match {
       case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined && e.oppilaitos.isDefined && e.koulutustoimija.isDefined =>
         context.user.hasVarhaiskasvatusAccess(e.koulutustoimija.get.oid, e.getOppilaitos.oid, AccessType.write)
@@ -353,7 +353,8 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       case o: Lähdejärjestelmällinen => o.lähdejärjestelmänId.nonEmpty
       case _ => false
     }
-    val editable = context.editable && !lähdejärjestelmällinen && orgWriteAccess
+    val readOnly: Boolean = metadata.exists(_.isInstanceOf[ReadOnly])
+    val editable = context.editable && !lähdejärjestelmällinen && orgWriteAccess && !readOnly
 
     val invalidatable = obj match {
       case o: Opiskeluoikeus => context.invalidatable && OpiskeluoikeusAccessChecker.isInvalidatable(o, context.user)
