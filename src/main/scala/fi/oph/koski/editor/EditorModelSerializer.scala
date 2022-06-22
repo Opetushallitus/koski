@@ -16,7 +16,9 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
 
   override def deserialize(implicit format: Formats) = PartialFunction.empty
 
-  override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
+  override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = doSerialize(Nil)(format)
+
+  private def doSerialize(inheritedFields: List[(String, JValue)])(implicit format: Formats): PartialFunction[Any, JValue] = {
     case (model: EditorModel) => {
       model match {
         case (ObjectModel(c, properties, title, editable, invalidatable, prototypes, metadata)) =>
@@ -27,53 +29,52 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
               JField("classes", JArray(c.map(JString(_)))),
               JField("title", title.map(JString(_)).getOrElse(JNothing)),
               JField("properties", JArray(properties.map{ case EditorProperty(key, title, description, model, flags) =>
-                JObject(List(
+                JObject(cleanupFields(List(
                   JField("key", JString(key)),
                   JField("title", JString(title)),
-                  JField("model", serialize(format)(model))
-                ) ++ flagsToFields(flags) ++ descriptionToField(description))
+                  JField("model", doSerialize(inheritedFields ++ cascadingFields(flagsToFields(flags)))(format)(model))
+                ) ++ flagsToFields(flags) ++ inheritedFields ++ descriptionToField(description)))
               }))
             )),
-            JField("editable", JBool(editable)),
+            JField("editable", JBool(!inheritedFields.exists(_._1 == "readOnly"))),
             JField("invalidatable", JBool(invalidatable)),
             JField("prototypes", protos)
           ) ++ metadataToFields(metadata))
         case (PrototypeModel(key, metadata)) =>
-          JObject(
-            List(
+          JObject(cleanupFields(List(
               JField("type", JString("prototype")),
               JField("key", JString(key))
-            ) ++ metadataToFields(metadata)
+            ) ++ metadataToFields(metadata) ++ inheritedFields)
           )
         case (OptionalModel(model, prototype, metadata)) =>
-          val optionalInfo: JValue = JObject(
+          val optionalInfo: JValue = JObject(cleanupFields(List(
             JField("optional", JBool(true)),
-            JField("optionalPrototype", prototype.map(p => serialize(format)(p)).getOrElse(JNothing))
-          )
+            JField("optionalPrototype", prototype.map(p => doSerialize(inheritedFields)(format)(p)).getOrElse(JNothing))
+          ) ++ inheritedFields))
 
-          val typeAndValue = model.map(serialize(format)(_)).getOrElse(emptyObject)
+          val typeAndValue = model.map(doSerialize(inheritedFields)(format)(_)).getOrElse(emptyObject)
           typeAndValue.merge(optionalInfo).merge(JObject(metadataToFields(metadata)))
 
         case (ListModel(items, prototype, metadata)) =>
-          JObject(List(
+          JObject(cleanupFields(List(
             JField("type", JString("array")),
-            JField("value", JArray(items.map(item => serialize(format)(item)))),
-            JField("arrayPrototype", prototype.map(p => serialize(format)(p)).getOrElse(JNothing))
-          ) ++ metadataToFields(metadata))
+            JField("value", JArray(items.map(item => doSerialize(inheritedFields)(format)(item)))),
+            JField("arrayPrototype", prototype.map(p => doSerialize(inheritedFields)(format)(p)).getOrElse(JNothing))
+          ) ++ metadataToFields(metadata) ++ inheritedFields))
 
         case (EnumeratedModel(value, alternatives, path, metadata)) =>
-          JObject(List(
+          JObject(cleanupFields(List(
             JField("type", JString("enum")),
             JField("alternatives", alternatives.map(alts => JArray(alts.map(serializeEnumValue))).getOrElse(JNothing)),
             JField("alternativesPath", path.map(JString(_)).getOrElse(JNothing)),
             JField("value", value.map(serializeEnumValue).getOrElse(JNothing))
-          ) ++ metadataToFields(metadata))
+          ) ++ metadataToFields(metadata) ++ inheritedFields))
         case (OneOfModel(c, model, prototypes, metadata)) =>
-          val oneOfInfo = JObject(
+          val oneOfInfo = JObject(cleanupFields(List(
             JField("oneOfClass", JString(c)),
-            JField("oneOfPrototypes", JArray(prototypes.map(p => serialize(format)(p))))
-          )
-          serialize(format)(model).merge(oneOfInfo).merge(JObject(metadataToFields(metadata)))
+            JField("oneOfPrototypes", JArray(prototypes.map(p => doSerialize(inheritedFields)(format)(p))))
+          ) ++ inheritedFields))
+          doSerialize(inheritedFields)(format)(model).merge(oneOfInfo).merge(JObject(metadataToFields(metadata)))
         case (NumberModel(value, metadata)) => serializeValueModel("number", value, metadata)
         case (BooleanModel(value, metadata)) => serializeValueModel("boolean", value, metadata)
         case (DateModel(value, metadata)) => serializeValueModel("date", value, metadata)
@@ -112,7 +113,13 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
 
   private def metadataToObject(metadata: List[Metadata]) = JObject(metadataToFields(metadata))
 
-  private def flagsToFields(props: Map[String, JValue]) = props.toList.map{ case (key, value) => JField(key, value) }
+  private def flagsToFields(props: Map[String, JValue]): List[(String, JValue)] = props.toList.map { case (key, value) => JField(key, value) }
+
+  private def cleanupFields(fields: List[(String, JValue)]): List[(String, JValue)] = {
+    val map = fields.toMap
+    val mapWithEdit = if (map.contains("readOnly")) map - "editable" else map + ("editable" -> JBool(true))
+    mapWithEdit.toList
+  }
 
   private def descriptionToField(description: List[String]): List[JField] = description match {
     case Nil =>
@@ -129,4 +136,8 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   ) ++ metadataToFields(metadata))
 
   private def emptyObject = JObject()
+
+  private def cascadingFields(props: List[(String, JValue)]): List[(String, JValue)] = {
+    props.filter(_._1 == "readOnly")
+  }
 }

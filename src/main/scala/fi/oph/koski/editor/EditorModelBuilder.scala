@@ -280,7 +280,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (property.metadata.contains(FlattenInUI())) props += ("flatten" -> JBool(true))
     if (property.metadata.contains(ComplexObject())) props += ("complexObject" -> JBool(true))
     if (property.metadata.contains(Tabular())) props += ("tabular" -> JBool(true))
-    if (!readOnly) props += ("editable" -> JBool(true))
+    if (readOnly) props += ("readOnly" -> JBool(true))
     if (SensitiveAndRedundantDataFilter(context.user).shouldHideField(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
     KoskiSpecificSchemaLocalization.deprecated(property)

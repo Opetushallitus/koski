@@ -24,6 +24,7 @@ export class Editor extends React.Component {
 }
 
 Editor.setupContext = (model, {editorMapping, changeBus, editBus, saveChangesBus, edit, path}) => {
+  const isEditable = model.editable
   if (!model.context) {
     if (!editorMapping) {
       console.error('editorMapping required for root editor', model)
@@ -43,7 +44,7 @@ Editor.setupContext = (model, {editorMapping, changeBus, editBus, saveChangesBus
     if (saveChangesBus) model = addContext(model, {saveChangesBus})
     if (editBus) model = addContext(model, {editBus})
   }
-  edit = parseBool(edit)
+  edit = isEditable && parseBool(edit)
   if (edit !== model.context.edit) {
     model = addContext(model, { edit })
   }
