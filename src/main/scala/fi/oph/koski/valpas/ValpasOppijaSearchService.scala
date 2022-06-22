@@ -120,20 +120,13 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
           // Henkilö, jonka tiedot löytyvät, mutta jolla maksuttomuus on päättynyt esim. toiselta asteelta
           // valmistumiseen, ei ole enää maksuttomuuden piirissä:
           case Some(o) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(o.henkilö.oid), o.henkilö.hetu)
-          case None => asLaajatOppijaHenkilöTiedot(henkilö) match {
+          case None => oppijaLaajatTiedotService.asLaajatOppijaHenkilöTiedot(henkilö) match {
             case Some(h) if !h.turvakielto && h.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(h.oid), h.hetu)
             case _ => ValpasEiLöytynytHenkilöhakuResult()
           }
         })
     } else {
       Right(ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(henkilö.oid), henkilö.hetu))
-    }
-  }
-
-  private def asLaajatOppijaHenkilöTiedot(henkilö: OppijaHenkilö): Option[LaajatOppijaHenkilöTiedot] = {
-    henkilö match {
-      case h: LaajatOppijaHenkilöTiedot => Some(h)
-      case _ => henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
     }
   }
 
@@ -146,33 +139,9 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
         // Oli Koskessa, tarkista käyttöoikeudet ja palauta, jos ok
         accessResolver.withOppijaAccessAsRole(ValpasRooli.KUNTA)(oppija)
           .map(ValpasLöytyiHenkilöhakuResult.apply)
-      case Right(None) if onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö) =>
+      case Right(None) if oppijaLaajatTiedotService.onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö) =>
         Right(ValpasLöytyiHenkilöhakuResult(henkilö, true))
       case _ => Left(ValpasErrorCategory.forbidden.oppija())
-    }
-  }
-
-  private def onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
-    val onMahdollisestiLainPiirissä =
-      MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
-        henkilö.syntymäaika,
-        opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(henkilö.oid),
-        rajapäivätService
-      ).isEmpty
-    lazy val onAlle18VuotiasTarkastelupäivänä = rajapäivätService.onAlle18VuotiasTarkastelupäivänä(henkilö.syntymäaika)
-    lazy val näytäKotikunnanPerusteella = onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö)
-
-    onMahdollisestiLainPiirissä && onAlle18VuotiasTarkastelupäivänä && näytäKotikunnanPerusteella
-  }
-
-  private def onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö: OppijaHenkilö): Boolean = {
-    asLaajatOppijaHenkilöTiedot(henkilö) match {
-      case Some(o) if o.turvakielto || !o.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella =>
-        true
-      case _ =>
-        // TODO: mitä jos laajojen tietojen onr-haku epäonnistuu esim. sen ollessa väliaikaisesti alhaalla?
-        // Pitäisikö palauttaa joku virheilmoitus käyttöliittymään asti?
-        false
     }
   }
 

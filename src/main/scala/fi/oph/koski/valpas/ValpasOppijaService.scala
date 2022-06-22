@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.Yhteystiedot
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, Yhteystiedot}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.huoltaja.{HuollettavienHakuEpäonnistui, HuollettavienHakuOnnistui}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -11,6 +11,7 @@ import fi.oph.koski.schema.{Henkilö, LocalizedString, Organisaatio}
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.UuidUtils
+import fi.oph.koski.validation.MaksuttomuusValidation
 import fi.oph.koski.valpas.db.ValpasSchema
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow, OppivelvollisuudenKeskeytyshistoriaRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
@@ -109,6 +110,8 @@ case class OpiskeluoikeusLisätiedot(
 class ValpasOppijaService(
   application: KoskiApplication
 ) extends Logging with ValpasRouhintaTiming {
+  private val henkilöRepository = application.henkilöRepository
+  private val opiskeluoikeusRepository = application.opiskeluoikeusRepository
   private val hakukoosteService = ValpasHakukoosteService(application.config, application.validatingAndResolvingExtractor)
   private val opiskeluoikeusDbService = application.valpasOpiskeluoikeusDatabaseService
   private val ovKeskeytysService = new OppivelvollisuudenKeskeytysService(application)
@@ -379,6 +382,37 @@ class ValpasOppijaService(
       .toRight(ValpasErrorCategory.forbidden.oppija())
       .flatMap(asValpasOppijaLaajatTiedot)
       .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
+  }
+
+  def onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
+    val onMahdollisestiLainPiirissä =
+      MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
+        henkilö.syntymäaika,
+        opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(henkilö.oid),
+        rajapäivätService
+      ).isEmpty
+    lazy val onAlle18VuotiasTarkastelupäivänä = rajapäivätService.onAlle18VuotiasTarkastelupäivänä(henkilö.syntymäaika)
+    lazy val näytäKotikunnanPerusteella = onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö)
+
+    onMahdollisestiLainPiirissä && onAlle18VuotiasTarkastelupäivänä && näytäKotikunnanPerusteella
+  }
+
+  private def onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö: OppijaHenkilö): Boolean = {
+    asLaajatOppijaHenkilöTiedot(henkilö) match {
+      case Some(o) if o.turvakielto || !o.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella =>
+        true
+      case _ =>
+        // TODO: mitä jos laajojen tietojen onr-haku epäonnistuu esim. sen ollessa väliaikaisesti alhaalla?
+        // Pitäisikö palauttaa joku virheilmoitus käyttöliittymään asti?
+        false
+    }
+  }
+
+  def asLaajatOppijaHenkilöTiedot(henkilö: OppijaHenkilö): Option[LaajatOppijaHenkilöTiedot] = {
+    henkilö match {
+      case h: LaajatOppijaHenkilöTiedot => Some(h)
+      case _ => henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
+    }
   }
 
   def getOppijaLaajatTiedotIlmanOikeustarkastusta(oppijaOid: ValpasHenkilö.Oid) : Either[HttpStatus, Option[ValpasOppijaLaajatTiedot]] = {
