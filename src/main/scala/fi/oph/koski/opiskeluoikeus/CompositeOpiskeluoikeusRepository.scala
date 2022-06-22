@@ -16,6 +16,17 @@ import scala.util.{Failure, Success, Try}
 
 class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, virta: AuxiliaryOpiskeluoikeusRepository, ytr: AuxiliaryOpiskeluoikeusRepository) extends GlobalExecutionContext with Logging {
 
+  private def withErrorLogging[T](fun: () => T)(implicit user: KoskiSpecificSession): T = {
+    Try(fun()) match {
+      case Success(s) => s
+      case Failure(t) if t.isInstanceOf[java.lang.reflect.UndeclaredThrowableException] && Option(t.getCause).nonEmpty =>
+        logger.error(t.getCause)(s"${t.getCause}: ${t.getMessage}")
+        throw t
+      case Failure(t) =>
+        throw t
+    }
+  }
+
   def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A] = {
     val found1 = main.filterOppijat(oppijat)
     val left1 = oppijat.diff(found1)
@@ -36,7 +47,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
   )(
     implicit user: KoskiSpecificSession
   ): Either[HttpStatus, CreateOrUpdateResult] =
-    main.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
+    withErrorLogging(() => main.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted))
 
   def mapFailureToVirtaUnavailable(result: Try[Seq[Opiskeluoikeus]], oid: String): Try[WithWarnings[Seq[Opiskeluoikeus]]] = {
     result match {
@@ -61,7 +72,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
         case _ => false
     }
 
-    val mainResult = main.findByOppijaOids(tunnisteet.oid :: tunnisteet.linkitetytOidit)
+    val mainResult = withErrorLogging(() => main.findByOppijaOids(tunnisteet.oid :: tunnisteet.linkitetytOidit))
     val ytrResultFuture = Future { if (useYtr) ytr.findByOppija(tunnisteet) else Nil }.transform(mapFailureToYtrUnavailable(_, oid))
     val ytrResult = Futures.await(ytrResultFuture)
 
