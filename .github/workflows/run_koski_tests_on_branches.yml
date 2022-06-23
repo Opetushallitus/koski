@@ -49,7 +49,7 @@ jobs:
           make lint
 
   checkdoc_koski_validation:
-    name: Check that validaation_muustohistoria.md has been updated
+    name: Check that validaation_muutoshistoria.md has been updated
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -60,7 +60,7 @@ jobs:
           make checkdoc_validation
 
   checkdoc_koski_schema:
-    name: Check that tiedonsiirtoprotokollan_muustohistoria.md has been updated
+    name: Check that tiedonsiirtoprotokollan_muutoshistoria.md has been updated
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
