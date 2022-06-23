@@ -7,6 +7,7 @@ import {
   pushModel,
   modelLookup,
   modelData,
+  contextualizeSubModel,
 } from "../editor/EditorModel";
 import { koodistoValues } from "../uusioppija/koodisto";
 import KoodistoDropdown from "../koodisto/KoodistoDropdown";
@@ -27,6 +28,8 @@ import {
   EditorModel,
   EnumValue,
   ObjectModel,
+  OneOfModel,
+  PrototypeModel,
   StringModel,
 } from "../types/EditorModels";
 import { ChangeBusContext, Contextualized } from "../types/EditorModelContext";
@@ -35,6 +38,7 @@ import {
   OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
   VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus,
 } from "../types/VapaaSivistystyo";
+import { Koodistokoodiviite } from "../types/common";
 
 export type UusiVapaanSivistystyonOsasuoritusProps = {
   suoritusPrototypes: OsasuoritusEditorModel[];
@@ -110,6 +114,21 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
 
   const vapaatavoitteisenOsasuoritus = findSuoritusPrototyyppi(
     "vapaansivistystyonvapaatavoitteisenkoulutuksenosasuorituksensuoritus"
+  );
+
+  const koto2022Osasuoritus = findSuoritusPrototyyppi(
+    "vstkotoutumiskoulutuksenkielijaviestintaosaamisensuoritus2022"
+  );
+  const koto2022KieliJaViestintaOsaamisenAlaosasuoritus =
+    findSuoritusPrototyyppi(
+      "vstkotoutumiskoulutuksenkielijaviestintaosaamisenosasuoritus"
+    );
+  const koto2022YhteiskuntaJaTyöelämäosaamisenAlaosasuoritus =
+    findSuoritusPrototyyppi(
+      "vstkotoutumiskoulutuksenyhteiskuntajatyoelamaosaaminenalaosasuoritus"
+    );
+  const koto2022ValinnaistenOpintojenAlaosasuoritus = findSuoritusPrototyyppi(
+    "vstkotoutumiskoulutusvalinnaistenopintojenalaosasuoritus"
   );
 
   return (
@@ -224,6 +243,45 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
           lisääTitle={"Osasuorituksen lisäys"}
         />
       )}
+      {koto2022Osasuoritus && (
+        <LisääVSTKOTO2022Osasuoritus
+          className="vst-osaamiskokonaisuus"
+          koodistoUri="vstkoto2022kokonaisuus"
+          suoritusPrototype={koto2022Osasuoritus}
+          selectionText={"Lisää osasuoritus"}
+          setExpanded={setExpanded}
+        />
+      )}
+      {koto2022KieliJaViestintaOsaamisenAlaosasuoritus && (
+        <LisääKoodistosta
+          koodistoUri={"vstkoto2022kielijaviestintakoulutus"}
+          suoritusPrototype={koto2022KieliJaViestintaOsaamisenAlaosasuoritus}
+          className="vstkoto2022-kielijaviestinta"
+          selectionText={"Lisää kieli- ja viestintäkoulutuksen alaosasuoritus"}
+          setExpanded={setExpanded}
+        />
+      )}
+      {koto2022YhteiskuntaJaTyöelämäosaamisenAlaosasuoritus && (
+        <LisääKoodistosta
+          koodistoUri={"vstkoto2022yhteiskuntajatyoosaamiskoulutus"}
+          suoritusPrototype={
+            koto2022YhteiskuntaJaTyöelämäosaamisenAlaosasuoritus
+          }
+          className="vstkoto2022-yhteiskuntajatyoosaamis"
+          selectionText={
+            "Lisää yhteiskunta- ja työosaamiskoulutuksen alaosasuoritus"
+          }
+          setExpanded={setExpanded}
+        />
+      )}
+      {koto2022ValinnaistenOpintojenAlaosasuoritus && (
+        <LisääPaikallinen
+          suoritusPrototype={koto2022ValinnaistenOpintojenAlaosasuoritus}
+          setExpanded={setExpanded}
+          lisääText={"Lisää osasuoritus"}
+          lisääTitle={"Lisää valinnainen alaosasuoritus"}
+        />
+      )}
     </>
   );
 };
@@ -318,6 +376,77 @@ const LisääOsaAlue = ({
   );
 };
 
+type LisääOsasuoritusProps = {
+  suoritusPrototype: OsasuoritusEditorModel;
+  selectionText: string;
+  setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void;
+  className?: string;
+  koodistoUri: string;
+};
+
+const LisääVSTKOTO2022Osasuoritus = ({
+  suoritusPrototype,
+  selectionText,
+  setExpanded,
+  className,
+}: LisääOsasuoritusProps) => {
+  const selectedAtom = Atom<EnumValue<Koodistokoodiviite> | undefined>();
+
+  const koulutusmoduuliPrototypes = (
+    suoritusPrototype as OsasuoritusEditorModel & OneOfModel
+  ).oneOfPrototypes as PrototypeModel[];
+
+  selectedAtom.filter(notUndefined).onValue((newItem) => {
+    const prototypeMapping: Record<string, string> = {
+      kielijaviestintaosaaminen:
+        "vstkotoutumiskoulutuksenkielijaviestintaosaamisensuoritus2022",
+      ohjaus: "vstkotoutumiskoulutuksenohjauksensuoritus2022",
+      valinnaisetopinnot:
+        "vstkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus2022",
+      yhteiskuntajatyoelamaosaaminen:
+        "vstkotoutumiskoulutuksenyhteiskuntajatyoelamaosaaminensuoritus2022",
+    };
+
+    const prototypeKey = prototypeMapping[newItem.data.koodiarvo];
+    const proto = koulutusmoduuliPrototypes.find((p) => p.key === prototypeKey);
+
+    if (proto) {
+      const koulutusmoduuliPrototype =
+        koulutusModuuliprototypes(suoritusPrototype)[0];
+
+      const koulutusmoduuli = modelSetTitle(
+        modelSetValues(koulutusmoduuliPrototype, { tunniste: newItem }),
+        newItem.title
+      );
+
+      const suoritus = modelSet(
+        modelSetTitle(
+          contextualizeSubModel(proto, suoritusPrototype)!,
+          newItem.title
+        ),
+        koulutusmoduuli,
+        "koulutusmoduuli"
+      );
+
+      pushModel(suoritus);
+      setExpanded(suoritus)(true);
+      selectedAtom.set(undefined);
+    }
+  });
+
+  return (
+    <div className={"lisaa-uusi-suoritus " + className}>
+      {/* @ts-expect-error KoodistoDropdown */}
+      <KoodistoDropdown
+        className={className}
+        options={koodistoValues("vstkoto2022kokonaisuus")}
+        selected={selectedAtom.view(enumValueToKoodiviiteLens)}
+        selectionText={t(selectionText)}
+      />
+    </div>
+  );
+};
+
 type LisääPaikallinenProps = {
   suoritusPrototype: OsasuoritusEditorModel;
   setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void;
@@ -343,11 +472,11 @@ const LisääPaikallinen = ({
   const updateInputState = (event: React.ChangeEvent<HTMLInputElement>) =>
     inputState.set(event.target.value);
 
-  const koulutusmoduuliPrototype =
-    koulutusModuuliprototypes(suoritusPrototype)[0] as OsasuoritusEditorModel;
+  const koulutusmoduuliPrototype = koulutusModuuliprototypes(
+    suoritusPrototype
+  )[0] as OsasuoritusEditorModel;
 
   const addNewSuoritus = (storedSuoritus: TallennettuSuoritus) => {
-    console.log("addNewSuoritus - storedSuoritus", storedSuoritus);
     const input = inputState.get();
     const updateValues = {
       "kuvaus.fi": { data: storedSuoritus ? storedSuoritus.kuvaus.fi : input },
@@ -371,8 +500,6 @@ const LisääPaikallinen = ({
     setExpanded(suoritus)(true);
     showModal.set(false);
   };
-
-  const x = modelData(suoritusPrototype.context.opiskeluoikeus, "suoritukset");
 
   const päätasonSuoritus = modelData(
     suoritusPrototype.context.opiskeluoikeus,

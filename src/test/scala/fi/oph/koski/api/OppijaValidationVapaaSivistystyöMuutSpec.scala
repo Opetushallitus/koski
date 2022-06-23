@@ -238,7 +238,7 @@ class OppijaValidationVapaaSivistystyöMuutSpec extends AnyFreeSpec with PutOpis
           arviointi = Koto2022.suoritusArviointi(LocalDate.of(2023, 5, 1))
         )
         VSTKotoutumiskoulutus2022Validation.validateTyössäoppimisjaksot(yhteiskuntaJaTyöosaaminen) shouldBe
-          KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusLiianSuppea(s"Oppiaineen suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 8.0 op)")
+          KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusLiianSuppea(s"Oppiaineen 'Työssäoppiminen' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 8.0 op)")
       }
 
       "Opiskeluoikeutta ei voi hyväksyä, jos työoppimisjaksoja on liian vähän" in {
@@ -267,7 +267,7 @@ class OppijaValidationVapaaSivistystyöMuutSpec extends AnyFreeSpec with PutOpis
         )
 
         putOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusLiianSuppea(s"Oppiaineen suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 8.0 op)"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusLiianSuppea(s"Oppiaineen 'Työssäoppiminen' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 8.0 op)"))
         }
       }
     }
