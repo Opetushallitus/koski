@@ -41,10 +41,10 @@ export const HeaderButtons = ({uiModeA, oppija}) => (
       clearedStateValue={FormState.NONE}
       text='Jaa suoritustietoja'
     />}
-    <FloatingActionButton
+    {!oppija.context.huollettava && hasOpintoja(oppija) && <FloatingActionButton
       text='Jaa suoritustietoja'
       onClick={() => moveToSuoritusjako(() => uiModeA.set(FormState.SUORITUSJAKO))}
       visibilityOffset={ACTION_BUTTON_OFFSET}
-    />
+    />}
   </div>
 )
