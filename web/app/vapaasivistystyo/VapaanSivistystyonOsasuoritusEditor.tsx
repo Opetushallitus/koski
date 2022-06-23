@@ -1,19 +1,19 @@
 import React from "baret";
 import * as R from "ramda";
 
-import { modelData, modelLookup } from "../editor/EditorModel";
+import { modelData, modelEmpty, modelLookup, modelProperties } from "../editor/EditorModel";
 import { PropertiesEditor } from "../editor/PropertiesEditor";
 import { pushRemoval } from "../editor/EditorModel";
 import { suoritusProperties } from "../suoritus/SuoritustaulukkoCommon";
 import { VapaanSivistystyonSuoritustaulukko } from "./VapaanSivistystyonSuoritustaulukko";
 import { saveOrganizationalPreference } from "../virkailija/organizationalPreferences";
 import { doActionWhileMounted } from "../util/util";
-import { ObjectModel } from "../types/EditorModels.js";
+import { ObjectModel, ObjectModelProperty } from "../types/EditorModels.js";
 import { OsasuoritusEditorModel } from "../types/OsasuoritusEditorModel";
 
 type VapaanSivistystyonOsasuoritusEditorProps = {
   model: OsasuoritusEditorModel;
-  onExpand: () => void;
+  onExpand?: () => void;
   expanded: boolean;
   nestedLevel: number;
   columns: any[]; // TODO
@@ -56,10 +56,14 @@ export class VapaanSivistystyonOsasuoritusEditor extends React.Component<
   render() {
     let { model, onExpand, expanded, nestedLevel, columns } = this.props;
 
-    const editableProperties = suoritusProperties(model).filter(
-      (p) => p.key !== "osasuoritukset"
+    const editableProperties: ObjectModelProperty[] = suoritusProperties(model).filter(
+      (p: ObjectModelProperty) => p.key !== "osasuoritukset"
     );
     const osasuoritukset = modelLookup(model, "osasuoritukset");
+
+    const canExpand =
+      onExpand !== undefined 
+      && model.value.classes.find(c => c.includes("vstkotoutumiskoulutuksenohjauksensuoritus2022")) === undefined
 
     return (
       <tbody className={"vst-osasuoritus"}>
@@ -70,7 +74,7 @@ export class VapaanSivistystyonOsasuoritusEditor extends React.Component<
               expanded,
               onExpand,
               showTila: true,
-              hasProperties: true,
+              hasProperties: canExpand,
             })
           )}
           {model.context.edit && (

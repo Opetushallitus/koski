@@ -281,4 +281,116 @@ describe('VST', function () {
         })
       })
     })
+  describe('VST-KOTO 2022', () => {
+    describe('Opiskeluoikeuden luonti', function() {
+      before(
+        prepareForNewOppija('kalle', '130505A284V'),
+        addOppija.enterHenkilötiedot(),
+        addOppija.selectOppilaitos('Varsinais-Suomen'),
+        addOppija.selectOpiskeluoikeudenTyyppi('Vapaan'),
+        addOppija.selectOppimäärä('Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutus'),
+        addOppija.selectPeruste('OPH-649-2022'),
+        addOppija.selectMaksuttomuus(0)
+      )
+
+      describe('Opiskeluoikeutta, joka on luotu ennen 1.8.2022', function() {
+        before(
+          addOppija.selectAloituspäivä('30.7.2022'),
+          addOppija.submit
+        )
+        it('ei voi luoda', function() {
+          expectError('Vapaan sivistystyön kotiutumiskoulutuksen suorituksella ei voi olla ennen 1.8.2022 aloitettuja kotoutumiskoulutuksen opetussuunnitelman 2022 mukaisia suorituksia')
+        })
+      })
+
+      describe('Opiskeluoikeuden, joka on luotu 1.8.2022 tai myöhemmin', function() {
+        before(
+          addOppija.selectAloituspäivä('1.8.2022'),
+          addOppija.submit
+        )
+        it('voi luoda', function() {
+          const otsikko = S('.oppija-heading')
+          expect(extractAsText(otsikko)).to.include('Tyhjä, Tero (130505A284V)')
+        })
+      })
+
+      describe('Kieli- ja viestintäopintojen lisäys', function() {
+        const lisääKieliopinto = (nimi, laajuus, arvosana) => [
+          vst.lisääKieliJaViestintäosaamisenOsasuoritus(nimi),
+          vst.enterLaajuus(nimi, laajuus),
+          vst.selectArvosana(nimi, arvosana)
+        ]
+
+        before(
+          editor.edit,
+          vst.lisääOsaamiskokonaisuus('Kieli- ja viestintäosaaminen'),
+          ...lisääKieliopinto('Kirjoittaminen', 5, 'A1.1'),
+          ...lisääKieliopinto('Puhuminen', 5, 'A1.1'),
+          ...lisääKieliopinto('Kuullun ymmärtäminen', 10, 'A1.1'),
+          ...lisääKieliopinto('Luetun ymmärtäminen', 10, 'A1.1'),
+          vst.selectArvosana('Kieli- ja viestintäosaaminen', 'Hyväksytty'),
+          editor.saveChangesAndExpectError
+        )
+
+        it('ei onnistu liian vähillä opintopisteillä', function () {
+          expectError('Oppiaineen \'Kieli- ja viestintäosaaminen\' suoritettu laajuus liian suppea (30.0 op, pitäisi olla vähintään 40.0 op)')
+        })
+
+        describe('mutta kun opintopisteitä on tarpeeksi', function() {
+          before(
+            vst.enterLaajuus('Kirjoittaminen', 10),
+            vst.enterLaajuus('Puhuminen', 10),
+            editor.saveChanges
+          )
+          it('tallentaminen onnistuu', function () {})
+        })
+      })
+
+      describe('Yhteiskunta- ja työelämän opintojen lisäys', function() {
+        const lisääTyöelämäopinto = (nimi, laajuus) => [
+          vst.lisääYhteiskuntaJaTyöelämänOsaamisenOsasuoritus(nimi),
+          vst.enterLaajuus(nimi, laajuus),
+        ]
+
+        before(
+          editor.edit,
+          vst.lisääOsaamiskokonaisuus('Yhteiskunta- ja työelämäosaaminen'),
+          ...lisääTyöelämäopinto('Ammatti- ja koulutuspalvelut', 5),
+          ...lisääTyöelämäopinto('Työelämätietous', 5),
+          ...lisääTyöelämäopinto('Työssäoppiminen', 5),
+          vst.selectArvosana('Yhteiskunta- ja työelämäosaaminen', 'Hyväksytty'),
+          editor.saveChangesAndExpectError
+        )
+
+        it('ei onnistu liian vähillä opintopisteillä', function() {
+          expectError('Oppiaineen \'Yhteiskunta- ja työelämäosaaminen\' suoritettu laajuus liian suppea (15.0 op, pitäisi olla vähintään 20.0 op)')
+        })
+
+        describe('Lisäämällä opintoihin yhteiskunnan peruspalvelut, 5 op', function() {
+          before(
+            ...lisääTyöelämäopinto('Yhteiskunnan peruspalvelut', 5),
+            editor.saveChangesAndExpectError
+          )
+
+          it('ei vieläkään onnistu, koska työssäoppimisessa liian vähän opintopisteitä', function() {
+            expectError('Oppiaineen \'Työssäoppiminen\' suoritettu laajuus liian suppea (5.0 op, pitäisi olla vähintään 8.0 op)')
+          })
+
+          describe('Mutta lisäämällä 3 op työssäoppimista', function() {
+            before(
+              ...lisääTyöelämäopinto('Työssäoppiminen', 3),
+              editor.saveChanges
+            )
+
+            it('tallentaminen onnistuu', function() {})
+          })
+        })
+      })
+    })
+  })
 })
+
+function expectError(error) {
+  const virhe = S('#error')
+  expect(extractAsText(virhe)).to.include(error)
+}

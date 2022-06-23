@@ -2319,5 +2319,9 @@
   "eperusteet_opintopolku_url_fragment" : "/#/fi/opintokokonaisuus/",
   "infoLinkUrl:eperusteet_opintopolku_url" : "https://eperusteet.opintopolku.fi/#/fi",
   "infoLinkTitle:opintokokonaisuudet_eperusteissa" : "Opintokokonaisuudet ePerusteissa",
-  "infoDescription:opintokokonaisuuden_tarkemmat_tiedot_eperusteissa" : "Näet opintokokonaisuuksien tarkemmat tiedot ePerusteissa."
+  "infoDescription:opintokokonaisuuden_tarkemmat_tiedot_eperusteissa" : "Näet opintokokonaisuuksien tarkemmat tiedot ePerusteissa.",
+  "Lisää kieli- ja viestintäkoulutuksen alaosasuoritus": "Lisää kieli- ja viestintäkoulutuksen alaosasuoritus",
+  "Lisää yhteiskunta- ja työosaamiskoulutuksen alaosasuoritus": "Lisää yhteiskunta- ja työosaamiskoulutuksen alaosasuoritus",
+  "Lisää valinnainen alaosasuoritus": "Lisää valinnainen alaosasuoritus",
+  "Poista osasuoritus. Poistaminen ei vaikuta olemassa oleviin suorituksiin.": "Poista osasuoritus. Poistaminen ei vaikuta olemassa oleviin suorituksiin."
 }
