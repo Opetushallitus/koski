@@ -19,8 +19,8 @@ object LogMaskingPatternConverter {
 @ConverterKeys(Array("cm"))
 class LogMaskingPatternConverter extends LogEventPatternConverter(NAME, NAME) {
   override def format(event: LogEvent, outputMessage: lang.StringBuilder): Unit = {
-    val message = cutToMaxLength(event.getMessage.getFormattedMessage)
-    outputMessage.append(maskSensitiveInformation(message))
+    val message = cutToMaxLength(maskSensitiveInformation(event.getMessage.getFormattedMessage))
+    outputMessage.append(message)
   }
 
   private def cutToMaxLength(msg: => String) = {
