@@ -145,10 +145,10 @@ case class VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi(
   @KoodistoKoodiarvo("C2.2")
   arvosana: Koodistokoodiviite,
   arviointipäivä: Option[LocalDate] = None,
-  arvioitsijat: Option[List[SuorituksenArvioitsija]] = None,
 ) extends Arviointi {
   override def hyväksytty: Boolean = true
   override def arvosanaKirjaimin: LocalizedString = LocalizedString.finnish(arvosana.koodiarvo)
+  override def arvioitsijat: Option[List[SuorituksenArvioitsija]] = None
 }
 
 /*

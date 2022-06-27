@@ -1,3 +1,7 @@
+## 29.6.2022
+
+- Poistettu vapaan sivistystyön kotoutumiskoulutuksen opetussuunnitelman 2022 kieli- ja viestintäkoulutusten arvioinnin tietomallista arvioitsijat.
+
 ## 27.6.2022
 
 - Lisätty validaatio, että lukion 2015 oppimäärän suoritusta ei voi käyttää lukion 2019 diaarinumerojen kanssa.
