@@ -191,13 +191,13 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     "Lukion oppiaineen oppimäärässä" - {
       "Lukion 2019 opetussuunnitelman nuorten diaarinumeron käyttöä ei sallita" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi.copy(koulutusmoduuli = lukionOppiaine("YH", diaarinumero = lops2019perusteenDiaarinumero))))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("Lukion aiemman opetusohjelman mukaisessa suorituksessa ei voi käyttää lukion 2019 opetussuunnitelman diaarinumeroa"))
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*Not allowed, when koulutusmoduuli/perusteenDiaarinumero.*".r))
         }
       }
 
       "Lukion 2019 opetussuunnitelman aikuisten diaarinumeron käyttöä ei sallita" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi.copy(koulutusmoduuli = lukionOppiaine("YH", diaarinumero = lops2019AikuistenPerusteenDiaarinumero))))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("Lukion aiemman opetusohjelman mukaisessa suorituksessa ei voi käyttää lukion 2019 opetussuunnitelman diaarinumeroa"))
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*Not allowed, when koulutusmoduuli/perusteenDiaarinumero.*".r))
         }
       }
     }
