@@ -21,6 +21,18 @@ abstract class ValpasRajapäivätService(config: Config) extends Logging {
   def oppivelvollisuusAlkaa(syntymäpäivä: LocalDate): LocalDate =
     oppivelvollisuusAlkaaPäivämäärä.withYear(syntymäpäivä.getYear + oppivelvollisuusAlkaaIka)
 
+  def oppivelvollisuusVoimassaAstiIänPerusteella(syntymäpäivä: LocalDate): LocalDate = {
+    // Huom! Sama logiikka on myös SQL:nä Oppivelvollisuustiedot-luokan luomassa materialized view:ssä.
+    // Varmista muutosten jälkeen, että logiikka säilyy samana.
+    syntymäpäivä.plusYears(oppivelvollisuusLoppuuIka.toLong)
+  }
+
+  def maksuttomuusVoimassaAstiIänPerusteella(syntymäpäivä: LocalDate): LocalDate = {
+    // Huom! Sama logiikka on myös SQL:nä Oppivelvollisuustiedot-luokan luomassa materialized view:ssä.
+    // Varmista muutosten jälkeen, että logiikka säilyy samana.
+    date(syntymäpäivä.plusYears(maksuttomuusLoppuuIka.toLong).getYear, 12, 31)
+  }
+
   def oppivelvollisuusLoppuuIka: Integer =
     config.getInt(ValpasRajapäivätService.OppivelvollisuusLoppuuIkaPath)
 

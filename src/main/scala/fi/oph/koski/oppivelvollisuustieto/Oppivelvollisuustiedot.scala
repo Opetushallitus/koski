@@ -212,6 +212,8 @@ object Oppivelvollisuustiedot {
             #$oppivelvollisuusAlkaaPäivä
           ) AS oppivelvollisuusVoimassaAlkaen,
 
+          -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
+          -- että logiikka säilyy samana.
           case
             when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
             when suorittaa_ammattitutkintoa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, ammattitutkinnon_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
@@ -220,6 +222,8 @@ object Oppivelvollisuustiedot {
           end
             oppivelvollisuusVoimassaAsti,
 
+          -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
+          -- että logiikka säilyy samana.
           case
             when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then least(
               dia_tutkinnon_vahvistuspaiva,
