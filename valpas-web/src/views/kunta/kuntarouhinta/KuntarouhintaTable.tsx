@@ -156,8 +156,7 @@ const nimiValue = (
   oppijanNimiValue("kuntaRef")(
     { ...oppija, oid: oppija.oppijanumero },
     organisaatioOid,
-    basePath,
-    !oppija.vainOppijanumerorekisterissä
+    basePath
   )
 
 const päättymispäiväValue = (opiskeluoikeus?: RouhintaOpiskeluoikeus): Value =>
