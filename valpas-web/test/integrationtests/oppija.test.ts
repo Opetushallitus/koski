@@ -1164,7 +1164,7 @@ describe("Oppijakohtainen näkymä", () => {
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Ei opiskelupaikkaa",
-        oppivelvollisuus: "Keskeytetty toistaiseksi 1.9.2021 alkaen",
+        oppivelvollisuudenKeskeytykset: ["toistaiseksi 1.9.2021 alkaen"],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
       })
