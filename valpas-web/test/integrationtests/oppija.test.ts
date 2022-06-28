@@ -1,6 +1,7 @@
 import { oppijaPath } from "../../src/state/paths"
 import {
   clickElement,
+  contentEventuallyEquals,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
 import {
@@ -130,6 +131,13 @@ const oppivelvollisuusKeskeytettyHelsinkiläinenPath = oppijaPath.href(
   "/virkailija",
   {
     oppijaOid: "1.2.246.562.24.00000000130",
+  }
+)
+
+const eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaPath = oppijaPath.href(
+  "/virkailija",
+  {
+    oppijaOid: "1.2.246.562.24.00000000144",
   }
 )
 
@@ -1145,6 +1153,25 @@ describe("Oppijakohtainen näkymä", () => {
           päättymispäivä: "30.5.2021",
         })
       )
+    )
+  })
+
+  it("Näyttää ohjetekstin, jos oppijalle ei löydy opintohistoriaa", async () => {
+    await loginAs(eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaPath, "valpas-monta")
+
+    await mainHeadingEquals("Kosketon-keskeytyksiä-ilmoituksia Valpas (260705A1119)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000144")
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Ei opiskelupaikkaa",
+        oppivelvollisuus: "Keskeytetty toistaiseksi 1.9.2021 alkaen",
+        maksuttomuusoikeus: "31.12.2025 asti",
+        oppivelvollisuudenKeskeytysBtn: true,
+      })
+    )
+    await contentEventuallyEquals(
+      `[data-test-id="ei-opiskeluoikeushistoria-opintoja-text"]`,
+      "Oppijalle ei löytynyt opiskeluhistoriaa"
     )
   })
 })
