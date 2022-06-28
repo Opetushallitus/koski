@@ -13,7 +13,7 @@ import {
   getLaajuusYksikkö,
   LaajuusColumn,
   SuoritusColumn,
-  TaitotasoColmn,
+  TaitotasoColumn,
 } from "../suoritus/SuoritustaulukkoCommon";
 import { numberToString } from "../util/format";
 import { EditorModel, ObjectModel } from "../types/EditorModels";
@@ -28,6 +28,12 @@ export type VapaanSivistystyonSuoritustaulukkoProps = {
   suorituksetModel?: OsasuoritusEditorModel;
   nestedLevel?: number;
 };
+
+type VSTColumn =
+  | SuoritusColumn
+  | LaajuusColumn
+  | ArvosanaColumn
+  | TaitotasoColumn;
 
 export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSivistystyonSuoritustaulukkoProps> {
   render() {
@@ -77,7 +83,7 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
       SuoritusColumn,
       LaajuusColumn,
       ArvosanaColumn,
-      TaitotasoColmn,
+      TaitotasoColumn,
     ].filter((column) =>
       column.shouldShow({
         parentSuoritus,
@@ -87,7 +93,7 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
       })
     );
 
-    const canExpand = nestedLevel < maxNestedLevel - 1
+    const canExpand = nestedLevel < maxNestedLevel - 1;
 
     return (
       <div className="suoritus-taulukko">
@@ -95,6 +101,7 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
           {nestedLevel === 0 && (
             <ExpandAllRows
               allExpandedP={allExpandedP}
+              // @ts-expect-error
               toggleExpandAll={toggleExpandAll}
             />
           )}
@@ -122,7 +129,9 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
             <SingleColumnRowTable colSpan={4}>
               <UusiVapaanSivistystyonOsasuoritus
                 // @ts-expect-error TutkinnonOsa
-                suoritusPrototypes={suoritusProtos as Array<ObjectModel & Contextualized<VapaaSivistystyoContext>>}
+                suoritusPrototypes={
+                  suoritusProtos as Array<ObjectModel & Contextualized>
+                }
                 setExpanded={setExpanded}
                 suoritukset={suoritukset}
               />
@@ -132,6 +141,7 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
             <SingleColumnRowTable className={"yhteislaajuus"}>
               <YhteensäSuoritettu
                 suoritukset={suoritukset}
+                // @ts-expect-error YhteensäSuoritettu
                 laajuusYksikkö={laajuusYksikkö}
               />
             </SingleColumnRowTable>
