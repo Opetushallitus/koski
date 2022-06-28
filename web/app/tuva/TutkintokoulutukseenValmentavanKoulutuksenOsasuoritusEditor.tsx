@@ -30,12 +30,6 @@ export const TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor = ({
   );
   const osasuoritukset = modelLookup(model, "osasuoritukset");
 
-  const laajuusReadOnly =
-    model &&
-    model.value.classes.includes(
-      "tutkintokoulutukseenvalmentavankoulutuksenvalinnaisenosansuoritus"
-    );
-
   return (
     <tbody className={"tuva-osasuoritus tuva-osasuoritus-" + nestedLevel}>
       <tr className={"tuva-osasuoritusrivi-" + nestedLevel}>
@@ -46,7 +40,6 @@ export const TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor = ({
             onExpand,
             showTila: true,
             hasProperties: true,
-            disabled: laajuusReadOnly,
           })
         )}
         {model.context.edit && (
