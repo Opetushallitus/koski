@@ -65,6 +65,12 @@ export const oppivelvollisuustiedot = (p: {
     .filter(nonNull)
     .join("\n")
 
+export const historiaEiOpiskeluhistoriaa = () =>
+  [
+    "school",
+    "Oppijalle ei löytynyt opiskeluhistoriaa"
+  ].join("\n")
+
 export const historiaOpintoOikeus = (p: {
   otsikko: string
   tila: string
