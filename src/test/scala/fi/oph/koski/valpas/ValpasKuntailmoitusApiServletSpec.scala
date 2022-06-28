@@ -152,6 +152,14 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     }
   }
 
+  "Kuntailmoitusta ei voi tehdä oppijalle, jolla ei ole tietoja Koskessa" in {
+    val minimiKuntailmoitus = teeMinimiKuntailmoitusInput(oppijaOid = ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia.oid)
+
+    post("/valpas/api/kuntailmoitus", body = minimiKuntailmoitus, headers = authHeaders() ++ jsonContent) {
+      verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
+    }
+  }
+
   "Kuntailmoitusta ei voi tehdä ennen lain voimaantuloa 1.8.2021" in {
     FixtureUtil.resetMockData(KoskiApplicationForTests, tarkastelupäivä = date(2021, 7, 31))
 
