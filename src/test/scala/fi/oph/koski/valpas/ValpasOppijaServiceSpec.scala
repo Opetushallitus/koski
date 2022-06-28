@@ -8,7 +8,7 @@ import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{HakeutumisvalvontaTieto, MockValpasRajapäivätService, ValpasHakutilanneLaajatTiedot}
 import fi.oph.koski.valpas.valpasrepository._
-import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUsers, ValpasRooli}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
 import org.scalatest.BeforeAndAfterEach
 
@@ -2124,6 +2124,38 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
 
     val keskeytykset = oppijaLaajatTiedotService
       .getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppija.oid)(kuntaSession)
+      .map(_.oppivelvollisuudenKeskeytykset)
+
+    keskeytykset shouldBe Right(List(expectedKeskeytys))
+  }
+
+  "Oppivelvollisuuden pystyy keskeyttämään Koskesta puuttuvalle oppijalle kunnan valvontaoikeuksilla" in {
+    val oppija = ValpasMockOppijat.eiKoskessaOppivelvollinen
+    val tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki
+    val kuntaSession = session(ValpasMockUsers.valpasUseitaKuntia)
+    val alku = rajapäivätService.tarkastelupäivä
+    val loppu = alku.plusMonths(3)
+
+    val result = oppijaLaajatTiedotService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      oppijaOid = oppija.oid,
+      alku = alku,
+      loppu = Some(loppu),
+      tekijäOrganisaatioOid = tekijäOrganisaatioOid,
+    ))(kuntaSession)
+
+    val expectedKeskeytys = ValpasOppivelvollisuudenKeskeytys(
+      id = result.toOption.get.id,
+      tekijäOrganisaatioOid = tekijäOrganisaatioOid,
+      alku = alku,
+      loppu = Some(loppu),
+      voimassa = true,
+      tulevaisuudessa = false,
+    )
+
+    result shouldBe Right(expectedKeskeytys)
+
+    val keskeytykset = oppijaLaajatTiedotService
+      .getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppija.oid, rooli = Some(ValpasRooli.KUNTA), haeMyösVainOppijanumerorekisterissäOleva = true)(kuntaSession)
       .map(_.oppivelvollisuudenKeskeytykset)
 
     keskeytykset shouldBe Right(List(expectedKeskeytys))

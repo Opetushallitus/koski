@@ -467,13 +467,18 @@ class ValpasOppijaService(
   }
 
   def getOppijaLaajatTiedot
-    (oppijaOid: ValpasHenkilö.Oid)
+    (oppijaOid: ValpasHenkilö.Oid, haeMyösVainOppijanumerorekisterissäOleva: Boolean = false)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
-    opiskeluoikeusDbService.getOppija(oppijaOid)
-      .toRight(ValpasErrorCategory.forbidden.oppija())
-      .flatMap(asValpasOppijaLaajatTiedot)
-      .flatMap(accessResolver.withOppijaAccess(_))
+    opiskeluoikeusDbService.getOppija(oppijaOid) match {
+      case Some(oppijaRow) =>
+        asValpasOppijaLaajatTiedot(oppijaRow)
+          .flatMap(accessResolver.withOppijaAccess(_))
+      case None if haeMyösVainOppijanumerorekisterissäOleva =>
+        getKuntakäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
+      case _ =>
+        Left(ValpasErrorCategory.forbidden.oppija())
+    }
   }
 
   def getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla
@@ -533,9 +538,11 @@ class ValpasOppijaService(
     (keskeytys: UusiOppivelvollisuudenKeskeytys)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppivelvollisuudenKeskeytys] = {
+    val haeMyösVainOppijanumerorekisterissäOleva = accessResolver.accessToAnyOrg(ValpasRooli.KUNTA)
+
     for {
       saaTehdäIlmoituksen <- accessResolver.assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
-      oppija              <- getOppijaLaajatTiedot(keskeytys.oppijaOid)
+      oppija              <- getOppijaLaajatTiedot(keskeytys.oppijaOid, haeMyösVainOppijanumerorekisterissäOleva)
       ovKeskeytys         <- ovKeskeytysService.create(keskeytys)
     } yield ovKeskeytys
   }
@@ -544,13 +551,15 @@ class ValpasOppijaService(
     (muutos: OppivelvollisuudenKeskeytyksenMuutos)
     (implicit session: ValpasSession)
   : Either[HttpStatus, (ValpasSchema.OppivelvollisuudenKeskeytysRow, ValpasOppivelvollisuudenKeskeytys)] = {
+    val haeMyösVainOppijanumerorekisterissäOleva = accessResolver.accessToAnyOrg(ValpasRooli.KUNTA)
+
     UuidUtils.optionFromString(muutos.id)
       .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
       .flatMap(uuid => ovKeskeytysService.getLaajatTiedot(uuid).toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()))
       .flatMap(keskeytys => {
         accessResolver
           .assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
-          .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid))
+          .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid, haeMyösVainOppijanumerorekisterissäOleva))
           .flatMap(accessResolver.withOppijaAccess(_))
           .flatMap(_ => ovKeskeytysService.update(muutos))
           .map(_ => (keskeytys, ovKeskeytysService.getSuppeatTiedot(UUID.fromString(muutos.id)).get))
@@ -561,12 +570,14 @@ class ValpasOppijaService(
     (uuid: UUID)
     (implicit session: ValpasSession)
   : Either[HttpStatus, (ValpasSchema.OppivelvollisuudenKeskeytysRow, ValpasOppivelvollisuudenKeskeytys)] = {
+    val haeMyösVainOppijanumerorekisterissäOleva = accessResolver.accessToAnyOrg(ValpasRooli.KUNTA)
+
     ovKeskeytysService.getLaajatTiedot(uuid)
       .toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       .flatMap(keskeytys => {
         accessResolver
           .assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
-          .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid))
+          .flatMap(_ => getOppijaLaajatTiedot(keskeytys.oppijaOid, haeMyösVainOppijanumerorekisterissäOleva))
           .flatMap(accessResolver.withOppijaAccess(_))
           .flatMap(_ => ovKeskeytysService.delete(uuid))
           .map(k => (keskeytys, ovKeskeytysService.getSuppeatTiedot(UUID.fromString(k.id)).get))
@@ -577,12 +588,14 @@ class ValpasOppijaService(
     (uuid: UUID)
     (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppivelvollisuudenKeskeytyshistoriaRow]] = {
+    val haeMyösVainOppijanumerorekisterissäOleva = accessResolver.accessToAnyOrg(ValpasRooli.KUNTA)
+
     val ovKeskeytyshistoria = ovKeskeytysService.getMuutoshistoria(uuid)
     ovKeskeytyshistoria
       .headOption
       .toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       .map(_.oppijaOid)
-      .flatMap(o => getOppijaLaajatTiedot(o)) // Tarkasta oikeus katsoa oppijan tietoja getOppijaLaajatTiedot avulla
+      .flatMap(o => getOppijaLaajatTiedot(o, haeMyösVainOppijanumerorekisterissäOleva)) // Tarkasta oikeus katsoa oppijan tietoja getOppijaLaajatTiedot avulla
       .map(_ => ovKeskeytyshistoria)
   }
 

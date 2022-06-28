@@ -28,7 +28,9 @@ class ValpasOppivelvollisuudenKeskeytysSpec extends ValpasTestBase with BeforeAn
   val oppijaOid: String = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid
   val organisaatioOid: String = MockOrganisaatiot.helsinginKaupunki
 
-  val okMääräaikainenKeskeytys: UusiOppivelvollisuudenKeskeytys = UusiOppivelvollisuudenKeskeytys(
+  val okMääräaikainenKeskeytys: UusiOppivelvollisuudenKeskeytys = okMääräaikainenKeskeytys(oppijaOid)
+
+  def okMääräaikainenKeskeytys(oppijaOid: String): UusiOppivelvollisuudenKeskeytys = UusiOppivelvollisuudenKeskeytys(
     oppijaOid = oppijaOid,
     alku = LocalDate.of(2021, 8, 1),
     loppu = Some(LocalDate.of(2021, 9, 1)),
@@ -85,6 +87,55 @@ class ValpasOppivelvollisuudenKeskeytysSpec extends ValpasTestBase with BeforeAn
         val loppuMuokattu = LocalDate.of(2022, 2, 1)
 
         lisääKeskeytys(okMääräaikainenKeskeytys) {
+          verifyResponseStatusOk()
+          val ovKeskeytysUuid = getResult.id
+          muokkaaKeskeytystä(OppivelvollisuudenKeskeytyksenMuutos(
+            id = ovKeskeytysUuid,
+            alku = alkuMuokattu,
+            loppu = Some(loppuMuokattu),
+          )) {
+            verifyResponseStatusOk()
+            poistaKeskeytys(ovKeskeytysUuid) {
+              verifyResponseStatusOk()
+
+              val entry1 = OppivelvollisuudenKeskeytyshistoriaRow(
+                ovKeskeytysUuid = UUID.fromString(ovKeskeytysUuid),
+                muutosTehty = LocalDateTime.now(),
+                muutoksenTekijä = user.oid,
+                oppijaOid = oppijaOid,
+                alku = okMääräaikainenKeskeytys.alku,
+                loppu = okMääräaikainenKeskeytys.loppu,
+                luotu = LocalDateTime.now(),
+                tekijäOid = user.oid,
+                tekijäOrganisaatioOid = organisaatioOid,
+                peruttu = false,
+              )
+              val entry2 = entry1.copy(
+                alku = alkuMuokattu,
+                loppu = Some(loppuMuokattu),
+              )
+              val entry3 = entry2.copy(
+                peruttu = true,
+              )
+              val expectedHistoria = List(entry1, entry2, entry3)
+
+              val muutosHistoria = getResultedMuutoshistoria
+              muutosHistoria.size should equal(expectedHistoria.size)
+              muutosHistoria
+                .zip(expectedHistoria)
+                .foreach(Function.tupled(verifyHistoriaEntry))
+            }
+          }
+        }
+      }
+
+      "Keskeytyksen lisääminen, muutos ja poisto Koskesta puuttuvalle oppijalle" in {
+        val alkuMuokattu = LocalDate.of(2022, 1, 1)
+        val loppuMuokattu = LocalDate.of(2022, 2, 1)
+
+        val oppijaOid = ValpasMockOppijat.eiKoskessaOppivelvollinen.oid
+
+        lisääKeskeytys(okMääräaikainenKeskeytys(oppijaOid)) {
           verifyResponseStatusOk()
           val ovKeskeytysUuid = getResult.id
           muokkaaKeskeytystä(OppivelvollisuudenKeskeytyksenMuutos(
