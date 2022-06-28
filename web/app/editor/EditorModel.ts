@@ -30,6 +30,7 @@ import {
   OneOfModel,
   isEditableModel,
   isValueModel,
+  PrototypeModel,
 } from "../types/EditorModels";
 import {
   EditorMappingContext,
@@ -443,13 +444,13 @@ export const optionalModelLens = <T extends EditableModel & Contextualized, S>({
   );
 };
 
-const preparePrototypeModel = <T extends object>(
-  prototypeModel: (EditorModel & Partial<Contextualized<T>>) | undefined,
+const preparePrototypeModel = <P extends PrototypeModel & Partial<Contextualized<T>>, T extends object>(
+  prototypeModel: P | undefined,
   forModel: EditorModel & Contextualized<T>
-): (EditorModel & Contextualized<T>) | undefined => {
+): P | undefined => {
   if (!prototypeModel) return prototypeModel;
   if (prototypeModel.context) {
-    return prototypeModel as EditorModel & Contextualized<T>;
+    return prototypeModel as P;
   }
 
   // includes all attributes from parent model (like maxLines etc that come from property annotations)
@@ -457,18 +458,18 @@ const preparePrototypeModel = <T extends object>(
     ...forModel,
     ...(contextualizeSubModel(prototypeModel, forModel as any) || {}),
     parent: forModel.parent,
-  } as EditorModel & Contextualized<T>;
+  } as P;
 };
 
 export const optionalPrototypeModel = <
-  M extends EditorModel & OptionalModel & Contextualized
+  P extends PrototypeModel & OptionalModel & Partial<OneOfModel> & Contextualized
 >(
-  model: M
-): M | undefined => {
+  model: P
+): P | undefined => {
   let prototype = undefined;
   if (isSomeOptionalModel(model)) {
     prototype = model.optionalPrototype = preparePrototypeModel(
-      model.optionalPrototype as M,
+      model.optionalPrototype as P,
       model
     )!;
   }
@@ -476,11 +477,11 @@ export const optionalPrototypeModel = <
   if (isOneOfModel(prototype) && !modelData(prototype)) {
     // This is a OneOfModel, just pick the first alternative
     prototype = prototype.oneOfPrototypes[0] = preparePrototypeModel(
-      prototype.oneOfPrototypes[0] as M,
+      prototype.oneOfPrototypes[0] as P,
       model
     )!;
   }
-  return R.mergeRight(prototype, createOptionalEmpty(model)) as M; // Ensure that the prototype model has optional flag and optionalPrototype
+  return R.mergeRight(prototype, createOptionalEmpty(model)) as P; // Ensure that the prototype model has optional flag and optionalPrototype
 };
 
 export const createOptionalEmpty = <M extends EditorModel & OptionalModel>(
@@ -850,11 +851,11 @@ export const ensureArrayKey = (v: ListModel) => {
 const modelItemLens = <T, S>(index: number): L.Lens<T, S> => {
   let valueIndexLens = L.compose("value", indexL(index));
   let baseLens = L.lens(
-    (m?: ListModel & OptionalModel & Contextualized): EditorModel => {
+    (m?: ListModel & OptionalModel &  Contextualized): EditorModel => {
       if (m && isSomeOptionalModel(m) && m.optionalPrototype && !m.value) {
         // Array is missing -> create optional value using array prototype
-        var arrayPrototype = (optionalPrototypeModel(m) as ListModel)
-          .arrayPrototype!;
+        // @ts-expect-error
+        var arrayPrototype = optionalPrototypeModel(m).arrayPrototype!;
         return { optional: true, optionalPrototype: arrayPrototype } as any;
       }
       if (m && m.value && index >= m.value.length && m.arrayPrototype) {
@@ -902,7 +903,7 @@ let modelPropertyValueLens = (key: string) => {
     (v: any, m: any) => {
       if (m && isSomeOptionalModel(m) && m.optionalPrototype && !hasValue(m)) {
         let proto = optionalPrototypeModel(
-          m as EditorModel & OptionalModel & Contextualized
+          m as PrototypeModel & OptionalModel & Contextualized
         );
         return L.set(propertyModelLens, v, proto);
       }

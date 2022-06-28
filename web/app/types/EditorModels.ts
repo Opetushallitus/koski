@@ -162,7 +162,7 @@ export const isOneOfModel = <M extends EditorModel>(
 
 export type OneOfModel = {
   oneOfClass: string;
-  oneOfPrototypes: EditorModel[]; // TODO: Pitäisi varmaan olla PrototypeModel[]
+  oneOfPrototypes: PrototypeModel[];
 };
 
 // Value models
