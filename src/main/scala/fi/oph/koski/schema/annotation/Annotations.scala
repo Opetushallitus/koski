@@ -2,9 +2,7 @@ package fi.oph.koski.schema.annotation
 
 import fi.oph.koski.koskiuser.Rooli.Role
 import fi.oph.scalaschema._
-import fi.oph.scalaschema.annotation.AnyToJson
-import org.json4s.JsonAST.{JObject, JString}
-import org.json4s.{JValue, JsonAST}
+import org.json4s.{JsonAST}
 
 /* This property can be used to represent the whole entity */
 case class Representative() extends RepresentationalMetadata

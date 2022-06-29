@@ -1,3 +1,7 @@
+## 27.6.2022
+
+- Lisätty validaatio, että lukion 2015 oppimäärän suoritusta ei voi käyttää lukion 2019 diaarinumerojen kanssa.
+
 ## 6.6.2022
 
 - Lisätty vapaan sivistystyön kotoutumiskoulutuksen opetussuunnitelman 2022 mukainen tietomalli
