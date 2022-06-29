@@ -536,7 +536,6 @@ class ValpasOppijaService(
     for {
       saaTehdäIlmoituksen <- accessResolver.assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
       oppija              <- getOppijaLaajatTiedot(keskeytys.oppijaOid)
-      onOikeusOppijaan    <- accessResolver.withOppijaAccess(oppija)
       ovKeskeytys         <- ovKeskeytysService.create(keskeytys)
     } yield ovKeskeytys
   }
