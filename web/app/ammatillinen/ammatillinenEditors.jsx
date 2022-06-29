@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import {modelData, modelLookup, modelTitle} from '../editor/EditorModel.js'
+import {modelData, modelLookup, modelTitle} from '../editor/EditorModel'
 import {Editor} from '../editor/Editor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {PäivämääräväliEditor} from '../date/PaivamaaravaliEditor'

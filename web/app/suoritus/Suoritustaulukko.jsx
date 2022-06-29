@@ -1,5 +1,5 @@
 import React from 'baret'
-import {modelData} from '../editor/EditorModel.js'
+import {modelData} from '../editor/EditorModel'
 import {modelItems} from '../editor/EditorModel'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {suoritusValmis} from './Suoritus'

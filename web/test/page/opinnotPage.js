@@ -651,6 +651,30 @@ function VSTSuoritukset(prev) {
           .then(wait.forAjax)
       }
     },
+    lisääKieliJaViestintäosaamisenOsasuoritus: function(hakusana) {
+      return function () {
+        return Page(findSingle('.lisaa-uusi-suoritus.vstkoto2022-kielijaviestinta', selectedOsasuoritus))
+          .setInputValue('.dropdown, .autocomplete', hakusana)()
+          .then(wait.forAjax)
+      }
+    },
+    lisääYhteiskuntaJaTyöelämänOsaamisenOsasuoritus: function(hakusana) {
+      return function () {
+        return Page(findSingle('.lisaa-uusi-suoritus.vstkoto2022-yhteiskuntajatyoosaamis', selectedOsasuoritus))
+          .setInputValue('.dropdown, .autocomplete', hakusana)()
+          .then(wait.forAjax)
+      }
+    },
+    enterLaajuus: function(osasuorituksenNimi, arvo) {
+      return function () {
+        return VSTSuoritukset().selectOsasuoritus(osasuorituksenNimi)().property('laajuus').setValue(arvo)()
+      }
+    },
+    selectArvosana: function(osasuorituksenNimi, arvo) {
+      return function () {
+        return VSTSuoritukset().selectOsasuoritus(osasuorituksenNimi)().firstPropertyBySelector('tr td.arvosana').selectValue(arvo)()
+      }
+    },
     selectOsasuoritus: function (nimi) {
       return function () {
         var osasuoritukset = selectedOsasuoritus ? selectedOsasuoritus.find('.vst-osasuoritus') : S('.vst-osasuoritus')
@@ -658,7 +682,7 @@ function VSTSuoritukset(prev) {
         var found
 
         osasuoritukset.each(function (i, e) {
-          if (extractAsText(S(e).find('tr > td.suoritus > button.nimi')).includes(nimi)) {
+          if (extractAsText(S(e).find('tr > td.suoritus > .nimi')).includes(nimi)) {
             found = S(e)
           }
         })
@@ -668,7 +692,7 @@ function VSTSuoritukset(prev) {
         }
         return VSTSuoritukset(found)
       }
-    }
+    }  
   }
   return _.merge(api, Editor(S(selectedOsasuoritus)), Property(function () { return S(selectedOsasuoritus) }))
 }
@@ -1058,6 +1082,9 @@ function Editor(elem) {
     },
     propertyBySelector: function(selector) {
       return Property(findSingle(selector, elem))
+    },
+    firstPropertyBySelector: function(selector) {
+      return Property(() => findFirst(selector, elem)()[0])
     },
     subEditor: function(selector) {
       return Editor(findSingle(selector, elem))

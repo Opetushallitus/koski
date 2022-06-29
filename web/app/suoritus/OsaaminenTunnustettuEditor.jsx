@@ -2,7 +2,7 @@ import React from 'baret'
 import Atom from 'bacon.atom'
 import Text from '../i18n/Text'
 import {Editor} from '../editor/Editor'
-import {modelLookup, resetOptionalModel} from '../editor/EditorModel.js'
+import {modelLookup, resetOptionalModel} from '../editor/EditorModel'
 import {modelEmpty, optionalPrototypeModel, pushModel} from '../editor/EditorModel'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 

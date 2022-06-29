@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
-import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, ReadOnly}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, OnlyWhen, Title}
 
 import java.time.LocalDate
 
@@ -38,6 +38,7 @@ case class VSTKotoutumiskoulutus2022(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999910", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String] = Some(VSTKoto2022Peruste.diaarinumero),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
+  @ReadOnly("Laajuus lasketaan automaattisesti osasuoritusten laajuuksista.")
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends DiaarinumerollinenKoulutus
   with Tutkinto
@@ -85,8 +86,6 @@ trait VSTKotoutumiskoulutuksenAlaosasuoritus2022
 
 trait VSTKotoutumiskoulutuksenAlasuorituksenKoulutusmoduuli2022
   extends Koulutusmoduuli
-    with LaajuuttaEiValidoida
-    with KoulutusmoduuliValinnainenLaajuus
     with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuliLaajuusOpintopisteissä
 
 /*
@@ -108,6 +107,7 @@ case class VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022(
 case class VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli(
   @KoodistoKoodiarvo("kielijaviestintaosaaminen")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("kielijaviestintaosaaminen", "vstkoto2022kokonaisuus"),
+  @ReadOnly("VST-Laajuus lasketaan automaattisesti osasuoritusten laajuuksista.")
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends VSTKotoutumiskoulutuksenSuorituksenKoulutusmoduuli2022
 
@@ -145,10 +145,10 @@ case class VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi(
   @KoodistoKoodiarvo("C2.2")
   arvosana: Koodistokoodiviite,
   arviointipäivä: Option[LocalDate] = None,
-  arvioitsijat: Option[List[SuorituksenArvioitsija]] = None,
 ) extends Arviointi {
   override def hyväksytty: Boolean = true
   override def arvosanaKirjaimin: LocalizedString = LocalizedString.finnish(arvosana.koodiarvo)
+  override def arvioitsijat: Option[List[SuorituksenArvioitsija]] = None
 }
 
 /*
@@ -170,6 +170,7 @@ case class VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022
 case class VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenKoulutusmoduuli2022(
   @KoodistoKoodiarvo("yhteiskuntajatyoelamaosaaminen")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("yhteiskuntajatyoelamaosaaminen", "vstkoto2022kokonaisuus"),
+  @ReadOnly("Laajuus lasketaan automaattisesti osasuoritusten laajuuksista.")
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends VSTKotoutumiskoulutuksenSuorituksenKoulutusmoduuli2022
 
@@ -178,9 +179,7 @@ case class VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuorit
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus", "suorituksentyyppi"),
   koulutusmoduuli: VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022,
-) extends VSTKotoutumiskoulutuksenAlaosasuoritus2022 {
-  override def arviointi: Option[List[Arviointi]] = None
-}
+) extends VSTKotoutumiskoulutuksenAlaosasuoritus2022 with Vahvistukseton with Arvioinniton
 
 @Title("VST-KOTO yhteuskunta- ja työelämäosaamisen osasuorituksen alaosasuoritus")
 case class VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022(
@@ -233,6 +232,7 @@ case class VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022(
 case class VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022(
   @KoodistoKoodiarvo("valinnaisetopinnot")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("valinnaisetopinnot", "vstkoto2022kokonaisuus"),
+  @ReadOnly("Laajuus lasketaan automaattisesti osasuoritusten laajuuksista.")
   laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends VSTKotoutumiskoulutuksenSuorituksenKoulutusmoduuli2022
 
@@ -242,13 +242,12 @@ case class VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus(
   koulutusmoduuli: VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022,
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus", "suorituksentyyppi"),
-) extends VSTKotoutumiskoulutuksenAlaosasuoritus2022 {
-  override def arviointi: Option[List[Arviointi]] = None
-}
+) extends VSTKotoutumiskoulutuksenAlaosasuoritus2022 with Vahvistukseton with Arvioinniton
 
 case class VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022(
   kuvaus: LocalizedString,
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusOpintopisteissä] = None
+  laajuus: Option[LaajuusOpintopisteissä] = None,
 ) extends VSTKotoutumiskoulutuksenAlasuorituksenKoulutusmoduuli2022
   with PaikallinenKoulutusmoduuli
+  with StorablePreference

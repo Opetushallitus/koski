@@ -1,7 +1,7 @@
 import React from 'baret'
 import * as R from 'ramda'
 
-import {modelData, modelItems, modelLookup, pushRemoval} from '../editor/EditorModel.js'
+import {modelData, modelItems, modelLookup, pushRemoval} from '../editor/EditorModel'
 import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {tilaText} from '../suoritus/Suoritus'

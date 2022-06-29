@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelLookup} from './EditorModel.js'
+import {modelLookup} from './EditorModel.ts'
 import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor'
 import {modelErrorMessages, modelProperties, modelProperty, wrapOptional} from './EditorModel'
 import {currentLocation, navigateWithQueryParams} from '../util/location'

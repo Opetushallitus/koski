@@ -1,6 +1,6 @@
 import React from 'react'
 import {Editor} from '../editor/Editor'
-import {modelData} from '../editor/EditorModel.js'
+import {modelData} from '../editor/EditorModel'
 import {modelEmpty, modelValid, wrapOptional} from '../editor/EditorModel'
 
 export const PäivämääräväliEditor = ({model}) => {

@@ -17,22 +17,16 @@ module.exports = {
   output: {
     path: __dirname + '/../target/webapp/koski',
     filename: 'js/koski-[name].js',
-    publicPath: '/koski/',
-    /*
-      Webpack v4 käyttää oletuksena jsonpFunction:n nimenä "webpackJsonp".
-      Jos samalla sivustolla kutsutaan useita Webpackilla buildattuja sovelluksia, sovelluksen namespace menee sekaisin.
-      Korjauksena määritetään manuaalisesti jsonpFunction:n arvo. Webpack v5 tekee tämän automaattisesti
-    */
-    jsonpFunction: 'webpackJsonpKoski'
+    publicPath: '/koski/'
   },
   stats: 'normal',
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         include: [__dirname + '/app'],
         use: {
           loader: 'babel-loader',
@@ -41,6 +35,11 @@ module.exports = {
             presets: ['@babel/preset-env', '@babel/preset-react']
           }
         }
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        include: [__dirname + '/app'],
+        use: ['ts-loader']
       },
       {
         test: /\.less$/,

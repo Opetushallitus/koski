@@ -8,7 +8,7 @@ import {
   modelSetValues,
   modelTitle,
   pushModel
-} from '../editor/EditorModel.js'
+} from '../editor/EditorModel'
 import {TogglableEditor} from '../editor/TogglableEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {OpiskeluoikeudenTilaEditor} from './OpiskeluoikeudenTilaEditor'

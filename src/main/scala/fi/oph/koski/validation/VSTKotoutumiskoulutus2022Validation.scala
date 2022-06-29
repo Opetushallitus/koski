@@ -103,7 +103,7 @@ object VSTKotoutumiskoulutus2022Validation {
           .filter(_.koulutusmoduuli.tunniste.koodiarvo == "tyossaoppiminen")
           .map(_.koulutusmoduuli.laajuusArvo(0))
           .sum)
-      validateLaajuus(työssäoppimisjaksojenYhteislaajuus, 8.0)
+      validateLaajuus("Työssäoppiminen", työssäoppimisjaksojenYhteislaajuus, 8.0)
     }
 
   def validateOhjausLaajuus(suoritus: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022): HttpStatus =
@@ -115,14 +115,14 @@ object VSTKotoutumiskoulutus2022Validation {
     if (suoritus.arvioitu) f else HttpStatus.ok
 
   def validateLaajuus(suoritus: Suoritus, minimiLaajuus: Double): HttpStatus =
-    validateLaajuus(suoritus.koulutusmoduuli.getLaajuus.map { case l: LaajuusOpintopisteissä => l.arvo }, minimiLaajuus)
+    validateLaajuus(suoritus.koulutusmoduuli.nimi.get("fi"), suoritus.koulutusmoduuli.getLaajuus.map { case l: LaajuusOpintopisteissä => l.arvo }, minimiLaajuus)
 
-  def validateLaajuus(laajuus: Option[Double], minimiLaajuus: Double): HttpStatus =
+  def validateLaajuus(oppiaineenNimi: String, laajuus: Option[Double], minimiLaajuus: Double): HttpStatus =
     laajuus match {
       case Some(laajuus) if laajuus >= minimiLaajuus =>
         HttpStatus.ok
       case Some(laajuus) =>
-        KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusLiianSuppea(s"Oppiaineen suoritettu laajuus liian suppea (${laajuus} op, pitäisi olla vähintään $minimiLaajuus op)")
+        KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusLiianSuppea(s"Oppiaineen '$oppiaineenNimi' suoritettu laajuus liian suppea (${laajuus} op, pitäisi olla vähintään $minimiLaajuus op)")
       case None =>
         KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu()
     }
