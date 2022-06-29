@@ -419,16 +419,20 @@ class ValpasOppijaService(
   // TODO: siirrä nämä päättelyt muualle? Ei oikein ole OppijaService:n asia nämä, ja näitä tulee lisää, esim.
   // kansalaiselle ja maksuttomuusvalvojalle omansa.
   def onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
+    lazy val onAlle18VuotiasTarkastelupäivänä = rajapäivätService.onAlle18VuotiasTarkastelupäivänä(henkilö.syntymäaika)
+
+    onKelalleNäkyväVainOnrssäOlevaOppija(henkilö) && onAlle18VuotiasTarkastelupäivänä
+  }
+  def onKelalleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
     val onMahdollisestiLainPiirissä =
       MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
         henkilö.syntymäaika,
         opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(henkilö.oid),
         rajapäivätService
       ).isEmpty
-    lazy val onAlle18VuotiasTarkastelupäivänä = rajapäivätService.onAlle18VuotiasTarkastelupäivänä(henkilö.syntymäaika)
     lazy val näytäKotikunnanPerusteella = onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö)
 
-    onMahdollisestiLainPiirissä && onAlle18VuotiasTarkastelupäivänä && näytäKotikunnanPerusteella
+    onMahdollisestiLainPiirissä && näytäKotikunnanPerusteella
   }
   def onKansalaiselleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
     MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(

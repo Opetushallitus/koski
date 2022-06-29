@@ -1,18 +1,33 @@
 package fi.oph.koski.valpas
 
-import java.time.LocalDate.{of => date}
+import fi.oph.koski.KoskiApplicationForTests
 
+import java.time.LocalDate.{of => date}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.kela.{ValpasKelaBulkRequest, ValpasKelaOppija, ValpasKelaOppivelvollisuudenKeskeytys, ValpasKelaRequest}
-import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
+import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
 import fi.oph.koski.valpas.valpasrepository.ValpasExampleData
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.BeforeAndAfterEach
 
 class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   override protected def beforeEach() {
+    super.beforeEach()
+    KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
     AuditLogTester.clearMessages
+
+  }
+
+  override protected def afterEach(): Unit = {
+    KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
+    super.afterEach()
   }
 
   "Kelan Valpas API" - {
@@ -27,6 +42,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPPIVELVOLLISUUSREKISTERI_LUOVUTUS", "target" -> Map("oppijaHenkilöOid" -> oppija.oid)))
         }
       }
+
       "Yhden oppijan hakeminen palauttaa oppijan, jolla ei ole oppivelvollisuuden keskeytyksiä, tiedot" in {
         val oppija = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021
 
@@ -38,6 +54,18 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 11, 21))
           response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
           response.oppivelvollisuudenKeskeytykset should be(Seq.empty)
+        }
+      }
+
+      "Palautetaan 404 jos on ohitettu vuosi, jolloin oppija täyttää 20" in {
+        KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+          .asetaMockTarkastelupäivä(date(2026, 1, 1))
+
+        AuditLogTester.clearMessages
+
+        postHetu(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.hetu.get) {
+          verifyResponseStatus(404, ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+          AuditLogTester.verifyNoAuditLogMessages()
         }
       }
 
@@ -113,6 +141,88 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
                 actual.peruttu should equal(expected.peruttu)
               }
             }
+          }
+        }
+      }
+
+      "Yhden oppijan hakeminen palauttaa oppijan, joka on vain opppijanumerorekisterissä, jos on ikänsä puolesta ovl-lain piirissä" in {
+        val oppija = ValpasMockOppijat.eiKoskessaOppivelvollinen
+
+        postHetu(oppija.hetu.get) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[ValpasKelaOppija](body)
+          response.henkilö.hetu should equal(oppija.hetu)
+          response.henkilö.oid should equal(oppija.oid)
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 24))
+          response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
+
+          response.oppivelvollisuudenKeskeytykset.length should be(0)
+        }
+      }
+
+      "Yhden oppijan hakeminen palauttaa oppijan, joka on vain opppijanumerorekisterissä, jos on ikänsä puolesta ovl-lain piirissä, vaikka olisi yli 18-vuotias" in {
+        KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+          .asetaMockTarkastelupäivä(date(2023, 1, 25))
+
+        val oppija = ValpasMockOppijat.eiKoskessaOppivelvollinen
+
+        postHetu(oppija.hetu.get) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[ValpasKelaOppija](body)
+          response.henkilö.hetu should equal(oppija.hetu)
+          response.henkilö.oid should equal(oppija.oid)
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 24))
+          response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
+
+          response.oppivelvollisuudenKeskeytykset.length should be(0)
+        }
+      }
+
+      "Yhden oppijan hakeminen ei palauta vain oppijanumerorekisterissä olevaa oppijaa, jos on ohitettu vuosi, jolloin hän täyttää 20" in {
+        KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+          .asetaMockTarkastelupäivä(date(2026, 1, 1))
+
+        val oppija = ValpasMockOppijat.eiKoskessaOppivelvollinen
+
+        postHetu(oppija.hetu.get) {
+          verifyResponseStatus(404, ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+          AuditLogTester.verifyNoAuditLogMessages()
+        }
+      }
+
+      "Yhden oppijan hakeminen palauttaa oppijan, joka ei ole Koskessa, mutta jolla on oppivelvollisuuden keskeytyksiä, tiedot" in {
+        val oppija = ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia
+
+        val expectedKeskeytysData = Seq(6,7).map(ValpasExampleData.oppivelvollisuudenKeskeytykset)
+
+        val expectedKeskeytykset = expectedKeskeytysData.map(data =>
+          ValpasKelaOppivelvollisuudenKeskeytys(
+            uuid = "",
+            alku = data.alku,
+            loppu = data.loppu,
+            luotu = data.luotu,
+            peruttu = data.peruttu
+          )
+        )
+
+        postHetu(oppija.hetu.get) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[ValpasKelaOppija](body)
+          response.henkilö.hetu should equal(oppija.hetu)
+          response.henkilö.oid should equal(oppija.oid)
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 7, 26))
+          response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
+
+          response.oppivelvollisuudenKeskeytykset.length should be(expectedKeskeytykset.length)
+          response.oppivelvollisuudenKeskeytykset.zip(expectedKeskeytykset).zipWithIndex.map {
+            case ((actual, expected), index) =>
+              withClue(s"index ${index}: ") {
+                actual.uuid should not be empty
+                actual.alku should equal(expected.alku)
+                actual.loppu should equal(expected.loppu)
+                actual.luotu should equal(expected.luotu)
+                actual.peruttu should equal(expected.peruttu)
+              }
           }
         }
       }
