@@ -431,8 +431,11 @@ class ValpasOppijaService(
         rajapäivätService
       ).isEmpty
     lazy val näytäKotikunnanPerusteella = onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö)
+    // Toistaiseksi vain hetullisilla voi olla kotikunta, mutta tämä saattaa tulevaisuudessa muuttua, joten varmistetaan,
+    // että henkilöllä on myös hetu
+    lazy val näytäHetunOlemassaolonPerusteella = henkilö.hetu.isDefined
 
-    onMahdollisestiLainPiirissä && näytäKotikunnanPerusteella
+    onMahdollisestiLainPiirissä && näytäKotikunnanPerusteella && näytäHetunOlemassaolonPerusteella
   }
   def onKansalaiselleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
     MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(

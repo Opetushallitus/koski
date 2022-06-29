@@ -123,6 +123,12 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       }
     }
 
+    "Ei palauta vain oppijanumerorekisterista löytyvää hetutonta oppijaa" in {
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaHetuton.oid), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
+      }
+    }
+
     "ei palauta vain oppijanumerorekisteristä löytyvää oppijaa hänen täytettyään 18 vuotta" in {
       KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2023, 1, 25))
 

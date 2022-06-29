@@ -1498,6 +1498,18 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
       result should be(expectedResult)
     }
 
+    "ei palauta hetutonta oppijaa" in {
+      val expectedResult = Left(HttpStatus(403,List(ErrorDetail(
+        ValpasErrorCategory.forbidden.oppija.key, "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"
+      ))))
+
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        ValpasMockOppijat.eiKoskessaHetuton.oid
+      )(session(ValpasMockUsers.valpasHelsinki))
+
+      result should be(expectedResult)
+    }
+
     "ei palauta oppijaa, jos käyttäjällä ei ole kunta-oikeuksia" in {
       val expectedResult = Left(HttpStatus(403,List(ErrorDetail(
         ValpasErrorCategory.forbidden.oppija.key, "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"
@@ -2159,6 +2171,23 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
       .map(_.oppivelvollisuudenKeskeytykset)
 
     keskeytykset shouldBe Right(List(expectedKeskeytys))
+  }
+
+  "Oppivelvollisuutta ei pysty keskeyttämään hetuttomalta Koskesta puuttuvalta oppijalta" in {
+    val oppija = ValpasMockOppijat.eiKoskessaHetuton
+    val tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki
+    val kuntaSession = session(ValpasMockUsers.valpasUseitaKuntia)
+    val alku = rajapäivätService.tarkastelupäivä
+    val loppu = alku.plusMonths(3)
+
+    val result = oppijaLaajatTiedotService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      oppijaOid = oppija.oid,
+      alku = alku,
+      loppu = Some(loppu),
+      tekijäOrganisaatioOid = tekijäOrganisaatioOid,
+    ))(kuntaSession)
+
+    result.left.map(_.statusCode) shouldBe Left(403)
   }
 
   "Oppivelvollisuutta ei voi keskeyttää ellei oppija ole ovl-lain alainen" in {
