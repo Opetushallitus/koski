@@ -31,6 +31,11 @@ declare module "baconjs" {
   declare type Function4<T1, T2, T3, T4, R> = (t1: T1, t2: T2, t3: T3, t4: T4) => R;
   declare type Function5<T1, T2, T3, T4, T5, R> = (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5) => R;
   declare type Function6<T1, T2, T3, T4, T5, T6, R> = (t1: T1, t2: T2, t3: T3, t4: T4, t5: T5, t6: T6) => R;
+  declare type Reply = "<no-more>" | any;
+  declare type Sink<V> = (value: V) => Reply;
+  declare type EventSink<V> = (event: Event<V>) => Reply;
+  declare type VoidSink = () => Reply;
+  declare type Unsub = () => void;
 
   function constant<T>(t: T): Observable<T>;
 
@@ -42,6 +47,9 @@ declare module "baconjs" {
     log(text: string): Observable<T>;
     doAction(f: Function1<V, any>): this
     toProperty(): Property<T>
+    onValue(f?: Sink<V>): Unsub;
+    onValues(f: Function): Unsub;
+    onError(f?: Sink<any>): Unsub;
   }
 
   interface EventStreamOptions {
