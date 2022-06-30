@@ -8,10 +8,14 @@ export type RadioButtonProps = {
   selected: boolean
   onChange: (selected: boolean) => void
   children: React.ReactNode
+  testId?: string
 }
 
 export const RadioButton = (props: RadioButtonProps) => (
-  <label className={b("container")}>
+  <label
+    className={b("container")}
+    data-testid={props.testId ? props.testId : ""}
+  >
     {props.children}
     <input
       type="radio"

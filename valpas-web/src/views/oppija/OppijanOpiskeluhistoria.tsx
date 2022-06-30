@@ -132,7 +132,7 @@ export const OppijanOpiskeluhistoria = (
 
 const EiOpiskeluhistoriaOpintoja = () => (
   <IconSection icon={<OpiskeluIcon color="gray" />}>
-    <NoDataMessage data-test-id="ei-opiskeluoikeushistoria-opintoja-text">
+    <NoDataMessage data-testid="ei-opiskeluoikeushistoria-opintoja-text">
       <T id="oppija__ei_opiskeluhistoriaa" />
     </NoDataMessage>
   </IconSection>

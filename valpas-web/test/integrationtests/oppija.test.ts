@@ -2,6 +2,7 @@ import { oppijaPath } from "../../src/state/paths"
 import {
   clickElement,
   contentEventuallyEquals,
+  testId,
   textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
 import {
@@ -1170,8 +1171,41 @@ describe("Oppijakohtainen näkymä", () => {
       })
     )
     await contentEventuallyEquals(
-      `[data-test-id="ei-opiskeluoikeushistoria-opintoja-text"]`,
+      testId("ei-opiskeluoikeushistoria-opintoja-text"),
       "Oppijalle ei löytynyt opiskeluhistoriaa"
+    )
+  })
+
+  it("Oppivelvollisuuden keskeytys toimii oppijalle, jota ei löydy Koskesta", async () => {
+    await loginAs(eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaPath, "valpas-monta")
+
+    await mainHeadingEquals("Kosketon-keskeytyksiä-ilmoituksia Valpas (260705A1119)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000144")
+
+    // Avaa ov-keskeytysmodaali
+    await clickElement(testId("ovkeskeytys-btn"))
+    await textEventuallyEquals(
+      testId("ovkeskeytys-modal__container-header-title"),
+      "Oppivelvollisuuden keskeytyksen lisäys"
+    )
+
+    await textEventuallyEquals(
+      testId("ovkeskeytys-secondary-heading"),
+      "Kosketon-keskeytyksiä-ilmoituksia Valpas (260705A1119)"
+    )
+
+    // Valitse "Oppivelvollisuus keskeytetään toistaiseksi", säilytä alkupäivänä nykyinen päivä, hyväksy ehto
+    await clickElement(testId("ovkeskeytys-toistaiseksi-option"))
+    await clickElement(testId("ovkeskeytys-toistaiseksi-vahvistus"))
+    await clickElement(testId("ovkeskeytys-submit"))
+
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Ei opiskelupaikkaa",
+        oppivelvollisuudenKeskeytykset: ["toistaiseksi 5.9.2021 alkaen", "toistaiseksi 1.9.2021 alkaen"],
+        maksuttomuusoikeus: "31.12.2025 asti",
+        oppivelvollisuudenKeskeytysBtn: true,
+      })
     )
   })
 })

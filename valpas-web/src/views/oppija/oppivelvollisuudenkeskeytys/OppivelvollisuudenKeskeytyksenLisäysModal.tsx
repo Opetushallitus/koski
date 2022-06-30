@@ -39,12 +39,17 @@ export const OppivelvollisuudenKeskeytyksenLisäysModal = (
   useOnApiSuccess(create, props.onSubmit)
 
   return (
-    <Modal title={t("ovkeskeytys__otsikko")} onClose={props.onClose}>
-      <SecondaryHeading>
+    <Modal
+      title={t("ovkeskeytys__otsikko")}
+      testId="ovkeskeytys-modal"
+      onClose={props.onClose}
+    >
+      <SecondaryHeading data-testid="ovkeskeytys-secondary-heading">
         {props.henkilö.sukunimi} {props.henkilö.etunimet}
         {props.henkilö.hetu && ` (${props.henkilö.hetu})`}
       </SecondaryHeading>
       <OppivelvollisuudenKeskeytysForm
+        testId="ovkeskeytys-form"
         organisaatiot={organisaatiot}
         onSubmit={submit}
         errors={isError(create) ? create.errors : []}
