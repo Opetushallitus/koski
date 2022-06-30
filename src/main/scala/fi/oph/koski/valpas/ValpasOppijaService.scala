@@ -383,11 +383,25 @@ class ValpasOppijaService(
         asValpasOppijaLaajatTiedot(oppijaRow)
           .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
       case None if haeMyösVainOppijanumerorekisterissäOleva =>
-        getKuntakäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
+        if (accessResolver.accessToAnyOrg(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)) {
+          // Maksuttomuusoikeudet ovat laajemmat ja sisältävät kuntaoikeudet, joten haetaan ensisijaisesti niillä, jos
+          // käyttäjällä on molemmat oikeudet
+          getMaksuttomuuskäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
+        } else {
+          getKuntakäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
+        }
       case _ =>
         Left(ValpasErrorCategory.forbidden.oppija())
     }
   }
+
+  private def getMaksuttomuuskäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
+    oppijaOid: ValpasHenkilö.Oid
+  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] =
+    getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
+      onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija,
+      oppijaOid
+    )
 
   private def getKuntakäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
     oppijaOid: ValpasHenkilö.Oid
@@ -512,7 +526,9 @@ class ValpasOppijaService(
     (oppijaOid: ValpasHenkilö.Oid)
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
-    val haeMyösVainOppijanumerorekisterissäOleva = accessResolver.accessToAnyOrg(ValpasRooli.KUNTA)
+    val haeMyösVainOppijanumerorekisterissäOleva =
+      accessResolver.accessToAnyOrg(ValpasRooli.KUNTA) ||
+      accessResolver.accessToAnyOrg(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
 
     val rooli = roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.find(accessResolver.accessToAnyOrg)
 
@@ -541,7 +557,7 @@ class ValpasOppijaService(
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
     if (rooli.isEmpty && haeMyösVainOppijanumerorekisterissäOleva) {
-      throw new InternalError("Ei voi tapahtua: vain onr:ssä olevat haetaan vain kuntakäyttäjälle, jolloin roolinkin pitää olla määritelty")
+      throw new InternalError("Ei voi tapahtua: vain onr:ssä olevat haetaan vain kunta- ja maksuttomuuskäyttäjille, jolloin roolinkin pitää olla määritelty")
     }
     (rooli match {
       case None => getOppijaLaajatTiedot(oppijaOid)

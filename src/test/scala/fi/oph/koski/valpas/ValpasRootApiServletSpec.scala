@@ -248,8 +248,16 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       }
     }
     "ei palauta ennen lain voimaantuloa syntynyttä vain oppijanumerorekisteristä löytyvää oppijaa" in {
+      val expectedResult = ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(
+        None,
+        None,
+      )
+
       authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
-        verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
       }
     }
   }

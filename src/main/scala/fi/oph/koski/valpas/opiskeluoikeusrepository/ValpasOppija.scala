@@ -30,7 +30,7 @@ object ValpasOppijaLaajatTiedot {
       // Tänne ei pitäisi koskaan päätyä syntymäajattomalla oppijalla, koska heitä ei katsota oppivelvollisiksi
       oppivelvollisuusVoimassaAsti = rajapäivätService.oppivelvollisuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get),
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get),
-      onOikeusValvoaMaksuttomuutta = false,
+      onOikeusValvoaMaksuttomuutta = true,
       onOikeusValvoaKunnalla = true
     )
   }
