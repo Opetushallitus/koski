@@ -200,7 +200,7 @@ case class VSTKotoutumiskoulutuksenOhjauksenSuoritus2022(
   koulutusmoduuli: VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 = VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022(),
   @KoodistoKoodiarvo("vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus", "suorituksentyyppi"),
-) extends VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022 {
+) extends VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022 with MahdollisestiArvioinniton {
   override def osasuoritukset: Option[List[Suoritus]] = None
   override val arviointi: Option[List[VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022]] = None
 }
