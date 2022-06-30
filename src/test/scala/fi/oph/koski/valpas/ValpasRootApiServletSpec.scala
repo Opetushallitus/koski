@@ -170,14 +170,86 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       testHetunMaskausAccessLogissa(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.lukionAloittanut.hetu.get))
     }
 
-    "Palauttaa ei löytynyt tuloksen oppijalla, joka löytyy vain oppijanumerorekisteristä" in {
+    "Ei palauta vain oppijanumerorekisteristä löytyvää oppijaa käyttäjälle, jolla ei ole maksuttomuus-oikeuksia" in {
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto("Käyttäjällä ei ole oikeuksia toimintoon"))
+      }
+    }
+
+    "Palauttaa oppijan, joka löytyy vain oppijanumerorekisteristä" in {
+      val expectedResult = ValpasLöytyiHenkilöhakuResult(
+        oid = ValpasMockOppijat.eiKoskessaOppivelvollinen.oid,
+        hetu = ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu,
+        etunimet = ValpasMockOppijat.eiKoskessaOppivelvollinen.etunimet,
+        sukunimi = ValpasMockOppijat.eiKoskessaOppivelvollinen.sukunimi,
+        vainOppijanumerorekisterissä = true
+      )
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+        verifyResponseStatusOk()
+
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
+
+    "Ei palauta vain oppijanumerorekisterista löytyvää hetutonta oppijaa" in {
       val expectedResult = ValpasEiLöytynytHenkilöhakuResult()
 
-      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasMonta) {
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaHetuton.oid), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
         verifyResponseStatusOk()
         val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
 
         result should be(expectedResult)
+      }
+    }
+
+    "ei palauta vain oppijanumerorekisteristä löytyvää oppijaa, kun on ohitettu 20-vuotisikävuosi" in {
+      val expectedResult = ValpasEiLöytynytHenkilöhakuResult()
+
+      KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2026, 1, 1))
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
+    "ei palauta Ahvenanmaalla asuvaa vain oppijanumerorekisteristä löytyvää oppijaa" in {
+      val expectedResult = ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(
+        None,
+        None,
+      )
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainen.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
+    "palauttaa turvakiellollisen vain oppijanumerorekisteristä löytyvän oppijan" in {
+      val expectedResult = ValpasLöytyiHenkilöhakuResult(
+        oid = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.oid,
+        hetu = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.hetu,
+        etunimet = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.etunimet,
+        sukunimi = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.sukunimi,
+        vainOppijanumerorekisterissä = true
+      )
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+        verifyResponseStatusOk()
+
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
+    "ei palauta ennen lain voimaantuloa syntynyttä vain oppijanumerorekisteristä löytyvää oppijaa" in {
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
       }
     }
   }

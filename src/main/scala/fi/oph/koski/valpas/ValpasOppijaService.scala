@@ -423,7 +423,9 @@ class ValpasOppijaService(
 
     onKelalleNäkyväVainOnrssäOlevaOppija(henkilö) && onAlle18VuotiasTarkastelupäivänä
   }
-  def onKelalleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
+  def onKelalleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean =
+    onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija(henkilö)
+  def onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
     val onMahdollisestiLainPiirissä =
       MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
         henkilö.syntymäaika,
@@ -434,8 +436,9 @@ class ValpasOppijaService(
     // Toistaiseksi vain hetullisilla voi olla kotikunta, mutta tämä saattaa tulevaisuudessa muuttua, joten varmistetaan,
     // että henkilöllä on myös hetu
     lazy val näytäHetunOlemassaolonPerusteella = henkilö.hetu.isDefined
+    lazy val maksuttomuudenPäättymispäiväTulevaisuudessa = !rajapäivätService.tarkastelupäivä.isAfter(rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get))
 
-    onMahdollisestiLainPiirissä && näytäKotikunnanPerusteella && näytäHetunOlemassaolonPerusteella
+    onMahdollisestiLainPiirissä && näytäKotikunnanPerusteella && näytäHetunOlemassaolonPerusteella && maksuttomuudenPäättymispäiväTulevaisuudessa
   }
   def onKansalaiselleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
     MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(

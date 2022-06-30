@@ -122,6 +122,8 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
           case Some(o) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(o.henkilö.oid), o.henkilö.hetu)
           case None => oppijaLaajatTiedotService.asLaajatOppijaHenkilöTiedot(henkilö) match {
             case Some(h) if !h.turvakielto && h.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(h.oid), h.hetu)
+            case Some(h) if oppijaLaajatTiedotService.onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija(h) =>
+              ValpasLöytyiHenkilöhakuResult(h, true)
             case _ => ValpasEiLöytynytHenkilöhakuResult()
           }
         })
