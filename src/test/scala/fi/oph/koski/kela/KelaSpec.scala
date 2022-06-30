@@ -71,6 +71,24 @@ class KelaSpec
         oppija.opiskeluoikeudet.length should be(2)
       }
     }
+    "Palauttaa rikkinäisen opiskeluoikeuden" in {
+      postHetu(KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        oppija.opiskeluoikeudet.length should be(1)
+
+        val opiskeluoikeus = oppija.opiskeluoikeudet.last match {
+          case x: KelaAmmatillinenOpiskeluoikeus => x
+        }
+        opiskeluoikeus.lisätiedot.get.majoitus.get.head shouldBe KelaAikajakso(
+          alku = LocalDate.of(2022, 1, 1),
+          loppu = Some(LocalDate.of(2020, 12, 31))
+        )
+        opiskeluoikeus.suoritukset.head.suoritustapa.get.koodiarvo shouldBe "rikkinäinenKoodi"
+        opiskeluoikeus.suoritukset.head.osasuoritukset.get.head.lisätiedot.get.size shouldBe 1
+        opiskeluoikeus.suoritukset.head.osasuoritukset.get.head.lisätiedot.get.head.tunniste.koodiarvo shouldBe "mukautettu"
+      }
+    }
   }
 
   "Usean oppijan rajapinta" - {
@@ -132,6 +150,24 @@ class KelaSpec
         tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.perusteenDiaarinumero.get shouldBe "OPH-1488-2021"
         tuvaOpiskeluoikeus.suoritukset.head.koulutusmoduuli.laajuus shouldBe None
         tuvaOpiskeluoikeus.suoritukset.head.osasuoritukset.get.length shouldBe 3
+      }
+    }
+    "Palauttaa rikkinäisen opiskeluoikeuden" in {
+      postHetut(List(KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.hetu.get), user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[List[KelaOppija]](body).head
+        oppija.opiskeluoikeudet.length should be(1)
+
+        val opiskeluoikeus = oppija.opiskeluoikeudet.last match {
+          case x: KelaAmmatillinenOpiskeluoikeus => x
+        }
+        opiskeluoikeus.lisätiedot.get.majoitus.get.head shouldBe KelaAikajakso(
+          alku = LocalDate.of(2022, 1, 1),
+          loppu = Some(LocalDate.of(2020, 12, 31))
+        )
+        opiskeluoikeus.suoritukset.head.suoritustapa.get.koodiarvo shouldBe "rikkinäinenKoodi"
+        opiskeluoikeus.suoritukset.head.osasuoritukset.get.head.lisätiedot.get.size shouldBe 1
+        opiskeluoikeus.suoritukset.head.osasuoritukset.get.head.lisätiedot.get.head.tunniste.koodiarvo shouldBe "mukautettu"
       }
     }
   }
