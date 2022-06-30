@@ -1,6 +1,8 @@
-## 29.6.2022
+## 30.6.2022
 
-- Poistettu vapaan sivistystyön kotoutumiskoulutuksen opetussuunnitelman 2022 kieli- ja viestintäkoulutusten arvioinnin tietomallista arvioitsijat.
+- Vapaan sivistystyön kotoutumiskoulutuksen opetussuunnitelma 2022:
+  - Poistettu kieli- ja viestintäkoulutusten arvioinnin tietomallista arvioitsijat.
+  - Poistettu vaatimus arvioinnista ohjausosasuoritukselle.
 
 ## 27.6.2022
 
