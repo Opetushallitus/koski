@@ -63,6 +63,8 @@ export const isEditableModel = <T>(
 ): model is EditableModel<T> =>
   isObjectModel(model) || isEnumeratedModel(model) || isValueModel(model);
 
+export type Maybe<T extends object> = Partial<T>
+
 // ObjectModel
 
 export const isObjectModel = isTypedEditorModel<ObjectModel>("object");
@@ -112,7 +114,7 @@ export type PrototypeModel = TypedEditorModelBase<"prototype"> & {
 export const isSomeOptionalModel = (model: any): model is OptionalSomeModel =>
   model &&
   typeof model === "object" &&
-  (model as OptionalModel).optional === true;
+  (model as OptionalSomeModel).optional === true;
 
 export type OptionalModel = OptionalSomeModel | OptionalNoneModel;
 
@@ -121,9 +123,7 @@ export type OptionalSomeModel = {
   optionalPrototype: EditorModel;
 };
 
-export type OptionalNoneModel = {
-  optional: false | undefined;
-};
+export type OptionalNoneModel = {};
 
 // ListModel
 
@@ -156,7 +156,7 @@ export type EnumValue<T> = {
 // OneOfModel
 
 export const isOneOfModel = <M extends EditorModel>(
-  model: M & Partial<OneOfModel>
+  model: M & MaybeOneOfModel
 ): model is M & OneOfModel =>
   typeof (model as OneOfModel).oneOfClass === "string";
 
@@ -164,6 +164,8 @@ export type OneOfModel = {
   oneOfClass: string;
   oneOfPrototypes: PrototypeModel[];
 };
+
+export type MaybeOneOfModel = Maybe<OneOfModel> | {}
 
 // Value models
 

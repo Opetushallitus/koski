@@ -31,6 +31,8 @@ import {
   isEditableModel,
   isValueModel,
   PrototypeModel,
+  Maybe,
+  MaybeOneOfModel,
 } from "../types/EditorModels";
 import {
   EditorMappingContext,
@@ -444,7 +446,7 @@ export const optionalModelLens = <T extends EditableModel & Contextualized, S>({
   );
 };
 
-const preparePrototypeModel = <P extends PrototypeModel & Partial<Contextualized<T>>, T extends object>(
+const preparePrototypeModel = <P extends EditorModel & Maybe<Contextualized<T>>, T extends object>(
   prototypeModel: P | undefined,
   forModel: EditorModel & Contextualized<T>
 ): P | undefined => {
@@ -462,7 +464,7 @@ const preparePrototypeModel = <P extends PrototypeModel & Partial<Contextualized
 };
 
 export const optionalPrototypeModel = <
-  P extends PrototypeModel & OptionalModel & Partial<OneOfModel> & Contextualized
+  P extends EditorModel & OptionalModel & MaybeOneOfModel & Contextualized
 >(
   model: P
 ): P | undefined => {
@@ -476,6 +478,7 @@ export const optionalPrototypeModel = <
   if (!prototype) return prototype;
   if (isOneOfModel(prototype) && !modelData(prototype)) {
     // This is a OneOfModel, just pick the first alternative
+    // @ts-expect-error
     prototype = prototype.oneOfPrototypes[0] = preparePrototypeModel(
       prototype.oneOfPrototypes[0] as P,
       model
@@ -487,14 +490,12 @@ export const optionalPrototypeModel = <
 export const createOptionalEmpty = <M extends EditorModel & OptionalModel>(
   optModel: M
 ): OptionalModel =>
-  optModel.optional
+  isSomeOptionalModel(optModel)
     ? {
         optional: optModel.optional,
         optionalPrototype: optModel.optionalPrototype,
       }
-    : {
-        optional: optModel.optional,
-      };
+    : {};
 
 export const resetOptionalModel = <
   M extends EditorModel & OptionalModel & Contextualized<ChangeBusAction>
@@ -517,7 +518,7 @@ export const modelItems = <M extends EditorModel>(
 };
 
 export const hasModelProperty = (
-  mainModel: EditorModel & Partial<Contextualized>,
+  mainModel: EditorModel & Maybe<Contextualized>,
   key: string
 ): boolean => {
   return (
@@ -638,7 +639,7 @@ export function contextualizeSubModel<M extends EditorModel, T extends object>(
 
 // Add more context parameters to the current context of the model.
 export const addContext = <
-  M extends EditorModel & Partial<Contextualized>,
+  M extends EditorModel & Maybe<Contextualized>,
   T extends object
 >(
   model: M,
