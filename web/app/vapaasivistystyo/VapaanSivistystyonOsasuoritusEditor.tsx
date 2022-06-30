@@ -62,7 +62,7 @@ export class VapaanSivistystyonOsasuoritusEditor extends React.Component<
     const osasuoritukset = modelLookup(model, "osasuoritukset");
 
     const canExpand =
-      onExpand !== undefined 
+      onExpand !== undefined
       && model.value.classes.find(c => c.includes("vstkotoutumiskoulutuksenohjauksensuoritus2022")) === undefined
 
     return (
@@ -101,10 +101,12 @@ export class VapaanSivistystyonOsasuoritusEditor extends React.Component<
             </td>
           </tr>
         )}
+        <>{/* Tämä on pakko wrapata React.Framenttiin. Hookin avulla tämän saa pois renderistä*/}
         {model.context.edit &&
           doActionWhileMounted(model.context.saveChangesBus, () => {
             this.saveChangedPreferences();
           })}
+        </>
       </tbody>
     );
   }

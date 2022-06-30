@@ -1,4 +1,5 @@
 import Bacon from "baconjs";
+import type { EventStream, Function1 } from "baconjs"
 import * as R from "ramda";
 import {
   EditorModel,
@@ -7,9 +8,16 @@ import {
   ObjectModel,
 } from "../types/EditorModels";
 
-// @ts-expect-error
-export const doActionWhileMounted = (stream, action) =>
-  stream.doAction(action).map(null).toProperty().startWith(null);
+function toFunction<V, V2>(f: ((x: V) => V2) | V2): ((x: V) => V2) {
+  if (typeof f == "function") {
+    return <any>f
+  }
+  return x => f
+}
+
+export const doActionWhileMounted = <T, V>(stream: EventStream<T>, action: Function1<V, any>) =>
+// .map(null) muuttuu Bacon.JS:ssä muotoon .map(() => null)
+  stream.doAction(action).map(toFunction(null)).toProperty().startWith(null);
 
 export const parseBool = (b: any, defaultValue: boolean): boolean => {
   if (typeof b === "string") {
