@@ -63,7 +63,7 @@ object AmmatillinenRaporttiUtils {
 
   val isRahoituksenPiirissä: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").exists(_.rahoituksenPiirissä)
 
-  val yhteistenTutkinnonOsienKoodistokoodiarvot = Set("101053", "101054", "101055", "101056", "400012", "400013", "400014")
+  val yhteistenTutkinnonOsienKoodistokoodiarvot = AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.map(_.koodiarvo).toSet
 
   val isYhteinenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => yhteistenTutkinnonOsienKoodistokoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo)
 
