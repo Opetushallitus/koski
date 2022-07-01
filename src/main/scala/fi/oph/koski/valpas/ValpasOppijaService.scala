@@ -254,9 +254,6 @@ class ValpasOppijaService(
     }
   }
 
-  private def onNuortenPerusopetuksenOpiskeluoikeus(oo: ValpasOpiskeluoikeusLaajatTiedot): Boolean =
-    oo.tyyppi.koodiarvo == "perusopetus"
-
   private def onSuorittamisvalvottaviaOpiskeluoikeuksia(oppija: OppijaHakutilanteillaLaajatTiedot): Boolean =
     oppija.oppija.opiskeluoikeudet.exists(_.onSuorittamisValvottava)
 
