@@ -40,13 +40,15 @@ object YtlMaksuttomuustieto {
       .orElse(Some(false)),
   )
 
-  def apply(tiedot: ValpasHenkilöhakuResult): Option[YtlMaksuttomuustieto] =
+  def apply(tiedot: ValpasHenkilöhakuResult, tarkastelupäivä: LocalDate): Option[YtlMaksuttomuustieto] =
     tiedot match {
       case r: ValpasLöytyiHenkilöhakuResult => Some(YtlMaksuttomuustieto(
         oppijaOid = r.oid,
         hetu = r.hetu,
-        oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
-        maksuttomuudenPiirissä = None,
+        oikeusMaksuttomaanKoulutukseenVoimassaAsti = r.maksuttomuusVoimassaAstiIänPerusteella,
+        maksuttomuudenPiirissä = r.maksuttomuusVoimassaAstiIänPerusteella
+          .map(_.isEqualOrAfter(tarkastelupäivä))
+          .orElse(Some(false)),
       ))
       case r: ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult => r.oid.map(oid => YtlMaksuttomuustieto(
         oppijaOid = oid,

@@ -111,7 +111,8 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         hetu = ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu,
         etunimet = ValpasMockOppijat.eiKoskessaOppivelvollinen.etunimet,
         sukunimi = ValpasMockOppijat.eiKoskessaOppivelvollinen.sukunimi,
-        vainOppijanumerorekisterissä = true
+        vainOppijanumerorekisterissä = true,
+        maksuttomuusVoimassaAstiIänPerusteella = Some(date(2025, 12, 31))
       )
 
       authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasHelsinki) {
@@ -147,7 +148,8 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         hetu = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.hetu,
         etunimet = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.etunimet,
         sukunimi = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.sukunimi,
-        vainOppijanumerorekisterissä = true
+        vainOppijanumerorekisterissä = true,
+        maksuttomuusVoimassaAstiIänPerusteella = Some(date(2025, 12, 31))
       )
 
       authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.hetu.get), ValpasMockUsers.valpasHelsinki) {
@@ -182,7 +184,8 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         hetu = ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu,
         etunimet = ValpasMockOppijat.eiKoskessaOppivelvollinen.etunimet,
         sukunimi = ValpasMockOppijat.eiKoskessaOppivelvollinen.sukunimi,
-        vainOppijanumerorekisterissä = true
+        vainOppijanumerorekisterissä = true,
+        maksuttomuusVoimassaAstiIänPerusteella = Some(date(2025, 12, 31))
       )
 
       authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
@@ -236,7 +239,8 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         hetu = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.hetu,
         etunimet = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.etunimet,
         sukunimi = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.sukunimi,
-        vainOppijanumerorekisterissä = true
+        vainOppijanumerorekisterissä = true,
+        maksuttomuusVoimassaAstiIänPerusteella = Some(date(2025, 12, 31))
       )
 
       authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {

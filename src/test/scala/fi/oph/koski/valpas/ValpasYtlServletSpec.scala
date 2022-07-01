@@ -4,8 +4,10 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.{JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import fi.oph.koski.valpas.ytl.YtlMaksuttomuustieto
 import fi.oph.koski.ytl.YtlBulkRequest
@@ -21,7 +23,18 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
   }
 
   override protected def beforeEach() {
+    super.beforeEach()
+    KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
     AuditLogTester.clearMessages
+  }
+
+  override protected def afterEach(): Unit = {
+    KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
+    super.afterEach()
   }
 
   val oppijatOikeusMaksuttomuuteen = List(
@@ -44,6 +57,8 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
   val oppijatEiKoskessa = List(
     ValpasMockOppijat.eiKoskessaOppivelvollinen,
     ValpasMockOppijat.eiOppivelvollinenLiianNuori,
+    ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainen,
+    ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella
   )
 
   "YTL-luovutuspalvelukäyttäjä" - {
@@ -53,6 +68,22 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
           oppijaOid = o._1.oid,
           oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(o._2),
           maksuttomuudenPiirissä = Some(true),
+        ))
+
+        doQuery(oidit = Some(expectedData.map(_.oppijaOid))) {
+          verifyResponseStatusOk()
+          sort(parsedResponse) shouldBe sort(expectedData)
+        }
+      }
+
+      "Oikea tulos, jos oppijalla on ollut oikeus maksuttomaan koulutukseen aiemmin" in {
+        KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+          .asetaMockTarkastelupäivä(LocalDate.of(2026, 3, 25))
+
+        val expectedData = oppijatOikeusMaksuttomuuteen.map(o => YtlMaksuttomuustieto(
+          oppijaOid = o._1.oid,
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(o._2),
+          maksuttomuudenPiirissä = Some(false),
         ))
 
         doQuery(oidit = Some(expectedData.map(_.oppijaOid))) {
@@ -86,12 +117,33 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
         }
       }
 
-      "Tyhjä vastaus, jois oppijaa ei löydy Koskesta (maksuttomuutta ei voida päätellä)" in {
+      "Jos oppijaa ei löydy Koskesta, palauta ONR:ssä olevan iän perusteella päätelty maksuttomuustieto" in {
         val oids = oppijatEiKoskessa.map(_.oid)
+
+        val expectedData = List(
+          YtlMaksuttomuustieto(
+            oppijaOid = ValpasMockOppijat.eiKoskessaOppivelvollinen.oid,
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some( LocalDate.of(2025, 12, 31)),
+            maksuttomuudenPiirissä = Some(true),
+          ),
+          YtlMaksuttomuustieto(
+            oppijaOid = ValpasMockOppijat.eiOppivelvollinenLiianNuori.oid,
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some( LocalDate.of(2035, 12, 31)),
+            maksuttomuudenPiirissä = Some(true),
+          ),
+          YtlMaksuttomuustieto(
+            oppijaOid = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainen.oid,
+            maksuttomuudenPiirissä = Some(false),
+          ),
+          YtlMaksuttomuustieto(
+            oppijaOid = ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella.oid,
+            maksuttomuudenPiirissä = Some(false),
+          ),
+        )
 
         doQuery(oidit = Some(oids)) {
           verifyResponseStatusOk()
-          parsedResponse shouldBe List.empty
+          sort(parsedResponse) shouldBe sort(expectedData)
         }
       }
 
@@ -156,12 +208,39 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
         }
       }
 
-      "Tyhjä vastaus, jois oppijaa ei löydy Koskesta (maksuttomuutta ei voida päätellä)" in {
+      "Jos oppijaa ei löydy Koskesta, palauta ONR:ssä olevan iän perusteella päätelty maksuttomuustieto" in {
         val hetut = oppijatEiKoskessa.flatMap(_.hetu)
+
+        val expectedData = List(
+          YtlMaksuttomuustieto(
+            oppijaOid = ValpasMockOppijat.eiKoskessaOppivelvollinen.oid,
+            hetu = ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu,
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some( LocalDate.of(2025, 12, 31)),
+            maksuttomuudenPiirissä = Some(true),
+          ),
+          YtlMaksuttomuustieto(
+            oppijaOid = ValpasMockOppijat.eiOppivelvollinenLiianNuori.oid,
+            hetu = ValpasMockOppijat.eiOppivelvollinenLiianNuori.hetu,
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some( LocalDate.of(2035, 12, 31)),
+            maksuttomuudenPiirissä = Some(true),
+          ),
+          YtlMaksuttomuustieto(
+            oppijaOid = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainen.oid,
+            hetu = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainen.hetu,
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
+            maksuttomuudenPiirissä = Some(false),
+          ),
+          YtlMaksuttomuustieto(
+            oppijaOid = ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella.oid,
+            hetu = ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella.hetu,
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
+            maksuttomuudenPiirissä = Some(false),
+          ),
+        )
 
         doQuery(hetut = Some(hetut)) {
           verifyResponseStatusOk()
-          parsedResponse shouldBe List.empty
+          sort(parsedResponse) shouldBe sort(expectedData)
         }
       }
 
