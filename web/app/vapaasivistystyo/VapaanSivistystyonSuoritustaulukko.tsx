@@ -93,8 +93,6 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
       })
     );
 
-    const canExpand = nestedLevel < maxNestedLevel - 1;
-
     return (
       <div className="suoritus-taulukko">
         <table>
@@ -120,7 +118,7 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
               key={i}
               model={suoritus}
               expanded={isExpandedP(suoritus)}
-              onExpand={canExpand ? setExpanded(suoritus) : undefined}
+              onExpand={setExpanded(suoritus)}
               columns={columns}
               nestedLevel={nestedLevel + 1}
             />
