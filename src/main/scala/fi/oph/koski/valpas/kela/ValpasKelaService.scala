@@ -13,6 +13,7 @@ class ValpasKelaService(application: KoskiApplication) extends Logging with Timi
   val henkilöRepository = application.henkilöRepository
   val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
   val rajapäivätService = application.valpasRajapäivätService
+  val oppijanumerorekisteriService = application.valpasOppijanumerorekisteriService
 
   def findValpasKelaOppijatByHetut(hetut: Seq[String]): Either[HttpStatus, Seq[ValpasKelaOppija]] = {
 
@@ -34,7 +35,7 @@ class ValpasKelaService(application: KoskiApplication) extends Logging with Timi
 
       val oppijatJotkaLöytyvätOnrstä =
         hetutJoitaEiLöytynytKoskesta.flatMap(hetu => henkilöRepository.opintopolku.findByHetu(hetu))
-          .filter(o => oppijaLaajatTiedotService.onKelalleNäkyväVainOnrssäOlevaOppija(o))
+          .filter(o => oppijanumerorekisteriService.onKelalleNäkyväVainOnrssäOlevaOppija(o))
 
       val onrPalautettavatOppijat = tiedotAsValpasKelaOppijatWithOppivelvollisuudenKeskeytykset(oppijatJotkaLöytyvätOnrstä)
 

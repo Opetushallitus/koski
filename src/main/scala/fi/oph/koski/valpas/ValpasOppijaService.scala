@@ -1,9 +1,9 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, Yhteystiedot}
+import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.huoltaja.{HuollettavienHakuEpäonnistui, HuollettavienHakuOnnistui}
+import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
@@ -11,7 +11,6 @@ import fi.oph.koski.schema.{Henkilö, LocalizedString, Organisaatio}
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.UuidUtils
-import fi.oph.koski.validation.MaksuttomuusValidation
 import fi.oph.koski.valpas.db.ValpasSchema
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow, OppivelvollisuudenKeskeytyshistoriaRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
@@ -110,8 +109,6 @@ case class OpiskeluoikeusLisätiedot(
 class ValpasOppijaService(
   application: KoskiApplication
 ) extends Logging with ValpasRouhintaTiming {
-  private val henkilöRepository = application.henkilöRepository
-  private val opiskeluoikeusRepository = application.opiskeluoikeusRepository
   private val hakukoosteService = ValpasHakukoosteService(application.config, application.validatingAndResolvingExtractor)
   private val opiskeluoikeusDbService = application.valpasOpiskeluoikeusDatabaseService
   private val ovKeskeytysService = new OppivelvollisuudenKeskeytysService(application)
@@ -120,6 +117,7 @@ class ValpasOppijaService(
   private val koodistoviitepalvelu = application.koodistoViitePalvelu
   private val lisätiedotRepository = application.valpasOpiskeluoikeusLisätiedotRepository
   private val rajapäivätService = application.valpasRajapäivätService
+  private val oppijanumerorekisteriService = application.valpasOppijanumerorekisteriService
 
   private val accessResolver = new ValpasAccessResolver
 
@@ -383,98 +381,9 @@ class ValpasOppijaService(
         asValpasOppijaLaajatTiedot(oppijaRow)
           .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
       case None if haeMyösVainOppijanumerorekisterissäOleva =>
-        if (accessResolver.accessToAnyOrg(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)) {
-          // Maksuttomuusoikeudet ovat laajemmat ja sisältävät kuntaoikeudet, joten haetaan ensisijaisesti niillä, jos
-          // käyttäjällä on molemmat oikeudet
-          getMaksuttomuuskäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
-        } else {
-          getKuntakäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
-        }
+        oppijanumerorekisteriService.getOppijaLaajatTiedotOppijanumerorekisteristä(oppijaOid)
       case _ =>
         Left(ValpasErrorCategory.forbidden.oppija())
-    }
-  }
-
-  private def getMaksuttomuuskäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
-    oppijaOid: ValpasHenkilö.Oid
-  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] =
-    getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
-      onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija,
-      oppijaOid
-    )
-
-  private def getKuntakäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
-    oppijaOid: ValpasHenkilö.Oid
-  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] =
-    getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
-      onKunnalleNäkyväVainOnrssäOlevaOppija,
-      oppijaOid
-    )
-
-  private def getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
-    onPalautettavaOppija: OppijaHenkilö => Boolean,
-    oppijaOid: ValpasHenkilö.Oid
-  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
-    henkilöRepository.findByOid(oppijaOid, findMasterIfSlaveOid = true) match {
-      case Some(henkilö) if onPalautettavaOppija(henkilö) =>
-        Right(ValpasOppijaLaajatTiedot(henkilö, rajapäivätService, onTallennettuKoskeen = false))
-      case _ => Left(ValpasErrorCategory.forbidden.oppija())
-    }
-  }
-
-  private def getKansalaiselleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
-    oppijaOid: ValpasHenkilö.Oid
-  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] =
-    getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
-      onKansalaiselleNäkyväVainOnrssäOlevaOppija,
-      oppijaOid
-    )
-
-  // TODO: siirrä nämä päättelyt muualle? Ei oikein ole OppijaService:n asia nämä, ja näitä tulee lisää, esim.
-  // kansalaiselle ja maksuttomuusvalvojalle omansa.
-  def onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
-    lazy val onAlle18VuotiasTarkastelupäivänä = rajapäivätService.onAlle18VuotiasTarkastelupäivänä(henkilö.syntymäaika)
-
-    onKelalleNäkyväVainOnrssäOlevaOppija(henkilö) && onAlle18VuotiasTarkastelupäivänä
-  }
-  def onKelalleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean =
-    onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija(henkilö)
-  def onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
-    val onMahdollisestiLainPiirissä =
-      MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
-        henkilö.syntymäaika,
-        opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(henkilö.oid),
-        rajapäivätService
-      ).isEmpty
-    lazy val näytäKotikunnanPerusteella = onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö)
-    // Toistaiseksi vain hetullisilla voi olla kotikunta, mutta tämä saattaa tulevaisuudessa muuttua, joten varmistetaan,
-    // että henkilöllä on myös hetu
-    lazy val näytäHetunOlemassaolonPerusteella = henkilö.hetu.isDefined
-    lazy val maksuttomuudenPäättymispäiväTulevaisuudessa = !rajapäivätService.tarkastelupäivä.isAfter(rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get))
-
-    onMahdollisestiLainPiirissä && näytäKotikunnanPerusteella && näytäHetunOlemassaolonPerusteella && maksuttomuudenPäättymispäiväTulevaisuudessa
-  }
-  def onKansalaiselleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
-    MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
-      henkilö.syntymäaika,
-      opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(henkilö.oid),
-      rajapäivätService
-    ).isEmpty
-  }
-
-  private def onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö: OppijaHenkilö): Boolean = {
-    asLaajatOppijaHenkilöTiedot(henkilö) match {
-      case Some(o) if o.turvakielto || !o.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella =>
-        true
-      case _ =>
-        false
-    }
-  }
-
-  def asLaajatOppijaHenkilöTiedot(henkilö: OppijaHenkilö): Option[LaajatOppijaHenkilöTiedot] = {
-    henkilö match {
-      case h: LaajatOppijaHenkilöTiedot => Some(h)
-      case _ => henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
     }
   }
 
@@ -514,7 +423,7 @@ class ValpasOppijaService(
         asValpasOppijaLaajatTiedot(oppijaRow)
           .flatMap(accessResolver.withOppijaAccess(_))
       case None if haeMyösVainOppijanumerorekisterissäOleva =>
-        getKuntakäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
+        oppijanumerorekisteriService.getOppijaLaajatTiedotOppijanumerorekisteristä(oppijaOid)
       case _ =>
         Left(ValpasErrorCategory.forbidden.oppija())
     }
@@ -927,7 +836,7 @@ class ValpasOppijaService(
         .toRight(ValpasErrorCategory.notFound.oppijaEiOppivelvollisuuslainPiirissä())
         .flatMap(asValpasOppijaLaajatTiedot) match {
       case Left(_) =>
-        getKansalaiselleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
+        oppijanumerorekisteriService.getKansalaiselleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(oppijaOid)
           .left.map(_ => ValpasErrorCategory.notFound.oppijaEiOppivelvollisuuslainPiirissä())
       case o => o
     }

@@ -22,6 +22,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
   private val opiskeluoikeusRepository = application.opiskeluoikeusRepository
   private val rajapäivätService = application.valpasRajapäivätService
   private val opintopolkuHenkilöt = application.opintopolkuHenkilöFacade
+  private val oppijanumerorekisteriService = application.valpasOppijanumerorekisteriService
 
   def findHenkilöSuorittaminen
     (query: String)
@@ -122,9 +123,9 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
           // Henkilö, jonka tiedot löytyvät, mutta jolla maksuttomuus on päättynyt esim. toiselta asteelta
           // valmistumiseen, ei ole enää maksuttomuuden piirissä:
           case Some(o) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(o.henkilö.oid), o.henkilö.hetu)
-          case None => oppijaLaajatTiedotService.asLaajatOppijaHenkilöTiedot(henkilö) match {
+          case None => oppijanumerorekisteriService.asLaajatOppijaHenkilöTiedot(henkilö) match {
             case Some(h) if !h.turvakielto && h.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(h.oid), h.hetu)
-            case Some(h) if oppijaLaajatTiedotService.onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija(h) =>
+            case Some(h) if oppijanumerorekisteriService.onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija(h) =>
               ValpasLöytyiHenkilöhakuResult(h, vainOppijanumerorekisterissä = true, rajapäivätService)
             case _ => ValpasEiLöytynytHenkilöhakuResult()
           }
@@ -143,7 +144,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
         // Oli Koskessa, tarkista käyttöoikeudet ja palauta, jos ok
         accessResolver.withOppijaAccessAsRole(ValpasRooli.KUNTA)(oppija)
           .map(o => ValpasLöytyiHenkilöhakuResult.apply(o, rajapäivätService))
-      case Right(None) if oppijaLaajatTiedotService.onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö) =>
+      case Right(None) if oppijanumerorekisteriService.onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö) =>
         Right(ValpasLöytyiHenkilöhakuResult(henkilö, vainOppijanumerorekisterissä = true, rajapäivätService))
       case _ => Left(ValpasErrorCategory.forbidden.oppija())
     }
