@@ -467,8 +467,6 @@ class ValpasOppijaService(
       case Some(o) if o.turvakielto || !o.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella =>
         true
       case _ =>
-        // TODO: mitä jos laajojen tietojen onr-haku epäonnistuu esim. sen ollessa väliaikaisesti alhaalla?
-        // Pitäisikö palauttaa joku virheilmoitus käyttöliittymään asti?
         false
     }
   }
