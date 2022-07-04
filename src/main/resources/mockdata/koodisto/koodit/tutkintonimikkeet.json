@@ -1008,6 +1008,19 @@
   } ],
   "versio" : 2
 }, {
+  "koodiUri" : "tutkintonimikkeet_10080",
+  "koodiArvo" : "10080",
+  "metadata" : [ {
+    "nimi" : "Hyötyajoneuvomekaanikko",
+    "lyhytNimi" : "Hyötyajoneuvomekaanikko",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Nyttofordonsmekaniker",
+    "lyhytNimi" : "Nyttofordonsmekaniker",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2
+}, {
   "koodiUri" : "tutkintonimikkeet_10081",
   "koodiArvo" : "10081",
   "metadata" : [ {

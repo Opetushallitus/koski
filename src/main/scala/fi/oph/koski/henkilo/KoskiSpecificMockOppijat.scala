@@ -156,6 +156,7 @@ object KoskiSpecificMockOppijat {
   val vstKoto2022Aloittaja = koskiSpecificOppijat.oppija(suku = "Kotolainen-Alkujuuri", etu = "Vesti", hetu = "060806A528W")
   val vstKoto2022Kesken = koskiSpecificOppijat.oppija(suku = "Kotonen-Keskinen", etu = "Vesti", hetu = "120706A8456")
   val vstKoto2022Suorittanut = koskiSpecificOppijat.oppija(suku = "Kotinen-Suorsalo", etu = "Vesti", hetu = "270606A1355")
+  val ajoneuvoalanOpiskelija = koskiSpecificOppijat.oppija(suku = "Autonen", etu = "Antti", hetu = "030402A6975")
 
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen
