@@ -153,7 +153,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           val response = JsonSerializer.parse[ValpasKelaOppija](body)
           response.henkilö.hetu should equal(oppija.hetu)
           response.henkilö.oid should equal(oppija.oid)
-          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 24))
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 23))
           response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
 
           response.oppivelvollisuudenKeskeytykset.length should be(0)
@@ -171,7 +171,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           val response = JsonSerializer.parse[ValpasKelaOppija](body)
           response.henkilö.hetu should equal(oppija.hetu)
           response.henkilö.oid should equal(oppija.oid)
-          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 24))
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 23))
           response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
 
           response.oppivelvollisuudenKeskeytykset.length should be(0)
@@ -222,7 +222,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           val response = JsonSerializer.parse[ValpasKelaOppija](body)
           response.henkilö.hetu should equal(oppija.hetu)
           response.henkilö.oid should equal(oppija.oid)
-          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 7, 26))
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2023, 7, 25))
           response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2025, 12, 31)))
 
           response.oppivelvollisuudenKeskeytykset.length should be(expectedKeskeytykset.length)

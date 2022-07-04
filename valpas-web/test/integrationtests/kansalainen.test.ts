@@ -192,7 +192,7 @@ const expectEiKoskessaOppivelvollinenKaikkiTiedot = async () => {
   await oppivelvollisuustiedotEquals(
     oppivelvollisuustiedot({
       opiskelutilanne: "Ei opiskelupaikkaa",
-      oppivelvollisuus: "24.1.2023 asti",
+      oppivelvollisuus: "23.1.2023 asti",
       maksuttomuusoikeus: "31.12.2025 asti",
     })
   )

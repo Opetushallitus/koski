@@ -1398,7 +1398,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
         ValpasMockOppijat.eiKoskessaOppivelvollinen.oid
       )(session(ValpasMockUsers.valpasHelsinki)).toOption.get
 
-      result.oppija.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 24))
+      result.oppija.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 23))
       result.oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(date(2025, 12, 31))
       result.onOikeusTehdäKuntailmoitus should equal(Some(false))
     }
@@ -1557,7 +1557,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
         ValpasMockOppijat.eiKoskessaOppivelvollinen.oid
       )(session(ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä)).toOption.get
 
-      result.oppija.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 24))
+      result.oppija.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 23))
       result.oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(date(2025, 12, 31))
       result.onOikeusTehdäKuntailmoitus should equal(Some(false))
     }
@@ -1570,7 +1570,7 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
         ValpasMockOppijat.eiKoskessaOppivelvollinen.oid
       )(session(ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä)).toOption.get
 
-      result.oppija.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 24))
+      result.oppija.oppivelvollisuusVoimassaAsti should equal(date(2023, 1, 23))
       result.oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(date(2025, 12, 31))
       result.onOikeusTehdäKuntailmoitus should equal(Some(false))
     }
