@@ -165,6 +165,35 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
       }
     }
+
+    "Palauttaa vain oppijanumerorekisteristä löytyvän 7-vuotta täyttävän elokuussa sinä vuonna" in {
+      val expectedResult = ValpasLöytyiHenkilöhakuResult(
+        oid = ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.oid,
+        hetu = ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.hetu,
+        etunimet = ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.etunimet,
+        sukunimi = ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.sukunimi,
+        vainOppijanumerorekisterissä = true,
+        maksuttomuusVoimassaAstiIänPerusteella = Some(date(2034, 12, 31))
+      )
+
+      KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 8, 1))
+
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.oid), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatusOk()
+
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
+
+    "Ei palauta vain oppijanumerorekisteristä löytyvää 7-vuotta täyttävää ennen elokuuta sinä vuonna" in {
+      KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 7, 31))
+
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.oid), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
+      }
+    }
   }
 
   "Maksuttomuuskäyttäjän hetuhaku" - {
@@ -258,6 +287,40 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       )
 
       authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella.hetu.get), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
+
+    "Palauttaa vain oppijanumerorekisteristä löytyvän 7-vuotta täyttävän elokuussa sinä vuonna" in {
+      val expectedResult = ValpasLöytyiHenkilöhakuResult(
+        oid = ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.oid,
+        hetu = ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.hetu,
+        etunimet = ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.etunimet,
+        sukunimi = ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.sukunimi,
+        vainOppijanumerorekisterissä = true,
+        maksuttomuusVoimassaAstiIänPerusteella = Some(date(2034, 12, 31))
+      )
+
+      KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 8, 1))
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.oid), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+        verifyResponseStatusOk()
+
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
+
+    "Ei palauta vain oppijanumerorekisteristä löytyvää 7-vuotta täyttävää ennen elokuuta sinä vuonna" in {
+      KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(date(2021, 7, 31))
+
+      val expectedResult = ValpasEiLöytynytHenkilöhakuResult()
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.oid), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
         verifyResponseStatusOk()
         val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
 

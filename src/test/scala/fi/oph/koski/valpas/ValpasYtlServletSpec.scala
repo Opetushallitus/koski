@@ -127,11 +127,6 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
             maksuttomuudenPiirissä = Some(true),
           ),
           YtlMaksuttomuustieto(
-            oppijaOid = ValpasMockOppijat.eiOppivelvollinenLiianNuori.oid,
-            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some( LocalDate.of(2035, 12, 31)),
-            maksuttomuudenPiirissä = Some(true),
-          ),
-          YtlMaksuttomuustieto(
             oppijaOid = ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainen.oid,
             maksuttomuudenPiirissä = Some(false),
           ),
@@ -144,6 +139,18 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
         doQuery(oidit = Some(oids)) {
           verifyResponseStatusOk()
           sort(parsedResponse) shouldBe sort(expectedData)
+        }
+      }
+
+      "Tyhjä vastaus, jos oppija on ONR:ssä, mutta ei vielä olla elokuussa hänen 7-vuotisvuotenaan" in {
+        KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+          .asetaMockTarkastelupäivä(LocalDate.of(2021, 7, 31))
+
+        val oids = List(ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.oid)
+
+        doQuery(oidit = Some(oids)) {
+          verifyResponseStatusOk()
+          parsedResponse shouldBe List.empty
         }
       }
 
@@ -216,12 +223,6 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
             oppijaOid = ValpasMockOppijat.eiKoskessaOppivelvollinen.oid,
             hetu = ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu,
             oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some( LocalDate.of(2025, 12, 31)),
-            maksuttomuudenPiirissä = Some(true),
-          ),
-          YtlMaksuttomuustieto(
-            oppijaOid = ValpasMockOppijat.eiOppivelvollinenLiianNuori.oid,
-            hetu = ValpasMockOppijat.eiOppivelvollinenLiianNuori.hetu,
-            oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some( LocalDate.of(2035, 12, 31)),
             maksuttomuudenPiirissä = Some(true),
           ),
           YtlMaksuttomuustieto(

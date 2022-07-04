@@ -1510,6 +1510,21 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
       result should be(expectedResult)
     }
 
+    "ei palauta oppijaa ennen elokuuta oppijan 7-vuotisvuotena" in {
+      KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+        .asetaMockTarkastelupäivä(date(2021, 7, 31))
+
+      val expectedResult = Left(HttpStatus(403,List(ErrorDetail(
+        ValpasErrorCategory.forbidden.oppija.key, "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"
+      ))))
+
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.oid
+      )(session(ValpasMockUsers.valpasHelsinki))
+
+      result should be(expectedResult)
+    }
+
     "ei palauta oppijaa, jos käyttäjällä ei ole kunta-oikeuksia" in {
       val expectedResult = Left(HttpStatus(403,List(ErrorDetail(
         ValpasErrorCategory.forbidden.oppija.key, "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"
@@ -1594,6 +1609,21 @@ class ValpasOppijaServiceSpec extends ValpasOppijaServiceTestBase with BeforeAnd
 
       val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
         ValpasMockOppijat.eiKoskessaHetuton.oid
+      )(session(ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä))
+
+      result should be(expectedResult)
+    }
+
+    "ei palauta oppijaa ennen elokuuta oppijan 7-vuotisvuotena" in {
+      KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+        .asetaMockTarkastelupäivä(date(2021, 7, 31))
+
+      val expectedResult = Left(HttpStatus(403,List(ErrorDetail(
+        ValpasErrorCategory.forbidden.oppija.key, "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"
+      ))))
+
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        ValpasMockOppijat.eiKoskessa7VuottaTäyttävä.oid
       )(session(ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä))
 
       result should be(expectedResult)

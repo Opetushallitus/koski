@@ -21,6 +21,14 @@ abstract class ValpasRajapäivätService(config: Config) extends Logging {
   def oppivelvollisuusAlkaa(syntymäpäivä: LocalDate): LocalDate =
     oppivelvollisuusAlkaaPäivämäärä.withYear(syntymäpäivä.getYear + oppivelvollisuusAlkaaIka)
 
+  // Vain ONR:ssä olevan oppivelvollisen tiedot voi näyttää 1 kk ennenkuin oppivelvollisuus on alkanut, jotta
+  // hänelle voi esim. kirjata oppivelvollisuuden keskeytyksen.
+  def oppijaOnTarpeeksiVanhaKeskeytysmerkintöjäVarten(syntymäaika: Option[LocalDate]): Boolean =
+    syntymäaika match {
+      case Some(pvm) => !tarkastelupäivä.isBefore(oppivelvollisuusAlkaa(pvm).minusMonths(1))
+      case _ => false
+    }
+
   def oppivelvollisuusVoimassaAstiIänPerusteella(syntymäpäivä: LocalDate): LocalDate = {
     // Huom! Sama logiikka on myös SQL:nä Oppivelvollisuustiedot-luokan luomassa materialized view:ssä.
     // Varmista muutosten jälkeen, että logiikka säilyy samana.

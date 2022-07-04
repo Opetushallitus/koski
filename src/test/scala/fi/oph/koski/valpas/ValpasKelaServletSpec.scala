@@ -190,6 +190,18 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         }
       }
 
+      "Yhden oppijan hakeminen ei palauta vain oppijanumerorekisterissä olevaa oppijaa, jos ei olla vielä elokuussa oppijan 7-vuotisvuotena" in {
+        KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+          .asetaMockTarkastelupäivä(date(2021, 7, 31))
+
+        val oppija = ValpasMockOppijat.eiKoskessa7VuottaTäyttävä
+
+        postHetu(oppija.hetu.get) {
+          verifyResponseStatus(404, ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+          AuditLogTester.verifyNoAuditLogMessages()
+        }
+      }
+
       "Yhden oppijan hakeminen palauttaa oppijan, joka ei ole Koskessa, mutta jolla on oppivelvollisuuden keskeytyksiä, tiedot" in {
         val oppija = ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia
 
