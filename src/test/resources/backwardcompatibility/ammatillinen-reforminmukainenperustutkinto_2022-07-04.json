@@ -1,6 +1,6 @@
 {
   "henkilö" : {
-    "hetu" : "060600A8482",
+    "hetu" : "020882-577H",
     "etunimet" : "Aarne",
     "kutsumanimi" : "Aarne",
     "sukunimi" : "Ammattilainen"
@@ -16,11 +16,11 @@
         "fi" : "Stadin ammattiopisto"
       }
     },
-    "arvioituPäättymispäivä" : "2026-05-31",
+    "arvioituPäättymispäivä" : "2020-05-31",
     "ostettu" : false,
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2022-01-08",
+        "alku" : "2018-01-01",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -39,9 +39,12 @@
       "koulutusmoduuli" : {
         "tunniste" : {
           "koodiarvo" : "351301",
+          "nimi" : {
+            "fi" : "Autoalan perustutkinto"
+          },
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "OPH-5410-2021"
+        "perusteenDiaarinumero" : "OPH-2762-2017"
       },
       "suoritustapa" : {
         "koodiarvo" : "reformi",
@@ -52,17 +55,17 @@
         "koodistoVersio" : 1
       },
       "tutkintonimike" : [ {
-        "koodiarvo" : "10080",
+        "koodiarvo" : "10024",
         "nimi" : {
-          "fi" : "Hyötyajoneuvomekaanikko"
+          "fi" : "Autokorinkorjaaja"
         },
         "koodistoUri" : "tutkintonimikkeet"
       } ],
       "osaamisala" : [ {
         "osaamisala" : {
-          "koodiarvo" : "1008",
+          "koodiarvo" : "1719",
           "nimi" : {
-            "fi" : "Ajoneuvotekniikan osaamisala"
+            "fi" : "Autokorinkorjauksen osaamisala"
           },
           "koodistoUri" : "osaamisala"
         }
@@ -96,9 +99,9 @@
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "106945",
+            "koodiarvo" : "105708",
             "nimi" : {
-              "fi" : "Ajoneuvon huoltotyöt"
+              "fi" : "Huolto- ja korjaustyöt"
             },
             "koodistoUri" : "tutkinnonosat"
           },
@@ -173,8 +176,8 @@
             }
           },
           "suoritusaika" : {
-            "alku" : "2023-02-02",
-            "loppu" : "2023-02-02"
+            "alku" : "2018-02-02",
+            "loppu" : "2018-02-02"
           },
           "työssäoppimisenYhteydessä" : false,
           "arviointi" : {
@@ -292,9 +295,9 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "106943",
+            "koodiarvo" : "105715",
             "nimi" : {
-              "fi" : "Ruiskumaalaustyöt"
+              "fi" : "Maalauksen esikäsittelytyöt"
             },
             "koodistoUri" : "tutkinnonosat"
           },
@@ -369,8 +372,8 @@
             }
           },
           "suoritusaika" : {
-            "alku" : "2023-02-02",
-            "loppu" : "2023-02-02"
+            "alku" : "2018-02-02",
+            "loppu" : "2018-02-02"
           },
           "työssäoppimisenYhteydessä" : false,
           "arviointi" : {
@@ -488,7 +491,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "106727",
+            "koodiarvo" : "400012",
             "nimi" : {
               "fi" : "Viestintä- ja vuorovaikutusosaaminen"
             },
@@ -583,8 +586,8 @@
               }
             },
             "suoritusaika" : {
-              "alku" : "2023-05-18",
-              "loppu" : "2023-05-18"
+              "alku" : "2014-05-18",
+              "loppu" : "2014-05-18"
             },
             "työssäoppimisenYhteydessä" : false
           },
@@ -870,6 +873,12 @@
       }
     } ],
     "lisätiedot" : {
+      "erityinenTuki" : [ {
+        "alku" : "2018-01-01"
+      } ],
+      "vaativanErityisenTuenErityinenTehtävä" : [ {
+        "alku" : "2018-01-01"
+      } ],
       "henkilöstökoulutus" : false,
       "koulutusvienti" : false
     },
@@ -877,6 +886,6 @@
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
-    "alkamispäivä" : "2022-01-08"
+    "alkamispäivä" : "2018-01-01"
   } ]
 }
