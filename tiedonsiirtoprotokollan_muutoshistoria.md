@@ -1,3 +1,9 @@
+## 4.7.2022
+- Sallitaan muuttuneet ammatillisen koulutuksen yhteisten tutkinnon osien koodit:
+  - 106727: Viestintä- ja vuorovaikutusosaaminen
+  - 106728: Matemaattis-luonnontieteellinen osaaminen
+  - 106729: Yhteiskunta- ja työelämäosaaminen
+  
 ## 30.6.2022
 
 - Vapaan sivistystyön kotoutumiskoulutuksen opetussuunnitelma 2022:

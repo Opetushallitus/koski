@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 4.7.2022
+- Sallitaan muuttuneet ammatillisen koulutuksen yhteisten tutkinnon osien koodit:
+  - 106727: Viestintä- ja vuorovaikutusosaaminen
+  - 106728: Matemaattis-luonnontieteellinen osaaminen
+  - 106729: Yhteiskunta- ja työelämäosaaminen
+
 ## 16.6.2022
 - Aikuisten lukiokoulutuksen uudessa opintosuunnitelmassa (2019) Historian kurssien HI2 ja HI3 nimet on korjattu vastaamaan Opetushallituksen laatimaa opetussuunnitelmaa.
 

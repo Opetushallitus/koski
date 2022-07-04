@@ -714,7 +714,14 @@ sealed trait AmmatillisenTutkinnonOsa extends KoulutusmoduuliValinnainenLaajuus
 }
 
 object AmmatillisenTutkinnonOsa {
-  val reformiMuotoisenTutkinnonYhteisetOsat = List("400012", "400013", "400014", "600001", "600002").map(Koodistokoodiviite(_, "tutkinnonosat"))
+  val reformiMuotoisenTutkinnonYhteisetOsat = List(
+    // Yhteiset tutkinnon osat ennen 1.8.2022
+    "400012", "400013", "400014",
+    // Yhteiset tutkinnon osat 1.8.2022 alkaen
+    "106727", "106728", "106729",
+    // Koulutusvientikokeilut
+    "600001", "600002",
+    ).map(Koodistokoodiviite(_, "tutkinnonosat"))
   val opsMuotoisenTutkinnonYhteisetOsat = List("101053", "101054", "101055", "101056").map(Koodistokoodiviite(_, "tutkinnonosat"))
   val yhteisetTutkinnonOsat = reformiMuotoisenTutkinnonYhteisetOsat ::: opsMuotoisenTutkinnonYhteisetOsat
 }
@@ -739,6 +746,9 @@ case class YhteinenTutkinnonOsa(
   @KoodistoKoodiarvo("101054")
   @KoodistoKoodiarvo("101055")
   @KoodistoKoodiarvo("101056")
+  @KoodistoKoodiarvo("106727")
+  @KoodistoKoodiarvo("106728")
+  @KoodistoKoodiarvo("106729")
   @KoodistoKoodiarvo("400012")
   @KoodistoKoodiarvo("400013")
   @KoodistoKoodiarvo("400014")

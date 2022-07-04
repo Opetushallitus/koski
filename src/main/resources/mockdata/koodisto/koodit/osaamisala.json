@@ -113,6 +113,19 @@
   } ],
   "versio" : 3
 }, {
+  "koodiUri" : "osaamisala_1008",
+  "koodiArvo" : "1008",
+  "metadata" : [ {
+    "nimi" : "Ajoneuvotekniikan osaamisala",
+    "lyhytNimi" : "Ajoneuvotekniikan osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för fordonsteknik",
+    "lyhytNimi" : "Kompetensområdet för fordonsteknik",
+    "kieli" : "SV"
+  } ],
+  "versio" : 3
+}, {
   "koodiUri" : "osaamisala_1501",
   "koodiArvo" : "1501",
   "metadata" : [ {
