@@ -266,7 +266,7 @@ object AmmatillinenExampleData {
   }
 
   def tutkinnonOsanSuoritus(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], arvosana: Koodistokoodiviite, laajuus: Option[Float] = None, pakollinen: Boolean = true): MuunAmmatillisenTutkinnonOsanSuoritus = {
-    val osa = MuuValtakunnallinenTutkinnonOsa(tunniste = Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), pakollinen, laajuus = laajuus.map(l => LaajuusOsaamispisteissä(l)))
+    val osa = MuuValtakunnallinenTutkinnonOsa(tunniste = Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat"), pakollinen, laajuus = laajuus.map(l => LaajuusOsaamispisteissä(l)))
     tutkinnonOsanSuoritus(arvosana, osa, ryhmä)
   }
 
