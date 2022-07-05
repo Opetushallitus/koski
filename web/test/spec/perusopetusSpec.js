@@ -2490,7 +2490,10 @@ describe('Perusopetus', function() {
     })
 
     describe('Perusopetuksen oppiaineen oppimäärä', function() {
+      this.timeout(20000)
+
       before(
+        timeout.overrideWaitTime(20000),
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus')
