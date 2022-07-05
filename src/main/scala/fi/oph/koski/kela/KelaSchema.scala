@@ -1,11 +1,9 @@
 package fi.oph.koski.kela
 
-import com.typesafe.config.Config
-import fi.oph.koski.config.Environment
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, Tooltip, UnitOfMeasure}
-import fi.oph.scalaschema.annotation.{Description, Discriminator, ReadFlattened, SyntheticProperty, Title}
+import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, UnitOfMeasure}
+import fi.oph.scalaschema.annotation.{Discriminator, ReadFlattened, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -15,7 +13,7 @@ object KelaSchema {
   lazy val schemaJson: JValue =
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[KelaOppija]).asInstanceOf[ClassSchema])
 
-  def schemassaTuetutOpiskeluoikeustyypit(config: Config): List[String] = List(
+  val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
     "aikuistenperusopetus",
     "ammatillinenkoulutus",
     "ibtutkinto",
@@ -28,9 +26,7 @@ object KelaSchema {
     "perusopetus",
     "ylioppilastutkinto",
     "vapaansivistystyonkoulutus",
-    // Poistetaan tämä kun TUVA-opiskeluoikeudet avataan Kela APIin.
-    // See TOR-1677
-    if (Environment.isProdEnvironment(config)) "" else "tuva"
+    "tuva"
   ).filter(_.nonEmpty)
 }
 
