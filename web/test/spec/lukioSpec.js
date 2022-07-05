@@ -692,6 +692,11 @@ describe('Lukiokoulutus', function( ){
           expect(addOppija.oppiaineet()).to.contain('Ei tiedossa')
         })
 
+        it('Ei näytä lukion 2019 OPS:n diaarinumeroita', function() {
+          expect(addOppija.perusteet()).to.not.contain('OPH-2267-2019 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019')
+          expect(addOppija.perusteet()).to.not.contain('OPH-2263-2019 Lukion opetussuunnitelman perusteet 2019')
+        })
+
         describe('Lisäyksen jälkeen', function () {
           before(
             addOppija.selectOppiaine('Biologia'),

@@ -33,7 +33,8 @@ export default ({ options,
                   isRemovable = () => false,
                   onRemoval,
                   removeText,
-                  isOptionEnabled = () => true }) => {
+                  isOptionEnabled = () => true,
+                  ...rest }) => {
   options = toObservable(options)
   let selectedP = toObservable(selected)
   inline = parseBool(inline)
@@ -128,7 +129,7 @@ export default ({ options,
     elementWithLoadingIndicator(allOptionsP.map(allOptions => {
       let grouped = R.keys(R.groupBy((opt) => opt.groupName)(R.filter(o => o.groupName, allOptions))).length > 1
       let className = buildClassNames(['dropdown', inline && 'inline', grouped && 'grouped'])
-      return (<div className={className} tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)}>
+      return (<div className={className} tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)} {...rest}>
           {
             enableFilter ?
               <div className="input-container" onClick={toggleOpen}>

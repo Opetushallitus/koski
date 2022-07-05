@@ -573,7 +573,10 @@ function AddOppijaPage() {
       return isElementVisible(S("[data-test-id='tutkinto-autocomplete'] [data-test-id='autocomplete-results']"))
     },
     selectPeruste: function (peruste) {
-      return selectFromDropdown('.peruste .dropdown', peruste)
+      return selectFromDropdown("[data-test-id='peruste-dropdown']", peruste)
+    },
+    perusteet: function () {
+      return extractAsText(S("[data-test-id='peruste-dropdown'] .options"))
     },
     selectKieli: function (kieli) {
       return selectFromDropdown('.kieli .dropdown', kieli)
