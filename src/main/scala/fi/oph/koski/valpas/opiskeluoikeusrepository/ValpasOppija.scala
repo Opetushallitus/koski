@@ -4,6 +4,7 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty}
+import fi.oph.koski.valpas.ValpasKuntailmoitusService
 import fi.oph.koski.valpas.hakukooste._
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
@@ -118,6 +119,9 @@ trait ValpasOpiskeluoikeus {
 
   @SyntheticProperty
   def isOpiskeluTulevaisuudessa: Boolean = opiskeluoikeustiedot.exists(_.isOpiskeluTulevaisuudessa)
+
+  def isKuntailmoituksenPassivoivassaTerminaalitilassa: Boolean =
+    opiskeluoikeustiedot.exists(t => ValpasKuntailmoitusService.isKuntailmoituksenPassivoivaTerminaalitila(t.tarkastelupäivänTila))
 
   @SyntheticProperty
   def tarkasteltavaPäätasonSuoritus: Option[ValpasPäätasonSuoritus] = {

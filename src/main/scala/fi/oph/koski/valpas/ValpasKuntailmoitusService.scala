@@ -452,3 +452,16 @@ class ValpasKuntailmoitusService(
     koodistoViitePalvelu.validate(koodistoviite)
   }
 }
+
+object ValpasKuntailmoitusService {
+  def isKuntailmoituksenPassivoivaTerminaalitila(opiskeluoikeudenTila: Koodistokoodiviite): Boolean =
+    opiskeluoikeudenTila.koodistoUri == "valpasopiskeluoikeudentila" && List(
+      "eronnut",
+      "hyvaksytystisuoritettu",
+      "katsotaaneronneeksi",
+      "keskeytynyt",
+      "valmistunut",
+      "peruutettu",
+      "tuntematon"
+    ).contains(opiskeluoikeudenTila.koodiarvo)
+}
