@@ -193,6 +193,27 @@
     "kieli" : "SV"
   } ],
   "versio" : 1
+},     {
+  "koodiUri": "ammatillisenoppiaineet_vvai22",
+  "koodiArvo": "VVAI22",
+  "metadata": [
+    {
+      "nimi": "Viestintä ja vuorovaikutus äidinkielellä",
+      "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä",
+      "kieli": "FI"
+    },
+    {
+      "nimi": "Kommunikation och interaktion på modersmålet",
+      "lyhytNimi": "Kommunikation och interaktion på modersmålet",
+      "kieli": "SV"
+    },
+    {
+      "nimi": "Communication and interaction in mother tongue",
+      "lyhytNimi": "Communication and interaction in mother tongue",
+      "kieli": "EN"
+    }
+  ],
+  "versio": 1
 }, {
   "koodiUri" : "ammatillisenoppiaineet_vvai11",
   "koodiArvo" : "VVAI11",

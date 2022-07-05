@@ -1037,6 +1037,7 @@ case class AmmatillisenTutkinnonÄidinkieli(
 case class AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(
   @KoodistoKoodiarvo("VVTK")
   @KoodistoKoodiarvo("VVAI")
+  @KoodistoKoodiarvo("VVAI22")
   @KoodistoKoodiarvo("VVVK")
   @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
