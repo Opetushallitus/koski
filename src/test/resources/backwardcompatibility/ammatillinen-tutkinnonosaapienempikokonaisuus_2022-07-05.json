@@ -1,0 +1,321 @@
+{
+  "henkilö" : {
+    "hetu" : "280618-402H",
+    "etunimet" : "Aarne",
+    "kutsumanimi" : "Aarne",
+    "sukunimi" : "Ammattilainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "arvioituPäättymispäivä" : "2020-05-31",
+    "ostettu" : false,
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2018-01-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "KISI",
+          "nimi" : {
+            "fi" : "Kiinteistösihteerin koulutus ja tutkinto (KISI)"
+          }
+        },
+        "kuvaus" : {
+          "fi" : "Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä."
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AKTV",
+            "nimi" : {
+              "fi" : "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Kurssilla opitaan hallitsemaan asunto- ja kiinteistöosakeyhtiön taloutta ja verotusta."
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "liittyyTutkinnonOsaan" : {
+          "koodiarvo" : "101481",
+          "koodistoUri" : "tutkinnonosat"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tutkinnonosaapienempikokonaisuus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ATK",
+            "nimi" : {
+              "fi" : "Tietokoneiden huolto"
+            }
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "osaamispistettä",
+                "sv" : "kompetenspoäng",
+                "en" : "ECVET competence points"
+              },
+              "lyhytNimi" : {
+                "fi" : "osp",
+                "sv" : "kp",
+                "en" : "competence points"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Kurssilla opitaan korjaamaan tietokoneita."
+          }
+        },
+        "liittyyTutkinnonOsaan" : {
+          "koodiarvo" : "101481",
+          "koodistoUri" : "tutkinnonosat"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tutkinnonosaapienempikokonaisuus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FK",
+            "koodistoUri" : "ammatillisenoppiaineet"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AI",
+            "koodistoUri" : "ammatillisenoppiaineet"
+          },
+          "kieli" : {
+            "koodiarvo" : "AI1",
+            "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+          },
+          "pakollinen" : false
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ETK",
+            "koodistoUri" : "ammatillisenoppiaineet"
+          },
+          "pakollinen" : true
+        },
+        "tunnustettu" : {
+          "osaaminen" : {
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "100238",
+                "nimi" : {
+                  "fi" : "Asennushitsaus"
+                },
+                "koodistoUri" : "tutkinnonosat"
+              },
+              "pakollinen" : true
+            },
+            "tyyppi" : {
+              "koodiarvo" : "ammatillisentutkinnonosa",
+              "koodistoUri" : "suorituksentyyppi"
+            }
+          },
+          "selite" : {
+            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+          },
+          "rahoituksenPiirissä" : false
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PS",
+            "koodistoUri" : "ammatillisenoppiaineet"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 5.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "osaamispistettä",
+                "sv" : "kompetenspoäng",
+                "en" : "ECVET competence points"
+              },
+              "lyhytNimi" : {
+                "fi" : "osp",
+                "sv" : "kp",
+                "en" : "competence points"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tunnustettu" : {
+          "osaaminen" : {
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "100238",
+                "nimi" : {
+                  "fi" : "Asennushitsaus"
+                },
+                "koodistoUri" : "tutkinnonosat"
+              },
+              "pakollinen" : true
+            },
+            "tyyppi" : {
+              "koodiarvo" : "ammatillisentutkinnonosa",
+              "koodistoUri" : "suorituksentyyppi"
+            }
+          },
+          "selite" : {
+            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+          },
+          "rahoituksenPiirissä" : true
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2018-01-01"
+  } ]
+}

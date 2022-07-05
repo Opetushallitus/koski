@@ -165,7 +165,7 @@ object AmmatillinenExampleData {
   lazy val suoritettu: Koodistokoodiviite = Koodistokoodiviite("Suoritettu", Some("Suoritettu"), "arviointiasteikkomuuammatillinenkoulutus", Some(1))
   lazy val tunnustettu: OsaamisenTunnustaminen = OsaamisenTunnustaminen(
     Some(MuunAmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
+      koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat"), true, None),
       suorituskieli = None,
       alkamispäivä = None,
       toimipiste = None
@@ -197,7 +197,7 @@ object AmmatillinenExampleData {
   def primusLähdejärjestelmäId(ooId: String) = LähdejärjestelmäId(Some(ooId), lähdePrimus)
 
   def autonLisävarustetyöt(pakollinen: Boolean, kuvaus: String = "Tuunaus") = MuuValtakunnallinenTutkinnonOsa(
-    Koodistokoodiviite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", Some(1)),
+    Koodistokoodiviite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat"),
     pakollinen,
     Some(LaajuusOsaamispisteissä(15)),
     Some(kuvaus)
@@ -240,7 +240,7 @@ object AmmatillinenExampleData {
   }
 
   def yhteisenTutkinnonOsanSuoritus(koodi: String, nimi: String, arvosana: Koodistokoodiviite, laajuus: Float): YhteisenAmmatillisenTutkinnonOsanSuoritus = {
-    val osa = YhteinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, Some(LaajuusOsaamispisteissä(laajuus)))
+    val osa = YhteinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat"), true, Some(LaajuusOsaamispisteissä(laajuus)))
     YhteisenAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = osa,
       tutkinnonOsanRyhmä = yhteisetTutkinnonOsat,
@@ -254,7 +254,7 @@ object AmmatillinenExampleData {
   }
 
   def tutkinnonOsanSuoritus(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], laajuus: Option[Float]): AmmatillisenTutkinnonOsanSuoritus = {
-    val osa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
+    val osa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat"), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = osa,
       tutkinnonOsanRyhmä = ryhmä,
@@ -289,7 +289,7 @@ object AmmatillinenExampleData {
   }
 
   def osittaisenTutkinnonTutkinnonOsanSuoritus(arvosana: Koodistokoodiviite, ryhmä: Option[Koodistokoodiviite], koodi: String, nimi: String, laajuus: Int): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus = {
-    val osa = MuuValtakunnallinenTutkinnonOsa(tunniste = Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, Some(LaajuusOsaamispisteissä(laajuus)))
+    val osa = MuuValtakunnallinenTutkinnonOsa(tunniste = Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat"), true, Some(LaajuusOsaamispisteissä(laajuus)))
     MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
       koulutusmoduuli = osa,
       tutkinnonOsanRyhmä = ryhmä,
@@ -303,7 +303,7 @@ object AmmatillinenExampleData {
   }
 
   def yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(arvosana: Koodistokoodiviite, ryhmä: Option[Koodistokoodiviite], koodi: String, nimi: String, laajuus: Int): YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus = {
-    val osa = YhteinenTutkinnonOsa(tunniste = Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, Some(LaajuusOsaamispisteissä(laajuus)))
+    val osa = YhteinenTutkinnonOsa(tunniste = Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat"), true, Some(LaajuusOsaamispisteissä(laajuus)))
     YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
       koulutusmoduuli = osa,
       tutkinnonOsanRyhmä = ryhmä,

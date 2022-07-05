@@ -619,7 +619,7 @@ object AmmatillinenOldExamples {
   lazy val tutkinnonOsat = List(
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
-        Koodistokoodiviite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat", Some(1)),
+        Koodistokoodiviite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat"),
         true,
         laajuus = None
       ),
@@ -638,7 +638,7 @@ object AmmatillinenOldExamples {
     paikallisenOsanSuoritus,
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
-        Koodistokoodiviite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat", Some(1)),
+        Koodistokoodiviite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat"),
         true,
         None
       ),
@@ -656,7 +656,7 @@ object AmmatillinenOldExamples {
     ),
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
-        Koodistokoodiviite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", Some(1)),
+        Koodistokoodiviite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat"),
         true,
         None
       ),
@@ -688,7 +688,7 @@ object AmmatillinenOldExamples {
     ),
     MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(
-        Koodistokoodiviite("101050", Some("Yritystoiminnan suunnittelu"), "tutkinnonosat", Some(1)),
+        Koodistokoodiviite("101050", Some("Yritystoiminnan suunnittelu"), "tutkinnonosat"),
         true,
         None
       ),

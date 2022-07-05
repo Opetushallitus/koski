@@ -55,7 +55,7 @@ object ExamplesValma {
 
   lazy val tunnustettu: Some[OsaamisenTunnustaminen] = Some(OsaamisenTunnustaminen(
     osaaminen = Some(MuunAmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100209", Some("Asennuksen ja automaation perustyöt"), "tutkinnonosat", Some(1)), true, None),
+      koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100209", Some("Asennuksen ja automaation perustyöt"), "tutkinnonosat"), true, None),
       suorituskieli = None,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
