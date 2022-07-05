@@ -1,16 +1,21 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.oppijaservice
 
-import java.time.LocalDateTime
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema.{InternationalSchoolOpiskeluoikeus, InternationalSchoolVuosiluokanSuoritus, KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenSuoritus, PerusopetuksenOpiskeluoikeus, PerusopetuksenVuosiluokanSuoritus, Ryhmällinen}
+import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
+import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
+import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot}
 import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.ValpasMockUser
+import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasOppijaSuppeatTiedot, ValpasTestBase}
+import org.scalatest.BeforeAndAfterEach
+
+import java.time.LocalDateTime
 
 case class ExpectedDataPerusopetusTiedot(
   tarkastelupäivänTila: String,
@@ -70,7 +75,22 @@ object ExpectedOppijaData {
     )
 }
 
-trait ValpasOppijaServiceTestBase extends ValpasTestBase {
+trait ValpasOppijaServiceTestBase extends ValpasTestBase with BeforeAndAfterEach {
+
+  override protected def beforeEach() {
+    super.beforeEach()
+    KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
+  }
+
+  override protected def afterEach(): Unit = {
+    KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+      .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
+    super.afterEach()
+  }
+
   protected val oppijaLaajatTiedotService = KoskiApplicationForTests.valpasOppijaLaajatTiedotService
   protected val oppijaSuppeatTiedotService = KoskiApplicationForTests.valpasOppijaSuppeatTiedotService
   protected val rajapäivätService = KoskiApplicationForTests.valpasRajapäivätService
@@ -78,21 +98,6 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
   protected val amisOppilaitos = MockOrganisaatiot.stadinAmmattiopisto
   protected val organisaatioRepository = KoskiApplicationForTests.organisaatioRepository
   protected val kuntailmoitusRepository = KoskiApplicationForTests.valpasKuntailmoitusRepository
-
-  protected def validateKunnanIlmoitetutOppijat(
-    organisaatioOid: Oid,
-    user: ValpasMockUser
-  )(expectedOppijat: Seq[LaajatOppijaHenkilöTiedot]) = {
-    val result = getKunnanIlmoitetutOppijat(organisaatioOid, user)
-    result.map(_.map(_.oppija.henkilö.oid).sorted) shouldBe Right(expectedOppijat.map(_.oid).sorted)
-  }
-
-  private def getKunnanIlmoitetutOppijat(organisaatioOid: Oid, user: ValpasMockUser) = {
-    oppijaSuppeatTiedotService.getKunnanOppijatSuppeatTiedot(organisaatioOid)(session(user))
-  }
-
-  protected def canAccessOppijaYhteystiedoillaJaKuntailmoituksilla(oppija: LaajatOppijaHenkilöTiedot, user: ValpasMockUser): Boolean =
-    oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oppija.oid)(session(user)).isRight
 
   protected def validateOppijaLaajatTiedot(
     oppija: ValpasOppijaLaajatTiedot,
@@ -305,91 +310,6 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
     }
   }
 
-  protected def täydennäAikaleimallaJaOrganisaatiotiedoilla(
-    kuntailmoitus: ValpasKuntailmoitusLaajatTiedot,
-    aikaleima: LocalDateTime = rajapäivätService.tarkastelupäivä.atStartOfDay
-  ): ValpasKuntailmoitusLaajatTiedot  = {
-    // Yksinkertaista vertailukoodia testissä tekemällä samat aikaleiman ja organisaatiodatan täydennykset mitkä tehdään tuotantokoodissa.
-    kuntailmoitus.copy(
-      aikaleima = Some(aikaleima),
-      tekijä = kuntailmoitus.tekijä.copy(
-        organisaatio = organisaatioRepository.getOrganisaatio(kuntailmoitus.tekijä.organisaatio.oid).get
-      ),
-      kunta = organisaatioRepository.getOrganisaatio(kuntailmoitus.kunta.oid).get
-    )
-  }
-
-  protected def karsiPerustietoihin(kuntailmoitus: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusLaajatTiedot = {
-    kuntailmoitus.copy(
-      tekijä = kuntailmoitus.tekijä.copy(
-        henkilö = None
-      ),
-      yhteydenottokieli = None,
-      oppijanYhteystiedot = None,
-      hakenutMuualle = None
-    )
-  }
-
-  protected def oppijanPuhelinnumerolla(puhelinnumero: String, kuntailmoitus: ValpasKuntailmoitusLaajatTiedot): ValpasKuntailmoitusLaajatTiedot =
-    kuntailmoitus.copy(
-      oppijanYhteystiedot = Some(kuntailmoitus.oppijanYhteystiedot.get.copy(
-        puhelinnumero = Some(puhelinnumero)
-      ))
-    )
-
-  protected def validateKuntailmoitukset(oppija: OppijaHakutilanteillaLaajatTiedot, expectedIlmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]) = {
-    def clueMerkkijono(kuntailmoitus: ValpasKuntailmoitusLaajatTiedot): String =
-      s"${kuntailmoitus.tekijä.organisaatio.nimi.get.get("fi")}=>${kuntailmoitus.kunta.kotipaikka.get.nimi.get.get("fi")}"
-
-    val maybeIlmoitukset = oppija.kuntailmoitukset.map(o => Some(o))
-    val maybeExpectedData = expectedIlmoitukset.map(o => Some(o))
-
-    maybeIlmoitukset.zipAll(maybeExpectedData, None, None).zipWithIndex.foreach {
-      case (element, index) => {
-        withClue(s"index ${index}: ") {
-          element match {
-            case (Some(kuntailmoitusLisätiedoilla), Some(expectedData)) => {
-              val clue = makeClue("ValpasKuntailmoitusLaajatTiedot", Seq(
-                s"${kuntailmoitusLisätiedoilla.id}",
-                clueMerkkijono(kuntailmoitusLisätiedoilla)
-              ))
-
-              withClue(clue) {
-                withClue("aktiivinen") {
-                  kuntailmoitusLisätiedoilla.aktiivinen should equal(expectedData.aktiivinen)
-                }
-                withClue("kunta") {
-                  kuntailmoitusLisätiedoilla.kunta should equal(expectedData.kunta)
-                }
-                withClue("aikaleiman päivämäärä") {
-                  kuntailmoitusLisätiedoilla.aikaleima.map(_.toLocalDate) should equal(expectedData.aikaleima.map(_.toLocalDate))
-                }
-                withClue("tekijä") {
-                  kuntailmoitusLisätiedoilla.tekijä should equal(expectedData.tekijä)
-                }
-                withClue("yhteydenottokieli") {
-                  kuntailmoitusLisätiedoilla.yhteydenottokieli should equal(expectedData.yhteydenottokieli)
-                }
-                withClue("oppijanYhteystiedot") {
-                  kuntailmoitusLisätiedoilla.oppijanYhteystiedot should equal(expectedData.oppijanYhteystiedot)
-                }
-                withClue("hakenutMuualle") {
-                  kuntailmoitusLisätiedoilla.hakenutMuualle should equal(expectedData.hakenutMuualle)
-                }
-              }
-            }
-            case (None, Some(expectedData)) =>
-              fail(s"Ilmoitus puuttuu: oppija.oid:${oppija.oppija.henkilö.oid} oppija.hetu:${oppija.oppija.henkilö.hetu} ilmoitus:${clueMerkkijono(expectedData)}")
-            case (Some(kuntailmoitusLisätiedoilla), None) =>
-              fail(s"Saatiin ylimääräinen ilmoitus: oppija.oid:${oppija.oppija.henkilö.oid} oppija.hetu:${oppija.oppija.henkilö.hetu} ilmoitus:${clueMerkkijono(kuntailmoitusLisätiedoilla)}")
-            case _ =>
-              fail("Internal error")
-          }
-        }
-      }
-    }
-  }
-
-  private def makeClue(otsikko: String, tiedot: Seq[String]): String =
+  protected def makeClue(otsikko: String, tiedot: Seq[String]): String =
     s"${otsikko}(${tiedot.mkString("/")}) :"
 }
