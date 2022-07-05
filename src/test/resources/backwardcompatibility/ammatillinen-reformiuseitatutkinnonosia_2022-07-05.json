@@ -1,0 +1,1498 @@
+{
+  "henkilö" : {
+    "oid" : "1.2.246.562.24.00000000001"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "arvioituPäättymispäivä" : "2015-05-31",
+    "ostettu" : false,
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "361902",
+          "nimi" : {
+            "fi" : "Autoalan perustutkinto"
+          },
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "62/011/2014"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "reformi",
+        "nimi" : {
+          "fi" : "Ammatillinen perustutkinto"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
+      },
+      "tutkintonimike" : [ {
+        "koodiarvo" : "10024",
+        "nimi" : {
+          "fi" : "Autokorinkorjaaja"
+        },
+        "koodistoUri" : "tutkintonimikkeet"
+      } ],
+      "toinenTutkintonimike" : true,
+      "osaamisala" : [ {
+        "osaamisala" : {
+          "koodiarvo" : "1525",
+          "nimi" : {
+            "fi" : "Autokorinkorjauksen osaamisala"
+          },
+          "koodistoUri" : "osaamisala"
+        }
+      } ],
+      "toinenOsaamisala" : false,
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2016-05-31",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.52251087186",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "10105",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "järjestämismuodot" : [ {
+        "alku" : "2012-09-01",
+        "järjestämismuoto" : {
+          "tunniste" : {
+            "koodiarvo" : "10",
+            "nimi" : {
+              "fi" : "Oppilaitosmuotoinen"
+            },
+            "koodistoUri" : "jarjestamismuoto",
+            "koodistoVersio" : 1
+          }
+        }
+      } ],
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100001",
+            "nimi" : {
+              "fi" : "Audiovisuaalisen tuotannon toteuttaminen"
+            },
+            "koodistoUri" : "tutkinnonosat"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 20.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "osaamispistettä",
+                "sv" : "kompetenspoäng",
+                "en" : "ECVET competence points"
+              },
+              "lyhytNimi" : {
+                "fi" : "osp",
+                "sv" : "kp",
+                "en" : "competence points"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "2",
+            "nimi" : {
+              "fi" : "H2"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2015-01-01",
+          "hyväksytty" : true
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Reijo Reksi",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tunnustettu" : {
+          "osaaminen" : {
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "100238",
+                "nimi" : {
+                  "fi" : "Asennushitsaus"
+                },
+                "koodistoUri" : "tutkinnonosat"
+              },
+              "pakollinen" : true
+            },
+            "tyyppi" : {
+              "koodiarvo" : "ammatillisentutkinnonosa",
+              "koodistoUri" : "suorituksentyyppi"
+            }
+          },
+          "selite" : {
+            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+          },
+          "rahoituksenPiirissä" : false
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100003",
+            "nimi" : {
+              "fi" : "Paikallinen kurssi"
+            },
+            "koodistoUri" : "tutkinnonosat"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 3.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "osaamispistettä",
+                "sv" : "kompetenspoäng",
+                "en" : "ECVET competence points"
+              },
+              "lyhytNimi" : {
+                "fi" : "osp",
+                "sv" : "kp",
+                "en" : "competence points"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "2",
+            "nimi" : {
+              "fi" : "H2"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100002",
+            "nimi" : {
+              "fi" : "Televisiotuotanto"
+            },
+            "koodistoUri" : "tutkinnonosat"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 25.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "osaamispistettä",
+                "sv" : "kompetenspoäng",
+                "en" : "ECVET competence points"
+              },
+              "lyhytNimi" : {
+                "fi" : "osp",
+                "sv" : "kp",
+                "en" : "competence points"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20",
+          "hyväksytty" : true
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Reijo Reksi",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tunnustettu" : {
+          "osaaminen" : {
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "100238",
+                "nimi" : {
+                  "fi" : "Asennushitsaus"
+                },
+                "koodistoUri" : "tutkinnonosat"
+              },
+              "pakollinen" : true
+            },
+            "tyyppi" : {
+              "koodiarvo" : "ammatillisentutkinnonosa",
+              "koodistoUri" : "suorituksentyyppi"
+            }
+          },
+          "selite" : {
+            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+          },
+          "rahoituksenPiirissä" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "htm",
+              "nimi" : {
+                "fi" : "Hoitotarpeen määrittäminen"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Hoitotarpeen määrittäminen"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "nimi" : {
+                "fi" : "Hyväksytty"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+              "koodistoVersio" : 1
+            },
+            "päivä" : "2013-03-20",
+            "arvioitsijat" : [ {
+              "nimi" : "Jaana Arstila"
+            }, {
+              "nimi" : "Pekka Saurmann"
+            }, {
+              "nimi" : "Juhani Mykkänen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosaapienempikokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100432",
+            "nimi" : {
+              "fi" : "Ympäristön hoitaminen"
+            },
+            "koodistoUri" : "tutkinnonosat"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 30.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "osaamispistettä",
+                "sv" : "kompetenspoäng",
+                "en" : "ECVET competence points"
+              },
+              "lyhytNimi" : {
+                "fi" : "osp",
+                "sv" : "kp",
+                "en" : "competence points"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20",
+          "hyväksytty" : true
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Reijo Reksi",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Muksulan päiväkoti, Kaarinan kunta"
+            }
+          },
+          "suoritusaika" : {
+            "alku" : "2016-02-01",
+            "loppu" : "2016-02-01"
+          },
+          "työssäoppimisenYhteydessä" : false,
+          "arviointi" : {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "arvioitsijat" : [ {
+              "nimi" : "Jaana Arstila",
+              "ntm" : true
+            }, {
+              "nimi" : "Pekka Saurmann",
+              "ntm" : true
+            }, {
+              "nimi" : "Juhani Mykkänen",
+              "ntm" : false
+            } ],
+            "arviointikohteet" : [ {
+              "tunniste" : {
+                "koodiarvo" : "1",
+                "nimi" : {
+                  "fi" : "Työprosessin hallinta"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "K3"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            }, {
+              "tunniste" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "Työmenetelmien, -välineiden ja materiaalin hallinta"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "H2"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            }, {
+              "tunniste" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "Työn perustana olevan tiedon hallinta"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "H2"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            }, {
+              "tunniste" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "Elinikäisen oppimisen avaintaidot"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "K3"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            } ],
+            "arvioinnistaPäättäneet" : [ {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "Opettaja"
+              },
+              "koodistoUri" : "ammatillisennaytonarvioinnistapaattaneet"
+            } ],
+            "arviointikeskusteluunOsallistuneet" : [ {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "Opettaja"
+              },
+              "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
+            }, {
+              "koodiarvo" : "4",
+              "nimi" : {
+                "fi" : "Opiskelija"
+              },
+              "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
+            } ],
+            "hyväksytty" : true
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "101053",
+            "nimi" : {
+              "fi" : "Viestintä- ja vuorovaikutusosaaminen"
+            },
+            "koodistoUri" : "tutkinnonosat"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 14.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "osaamispistettä",
+                "sv" : "kompetenspoäng",
+                "en" : "ECVET competence points"
+              },
+              "lyhytNimi" : {
+                "fi" : "osp",
+                "sv" : "kp",
+                "en" : "competence points"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "2",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "2",
+            "nimi" : {
+              "fi" : "H2"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20",
+          "hyväksytty" : true
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Reijo Reksi",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AI",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "kieli" : {
+              "koodiarvo" : "AI1",
+              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 5.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AI",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "kieli" : {
+              "koodiarvo" : "AI1",
+              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+            },
+            "pakollinen" : false,
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TK1",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "kieli" : {
+              "koodiarvo" : "SV",
+              "koodistoUri" : "kielivalikoima"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "VK",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "kieli" : {
+              "koodiarvo" : "EN",
+              "koodistoUri" : "kielivalikoima"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PS",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "0",
+              "nimi" : {
+                "fi" : "H"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "VVTK",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "kieli" : {
+              "koodiarvo" : "EN",
+              "koodistoUri" : "kielivalikoima"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "101054",
+            "nimi" : {
+              "fi" : "Matemaattis-luonnontieteellinen osaaminen"
+            },
+            "koodistoUri" : "tutkinnonosat"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 9.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "osaamispistettä",
+                "sv" : "kompetenspoäng",
+                "en" : "ECVET competence points"
+              },
+              "lyhytNimi" : {
+                "fi" : "osp",
+                "sv" : "kp",
+                "en" : "competence points"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "2",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20",
+          "hyväksytty" : true
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Reijo Reksi",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tunnustettu" : {
+          "osaaminen" : {
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "100238",
+                "nimi" : {
+                  "fi" : "Asennushitsaus"
+                },
+                "koodistoUri" : "tutkinnonosat"
+              },
+              "pakollinen" : true
+            },
+            "tyyppi" : {
+              "koodiarvo" : "ammatillisentutkinnonosa",
+              "koodistoUri" : "suorituksentyyppi"
+            }
+          },
+          "selite" : {
+            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+          },
+          "rahoituksenPiirissä" : true
+        },
+        "lisätiedot" : [ {
+          "tunniste" : {
+            "koodiarvo" : "mukautettu",
+            "koodistoUri" : "ammatillisentutkinnonosanlisatieto"
+          },
+          "kuvaus" : {
+            "fi" : "Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MA",
+              "nimi" : {
+                "fi" : "Matematiikka"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Matematiikan opinnot"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FK",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tunnustettu" : {
+            "osaaminen" : {
+              "koulutusmoduuli" : {
+                "tunniste" : {
+                  "koodiarvo" : "100238",
+                  "nimi" : {
+                    "fi" : "Asennushitsaus"
+                  },
+                  "koodistoUri" : "tutkinnonosat"
+                },
+                "pakollinen" : true
+              },
+              "tyyppi" : {
+                "koodiarvo" : "ammatillisentutkinnonosa",
+                "koodistoUri" : "suorituksentyyppi"
+              }
+            },
+            "selite" : {
+              "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+            },
+            "rahoituksenPiirissä" : false
+          },
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TVT",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "alkamispäivä" : "2014-01-01",
+          "lisätiedot" : [ {
+            "tunniste" : {
+              "koodiarvo" : "mukautettu",
+              "koodistoUri" : "ammatillisentutkinnonosanlisatieto"
+            },
+            "kuvaus" : {
+              "fi" : "Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella"
+            }
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "tutkinnonosatvalinnanmahdollisuus"
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "de",
+              "nimi" : {
+                "fi" : "Saksa"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Saksa"
+            },
+            "laajuus" : {
+              "arvo" : 5.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillinenkorkeakouluopintoja",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "tutkinnonosatvalinnanmahdollisuus"
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA",
+              "nimi" : {
+                "fi" : "Maantieto"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Lukion maantiedon oppimäärä"
+            },
+            "perusteenDiaarinumero" : "33/011/2003"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillinenlukionopintoja",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "EN",
+              "nimi" : {
+                "fi" : "Englanti"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Englannin kurssi"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "perusteenDiaarinumero" : "33/011/2003"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillinenlukionopintoja",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TVT",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "osaamispistettä",
+                  "sv" : "kompetenspoäng",
+                  "en" : "ECVET competence points"
+                },
+                "lyhytNimi" : {
+                  "fi" : "osp",
+                  "sv" : "kp",
+                  "en" : "competence points"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "htm",
+              "nimi" : {
+                "fi" : "Hoitotarpeen määrittäminen"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Hoitotarpeen määrittäminen"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "todistuksellaNäkyvätLisätiedot" : {
+        "fi" : "Suorittaa toista osaamisalaa"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "ammatillinentutkintoosittainen",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2012-09-01",
+    "päättymispäivä" : "2016-06-04"
+  } ]
+}
