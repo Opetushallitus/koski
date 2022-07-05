@@ -148,6 +148,13 @@ object ValpasMockOppijat {
   val perusopetukseenValmistavastaValmistunut17Vuotias = valpasOppijat.oppijaSyntymäaikaHetusta("Perusopetukseen-valmistavasta-valmistunut-17-vuotta-täyttävä", "Valpas", "290504A780X", kotikunta = Some("091"))
   val perusopetukseenValmistavastaEronnut17Vuotias = valpasOppijat.oppijaSyntymäaikaHetusta("Perusopetukseen-valmistavasta-eronnut-17-vuotta-täyttävä", "Valpas", "210604A184B", kotikunta = Some("091"))
   val sureHautAinaEpäonnistuvaOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Sure-haut-aina-epäonnistuvat", "Valpas", "180704A3397", kotikunta = Some("091"))
+  val eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-ei-oppivelvollinen-alle-18-v", "Valpas", "250903A698N", kotikunta = Some("091"))
+  val eiKoskessaOppivelvollinenAhvenanmaalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-ahvenanmaalainen", "Valpas", "050705A749A", kotikunta = Some("170"))
+  val eiKoskessaOppivelvollinenAhvenanmaalainenTurvakiellollinen = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-ahvenanmaalainen-turvakielto", "Valpas", "091105A8136", turvakielto = true, kotikunta = Some("170"))
+  val eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-keskeytyksiä-ilmoituksia", "Valpas", "260705A1119", kotikunta = Some("091"))
+  val eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaSlave = valpasOppijat.duplicate(eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia.copy(hetu = None))
+  val eiKoskessaHetuton = valpasOppijat.oppija("Kosketon-hetuton", "Valpas", "", syntymäaika = Some(LocalDate.of(2005, 3, 3)), kotikunta = Some("091"))
+  val eiKoskessa7VuottaTäyttävä = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-7-vuotta-täyttävä", "Valpas", "160614A587P", kotikunta = Some("091"))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

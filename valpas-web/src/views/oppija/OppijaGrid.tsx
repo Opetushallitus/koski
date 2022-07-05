@@ -12,10 +12,7 @@ import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { t, T } from "../../i18n/i18n"
 import { HakuLaajatTiedot } from "../../state/apitypes/haku"
 import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
-import {
-  isAktiivinenKansalainenKuntailmoitus,
-  KansalainenOppijatiedot,
-} from "../../state/apitypes/kansalainen"
+import { KansalainenOppijatiedot } from "../../state/apitypes/kansalainen"
 import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { OppivelvollisuudenKeskeytys } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
@@ -50,9 +47,7 @@ export type KansalainenGridProps = {
 }
 
 export const KansalainenGrid = (props: KansalainenGridProps) => {
-  const kuntailmoitukset = props.data.kuntailmoitukset.filter(
-    isAktiivinenKansalainenKuntailmoitus
-  )
+  const kuntailmoitukset = props.data.kuntailmoitukset
 
   return (
     <Grid

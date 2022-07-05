@@ -12,6 +12,7 @@ const b = bem("modal")
 export type ModalProps = {
   children: React.ReactNode
   title?: React.ReactNode
+  testId?: string
   onClose?: () => void
   closeOnBackgroundClick?: boolean
 }
@@ -31,6 +32,7 @@ export const Modal = (props: ModalProps) => {
         hidden={animation.hidden}
         onClose={animation.hide}
         title={props.title}
+        testId={props.testId}
       >
         {props.children}
       </Container>
@@ -73,6 +75,7 @@ const Background = (props: BackgroundProps) => {
 
 type ContainerProps = ModalProps & {
   hidden: boolean
+  testId?: string
 }
 
 const Container = (props: ContainerProps) => (
@@ -83,11 +86,24 @@ const Container = (props: ContainerProps) => (
     })}
     role="dialog"
   >
-    <div className={b("header")}>
-      <h2 className={b("title")}>{props.title}</h2>
+    <div
+      className={b("header")}
+      data-testid={`${props.testId ? props.testId : ""}__container-header`}
+    >
+      <h2
+        className={b("title")}
+        data-testid={`${
+          props.testId ? props.testId : ""
+        }__container-header-title`}
+      >
+        {props.title}
+      </h2>
       {props.onClose && (
         <FlatButton
           className={b("closebutton")}
+          data-testid={`${
+            props.testId ? props.testId : ""
+          }__container-close-button`}
           onClick={props.onClose}
           aria-label={t("closebutton_aria_label")}
         >

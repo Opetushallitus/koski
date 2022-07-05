@@ -21,6 +21,26 @@ abstract class ValpasRajapäivätService(config: Config) extends Logging {
   def oppivelvollisuusAlkaa(syntymäpäivä: LocalDate): LocalDate =
     oppivelvollisuusAlkaaPäivämäärä.withYear(syntymäpäivä.getYear + oppivelvollisuusAlkaaIka)
 
+  // Vain ONR:ssä olevan oppivelvollisen tiedot voi näyttää 1 kk ennenkuin oppivelvollisuus on alkanut, jotta
+  // hänelle voi esim. kirjata oppivelvollisuuden keskeytyksen.
+  def oppijaOnTarpeeksiVanhaKeskeytysmerkintöjäVarten(syntymäaika: Option[LocalDate]): Boolean =
+    syntymäaika match {
+      case Some(pvm) => !tarkastelupäivä.isBefore(oppivelvollisuusAlkaa(pvm).minusMonths(1))
+      case _ => false
+    }
+
+  def oppivelvollisuusVoimassaAstiIänPerusteella(syntymäpäivä: LocalDate): LocalDate = {
+    // Huom! Sama logiikka on myös SQL:nä Oppivelvollisuustiedot-luokan luomassa materialized view:ssä.
+    // Varmista muutosten jälkeen, että logiikka säilyy samana.
+    syntymäpäivä.plusYears(oppivelvollisuusLoppuuIka.toLong).minusDays(1)
+  }
+
+  def maksuttomuusVoimassaAstiIänPerusteella(syntymäpäivä: LocalDate): LocalDate = {
+    // Huom! Sama logiikka on myös SQL:nä Oppivelvollisuustiedot-luokan luomassa materialized view:ssä.
+    // Varmista muutosten jälkeen, että logiikka säilyy samana.
+    date(syntymäpäivä.plusYears(maksuttomuusLoppuuIka.toLong).getYear, 12, 31)
+  }
+
   def oppivelvollisuusLoppuuIka: Integer =
     config.getInt(ValpasRajapäivätService.OppivelvollisuusLoppuuIkaPath)
 
@@ -75,6 +95,14 @@ abstract class ValpasRajapäivätService(config: Config) extends Logging {
 
   def kuntailmoitusAktiivisuusKuukausina: Long =
     config.getLong(ValpasRajapäivätService.kuntailmoitusAktiivisuusKuukausina)
+
+  def onAlle18VuotiasTarkastelupäivänä(syntymäaika: Option[LocalDate]): Boolean = {
+    syntymäaika match {
+      case Some(d) if d.plusYears(18).isAfter(tarkastelupäivä) => true
+      case Some(_) => false
+      case _ => false // Jos syntymäaika puuttuu, oletetaan täysi-ikäiseksi
+    }
+  }
 
   private val keväänValmistumisjaksoPituusPäivinä: Long =
     config.getLong(ValpasRajapäivätService.KeväänValmistumisjaksoPituusPäivinäPath)

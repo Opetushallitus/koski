@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.kela
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log._
 import fi.oph.koski.util.Timing
@@ -9,6 +10,11 @@ import fi.oph.koski.valpas.db.ValpasSchema.OppivelvollisuudenKeskeytysRow
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppivelvollisuustiedotRow
 
 class ValpasKelaService(application: KoskiApplication) extends Logging with Timing {
+  val henkilöRepository = application.henkilöRepository
+  val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
+  val rajapäivätService = application.valpasRajapäivätService
+  val oppijanumerorekisteriService = application.valpasOppijanumerorekisteriService
+
   def findValpasKelaOppijatByHetut(hetut: Seq[String]): Either[HttpStatus, Seq[ValpasKelaOppija]] = {
 
     val timedBlockName = hetut.length match {
@@ -20,7 +26,27 @@ class ValpasKelaService(application: KoskiApplication) extends Logging with Timi
 
     timed(timedBlockName, 10) {
       val oppivelvollisuusTiedot = application.valpasOpiskeluoikeusDatabaseService.getOppivelvollisuusTiedot(hetut)
-      Right(asValpasKelaOppijatWithOppivelvollisuudenKeskeytykset(oppivelvollisuusTiedot))
+      val koskeenTallennetutPalautettavatOppijat = asValpasKelaOppijatWithOppivelvollisuudenKeskeytykset(oppivelvollisuusTiedot)
+
+      val hetutJoitaEiLöytynytKoskesta = hetut.diff(oppivelvollisuusTiedot.map(_.hetu.getOrElse("")))
+
+      // Väliaikainen logitus mahdollisen ONR-kuormituksen tarkkailemiseksi seuraavassa Kelan massahaussa. Voi poistaa sen jälkeen.
+      logger.info(s"Kela haki ${hetut.length} oppijaa, joista ${hetutJoitaEiLöytynytKoskesta.length} ei löytynyt Koskesta vaan haetaan ONR:stä")
+
+      val oppijatJotkaLöytyvätOnrstä =
+        hetutJoitaEiLöytynytKoskesta.flatMap(hetu => henkilöRepository.opintopolku.findByHetu(hetu))
+          .filter(o => oppijanumerorekisteriService.onKelalleNäkyväVainOnrssäOlevaOppija(o))
+
+      val onrPalautettavatOppijat = tiedotAsValpasKelaOppijatWithOppivelvollisuudenKeskeytykset(oppijatJotkaLöytyvätOnrstä)
+
+      val oppijatJoidenMaksuttomuusoikeusOnVieläVoimassa = (koskeenTallennetutPalautettavatOppijat ++ onrPalautettavatOppijat)
+        .filter(_.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti match {
+          case Some(d) if !rajapäivätService.tarkastelupäivä.isAfter(d) => true
+          case None => true
+          case _ => false
+        })
+
+      Right(oppijatJoidenMaksuttomuusoikeusOnVieläVoimassa)
     }
   }
 
@@ -33,9 +59,7 @@ class ValpasKelaService(application: KoskiApplication) extends Logging with Timi
 
     oppijat.map(oppija => {
       val oppijanKeskeytykset =
-        oppija.kaikkiOppijaOidit
-          .map(keskeytykset)
-          .flatten
+        oppija.kaikkiOppijaOidit.flatMap(keskeytykset)
 
       asValpasKelaOppija(oppija, oppijanKeskeytykset)
     })
@@ -52,6 +76,40 @@ class ValpasKelaService(application: KoskiApplication) extends Logging with Timi
         hetu = dbRow.hetu,
         oppivelvollisuusVoimassaAsti = dbRow.oppivelvollisuusVoimassaAsti,
         oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = Some(dbRow.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti)
+      ),
+      oppivelvollisuudenKeskeytykset = keskeytykset.map(asValpasKelaOppivelvollisuudenKeskeytys)
+    )
+  }
+
+  private def tiedotAsValpasKelaOppijatWithOppivelvollisuudenKeskeytykset(oppijat: Seq[LaajatOppijaHenkilöTiedot]): Seq[ValpasKelaOppija] = {
+    val keskeytykset: Map[String, Seq[OppivelvollisuudenKeskeytysRow]] =
+      application.valpasOppivelvollisuudenKeskeytysRepository
+        .getKeskeytykset(oppijat.flatMap(o => o.kaikkiOidit))
+        .groupBy(_.oppijaOid)
+        .withDefaultValue(Seq.empty)
+
+    oppijat.map(oppija => {
+      val oppijanKeskeytykset =
+        oppija.kaikkiOidit.flatMap(keskeytykset)
+
+      asValpasKelaOppija(oppija, oppijanKeskeytykset)
+    })
+  }
+
+  private def asValpasKelaOppija(
+    oppija: LaajatOppijaHenkilöTiedot,
+    keskeytykset: Seq[OppivelvollisuudenKeskeytysRow]
+  ): ValpasKelaOppija =
+  {
+    ValpasKelaOppija(
+      henkilö = ValpasKelaHenkilö(
+        oid = oppija.oid,
+        hetu = oppija.hetu,
+        // Tänne ei pitäisi koskaan päätyä syntymäajattomalla oppijalla, koska heitä ei katsota oppivelvollisiksi
+        oppivelvollisuusVoimassaAsti =
+          rajapäivätService.oppivelvollisuusVoimassaAstiIänPerusteella(oppija.syntymäaika.get),
+        oikeusKoulutuksenMaksuttomuuteenVoimassaAsti =
+          Some(rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(oppija.syntymäaika.get))
       ),
       oppivelvollisuudenKeskeytykset = keskeytykset.map(asValpasKelaOppivelvollisuudenKeskeytys)
     )

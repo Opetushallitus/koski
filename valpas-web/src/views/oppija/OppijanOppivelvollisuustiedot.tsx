@@ -89,6 +89,7 @@ export const OppijanOppivelvollisuustiedot = (
             <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
               <RaisedButton
                 id="ovkeskeytys-btn"
+                data-testid="ovkeskeytys-btn"
                 hierarchy="secondary"
                 onClick={() => openKeskeytysModal()}
               >

@@ -51,7 +51,7 @@ describe("Kuntarouhinta", () => {
       await expectPyhtääTableContents()
 
       await expectLinkExistsForOppija(tavallinenOppija)
-      await expectNoLinkExistsForOppija(vainOnrOppija)
+      await expectLinkExistsForOppija(vainOnrOppija)
     })
 
     it("Tietojen lataamisen ja kunnan vaihtamisen jälkeen vahvistus lataamiselle kysytään uudelleen", async () => {
@@ -148,9 +148,4 @@ const oppijaRowSelector = (oppijaOid: Oid) =>
 const expectLinkExistsForOppija = async (oppijaOid: Oid) => {
   const selector = oppijaRowSelector(oppijaOid)
   await expectElementEventuallyVisible(selector)
-}
-
-const expectNoLinkExistsForOppija = async (oppijaOid: Oid) => {
-  const selector = oppijaRowSelector(oppijaOid)
-  await expectElementEventuallyNotVisible(selector)
 }

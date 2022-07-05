@@ -26,11 +26,12 @@ const b = bem("ovkeskeytys")
 
 export type OppivelvollisuudenKeskeytysFormProps = {
   organisaatiot: Organisaatio[]
+  testId?: string
   onSubmit: (aikaväli: OppivelvollisuudenKeskeytysFormValues) => void
   errors: ApiError[]
   muokattavaKeskeytys?: OppivelvollisuudenKeskeytysFormValues
   onDelete?: () => void
-}
+} & Omit<React.HTMLAttributes<HTMLElement>, "onSubmit">
 
 export type OppivelvollisuudenKeskeytysFormValues = {
   alku: ISODate
@@ -43,20 +44,28 @@ export type Aikavalinta = "määräaikainen" | "toistaiseksi"
 export const OppivelvollisuudenKeskeytysForm = (
   props: OppivelvollisuudenKeskeytysFormProps
 ) => {
+  const {
+    organisaatiot,
+    testId,
+    errors,
+    muokattavaKeskeytys,
+    onSubmit,
+    onDelete,
+    ...rest
+  } = props
   const [aikavalinta, setAikavalinta] = useState<Aikavalinta>(
-    props.muokattavaKeskeytys && props.muokattavaKeskeytys.loppu === undefined
+    muokattavaKeskeytys && muokattavaKeskeytys.loppu === undefined
       ? "toistaiseksi"
       : "määräaikainen"
   )
 
   const [toistaiseksiVahvistettu, setToistaiseksiVahvistettu] = useState(false)
   const [dateRange, setDateRange] = useState<DateRange>([
-    props.muokattavaKeskeytys?.alku || today(),
-    props.muokattavaKeskeytys?.loppu || null,
+    muokattavaKeskeytys?.alku || today(),
+    muokattavaKeskeytys?.loppu || null,
   ])
   const [organisaatio, setOrganisaatio] = useState<Oid | undefined>(
-    props.muokattavaKeskeytys?.tekijäOrganisaatioOid ||
-      props.organisaatiot[0]?.oid
+    muokattavaKeskeytys?.tekijäOrganisaatioOid || organisaatiot[0]?.oid
   )
 
   const määräaikainenSelected = aikavalinta === "määräaikainen"
@@ -67,7 +76,6 @@ export const OppivelvollisuudenKeskeytysForm = (
       ? dateRange.every((d) => d != null)
       : toistaiseksiVahvistettu)
 
-  const { onSubmit } = props
   const submit = useCallback(() => {
     if (
       määräaikainenSelected &&
@@ -97,17 +105,16 @@ export const OppivelvollisuudenKeskeytysForm = (
     toistaiseksiSelected,
     toistaiseksiVahvistettu,
   ])
-
   return (
-    <section className={b()}>
-      {props.organisaatiot.length !== 1 ? (
+    <section className={b()} {...rest}>
+      {organisaatiot.length !== 1 ? (
         <Dropdown
           label={t("ovkeskeytys__organisaatio")}
-          options={organisaatiotToOptions(props.organisaatiot)}
+          options={organisaatiotToOptions(organisaatiot)}
           value={organisaatio}
           onChange={setOrganisaatio}
           testId="organisaatio"
-          disabled={Boolean(props.muokattavaKeskeytys)}
+          disabled={Boolean(muokattavaKeskeytys)}
         />
       ) : null}
 
@@ -115,6 +122,7 @@ export const OppivelvollisuudenKeskeytysForm = (
         selected={määräaikainenSelected}
         onSelect={() => setAikavalinta("määräaikainen")}
         label={t("ovkeskeytys__keskeytys_määräajalle")}
+        testId={"ovkeskeytys-maaraaikainen-option"}
       >
         <DateRangePicker
           value={dateRange}
@@ -127,6 +135,7 @@ export const OppivelvollisuudenKeskeytysForm = (
         selected={toistaiseksiSelected}
         onSelect={() => setAikavalinta("toistaiseksi")}
         label={t("ovkeskeytys__keskeytys_toistaiseksi")}
+        testId={"ovkeskeytys-toistaiseksi-option"}
       >
         <DatePicker
           value={dateRange[0]}
@@ -139,12 +148,13 @@ export const OppivelvollisuudenKeskeytysForm = (
           onChange={setToistaiseksiVahvistettu}
           disabled={!toistaiseksiSelected}
           className={b("confirmcb")}
+          testId={"ovkeskeytys-toistaiseksi-vahvistus"}
         />
       </OppivelvollisuudenKeskeytysOption>
 
-      {isNonEmpty(props.errors) && <ApiErrors errors={props.errors} />}
+      {isNonEmpty(errors) && <ApiErrors errors={errors} />}
 
-      {props.muokattavaKeskeytys ? (
+      {muokattavaKeskeytys ? (
         <ButtonGroup>
           <RaisedButton
             id="ovkeskeytys-submit-edit"
@@ -158,7 +168,7 @@ export const OppivelvollisuudenKeskeytysForm = (
             id="ovkeskeytys-delete"
             hierarchy="danger"
             className={b("delete")}
-            onClick={props.onDelete}
+            onClick={onDelete}
           >
             <T id="ovkeskeytys__poista_btn" />
           </RaisedButton>
@@ -166,6 +176,7 @@ export const OppivelvollisuudenKeskeytysForm = (
       ) : (
         <RaisedButton
           id="ovkeskeytys-submit"
+          data-testid="ovkeskeytys-submit"
           className={b("submit")}
           onClick={submit}
           disabled={!isOk}
@@ -181,19 +192,22 @@ type OppivelvollisuudenKeskeytysOptionProps = {
   selected: boolean
   onSelect?: () => void
   label: string
-  children: React.ReactNode
-}
+  testId?: string
+} & React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>
 
-const OppivelvollisuudenKeskeytysOption = (
-  props: OppivelvollisuudenKeskeytysOptionProps
-) => (
-  <div className={b("option")}>
-    <RadioButton
-      selected={props.selected}
-      onChange={(checked) => checked && props.onSelect?.()}
-    >
-      {props.label}
-    </RadioButton>
-    <div className={b("optionform")}>{props.children}</div>
-  </div>
-)
+const OppivelvollisuudenKeskeytysOption: React.FC<OppivelvollisuudenKeskeytysOptionProps> = (
+  props
+) => {
+  return (
+    <div className={b("option")}>
+      <RadioButton
+        selected={props.selected}
+        onChange={(checked) => checked && props.onSelect?.()}
+        testId={props.testId ? props.testId : ""}
+      >
+        {props.label}
+      </RadioButton>
+      <div className={b("optionform")}>{props.children}</div>
+    </div>
+  )
+}

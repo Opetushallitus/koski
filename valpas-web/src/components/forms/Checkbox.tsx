@@ -35,6 +35,7 @@ export const Checkbox = ({
 export type LabeledCheckboxProps = CheckboxProps & {
   label: string
   inline?: boolean
+  testId?: string
 }
 
 export const LabeledCheckbox = ({

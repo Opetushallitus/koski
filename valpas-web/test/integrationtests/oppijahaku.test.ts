@@ -161,13 +161,19 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Maksuttomuus: Haku kertoo ettei maksuttomuutta voida päätellä, jos ikänsä puolesta uuden lain mukaan oppivelvollinen löytyy oppijanumerorekisteristä mutta ei Koskesta", async () => {
-    await hakuLogin()
-    await fillQueryField("110405A6951", "maksuttomuusoppijasearch")
+  it("Maksuttomuus: Haku löytää opijan, joka on ikänsä puolesta uuden lain mukaan oppivelvollinen ja löytyy oppijanumerorekisteristä mutta ei Koskesta", async () => {
+    await hakuLogin("valpas-pelkkä-maksuttomuus")
+    await fillQueryField(
+      "1.2.246.562.24.00000000075",
+      "maksuttomuusoppijasearch"
+    )
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Maksuttomuutta ei pystytä päättelemään",
-      undefined,
+      "Löytyi: Ei-opiskeluoikeuksia-oppivelvollisuusikäinen Valpas (110405A6951)",
+      oppijaPath.href("/virkailija", {
+        oppijaOid: "1.2.246.562.24.00000000075",
+        prev: maksuttomuusPath.href(),
+      }),
       "maksuttomuusoppijasearch"
     )
   })
@@ -317,7 +323,7 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä ei ole oppivelvollisuuden suorittamiseen kelpaavia opintoja paitsi International school jota ei tällä hetkellä Valppaassa näytetä", async () => {
+  it("Maksuttomuus: Haku löytää oppijan, vaikka hänellä on oppivelvollisuuden suorittamiseen kelpaavia opintoja ainoastaan International schoolissa", async () => {
     await hakuLogin("valpas-maksuttomuus-hki")
     await fillQueryField("200405A780K", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")

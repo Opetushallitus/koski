@@ -1,5 +1,6 @@
 package fi.oph.koski.valpas.opiskeluoikeusrepository
 
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty}
@@ -17,6 +18,22 @@ trait ValpasOppija {
 
   @SyntheticProperty
   def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOpiskelu)
+}
+
+object ValpasOppijaLaajatTiedot {
+  def apply(henkilö: LaajatOppijaHenkilöTiedot, rajapäivätService: ValpasRajapäivätService, onTallennettuKoskeen: Boolean): ValpasOppijaLaajatTiedot = {
+    ValpasOppijaLaajatTiedot(
+      henkilö = ValpasHenkilöLaajatTiedot(henkilö, onTallennettuKoskeen),
+      hakeutumisvalvovatOppilaitokset = Set.empty,
+      suorittamisvalvovatOppilaitokset = Set.empty,
+      opiskeluoikeudet = Seq.empty,
+      // Tänne ei pitäisi koskaan päätyä syntymäajattomalla oppijalla, koska heitä ei katsota oppivelvollisiksi
+      oppivelvollisuusVoimassaAsti = rajapäivätService.oppivelvollisuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get),
+      oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get),
+      onOikeusValvoaMaksuttomuutta = true,
+      onOikeusValvoaKunnalla = true
+    )
+  }
 }
 
 case class ValpasOppijaLaajatTiedot(
@@ -45,6 +62,21 @@ trait ValpasHenkilö {
   def sukunimi: String
 }
 
+object ValpasHenkilöLaajatTiedot {
+  def apply(henkilö: LaajatOppijaHenkilöTiedot, onTallennettuKoskeen: Boolean): ValpasHenkilöLaajatTiedot =
+    ValpasHenkilöLaajatTiedot(
+      oid = henkilö.oid,
+      kaikkiOidit = henkilö.kaikkiOidit.toSet,
+      hetu = henkilö.hetu,
+      syntymäaika = henkilö.syntymäaika,
+      etunimet = henkilö.etunimet,
+      sukunimi = henkilö.sukunimi,
+      turvakielto = henkilö.turvakielto,
+      äidinkieli = henkilö.äidinkieli,
+      onTallennettuKoskeen = onTallennettuKoskeen
+    )
+}
+
 case class ValpasHenkilöLaajatTiedot(
   oid: ValpasHenkilö.Oid,
   kaikkiOidit: Set[ValpasHenkilö.Oid],
@@ -53,7 +85,8 @@ case class ValpasHenkilöLaajatTiedot(
   etunimet: String,
   sukunimi: String,
   turvakielto: Boolean,
-  äidinkieli: Option[String]
+  äidinkieli: Option[String],
+  onTallennettuKoskeen: Boolean = true
 ) extends ValpasHenkilö
 
 object ValpasOpiskeluoikeus {

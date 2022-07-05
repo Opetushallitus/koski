@@ -41,8 +41,7 @@ export const nullableKoulutustyyppiValue = (
 export const oppijanNimiValue = (urlBackRef: keyof OppijaPathBackRefs) => (
   henkilö: HenkilöTiedot,
   organisaatioOid: Oid,
-  basePath: string,
-  näytäLinkki: boolean = true
+  basePath: string
 ): Value => {
   const value = `${henkilö.sukunimi} ${henkilö.etunimet}`
   const linkTo = oppijaPath.href(basePath, {
@@ -52,7 +51,7 @@ export const oppijanNimiValue = (urlBackRef: keyof OppijaPathBackRefs) => (
 
   return {
     value,
-    display: näytäLinkki ? <Link to={linkTo}>{value}</Link> : undefined,
+    display: <Link to={linkTo}>{value}</Link>,
   }
 }
 

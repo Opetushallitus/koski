@@ -32,6 +32,7 @@ import { ISODate, Language } from "../../state/common"
 import { formatDate, formatDateRange, parseYear } from "../../utils/date"
 import { withoutDefaultAction } from "../../utils/events"
 import { pick } from "../../utils/objects"
+import { filterFalsy } from "../../utils/types"
 import { OppijaKuntailmoitus } from "./OppijaKuntailmoitus"
 import "./OppijanOpiskeluhistoria.less"
 import {
@@ -81,6 +82,10 @@ export const OppijanOpiskeluhistoria = (
     // Yhdistä erilaatuiset asiat yhtenäiseksi listaksi
     return pipe(
       [
+        opiskeluoikeudet.length === 0 && {
+          order: orderString("A", new Date().toISOString(), 0),
+          child: <EiOpiskeluhistoriaOpintoja key={`i-${0}-no-history`} />,
+        },
         ...ilmoitukset.map((ilmoitus, index) => ({
           order: orderString("A", ilmoitus.aikaleima, index),
           child: (
@@ -105,7 +110,7 @@ export const OppijanOpiskeluhistoria = (
             />
           ),
         })),
-      ],
+      ].filter(filterFalsy),
       A.sort(opiskeluhistoriaItemOrd),
       pick("child")
     )
@@ -124,6 +129,14 @@ export const OppijanOpiskeluhistoria = (
     </NoDataMessage>
   )
 }
+
+const EiOpiskeluhistoriaOpintoja = () => (
+  <IconSection icon={<OpiskeluIcon color="gray" />}>
+    <NoDataMessage data-testid="ei-opiskeluoikeushistoria-opintoja-text">
+      <T id="oppija__ei_opiskeluhistoriaa" />
+    </NoDataMessage>
+  </IconSection>
+)
 
 type OpiskeluhistoriaOpintoProps = {
   opiskeluoikeus: MinimiOpiskeluoikeus

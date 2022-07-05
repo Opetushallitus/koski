@@ -62,6 +62,20 @@ class OppivelvollisuustietoServletSpec extends AnyFreeSpec with KoskiHttpSpec wi
       }
     }
 
+    "Rajapinta ei palauta vain oppijanumerorekisteristä löytyviä oppijoita" in {
+      val expectedResult = List()
+
+      val oids = List(
+        KoskiSpecificMockOppijat.eiKoskessaOppivelvollinen.oid,
+      )
+
+      haeOppivelvollisuustiedot(oids, MockUsers.oppivelvollisuutietoRajapinta) {
+        verifyResponseStatusOk()
+        val response = JsonSerializer.parse[Seq[Oppivelvollisuustieto]](body)
+        response should contain theSameElementsAs(expectedResult)
+      }
+    }
+
     "Rajapinnasta kerralla haettavien tietojen määrä on rajoitettu" in {
       val oids = List.fill(10001)(koskeenTallennettujenOppijoidenOidit.head)
 

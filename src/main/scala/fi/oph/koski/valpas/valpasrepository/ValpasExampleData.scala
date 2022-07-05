@@ -100,7 +100,19 @@ object ValpasExampleData {
       oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = pyhtäänKunta).withOppijaOid(
         ValpasMockOppijat.turvakieltoOppija.oid
       )
-    )
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = pyhtäänKunta).withOppijaOid(
+        ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia.oid
+      ),
+      Some(LocalDate.of(2021, 8, 15))
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.copy(kunta = helsinginKaupunki).withOppijaOid(
+        ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaSlave.oid
+      ),
+      Some(LocalDate.of(2021, 4, 8))
+    ),
   )
 
   def ilmoitustenLisätietojenPoistot = Seq(
@@ -176,6 +188,22 @@ object ValpasExampleData {
       alku = date(2021, 8, 16),
       loppu = None,
       luotu = LocalDateTime.of(2021, 1, 1, 12, 30),
+      tekijäOid = ValpasMockUsers.valpasHelsinki.oid,
+      tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki,
+    ),
+    OppivelvollisuudenKeskeytysRow(
+      oppijaOid = ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia.oid,
+      alku = date(2021, 9, 1),
+      loppu = None,
+      luotu = LocalDateTime.of(2021, 9, 5, 12, 30),
+      tekijäOid = ValpasMockUsers.valpasHelsinki.oid,
+      tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki,
+    ),
+    OppivelvollisuudenKeskeytysRow(
+      oppijaOid = ValpasMockOppijat.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaSlave.oid,
+      alku = date(2019, 1, 1),
+      loppu = Some(date(2019, 12, 1)),
+      luotu = LocalDateTime.of(2019, 1, 2, 12, 30),
       tekijäOid = ValpasMockUsers.valpasHelsinki.oid,
       tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki,
     ),

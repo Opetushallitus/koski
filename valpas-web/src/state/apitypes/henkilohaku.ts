@@ -11,6 +11,7 @@ export type LöytyiHenkilöhakuResult = {
   hetu?: string
   etunimet: string
   sukunimi: string
+  vainOppijanumerorekisterissä?: boolean
   eiLainTaiMaksuttomuudenPiirissä?: boolean
 }
 

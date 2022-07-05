@@ -23,6 +23,10 @@ const globalAllowedNetworkErrors: NetworkErrorCase[] = [
     "SharedArrayBuffer will require cross-origin isolation as of M91, around May 2021.",
   ],
   [new RegExp("/valpas/api/oppijat/[\\d\\.]+/hakutiedot"), UNAUTHORIZED],
+  [
+    // Korhopankki functionality only used in local development causes errors on Macs, but apparently not on CI
+    new RegExp("koski-korhopankki.js"), ""
+  ],
 ]
 let testCaseSpecificAllowedNetworkErrors: NetworkErrorCase[] = []
 

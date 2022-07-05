@@ -53,7 +53,7 @@ class ValpasYtlService(application: KoskiApplication) {
     tiedotKoskessa ++
       tiedotOnrissa
         .flatMap(_.toOption) // TODO: Virheet voisi ottaa talteen?
-        .flatMap(tiedot => YtlMaksuttomuustieto(tiedot))
+        .flatMap(tiedot => YtlMaksuttomuustieto(tiedot, rajapäivät.tarkastelupäivä))
   }
 }
 

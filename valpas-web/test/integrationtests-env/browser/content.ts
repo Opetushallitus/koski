@@ -14,6 +14,8 @@ export const textEventuallyEquals = (
     expect(await element.getText()).toEqual(expected)
   }, timeout)
 
+export const testId = <Value extends string>(value: Value): `[data-testid="${Value}"]`  =>  `[data-testid="${value}"]`
+
 export const contentEventuallyEquals = (
   selector: string,
   expected: string,

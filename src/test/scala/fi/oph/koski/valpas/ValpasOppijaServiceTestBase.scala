@@ -38,6 +38,38 @@ case class ExpectedData(
   muuOpetusTiedot: Option[ExpectedDataMuuOpetusTiedot] = None,
 )
 
+case class ExpectedOppijaData(
+  oppija: LaajatOppijaHenkilöTiedot,
+  onOikeusValvoaMaksuttomuutta: Boolean,
+  onOikeusValvoaKunnalla: Boolean
+) {
+  def oid = oppija.oid
+  def sukunimi = oppija.sukunimi
+  def etunimet = oppija.etunimet
+  def kutsumanimi = oppija.kutsumanimi
+  def hetu = oppija.hetu
+  def syntymäaika = oppija.syntymäaika
+  def sukupuoli = oppija.sukupuoli
+  def äidinkieli = oppija.äidinkieli
+  def kansalaisuus = oppija.kansalaisuus
+  def modified = oppija.modified
+  def turvakielto = oppija.turvakielto
+  def linkitetytOidit = oppija.linkitetytOidit
+  def vanhatHetut = oppija.vanhatHetut
+  def kotikunta = oppija.kotikunta
+  def yksilöity = oppija.yksilöity
+  def yhteystiedot = oppija.yhteystiedot
+}
+
+object ExpectedOppijaData {
+  def apply(oppija: LaajatOppijaHenkilöTiedot): ExpectedOppijaData =
+    ExpectedOppijaData(
+      oppija,
+      onOikeusValvoaMaksuttomuutta = true,
+      onOikeusValvoaKunnalla = true
+    )
+}
+
 trait ValpasOppijaServiceTestBase extends ValpasTestBase {
   protected val oppijaLaajatTiedotService = KoskiApplicationForTests.valpasOppijaLaajatTiedotService
   protected val oppijaSuppeatTiedotService = KoskiApplicationForTests.valpasOppijaSuppeatTiedotService
@@ -66,10 +98,17 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
     oppija: ValpasOppijaLaajatTiedot,
     expectedOppija: LaajatOppijaHenkilöTiedot,
     expectedData: List[ExpectedData]
+  ): Unit =
+    validateOppijaLaajatTiedot(oppija, ExpectedOppijaData(expectedOppija), expectedData)
+
+  protected def validateOppijaLaajatTiedot(
+    oppija: ValpasOppijaLaajatTiedot,
+    expectedOppijaData: ExpectedOppijaData,
+    expectedData: List[ExpectedData]
   ): Unit = validateOppijaLaajatTiedot(
     oppija,
-    expectedOppija,
-    Set(expectedOppija.oid),
+    expectedOppijaData,
+    Set(expectedOppijaData.oppija.oid),
     expectedData
   )
 
@@ -78,7 +117,15 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
     expectedOppija: LaajatOppijaHenkilöTiedot,
     expectedOppijaOidit: Set[String],
     expectedData: List[ExpectedData]
+  ): Unit = validateOppijaLaajatTiedot(oppija, ExpectedOppijaData(expectedOppija), expectedOppijaOidit, expectedData)
+
+  protected def validateOppijaLaajatTiedot(
+    oppija: ValpasOppijaLaajatTiedot,
+    expectedOppijaData: ExpectedOppijaData,
+    expectedOppijaOidit: Set[String],
+    expectedData: List[ExpectedData]
   ): Unit = {
+    val expectedOppija = expectedOppijaData.oppija
     withClue(s"ValpasOppija(${oppija.henkilö.oid}/${oppija.henkilö.hetu}): ") {
       oppija.henkilö.oid shouldBe expectedOppija.oid
       oppija.henkilö.kaikkiOidit shouldBe expectedOppijaOidit
@@ -94,8 +141,8 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase {
       val expectedSuorittamisvalvovatOppilaitokset = expectedData.filter(_.onSuorittamisvalvovaOppilaitos).map(_.opiskeluoikeus.oppilaitos.get.oid).toSet
       oppija.suorittamisvalvovatOppilaitokset shouldBe expectedSuorittamisvalvovatOppilaitokset
 
-      oppija.onOikeusValvoaMaksuttomuutta shouldBe true // TODO: true aina, koska toistaiseksi tutkitaan vain peruskoulun hakeutumisvalvottavia
-      oppija.onOikeusValvoaKunnalla shouldBe true // TODO: true aina, koska toistaiseksi tutkitaan vain peruskoulun hakeutumisvalvottavia
+      oppija.onOikeusValvoaMaksuttomuutta shouldBe expectedOppijaData.onOikeusValvoaMaksuttomuutta
+      oppija.onOikeusValvoaKunnalla shouldBe expectedOppijaData.onOikeusValvoaKunnalla
 
       val maybeOpiskeluoikeudet = oppija.opiskeluoikeudet.map(o => Some(o))
       val maybeExpectedData = expectedData.map(o => Some(o))
