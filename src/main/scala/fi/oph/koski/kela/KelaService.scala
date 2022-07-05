@@ -89,7 +89,7 @@ class KelaService(application: KoskiApplication) extends GlobalExecutionContext 
         .map { masterHenkilöt =>
           masterHenkilöt.values.map { henkilö =>
             henkilö -> kelaOpiskeluoikeusRepository.getOppijanKaikkiOpiskeluoikeudet(
-              palautettavatOpiskeluoikeudenTyypit = KelaSchema.schemassaTuetutOpiskeluoikeustyypit(application.config),
+              palautettavatOpiskeluoikeudenTyypit = KelaSchema.schemassaTuetutOpiskeluoikeustyypit,
               oppijaMasterOids = List(henkilö.oid)
             )
           }.toMap
