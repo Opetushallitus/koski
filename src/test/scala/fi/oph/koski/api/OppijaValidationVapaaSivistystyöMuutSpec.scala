@@ -281,7 +281,7 @@ class OppijaValidationVapaaSivistystyöMuutSpec extends AnyFreeSpec with PutOpis
         )
 
         putOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vstKoto2022Alkamispäivä())
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2022())
         }
       }
 
@@ -294,7 +294,7 @@ class OppijaValidationVapaaSivistystyöMuutSpec extends AnyFreeSpec with PutOpis
         )
 
         putOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vstKoto2012Alkamispäivä())
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2012())
         }
       }
     }

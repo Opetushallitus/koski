@@ -36,8 +36,8 @@ object VSTKotoutumiskoulutus2022Validation {
       }
 
       (onRajapäivänJälkeen, pitääOllaRajapäivänJälkeen) match {
-        case (Some(true), Some(false))  => KoskiErrorCategory.badRequest.validation.rakenne.vstKoto2012Alkamispäivä()
-        case (Some(false), Some(true))  => KoskiErrorCategory.badRequest.validation.rakenne.vstKoto2022Alkamispäivä()
+        case (Some(true), Some(false))  => KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2012()
+        case (Some(false), Some(true))  => KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2022()
         case _ => HttpStatus.ok
       }
     }))
