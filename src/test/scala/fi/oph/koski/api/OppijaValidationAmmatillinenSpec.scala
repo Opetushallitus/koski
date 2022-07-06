@@ -921,6 +921,32 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
       }
     }
+
+    "Yhteisen tutkinnon osan osa-alueen viestintä- ja vuorovaikutus kielivalinnalla suoritus VVAI22" - {
+      "Koodia VVAI22 ei saa tallentaa jos opiskeluoikeus on alkanut ennen 1.8.2022" in {
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(
+          osasuoritukset = Some(List(yhtTutkinnonOsanSuoritusVVTK22))
+        )
+
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.yhteinenTutkinnonOsaVVAI22())
+        }
+      }
+      "Koodin VVAI22 saa tallentaa jos opiskeluoikeus on alkanut 1.8.2022 tai sen jälkeen" in {
+        val alkamispäivä = date(2022, 8, 1)
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(
+          alkamispäivä = Some(alkamispäivä),
+          osasuoritukset = Some(List(yhtTutkinnonOsanSuoritusVVTK22))
+        )
+        val tila = AmmatillinenOpiskeluoikeudenTila(List(
+          AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+        ))
+
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus), tila = tila)) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
   }
 
   def vahvistus(date: LocalDate) = {
@@ -961,6 +987,13 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(Koodistokoodiviite("TK1", "ammatillisenoppiaineet"), Koodistokoodiviite("SV", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä))),
       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(Koodistokoodiviite("VK", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä))),
       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVTK", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä)))
+    )),
+    arviointi = arviointiHyvä(),
+  )
+
+  lazy val yhtTutkinnonOsanSuoritusVVTK22 = yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 2).copy(
+    osasuoritukset = Some(List(
+      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä)))
     )),
     arviointi = arviointiHyvä(),
   )

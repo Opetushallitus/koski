@@ -15,7 +15,8 @@ object AmmatillinenValidation {
       case ammatillinen: AmmatillinenOpiskeluoikeus =>
         HttpStatus.fold(
           validatePerusteVoimassa(ammatillinen, ePerusteet, config),
-          validateUseaPäätasonSuoritus(ammatillinen)
+          validateUseaPäätasonSuoritus(ammatillinen),
+          validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen)
         )
       case _ => HttpStatus.ok
     }
@@ -138,5 +139,26 @@ object AmmatillinenValidation {
       case osittainenTaiKokonainen: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => osittainenTaiKokonainen.suoritustapa.koodiarvo
       case _: NäyttötutkintoonValmistavanKoulutuksenSuoritus => "valmentava"
     }
+  }
+
+  private def validateViestintäJaVuorovaikutusÄidinkielellä2022(oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
+    val rajapäivä = LocalDate.of(2022, 8, 1)
+
+    def löytyyVVAI22(suoritus: AmmatillisenTutkinnonSuoritus): Boolean = suoritus
+      .osasuoritukset
+      .getOrElse(List.empty)
+      .flatMap(_.osasuoritusLista)
+      .map(_.koulutusmoduuli)
+      .exists(k => k.tunniste.koodiarvo == "VVAI22")
+
+    HttpStatus.fold(
+      oo.suoritukset.map {
+        case a: AmmatillisenTutkinnonSuoritus if oo.alkamispäivä.exists(ap => ap.isBefore(rajapäivä)) =>
+          HttpStatus.validate(!löytyyVVAI22(a)) {
+            KoskiErrorCategory.badRequest.validation.ammatillinen.yhteinenTutkinnonOsaVVAI22()
+          }
+        case _ => HttpStatus.ok
+      }
+    )
   }
 }

@@ -190,6 +190,7 @@ object KoskiErrorCategory {
       class Ammatillinen extends ErrorCategory(Validation.this, "ammatillinen", "Ammatilliseen opiskeluoikeuteen liittyvä validointivirhe") {
         val muutettuSuoritustapaaTaiTutkintokoodia = subcategory("muutettuSuoritustapaaTaiTutkintokoodia", "Ammatillisessa opiskeluoikeudessa, jossa päätason suorituksena on ammatillisen tutkintokoulutuksen suoritus, ei voi vaihtaa suoritettavan tutkintokoulutuksen tutkintokoodia tai suoritustapaa. Jos on vahingossa luotu ammatillisen tutkintokoulutuksen opiskeluoikeus väärällä tutkintokoodilla tai suoritustavalla, väärän tutkintokoodin tai suoritustavan sisältävä opiskeluoikeus on ensin mitätöitävä, ja sitten on luotava uusi opiskeluoikeus oikeilla tiedoilla.")
         val useampiPäätasonSuoritus = subcategory("useampiPäätasonSuoritus", "Ammatillinen opiskeluoikeus, jossa päätason suorituksena on ammatillisen tutkintokoulutuksen suoritus, ei voi sisältää useampaa kuin yhtä päätason suoritusta, ellei kyseessä ole opiskeluoikeus, jossa suoritetaan ns. vanhamallista näyttötutkintoa ja siihen liittyvää näyttötutkintoon valmistavaa koulutusta.")
+        val yhteinenTutkinnonOsaVVAI22 = subcategory("yhteinenTutkinnonOsaVVAI22", "Ennen 1.8.2022 aloitetulle ammatillisen opiskeluoikeudelle ei voi lisätä yhteisen tutkinnon osan osa-alueen suoritusta VVAI22.")
       }
       val ammatillinen = new Ammatillinen
 

@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 5.7.2022
+- Ammatillisen yhteisen tutkinnon osan osa-alueen koodi VVAI22 sallitaan vain 1.8.2022 jälkeen alkaneille opiskeluoikeuksille.
+
 ## 4.7.2022
 - Sallitaan muuttuneet ammatillisen koulutuksen yhteisten tutkinnon osien koodit:
   - 106727: Viestintä- ja vuorovaikutusosaaminen
