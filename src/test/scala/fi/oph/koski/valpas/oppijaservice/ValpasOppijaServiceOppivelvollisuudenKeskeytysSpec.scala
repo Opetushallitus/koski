@@ -1,5 +1,6 @@
 package fi.oph.koski.valpas.oppijaservice
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasOppivelvollisuudenKeskeytys}
@@ -9,13 +10,15 @@ import java.time.LocalDate.{of => date}
 
 class ValpasOppijaServiceOppivelvollisuudenKeskeytysSpec extends ValpasOppijaServiceTestBase {
 
+  protected val oppivelvollisuudenKeskeytysService = KoskiApplicationForTests.valpasOppivelvollisuudenKeskeytysService
+
   "Oppivelvollisuuden keskeytys" - {
     "Oppivelvollisuutta ei pysty keskeyttämään ilman kunnan valvontaoikeuksia" in {
       val oppija = ValpasMockOppijat.valmistunutYsiluokkalainen
       val tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu
       val alku = rajapäivätService.tarkastelupäivä
 
-      val result = oppijaLaajatTiedotService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      val result = oppivelvollisuudenKeskeytysService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
         oppijaOid = oppija.oid,
         alku = alku,
         loppu = None,
@@ -31,7 +34,7 @@ class ValpasOppijaServiceOppivelvollisuudenKeskeytysSpec extends ValpasOppijaSer
       val kuntaSession = session(ValpasMockUsers.valpasUseitaKuntia)
       val alku = rajapäivätService.tarkastelupäivä
 
-      val result = oppijaLaajatTiedotService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      val result = oppivelvollisuudenKeskeytysService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
         oppijaOid = oppija.oid,
         alku = alku,
         loppu = None,
@@ -53,7 +56,7 @@ class ValpasOppijaServiceOppivelvollisuudenKeskeytysSpec extends ValpasOppijaSer
 
       keskeytykset shouldBe Right(Seq.empty)
 
-      val result = oppijaLaajatTiedotService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      val result = oppivelvollisuudenKeskeytysService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
         oppijaOid = oppija.oid,
         alku = alku,
         loppu = None,
@@ -85,7 +88,7 @@ class ValpasOppijaServiceOppivelvollisuudenKeskeytysSpec extends ValpasOppijaSer
       val alku = rajapäivätService.tarkastelupäivä
       val loppu = alku.plusMonths(3)
 
-      val result = oppijaLaajatTiedotService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      val result = oppivelvollisuudenKeskeytysService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
         oppijaOid = oppija.oid,
         alku = alku,
         loppu = Some(loppu),
@@ -117,7 +120,7 @@ class ValpasOppijaServiceOppivelvollisuudenKeskeytysSpec extends ValpasOppijaSer
       val alku = rajapäivätService.tarkastelupäivä
       val loppu = alku.plusMonths(3)
 
-      val result = oppijaLaajatTiedotService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      val result = oppivelvollisuudenKeskeytysService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
         oppijaOid = oppija.oid,
         alku = alku,
         loppu = Some(loppu),
@@ -149,7 +152,7 @@ class ValpasOppijaServiceOppivelvollisuudenKeskeytysSpec extends ValpasOppijaSer
       val alku = rajapäivätService.tarkastelupäivä
       val loppu = alku.plusMonths(3)
 
-      val result = oppijaLaajatTiedotService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      val result = oppivelvollisuudenKeskeytysService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
         oppijaOid = oppija.oid,
         alku = alku,
         loppu = Some(loppu),
@@ -165,7 +168,7 @@ class ValpasOppijaServiceOppivelvollisuudenKeskeytysSpec extends ValpasOppijaSer
       val kuntaSession = session(ValpasMockUsers.valpasUseitaKuntia)
       val alku = rajapäivätService.tarkastelupäivä
 
-      val result = oppijaLaajatTiedotService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+      val result = oppivelvollisuudenKeskeytysService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
         oppijaOid = oppija.oid,
         alku = alku,
         loppu = None,

@@ -21,7 +21,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
     with Logging
     with GlobalExecutionContext
 {
-  private val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
+  private val oppijalistatService = application.valpasOppijalistatService
   private val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
 
   def haeKunnanPerusteellaIlmanOikeustarkastusta
@@ -123,7 +123,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
     val oppivelvollisetKoskessa = getOppivelvollisetKotikunnalla(kunta)
 
     rouhintaTimed("haeKunnanPerusteellaKoskesta", oppivelvollisetKoskessa.size) {
-      oppijaLaajatTiedotService
+      oppijalistatService
         // Kunnan käyttäjällä on aina oikeudet kaikkiin oppijoihin, joilla on oppivelvollisuus voimassa, joten
         // käyttöoikeustarkistusta ei tarvitse tehdä
         .getOppijalistaIlmanOikeustarkastusta(oppivelvollisetKoskessa)
@@ -133,7 +133,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
               oppivelvollisetKoskessa
                 .filterNot(_.oppija.suorittaaOppivelvollisuutta)
 
-            oppijaLaajatTiedotService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(eiSuorittavat)
+            oppijalistatService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(eiSuorittavat)
               .map(_.map(ValpasRouhintaOppivelvollinen.apply))
               .map(oppijat => rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(oppijat))
           }
@@ -143,7 +143,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
 
   private def getOppivelvollisetKotikunnalla(kunta: String): Seq[ValpasHenkilö.Oid] = {
     timed("getOppivelvollisetKotikunnalla") {
-      oppijaLaajatTiedotService.getOppivelvollisetKotikunnallaIlmanOikeustarkastusta(kunta).map(_.masterOid)
+      oppijalistatService.getOppivelvollisetKotikunnallaIlmanOikeustarkastusta(kunta).map(_.masterOid)
     }
   }
 }

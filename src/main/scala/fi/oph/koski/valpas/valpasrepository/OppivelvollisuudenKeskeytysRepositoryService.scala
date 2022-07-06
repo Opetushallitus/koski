@@ -15,7 +15,7 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID
 
-class OppivelvollisuudenKeskeytysService(application: KoskiApplication) extends Logging {
+class OppivelvollisuudenKeskeytysRepositoryService(application: KoskiApplication) extends Logging {
   protected lazy val db = application.valpasOppivelvollisuudenKeskeytysRepository
   protected lazy val rajapäivät = application.valpasRajapäivätService
   protected lazy val localization = application.valpasLocalizationRepository

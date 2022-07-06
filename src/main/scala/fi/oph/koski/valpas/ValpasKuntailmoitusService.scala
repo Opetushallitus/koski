@@ -19,6 +19,7 @@ class ValpasKuntailmoitusService(
   private val accessResolver = new ValpasAccessResolver
   private val repository = application.valpasKuntailmoitusRepository
   private val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
+  private val oppijalistatService = application.valpasOppijalistatService
   private val directoryClient = application.directoryClient
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val koodistoViitePalvelu = application.koodistoViitePalvelu
@@ -231,7 +232,7 @@ class ValpasKuntailmoitusService(
   private def haeOppilaitoksenOppijat(
     oppilaitosOid: ValpasOppilaitos.Oid, oppijaOidit: Seq[String]
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
-    oppijaLaajatTiedotService.getOppijatLaajatTiedotYhteystiedoilla(oppilaitosOid, oppijaOidit)
+    oppijalistatService.getOppijatLaajatTiedotYhteystiedoilla(oppilaitosOid, oppijaOidit)
   }
 
   private def haeYksittäisetOppijat(

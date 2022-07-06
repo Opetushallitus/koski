@@ -295,7 +295,7 @@ class ValpasOppijaServiceKuntailmoitusSpec extends ValpasOppijaServiceTestBase {
   }
 
   private def getKunnanIlmoitetutOppijat(organisaatioOid: Oid, user: ValpasMockUser) = {
-    oppijaSuppeatTiedotService.getKunnanOppijatSuppeatTiedot(organisaatioOid)(session(user))
+    oppijalistatService.getKunnanOppijatSuppeatTiedot(organisaatioOid)(session(user))
   }
 
   private def täydennäAikaleimallaJaOrganisaatiotiedoilla(

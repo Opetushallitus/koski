@@ -8,14 +8,14 @@ import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasKansalainenSession
 
 class ValpasKansalainenApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasKansalainenSession {
-  private val oppijaService = application.valpasOppijaLaajatTiedotService
+  private val kansalainenService = application.valpasKansalainenService
 
   get("/user") {
     session.user
   }
 
   get("/tiedot") {
-    oppijaService.getKansalaisnäkymänTiedot()
+    kansalainenService.getKansalaisnäkymänTiedot()
       .tap(auditLogKansalainenOmatTiedot)
       .tap(auditLogKansalainenHuollettavienTiedot)
   }

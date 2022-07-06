@@ -23,7 +23,7 @@ class ValpasOppivelvollisuudenKeskeytysSpec extends ValpasTestBase with BeforeAn
     AuditLogTester.clearMessages()
   }
 
-  val oppijaService = KoskiApplicationForTests.valpasOppijaLaajatTiedotService
+  val oppivelvollisuudenKeskeytysService = KoskiApplicationForTests.valpasOppivelvollisuudenKeskeytysService
   val user: ValpasMockUser = ValpasMockUsers.valpasUseitaKuntia
   val oppijaOid: String = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid
   val organisaatioOid: String = MockOrganisaatiot.helsinginKaupunki
@@ -181,7 +181,7 @@ class ValpasOppivelvollisuudenKeskeytysSpec extends ValpasTestBase with BeforeAn
   }
 
   private def uusiKeskeytys: ValpasOppivelvollisuudenKeskeytys =
-    oppijaService
+    oppivelvollisuudenKeskeytysService
       .addOppivelvollisuudenKeskeytys(okMääräaikainenKeskeytys)(session(user))
       .right.get
 
@@ -209,7 +209,7 @@ class ValpasOppivelvollisuudenKeskeytysSpec extends ValpasTestBase with BeforeAn
     JsonSerializer.extract[ValpasOppivelvollisuudenKeskeytys](JsonMethods.parse(body))
 
   private def getMuutoshistoria(id: UUID): Seq[OppivelvollisuudenKeskeytyshistoriaRow] =
-    oppijaService
+    oppivelvollisuudenKeskeytysService
       .getOppivelvollisuudenKeskeytyksenMuutoshistoria(id)(session(user))
       .right.get
 

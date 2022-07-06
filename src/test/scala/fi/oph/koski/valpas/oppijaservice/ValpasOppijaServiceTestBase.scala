@@ -92,7 +92,7 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase with BeforeAndAfterEach
   }
 
   protected val oppijaLaajatTiedotService = KoskiApplicationForTests.valpasOppijaLaajatTiedotService
-  protected val oppijaSuppeatTiedotService = KoskiApplicationForTests.valpasOppijaSuppeatTiedotService
+  protected val oppijalistatService = KoskiApplicationForTests.valpasOppijalistatService
   protected val rajapäivätService = KoskiApplicationForTests.valpasRajapäivätService
   protected val oppilaitos = MockOrganisaatiot.jyväskylänNormaalikoulu
   protected val amisOppilaitos = MockOrganisaatiot.stadinAmmattiopisto
