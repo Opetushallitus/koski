@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 7.7.2022
+- Korjattu vapaan sivistystyön kotoutumiskoulutuksen (ops 2022) ohjauksen osasuorituksen validoinnit vastaamaan perustetta
+
 ## 5.7.2022
 - Ammatillisen yhteisen tutkinnon osan osa-alueen koodi VVAI22 sallitaan vain 1.8.2022 jälkeen alkaneille opiskeluoikeuksille.
 
