@@ -268,7 +268,7 @@ const OpiskeluhistoriaOppivelvollisuudenKeskeytys = (
   props: OpiskeluhistoriaOppivelvollisuudenKeskeytysProps
 ) => (
   <IconSection icon={<OpiskeluhistoriaTapahtumaIcon color="gray" />}>
-    <IconSectionHeading>Oppivelvollisuus</IconSectionHeading>
+    <IconSectionHeading>{t("oppija__historia_keskeytys_otsikko")}</IconSectionHeading>
     <div>
       {props.keskeytys.loppu
         ? t("oppija__oppivelvollisuus_keskeytetty_value", {

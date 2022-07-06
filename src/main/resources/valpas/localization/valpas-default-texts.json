@@ -71,6 +71,7 @@
   "oppija__yhteystiedot_otsikko": "Yhteystiedot",
   "oppija__yhteystiedot_tooltip": "Oppijan yhteystiedot haetaan automaattisesti DVV:stä, mikäli oppijalla ei ole turvakieltoa. Lisäksi mahdolliset hakulomakkeessa ilmoitetut tai virkailijan ilmoittamat yhteystiedot näkyvät täällä",
   "oppija__opiskeluhistoria_otsikko": "Opiskeluhistoria ja ilmoitukset",
+  "oppija__historia_keskeytys_otsikko": "Oppivelvollisuus",
   "oppija__haut_otsikko": "Haut",
   "oppija__haut_hyvaksytty": "Hyväksytty",
   "oppija__haut_hylatty": "Hylätty",
