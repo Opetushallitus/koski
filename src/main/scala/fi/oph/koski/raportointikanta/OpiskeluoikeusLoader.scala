@@ -356,6 +356,10 @@ object OpiskeluoikeusLoader extends Logging {
       lisätiedotKoulutusvienti = o.lisätiedot.collect {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.koulutusvienti
       }.getOrElse(false),
+      tuvaJärjestämislupa = o match {
+        case l: TutkintokoulutukseenValmentavanOpiskeluoikeus => Some(l.järjestämislupa.koodiarvo)
+        case _ => None
+      },
       lähdejärjestelmäKoodiarvo = o.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmäId = o.lähdejärjestelmänId.flatMap(_.id),
       luokka = o.luokka,
