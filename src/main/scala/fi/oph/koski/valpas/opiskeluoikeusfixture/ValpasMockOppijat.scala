@@ -155,6 +155,7 @@ object ValpasMockOppijat {
   val eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaSlave = valpasOppijat.duplicate(eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia.copy(hetu = None))
   val eiKoskessaHetuton = valpasOppijat.oppija("Kosketon-hetuton", "Valpas", "", syntymäaika = Some(LocalDate.of(2005, 3, 3)), kotikunta = Some("091"))
   val eiKoskessa7VuottaTäyttävä = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-7-vuotta-täyttävä", "Valpas", "160614A587P", kotikunta = Some("091"))
+  val valmistunutNivelvaiheenOpiskelija2022 = valpasOppijat.oppijaSyntymäaikaHetusta("Valmistunut-nivelvaiheet-opiskelija-2022", "Valpas", "190305A488P", kotikunta = Some("091"))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

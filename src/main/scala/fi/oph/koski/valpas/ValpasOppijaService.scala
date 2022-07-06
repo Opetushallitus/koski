@@ -11,6 +11,7 @@ import fi.oph.koski.schema.{Henkilö, LocalizedString, Organisaatio}
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.util.UuidUtils
+import fi.oph.koski.valpas.ValpasKuntailmoitusService.isKuntailmoituksenPassivoivaTerminaalitila
 import fi.oph.koski.valpas.db.ValpasSchema
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow, OppivelvollisuudenKeskeytyshistoriaRow}
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, ValpasHakukoosteService}
@@ -700,8 +701,11 @@ class ValpasOppijaService(
         if (index > 0) {
           false
         }
-        // 2. Voimassaoleva ovl-kelpoinen opiskeluoikeus alkanut kuntailmoituksen tekemisen jälkeen --> passiivinen
-        else if (oppija.opiskeluoikeudet.exists(oo => oo.isOpiskelu && oo.oppivelvollisuudenSuorittamiseenKelpaava && oo.alkamispäivä.exists(_.isAfter(ilmoituksentekopäivä)))) {
+        // 2. Voimassaoleva ovl-kelpoinen opiskeluoikeus alkanut (ja mahdollisesti päättynyt) kuntailmoituksen tekemisen jälkeen --> passiivinen
+        else if (oppija.opiskeluoikeudet.exists(oo =>
+          (oo.isOpiskelu || oo.isKuntailmoituksenPassivoivassaTerminaalitilassa ) &&
+            oo.oppivelvollisuudenSuorittamiseenKelpaava &&
+            oo.alkamispäivä.exists(_.isAfter(ilmoituksentekopäivä)))) {
           false
         }
         // 3. Ilmoituksen teosta alle 2kk (vaikka olisikin voimassaoleva opiskeluoikeus) --> aktiivinen

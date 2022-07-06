@@ -922,6 +922,15 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def valmistunutKymppiluokkalainenKeväällä2022 = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusValmistunut)
+      )
+    )
+  )
+
   def kymppiluokanOpiskeluoikeus = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(

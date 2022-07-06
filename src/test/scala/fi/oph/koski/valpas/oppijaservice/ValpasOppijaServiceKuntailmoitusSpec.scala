@@ -232,6 +232,24 @@ class ValpasOppijaServiceKuntailmoitusSpec extends ValpasOppijaServiceTestBase {
 
       validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
     }
+
+    "Passiivinen jos on ilmoituksen tekemisen jälkeen alkanut ja päättynyt ov-suorittamiseen kelpaava opiskeluoikeus" in {
+      val ilmoituksenTekopäivä = date(2021, 7, 15)
+      val tarkastelupäivä = date(2022, 6, 1)
+
+      rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(ilmoituksenTekopäivä)
+      val ilmoitus = ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(ValpasMockOppijat.valmistunutNivelvaiheenOpiskelija2022.oid)
+      kuntailmoitusRepository.create(ilmoitus, Seq.empty)
+
+      rajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
+      val oppija = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.valmistunutNivelvaiheenOpiskelija2022.oid)(defaultSession)
+        .toOption.get
+
+      val expectedIlmoitus =
+        täydennäAikaleimallaJaOrganisaatiotiedoilla(ValpasExampleData.oppilaitoksenIlmoitusKaikillaTiedoilla, ilmoituksenTekopäivä.atStartOfDay).withAktiivinen(false)
+
+      validateKuntailmoitukset(oppija, Seq(expectedIlmoitus))
+    }
   }
 
   "Kuntailmoitukset hakeminen kunnalle" - {

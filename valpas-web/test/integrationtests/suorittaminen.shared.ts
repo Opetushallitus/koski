@@ -13,7 +13,7 @@ import {
   jyväskylänNormaalikouluOid,
 } from "../integrationtests/oids"
 
-export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (17)"
+export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (18)"
 export const jklNormaalikouluSuorittaminenTableContent = `
   Int-school-9-luokan-jälkeen-lukion-aloittanut Valpas            | 12.5.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | –         | International School of Helsinki, International school | 11.5.2023 asti
   Int-school-9-luokan-jälkeen-lukion-lokakuussa-aloittanut Valpas |  7.1.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu | 3.10.2021  | –         | International School of Helsinki, International school |  6.1.2023 asti
@@ -32,7 +32,8 @@ export const jklNormaalikouluSuorittaminenTableContent = `
   LukionAloittanutJaLopettanut-ilmo Valpas                        |  5.4.2005  | Lukion oppimäärä          | warningEronnut          | Jyväskylän normaalikoulu | 15.8.2021  | 19.9.2021 | –                                            |  4.4.2023 asti
   LukionLokakuussaAloittanut Valpas                               | 18.4.2005  | Lukion oppimäärä          | Läsnä                   | Jyväskylän normaalikoulu |  3.10.2021 | –         | –                                            | 17.4.2023 asti
   SuorittaaPreIB Valpas                                           | 19.7.2004  | IB                        | Läsnä                   | Jyväskylän normaalikoulu |  1.6.2021  | –         | –                                            | 18.7.2022 asti
-    `
+  Valmistunut-nivelvaiheet-opiskelija-2022 Valpas                 | 19.3.2005  | Perusopetuksen lisäopetus | Läsnä                   | Jyväskylän normaalikoulu | 15.8.2021  | 31.5.2022 | –                                            | 18.3.2023 asti
+  `
 
 export const stadinAmmattiopistoSuorittaminenTableHead = "Oppivelvolliset (15)"
 
