@@ -4,14 +4,14 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import fi.oph.koski.log.Logging
+import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
-import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
 
 class ValpasKansalainenService(
   application: KoskiApplication
-) extends Logging with ValpasRouhintaTiming {
+) extends Logging with Timing {
   private val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
   private val opiskeluoikeusDbService = application.valpasOpiskeluoikeusDatabaseService
   private val koodistoviitepalvelu = application.koodistoViitePalvelu

@@ -5,16 +5,16 @@ import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
-import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
 
 class ValpasOppijaLaajatTiedotService(
   application: KoskiApplication
-) extends Logging with ValpasRouhintaTiming {
+) extends Logging with Timing {
   private val hakukoosteService = application.valpasHakukoosteService
   private val opiskeluoikeusDbService = application.valpasOpiskeluoikeusDatabaseService
   private val ovKeskeytysRepositoryService = application.valpasOppivelvollisuudenKeskeytysRepositoryService
