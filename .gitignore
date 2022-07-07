@@ -40,3 +40,5 @@ valpas-web/node/
 valpas-web/.parcel-cache/
 valpas-web/.last-build
 valpas-web/test/download/
+scripts/opiskeluoikeushistoria-debug/hotfix*.json
+scripts/opiskeluoikeushistoria-debug/dump.json

@@ -1,0 +1,2 @@
+{"versionumero":1,"muutos":[{"op":"add","path":"","value":{"help":"Lisää tähän tiedostoon README.md:n ohjeiden mukaan tutkittavat opiskeluhistorian tiedot."}}]}
+{"versionumero":2,"muutos":[{"op":"replace","path":"/help","value":"Tämä vielä onnistuu"},{"op":"replace","path":"/voiei","value":"Tämä menee pieleen"}]}
