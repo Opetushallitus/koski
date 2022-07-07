@@ -1,10 +1,10 @@
 package fi.oph.koski.valpas
 
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusPerusopetusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasPäätasonSuoritus, ValpasToimipiste}
+import fi.oph.koski.valpas.oppija.{ValpasAccessResolver, ValpasErrorCategory}
 import fi.oph.koski.valpas.valpasuser.ValpasRooli
 
 

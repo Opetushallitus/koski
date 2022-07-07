@@ -1,25 +1,30 @@
 package fi.oph.koski.valpas.hakukooste
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.Http.{StringToUriConverter, parseJsonWithDeserialize, unsafeRetryingClient}
 import fi.oph.koski.http.{Http, HttpException, HttpStatus, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.lenientDeserialization
 import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import org.json4s.JValue
 
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 class SureHakukoosteService(
-  config: Config,
-  validatingAndResolvingExtractor: ValidatingAndResolvingExtractor
+  valpasLocalizationRepository: LocalizationRepository,
+  validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
+  config: Config
 ) extends ValpasHakukoosteService
   with Logging
   with Timing {
+
+  protected val localizationRepository = valpasLocalizationRepository
 
   private val baseUrl = "/suoritusrekisteri"
 

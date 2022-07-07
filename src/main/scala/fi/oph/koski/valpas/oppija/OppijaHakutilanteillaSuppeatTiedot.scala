@@ -1,12 +1,11 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.oppija
+
+import fi.oph.koski.schema.annotation.KoodistoUri
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, OrganisaatioWithOid}
+import fi.oph.koski.valpas.opiskeluoikeusrepository._
+import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasOppivelvollisuudenKeskeytys}
 
 import java.time.{LocalDate, LocalDateTime}
-import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.schema.{Henkilö, Koodistokoodiviite, LocalizedString, Organisaatio, OrganisaatioWithOid}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{HakeutumisvalvontaTieto, ValpasHakutilanne, ValpasHakutilanneLaajatTiedot, ValpasHakutoive, ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusMuuOpetusLaajatTiedot, ValpasOpiskeluoikeusPerusopetuksenJälkeinenLaajatTiedot, ValpasOpiskeluoikeusPerusopetusLaajatTiedot, ValpasOpiskeluoikeusPerusopetusTiedot, ValpasOpiskeluoikeusTiedot, ValpasOppija, ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasPäätasonSuoritus}
-import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasOppivelvollisuudenKeskeytys}
-import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 case class OppijaHakutilanteillaSuppeatTiedot(
   oppija: ValpasOppijaSuppeatTiedot,
@@ -271,45 +270,5 @@ case class ValpasKuntailmoituksenTekijäSuppeatTiedot(
 object ValpasKuntailmoituksenTekijäSuppeatTiedot {
   def apply(laajatTiedot: ValpasKuntailmoituksenTekijäLaajatTiedot): ValpasKuntailmoituksenTekijäSuppeatTiedot = {
     ValpasKuntailmoituksenTekijäSuppeatTiedot(laajatTiedot.organisaatio)
-  }
-}
-
-class ValpasOppijaSuppeatTiedotService(
-  valpasOppijaService: ValpasOppijaService
-) {
-  def getHakeutumisvalvottavatOppijatSuppeatTiedot
-    (oppilaitosOid: ValpasOppilaitos.Oid, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value, haeHakutilanteet: Seq[Henkilö.Oid] = Seq.empty)
-    (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
-    valpasOppijaService.getHakeutumisvalvottavatOppijatLaajatTiedot(oppilaitosOid, hakeutumisvalvontaTieto, haeHakutilanteet)
-      .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
-
-  def getSuorittamisvalvottavatOppijatSuppeatTiedot
-    (oppilaitosOid: ValpasOppilaitos.Oid)
-    (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
-    valpasOppijaService.getSuorittamisvalvottavatOppijatLaajatTiedot(oppilaitosOid)
-      .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
-
-  def getKunnanOppijatSuppeatTiedot
-    (kuntaOid: Organisaatio.Oid)
-    (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaKuntailmoituksillaSuppeatTiedot]] =
-    valpasOppijaService.getKunnanOppijatLaajatTiedot(kuntaOid)
-      .map(_.map(OppijaKuntailmoituksillaSuppeatTiedot.apply))
-
-  def getHakeutumisenvalvonnanKunnalleTehdytIlmoituksetSuppeatTiedot
-    (oppilaitosOid: ValpasOppilaitos.Oid)
-    (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] =
-    valpasOppijaService.getOppilaitoksenKunnalleTekemätIlmoituksetLaajatTiedot(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, oppilaitosOid)
-      .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
-
-  def getSuorittamisvalvonnanKunnalleTehdytIlmoituksetSuppeatTiedot
-    (oppilaitosOid: ValpasOppilaitos.Oid)
-    (implicit session: ValpasSession)
-  : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] = {
-    valpasOppijaService.getOppilaitoksenKunnalleTekemätIlmoituksetLaajatTiedot(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid)
-      .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
   }
 }

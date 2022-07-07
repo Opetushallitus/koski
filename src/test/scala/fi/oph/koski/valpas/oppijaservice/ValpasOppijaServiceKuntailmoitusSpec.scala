@@ -1,12 +1,14 @@
 package fi.oph.koski.valpas.oppijaservice
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.valpas.OppijaHakutilanteillaLaajatTiedot
+import fi.oph.koski.valpas.kuntavalvonta.ValpasKuntavalvontaService
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
+import fi.oph.koski.valpas.oppija.OppijaHakutilanteillaLaajatTiedot
 import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 
@@ -14,6 +16,7 @@ import java.time.LocalDate.{of => date}
 import java.time.LocalDateTime
 
 class ValpasOppijaServiceKuntailmoitusSpec extends ValpasOppijaServiceTestBase {
+  private val kuntavalvontaService = new ValpasKuntavalvontaService(KoskiApplicationForTests)
 
   "Kuntailmoitukset getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla" - {
     "palauttaa kuntailmoituksettoman oppijan ilman kuntailmoituksia" in {
@@ -295,7 +298,7 @@ class ValpasOppijaServiceKuntailmoitusSpec extends ValpasOppijaServiceTestBase {
   }
 
   private def getKunnanIlmoitetutOppijat(organisaatioOid: Oid, user: ValpasMockUser) = {
-    oppijaSuppeatTiedotService.getKunnanOppijatSuppeatTiedot(organisaatioOid)(session(user))
+    kuntavalvontaService.getOppijatSuppeatTiedot(organisaatioOid)(session(user))
   }
 
   private def täydennäAikaleimallaJaOrganisaatiotiedoilla(

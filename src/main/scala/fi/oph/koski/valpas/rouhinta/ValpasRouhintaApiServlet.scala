@@ -1,20 +1,19 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.rouhinta
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.Kunta
-import fi.oph.koski.koskiuser.UserLanguage.sanitizeLanguage
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{AhvenanmaanKunnat, ExcelWriter, OppilaitosRaporttiResponse}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogRouhintahakuHetulistalla, auditLogRouhintahakuKunnalla}
-import fi.oph.koski.valpas.rouhinta.{HeturouhinnanTulos, KuntarouhinnanTulos, ValpasRouhintaService}
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 import org.json4s.JValue
 import org.scalatra.{Cookie, CookieOptions}
-import fi.oph.koski.util.ChainingSyntax._
 
 class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private val rouhinta = new ValpasRouhintaService(application)

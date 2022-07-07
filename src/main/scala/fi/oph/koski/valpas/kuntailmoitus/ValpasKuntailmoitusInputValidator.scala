@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.kuntailmoitus
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.organisaatio.{OrganisaatioRepository, Organisaatiotyyppi}
@@ -6,6 +6,7 @@ import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.schema.{Oppilaitos, OrganisaatioWithOid, Toimipiste}
 import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 

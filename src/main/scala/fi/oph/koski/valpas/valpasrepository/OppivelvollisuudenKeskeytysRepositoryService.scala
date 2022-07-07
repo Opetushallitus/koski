@@ -9,13 +9,13 @@ import fi.oph.koski.valpas.db.ValpasSchema.{OppivelvollisuudenKeskeytysRow, Oppi
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID
 
-class OppivelvollisuudenKeskeytysService(application: KoskiApplication) extends Logging {
+class OppivelvollisuudenKeskeytysRepositoryService(application: KoskiApplication) extends Logging {
   protected lazy val db = application.valpasOppivelvollisuudenKeskeytysRepository
   protected lazy val rajapäivät = application.valpasRajapäivätService
   protected lazy val localization = application.valpasLocalizationRepository

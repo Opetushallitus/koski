@@ -6,8 +6,8 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import org.json4s.JValue
 
 import java.time.{LocalDate, LocalDateTime}

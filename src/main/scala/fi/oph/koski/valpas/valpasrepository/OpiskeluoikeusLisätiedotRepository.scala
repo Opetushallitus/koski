@@ -8,7 +8,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.db.ValpasSchema.{OpiskeluoikeusLisätiedot, OpiskeluoikeusLisätiedotKey, OpiskeluoikeusLisätiedotRow}
-import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
+import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
 
 class OpiskeluoikeusLisätiedotRepository(valpasDatabase: ValpasDatabase, config: Config) extends QueryMethods with Logging {
   protected val db: DB = valpasDatabase.db

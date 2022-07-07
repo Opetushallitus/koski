@@ -9,10 +9,10 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.{skipSyntheticProperties, strictDeserialization}
 import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, OidOrganisaatio, Organisaatio}
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasSchema._
 import fi.oph.koski.valpas.db._
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasRajapäivätService}
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.JValue
 import slick.jdbc.GetResult

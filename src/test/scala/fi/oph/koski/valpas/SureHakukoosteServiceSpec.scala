@@ -29,7 +29,7 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       |valpas.hakukoosteTimeoutSeconds = 2
     """.stripMargin)
 
-  private val mockClient = ValpasHakukoosteService(config, KoskiApplicationForTests.validatingAndResolvingExtractor)
+  private val mockClient = ValpasHakukoosteService(KoskiApplicationForTests, Some(config))
 
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9875))
 

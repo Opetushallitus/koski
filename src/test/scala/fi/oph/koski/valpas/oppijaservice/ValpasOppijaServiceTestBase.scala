@@ -12,7 +12,8 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätServic
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot}
 import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.ValpasMockUser
-import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasOppijaSuppeatTiedot, ValpasTestBase}
+import fi.oph.koski.valpas.ValpasTestBase
+import fi.oph.koski.valpas.oppija.ValpasOppijaSuppeatTiedot
 import org.scalatest.BeforeAndAfterEach
 
 import java.time.LocalDateTime
@@ -92,7 +93,7 @@ trait ValpasOppijaServiceTestBase extends ValpasTestBase with BeforeAndAfterEach
   }
 
   protected val oppijaLaajatTiedotService = KoskiApplicationForTests.valpasOppijaLaajatTiedotService
-  protected val oppijaSuppeatTiedotService = KoskiApplicationForTests.valpasOppijaSuppeatTiedotService
+  protected val oppijalistatService = KoskiApplicationForTests.valpasOppijalistatService
   protected val rajapäivätService = KoskiApplicationForTests.valpasRajapäivätService
   protected val oppilaitos = MockOrganisaatiot.jyväskylänNormaalikoulu
   protected val amisOppilaitos = MockOrganisaatiot.stadinAmmattiopisto
