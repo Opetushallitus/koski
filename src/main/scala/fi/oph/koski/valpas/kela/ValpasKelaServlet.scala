@@ -7,8 +7,8 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.log.ValpasAuditLog.auditLogOppivelvollisuusrekisteriLuovutus
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasKelaSession
 import org.json4s.JsonAST.JValue

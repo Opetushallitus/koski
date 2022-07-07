@@ -1,13 +1,13 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.kansalainen
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import fi.oph.koski.log.Logging
-import fi.oph.koski.valpas.kansalainen.{KansalainenOppijaIlmanTietoja, KansalainenOppijatiedot, KansalaisnäkymänTiedot}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
 import fi.oph.koski.valpas.valpasuser.ValpasSession
+import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
 
 class ValpasKansalainenService(
   application: KoskiApplication

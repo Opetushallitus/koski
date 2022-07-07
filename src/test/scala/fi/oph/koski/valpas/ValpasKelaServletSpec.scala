@@ -9,6 +9,7 @@ import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.kela.{ValpasKelaBulkRequest, ValpasKelaOppija, ValpasKelaOppivelvollisuudenKeskeytys, ValpasKelaRequest}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.valpasrepository.ValpasExampleData
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.BeforeAndAfterEach

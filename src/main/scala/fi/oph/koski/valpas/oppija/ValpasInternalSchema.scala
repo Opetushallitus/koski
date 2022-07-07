@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}

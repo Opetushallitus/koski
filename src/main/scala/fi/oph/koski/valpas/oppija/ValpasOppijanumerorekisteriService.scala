@@ -1,9 +1,8 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.validation.MaksuttomuusValidation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö.Oid
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot}

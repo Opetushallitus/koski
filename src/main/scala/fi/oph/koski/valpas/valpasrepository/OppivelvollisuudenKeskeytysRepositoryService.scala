@@ -9,8 +9,8 @@ import fi.oph.koski.valpas.db.ValpasSchema.{OppivelvollisuudenKeskeytysRow, Oppi
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID

@@ -4,9 +4,9 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.valpas.OppijaHakutilanteillaLaajatTiedot
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
+import fi.oph.koski.valpas.oppija.OppijaHakutilanteillaLaajatTiedot
 import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 

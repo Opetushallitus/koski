@@ -1,8 +1,8 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.oppija
 
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, OrganisaatioWithOid}
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHakutilanne, ValpasHakutilanneLaajatTiedot, ValpasHakutoive, ValpasHenkilö, ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusMuuOpetusLaajatTiedot, ValpasOpiskeluoikeusPerusopetuksenJälkeinenLaajatTiedot, ValpasOpiskeluoikeusPerusopetusLaajatTiedot, ValpasOpiskeluoikeusPerusopetusTiedot, ValpasOpiskeluoikeusTiedot, ValpasOppija, ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasPäätasonSuoritus}
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, OrganisaatioWithOid}
+import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasOppivelvollisuudenKeskeytys}
 
 import java.time.{LocalDate, LocalDateTime}

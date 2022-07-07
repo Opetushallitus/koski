@@ -6,8 +6,8 @@ import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 class ValpasHeturouhintaService(application: KoskiApplication)
   extends ValpasRouhintaTiming

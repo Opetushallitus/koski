@@ -8,9 +8,9 @@ import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import fi.oph.koski.valpas.ValpasInternalSchema
 import fi.oph.koski.valvira.ValviraSchema
 import fi.oph.koski.valpas.kela.ValpasKelaSchema
+import fi.oph.koski.valpas.oppija.ValpasInternalSchema
 import fi.oph.koski.valpas.ytl.ValpasYtlSchema
 import fi.oph.koski.ytl.YtlSchema
 

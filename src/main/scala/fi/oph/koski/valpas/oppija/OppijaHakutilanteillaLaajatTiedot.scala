@@ -1,14 +1,14 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.LocalizedString
+import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotRow
 import fi.oph.koski.valpas.hakukooste.Hakukooste
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHakutilanneLaajatTiedot, ValpasHenkilö, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
-import fi.oph.koski.util.DateOrdering.localDateTimeOrdering
 
 case class OppijaHakutilanteillaLaajatTiedot(
   oppija: ValpasOppijaLaajatTiedot,

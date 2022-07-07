@@ -1,8 +1,8 @@
 package fi.oph.koski.valpas.hakukooste
 
 import fi.oph.koski.http._
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 // Dummy-luokka hakukoostekyselyiden disabloimiseksi tarvittaessa kokonaan ympäristöissä
 class DisabledHakukoosteService extends ValpasHakukoosteService {

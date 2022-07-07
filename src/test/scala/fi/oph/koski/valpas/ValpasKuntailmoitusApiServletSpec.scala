@@ -12,7 +12,9 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätServi
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUsers, ValpasSession}
 import fi.oph.koski.db.{DB, QueryMethods}
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import org.scalatest.BeforeAndAfterEach
+
 import java.time.LocalDate.{of => date}
 import java.util.UUID
 

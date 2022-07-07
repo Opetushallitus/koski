@@ -32,11 +32,14 @@ import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.{KoskiGlobaaliValidator, KoskiValidator, ValidatingAndResolvingExtractor}
-import fi.oph.koski.valpas.{ValpasKansalainenService, ValpasKuntailmoitusService, ValpasOppijaSearchService, ValpasOppijaLaajatTiedotService, ValpasOppijalistatService, ValpasOppijanumerorekisteriService, ValpasOppivelvollisuudenKeskeytysService}
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.hakukooste.ValpasHakukoosteService
+import fi.oph.koski.valpas.kansalainen.ValpasKansalainenService
+import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusService
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusDatabaseService, ValpasRajapäivätService}
+import fi.oph.koski.valpas.oppija.{ValpasOppijaLaajatTiedotService, ValpasOppijaSearchService, ValpasOppijalistatService, ValpasOppijanumerorekisteriService}
+import fi.oph.koski.valpas.oppivelvollisuudenkeskeytys.ValpasOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.valpasrepository.{OpiskeluoikeusLisätiedotRepository, OppivelvollisuudenKeskeytysRepository, OppivelvollisuudenKeskeytysRepositoryService, ValpasKuntailmoitusRepository}
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}

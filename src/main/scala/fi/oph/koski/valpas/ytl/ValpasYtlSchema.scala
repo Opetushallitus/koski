@@ -4,7 +4,7 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.oppivelvollisuustieto.OptionalOppivelvollisuustieto
 import fi.oph.koski.schema
 import fi.oph.koski.util.ChainingSyntax._
-import fi.oph.koski.valpas.{ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult, ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
+import fi.oph.koski.valpas.oppija.{ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult, ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
 import fi.oph.scalaschema.annotation.{Description, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue

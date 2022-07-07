@@ -1,11 +1,10 @@
 package fi.oph.koski.valpas.rouhinta
 
 import java.time.LocalDate
-
 import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaNumerorekisteriKuntarouhintaOppija}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.valpas.{OppijaHakutilanteillaLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{OrderedOpiskeluoikeusTiedot, ValpasHenkilö, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{OrderedOpiskeluoikeusTiedot, ValpasHenkilö, ValpasOpiskeluoikeusLaajatTiedot}
+import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, ValpasKuntailmoitusSuppeatTiedot}
 import fi.oph.koski.valpas.valpasrepository.ValpasOppivelvollisuudenKeskeytys
 
 case class ValpasRouhintaOppivelvollinen(

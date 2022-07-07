@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.kuntailmoitus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
@@ -9,6 +9,7 @@ import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOppijaLaajatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, ValpasAccessResolver, ValpasErrorCategory}
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}

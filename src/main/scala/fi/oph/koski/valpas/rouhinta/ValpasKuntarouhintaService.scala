@@ -9,8 +9,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö.Oid
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.util.Futures
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 import scala.concurrent.Future
 import scala.util.control.NonFatal

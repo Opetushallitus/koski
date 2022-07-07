@@ -8,8 +8,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.lenientDeserialization
 import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.ValidatingAndResolvingExtractor
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import org.json4s.JValue
 
 import scala.concurrent.duration.{DurationInt, FiniteDuration}

@@ -3,7 +3,7 @@ package fi.oph.koski.valpas.ytl
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
-import fi.oph.koski.valpas.ValpasHenkilöhakuResult
+import fi.oph.koski.valpas.oppija.ValpasHenkilöhakuResult
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 class ValpasYtlService(application: KoskiApplication) {

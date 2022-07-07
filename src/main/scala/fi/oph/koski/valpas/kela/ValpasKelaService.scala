@@ -5,9 +5,9 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log._
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasSchema.OppivelvollisuudenKeskeytysRow
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppivelvollisuustiedotRow
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 class ValpasKelaService(application: KoskiApplication) extends Logging with Timing {
   val henkilöRepository = application.henkilöRepository

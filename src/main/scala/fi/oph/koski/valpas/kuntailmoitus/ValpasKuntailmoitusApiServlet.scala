@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.kuntailmoitus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
@@ -7,6 +7,7 @@ import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogKuntaKatsominen, auditLogOppijaKatsominen, auditLogOppijaKuntailmoitus}
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoitusLaajatTiedot, ValpasKuntailmoitusPohjatiedot, ValpasKuntailmoitusPohjatiedotInput}
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession

@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.oppivelvollisuudenkeskeytys
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
@@ -8,6 +8,7 @@ import fi.oph.koski.valpas.db.ValpasSchema
 import fi.oph.koski.valpas.db.ValpasSchema.OppivelvollisuudenKeskeytyshistoriaRow
 import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytyksenMuutos, UusiOppivelvollisuudenKeskeytys, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
+import fi.oph.koski.valpas.oppija.{ValpasAccessResolver, ValpasErrorCategory}
 
 import java.util.UUID
 

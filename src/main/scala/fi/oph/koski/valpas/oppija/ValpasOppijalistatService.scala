@@ -1,10 +1,10 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Henkilö, Organisaatio}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{HakeutumisvalvontaTieto, HetuMasterOid, ValpasHenkilö, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos}
+import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 

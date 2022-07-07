@@ -5,7 +5,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, Maksuttomuus, OikeuttaMaksuttomu
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenOppijanYhteystiedot, ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
-import fi.oph.koski.valpas.{OpiskeluoikeusLisätiedot, OppijaHakutilanteillaLaajatTiedot}
+import fi.oph.koski.valpas.oppija.{OpiskeluoikeusLisätiedot, OppijaHakutilanteillaLaajatTiedot}
 
 import java.time.{LocalDate, LocalDateTime}
 

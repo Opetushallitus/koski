@@ -11,6 +11,7 @@ import fi.oph.koski.util.UuidUtils
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
 import fi.oph.koski.valpas.log.ValpasAuditLog._
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{HakeutumisvalvontaTieto, ValpasOppilaitos}
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytyksenMuutos, UusiOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession

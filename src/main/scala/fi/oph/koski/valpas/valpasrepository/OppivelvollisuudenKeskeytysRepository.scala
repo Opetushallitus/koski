@@ -7,9 +7,9 @@ import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.UuidUtils
-import fi.oph.koski.valpas.ValpasErrorCategory
 import fi.oph.koski.valpas.db.ValpasDatabase
 import fi.oph.koski.valpas.db.ValpasSchema.{OppivelvollisuudenKeskeytys, OppivelvollisuudenKeskeytysRow, OppivelvollisuudenKeskeytyshistoria, OppivelvollisuudenKeskeytyshistoriaRow}
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID

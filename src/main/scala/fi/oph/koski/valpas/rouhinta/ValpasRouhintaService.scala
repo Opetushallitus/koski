@@ -5,7 +5,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{DataSheet, OppilaitosRaporttiResponse, WorkbookSettings}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
-import fi.oph.koski.valpas.{ValpasAccessResolver, ValpasErrorCategory}
+import fi.oph.koski.valpas.oppija.{ValpasAccessResolver, ValpasErrorCategory}
 
 import java.time.format.DateTimeFormatter
 

@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.http.ErrorCategory
 
@@ -15,6 +15,7 @@ object ValpasErrorCategory {
       val epävalidiUuid = subcategory("epävalidiUuid", "UUID ei ollut validi")
       val virheellinenPäivämäärä = subcategory("virheellinenPäivämäärä", "Virheellinen päivämäärä")
     }
+
     val validation = new Validation
     val requestTooLarge = subcategory("requestTooLarge", "Liian suuri kysely")
   }
@@ -48,4 +49,3 @@ object ValpasErrorCategory {
     val sure = subcategory("sure", "Hakukoosteita ei juuri nyt saada haettua suoritusrekisteristä. Yritä myöhemmin uudelleen.")
   }
 }
-
