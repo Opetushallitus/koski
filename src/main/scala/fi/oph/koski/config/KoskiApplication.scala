@@ -38,7 +38,8 @@ import fi.oph.koski.valpas.kansalainen.ValpasKansalainenService
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusService
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusDatabaseService, ValpasRajapäivätService}
-import fi.oph.koski.valpas.oppija.{ValpasOppijaLaajatTiedotService, ValpasOppijaSearchService, ValpasOppijalistatService, ValpasOppijanumerorekisteriService}
+import fi.oph.koski.valpas.oppija.{ValpasOppijaLaajatTiedotService, ValpasOppijalistatService, ValpasOppijanumerorekisteriService}
+import fi.oph.koski.valpas.oppijahaku.ValpasOppijaSearchService
 import fi.oph.koski.valpas.oppivelvollisuudenkeskeytys.ValpasOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.valpasrepository.{OpiskeluoikeusLisätiedotRepository, OppivelvollisuudenKeskeytysRepository, OppivelvollisuudenKeskeytysRepositoryService, ValpasKuntailmoitusRepository}
@@ -151,7 +152,7 @@ class KoskiApplication(
   lazy val valpasRajapäivätService = ValpasRajapäivätService(config)
   lazy val valpasOppijaLaajatTiedotService = new ValpasOppijaLaajatTiedotService(this)
   lazy val valpasOppijalistatService = new ValpasOppijalistatService(this)
-  lazy val valpasHakukoosteService = ValpasHakukoosteService(this.config, this.validatingAndResolvingExtractor)
+  lazy val valpasHakukoosteService = ValpasHakukoosteService(this)
   lazy val valpasKansalainenService = new ValpasKansalainenService(this)
   lazy val valpasOppijanumerorekisteriService = new ValpasOppijanumerorekisteriService(this)
   lazy val valpasOppijaSearchService = new ValpasOppijaSearchService(this)

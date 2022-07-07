@@ -23,6 +23,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
 {
   private val oppijalistatService = application.valpasOppijalistatService
   private val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
+  private val kuntailmoitusService = application.valpasKuntailmoitusService
 
   def haeKunnanPerusteellaIlmanOikeustarkastusta
     (kunta: String)
@@ -133,7 +134,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
               oppivelvollisetKoskessa
                 .filterNot(_.oppija.suorittaaOppivelvollisuutta)
 
-            oppijalistatService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(eiSuorittavat)
+            kuntailmoitusService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(eiSuorittavat)
               .map(_.map(ValpasRouhintaOppivelvollinen.apply))
               .map(oppijat => rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(oppijat))
           }

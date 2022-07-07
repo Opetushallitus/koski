@@ -1,12 +1,15 @@
 package fi.oph.koski.valpas.hakukooste
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasHenkilöLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 
-class MockHakukoosteService extends ValpasHakukoosteService {
+class MockHakukoosteService(application: KoskiApplication) extends ValpasHakukoosteService {
+  protected val localizationRepository = application.valpasLocalizationRepository
+
   // Näillä oideilla kutsuminen aiheuttaa virhetilanteen (käytetään virhetilanteiden hallinnan testaamiseen)
   private def errorOids = Map(
     "unavailable" -> ValpasErrorCategory.unavailable.sure(),

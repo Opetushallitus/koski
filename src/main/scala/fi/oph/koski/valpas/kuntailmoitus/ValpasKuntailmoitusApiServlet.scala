@@ -6,6 +6,7 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
+import fi.oph.koski.valpas.kuntavalvonta.ValpasKuntavalvontaService
 import fi.oph.koski.valpas.log.ValpasAuditLog.{auditLogKuntaKatsominen, auditLogOppijaKatsominen, auditLogOppijaKuntailmoitus}
 import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
@@ -24,12 +25,13 @@ class ValpasKuntailmoitusApiServlet(implicit val application: KoskiApplication)
     application.directoryClient
   )
   private lazy val kuntailmoitusService = application.valpasKuntailmoitusService
-  private lazy val oppijalistatService = application.valpasOppijalistatService
+
+  private val kuntavalvontaService = new ValpasKuntavalvontaService(application)
 
   get("/oppijat/:kuntaOid") {
     val kuntaOid: Organisaatio.Oid = params("kuntaOid")
     renderEither(
-      oppijalistatService.getKunnanOppijatSuppeatTiedot(kuntaOid)
+      kuntavalvontaService.getOppijatSuppeatTiedot(kuntaOid)
         .tap(_ => auditLogKuntaKatsominen(kuntaOid))
     )
   }

@@ -5,7 +5,7 @@ import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.valpas.kansalainen.{KansalainenOppijatiedot, KansalaisnäkymänTiedot}
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppilaitos}
-import fi.oph.koski.valpas.oppija.{ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
+import fi.oph.koski.valpas.oppijahaku.{ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
 import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasKuntailmoitusLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 

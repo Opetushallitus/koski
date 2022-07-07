@@ -8,7 +8,8 @@ import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
-import fi.oph.koski.valpas.oppija.{ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult, ValpasEiLöytynytHenkilöhakuResult, ValpasErrorCategory, ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
+import fi.oph.koski.valpas.oppijahaku.{ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult, ValpasEiLöytynytHenkilöhakuResult, ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.{BeforeAndAfterEach, Tag}
 

@@ -9,10 +9,12 @@ import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.UuidUtils
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
+import fi.oph.koski.valpas.hakeutumisvalvonta.ValpasHakeutumisvalvontaService
 import fi.oph.koski.valpas.log.ValpasAuditLog._
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{HakeutumisvalvontaTieto, ValpasOppilaitos}
 import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
+import fi.oph.koski.valpas.suorittamisenvalvonta.ValpasSuorittamisenValvontaService
 import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytyksenMuutos, UusiOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 import org.json4s.JValue
@@ -20,9 +22,11 @@ import org.json4s.JValue
 class ValpasRootApiServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasSession {
   private lazy val organisaatioService = application.organisaatioService
   private lazy val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
-  private lazy val oppijalistatService = application.valpasOppijalistatService
   private lazy val oppijaSearchService = application.valpasOppijaSearchService
   private lazy val oppivelvollisuudenKeskeytysService = application.valpasOppivelvollisuudenKeskeytysService
+
+  private val hakeutumisvalvontaService = new ValpasHakeutumisvalvontaService(application)
+  private val suorittamisenValvontaService = new ValpasSuorittamisenValvontaService(application)
 
   get("/user") {
     session.user
@@ -44,7 +48,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/oppijat/:organisaatio") {
     val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
-      oppijalistatService.getHakeutumisvalvottavatOppijatSuppeatTiedot(
+      hakeutumisvalvontaService.getOppijatSuppeatTiedot(
         oppilaitosOid,
         HakeutumisvalvontaTieto.Perusopetus,
       )
@@ -60,7 +64,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
         .extract[Oppijalista](strictDeserialization)(body)
 
       renderEither(oppijat.flatMap(o =>
-        oppijalistatService.getHakeutumisvalvottavatOppijatSuppeatTiedot(
+        hakeutumisvalvontaService.getOppijatSuppeatTiedot(
           oppilaitosOid,
           HakeutumisvalvontaTieto.Perusopetus,
           haeHakutilanteet = o.oppijaOids,
@@ -72,7 +76,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/oppijat-nivelvaihe/:organisaatio") {
     val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
-      oppijalistatService.getHakeutumisvalvottavatOppijatSuppeatTiedot(
+      hakeutumisvalvontaService.getOppijatSuppeatTiedot(
         oppilaitosOid,
         HakeutumisvalvontaTieto.Nivelvaihe,
       )
@@ -88,7 +92,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
         .extract[Oppijalista](strictDeserialization)(body)
 
       renderEither(oppijat.flatMap(o =>
-        oppijalistatService.getHakeutumisvalvottavatOppijatSuppeatTiedot(
+        hakeutumisvalvontaService.getOppijatSuppeatTiedot(
           oppilaitosOid,
           HakeutumisvalvontaTieto.Nivelvaihe,
           haeHakutilanteet = o.oppijaOids,
@@ -100,7 +104,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/oppijat/:organisaatio/ilmoitukset") {
     val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
-      oppijalistatService.getHakeutumisenvalvonnanKunnalleTehdytIlmoituksetSuppeatTiedot(oppilaitosOid)
+      hakeutumisvalvontaService.getKunnalleTehdytIlmoituksetSuppeatTiedot(oppilaitosOid)
         .tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
     )
   }
@@ -108,7 +112,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/oppijat-suorittaminen/:organisaatio") {
     val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
-      oppijalistatService.getSuorittamisvalvottavatOppijatSuppeatTiedot(oppilaitosOid)
+      suorittamisenValvontaService.getOppijatSuppeatTiedot(oppilaitosOid)
         .tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
     )
   }
@@ -116,7 +120,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   get("/oppijat-suorittaminen/:organisaatio/ilmoitukset") {
     val oppilaitosOid: ValpasOppilaitos.Oid = params("organisaatio")
     renderEither(
-      oppijalistatService.getSuorittamisvalvonnanKunnalleTehdytIlmoituksetSuppeatTiedot(oppilaitosOid)
+      suorittamisenValvontaService.getKunnalleTehdytIlmoituksetSuppeatTiedot(oppilaitosOid)
         .tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
     )
   }

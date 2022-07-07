@@ -21,6 +21,8 @@ class ValpasKuntailmoitusService(
   private val repository = application.valpasKuntailmoitusRepository
   private val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
   private val oppijalistatService = application.valpasOppijalistatService
+  private val opiskeluoikeusDbService = application.valpasOpiskeluoikeusDatabaseService
+  private val lisätiedotRepository = application.valpasOpiskeluoikeusLisätiedotRepository
   private val directoryClient = application.directoryClient
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val koodistoViitePalvelu = application.koodistoViitePalvelu
@@ -92,16 +94,80 @@ class ValpasKuntailmoitusService(
     repository.queryByKunta(kuntaOid)
   }
 
-  def getOppilaitoksenTekemätIlmoituksetIlmanKäyttöoikeustarkistusta
-    (organisaatioOid: Organisaatio.Oid)
-  : Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
-    repository.queryByTekijäOrganisaatio(organisaatioOid)
+  def getOppilaitoksenKunnalleTekemätIlmoituksetLaajatTiedot(
+    rooli: ValpasRooli.Role,
+    oppilaitosOid: ValpasOppilaitos.Oid
+  )(
+    implicit session: ValpasSession
+  ) : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+    repository.queryByTekijäOrganisaatio(oppilaitosOid)
+      .map(ilmoitukset => {
+        // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
+        // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
+        val oppijaOids = ilmoitukset.map(_.oppijaOid.get)
+        val oppijat = opiskeluoikeusDbService
+          .getOppijat(oppijaOids)
+          .flatMap(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot(_).toOption)
+        val oppijatJoihinKatseluoikeus = accessResolver
+          .filterByOppijaAccess(rooli)(oppijat)
+          .map(OppijaHakutilanteillaLaajatTiedot.apply)
+        val oppijatLisätiedoilla = lisätiedotRepository.readForOppijat(oppijatJoihinKatseluoikeus)
+        val oppijatLaajatTiedot = oppijatLisätiedoilla.map(oppijaLisätiedotTuple =>
+          oppijaLisätiedotTuple._1.withLisätiedot(oppijaLisätiedotTuple._2)
+        )
+
+        // Lisää kuntailmoitukset oppijan tietoihin
+        oppijatLaajatTiedot.map(oppija => oppija.copy(
+          kuntailmoitukset = ilmoitukset
+            // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
+            // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
+            .filter(ilmoitus => oppija.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get))
+        ))
+      })
+  }
+
+  def withKuntailmoituksetIlmanKäyttöoikeustarkistusta(
+    oppijaTiedot: Seq[OppijaHakutilanteillaLaajatTiedot]
+  ): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
+    application.valpasKuntailmoitusService.getKuntailmoituksetIlmanKäyttöoikeustarkistusta(oppijaTiedot.map(_.oppija))
+      .map(kuntailmoitukset =>
+        oppijaTiedot.map(oppijaTieto => {
+          val oppijanIlmoitukset = kuntailmoitukset.filter(
+            // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
+            // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
+            ilmoitus => oppijaTieto.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get)
+          )
+          val oppijanIlmoituksetAktiivisuustiedoilla =
+            oppijaLaajatTiedotService.lisääAktiivisuustiedot(oppijaTieto.oppija)(oppijanIlmoitukset)
+
+          oppijaTieto.copy(
+            kuntailmoitukset = oppijanIlmoituksetAktiivisuustiedoilla
+          )
+        })
+      )
   }
 
   def queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet: Seq[String]): Seq[String] =
     repository.queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet)
 
-  def addOpiskeluoikeusOnTehtyIlmoitusProperties(oppijat: Seq[OppijaHakutilanteillaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
+  def poistaKuntailmoitetutOpiskeluoikeudet
+    (säästäJosOpiskeluoikeusVoimassa: Boolean)
+      (oppijat: Seq[OppijaHakutilanteillaLaajatTiedot])
+      (implicit session: ValpasSession)
+  : Seq[OppijaHakutilanteillaLaajatTiedot] = {
+    addOpiskeluoikeusOnTehtyIlmoitusProperties(oppijat)
+      .flatMap(oppija => {
+        val opiskeluoikeudet = oppija.oppija.opiskeluoikeudet
+          .filter(oo => !oo.onTehtyIlmoitus.contains(true) || (säästäJosOpiskeluoikeusVoimassa && oo.isOpiskelu))
+        if (opiskeluoikeudet.nonEmpty) {
+          Some(oppija.copy(oppija = oppija.oppija.copy(opiskeluoikeudet = opiskeluoikeudet)))
+        } else {
+          None
+        }
+      })
+  }
+
+  private def addOpiskeluoikeusOnTehtyIlmoitusProperties(oppijat: Seq[OppijaHakutilanteillaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
     val ilmoituksellisetOpiskeluoikeudet = queryOpiskeluoikeudetWithIlmoitus(oppijat.flatMap(_.oppija.opiskeluoikeudet.map(_.oid)))
     oppijat.map(oppija => {
       val opiskeluoikeudet = oppija.oppija.opiskeluoikeudet

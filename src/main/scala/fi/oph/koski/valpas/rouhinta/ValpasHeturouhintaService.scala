@@ -18,6 +18,7 @@ class ValpasHeturouhintaService(application: KoskiApplication)
   private val oppijanumerorekisteri = application.opintopolkuHenkilöFacade
   private val oppijalistatService = application.valpasOppijalistatService
   private val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
+  private val kuntailmoitusService = application.valpasKuntailmoitusService
 
   private val maxHetuCount = application.config.getInt("valpas.rouhintaMaxHetuCount")
 
@@ -51,7 +52,7 @@ class ValpasHeturouhintaService(application: KoskiApplication)
 
             val suorittavat = suorittavatKoski
 
-            oppijalistatService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(eiSuorittavatKoskiLaajatTiedot)
+            kuntailmoitusService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(eiSuorittavatKoskiLaajatTiedot)
               .map(_.map(ValpasRouhintaOppivelvollinen.apply))
               .map(eiSuorittavatKuntailmoituksilla => {
 
