@@ -17,8 +17,14 @@ object VSTKotoutumiskoulutus2022Validation {
 
   def validate(suoritus: Suoritus): HttpStatus =
     suoritus match {
-      case s: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 =>
-        HttpStatus.fold(s.osasuoritukset.getOrElse(List.empty).map(validate))
+      case päätasonSuoritus: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 =>
+        HttpStatus.fold(
+          päätasonSuoritus
+            .osasuoritukset
+            .getOrElse(List.empty)
+            .map(validateOsasuoritus(päätasonSuoritus))
+          :+ validatePakollisetOsasuoritukset(päätasonSuoritus)
+        )
       case _ =>
         HttpStatus.ok
     }
@@ -36,18 +42,32 @@ object VSTKotoutumiskoulutus2022Validation {
       }
 
       (onRajapäivänJälkeen, pitääOllaRajapäivänJälkeen) match {
-        case (Some(true), Some(false))  => KoskiErrorCategory.badRequest.validation.rakenne.vstKoto2012Alkamispäivä()
-        case (Some(false), Some(true))  => KoskiErrorCategory.badRequest.validation.rakenne.vstKoto2022Alkamispäivä()
+        case (Some(true), Some(false))  => KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2012()
+        case (Some(false), Some(true))  => KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2022()
         case _ => HttpStatus.ok
       }
     }))
   }
 
-  def validate(osasuoritus: VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022): HttpStatus =
+  def validatePakollisetOsasuoritukset(päätasonSuoritus: VapaanSivistystyönPäätasonSuoritus): HttpStatus =
+    josVahvistettu(päätasonSuoritus) {
+      val pakollisetOsasuoritukset = Set(
+        "yhteiskuntajatyoelamaosaaminen",
+        "kielijaviestintaosaaminen",
+        "ohjaus",
+      )
+
+      collectOsasuoritustenTyypit(päätasonSuoritus) match {
+        case Some(tyypit) if pakollisetOsasuoritukset.forall(tyypit.contains) => HttpStatus.ok
+        case _ => KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.puuttuvaOpintokokonaisuus("Suoritusta ei voi vahvistaa ennen kuin kaikki pakolliset osasuoritukset on arvioitu")
+      }
+    }
+
+  def validateOsasuoritus(päätasonSuoritus: VapaanSivistystyönPäätasonSuoritus)(osasuoritus: VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022): HttpStatus =
     osasuoritus match {
       case s: VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 => validateKieliJaViestintä(s)
       case s: VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 => validateYhteiskuntaJaTyöosaaminen(s)
-      case s: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 => validateOhjausLaajuus(s)
+      case s: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 => validateOhjausLaajuus(s, päätasonSuoritus)
       case _ => HttpStatus.ok
     }
 
@@ -71,14 +91,7 @@ object VSTKotoutumiskoulutus2022Validation {
         "kirjoittaminen"
       )
 
-      val arvioidutOsasuoritustenTyypit =
-        suoritus
-          .osasuoritukset
-          .map(_
-            .filter(_.arvioitu)
-            .map(_.koulutusmoduuli.tunniste.koodiarvo))
-
-      arvioidutOsasuoritustenTyypit match {
+      collectOsasuoritustenTyypit(suoritus, Some(_.arvioitu)) match {
         case Some(tyypit) if pakollisetKieliopintojenAlaosasuoritukset.forall(tyypit.contains) => HttpStatus.ok
         case _ => KoskiErrorCategory.badRequest.validation.tila.osasuoritusPuuttuu("Kielten ja viestinnän osasuoritusta ei voi hyväksyä ennen kuin kaikki pakolliset alaosasuoritukset on arvioitu")
       }
@@ -106,13 +119,16 @@ object VSTKotoutumiskoulutus2022Validation {
       validateLaajuus("Työssäoppiminen", työssäoppimisjaksojenYhteislaajuus, 8.0)
     }
 
-  def validateOhjausLaajuus(suoritus: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022): HttpStatus =
-    josArvioitu(suoritus) {
-      validateLaajuus(suoritus, 8)
+  def validateOhjausLaajuus(suoritus: VSTKotoutumiskoulutuksenOhjauksenSuoritus2022, päätasonSuoritus: VapaanSivistystyönPäätasonSuoritus): HttpStatus =
+    josVahvistettu(päätasonSuoritus) {
+      validateLaajuus(suoritus, 7)
     }
 
   def josArvioitu(suoritus: Suoritus)(f: => HttpStatus): HttpStatus =
     if (suoritus.arvioitu) f else HttpStatus.ok
+
+  def josVahvistettu(suoritus: Suoritus)(f: => HttpStatus): HttpStatus =
+    if (suoritus.vahvistettu) f else HttpStatus.ok
 
   def validateLaajuus(suoritus: Suoritus, minimiLaajuus: Double): HttpStatus =
     validateLaajuus(suoritus.koulutusmoduuli.nimi.get("fi"), suoritus.koulutusmoduuli.getLaajuus.map { case l: LaajuusOpintopisteissä => l.arvo }, minimiLaajuus)
@@ -126,4 +142,11 @@ object VSTKotoutumiskoulutus2022Validation {
       case None =>
         KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu()
     }
+
+  def collectOsasuoritustenTyypit(suoritus: Suoritus, filter: Option[Suoritus => Boolean] = None): Option[List[String]] =
+    suoritus
+      .osasuoritukset
+      .map(_
+        .filter(filter.getOrElse({ _ => true }))
+        .map(_.koulutusmoduuli.tunniste.koodiarvo))
 }

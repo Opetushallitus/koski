@@ -272,6 +272,41 @@ class OppijaValidationVapaaSivistystyöMuutSpec extends AnyFreeSpec with PutOpis
       }
     }
 
+    "Ohjaus" - {
+      "Opiskeluoikeutta ei voi vahvistaa, jos ohjauksen osasuoritus puuttuu" in {
+        val opiskeluoikeus = Koto2022.Opiskeluoikeus.suoritettu.copy(
+          suoritukset = List(Koto2022.PäätasonSuoritus.suoritettu.copy(
+            osasuoritukset = Some(List(
+              Koto2022.KieliJaViestintä.suoritettu,
+              Koto2022.YhteiskuntaJaTyöelämä.suoritettu,
+              Koto2022.Valinnaiset.suoritettu,
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.puuttuvaOpintokokonaisuus("Suoritusta ei voi vahvistaa ennen kuin kaikki pakolliset osasuoritukset on arvioitu"))
+        }
+      }
+
+      "Opiskeluoikeutta ei voi vahvistaa, jos ohjauksen osasuorituksen laajuus on liian suppea" in {
+        val opiskeluoikeus = Koto2022.Opiskeluoikeus.suoritettu.copy(
+          suoritukset = List(Koto2022.PäätasonSuoritus.suoritettu.copy(
+            osasuoritukset = Some(List(
+              Koto2022.KieliJaViestintä.suoritettu,
+              Koto2022.YhteiskuntaJaTyöelämä.suoritettu,
+              Koto2022.Valinnaiset.suoritettu,
+              Koto2022.Ohjaus.keskeneräinen,
+            ))
+          ))
+        )
+
+        putOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusLiianSuppea(s"Oppiaineen 'Ohjaus' suoritettu laajuus liian suppea (4.0 op, pitäisi olla vähintään 7.0 op)"))
+        }
+      }
+    }
+
     "Rajapäivät" - {
       "Uuden opsin mukaista opiskeluoikeutta, joka alkaa ennen 1.8.2022, ei voi siirtää" in {
         val opiskeluoikeus = Koto2022.Opiskeluoikeus.keskeneräinen.copy(
@@ -281,7 +316,7 @@ class OppijaValidationVapaaSivistystyöMuutSpec extends AnyFreeSpec with PutOpis
         )
 
         putOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vstKoto2022Alkamispäivä())
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2022())
         }
       }
 
@@ -294,7 +329,7 @@ class OppijaValidationVapaaSivistystyöMuutSpec extends AnyFreeSpec with PutOpis
         )
 
         putOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vstKoto2012Alkamispäivä())
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.kotoAlkamispäivä2012())
         }
       }
     }

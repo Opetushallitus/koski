@@ -67,7 +67,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
     "Opiskeluoikeuden opintokokonaisuus ei voi olla tyhjä" in {
       val oo = VapaatavoitteinenOpiskeluoikeusIlmanOpintokokonaisuutta
       putOpiskeluoikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vstPuuttuvaOpintokokonaisuus())
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.puuttuvaOpintokokonaisuus())
       }
     }
 

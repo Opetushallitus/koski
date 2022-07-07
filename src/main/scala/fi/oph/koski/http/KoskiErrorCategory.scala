@@ -129,11 +129,6 @@ object KoskiErrorCategory {
         val perusteenVoimassaoloPäättynyt = subcategory("perusteenVoimassaoloPäättynyt", "Tutkinnon perusteen siirtymäaika on päättynyt tai, jos perusteelle ei ole määritelty siirtyymäaikaa, perusteen voimassaoloaika on päättynyt. Aktiivisen opiskeluoikeuden tutkinnon rakenteen tulee olla voimassa.")
         val tuvaOpiskeluJaUrasuunnittelutaitojenOsasuoritusPuuttuu = subcategory("tuvaOpiskeluJaUrasuunnittelutaitojenOsasuoritusPuuttuu", "Tutkintokoulutukseen valmentavan koulutuksen pakollinen osasuoritus Opiskelu- ja urasuunnittelutaidot puuttuu.")
         val tuvaOsasuorituksiaLiianVähän = subcategory("tuvaOsasuorituksiaLiianVähän", "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksia on oltava vähintään kolmesta eri koulutuksen osasta.")
-        val vstKoto2012Alkamispäivä = subcategory("vstKotoAlkamispäivä2012", "Vapaan sivistystyön kotiutumiskoulutuksen suorituksella ei voi olla 1.8.2022 jälkeen aloitettuja aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman 2012 mukaisia suorituksia")
-        val vstKoto2022Alkamispäivä = subcategory("vstKotoAlkamispäivä2022", "Vapaan sivistystyön kotiutumiskoulutuksen suorituksella ei voi olla ennen 1.8.2022 aloitettuja kotoutumiskoulutuksen opetussuunnitelman 2022 mukaisia suorituksia")
-        val vstPuuttuvaOpintokokonaisuus = subcategory("vstOpintokokonaisuusEiSaaOllaTyhja", "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeuden opintokokonaisuus ei saa olla tyhjä.")
-        val vstPuuttuvaOpintokokonaisuusDeadline = subcategory("vstOpintokokonaisuusEiSaaOllaTyhjaDeadlinenJalkeen", "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeuden opintokokonaisuus on pakollinen tieto 1.8.2022 jälkeen.")
-        val vstOpintokokonaisuusVainVapaaTavoitteisessaKoulutuksessa = subcategory("vstOpintokokonaisuusSaaOllaVainVapaatavoitteisessaKoulutuksessa", "Opiskeluoikeuden opintokokonaisuus saa olla määritelty vain vapaan sivistystyön vapaatavoitteisissa koulutuksissa")
       }
       val rakenne = new Rakenne
 
@@ -205,6 +200,19 @@ object KoskiErrorCategory {
         )
       }
       val osaAikainenErityisopetus = new OsaAikainenErityisopetus
+
+      class VapaaSivistystyö extends ErrorCategory(
+        Validation.this,
+        "vapaasivistystyo",
+        "Vapaan sivistystyön kirjauksiin liittyvä validointivirhe"
+      ) {
+        val kotoAlkamispäivä2012 = subcategory("kotoAlkamispäivä2012", "Vapaan sivistystyön kotiutumiskoulutuksen suorituksella ei voi olla 1.8.2022 jälkeen aloitettuja aikuisten maahanmuuttajien kotoutumiskoulutuksen opetussuunnitelman 2012 mukaisia suorituksia")
+        val kotoAlkamispäivä2022 = subcategory("kotoAlkamispäivä2022", "Vapaan sivistystyön kotiutumiskoulutuksen suorituksella ei voi olla ennen 1.8.2022 aloitettuja kotoutumiskoulutuksen opetussuunnitelman 2022 mukaisia suorituksia")
+        val puuttuvaOpintokokonaisuus = subcategory("puuttuvaOpintokokonaisuus", "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeuden opintokokonaisuus ei saa olla tyhjä.")
+        val puuttuvaOpintokokonaisuusDeadline = subcategory("puuttuvaOpintokokonaisuusDeadline", "Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeuden opintokokonaisuus on pakollinen tieto 1.8.2022 jälkeen.")
+        val opintokokonaisuusVainVapaaTavoitteisessaKoulutuksessa = subcategory("opintokokonaisuusVainVapaaTavoitteisessaKoulutuksessa", "Opiskeluoikeuden opintokokonaisuus saa olla määritelty vain vapaan sivistystyön vapaatavoitteisissa koulutuksissa")
+      }
+      val vapaaSivistystyö = new VapaaSivistystyö
     }
     val validation = new Validation
   }

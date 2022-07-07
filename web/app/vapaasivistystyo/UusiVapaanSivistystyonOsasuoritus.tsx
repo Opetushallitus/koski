@@ -27,9 +27,8 @@ import {
 import {
   EditorModel,
   EnumValue,
+  isOneOfModel,
   ObjectModel,
-  OneOfModel,
-  PrototypeModel,
   StringModel,
 } from "../types/EditorModels";
 import { ChangeBusContext, Contextualized } from "../types/EditorModelContext";
@@ -55,6 +54,8 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
     suoritukset.find((s) => s.value.classes.includes(tyyppi));
   const findSuoritusPrototyyppi = (tyyppi: string) =>
     suoritusPrototypes.find((s) => s.value.classes.includes(tyyppi));
+  const findSuoritusPrototyypit = (tyyppi: string) =>
+    suoritusPrototypes.filter((s) => s.value.classes.includes(tyyppi));
 
   const osaamiskokonaisuus = findSuoritusPrototyyppi(
     "oppivelvollisillesuunnatunvapaansivistystyonosaamiskokonaisuudensuoritus"
@@ -116,8 +117,8 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
     "vapaansivistystyonvapaatavoitteisenkoulutuksenosasuorituksensuoritus"
   );
 
-  const koto2022Osasuoritus = findSuoritusPrototyyppi(
-    "vstkotoutumiskoulutuksenkielijaviestintaosaamisensuoritus2022"
+  const koto2022Osasuoritukset = findSuoritusPrototyypit(
+    "vstkotoutumiskoulutuksenkokonaisuudenosasuoritus2022"
   );
   const koto2022KieliJaViestintaOsaamisenAlaosasuoritus =
     findSuoritusPrototyyppi(
@@ -243,11 +244,11 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
           lisääTitle={"Osasuorituksen lisäys"}
         />
       )}
-      {koto2022Osasuoritus && (
+      {koto2022Osasuoritukset.length > 0 && (
         <LisääVSTKOTO2022Osasuoritus
           className="vst-osaamiskokonaisuus"
           koodistoUri="vstkoto2022kokonaisuus"
-          suoritusPrototype={koto2022Osasuoritus}
+          suoritusPrototypes={koto2022Osasuoritukset}
           selectionText={"Lisää osasuoritus"}
           setExpanded={setExpanded}
         />
@@ -377,7 +378,7 @@ const LisääOsaAlue = ({
 };
 
 type LisääOsasuoritusProps = {
-  suoritusPrototype: OsasuoritusEditorModel;
+  suoritusPrototypes: OsasuoritusEditorModel[];
   selectionText: string;
   setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void;
   className?: string;
@@ -385,16 +386,17 @@ type LisääOsasuoritusProps = {
 };
 
 const LisääVSTKOTO2022Osasuoritus = ({
-  suoritusPrototype,
+  suoritusPrototypes,
   selectionText,
   setExpanded,
   className,
 }: LisääOsasuoritusProps) => {
   const selectedAtom = Atom<EnumValue<Koodistokoodiviite> | undefined>();
 
-  const koulutusmoduuliPrototypes = (
-    suoritusPrototype as OsasuoritusEditorModel & OneOfModel
-  ).oneOfPrototypes as PrototypeModel[];
+  const koulutusmoduuliPrototypes = suoritusPrototypes.flatMap(
+    (suoritusPrototype) =>
+      isOneOfModel(suoritusPrototype) ? suoritusPrototype.oneOfPrototypes : []
+  );
 
   selectedAtom.filter(notUndefined).onValue((newItem) => {
     const prototypeMapping: Record<string, string> = {
@@ -411,6 +413,9 @@ const LisääVSTKOTO2022Osasuoritus = ({
     const proto = koulutusmoduuliPrototypes.find((p) => p.key === prototypeKey);
 
     if (proto) {
+      const suoritusPrototype = suoritusPrototypes.find((m) =>
+        m.value.classes.includes(prototypeKey)
+      );
       const koulutusmoduuliPrototype =
         koulutusModuuliprototypes(suoritusPrototype)[0];
 
@@ -420,10 +425,7 @@ const LisääVSTKOTO2022Osasuoritus = ({
       );
 
       const suoritus = modelSet(
-        modelSetTitle(
-          contextualizeSubModel(proto, suoritusPrototype)!,
-          newItem.title
-        ),
+        contextualizeSubModel(proto, suoritusPrototype)!,
         koulutusmoduuli,
         "koulutusmoduuli"
       );
