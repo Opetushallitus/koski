@@ -19,7 +19,7 @@ import { ApiErrors } from "../../../components/typography/error"
 import { T, t } from "../../../i18n/i18n"
 import { Organisaatio } from "../../../state/apitypes/organisaatiot"
 import { ISODate, Oid } from "../../../state/common"
-import { today } from "../../../utils/date"
+import { isValidSortedValues, today } from "../../../utils/date"
 import "./OppivelvollisuudenKeskeytys.less"
 
 const b = bem("ovkeskeytys")
@@ -139,7 +139,11 @@ export const OppivelvollisuudenKeskeytysForm = (
       >
         <DatePicker
           value={dateRange[0]}
-          onChange={(startDate) => setDateRange([startDate, dateRange[1]])}
+          onChange={(startDate) => {
+            if (isValidSortedValues(startDate, dateRange[1])) {
+              setDateRange([startDate, dateRange[1]])
+            }
+          }}
           disabled={!toistaiseksiSelected}
         />
         <LabeledCheckbox

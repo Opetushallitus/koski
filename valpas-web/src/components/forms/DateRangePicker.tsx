@@ -1,6 +1,7 @@
 import bem from "bem-ts"
 import React, { useCallback } from "react"
 import { ISODate } from "../../state/common"
+import { isValidSortedValues } from "../../utils/date"
 import { DatePicker } from "./DatePicker"
 import "./DateRangePicker.less"
 
@@ -18,7 +19,10 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
   const values = sortDateRange(props.value)
   const setValuesSorted = useCallback(
     (range: DateRange) => {
-      props.onChange(sortDateRange(range))
+      const [value1, value2] = range
+      if (isValidSortedValues(value1, value2)) {
+        props.onChange(sortDateRange([value1, value2]))
+      }
     },
     [props]
   )
