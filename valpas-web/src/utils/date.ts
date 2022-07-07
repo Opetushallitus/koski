@@ -37,3 +37,18 @@ export const dateToday = () => {
   }
   return new Date()
 }
+
+const isValidDate = (date: string) => {
+  const castDate = new Date(date)
+  if (!isNaN(castDate.getTime())) {
+    return castDate.getFullYear() <= 9999
+  }
+  return false
+}
+
+export const isValidSortedValues = (
+  value1: ISODate | null,
+  value2: ISODate | null
+) =>
+  (value1 === null || isValidDate(value1)) &&
+  (value2 === null || isValidDate(value2))
