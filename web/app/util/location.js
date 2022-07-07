@@ -65,7 +65,7 @@ export function parseLocation(location) {
   }
   let hashStr = location.hash ? location.hash : ''
   return {
-    path: location.pathname.replace(/(^\/?)/,'/'),
+    path: location.pathname.replace(/\/$/, '').replace(/(^\/?)/,'/'),
     params: parseQuery(location.search || ''),
     queryString: location.search || '',
     hash: location.hash,

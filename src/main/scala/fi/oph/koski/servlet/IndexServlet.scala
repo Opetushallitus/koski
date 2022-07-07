@@ -35,7 +35,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     }
   })
 
-  get("/virkailija")(nonce => {
+  get("/virkailija/?")(nonce => {
     if (koskiSessionOption.exists(_.hasKelaAccess)) {
       redirect("/koski/kela")
     } else {
