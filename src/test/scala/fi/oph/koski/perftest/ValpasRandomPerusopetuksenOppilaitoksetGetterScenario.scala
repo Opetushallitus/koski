@@ -30,9 +30,10 @@ object ValpasRandomPerusopetuksenOppilaitoksetGetterScenario extends PerfTestSce
     }
     !bodyContainsError
   }
+
+  override val minimumTimeBetweenOperationsMs = 2500
 }
 
 object ValpasRandomPerusopetuksenOppilaitoksetGetter extends App {
   PerfTestRunner.executeTest(ValpasRandomPerusopetuksenOppilaitoksetGetterScenario)
 }
-

@@ -15,6 +15,7 @@ trait PerfTestScenario extends KoskidevHttpSpecification with EnvVariables with 
   def name = getClass.getSimpleName
   def readBody: Boolean = false
   def bodyValidator: Boolean = true
+  def minimumTimeBetweenOperationsMs: Int = 0
 
   override def logger = super.logger
 }

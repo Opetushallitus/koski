@@ -62,6 +62,7 @@ object PerfTestRunner extends Logging {
             case Some(round) =>
               val operations = scenario.operation(round)
               operations.foreach { o =>
+                val operationStarted = currentTimeMillis
                 val gzipHeaders = if (o.body != null && o.gzip) List(("Content-Encoding" -> "gzip")) else Nil
                 val cookieHeaders = Map("Cookie" -> s"SERVERID=koski-app${round % scenario.serverCount + 1}")
                 val contentTypeHeaders = if (o.body != null) scenario.jsonContent else Nil
@@ -90,6 +91,11 @@ object PerfTestRunner extends Logging {
                 } else {
                   scenario.logger.warn(s"Round took $elapsed milliseconds, while maximum expected duration was ${scenario.maximumExpectedDurationMs} milliseconds")
                   stats.record(o.method + " " + o.uriPattern.getOrElse(o.uri), false, elapsed)(scenario.logger)
+                }
+                val operationElapsed = currentTimeMillis - operationStarted
+                if (scenario.minimumTimeBetweenOperationsMs > operationElapsed) {
+                  val extraSleepTimeMs = scenario.minimumTimeBetweenOperationsMs - operationElapsed
+                  Thread.sleep(extraSleepTimeMs)
                 }
               }
               run
