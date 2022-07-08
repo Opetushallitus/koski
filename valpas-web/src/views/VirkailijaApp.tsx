@@ -4,6 +4,7 @@ import { fetchYlatasonOrganisaatiotJaKayttooikeusroolit } from "../api/api"
 import { useApiOnce } from "../api/apiHooks"
 import { isSuccess } from "../api/apiUtils"
 import { LoadingModal } from "../components/icons/Spinner"
+import { Aikaleima } from "../components/shared/Aikaleima"
 import { t } from "../i18n/i18n"
 import { KäyttöoikeusroolitProvider } from "../state/accessRights"
 import {
@@ -305,6 +306,7 @@ const VirkailijaApp = ({ basePath }: VirkailijaAppProps) => {
         hasValpasAccess(user) ? (
           <div id="virkailija-app">
             <VirkailijaRoutes />
+            <Aikaleima />
           </div>
         ) : (
           <ErrorView

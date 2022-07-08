@@ -274,7 +274,10 @@ trait InternationalSchoolNumeerinenOppiaineenArviointi extends InternationalScho
   @KoodistoKoodiarvo("5")
   @KoodistoKoodiarvo("6")
   @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("Pass")
+  @KoodistoKoodiarvo("Fail")
   @KoodistoUri("arviointiasteikkoib")
+  @KoodistoUri("arviointiasteikkointernationalschool")
   def arvosana: Koodistokoodiviite
 }
 

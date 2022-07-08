@@ -3,6 +3,7 @@ package fi.oph.koski.valpas
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioHierarkiaJaKayttooikeusrooli}
+import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
@@ -24,6 +25,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
   private lazy val oppijaLaajatTiedotService = application.valpasOppijaLaajatTiedotService
   private lazy val oppijaSearchService = application.valpasOppijaSearchService
   private lazy val oppivelvollisuudenKeskeytysService = application.valpasOppivelvollisuudenKeskeytysService
+  private lazy val raportitService = new RaportitService(application)
 
   private val hakeutumisvalvontaService = new ValpasHakeutumisvalvontaService(application)
   private val suorittamisenValvontaService = new ValpasSuorittamisenValvontaService(application)
@@ -54,6 +56,10 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
       )
         .tap(_ => auditLogOppilaitosKatsominen(oppilaitosOid))
     )
+  }
+
+  get("/paivitysaika") {
+    raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika
   }
 
   post("/oppijat/:organisaatio/hakutiedot") {
