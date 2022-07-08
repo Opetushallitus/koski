@@ -363,7 +363,8 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
           alku = date(2021, 8, 1),
           loppu = None
         )
-      )
+      ),
+      erityisenTuenPäätökset = None
     )),
     organisaatiohistoria = Some(opiskeluoikeudenOrganisaatioHistoria),
     suoritukset = List(
