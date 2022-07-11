@@ -9,6 +9,7 @@ import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[TutkintokoulutukseenValmentavanOpiskeluoikeus] with KoskiHttpSpec {
@@ -274,6 +275,57 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
               .badRequest(
                 "Olemassaolevan tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeuden järjestämislupaa ei saa muuttaa."
               )
+          )
+        }
+      }
+    }
+
+    "Opiskeluoikeuden tila" - {
+      """Opiskeluoikeuden tila "loma" sallitaan, kun opiskeluoikeuden järjestämislupa on ammatillisen koulutuksen järjestämisluvan piirissä""" in {
+        putOpiskeluoikeus(
+          tuvaOpiskeluOikeusLoma.copy(
+            järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa"),
+            lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
+              maksuttomuus = Some(
+                List(
+                  Maksuttomuus(
+                    alku = date(2021, 8, 1),
+                    loppu = None,
+                    maksuton = true
+                  )
+                )
+              )
+            ))),
+          henkilö = tuvaHenkilöLoma,
+          headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+        ) {
+          verifyResponseStatusOk()
+        }
+      }
+      """Opiskeluoikeuden tila ei saa olla "loma", kun opiskeluoikeuden järjestämislupa on jokin muu kuin ammatillisen koulutuksen järjestämisluvan piirissä""" in {
+        putOpiskeluoikeus(
+          tuvaOpiskeluOikeusLoma.copy(
+            lisätiedot = Some(
+              TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot(
+                maksuttomuus = Some(
+                  List(
+                    Maksuttomuus(
+                      alku = date(2021, 8, 1),
+                      loppu = None,
+                      maksuton = true
+                    )
+                  )
+                )
+              ))),
+          henkilö = tuvaHenkilöLoma,
+          headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+        ) {
+          verifyResponseStatus(
+            400,
+            KoskiErrorCategory
+              .badRequest.validation.tila.tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo(
+              """Tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeuden tila ei voi olla "loma", jos opiskeluoikeuden järjestämislupa ei ole ammatillisen koulutuksen järjestämisluvan piirissä."""
+            )
           )
         }
       }

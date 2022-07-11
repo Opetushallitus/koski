@@ -45,6 +45,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("mitatoity")
   @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
   @KoodistoKoodiarvo("valmistunut")
+  @KoodistoKoodiarvo("loma")
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")

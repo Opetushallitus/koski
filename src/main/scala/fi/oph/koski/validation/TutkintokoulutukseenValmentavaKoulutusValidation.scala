@@ -2,6 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.laajuudet._
+import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.tila.{tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo}
 import fi.oph.koski.schema._
 
 object TutkintokoulutukseenValmentavaKoulutusValidation {
@@ -9,7 +10,10 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
   def validateTuvaSuoritus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     suoritus match {
       case suoritus: TutkintokoulutukseenValmentavanKoulutuksenSuoritus =>
-        validateTuvaSuorituksenLaajuusJaRakenne(suoritus, opiskeluoikeus)
+        HttpStatus.fold(
+          validateTuvaSuorituksenLaajuusJaRakenne(suoritus, opiskeluoikeus),
+          validateTuvaSuorituksenOpiskeluoikeudenTila(opiskeluoikeus)
+        )
       case _ =>
         HttpStatus.ok
     }
@@ -41,6 +45,13 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
     } else {
       tuvaPäätasonSuoritusVääräLaajuus()
     }
+  }
+
+  private def validateTuvaSuorituksenOpiskeluoikeudenTila(
+                                                       opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus
+                                                     ): HttpStatus = opiskeluoikeus match {
+    case a: TutkintokoulutukseenValmentavanOpiskeluoikeus if a.järjestämislupa.koodiarvo != "ammatillinen" && a.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == "loma") => tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo()
+    case _ => HttpStatus.ok
   }
 
   private def validateOsasuoritustenLaajuus(
