@@ -552,13 +552,13 @@ class RaportointikantaSpec
             tyyppi = t._1.oppijaOid match {
               case "1.2.246.562.24.00000000001" => "perusopetus"
               case "1.2.246.562.24.00000000013" => "ammatillinenkoulutus"
-              case "1.2.246.562.24.00000000128" => "vapaansivistystyonkoulutus"
+              case "1.2.246.562.24.00000000129" => "vapaansivistystyonkoulutus"
               case _ => "???"
             },
             päätasonSuoritusTyypit = t._1.oppijaOid match {
               case "1.2.246.562.24.00000000001" => List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
               case "1.2.246.562.24.00000000013" => List("ammatillinentutkinto")
-              case "1.2.246.562.24.00000000128" => List("vstvapaatavoitteinenkoulutus")
+              case "1.2.246.562.24.00000000129" => List("vstvapaatavoitteinenkoulutus")
               case _ => List("???")
             },
           ))
