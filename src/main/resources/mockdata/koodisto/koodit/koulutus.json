@@ -5266,12 +5266,12 @@
   "koodiUri" : "koulutus_351301",
   "koodiArvo" : "351301",
   "metadata" : [ {
-    "nimi" : "Autoalan perustutkinto",
-    "lyhytNimi" : "Autoalan perustutkinto",
+    "nimi" : "Ajoneuvoalan perustutkinto",
+    "lyhytNimi" : "Ajoneuvoalan perustutkinto",
     "kieli" : "FI"
   }, {
-    "nimi" : "Grundexamen inom bilbranschen",
-    "lyhytNimi" : "Grundexamen inom bilbranschen",
+    "nimi" : "Grundexamen inom fordonsbranschen",
+    "lyhytNimi" : "Grundexamen inom fordonsbranschen",
     "kieli" : "SV"
   }, {
     "nimi" : "Vocational qualification in the Vehicle Sector",
