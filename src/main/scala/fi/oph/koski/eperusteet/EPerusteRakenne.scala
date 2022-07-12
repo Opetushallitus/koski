@@ -13,6 +13,7 @@ case class EPerusteRakenne(
   nimi: Map[String, String],
   diaarinumero: String,
   koulutustyyppi: String,
+  voimassaoloAlkaa: Option[String],
   voimassaoloLoppuu: Option[String],
   siirtymaPaattyy: Option[String],
   koulutukset: List[EPerusteKoulutus],
@@ -30,6 +31,9 @@ case class EPerusteRakenne(
     case None => false
   }
   def voimassaoloLoppuuLocalDate = voimassaoloLoppuu.map(ms =>
+    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
+
+  def voimassaoloAlkaaLocalDate = voimassaoloAlkaa.map(ms =>
     ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
 
   def siirtymäPäättynyt(vertailupäivämäärä: LocalDate = LocalDate.now()) = siirtymäPäättyyLocalDate match {

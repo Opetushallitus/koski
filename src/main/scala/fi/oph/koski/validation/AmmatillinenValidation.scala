@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillisenTutkinnonOsittainenSuoritus, AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, AmmatillisenTutkinnonSuoritus, DiaarinumerollinenKoulutus, KoskeenTallennettavaOpiskeluoikeus, NäyttötutkintoonValmistavanKoulutuksenSuoritus}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillinenPäätasonSuoritus, AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, AmmatillisenTutkinnonSuoritus, DiaarinumerollinenKoulutus, KoskeenTallennettavaOpiskeluoikeus, NäyttötutkintoonValmistavanKoulutuksenSuoritus}
 
 import java.time.LocalDate
 import com.typesafe.config.Config
@@ -16,7 +16,7 @@ object AmmatillinenValidation {
         HttpStatus.fold(
           validatePerusteVoimassa(ammatillinen, ePerusteet, config),
           validateUseaPäätasonSuoritus(ammatillinen),
-          validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen)
+          validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen, ePerusteet)
         )
       case _ => HttpStatus.ok
     }
@@ -141,7 +141,10 @@ object AmmatillinenValidation {
     }
   }
 
-  private def validateViestintäJaVuorovaikutusÄidinkielellä2022(oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
+  private def validateViestintäJaVuorovaikutusÄidinkielellä2022(
+    oo: AmmatillinenOpiskeluoikeus,
+    ePerusteet: EPerusteetRepository
+  ): HttpStatus = {
     val rajapäivä = LocalDate.of(2022, 8, 1)
 
     def löytyyVVAI22(suoritus: AmmatillisenTutkinnonSuoritus): Boolean = suoritus
@@ -151,13 +154,22 @@ object AmmatillinenValidation {
       .map(_.koulutusmoduuli)
       .exists(k => k.tunniste.koodiarvo == "VVAI22")
 
+    def haePeruste(suoritus: AmmatillinenPäätasonSuoritus) =
+      suoritus.koulutusmoduuli match {
+        case diaarillinen: DiaarinumerollinenKoulutus =>
+          diaarillinen.perusteenDiaarinumero.flatMap(dNro => ePerusteet.findUusinRakenne(dNro))
+        case _ => None
+      }
+
     HttpStatus.fold(
-      oo.suoritukset.map {
-        case a: AmmatillisenTutkinnonSuoritus if oo.alkamispäivä.exists(ap => ap.isBefore(rajapäivä)) =>
-          HttpStatus.validate(!löytyyVVAI22(a)) {
-            KoskiErrorCategory.badRequest.validation.ammatillinen.yhteinenTutkinnonOsaVVAI22()
+      oo.suoritukset.flatMap {
+        case suoritus: AmmatillisenTutkinnonSuoritus if löytyyVVAI22(suoritus) =>
+          haePeruste(suoritus).map { peruste =>
+            HttpStatus.validate(peruste.voimassaoloAlkaaLocalDate.exists(d => !d.isBefore(rajapäivä))) {
+              KoskiErrorCategory.badRequest.validation.ammatillinen.yhteinenTutkinnonOsaVVAI22()
+            }
           }
-        case _ => HttpStatus.ok
+        case _ => Some(HttpStatus.ok)
       }
     )
   }

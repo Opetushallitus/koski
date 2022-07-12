@@ -4,7 +4,7 @@
 - Korjattu vapaan sivistystyön kotoutumiskoulutuksen (ops 2022) ohjauksen osasuorituksen validoinnit vastaamaan perustetta
 
 ## 5.7.2022
-- Ammatillisen yhteisen tutkinnon osan osa-alueen koodi VVAI22 sallitaan vain 1.8.2022 jälkeen alkaneille opiskeluoikeuksille.
+- Ammatillisen yhteisen tutkinnon osan osa-alueen koodi VVAI22 sallitaan vain suoritukselle, jonka perusteen voimaantulon päivä on 1.8.2022 tai sen jälkeen.
 
 ## 4.7.2022
 - Sallitaan muuttuneet ammatillisen koulutuksen yhteisten tutkinnon osien koodit:

@@ -9,6 +9,7 @@ import fi.oph.koski.documentation.AmmatillinenReforminMukainenPerustutkintoExamp
 import fi.oph.koski.documentation.ExampleData.{helsinki, _}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesValma}
 import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
@@ -923,26 +924,21 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     }
 
     "Yhteisen tutkinnon osan osa-alueen viestintä- ja vuorovaikutus kielivalinnalla suoritus VVAI22" - {
-      "Koodia VVAI22 ei saa tallentaa jos opiskeluoikeus on alkanut ennen 1.8.2022" in {
+      "Koodia VVAI22 ei saa tallentaa jos perusteen voimaantulon päivä on ennen 1.8.2022" in {
         val suoritus = autoalanPerustutkinnonSuoritus().copy(
-          osasuoritukset = Some(List(yhtTutkinnonOsanSuoritusVVTK22))
+          osasuoritukset = Some(List(yhtTutkinnonOsanSuoritusVVAI22()))
         )
 
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.yhteinenTutkinnonOsaVVAI22())
         }
       }
-      "Koodin VVAI22 saa tallentaa jos opiskeluoikeus on alkanut 1.8.2022 tai sen jälkeen" in {
-        val alkamispäivä = date(2022, 8, 1)
-        val suoritus = autoalanPerustutkinnonSuoritus().copy(
-          alkamispäivä = Some(alkamispäivä),
-          osasuoritukset = Some(List(yhtTutkinnonOsanSuoritusVVTK22))
+      "Koodin VVAI22 saa tallentaa jos perusteen voimaantulon päivä on 1.8.2022 tai sen jälkeen" in {
+        val suoritus = ajoneuvoalanPerustutkinnonSuoritus().copy(
+          osasuoritukset = Some(List(yhtTutkinnonOsanSuoritusVVAI22("106727")))
         )
-        val tila = AmmatillinenOpiskeluoikeudenTila(List(
-          AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
-        ))
 
-        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus), tila = tila)) {
+        putOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
           verifyResponseStatusOk()
         }
       }
@@ -991,7 +987,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     arviointi = arviointiHyvä(),
   )
 
-  lazy val yhtTutkinnonOsanSuoritusVVTK22 = yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 2).copy(
+  def yhtTutkinnonOsanSuoritusVVAI22(koodiArvo: String = "101053") = yhteisenTutkinnonOsanSuoritus(koodiArvo, "Viestintä- ja vuorovaikutusosaaminen", k3, 2).copy(
     osasuoritukset = Some(List(
       YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä)))
     )),
