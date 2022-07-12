@@ -301,6 +301,7 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliLaajuusArvo = column[Option[Double]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
     val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val koulutusmoduuliNimi = column[Option[String]]("koulutusmoduuli_nimi", StringIdentifierType)
+    val tutkinnonNimiPerusteessa = column[Option[String]]("tutkinnon_nimi_perusteessa", StringIdentifierType)
     val suorituskieliKoodiarvo = column[Option[String]]("suorituskieli_koodiarvo", StringIdentifierType)
     val oppimääräKoodiarvo = column[Option[String]]("oppimaara_koodiarvo", StringIdentifierType)
     val alkamispäivä = column[Option[Date]]("alkamispaiva")
@@ -314,11 +315,13 @@ object RaportointiDatabaseSchema {
     val toimipisteNimiSv = column[String]("toimipiste_nimi_sv")
     val data = column[JValue]("data")
     val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid", StringIdentifierType)
-    def * = (päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
-      koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliKoulutustyyppi,
-      koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, koulutusmoduuliNimi, suorituskieliKoodiarvo, oppimääräKoodiarvo, alkamispäivä,
-      vahvistusPäivä, arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
-      toimipisteOid, toimipisteNimi, toimipisteNimiSv, data, sisältyyOpiskeluoikeuteenOid) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
+    def * = (päätasonSuoritusId :: opiskeluoikeusOid :: suorituksenTyyppi ::
+      koulutusmoduuliKoodisto :: koulutusmoduuliKoodiarvo :: koulutusmoduuliKoulutustyyppi ::
+      koulutusmoduuliLaajuusArvo :: koulutusmoduuliLaajuusYksikkö :: koulutusmoduuliNimi ::
+      tutkinnonNimiPerusteessa :: suorituskieliKoodiarvo :: oppimääräKoodiarvo :: alkamispäivä ::
+      vahvistusPäivä :: arviointiArvosanaKoodiarvo :: arviointiArvosanaKoodisto :: arviointiHyväksytty ::
+      arviointiPäivä :: toimipisteOid :: toimipisteNimi :: toimipisteNimiSv :: data :: sisältyyOpiskeluoikeuteenOid ::
+      HNil).mappedWith(Generic[RPäätasonSuoritusRow])
   }
   class RPäätasonSuoritusTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, Temp)
 
@@ -617,6 +620,7 @@ case class RPäätasonSuoritusRow(
   koulutusmoduuliLaajuusArvo: Option[Double],
   koulutusmoduuliLaajuusYksikkö: Option[String],
   koulutusmoduuliNimi: Option[String],
+  tutkinnonNimiPerusteessa: Option[String],
   suorituskieliKoodiarvo: Option[String],
   oppimääräKoodiarvo: Option[String],
   alkamispäivä: Option[Date],
@@ -643,6 +647,7 @@ case class RPäätasonSuoritusRow(
     JsonSerializer.extract[Option[String]](data \ "koulutusmoduuli" \ "oppimäärä" \ "koodiarvo")
       .orElse(oppimääräKoodiarvo)
 
+  //TODO: lokalisoitu perusteen nimi ammatillisen raporteille
   def koulutusModuulistaKäytettäväNimi(lang: String): Option[String] = {
     JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "tunniste" \ "nimi").map(_.get(lang))
       .orElse(koulutusmoduuliNimi)

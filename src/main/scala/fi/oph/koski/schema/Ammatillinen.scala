@@ -701,10 +701,9 @@ case class Koulutussopimusjakso(
 case class AmmatillinenTutkintoKoulutus(
   tunniste: Koodistokoodiviite,
   perusteenDiaarinumero: Option[String],
-  @Description("Tutkinnon perusteen nimi. Tiedon syötössä tietoa ei tarvita; tieto haetaan e-perusteet palvelusta.")
   perusteenNimi: Option[LocalizedString] = None,
   koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends DiaarinumerollinenKoulutus with Laajuudeton with Tutkinto
+) extends DiaarinumerollinenKoulutus with PerusteenNimellinen with Laajuudeton with Tutkinto
 
 sealed trait AmmatillisenTutkinnonOsa extends KoulutusmoduuliValinnainenLaajuus
   with LaajuuttaEiValidoida

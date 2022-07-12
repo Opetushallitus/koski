@@ -425,6 +425,10 @@ object OpiskeluoikeusLoader extends Logging {
       koulutusmoduuliLaajuusArvo = ps.koulutusmoduuli.getLaajuus.map(_.arvo),
       koulutusmoduuliLaajuusYksikkö = ps.koulutusmoduuli.getLaajuus.map(_.yksikkö.koodiarvo),
       koulutusmoduuliNimi = ps.koulutusmoduuli.tunniste.getNimi.map(_.get("fi")),
+      tutkinnonNimiPerusteessa = ps.koulutusmoduuli match {
+        case k: PerusteenNimellinen => k.perusteenNimi.map(_.get("fi"))
+        case _ => None
+      },
       suorituskieliKoodiarvo = ps match {
         case s: Suorituskielellinen => Some(s.suorituskieli.koodiarvo)
         case m: MahdollisestiSuorituskielellinen => m.suorituskieli.map(_.koodiarvo)

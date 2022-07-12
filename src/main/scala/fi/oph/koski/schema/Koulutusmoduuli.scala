@@ -59,6 +59,11 @@ trait Diaarinumerollinen {
   def perusteenDiaarinumero: Option[String]
 }
 
+trait PerusteenNimellinen {
+  @Description("Tutkinnon perusteen nimi. Tiedon syötössä tietoa ei tarvita; tieto haetaan e-perusteet palvelusta.")
+  def perusteenNimi: Option[LocalizedString]
+}
+
 trait Laajuudeton extends KoulutusmoduuliValinnainenLaajuus {
   override def laajuus: Option[Laajuus] = None
 }
