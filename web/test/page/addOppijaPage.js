@@ -360,6 +360,25 @@ function AddOppijaPage() {
           .then(api.selectMaksuttomuus(0))
       }
     },
+    enterValidDataTUVAAmmatillinen: function (params) {
+      params = _.merge({
+        oppilaitos: 'Ressun',
+        järjestämislupa: 'Ammatillisen koulutuksen järjestämislupa (TUVA)',
+        suorituskieli: 'suomi',
+        alkamispäivä: '1.8.2021',
+        opintojenRahoitus: 'Muuta kautta rahoitettu',
+        tila: 'Loma'
+      })
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('Tutkintokoulutukseen valmentava koulutus'))
+          .then(api.selectJärjestämislupa(params.järjestämislupa))
+          .then(api.selectAloituspäivä(params.alkamispäivä))
+          .then(api.selectOpiskeluoikeudenTila(params.tila))
+          .then(api.selectMaksuttomuus(0))
+      }
+    },
     enterPaikallinenKoulutusmoduuliData: function (params) {
       params = _.merge(
         {
@@ -453,13 +472,13 @@ function AddOppijaPage() {
       return pageApi.setInputValue('.aloituspaiva input', date)
     },
     selectOpiskeluoikeudenTila: function (tila) {
-      if (tila)
-        {return selectFromDropdown('.opiskeluoikeudentila .dropdown', tila)}
-      else return function () {}
+      if (tila) {
+        return selectFromDropdown('.opiskeluoikeudentila .dropdown', tila)
+      } else return function () {}
     },
     selectMaksuttomuus: function (index) {
       return function () {
-        return click(S('.radio-option-container')[index])()
+        return click(S('[data-test-id="maksuttomuus-radio-buttons"] .radio-option-container')[index])()
       }
     },
     henkilötiedot: function () {

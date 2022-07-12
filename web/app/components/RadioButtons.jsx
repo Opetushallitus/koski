@@ -25,13 +25,14 @@ const RadioButtons = ({
     displayValue = o => o.value,
     equality = (option, selected) => keyValue(option) === selected,
     selected,
-    onSelectionChanged
+    onSelectionChanged,
+    ...rest
 }) => {
     options = toObservable(options)
     selected = toObservable(selected)
 
     return (
-        <div className="radio-select-container">
+        <div className="radio-select-container" {...rest}>
             {Bacon.combineWith(options, selected, (optionList, selectedItem) => (
                 optionList.map((option, index) => (
                     <RadioButton

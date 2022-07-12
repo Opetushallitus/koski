@@ -67,7 +67,7 @@ export default ({opiskeluoikeusAtom}) => {
   const suorituskieletP = Http.cachedGet('/koski/api/editor/koodit/kieli').map(sortLanguages).map(values => values.map(v => v.data))
   suorituskieletP.onValue(kielet => suorituskieliAtom.set(kielet[0]))
   const rahoituksetP = koodistoValues('opintojenrahoitus').map(R.sortBy(R.compose(parseInt, R.prop('koodiarvo'))))
-  const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom, suoritusAtom)
+  const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom, suoritusAtom, tuvaJärjestämislupaAtom)
   opiskeluoikeudenTilatP.onValue(tilat => {
     // ei aseteta tilaAtomia takaisin 'lasna'-tilaan jos tila on asetettu ja se löytyy mahdollisista opiskeluoikeuden tiloista
     if (!tilaAtom.get() || !tilat.includes(tilaAtom.get())) {
@@ -148,9 +148,9 @@ export default ({opiskeluoikeusAtom}) => {
   </div>)
 }
 
-const opiskeluoikeudentTilat = (tyyppiAtom, suoritusAtom) => {
+const opiskeluoikeudentTilat = (tyyppiAtom, suoritusAtom, tuvaJärjestämislupaAtom) => {
   const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma,hyvaksytystisuoritettu,keskeytynyt')
-  return suoritusAtom.flatMap(suoritusTyyppi => tilatP.map(filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi(tyyppiAtom.get(), suoritusTyyppi ? suoritusTyyppi.tyyppi : undefined))).toProperty()
+  return Bacon.combineAsArray(tyyppiAtom, suoritusAtom, tuvaJärjestämislupaAtom).flatMap(([tyyppi, suoritusTyyppi, järjestämislupa])=> tilatP.map(filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi(tyyppi, järjestämislupa, suoritusTyyppi ? suoritusTyyppi.tyyppi : undefined))).toProperty()
 }
 
 const VarhaiskasvatuksenJärjestämismuotoPicker = ({varhaiskasvatusAtom, järjestämismuotoAtom}) => {
@@ -256,6 +256,7 @@ const MaksuttomuusRadioButtons = ({maksuttomuusAtom}) => {
       options={maksuttomuusOptions}
       selected={maksuttomuusAtom}
       onSelectionChanged={selected => maksuttomuusAtom.set(selected.key)}
+      data-test-id="maksuttomuus-radio-buttons"
     />
   )
 }
