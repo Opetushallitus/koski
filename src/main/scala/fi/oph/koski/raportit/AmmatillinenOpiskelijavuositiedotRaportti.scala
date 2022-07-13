@@ -27,7 +27,7 @@ case class OpiskelijavuositiedotRow(
   etunimet: String,
   suorituksenTyyppi: String,
   koulutusmoduulit: String,
-  koulutusmoduuliNimet: String,
+  päätasonSuoritustenNimet: String,
   osaamisalat: Option[String],
   päätasonSuorituksenSuoritustapa: String,
   opiskeluoikeudenAlkamispäivä: Option[LocalDate],
@@ -94,7 +94,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
     "suorituksenTyyppi" -> Column(t.get("raportti-excel-kolumni-suorituksenTyyppi")),
     "koulutusmoduulit" -> Column(t.get("raportti-excel-kolumni-koulutusmoduulit")),
-    "koulutusmoduuliNimet" -> Column(t.get("raportti-excel-kolumni-koulutusmoduuliNimet")),
+    "päätasonSuoritustenNimet" -> Column(t.get("raportti-excel-kolumni-koulutusmoduuliNimet")),
     "osaamisalat" -> Column(t.get("raportti-excel-kolumni-osaamisalat")),
     "päätasonSuorituksenSuoritustapa" -> Column(t.get("raportti-excel-kolumni-päätasonSuorituksenSuoritustapa")),
     "opiskeluoikeudenAlkamispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
@@ -163,10 +163,13 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val arvioituPäättymispäivä = JsonSerializer.validateAndExtract[Option[LocalDate]](opiskeluoikeus.data \ "arvioituPäättymispäivä").toOption.flatten
     val (opiskelijavuoteenKuuluvatLomaPäivät, muutLomaPäivät) = lomaPäivät(aikajaksot)
-    val (koulutusmoduulit, koulutusmoduuliNimet) =
+    val (koulutusmoduulit, päätasonSuoritustenNimet) =
       päätasonSuoritukset
         .sortBy(_.koulutusmoduuliKoodiarvo)
-        .map(ps => (ps.koulutusmoduuliKoodiarvo, ps.koulutusModuulistaKäytettäväNimi(t.language).getOrElse("")))
+        .map(ps => (
+          ps.koulutusmoduuliKoodiarvo,
+          ps.perusteestaKäytettäväNimi(t.language).orElse(ps.koulutusModuulistaKäytettäväNimi(t.language)).getOrElse("")
+        ))
         .unzip
     val lisätiedot = JsonSerializer.extract[Option[AmmatillisenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
 
@@ -189,7 +192,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       etunimet = henkilö.etunimet,
       suorituksenTyyppi = päätasonSuoritukset.map(_.suorituksenTyyppi).mkString(","),
       koulutusmoduulit = koulutusmoduulit.mkString(","),
-      koulutusmoduuliNimet = koulutusmoduuliNimet.mkString(","),
+      päätasonSuoritustenNimet = päätasonSuoritustenNimet.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
       päätasonSuorituksenSuoritustapa = AmmatillinenRaporttiUtils.suoritusTavat(päätasonSuoritukset, t.language),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),

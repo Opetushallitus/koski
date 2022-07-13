@@ -66,7 +66,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
 
       rivi.suorituksenTyyppi should equal("ammatillinentutkinto")
       rivi.koulutusmoduulit should equal("361902")
-      rivi.koulutusmoduuliNimet should equal("Luonto- ja ympäristöalan perustutkinto")
+      rivi.päätasonSuoritustenNimet should equal("Luonto- ja ympäristöalan perustutkinto")
       rivi.osaamisalat should equal(Some("1590"))
       rivi.päätasonSuorituksenSuoritustapa should equal("Ammatillinen perustutkinto")
       rivi.opiskeluoikeudenAlkamispäivä should equal(Some(LocalDate.of(2012, 9, 1)))
@@ -78,6 +78,29 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
       rivi.arvioituPäättymispäivä should equal(Some(LocalDate.parse("2015-05-31")))
       rivi.ostettu should equal(false)
       rivi.yksiloity should equal(true)
+    }
+
+    "raportti sisältää oikeat päätason suorituksen tiedot uudella ja vanhalla perusteella" in {
+      val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2022-08-01"), LocalDate.parse("2022-08-01"), t)
+
+      val ajoneuvonOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ajoneuvoalanOpiskelija.oid).oid.get
+      val ajoneuvoRivi = result.find(_.opiskeluoikeusOid == ajoneuvonOpiskeluoikeusOid)
+      ajoneuvoRivi shouldBe defined
+      val riviUusiOps = ajoneuvoRivi.get
+
+      riviUusiOps.suorituksenTyyppi should equal("ammatillinentutkinto")
+      riviUusiOps.koulutusmoduulit should equal("351301")
+      riviUusiOps.päätasonSuoritustenNimet should equal("Ajoneuvoalan perustutkinto")
+      riviUusiOps.päätasonSuorituksenSuoritustapa should equal("Reformin mukainen näyttö")
+
+      val eeronOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid).oid.get
+      val eeroRivi = result.find(_.opiskeluoikeusOid == eeronOpiskeluoikeusOid)
+      eeroRivi shouldBe defined
+      val riviVanhaOps = eeroRivi.get
+      riviVanhaOps.suorituksenTyyppi should equal("ammatillinentutkinto")
+      riviVanhaOps.koulutusmoduulit should equal("351301")
+      riviVanhaOps.päätasonSuoritustenNimet should equal("Autoalan perustutkinto")
+      riviVanhaOps.päätasonSuorituksenSuoritustapa should equal("Ammatillinen perustutkinto")
     }
 
     "raportti sisältää maksuttomuuden tiedot" in {
