@@ -1,6 +1,8 @@
 ## 12.7.2022
-
 - Lisätty ammatillisen koulutuksen järjestämisluvan piirissä oleville TUVA-opiskeluoikeuksille sallituksi tilaksi 'loma'
+
+## 8.7.2022
+- Lisätty TUVA-koulutuksen perusopetuksen lisätietoihin uusi kenttä `erityisenTuenPäätökset`
 
 ## 5.7.2022
 - Sallitaan ammatillisen yhteisen tutkinnon osan osa-alueen uusi koodi VVAI22 (Viestintä- ja vuorovaikutus äidinkielellä)
