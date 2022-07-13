@@ -233,6 +233,90 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
     )
   )
 
+  lazy val tuvaOpiskeluOikeusLoma = TutkintokoulutukseenValmentavanOpiskeluoikeus(
+    lähdejärjestelmänId = None,
+    oppilaitos = Some(stadinAmmattiopisto),
+    koulutustoimija = Some(
+      Koulutustoimija(
+        oid = MockOrganisaatiot.helsinginKaupunki,
+        nimi = Some(Finnish(fi = "Helsingin kaupunki"))
+      )
+    ),
+    tila = tuvaTilaLäsnä.copy(opiskeluoikeusjaksot = List(tuvaOpiskeluOikeusjakso(LocalDate.of(2020, 1, 1), "loma"))),
+    järjestämislupa = Koodistokoodiviite("lukio", "tuvajarjestamislupa"),
+    organisaatiohistoria = Some(opiskeluoikeudenOrganisaatioHistoria),
+    suoritukset = List(
+      tuvaPäätasonSuoritus(laajuus = Some(12)).copy(
+        osasuoritukset = Some(
+          List(
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
+              arviointiPäivä = Some(date(2021, 9, 1)),
+              koodistoviite = "tutkintokoulutukseenvalmentava"
+            ),
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaPerustaitojenVahvistaminen(laajuus = Some(1)),
+              arviointiPäivä = Some(date(2021, 9, 1)),
+              koodistoviite = "tuvaperusopetus"
+            ),
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaAmmatillisenKoulutuksenOpinnot(laajuus = Some(1)),
+              arviointiPäivä = Some(date(2021, 10, 1)),
+              koodistoviite = "tuvaammatillinenkoulutus"
+            ),
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(1)),
+              arviointiPäivä = Some(date(2021, 10, 1)),
+              koodistoviite = "tutkintokoulutukseenvalmentava"
+            ),
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaArjenJaYhteiskunnallisenOsallisuudenTaidot(laajuus = Some(1)),
+              arviointiPäivä = Some(date(2021, 11, 1)),
+              koodistoviite = "tutkintokoulutukseenvalmentava"
+            ),
+            tuvaKoulutuksenMuunOsanSuoritus(
+              koulutusmoduuli = tuvaLukiokoulutuksenOpinnot(laajuus = Some(1)),
+              arviointiPäivä = Some(date(2021, 11, 1)),
+              koodistoviite = "tuvalukiokoulutus"
+            ).copy(
+              tunnustettu = Some(
+                OsaamisenTunnustaminen(
+                  osaaminen = Some(
+                    LukioExampleData.kurssisuoritus(
+                      LukioExampleData.valtakunnallinenKurssi("ENA1")
+                    ).copy(arviointi = LukioExampleData.numeerinenArviointi(8))
+                  ),
+                  selite = finnish("Tunnustettu lukion kurssi")
+                )
+              )
+            ),
+            tuvaKoulutuksenValinnaisenOsanSuoritus(
+              laajuus = Some(5),
+              arviointiPäivä = Some(date(2021, 12, 1))
+            ).copy(
+              osasuoritukset = Some(
+                List(
+                  tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                    kurssinNimi = "Valinnainen kurssi 1",
+                    paikallinenKoodi = "VALKU1",
+                    paikallisenKoodinNimi = "Paikallinen kurssisuoritus",
+                    laajuusViikoissa = 2
+                  ),
+                  tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                    kurssinNimi = "Valinnainen kurssi 2",
+                    paikallinenKoodi = "VALKU2",
+                    paikallisenKoodinNimi = "Paikallinen kurssisuoritus",
+                    laajuusViikoissa = 3
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+
   def tuvaKoulutuksenValinnaisenOsanOsasuoritus(
     kurssinNimi: String,
     paikallinenKoodi: String,
@@ -307,6 +391,7 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
 
   val tuvaHenkilöValmis = MockOppijat.asUusiOppija(KoskiSpecificMockOppijat.tuva)
   val tuvaHenkilöEiValmis = MockOppijat.asUusiOppija(KoskiSpecificMockOppijat.tuvaPerus)
+  val tuvaHenkilöLoma = MockOppijat.asUusiOppija(KoskiSpecificMockOppijat.tuvaLoma)
 
   lazy val tuvaOppijaValmistunut = Oppija(
     henkilö = tuvaHenkilöValmis,

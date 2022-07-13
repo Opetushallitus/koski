@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 12.7.2022
+
+- Lisätty ammatillisen koulutuksen järjestämisluvan piirissä oleville TUVA-opiskeluoikeuksille sallituksi tilaksi 'loma'
+
 ## 7.7.2022
 - Korjattu vapaan sivistystyön kotoutumiskoulutuksen (ops 2022) ohjauksen osasuorituksen validoinnit vastaamaan perustetta
 
