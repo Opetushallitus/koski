@@ -189,7 +189,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       (suoritukset, None)
     }
 
-    val vahvistusPäivä = tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku)
+    val tilaPäättynyt = "3"
+    val vahvistusPäivä = tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == tilaPäättynyt).map(_.alku)
     val oppilaitoksenNimiPäivä = getOppilaitoksenNimiPäivä(
       tila.opiskeluoikeusjaksot.lastOption,
       suoritukset.flatMap(_.vahvistus).sortBy(_.päivä)(DateOrdering.localDateOrdering).lastOption.map(_.päivä)
