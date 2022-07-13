@@ -58,8 +58,7 @@ describe('TUVA', function () {
               'Sisäoppilaitosmainen majoitus lisää uusi\n' +
               'Koulukoti lisää uusi\n' +
               'Pidennetty oppivelvollisuus lisää\n' +
-              'Pidennetty päättymispäivä\n' +
-              'Erityisen tuen päätökset lisää uusi'
+              'Pidennetty päättymispäivä'
           )
         })
         after(editor.cancelChanges)

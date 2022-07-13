@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koskiuser.Rooli
-import fi.oph.koski.schema.annotation.{OksaUri, SensitiveData, Tooltip}
+import fi.oph.koski.schema.annotation.{Deprecated, OksaUri, SensitiveData, Tooltip}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, OnlyWhen, Title}
 
 trait TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
@@ -117,9 +117,4 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLis
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
   @DefaultValue(false)
   pidennettyPäättymispäivä: Boolean = false,
-  @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
-  @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
-  @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
