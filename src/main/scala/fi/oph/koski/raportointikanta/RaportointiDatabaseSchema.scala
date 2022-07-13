@@ -647,10 +647,14 @@ case class RPäätasonSuoritusRow(
     JsonSerializer.extract[Option[String]](data \ "koulutusmoduuli" \ "oppimäärä" \ "koodiarvo")
       .orElse(oppimääräKoodiarvo)
 
-  //TODO: lokalisoitu perusteen nimi ammatillisen raporteille
   def koulutusModuulistaKäytettäväNimi(lang: String): Option[String] = {
     JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "tunniste" \ "nimi").map(_.get(lang))
       .orElse(koulutusmoduuliNimi)
+  }
+
+  def perusteestaKäytettäväNimi(lang: String): Option[String] = {
+    JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "perusteenNimi").map(_.get(lang))
+      .orElse(tutkinnonNimiPerusteessa)
   }
 
   def suorituksestaKäytettäväNimi(lang: String): Option[String] = {
