@@ -264,7 +264,7 @@ object AmmatillinenPerustutkintoExample {
 }
 
 object AmmatillinenReforminMukainenPerustutkintoExample {
-  lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("OPH-2762-2017"))
+  lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", Some(11)), Some("OPH-2762-2017"))
   lazy val korkeakouluopintoSuoritus = AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(koulutusmoduuli = KorkeakouluopinnotTutkinnonOsa(), osasuoritukset = Some(List(saksa)))
 
   lazy val jatkoOpintovalmiuksiaTukevienOpintojenSuoritus = AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(koulutusmoduuli = JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa(), osasuoritukset = Some(List(
@@ -453,7 +453,7 @@ object AmmatillinenOldExamples {
     opiskeluoikeus = opiskeluoikeus(
       oppilaitos = stadinAmmattiopisto,
       tutkinto = AmmatillisenTutkinnonSuoritus(
-        koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+        koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", Some(11)), Some("39/011/2014")),
         tutkintonimike = None,
         osaamisala = None,
         suoritustapa = suoritustapaNäyttö,
@@ -512,7 +512,7 @@ object AmmatillinenOldExamples {
     henkilö = exampleHenkilö.copy(hetu = "240550-475R"),
     opiskeluoikeus = opiskeluoikeus(
       tutkinto = AmmatillisenTutkinnonSuoritus(
-        koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+        koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", Some(11)), Some("39/011/2014")),
         suoritustapa = suoritustapaNäyttö,
         järjestämismuodot = None,
         toimipiste = stadinToimipiste,
@@ -528,7 +528,7 @@ object AmmatillinenOldExamples {
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
         oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(AmmatillisenTutkinnonSuoritus(
-          koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+          koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", Some(11)), Some("39/011/2014")),
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None)))),
           suoritustapa = suoritustapaOps,
@@ -589,7 +589,7 @@ object AmmatillinenOldExamples {
         oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(AmmatillisenTutkinnonSuoritus(
           koulutusmoduuli = AmmatillinenTutkintoKoulutus(
-            Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None),
+            Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", Some(11)),
             Some("39/011/2014")
           ),
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),

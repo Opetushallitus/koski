@@ -5266,6 +5266,23 @@
   "koodiUri" : "koulutus_351301",
   "koodiArvo" : "351301",
   "metadata" : [ {
+    "nimi" : "Autoalan perustutkinto",
+    "lyhytNimi" : "Autoalan perustutkinto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grundexamen inom bilbranschen",
+    "lyhytNimi" : "Grundexamen inom bilbranschen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational qualification in the Vehicle Sector",
+    "lyhytNimi" : "Vocational qualification in the Vehicle Sector",
+    "kieli" : "EN"
+  } ],
+  "versio" : 11
+}, {
+  "koodiUri" : "koulutus_351301",
+  "koodiArvo" : "351301",
+  "metadata" : [ {
     "nimi" : "Ajoneuvoalan perustutkinto",
     "lyhytNimi" : "Ajoneuvoalan perustutkinto",
     "kieli" : "FI"

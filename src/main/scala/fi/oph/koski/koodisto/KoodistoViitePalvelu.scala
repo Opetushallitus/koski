@@ -40,7 +40,12 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
   def validate(input: Koodistokoodiviite): Option[Koodistokoodiviite] = {
     val koodistoViite = toKoodistoViiteOptional(input)
 
-    val viite = koodistoViite.flatMap(getKoodistoKoodiViitteet(_).find(_.koodiarvo == input.koodiarvo))
+    val viite = koodistoViite.flatMap { v =>
+      val koodiviitteet = getKoodistoKoodiViitteet(v)
+      koodiviitteet.find(k => k.koodiarvo == input.koodiarvo && k.koodistoVersio == input.koodistoVersio).orElse(
+        koodiviitteet.find(k => k.koodiarvo == input.koodiarvo)
+      )
+    }
 
     if (!viite.isDefined) {
       logger.warn("Koodia " + input.koodiarvo + " ei löydy koodistosta " + input.koodistoUri)
@@ -48,7 +53,10 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
     viite
   }
 
-  private def toKoodistoViiteOptional(koodiviite: Koodistokoodiviite) = koodiviite.koodistoVersio.map(KoodistoViite(koodiviite.koodistoUri, _)).orElse(getLatestVersionOptional(koodiviite.koodistoUri))
+  private def toKoodistoViiteOptional(koodiviite: Koodistokoodiviite) = koodiviite
+    .koodistoVersio
+    .map(KoodistoViite(koodiviite.koodistoUri, _))
+    .orElse(getLatestVersionOptional(koodiviite.koodistoUri))
 
   def validateRequired(uri: String, koodi: String): Koodistokoodiviite = {
     validateRequired(Koodistokoodiviite(koodi, uri))
@@ -57,8 +65,9 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
   def validateRequired(input: Koodistokoodiviite) = {
     validate(input).getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ei löydy koodistosta: " + input)))
   }
-  
-  private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) = Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
+
+  private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) =
+    Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodi.versio))
 }
 
 object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(MockKoodistoPalvelu())(GlobalCacheManager) {
