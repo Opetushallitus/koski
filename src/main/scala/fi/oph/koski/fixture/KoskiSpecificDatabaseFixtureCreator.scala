@@ -298,9 +298,9 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
 }
 
 object AmmatillinenOpiskeluoikeusTestData {
-  def opiskeluoikeus(oppilaitosId: String, koulutusKoodi: Int = 351301, diaariNumero: String = "39/011/2014"): AmmatillinenOpiskeluoikeus = {
+  def opiskeluoikeus(oppilaitosId: String, koulutusKoodi: Int = 351301, diaariNumero: String = "39/011/2014", versio: Option[Int] = Some(11)): AmmatillinenOpiskeluoikeus = {
     val oppilaitos: Oppilaitos = Oppilaitos(oppilaitosId, None, None)
-    val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", None)
+    val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", versio)
 
     AmmatillinenOpiskeluoikeus(
       oppilaitos = Some(oppilaitos),
