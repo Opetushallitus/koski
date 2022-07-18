@@ -1,5 +1,7 @@
 package fi.oph.koski.perustiedot
 
+import fi.oph.koski.db.KoskiTables.{OpiskeluOikeudet, PerustiedotManualSync}
+import fi.oph.koski.documentation.KoskiApiOperations.opiskeluoikeus
 import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -13,6 +15,7 @@ import fi.oph.koski.util.DateOrdering
 import fi.oph.koski.util.SortOrder.Descending
 import org.json4s._
 import org.json4s.jackson.JsonMethods
+import slick.ast.ScalaBaseType.stringType
 
 import scala.util.{Failure, Success, Try}
 
@@ -81,7 +84,8 @@ object OpiskeluoikeudenPerustiedotIndexer {
 class OpiskeluoikeudenPerustiedotIndexer(
   elastic: ElasticSearch,
   opiskeluoikeusQueryService: OpiskeluoikeusQueryService,
-  perustiedotSyncRepository: PerustiedotSyncRepository
+  perustiedotSyncRepository: PerustiedotSyncRepository,
+  perustiedotManualSyncRepository: PerustiedotManualSyncRepository
 ) extends Logging {
 
   val index = new ElasticSearchIndex(
@@ -116,6 +120,26 @@ class OpiskeluoikeudenPerustiedotIndexer(
     }
   }
 
+  /**
+   * manualSync-funktiota käytetään ElasticSearch-indeksin manuaaliseen päivittämiseen.
+   * @param refresh
+   */
+  def manualSync(refresh: Boolean): Unit = synchronized {
+    logger.debug("Checking for manual sync rows")
+    val allRows = perustiedotManualSyncRepository.getQueuedUpdates(1000)
+    val itemsToSync = allRows.groupBy(_._2.opiskeluoikeusOid).mapValues(_.sortBy(_._2.aikaleima)(DateOrdering.ascedingSqlTimestampOrdering).last).map(_._2).toSeq
+    if (itemsToSync.nonEmpty) {
+      logger.debug(s"Manually syncing ${itemsToSync.length} rows")
+      itemsToSync.groupBy(_._2.upsert) foreach { case (upsert, syncRows) =>
+        perustiedotSyncRepository.addToSyncQueueRaw(syncRows.map({
+          case ((ooRow, henkRow), _) => perustiedotManualSyncRepository.makeSyncRow(ooRow, henkRow)
+        }).flatten, upsert)
+      }
+      perustiedotManualSyncRepository.deleteFromQueue(allRows.map(_._2.id))
+      logger.debug(s"Done manually syncing ${allRows.length} rows")
+    }
+  }
+
   def updatePerustiedot(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean, refresh: Boolean): Either[HttpStatus, Int] = {
     updatePerustiedotRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert, refresh)
   }
@@ -137,7 +161,9 @@ class OpiskeluoikeudenPerustiedotIndexer(
           None
         }
       }
+
       perustiedotSyncRepository.addToSyncQueueRaw(toSyncAgain, upsert) // FIXME: Sivuvaikutuksena timestamppi päivittyy, kun rivi lisätään uudestaan jonoon. Oikea korjaus olisi käyttää opiskeluoikeuden versionumeroa.
+
       val msg = s"""Elasticsearch indexing failed for ids ${failedOpiskeluoikeusIds.mkString(", ")}.
 Response from ES: ${JsonMethods.pretty(response)}.
 Will retry soon."""

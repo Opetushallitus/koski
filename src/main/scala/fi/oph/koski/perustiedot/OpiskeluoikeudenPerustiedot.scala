@@ -3,12 +3,13 @@ package fi.oph.koski.perustiedot
 import java.time.LocalDate
 
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, OppijaHenkilöWithMasterInfo, SuppeatOppijaHenkilöTiedot}
+import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri, OksaUri}
+import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.scalaschema.annotation.{Description, Discriminator}
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import org.json4s.{JArray, JValue}
@@ -80,7 +81,7 @@ object OpiskeluoikeudenPerustiedot {
     makePerustiedot(
       id,
       JsonSerializer.serializeWithUser(KoskiSpecificSession.untrustedUser)(oo),
-      oo.luokka.orElse(oo.ryhmä),
+      getLuokka(oo),
       OpiskeluoikeudenHenkilötiedot(id, henkilö)
     )
   }
@@ -89,7 +90,7 @@ object OpiskeluoikeudenPerustiedot {
     makePerustiedot(
       id,
       JsonSerializer.serializeWithUser(KoskiSpecificSession.untrustedUser)(oo),
-      oo.luokka.orElse(oo.ryhmä),
+      getLuokka(oo),
       OpiskeluoikeudenHenkilötiedot(id, henkilöRow, masterHenkilöRow)
     )
   }
@@ -119,6 +120,14 @@ object OpiskeluoikeudenPerustiedot {
       suoritukset,
       Some(fixTilat(extract[List[OpiskeluoikeusJaksonPerustiedot]](data \ "tila" \ "opiskeluoikeusjaksot", ignoreExtras = true))),
       luokka)
+  }
+
+  private def getLuokka(oo: Opiskeluoikeus): Option[String] = oo match {
+    case is: InternationalSchoolOpiskeluoikeus => is.suoritukset.filter(_.alkamispäivä.isDefined).sortBy(_.alkamispäivä).lastOption match {
+      case Some(suoritus) => suoritus.luokka.orElse(suoritus.koulutusmoduuli.tunniste.getNimi.getOrElse(Finnish("")).getOptional("en"))
+      case _ => None
+    }
+    case oo: Opiskeluoikeus => oo.luokka.orElse(oo.ryhmä)
   }
 
   def serializePerustiedot(tiedot: OpiskeluoikeudenOsittaisetTiedot) = Serializer.serialize(tiedot, serializationContext)

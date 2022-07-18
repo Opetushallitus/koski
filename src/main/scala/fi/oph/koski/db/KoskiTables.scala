@@ -190,6 +190,15 @@ object KoskiTables {
     def * = (id, opiskeluoikeusId, data, upsert, aikaleima) <> (PerustiedotSyncRow.tupled, PerustiedotSyncRow.unapply)
   }
 
+  class PerustiedotManualSyncTable(tag: Tag) extends Table[PerustiedotManualSyncRow](tag, "perustiedot_manual_sync") {
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
+    val upsert = column[Boolean]("upsert")
+    val aikaleima = column[Timestamp]("aikaleima")
+
+    def * = (id, opiskeluoikeusOid, upsert, aikaleima) <> (PerustiedotManualSyncRow.tupled, PerustiedotManualSyncRow.unapply)
+  }
+
   class OppilaitosIPOsoiteTable(tag: Tag) extends Table[OppilaitosIPOsoiteRow](tag, "oppilaitos_ip_osoite") {
     val username = column[String]("username", O.PrimaryKey)
     val ip = column[String]("ip")
@@ -245,7 +254,10 @@ object KoskiTables {
 
   val Henkilöt = TableQuery[HenkilöTable]
   val Scheduler = TableQuery[SchedulerTable]
+
   val PerustiedotSync = TableQuery[PerustiedotSyncTable]
+  val PerustiedotManualSync = TableQuery[PerustiedotManualSyncTable]
+
   val OppilaitosIPOsoite = TableQuery[OppilaitosIPOsoiteTable]
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
@@ -333,6 +345,8 @@ case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[J
 }
 
 case class PerustiedotSyncRow(id: Int = 0, opiskeluoikeusId: Int, data: JValue, upsert: Boolean, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
+
+case class PerustiedotManualSyncRow(id: Int = 0, opiskeluoikeusOid: String, upsert: Boolean, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
 
 case class OppilaitosIPOsoiteRow(username: String, ip: String)
 
