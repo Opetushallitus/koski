@@ -12,6 +12,7 @@ import { FlatLink } from "../../components/buttons/FlatButton"
 import { Page } from "../../components/containers/Page"
 import { BackIcon } from "../../components/icons/Icon"
 import { Spinner } from "../../components/icons/Spinner"
+import { Aikaleima } from "../../components/shared/Aikaleima"
 import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import { withRequiresJokinOikeus } from "../../state/accessRights"
@@ -51,11 +52,10 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
         {...searchQuery}
       />
       <OppijaHeadings oppija={oppija} oid={queryOid} />
-
       {mapLoading(oppija, () => (
         <Spinner />
       ))}
-
+      {oppijaData && <Aikaleima />}
       {oppijaData && <OppijaGrid data={oppijaData} />}
     </Page>
   )

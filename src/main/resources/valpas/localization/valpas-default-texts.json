@@ -338,5 +338,7 @@
   "kansalainen_etusivu_tietojen_käyttö": "Lisäksi tietoja voidaan jakaa niitä toiminnassaan tarvitseville viranomaisille, kuten esimerkiksi koulutuksen järjestäjille, kunnille ja Kelalle.\nOma Opintopolku-palvelussa pystytään näyttämään tiedot oppivelvollisuudesta pääteltynä oppijan iästä ja suoritetuista tukinnoista sekä niiden ajankohdista. Tiedot oppijan opiskeluoikeuksista ja koulutuksen maksuttomuudesta tulevat KOSKI-palvelusta. Haku- ja valintahistoria perustuvat haku- ja valintapalvelusta saataviin valtakunnallisten yhteishakujen tietoihin. Oppijan yhteystiedot tulevat valtakunnallisten yhteishakujen hakulomakkeilta ja Digi- ja väestötietoviraston tiedoista. Tiedot viranomaisten välisistä vastuuilmoituksista ja oppivelvollisuuden suorittamisen keskeyttämisestä on voitu kirjata oppivelvolliselle elokuusta 2021 alkaen Valpas-palvelussa. ",
   "closebutton_aria_label": "Sulje",
   "excel-export-default-value-kyllä": "kyllä",
-  "excel-export-default-value-ei": "ei"
+  "excel-export-default-value-ei": "ei",
+  "valpas-report-timestamp-part-1": "Opiskeluoikeuksien tiedot pohjautuvat KOSKI-tietovarannossa hetkellä",
+  "valpas-report-timestamp-part-2": "olleille tiedoille."
 }

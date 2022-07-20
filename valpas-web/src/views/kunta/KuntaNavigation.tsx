@@ -4,6 +4,7 @@ import {
   TabNavigation,
   TabNavigationItem,
 } from "../../components/navigation/TabNavigation"
+import { Aikaleima } from "../../components/shared/Aikaleima"
 import { t } from "../../i18n/i18n"
 import { kuntavalvontaAllowed } from "../../state/accessRights"
 import { Oid } from "../../state/common"
@@ -44,6 +45,7 @@ export const KuntaNavigation = (props: KuntaNavigationProps) => {
   return (
     <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
       <TabNavigation options={navOptions} />
+      <Aikaleima />
     </VisibleForKäyttöoikeusrooli>
   )
 }

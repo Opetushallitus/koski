@@ -4,6 +4,7 @@ import {
   TabNavigation,
   TabNavigationItem,
 } from "../../components/navigation/TabNavigation"
+import { Aikaleima } from "../../components/shared/Aikaleima"
 import { t } from "../../i18n/i18n"
 import { suorittamisenValvontaAllowed } from "../../state/accessRights"
 import { Oid } from "../../state/common"
@@ -46,6 +47,7 @@ export const SuorittaminenNavigation = (
   return (
     <VisibleForKäyttöoikeusrooli rooli={suorittamisenValvontaAllowed}>
       <TabNavigation options={navOptions} />
+      <Aikaleima />
     </VisibleForKäyttöoikeusrooli>
   )
 }
