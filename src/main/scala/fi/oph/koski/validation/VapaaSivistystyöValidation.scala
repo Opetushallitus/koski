@@ -46,8 +46,8 @@ object VapaaSivistystyöValidation {
       // Muissa järjestelmissä sallitaan opintokokonaisuuden puuttuminen, kunhan siirtymäajan deadlinea ei ole saavutettu
       case (Some(_), oo: VapaanSivistystyönOpiskeluoikeus) => oo.suoritukset.headOption match {
         case Some(vs: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus) if vs.koulutusmoduuli.opintokokonaisuus.isEmpty =>
-          // Alustavasti 1.8.2022 alkaen validoidaan, että VST-opiskeluoikeudelta löytyy opintokokonaisuus
-          if (LocalDate.now().isAfter(LocalDate.of(2022, 8, 1))) {
+          // 1.9.2022 alkaen validoidaan, että VST-opiskeluoikeudelta löytyy opintokokonaisuus
+          if (LocalDate.now().isAfter(LocalDate.of(2022, 9, 1))) {
             KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.puuttuvaOpintokokonaisuusDeadline()
           } else {
             HttpStatus.ok
