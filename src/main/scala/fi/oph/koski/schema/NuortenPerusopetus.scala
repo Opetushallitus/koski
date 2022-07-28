@@ -192,6 +192,14 @@ trait Tukimuodollinen {
   def tukimuotoLista: List[Koodistokoodiviite] = tukimuodot.getOrElse(List())
 }
 
+@Description("TUVA-opiskeluoikeuden erityisen tuen päätöstiedot")
+case class TuvaErityisenTuenPäätös(
+  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
+  alku: Option[LocalDate],
+  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
+  loppu: Option[LocalDate],
+) extends MahdollisestiAlkupäivällinenJakso
+
 @Description("Oppivelvollisen erityisen tuen päätöstiedot")
 case class ErityisenTuenPäätös(
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
