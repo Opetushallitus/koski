@@ -40,7 +40,7 @@ object Http extends Logging {
 
   private def baseClient(name: String, configFn: ClientConfigFn): Client[IO] = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
-    val builder = BlazeClientBuilder[IO](ExecutionContext.fromExecutor(Pools.httpPool))
+    val builder = BlazeClientBuilder[IO].withExecutionContext(ExecutionContext.fromExecutor(Pools.httpPool))
       .withMaxTotalConnections(maxHttpConnections)
       .withMaxWaitQueueLimit(1024)
       .withConnectTimeout(15.seconds)
