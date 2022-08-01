@@ -28,6 +28,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   ): Boolean = {
     if (isLoading && !force) {
       logger.info("Raportointikanta already loading, do nothing")
+      onEnd()
       false
     } else {
       val update = if (skipUnchangedData) {
