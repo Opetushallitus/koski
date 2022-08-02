@@ -158,6 +158,8 @@ object KoskiErrorCategory {
         val nuortenPerusopetuksenLuokkaAsteIlmanErityistäTutkintoa = subcategory("nuortenPerusopetuksenLuokkaAsteIlmanErityistäTutkintoa", "Luokka-aste voi olla valittuna vain nuorten perusopetuksen suorituksille, jos suoritustavaksi on valittu erityinen tutkinto.")
         val nuortenPerusopetuksenLuokkaAsteSamaUseammassaSuorituksessa = subcategory("nuortenPerusopetuksenLuokkaAsteSamaUseammassaSuorituksessa", "Nuorten perusopetuksen erityisessä tutkinnossa ei voi olla samaa luokka-astetta useammalla saman oppiaineen suorituksella.")
         val tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo = subcategory("tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo", """Tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeuden tila ei voi olla "loma", jos opiskeluoikeuden järjestämislupa ei ole ammatillisen koulutuksen järjestämisluvan piirissä.""")
+        val valmaTilaEiSallittu = subcategory("valmaOpiskeluoikeudenTilaEiSallittu", "Valmentavan koulutuksen opiskeluoikeudelle ei ole mahdollista merkitä uusia opiskeluoikeuden tiloja, joiden alkupäivämäärä on 2.8.2022 tai sen jälkeen.")
+        val perusopetuksenLisäopetuksenTilaEiSallittu = subcategory("perusopetuksenLisäopetuksenOpiskeluoikeudenTilaEiSallittu", "Perusopetuksen lisäopetuksen opiskeluoikeudelle ei ole mahdollista merkitä uusia opiskeluoikeuden tiloja, joiden alkupäivämäärä on 2.8.2022 tai sen jälkeen.")
       }
       val tila = new Tila
 

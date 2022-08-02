@@ -50,6 +50,18 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
     }
   }
 
+  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 1.8.2022 jälkeen" in {
+    val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2022, 8, 2), opiskeluoikeusLäsnä)
+      ))).withSuoritukset(
+      List(defaultLisäopetuksenSuoritus)
+    )
+    putOpiskeluoikeus(opiskeluoikeus) {
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.perusopetuksenLisäopetuksenTilaEiSallittu())
+    }
+  }
+
   "Deprekoituja kenttiä, jotka tiputetaan siirrossa pois" - {
     "Lisätiedon kenttiä perusopetuksenAloittamistaLykatty, aloittanut ennen oppivelvollisuutta, tukimuodot," +
       "tehostetun tuen päätös, vuosiluokkiin sitoutumaton opetus ja joustava perusopetus ei oteta vastaan siirrossa" in {
