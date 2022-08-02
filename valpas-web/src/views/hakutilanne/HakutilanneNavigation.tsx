@@ -3,6 +3,7 @@ import {
   TabNavigation,
   TabNavigationItem,
 } from "../../components/navigation/TabNavigation"
+import { Aikaleima } from "../../components/shared/Aikaleima"
 import { t } from "../../i18n/i18n"
 import { Oid } from "../../state/common"
 import {
@@ -37,5 +38,10 @@ export const HakutilanneNavigation = (props: HakutilanneNavigationProps) => {
     },
   ]
 
-  return <TabNavigation options={navOptions} />
+  return (
+    <>
+      <TabNavigation options={navOptions} />
+      <Aikaleima />
+    </>
+  )
 }
