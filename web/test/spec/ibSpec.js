@@ -487,8 +487,8 @@ describe('IB', function( ) {
         before(editor.edit)
 
         describe('Mitätöintilinkki', function() {
-          it('Ei näytetä', function() {
-            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
+          it('Näytetään', function() {
+            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(true)
           })
         })
       })
@@ -1123,8 +1123,8 @@ describe('IB', function( ) {
         before(editor.edit)
 
         describe('Mitätöintilinkki', function() {
-          it('Ei näytetä', function() {
-            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
+          it('Näytetään', function() {
+            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(true)
           })
         })
       })
