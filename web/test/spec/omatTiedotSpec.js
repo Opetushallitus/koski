@@ -866,7 +866,7 @@ describe('Omat tiedot', function() {
           wait.until(korhopankki.isReady),
           korhopankki.login('080154-770R'),
           wait.until(omattiedot.isVisible),
-          SuoritusjakoPage().avaaOpiskeluoikeus('Autoalan perustutkinto (2000—, läsnä)')
+          SuoritusjakoPage().avaaOpiskeluoikeus('Autoalan perustutkinto (2019—, läsnä)')
         )
 
         it('ei näytetä', function() {

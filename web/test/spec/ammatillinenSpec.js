@@ -2456,9 +2456,9 @@ describe('Ammatillinen koulutus', function() {
       it('näkyy', function() {
         expect(extractAsText(S('.lisätiedot'))).to.equal(
          'Lisätiedot\n' +
-         'Erityinen tuki 1.1.2001 —\n' +
-         'Vaikeasti vammaisille järjestetty opetus 1.1.2001 —\n' +
-         'Vankilaopetuksessa 1.1.2001 —'
+         'Erityinen tuki 30.5.2019 —\n' +
+         'Vaikeasti vammaisille järjestetty opetus 30.5.2019 —\n' +
+         'Vankilaopetuksessa 30.5.2019 —'
         )
       })
     })

@@ -96,7 +96,7 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
     "Luottamuksellinen data" - {
       "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
         resetFixtures
-        vankilaopetuksessa(haeOpiskeluoikeudetOppijanNimellä("Eero", "Esimerkki", stadinAmmattiopistoKatselija)) should equal(Some(List(Aikajakso(date(2001, 1, 1), None))))
+        vankilaopetuksessa(haeOpiskeluoikeudetOppijanNimellä("Eero", "Esimerkki", stadinAmmattiopistoKatselija)) should equal(Some(List(Aikajakso(date(2019, 5, 30), None))))
       }
 
       "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {

@@ -112,7 +112,7 @@ describe('Oppijataulukko', function() {
           'dia, opiskelija',
           'ib, opiskelija',
           'IB-final, Iina',
-          "IB-Pre-IB-uusilukio, Pate",
+          'IB-Pre-IB-uusilukio, Pate',
           'IB-predicted, Petteri',
           'Kurssikertyma, Eronnut Aineopiskelija',
           'Kurssikertyma, Valmistunut Aineopiskelija'
@@ -121,24 +121,125 @@ describe('Oppijataulukko', function() {
       })
     })
 
-    describe('alkamispäivällä', function() {
+    describe('alkamispäivällä 1.1.2001', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'),  page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('alkamispäivä', '1.1.2001'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([
-          'Çelik-Eerola, Jouni',
-          'Eiperusteissa, Erkki',
-          'Esimerkki, Eero',
           'Kurssikertyma, Eronnut Aineopiskelija',
           'Kurssikertyma, Oppimaara',
           'Kurssikertyma, Valmistunut Aineopiskelija',
           'Luva, Aikuisten',
+          'Luva, Nuorten'
+      ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('5')
+      })
+    })
+
+    describe('alkamispäivällä 30.5.2019', function() {
+      before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'),  page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('alkamispäivä', '30.5.2019'))
+      it('toimii', function() {
+        expect(page.oppijataulukko.names()).to.deep.equal([
+          'Aikuinen, AikuisAineOpiskelijaMuuKuinVos',
+          'Aikuinen, AikuisopiskelijaMuuKuinVos',
+          'Aikuinen, MuuRahoitus',
+          'Aikuinen, Vieraskielinen',
+          'Aikuinen, VieraskielinenMuuKuinVos',
+          'Aikuisopiskelija, Aini',
+          'aikuisten, oppimaara',
+          'Amikseenvalmistautuja, Anneli',
+          'Amis, Antti',
+          'Ammatillinen-Osittainen, Raitsu',
+          'Ammattilainen, Aarne',
+          'Çelik-Eerola, Jouni',
+          'Dia, Dia',
+          'e, erikois',
+          'e, erikois',
+          'Eiperusteissa, Erkki',
+          'ePerusteidenKoulutuksen-koodi, Poistettu',
+          'Erikoinen, Erja',
+          'ErityinenTutkinto, NuortenPerusopetus',
+          'Erityisoppilaitoksessa, Emppu',
+          'Erityisoppilaitoksessa, Emppu',
+          'Erityisoppilaitoksessa, Emppu Historia',
+          'Erkki, Eitiedossa',
+          'Esimerkki, Eero',
+          'Eskari, Essi',
+          'Hetuton, Heikki',
+          'Historoitsija, Hiisi',
+          'IB-final, Iina',
+          'IB-Pre-IB-uusilukio, Pate',
+          'IB-predicted, Petteri',
+          'International, Ida',
+          'k, kotiopetus',
+          'Kelalle, Useita',
+          'Kelalle, Useita',
+          'Kokonaisuuksilla, Keijo',
+          'Koodari, Monthy',
+          'Koululainen, Kaisa',
+          'Koululainen, Kaisa',
+          'Koululainen, Kaisa',
+          'Kurssikertyma, Eronnut Aineopiskelija',
+          'Kurssikertyma, Oppimaara',
+          'Kurssikertyma, Valmistunut Aineopiskelija',
+          'Kymppiluokkalainen, Kaisa',
+          'Lisä-Eskari, Essiina',
+          'Lukioaineopiskelija, Aino',
+          'Lukioaineopiskelija, Aktiivinen',
+          'Lukiokesken, Leila',
+          'Lukiolainen, Liisa',
+          'Lukiolainen, Liisa',
+          'Lukioonvalmistautuja, Luke',
+          'Lukioonvalmistautuja2019, Luke',
+          'Luokallejäänyt, Lasse',
+          'Luva, Aikuisten',
           'Luva, Nuorten',
           'Markkanen-Fagerström, Eéro Jorma-Petteri',
+          'Mervi, Monioppiaineinen',
+          'Monikoululainen, Miia',
+          'Monikoululainen, Miia',
+          'Muu-Ammatillinen, Marjo',
+          'nuorten, oppimaara',
+          'o, organisaatioHistoriallinen',
+          'o, organisaatioHistoriallinen',
+          'of Puppets, Master',
+          'of Puppets, Master',
+          'Oppiaineenkorottaja, Olli',
+          'Oppija, Oili',
+          'Oppija, Oili',
+          'Oppija, Oili',
+          'Osittainen, Outi',
+          'Perusopetuksensiirto, Pertti',
+          'Pieni-Kokonaisuus, Pentti',
+          'Reformi, Reijo',
+          'Rikkinäinen, Kela',
           'Syntynyt, Sylvi',
+          't, tavallinen',
+          't, tavallinen',
+          'Tehtävään-Valmistava, Tauno',
           'Tekijä, Teija',
-          'Tiedonsiirto, Tiina'
-        ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('12')
+          'Telmanen, Tuula',
+          'Tiedonsiirto, Tiina',
+          'Toiminta, Tommi',
+          'Tunnustettu, Teuvo',
+          'Tupla, Toivo',
+          'Turvakielto, Tero',
+          'v, virheellisestiSiirretty',
+          'v, virheellisestiSiirretty',
+          'v, virheellisestiSiirrettyVieraskielinen',
+          'v, virheellisestiSiirrettyVieraskielinen',
+          'Valviralle, Veera',
+          'Valviralle-Kesken, Ville',
+          'Vuonna 2004 syntynyt, Peruskoulu suoritettu 2021',
+          'Vuonna 2004 syntynyt, Peruskoulu suoritettu ennen 2021',
+          'Vuonna 2004 syntynyt, Peruskoulusta eronnut ennen 2021',
+          'Vuonna 2004 syntynyt ahvenanmaalle muuttanut, Peruskoulu suoritettu 2021',
+          'Vuonna 2004 syntynyt maastamuuttaja, Peruskoulu suoritettu 2021',
+          'Vuonna 2005 syntynyt, Peruskoulu suoritettu 2021',
+          'Vuosiluokkalainen, Ville',
+          'Ylioppilaslukiolainen, Ynjevi',
+          'Ysiluokkalainen, Ylermi'
+      ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('99')
       })
     })
 
@@ -192,7 +293,7 @@ describe('Oppijataulukko', function() {
           'e, erikois',
           'ErityinenTutkinto, NuortenPerusopetus',
           'Hetuton, Heikki',
-          "k, kotiopetus",
+          'k, kotiopetus',
           'Kelalle, Useita',
           'Koululainen, Kaisa',
           'Lukiolainen, Liisa',
@@ -215,7 +316,7 @@ describe('Oppijataulukko', function() {
           'Vuonna 2004 syntynyt maastamuuttaja, Peruskoulu suoritettu 2021',
           'Vuonna 2005 syntynyt, Peruskoulu suoritettu 2021',
           'Vuosiluokkalainen, Ville',
-          'Ysiluokkalainen, Ylermi',
+          'Ysiluokkalainen, Ylermi'
         ])
       })
       it('Laskeva järjestys klikkaamalla', function() {
@@ -244,7 +345,7 @@ describe('Oppijataulukko', function() {
             'Lukiolainen, Liisa',
             'Koululainen, Kaisa',
             'Kelalle, Useita',
-            "k, kotiopetus",
+            'k, kotiopetus',
             'Hetuton, Heikki',
             'ErityinenTutkinto, NuortenPerusopetus',
             'e, erikois'
@@ -299,7 +400,7 @@ describe('Oppijataulukko', function() {
   describe('Hakutekijän korostus', function() {
     before(page.oppijataulukko.filterBy('nimi', 'kaisa'), page.oppijataulukko.filterBy('tutkinto', 'perus'), page.oppijataulukko.filterBy('luokka', '9'))
     it('Toimii', function() {
-      expect(page.oppijataulukko.highlights()).to.deep.equal(["Kaisa", "Perus", "9"])
+      expect(page.oppijataulukko.highlights()).to.deep.equal(['Kaisa', 'Perus', '9'])
     })
   })
 
@@ -367,7 +468,7 @@ describe('Oppijataulukko', function() {
 
       it('näyttää vain Ostopalvelu/palveluseteli -valinnan eikä aliorganisaatioita sille', function() {
         expect(organisaatiovalitsin.oppilaitokset()).to.deep.equal([
-          'Ostopalvelu/palveluseteli',
+          'Ostopalvelu/palveluseteli'
         ])
       })
     })
