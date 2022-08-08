@@ -29,9 +29,6 @@ class ValpasKelaService(application: KoskiApplication) extends Logging with Timi
 
       val hetutJoitaEiLöytynytKoskesta = hetut.diff(oppivelvollisuusTiedot.map(_.hetu.getOrElse("")))
 
-      // Väliaikainen logitus mahdollisen ONR-kuormituksen tarkkailemiseksi seuraavassa Kelan massahaussa. Voi poistaa sen jälkeen.
-      logger.info(s"Kela haki ${hetut.length} oppijaa, joista ${hetutJoitaEiLöytynytKoskesta.length} ei löytynyt Koskesta vaan haetaan ONR:stä")
-
       val oppijatJotkaLöytyvätOnrstä =
         hetutJoitaEiLöytynytKoskesta.flatMap(hetu => henkilöRepository.opintopolku.findByHetu(hetu))
           .filter(o => oppijanumerorekisteriService.onKelalleNäkyväVainOnrssäOlevaOppija(o))
