@@ -19,8 +19,7 @@ object MaksuttomuusValidation {
                                         oppijanHenkilötiedot: Option[LaajatOppijaHenkilöTiedot],
                                         oppijanOid: String,
                                         opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
-                                        rajapäivät: ValpasRajapäivätService,
-                                        raportointikanta: RaportointiDatabase): HttpStatus = {
+                                        rajapäivät: ValpasRajapäivätService): HttpStatus = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
     val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijanOid)
 
@@ -67,37 +66,7 @@ object MaksuttomuusValidation {
         KoskiErrorCategory.badRequest.validation(s"Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä $syyt.")
       }
     } else {
-      // Päättele onko maksuttomuustiedot pakko siirtää
-      val laajennetunOppivelvollisuudenPiirissä = eiLaajennettuOppivelvollinenSyyt.isEmpty
-      val ollutPeruskoulussaValpasLainAikana = perusopetuksenAikavälit.exists(p => (p.vahvistuspäivä, p.päättymispäivä) match {
-        case (Some(vahvistus), Some(_)) => !vahvistus.isBefore(rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku)
-        case (None, Some(päättymis)) => !päättymis.isBefore(rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku)
-        case _ => true
-      })
-      val oppijallaKotikuntaSuomessa = oppijanHenkilötiedot.exists(!_.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella)
-      val opiskeluoikeusOnAktiivinen = opiskeluoikeus.päättymispäivä match {
-        case Some(p) => p.isAfter(rajapäivät.tarkastelupäivä)
-        case None => true
-      }
-
-      val oppivelvollisuus = Oppivelvollisuustiedot.queryByOid(oppijanOid, raportointikanta)
-      val oppivelvollisuusEiOlePäättynyt = oppivelvollisuus.exists(!_.oppivelvollisuusVoimassaAsti.isBefore(opiskeluoikeus.alkamispäivä.getOrElse(rajapäivät.tarkastelupäivä)))
-
-      val maksuttomuustiedotPakolliset =
-        laajennetunOppivelvollisuudenPiirissä &&
-        ollutPeruskoulussaValpasLainAikana &&
-        oppijallaKotikuntaSuomessa &&
-        opiskeluoikeusOnAktiivinen &&
-        koulutusOppivelvollisuuskoulutukseksiKelpaavaa &&
-        oppivelvollisuusEiOlePäättynyt
-
-      if (maksuttomuustiedotPakolliset) {
-        HttpStatus.validate(maksuttomuustietojaSiirretty) {
-          KoskiErrorCategory.badRequest.validation("Tiedot koulutuksen maksuttomuudesta puuttuvat tästä opiskeluoikeudesta")
-        }
-      } else {
-        HttpStatus.ok
-      }
+      HttpStatus.ok
     }
   }
 

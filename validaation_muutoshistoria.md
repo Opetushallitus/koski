@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 8.8.2022
+- Tietoja koulutuksen maksuttomuudesta ei enää vaadita pakollisena millekään opiskeluoikeudelle.
+
 ## 2.8.2022
 
 - VALMA- ja perusopetuksen lisäopetuksen opiskeluoikeuksille ei sallita uusia tiloja, joiden alkupäivämäärä on 2.8.2022 tai sen jälkeen.
