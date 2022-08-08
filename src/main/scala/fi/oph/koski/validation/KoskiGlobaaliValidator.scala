@@ -44,7 +44,6 @@ class KoskiGlobaaliValidator(
             oppijanOid,
             opiskeluoikeusRepository,
             rajapäivät,
-            raportointikanta,
           ),
           Lukio2015Validation.validateAlkamispäivä(
             opiskeluoikeus,
