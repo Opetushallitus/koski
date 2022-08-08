@@ -1126,6 +1126,7 @@
   "Opiskelijavuositiedot-description": "Tämä raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla, ja näihin liittyvät opiskelijavuosilaskennassa käytettävät tiedot. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla.",
   "Aikajakso": "Aikajakso",
   "Excel-tiedosto on suojattu salasanalla": "Excel-tiedosto on suojattu salasanalla",
+  "Ladataan raporttia. Lataaminen voi viedä useita minuutteja": "Ladataan raporttia. Lataaminen voi viedä useita minuutteja",
   "Lataa Excel-tiedosto": "Lataa Excel-tiedosto",
   "Tehostetun tuen päätökset": "Tehostetun tuen päätökset",
   "tooltip:Mahdollisen tehostetun tuen päätös päätöksen...": "Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.",
