@@ -24,7 +24,7 @@ export const Aikaleima = () => {
       })
       .catch((_e) => {})
     return () => {
-      ab.abort("Component has been unmounted")
+      ab.abort()
     }
   }, [])
   return (
