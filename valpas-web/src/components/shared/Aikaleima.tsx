@@ -11,18 +11,20 @@ export const Aikaleima = () => {
     fetch("/koski/valpas/api/paivitysaika", {
       signal: ab.signal,
       method: "GET",
-    }).then(async (res) => {
-      if (res.ok) {
-        const data = await res.json()
-        try {
-          setTime(parseISO(data))
-        } catch (err) {
-          console.error(err)
-        }
-      }
     })
+      .then(async (res) => {
+        if (res.ok) {
+          const data = await res.json()
+          try {
+            setTime(parseISO(data))
+          } catch (err) {
+            console.error(err)
+          }
+        }
+      })
+      .catch((_e) => {})
     return () => {
-      ab.abort()
+      ab.abort("Component has been unmounted")
     }
   }, [])
   return (
