@@ -1,11 +1,10 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.oppivelvollisuudenkeskeytys
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.valpas.db.ValpasSchema
+import fi.oph.koski.valpas.ValpasTestBase
 import fi.oph.koski.valpas.db.ValpasSchema.OppivelvollisuudenKeskeytyshistoriaRow
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
@@ -16,9 +15,8 @@ import org.scalatest.BeforeAndAfterEach
 
 import java.time.{LocalDate, LocalDateTime}
 import java.util.UUID
-import scala.List
 
-class ValpasOppivelvollisuudenKeskeytysSpec extends ValpasTestBase with BeforeAndAfterEach {
+class ValpasOppivelvollisuudenKeskeytysApiSpec extends ValpasTestBase with BeforeAndAfterEach {
   override protected def beforeEach(): Unit = {
     AuditLogTester.clearMessages()
   }

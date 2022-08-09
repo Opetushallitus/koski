@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas.oppijaservice
+package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
@@ -7,7 +7,7 @@ import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 
 import java.time.LocalDate.{of => date}
 
-class ValpasOppijaServiceKäyttöoikeudetSpec extends ValpasOppijaServiceTestBase {
+class ValpasOppijaLaajatTiedotServiceKäyttöoikeudetSpec extends ValpasOppijaTestBase {
 
   "Käyttöoikeudet" - {
     "Peruskoulun hakeutumisen valvoja saa haettua oman oppilaitoksen oppijan tiedot" in {

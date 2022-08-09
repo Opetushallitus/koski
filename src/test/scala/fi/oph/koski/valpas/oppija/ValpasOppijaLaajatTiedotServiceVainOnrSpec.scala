@@ -1,17 +1,16 @@
-package fi.oph.koski.valpas.oppijaservice
+package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.{ErrorDetail, HttpStatus}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
-import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import fi.oph.koski.valpas.yhteystiedot.{ValpasYhteystiedot, ValpasYhteystietoHakemukselta, ValpasYhteystietoOppijanumerorekisteristä}
 
 import java.time.LocalDate.{of => date}
 
-class ValpasOppijaServiceVainOnrSpec extends ValpasOppijaServiceTestBase {
+class ValpasOppijaLaajatTiedotServiceVainOnrSpec extends ValpasOppijaTestBase {
   "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla Koskesta ja Valppaasta löytymättömällä oppijalla" - {
     "palauttaa oppijan tiedot kuntakäyttäjälle" in {
       val expectedOppijaData = ExpectedOppijaData(

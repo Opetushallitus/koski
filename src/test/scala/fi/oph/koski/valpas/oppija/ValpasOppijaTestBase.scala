@@ -1,22 +1,16 @@
-package fi.oph.koski.valpas.oppijaservice
+package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
 import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot}
-import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedot
-import fi.oph.koski.valpas.valpasuser.ValpasMockUser
 import fi.oph.koski.valpas.ValpasTestBase
-import fi.oph.koski.valpas.oppija.ValpasOppijaSuppeatTiedot
 import org.scalatest.BeforeAndAfterEach
-
-import java.time.LocalDateTime
 
 case class ExpectedDataPerusopetusTiedot(
   tarkastelupäivänTila: String,
@@ -76,7 +70,7 @@ object ExpectedOppijaData {
     )
 }
 
-trait ValpasOppijaServiceTestBase extends ValpasTestBase with BeforeAndAfterEach {
+trait ValpasOppijaTestBase extends ValpasTestBase with BeforeAndAfterEach {
 
   override protected def beforeEach() {
     super.beforeEach()

@@ -1,4 +1,4 @@
-package fi.oph.koski.valpas.oppijaservice
+package fi.oph.koski.valpas.kuntailmoitus
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
@@ -9,13 +9,14 @@ import fi.oph.koski.valpas.kuntavalvonta.ValpasKuntavalvontaService
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
 import fi.oph.koski.valpas.oppija.OppijaHakutilanteillaLaajatTiedot
+import fi.oph.koski.valpas.oppija.ValpasOppijaTestBase
 import fi.oph.koski.valpas.valpasrepository.{ValpasExampleData, ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 
 import java.time.LocalDate.{of => date}
 import java.time.LocalDateTime
 
-class ValpasOppijaServiceKuntailmoitusSpec extends ValpasOppijaServiceTestBase {
+class ValpasOppijaServiceKuntailmoitusSpec extends ValpasOppijaTestBase {
   private val kuntavalvontaService = new ValpasKuntavalvontaService(KoskiApplicationForTests)
 
   "Kuntailmoitukset getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla" - {

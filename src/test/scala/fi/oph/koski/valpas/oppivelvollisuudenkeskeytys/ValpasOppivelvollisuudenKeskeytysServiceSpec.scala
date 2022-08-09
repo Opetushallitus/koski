@@ -1,14 +1,13 @@
-package fi.oph.koski.valpas.oppijaservice
+package fi.oph.koski.valpas.oppivelvollisuudenkeskeytys
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
+import fi.oph.koski.valpas.oppija.ValpasOppijaTestBase
 import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUsers, ValpasRooli}
 
-import java.time.LocalDate.{of => date}
-
-class ValpasOppijaServiceOppivelvollisuudenKeskeytysSpec extends ValpasOppijaServiceTestBase {
+class ValpasOppivelvollisuudenKeskeytysServiceSpec extends ValpasOppijaTestBase {
 
   protected val oppivelvollisuudenKeskeytysService = KoskiApplicationForTests.valpasOppivelvollisuudenKeskeytysService
 

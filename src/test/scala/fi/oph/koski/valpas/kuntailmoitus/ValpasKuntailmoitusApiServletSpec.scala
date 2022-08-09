@@ -1,18 +1,19 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.kuntailmoitus
 
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
+import fi.oph.koski.valpas.ValpasTestBase
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasHenkilö, ValpasOpiskeluoikeus, ValpasOppilaitos}
-import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedot}
-import fi.oph.koski.valpas.valpasuser.{ValpasMockUsers, ValpasSession}
-import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.valpas.oppija.ValpasErrorCategory
+import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenTekijäHenkilö, ValpasKuntailmoitusLaajatTiedot}
+import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 import org.scalatest.BeforeAndAfterEach
 
 import java.time.LocalDate.{of => date}
