@@ -4,6 +4,7 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus._
 import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonFiles
 import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
@@ -331,6 +332,12 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
       }
     }
 
+    "Deserialisointi osaa päätellä skeeman, jos @DefaultValuella annotoituja kenttiä puuttuu" in {
+      val json = JsonFiles.readFile("src/test/resources/opiskeluoikeus_puuttuvilla_defaultvalue_propertyilla.json")
+      putOppija(json) {
+        verifyResponseStatusOk()
+      }
+    }
   }
 
   def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus, henkilö: Henkilö): TutkintokoulutukseenValmentavanOpiskeluoikeus = putOpiskeluoikeus(
