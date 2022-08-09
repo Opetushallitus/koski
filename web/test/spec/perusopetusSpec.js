@@ -2193,7 +2193,11 @@ describe('Perusopetus', function() {
             })
 
             describe('Kolmannen opiskeluoikeuden lisääminen (oppiaineen oppimäärä)', function() {
+              this.timeout(20000)
+
               before(
+                timeout.overrideWaitTime(20000),
+
                 opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
                 addOppija.selectOppilaitos('Kulosaaren ala-aste'),
                 addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
@@ -2202,8 +2206,10 @@ describe('Perusopetus', function() {
                 addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
                 addOppija.submitAndExpectSuccessModal('Tyhjä, Tero (230872-7258)', 'Fysiikka')
               )
+              after(
+                timeout.resetDefaultWaitTime()
+              )
               it('toimii', function( ){
-
               })
             })
           })
