@@ -1,8 +1,8 @@
-package fi.oph.koski.valpas.oppijaservice
+package fi.oph.koski.valpas.oppija
 
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{ValpasMockOppijat, ValpasOpiskeluoikeusExampleData}
 
-object ValpasOppijaServiceSpecTestData {
+object ValpasOppijaTestData {
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa ennen syksyn rajapäivää
   val hakeutumisvelvolliset = List(
     (

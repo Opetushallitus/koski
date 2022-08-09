@@ -1,12 +1,12 @@
-package fi.oph.koski.valpas
+package fi.oph.koski.valpas.kuntailmoitus
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportit.AhvenanmaanKunnat
 import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, Oppilaitos}
 import fi.oph.koski.util.DateOrdering
+import fi.oph.koski.valpas.ValpasTestBase
 import fi.oph.koski.valpas.hakukooste.HakukoosteExampleData
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
