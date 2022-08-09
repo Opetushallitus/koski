@@ -94,7 +94,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
 
     "ostettu" in {
       val markkasenOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.markkanen.oid).oid.get
-      val rivi = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"), t)
+      val rivi = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2020-01-02"), t)
         .find(_.opiskeluoikeusOid == markkasenOpiskeluoikeusOid)
         .get
       rivi.ostettu should equal(true)

@@ -410,7 +410,7 @@ class KäyttöoikeusryhmätSpec
     getOpiskeluoikeudet(oid, käyttäjä)
   }
 
-  private lazy val expectedAikajakso = Some(List(Aikajakso(LocalDate.of(2001, 1, 1), None)))
+  private lazy val expectedAikajakso = Some(List(Aikajakso(LocalDate.of(2019, 5, 30), None)))
 
   private def suppeaSensitiveDataNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vankilaopetuksessa should equal(expectedAikajakso)
   private def suppeaSensitiveDataPiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vankilaopetuksessa should equal(None)

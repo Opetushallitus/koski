@@ -1,14 +1,14 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, puuteollisuudenPerustutkinnonSuoritus, puuteollisuudenPerustutkinto, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, ammatillisetTutkinnonOsat, k3, puuteollisuudenPerustutkinnonSuoritus, puuteollisuudenPerustutkinto, stadinAmmattiopisto, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus, tutkinnonOsanSuoritus}
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, peruskoulusuoritus, päiväkotisuoritus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinki, oppilaitos}
 import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiMockUser, KoskiSpecificSession, MockUsers}
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, päiväkotiMajakka}
 import fi.oph.koski.schema._
@@ -310,13 +310,41 @@ object AmmatillinenOpiskeluoikeusTestData {
         suorituskieli = suomenKieli,
         suoritustapa = AmmatillinenExampleData.suoritustapaOps
       )),
-      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2000, 1, 1), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)))),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2019, 5, 30), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)))),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,
-        erityinenTuki = Some(List(Aikajakso(date(2001, 1, 1), None))),
-        vaikeastiVammainen = Some(List(Aikajakso(date(2001, 1, 1), None))),
-        vankilaopetuksessa = Some(List(Aikajakso(date(2001, 1, 1), None)))
-      ))
+        erityinenTuki = Some(List(Aikajakso(date(2019, 5, 30), None))),
+        vaikeastiVammainen = Some(List(Aikajakso(date(2019, 5, 30), None))),
+        vankilaopetuksessa = Some(List(Aikajakso(date(2019, 5, 30), None)))
+      )),
+    )
+  }
+
+  def päättynytOpiskeluoikeus(oppilaitosId: String, koulutusKoodi: Int = 351301, diaariNumero: String = "39/011/2014"): AmmatillinenOpiskeluoikeus = {
+    val oppilaitos: Oppilaitos = Oppilaitos(oppilaitosId, None, None)
+    val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", None)
+
+    AmmatillinenOpiskeluoikeus(
+      oppilaitos = Some(oppilaitos),
+      suoritukset = List(AmmatillisenTutkinnonSuoritus(
+        koulutusmoduuli = AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some(diaariNumero)),
+        toimipiste = oppilaitos,
+        suorituskieli = suomenKieli,
+        suoritustapa = AmmatillinenExampleData.suoritustapaOps,
+        vahvistus = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(
+          päivä = LocalDate.of(2019, 5, 15),
+          myöntäjäOrganisaatio = oppilaitos,
+          myöntäjäHenkilöt = List(Organisaatiohenkilö("Reksi Rehtori", LocalizedString.finnish("rehtori"), oppilaitos)
+        ))),
+        osasuoritukset = Some(List(tutkinnonOsanSuoritus("101050", "Yritystoiminnan suunnittelu", ammatillisetTutkinnonOsat, k3, 40)))
+      )),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2020, 5, 30), ExampleData.opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen)))),
+      lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+        hojks = None,
+        erityinenTuki = Some(List(Aikajakso(date(2019, 5, 30), None))),
+        vaikeastiVammainen = Some(List(Aikajakso(date(2019, 5, 30), None))),
+        vankilaopetuksessa = Some(List(Aikajakso(date(2019, 5, 30), None)))
+      )),
     )
   }
 

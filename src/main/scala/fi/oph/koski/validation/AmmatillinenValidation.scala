@@ -15,6 +15,7 @@ object AmmatillinenValidation {
       case ammatillinen: AmmatillinenOpiskeluoikeus =>
         HttpStatus.fold(
           validatePerusteVoimassa(ammatillinen, ePerusteet, config),
+          validateOpiskeluoikeudenPäättyminenEnnenSiirtymäajanPäättymistä(ammatillinen, ePerusteet, config),
           validateUseaPäätasonSuoritus(ammatillinen),
           validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen, ePerusteet)
         )
@@ -49,8 +50,31 @@ object AmmatillinenValidation {
         case diaarillinen: DiaarinumerollinenKoulutus if diaarillinen.perusteenDiaarinumero.isDefined =>
           ePerusteet.findUusinRakenne(diaarillinen.perusteenDiaarinumero.get) match {
             case Some(peruste) =>
-              if (peruste.siirtymäTaiVoimassaoloPäättynyt()) {
+              if (peruste.voimassaoloLoppunut(opiskeluoikeus.alkamispäivä.getOrElse(LocalDate.now()))) {
                 KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
+              } else {
+                HttpStatus.ok
+              }
+            case _ => HttpStatus.ok
+          }
+        case _ => HttpStatus.ok
+      }
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateOpiskeluoikeudenPäättyminenEnnenSiirtymäajanPäättymistä(opiskeluoikeus: AmmatillinenOpiskeluoikeus, ePerusteet: EPerusteetRepository, config: Config): HttpStatus = {
+    val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan")).minusDays(1)
+    val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
+
+    if (voimassaolotarkastusAstunutVoimaan) {
+      opiskeluoikeus.suoritukset.head.koulutusmoduuli match {
+        case diaarillinen: DiaarinumerollinenKoulutus if diaarillinen.perusteenDiaarinumero.isDefined =>
+          (ePerusteet.findUusinRakenne(diaarillinen.perusteenDiaarinumero.get), opiskeluoikeus.päättymispäivä) match {
+            case (Some(peruste), Some(pp)) =>
+              if (peruste.siirtymäPäättynyt(pp)) {
+                KoskiErrorCategory.badRequest.validation.rakenne.siirtymäaikaPäättynyt()
               } else {
                 HttpStatus.ok
               }
