@@ -53,10 +53,10 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
   @Description("Onko kyseessä koulutusvientikoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole koulutusvientikoulutus.")
   @Tooltip("Valitse valintaruutu, jos kyseessä on koulutusvientikoulutus.")
   @DefaultValue(false)
-  koulutusvienti: Boolean = false,
+  koulutusvienti: Option[Boolean] = Some(false),
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
   @DefaultValue(false)
-  pidennettyPäättymispäivä: Boolean = false,
+  pidennettyPäättymispäivä: Option[Boolean] = Some(false),
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
   with Ulkomaajaksollinen
   with SisäoppilaitosmainenMajoitus
@@ -70,7 +70,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanL
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
   @DefaultValue(false)
-  pidennettyPäättymispäivä: Boolean = false,
+  pidennettyPäättymispäivä: Option[Boolean] = Some(false),
   @Description("Rahoituksen laskennassa käytettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
@@ -116,7 +116,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLis
   pidennettyOppivelvollisuus: Option[Aikajakso] = None,
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
   @DefaultValue(false)
-  pidennettyPäättymispäivä: Boolean = false,
+  pidennettyPäättymispäivä: Option[Boolean] = Some(false),
   @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
