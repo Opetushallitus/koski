@@ -52,10 +52,10 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
   vankilaopetuksessa: Option[List[Aikajakso]] = None,
   @Description("Onko kyseessä koulutusvientikoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole koulutusvientikoulutus.")
   @Tooltip("Valitse valintaruutu, jos kyseessä on koulutusvientikoulutus.")
-  @DefaultValue(false)
+  @DefaultValue(Some(false))
   koulutusvienti: Option[Boolean] = Some(false),
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
-  @DefaultValue(false)
+  @DefaultValue(Some(false))
   pidennettyPäättymispäivä: Option[Boolean] = Some(false),
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
   with Ulkomaajaksollinen
@@ -69,7 +69,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanL
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
-  @DefaultValue(false)
+  @DefaultValue(Some(false))
   pidennettyPäättymispäivä: Option[Boolean] = Some(false),
   @Description("Rahoituksen laskennassa käytettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
@@ -115,7 +115,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLis
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
   pidennettyOppivelvollisuus: Option[Aikajakso] = None,
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
-  @DefaultValue(false)
+  @DefaultValue(Some(false))
   pidennettyPäättymispäivä: Option[Boolean] = Some(false),
   @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")

@@ -58,7 +58,7 @@ case class LukionOppiaineenOppimääränSuoritus2015(
   suorituskieli: Koodistokoodiviite,
   @Description("Merkitään, jos lukion oppimäärä on tullut suoritetuksi aineopintoina.")
   @Tooltip("Opiskelija on suorittanut koko lukion oppimäärän ja saanut lukion päättötodistuksen")
-  @DefaultValue(false)
+  @DefaultValue(None)
   @Deprecated("Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'")
   @Hidden
   lukionOppimääräSuoritettu: Option[Boolean] = None,

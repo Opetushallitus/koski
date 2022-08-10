@@ -55,7 +55,7 @@ trait Koulutussopimuksellinen extends Työssäoppimisjaksollinen {
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Onko opiskelijalla oikeus maksuttomaan asuntolapaikkaan (true / false)")
   @Tooltip("Valitse valintaruutu, jos opiskelijalla on oikeus maksuttomaan asuntolapaikkaan.")
-  @DefaultValue(false)
+  @DefaultValue(None)
   @RedundantData
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None,
   @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
