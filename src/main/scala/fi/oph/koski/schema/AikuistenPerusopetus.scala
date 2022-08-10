@@ -57,7 +57,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   ulkomaanjaksot: Option[List[Aikajakso]] = None,
   @Description("Opiskelija on vuosiluokkiin sitomattomassa opetuksessa (true/false).")
   @Tooltip("Onko opiskelija vuosiluokkiin sitomattomassa opetuksessa.")
-  @DefaultValue(false)
+  @DefaultValue(None)
   @Title("Vuosiluokkiin sitomaton opetus")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @RedundantData

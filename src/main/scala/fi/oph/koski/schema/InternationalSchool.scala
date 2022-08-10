@@ -196,7 +196,6 @@ case class ISHDiplomaLuokkaAste(
 case class MYPOppiaineenSuoritus(
   koulutusmoduuli: MYPOppiaine,
   arviointi: Option[List[NumeerinenInternationalSchoolOppiaineenArviointi]] = None,
-  @DefaultValue("EN")
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("internationalschoolmypoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "internationalschoolmypoppiaine", koodistoUri = "suorituksentyyppi")
@@ -205,7 +204,6 @@ case class MYPOppiaineenSuoritus(
 case class PYPOppiaineenSuoritus(
   koulutusmoduuli: PYPOppiaine,
   arviointi: Option[List[SanallinenInternationalSchoolOppiaineenArviointi]] = None,
-  @DefaultValue("EN")
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("internationalschoolpypoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "internationalschoolpypoppiaine", koodistoUri = "suorituksentyyppi")
@@ -216,7 +214,6 @@ trait DiplomaIBOppiaineenSuoritus extends OppiaineenSuoritus with MahdollisestiS
 case class DiplomaOppiaineenSuoritus(
   koulutusmoduuli: InternationalSchoolIBOppiaine,
   arviointi: Option[List[DiplomaArviointi]] = None,
-  @DefaultValue("EN")
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("internationalschooldiplomaoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "internationalschooldiplomaoppiaine", koodistoUri = "suorituksentyyppi")
@@ -225,7 +222,6 @@ case class DiplomaOppiaineenSuoritus(
 case class DiplomaCoreRequirementsOppiaineenSuoritus(
   koulutusmoduuli: DiplomaCoreRequirementsOppiaine,
   arviointi: Option[List[InternationalSchoolCoreRequirementsArviointi]] = None,
-  @DefaultValue("EN")
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("internationalschoolcorerequirements")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "internationalschoolcorerequirements", koodistoUri = "suorituksentyyppi")

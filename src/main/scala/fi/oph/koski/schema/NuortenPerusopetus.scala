@@ -79,7 +79,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Perusopetuksen aloittamisesta lykkäys. Oppilas saanut luvan aloittaa perusopetuksen myöhemmin.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @OksaUri("tmpOKSAID242", "koulunkäynnin aloittamisen lykkääminen")
-  @DefaultValue(false)
+  @DefaultValue(None)
   @Deprecated("Kenttä ei ole käytössä")
   perusopetuksenAloittamistaLykätty: Option[Boolean] = None,
   @Description("Perusopetuksen aloituksen aikaistaminen (true/false). Oppilas aloittanut perusopetuksen ennen oppivelvollisuusikää.")
@@ -270,7 +270,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Description("Tieto siitä, osallistuuko oppilas osa-aikaiseen erityisopetukseen lukuvuoden aikana")
   @Tooltip("Osallistuuko oppilas osa-aikaiseen erityisopetukseen lukuvuoden aikana")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  @DefaultValue(false)
+  @DefaultValue(None)
   @Title("Osa-aikainen erityisopetus lukuvuoden aikana")
   @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   @Hidden

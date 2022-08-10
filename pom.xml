@@ -49,9 +49,12 @@
       <version>f324e2c5168ef4cd68d08520294300a707adb833</version>
     </dependency>
     <dependency>
-      <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-schema</artifactId>
-      <version>2.29.0_2.12</version>
+      <groupId>com.github.Opetushallitus</groupId>
+      <version>2.30.0_2.12</version>
+      <!-- Käytä tätä versiota, jos haluat linkittää mukaan paikallisesti käännetyn scala-scheman -->
+      <!-- <groupId>fi.vm.sade</groupId>-->
+      <!-- <version>0.1.0-SNAPSHOT</version>-->
     </dependency>
     <!-- external deps -->
     <dependency>

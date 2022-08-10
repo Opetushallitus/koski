@@ -37,12 +37,12 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Perusopetuksen aloittamisesta lykkäys. Oppilas saanut luvan aloittaa perusopetuksen myöhemmin.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @OksaUri("tmpOKSAID242", "koulunkäynnin aloittamisen lykkääminen")
-  @DefaultValue(false)
+  @DefaultValue(None)
   @Deprecated("Kenttä ei ole käytössä")
   perusopetuksenAloittamistaLykätty: Option[Boolean] = None,
   @Description("Perusopetuksen aloituksen aikaistaminen (true/false). Oppilas aloittanut perusopetuksen ennen oppivelvollisuusikää.")
   @Tooltip("Perusopetuksen aloitusta aikaistettu, eli oppilas aloittanut peruskoulun ennen oppivelvollisuusikää.")
-  @DefaultValue(false)
+  @DefaultValue(None)
   @RedundantData
   aloittanutEnnenOppivelvollisuutta: Option[Boolean] = None,
   @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta. Rahoituksen laskennassa käytettävä tieto.")
@@ -102,7 +102,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Oppilas on vuosiluokkiin sitomattomassa opetuksessa (kyllä/ei).")
   @Tooltip("Onko oppilas vuosiluokkiin sitomattomassa opetuksessa.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  @DefaultValue(false)
+  @DefaultValue(None)
   @Title("Vuosiluokkiin sitomaton opetus")
   @RedundantData
   vuosiluokkiinSitoutumatonOpetus: Option[Boolean] = None,
@@ -161,7 +161,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   @Description("Tieto siitä, osallistuuko oppilas osa-aikaiseen erityisopetukseen perusopetuksen lisäopetuksen aikana")
   @Tooltip("Osallistuuko oppilas osa-aikaiseen erityisopetukseen perusopetuksen lisäopetuksen aikana")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  @DefaultValue(false)
+  @DefaultValue(None)
   @Title("Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana")
   @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   @Hidden

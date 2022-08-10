@@ -67,7 +67,7 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   @Title("Opetuskieli")
   suorituskieli: Koodistokoodiviite,
   @Description("Merkitään, jos lukion oppimäärä on tullut suoritetuksi aineopintoina.")
-  @DefaultValue(false)
+  @DefaultValue(None)
   @Deprecated("Käytä opiskeluoikeuden kenttää 'oppimääräSuoritettu'")
   @Hidden
   lukionOppimääräSuoritettu: Option[Boolean] = None,

@@ -218,7 +218,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot. Rahoituksen laskennassa hyödynnettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa hyödynnettävä tieto.")
-  @DefaultValue(false)
+  @DefaultValue(None)
   @RedundantData
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Boolean] = None,
   @Description("Tieto onko oppija sisäoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa hyödynnettävä tieto.")

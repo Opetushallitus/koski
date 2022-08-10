@@ -94,7 +94,14 @@ case class BooleanModelBuilder(t: BooleanSchema) extends ModelBuilderWithData[Bo
   override def buildModelForObject(x: Boolean, metadata: List[Metadata]) = BooleanModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)
   override def getPrototypeData = false
   override def buildPrototype(metadata: List[Metadata]): EditorModel = buildModelForObject(getDefaultValue(metadata), metadata)
-  def getDefaultValue(metadata: List[Metadata]): Boolean = DefaultValue.getDefaultValue(metadata).getOrElse(false)
+  def getDefaultValue(metadata: List[Metadata]): Boolean = {
+    val value = DefaultValue.getDefaultValue[Any](metadata)
+    value.flatMap {
+      case b: Boolean => Some(b)
+      case o: Option[_] => Some(o.contains(true))
+      case _ => None
+    }.getOrElse(false)
+  }
 }
 
 case class StringModelBuilder(t: StringSchema) extends ModelBuilderWithData[String] {
