@@ -88,6 +88,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     val tarkastelupäivä = rajapäivätService.tarkastelupäivä
     val keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä = rajapäivätService.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
     val hakeutusmivalvottavanSuorituksenNäyttämisenAikaraja = rajapäivätService.perusopetussuorituksenNäyttämisenAikaraja
+    val (nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAlku, nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutLoppu) =
+      rajapäivätService.nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAikaväli
 
     val timedBlockname = oppijaOids.size match {
       case 0 => "getOppijatMultiple"
@@ -529,14 +531,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         )
       )
       AND (
-        -- opiskeluoikeus ei ole eronnut tilassa tällä hetkellä
+        -- opiskeluoikeus ei ole peruutettu tai keskeytynyt tällä hetkellä
         (aikajakson_keskella.tila IS NOT NULL
-          AND NOT aikajakson_keskella.tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
+          AND NOT aikajakson_keskella.tila = any('{peruutettu, keskeytynyt}'))
         OR (aikajakson_keskella.tila IS NULL
           AND $tarkastelupäivä < ov_kelvollinen_opiskeluoikeus.alkamispaiva)
         OR (aikajakson_keskella.tila IS NULL
           AND $tarkastelupäivä > ov_kelvollinen_opiskeluoikeus.paattymispaiva
-          AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi, peruutettu, keskeytynyt}'))
+          AND NOT ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{peruutettu, keskeytynyt}'))
       )
       AND (
         -- opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
@@ -548,6 +550,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           AND (
             ov_kelvollinen_opiskeluoikeus.alkamispaiva <= $keväänValmistumisjaksoLoppu
             OR $tarkastelupäivä > $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+          )
+        )
+        -- TAI: opiskeluoikeus on päättynyt tilaan 'eronnut' tai 'katsotaan eronneeksi' ministeriön määrittelemän aikajakson sisällä
+        OR (
+          ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{eronnut, katsotaaneronneeksi}')
+          AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva
+            BETWEEN $nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAlku
+                AND $nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutLoppu
           )
         )
         -- TAI:
