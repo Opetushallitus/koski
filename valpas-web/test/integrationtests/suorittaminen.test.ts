@@ -146,7 +146,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await selectOrganisaatio(1)
     await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
-    await textEventuallyEquals(".card__header", "Oppivelvolliset (16)")
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (20)")
     await waitTableLoadingHasFinished(".suorittaminen")
   })
 
