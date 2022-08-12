@@ -23,3 +23,14 @@ export const ressunLukioTableContent_lokakuu2021 = `
   Valma Valpas                                                      | 9.1.2004    | VALMA                                         | 8.8.2021  | –           | Ei hakemusta  | – | – | –                               |
   Vst-kops Valpas                                                   | 19.5.2004   | VST                                           | 1.9.2021  | –           | Ei hakemusta  | – | – | –                               |
 `
+
+export const jyväskylänNormaalikouluNivelvaiheTableContent = `
+  Alkukesästä-eronneeksi-katsottu-nivelvaiheen-opiskelija Valpas  | 18.1.2005   | Perusopetuksen lisäopetus | 15.8.2020 | 31.5.2021 | Ei hakemusta  | – | – | –                             |
+  Alkukesästä-eronnut-nivelvaiheen-opiskelija Valpas              | 16.10.2005  | Perusopetuksen lisäopetus | 15.8.2020 | 31.5.2021 | Ei hakemusta  | – | – | –                             |
+  Amis-eronnut-nivelvaihe-ei-kelpaa Valpas                        | 10.11.2005  | Perusopetuksen lisäopetus | 15.8.2008 | 31.5.2021 | Ei hakemusta  | – | – | Helsingin Saksalainen koulu	  |
+  Amis-eronnut-nivelvaihe-vstssa-ei-kelpaa Valpas                 | 9.6.2004    | Perusopetuksen lisäopetus | 15.8.2008 | 31.5.2021 | Ei hakemusta  | – | – | Varsinais-Suomen kansanopisto |
+  Amis-eronnut-perusopetukseen-valmistava-ei-kelpaa Valpas        | 24.2.2005   | Perusopetuksen lisäopetus | 15.8.2008 | 31.5.2021 | Ei hakemusta  | – | – | –                             |
+  Jkl-Nivel-Kulosaarelainen Valpas                                | 1.1.2004    | Perusopetuksen lisäopetus | 15.8.2012 | –         | Ei hakemusta  | – | – | –                             |
+  Nivelvaiheesta-valmistunut Valpas                               | 20.10.2005  | Perusopetuksen lisäopetus | 15.8.2008 | 31.5.2021 | Ei hakemusta  | – | – | –                             |
+`
+
