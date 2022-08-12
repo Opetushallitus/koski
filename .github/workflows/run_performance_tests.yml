@@ -227,7 +227,7 @@ jobs:
 
       - name: Run perftest valpas-oppija-detaalit
         run: |
-          export PERFTEST_THREADS=20
+          export PERFTEST_THREADS=30
           export PERFTEST_ROUNDS=5000
           export WARMUP_ROUNDS=50
           export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
