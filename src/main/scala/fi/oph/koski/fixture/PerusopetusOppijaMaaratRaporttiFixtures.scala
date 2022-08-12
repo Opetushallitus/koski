@@ -109,7 +109,13 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
     kuljetusetu = Some(aikajakso),
     sisäoppilaitosmainenMajoitus = Some(List(aikajakso)),
     koulukoti = Some(List(aikajakso)),
-    joustavaPerusopetus = Some(aikajakso)
+    joustavaPerusopetus = Some(aikajakso),
+    erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+      alku = Some(aikajakso.alku),
+      loppu = aikajakso.loppu,
+      erityisryhmässä = Some(false),
+      tukimuodot = None
+    )))
   )
 
   private val virheellisestiSiirrettyVaikeastiVammainenLisätiedotPerusopetuksenLisäopetus = PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
@@ -119,7 +125,13 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
     kuljetusetu = Some(aikajakso),
     sisäoppilaitosmainenMajoitus = Some(List(aikajakso)),
     koulukoti = Some(List(aikajakso)),
-    joustavaPerusopetus = Some(aikajakso)
+    joustavaPerusopetus = Some(aikajakso),
+    erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+      alku = Some(aikajakso.alku),
+      loppu = aikajakso.loppu,
+      erityisryhmässä = Some(false),
+      tukimuodot = None
+    )))
   )
 
   val virheellisestiSiirrettyVaikeastiVammainen = PerusopetuksenOpiskeluoikeus(
@@ -147,12 +159,24 @@ object PerusopetusOppijaMaaratRaporttiFixtures {
 
   private val virheellisestiSiirrettyVammainenLisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot = PerusopetuksenOpiskeluoikeudenLisätiedot(
     pidennettyOppivelvollisuus = Some(aikajakso),
-    vammainen = Some(List(aikajakso))
+    vammainen = Some(List(aikajakso)),
+    erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+      alku = Some(aikajakso.alku),
+      loppu = aikajakso.loppu,
+      erityisryhmässä = Some(false),
+      tukimuodot = None
+    )))
   )
 
   private val virheellisestiSiirrettyVammainenLisätiedotPerusopetuksenLisäopetus = PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
     pidennettyOppivelvollisuus = Some(aikajakso),
-    vammainen = Some(List(aikajakso))
+    vammainen = Some(List(aikajakso)),
+    erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+      alku = Some(aikajakso.alku),
+      loppu = aikajakso.loppu,
+      erityisryhmässä = Some(false),
+      tukimuodot = None
+    )))
   )
 
   val virheellisestiSiirrettyVammainen = PerusopetuksenOpiskeluoikeus(

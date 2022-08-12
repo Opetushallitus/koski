@@ -8,6 +8,7 @@
   - ei sallita tiedon vaikeasti kehitysvammainen tai muu kuin vaikeasti kehitysvammainen siirtämistä, elleivät ne osu jollekin siirretylle pidennetyn oppivelvollisuuden jaksolle
   - ei sallita päällekkäisiä vaikeasti kehitysvammainen- tai muu kuin vaikeasti kehitysvammainen-jaksoja
   - jos pidennetyn oppivelvollisuuden jaksolle on merkitty päättymispäivä, vaaditaan päättymispäivä myös kronologisesti myöhäisimmältä vammaisuusjaksolta
+- Lisäksi erityisen tuen päätöksien osalta validoidaan, että jokin erityisen tuen päätös on voimassa jokaisena pidennetyn oppivelvollisuuden jakson päivänä
 - Samat validaatiot tehdään nyt myös tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeuksille, jos niissä on perusopetuksen järjestämislupa
 
 ## 17.8.2022

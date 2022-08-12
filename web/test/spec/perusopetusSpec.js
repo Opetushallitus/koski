@@ -3346,6 +3346,9 @@ describe('Perusopetus', function() {
           '15.8.2008 Läsnä\n' +
           'Lisätiedot\n' +
           'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
+          'Erityisen tuen päätökset 15.8.2008 — 4.6.2016\n' +
+          'Opiskelee toiminta-alueittain ei\n' +
+          'Opiskelee erityisryhmässä ei\n' +
           'Muu kuin vaikeimmin kehitysvammainen 15.8.2008 — 4.6.2016'
         )
       })

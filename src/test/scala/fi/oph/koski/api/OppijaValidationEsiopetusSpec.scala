@@ -110,8 +110,16 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku, None)),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = None,
-            vaikeastiVammainen = None
+            vaikeastiVammainen = None,
           )
         )
       )
@@ -146,8 +154,16 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku, None)),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = None,
-            vaikeastiVammainen = Some(List(Aikajakso(alku, None)))
+            vaikeastiVammainen = Some(List(Aikajakso(alku, None))),
           )
         )
       )
@@ -161,6 +177,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku.plusDays(2), None)),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(Aikajakso(alku, None))),
             vaikeastiVammainen = None
           )
@@ -176,6 +200,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku.plusDays(4), None)),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(
               Aikajakso(alku, Some(alku.plusDays(3))),
               Aikajakso(alku.plusDays(4), None)
@@ -197,6 +229,15 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku.minusDays(1), None)),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku.minusDays(1)),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
+
             vammainen = None,
             vaikeastiVammainen = Some(List(Aikajakso(alku, None)))
           )
@@ -215,6 +256,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku, Some(alku.plusDays(2)))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(Aikajakso(alku, Some(alku.plusDays(1))))),
             vaikeastiVammainen = None
           )
@@ -233,6 +282,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku, Some(alku.plusDays(10)))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(Aikajakso(alku, Some(alku.plusDays(5))))),
             vaikeastiVammainen = Some(List(Aikajakso(alku.plusDays(5), Some(alku.plusDays(10)))))
           )
@@ -251,6 +308,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku, Some(alku.plusDays(1)))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = None,
             vaikeastiVammainen = Some(List(Aikajakso(alku, Some(alku.plusDays(1)))))
           )
@@ -266,6 +331,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku, Some(alku.plusDays(1)))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = None,
             vaikeastiVammainen = Some(List(Aikajakso(alku.plusDays(2), Some(alku.plusDays(3)))))
           )
@@ -289,6 +362,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alkujakso.alku, loppujakso.loppu)),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alkujakso.alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(
               alkujakso, loppujakso
             )),
@@ -312,6 +393,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alkujakso.alku, loppujakso.loppu)),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alkujakso.alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(
               alkujakso, loppujakso
             )),
@@ -337,6 +426,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku.plusDays(10), Some(alku.plusDays(12)))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(
               jakso1,
               jakso2
@@ -358,6 +455,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku.plusDays(10), Some(alku.plusDays(12)))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(
               jakso1,
               jakso2
@@ -384,6 +489,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku.plusDays(10), Some(alku.plusDays(12)))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(
               jakso1,
               jakso2
@@ -409,6 +522,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku.plusDays(10), Some(alku.plusDays(12)))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(
               jakso1
             )),
@@ -435,6 +556,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku.minusDays(1), None)),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku.minusDays(1)),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(Aikajakso(alku, None))),
             vaikeastiVammainen = None
           )
@@ -459,6 +588,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku, Some(loppu))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(alku),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(
               Aikajakso(alku, Some(alku.plusDays(10))),
               Aikajakso(alku.plusDays(11), None),
@@ -486,6 +623,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(LocalDate.of(2021, 5, 19), Some(LocalDate.of(2022, 2, 3)))),
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(LocalDate.of(2021, 5, 19)),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            )),
             vammainen = Some(List(Aikajakso(LocalDate.of(2021, 5, 19), Some(LocalDate.of(2022, 2, 3))))),
             vaikeastiVammainen = None
           )
@@ -499,8 +644,109 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       }
     }
 
+    "Validointi onnistuu, kun erityisen tuen jaksoja on ilman pidennettyä oppivelvollisuutta" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2022, 8, 9), opiskeluoikeusLäsnä)
+          )
+        ),
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = None,
+            vammainen = None,
+            vaikeastiVammainen = None,
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(LocalDate.of(2022, 8, 9)),
+                loppu = Some(LocalDate.of(2022, 9, 9)),
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+              ErityisenTuenPäätös(
+                alku = Some(LocalDate.of(2023, 2, 3)),
+                loppu = Some(LocalDate.of(2023, 9, 15)),
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            ))
+          )
+        )
+      )
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Validointi onnistuu, kun erityisen tuen jaksoja on kokonaan pidennetyn oppivelvollisuuden ulkopuolella" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2022, 8, 9), opiskeluoikeusLäsnä)
+          )
+        ),
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(LocalDate.of(2023, 5, 19), Some(LocalDate.of(2024, 2, 3)))),
+            vammainen = Some(List(Aikajakso(LocalDate.of(2023, 5, 19), Some(LocalDate.of(2024, 2, 3))))),
+            vaikeastiVammainen = None,
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(LocalDate.of(2022, 8, 9)),
+                loppu = Some(LocalDate.of(2022, 9, 9)),
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+              ErityisenTuenPäätös(
+                alku = Some(LocalDate.of(2023, 5, 19)),
+                loppu = Some(LocalDate.of(2024, 2, 3)),
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            ))
+          )
+        )
+      )
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
     "Validointi ei onnistu, jos pidennetty oppivelvollisuus sisältää päiviä, joina ei ole erityisen tuen jaksoa" in {
-      // TODO. Pitää lisätä myös erityisen tuen päätökset kaikkiin ylläoleviin testeihin.
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2022, 8, 9), opiskeluoikeusLäsnä)
+          )
+        ),
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(LocalDate.of(2023, 5, 19), Some(LocalDate.of(2024, 2, 3)))),
+            vammainen = Some(List(Aikajakso(LocalDate.of(2023, 5, 19), Some(LocalDate.of(2024, 2, 3))))),
+            vaikeastiVammainen = None,
+            erityisenTuenPäätökset = Some(List(
+              ErityisenTuenPäätös(
+                alku = Some(LocalDate.of(2023, 5, 19)),
+                loppu = Some(LocalDate.of(2024, 1, 3)),
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+              ErityisenTuenPäätös(
+                alku = Some(LocalDate.of(2024, 1, 7)),
+                loppu = None,
+                opiskeleeToimintaAlueittain = true,
+                erityisryhmässä = Some(true)
+              ),
+            ))
+          )
+        )
+      )
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(
+          expectedStatus = 400,
+          KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa erityisen tuen jaksoa")
+        )
+      }
     }
   }
 

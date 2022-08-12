@@ -20,7 +20,13 @@ object ExamplesEsiopetus {
     majoitusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
     kuljetusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
     sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
-    koulukoti = Some(List(Aikajakso(date(2011, 8, 14), None)))
+    koulukoti = Some(List(Aikajakso(date(2011, 8, 14), None))),
+    erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+      alku = Some(date(2014, 8, 15)),
+      loppu = None,
+      erityisryhmässä = Some(false),
+      tukimuodot = None
+    )))
   )
 
   lazy val esiopetusaikaisetLisätiedot = EsiopetuksenOpiskeluoikeudenLisätiedot(
@@ -31,7 +37,13 @@ object ExamplesEsiopetus {
     majoitusetu = Some(Aikajakso(date(2006, 8, 14), Some(date(2012, 8, 14)))),
     kuljetusetu = Some(Aikajakso(date(2006, 8, 14), Some(date(2012, 8, 14)))),
     sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2006, 9, 1), Some(date(2013, 9, 1))))),
-    koulukoti = Some(List(Aikajakso(date(2006, 8, 14), None)))
+    koulukoti = Some(List(Aikajakso(date(2006, 8, 14), None))),
+    erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+      alku = Some(date(2006, 8, 15)),
+      loppu = Some(date(2016, 6, 4)),
+      erityisryhmässä = Some(false),
+      tukimuodot = None
+    )))
   )
 
   lazy val opiskeluoikeus = EsiopetuksenOpiskeluoikeus(
