@@ -244,6 +244,7 @@ jobs:
 
   tilastokeskus-haku:
     name: tilastokeskus-haku
+    needs: [ insert_light ]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -280,5 +281,8 @@ jobs:
 
       - name: Run perftest tilastokeskus-haku
         run: |
-          export PERFTEST_THREADS=2
+          export PERFTEST_THREADS=1
+          export KOSKI_SERVER_COUNT=1
+          export PERFTEST_ROUNDS=30
+          export WARMUP_ROUNDS=0
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.LuovutuspalveluTilastokeskuksenHaku"
