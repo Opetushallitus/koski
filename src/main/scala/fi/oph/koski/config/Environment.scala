@@ -2,6 +2,9 @@ package fi.oph.koski.config
 
 import com.typesafe.config.Config
 
+import java.time.ZonedDateTime
+import java.time.format.DateTimeParseException
+
 object Environment {
   val Local = "local"
   val UnitTest = "unittest"
@@ -36,4 +39,11 @@ object Environment {
 
   def forceLocalMigration: Option[String] =
     sys.env.get("FORCE_LOCAL_MIGRATION")
+
+  def raportointikantaLoadDueTime: Option[ZonedDateTime] =
+    sys.env.get("RAPORTOINTIKANTA_DUETIME").map(time => try {
+      ZonedDateTime.parse(time)
+    } catch {
+      case e: DateTimeParseException => throw new RuntimeException(s"Invalid timestamp format in environment variable RAPORTOINTIKANTA_DUETIME (expected ISO datetime format): ${e.getMessage}")
+    })
 }

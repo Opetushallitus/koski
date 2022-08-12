@@ -44,7 +44,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       }
       loadDatabase.dropAndCreateObjects
       startLoading(update, scheduler, onEnd, pageSize, onAfterPage)
-      logger.info(s"Started loading raportointikanta (force: $force)")
+      logger.info(s"Started loading raportointikanta (force: $force, duetime: ${update.map(_.dueTime.toString).getOrElse("-")})")
       true
     }
   }
@@ -180,7 +180,9 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   }
 
   private def getDueTime: ZonedDateTime =
-    if (isMockEnvironment) ZonedDateTime.now().plusSeconds(5) else nextMidnight
+    Environment.raportointikantaLoadDueTime.getOrElse(
+      if (isMockEnvironment) ZonedDateTime.now().plusSeconds(5) else nextMidnight
+    )
 
   private def nextMidnight: ZonedDateTime = {
     val now = ZonedDateTime.now()
