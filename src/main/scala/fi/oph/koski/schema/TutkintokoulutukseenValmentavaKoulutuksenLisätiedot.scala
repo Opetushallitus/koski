@@ -124,3 +124,8 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLis
   erityisenTuenPäätökset: Option[List[TuvaErityisenTuenPäätös]] = None
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
   with PidennettyOppivelvollisuus
+{
+  def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso] = {
+    erityisenTuenPäätökset.getOrElse(List.empty)
+  }
+}

@@ -92,6 +92,11 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   with Vammainen
   with VaikeastiVammainen
   with PidennettyOppivelvollisuus
+{
+  def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso] = {
+    erityisenTuenPäätös.map(p => List(p)).getOrElse(List.empty) ++ erityisenTuenPäätökset.getOrElse(List.empty)
+  }
+}
 
 case class EsiopetuksenSuoritus(
   @Title("Koulutus")

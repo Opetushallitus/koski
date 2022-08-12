@@ -39,6 +39,10 @@ trait OikeusmaksuttomaanAsuntolapaikkaanBooleanina extends OpiskeluoikeudenLisä
     shapeless.lens[OikeusmaksuttomaanAsuntolapaikkaanBooleanina].field[Option[Boolean]]("oikeusMaksuttomaanAsuntolapaikkaan").set(this)(maksuttomuus)
 }
 
+trait ErityisenTuenPäätöksiäSisältäväLisätieto {
+  def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso]
+}
+
 trait UlkomainenVaihtoopiskelija {
   def ulkomainenVaihtoopiskelija: Boolean
 }
@@ -51,7 +55,7 @@ trait VaikeastiVammainen {
   def vaikeastiVammainen: Option[List[Aikajakso]]
 }
 
-trait PidennettyOppivelvollisuus extends Vammainen with VaikeastiVammainen {
+trait PidennettyOppivelvollisuus extends Vammainen with VaikeastiVammainen with ErityisenTuenPäätöksiäSisältäväLisätieto {
   def pidennettyOppivelvollisuus: Option[Aikajakso]
 }
 

@@ -144,6 +144,11 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   with VaikeastiVammainen
   with MaksuttomuusTieto
   with PidennettyOppivelvollisuus
+{
+  def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso] = {
+    erityisenTuenPäätös.map(p => List(p)).getOrElse(List.empty) ++ erityisenTuenPäätökset.getOrElse(List.empty)
+  }
+}
 
 @Description("Perusopetuksen lisäopetuksen suoritustiedot")
 case class PerusopetuksenLisäopetuksenSuoritus(
