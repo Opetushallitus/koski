@@ -85,7 +85,7 @@ trait Raamit {
 }
 
 case object Virkailija extends Raamit {
-  override def script(nonce: String): NodeSeq = <script nonce={nonce} type="text/javascript" src="/virkailija-raamit/apply-raamit.js"/>
+  override def script(nonce: String): NodeSeq = <script nonce={nonce} type="text/javascript" src="/virkailija-raamit/apply-raamit.js"></script>
   override def toString: String = "virkailija"
 }
 
