@@ -208,9 +208,8 @@ trait MahdollisestiAlkupäivällinenJakso extends DateContaining {
   @Description("Jakson loppupäivämäärä. Muoto YYYY-MM-DD")
   def loppu: Option[LocalDate]
 
-  // TODO: Onko toteutus oikea alkupäivän puuttuessa?
   def contains(d: LocalDate): Boolean =
-    (alku.isDefined && !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
+    (alku.isEmpty || !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
 }
 
 trait DateContaining {
