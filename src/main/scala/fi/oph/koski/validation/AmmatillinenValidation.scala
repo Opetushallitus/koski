@@ -51,7 +51,9 @@ object AmmatillinenValidation {
           ePerusteet.findUusinRakenne(diaarillinen.perusteenDiaarinumero.get) match {
             case Some(peruste) =>
               if (peruste.voimassaoloLoppunut(opiskeluoikeus.alkamispäivä.getOrElse(LocalDate.now()))) {
-                KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
+                // FIXME: Otetaan voimassaolon validaatio väliaikaisesti pois päältä
+                // KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
+                HttpStatus.ok
               } else {
                 HttpStatus.ok
               }
@@ -74,7 +76,9 @@ object AmmatillinenValidation {
           (ePerusteet.findUusinRakenne(diaarillinen.perusteenDiaarinumero.get), opiskeluoikeus.päättymispäivä) match {
             case (Some(peruste), Some(pp)) =>
               if (peruste.siirtymäPäättynyt(pp)) {
-                KoskiErrorCategory.badRequest.validation.rakenne.siirtymäaikaPäättynyt()
+                // FIXME: Otetaan voimassaolon validaatio väliaikaisesti pois päältä
+                // KoskiErrorCategory.badRequest.validation.rakenne.siirtymäaikaPäättynyt()
+                HttpStatus.ok
               } else {
                 HttpStatus.ok
               }

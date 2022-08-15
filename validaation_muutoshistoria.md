@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 15.8.2022
+- Muutettu ammatillisen koulutuksen validaatiota väliaikaisesti siten, että perusteen voimassaolopäiväystä ei tarkasteta lisättäessä ammatillisen koulutuksen opiskeluoikeuksia järjestelmään.
+
 ## 8.8.2022
 - Tietoja koulutuksen maksuttomuudesta ei enää vaadita pakollisena millekään opiskeluoikeudelle.
 
