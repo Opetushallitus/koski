@@ -34,7 +34,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "RaportointiDatabase.scala"                                 -> "cebf82c7dc48aac0f319712b168a2677",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
         "RaportointiDatabaseSchema.scala"                           -> "7b1158c2a2c921257433a904f708cbfa",
-        "RaportointikantaService.scala"                             -> "df80a4347532fceac05475e704f78adb",
+        "RaportointikantaService.scala"                             -> "19a123803c22f8651c7ccbc3bcef9cab",
         "RaportointikantaServlet.scala"                             -> "2eaa7fc778aac5db6aaca76de5745e06",
         "RaportointikantaTableQueries.scala"                        -> "b97f971fa7a5896ec3c4d69882ca705d",
         "TOPKSAmmatillinenRaporttiRowBuilder.scala"                 -> "a9c26a13385ff576810f3ef831240437",
