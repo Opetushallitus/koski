@@ -75,7 +75,7 @@ object ExamplesPerusopetuksenLisaopetus {
     koulutustoimija = None,
     lisätiedot = Some(PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
       pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-      vammainen = Some(List(Aikajakso(date(2008, 8, 15), None)))
+      vammainen = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))))
     )),
     suoritukset = List(
       lisäopetuksenSuoritus
@@ -100,7 +100,7 @@ object ExamplesPerusopetuksenLisaopetus {
       koulutustoimija = None,
       lisätiedot = Some(PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
         pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        vammainen = Some(List(Aikajakso(date(2008, 8, 15), None))),
+        vammainen = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))))),
         erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
           alku = Some(date(2008, 8, 15)),
           loppu = Some(date(2016, 6, 4)),

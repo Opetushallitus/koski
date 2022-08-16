@@ -1,5 +1,4 @@
 {
-  "ignoreKoskiValidator" : true,
   "henkilö" : {
     "hetu" : "220109-784L",
     "etunimet" : "Kaisa",
@@ -98,10 +97,12 @@
       } ],
       "vuosiluokkiinSitoutumatonOpetus" : true,
       "vammainen" : [ {
-        "alku" : "2010-08-14"
+        "alku" : "2010-08-14",
+        "loppu" : "2010-09-01"
       } ],
       "vaikeastiVammainen" : [ {
-        "alku" : "2010-08-14"
+        "alku" : "2010-09-02",
+        "loppu" : "2016-06-04"
       } ],
       "majoitusetu" : {
         "alku" : "2008-08-15",

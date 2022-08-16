@@ -929,7 +929,8 @@ object ValpasOpiskeluoikeusExampleData {
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 8, 15), opiskeluoikeusLäsnä),
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusValmistunut)
       )
-    )
+    ),
+    lisätiedot = None
   )
 
   def alkukesästäEronnutKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
@@ -1411,6 +1412,11 @@ object ValpasOpiskeluoikeusExampleData {
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 8, 13), opiskeluoikeusLäsnä),
       )
     ),
+    lisätiedot = Some(ExamplesEsiopetus.lisätiedot.copy(
+      pidennettyOppivelvollisuus = None,
+      vammainen = None,
+      vaikeastiVammainen = None
+    ))
   )
 
   def esiopetusValmistunutOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus.copy(

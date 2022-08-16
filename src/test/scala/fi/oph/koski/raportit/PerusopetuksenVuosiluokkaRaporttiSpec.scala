@@ -351,7 +351,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     pidennettyOppivelvollisuus = true,
     joustavaPerusopetus = true,
     vuosiluokkiinSitoutumatonOpetus = true,
-    vammainen = true,
+    vammainen = false,
     vaikeastiVammainen = true,
     sisäoppilaitosmainenMajoitus = true,
     koulukoti = true,
@@ -506,8 +506,12 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     )),
     joustavaPerusopetus = Some(voimassaolevaAikajakso),
     vuosiluokkiinSitoutumatonOpetus = true,
-    vammainen = Some(List(voimassaolevaAikajakso)),
-    vaikeastiVammainen = Some(List(voimassaolevaAikajakso)),
+    vammainen = Some(List(voimassaolevaAikajakso.copy(
+      loppu = Some(voimassaolevaAikajakso.alku.plusDays(10))
+    ))),
+    vaikeastiVammainen = Some(List(voimassaolevaAikajakso.copy(
+      alku = voimassaolevaAikajakso.alku.plusDays(11)
+    ))),
     majoitusetu = Some(voimassaolevaAikajakso),
     kuljetusetu = Some(mennytAikajakso),
     oikeusMaksuttomaanAsuntolapaikkaan = Some(aikajakso),
