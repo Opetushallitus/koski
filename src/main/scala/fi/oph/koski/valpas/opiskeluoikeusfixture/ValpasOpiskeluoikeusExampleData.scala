@@ -16,6 +16,7 @@ import fi.oph.koski.schema._
 
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExamplesInternationalSchool.{grade1, grade10, grade11, grade12, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9, gradeExplorer}
+import fi.oph.koski.documentation.ExamplesPerusopetuksenLisaopetus.lisäopetuksenSuoritus
 
 object ValpasOpiskeluoikeusExampleData {
   def oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
@@ -929,6 +930,46 @@ object ValpasOpiskeluoikeusExampleData {
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusValmistunut)
       )
     )
+  )
+
+  def alkukesästäEronnutKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2020, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 31), opiskeluoikeusEronnut)
+      )
+    ),
+    suoritukset = List(lisäopetuksenSuoritus.copy(vahvistus = None)),
+  )
+
+  def alkukesästäEronneeksiKatsottuKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2020, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 31), opiskeluoikeusKatsotaanEronneeksi)
+      )
+    ),
+    suoritukset = List(lisäopetuksenSuoritus.copy(vahvistus = None)),
+  )
+
+  def alkuvuodestaEronnutKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2020, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 1, 31), opiskeluoikeusEronnut)
+      )
+    ),
+    suoritukset = List(lisäopetuksenSuoritus.copy(vahvistus = None)),
+  )
+
+  def alkuvuodestaEronneeksiKatsottuKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2020, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 1, 31), opiskeluoikeusKatsotaanEronneeksi)
+      )
+    ),
+    suoritukset = List(lisäopetuksenSuoritus.copy(vahvistus = None)),
   )
 
   def kymppiluokanOpiskeluoikeus = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(

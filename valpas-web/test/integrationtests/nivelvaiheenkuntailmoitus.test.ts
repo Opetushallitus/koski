@@ -29,13 +29,20 @@ import {
   Tekijä,
   täytäJaLähetäLomake,
 } from "./kuntailmoitus.shared"
-import { ressunLukioTableContent_syyskuu2021 } from "./nivelvaihehakutilanne.shared"
+import { jyväskylänNormaalikouluNivelvaiheTableContent, ressunLukioTableContent_syyskuu2021 } from "./nivelvaihehakutilanne.shared"
 import { jyväskylänNormaalikouluOid, ressunLukioOid } from "./oids"
 
 const ressunLukioHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",
   {
     organisaatioOid: ressunLukioOid,
+  }
+)
+
+const jyväskylänNormaalikouluHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
+  "/virkailija",
+  {
+    organisaatioOid: jyväskylänNormaalikouluOid,
   }
 )
 
@@ -74,6 +81,16 @@ const teeOppijat = (tekijä: Tekijä): NonEmptyArray<Oppija> => [
 describe("Nivelvaiheen näkymästä kuntailmoituksen tekeminen", () => {
   it("happy path nivelvaiheen hakeutumisen valvojana", async () => {
     await teeKuntailmoitusHakutilannenäkymästä("valpas-monta", opo)
+  })
+
+  it("Näytä aikavälillä 1.4.-31.7. eronneet tai eronneiksi katsotut nivelvaiheen oppijat", async () => {
+    await loginAs(jyväskylänNormaalikouluHakutilannePath, "valpas-monta")
+    await urlIsEventually(jyväskylänNormaalikouluHakutilannePath)
+    await dataTableEventuallyEquals(
+      ".hakutilanne",
+      jyväskylänNormaalikouluNivelvaiheTableContent,
+      "|"
+    )
   })
 })
 
