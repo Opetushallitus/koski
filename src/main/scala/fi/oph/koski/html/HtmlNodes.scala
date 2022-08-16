@@ -25,9 +25,8 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSu
     val bodyClasses = scriptBundleName.replace("koski-", "").replace(".js", "") + "-page"
     <html lang={lang}>
       <head>
-        {commonHead(responsive, allowIndexing, nonce) ++ raamit.script(nonce) ++ piwikTrackingScriptLoader(nonce, piwikHttpStatusCode)}
+        {commonHead(responsive, allowIndexing, nonce) ++ windowNonce(nonce) ++ raamit.script(nonce) ++ piwikTrackingScriptLoader(nonce, piwikHttpStatusCode)}
         <script nonce={nonce}>
-          {setWindowVar("nonce", nonce)}
           {setWindowVar("ePerusteetBaseUrl", application.config.getString("eperusteet.baseUrl"))}
         </script>
       </head>
@@ -47,6 +46,12 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with PiwikNodes with LanguageSu
         <!-- oppija-raamit footer is inserted here -->
       </body>
     </html>
+  }
+
+  def windowNonce(nonce: String): NodeSeq = {
+    <script nonce={nonce}>
+      {setWindowVar("nonce", nonce)}
+    </script>
   }
 
   def commonHead(responsive: Boolean = false, allowIndexing: Boolean = false, nonce: String): NodeSeq = {
