@@ -599,39 +599,6 @@ class KoskiValidator(
       }).reverse
     }
 
-    // Yhdistää päällekkäiset aikajaksot sekä sellaiset jaksot, jotka alkavat seuraavana päivänä edellisen jakson päättymisestä
-    // Palauttaa annetuista aikajaksoista yhdistetyt pisimmät mahdolliset yhtenäiset aikajaksot
-    def yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(
-      kaikkiJaksot: List[MahdollisestiAlkupäivällinenJakso]
-    ): List[MahdollisestiAlkupäivällinenJakso] = {
-
-      def asettuvatPeräkkäin(
-        edellinen: MahdollisestiAlkupäivällinenJakso,
-        seuraava: MahdollisestiAlkupäivällinenJakso
-      ): Boolean = {
-        edellinen.contains(seuraava.alku.getOrElse(LocalDate.MIN)) ||
-          edellinen.contains(seuraava.alku.map(_.minusDays(1)).getOrElse(LocalDate.MIN))
-      }
-
-      def järjestäAikajärjestykseen(
-        jaksot: List[MahdollisestiAlkupäivällinenJakso]
-      ): List[MahdollisestiAlkupäivällinenJakso] = {
-        jaksot.sortBy(r => (r.alku.getOrElse(LocalDate.MIN), r.loppu.getOrElse(LocalDate.MAX)))
-      }
-
-      järjestäAikajärjestykseen(kaikkiJaksot).foldLeft(List.empty[MahdollisestiAlkupäivällinenJakso])((acc, seuraava) => {
-        acc match {
-          case Nil => List(seuraava)
-          case edellinen :: js if asettuvatPeräkkäin(edellinen, seuraava) =>
-            new MahdollisestiAlkupäivällinenJakso {
-              val alku = edellinen.alku
-              val loppu = List(edellinen.loppu, seuraava.loppu).max(localDateOptionOrdering)
-            } :: js
-          case _ => seuraava :: acc
-        }
-      }).reverse
-    }
-
     lisätiedot match {
       case Some(lt: PidennettyOppivelvollisuus) if lt.pidennettyOppivelvollisuus.isDefined =>
         val kaikkiJaksot = lt.vammainen.getOrElse(List.empty) ++ lt.vaikeastiVammainen.getOrElse(List.empty)
@@ -711,6 +678,54 @@ class KoskiValidator(
           )
         )
       case _ => HttpStatus.ok
+    }
+  }
+
+  // Yhdistää päällekkäiset aikajaksot sekä sellaiset jaksot, jotka alkavat seuraavana päivänä edellisen jakson päättymisestä
+  // Palauttaa annetuista aikajaksoista yhdistetyt pisimmät mahdolliset yhtenäiset aikajaksot
+  def yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(
+    kaikkiJaksot: List[MahdollisestiAlkupäivällinenJakso]
+  ): List[SuljettuJakso] = {
+    SuljettuJakso.yhdistäPäällekäisetJaPeräkkäiset(kaikkiJaksot.map(SuljettuJakso.apply))
+  }
+
+  case class SuljettuJakso(
+    alku: LocalDate,
+    loppu: LocalDate
+  ) extends Alkupäivällinen with DateContaining {
+    def contains(d: LocalDate): Boolean = !d.isBefore(alku) && (!d.isAfter(loppu))
+  }
+
+  object SuljettuJakso {
+    def apply(j: MahdollisestiAlkupäivällinenJakso): SuljettuJakso = SuljettuJakso(
+      alku = j.alku.getOrElse(LocalDate.MIN),
+      loppu = j.loppu.getOrElse(LocalDate.MAX)
+    )
+
+    def yhdistäPäällekäisetJaPeräkkäiset(
+      kaikkiJaksot: List[SuljettuJakso]
+    ): List[SuljettuJakso] = {
+      järjestäAikajärjestykseen(kaikkiJaksot).foldLeft(List.empty[SuljettuJakso])((acc, seuraava) => {
+        acc match {
+          case Nil => List(seuraava)
+          case edellinen :: js if asettuvatPeräkkäin(edellinen, seuraava) =>
+            SuljettuJakso(
+              alku = edellinen.alku,
+              loppu = List(edellinen.loppu, seuraava.loppu).max(localDateOrdering)
+            ) :: js
+          case _ => seuraava :: acc
+        }
+      }).reverse
+    }
+
+    private def järjestäAikajärjestykseen(
+      jaksot: List[SuljettuJakso]
+    ): List[SuljettuJakso] = {
+      jaksot.sortBy(r => (r.alku, r.loppu))
+    }
+
+    private def asettuvatPeräkkäin(edellinen: SuljettuJakso, seuraava: SuljettuJakso): Boolean = {
+      edellinen.contains(seuraava.alku) || edellinen.contains(seuraava.alku.minusDays(1))
     }
   }
 
