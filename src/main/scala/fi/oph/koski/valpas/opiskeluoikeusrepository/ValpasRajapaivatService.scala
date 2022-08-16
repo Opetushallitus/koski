@@ -108,13 +108,7 @@ abstract class ValpasRajapäivätService(config: Config) extends Logging {
   }
 
   def nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAikaväli: (LocalDate, LocalDate) = {
-    val väli = List(
-      ValpasRajapäivätService.NivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAikajaksonAlkuPath,
-      ValpasRajapäivätService.NivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAikajaksonLoppuPath
-    )
-      .map(config.getString)
-      .map(LocalDate.parse)
-      .map(_.withYear(tarkastelupäivä.getYear))
+    val väli = List(keväänValmistumisjaksoAlku, keväänValmistumisjaksoLoppu).map(_.withYear(tarkastelupäivä.getYear))
     (väli(0), väli(1))
   }
 
@@ -136,10 +130,6 @@ object ValpasRajapäivätService {
   val IlmoitustenEnsimmäinenTallennuspäiväPath = "valpas.rajapäivät.ilmoitustenEnsimmäinenTallennuspäivä"
   val KeväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäiväPath =
     "valpas.rajapäivät.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä"
-  val NivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAikajaksonAlkuPath =
-    "valpas.rajapäivät.nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnut.aikajaksonAlku"
-  val NivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAikajaksonLoppuPath =
-    "valpas.rajapäivät.nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnut.aikajaksonLoppu"
 
   def keväänValmistumisjaksoAlkuPath(vuosi: Int) = s"valpas.rajapäivät.${vuosi}.keväänValmistumisjaksoAlku"
   def keväänValmistumisjaksoLoppuPath(vuosi: Int) = s"valpas.rajapäivät.${vuosi}.keväänValmistumisjaksoLoppu"
