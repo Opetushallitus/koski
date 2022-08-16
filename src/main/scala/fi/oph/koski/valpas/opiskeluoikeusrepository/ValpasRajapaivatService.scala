@@ -54,7 +54,10 @@ abstract class ValpasRajapäivätService(config: Config) extends Logging {
     LocalDate.parse(config.getString(ValpasRajapäivätService.LakiVoimassaPeruskoulustaValmistuneillaAlkuPath))
 
   def keväänValmistumisjaksoAlku: LocalDate =
-    keväänValmistumisjaksoLoppu.minusDays(keväänValmistumisjaksoPituusPäivinä)
+    konfiguraatioOletuksenaEdellinenVuosi(
+      ValpasRajapäivätService.keväänValmistumisjaksoAlkuPath,
+      tarkastelupäivä.getYear
+    )
 
   def keväänValmistumisjaksoLoppu: LocalDate =
     konfiguraatioOletuksenaEdellinenVuosi(
@@ -115,9 +118,6 @@ abstract class ValpasRajapäivätService(config: Config) extends Logging {
     (väli(0), väli(1))
   }
 
-  private val keväänValmistumisjaksoPituusPäivinä: Long =
-    config.getLong(ValpasRajapäivätService.KeväänValmistumisjaksoPituusPäivinäPath)
-
   private val tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinä: Long =
     config.getLong(ValpasRajapäivätService.tulevaisuuteenMerkitynPerusopetuksenSuorituksenAikaikkunaPäivinäPath)
 
@@ -133,7 +133,6 @@ object ValpasRajapäivätService {
   val OppivelvollisuusLoppuuIkaPath = "valpas.rajapäivät.oppivelvollisuusLoppuuIkä"
   val MaksuttomuusLoppuuIkaPath = "valpas.rajapäivät.maksuttomuusLoppuuIkä"
   val LakiVoimassaPeruskoulustaValmistuneillaAlkuPath = "valpas.rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku"
-  val KeväänValmistumisjaksoPituusPäivinäPath = "valpas.rajapäivät.keväänValmistumisjaksoPituusPäivinä"
   val IlmoitustenEnsimmäinenTallennuspäiväPath = "valpas.rajapäivät.ilmoitustenEnsimmäinenTallennuspäivä"
   val KeväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäiväPath =
     "valpas.rajapäivät.keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä"
@@ -142,6 +141,7 @@ object ValpasRajapäivätService {
   val NivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnutAikajaksonLoppuPath =
     "valpas.rajapäivät.nivelvaiheenOppilaitokselleHakeutumisvalvottavaJosOppijaEronnut.aikajaksonLoppu"
 
+  def keväänValmistumisjaksoAlkuPath(vuosi: Int) = s"valpas.rajapäivät.${vuosi}.keväänValmistumisjaksoAlku"
   def keväänValmistumisjaksoLoppuPath(vuosi: Int) = s"valpas.rajapäivät.${vuosi}.keväänValmistumisjaksoLoppu"
 
   def keväänValmistumisjaksollaValmistuneidenOppivelvollisuudenSuorittamisenTarkistuspäiväPath(vuosi: Int) =
