@@ -1,10 +1,10 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä}
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.ExamplesPerusopetus.erityisenTuenPäätös
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.kulosaarenAlaAste
 import fi.oph.koski.documentation.{ExamplesEsiopetus, OsaAikainenErityisopetusExampleData}
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
 
 import java.time.LocalDate
@@ -118,7 +118,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       putOpiskeluoikeus(oo) {
         verifyResponseStatus(
           expectedStatus = 400,
-          KoskiErrorCategory.badRequest.validation.date.vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella()
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa")
         )
       }
     }
@@ -136,7 +136,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       putOpiskeluoikeus(oo) {
         verifyResponseStatus(
           expectedStatus = 400,
-          KoskiErrorCategory.badRequest.validation.date.vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella()
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuusjaksoja ei voi olla ilman vastaavaa pidennetyn oppivelvollisuuden jaksoa")
         )
       }
     }
@@ -171,6 +171,27 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       }
     }
 
+    "Validointi ei onnistu, kun opiskeluoikeus sisältää vammaisuusjakson, joka on kokonaan pidennetyn oppivelvollisuuden ulkopuolella" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(alku.plusDays(4), None)),
+            vammainen = Some(List(
+              Aikajakso(alku, Some(alku.plusDays(3))),
+              Aikajakso(alku.plusDays(4), None)
+            )),
+            vaikeastiVammainen = None
+          )
+        )
+      )
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(
+          expectedStatus = 400,
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Jokin vammaisuusjaksoista on kokonaan pidennetyn oppivelvollisuuden ulkopuolella")
+        )
+      }
+    }
+
     "Validointi ei onnistu, kun opiskeluoikeus sisältää pidennetyn oppivelvollisuuden jakson joka alkaa ennen vammaisuusjaksoa" in {
       val oo = defaultOpiskeluoikeus.copy(
         lisätiedot = Some(
@@ -184,7 +205,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       putOpiskeluoikeus(oo) {
         verifyResponseStatus(
           expectedStatus = 400,
-          KoskiErrorCategory.badRequest.validation.date.vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella()
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa")
         )
       }
     }
@@ -195,24 +216,42 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku, Some(alku.plusDays(2)))),
             vammainen = Some(List(Aikajakso(alku, Some(alku.plusDays(1))))),
-            vaikeastiVammainen = Some(List(Aikajakso(alku, Some(alku.plusDays(1)))))
+            vaikeastiVammainen = None
+          )
+        )
+      )
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, HttpStatus.append(
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa"),
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Viimeisimmän vammaisuusjakson päättymispäivä ei ole sama kuin pidennetyn oppivelvollisuuden määritelty päättymispäivä")
+        ))
+      }
+    }
+
+    "Validointi ei onnistu, kun vaikeasti vammaisuuden ja vammaisuuden jaksoja on samoina päivinä" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(alku, Some(alku.plusDays(10)))),
+            vammainen = Some(List(Aikajakso(alku, Some(alku.plusDays(5))))),
+            vaikeastiVammainen = Some(List(Aikajakso(alku.plusDays(5), Some(alku.plusDays(10)))))
           )
         )
       )
       putOpiskeluoikeus(oo) {
         verifyResponseStatus(
           expectedStatus = 400,
-          KoskiErrorCategory.badRequest.validation.date.vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella()
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden ja muun kuin vaikeasti vammaisuuden aikajaksot eivät voi olla voimassa samana päivänä")
         )
       }
     }
 
-    "Validointi onnistuu, kun opiskeluoikeus sisältää rajatun pidennetyn oppivelvollisuuden jakson joka on sama kuin vammaisuuden jaksot" in {
+    "Validointi onnistuu, kun opiskeluoikeus sisältää rajatun pidennetyn oppivelvollisuuden jakson joka on sama kuin vammaisuuden jakso" in {
       val oo = defaultOpiskeluoikeus.copy(
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku, Some(alku.plusDays(1)))),
-            vammainen = Some(List(Aikajakso(alku, Some(alku.plusDays(1))))),
+            vammainen = None,
             vaikeastiVammainen = Some(List(Aikajakso(alku, Some(alku.plusDays(1)))))
           )
         )
@@ -222,25 +261,29 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       }
     }
 
-    "Validointi onnistuu, kun opiskeluoikeus sisältää rajatun pidennetyn oppivelvollisuuden jakson joka loppuu ennen rajattua vammaisuusjaksoa" in {
+    "Validointi ei onnistu, kun opiskeluoikeus sisältää rajatun pidennetyn oppivelvollisuuden jakson joka loppuu ennen rajattua vammaisuusjaksoa" in {
       val oo = defaultOpiskeluoikeus.copy(
         lisätiedot = Some(
           ExamplesEsiopetus.lisätiedot.copy(
             pidennettyOppivelvollisuus = Some(Aikajakso(alku, Some(alku.plusDays(1)))),
-            vammainen = Some(List(Aikajakso(alku, Some(alku.plusDays(1))))),
-            vaikeastiVammainen = Some(List(Aikajakso(alku, Some(alku.plusDays(2)))))
+            vammainen = None,
+            vaikeastiVammainen = Some(List(Aikajakso(alku.plusDays(2), Some(alku.plusDays(3)))))
           )
         )
       )
       putOpiskeluoikeus(oo) {
-        verifyResponseStatusOk()
+        verifyResponseStatus(400, HttpStatus.fold(
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa"),
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Jokin vammaisuusjaksoista on kokonaan pidennetyn oppivelvollisuuden ulkopuolella"),
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Viimeisimmän vammaisuusjakson päättymispäivä ei ole sama kuin pidennetyn oppivelvollisuuden määritelty päättymispäivä")
+        ))
       }
     }
 
-    "Validointi onnistuu, kun opiskeluoikeus sisältää toisiinsa lomittuvat vammaisuuden jaksot" in {
+    "Validointi onnistuu, kun opiskeluoikeus sisältää peräkkäisiä eri vammaisuusjaksoja" in {
       val alkujakso = Aikajakso(alku, Some(alku.plusDays(2)))
       val välijakso = Aikajakso(alku.plusDays(3), Some(alku.plusDays(4)))
-      val loppujakso = Aikajakso(alku.plusDays(4), Some(alku.plusDays(6)))
+      val loppujakso = Aikajakso(alku.plusDays(5), Some(alku.plusDays(6)))
 
       val oo = defaultOpiskeluoikeus.copy(
         lisätiedot = Some(
@@ -263,7 +306,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
     "Validointi ei onnistu, kun opiskeluoikeus sisältää toisiinsa lomittumattomat vammaisuuden jaksot" in {
       val alkujakso = Aikajakso(alku, Some(alku.plusDays(1)))
       val välijakso = Aikajakso(alku.plusDays(3), Some(alku.plusDays(4)))
-      val loppujakso = Aikajakso(alku.plusDays(4), Some(alku.plusDays(6)))
+      val loppujakso = Aikajakso(alku.plusDays(5), Some(alku.plusDays(6)))
 
       val oo = defaultOpiskeluoikeus.copy(
         lisätiedot = Some(
@@ -281,14 +324,86 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       putOpiskeluoikeus(oo) {
         verifyResponseStatus(
           expectedStatus = 400,
-          KoskiErrorCategory.badRequest.validation.date.vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella()
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa")
         )
       }
     }
 
-    "Validointi onnistuu, kun opiskeluoikeus sisältää osittain päällekäiset vammaisuuden jaksot" in {
+    "Validointi onnistuu, kun samantyyppisiä vammaisuusjaksoja on päällekäin" in {
       val jakso1 = Aikajakso(alku, None)
-      val jakso2 = Aikajakso(alku.plusDays(5), Some(alku.plusDays(8)))
+      val jakso2 = Aikajakso(alku.plusDays(5), Some(alku.plusDays(12)))
+
+      val oo = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(alku.plusDays(10), Some(alku.plusDays(12)))),
+            vammainen = Some(List(
+              jakso1,
+              jakso2
+            )),
+            vaikeastiVammainen = None
+          )
+        )
+      )
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Validointi ei onnistu, kun samantyyppisiä vammaisuusjaksoja on päällekäin, mutta vain aiemmin alkanut jakso jatkuu avoimuuden vuoksi pidennetyn oppivelvollisuuden loppuun" in {
+      val jakso1 = Aikajakso(alku, None)
+      val jakso2 = Aikajakso(alku.plusDays(5), Some(alku.plusDays(10)))
+
+      val oo = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(alku.plusDays(10), Some(alku.plusDays(12)))),
+            vammainen = Some(List(
+              jakso1,
+              jakso2
+            )),
+            vaikeastiVammainen = None
+          )
+        )
+      )
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(
+          expectedStatus = 400, HttpStatus.append(
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa"),
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Viimeisimmän vammaisuusjakson päättymispäivä ei ole sama kuin pidennetyn oppivelvollisuuden määritelty päättymispäivä")
+          )
+        )
+      }
+    }
+
+    "Validointi ei onnistu, jos viimeisenä alkaneelta vammaisuusjaksolta puuttuu päättymispäivä, kun pidennetyllä oppivelvollisuudella on päättymispäivä" in {
+      val jakso1 = Aikajakso(alku, Some(alku.plusDays(12)))
+      val jakso2 = Aikajakso(alku.plusDays(5), None)
+
+      val oo = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(alku.plusDays(10), Some(alku.plusDays(12)))),
+            vammainen = Some(List(
+              jakso1,
+              jakso2
+            )),
+            vaikeastiVammainen = None
+          )
+        )
+      )
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(
+          expectedStatus = 400,
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Viimeisimmän vammaisuusjakson päättymispäivä ei ole sama kuin pidennetyn oppivelvollisuuden määritelty päättymispäivä")
+        )
+      }
+    }
+
+
+    "Validointi ei onnistu, kun opiskeluoikeus sisältää osittain päällekäiset eri vammaisuuden jaksot" in {
+      val jakso1 = Aikajakso(alku, None)
+      val jakso2 = Aikajakso(alku.plusDays(5), Some(alku.plusDays(12)))
 
       val oo = defaultOpiskeluoikeus.copy(
         lisätiedot = Some(
@@ -304,11 +419,14 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         )
       )
       putOpiskeluoikeus(oo) {
-        verifyResponseStatusOk()
+        verifyResponseStatus(
+          expectedStatus = 400,
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden ja muun kuin vaikeasti vammaisuuden aikajaksot eivät voi olla voimassa samana päivänä")
+        )
       }
     }
 
-    "Validointi onnistuu, vaikka pidennetyn oppivelvollisuuden jakso alkaa ennen opiskeluoikeuden ja vammaisuusjakson yhteistä alkupäivää" in {
+    "Validointi ei onnistu, jos pidennetyn oppivelvollisuuden jakso alkaa ennen opiskeluoikeuden ja vammaisuusjakson yhteistä alkupäivää" in {
       val oo = defaultOpiskeluoikeus.copy(
         tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
           opiskeluoikeusjaksot = List(
@@ -323,11 +441,42 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         )
       )
       putOpiskeluoikeus(oo) {
-        verifyResponseStatusOk()
+        verifyResponseStatus(
+          expectedStatus = 400,
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa")
+        )
       }
     }
 
-    "Validointi onnistuu, vaikka pidennetyn oppivelvollisuuden jakso loppuu jo ennen opiskeluoikeuden alkamista" in {
+    "Validointi ei onnistu, jos opiskeluoikeus on päättynyt ja samalla alkupäivämäärällä on useita vammaisuusjaksoja, joista jonkin loppu on avoin" in {
+      val loppu = alku.plusMonths(13)
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(alku, opiskeluoikeusLäsnä),
+            NuortenPerusopetuksenOpiskeluoikeusjakso(loppu, opiskeluoikeusValmistunut)
+          )),
+        lisätiedot = Some(
+          ExamplesEsiopetus.lisätiedot.copy(
+            pidennettyOppivelvollisuus = Some(Aikajakso(alku, Some(loppu))),
+            vammainen = Some(List(
+              Aikajakso(alku, Some(alku.plusDays(10))),
+              Aikajakso(alku.plusDays(11), None),
+              Aikajakso(alku.plusDays(11), Some(loppu)),
+            )),
+            vaikeastiVammainen = None
+          )
+        )
+      )
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(
+          expectedStatus = 400,
+          KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Viimeisimmän vammaisuusjakson päättymispäivä ei ole sama kuin pidennetyn oppivelvollisuuden määritelty päättymispäivä")
+        )
+      }
+    }
+
+    "Validointi ei onnistu, jos pidennetyn oppivelvollisuuden jakso loppuu jo ennen opiskeluoikeuden alkamista" in {
       val oo = defaultOpiskeluoikeus.copy(
         tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
           opiskeluoikeusjaksot = List(
@@ -343,8 +492,15 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         )
       )
       putOpiskeluoikeus(oo) {
-        verifyResponseStatusOk()
+        verifyResponseStatus(
+          expectedStatus = 400,
+          KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus("Pidennetty oppivelvollisuusjakso ei voi loppua ennen opiskeluoikeuden alkua")
+        )
       }
+    }
+
+    "Validointi ei onnistu, jos pidennetty oppivelvollisuus sisältää päiviä, joina ei ole erityisen tuen jaksoa" in {
+      // TODO. Pitää lisätä myös erityisen tuen päätökset kaikkiin ylläoleviin testeihin.
     }
   }
 

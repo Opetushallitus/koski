@@ -941,6 +941,7 @@ object ValpasOpiskeluoikeusExampleData {
       )
     ),
     suoritukset = List(lisäopetuksenSuoritus.copy(vahvistus = None)),
+    lisätiedot = None
   )
 
   def alkukesästäEronneeksiKatsottuKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
@@ -951,6 +952,7 @@ object ValpasOpiskeluoikeusExampleData {
       )
     ),
     suoritukset = List(lisäopetuksenSuoritus.copy(vahvistus = None)),
+    lisätiedot = None
   )
 
   def alkuvuodestaEronnutKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
@@ -961,6 +963,7 @@ object ValpasOpiskeluoikeusExampleData {
       )
     ),
     suoritukset = List(lisäopetuksenSuoritus.copy(vahvistus = None)),
+    lisätiedot = None
   )
 
   def alkuvuodestaEronneeksiKatsottuKymppiluokkalainen = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
@@ -971,6 +974,7 @@ object ValpasOpiskeluoikeusExampleData {
       )
     ),
     suoritukset = List(lisäopetuksenSuoritus.copy(vahvistus = None)),
+    lisätiedot = None
   )
 
   def kymppiluokanOpiskeluoikeus = ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
