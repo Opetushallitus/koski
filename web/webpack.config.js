@@ -72,22 +72,34 @@ module.exports = {
       extensions: ['js', 'jsx'],
       failOnWarning: true
     }),
-    new CopyWebpackPlugin(
-      [
-        {from: 'static'},
-        {from: 'test', to: 'test'},
-        {from: 'node_modules/chai/chai.js', to: 'test/lib'},
-        {from: 'node_modules/jquery/dist/jquery.js', to: 'test/lib'},
-        {from: 'node_modules/mocha/mocha.js', to: 'test/lib'},
-        {from: 'node_modules/mocha/mocha.css', to: 'test/css'},
-        {from: 'node_modules/lodash/lodash.js', to: 'test/lib'},
-        {from: 'node_modules/q/q.js', to: 'test/lib'},
-        {from: 'node_modules/html2canvas/dist/html2canvas.js', to: 'test/lib'},
-        {from: 'WEB-INF', to: '../WEB-INF'},
-        {from: 'node_modules/codemirror/lib/codemirror.js', to: 'js/codemirror'},
-        {from: 'node_modules/codemirror/mode/javascript/javascript.js', to: 'js/codemirror'},
-        {from: 'node_modules/codemirror/lib/codemirror.css', to: 'css/codemirror'}
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'static' },
+        { from: 'test', to: 'test' },
+        { from: 'node_modules/chai/chai.js', to: 'test/lib' },
+        { from: 'node_modules/jquery/dist/jquery.js', to: 'test/lib' },
+        { from: 'node_modules/mocha/mocha.js', to: 'test/lib' },
+        { from: 'node_modules/mocha/mocha.css', to: 'test/css' },
+        { from: 'node_modules/lodash/lodash.js', to: 'test/lib' },
+        { from: 'node_modules/q/q.js', to: 'test/lib' },
+        {
+          from: 'node_modules/html2canvas/dist/html2canvas.js',
+          to: 'test/lib'
+        },
+        { from: 'WEB-INF', to: '../WEB-INF' },
+        {
+          from: 'node_modules/codemirror/lib/codemirror.js',
+          to: 'js/codemirror'
+        },
+        {
+          from: 'node_modules/codemirror/mode/javascript/javascript.js',
+          to: 'js/codemirror'
+        },
+        {
+          from: 'node_modules/codemirror/lib/codemirror.css',
+          to: 'css/codemirror'
+        }
       ]
-    )
+    })
   ]
 }
