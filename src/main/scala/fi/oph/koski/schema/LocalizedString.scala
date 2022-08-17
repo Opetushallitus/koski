@@ -7,6 +7,10 @@ trait BlankableLocalizedString {
   def valueList: List[(String, String)]
   lazy val values: Map[String, String] = Map(valueList : _*)
   def get(lang: String) = values.get(lang).orElse(values.get("fi")).orElse(values.values.headOption).getOrElse(LocalizedString.missingString)
+  /**
+   * Returns the translation, if it exists in the values-map. If the translation cannot be found for the given language, no fallbacks are searched and None is returned.
+   */
+  def getOptional(lang: String) = values.get(lang)
   def concat(x: LocalizedString) = {
     val (fi :: sv :: en :: Nil) = LocalizedString.languages.map { lang => get(lang) + x.get(lang) }
     Finnish(fi, Some(sv), Some(en))

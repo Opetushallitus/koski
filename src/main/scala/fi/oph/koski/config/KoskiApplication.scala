@@ -21,10 +21,10 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.{OrganisaatioRepository, OrganisaatioService}
-import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotSyncRepository}
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotManualSyncRepository, PerustiedotSyncRepository}
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
-import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
+import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotManualSyncScheduler, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.{CasOppijaCreationService, CasService, KoskiSessionRepository}
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
@@ -125,10 +125,12 @@ class KoskiApplication(
     config
   )
   lazy val elasticSearch = ElasticSearch(config)
-  lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(elasticSearch, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
+  lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(elasticSearch, opiskeluoikeusQueryRepository, perustiedotSyncRepository, perustiedotManualSyncRepository)
   lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(perustiedotIndexer, opiskeluoikeusQueryRepository)
   lazy val perustiedotSyncRepository = new PerustiedotSyncRepository(masterDatabase.db)
+  lazy val perustiedotManualSyncRepository = new PerustiedotManualSyncRepository(masterDatabase.db, henkilöCache)
   lazy val perustiedotSyncScheduler = new PerustiedotSyncScheduler(this)
+  lazy val perustiedotManualSyncScheduler = new PerustiedotManualSyncScheduler(this)
   lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, historyRepository, globaaliValidator, config, hetu)
   lazy val oppijaFacadeV2 = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepositoryV2, historyRepository, globaaliValidatorV2, config, hetu)
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)

@@ -37,7 +37,7 @@ object InternationalSchoolExampleData {
     suorituskieli = ExampleData.englanti
   )
 
-  def mypOppiaineenSuoritus(oppiaine: MYPOppiaine, arviointi: Option[NumeerinenInternationalSchoolOppiaineenArviointi] = None): MYPOppiaineenSuoritus = MYPOppiaineenSuoritus(
+  def mypOppiaineenSuoritus(oppiaine: MYPOppiaine, arviointi: Option[MYPArviointi] = None): MYPOppiaineenSuoritus = MYPOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     arviointi = arviointi.map(a => List(a))
   )

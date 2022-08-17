@@ -195,7 +195,7 @@ case class ISHDiplomaLuokkaAste(
 
 case class MYPOppiaineenSuoritus(
   koulutusmoduuli: MYPOppiaine,
-  arviointi: Option[List[NumeerinenInternationalSchoolOppiaineenArviointi]] = None,
+  arviointi: Option[List[MYPArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("internationalschoolmypoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "internationalschoolmypoppiaine", koodistoUri = "suorituksentyyppi")
@@ -242,6 +242,7 @@ trait MYPOppiaine extends InternationalSchoolOppiaine
 trait PYPOppiaine extends InternationalSchoolOppiaine
 
 trait DiplomaArviointi extends KoodistostaLöytyväArviointi
+trait MYPArviointi extends KoodistostaLöytyväArviointi
 trait InternationalSchoolArviointi extends KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
   def päivä: Option[LocalDate]
@@ -283,7 +284,7 @@ trait Predicted {
 case class NumeerinenInternationalSchoolOppiaineenArviointi(
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate] = None
-) extends InternationalSchoolNumeerinenOppiaineenArviointi
+) extends InternationalSchoolNumeerinenOppiaineenArviointi with MYPArviointi
 
 case class InternationalSchoolIBOppiaineenArviointi(
   predicted: Boolean = false,
@@ -297,7 +298,7 @@ case class PassFailOppiaineenArviointi(
   @KoodistoUri("arviointiasteikkointernationalschool")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate] = None
-) extends InternationalSchoolArviointi with DiplomaArviointi
+) extends InternationalSchoolArviointi with DiplomaArviointi with MYPArviointi
 
 case class InternationalSchoolCoreRequirementsArviointi(
   predicted: Boolean = false,

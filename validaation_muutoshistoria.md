@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 17.8.2022
+- International school -opiskeluoikeuden MYP-suorituksissa sallitaan nyt pass/fail -arviointi
+
 ## 15.8.2022
 - Muutettu ammatillisen koulutuksen validaatiota väliaikaisesti siten, että perusteen voimassaolopäiväystä ei tarkasteta lisättäessä ammatillisen koulutuksen opiskeluoikeuksia järjestelmään.
 
