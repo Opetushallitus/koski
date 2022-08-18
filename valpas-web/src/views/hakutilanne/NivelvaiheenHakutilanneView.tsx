@@ -32,6 +32,10 @@ import { HakutilanneNavigation } from "./HakutilanneNavigation"
 import { NivelvaiheenHakutilanneTable } from "./NivelvaiheenHakutilanneTable"
 import { useOppijaSelect } from "./useOppijaSelect"
 import { useNivelvaiheenOppijatData } from "./useOppijatData"
+import "./HakutilanneView.less"
+import bem from "bem-ts"
+
+const b = bem("hakutilanneview")
 
 const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_HAKEUTUMINEN"
@@ -103,7 +107,7 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
     const { setSelectedOppijaOids, selectedOppijat } = useOppijaSelect(data)
 
     return (
-      <Page>
+      <Page className={b("view")}>
         <OrganisaatioValitsin
           organisaatioTyyppi={organisaatioTyyppi}
           organisaatioHierarkia={organisaatiot}
