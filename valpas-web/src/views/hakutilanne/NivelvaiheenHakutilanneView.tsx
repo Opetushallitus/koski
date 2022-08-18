@@ -1,3 +1,4 @@
+import bem from "bem-ts"
 import React, { useCallback, useMemo, useState } from "react"
 import { useHistory } from "react-router-dom"
 import {
@@ -29,11 +30,10 @@ import { ErrorView } from "../ErrorView"
 import { OrganisaatioAutoRedirect } from "../OrganisaatioAutoRedirect"
 import { HakutilanneDrawer } from "./HakutilanneDrawer"
 import { HakutilanneNavigation } from "./HakutilanneNavigation"
+import "./HakutilanneView.less"
 import { NivelvaiheenHakutilanneTable } from "./NivelvaiheenHakutilanneTable"
 import { useOppijaSelect } from "./useOppijaSelect"
 import { useNivelvaiheenOppijatData } from "./useOppijatData"
-import "./HakutilanneView.less"
-import bem from "bem-ts"
 
 const b = bem("hakutilanneview")
 
