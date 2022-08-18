@@ -34,16 +34,31 @@ class OpiskeluoikeusChangeValidator(organisaatioRepository: OrganisaatioReposito
   }
 
   private def validateOppilaitoksenMuutos(vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+
+    // Tässä listassa on väliaikaisesti sallittujen oppilaitosvaihdosten lähde- ja kohde -OID:t. Tuplena.
+    // Lähde-OID --> kohde-OID
+    val sallitutOppilaitosVaihdokset = List(
+      (Some("1.2.246.562.10.63813695861"), Some("1.2.246.562.10.42923230215"))
+    )
+
     val uusiOppilaitos = uusiOpiskeluoikeus.oppilaitos.map(_.oid)
     val vanhaOppilaitos = vanhaOpiskeluoikeus.oppilaitos.map(_.oid)
+
+    val oppilaitosPysynytSamana = uusiOppilaitos == vanhaOppilaitos
+
     val koulutustoimijaPysynytSamana = uusiOpiskeluoikeus.koulutustoimija.map(_.oid).exists(uusiOid => vanhaOpiskeluoikeus.koulutustoimija.map(_.oid).contains(uusiOid))
     val vanhaAktiivinen = vanhaOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
     val uusiAktiivinen = uusiOppilaitos.flatMap(oid => organisaatioRepository.getOrganisaatioHierarkia(oid).map(_.aktiivinen)).getOrElse(false)
     val uusiOrganisaatioLöytyyOrganisaatioHistoriasta = vanhaOpiskeluoikeus.organisaatiohistoria.exists(_.exists(_.oppilaitos.exists(x => uusiOppilaitos.contains(x.oid))))
     val oppilaitoksenVaihtoSallittu = uusiOrganisaatioLöytyyOrganisaatioHistoriasta || (!vanhaAktiivinen && uusiAktiivinen)
 
-    if (koulutustoimijaPysynytSamana && uusiOppilaitos != vanhaOppilaitos) {
-      HttpStatus.validate(oppilaitoksenVaihtoSallittu) { KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto()}
+    val oppilaitoksenVaihtoSallittuPoikkeustilanteessa = sallitutOppilaitosVaihdokset.exists(siirtymä => siirtymä._1 == vanhaOppilaitos && siirtymä._2 == uusiOppilaitos) && (uusiOrganisaatioLöytyyOrganisaatioHistoriasta || uusiAktiivinen)
+
+    if (koulutustoimijaPysynytSamana && !oppilaitosPysynytSamana) {
+      // Poikkeustilanteissa sallitaan siirto, jos vanha oppilaitos ei ole lakkautettu
+      HttpStatus.validate(oppilaitoksenVaihtoSallittuPoikkeustilanteessa || oppilaitoksenVaihtoSallittu) {
+        KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto()
+      }
     } else {
       HttpStatus.ok
     }

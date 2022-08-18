@@ -12,6 +12,7 @@ import fi.oph.koski.schema.{LocalizedString, Oppilaitos}
 object MockOrganisaatiot {
   val helsinginKaupunki = "1.2.246.562.10.346830761110"
   val tornionKaupunki = "1.2.246.562.10.25412665926"
+  val kuopionKaupunki = "1.2.246.562.10.59286753021"
   val pyhtäänKunta = "1.2.246.562.10.69417312936"
   val helsinginYliopisto = "1.2.246.562.10.39218317368"
   val aaltoYliopisto = "1.2.246.562.10.56753942459"
@@ -58,6 +59,8 @@ object MockOrganisaatiot {
   val länsirannikonKoulutusOy = "1.2.246.562.10.82246911869"
   val tilastokeskus = "1.2.246.562.10.35939310928"
   val valvira = "1.2.246.562.10.52577249361"
+  val kuopionAikuislukio = "1.2.246.562.10.42923230215"
+  val kallavedenLukio = "1.2.246.562.10.63813695861"
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,
@@ -78,7 +81,9 @@ object MockOrganisaatiot {
     saksalainenKoulu,
     internationalSchool,
     varsinaisSuomenKansanopisto,
-    lakkautettuOppilaitosHelsingissä
+    lakkautettuOppilaitosHelsingissä,
+    kuopionAikuislukio,
+    kallavedenLukio
   )
 }
 
