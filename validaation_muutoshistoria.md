@@ -1,7 +1,7 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## xx.8.2022
+## 19.8.2022
 - Seuraavat validaatiomuutokset ovat toistaiseksi vain testiopintopolussa, ne viedään tuotantoon myöhemmin:
   - Oppivelvollisuuden laajennuksen, vammaisuuden, ja vaikeasti vammaisuuden aikajaksojen validointia on korjattu. Säännöt ovat nyt:
     - pidennetyn oppivelvollisuuden jakso ei saa päättyä ennen kuin opiskeluoikeus alkaa
