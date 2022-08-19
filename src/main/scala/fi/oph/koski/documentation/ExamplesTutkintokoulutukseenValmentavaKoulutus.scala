@@ -364,7 +364,16 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
           loppu = None
         )
       ),
-      erityisenTuenPäätökset = None
+      vammainen = Some(List(
+        Aikajakso(
+          alku = date(2021, 8, 1),
+          loppu = None
+        )
+      )),
+      erityisenTuenPäätökset = Some(List(TuvaErityisenTuenPäätös(
+        alku = Some(date(2021, 8, 1)),
+        loppu = None
+      )))
     )),
     organisaatiohistoria = Some(opiskeluoikeudenOrganisaatioHistoria),
     suoritukset = List(

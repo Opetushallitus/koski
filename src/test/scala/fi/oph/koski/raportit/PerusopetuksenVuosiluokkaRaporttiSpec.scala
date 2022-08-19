@@ -351,7 +351,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     pidennettyOppivelvollisuus = true,
     joustavaPerusopetus = true,
     vuosiluokkiinSitoutumatonOpetus = true,
-    vammainen = true,
+    vammainen = false,
     vaikeastiVammainen = true,
     sisäoppilaitosmainenMajoitus = true,
     koulukoti = true,
@@ -491,7 +491,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
   private val aikajakso = voimassaolevaAikajakso.copy(loppu = Some(date(2018, 1, 1)))
   private val aikajaksot = Some(List(aikajakso))
   private val erityisenTuenPäätös = ErityisenTuenPäätös(
-    alku = Some(date(2014, 1, 1)),
+    alku = Some(date(2008, 1, 1)),
     loppu = Some(date(2018, 1, 1)),
     opiskeleeToimintaAlueittain = true,
     erityisryhmässä = Some(true),
@@ -502,12 +502,19 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     pidennettyOppivelvollisuus = Some(voimassaolevaAikajakso),
     erityisenTuenPäätös = Some(erityisenTuenPäätös),
     erityisenTuenPäätökset = Some(List(
-      erityisenTuenPäätös.copy(alku = Some(date(2016, 1, 1))),
+      erityisenTuenPäätös.copy(
+        alku = Some(date(2016, 1, 1)),
+        loppu = None
+      ),
     )),
     joustavaPerusopetus = Some(voimassaolevaAikajakso),
     vuosiluokkiinSitoutumatonOpetus = true,
-    vammainen = Some(List(voimassaolevaAikajakso)),
-    vaikeastiVammainen = Some(List(voimassaolevaAikajakso)),
+    vammainen = Some(List(voimassaolevaAikajakso.copy(
+      loppu = Some(voimassaolevaAikajakso.alku.plusDays(10))
+    ))),
+    vaikeastiVammainen = Some(List(voimassaolevaAikajakso.copy(
+      alku = voimassaolevaAikajakso.alku.plusDays(11)
+    ))),
     majoitusetu = Some(voimassaolevaAikajakso),
     kuljetusetu = Some(mennytAikajakso),
     oikeusMaksuttomaanAsuntolapaikkaan = Some(aikajakso),

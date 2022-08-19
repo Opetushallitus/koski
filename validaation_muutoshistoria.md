@@ -1,4 +1,16 @@
+
 # Koskeen tallennettavien tietojen validaatiosäännöt
+
+## xx.8.2022
+- Seuraavat validaatiomuutokset ovat toistaiseksi vain testiopintopolussa, ne viedään tuotantoon myöhemmin:
+  - Oppivelvollisuuden laajennuksen, vammaisuuden, ja vaikeasti vammaisuuden aikajaksojen validointia on korjattu. Säännöt ovat nyt:
+    - pidennetyn oppivelvollisuuden jakso ei saa päättyä ennen kuin opiskeluoikeus alkaa
+    - Jokin vammaisuuspäivä vaaditaan jokaiselle pidennetyn oppivelvollisuuden päivälle
+    - ei sallita tiedon vaikeasti kehitysvammainen tai muu kuin vaikeasti kehitysvammainen siirtämistä, elleivät ne osu jollekin siirretylle pidennetyn oppivelvollisuuden jaksolle
+    - ei sallita päällekkäisiä vaikeasti kehitysvammainen- tai muu kuin vaikeasti kehitysvammainen-jaksoja
+    - jos pidennetyn oppivelvollisuuden jaksolle on merkitty päättymispäivä, vaaditaan päättymispäivä myös kronologisesti myöhäisimmältä vammaisuusjaksolta
+  - Lisäksi erityisen tuen päätöksien osalta validoidaan, että jokin erityisen tuen päätös on voimassa jokaisena pidennetyn oppivelvollisuuden jakson päivänä
+  - Samat validaatiot tehdään nyt myös tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeuksille, jos niissä on perusopetuksen järjestämislupa
 
 ## 17.8.2022
 - International school -opiskeluoikeuden MYP-suorituksissa sallitaan nyt pass/fail -arviointi

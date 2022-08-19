@@ -180,6 +180,12 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   with Vammainen
   with VaikeastiVammainen
   with PidennettyOppivelvollisuus
+{
+  def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso] = {
+    erityisenTuenPäätös.map(p => List(p)).getOrElse(List.empty) ++ erityisenTuenPäätökset.getOrElse(List.empty)
+  }
+}
+
 
 trait Tukimuodollinen {
   @KoodistoUri("perusopetuksentukimuoto")

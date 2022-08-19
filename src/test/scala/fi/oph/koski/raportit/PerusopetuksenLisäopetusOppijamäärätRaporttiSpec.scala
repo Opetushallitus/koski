@@ -1,23 +1,148 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.documentation.ExamplesPerusopetuksenLisaopetus
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa
+import fi.oph.koski.henkilo.VerifiedHenkilöOid
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenLisäopetuksenOpiskeluoikeus}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate.{of => date}
 
-class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
+class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with DirtiesFixtures {
 
-  override protected def beforeAll(): Unit = {
-    super.beforeAll()
+  private val raportointipäivä = date(2012, 1, 1)
+
+  override protected def alterFixture(): Unit = {
+    // Lisää validointien osalta rikkinäisiä opiskeluoikeuksia suoraan tietokantaan, koska raportti kertoo
+    // rikkinäisyyksistä.
+
+    testiOpiskeluoikeudet.map(oo => {
+      val createResult = application.opiskeluoikeusRepository.createOrUpdate(
+        oppijaOid = VerifiedHenkilöOid(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa),
+        opiskeluoikeus = oo,
+        allowUpdate = false
+      )(session(defaultUser))
+      createResult.map(_.created) should be(Right(true))
+    })
+
+    application.perustiedotIndexer.sync(refresh = true)
     reloadRaportointikanta
   }
+
+  private val testiOpiskeluoikeudet =
+    List(
+      ehjäPidennettyOppivelvollisuusTarvittavienTietojenKanssaOpiskeluoikeus,
+      rikkinäinenPelkkäPidennettyOppivelvollisuusOpiskeluoikeus,
+      rikkinäinenPidennettyOppivelvollisuusIlmanVammaisuuttaOpiskeluoikeus,
+      rikkinäinenPidennettyOppivelvollisuusIlmanErityisenTuenPäätöstäOpiskeluoikeus,
+      rikkinäinenPelkkäVaikeastiVammaisuusOpiskeluoikeus,
+      rikkinäinenPelkkäVammaisuusOpiskeluoikeus,
+      rikkinäinenPäällekäisetVammaisuudetOpiskeluoikeus,
+      ehjäPelkkäErityinenTukiOpiskeluoikeus
+    )
+
+  private val ylimääräisetLkm = testiOpiskeluoikeudet.length
+  private val ylimääräisetErityiselläTuellaOpiskeluoikeudet = 4
+  private val ylimääräisetVaikeastiVammaisetLkm = 0
+  private val ylimääräisetMuuKuinVaikeastiVammaisetLkm = 1
+  private val rikkinäisetYlimääräisetLkm = 6
+
+  private def ehjäPidennettyOppivelvollisuusTarvittavienTietojenKanssaOpiskeluoikeus: PerusopetuksenLisäopetuksenOpiskeluoikeus =
+    raportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+        pidennettyOppivelvollisuus = raportointipäiväänOsuvaPidennettyOppivelvollisuus,
+        vammainen = raportointipäiväänOsuvaVammaisuustieto,
+        erityisenTuenPäätökset = raportointipäiväänOsuvaErityisenTuenPäätös
+      )
+    )
+
+  private def rikkinäinenPelkkäPidennettyOppivelvollisuusOpiskeluoikeus: PerusopetuksenLisäopetuksenOpiskeluoikeus =
+    raportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+        pidennettyOppivelvollisuus = raportointipäiväänOsuvaPidennettyOppivelvollisuus
+      )
+    )
+
+  private def rikkinäinenPidennettyOppivelvollisuusIlmanVammaisuuttaOpiskeluoikeus: PerusopetuksenLisäopetuksenOpiskeluoikeus =
+    raportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+        pidennettyOppivelvollisuus = raportointipäiväänOsuvaPidennettyOppivelvollisuus,
+        erityisenTuenPäätökset = raportointipäiväänOsuvaErityisenTuenPäätös
+      )
+    )
+
+  private def rikkinäinenPidennettyOppivelvollisuusIlmanErityisenTuenPäätöstäOpiskeluoikeus: PerusopetuksenLisäopetuksenOpiskeluoikeus =
+    raportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+        pidennettyOppivelvollisuus = raportointipäiväänOsuvaPidennettyOppivelvollisuus,
+        vaikeastiVammainen = raportointipäiväänOsuvaVammaisuustieto
+      )
+    )
+
+  private def rikkinäinenPelkkäVaikeastiVammaisuusOpiskeluoikeus: PerusopetuksenLisäopetuksenOpiskeluoikeus =
+    raportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+        vaikeastiVammainen = raportointipäiväänOsuvaVammaisuustieto
+      )
+    )
+
+  private def rikkinäinenPelkkäVammaisuusOpiskeluoikeus: PerusopetuksenLisäopetuksenOpiskeluoikeus =
+    raportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+        vammainen = raportointipäiväänOsuvaVammaisuustieto
+      )
+    )
+
+  private def rikkinäinenPäällekäisetVammaisuudetOpiskeluoikeus: PerusopetuksenLisäopetuksenOpiskeluoikeus =
+    raportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+        pidennettyOppivelvollisuus = raportointipäiväänOsuvaPidennettyOppivelvollisuus,
+        vammainen = raportointipäiväänOsuvaVammaisuustieto,
+        vaikeastiVammainen = raportointipäiväänOsuvaVammaisuustieto,
+        erityisenTuenPäätökset = raportointipäiväänOsuvaErityisenTuenPäätös
+      )
+    )
+
+  private def ehjäPelkkäErityinenTukiOpiskeluoikeus: PerusopetuksenLisäopetuksenOpiskeluoikeus =
+    raportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+        erityisenTuenPäätökset = raportointipäiväänOsuvaErityisenTuenPäätös
+      )
+    )
+
+  private def raportilleOsuvaOpiskeluoikeus(
+    lisätiedot: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot
+  ): PerusopetuksenLisäopetuksenOpiskeluoikeus =
+    raportilleOsuvaOpiskeluoikeus(Some(lisätiedot))
+
+  private def raportilleOsuvaOpiskeluoikeus(
+    lisätiedot: Option[PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot] = None
+  ): PerusopetuksenLisäopetuksenOpiskeluoikeus = {
+    ExamplesPerusopetuksenLisaopetus.lisäopetuksenOpiskeluoikeus.copy(
+      lisätiedot = lisätiedot
+    )
+  }
+
+  private def raportointipäiväänOsuvaVammaisuustieto = Some(List(raportointipäiväänOsuvaAikajakso))
+  private def raportointipäiväänOsuvaPidennettyOppivelvollisuus = Some(raportointipäiväänOsuvaAikajakso)
+  private def raportointipäiväänOsuvaErityisenTuenPäätös =  Some(List(
+    ErityisenTuenPäätös(
+      alku = Some(raportointipäiväänOsuvaAikajakso.alku),
+      loppu = raportointipäiväänOsuvaAikajakso.loppu,
+      erityisryhmässä = None
+    )
+  ))
+
+  private def raportointipäiväänOsuvaAikajakso =
+    Aikajakso(raportointipäivä.minusDays(10), Some(raportointipäivä.plusDays(10)))
 
   private def session(user: KoskiMockUser) = user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 
@@ -25,7 +150,7 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
   private val raporttiBuilder = PerusopetuksenLisäopetusOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val raportti = raporttiBuilder
-    .build(Seq(jyväskylänNormaalikoulu), date(2012, 1, 1), t)(session(defaultUser))
+    .build(Seq(jyväskylänNormaalikoulu), raportointipäivä, t)(session(defaultUser))
     .rows.map(_.asInstanceOf[PerusopetuksenLisäopetusOppijamäärätRaporttiRow])
 
   "Perusopetuksen lisäopetuksen oppijamäärien raportti" - {
@@ -69,13 +194,12 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
           oppilaitosNimi = "Jyväskylän normaalikoulu",
           organisaatioOid = "1.2.246.562.10.14613773812",
           opetuskieli = "suomi",
-          oppilaita = 6,
+          oppilaita = 6 + ylimääräisetLkm,
           vieraskielisiä = 1,
-          pidennettyOppivelvollisuusJaVaikeastiVammainen = 2,
-          pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen = 2,
-          virheellisestiSiirretytVaikeastiVammaiset = 1,
-          virheellisestiSiirretytMuutKuinVaikeimminVammaiset = 2,
-          erityiselläTuella = 1,
+          pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 2 + ylimääräisetVaikeastiVammaisetLkm,
+          pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 2 + ylimääräisetMuuKuinVaikeastiVammaisetLkm,
+          virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
+          erityiselläTuella = 4 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
           majoitusetu = 2,
           kuljetusetu = 2,
           sisäoppilaitosmainenMajoitus = 2,
