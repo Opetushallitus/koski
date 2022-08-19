@@ -568,5 +568,27 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         verifyResponseStatusOk()
       }
     }
+
+    "Jos oppilaitos muuttuu, sallitaan siirto poikkeustapauksessa" - {
+      "Kallavaden lukio (1.2.246.562.10.63813695861) oppilaitokseen Kuopion aikuislukio (1.2.246.562.10.42923230215)" in {
+        resetFixtures
+
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.kallavedenLukio)))
+          .withKoulutustoimija(Koulutustoimija(MockOrganisaatiot.kuopionKaupunki))
+        putOppija(Oppija(oppija, List(opiskeluoikeus))) {
+          verifyResponseStatusOk()
+        }
+
+        val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
+
+        val muutos = ensimmäinenOpiskeluoikeus
+          .withOppilaitos(Oppilaitos(MockOrganisaatiot.kuopionAikuislukio))
+          .withKoulutustoimija(Koulutustoimija(MockOrganisaatiot.kuopionKaupunki))
+
+        putOppija(Oppija(oppija, List(muutos))) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
   }
 }

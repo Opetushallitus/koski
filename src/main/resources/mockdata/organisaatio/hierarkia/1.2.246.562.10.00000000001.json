@@ -22846,6 +22846,369 @@
         "organisaatiotyyppi_01"
       ],
       "aliOrganisaatioMaara": 1
+    },
+    {
+      "oid": "1.2.246.562.10.59286753021",
+      "alkuPvm": 258760800000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+      "ytunnus": "0171450-7",
+      "toimipistekoodi": "",
+      "match": false,
+      "nimi": {
+        "fi": "Kuopion kaupunki",
+        "sv": "Kuopion kaupunki",
+        "en": "Kuopion kaupunki"
+      },
+      "lyhytNimi": {
+        "fi": "Kuopion kaupunki",
+        "sv": "Kuopion kaupunki",
+        "en": "Kuopion kaupunki"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#2"
+      ],
+      "kotipaikkaUri": "kunta_297",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.63813695861",
+          "alkuPvm": 694216800000,
+          "parentOid": "1.2.246.562.10.59286753021",
+          "parentOidPath": "1.2.246.562.10.63813695861/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+          "oppilaitosKoodi": "00306",
+          "oppilaitostyyppi": "oppilaitostyyppi_15#1",
+          "toimipistekoodi": "00306",
+          "match": true,
+          "nimi": {
+            "fi": "Kallaveden lukio",
+            "sv": "Kallaveden lukio",
+            "en": "Kallaveden lukio"
+          },
+          "lyhytNimi": {
+            "fi": "Kallaveden lukio",
+            "sv": "Kallaveden lukio",
+            "en": "Kallaveden lukio"
+          },
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#2"
+          ],
+          "kotipaikkaUri": "kunta_297",
+          "children": [
+            {
+              "oid": "1.2.246.562.10.97828693362",
+              "alkuPvm": 694216800000,
+              "parentOid": "1.2.246.562.10.63813695861",
+              "parentOidPath": "1.2.246.562.10.97828693362/1.2.246.562.10.63813695861/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0030601",
+              "match": false,
+              "nimi": {
+                "fi": "Kallaveden lukio",
+                "sv": "Kallaveden lukio",
+                "en": "Kallaveden lukio"
+              },
+              "lyhytNimi": {
+                "fi": "Kallaveden lukio",
+                "sv": "Kallaveden lukio",
+                "en": "Kallaveden lukio"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_297",
+              "children": [],
+              "subRows": [],
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "aliOrganisaatioMaara": 0,
+              "status": "AKTIIVINEN"
+            },
+            {
+              "oid": "1.2.246.562.10.17956879576",
+              "alkuPvm": 1412110800000,
+              "parentOid": "1.2.246.562.10.63813695861",
+              "parentOidPath": "1.2.246.562.10.17956879576/1.2.246.562.10.63813695861/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0030603",
+              "match": false,
+              "nimi": {
+                "fi": "Kallaveden lukio, Kuopion Aikuislukio",
+                "sv": "Kallaveden lukio, Kuopion Aikuislukio",
+                "en": "Kallaveden lukio, Kuopion Aikuislukio"
+              },
+              "lyhytNimi": {
+                "fi": "Kuopion Aikuislukio",
+                "sv": "Kuopion Aikuislukio",
+                "en": "Kuopion Aikuislukio"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_297",
+              "children": [],
+              "subRows": [],
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "aliOrganisaatioMaara": 0,
+              "status": "AKTIIVINEN"
+            }
+          ],
+          "subRows": [
+            {
+              "oid": "1.2.246.562.10.97828693362",
+              "alkuPvm": 694216800000,
+              "parentOid": "1.2.246.562.10.63813695861",
+              "parentOidPath": "1.2.246.562.10.97828693362/1.2.246.562.10.63813695861/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0030601",
+              "match": false,
+              "nimi": {
+                "fi": "Kallaveden lukio",
+                "sv": "Kallaveden lukio",
+                "en": "Kallaveden lukio"
+              },
+              "lyhytNimi": {
+                "fi": "Kallaveden lukio",
+                "sv": "Kallaveden lukio",
+                "en": "Kallaveden lukio"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_297",
+              "children": [],
+              "subRows": [],
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "aliOrganisaatioMaara": 0,
+              "status": "AKTIIVINEN"
+            },
+            {
+              "oid": "1.2.246.562.10.17956879576",
+              "alkuPvm": 1412110800000,
+              "parentOid": "1.2.246.562.10.63813695861",
+              "parentOidPath": "1.2.246.562.10.17956879576/1.2.246.562.10.63813695861/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0030603",
+              "match": false,
+              "nimi": {
+                "fi": "Kallaveden lukio, Kuopion Aikuislukio",
+                "sv": "Kallaveden lukio, Kuopion Aikuislukio",
+                "en": "Kallaveden lukio, Kuopion Aikuislukio"
+              },
+              "lyhytNimi": {
+                "fi": "Kuopion Aikuislukio",
+                "sv": "Kuopion Aikuislukio",
+                "en": "Kuopion Aikuislukio"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_297",
+              "children": [],
+              "subRows": [],
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "aliOrganisaatioMaara": 0,
+              "status": "AKTIIVINEN"
+            }
+          ],
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ],
+          "aliOrganisaatioMaara": 2,
+          "status": "AKTIIVINEN"
+        }
+      ],
+      "subRows": [
+        {
+          "oid": "1.2.246.562.10.63813695861",
+          "alkuPvm": 694216800000,
+          "parentOid": "1.2.246.562.10.59286753021",
+          "parentOidPath": "1.2.246.562.10.63813695861/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+          "oppilaitosKoodi": "00306",
+          "oppilaitostyyppi": "oppilaitostyyppi_15#1",
+          "toimipistekoodi": "00306",
+          "match": true,
+          "nimi": {
+            "fi": "Kallaveden lukio",
+            "sv": "Kallaveden lukio",
+            "en": "Kallaveden lukio"
+          },
+          "lyhytNimi": {
+            "fi": "Kallaveden lukio",
+            "sv": "Kallaveden lukio",
+            "en": "Kallaveden lukio"
+          },
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#2"
+          ],
+          "kotipaikkaUri": "kunta_297",
+          "children": [
+            {
+              "oid": "1.2.246.562.10.97828693362",
+              "alkuPvm": 694216800000,
+              "parentOid": "1.2.246.562.10.63813695861",
+              "parentOidPath": "1.2.246.562.10.97828693362/1.2.246.562.10.63813695861/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0030601",
+              "match": false,
+              "nimi": {
+                "fi": "Kallaveden lukio",
+                "sv": "Kallaveden lukio",
+                "en": "Kallaveden lukio"
+              },
+              "lyhytNimi": {
+                "fi": "Kallaveden lukio",
+                "sv": "Kallaveden lukio",
+                "en": "Kallaveden lukio"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_297",
+              "children": [],
+              "subRows": [],
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "aliOrganisaatioMaara": 0,
+              "status": "AKTIIVINEN"
+            },
+            {
+              "oid": "1.2.246.562.10.17956879576",
+              "alkuPvm": 1412110800000,
+              "parentOid": "1.2.246.562.10.63813695861",
+              "parentOidPath": "1.2.246.562.10.17956879576/1.2.246.562.10.63813695861/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0030603",
+              "match": false,
+              "nimi": {
+                "fi": "Kallaveden lukio, Kuopion Aikuislukio",
+                "sv": "Kallaveden lukio, Kuopion Aikuislukio",
+                "en": "Kallaveden lukio, Kuopion Aikuislukio"
+              },
+              "lyhytNimi": {
+                "fi": "Kuopion Aikuislukio",
+                "sv": "Kuopion Aikuislukio",
+                "en": "Kuopion Aikuislukio"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_297",
+              "children": [],
+              "subRows": [],
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "aliOrganisaatioMaara": 0,
+              "status": "AKTIIVINEN"
+            }
+          ],
+          "subRows": [
+            {
+              "oid": "1.2.246.562.10.97828693362",
+              "alkuPvm": 694216800000,
+              "parentOid": "1.2.246.562.10.63813695861",
+              "parentOidPath": "1.2.246.562.10.97828693362/1.2.246.562.10.63813695861/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0030601",
+              "match": false,
+              "nimi": {
+                "fi": "Kallaveden lukio",
+                "sv": "Kallaveden lukio",
+                "en": "Kallaveden lukio"
+              },
+              "lyhytNimi": {
+                "fi": "Kallaveden lukio",
+                "sv": "Kallaveden lukio",
+                "en": "Kallaveden lukio"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_297",
+              "children": [],
+              "subRows": [],
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "aliOrganisaatioMaara": 0,
+              "status": "AKTIIVINEN"
+            },
+            {
+              "oid": "1.2.246.562.10.17956879576",
+              "alkuPvm": 1412110800000,
+              "parentOid": "1.2.246.562.10.63813695861",
+              "parentOidPath": "1.2.246.562.10.17956879576/1.2.246.562.10.63813695861/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0030603",
+              "match": false,
+              "nimi": {
+                "fi": "Kallaveden lukio, Kuopion Aikuislukio",
+                "sv": "Kallaveden lukio, Kuopion Aikuislukio",
+                "en": "Kallaveden lukio, Kuopion Aikuislukio"
+              },
+              "lyhytNimi": {
+                "fi": "Kuopion Aikuislukio",
+                "sv": "Kuopion Aikuislukio",
+                "en": "Kuopion Aikuislukio"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_297",
+              "children": [],
+              "subRows": [],
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "aliOrganisaatioMaara": 0,
+              "status": "AKTIIVINEN"
+            }
+          ],
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ],
+          "aliOrganisaatioMaara": 2,
+          "status": "AKTIIVINEN"
+        }
+      ],
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_01",
+        "organisaatiotyyppi_07",
+        "organisaatiotyyppi_09"
+      ],
+      "aliOrganisaatioMaara": 160,
+      "status": "AKTIIVINEN"
+    },
+    {
+      "oid": "1.2.246.562.10.42923230215",
+      "alkuPvm": 1659301200000,
+      "parentOid": "1.2.246.562.10.59286753021",
+      "parentOidPath": "1.2.246.562.10.42923230215/1.2.246.562.10.59286753021/1.2.246.562.10.00000000001",
+      "oppilaitosKoodi": "00624",
+      "oppilaitostyyppi": "oppilaitostyyppi_15#1",
+      "toimipistekoodi": "00624",
+      "match": true,
+      "nimi": {
+        "fi": "Kuopion aikuislukio",
+        "sv": "Kuopion aikuislukio",
+        "en": "Kuopion aikuislukio"
+      },
+      "lyhytNimi": {
+        "fi": "Kuopion aikuislukio",
+        "sv": "Kuopion aikuislukio",
+        "en": "Kuopion aikuislukio"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#2"
+      ],
+      "kotipaikkaUri": "kunta_297",
+      "children": [],
+      "subRows": [],
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_02"
+      ],
+      "aliOrganisaatioMaara": 0,
+      "status": "AKTIIVINEN"
     }
   ]
 }
