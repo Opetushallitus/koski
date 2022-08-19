@@ -2193,7 +2193,7 @@ describe('Perusopetus', function() {
             })
 
             describe('Kolmannen opiskeluoikeuden lisääminen (oppiaineen oppimäärä)', function() {
-              this.timeout(20000)
+              this.timeout(30000)
 
               before(
                 timeout.overrideWaitTime(20000),
@@ -2289,7 +2289,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Aikuisten perusopetus, uusi oppija', function() {
-      this.timeout(20000)
+      this.timeout(30000)
 
       before(
         timeout.overrideWaitTime(20000),
@@ -2306,7 +2306,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Aikuisten perusopetus', function() {
-      this.timeout(20000)
+      this.timeout(30000)
 
       before(
         timeout.overrideWaitTime(20000),
@@ -2387,7 +2387,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Aikuisten perusopetuksen alkuvaihe', function() {
-      this.timeout(20000)
+      this.timeout(30000)
 
       before(
         timeout.overrideWaitTime(20000),
@@ -2496,7 +2496,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Perusopetuksen oppiaineen oppimäärä', function() {
-      this.timeout(20000)
+      this.timeout(30000)
 
       before(
         timeout.overrideWaitTime(20000),

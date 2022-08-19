@@ -26,6 +26,7 @@ import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
   val schema: Schema = config.schema
+  override def defaultRetryIntervalMs = 30000
 
   logger.info(s"Instantiating RaportointiDatabase for ${schema.name}")
 
@@ -70,17 +71,15 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def dropPublicAndMoveTempToPublic: Unit = {
     // Raportointikannan swappaaminen saattaa epäonnistua timeouttiin, jos esim. käyttäjä on juuri ajamassa
     // hidasta raporttia. Parempi yrittää uudestaan, eikä lopettaa monen tunnin operaatiota vain tästä syystä.
-    Retry.retryWithInterval(5, 30000) {
-      runDbSync(
-        DBIO.seq(
-          RaportointiDatabaseSchema.dropSchema(Public),
-          RaportointiDatabaseSchema.moveSchema(Temp, Public),
-          RaportointiDatabaseSchema.createRolesIfNotExists,
-          RaportointiDatabaseSchema.grantPermissions(Public)
-        ).transactionally,
-        timeout = 5.minutes
-      )
-    }
+    retryDbSync(
+      DBIO.seq(
+        RaportointiDatabaseSchema.dropSchema(Public),
+        RaportointiDatabaseSchema.moveSchema(Temp, Public),
+        RaportointiDatabaseSchema.createRolesIfNotExists,
+        RaportointiDatabaseSchema.grantPermissions(Public)
+      ).transactionally,
+      timeout = 5.minutes
+    )
     logger.info("RaportointiDatabase schema swapped")
   }
 
@@ -207,15 +206,19 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       Range.inclusive(0, batchCount).foreach(i => {
         val batchStartTime = System.currentTimeMillis
         val offset = i * BATCH_SIZE
-        val rowsCloned = runDbSync(
-          sql"""
-               INSERT INTO #${schema.name}.#${kloonaus.taulu}
-               SELECT * FROM #${source.schema.name}.#${kloonaus.taulu}
-               #${kloonaus.primaryKey.map(pk => s"ORDER BY $pk").getOrElse("")}
-               LIMIT $BATCH_SIZE OFFSET $offset
-          """.asUpdate,
-          timeout = kloonaus.timeout,
-        )
+
+        logger.info(s"Kopioidaan erä ${i + 1}/${batchCount + 1}...")
+
+        val rowsCloned = retryDbSync(
+            sql"""
+                 INSERT INTO #${schema.name}.#${kloonaus.taulu}
+                 SELECT * FROM #${source.schema.name}.#${kloonaus.taulu}
+                 #${kloonaus.primaryKey.map(pk => s"ORDER BY $pk").getOrElse("")}
+                 LIMIT $BATCH_SIZE OFFSET $offset
+            """.asUpdate,
+            timeout = kloonaus.timeout,
+          )
+
         val elapsedSeconds = (System.currentTimeMillis - batchStartTime) / 1000
         logger.info(s"Kopioitiin erä ${i + 1}/${batchCount + 1} (${rowsCloned} riviä), $elapsedSeconds s")
         if (elapsedSeconds.toInt.seconds > BATCH_WARNING_TIME_LIMIT) {
@@ -421,7 +424,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     val päätasonSuorituksetQuery = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet result1.map(_._1.opiskeluoikeusOid).distinct)
     val päätasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(päätasonSuorituksetQuery.result).groupBy(_.opiskeluoikeusOid)
     val sisältyvätOpiskeluoikeudetQuery = ROpiskeluoikeudet.filter(_.sisältyyOpiskeluoikeuteenOid inSet result1.map(_._1.opiskeluoikeusOid).distinct)
-    val sisältyvätOpiskeluoikeudet: Map[String, Seq[ROpiskeluoikeusRow]] = runDbSync(sisältyvätOpiskeluoikeudetQuery.result).groupBy(_.sisältyyOpiskeluoikeuteenOid.get)
+    val sisältyvätOpiskeluoikeudet: Map[String, Seq[ROpiskeluoikeusRow]] = retryDbSync(sisältyvätOpiskeluoikeudetQuery.result).groupBy(_.sisältyyOpiskeluoikeuteenOid.get)
 
     val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet result1.map(_._1.oppijaOid))
     val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result).groupBy(_.oppijaOid).mapValues(_.head)
