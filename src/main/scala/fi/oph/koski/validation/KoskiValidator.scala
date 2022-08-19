@@ -3,6 +3,7 @@ package fi.oph.koski.validation
 import java.lang.Character.isDigit
 import java.time.LocalDate
 import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.HenkilöRepository
@@ -565,6 +566,83 @@ class KoskiValidator(
   }
 
   private def validatePidennettyOppivelvollisuus(
+    lisätiedot: Option[OpiskeluoikeudenLisätiedot],
+    opiskeluoikeudenAlkamispäivä: Option[LocalDate]
+  ): HttpStatus = {
+    // Käytetään tuotannossa toistaiseksi vanhoja validaatioita siihen asti, kunnes järjestelmätoimittajat ovat saaneet
+    // tarvittavat korjaukset tehtyä. Sen jälkeen tämän vanhan validaatiokoodin voi poistaa.
+    if (Environment.isProdEnvironment(config)) {
+      validatePidennettyOppivelvollisuusVanha(lisätiedot, opiskeluoikeudenAlkamispäivä)
+    } else {
+      validatePidennettyOppivelvollisuusUusi(lisätiedot, opiskeluoikeudenAlkamispäivä)
+    }
+  }
+
+  private def validatePidennettyOppivelvollisuusVanha(
+    lisätiedot: Option[OpiskeluoikeudenLisätiedot],
+    opiskeluoikeudenAlkamispäivä: Option[LocalDate]
+  ): HttpStatus = {
+
+    // Yhdistää päällekkäiset aikajaksot sekä sellaiset jaksot, jotka alkavat seuraavana päivänä edellisen jakson päättymisestä
+    // Palauttaa annetuista aikajaksoista yhdistetyt pisimmät mahdolliset yhtenäiset aikajaksot
+    def foldAikajaksot(a: Option[List[Aikajakso]], b: Option[List[Aikajakso]]): Option[List[Aikajakso]] = {
+      val kaikkiJaksot = a.getOrElse(List.empty) ++ b.getOrElse(List.empty)
+
+      val jaksotFoldattu = kaikkiJaksot.sortBy(_.alku).foldLeft(List.empty[Aikajakso])((acc, seuraava) => {
+        acc match {
+          case Nil => List(seuraava)
+          case edellinen :: js
+            if edellinen.contains(seuraava.alku) || edellinen.contains(seuraava.alku.minusDays(1)) =>
+            edellinen.copy(loppu = List(edellinen.loppu, seuraava.loppu).max(localDateOptionOrdering)) :: js
+          case _ => seuraava :: acc
+        }
+      }).reverse
+
+      Some(jaksotFoldattu).filter(_.nonEmpty)
+    }
+
+    def validatePidennettyOppivelvollisuusJakso(
+      pidennettyOppivelvollisuus: Option[Aikajakso],
+      vammaisuusJaksot: Option[List[Aikajakso]],
+    ): HttpStatus = {
+      def sisältyyJaksoon: Boolean =
+        pidennettyOppivelvollisuus.exists(p => vammaisuusJaksot.exists(js => js.exists(j => j.contains(p))))
+      def validitJaksot: Boolean = pidennettyOppivelvollisuus.nonEmpty && vammaisuusJaksot.nonEmpty && sisältyyJaksoon
+      val eiJaksoja = pidennettyOppivelvollisuus.isEmpty && vammaisuusJaksot.isEmpty
+
+      HttpStatus.validate(eiJaksoja || validitJaksot)(
+        KoskiErrorCategory.badRequest.validation.date.vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella()
+      )
+    }
+
+    lisätiedot match {
+      case Some(lt: PidennettyOppivelvollisuus) if !lt.isInstanceOf[TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot] =>
+        val vammaisuusjaksot = foldAikajaksot(lt.vammainen, lt.vaikeastiVammainen)
+        HttpStatus.validate(
+          validatePidennettyOppivelvollisuusJakso(
+            lt.pidennettyOppivelvollisuus,
+            vammaisuusjaksot
+          ).isOk
+        ) {
+          // Jos validointi ei onnistunut alkuperäisillä päivämäärillä,
+          // ja pidennetty oppivelvollisuusjakso alkaa ennen opiskeluoikeuden alkamispäivää,
+          // käytä validointiin pidennetyn oppivelvollisuuden alkupäivänä opiskeluoikeuden alkupäivää.
+          if (
+            lt.pidennettyOppivelvollisuus.exists(po => opiskeluoikeudenAlkamispäivä.exists(d => po.alku.isBefore(d)))
+          ) {
+            validatePidennettyOppivelvollisuusJakso(
+              lt.pidennettyOppivelvollisuus.map(po => po.copy(alku = opiskeluoikeudenAlkamispäivä.getOrElse(po.alku))),
+              vammaisuusjaksot
+            )
+          } else {
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella()
+          }
+        }
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validatePidennettyOppivelvollisuusUusi(
     lisätiedot: Option[OpiskeluoikeudenLisätiedot],
     opiskeluoikeudenAlkamispäivä: Option[LocalDate]
   ): HttpStatus = {

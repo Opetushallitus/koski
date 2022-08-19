@@ -86,6 +86,10 @@ object KoskiErrorCategory {
         val alkamispäivä = subcategory("alkamispäivä", "Opiskeluoikeuden alkamispäivä ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää")
         val päättymispäivämäärä = subcategory("päättymispäivämäärä", "Opiskeluoikeuden päättymispäivä ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää")
 
+        // Käytetään tuotannossa toistaiseksi vanhoja validaatioita siihen asti, kunnes järjestelmätoimittajat ovat saaneet
+        // tarvittavat korjaukset tehtyä. Sen jälkeen tämän vanhan validaatiokoodin käyttämän virheilmoituksen voi poistaa.
+        val vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella = subcategory("vammaisuusjaksoPidennetynOppivelvollisuudenUlkopuolella", "Pidennetyn oppivelvollisuuden aikajakso on vammaisuustietojen aikajaksojen ulkopuolella tai toinen tiedoista puuttuu.")
+
         val vammaisuusjakso = subcategory("vammaisuusjakso", "Vammaisuusjaksojen määrittely on väärin")
         val pidennettyOppivelvollisuus = subcategory("pidennettyOppivelvollisuus", "Pidennettyjen oppivelvollisuusjaksojen määrittely on väärin")
         val erityisenTuenPäätös = subcategory("erityisenTuenPäätös", "Erityisen tuen päätösten määrittely on väärin")
