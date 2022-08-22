@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom'
 import Http from './util/http'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
+import Cookie from 'js-cookie'
 import {TopBar} from './topbar/TopBar'
 import {t} from './i18n/i18n.js'
 import Text from './i18n/Text'
@@ -24,7 +25,7 @@ const Login = () => {
       inProgress.set(false)
       error.set(e)
     } }))
-  loginResultE.onValue(() => document.location='/koski/virkailija')
+  loginResultE.onValue(() => document.location=Cookie.get('koskiReturnUrl') || '/koski/virkailija')
   const doLogin = (e) => {
     e.preventDefault()
     inProgress.set(true)
