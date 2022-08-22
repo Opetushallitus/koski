@@ -9,10 +9,12 @@ import fi.oph.koski.http.KoskiErrorCategory.notFound
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{AuditLogTester, RootLogTester}
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeushistoriaErrorRepository, OpiskeluoikeushistoriaVirhe}
 import fi.oph.koski.schema.Opiskeluoikeus
-import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
+import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.JsonAST.{JArray, JNothing}
 import org.json4s.jackson.JsonMethods
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.{LocalDate, LocalDateTime}
@@ -155,6 +157,8 @@ class OpiskeluoikeusHistorySpec
            |} ]
           """.stripMargin.trim)
 
+        opiskeluoikeushistoriaErrors.length should equal(1)
+        
         resetFixtures() // Siivoa muutokset
       }
 
@@ -177,9 +181,13 @@ class OpiskeluoikeusHistorySpec
 
         val logString = RootLogTester.getLogMessages.find(_.startsWith("Virhe opiskeluoikeushistorian validoinnissa")).get
         logString should equal(s"Virhe opiskeluoikeushistorian validoinnissa: Opiskeluoikeuden ${opiskeluoikeus.oid} historiaversion patch 4 epäonnistui")
+
+        opiskeluoikeushistoriaErrors.length should equal(1)
       }
     }
   }
+
+  private lazy val opiskeluoikeushistoriaErrorRepository = new OpiskeluoikeushistoriaErrorRepository(KoskiApplicationForTests.masterDatabase.db)
 
   private def updateOpiskeluoikeusHistory(oid: String, version: Int, muutos: String) = {
     val id = runDbSync(OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result.head)
@@ -189,4 +197,7 @@ class OpiskeluoikeusHistorySpec
       .update(JsonMethods.parse(muutos))
     )
   }
+
+  private def opiskeluoikeushistoriaErrors: Seq[OpiskeluoikeushistoriaVirhe] =
+    opiskeluoikeushistoriaErrorRepository.getAll
 }
