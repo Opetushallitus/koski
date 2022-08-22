@@ -1,0 +1,587 @@
+name: Run tests on branches
+on:
+  schedule:
+    - cron: "0 * * * *"
+env:
+  DOCKER_BUILDKIT: 1
+  TZ: Europe/Helsinki
+
+jobs:
+  lint_koski:
+    name: Lint Koski scala and frontend code
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Run linter
+        run: |
+          cd web
+          npm ci
+          cd ..
+          make lint
+
+  checkdoc_koski_validation:
+    name: Check that validaation_muustohistoria.md has been updated
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with: { fetch-depth: 0 }
+
+      - name: Check validation and documentation changes
+        run: |
+          make checkdoc_validation
+
+  checkdoc_koski_schema:
+    name: Check that tiedonsiirtoprotokollan_muustohistoria.md has been updated
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with: { fetch-depth: 0 }
+
+      - name: Check schema and documentation changes
+        run: |
+          make checkdoc_schema
+
+  run_backend_tests_api:
+    name: Run Koski backend tests (api)
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Configure sysctl limits for Elasticsearch
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Start Postgres and ES containers
+        run: docker-compose up -d
+
+      - name: Run backend tests (api)
+        run: |
+          mvn test -DmembersOnlySuites="fi.oph.koski.api, \
+          fi.oph.koski.browserstack,fi.oph.koski.cache"
+
+  run_backend_tests_nonmock:
+    name: Run Koski backend tests (non-mock)
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Configure sysctl limits for Elasticsearch
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Start Postgres and ES containers
+        run: docker-compose up -d
+
+      - name: Run backend tests (non-mock)
+        run: mvn test -DmembersOnlySuites="fi.oph.koski.nonmockloginsecurity"
+
+  run_backend_tests_other:
+    name: Run Koski backend tests (other)
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Configure sysctl limits for Elasticsearch
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Start Postgres and ES containers
+        run: docker-compose up -d
+
+      - name: Run backend tests (other)
+        run: |
+          mvn test -DmembersOnlySuites="fi.oph.koski.browserstack, \
+          fi.oph.koski.cache,fi.oph.koski.editor,fi.oph.koski.environment, \
+          fi.oph.koski.etk,fi.oph.koski.henkilo,fi.oph.koski.http, \
+          fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto, \
+          fi.oph.koski.koskiuser,fi.oph.koski.localization,fi.oph.koski.log, \
+          fi.oph.koski.luovutuspalvelu,fi.oph.koski.migration,fi.oph.koski.migri, \
+          fi.oph.koski.mocha,fi.oph.koski.mydata,fi.oph.koski.omaopintopolkuloki, \
+          fi.oph.koski.opiskeluoikeus,fi.oph.koski.oppilaitos,fi.oph.koski.oppivelvollisuustieto, \
+          fi.oph.koski.organisaatio,fi.oph.koski.perftest,fi.oph.koski.raportit, \
+          fi.oph.koski.raportointikanta,fi.oph.koski.schedule,fi.oph.koski.schema, \
+          fi.oph.koski.sso,fi.oph.koski.sure,fi.oph.koski.tools, \
+          fi.oph.koski.userdirectory,fi.oph.koski.util,fi.oph.koski.valpas, \
+          fi.oph.koski.valvira,fi.oph.koski.versioning,fi.oph.koski.virta, \
+          fi.oph.koski.ytl,fi.oph.koski.ytr, fi.oph.koski.ytl,fi.oph.koski.meta, \
+          fi.oph.koski.frontendvalvonta"
+
+  run_frontend_tests_0:
+    name: Run Koski frontend tests runner 0
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Configure sysctl limits for Elasticsearch
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Start Postgres and ES containers
+        run: docker-compose up -d
+
+      - name: Run frontend tests
+        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner0"
+
+  run_frontend_tests_1:
+    name: Run Koski frontend tests runner 1
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Configure sysctl limits for Elasticsearch
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Start Postgres and ES containers
+        run: docker-compose up -d
+
+      - name: Run frontend tests
+        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner1"
+
+  run_frontend_tests_2:
+    name: Run Koski frontend tests runner 2
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Configure sysctl limits for Elasticsearch
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Start Postgres and ES containers
+        run: docker-compose up -d
+
+      - name: Run frontend tests
+        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner2"
+
+  run_frontend_tests_3:
+    name: Run Koski frontend tests runner 3
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Configure sysctl limits for Elasticsearch
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Start Postgres and ES containers
+        run: docker-compose up -d
+
+      - name: Run frontend tests
+        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner3"
+
+  run_frontend_tests_4:
+    name: Run Koski frontend tests runner 4
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Configure sysctl limits for Elasticsearch
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Start Postgres and ES containers
+        run: docker-compose up -d
+
+      - name: Run frontend tests
+        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner4"
+
+  valpas_integration_tests_1:
+    name: Valpas integration tests 1
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install and verify Jest
+        run: make install-and-verify-valpas-jest-deps
+
+      - name: Configure sysctl limits for Elasticsearch
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Start Postgres and ES containers
+        run: docker-compose up -d
+
+      - name: Run tests
+        run: |
+          cd valpas-web
+          npm ci
+          cd ..
+          make valpas-fronttest-1
+
+  valpas_integration_tests_2:
+    name: Valpas integration tests 2
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+          architecture: x64
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install and verify Jest
+        run: make install-and-verify-valpas-jest-deps
+
+      - name: Configure sysctl limits for Elasticsearch
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+
+      - name: Start Postgres and ES containers
+        run: docker-compose up -d
+
+      - name: Run tests
+        run: |
+          cd valpas-web
+          npm ci
+          cd ..
+          make valpas-fronttest-2
+
+  valpas_frontend_unit_tests:
+    name: Valpas frontend unit tests
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node 14
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Cache Node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Run linter and tests
+        run: |
+          cd valpas-web
+          npm ci
+          npm run lint
+          npm run test:unit
