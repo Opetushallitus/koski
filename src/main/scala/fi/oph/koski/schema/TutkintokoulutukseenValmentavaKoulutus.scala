@@ -20,6 +20,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeus(
   lisätiedot: Option[TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
   suoritukset: List[TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus],
+  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.tuva.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.tuva,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
   @KoodistoUri("tuvajarjestamislupa")
