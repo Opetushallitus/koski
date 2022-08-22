@@ -1,3 +1,7 @@
+## 22.8.2022
+
+- Korjattu bugi: tutkintokoulutukseen valmentavan koulutuksen tietomallissa opiskeluoikeuden tyyppi-kenttää ei ollut pakotettu arvoon "tuva"
+
 ## 17.8.2022
 
 - Lisätty International school -opiskeluoikeuden MYP-suorituksen arviointiasteikkoon `Pass` ja `Fail` koodistosta `arviointiasteikkointernationalschool`
