@@ -1,4 +1,4 @@
-name: Run tests on branches 1 per hour
+name: Run tests 1 per hour
 on:
   schedule:
     - cron: "0 * * * *"
