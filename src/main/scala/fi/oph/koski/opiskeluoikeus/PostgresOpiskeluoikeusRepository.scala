@@ -37,6 +37,7 @@ class PostgresOpiskeluoikeusRepository(
   ePerusteet: EPerusteetRepository
 ) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with QueryMethods with Logging {
   lazy val validator = new OpiskeluoikeusChangeValidator(organisaatioRepository, ePerusteet)
+  lazy val errorRepository = new OpiskeluoikeushistoriaErrorRepository(db)
 
   override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A] = {
     val queryOppijaOids = sequence(oppijat.map { o =>
@@ -397,6 +398,11 @@ class PostgresOpiskeluoikeusRepository(
   private def validateHistoria(opiskeluoikeusJson: JValue, historia: OpiskeluoikeusHistory): Option[String] = try {
     val opiskeluoikeusDiffHistoria = jsonDiff(opiskeluoikeusJson, historia.asOpiskeluoikeusJson)
     if (opiskeluoikeusDiffHistoria.values.nonEmpty) {
+      val id = errorRepository.save(
+        opiskeluoikeus = opiskeluoikeusJson,
+        historia = historia,
+        diff = opiskeluoikeusDiffHistoria,
+      )
       Some(s"Virhe opiskeluoikeushistoriarivin tuottamisessa opiskeluoikeudelle ${historia.oid}/${historia.version}: ${JsonMethods.pretty(opiskeluoikeusDiffHistoria)}")
     } else {
       None

@@ -5,6 +5,9 @@ describe('TUVA', function () {
   var addOppija = AddOppijaPage()
 
   describe('Opiskeluoikeuden lisääminen', function () {
+    before(timeout.overrideWaitTime(30000))
+    after(timeout.resetDefaultWaitTime())
+
     describe('Perusopetuksen järjestämislupa (TUVA)', () => {
       before(
         prepareForNewOppija('kalle', '230872-7258'),

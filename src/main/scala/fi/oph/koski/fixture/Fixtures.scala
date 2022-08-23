@@ -4,6 +4,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeushistoriaErrorRepository
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.util.{Timing, Wait}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
@@ -15,6 +16,7 @@ object FixtureCreator {
 class FixtureCreator(application: KoskiApplication) extends Logging with Timing {
   private val raportointikantaService = application.raportointikantaService
   private var currentFixtureState: FixtureState = new NotInitializedFixtureState
+  private val opiskeluoikeushistoriaErrorRepository = new OpiskeluoikeushistoriaErrorRepository(application.masterDatabase.db)
 
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = currentFixtureState.defaultOppijat
 
@@ -32,6 +34,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       application.valpasLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.tiedonsiirtoService.index.deleteAll()
       application.päivitetytOpiskeluoikeudetJono.poistaKaikki()
+      opiskeluoikeushistoriaErrorRepository.truncate
 
       if (reloadRaportointikanta || fixtureNameHasChanged) {
         raportointikantaService.loadRaportointikanta(force = true)
