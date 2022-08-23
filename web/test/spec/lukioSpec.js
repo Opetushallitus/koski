@@ -7,7 +7,9 @@ describe('Lukiokoulutus', function( ){
   before(Authentication().login(), resetFixtures)
 
   describe('Lukion päättötodistus', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('lukiokoulutus'))
+    before(timeout.overrideWaitTime(20000),page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('lukiokoulutus'))
+    after(timeout.resetDefaultWaitTime())
+
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto()).to.equal("Lukion oppimäärä")
