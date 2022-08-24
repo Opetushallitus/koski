@@ -4,6 +4,8 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.koskiuser.MockUsers.omniaKatselija
 import fi.oph.koski.log.LogUtils.HETU_MASK
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
@@ -56,6 +58,27 @@ class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods 
           verifyResponseStatusOk()
           body should include("Eerola")
           AccessLogTester.getLatestMatchingAccessLog("/koski/api/henkilo/search") should include("/koski/api/henkilo/search?query=* HTTP")
+        }
+      }
+      "Does not allow access for user with read-only access" in {
+        AccessLogTester.clearMessages
+        authGet("api/henkilo/hetu/010101-123N", omniaKatselija) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu ilman muokkausoikeuksia"))
+        }
+      }
+    }
+    "POST hetu endpoint" - {
+      "Allow access for users with write access" in {
+        AccessLogTester.clearMessages
+        postHetu("010101-123N") {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Does not allow access for user with read-only access" in {
+        AccessLogTester.clearMessages
+        postHetu("010101-123N", omniaKatselija) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu ilman muokkausoikeuksia"))
         }
       }
     }
