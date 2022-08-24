@@ -9,7 +9,7 @@ trait KoskiSpecificAuthenticationSupport extends AuthenticationSupport with Kosk
   override def koskiSessionOption: Option[KoskiSpecificSession] =
     getUser.toOption.map(createSession)
 
-  def requireVirkailijaOrPalvelukäyttäjä = {
+  def requireVirkailijaOrPalvelukäyttäjä: AuthenticationUser = {
     getUser match {
       case Right(user) if user.kansalainen =>
         haltWithStatus(KoskiErrorCategory.forbidden.vainVirkailija())
@@ -21,6 +21,7 @@ trait KoskiSpecificAuthenticationSupport extends AuthenticationSupport with Kosk
         if (session.hasLuovutuspalveluAccess || session.hasTilastokeskusAccess || session.hasKelaAccess || session.hasYtlAccess || session.hasValviraAccess) {
           haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
         }
+        user
       case Left(error) =>
         haltWithStatus(error)
     }
@@ -38,4 +39,10 @@ trait KoskiSpecificAuthenticationSupport extends AuthenticationSupport with Kosk
   }
 
   def createSession(user: AuthenticationUser): KoskiSpecificSession = KoskiSpecificSession(user, request, application.käyttöoikeusRepository)
+
+  def requireMuokkausoikeus(): Unit = {
+    if (!createSession(requireVirkailijaOrPalvelukäyttäjä).hasAnyWriteAccess) {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu ilman muokkausoikeuksia"))
+    }
+  }
 }
