@@ -40,6 +40,7 @@ class RaportitService(application: KoskiApplication) {
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenOppijamäärätAikajaksovirheetRaportti = PerusopetuksenOppijamäärätAikajaksovirheetRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
+  private val ibSuoritustiedotRepository = IBSuoritustiedotRaporttiRepository(raportointiDatabase.db)
 
   def viimeisinOpiskeluoikeuspäivitystenVastaanottoaika: LocalDateTime = {
     val status = raportointiDatabase.status
@@ -313,6 +314,25 @@ class RaportitService(application: KoskiApplication) {
       sheets = Seq(perusopetuksenLisäopetuksenOppijamäärätRaportti.build(oppilaitosOids.toSeq, request.paiva, t)),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-perusopetuksenlisaopetus-vos-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-perusopetuksenlisaopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
+  def ibSuoritustiedot(request: IBSuoritustiedotRaporttiRequest, t: LocalizationReader)
+    (implicit u: KoskiSpecificSession): OppilaitosRaporttiResponse = {
+    OppilaitosRaporttiResponse(
+      sheets = Seq(
+        IBSuoritustiedotRaportti(ibSuoritustiedotRepository, t)
+          .build(
+            request.oppilaitosOid,
+            request.alku,
+            request.loppu,
+            request.osasuoritustenAikarajaus,
+            request.raportinTyyppi
+          )
+      ),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-ib-suoritustiedot-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-ib-suoritustiedot-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
     )
   }

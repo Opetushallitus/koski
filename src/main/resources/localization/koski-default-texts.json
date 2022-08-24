@@ -1552,6 +1552,8 @@
   "raportti-excel-luva-opiskelijamäärät-tiedoston-etuliite": "lukioon_valmistavan_koulutuksen_opiskelijamaarat",
   "raportti-excel-paallekkaiset-opiskeluoikeudet-tiedoston-etuliite": "paallekkaiset_opiskeluoikeudet",
   "raportti-excel-paallekkaiset-opiskeluoikeudet-sheet-name": "Päällekkäiset opiskeluoikeudet",
+  "raportti-excel-ib-suoritustiedot-title": "IB-opiskeluoikeuksien suoritustietojen tarkistusraportti",
+  "raportti-excel-ib-suoritustiedot-tiedoston-etuliite": "ib_suoritustiedot",
   "raportti-excel-opiskelijamäärä-sheet-name": "Opiskelijamäärät",
   "raportti-excel-oppimäärä-sheet-name": "Oppimäärä",
   "raportti-excel-suoritukset-sheet-name": "Suoritukset",
