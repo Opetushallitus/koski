@@ -8,6 +8,7 @@ import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
+import fi.oph.koski.raportit.esiopetus.{EsiopetusRaportti, EsiopetusRaporttiRow, EsiopetusRaporttiService}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.scalatest.BeforeAndAfterAll

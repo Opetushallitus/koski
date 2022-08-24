@@ -10,6 +10,7 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, päiväkotiTouhula, tornionKaupunki}
+import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätRaportti, EsiopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, EsiopetuksenOpiskeluoikeudenLisätiedot, EsiopetuksenOpiskeluoikeus}
 import fi.oph.koski.schema.Organisaatio.Oid

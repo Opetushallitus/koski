@@ -6,9 +6,11 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.raportit.aikuistenperusopetus._
+import fi.oph.koski.raportit.esiopetus.EsiopetuksenOppijamäärätRaportti
 import fi.oph.koski.raportit.lukio.LukioOppiaineenOppimaaranKurssikertymat.{AikuistenOppimäärä, NuortenOppimäärä}
 import fi.oph.koski.raportit.lukio._
 import fi.oph.koski.raportit.lukio.lops2021._
+import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätRaportti, PerusopetuksenRaportitRepository, PerusopetuksenVuosiluokkaRaportti}
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 

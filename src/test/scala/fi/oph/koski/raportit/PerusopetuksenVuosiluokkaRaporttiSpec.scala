@@ -11,6 +11,7 @@ import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.raportit.perusopetus.{PerusopetuksenRaportitRepository, PerusopetuksenVuosiluokkaRaportti, PerusopetusRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import org.scalatest.BeforeAndAfterAll

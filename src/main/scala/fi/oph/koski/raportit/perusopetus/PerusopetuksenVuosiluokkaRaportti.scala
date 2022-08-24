@@ -1,15 +1,17 @@
-package fi.oph.koski.raportit
+package fi.oph.koski.raportit.perusopetus
 
-import java.sql.Date
-import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
+import fi.oph.koski.log.Logging
+import fi.oph.koski.raportit.{Column, CompactColumn, VuosiluokkaRaporttiPaivalta}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema.{Koodistokoodiviite, _}
-import org.json4s.JValue
-import fi.oph.koski.log.Logging
+import fi.oph.koski.schema._
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
+import org.json4s.JValue
+
+import java.sql.Date
+import java.time.LocalDate
 
 object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta with Logging {
 

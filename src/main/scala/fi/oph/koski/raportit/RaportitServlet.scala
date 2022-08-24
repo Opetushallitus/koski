@@ -11,6 +11,7 @@ import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.raportit.aikuistenperusopetus.AikuistenPerusopetusRaportti
 import fi.oph.koski.organisaatio.{Kaikki, OrganisaatioHierarkia, OrganisaatioOid}
+import fi.oph.koski.raportit.esiopetus.EsiopetusRaporttiService
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}

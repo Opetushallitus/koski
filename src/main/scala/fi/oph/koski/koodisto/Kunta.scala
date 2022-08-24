@@ -1,6 +1,6 @@
 package fi.oph.koski.koodisto
 
-import fi.oph.koski.raportit.PerusopetuksenVuosiluokkaRaportti.logger
+import fi.oph.koski.raportit.perusopetus.PerusopetuksenVuosiluokkaRaportti.logger
 import fi.oph.koski.log.Logging
 
 class Kunta

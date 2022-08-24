@@ -12,6 +12,7 @@ import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
+import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätRaportti, PerusopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
 import org.scalatest.BeforeAndAfterAll
