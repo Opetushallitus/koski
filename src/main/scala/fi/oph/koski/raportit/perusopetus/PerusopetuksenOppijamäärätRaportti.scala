@@ -1,17 +1,17 @@
 package fi.oph.koski.raportit.perusopetus
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.db.{DB, QueryMethods}
+import fi.oph.koski.db.{DB, QueryMethods, SQLHelpers}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportit.{Column, DataSheet}
-import slick.jdbc.GetResult
+import slick.jdbc.{GetResult}
 
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
-case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends QueryMethods {
+case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends PerusopetuksenOppijamääristäRaportoiva {
   implicit private val getResult: GetResult[PerusopetuksenOppijamäärätRaporttiRow] = GetResult(r =>
     PerusopetuksenOppijamäärätRaporttiRow(
       oppilaitosNimi = r.rs.getString("oppilaitos_nimi"),
@@ -46,7 +46,9 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
   private def query(oppilaitosOids: Seq[String], date: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val kaikkiVuosiluokatLokalisoituTeksti = t.get("raportti-excel-default-value-kaikki-vuosiluokat")
     val nimiSarake = if(t.language == "sv") "nimi_sv" else "nimi"
-    sql"""
+
+    SQLHelpers.concatMany(
+Some(sql"""
     with q as (
       select
         oppilaitos.#$nimiSarake as oppilaitos_nimi,
@@ -57,7 +59,11 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         count(distinct (case when not kotiopetus and r_henkilo.aidinkieli not in ('fi', 'sv', 'se', 'ri', 'vk') then oo.opiskeluoikeus_oid end)) as vieraskielisiä,
         count(distinct (case when not kotiopetus and erityinen_tuki and not vammainen and vaikeasti_vammainen and pidennetty_oppivelvollisuus then oo.opiskeluoikeus_oid end)) as pidOppivelvollisuusEritTukiJaVaikeastiVammainen,
         count(distinct (case when not kotiopetus and erityinen_tuki and vammainen and not vaikeasti_vammainen and pidennetty_oppivelvollisuus then oo.opiskeluoikeus_oid end)) as pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen,
-        count(distinct (case when not kotiopetus and ((vaikeasti_vammainen and vammainen) or (pidennetty_oppivelvollisuus and (not erityinen_tuki or (not vaikeasti_vammainen and not vammainen))) or (not pidennetty_oppivelvollisuus and (vaikeasti_vammainen or vammainen))) then oo.opiskeluoikeus_oid end)) as virheellisestiSiirrettyjaTukitietoja,
+        count(distinct (case when
+"""),
+virheellisestiSiirrettyjäTukitietojaEhtoSqlPart,
+Some(sql"""
+          then oo.opiskeluoikeus_oid end)) as virheellisestiSiirrettyjaTukitietoja,
         count(distinct (case when not kotiopetus and erityinen_tuki then oo.opiskeluoikeus_oid end)) as erityiselläTuella,
         count(distinct (case when not kotiopetus and majoitusetu then oo.opiskeluoikeus_oid end)) as majoitusetu,
         count(distinct (case when not kotiopetus and kuljetusetu then oo.opiskeluoikeus_oid end)) as kuljetusetu,
@@ -65,27 +71,9 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
         count(distinct (case when not kotiopetus and koulukoti then oo.opiskeluoikeus_oid end)) as koulukoti,
         count(distinct (case when not kotiopetus and joustava_perusopetus then oo.opiskeluoikeus_oid end)) as joustava_perusopetus,
         count(distinct (case when kotiopetus then oo.opiskeluoikeus_oid end)) as kotiopetus
-      from r_opiskeluoikeus oo
-      join r_organisaatiohistoria oh on oh.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-      join r_organisaatio oppilaitos on oppilaitos.organisaatio_oid = oh.oppilaitos_oid
-      join r_henkilo on r_henkilo.oppija_oid = oo.oppija_oid
-      join r_paatason_suoritus pts on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-      join r_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-      left join r_organisaatio_kieli on r_organisaatio_kieli.organisaatio_oid = oh.oppilaitos_oid
-      left join r_koodisto_koodi opetuskieli_koodisto
-        on opetuskieli_koodisto.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
-        and opetuskieli_koodisto.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)
-      where oh.oppilaitos_oid = any(${oppilaitosOids})
-        and oh.alku <= $date
-        and oh.loppu >= $date
-        and oo.koulutusmuoto = 'perusopetus'
-        and (pts.vahvistus_paiva is null or pts.vahvistus_paiva > $date)
-        and pts.alkamispaiva <= $date
-        and pts.koulutusmoduuli_koodiarvo in ('1', '2', '3', '4', '5', '6', '7', '8', '9')
-        and aikajakso.alku <= $date
-        and aikajakso.loppu >= $date
-        and aikajakso.tila = 'lasna'
-        and oo.sisaltyy_opiskeluoikeuteen_oid is null
+"""),
+fromJoinWhereSqlPart(oppilaitosOids, date),
+Some(sql"""
       group by oppilaitos.#$nimiSarake, oh.oppilaitos_oid, opetuskieli_koodisto.#$nimiSarake, pts.koulutusmoduuli_koodiarvo
     ), totals as (
       select * from q
@@ -112,7 +100,7 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
     ) select *
     from totals
     order by oppilaitos_nimi, oppilaitos_oid, vuosiluokka
-  """
+  """))
   }
 
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(

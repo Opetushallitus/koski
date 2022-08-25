@@ -5,6 +5,7 @@ import fi.oph.koski.documentation.{PerusopetusExampleData, Yleissivistavakoulutu
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, seitsemännenLuokanLuokallejääntiSuoritus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa
 import fi.oph.koski.henkilo.VerifiedHenkilöOid
+import fi.oph.koski.http.HttpStatus
 
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
@@ -14,7 +15,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätRaportti, PerusopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
+import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, Opiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -23,38 +24,48 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
 {
   private val raportointipäivä = date(2012, 1, 1)
 
+  var rikkinäisetOpiskeluoikeusOidit: Seq[Opiskeluoikeus.Oid] = Seq()
+
   override protected def alterFixture(): Unit = {
     // Lisää validointien osalta rikkinäisiä opiskeluoikeuksia suoraan tietokantaan, koska raportti kertoo
     // rikkinäisyyksistä.
 
-    testiOpiskeluoikeudet.map(oo => {
+    def create(oo: PerusopetuksenOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus.Oid] = {
       val createResult = application.opiskeluoikeusRepository.createOrUpdate(
         oppijaOid = VerifiedHenkilöOid(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa),
         opiskeluoikeus = oo,
         allowUpdate = false
       )(session(defaultUser))
       createResult.map(_.created) should be(Right(true))
-    })
+      createResult.map(_.oid)
+    }
+
+    eiRikkinäinäRaportoitavatTestiopiskeluoikeudet.map(create)
+    rikkinäisetOpiskeluoikeusOidit = rikkinäisetTestiopiskeluoikeudet.map(create).map(_.getOrElse(throw new Error))
 
     application.perustiedotIndexer.sync(refresh = true)
     reloadRaportointikanta
   }
 
-  private val testiOpiskeluoikeudet =
+  private val eiRikkinäinäRaportoitavatTestiopiskeluoikeudet =
     List(
-      ehjäPidennettyOppivelvollisuusTarvittavienTietojenKanssaOpiskeluoikeus,
       rikkinäinenMuttaRaportoidaanVainKotiopetuksenaPidennettyOppivelvollisuusOpiskeluoikeus,
+      ehjäPidennettyOppivelvollisuusTarvittavienTietojenKanssaOpiskeluoikeus,
+      ehjäPelkkäErityinenTukiOpiskeluoikeus
+    )
+
+  private val rikkinäisetTestiopiskeluoikeudet =
+    List(
       rikkinäinenPelkkäPidennettyOppivelvollisuusOpiskeluoikeus,
       rikkinäinenPidennettyOppivelvollisuusIlmanVammaisuuttaOpiskeluoikeus,
       rikkinäinenPidennettyOppivelvollisuusIlmanErityisenTuenPäätöstäOpiskeluoikeus,
       rikkinäinenPelkkäVaikeastiVammaisuusOpiskeluoikeus,
       rikkinäinenPelkkäVammaisuusOpiskeluoikeus,
       rikkinäinenPäällekäisetVammaisuudetOpiskeluoikeus,
-      ehjäPelkkäErityinenTukiOpiskeluoikeus
     )
 
   private val ylimääräisetKotiopetusLkm = 1
-  private val ylimääräisetLkm = testiOpiskeluoikeudet.length - ylimääräisetKotiopetusLkm
+  private val ylimääräisetLkm = eiRikkinäinäRaportoitavatTestiopiskeluoikeudet.length + rikkinäisetTestiopiskeluoikeudet.length - ylimääräisetKotiopetusLkm
   private val ylimääräisetErityiselläTuellaOpiskeluoikeudet = 4
   private val ylimääräisetVaikeastiVammaisetLkm = 0
   private val ylimääräisetMuuKuinVaikeastiVammaisetLkm = 1
@@ -177,11 +188,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
   private def session(user: KoskiMockUser) = user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 
   private val application = KoskiApplicationForTests
-  private val raporttiBuilder = PerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
-  private lazy val raportti = raporttiBuilder
-    .build(Seq(jyväskylänNormaalikoulu), raportointipäivä, t)(session(defaultUser))
-    .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
 
   "Perusopetuksen oppijamäärien raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
@@ -215,84 +222,89 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         )
       }
     }
-
-    "Raportin sarakkeet" in {
-      val rows = raportti.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
-      rows.length should be(4)
-      rows.toList should equal(List(
-        PerusopetuksenOppijamäärätRaporttiRow(
-          oppilaitosNimi = "Jyväskylän normaalikoulu",
-          organisaatioOid = "1.2.246.562.10.14613773812",
-          opetuskieli = "suomi",
-          vuosiluokka = "6",
-          oppilaita = 2,
-          vieraskielisiä = 0,
-          pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 0,
-          pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 0,
-          virheellisestiSiirrettyjaTukitietoja = 0,
-          erityiselläTuella = 0,
-          majoitusetu = 0,
-          kuljetusetu = 0,
-          sisäoppilaitosmainenMajoitus = 0,
-          koulukoti = 0,
-          joustavaPerusopetus = 0,
-          kotiopetus = 1
-        ),
-        PerusopetuksenOppijamäärätRaporttiRow(
-          oppilaitosNimi = "Jyväskylän normaalikoulu",
-          organisaatioOid = "1.2.246.562.10.14613773812",
-          opetuskieli = "suomi",
-          vuosiluokka = "7",
-          oppilaita = 2,
-          vieraskielisiä = 1,
-          pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 1,
-          pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 1,
-          virheellisestiSiirrettyjaTukitietoja = 0,
-          erityiselläTuella = 2,
-          majoitusetu = 1,
-          kuljetusetu = 1,
-          sisäoppilaitosmainenMajoitus = 1,
-          koulukoti = 1,
-          joustavaPerusopetus = 1,
-          kotiopetus = 0
-        ),
-        PerusopetuksenOppijamäärätRaporttiRow(
-          oppilaitosNimi = "Jyväskylän normaalikoulu",
-          organisaatioOid = "1.2.246.562.10.14613773812",
-          opetuskieli = "suomi",
-          vuosiluokka = "8",
-          oppilaita = 1 + ylimääräisetLkm,
-          vieraskielisiä = 0,
-          pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 1 + ylimääräisetVaikeastiVammaisetLkm,
-          pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 0 + ylimääräisetMuuKuinVaikeastiVammaisetLkm,
-          virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
-          erityiselläTuella = 1 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
-          majoitusetu = 1,
-          kuljetusetu = 1,
-          sisäoppilaitosmainenMajoitus = 1,
-          koulukoti = 1,
-          joustavaPerusopetus = 1,
-          kotiopetus = 0 + ylimääräisetKotiopetusLkm
-        ),
-        PerusopetuksenOppijamäärätRaporttiRow(
-          oppilaitosNimi = "Jyväskylän normaalikoulu",
-          organisaatioOid = "1.2.246.562.10.14613773812",
-          opetuskieli = "suomi",
-          vuosiluokka = "Kaikki vuosiluokat yhteensä",
-          oppilaita = 5 + ylimääräisetLkm,
-          vieraskielisiä = 1,
-          pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 2 + ylimääräisetVaikeastiVammaisetLkm,
-          pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 1 + ylimääräisetMuuKuinVaikeastiVammaisetLkm,
-          virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
-          erityiselläTuella = 3 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
-          majoitusetu = 2,
-          kuljetusetu = 2,
-          sisäoppilaitosmainenMajoitus = 2,
-          koulukoti = 2,
-          joustavaPerusopetus = 2,
-          kotiopetus = 1 + ylimääräisetKotiopetusLkm
-        )
-      ))
-    }
   }
+
+  "Perusopetuksen oppijamäärien raportti - päävälilehti" in {
+    val rows = perusopetuksenOppijamäärätRaportti.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
+    rows.length should be(4)
+    rows.toList should equal(List(
+      PerusopetuksenOppijamäärätRaporttiRow(
+        oppilaitosNimi = "Jyväskylän normaalikoulu",
+        organisaatioOid = "1.2.246.562.10.14613773812",
+        opetuskieli = "suomi",
+        vuosiluokka = "6",
+        oppilaita = 2,
+        vieraskielisiä = 0,
+        pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 0,
+        pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 0,
+        virheellisestiSiirrettyjaTukitietoja = 0,
+        erityiselläTuella = 0,
+        majoitusetu = 0,
+        kuljetusetu = 0,
+        sisäoppilaitosmainenMajoitus = 0,
+        koulukoti = 0,
+        joustavaPerusopetus = 0,
+        kotiopetus = 1
+      ),
+      PerusopetuksenOppijamäärätRaporttiRow(
+        oppilaitosNimi = "Jyväskylän normaalikoulu",
+        organisaatioOid = "1.2.246.562.10.14613773812",
+        opetuskieli = "suomi",
+        vuosiluokka = "7",
+        oppilaita = 2,
+        vieraskielisiä = 1,
+        pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 1,
+        pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 1,
+        virheellisestiSiirrettyjaTukitietoja = 0,
+        erityiselläTuella = 2,
+        majoitusetu = 1,
+        kuljetusetu = 1,
+        sisäoppilaitosmainenMajoitus = 1,
+        koulukoti = 1,
+        joustavaPerusopetus = 1,
+        kotiopetus = 0
+      ),
+      PerusopetuksenOppijamäärätRaporttiRow(
+        oppilaitosNimi = "Jyväskylän normaalikoulu",
+        organisaatioOid = "1.2.246.562.10.14613773812",
+        opetuskieli = "suomi",
+        vuosiluokka = "8",
+        oppilaita = 1 + ylimääräisetLkm,
+        vieraskielisiä = 0,
+        pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 1 + ylimääräisetVaikeastiVammaisetLkm,
+        pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 0 + ylimääräisetMuuKuinVaikeastiVammaisetLkm,
+        virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
+        erityiselläTuella = 1 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
+        majoitusetu = 1,
+        kuljetusetu = 1,
+        sisäoppilaitosmainenMajoitus = 1,
+        koulukoti = 1,
+        joustavaPerusopetus = 1,
+        kotiopetus = 0 + ylimääräisetKotiopetusLkm
+      ),
+      PerusopetuksenOppijamäärätRaporttiRow(
+        oppilaitosNimi = "Jyväskylän normaalikoulu",
+        organisaatioOid = "1.2.246.562.10.14613773812",
+        opetuskieli = "suomi",
+        vuosiluokka = "Kaikki vuosiluokat yhteensä",
+        oppilaita = 5 + ylimääräisetLkm,
+        vieraskielisiä = 1,
+        pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 2 + ylimääräisetVaikeastiVammaisetLkm,
+        pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 1 + ylimääräisetMuuKuinVaikeastiVammaisetLkm,
+        virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
+        erityiselläTuella = 3 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
+        majoitusetu = 2,
+        kuljetusetu = 2,
+        sisäoppilaitosmainenMajoitus = 2,
+        koulukoti = 2,
+        joustavaPerusopetus = 2,
+        kotiopetus = 1 + ylimääräisetKotiopetusLkm
+      )
+    ))
+  }
+
+  private val perusopetuksenOppijamäärätRaporttiBuilder = PerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private lazy val perusopetuksenOppijamäärätRaportti = perusopetuksenOppijamäärätRaporttiBuilder
+    .build(Seq(jyväskylänNormaalikoulu), raportointipäivä, t)(session(defaultUser))
+    .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
 }

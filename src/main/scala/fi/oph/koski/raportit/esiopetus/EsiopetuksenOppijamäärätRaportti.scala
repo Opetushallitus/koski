@@ -1,18 +1,17 @@
 package fi.oph.koski.raportit.esiopetus
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.db.{DB, QueryMethods}
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.db.{DB, SQLHelpers}
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportit.{Column, DataSheet}
-import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import slick.jdbc.GetResult
 
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
-case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends QueryMethods {
+case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends EsiopetuksenOppijamääristäRaportoiva {
   implicit private val getResult: GetResult[EsiopetuksenOppijamäärätRaporttiRow] = GetResult(r =>
     EsiopetuksenOppijamäärätRaporttiRow(
       oppilaitosNimi = r.<<,
@@ -48,7 +47,8 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
     val oppilaitosNimiSarake = if(lang == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"
     val koodistoNimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
 
-    sql"""
+    SQLHelpers.concatMany(
+Some(sql"""
     select
       r_opiskeluoikeus.#$oppilaitosNimiSarake,
       r_koodisto_koodi.#$koodistoNimiSarake,
@@ -60,49 +60,20 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
       count(case when $year - extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = false then 1 end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
       count(case when erityisen_tuen_paatos and not vammainen and vaikeasti_vammainen and pidennetty_oppivelvollisuus then 1 end) as pidOppivelvollisuusEritTukiJaVaikeastiVammainen,
       count(case when erityisen_tuen_paatos and vammainen and not vaikeasti_vammainen and pidennetty_oppivelvollisuus then 1 end) as pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen,
-      count(case when ((vaikeasti_vammainen and vammainen) or (pidennetty_oppivelvollisuus and (not erityisen_tuen_paatos or (not vaikeasti_vammainen and not vammainen))) or (not pidennetty_oppivelvollisuus and (vaikeasti_vammainen or vammainen))) then 1 end) as virheellisestiSiirrettyjaTukitietoja,
+      count(case when
+"""),
+virheellisestiSiirrettyjäTukitietojaEhtoSqlPart,
+Some(sql"""
+        then 1 end) as virheellisestiSiirrettyjaTukitietoja,
       count(case when erityisen_tuen_paatos = true then 1 end) as erityiselläTuella,
       count(case when majoitusetu = true then 1 end) as majoitusetu,
       count(case when kuljetusetu = true then 1 end) as kuljetusetu,
       count(case when sisaoppilaitosmainen_majoitus = true then 1 end) as sisäoppilaitosmainenMajoitus
-    from r_opiskeluoikeus
-    join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
-    join esiopetus_opiskeluoik_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    join r_organisaatio_kieli on r_organisaatio_kieli.organisaatio_oid = oppilaitos_oid
-    join r_koodisto_koodi
-      on r_koodisto_koodi.koodisto_uri = split_part(r_organisaatio_kieli.kielikoodi, '_', 1)
-      and r_koodisto_koodi.koodiarvo = split_part(split_part(r_organisaatio_kieli.kielikoodi, '_', 2), '#', 1)
-    join r_organisaatio on r_organisaatio.organisaatio_oid = oppilaitos_oid
-    left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    where (r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOidit) or r_opiskeluoikeus.koulutustoimija_oid = any($oppilaitosOidit))
-      and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
-      and aikajakso.alku <= $päivä
-      and aikajakso.loppu >= $päivä
-      and aikajakso.tila = 'lasna'
-    -- access check
-      and (
-        #${(if (u.hasGlobalReadAccess) "true" else "false")}
-        or
-        r_opiskeluoikeus.oppilaitos_oid = any($käyttäjänOrganisaatioOidit)
-        or
-        (r_opiskeluoikeus.koulutustoimija_oid = any($käyttäjänKoulutustoimijaOidit))
-      )
+"""),
+fromJoinWhereSqlPart(oppilaitosOidit, päivä),
+Some(sql"""
     group by r_opiskeluoikeus.#$oppilaitosNimiSarake, r_koodisto_koodi.#$koodistoNimiSarake
-  """
-  }
-
-  private def käyttäjänOrganisaatioOidit(implicit u: KoskiSpecificSession) = u.organisationOids(AccessType.read).toSeq
-
-  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSpecificSession) = u.varhaiskasvatusKäyttöoikeudet.toSeq
-    .filter(_.organisaatioAccessType.contains(AccessType.read))
-    .map(_.koulutustoimija.oid)
-
-  private def validateOids(oppilaitosOids: List[String]) = {
-    val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
-    if (invalidOid.isDefined) {
-      throw new IllegalArgumentException(s"Invalid oppilaitos oid ${invalidOid.get}")
-    }
-    oppilaitosOids
+"""))
   }
 
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(

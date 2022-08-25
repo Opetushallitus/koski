@@ -3,6 +3,7 @@ package fi.oph.koski.raportit
 import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa
 import fi.oph.koski.henkilo.VerifiedHenkilöOid
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
@@ -31,36 +32,46 @@ class EsiopetuksenOppijamäärätRaporttiSpec
 
   private val raportointipäivä = date(2007, 1, 1)
 
+  var rikkinäisetOpiskeluoikeusOidit: Seq[Opiskeluoikeus.Oid] = Seq()
+
   override protected def alterFixture(): Unit = {
     // Lisää validointien osalta rikkinäisiä opiskeluoikeuksia suoraan tietokantaan, koska raportti kertoo
     // rikkinäisyyksistä.
 
-    testiOpiskeluoikeudet.map(oo => {
+    def create(oo: EsiopetuksenOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus.Oid] = {
       val createResult = application.opiskeluoikeusRepository.createOrUpdate(
         oppijaOid = VerifiedHenkilöOid(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa),
         opiskeluoikeus = oo,
         allowUpdate = false
       )(session(defaultUser))
       createResult.map(_.created) should be(Right(true))
-    })
+      createResult.map(_.oid)
+    }
+
+    ehjätTestiopiskeluoikeudet.map(create)
+    rikkinäisetOpiskeluoikeusOidit = rikkinäisetTestiopiskeluoikeudet.map(create).map(_.getOrElse(throw new Error))
 
     application.perustiedotIndexer.sync(refresh = true)
     reloadRaportointikanta
   }
 
-  private val testiOpiskeluoikeudet =
+  private val ehjätTestiopiskeluoikeudet =
     List(
       ehjäPidennettyOppivelvollisuusTarvittavienTietojenKanssaOpiskeluoikeus,
+      ehjäPelkkäErityinenTukiOpiskeluoikeus
+    )
+
+  private val rikkinäisetTestiopiskeluoikeudet =
+    List(
       rikkinäinenPelkkäPidennettyOppivelvollisuusOpiskeluoikeus,
       rikkinäinenPidennettyOppivelvollisuusIlmanVammaisuuttaOpiskeluoikeus,
       rikkinäinenPidennettyOppivelvollisuusIlmanErityisenTuenPäätöstäOpiskeluoikeus,
       rikkinäinenPelkkäVaikeastiVammaisuusOpiskeluoikeus,
       rikkinäinenPelkkäVammaisuusOpiskeluoikeus,
       rikkinäinenPäällekäisetVammaisuudetOpiskeluoikeus,
-      ehjäPelkkäErityinenTukiOpiskeluoikeus
     )
 
-  private val ylimääräisetLkm = testiOpiskeluoikeudet.length
+  private val ylimääräisetLkm = ehjätTestiopiskeluoikeudet.length + rikkinäisetTestiopiskeluoikeudet.length
   private val ylimääräisetErityiselläTuellaOpiskeluoikeudet = 4
   private val ylimääräisetVaikeastiVammaisetLkm = 0
   private val ylimääräisetMuuKuinVaikeastiVammaisetLkm = 1
@@ -156,15 +167,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec
     Aikajakso(raportointipäivä.minusDays(10), Some(raportointipäivä.plusDays(10)))
 
   private val application = KoskiApplicationForTests
-  private val raporttiBuilder = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
-  private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
-  private lazy val raportti =
-    raporttiBuilder.build(List(oppilaitosOid), raportointipäivä, t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
-  private lazy val ilmanOikeuksiaRaportti =
-    raporttiBuilder.build(List(oppilaitosOid), raportointipäivä, t)(session(tornioTallentaja)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
-  private lazy val tyhjäVuosiRaportti =
-    raporttiBuilder.build(List(oppilaitosOid), date(2012, 1, 1), t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
-  private val raporttiService = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private val t = new LocalizationReader(application.koskiLocalizationRepository, "fi")
 
   "Esiopetuksen oppijamäärien raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
@@ -184,9 +187,12 @@ class EsiopetuksenOppijamäärätRaporttiSpec
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetuksenoppijamaaratraportti&oppilaitosOid=$oppilaitosOid&paiva=2007-01-01&lang=sv")))
       }
     }
+  }
+
+  "Esiopetuksen oppijamäärien raportti - päävälilehti" - {
 
     "Raportin kolumnit" in {
-      lazy val r = findSingle(raportti)
+      lazy val r = findSingle(esiopetuksenOppijamäärätRaportti)
 
       r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
       r.opetuskieli should equal("suomi")
@@ -206,38 +212,47 @@ class EsiopetuksenOppijamäärätRaporttiSpec
     }
 
     "Haettu vuodelle, jona ei oppilaita" in {
-      tyhjäVuosiRaportti.length should be(0)
+      esiopetuksenOppijamäärätTyhjäVuosiRaportti.length should be(0)
     }
 
     "Ei näe muiden organisaatioiden raporttia" in {
-      ilmanOikeuksiaRaportti.length should be(0)
+      esiopetuksenOppijamäärätIlmanOikeuksiaRaportti.length should be(0)
     }
 
     "Varhaiskasvatuksen järjestäjä" - {
       "näkee vain omat opiskeluoikeutensa" in {
-        val tornionTekemäRaportti = buildRaportti(tornioTallentaja, päiväkotiTouhula)
+        val tornionTekemäRaportti = buildEsiopetuksenOppijamäärätRaportti(tornioTallentaja, päiväkotiTouhula)
         getOppilaitokset(tornionTekemäRaportti) should be(empty)
 
-        val helsinginTekemäRaportti = buildRaportti(helsinkiTallentaja, päiväkotiTouhula)
+        val helsinginTekemäRaportti = buildEsiopetuksenOppijamäärätRaportti(helsinkiTallentaja, päiväkotiTouhula)
         getOppilaitokset(helsinginTekemäRaportti) should equal(List("Päiväkoti Touhula"))
       }
 
       "voi hakea kaikki koulutustoimijan alla olevat tiedot" in {
-        val raportti = buildRaportti(helsinkiTallentaja, helsinginKaupunki)
+        val raportti = buildEsiopetuksenOppijamäärätRaportti(helsinkiTallentaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
       }
 
       "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
-        val raportti = buildRaportti(tornioTallentaja, tornionKaupunki)
+        val raportti = buildEsiopetuksenOppijamäärätRaportti(tornioTallentaja, tornionKaupunki)
         getOppilaitokset(raportti) should be(empty)
       }
 
       "globaaleilla käyttöoikeuksilla voi tehdä raportin" in {
-        val raportti = buildRaportti(MockUsers.paakayttaja, helsinginKaupunki)
+        val raportti = buildEsiopetuksenOppijamäärätRaportti(MockUsers.paakayttaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
       }
     }
   }
+
+  private val esiopetuksenOppijamäärätRaporttiBuilder = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private lazy val esiopetuksenOppijamäärätRaportti =
+    esiopetuksenOppijamäärätRaporttiBuilder.build(List(oppilaitosOid), raportointipäivä, t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+  private lazy val esiopetuksenOppijamäärätIlmanOikeuksiaRaportti =
+    esiopetuksenOppijamäärätRaporttiBuilder.build(List(oppilaitosOid), raportointipäivä, t)(session(tornioTallentaja)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+  private lazy val esiopetuksenOppijamäärätTyhjäVuosiRaportti =
+    esiopetuksenOppijamäärätRaporttiBuilder.build(List(oppilaitosOid), date(2012, 1, 1), t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+  private val esiopetuksenOppijamäärätRaporttiService = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
 
   private def findSingle(rows: Seq[EsiopetuksenOppijamäärätRaporttiRow]) = {
     val found = rows.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
@@ -245,8 +260,8 @@ class EsiopetuksenOppijamäärätRaporttiSpec
     found.head
   }
 
-  private def buildRaportti(user: KoskiMockUser, organisaatio: Oid) =
-    raporttiService.build(List(organisaatio), raportointipäivä, t)(session(user))
+  private def buildEsiopetuksenOppijamäärätRaportti(user: KoskiMockUser, organisaatio: Oid) =
+    esiopetuksenOppijamäärätRaporttiService.build(List(organisaatio), raportointipäivä, t)(session(user))
 
   private def getOppilaitokset(raportti: DataSheet) = {
     getRows(raportti).map(_.oppilaitosNimi).sorted
