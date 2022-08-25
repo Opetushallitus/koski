@@ -4,6 +4,7 @@ import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.Koodistokoodiviite
 
 class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with Logging {
   private val http = Http(virkailijaUrl, "koodisto")
@@ -51,6 +52,9 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
       case (status, text, uri) => throw HttpStatusException(status, text, uri)
     })
   }
+
+  def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) =
+    Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
 
   private def noCache = uri"?noCache=${System.currentTimeMillis()}"
 

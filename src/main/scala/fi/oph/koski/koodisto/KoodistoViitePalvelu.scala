@@ -12,7 +12,7 @@ import scala.reflect.runtime.universe.TypeTag
 case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
   private val koodiviiteCache = KeyValueCache(RefreshingCache("KoodistoViitePalvelu", 1.hour, 100), { koodisto: KoodistoViite =>
     val koodit: List[KoodistoKoodi] = koodistoPalvelu.getKoodistoKoodit(koodisto)
-    koodit.map(toKoodiviite(koodisto))
+    koodit.map(koodistoPalvelu.toKoodiviite(koodisto))
   })
 
   def getKoodistoKoodiViitteet(koodisto: KoodistoViite): List[Koodistokoodiviite] = {
@@ -25,7 +25,7 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
       parent <- koodistoPalvelu.getKoodistoKoodit(parentKoodisto).find(_.koodiArvo == parentViite.koodiarvo)
       koodit: List[KoodistoKoodi] <- Some(koodistoPalvelu.getKoodistoKoodit(koodisto))
     } yield {
-      koodit.filter(_.hasParent(parent)).map(toKoodiviite(koodisto))
+      koodit.filter(_.hasParent(parent)).map(koodistoPalvelu.toKoodiviite(koodisto))
     }
   }
 
@@ -42,6 +42,9 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
 
     val viite = koodistoViite.flatMap { v =>
       val koodiviitteet = getKoodistoKoodiViitteet(v)
+      // Huom. koodiviitteet sisältävät duplikaatteja koodiarvoja vain lokaalissa kehitysympäristössä.
+      // Tällöin koodiviitteen koodistoVersio-kenttä erottaa saman koodiston sisällä olevat duplikaattiarvot toisistaan.
+      // Katso esim. koodistokoodiarvo koulutus/351301
       koodiviitteet.find(k => k.koodiarvo == input.koodiarvo && k.koodistoVersio == input.koodistoVersio).orElse(
         koodiviitteet.find(k => k.koodiarvo == input.koodiarvo)
       )
@@ -65,9 +68,6 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
   def validateRequired(input: Koodistokoodiviite) = {
     validate(input).getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ei löydy koodistosta: " + input)))
   }
-
-  private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) =
-    Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodi.versio))
 }
 
 object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(MockKoodistoPalvelu())(GlobalCacheManager) {

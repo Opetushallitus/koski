@@ -2,6 +2,7 @@ package fi.oph.koski.koodisto
 import fi.oph.koski.cache.{Cached, GlobalCacheManager}
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.koodisto.MockKoodistoPalvelu._
+import fi.oph.koski.schema.Koodistokoodiviite
 
 private class MockKoodistoPalvelu extends KoodistoPalvelu {
   def getKoodistoKoodit(koodisto: KoodistoViite): List[KoodistoKoodi] = {
@@ -20,6 +21,9 @@ private class MockKoodistoPalvelu extends KoodistoPalvelu {
   }
 
   def getLatestVersionOptional(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
+
+  def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) =
+    Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodi.versio))
 }
 
 

@@ -2,6 +2,7 @@ package fi.oph.koski.koodisto
 
 import com.typesafe.config.Config
 import fi.oph.koski.cache.{CacheManager, CachingProxy, RefreshingCache}
+import fi.oph.koski.schema.Koodistokoodiviite
 
 import scala.concurrent.duration.DurationInt
 
@@ -27,4 +28,5 @@ trait KoodistoPalvelu {
     getLatestVersionOptional(koodistoUri).getOrElse(throw new RuntimeException(s"Koodistoa ei löydy: $koodistoUri"))
   }
   def getLatestVersionOptional(koodistoUri: String): Option[KoodistoViite]
+  def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi): Koodistokoodiviite
 }
