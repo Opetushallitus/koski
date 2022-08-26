@@ -181,6 +181,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     writeExcel(resp, t)
   }
 
+  get("/valmistavansuoritustietojentarkistus") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus)
+    val parsedRequest = parseAikajaksoRaporttiAikarajauksellaRequest
+    val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=valmistavansuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&lang=${parsedRequest.lang}")))
+    writeExcel(raportitService.valmistavanopetuksenraportti(parsedRequest, t), t)
+  }
+
   get("/esiopetuksenoppijamaaratraportti") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.esiopetus)
     val parsedRequest = parseRaporttiPäivältäRequest

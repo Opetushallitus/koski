@@ -41,6 +41,7 @@ class RaportitService(application: KoskiApplication) {
   private val perusopetuksenOppijamäärätAikajaksovirheetRaportti = PerusopetuksenOppijamäärätAikajaksovirheetRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val ibSuoritustiedotRepository = IBSuoritustiedotRaporttiRepository(raportointiDatabase.db)
+  private val perusopetukseenValmistavanRepository = PerusopetukseenValmistavanRaportitRepository(raportointiDatabase.db)
 
   def viimeisinOpiskeluoikeuspäivitystenVastaanottoaika: LocalDateTime = {
     val status = raportointiDatabase.status
@@ -113,6 +114,21 @@ class RaportitService(application: KoskiApplication) {
 
   def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest, t: LocalizationReader): OppilaitosRaporttiResponse = {
     perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokkaRaportti, t)
+  }
+
+  def valmistavanopetuksenraportti(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
+    val valmistavanRaportti = PerusopetukseenValmistavanRaportti(perusopetukseenValmistavanRepository, t)
+    val raportti = valmistavanRaportti
+      .buildRows(Seq(request.oppilaitosOid), request.alku, request.loppu, t)
+
+    OppilaitosRaporttiResponse(
+      sheets = Seq(valmistavanRaportti.buildDataSheet(raportti)),
+      workbookSettings = WorkbookSettings(
+        s"${t.get("raportti-excel-valmistava-opetus-title")}_${request.oppilaitosOid}", Some(request.password)
+      ),
+      filename = s"${t.get("valmistavaopetus_koski_raportti")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken
+    )
   }
 
   def lukioraportti(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
