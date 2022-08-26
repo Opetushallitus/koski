@@ -11,9 +11,9 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, päiväkotiTouhula, tornionKaupunki}
-import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätRaportti, EsiopetuksenOppijamäärätRaporttiRow}
+import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätAikajaksovirheetRaportti, EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow, EsiopetuksenOppijamäärätRaportti, EsiopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, EsiopetuksenOpiskeluoikeudenLisätiedot, EsiopetuksenOpiskeluoikeus}
+import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, EsiopetuksenOpiskeluoikeudenLisätiedot, EsiopetuksenOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
@@ -272,6 +272,34 @@ class EsiopetuksenOppijamäärätRaporttiSpec
       case r: EsiopetuksenOppijamäärätRaporttiRow => r
     }.toList
   }
+
+  "Esiopetuksen oppijamäärien raportti - aikajaksovirheet" - {
+
+    "Raportin kolumnit" in {
+      val r = findRows(esiopetuksenOppijamäärätAikajaksovirheetRaportti)
+      r.length should be(rikkinäisetYlimääräisetLkm)
+
+      val expectedRows: Seq[EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow] =
+        rikkinäisetOpiskeluoikeusOidit.map(opiskeluoikeusOid =>
+          EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow(
+            oppilaitosNimi = "Jyväskylän normaalikoulu",
+            oppijaOid = vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid,
+            opiskeluoikeusOid = opiskeluoikeusOid
+          )
+      ).sortBy(_.opiskeluoikeusOid)
+
+      r should be(expectedRows)
+    }
+  }
+
+  private def findRows(rows: Seq[EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow]) = {
+    val found = rows.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
+    found
+  }
+
+  private val esiopetuksenOppijamäärätAikajaksovirheetRaporttiBuilder = EsiopetuksenOppijamäärätAikajaksovirheetRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private lazy val esiopetuksenOppijamäärätAikajaksovirheetRaportti =
+    esiopetuksenOppijamäärätAikajaksovirheetRaporttiBuilder.build(List(oppilaitosOid), raportointipäivä, t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow])
 
   private def session(user: KoskiMockUser): KoskiSpecificSession = user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 }
