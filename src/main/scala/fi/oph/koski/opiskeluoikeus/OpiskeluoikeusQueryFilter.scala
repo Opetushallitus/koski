@@ -1,51 +1,165 @@
 package fi.oph.koski.opiskeluoikeus
-import java.time.format.DateTimeParseException
-import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
-
+import fi.oph.koski.db.KoskiTables.{HenkilöTable, OpiskeluoikeusTable}
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{Luokkahaku, Nimihaku, SuoritusJsonHaku, _}
-import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioOid, OrganisaatioRepository, OrganisaatioService}
-import fi.oph.koski.perustiedot.VarhaiskasvatusToimipistePerustiedot
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
+import fi.oph.koski.organisaatio.{OrganisaatioOid, OrganisaatioService}
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
+import fi.oph.koski.servlet.InvalidRequestException
 import org.json4s.JsonAST.JValue
-import org.json4s.jackson.JsonMethods
+import org.json4s.jackson.{JsonMethods, parseJson}
 import org.scalatra.MultiParams
+import slick.lifted.{CanBeQueryCondition, Query, Rep}
 
+import java.sql.{Date, Timestamp}
+import java.time.format.DateTimeParseException
+import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import scala.util.{Failure, Success, Try}
 
-sealed trait OpiskeluoikeusQueryFilter
+sealed trait OpiskeluoikeusQueryFilterBase {
+  def composeWith(query: QueryType)(implicit wt: CanBeQueryCondition[Rep[Option[Boolean]]]): QueryType
+  def requiresHenkilötiedot: Boolean = false
+}
+
+trait OpiskeluoikeusQueryFilter extends OpiskeluoikeusQueryFilterBase {
+  def composeWith(query: QueryType)(implicit wt: CanBeQueryCondition[Rep[Option[Boolean]]]): QueryType =
+    query.filter(f => predicate(f._1))
+
+  def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]]
+}
+
+trait HenkilöQueryFilter extends OpiskeluoikeusQueryFilterBase {
+  override def requiresHenkilötiedot: Boolean = true
+
+  def composeWith(query: QueryType)(implicit wt: CanBeQueryCondition[Rep[Option[Boolean]]]): QueryType =
+    query.filter(f => predicate(f._2, f._3))
+
+  def predicate(henkilö: HenkilöTable, slave: Rep[Option[HenkilöTable]]): Rep[Option[Boolean]]
+}
+
+trait UnimplementedOpiskeluoikeusQueryFilter extends OpiskeluoikeusQueryFilterBase {
+  override def composeWith(query: QueryType)(implicit wt: CanBeQueryCondition[Rep[Option[Boolean]]]): QueryType =
+    throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + this.getClass.getName))
+}
 
 object OpiskeluoikeusQueryFilter {
-  case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
-  case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
-  case class OpiskeluoikeusAlkanutAikaisintaan(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
-  case class OpiskeluoikeusAlkanutViimeistään(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
-  case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
-  case class OneOfOpiskeluoikeudenTyypit(opiskeluoikeudenTyypit: List[OpiskeluoikeudenTyyppi]) extends OpiskeluoikeusQueryFilter
-  case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
-  case class NotSuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
-  case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
-  case class Tutkintohaku(hakusana: String) extends OpiskeluoikeusQueryFilter
-  case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
-  case class VarhaiskasvatuksenToimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
-  case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter
-  case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
-  case class SuoritusJsonHaku(json: JValue) extends OpiskeluoikeusQueryFilter
-  case class IdHaku(ids: Seq[Int]) extends OpiskeluoikeusQueryFilter
-  case class OppijaOidHaku(oids: Seq[String]) extends OpiskeluoikeusQueryFilter
-  case class MuuttunutEnnen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
-  case class MuuttunutJälkeen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
-  case class Poistettu(poistettu: Boolean) extends OpiskeluoikeusQueryFilter
+  type Tables = (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])
+  type Rows = (OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])
+  type QueryType = Query[Tables, Rows, Seq]
 
-  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSpecificSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] =
+  def compose(
+    baseQuery: QueryType,
+    filters: Seq[OpiskeluoikeusQueryFilterBase]
+  ): QueryType = {
+    filters.foldLeft(baseQuery)((query, filter) => filter.composeWith(query))
+  }
+
+  case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.päättymispäivä >= Date.valueOf(päivä)
+  }
+
+  case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.päättymispäivä <= Date.valueOf(päivä)
+  }
+
+  case class OpiskeluoikeusAlkanutAikaisintaan(päivä: LocalDate) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.alkamispäivä.? >= Date.valueOf(päivä)
+  }
+
+  case class OpiskeluoikeusAlkanutViimeistään(päivä: LocalDate) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.alkamispäivä.? <= Date.valueOf(päivä)
+  }
+
+  case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.koulutusmuoto.? === tyyppi.koodiarvo
+  }
+
+  case class OneOfOpiskeluoikeudenTyypit(opiskeluoikeudenTyypit: List[OpiskeluoikeudenTyyppi]) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.koulutusmuoto.? inSet opiskeluoikeudenTyypit.map(_.tyyppi.koodiarvo)
+  }
+
+  case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.suoritustyypit.?.@>(List(tyyppi.koodiarvo))
+  }
+
+  case class NotSuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.suoritustyypit.?.@>(List(tyyppi.koodiarvo))
+  }
+
+  case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.data.?.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo
+  }
+
+  case class Tutkintohaku(hakusana: String) extends UnimplementedOpiskeluoikeusQueryFilter
+
+  case class Toimipiste(toimipisteet: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] = {
+      val matchers = toimipisteet.map { toimipiste =>
+        parseJson(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]""")
+      }
+      opiskeluoikeus.data.?.+>("suoritukset").@>(matchers.bind.any)
+    }
+  }
+
+  case class VarhaiskasvatuksenToimipiste(toimipiste: List[OrganisaatioWithOid]) extends UnimplementedOpiskeluoikeusQueryFilter
+
+  case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.luokka ilike (hakusana + "%")
+  }
+
+  case class Nimihaku(hakusana: String) extends UnimplementedOpiskeluoikeusQueryFilter
+
+  case class SuoritusJsonHaku(json: JValue) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.data.?.+>("suoritukset").@>(json)
+  }
+
+  case class IdHaku(ids: Seq[Int]) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.id.? inSetBind ids
+  }
+
+  case class OppijaOidHaku(oids: Seq[String]) extends HenkilöQueryFilter {
+    def predicate(henkilö: HenkilöTable, slave: Rep[Option[HenkilöTable]]): Rep[Option[Boolean]] =
+      (henkilö.oid inSetBind oids) || (slave.map(s => s.oid) inSetBind oids)
+  }
+
+  case class MuuttunutEnnen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.aikaleima.? < Timestamp.from(aikaleima)
+  }
+
+  case class MuuttunutJälkeen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.aikaleima.? >= Timestamp.from(aikaleima)
+  }
+
+  case class Poistettu(poistettu: Boolean) extends OpiskeluoikeusQueryFilter {
+    def predicate(opiskeluoikeus: OpiskeluoikeusTable): Rep[Option[Boolean]] =
+      opiskeluoikeus.poistettu.? === poistettu
+  }
+
+  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSpecificSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilterBase]] =
     OpiskeluoikeusQueryFilterParser.parse(params)
 }
 
 private object OpiskeluoikeusQueryFilterParser extends Logging {
-  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSpecificSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
+
+  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSpecificSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilterBase]] = {
     def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
       case (p, v) => try {
         Right(LocalDate.parse(v))
@@ -68,7 +182,7 @@ private object OpiskeluoikeusQueryFilterParser extends Logging {
       }
     }
 
-    val queryFilters: List[Either[HttpStatus, OpiskeluoikeusQueryFilter]] = params.filterNot { case (key, value) => List("sort", "pageSize", "pageNumber", "toimipisteNimi", "v").contains(key) }.map {
+    val queryFilters: List[Either[HttpStatus, OpiskeluoikeusQueryFilterBase]] = params.filterNot { case (key, value) => List("sort", "pageSize", "pageNumber", "toimipisteNimi", "v").contains(key) }.map {
       case (p, v +: _) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan)
       case (p, v +: _) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään)
       case (p, v +: _) if p == "opiskeluoikeusAlkanutAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusAlkanutAikaisintaan)

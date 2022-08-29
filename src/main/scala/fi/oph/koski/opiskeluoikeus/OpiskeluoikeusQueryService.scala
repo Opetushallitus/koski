@@ -44,7 +44,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
   }
 
   def opiskeluoikeusQuery(
-    filters: List[OpiskeluoikeusQueryFilter],
+    filters: List[OpiskeluoikeusQueryFilterBase],
     sorting: Option[SortOrder],
     paginationSettings: Option[PaginationSettings],
     queryPagination: QueryPagination = defaultPagination
@@ -109,39 +109,15 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     }
   }
 
-  private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder])(implicit user: KoskiSpecificSession) = {
+  private def mkQuery(filters: List[OpiskeluoikeusQueryFilterBase], sorting: Option[SortOrder])(implicit user: KoskiSpecificSession) = {
+    val requiresHenkilötiedot = filters.exists(_.requiresHenkilötiedot)
+    // TODO: Tiputa joinit pois, jos requiresHenkilötiedot on false
     val baseQuery = OpiskeluOikeudetWithAccessCheck
       .join(KoskiTables.Henkilöt).on(_.oppijaOid === _.oid)
       .joinLeft(KoskiTables.Henkilöt).on(_._2.masterOid === _.oid)
       .map(stuff => (stuff._1._1, stuff._1._2, stuff._2))
 
-    val query = filters.foldLeft(baseQuery) {
-      case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_._1.päättymispäivä >= Date.valueOf(päivä))
-      case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_._1.päättymispäivä <= Date.valueOf(päivä))
-      case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_._1.alkamispäivä >= Date.valueOf(päivä))
-      case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) => query.filter(_._1.alkamispäivä <= Date.valueOf(päivä))
-      case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_._1.koulutusmuoto === tyyppi.koodiarvo)
-      case (query, OneOfOpiskeluoikeudenTyypit(tyypit)) => query.filter(_._1.koulutusmuoto inSet tyypit.map(_.tyyppi.koodiarvo))
-      case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.suoritustyypit.@>(List(tyyppi.koodiarvo)))
-      case (query, NotSuorituksenTyyppi(tyyppi)) => query.filter(!_._1.suoritustyypit.@>(List(tyyppi.koodiarvo)))
-      case (query, Poistettu(poistettu)) => query.filter(d => d._1.poistettu === poistettu)
-      case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
-      case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
-        val matchers = toimipisteet.map { toimipiste =>
-          parseJson(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]""")
-        }
-        query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
-      case (query, Luokkahaku(hakusana)) =>
-        query.filter({ case t: (OpiskeluoikeusTable, HenkilöTable, _) => t._1.luokka ilike (hakusana + "%") })
-      case (query, IdHaku(ids)) => query.filter(_._1.id inSetBind ids)
-      case (query, OppijaOidHaku(oids)) => query.filter {
-        case (_, hlö, slave) => (hlö.oid inSetBind oids) || (slave.map(s => s.oid) inSetBind oids)
-      }
-      case (query, SuoritusJsonHaku(json)) => query.filter(_._1.data.+>("suoritukset").@>(json))
-      case (query, MuuttunutEnnen(aikaleima)) => query.filter(_._1.aikaleima < Timestamp.from(aikaleima))
-      case (query, MuuttunutJälkeen(aikaleima)) => query.filter(_._1.aikaleima >= Timestamp.from(aikaleima))
-      case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
-    }
+    val query = OpiskeluoikeusQueryFilter.compose(baseQuery, filters)
 
     def alkamispäivä(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = tuple._1.data.#>>(List("alkamispäivä"))
     def luokka(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = tuple._1.luokka

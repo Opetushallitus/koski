@@ -11,7 +11,7 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{NotSuorituksenTyyppi, Poistettu}
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryFilterBase, QueryOppijaHenkilö}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.SuorituksenTyyppi.vstvapaatavoitteinenkoulutus
 import fi.oph.koski.schema._
@@ -55,7 +55,7 @@ case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koski
     }
   }
 
-  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = {
+  private def query(filters: List[OpiskeluoikeusQueryFilterBase], paginationSettings: Option[PaginationSettings]): Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = {
     val groupedByOid = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings).tumblingBuffer(10)
     val oppijaStream = groupedByOid.flatMap { oppijatJaOidit: Seq[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] =>
       val oids: List[String] = oppijatJaOidit.map(_._1.oid).toList

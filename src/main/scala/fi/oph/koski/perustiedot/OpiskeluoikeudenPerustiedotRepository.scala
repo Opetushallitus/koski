@@ -9,7 +9,7 @@ import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, KäyttöoikeusVarhaiskasvatusToimipiste}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryFilterBase, OpiskeluoikeusQueryService}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
@@ -21,7 +21,7 @@ class OpiskeluoikeudenPerustiedotRepository(
   opiskeluoikeusQueryService: OpiskeluoikeusQueryService
 ) extends Logging {
 
-  def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSpecificSession): OpiskeluoikeudenPerustiedotResponse = {
+  def find(filters: List[OpiskeluoikeusQueryFilterBase], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSpecificSession): OpiskeluoikeudenPerustiedotResponse = {
     if (filters.exists(_.isInstanceOf[SuoritusJsonHaku])) {
       // JSON queries go to PostgreSQL
       OpiskeluoikeudenPerustiedotResponse(None, opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, Some(sorting), Some(pagination)).toList.toBlocking.last.map {
@@ -33,7 +33,7 @@ class OpiskeluoikeudenPerustiedotRepository(
     }
   }
 
-  private def findFromIndex(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSpecificSession): OpiskeluoikeudenPerustiedotResponse = {
+  private def findFromIndex(filters: List[OpiskeluoikeusQueryFilterBase], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSpecificSession): OpiskeluoikeudenPerustiedotResponse = {
     def nimi(order: String) = List(
       Map("henkilö.sukunimi.sort" -> order),
       Map("henkilö.etunimet.sort" -> order)

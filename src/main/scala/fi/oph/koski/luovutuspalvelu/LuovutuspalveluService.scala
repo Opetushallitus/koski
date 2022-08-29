@@ -7,7 +7,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, KoskiOperation}
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryFilterBase}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{OneOfOpiskeluoikeudenTyypit, OppijaOidHaku}
 import fi.oph.koski.schema._
 import org.json4s.JValue
@@ -41,7 +41,7 @@ class LuovutuspalveluService(application: KoskiApplication) {
     }
   }
 
-  private def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit koskiSession: KoskiSpecificSession) =
+  private def streamingQuery(filters: List[OpiskeluoikeusQueryFilterBase])(implicit koskiSession: KoskiSpecificSession) =
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, None)
 
   private def auditLogOpiskeluoikeusKatsominen(henkilöt: Seq[OppijaHenkilö])(implicit koskiSession: KoskiSpecificSession): Unit = henkilöt

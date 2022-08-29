@@ -28,7 +28,7 @@ trait OpiskeluoikeusQueries extends KoskiSpecificApiServlet with Logging with Ob
   *  Scalatra threadlocals are used.
   */
 case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSpecificSession, application: KoskiApplication) extends Logging {
-  def queryWithoutHenkilötiedotRaw(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings], queryForAuditLog: String): Observable[(Oid, List[OpiskeluoikeusRow])] = {
+  def queryWithoutHenkilötiedotRaw(filters: List[OpiskeluoikeusQueryFilterBase], paginationSettings: Option[PaginationSettings], queryForAuditLog: String): Observable[(Oid, List[OpiskeluoikeusRow])] = {
     AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> queryForAuditLog)))
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings).map { case (oppijaHenkilö, opiskeluoikeudet) =>
       (oppijaHenkilö.oid, opiskeluoikeudet)
@@ -44,7 +44,7 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
     }
   }
 
-  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings], groupByOppija: Boolean): Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = {
+  private def query(filters: List[OpiskeluoikeusQueryFilterBase], paginationSettings: Option[PaginationSettings], groupByOppija: Boolean): Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = {
     val oikeudetPerOppijaOid: Observable[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] = if (groupByOppija) {
       OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
     } else {
@@ -76,7 +76,7 @@ object OpiskeluoikeusQueryContext {
 
   def streamingQuery(
     application: KoskiApplication,
-    filters: List[OpiskeluoikeusQueryFilter],
+    filters: List[OpiskeluoikeusQueryFilterBase],
     paginationSettings: Option[PaginationSettings],
   )(
     implicit koskiSession: KoskiSpecificSession
@@ -105,7 +105,7 @@ object OpiskeluoikeusQueryContext {
 
   def streamingQueryGroupedByOid(
     application: KoskiApplication,
-    filters: List[OpiskeluoikeusQueryFilter],
+    filters: List[OpiskeluoikeusQueryFilterBase],
     paginationSettings: Option[PaginationSettings],
   )(
     implicit koskiSession: KoskiSpecificSession
