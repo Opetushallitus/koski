@@ -7,12 +7,12 @@ import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.InvalidRequestException
 
 import scala.concurrent.duration.DurationInt
-import scala.reflect.runtime.universe.TypeTag
 
 case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
   private val koodiviiteCache = KeyValueCache(RefreshingCache("KoodistoViitePalvelu", 1.hour, 100), { koodisto: KoodistoViite =>
-    val koodit: List[KoodistoKoodi] = koodistoPalvelu.getKoodistoKoodit(koodisto)
-    koodit.map(koodistoPalvelu.toKoodiviite(koodisto))
+    koodistoPalvelu
+      .getKoodistoKoodit(koodisto)
+      .map(koodi => koodistoPalvelu.toKoodiviite(koodisto, koodi))
   })
 
   def getKoodistoKoodiViitteet(koodisto: KoodistoViite): List[Koodistokoodiviite] = {
@@ -23,9 +23,11 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
     for {
       parentKoodisto <- toKoodistoViiteOptional(parentViite)
       parent <- koodistoPalvelu.getKoodistoKoodit(parentKoodisto).find(_.koodiArvo == parentViite.koodiarvo)
-      koodit: List[KoodistoKoodi] <- Some(koodistoPalvelu.getKoodistoKoodit(koodisto))
     } yield {
-      koodit.filter(_.hasParent(parent)).map(koodistoPalvelu.toKoodiviite(koodisto))
+      koodistoPalvelu
+        .getKoodistoKoodit(koodisto)
+        .withFilter(_.hasParent(parent))
+        .map(koodi => koodistoPalvelu.toKoodiviite(koodisto, koodi))
     }
   }
 

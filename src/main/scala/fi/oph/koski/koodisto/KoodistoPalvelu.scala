@@ -28,5 +28,5 @@ trait KoodistoPalvelu {
     getLatestVersionOptional(koodistoUri).getOrElse(throw new RuntimeException(s"Koodistoa ei löydy: $koodistoUri"))
   }
   def getLatestVersionOptional(koodistoUri: String): Option[KoodistoViite]
-  def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi): Koodistokoodiviite
+  def toKoodiviite(koodisto: KoodistoViite, koodi: KoodistoKoodi): Koodistokoodiviite
 }

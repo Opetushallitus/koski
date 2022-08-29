@@ -22,7 +22,7 @@ private class MockKoodistoPalvelu extends KoodistoPalvelu {
 
   def getLatestVersionOptional(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
 
-  def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) =
+  def toKoodiviite(koodisto: KoodistoViite, koodi: KoodistoKoodi) =
     Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodi.versio))
 }
 

@@ -53,7 +53,7 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
     })
   }
 
-  def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) =
+  def toKoodiviite(koodisto: KoodistoViite, koodi: KoodistoKoodi) =
     Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
 
   private def noCache = uri"?noCache=${System.currentTimeMillis()}"
