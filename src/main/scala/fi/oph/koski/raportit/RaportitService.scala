@@ -321,18 +321,16 @@ class RaportitService(application: KoskiApplication) {
   def ibSuoritustiedot(request: IBSuoritustiedotRaporttiRequest, t: LocalizationReader)
     (implicit u: KoskiSpecificSession): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
-      sheets = Seq(
-        IBSuoritustiedotRaportti(ibSuoritustiedotRepository, t)
-          .build(
-            request.oppilaitosOid,
-            request.alku,
-            request.loppu,
-            request.osasuoritustenAikarajaus,
-            request.raportinTyyppi
-          )
-      ),
+      sheets = IBSuoritustiedotRaportti(ibSuoritustiedotRepository, t)
+        .build(
+          request.oppilaitosOid,
+          request.alku,
+          request.loppu,
+          request.osasuoritustenAikarajaus,
+          request.raportinTyyppi
+        ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-ib-suoritustiedot-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-ib-suoritustiedot-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      filename = s"${t.get("raportti-excel-ib-suoritustiedot-tiedoston-etuliite")}_${IBSuoritustiedotRaporttiType.raporttiTypeLokalisoitu(request.raportinTyyppi, t)}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
     )
   }

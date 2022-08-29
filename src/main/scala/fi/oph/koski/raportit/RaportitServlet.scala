@@ -283,7 +283,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val raportinTyyppi = params.get("raportinTyyppi").getOrElse("") match {
       case IBTutkinnonSuoritusRaportti.typeName => IBTutkinnonSuoritusRaportti
       case PreIBSuoritusRaportti.typeName => PreIBSuoritusRaportti
-      case _ => haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Raportin lataaminen epäonnistui, tuntematon raportin tyyppi ${params.get("raportinTyyppi")}"))
+      case _ => haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Raportin lataaminen epäonnistui, tuntematon raportin tyyppi ${params.get("raportinTyyppi").getOrElse("tuntematon")}"))
     }
 
     IBSuoritustiedotRaporttiRequest(
