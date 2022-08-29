@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.TestEnvironment
-import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, Example, Examples}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
@@ -21,7 +21,7 @@ class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers w
     }
 
     "Examples" - {
-      Examples.examples.foreach { example =>
+      Examples.oppijaExamples.foreach { example =>
         example.name in {
           val json = JsonSerializer.serializeWithRoot(example.data)
           val oppija = SchemaValidatingExtractor.extract[Oppija](json).right.get
@@ -52,7 +52,7 @@ class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers w
 
     "Suoritukset" - {
 
-      Examples.examples.foreach { e =>
+      Examples.oppijaExamples.foreach { e =>
         (e.name + " serialisoituu") in {
           val kaikkiSuoritukset: Seq[Suoritus] = e.data.opiskeluoikeudet.flatMap(_.suoritukset.flatMap(_.rekursiivisetOsasuoritukset))
             .filterNot {

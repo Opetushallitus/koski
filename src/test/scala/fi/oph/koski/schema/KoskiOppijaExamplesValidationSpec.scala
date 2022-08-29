@@ -22,7 +22,7 @@ class KoskiOppijaExamplesValidationSpec extends AnyFreeSpec with TestEnvironment
   private lazy val schema: JsonNode =  JsonLoader.fromString(KoskiSchema.schemaJsonString)
 
   "Validation with JSON Schema" - {
-    Examples.examples.foreach { example =>
+    Examples.oppijaExamples.foreach { example =>
       example.name in {
         import scala.collection.JavaConverters._
         val json = JsonLoader.fromString(JsonSerializer.writeWithRoot(example.data))
@@ -56,7 +56,7 @@ class KoskiOppijaExamplesValidationSpec extends AnyFreeSpec with TestEnvironment
       testDeserialization[LocalizedString](Finnish("Moi", Some("Hej"), Some("Hi")))
     }
     "Examples" - {
-      Examples.examples.foreach { example =>
+      Examples.oppijaExamples.foreach { example =>
         example.name in {
           testDeserialization(example.data)
         }

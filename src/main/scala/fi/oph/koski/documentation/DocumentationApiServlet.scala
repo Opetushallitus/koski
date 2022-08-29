@@ -38,7 +38,7 @@ class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticat
   }
 
   get("/examples/:name.json") {
-    renderOption(KoskiErrorCategory.notFound)(Examples.allExamples.find(_.name == params("name")).map(_.data))
+    renderOption(KoskiErrorCategory.notFound)(Examples.oppijaExamples.find(_.name == params("name")).map(_.data))
   }
   get("/koski-oppija-schema.json") {
     KoskiSchema.schemaJson

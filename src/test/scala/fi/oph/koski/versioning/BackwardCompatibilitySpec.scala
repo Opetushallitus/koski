@@ -4,7 +4,7 @@ import java.io.File
 import java.time.LocalDate
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import fi.oph.koski.documentation.Example
-import fi.oph.koski.documentation.Examples.examples
+import fi.oph.koski.documentation.Examples.{oppijaExamples}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
@@ -78,7 +78,7 @@ class BackwardCompatibilitySpec extends AnyFreeSpec with TestEnvironment with Ma
   }
 
   "backwards compatibility with stored JSON examples" - {
-    val storedExamples = examples.filter(
+    val storedExamples = oppijaExamples.filter(
       _.data.opiskeluoikeudet.head.isInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
     )
     storedExamples.foreach(makeTestForExample)
