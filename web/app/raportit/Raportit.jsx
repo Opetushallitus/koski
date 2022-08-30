@@ -6,7 +6,11 @@ import {AikajaksoRaportti} from './AikajaksoRaportti'
 import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
 import {AikajaksoRaporttiAikarajauksella, osasuoritusTypes} from './AikajaksoRaporttiAikarajauksella'
 import {RaporttiPaivalta} from './RaporttiPaivalta'
-import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
+import {
+  AikajaksoRaporttiTyyppivalinnalla,
+  aikuistenPerusopetusReportTypes,
+  ibReportTypes
+} from './AikajaksoRaporttiTyyppivalinnalla'
 import {Tabs} from '../components/Tabs'
 import { OrganisaatioDropdown } from './OrganisaatioDropdown'
 import {filterOrgTreeByRaporttityyppi} from './raporttiUtils'
@@ -160,6 +164,18 @@ const kaikkiRaportitKategorioittain = [
         id: 'luvaopiskelijamaarat',
         name: 'raportti-tab-luvaopiskelijamaarat',
         component: LuvaOpiskelijamaaratRaportti
+      }
+    ]
+  },
+  {
+    id: 'ib',
+    tab: 'raporttikategoria-tab-ib',
+    heading: 'raporttikategoria-heading-ib',
+    raportit: [
+      {
+        id: 'ibsuoritustietojentarkistus',
+        name: 'raportti-tab-ibsuoritustietojentarkistus',
+        component: IBSuoritustiedot
       }
     ]
   },
@@ -720,13 +736,16 @@ function AikuistenPerusopetusRaportti({ stateP }) {
   const exampleText = <Paragraphs name='aikuisten-perusopetus-raportti-example' />
 
   return (
-    <AikuistenPerusopetuksenRaportit
+    <AikajaksoRaporttiTyyppivalinnalla
       stateP={stateP}
       apiEndpoint={'/aikuisten-perusopetus-suoritustietojen-tarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
       lang={lang}
+      raporttiTyypit={aikuistenPerusopetusReportTypes}
+      defaultRaportinTyyppi={aikuistenPerusopetusReportTypes.alkuvaihe.key}
+      listavalintaKuvaus={'suorituksentyyppivalinta-help'}
     />
   )
 }
@@ -765,6 +784,24 @@ function AikuistenPerusopetuksenKurssikertymäRaportti({ stateP }) {
       dateInputHelp={dateInputHelpText}
       example={exampleText}
       lang={lang}
+    />
+  )
+}
+
+function IBSuoritustiedot({ stateP }) {
+  const shortDescriptionText = <Text name='IBSuoritustiedotRaportti-short-description' />
+  const exampleText = <Paragraphs name='IBSuoritustiedotRaportti-example' />
+
+  return (
+    <AikajaksoRaporttiTyyppivalinnalla
+      stateP={stateP}
+      apiEndpoint={'/ibsuoritustietojentarkistus'}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      lang={lang}
+      raporttiTyypit={ibReportTypes}
+      defaultRaportinTyyppi={ibReportTypes.ib.key}
+      listavalintaKuvaus={'suorituksentyyppivalinta-ib-help'}
     />
   )
 }

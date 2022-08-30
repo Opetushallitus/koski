@@ -28,7 +28,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
 
     val oppiaineJaLisätiedotFuture = Future{
       DynamicDataSheet(
-        title = t.get("raportti-excel-suoritukset-sheet-name"),
+        title = t.get("raportti-excel-oppiaineet-sheet-name"),
         rows = rows.map(r => kaikkiOppiaineetVälilehtiRow(r, oppiaineetJaKurssit, alku, loppu, raportinTyyppi)),
         columnSettings = columnSettings(oppiaineetJaKurssit, t)
       )
@@ -37,12 +37,12 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       oppiaineetJaKurssit.map(oJaK => oppiaineKohtainenSheet(oJaK, rows))
     )
 
-    val future = for {
+    val dataSheets = for {
       oppiaineJaLisätiedot <- oppiaineJaLisätiedotFuture
       kurssit <- kurssitFuture
     } yield (oppiaineJaLisätiedot +: kurssit)
 
-    Futures.await(future, atMost = 6.minutes)
+    Futures.await(dataSheets, atMost = 6.minutes)
   }
 
   private def kaikkiOppiaineetVälilehtiRow(
