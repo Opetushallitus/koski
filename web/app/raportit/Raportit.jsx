@@ -18,6 +18,7 @@ import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import {lang} from '../i18n/i18n'
+import {currentLocation} from '../util/location.js'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -167,7 +168,9 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   },
-  {
+  // TODO: parametrin tarkistuksen voi poistaa sitten kun raportti julkaistaan kaikille käyttäjille
+  // Huom. tee silloin myös tarvittavat korjaukset RaportitSpec.js:ään
+  currentLocation().params.ibraportti === 'true' ? {
     id: 'ib',
     tab: 'raporttikategoria-tab-ib',
     heading: 'raporttikategoria-heading-ib',
@@ -178,7 +181,7 @@ const kaikkiRaportitKategorioittain = [
         component: IBSuoritustiedot
       }
     ]
-  },
+  } : null,
   {
     id: 'muut',
     tab: 'raporttikategoria-tab-muut',
@@ -192,7 +195,7 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   }
-]
+].filter(r => !!r)
 
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map(tab => {
