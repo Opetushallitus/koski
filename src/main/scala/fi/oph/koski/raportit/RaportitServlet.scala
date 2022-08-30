@@ -181,7 +181,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     writeExcel(resp, t)
   }
 
-  get("/valmistavansuoritustietojentarkistus") {
+  get("/perusopetukseenvalmistavansuoritustietojentarkistus") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus)
     val parsedRequest = parseAikajaksoRaporttiAikarajauksellaRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)

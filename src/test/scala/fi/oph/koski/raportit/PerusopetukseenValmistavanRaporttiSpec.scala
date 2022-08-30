@@ -14,7 +14,7 @@ import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate
 
 class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods
-  with OpiskeluoikeusTestMethodsPerusopetus with BeforeAndAfterAll {
+                                                     with OpiskeluoikeusTestMethodsPerusopetus with BeforeAndAfterAll {
 
   private lazy val repository = PerusopetukseenValmistavanRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
   private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
@@ -26,8 +26,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
     reloadRaportointikanta
   }
 
-
-  private val defaultExpectedValmistavaRow: PerusopetukseenValmistavanRaporttiRow = PerusopetukseenValmistavanRaporttiRow(
+  private val defaultExpectedValmistavaRow: PerusopetukseenValmistavanRaporttiStableFields = PerusopetukseenValmistavanRaporttiStableFields(
     opiskeluoikeusOid = "1.2.246.562.15.72335373733",
     lähdejärjestelmä = None,
     lähdejärjestelmänTunniste = None,
@@ -53,7 +52,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
 
   "Valmistavan opetuksen raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/valmistavansuoritustietojentarkistus?oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=fi&password=salasana") {
+      authGet(s"api/raportit/perusopetukseenvalmistavansuoritustietojentarkistus?oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=fi&password=salasana") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="valmistavaopetus_koski_raportti_${jyväskylänNormaalikoulu}_2018-01-01_2022-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
@@ -62,7 +61,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
     }
 
     "Raportin lataaminen toimii eri lokalisaatiolla" in {
-      authGet(s"api/raportit/valmistavansuoritustietojentarkistus?oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=sv&password=salasana") {
+      authGet(s"api/raportit/perusopetukseenvalmistavansuoritustietojentarkistus?oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=sv&password=salasana") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="valmistavaopetus_koski_raportti_${jyväskylänNormaalikoulu}_2018-01-01_2022-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
@@ -71,8 +70,15 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
     }
 
     "Raportti näyttää oikealta" - {
-      lazy val report = valmistavanRaportti.buildRows(Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2000, 1, 1), LocalDate.of(2022, 1, 1), t)
-      lazy val sheet = valmistavanRaportti.buildDataSheet(report)
+      val oids = Seq(MockOrganisaatiot.jyväskylänNormaalikoulu)
+      val alku = LocalDate.of(2000, 1, 1)
+      val loppu = LocalDate.of(2022, 1, 1)
+
+      lazy val rows = repository.perusopetukseenValmistavanRaporttiRows(oids, alku, loppu)
+
+      lazy val report = valmistavanRaportti.buildDataSheetRows(rows, alku, loppu, t)
+
+      lazy val sheet = valmistavanRaportti.buildRaportti(oids, alku, loppu, t)
       "Sarakkeiden järjestys" in {
         sheet.columnSettings.map(_.title) should equal(Seq(
           "Opiskeluoikeuden oid",
@@ -95,11 +101,13 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
           "Suorituksen tila",
           "Suorituksen vahvistuspäivä",
           "Läsnäolopäiviä aikajakson aikana",
-          "Rahoitukset"
+          "Rahoitukset",
+          "FY Fysiikka valtakunnallinen",
+          "ai Äidinkieli paikallinen"
         ))
       }
       "Data näyttää oikealta" in {
-        sheet.rows.head should equal ( defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.opiskeluoikeusOid).productIterator.toList )
+        sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana 9, 0.0 kurssia", "Arvosana S, 0.0 kurssia"))
       }
     }
   }

@@ -118,11 +118,10 @@ class RaportitService(application: KoskiApplication) {
 
   def valmistavanopetuksenraportti(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
     val valmistavanRaportti = PerusopetukseenValmistavanRaportti(perusopetukseenValmistavanRepository, t)
-    val raportti = valmistavanRaportti
-      .buildRows(Seq(request.oppilaitosOid), request.alku, request.loppu, t)
+    val mainSheet = valmistavanRaportti.buildRaportti(Seq(request.oppilaitosOid), request.alku, request.loppu, t)
 
     OppilaitosRaporttiResponse(
-      sheets = Seq(valmistavanRaportti.buildDataSheet(raportti)),
+      sheets = Seq(mainSheet),
       workbookSettings = WorkbookSettings(
         s"${t.get("raportti-excel-valmistava-opetus-title")}_${request.oppilaitosOid}", Some(request.password)
       ),

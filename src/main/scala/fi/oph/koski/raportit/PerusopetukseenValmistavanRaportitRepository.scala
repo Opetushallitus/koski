@@ -2,50 +2,62 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
+import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
 import slick.jdbc.GetResult
 
 import java.time.LocalDate
-import scala.concurrent.duration.DurationInt
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 case class PerusopetukseenValmistavanRaportitRepository(db: DB) extends QueryMethods with RaportointikantaTableQueries {
 
   type OpiskeluoikeusOid = String
   type Tunnisteet = (OpiskeluoikeusOid)
+  private type PäätasonSuoritusId = Long
+
+  private val defaultTimeout: FiniteDuration = 5.minutes
 
   def perusopetukseenValmistavanRaporttiRows(
     oppilaitosOids: Seq[Oid],
     alku: LocalDate,
     loppu: LocalDate
   ): Seq[PerusopetukseenValmistavanRaporttiRows] = {
-    val opiskeluoikeudetOppilaitoksille: Seq[OpiskeluoikeusOid] = queryOpiskeluoikeusOids(oppilaitosOids, alku, loppu)
+    val opiskeluoikeudetOppilaitoksille = queryOpiskeluoikeusOids(oppilaitosOids, alku, loppu)
 
-    val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet opiskeluoikeudetOppilaitoksille).result, timeout = 5.minutes)
+    val opiskeluoikeusOids = opiskeluoikeudetOppilaitoksille.map(_._1)
+    val paatasonSuoritusIds = opiskeluoikeudetOppilaitoksille.flatMap(_._2)
+
+    val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = defaultTimeout)
+    val paatasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
+    val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
+
+    val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = defaultTimeout)
+      .groupBy(_.päätasonSuoritusId)
+
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).mapValues(_.head)
 
-    val paatasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet opiskeluoikeudetOppilaitoksille).result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid).mapValues(_.head)
-    val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.opiskeluoikeusOid inSet opiskeluoikeudetOppilaitoksille).result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
-
-    opiskeluoikeudet.map { oo =>
-      PerusopetukseenValmistavanRaporttiRows(
-        opiskeluoikeus = oo,
-        henkilo = henkilot(oo.oppijaOid),
-        päätasonSuoritus = paatasonSuoritukset(oo.opiskeluoikeusOid),
-        aikajaksot = aikajaksot(oo.opiskeluoikeusOid),
-        osasuoritukset = Seq()
-      )
+    opiskeluoikeudet.foldLeft[Seq[PerusopetukseenValmistavanRaporttiRows]](Seq.empty) { (acc, oo) =>
+      paatasonSuoritukset.getOrElse(oo.opiskeluoikeusOid, Nil).map((pts: RPäätasonSuoritusRow) =>
+        PerusopetukseenValmistavanRaporttiRows(
+          opiskeluoikeus = oo,
+          henkilo = henkilot(oo.oppijaOid),
+          päätasonSuoritus = pts,
+          aikajaksot = aikajaksot(oo.opiskeluoikeusOid),
+          osasuoritukset = osasuoritukset.getOrElse(pts.päätasonSuoritusId, Nil)
+        )
+      ) ++ acc
     }
-
   }
 
-  private def queryOpiskeluoikeusOids(oppilaitokset: Seq[String], alku: LocalDate, loppu: LocalDate): Seq[OpiskeluoikeusOid] = {
+  private def queryOpiskeluoikeusOids(oppilaitokset: Seq[String], alku: LocalDate, loppu: LocalDate) = {
     implicit val getResult = GetResult(rs => (rs.nextString, rs.nextArray, rs.nextArray))
 
     val query =
       sql"""
      select
-      oo.opiskeluoikeus_oid
+      oo.opiskeluoikeus_oid,
+      array_agg(pts.paatason_suoritus_id)
     from
       r_opiskeluoikeus oo
     join
@@ -61,14 +73,14 @@ case class PerusopetukseenValmistavanRaportitRepository(db: DB) extends QueryMet
       aikaj.alku <= $loppu and aikaj.loppu >= $alku
     group by oo.opiskeluoikeus_oid"""
 
-    runDbSync(query.as[Tunnisteet], timeout = 5.minutes)
+    runDbSync(query.as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId])], timeout = defaultTimeout)
   }
 }
 
 case class PerusopetukseenValmistavanRaporttiRows(
-   opiskeluoikeus: ROpiskeluoikeusRow,
-   henkilo: RHenkilöRow,
-   päätasonSuoritus: RPäätasonSuoritusRow,
-   aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow],
-   osasuoritukset: Seq[ROsasuoritusRow]
+  opiskeluoikeus: ROpiskeluoikeusRow,
+  henkilo: RHenkilöRow,
+  päätasonSuoritus: RPäätasonSuoritusRow,
+  aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow],
+  osasuoritukset: Seq[ROsasuoritusRow]
 ) extends YleissivistäväRaporttiRows
