@@ -217,7 +217,7 @@ describe('Perusopetus', function() {
             'Ulkomaanjaksot 15.8.2008 — 4.6.2016\n' +
             '16.9.2018 — 2.10.2019\n' +
             'Vuosiluokkiin sitomaton opetus kyllä\n' +
-            'Muu kuin vaikeimmin kehitysvammainen 14.8.2010 — 1.9.2010\n' +
+            'Muu kuin vaikeimmin kehitysvammainen 15.8.2010 — 1.9.2010\n' +
             'Vaikeimmin kehitysvammainen 2.9.2010 — 4.6.2016\n' +
             'Majoitusetu 15.8.2008 — 4.6.2016\n' +
             'Kuljetusetu 15.8.2008 — 4.6.2016\n' +

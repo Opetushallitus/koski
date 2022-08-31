@@ -697,7 +697,7 @@ class KoskiValidator(
           kaikkiVammaisuusjaksotYhdistettynä.exists(j => j.contains(lt.pidennettyOppivelvollisuus.get))
 
         val kaikkiVammaisuusjaksotOsuvatPidennettyynOppivelvollisuuteen =
-          kaikkiJaksot.forall(j => j.overlaps(lt.pidennettyOppivelvollisuus.get))
+          kaikkiVammaisuusjaksotYhdistettynä.forall(j => lt.pidennettyOppivelvollisuus.get.contains(j))
 
         val viimeinenVammaisuusjaksoPäättyyOikeinPidennetynOppivelvollisuudenPäättyessä =
           lt.pidennettyOppivelvollisuus.get.loppu.isEmpty ||
@@ -726,7 +726,7 @@ class KoskiValidator(
           ),
           HttpStatus.validate(kaikkiVammaisuusjaksotOsuvatPidennettyynOppivelvollisuuteen)(
             KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
-              "Jokin vammaisuusjaksoista on kokonaan pidennetyn oppivelvollisuuden ulkopuolella"
+              "Jokin vammaisuusjaksoista on pidennetyn oppivelvollisuuden ulkopuolella"
             )
           ),
           HttpStatus.validate(viimeinenVammaisuusjaksoPäättyyOikeinPidennetynOppivelvollisuudenPäättyessä)(
