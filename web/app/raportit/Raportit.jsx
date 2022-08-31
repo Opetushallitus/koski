@@ -57,6 +57,11 @@ const kaikkiRaportitKategorioittain = [
         id: 'perusopetuksenlisäopetuksenoppijamääräraportti',
         name: 'raportti-tab-perusopetuksenlisäopetuksenoppijamääräraportti',
         component: PerusopetuksenLisäopetuksenOppijamäärätRaportti
+      },
+      {
+        id: 'perusopetukseenvalmistavanopetuksentarkistus',
+        name: 'raportti-tab-perusopetukseenvalmistavantarkistusraportti',
+        component: PerusopetukseenValmistavanTarkistusRaportti
       }
     ]
   },
@@ -690,6 +695,24 @@ function EsiopetuksenOppijamäärätRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
+    />
+  )
+}
+
+function PerusopetukseenValmistavanTarkistusRaportti({ stateP }) {
+  const titleText = <Text name='Perusopetukseen-valmistava-title' />
+  const shortDescriptionText = <Text name='Perusopetukseen-valmistava-short-description' />
+  const exampleText = <Paragraphs name='Perusopetukseen-valmistava-example' />
+
+  return (
+    <AikajaksoRaporttiAikarajauksella
+      stateP={stateP}
+      apiEndpoint={'/perusopetukseenvalmistavansuoritustietojentarkistus'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      osasuoritusType={osasuoritusTypes.KURSSI}
       lang={lang}
     />
   )

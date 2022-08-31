@@ -143,6 +143,10 @@ case object PerusopetuksenLisäopetuksenOppijaMääräRaportti extends RaportinT
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus.koodiarvo
 }
 
+case object PerusopetukseenValmistavanOpetuksenTarkistus extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus.koodiarvo
+}
+
 case object LukionSuoritustietojenTarkistus extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo
 }
