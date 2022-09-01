@@ -74,11 +74,11 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
       val alku = LocalDate.of(2000, 1, 1)
       val loppu = LocalDate.of(2022, 1, 1)
 
-      lazy val rows = repository.perusopetukseenValmistavanRaporttiRows(oids, alku, loppu)
+      lazy val rows = repository.perusopetukseenValmistavanRaporttiRows(oids, alku, loppu, osasuoritustenAikarajaus = false)
 
       lazy val report = valmistavanRaportti.buildDataSheetRows(rows, alku, loppu, t)
 
-      lazy val sheet = valmistavanRaportti.buildRaportti(oids, alku, loppu, t)
+      lazy val sheet = valmistavanRaportti.buildRaportti(oids, alku, loppu, osasuoritustenAikarajaus = false, t)
       "Sarakkeiden järjestys" in {
         sheet.columnSettings.map(_.title) should equal(Seq(
           "Opiskeluoikeuden oid",

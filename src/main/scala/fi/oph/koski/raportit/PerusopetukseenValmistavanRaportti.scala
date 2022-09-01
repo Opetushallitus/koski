@@ -15,9 +15,10 @@ case class PerusopetukseenValmistavanRaportti(repository: PerusopetukseenValmist
     oppilaitosOids: Seq[Oid],
     alku: LocalDate,
     loppu: LocalDate,
+    osasuoritustenAikarajaus: Boolean,
     t: LocalizationReader
   ): DynamicDataSheet = {
-    val rows = repository.perusopetukseenValmistavanRaporttiRows(oppilaitosOids, alku, loppu)
+    val rows = repository.perusopetukseenValmistavanRaporttiRows(oppilaitosOids, alku, loppu, osasuoritustenAikarajaus)
 
     DynamicDataSheet(
       title = t.get("raportti-excel-oppiaineet-sheet-name"),

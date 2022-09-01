@@ -21,7 +21,8 @@ case class PerusopetukseenValmistavanRaportitRepository(db: DB) extends QueryMet
   def perusopetukseenValmistavanRaporttiRows(
     oppilaitosOids: Seq[Oid],
     alku: LocalDate,
-    loppu: LocalDate
+    loppu: LocalDate,
+    osasuoritustenAikarajaus: Boolean
   ): Seq[PerusopetukseenValmistavanRaporttiRows] = {
     val opiskeluoikeudetOppilaitoksille = queryOpiskeluoikeusOids(oppilaitosOids, alku, loppu)
 
@@ -33,6 +34,7 @@ case class PerusopetukseenValmistavanRaportitRepository(db: DB) extends QueryMet
     val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
 
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = defaultTimeout)
+      .filter(osasuoritus => !osasuoritustenAikarajaus || arvioituAikavälillä(alku, loppu)(osasuoritus))
       .groupBy(_.päätasonSuoritusId)
 
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).mapValues(_.head)
