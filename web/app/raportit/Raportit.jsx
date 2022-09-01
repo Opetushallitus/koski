@@ -58,12 +58,13 @@ const kaikkiRaportitKategorioittain = [
         name: 'raportti-tab-perusopetuksenlisäopetuksenoppijamääräraportti',
         component: PerusopetuksenLisäopetuksenOppijamäärätRaportti
       },
-      {
+      // TODO: poista ehto kun valmis tuotantoon
+      currentLocation().params.valmistava === 'true' ? {
         id: 'perusopetukseenvalmistavanopetuksentarkistus',
         name: 'raportti-tab-perusopetukseenvalmistavantarkistusraportti',
         component: PerusopetukseenValmistavanTarkistusRaportti
-      }
-    ]
+      } : null
+    ].filter(r => !!r)
   },
   {
     id: 'aikuisten-perusopetus',
