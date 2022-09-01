@@ -701,9 +701,9 @@ function EsiopetuksenOppijamäärätRaportti({ stateP }) {
 }
 
 function PerusopetukseenValmistavanTarkistusRaportti({ stateP }) {
-  const titleText = <Text name='Perusopetukseen-valmistava-title' />
-  const shortDescriptionText = <Text name='Perusopetukseen-valmistava-short-description' />
-  const exampleText = <Paragraphs name='Perusopetukseen-valmistava-example' />
+  const titleText = <Text name='Perusopetukseen-valmistava-raportti-title' />
+  const shortDescriptionText = <Text name='Perusopetukseen-valmistava-raportti-short-description' />
+  const exampleText = <Paragraphs name='Perusopetukseen-valmistava-raportti-example' />
 
   return (
     <AikajaksoRaporttiAikarajauksella
