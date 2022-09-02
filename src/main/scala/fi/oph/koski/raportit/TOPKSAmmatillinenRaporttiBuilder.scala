@@ -61,7 +61,10 @@ case class TOPKSAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
         oo.lahdejarjestelma_id,
         oo.aikaleima,
         pts.paatason_suoritus_id,
-        COALESCE(pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, pts.koulutusmoduuli_nimi) as koulutusmoduuli_nimi,
+        COALESCE(pts.data -> 'koulutusmoduuli' -> 'perusteenNimi' ->> $lang,
+          pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang,
+          pts.tutkinnon_nimi_perusteessa,
+          pts.koulutusmoduuli_nimi) as suorituksen_nimi,
         pts.vahvistus_paiva,
         pts.toimipiste_oid
       from r_opiskeluoikeus oo
@@ -85,7 +88,10 @@ case class TOPKSAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
         oo.lahdejarjestelma_id,
         oo.aikaleima,
         pts.paatason_suoritus_id,
-        COALESCE(pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, pts.koulutusmoduuli_nimi) as koulutusmoduuli_nimi,
+        COALESCE(pts.data -> 'koulutusmoduuli' -> 'perusteenNimi' ->> $lang,
+          pts.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang,
+          pts.tutkinnon_nimi_perusteessa,
+          pts.koulutusmoduuli_nimi) as suorituksen_nimi,
         pts.vahvistus_paiva,
         pts.toimipiste_oid
       from r_opiskeluoikeus oo
@@ -151,7 +157,7 @@ case class TOPKSAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
       oo_ja_pts.lahdejarjestelma_id,
       oo_ja_pts.aikaleima,
       oo_ja_pts.toimipiste_oid,
-      oo_ja_pts.koulutusmoduuli_nimi,
+      oo_ja_pts.suorituksen_nimi,
       oo_ja_pts.opiskeluoikeuden_alkamispaiva,
       oo_ja_pts.opiskeluoikeuden_viimeisin_tila,
       henkilo.yksiloity,

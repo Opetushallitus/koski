@@ -1,15 +1,16 @@
 package fi.oph.koski.koodisto
 
+import com.typesafe.config.Config
 import fi.oph.koski.cache._
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.InvalidRequestException
 
 import scala.concurrent.duration.DurationInt
-import scala.reflect.runtime.universe.TypeTag
 
-case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
+case class KoodistoViitePalvelu(config: Config, koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
   private val koodiviiteCache = KeyValueCache(RefreshingCache("KoodistoViitePalvelu", 1.hour, 100), { koodisto: KoodistoViite =>
     val koodit: List[KoodistoKoodi] = koodistoPalvelu.getKoodistoKoodit(koodisto)
     koodit.map(toKoodiviite(koodisto))
@@ -40,7 +41,15 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
   def validate(input: Koodistokoodiviite): Option[Koodistokoodiviite] = {
     val koodistoViite = toKoodistoViiteOptional(input)
 
-    val viite = koodistoViite.flatMap(getKoodistoKoodiViitteet(_).find(_.koodiarvo == input.koodiarvo))
+    val viite = koodistoViite.flatMap { v =>
+      val koodiviitteet = getKoodistoKoodiViitteet(v)
+      // Huom. koodiviitteet sisältävät duplikaatteja koodiarvoja vain lokaalissa kehitysympäristössä.
+      // Tällöin koodiviitteen koodistoVersio-kenttä erottaa saman koodiston sisällä olevat duplikaattiarvot toisistaan.
+      // Katso esim. koodistokoodiarvo koulutus/351301
+      koodiviitteet.find(k => k.koodiarvo == input.koodiarvo && k.koodistoVersio == input.koodistoVersio).orElse(
+        koodiviitteet.find(k => k.koodiarvo == input.koodiarvo)
+      )
+    }
 
     if (!viite.isDefined) {
       logger.warn("Koodia " + input.koodiarvo + " ei löydy koodistosta " + input.koodistoUri)
@@ -48,20 +57,28 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
     viite
   }
 
-  private def toKoodistoViiteOptional(koodiviite: Koodistokoodiviite) = koodiviite.koodistoVersio.map(KoodistoViite(koodiviite.koodistoUri, _)).orElse(getLatestVersionOptional(koodiviite.koodistoUri))
+  private def toKoodistoViiteOptional(koodiviite: Koodistokoodiviite): Option[KoodistoViite] = koodiviite
+    .koodistoVersio
+    .map(KoodistoViite(koodiviite.koodistoUri, _))
+    .orElse(getLatestVersionOptional(koodiviite.koodistoUri))
 
   def validateRequired(uri: String, koodi: String): Koodistokoodiviite = {
     validateRequired(Koodistokoodiviite(koodi, uri))
   }
 
-  def validateRequired(input: Koodistokoodiviite) = {
+  def validateRequired(input: Koodistokoodiviite): Koodistokoodiviite = {
     validate(input).getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ei löydy koodistosta: " + input)))
   }
-  
-  private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi) = Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
+
+  private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi): Koodistokoodiviite = {
+    config.getString("opintopolku.virkailija.url") match {
+      case "mock" => Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodi.versio))
+      case url => Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
+    }
+  }
 }
 
-object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(MockKoodistoPalvelu())(GlobalCacheManager) {
+object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(KoskiApplication.defaultConfig, MockKoodistoPalvelu())(GlobalCacheManager) {
   override def validate(input: Koodistokoodiviite) = super.validate(input).map(_.copy(koodistoVersio = None))
   override def validate(koodistoUri: String, koodiArvo: String) = super.validate(koodistoUri, koodiArvo).map(_.copy(koodistoVersio = None))
   override def getKoodistoKoodiViitteet(koodisto: KoodistoViite) = super.getKoodistoKoodiViitteet(koodisto).map(_.copy(koodistoVersio = None))

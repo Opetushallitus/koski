@@ -5278,6 +5278,23 @@
     "lyhytNimi" : "Vocational qualification in the Vehicle Sector",
     "kieli" : "EN"
   } ],
+  "versio" : 11
+}, {
+  "koodiUri" : "koulutus_351301",
+  "koodiArvo" : "351301",
+  "metadata" : [ {
+    "nimi" : "Ajoneuvoalan perustutkinto",
+    "lyhytNimi" : "Ajoneuvoalan perustutkinto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grundexamen inom fordonsbranschen",
+    "lyhytNimi" : "Grundexamen inom fordonsbranschen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational qualification in the Vehicle Sector",
+    "lyhytNimi" : "Vocational qualification in the Vehicle Sector",
+    "kieli" : "EN"
+  } ],
   "versio" : 12
 }, {
   "koodiUri" : "koulutus_351302",

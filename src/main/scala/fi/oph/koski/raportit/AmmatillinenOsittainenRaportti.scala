@@ -75,7 +75,9 @@ object AmmatillinenOsittainenRaportti {
       tutkinto = päätasonSuoritus.koulutusmoduuliKoodiarvo,
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
       tutkintonimike = tutkintonimike(päätasonSuoritus, t.language).getOrElse(""),
-      päätasonSuorituksenNimi = päätasonSuoritus.koulutusModuulistaKäytettäväNimi(t.language).getOrElse(""),
+      päätasonSuorituksenNimi = päätasonSuoritus.perusteestaKäytettäväNimi(t.language)
+        .orElse(päätasonSuoritus.koulutusModuulistaKäytettäväNimi(t.language))
+        .getOrElse(""),
       päätasonSuorituksenSuoritustapa = suoritusTavat(List(päätasonSuoritus), t.language),
       päätasonSuorituksenTila = vahvistusPäiväToTila(päätasonSuoritus.vahvistusPäivä, t),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),

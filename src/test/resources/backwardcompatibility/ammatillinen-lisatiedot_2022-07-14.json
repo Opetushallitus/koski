@@ -1,0 +1,134 @@
+{
+  "henkilö" : {
+    "hetu" : "280618-402H",
+    "etunimet" : "Aarne",
+    "kutsumanimi" : "Aarne",
+    "sukunimi" : "Ammattilainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186"
+    },
+    "arvioituPäättymispäivä" : "2020-05-01",
+    "ostettu" : false,
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2016-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "351301",
+          "koodistoUri" : "koulutus",
+          "koodistoVersio" : 11
+        },
+        "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "ops",
+        "nimi" : {
+          "fi" : "Ammatillinen perustutkinto"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "alkamispäivä" : "2016-09-01",
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "ammatillinentutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "lisätiedot" : {
+      "majoitus" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01"
+      } ],
+      "sisäoppilaitosmainenMajoitus" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01"
+      } ],
+      "vaativanErityisenTuenYhteydessäJärjestettäväMajoitus" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01"
+      } ],
+      "ulkomaanjaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01",
+        "maa" : {
+          "koodiarvo" : "752",
+          "nimi" : {
+            "fi" : "Ruotsi"
+          },
+          "koodistoUri" : "maatjavaltiot2"
+        },
+        "kuvaus" : {
+          "fi" : "Harjoittelua ulkomailla"
+        }
+      } ],
+      "hojks" : {
+        "opetusryhmä" : {
+          "koodiarvo" : "1",
+          "nimi" : {
+            "fi" : "Yleinen opetusryhmä"
+          },
+          "koodistoUri" : "opetusryhma"
+        }
+      },
+      "vaikeastiVammainen" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01"
+      } ],
+      "vammainenJaAvustaja" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01"
+      } ],
+      "osaAikaisuusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "osaAikaisuus" : 80
+      } ],
+      "opiskeluvalmiuksiaTukevatOpinnot" : [ {
+        "alku" : "2013-10-01",
+        "loppu" : "2013-10-31",
+        "kuvaus" : {
+          "fi" : "Opiskeluvalmiuksia tukevia opintoja"
+        }
+      } ],
+      "henkilöstökoulutus" : true,
+      "vankilaopetuksessa" : [ {
+        "alku" : "2013-09-02"
+      } ],
+      "koulutusvienti" : false
+    },
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2016-09-01"
+  } ]
+}
