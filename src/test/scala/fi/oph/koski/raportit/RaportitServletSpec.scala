@@ -45,6 +45,11 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
           raportit should contain(TOPKSAmmatillinen.toString)
         }
       }
+      "sallii tuva perusopetuksen raportin ammatilliselle oppilaitokselle, joka järjestää tuva-koulutusta perusopetuksen järjestämisluvalla" in {
+        verifyMahdollisetRaportit(stadinAmmattiopisto) { raportit =>
+          raportit should contain(TuvaPerusopetuksenOppijaMääräRaportti.toString)
+        }
+      }
       "sallii suoritustietojen tarkistuksen osittaisista ammatillisista tutkinnoista ammatilliselle oppilaitokselle" in {
         verifyMahdollisetRaportit(stadinAmmattiopisto) { raportit =>
           raportit should contain(AmmatillinenOsittainenSuoritustietojenTarkistus.toString)
@@ -91,11 +96,12 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
              EsiopetuksenOppijaMäärienRaportti.toString,
              PerusopetuksenVuosiluokka.toString,
              PerusopetuksenOppijaMääräRaportti.toString,
+             TuvaPerusopetuksenOppijaMääräRaportti.toString,
              PerusopetuksenLisäopetuksenOppijaMääräRaportti.toString,
              LukioDiaIbInternationalOpiskelijamaarat.toString,
              LukioKurssikertyma.toString,
              LuvaOpiskelijamaarat.toString,
-             LukioOpintopistekertyma.toString
+             LukioOpintopistekertyma.toString,
            ))
           }
         }

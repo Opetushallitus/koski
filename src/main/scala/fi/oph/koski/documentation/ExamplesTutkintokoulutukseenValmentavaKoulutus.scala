@@ -367,7 +367,31 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
       erityisenTuenPäätökset = Some(List(TuvaErityisenTuenPäätös(
         alku = Some(date(2021, 8, 1)),
         loppu = None
-      )))
+      ))),
+      majoitusetu = Some(
+        Aikajakso(
+          alku = date(2021, 9, 1),
+          loppu = None
+        )
+      ),
+      kuljetusetu = Some(
+        Aikajakso(
+          alku = date(2021, 9, 1),
+          loppu = None
+        )
+      ),
+      sisäoppilaitosmainenMajoitus = Some(List(
+        Aikajakso(
+          alku = date(2021, 9, 1),
+          loppu = None
+        )
+      )),
+      koulukoti = Some(List(
+        Aikajakso(
+          alku = date(2021, 9, 1),
+          loppu = None
+        )
+      )),
     )),
     organisaatiohistoria = Some(opiskeluoikeudenOrganisaatioHistoria),
     suoritukset = List(

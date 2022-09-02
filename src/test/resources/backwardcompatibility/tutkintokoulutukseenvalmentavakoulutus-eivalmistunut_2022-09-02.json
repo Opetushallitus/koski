@@ -1,0 +1,188 @@
+{
+  "henkilö" : {
+    "hetu" : "040904A578H",
+    "etunimet" : "Tuula",
+    "kutsumanimi" : "Tuula",
+    "sukunimi" : "Vaara"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "koulutustoimija" : {
+      "oid" : "1.2.246.562.10.346830761110",
+      "nimi" : {
+        "fi" : "Helsingin kaupunki"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2021-08-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "koodistoUri" : "koskiopiskeluoikeudentila"
+        }
+      } ]
+    },
+    "lisätiedot" : {
+      "maksuttomuus" : [ {
+        "alku" : "2021-08-01",
+        "maksuton" : true
+      } ],
+      "vammainen" : [ {
+        "alku" : "2021-08-01"
+      } ],
+      "majoitusetu" : {
+        "alku" : "2021-09-01"
+      },
+      "kuljetusetu" : {
+        "alku" : "2021-09-01"
+      },
+      "sisäoppilaitosmainenMajoitus" : [ {
+        "alku" : "2021-09-01"
+      } ],
+      "koulukoti" : [ {
+        "alku" : "2021-09-01"
+      } ],
+      "pidennettyPäättymispäivä" : false,
+      "erityisenTuenPäätökset" : [ {
+        "alku" : "2021-08-01"
+      } ]
+    },
+    "suoritukset" : [ {
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.52251087186",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "10105",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto"
+        }
+      },
+      "tyyppi" : {
+        "koodiarvo" : "tuvakoulutuksensuoritus",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999908",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "OPH-1488-2021",
+        "koulutustyyppi" : {
+          "koodiarvo" : "40",
+          "koodistoUri" : "koulutustyyppi"
+        }
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "101",
+            "nimi" : {
+              "fi" : "Opiskelu- ja urasuunnittelutaidot",
+              "sv" : "Opiskelu- ja urasuunnittelutaidot",
+              "en" : "Opiskelu- ja urasuunnittelutaidot"
+            },
+            "koodistoUri" : "koulutuksenosattuva"
+          }
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "nimi" : {
+            "fi" : "suomi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tutkintokoulutukseenvalmentava",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "107",
+            "nimi" : {
+              "fi" : "Perustaitojen vahvistaminen",
+              "sv" : "Perustaitojen vahvistaminen",
+              "en" : "Perustaitojen vahvistaminen"
+            },
+            "koodistoUri" : "koulutuksenosattuva"
+          }
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "nimi" : {
+            "fi" : "suomi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tuvaperusopetus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "103",
+            "nimi" : {
+              "fi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
+              "sv" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
+              "en" : "Arjen ja yhteiskunnallisen osallisuuden taidot"
+            },
+            "koodistoUri" : "koulutuksenosattuva"
+          }
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "nimi" : {
+            "fi" : "suomi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tutkintokoulutukseenvalmentava",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "tuva",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "organisaatiohistoria" : [ {
+      "muutospäivä" : "2021-08-01",
+      "oppilaitos" : {
+        "oid" : "1.2.246.562.10.52251087186",
+        "nimi" : {
+          "fi" : "Stadin ammatti- ja aikuisopisto"
+        }
+      },
+      "koulutustoimija" : {
+        "oid" : "1.2.246.562.10.346830761110",
+        "nimi" : {
+          "fi" : "Helsingin kaupunki"
+        }
+      }
+    } ],
+    "järjestämislupa" : {
+      "koodiarvo" : "perusopetus",
+      "koodistoUri" : "tuvajarjestamislupa"
+    },
+    "alkamispäivä" : "2021-08-01"
+  } ]
+}

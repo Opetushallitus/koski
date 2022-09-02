@@ -74,6 +74,18 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   } : null,
+  currentLocation().params.tuva === 'true' ? {
+    id: 'tuva',
+    tab: 'raporttikategoria-tab-tuva',
+    heading: 'raporttikategoria-heading-tuva',
+    raportit: [
+      {
+        id: 'tuvaperusopetuksenoppijamääräraportti',
+        name: 'raportti-tab-tuvaperusopetuksenoppijamäärätraportti',
+        component: TuvaPerusopetuksenOppijamäärätRaportti
+      }
+    ]
+  } : null,
   {
     id: 'aikuisten-perusopetus',
     tab: 'raporttikategoria-tab-aikuisten-perusopetus',
@@ -737,6 +749,25 @@ function PerusopetuksenOppijamäärätRaportti({ stateP }) {
     <RaporttiPaivalta
       stateP={stateP}
       apiEndpoint={'/perusopetuksenoppijamaaratraportti'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      dateInputHelp={dateInputHelpText}
+      example={exampleText}
+      lang={lang}
+    />
+  )
+}
+
+function TuvaPerusopetuksenOppijamäärätRaportti({ stateP }) {
+  const titleText = <Text name='Tuva-perusopetus-oppijamäärät-raportti-title' />
+  const shortDescriptionText = <Text name='Tuva-perusopetus-oppijamäärät-raportti-short-description' />
+  const dateInputHelpText = <Text name='Tuva-perusopetus-oppijamäärät-raportti-date-input-help' />
+  const exampleText = <Paragraphs name='Tuva-perusopetus-oppijamäärät-raportti-example' />
+
+  return (
+    <RaporttiPaivalta
+      stateP={stateP}
+      apiEndpoint={'/tuvaperusopetuksenoppijamaaratraportti'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
