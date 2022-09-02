@@ -1,12 +1,13 @@
 package fi.oph.koski.raportit
 
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
 
 import java.lang.Character.isDigit
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import fi.oph.koski.raportointikanta._
-import fi.oph.koski.schema.{Aikajakso, Jakso, Koulutusmoduuli}
+import fi.oph.koski.schema.{Aikajakso, Jakso, Koulutusmoduuli, LocalizedString}
 
 
 case class YleissivistäväOppiaineenTiedot(suoritus: RSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) {
@@ -14,17 +15,35 @@ case class YleissivistäväOppiaineenTiedot(suoritus: RSuoritusRow, osasuorituks
     case _: RPäätasonSuoritusRow => osasuoritukset
     case s: ROsasuoritusRow => osasuoritukset.filter(_.ylempiOsasuoritusId.contains(s.osasuoritusId))
   }
+
+  private val suorituksenLaajuusYksikkö = {
+    suoritus match {
+      case s: RPäätasonSuoritusRow =>
+        JsonSerializer.extract[Option[LocalizedString]](s.data \ "koulutusmoduuli" \ "laajuus" \ "yksikkö" \ "nimi")
+      case s: ROsasuoritusRow =>
+        JsonSerializer
+          .extract[Option[LocalizedString]](s.data \ "koulutusmoduuli" \ "laajuus" \ "yksikkö" \ "nimi")
+          .orElse(
+            suorituksenOsasuoritukset
+              .find(_.koulutusmoduuliLaajuusYksikkö.nonEmpty)
+              .flatMap(r => JsonSerializer
+                .extract[Option[LocalizedString]](r.data \ "koulutusmoduuli" \ "laajuus" \ "yksikkö" \ "nimi")
+              )
+          )
+    }
+  }
   private val hylätytOsasuoritukset = suorituksenOsasuoritukset.filterNot(_.arvioituJaHyväksytty)
 
   private val laajuus = suorituksenOsasuoritukset.map(_.laajuus).sum
   private val hylättyjenLaajuus = hylätytOsasuoritukset.map(_.laajuus).sum
 
-  private def hylätytKurssitStr(t: LocalizationReader) = if (hylättyjenLaajuus > 0) f" (${t.get("raportti-excel-default-value-joista")} $hylättyjenLaajuus%.1f ${t.get("raportti-excel-default-value-hylättyjä")})" else ""
+  private def hylätytKurssitStr(t: LocalizationReader) =
+    if (hylättyjenLaajuus > 0) f" (${t.get("raportti-excel-default-value-joista")} $hylättyjenLaajuus%.1f ${t.get("raportti-excel-default-value-hylättyjä")})" else ""
 
   def toStringLokalisoitu(t: LocalizationReader): String = {
     suoritus
       .arviointiArvosanaKoodiarvo
-      .map(a => f"${t.get("raportti-excel-default-value-arvosana")} $a, $laajuus%.1f ${t.get("raportti-excel-default-value-kurssia")}${hylätytKurssitStr(t)}")
+      .map(a => f"${t.get("raportti-excel-default-value-arvosana")} $a, $laajuus%.1f ${suorituksenLaajuusYksikkö.map(_.get(t.language)).getOrElse(t.get("raportti-excel-default-value-kurssia"))}${hylätytKurssitStr(t)}")
       .getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))
   }
 }

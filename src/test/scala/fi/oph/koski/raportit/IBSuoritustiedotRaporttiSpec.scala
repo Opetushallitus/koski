@@ -2,7 +2,7 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.ibPredicted
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{ibPreIB2019, ibPredicted}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession}
@@ -149,11 +149,11 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "Erityisen koulutustehtävän jaksot" -> None,
           "Ulkomaanjaksot" -> None,
           "Sisäoppilaitosmainen majoitus" -> None,
-          "Yhteislaajuus (kaikki kurssit)" -> 32.0,
-          "Yhteislaajuus (suoritetut kurssit)" -> 32.0,
-          "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0,
-          "Yhteislaajuus (tunnustetut kurssit)" -> 0,
-          "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0,
+          "Yhteislaajuus (kaikki kurssit/opintopisteet)" -> 32.0,
+          "Yhteislaajuus (suoritetut kurssit/opintopisteet)" -> 32.0,
+          "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit/opintopisteet)" -> 0,
+          "Yhteislaajuus (tunnustetut kurssit/opintopisteet)" -> 0,
+          "Yhteislaajuus (eri vuonna korotetut kurssit/opintopisteet)" -> 0,
           "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 8, 3.0 kurssia",
           "A1 Englanti valtakunnallinen" -> "Arvosana 10, 3.0 kurssia",
           "B1 Ruotsi valtakunnallinen" -> "Arvosana 7, 2.0 kurssia",
@@ -184,6 +184,74 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
         )
 
         verifyOppijanRow(ibPredicted, expectedPetteri, suoritusTiedotSheet)
+      }
+
+      "suoritustiedot sheetillä Pre-IB 2019 suorituksille" in {
+        val suoritusTiedotSheet = raporttiRivitPreIB.head
+        suoritusTiedotSheet.size shouldBe 4
+
+        lazy val expectedPate = Map(
+          "Opiskeluoikeuden oid" -> "",
+          "Lähdejärjestelmä" -> None,
+          "Koulutustoimija" -> "Helsingin kaupunki",
+          "Oppilaitoksen nimi" -> "Ressun lukio",
+          "Toimipiste" -> "Ressun lukio",
+          "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
+          "Päivitetty" -> LocalDate.now,
+          "Yksilöity" -> true,
+          "Oppijan oid" -> ibPreIB2019.oid,
+          "Hetu" -> ibPreIB2019.hetu,
+          "Sukunimi" -> ibPreIB2019.sukunimi,
+          "Etunimet" -> ibPreIB2019.etunimet,
+          "Opiskeluoikeuden alkamispäivä" -> Some(LocalDate.of(2012, 9, 1)),
+          "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
+          "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna, valmistunut",
+          "Päätason suoritusten nimet" -> Some("Pre-IB 2019"),
+          "Opiskeluoikeuden päättymispäivä" -> Some(LocalDate.of(2016, 6, 4)),
+          "Rahoitukset" -> "1, 1",
+          "Läsnä/valmistunut-rahoitusmuodot syötetty" -> true,
+          "Maksuttomuus" -> None,
+          "Oikeutta maksuttomuuteen pidennetty" -> None,
+          "Pidennetty päättymispäivä" -> false,
+          "Ulkomainen vaihto-opiskelija" -> false,
+          "Erityisen koulutustehtävän jaksot" -> None,
+          "Ulkomaanjaksot" -> None,
+          "Sisäoppilaitosmainen majoitus" -> None,
+          "Yhteislaajuus (kaikki kurssit/opintopisteet)" -> 34.0,
+          "Yhteislaajuus (suoritetut kurssit/opintopisteet)" -> 32.0,
+          "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit/opintopisteet)" -> 0,
+          "Yhteislaajuus (tunnustetut kurssit/opintopisteet)" -> 2.0,
+          "Yhteislaajuus (eri vuonna korotetut kurssit/opintopisteet)" -> 0,
+          "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 4.0 opintopistettä",
+          "A1 Englanti valtakunnallinen" -> "",
+          "B1 Ruotsi valtakunnallinen" -> "",
+          "B2 Ranska valtakunnallinen" -> "",
+          "B3 Espanja valtakunnallinen" -> "",
+          "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 10, 4.0 opintopistettä",
+          "BI Biologia valtakunnallinen" -> "",
+          "GE Maantieto valtakunnallinen" -> "",
+          "FY Fysiikka valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
+          "KE Kemia valtakunnallinen" -> "Arvosana 7, 2.0 opintopistettä",
+          "FI Filosofia valtakunnallinen" -> "",
+          "PS Psykologia valtakunnallinen" -> "",
+          "HI Historia valtakunnallinen" -> "",
+          "YH Yhteiskuntaoppi valtakunnallinen" -> "",
+          "KT Katolinen uskonto valtakunnallinen" -> "Arvosana 9, 2.0 opintopistettä",
+          "KT Uskonto/Elämänkatsomustieto valtakunnallinen" -> "",
+          "TE Terveystieto valtakunnallinen" -> "",
+          "LI Liikunta valtakunnallinen" -> "Arvosana 8, 3.0 opintopistettä",
+          "MU Musiikki valtakunnallinen" -> "",
+          "KU Kuvataide valtakunnallinen" -> "",
+          "OP Opinto-ohjaus valtakunnallinen" -> "",
+          "TO Teemaopinnot valtakunnallinen" -> "Ei arvosanaa",
+          "LD Lukiodiplomit valtakunnallinen" -> "Ei arvosanaa",
+          "MS Muut suoritukset valtakunnallinen" -> "Ei arvosanaa",
+          "A Englanti valtakunnallinen" -> "Arvosana 9, 4.0 opintopistettä",
+          "A Espanja valtakunnallinen" -> "Arvosana 6, 4.0 opintopistettä",
+          "ITT Tanssi ja liike paikallinen" -> "Arvosana 6, 2.0 opintopistettä"
+        )
+
+        verifyOppijanRow(ibPreIB2019, expectedPate, suoritusTiedotSheet)
       }
     }
   }

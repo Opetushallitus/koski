@@ -175,12 +175,12 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     "Hetu" -> KoskiSpecificMockOppijat.teija.hetu,
     "Sukunimi" -> KoskiSpecificMockOppijat.teija.sukunimi,
     "Etunimet" -> KoskiSpecificMockOppijat.teija.etunimet,
-    "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 6.0 kurssia",
-    "ITT Tanssi ja liike paikallinen" -> "Arvosana 8, 2.0 kurssia",
+    "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 6.0 opintopistettä",
+    "ITT Tanssi ja liike paikallinen" -> "Arvosana 8, 2.0 opintopistettä",
     "Yhteislaajuus (kaikki opintopisteet)" -> 8.0,
     "Yhteislaajuus (suoritetut opintopisteet)" -> 4.0,
     "Yhteislaajuus (tunnustetut opintopisteet)" -> 4.0,
     "Yhteislaajuus (hylätyllä arvosanalla suoritetut opintopisteet)" -> 0,
-    "Yhteislaajuus (eri vuonna korotetut opintopisteet)" -> 2.0,
+    "Yhteislaajuus (eri vuonna korotetut opintopisteet)" -> 2.0
   )
 }
