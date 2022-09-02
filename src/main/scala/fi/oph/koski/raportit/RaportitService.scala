@@ -116,16 +116,16 @@ class RaportitService(application: KoskiApplication) {
     perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokkaRaportti, t)
   }
 
-  def valmistavanopetuksenraportti(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
+  def perusopetukseenvalmistavanopetuksenraportti(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
     val valmistavanRaportti = PerusopetukseenValmistavanRaportti(perusopetukseenValmistavanRepository, t)
     val mainSheet = valmistavanRaportti.buildRaportti(Seq(request.oppilaitosOid), request.alku, request.loppu, request.osasuoritustenAikarajaus, t)
 
     OppilaitosRaporttiResponse(
       sheets = Seq(mainSheet),
       workbookSettings = WorkbookSettings(
-        s"${t.get("raportti-excel-valmistava-opetus-title")}_${request.oppilaitosOid}", Some(request.password)
+        s"${t.get("raportti-excel-perusopetukseen-valmistava-opetus-title")}_${request.oppilaitosOid}", Some(request.password)
       ),
-      filename = s"${t.get("valmistavaopetus_koski_raportti")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      filename = s"${t.get("raportti-excel-perusopetukseenvalmistavaopetus-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
     )
   }
