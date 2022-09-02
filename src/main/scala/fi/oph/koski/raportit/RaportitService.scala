@@ -332,6 +332,20 @@ class RaportitService(application: KoskiApplication) {
       sheets = Seq(
         tuvaPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t),
         tuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti.build(oppilaitosOids, request.paiva, t),
+        DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-aikajaksovirheet-ohje-body"))
+      ),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-tuva-perusopetus-vos-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-tuva-perusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
+  def tuvaPerusopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "tuva")
+    OppilaitosRaporttiResponse(
+      sheets = Seq(
+        tuvaPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t),
+        tuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti.build(oppilaitosOids, request.paiva, t),
         DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-tuva-perus-aikajaksovirheet-ohje-body"))
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-tuva-perusopetus-vos-title"), Some(request.password)),
