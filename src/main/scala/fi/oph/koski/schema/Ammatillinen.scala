@@ -117,6 +117,12 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   with VaikeastiVammainen
   with MaksuttomuusTieto
   with OikeusmaksuttomaanAsuntolapaikkaanBooleanina
+  with Majoituksellinen
+  with OsaAikaisuusjaksollinen
+  with VaativanErityisenTuenErityisenTehtävänSisältäväLisätieto
+  with VaativanErityisenTuenYhteydessäJärjestettävänMajoituksenSisältäväLisätieto
+  with Vankilaopetuksessa
+  with VammainenJaAvustaja
 
 @Title("Osa-aikaisuusjakso")
 @Description("Osa-aikaisuusjakson kesto ja suuruus")

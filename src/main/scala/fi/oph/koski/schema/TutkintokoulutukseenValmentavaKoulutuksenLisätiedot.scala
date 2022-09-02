@@ -60,7 +60,13 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
   with Ulkomaajaksollinen
   with SisäoppilaitosmainenMajoitus
+  with OsaAikaisuusjaksollinen
+  with Majoituksellinen
   with VaikeastiVammainen
+  with VaativanErityisenTuenYhteydessäJärjestettävänMajoituksenSisältäväLisätieto
+  with VaativanErityisenTuenErityisenTehtävänSisältäväLisätieto
+  with VammainenJaAvustaja
+  with Vankilaopetuksessa
 
 @Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden lukiokoulutuksen järjestämisluvan lisätiedot")
 @Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden lukiokoulutuksen järjestämisluvan lisätiedot")
@@ -77,6 +83,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanL
   @Description("Onko opiskelija sisöoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
+  with SisäoppilaitosmainenMajoitus
 
 @Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan lisätiedot")
 @Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan lisätiedot")
@@ -124,6 +131,9 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLis
   erityisenTuenPäätökset: Option[List[TuvaErityisenTuenPäätös]] = None
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
   with PidennettyOppivelvollisuus
+  with Majoitusetuinen
+  with Kuljetusetuinen
+  with SisäoppilaitosmainenMajoitus
 {
   def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso] = {
     erityisenTuenPäätökset.getOrElse(List.empty)
