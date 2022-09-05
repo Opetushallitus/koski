@@ -21,10 +21,10 @@ class ApiGroup extends ApiDefinition {
 }
 
 object ApiOperation {
-  def apply(method: String, path: String, summary: String, doc: Elem, examples: List[Example], parameters: List[ApiOperationParameter], statusCodes: List[ErrorCategory]): ApiOperation =
+  def apply(method: String, path: String, summary: String, doc: Elem, examples: List[ExampleBase], parameters: List[ApiOperationParameter], statusCodes: List[ErrorCategory]): ApiOperation =
       ApiOperation(method, path, summary, doc.toString, examples, parameters, statusCodes)
 }
-case class ApiOperation(method: String, path: String, summary: String, doc: String, examples: List[Example], parameters: List[ApiOperationParameter], statusCodes: List[ErrorCategory]) extends ApiDefinition {
+case class ApiOperation(method: String, path: String, summary: String, doc: String, examples: List[ExampleBase], parameters: List[ApiOperationParameter], statusCodes: List[ErrorCategory]) extends ApiDefinition {
   def operations = List(this)
   @SyntheticProperty
   def errorCategories: List[ErrorCategory] = statusCodes.flatMap(_.flatten)

@@ -10,7 +10,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, KoskiSpecificBaseServlet, 
 import scala.collection.immutable.Seq
 
 class KoodistoServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with Unauthenticated with KoodistoFinder with NoCache {
-  private val opiskeluoikeudet: Seq[Opiskeluoikeus] = Examples.examples.flatMap(_.data.opiskeluoikeudet)
+  private val opiskeluoikeudet: Seq[Opiskeluoikeus] = Examples.oppijaExamples.flatMap(_.data.opiskeluoikeudet)
   private val koodiarvot: Seq[Opiskeluoikeus] => Seq[String] = opiskeluoikeudet => opiskeluoikeudet.flatMap(_.suoritukset).map(_.tyyppi.koodiarvo).distinct.sorted
 
   get("/:name/:version") {

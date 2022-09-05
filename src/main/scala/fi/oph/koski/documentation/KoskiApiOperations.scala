@@ -1,14 +1,16 @@
 package fi.oph.koski.documentation
 
-import java.sql.Timestamp
+import fi.oph.koski.documentation.Examples.searchByHetuExamples
 
-import fi.oph.koski.henkilo.{HenkilötiedotSearchResponse, KoskiSpecificMockOppijat}
+import java.sql.Timestamp
+import fi.oph.koski.henkilo.{HenkilötiedotSearchRequest, HenkilötiedotSearchResponse, KoskiSpecificMockOppijat}
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koodisto.{KoodistoKoodi, Koodistot, MockKoodistoPalvelu}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.{HenkilötiedotJaOid, Opiskeluoikeus, Oppija}
+import org.json4s.{JField, JString}
 import org.json4s.JsonAST.JObject
 
 object KoskiApiOperations extends ApiGroup {
@@ -45,10 +47,21 @@ object KoskiApiOperations extends ApiGroup {
         KoskiErrorCategory.unauthorized
       )
     ))
-    val byHetu = add(ApiOperation(
-      "GET", "/koski/api/henkilo/hetu/{hetu}",
-      "Palauttaa henkilötiedot hetulla",
+    val byHetuPost = add(ApiOperation(
+      "POST", "/koski/api/henkilo/hetu",
+      "Palauttaa henkilötiedot hetulla.",
       <p></p>,
+      searchByHetuExamples,
+      Nil,
+      List(
+        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = serializeWithRoot[List[HenkilötiedotJaOid]](List(KoskiSpecificMockOppijat.eero.toHenkilötiedotJaOid))),
+        KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu
+      )
+    ))
+    val byHetuGet = add(ApiOperation(
+      "GET", "/koski/api/henkilo/hetu/{hetu}",
+      "Deprekoitu – Palauttaa henkilötiedot hetulla.",
+      <p>Tämä rajapinta on deprekoitu. Käytä POST /koski/api/henkilo/hetu -rajapintaa.</p>,
       Nil,
       List(
         PathParameter("hetu", "Henkilötunnus", List("010101-123N"))
@@ -115,7 +128,7 @@ object KoskiApiOperations extends ApiGroup {
           Syötedata validoidaan json-schemaa ja tiettyjä sisäisiä sääntöjä vasten ja päivitys hyväksytään vain, mikäli validointi menee läpi. Ks. paluukoodit alla.
         </p>
       </div>,
-      Examples.examples,
+      Examples.oppijaExamples,
       Nil,
       List(
         KoskiErrorCategory.ok.createdOrUpdated,
@@ -142,7 +155,7 @@ object KoskiApiOperations extends ApiGroup {
           Syötedata validoidaan json-schemaa ja tiettyjä sisäisiä sääntöjä vasten ja päivitys hyväksytään vain, mikäli validointi menee läpi. Ks. paluukoodit alla.
         </p>
       </div>,
-      Examples.examples,
+      Examples.oppijaExamples,
       Nil,
       List(
         KoskiErrorCategory.ok.createdOrUpdated,
