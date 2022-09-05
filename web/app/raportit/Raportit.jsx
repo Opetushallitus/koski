@@ -749,6 +749,9 @@ function AikuistenPerusopetusRaportti({ stateP }) {
       raporttiTyypit={aikuistenPerusopetusReportTypes}
       defaultRaportinTyyppi={aikuistenPerusopetusReportTypes.alkuvaihe.key}
       listavalintaKuvaus={'suorituksentyyppivalinta-help'}
+      aikajaksoValintaKuvaus={'aikuistenperusopetuksen-raportti-osasuoritusten-aikavaraus-help'}
+      osasuoritustenAikarajausEiKuvaus={'Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta'}
+      osasuoritustenAikarajausKylläKuvaus={'Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle'}
     />
   )
 }
@@ -805,6 +808,9 @@ function IBSuoritustiedot({ stateP }) {
       raporttiTyypit={ibReportTypes}
       defaultRaportinTyyppi={ibReportTypes.ib.key}
       listavalintaKuvaus={'suorituksentyyppivalinta-ib-help'}
+      aikajaksoValintaKuvaus={'ib-raportti-osasuoritusten-aikavaraus-help'}
+      osasuoritustenAikarajausEiKuvaus={'ib-raportti-osasuoritusten-aikarajaus-ei'}
+      osasuoritustenAikarajausKylläKuvaus={'ib-raportti-osasuoritusten-aikarajaus-kyllä'}
     />
   )
 }

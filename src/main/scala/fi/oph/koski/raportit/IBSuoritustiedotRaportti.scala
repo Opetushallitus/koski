@@ -179,7 +179,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       stattisetKolumnit = IBRaporttiOppiaineenKurssienVälilehtiStaattisetKolumnit(
         oppijanOid = row.opiskeluoikeus.oppijaOid,
         hetu = row.henkilo.hetu,
-        sukinimi = row.henkilo.sukunimi,
+        sukunimi = row.henkilo.sukunimi,
         etunimet = row.henkilo.etunimet,
         toimipiste = if (t.language == "sv") row.päätasonSuoritus.toimipisteNimiSv else row.päätasonSuoritus.toimipisteNimi,
         suorituksenTyyppi = row
@@ -203,7 +203,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
         .filter(_.matchesWith(kurssi, t.language))
         .map(kurssisuoritus =>
           IBModuulinTiedot(
-            kurssinTyyppi = JsonSerializer.extract[Option[Koodistokoodiviite]](kurssisuoritus.data \ "koulutusmoduuli" \ "kurssinTyyppi").map(_.koodiarvo),
+            kurssinTyyppi = JsonSerializer.extract[Option[LocalizedString]](kurssisuoritus.data \ "koulutusmoduuli" \ "kurssinTyyppi" \ "nimi"),
             pakollinen = JsonSerializer.extract[Option[Boolean]](kurssisuoritus.data \ "koulutusmoduuli" \ "pakollinen"),
             arvosana = kurssisuoritus.arviointiArvosanaKoodiarvo,
             laajuus = raportinTyyppi match {
@@ -270,7 +270,7 @@ case class IBRaporttiRow(
 case class IBRaporttiOppiaineenKurssienVälilehtiStaattisetKolumnit(
   oppijanOid: String,
   hetu: Option[String],
-  sukinimi: String,
+  sukunimi: String,
   etunimet: String,
   toimipiste: String,
   suorituksenTyyppi: String
@@ -285,7 +285,7 @@ case class IBRaportinOppiaineenOsasuorituksetRow(
 
 case class IBModuulinTiedot(
   pakollinen: Option[Boolean],
-  kurssinTyyppi: Option[String],
+  kurssinTyyppi: Option[LocalizedString],
   arvosana: Option[String],
   laajuus: Option[Double],
   tunnustettu: Boolean,
@@ -297,7 +297,7 @@ case class IBModuulinTiedot(
         if (p) t.get("raportti-excel-default-value-pakollinen").capitalize
         else t.get("raportti-excel-default-value-vapaavalintainen").capitalize
       }.orElse(
-        Some(kurssinTyyppi.getOrElse(t.get("raportti-excel-default-value-ei-tyyppiä")).capitalize)
+        Some(kurssinTyyppi.map(_.get(t.language)).getOrElse(t.get("raportti-excel-default-value-ei-tyyppiä")).capitalize)
       ),
       Some(arvosana
         .map(s"${t.get("raportti-excel-default-value-arvosana")} " + _)

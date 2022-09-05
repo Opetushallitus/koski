@@ -36,7 +36,19 @@ export const ibReportTypes = {
 }
 
 
-export const AikajaksoRaporttiTyyppivalinnalla = ({stateP, apiEndpoint, shortDescription, example, lang, defaultRaportinTyyppi, listavalintaKuvaus, raporttiTyypit}) => {
+export const AikajaksoRaporttiTyyppivalinnalla = ({
+    stateP,
+    apiEndpoint,
+    shortDescription,
+    example,
+    lang,
+    defaultRaportinTyyppi,
+    listavalintaKuvaus,
+    raporttiTyypit,
+    aikajaksoValintaKuvaus,
+    osasuoritustenAikarajausEiKuvaus,
+    osasuoritustenAikarajausKylläKuvaus
+  }) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const osasuoritustenAikarajausAtom = Atom(false)
@@ -90,11 +102,11 @@ export const AikajaksoRaporttiTyyppivalinnalla = ({stateP, apiEndpoint, shortDes
       />
 
       <Listavalinta
-        label="aikuistenperusopetuksen-raportti-osasuoritusten-aikavaraus-help"
+        label={aikajaksoValintaKuvaus}
         atom={osasuoritustenAikarajausAtom}
         options={[
-          { key: false, value: <Text name="Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta" /> },
-          { key: true, value: <Text name="Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle" /> }
+          { key: false, value: <Text name={osasuoritustenAikarajausEiKuvaus} /> },
+          { key: true, value: <Text name={osasuoritustenAikarajausKylläKuvaus} /> }
         ]}
       />
 
