@@ -44,7 +44,8 @@ object FrontendValvontaHeaders {
   // Raameissa ja YTL:n koesuorituksissa on data-imageja, siksi tarvitaan
   private val imgSrc = "img-src 'self' data: analytiikka.opintopolku.fi"
 
-  private val connectSrc = "connect-src 'self'"
+  // Piwik-scripti ladataan analytiikka.opintopolku.fi -domainista, siksi tarvitaan
+  private val connectSrc = "connect-src 'self' analytiikka.opintopolku.fi"
 
   private val formAction = "form-action 'self'"
 
