@@ -43,10 +43,6 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     .data.filter(_.nimi("fi").toLowerCase.contains(query.toLowerCase)).sortBy(_.koulutusvienti)
   }
 
-  def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste] = {
-    rakenteet.filter(_.diaarinumero == diaarinumero).map(_.toEPeruste).sortBy(_.koulutusvienti)
-  }
-
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste] = {
     rakenteet.filter(r => koulutustyypit.map(k => s"${k.koodistoUri}_${k.koodiarvo}").contains(r.koulutustyyppi)).map(_.toEPeruste).sortBy(_.koulutusvienti)
   }

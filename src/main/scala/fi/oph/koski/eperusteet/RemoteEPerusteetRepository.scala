@@ -23,15 +23,6 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
     runIO(program).sortBy(_.koulutusvienti)
   }
 
-  def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste] = {
-    val program: IO[List[EPeruste]] = for {
-      (perusteetIlmanKoulutusvientiä) <- http.get(uri"/api/perusteet?diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteet])
-      (perusteetKoulutusviennillä) <- http.get(uri"/api/perusteet?koulutusvienti=true&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteet])
-    } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data)
-
-    runIO(program).sortBy(_.koulutusvienti)
-  }
-
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste] = if (koulutustyypit.isEmpty) {
     Nil
   } else {

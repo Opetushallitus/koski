@@ -7,8 +7,6 @@ import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 trait EPerusteetRepository {
   def findPerusteet(query: String): List[EPeruste]
 
-  def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste]
-
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste]
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne]
