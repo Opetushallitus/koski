@@ -35,14 +35,8 @@ const kaikkiRaportitKategorioittain = [
         id: 'esiopetuksenoppijamäärienraportti',
         name: 'raportti-tab-esiopetuksenoppijamäärienraportti',
         component: EsiopetuksenOppijamäärätRaportti
-      },
-      // TODO: poista ehto kun valmis tuotantoon
-      currentLocation().params.valmistava === 'true' ? {
-        id: 'perusopetukseenvalmistavanopetuksentarkistus',
-        name: 'raportti-tab-perusopetukseenvalmistavantarkistusraportti',
-        component: PerusopetukseenValmistavanTarkistusRaportti
-      } : null
-    ].filter(r => !!r)
+      }
+    ]
   },
   {
     id: 'perusopetus',
@@ -63,15 +57,23 @@ const kaikkiRaportitKategorioittain = [
         id: 'perusopetuksenlisäopetuksenoppijamääräraportti',
         name: 'raportti-tab-perusopetuksenlisäopetuksenoppijamääräraportti',
         component: PerusopetuksenLisäopetuksenOppijamäärätRaportti
-      },
-      // TODO: poista ehto kun valmis tuotantoon
-      currentLocation().params.valmistava === 'true' ? {
+      }
+    ]
+  },
+  // TODO: parametrin tarkistuksen voi poistaa sitten kun raportti julkaistaan kaikille käyttäjille
+  // Huom. tee silloin myös tarvittavat korjaukset RaportitSpec.js:ään
+  currentLocation().params.valmistava === 'true' ? {
+    id: 'perusopetukseenvalmistava',
+    tab: 'raporttikategoria-tab-perusopetukseenvalmistava',
+    heading: 'raporttikategoria-heading-perusopetukseenvalmistava',
+    raportit: [
+      {
         id: 'perusopetukseenvalmistavanopetuksentarkistus',
         name: 'raportti-tab-perusopetukseenvalmistavantarkistusraportti',
         component: PerusopetukseenValmistavanTarkistusRaportti
-      } : null
-    ].filter(r => !!r)
-  },
+      }
+    ]
+  } : null,
   {
     id: 'aikuisten-perusopetus',
     tab: 'raporttikategoria-tab-aikuisten-perusopetus',
@@ -719,7 +721,7 @@ function PerusopetukseenValmistavanTarkistusRaportti({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
-      osasuoritusType={osasuoritusTypes.KURSSI}
+      osasuoritusType={osasuoritusTypes.OPINNOT}
       lang={lang}
     />
   )

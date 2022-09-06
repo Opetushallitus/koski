@@ -76,7 +76,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
       MuuAmmatillinenKoulutus,
       TOPKSAmmatillinen
     )
-    case "perusopetus" => Seq(PerusopetuksenVuosiluokka, PerusopetuksenOppijaMääräRaportti, PerusopetukseenValmistavanOpetuksenTarkistus)
+    case "perusopetus" => Seq(PerusopetuksenVuosiluokka, PerusopetuksenOppijaMääräRaportti)
     case "perusopetuksenlisaopetus" => Seq(PerusopetuksenLisäopetuksenOppijaMääräRaportti)
     case "lukiokoulutus" if !isKoulutustoimija => Seq(LukionSuoritustietojenTarkistus, LukioDiaIbInternationalOpiskelijamaarat, LukioKurssikertyma, LukioOpintopistekertyma)
     case "lukiokoulutus" => Seq(LukioDiaIbInternationalOpiskelijamaarat, LukioKurssikertyma, LukioOpintopistekertyma)
@@ -84,10 +84,11 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     case "ibtutkinto" => Seq(LukioDiaIbInternationalOpiskelijamaarat)
     case "diatutkinto" => Seq(LukioDiaIbInternationalOpiskelijamaarat)
     case "internationalschool" => Seq(LukioDiaIbInternationalOpiskelijamaarat)
-    case "esiopetus" => Seq(EsiopetuksenRaportti, EsiopetuksenOppijaMäärienRaportti, PerusopetukseenValmistavanOpetuksenTarkistus)
+    case "esiopetus" => Seq(EsiopetuksenRaportti, EsiopetuksenOppijaMäärienRaportti)
     case "aikuistenperusopetus" if !isKoulutustoimija => Seq(AikuistenPerusopetusSuoritustietojenTarkistus, AikuistenPerusopetusOppijaMäärienRaportti, AikuistenPerusopetusKurssikertymänRaportti)
     case "aikuistenperusopetus" => Seq(AikuistenPerusopetusOppijaMäärienRaportti, AikuistenPerusopetusKurssikertymänRaportti)
     case "luva" => Seq(LuvaOpiskelijamaarat)
+    case "perusopetukseenvalmistavaopetus" if !isKoulutustoimija => Seq(PerusopetukseenValmistavanOpetuksenTarkistus)
     case _ => Seq.empty[RaportinTyyppi]
   }
 
