@@ -46,8 +46,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
     suoritustyyppi = "perusopetukseenvalmistavaopetus",
     suorituksenTila = "valmis",
     suorituksenVahvistuspaiva = "2008-06-01",
-    läsnäolopäiviäAikajaksonAikana = 274,
-    rahoitukset = ""
+    läsnäolopäiviäAikajaksonAikana = 274
   )
 
   "Valmistavan opetuksen raportti" - {
@@ -101,13 +100,12 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
           "Suorituksen tila",
           "Suorituksen vahvistuspäivä",
           "Läsnäolopäiviä aikajakson aikana",
-          "Rahoitukset",
-          "FY Fysiikka valtakunnallinen",
-          "ai Äidinkieli paikallinen"
+          "ai Äidinkieli paikallinen",
+          "FY Fysiikka valtakunnallinen"
         ))
       }
       "Data näyttää oikealta" in {
-        sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana 9, 0.0 kurssia", "Arvosana S, 0.0 kurssia"))
+        sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana S, 10.0 vuosiviikkotuntia", "Arvosana 9, 1.0 vuosiviikkotuntia, 7. vuosiluokka"))
       }
     }
   }

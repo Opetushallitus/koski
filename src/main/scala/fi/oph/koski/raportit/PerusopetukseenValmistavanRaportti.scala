@@ -50,7 +50,11 @@ case class PerusopetukseenValmistavanRaportti(repository: PerusopetukseenValmist
     osasuoritus.suorituksenTyyppi == "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa" ||
       osasuoritus.suorituksenTyyppi == "perusopetukseenvalmistavanopetuksenoppiaine"
 
-  private def oppiaineet(rows: Seq[PerusopetukseenValmistavanRaporttiRows]) = opetettavatOppiaineetJaNiidenKurssit(_ => false, isOppiaine, rows, t)
+  private def oppiaineet(
+    rows: Seq[PerusopetukseenValmistavanRaporttiRows]
+  ): Seq[YleissivistäväRaporttiOppiaineJaKurssit] = {
+    opetettavatOppiaineetJaNiidenKurssit(_ => false, isOppiaine, rows, t, PerusopetukseenValmistavaOppiaineetOrdering)
+  }
 
   private def combineStableAndDynamicRowParts(staticRowParts: Seq[PerusopetukseenValmistavanRaporttiStableFields], dynamicRowParts: Seq[Seq[Any]]): Seq[List[Any]] =
     staticRowParts
@@ -81,8 +85,7 @@ case class PerusopetukseenValmistavanRaportti(repository: PerusopetukseenValmist
       suoritustyyppi = row.päätasonSuoritus.suorituksenTyyppi,
       suorituksenTila = if (row.päätasonSuoritus.vahvistusPäivä.isDefined) t.get("raportti-excel-default-value-valmis") else t.get("raportti-excel-default-value-kesken"),
       suorituksenVahvistuspaiva = row.päätasonSuoritus.vahvistusPäivä.getOrElse("").toString,
-      läsnäolopäiviäAikajaksonAikana = row.aikajaksot.filter(_.tila == "lasna").map(j => Aikajakso(j.alku.toLocalDate, Some(j.loppu.toLocalDate))).map(lengthInDaysInDateRange(_, alku, loppu)).sum,
-      rahoitukset = row.aikajaksot.flatMap(_.opintojenRahoitus).mkString(",")
+      läsnäolopäiviäAikajaksonAikana = row.aikajaksot.filter(_.tila == "lasna").map(j => Aikajakso(j.alku.toLocalDate, Some(j.loppu.toLocalDate))).map(lengthInDaysInDateRange(_, alku, loppu)).sum
     )
   }
 
@@ -106,8 +109,7 @@ case class PerusopetukseenValmistavanRaportti(repository: PerusopetukseenValmist
     CompactColumn(t.get("raportti-excel-kolumni-suorituksenTyyppi"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTyyppi-lukio-comment"))),
     CompactColumn(t.get("raportti-excel-kolumni-suorituksenTila"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTila-lukio-comment"))),
     CompactColumn(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva"), comment = Some(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva-lukio-comment"))),
-    CompactColumn(t.get("raportti-excel-kolumni-läsnäolopäiviäAikajaksolla"), comment = Some(t.get("raportti-excel-kolumni-läsnäolopäiviäAikajaksolla-comment"))),
-    CompactColumn(t.get("raportti-excel-kolumni-rahoitukset"), comment = Some(t.get("raportti-excel-kolumni-rahoitukset-lukio-comment"))),
+    CompactColumn(t.get("raportti-excel-kolumni-läsnäolopäiviäAikajaksolla"), comment = Some(t.get("raportti-excel-kolumni-läsnäolopäiviäAikajaksolla-comment")))
   )
 
   private def perusopetukseenValmistavanRaporttiDynamicColumnSettings(oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit], t: LocalizationReader) = {
@@ -137,6 +139,5 @@ private[raportit] case class PerusopetukseenValmistavanRaporttiStableFields(
   suoritustyyppi: String,
   suorituksenTila: String,
   suorituksenVahvistuspaiva: String,
-  läsnäolopäiviäAikajaksonAikana: Int,
-  rahoitukset: String
+  läsnäolopäiviäAikajaksonAikana: Int
 )
