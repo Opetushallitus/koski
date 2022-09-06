@@ -97,6 +97,17 @@ case class AikuistenPerusopetusRaporttiRequest(
   lang: String
 ) extends RaporttiAikajaksoltaRequest
 
+case class IBSuoritustiedotRaporttiRequest(
+  oppilaitosOid: Organisaatio.Oid,
+  downloadToken: Option[String],
+  password: String,
+  alku: LocalDate,
+  loppu: LocalDate,
+  osasuoritustenAikarajaus: Boolean,
+  raportinTyyppi: IBSuoritustiedotRaporttiType,
+  lang: String
+) extends RaporttiAikajaksoltaRequest
+
 case class RaporttiPäivältäRequest(
   oppilaitosOid: Organisaatio.Oid,
   downloadToken: Option[String],
@@ -170,4 +181,8 @@ case object AikuistenPerusopetusOppijaMäärienRaportti extends RaportinTyyppi {
 
 case object AikuistenPerusopetusKurssikertymänRaportti extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo
+}
+
+case object IBSuoritustietojenTarkistus extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.ibtutkinto.koodiarvo
 }

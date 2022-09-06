@@ -80,6 +80,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     case "perusopetuksenlisaopetus" => Seq(PerusopetuksenLisäopetuksenOppijaMääräRaportti)
     case "lukiokoulutus" if !isKoulutustoimija => Seq(LukionSuoritustietojenTarkistus, LukioDiaIbInternationalOpiskelijamaarat, LukioKurssikertyma, LukioOpintopistekertyma)
     case "lukiokoulutus" => Seq(LukioDiaIbInternationalOpiskelijamaarat, LukioKurssikertyma, LukioOpintopistekertyma)
+    case "ibtutkinto" if !isKoulutustoimija => Seq(LukioDiaIbInternationalOpiskelijamaarat, IBSuoritustietojenTarkistus)
     case "ibtutkinto" => Seq(LukioDiaIbInternationalOpiskelijamaarat)
     case "diatutkinto" => Seq(LukioDiaIbInternationalOpiskelijamaarat)
     case "internationalschool" => Seq(LukioDiaIbInternationalOpiskelijamaarat)

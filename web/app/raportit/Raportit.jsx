@@ -6,7 +6,11 @@ import {AikajaksoRaportti} from './AikajaksoRaportti'
 import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
 import {AikajaksoRaporttiAikarajauksella, osasuoritusTypes} from './AikajaksoRaporttiAikarajauksella'
 import {RaporttiPaivalta} from './RaporttiPaivalta'
-import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
+import {
+  AikajaksoRaporttiTyyppivalinnalla,
+  aikuistenPerusopetusReportTypes,
+  ibReportTypes
+} from './AikajaksoRaporttiTyyppivalinnalla'
 import {Tabs} from '../components/Tabs'
 import { OrganisaatioDropdown } from './OrganisaatioDropdown'
 import {filterOrgTreeByRaporttityyppi} from './raporttiUtils'
@@ -14,6 +18,7 @@ import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import {lang} from '../i18n/i18n'
+import {currentLocation} from '../util/location.js'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -163,6 +168,20 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   },
+  // TODO: parametrin tarkistuksen voi poistaa sitten kun raportti julkaistaan kaikille käyttäjille
+  // Huom. tee silloin myös tarvittavat korjaukset RaportitSpec.js:ään
+  currentLocation().params.ibraportti === 'true' ? {
+    id: 'ib',
+    tab: 'raporttikategoria-tab-ib',
+    heading: 'raporttikategoria-heading-ib',
+    raportit: [
+      {
+        id: 'ibsuoritustietojentarkistus',
+        name: 'raportti-tab-ibsuoritustietojentarkistus',
+        component: IBSuoritustiedot
+      }
+    ]
+  } : null,
   {
     id: 'muut',
     tab: 'raporttikategoria-tab-muut',
@@ -176,7 +195,7 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   }
-]
+].filter(r => !!r)
 
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map(tab => {
@@ -720,13 +739,19 @@ function AikuistenPerusopetusRaportti({ stateP }) {
   const exampleText = <Paragraphs name='aikuisten-perusopetus-raportti-example' />
 
   return (
-    <AikuistenPerusopetuksenRaportit
+    <AikajaksoRaporttiTyyppivalinnalla
       stateP={stateP}
       apiEndpoint={'/aikuisten-perusopetus-suoritustietojen-tarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
       lang={lang}
+      raporttiTyypit={aikuistenPerusopetusReportTypes}
+      defaultRaportinTyyppi={aikuistenPerusopetusReportTypes.alkuvaihe.key}
+      listavalintaKuvaus={'suorituksentyyppivalinta-help'}
+      aikajaksoValintaKuvaus={'aikuistenperusopetuksen-raportti-osasuoritusten-aikavaraus-help'}
+      osasuoritustenAikarajausEiKuvaus={'Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta'}
+      osasuoritustenAikarajausKylläKuvaus={'Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle'}
     />
   )
 }
@@ -765,6 +790,27 @@ function AikuistenPerusopetuksenKurssikertymäRaportti({ stateP }) {
       dateInputHelp={dateInputHelpText}
       example={exampleText}
       lang={lang}
+    />
+  )
+}
+
+function IBSuoritustiedot({ stateP }) {
+  const shortDescriptionText = <Text name='IBSuoritustiedotRaportti-short-description' />
+  const exampleText = <Paragraphs name='IBSuoritustiedotRaportti-example' />
+
+  return (
+    <AikajaksoRaporttiTyyppivalinnalla
+      stateP={stateP}
+      apiEndpoint={'/ibsuoritustietojentarkistus'}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      lang={lang}
+      raporttiTyypit={ibReportTypes}
+      defaultRaportinTyyppi={ibReportTypes.ib.key}
+      listavalintaKuvaus={'suorituksentyyppivalinta-ib-help'}
+      aikajaksoValintaKuvaus={'ib-raportti-osasuoritusten-aikavaraus-help'}
+      osasuoritustenAikarajausEiKuvaus={'ib-raportti-osasuoritusten-aikarajaus-ei'}
+      osasuoritustenAikarajausKylläKuvaus={'ib-raportti-osasuoritusten-aikarajaus-kyllä'}
     />
   )
 }

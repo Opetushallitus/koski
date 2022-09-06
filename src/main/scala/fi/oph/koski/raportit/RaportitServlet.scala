@@ -221,6 +221,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     writeExcel(raportitService.perusopetuksenLisäopetuksenOppijamäärät(parsedRequest, t), t)
   }
 
+  get("/ibsuoritustietojentarkistus") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.ibtutkinto)
+    val parsedRequest = parseIBSuoritusRaporttiRequest
+    val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=ibsuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&raportinTyyppi=${parsedRequest.raportinTyyppi.typeName}&osasuoritustenAikarajaus=${parsedRequest.osasuoritustenAikarajaus}&lang=${parsedRequest.lang}")))
+    writeExcel(raportitService.ibSuoritustiedot(parsedRequest, t), t)
+  }
+
   private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {
     if (!session.allowedOpiskeluoikeusTyypit.contains(opiskeluoikeudenTyyppiViite.koodiarvo)) {
       haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
@@ -268,6 +276,26 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val lang = getStringParam("lang")
 
     AikajaksoRaporttiAikarajauksellaRequest(oppilaitosOid, downloadToken, password, alku, loppu, osasuoritustenAikarajaus, lang)
+  }
+
+  private def parseIBSuoritusRaporttiRequest: IBSuoritustiedotRaporttiRequest = {
+    val (alku, loppu) = getAlkuLoppuParams
+    val raportinTyyppi = params.get("raportinTyyppi").getOrElse("") match {
+      case IBTutkinnonSuoritusRaportti.typeName => IBTutkinnonSuoritusRaportti
+      case PreIBSuoritusRaportti.typeName => PreIBSuoritusRaportti
+      case _ => haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Raportin lataaminen epäonnistui, tuntematon raportin tyyppi ${params.get("raportinTyyppi").getOrElse("tuntematon")}"))
+    }
+
+    IBSuoritustiedotRaporttiRequest(
+      oppilaitosOid = getOppilaitosOid,
+      downloadToken = params.get("downloadToken"),
+      password = getStringParam("password"),
+      alku = alku,
+      loppu = loppu,
+      osasuoritustenAikarajaus = getOptionalBooleanParam("osasuoritustenAikarajaus").getOrElse(false),
+      raportinTyyppi = raportinTyyppi,
+      lang = getStringParam("lang")
+    )
   }
 
   private def parseAikuistenPerusopetusRaporttiRequest: AikuistenPerusopetusRaporttiRequest = {

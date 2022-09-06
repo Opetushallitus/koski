@@ -9,17 +9,50 @@ import {downloadExcel} from './downloadExcel'
 import { AikajaksoValinta, Listavalinta, LyhytKuvaus, RaportinLataus, Vinkit } from './raporttiComponents'
 import { selectFromState } from './raporttiUtils'
 
-const reportTypes = {
-  alkuvaihe: 'alkuvaihe',
-  päättövaihe: 'päättövaihe',
-  oppiaineenoppimäärä: 'oppiaineenoppimäärä'
+export const aikuistenPerusopetusReportTypes = {
+  alkuvaihe: {
+    key: 'alkuvaihe',
+    name: 'Alkuvaihe'
+  },
+  päättövaihe: {
+    key: 'päättövaihe',
+    name: 'Päättövaihe'
+  },
+  oppiaineenoppimäärä: {
+    key: 'oppiaineenoppimäärä',
+    name: 'Oppiaineen oppimäärä (ns. aineopiskelijat)'
+  }
 }
 
-export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescription, example, lang}) => {
+export const ibReportTypes = {
+  ib: {
+    key: 'ibtutkinto',
+    name: 'IB-tutkinnon suoritukset'
+  },
+  preib: {
+    key: 'preiboppimaara',
+    name: 'Pre-IB-opintojen suoritukset'
+  }
+}
+
+
+export const AikajaksoRaporttiTyyppivalinnalla = ({
+    stateP,
+    apiEndpoint,
+    shortDescription,
+    example,
+    lang,
+    defaultRaportinTyyppi,
+    listavalintaKuvaus,
+    raporttiTyypit,
+    aikajaksoValintaKuvaus,
+    osasuoritustenAikarajausEiKuvaus,
+    osasuoritustenAikarajausKylläKuvaus
+  }) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const osasuoritustenAikarajausAtom = Atom(false)
-  const raportinTyyppiAtom = Atom(reportTypes.alkuvaihe)
+  const raportinTyyppiAtom = Atom(defaultRaportinTyyppi)
   const submitBus = Bacon.Bus()
   const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
 
@@ -50,13 +83,17 @@ export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescr
       <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
       <Listavalinta
-        label="suorituksentyyppivalinta-help"
+        label={listavalintaKuvaus}
         atom={raportinTyyppiAtom}
-        options={[
-          { key: reportTypes.alkuvaihe, value: <Text name="Alkuvaihe" /> },
-          { key: reportTypes.päättövaihe, value: <Text name="Päättövaihe" /> },
-          { key: reportTypes.oppiaineenoppimäärä, value: <Text name="Oppiaineen oppimäärä (ns. aineopiskelijat)" /> }
-        ]}
+        options={
+          Object.entries(raporttiTyypit).map(([_, v]) => {
+              return {
+                key: v.key,
+                value: <Text name={v.name} />
+              }
+            }
+          )
+      }
       />
 
       <AikajaksoValinta
@@ -65,11 +102,11 @@ export const AikuistenPerusopetuksenRaportit = ({stateP, apiEndpoint, shortDescr
       />
 
       <Listavalinta
-        label="aikuistenperusopetuksen-raportti-osasuoritusten-aikavaraus-help"
+        label={aikajaksoValintaKuvaus}
         atom={osasuoritustenAikarajausAtom}
         options={[
-          { key: false, value: <Text name="Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta" /> },
-          { key: true, value: <Text name="Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle" /> }
+          { key: false, value: <Text name={osasuoritustenAikarajausEiKuvaus} /> },
+          { key: true, value: <Text name={osasuoritustenAikarajausKylläKuvaus} /> }
         ]}
       />
 

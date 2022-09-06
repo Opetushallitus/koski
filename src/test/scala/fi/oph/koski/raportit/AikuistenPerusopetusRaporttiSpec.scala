@@ -527,8 +527,8 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 1.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 5.0 kurssia (joista 1.0 hylättyjä)",
             "A1 Englanti valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
-            "B1 Ruotsi valtakunnallinen" -> "Arvosana 8, 0.0 kurssia,Arvosana S, 0.0 kurssia",
-            "B2 Saksa valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
+            "B1 Ruotsi valtakunnallinen" -> "Arvosana 8, 0.0 kurssia,Arvosana S, 0.0 vuosiviikkotuntia",
+            "B2 Saksa valtakunnallinen" -> "Arvosana 9, 0.0 vuosiviikkotuntia",
             "MA Matematiikka valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
             "BI Biologia valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
             "GE Maantieto valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
@@ -538,10 +538,10 @@ class AikuistenPerusopetusRaporttiSpec
             "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 10, 0.0 kurssia",
             "KT Ortodoksinen uskonto valtakunnallinen" -> "Arvosana 10, 0.0 kurssia",
             "TE Terveystieto valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
-            "LI Liikunta valtakunnallinen" -> "Arvosana 9, 0.0 kurssia,Arvosana S, 0.0 kurssia",
+            "LI Liikunta valtakunnallinen" -> "Arvosana 9, 0.0 kurssia,Arvosana S, 0.0 vuosiviikkotuntia",
             "MU Musiikki valtakunnallinen" -> "Arvosana 7, 0.0 kurssia",
             "KU Kuvataide valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
-            "KO Kotitalous valtakunnallinen" -> "Arvosana 8, 0.0 kurssia,Arvosana S, 0.0 kurssia",
+            "KO Kotitalous valtakunnallinen" -> "Arvosana 8, 0.0 kurssia,Arvosana S, 0.0 vuosiviikkotuntia",
             "KS Käsityö valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
             "TH Tietokoneen hyötykäyttö paikallinen" -> "Arvosana 9, 0.0 kurssia"
           )
