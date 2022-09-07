@@ -15,7 +15,7 @@ class KoodistotLocalizationTest extends AnyFreeSpec with TestEnvironment with Ma
     lazy val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))
     lazy val koodistoPalvelu = new RemoteKoodistoPalvelu(root)
 
-    Koodistot.koodistoAsetukset.foreach { koodistoAsetus =>
+    Koodistot.koodistoAsetukset.filter(_.koodistoVersio.isEmpty).foreach { koodistoAsetus =>
       s"${koodistoAsetus.koodisto}" taggedAs (LocalizationTestTag) in {
         val koodistoViite = koodistoPalvelu.getLatestVersionRequired(koodistoAsetus.koodisto)
         val koodit = koodistoPalvelu.getKoodistoKoodit(koodistoViite)

@@ -81,7 +81,7 @@ class DocumentationApiServlet extends KoskiSpecificApiServlet with Unauthenticat
   }
 
   get("/koodistot.json") {
-    renderObject[List[String]](Koodistot.koodistot)
+    renderObject[List[String]](Koodistot.koodistoAsetukset.filter(_.koodistoVersio.isEmpty).map(_.toString))
   }
 
   override def toJsonString[T: ru.TypeTag](x: T): String = JsonSerializer.writeWithRoot(x)

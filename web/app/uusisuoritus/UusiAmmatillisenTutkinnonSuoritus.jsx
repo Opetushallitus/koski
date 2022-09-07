@@ -104,7 +104,7 @@ const Popup = (isValmistava) => ({opiskeluoikeus, resultCallback}) => {
                   return <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(modelData(opiskeluoikeus, 'oppilaitos'))}/>
                 case 'suoritustapa':
                   let tutkinto = modelData(oppiaineenSuoritus, 'koulutusmoduuli')
-                  return<SuoritustapaDropdown diaarinumero={tutkinto.perusteenDiaarinumero} suoritustapaAtom={suoritustapaAtom}/>
+                  return <SuoritustapaDropdown diaarinumero={tutkinto.perusteenDiaarinumero} suoritustapaAtom={suoritustapaAtom}/>
                 default: return getDefault()
               }
             }}

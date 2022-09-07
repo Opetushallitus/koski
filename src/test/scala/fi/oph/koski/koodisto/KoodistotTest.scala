@@ -6,17 +6,17 @@ import org.scalatest.matchers.should.Matchers
 
 class KoodistotTest extends AnyFreeSpec with TestEnvironment with Matchers {
   "Koski-koodistojen mockdata löytyy, ja codesGroupUri on oikein" - {
-    Koodistot.koskiKoodistot.foreach { koodistoUri =>
-      koodistoUri in {
-        getKoodisto(koodistoUri).codesGroupUri should equal("http://koski")
+    Koodistot.koskiKoodistoAsetukset.foreach { koodistoAsetus =>
+      s"${koodistoAsetus.koodisto}/${koodistoAsetus.koodistoVersio}" in {
+        getKoodisto(koodistoAsetus.koodisto, koodistoAsetus.koodistoVersio).codesGroupUri should equal("http://koski")
       }
     }
   }
 
   "Muiden koodistojen mockdata löytyy, ja codesGroupUri on oikein" - {
-    Koodistot.muutKoodistot.foreach { koodistoUri =>
-      koodistoUri in {
-        getKoodisto(koodistoUri).codesGroupUri should not equal("http://koski")
+    Koodistot.muutKoodistoAsetukset.foreach { koodistoAsetus =>
+      s"${koodistoAsetus.koodisto}/${koodistoAsetus.koodistoVersio}" in {
+        getKoodisto(koodistoAsetus.koodisto, koodistoAsetus.koodistoVersio).codesGroupUri should not equal("http://koski")
       }
     }
   }
@@ -25,9 +25,9 @@ class KoodistotTest extends AnyFreeSpec with TestEnvironment with Matchers {
   // vaan muodostaa koodistoUri:n nimestä (suomenkielisestä jos löyty). Nimeä voi
   // kyllä muokata myöhemmin, joten ne eivät aina täsmää palvelussa.
   "Koski-koodistojen nimi ja koodistoUri täsmäävät" - {
-    Koodistot.koskiKoodistot.foreach { koodistoUri =>
-      koodistoUri in {
-        val koodisto = getKoodisto(koodistoUri)
+    Koodistot.koskiKoodistoAsetukset.foreach { koodistoAsetus =>
+      s"${koodistoAsetus.koodisto}/${koodistoAsetus.koodistoVersio}" in {
+        val koodisto = getKoodisto(koodistoAsetus.koodisto, koodistoAsetus.koodistoVersio)
         val preferredOrder = Seq("FI", "SV", "EN")
         val nimi = koodisto.metadata
           .sortBy(m => preferredOrder.indexOf(m.kieli))
@@ -35,7 +35,7 @@ class KoodistotTest extends AnyFreeSpec with TestEnvironment with Matchers {
           .getOrElse(throw new RuntimeException("Metadata puuttuu?"))
           .nimi
           .getOrElse(throw new RuntimeException("Nimi puuttuu?"))
-        transliterate(nimi) should equal(koodistoUri)
+        transliterate(nimi) should equal(koodistoAsetus.koodisto)
       }
     }
   }
@@ -74,8 +74,9 @@ class KoodistotTest extends AnyFreeSpec with TestEnvironment with Matchers {
     }
   }
 
-  private def getKoodisto(koodistoUri: String) = {
-    val versio = MockKoodistoPalvelu().getLatestVersionRequired(koodistoUri)
+  private def getKoodisto(koodistoUri: String, koodistoVersio: Option[Int]) = {
+    val versio = koodistoVersio.map(v => KoodistoViite(koodistoUri, v))
+      .getOrElse(MockKoodistoPalvelu().getLatestVersionRequired(koodistoUri))
     MockKoodistoPalvelu().getKoodisto(versio).get
   }
   private def getKoodistoKoodit(koodistoUri: String) = {
