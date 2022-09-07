@@ -42,7 +42,7 @@ object FrontendValvontaHeaders {
   private val fontSrc = "font-src 'self' data: fonts.gstatic.com fonts.googleapis.com digabi.github.io"
 
   // Raameissa ja YTL:n koesuorituksissa on data-imageja, siksi tarvitaan
-  private val imgSrc = "img-src 'self' data: analytiikka.opintopolku.fi"
+  private val imgSrc = "img-src 'self' data: analytiikka.opintopolku.fi browser-update.org"
 
   // Piwik-scripti ladataan analytiikka.opintopolku.fi -domainista, siksi tarvitaan
   private val connectSrc = "connect-src 'self' analytiikka.opintopolku.fi"
