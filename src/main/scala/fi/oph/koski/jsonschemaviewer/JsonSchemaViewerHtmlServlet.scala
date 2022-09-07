@@ -196,7 +196,7 @@ class JsonSchemaViewerHtmlServlet(implicit val application: KoskiApplication) ex
           </p>
         </div>
 
-        <script nonce={nonce} type='text/javascript' src="/koski/json-schema-viewer/jquery/1.11.3/jquery.min.js"></script>
+        <script nonce={nonce} type='text/javascript' src="/koski/json-schema-viewer/jquery/2.1.1/jquery.min.js"></script>
         <script nonce={nonce} type='text/javascript' src="/koski/json-schema-viewer/jquery/1.4.5/jquery.mobile.min.js"></script>
         <script nonce={nonce} type='text/javascript' src="/koski/json-schema-viewer/js/json-schema-viewer.min.js"></script>
         <script nonce={nonce} type='text/javascript'>{code}</script>
