@@ -1,6 +1,7 @@
 package fi.oph.koski.api
 
 import com.typesafe.config.{Config, ConfigFactory}
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.parse
@@ -86,12 +87,19 @@ class OpiskeluoikeusValidationSpec extends AnyFreeSpec with Matchers with Opiske
 
   private def mockKoskiValidator(config: Config) = {
     new KoskiValidator(
-      KoskiApplicationForTests.tutkintoRepository,
-      KoskiApplicationForTests.koodistoViitePalvelu,
       KoskiApplicationForTests.organisaatioRepository,
       KoskiApplicationForTests.possu,
       KoskiApplicationForTests.henkilöRepository,
-      KoskiApplicationForTests.ePerusteet,
+      new EPerusteisiinPerustuvaValidator(
+        KoskiApplicationForTests.ePerusteet,
+        KoskiApplicationForTests.tutkintoRepository,
+        KoskiApplicationForTests.koodistoViitePalvelu
+      ),
+      new EPerusteetFiller(
+        KoskiApplicationForTests.ePerusteet,
+        KoskiApplicationForTests.tutkintoRepository,
+        KoskiApplicationForTests.koodistoViitePalvelu
+      ),
       KoskiApplicationForTests.validatingAndResolvingExtractor,
       KoskiApplicationForTests.suostumuksenPeruutusService,
       config

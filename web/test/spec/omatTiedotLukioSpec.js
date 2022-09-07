@@ -109,7 +109,7 @@ describe('Omat tiedot - lukio', function() {
       before(authentication.logout, etusivu.openMobilePage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('250605A518Y'), wait.until(omattiedot.isVisible))
 
       describe('Kun opiskeluoikeus avataan', function () {
-        before(opinnot.valitseOmatTiedotOpiskeluoikeus('Lukion oppimäärä (2019—2020, valmistunut)'))
+        before(opinnot.valitseOmatTiedotOpiskeluoikeus('Lukion oppimäärä (2019—2021, valmistunut)'))
 
         it('Näytetään taulukko oppiaineista', function () {
           expect(extractAsText(S('table.omattiedot-suoritukset'))).to.equal(
@@ -152,7 +152,7 @@ describe('Omat tiedot - lukio', function() {
         })
 
         describe('Kun oppiainetta klikataan', function () {
-          before(opinnot.valitseOmatTiedotOpiskeluoikeudenLukionSuoritus('Lukion oppimäärä (2019—2020, valmistunut)', 'Äidinkieli ja kirjallisuus'))
+          before(opinnot.valitseOmatTiedotOpiskeluoikeudenLukionSuoritus('Lukion oppimäärä (2019—2021, valmistunut)', 'Äidinkieli ja kirjallisuus'))
 
           it('Näytetään oppiaineen kurssit', function () {
             expect(extractAsText(S('table.omattiedot-suoritukset tr.oppiaine-kurssit table.kurssilista-mobile'))).to.equal(
@@ -366,11 +366,11 @@ describe('Omat tiedot - lukio', function() {
       before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('250605A518Y'), wait.until(omattiedot.isVisible))
 
       it('Opiskeluoikeus näytetään listassa', function () {
-        expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.contain('Lukion oppimäärä (2019—2020, valmistunut)')
+        expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.contain('Lukion oppimäärä (2019—2021, valmistunut)')
       })
 
       describe('Kun opiskeluoikeus avataan', function () {
-        before(opinnot.valitseOmatTiedotOpiskeluoikeus('Lukion oppimäärä (2019—2020, valmistunut)'))
+        before(opinnot.valitseOmatTiedotOpiskeluoikeus('Lukion oppimäärä (2019—2021, valmistunut)'))
         it('Näytetään taulukko oppiaineista sekä kurssisuorituksista', function () {
           expect(extractAsText(S('table.omattiedot-suoritukset'))).to.equal(
             'Oppiaine Arvosana\n' +

@@ -8,6 +8,7 @@ import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkin
 import fi.oph.koski.documentation.AmmatillinenReforminMukainenPerustutkintoExample.{jatkoOpintovalmiuksiaTukevienOpintojenSuoritus, korkeakouluopintoSuoritus}
 import fi.oph.koski.documentation.ExampleData.{helsinki, _}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesValma}
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
@@ -59,7 +60,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             suoritustapa = Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"),
             osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("3053", "osaamisala")))))
 
-          "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014"))))
+          "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014 (612)"))))
         }
         "Osaamisala virheellinen" - {
           val suoritus = autoalanPerustutkinnonSuoritus().copy(
@@ -81,7 +82,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Tutkinnon osa ei kuulu tutkintorakenteeseen" - {
             "Pakolliset ja ammatilliset tutkinnon osat" - {
               "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen), tutkinnonSuoritustapaNäyttönä)(
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa naytto"))))
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta perusteelle 39/011/2014 (612) - suoritustapa naytto"))))
             }
             "Vapaavalintaiset tutkinnon osat" - {
               "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(
@@ -607,51 +608,95 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
       }
 
-      "Vanhentunut tutkinnon rakenne" - {
-        "Sallitaan siirto, jos eperusteissa rakenteen siirtymäaika on päättynyt kun validaatio on voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014")
+      "Tutkinnon rakenteen vanheneminen" - {
+
+        "Sallitaan siirto perusteen voimassaolon jälkeen alkaneelle, mutta keskeneräiselle opiskeluoikeudelle" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "1000/011/2014", alkamispäivä = LocalDate.of(2022, 1, 1))
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
-        }
-        "Sallitaan siirto, jos eperusteissa rakenteen voimassaolo on päättynyt ja siirtymäaikaa ei ole määritelty kun validaatio on voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "1000/011/2014", versio = Some(11))
-          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
-          implicit val accessType = AccessType.write
-          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
         }
 
-        /*
-        FIXME: Väliaikaisesti otettu pois käytöstä perusteen voimassaolon validointi
-        "Ei sallita siirtoa, jos eperusteissa rakenteen siirtymäaika on päättynyt kun validaatio on voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014")
+        "Sallitaan siirto ja täydennetään perusteen nimi oikein perusteen siirtymäajalla päättyneelle opiskeluoikeudelle" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2019, 7, 31)
+          )
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.siirtymäaikaPäättynyt())
+
+          val validatedOppija = mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija)
+
+          validatedOppija.isRight should equal (true)
+
+          validatedOppija.right.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 4")
         }
 
-        "Ei sallita siirtoa, jos eperusteissa rakenteen voimassaolo on päättynyt ja siirtymäaikaa ei ole määritelty kun validaatio on voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "1000/011/2014")
+        "Ei sallita siirtoa perusteen siirtymäajan jälkeen päättyneelle opiskeluoikeudelle" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2019, 8, 1)
+          )
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
-        }*/
 
-        "Sallitaan siirto, kun validaatio ei vielä voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014", versio = Some(11))
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+        }
+
+        "Sallitaan siirto ja täydennetään perusteen nimi oikein perusteen voimassaoloaikana päättyneelle opiskeluoikeudelle, vaikka samalla diaarinumerolla löytyy luontipäivältään uudempi mutta päättynyt peruste" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "2000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2018, 7, 31)
+          )
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().plusDays(1).toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
+
+          val validatedOppija = mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija)
+
+          validatedOppija.isRight should equal (true)
+
+          validatedOppija.right.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 3")
+        }
+
+        "Ei sallita siirtoa perusteen voimassaolon jälkeen päättyneelle opiskeluoikeudelle" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101, diaariNumero = "1000/011/2014",
+            alkamispäivä = LocalDate.of(2017, 1, 1),
+            päättymispäivä = LocalDate.of(2018, 8, 1)
+          )
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+        }
+
+        "Ei validoida perusteen voimassaoloa tai rakennetta, jos diaarinumero löytyy koodistosta" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101, diaariNumero = "13/011/2009",
+            alkamispäivä = LocalDate.of(2017, 1, 1),
+            päättymispäivä = LocalDate.of(2099, 8, 1)
+          )
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+
+          val validatedOppija = mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija)
+          validatedOppija.isRight should equal (true)
         }
       }
     }
@@ -859,12 +904,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
         "Alkamispäivä 2019" - {
           "palautetaan HTTP 400" in putOppija(oppija(LocalDate.of(2019, 1, 1), suoritus()))(
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta("Suoritustapaa ei löydy tutkinnon rakenteesta")))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta("Suoritustapaa ei löydy tutkinnon rakenteesta perusteelle 39/011/2014 (612)")))
         }
         "Alkamispäivä 2018, rakenne ei validi" - {
           val johtaminenJaHenkilöstönKehittäminen = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None)
           "palautetaan HTTP 400" in putOppija(oppija(LocalDate.of(2018, 1, 1), suoritus(tutkinnonOsaSuoritus.copy(koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen))))(
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa ops")))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta perusteelle 39/011/2014 (612) - suoritustapa ops")))
         }
       }
 
@@ -890,7 +935,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     "Valma" - {
       "suoritus.vahvistus.päivä > päättymispäivä" - {
         val suoritus = autoalanPerustutkinnonSuoritusValma().copy(vahvistus = vahvistus(date(2017, 5, 31)), osasuoritukset = Some(List(ExamplesValma.valmaKoulutukseenOrientoitumine)))
-        "palautetaan HTTP 200" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(suoritukset = List(suoritus)))(
+        "palautetaan HTTP 200" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2018, 1, 1)).copy(suoritukset = List(suoritus)))(
           verifyResponseStatusOk()
         )
       }
@@ -920,7 +965,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       "Suoritustapana OPS" - {
         val suoritus = erikoisammattitutkintoSuoritus(tutkinnonOsanSuoritus.copy(tutkinnonOsanRyhmä = None)).copy(suoritustapa = suoritustapaOps)
-        "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta("Suoritustapaa ei löydy tutkinnon rakenteesta"))))
+        "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta("Suoritustapaa ei löydy tutkinnon rakenteesta perusteelle 40/011/2001 (1013059)"))))
       }
     }
 
@@ -1112,12 +1157,19 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
   private def mockKoskiValidator(config: Config) = {
     new KoskiValidator(
-      KoskiApplicationForTests.tutkintoRepository,
-      KoskiApplicationForTests.koodistoViitePalvelu,
       KoskiApplicationForTests.organisaatioRepository,
       KoskiApplicationForTests.possu,
       KoskiApplicationForTests.henkilöRepository,
-      KoskiApplicationForTests.ePerusteet,
+      new EPerusteisiinPerustuvaValidator(
+        KoskiApplicationForTests.ePerusteet,
+        KoskiApplicationForTests.tutkintoRepository,
+        KoskiApplicationForTests.koodistoViitePalvelu
+      ),
+      new EPerusteetFiller(
+        KoskiApplicationForTests.ePerusteet,
+        KoskiApplicationForTests.tutkintoRepository,
+        KoskiApplicationForTests.koodistoViitePalvelu
+      ),
       KoskiApplicationForTests.validatingAndResolvingExtractor,
       KoskiApplicationForTests.suostumuksenPeruutusService,
       config
@@ -1127,5 +1179,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinnonSuoritus().koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
 
   override def vääräntyyppisenPerusteenDiaarinumero: String = "60/011/2015"
+  override def vääräntyyppisenPerusteenId: Long = 1372910
   def eperusteistaLöytymätönValidiDiaarinumero: String = "13/011/2009"
 }

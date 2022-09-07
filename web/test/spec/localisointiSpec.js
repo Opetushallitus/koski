@@ -64,7 +64,7 @@ describe('Lokalisointi', function() {
 
           describe('Vaihdettaessa vielä takaisin ruotsin kieleen', function() {
             before(startEdit, selectLanguage('sv'), cancelEdits)
-            
+
             it('Muokattu teksti näytetään', function() {
               expect(S('.oppija-haku h3').text()).to.equal('Hae juttuja')
             })
@@ -80,12 +80,14 @@ describe('Lokalisointi', function() {
     before(
       Authentication().login('pärre'), resetFixtures,
       page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
+      opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'),
       editor.edit, oppiaineet.selectValue('Lägg till'),
       paikallinen.propertyBySelector('.arvosana').selectValue('7'),
       paikallinen.propertyBySelector('.koodi').setValue('TNS'),
       paikallinen.propertyBySelector('.nimi').setValue('Dans'),
       editor.saveChanges,
-      Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L')
+      Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
+      opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus')
     )
 
     it('Näkyy myös suomenkieliselle virkailijalle', function() {

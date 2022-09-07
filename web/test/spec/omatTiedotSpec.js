@@ -296,7 +296,7 @@ describe('Omat tiedot', function() {
         describe('Monta oppiaineen oppimäärää samassa opiskeluoikeudessa', function () {
           it('Näytetään suorituksen tyyppi', function() {
             expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
-              'Perusopetuksen oppiaineen oppimäärä (2008—2016, valmistunut)'
+              'Perusopetuksen oppiaineen oppimäärä (2008—2018, valmistunut)'
             ])
           })
         })

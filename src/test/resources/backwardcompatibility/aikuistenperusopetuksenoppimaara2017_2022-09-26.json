@@ -1,0 +1,2303 @@
+{
+  "henkilö" : {
+    "hetu" : "220109-784L",
+    "etunimet" : "Kaisa",
+    "kutsumanimi" : "Kaisa",
+    "sukunimi" : "Koululainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "lyhytNimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu",
+        "sv" : "Jyväskylän normaalikoulu",
+        "en" : "Jyväskylän normaalikoulu"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "179",
+        "nimi" : {
+          "fi" : "Jyväskylä",
+          "sv" : "Jyväskylä"
+        },
+        "koodistoUri" : "kunta"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2008-08-15",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2018-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "perusteenDiaarinumero" : "OPH-1280-2017",
+        "tunniste" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppimaaranalkuvaihe",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "lyhytNimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä",
+            "sv" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
+            }
+          }
+        } ]
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "erityinentutkinto",
+        "koodistoUri" : "perusopetuksensuoritustapa"
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "omanÄidinkielenOpinnot" : {
+        "arvosana" : {
+          "koodiarvo" : "8",
+          "koodistoUri" : "arviointiasteikkoyleissivistava"
+        },
+        "kieli" : {
+          "koodiarvo" : "SE",
+          "nimi" : {
+            "fi" : "saame, lappi"
+          },
+          "koodistoUri" : "kielivalikoima"
+        },
+        "laajuus" : {
+          "arvo" : 1.0,
+          "yksikkö" : {
+            "koodiarvo" : "4",
+            "nimi" : {
+              "fi" : "kurssia",
+              "sv" : "kurser",
+              "en" : "course units"
+            },
+            "lyhytNimi" : {
+              "fi" : "kurssia",
+              "sv" : "kurser",
+              "en" : "courses"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
+        },
+        "hyväksytty" : true
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AI",
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          },
+          "kieli" : {
+            "koodiarvo" : "AI1",
+            "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-12-29",
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LÄI1",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tunnustettu" : {
+            "selite" : {
+              "fi" : "Osoittanut osaamisen käytännössä."
+            },
+            "rahoituksenPiirissä" : false
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LÄI2",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tunnustettu" : {
+            "selite" : {
+              "fi" : "Osoittanut osaamisen käytännössä."
+            },
+            "rahoituksenPiirissä" : true
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LÄI3",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LÄI4",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LÄI5",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LÄI6",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LÄI7",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "O",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2018-12-29",
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LÄI8",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LÄI9",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI1",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2018-12-29",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI2",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI3",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI4",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI5",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AÄI6",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A1",
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AENA1",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AENA2",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AENA3",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AENA4",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "10",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LMA1",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LMA2",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LMA3",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "YH",
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LYK1",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LYK2",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "vuosiviikkotuntia",
+                  "sv" : "årsveckotimmar",
+                  "en" : "weekly lessons per year"
+                },
+                "lyhytNimi" : {
+                  "fi" : "vuosiviikkotuntia",
+                  "sv" : "årsveckotimmar",
+                  "en" : "weekly lessons per year"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LYKX",
+              "nimi" : {
+                "fi" : "Kulttuurinen moniarvoisuus"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LYKY",
+              "nimi" : {
+                "fi" : "Tasa-arvo yhteiskunnassa"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "vuosiviikkotuntia",
+                  "sv" : "årsveckotimmar",
+                  "en" : "weekly lessons per year"
+                },
+                "lyhytNimi" : {
+                  "fi" : "vuosiviikkotuntia",
+                  "sv" : "årsveckotimmar",
+                  "en" : "weekly lessons per year"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "YL",
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LYL1",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TE",
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "10",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ATE1",
+              "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "OP",
+            "koodistoUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "aikuistenperusopetuksenoppimaaranalkuvaihe",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    }, {
+      "koulutusmoduuli" : {
+        "perusteenDiaarinumero" : "OPH-1280-2017",
+        "tunniste" : {
+          "koodiarvo" : "201101",
+          "koodistoUri" : "koulutus"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "lyhytNimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä",
+            "sv" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
+            }
+          }
+        } ]
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "erityinentutkinto",
+        "koodistoUri" : "perusopetuksensuoritustapa"
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "omanÄidinkielenOpinnot" : {
+        "arvosana" : {
+          "koodiarvo" : "8",
+          "koodistoUri" : "arviointiasteikkoyleissivistava"
+        },
+        "kieli" : {
+          "koodiarvo" : "SE",
+          "nimi" : {
+            "fi" : "saame, lappi"
+          },
+          "koodistoUri" : "kielivalikoima"
+        },
+        "laajuus" : {
+          "arvo" : 1.0,
+          "yksikkö" : {
+            "koodiarvo" : "4",
+            "nimi" : {
+              "fi" : "kurssia",
+              "sv" : "kurser",
+              "en" : "course units"
+            },
+            "lyhytNimi" : {
+              "fi" : "kurssia",
+              "sv" : "kurser",
+              "en" : "courses"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
+        },
+        "hyväksytty" : true
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "AI1",
+            "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI1",
+              "koodistoUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2014-12-28",
+            "hyväksytty" : true
+          }, {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2015-12-29",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tunnustettu" : {
+            "selite" : {
+              "fi" : "Osoittanut osaamisen käytännössä."
+            },
+            "rahoituksenPiirissä" : false
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI2",
+              "koodistoUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2014-12-28",
+            "hyväksytty" : true
+          }, {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2015-12-29",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "tunnustettu" : {
+            "selite" : {
+              "fi" : "Osoittanut osaamisen käytännössä."
+            },
+            "rahoituksenPiirissä" : true
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI3",
+              "koodistoUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "vuosiviikkotuntia",
+                  "sv" : "årsveckotimmar",
+                  "en" : "weekly lessons per year"
+                },
+                "lyhytNimi" : {
+                  "fi" : "vuosiviikkotuntia",
+                  "sv" : "årsveckotimmar",
+                  "en" : "weekly lessons per year"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-01-09",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI4",
+              "koodistoUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI10",
+              "nimi" : {
+                "fi" : "Paikallinen äidinkielen kurssi"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "course units"
+                },
+                "lyhytNimi" : {
+                  "fi" : "kurssia",
+                  "sv" : "kurser",
+                  "en" : "courses"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "aikuistenperusopetuksenkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B1",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B1",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : false,
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A1",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "4",
+              "nimi" : {
+                "fi" : "kurssia",
+                "sv" : "kurser",
+                "en" : "course units"
+              },
+              "lyhytNimi" : {
+                "fi" : "kurssia",
+                "sv" : "kurser",
+                "en" : "courses"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KT",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true,
+          "uskonnonOppimäärä" : {
+            "koodiarvo" : "OR",
+            "koodistoUri" : "uskonnonoppimaara"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "10",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "YH",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "10",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KE",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FY",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "BI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "GE",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KU",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KO",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KO",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : false,
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TE",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KS",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-12-29",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : false,
+          "laajuus" : {
+            "arvo" : 0.5,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B2",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "DE",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : false,
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TH",
+            "nimi" : {
+              "fi" : "Tietokoneen hyötykäyttö"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta."
+          },
+          "pakollinen" : false
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "aikuistenperusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "aikuistenperusopetuksenoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "aikuistenperusopetus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2008-08-15",
+    "päättymispäivä" : "2018-06-04"
+  } ]
+}

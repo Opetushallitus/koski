@@ -31,7 +31,7 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends AnyFreeSpec with PutOp
 
     "Kun yritetään liittää suoritus väärään koulutustyyppiin liittyvään perusteeseen" - {
       "palautetaan HTTP 400 virhe"  in {
-        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(vääräntyyppisenPerusteenDiaarinumero))) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi, (".*ei voi käyttää perustetta " + vääräntyyppisenPerusteenDiaarinumero + ", jonka koulutustyyppi on .*. Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat.*").r)))
+        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(vääräntyyppisenPerusteenDiaarinumero))) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi, s".*ei voi käyttää perustetta $vääräntyyppisenPerusteenDiaarinumero \\($vääräntyyppisenPerusteenId\\), jonka koulutustyyppi on .*. Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat.*".r)))
       }
     }
 
@@ -43,6 +43,7 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends AnyFreeSpec with PutOp
   }
 
   def vääräntyyppisenPerusteenDiaarinumero: String = "39/011/2014"
+  def vääräntyyppisenPerusteenId: Long = 612
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]): T
 

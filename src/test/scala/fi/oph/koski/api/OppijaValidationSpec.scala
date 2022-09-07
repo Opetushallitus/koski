@@ -297,11 +297,11 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
         }
 
         "Väärä päivämääräjärjestys" - {
-          "alkamispäivä > päättymispäivä"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(1999, 5, 31))) {
+          "alkamispäivä > päättymispäivä"  in (putOpiskeluoikeus(päättymispäivällä(makeOpiskeluoikeus(alkamispäivä = date(2020, 1, 1)), päättymispäivä = date(2019, 5, 31))) {
             verifyResponseStatus(400, List(
-              exact(KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää, "alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä (1999-05-31)"),
-              exact(KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät, "tila.opiskeluoikeusjaksot: 2000-01-01 on oltava aiempi kuin 1999-05-31"),
-              exact(KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää, "suoritus.alkamispäivä (2000-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä (1999-05-31)")
+              exact(KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää, "alkamispäivä (2020-01-01) oltava sama tai aiempi kuin päättymispäivä (2019-05-31)"),
+              exact(KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät, "tila.opiskeluoikeusjaksot: 2020-01-01 on oltava aiempi kuin 2019-05-31"),
+              exact(KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää, "suoritus.alkamispäivä (2020-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä (2019-05-31)"),
             ))
           })
 

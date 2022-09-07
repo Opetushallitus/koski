@@ -140,11 +140,11 @@ class RaportointikantaSpec
     val ammatillinenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/ammatillinen-perustutkinto_2022-09-26.json")
     val oid = "1.2.246.562.15.123456"
     val ammatillinenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](ammatillinenJson).right.get.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(oid = Some(oid))
-    val perusopetuksenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/perusopetuksenoppimaara-paattotodistus_2018-02-14.json")
+    val perusopetuksenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/perusopetuksenoppimaara-paattotodistus_2021-12-21.json")
     val perusopetuksenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](perusopetuksenJson).right.get.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus].copy(oid = Some(oid))
     val esiopetuksenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/esiopetusvalmis_2022-08-31.json")
     val esiopetuksenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](esiopetuksenJson).right.get.opiskeluoikeudet.head.asInstanceOf[EsiopetuksenOpiskeluoikeus].copy(oid = Some(oid))
-    val lukionJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/lukio-paattotodistus_2020-09-10.json")
+    val lukionJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/lukio-paattotodistus_2022-09-22.json")
     val lukionOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](lukionJson).right.get.opiskeluoikeudet.head.asInstanceOf[LukionOpiskeluoikeus].copy(oid = Some(oid))
     val vstJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/vapaasivistystyo-oppivelvollisillesuunnattukoulutus_2021-07-27.json")
     val vstOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](vstJson).right.get.opiskeluoikeudet.head.asInstanceOf[VapaanSivistystyönOpiskeluoikeus].copy(oid = Some(oid))
@@ -384,8 +384,8 @@ class RaportointikantaSpec
 
         aikajaksoRows should equal(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2012-09-01"), Date.valueOf("2013-09-01"), "lasna", Date.valueOf("2012-09-01"), erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo = Some("103"), opintojenRahoitus = Some("1"), sisäoppilaitosmainenMajoitus = true, ulkomaanjakso = true),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2013-09-02"), Date.valueOf("2016-06-07"), "lasna", Date.valueOf("2012-09-01"), opintojenRahoitus = Some("1")),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-06-08"), Date.valueOf("2016-06-08"), "valmistunut", Date.valueOf("2016-06-08"), opintojenRahoitus = Some("1"), opiskeluoikeusPäättynyt = true)
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2013-09-02"), Date.valueOf("2016-08-07"), "lasna", Date.valueOf("2012-09-01"), opintojenRahoitus = Some("1")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-08-08"), Date.valueOf("2016-08-08"), "valmistunut", Date.valueOf("2016-08-08"), opintojenRahoitus = Some("1"), opiskeluoikeusPäättynyt = true)
         ))
       }
       "Esiopetuksen opiskeluoikeuden lisätiedot" in {

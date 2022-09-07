@@ -15,7 +15,7 @@ class TutkinnonPerusteetService(application: KoskiApplication) {
 
   private def diaarinumerotByKoulutustyypit(koulutustyypit: Set[Koulutustyyppi]): List[Koodistokoodiviite] = {
     val diaaritEperusteista = application.ePerusteet.findPerusteetByKoulutustyyppi(koulutustyypit)
-      .sortBy(p => -p.id)
+      .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
       .map(p => Koodistokoodiviite(koodiarvo = p.diaarinumero, nimi = LocalizedString.sanitize(p.nimi), koodistoUri = "koskikoulutustendiaarinumerot"))
 
     val diaaritKoskesta = koulutustyypit.flatMap(koulutusTyyppi =>

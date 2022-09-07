@@ -109,7 +109,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
       "päättymispäivämäärä" in {
         resetFixtures
         insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), KoskiSpecificMockOppijat.eero)
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2013,1,9)), KoskiSpecificMockOppijat.teija)
+        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2015, 8, 9)), KoskiSpecificMockOppijat.teija)
 
         val queryString = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31&v=1"
         val oppijat = performQuery("?" + queryString)

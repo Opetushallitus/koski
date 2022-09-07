@@ -20,7 +20,7 @@ class ValviraSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTest
     "Yhdistää datat taulun sarakkeista jsoniin" - {
       "päättymispäivä" in {
        getHetu(KoskiSpecificMockOppijat.valviraaKiinnostavaTutkinto.hetu.get) {
-          parseValviraOppija.opiskeluoikeudet.head.päättymispäivä should equal(Some(LocalDate.of(2016, 5, 31)))
+         parseValviraOppija.opiskeluoikeudet.head.päättymispäivä should equal(Some(LocalDate.of(2016, 8, 1)))
        }
       }
       "serialisoituu kun päättymispäivää ei ole" in {

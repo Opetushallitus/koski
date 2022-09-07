@@ -30,7 +30,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec
 
   private val oppilaitosOid = MockOrganisaatiot.jyväskylänNormaalikoulu
 
-  private val raportointipäivä = date(2007, 1, 1)
+  private val raportointipäivä = date(2015, 1, 1)
 
   var rikkinäisetOpiskeluoikeusOidit: Seq[Opiskeluoikeus.Oid] = Seq()
 
@@ -72,9 +72,9 @@ class EsiopetuksenOppijamäärätRaporttiSpec
     )
 
   private val ylimääräisetLkm = ehjätTestiopiskeluoikeudet.length + rikkinäisetTestiopiskeluoikeudet.length
-  private val ylimääräisetErityiselläTuellaOpiskeluoikeudet = 4
-  private val ylimääräisetVaikeastiVammaisetLkm = 0
-  private val ylimääräisetMuuKuinVaikeastiVammaisetLkm = 1
+  private val ylimääräisetErityiselläTuellaOpiskeluoikeudet = 6
+  private val ylimääräisetVaikeastiVammaisetLkm = 1
+  private val ylimääräisetMuuKuinVaikeastiVammaisetLkm = 2
   private val rikkinäisetYlimääräisetLkm = 6
 
   private def ehjäPidennettyOppivelvollisuusTarvittavienTietojenKanssaOpiskeluoikeus: EsiopetuksenOpiskeluoikeus =
@@ -206,9 +206,9 @@ class EsiopetuksenOppijamäärätRaporttiSpec
       r.pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen should equal(1 + ylimääräisetMuuKuinVaikeastiVammaisetLkm)
       r.virheellisestiSiirrettyjaTukitietoja should equal(0 + rikkinäisetYlimääräisetLkm)
       r.erityiselläTuella should equal(1 + ylimääräisetErityiselläTuellaOpiskeluoikeudet)
-      r.majoitusetu should equal(1)
-      r.kuljetusetu should equal(1)
-      r.sisäoppilaitosmainenMajoitus should equal(1)
+      r.majoitusetu should equal(2)
+      r.kuljetusetu should equal(2)
+      r.sisäoppilaitosmainenMajoitus should equal(2)
     }
 
     "Haettu vuodelle, jona ei oppilaita" in {

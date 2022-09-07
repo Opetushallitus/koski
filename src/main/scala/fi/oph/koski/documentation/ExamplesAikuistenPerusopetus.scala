@@ -51,7 +51,7 @@ object ExamplesAikuistenPerusopetus {
       tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         List(
           AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
-          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 6, 4), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
         )
       )
     )
@@ -67,7 +67,7 @@ object ExamplesAikuistenPerusopetus {
       tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         List(
           AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(muutaKauttaRahoitettu)),
-          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(muutaKauttaRahoitettu))
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 6, 4), opiskeluoikeusValmistunut, Some(muutaKauttaRahoitettu))
         )
       )
     )
@@ -102,7 +102,7 @@ object ExamplesAikuistenPerusopetus {
       tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         List(
           AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
-          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 6, 4), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
         )
       )
     ))
@@ -118,7 +118,7 @@ object ExamplesAikuistenPerusopetus {
     tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
       List(
         AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
-        AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 6, 4), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
       )
     )
   )
@@ -289,10 +289,10 @@ object ExamplesAikuistenPerusopetus {
       alkuvaiheenKurssinSuoritus("LÄI4"),
       alkuvaiheenKurssinSuoritus("LÄI5"),
       alkuvaiheenKurssinSuoritus("LÄI6"),
-      alkuvaiheenKurssinSuoritus("LÄI7").copy(arviointi = arviointi("O", None, Some(date(2016, 12, 29)))),
+      alkuvaiheenKurssinSuoritus("LÄI7").copy(arviointi = arviointi("O", None, Some(date(2018, 12, 29)))),
       alkuvaiheenKurssinSuoritus("LÄI8"),
       alkuvaiheenKurssinSuoritus("LÄI9"),
-      alkuvaiheenKurssinSuoritus("AÄI1").copy(arviointi = arviointi(9, Some(date(2016, 12, 29)))),
+      alkuvaiheenKurssinSuoritus("AÄI1").copy(arviointi = arviointi(9, Some(date(2018, 12, 29)))),
       alkuvaiheenKurssinSuoritus("AÄI2"),
       alkuvaiheenKurssinSuoritus("AÄI3"),
       alkuvaiheenKurssinSuoritus("AÄI4"),
