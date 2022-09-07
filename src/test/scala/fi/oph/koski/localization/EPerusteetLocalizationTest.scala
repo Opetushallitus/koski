@@ -28,7 +28,7 @@ class EPerusteetLocalizationTest extends AnyFreeSpec with TestEnvironment with M
     if (thisPage.isEmpty) thisPage else thisPage ++ haePerusteidenInfot(startingFromPage + 1)
   }
   private def haeRakenne(id: Int): EPerusteRakenneLocalization = Http.runIO(
-    eperusteetHttp.get(uri"/api/perusteet/$id/kaikki")(Http.parseJson[EPerusteRakenneLocalization])
+    eperusteetHttp.get(uri"/api/external/peruste/$id")(Http.parseJson[EPerusteRakenneLocalization])
   )
 
   private def kanoninenNimi(s: String) =

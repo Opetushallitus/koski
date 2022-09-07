@@ -5,11 +5,11 @@ import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 trait EPerusteetRepository {
-  def findPerusteet(query: String): List[EPeruste]
+  def findPerusteet(nimi: String): List[EPerusteRakenne]
 
-  def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste]
+  def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPerusteRakenne]
 
-  def findRakenne(diaariNumero: String): Option[EPerusteRakenne]
+  def findRakenne(diaariNumero: String): Option[EPerusteTarkkaRakenne]
 
   def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne]
 
