@@ -694,11 +694,6 @@ jobs:
         run: |
           aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
 
-      - name: Get Valpas bucket name
-        id: get-valpas-bucket
-        run: |
-          echo "::set-output name=bucket-name::$(aws ssm get-parameter --name /valpas/bucket-name --output text --query 'Parameter.Value')"
-
       - name: Deploy using CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
@@ -709,18 +704,6 @@ jobs:
           codedeploy-appspec: appspec.json
           codedeploy-application: koski
           codedeploy-deployment-group: koski-deployment-group
-
-      - name: Deploy Valpas frontend
-        id: valpas-deploy
-        env:
-          ARTIFACTORY_URL_PREFIX: https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local/fi/vm/sade/koski
-        run: |
-          curl -s -S -f -L $ARTIFACTORY_URL_PREFIX/${{ github.sha }}/koski-${{ github.sha }}.war | jar -x
-          aws s3 sync VALPAS-WEB s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas --exclude index.html --delete
-          aws s3 cp VALPAS-WEB/index.html s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/index.html --metadata-directive REPLACE --cache-control max-age=0
-          distribution_id=$(aws ssm get-parameter --name /valpas/cloudfront-distribution-id --query Parameter.Value --output text)
-          invalidation_id=$(aws cloudfront create-invalidation --distribution-id $distribution_id --paths '/valpas/*' --query Invalidation.Id --output text)
-          aws cloudfront wait invalidation-completed --distribution-id $distribution_id --id $invalidation_id
 
       - name: Get raportointikanta-loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn
@@ -802,11 +785,6 @@ jobs:
         run: |
           aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
 
-      - name: Get Valpas bucket name
-        id: get-valpas-bucket
-        run: |
-          echo "::set-output name=bucket-name::$(aws ssm get-parameter --name /valpas/bucket-name --output text --query 'Parameter.Value')"
-
       - name: Deploy using CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
@@ -817,18 +795,6 @@ jobs:
           codedeploy-appspec: appspec.json
           codedeploy-application: koski
           codedeploy-deployment-group: koski-deployment-group
-
-      - name: Deploy Valpas frontend
-        id: valpas-deploy
-        env:
-          ARTIFACTORY_URL_PREFIX: https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local/fi/vm/sade/koski
-        run: |
-          curl -s -S -f -L $ARTIFACTORY_URL_PREFIX/${{ github.sha }}/koski-${{ github.sha }}.war | jar -x
-          aws s3 sync VALPAS-WEB s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas --exclude index.html --delete
-          aws s3 cp VALPAS-WEB/index.html s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/index.html --metadata-directive REPLACE --cache-control max-age=0
-          distribution_id=$(aws ssm get-parameter --name /valpas/cloudfront-distribution-id --query Parameter.Value --output text)
-          invalidation_id=$(aws cloudfront create-invalidation --distribution-id $distribution_id --paths '/valpas/*' --query Invalidation.Id --output text)
-          aws cloudfront wait invalidation-completed --distribution-id $distribution_id --id $invalidation_id
 
       - name: Get raportointikanta-loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn
@@ -910,11 +876,6 @@ jobs:
         run: |
           aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
 
-      - name: Get Valpas bucket name
-        id: get-valpas-bucket
-        run: |
-          echo "::set-output name=bucket-name::$(aws ssm get-parameter --name /valpas/bucket-name --output text --query 'Parameter.Value')"
-
       - name: Deploy using CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
@@ -925,18 +886,6 @@ jobs:
           codedeploy-appspec: appspec.json
           codedeploy-application: koski
           codedeploy-deployment-group: koski-deployment-group
-
-      - name: Deploy Valpas frontend
-        id: valpas-deploy
-        env:
-          ARTIFACTORY_URL_PREFIX: https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local/fi/vm/sade/koski
-        run: |
-          curl -s -S -f -L $ARTIFACTORY_URL_PREFIX/${{ github.sha }}/koski-${{ github.sha }}.war | jar -x
-          aws s3 sync VALPAS-WEB s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas --exclude index.html --delete
-          aws s3 cp VALPAS-WEB/index.html s3://${{ steps.get-valpas-bucket.outputs.bucket-name }}/valpas/index.html --metadata-directive REPLACE --cache-control max-age=0
-          distribution_id=$(aws ssm get-parameter --name /valpas/cloudfront-distribution-id --query Parameter.Value --output text)
-          invalidation_id=$(aws cloudfront create-invalidation --distribution-id $distribution_id --paths '/valpas/*' --query Invalidation.Id --output text)
-          aws cloudfront wait invalidation-completed --distribution-id $distribution_id --id $invalidation_id
 
       - name: Get raportointikanta-loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn
