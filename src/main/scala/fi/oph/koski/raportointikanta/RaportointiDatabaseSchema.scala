@@ -225,6 +225,7 @@ object RaportointiDatabaseSchema {
     val maksullinen = column[Boolean]("maksullinen")
     val oikeuttaMaksuttomuuteenPidennetty = column[Boolean]("oikeutta_maksuttomuuteen_pidennetty")
     val kotiopetus = column[Boolean]("kotiopetus")
+    val ulkomaanJakso = column[Boolean]("ulkomaanjakso")
 
     def * = (
       opiskeluoikeusOid ::
@@ -259,6 +260,7 @@ object RaportointiDatabaseSchema {
       maksullinen ::
       oikeuttaMaksuttomuuteenPidennetty ::
       kotiopetus ::
+      ulkomaanJakso ::
       id ::
       HNil
     ).mappedWith(Generic[ROpiskeluoikeusAikajaksoRow])
