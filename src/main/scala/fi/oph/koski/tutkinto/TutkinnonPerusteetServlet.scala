@@ -18,11 +18,6 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
    })
   }
 
-  get("/diaarinumerot/koulutustyyppi/:koulutustyypit") {
-    val koulutustyypit: Set[Koodistokoodiviite] = params("koulutustyypit").split(",").map(t => Koodistokoodiviite(t, "koulutustyyppi")).toSet
-    perusteetService.diaarinumerotByKoulutustyypit(koulutustyypit)
-  }
-
   get("/diaarinumerot/suorituksentyyppi/:suorituksenTyyppi") {
     val koodistokoodiviite = Koodistokoodiviite(params("suorituksenTyyppi"), "suorituksentyyppi")
     perusteetService.diaarinumerotBySuorituksenTyyppi(koodistokoodiviite)

@@ -13,7 +13,7 @@ class TutkinnonPerusteetService(application: KoskiApplication) {
     diaarinumerot.filter(diaarinumero => sallitutPerusteet(suorituksenTyyppi).matches(diaarinumero.koodiarvo))
   }
 
-  def diaarinumerotByKoulutustyypit(koulutustyypit: Set[Koulutustyyppi]): List[Koodistokoodiviite] = {
+  private def diaarinumerotByKoulutustyypit(koulutustyypit: Set[Koulutustyyppi]): List[Koodistokoodiviite] = {
     val diaaritEperusteista = application.ePerusteet.findPerusteetByKoulutustyyppi(koulutustyypit)
       .sortBy(p => -p.id)
       .map(p => Koodistokoodiviite(koodiarvo = p.diaarinumero, nimi = LocalizedString.sanitize(p.nimi), koodistoUri = "koskikoulutustendiaarinumerot"))
