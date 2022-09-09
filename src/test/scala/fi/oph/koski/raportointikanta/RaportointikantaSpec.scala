@@ -383,7 +383,7 @@ class RaportointikantaSpec
         val aikajaksoRows = AikajaksoRowBuilder.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
 
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2012-09-01"), Date.valueOf("2013-09-01"), "lasna", Date.valueOf("2012-09-01"), erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo = Some("103"), opintojenRahoitus = Some("1"), sisäoppilaitosmainenMajoitus = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2012-09-01"), Date.valueOf("2013-09-01"), "lasna", Date.valueOf("2012-09-01"), erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo = Some("103"), opintojenRahoitus = Some("1"), sisäoppilaitosmainenMajoitus = true, ulkomaanjakso = true),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2013-09-02"), Date.valueOf("2016-06-07"), "lasna", Date.valueOf("2012-09-01"), opintojenRahoitus = Some("1")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-06-08"), Date.valueOf("2016-06-08"), "valmistunut", Date.valueOf("2016-06-08"), opintojenRahoitus = Some("1"), opiskeluoikeusPäättynyt = true)
         ))

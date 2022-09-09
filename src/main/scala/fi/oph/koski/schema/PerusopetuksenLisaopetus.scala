@@ -144,6 +144,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
   with VaikeastiVammainen
   with MaksuttomuusTieto
   with PidennettyOppivelvollisuus
+  with Ulkomaanaikajaksollinen
 {
   def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso] = {
     erityisenTuenPäätös.map(p => List(p)).getOrElse(List.empty) ++ erityisenTuenPäätökset.getOrElse(List.empty)

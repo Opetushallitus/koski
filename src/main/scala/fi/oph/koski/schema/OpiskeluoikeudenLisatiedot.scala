@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
+import fi.oph.koski.schema.annotation.Deprecated
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 trait OpiskeluoikeudenLisätiedot
@@ -15,8 +16,26 @@ object TukimuodollisetLisätiedot {
     MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite("1", "perusopetuksentukimuoto"))
 }
 
-trait Ulkomaajaksollinen {
+trait UlkomaanaikajaksojaSisältävä {
+  def kaikkiUlkomaanaikajaksot: List[Aikajakso]
+}
+
+trait Ulkomaanaikajaksollinen extends UlkomaanaikajaksojaSisältävä{
+  @Deprecated("Käytä korvaavaa kenttää Ulkomaanjaksot")
+  def ulkomailla: Option[Aikajakso]
+  def ulkomaanjaksot: Option[List[Aikajakso]]
+
+  def kaikkiUlkomaanaikajaksot: List[Aikajakso] = {
+    ulkomailla.toList ++ ulkomaanjaksot.toList.flatten
+  }
+}
+
+trait Ulkomaanjaksollinen extends UlkomaanaikajaksojaSisältävä {
   def ulkomaanjaksot: Option[List[Ulkomaanjakso]]
+
+  def kaikkiUlkomaanaikajaksot: List[Aikajakso] = {
+    ulkomaanjaksot.getOrElse(List.empty).map(uj => Aikajakso(uj.alku, uj.loppu))
+  }
 }
 
 trait SisäoppilaitosmainenMajoitus {

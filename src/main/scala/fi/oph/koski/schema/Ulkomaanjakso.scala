@@ -18,5 +18,3 @@ case class Ulkomaanjakso(
   @Tooltip("Kuvaus ulkomaanjakson sisällöstä. Esimerkiksi tieto siitä, opiskeleeko oppija ulkomaisessa oppilaitoksessa vai onko työharjoittelussa tai työssäoppimisessa.")
   kuvaus: LocalizedString
 ) extends Jakso
-
-

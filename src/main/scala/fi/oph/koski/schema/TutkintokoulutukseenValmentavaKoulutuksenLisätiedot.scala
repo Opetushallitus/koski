@@ -7,7 +7,7 @@ import fi.oph.scalaschema.annotation.{DefaultValue, Description, OnlyWhen, Title
 trait TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
   extends OpiskeluoikeudenLisätiedot
     with MaksuttomuusTieto
-    with Ulkomaajaksollinen
+    with Ulkomaanjaksollinen
     with SisäoppilaitosmainenMajoitus
     with PidennettyPäättymispäivä
 

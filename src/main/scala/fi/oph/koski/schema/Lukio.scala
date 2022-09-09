@@ -71,7 +71,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot
   with ErityisenKoulutustehtävänJaksollinen
-  with Ulkomaajaksollinen
+  with Ulkomaanjaksollinen
   with SisäoppilaitosmainenMajoitus
   with UlkomainenVaihtoopiskelija
   with MaksuttomuusTieto

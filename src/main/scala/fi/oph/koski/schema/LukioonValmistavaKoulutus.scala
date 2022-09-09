@@ -227,7 +227,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot
-  with Ulkomaajaksollinen
+  with Ulkomaanjaksollinen
   with SisäoppilaitosmainenMajoitus
   with UlkomainenVaihtoopiskelija
   with MaksuttomuusTieto

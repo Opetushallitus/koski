@@ -92,6 +92,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   with Vammainen
   with VaikeastiVammainen
   with MaksuttomuusTieto
+  with Ulkomaanaikajaksollinen
 
 trait AikuistenPerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
 

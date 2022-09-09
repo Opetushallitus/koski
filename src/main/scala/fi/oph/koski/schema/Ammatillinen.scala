@@ -112,7 +112,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot
-  with Ulkomaajaksollinen
+  with Ulkomaanjaksollinen
   with SisäoppilaitosmainenMajoitus
   with VaikeastiVammainen
   with MaksuttomuusTieto
