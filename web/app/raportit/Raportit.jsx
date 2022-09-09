@@ -60,6 +60,20 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   },
+  // TODO: parametrin tarkistuksen voi poistaa sitten kun raportti julkaistaan kaikille käyttäjille
+  // Huom. tee silloin myös tarvittavat korjaukset RaportitSpec.js:ään
+  currentLocation().params.valmistava === 'true' ? {
+    id: 'perusopetukseenvalmistava',
+    tab: 'raporttikategoria-tab-perusopetukseenvalmistava',
+    heading: 'raporttikategoria-heading-perusopetukseenvalmistava',
+    raportit: [
+      {
+        id: 'perusopetukseenvalmistavanopetuksentarkistus',
+        name: 'raportti-tab-perusopetukseenvalmistavantarkistusraportti',
+        component: PerusopetukseenValmistavanTarkistusRaportti
+      }
+    ]
+  } : null,
   {
     id: 'aikuisten-perusopetus',
     tab: 'raporttikategoria-tab-aikuisten-perusopetus',
@@ -690,6 +704,24 @@ function EsiopetuksenOppijamäärätRaportti({ stateP }) {
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
       example={exampleText}
+      lang={lang}
+    />
+  )
+}
+
+function PerusopetukseenValmistavanTarkistusRaportti({ stateP }) {
+  const titleText = <Text name='Perusopetukseen-valmistava-raportti-title' />
+  const shortDescriptionText = <Text name='Perusopetukseen-valmistava-raportti-short-description' />
+  const exampleText = <Paragraphs name='Perusopetukseen-valmistava-raportti-example' />
+
+  return (
+    <AikajaksoRaporttiAikarajauksella
+      stateP={stateP}
+      apiEndpoint={'/perusopetukseenvalmistavansuoritustietojentarkistus'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      osasuoritusType={osasuoritusTypes.OPINNOT}
       lang={lang}
     />
   )

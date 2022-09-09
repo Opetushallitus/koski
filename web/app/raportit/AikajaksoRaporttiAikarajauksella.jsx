@@ -11,7 +11,8 @@ import { selectFromState } from './raporttiUtils'
 
 export const osasuoritusTypes = {
   TUTKINNON_OSA: 'tutkinnon osat',
-  KURSSI: 'kurssisuoritukset'
+  KURSSI: 'kurssisuoritukset',
+  OPINNOT: 'opinnot'
 }
 
 const KaikkiSuorituksetLabel = ({ osasuoritusType }) => {
@@ -20,6 +21,8 @@ const KaikkiSuorituksetLabel = ({ osasuoritusType }) => {
       return <Text name='Raportille valitaan kaikki tutkinnon osat riippumatta niiden suoritusajankohdasta' />
     case osasuoritusTypes.KURSSI:
       return <Text name='Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta' />
+    case osasuoritusTypes.OPINNOT:
+      return <Text name='Raportille valitaan kaikki opinnot riippumatta niiden suoritusajankohdasta' />
   }
 }
 
@@ -29,6 +32,8 @@ const AikarajatutSuorituksetLabel = ({ osasuoritusType }) => {
       return <Text name='Raportille valitaan vain sellaiset tutkinnon osat, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
     case osasuoritusTypes.KURSSI:
       return <Text name='Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
+    case osasuoritusTypes.OPINNOT:
+      return <Text name='Raportille valitaan vain sellaiset opinnot, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
   }
 }
 

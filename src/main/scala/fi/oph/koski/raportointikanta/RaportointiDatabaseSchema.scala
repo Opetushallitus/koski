@@ -664,6 +664,8 @@ case class RPäätasonSuoritusRow(
       .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "tunniste" \ "nimi").map(_.get(lang)))
       .orElse(koulutusmoduuliNimi)
   }
+
+  def koulutusModuulinLaajuusYksikköNimi = JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "laajuus" \ "yksikkö" \ "nimi")
 }
 
 case class ROsasuoritusRow(
@@ -718,6 +720,10 @@ case class ROsasuoritusRow(
   }
 
   def laajuus: BigDecimal = koulutusmoduuliLaajuusArvo.map(decimal).getOrElse(decimal(1.0))
+
+  def koulutusModuulinLaajuusYksikköNimi = JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "laajuus" \ "yksikkö" \ "nimi")
+
+  def luokkaAsteNimi: Option[LocalizedString] = JsonSerializer.extract[Option[LocalizedString]](data \ "luokkaAste" \ "nimi")
 }
 
 case class RHenkilöRow(
