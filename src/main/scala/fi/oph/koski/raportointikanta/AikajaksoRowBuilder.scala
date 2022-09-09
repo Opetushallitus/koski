@@ -9,29 +9,31 @@ import fi.oph.koski.util.DateOrdering
 object AikajaksoRowBuilder {
 
   def buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Seq[ROpiskeluoikeusAikajaksoRow] = {
-    buildAikajaksoRows(buildROpiskeluoikeusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus)
+    buildAikajaksoRows(buildROpiskeluoikeusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus).flatten
   }
 
   def buildEsiopetusOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: EsiopetuksenOpiskeluoikeus): Seq[EsiopetusOpiskeluoikeusAikajaksoRow] = {
-    buildAikajaksoRows(buildEsiopetusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus)
+    buildAikajaksoRows(buildEsiopetusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus).flatten
   }
 
-  private def buildAikajaksoRows[A <: KoskeenTallennettavaOpiskeluoikeus, B <: AikajaksoRow[B]](buildAikajaksoRow: ((String, A, LocalDate) => B), opiskeluoikeusOid: String, opiskeluoikeus: A): Seq[B] = {
+  private def buildAikajaksoRows[A <: KoskeenTallennettavaOpiskeluoikeus, B <: AikajaksoRow[B]](buildAikajaksoRow: ((String, A, LocalDate) => Option[B]), opiskeluoikeusOid: String, opiskeluoikeus: A): Seq[Option[B]] = {
     var edellinenTila: Option[String] = None
     var edellinenTilaAlkanut: Option[Date] = None
     for ((alku, loppu) <- aikajaksot(opiskeluoikeus)) yield {
-      val aikajakso = buildAikajaksoRow(opiskeluoikeusOid, opiskeluoikeus, alku).withLoppu(Date.valueOf(loppu))
-      if (edellinenTila.isDefined && edellinenTila.get == aikajakso.tila) {
-        aikajakso.withTilaAlkanut(edellinenTilaAlkanut.get)
-      } else {
-        edellinenTila = Some(aikajakso.tila)
-        edellinenTilaAlkanut = Some(aikajakso.alku)
-        aikajakso
-      }
+      buildAikajaksoRow(opiskeluoikeusOid, opiskeluoikeus, alku).map(ajr => {
+        val aikajakso = ajr.withLoppu(Date.valueOf(loppu))
+        if (edellinenTila.isDefined && edellinenTila.get == aikajakso.tila) {
+          aikajakso.withTilaAlkanut(edellinenTilaAlkanut.get)
+        } else {
+          edellinenTila = Some(aikajakso.tila)
+          edellinenTilaAlkanut = Some(aikajakso.alku)
+          aikajakso
+        }
+      })
     }
   }
 
-  private def buildROpiskeluoikeusAikajaksoRowForOneDay(opiskeluoikeusOid: String, o: KoskeenTallennettavaOpiskeluoikeus, päivä: LocalDate): ROpiskeluoikeusAikajaksoRow = {
+  private def buildROpiskeluoikeusAikajaksoRowForOneDay(opiskeluoikeusOid: String, o: KoskeenTallennettavaOpiskeluoikeus, päivä: LocalDate): Option[ROpiskeluoikeusAikajaksoRow] = {
     // Vanhassa datassa samalla alku-päivämäärällä voi löytyä useampi opiskeluoikeusjakso (nykyään tämä
     // ei enää mene läpi opiskeluoikeusjaksojenPäivämäärät-validaatiosta). Tässä otetaan näistä jaksoista
     // viimeinen, mikä lienee oikein.
@@ -49,113 +51,117 @@ object AikajaksoRowBuilder {
       o.lisätiedot.exists(l => aikajaksoVoimassaPäivänä(aikajaksoLisätiedosta.lift(l).flatten))
     }
 
-    ROpiskeluoikeusAikajaksoRow(
-      opiskeluoikeusOid = opiskeluoikeusOid,
-      alku = Date.valueOf(päivä),
-      loppu = Date.valueOf(päivä), // korvataan oikealla päivällä ylempänä
-      tila = jakso.tila.koodiarvo,
-      tilaAlkanut = Date.valueOf(päivä), // korvataan oikealla päivällä ylempänä
-      opiskeluoikeusPäättynyt = jakso.opiskeluoikeusPäättynyt,
-      opintojenRahoitus = jakso match {
-        case k: KoskiOpiskeluoikeusjakso => k.opintojenRahoitus.map(_.koodiarvo)
-        case _ => None
-      },
-      erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo = o.lisätiedot.flatMap {
-        case l: ErityisenKoulutustehtävänJaksollinen =>
-          l.erityisenKoulutustehtävänJaksot.toList.flatten.find(_.contains(päivä)).map(_.tehtävä.koodiarvo)
-        case _ => None
-      },
-      ulkomainenVaihtoopiskelija = o.lisätiedot.exists {
-        case l: UlkomainenVaihtoopiskelija => l.ulkomainenVaihtoopiskelija
-        case _ => false
-      },
-      osaAikaisuus = o.lisätiedot.collect {
+    if (o.isInstanceOf[EsiopetuksenOpiskeluoikeus]) {
+      None
+    } else {
+      Some(ROpiskeluoikeusAikajaksoRow(
+        opiskeluoikeusOid = opiskeluoikeusOid,
+        alku = Date.valueOf(päivä),
+        loppu = Date.valueOf(päivä), // korvataan oikealla päivällä ylempänä
+        tila = jakso.tila.koodiarvo,
+        tilaAlkanut = Date.valueOf(päivä), // korvataan oikealla päivällä ylempänä
+        opiskeluoikeusPäättynyt = jakso.opiskeluoikeusPäättynyt,
+        opintojenRahoitus = jakso match {
+          case k: KoskiOpiskeluoikeusjakso => k.opintojenRahoitus.map(_.koodiarvo)
+          case _ => None
+        },
+        erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo = o.lisätiedot.flatMap {
+          case l: ErityisenKoulutustehtävänJaksollinen =>
+            l.erityisenKoulutustehtävänJaksot.toList.flatten.find(_.contains(päivä)).map(_.tehtävä.koodiarvo)
+          case _ => None
+        },
+        ulkomainenVaihtoopiskelija = o.lisätiedot.exists {
+          case l: UlkomainenVaihtoopiskelija => l.ulkomainenVaihtoopiskelija
+          case _ => false
+        },
+        osaAikaisuus = o.lisätiedot.collect {
           case a: OsaAikaisuusjaksollinen => a
-      }.flatMap(_.osaAikaisuusjaksot).flatMap(_.find(_.contains(päivä))).map(_.osaAikaisuus).getOrElse(100).toByte,
-      majoitus = lisätietoVoimassaPäivänä {
-        case l: Majoituksellinen => l.majoitus
-      },
-      majoitusetu = lisätietoVoimassaPäivänä {
-        case l: Majoitusetuinen => Some(l.majoitusetu.toList)
-      },
-      kuljetusetu = lisätietoVoimassaPäivänä {
-        case l: Kuljetusetuinen => Some(l.kuljetusetu.toList)
-      },
-      sisäoppilaitosmainenMajoitus = lisätietoVoimassaPäivänä {
-        case l: SisäoppilaitosmainenMajoitus => l.sisäoppilaitosmainenMajoitus
-      },
-      vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = lisätietoVoimassaPäivänä {
-        case l: VaativanErityisenTuenYhteydessäJärjestettävänMajoituksenSisältäväLisätieto => l.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus
-      },
-      erityinenTuki = lisätietoVoimassaPäivänä {
-        case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.erityinenTuki
-        case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot => l.erityinenTuki
-        case l: PerusopetuksenOpiskeluoikeudenLisätiedot =>
-          Some(l.erityisenTuenPäätös.toList ::: l.erityisenTuenPäätökset.toList.flatten)
-        case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot =>
-          Some(l.erityisenTuenPäätös.toList ::: l.erityisenTuenPäätökset.toList.flatten)
-        case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot =>
-          l.erityisenTuenPäätökset
-      },
-      vaativanErityisenTuenErityinenTehtävä = lisätietoVoimassaPäivänä {
-        case l: VaativanErityisenTuenErityisenTehtävänSisältäväLisätieto => l.vaativanErityisenTuenErityinenTehtävä
-      },
-      hojks = lisätietoVoimassaPäivänä {
-        case l: AmmatillisenOpiskeluoikeudenLisätiedot => Some(l.hojks.toList)
-      },
-      vammainen = lisätietoVoimassaPäivänä {
-        case l: Vammainen => l.vammainen
-      },
-      vaikeastiVammainen = lisätietoVoimassaPäivänä {
-        case l: VaikeastiVammainen => l.vaikeastiVammainen
-      },
-      vammainenJaAvustaja = lisätietoVoimassaPäivänä {
-        case l: VammainenJaAvustaja => l.vammainenJaAvustaja
-      },
-      opiskeluvalmiuksiaTukevatOpinnot = lisätietoVoimassaPäivänä {
-        case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.opiskeluvalmiuksiaTukevatOpinnot
-      },
-      vankilaopetuksessa = lisätietoVoimassaPäivänä {
-        case l: Vankilaopetuksessa => l.vankilaopetuksessa
-      },
-      pidennettyOppivelvollisuus = lisätietoVoimassaPäivänä {
-        case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
-        case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
-      },
-      joustavaPerusopetus = lisätietoVoimassaPäivänä {
-        case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.joustavaPerusopetus.toList)
-        case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => Some(l.joustavaPerusopetus.toList)
-      },
-      koulukoti = lisätietoVoimassaPäivänä {
-        case l: PerusopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
-        case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
-        case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot => l.koulukoti
-      },
-      oppimääränSuorittaja = o.suoritukset.exists {
-        case _: AikuistenPerusopetuksenOppimääränSuoritus => true
-        case _ => false
-      },
-      oppisopimusJossainPäätasonSuorituksessa = oppisopimusAikajaksot(o).exists(_.contains(päivä)),
-      maksuton = lisätietoVoimassaPäivänä {
-        case l: MaksuttomuusTieto => l.maksuttomuus.map(ms => ms.filter(_.maksuton))
-      },
-      maksullinen = lisätietoVoimassaPäivänä {
-        case l: MaksuttomuusTieto => l.maksuttomuus.map(ms => ms.filterNot(_.maksuton))
-      },
-      oikeuttaMaksuttomuuteenPidennetty = lisätietoVoimassaPäivänä {
-        case l: MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty
-      },
-      kotiopetus = lisätietoVoimassaPäivänä {
-        case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.kotiopetusjaksot.toList.flatten ++ l.kotiopetus.toList)
-      },
-      ulkomaanjakso = lisätietoVoimassaPäivänä {
-        case l: UlkomaanaikajaksojaSisältävä => Some(l.kaikkiUlkomaanaikajaksot)
-      }
-    )
-    // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
+        }.flatMap(_.osaAikaisuusjaksot).flatMap(_.find(_.contains(päivä))).map(_.osaAikaisuus).getOrElse(100).toByte,
+        majoitus = lisätietoVoimassaPäivänä {
+          case l: Majoituksellinen => l.majoitus
+        },
+        majoitusetu = lisätietoVoimassaPäivänä {
+          case l: Majoitusetuinen => Some(l.majoitusetu.toList)
+        },
+        kuljetusetu = lisätietoVoimassaPäivänä {
+          case l: Kuljetusetuinen => Some(l.kuljetusetu.toList)
+        },
+        sisäoppilaitosmainenMajoitus = lisätietoVoimassaPäivänä {
+          case l: SisäoppilaitosmainenMajoitus => l.sisäoppilaitosmainenMajoitus
+        },
+        vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = lisätietoVoimassaPäivänä {
+          case l: VaativanErityisenTuenYhteydessäJärjestettävänMajoituksenSisältäväLisätieto => l.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus
+        },
+        erityinenTuki = lisätietoVoimassaPäivänä {
+          case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.erityinenTuki
+          case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot => l.erityinenTuki
+          case l: PerusopetuksenOpiskeluoikeudenLisätiedot =>
+            Some(l.erityisenTuenPäätös.toList ::: l.erityisenTuenPäätökset.toList.flatten)
+          case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot =>
+            Some(l.erityisenTuenPäätös.toList ::: l.erityisenTuenPäätökset.toList.flatten)
+          case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot =>
+            l.erityisenTuenPäätökset
+        },
+        vaativanErityisenTuenErityinenTehtävä = lisätietoVoimassaPäivänä {
+          case l: VaativanErityisenTuenErityisenTehtävänSisältäväLisätieto => l.vaativanErityisenTuenErityinenTehtävä
+        },
+        hojks = lisätietoVoimassaPäivänä {
+          case l: AmmatillisenOpiskeluoikeudenLisätiedot => Some(l.hojks.toList)
+        },
+        vammainen = lisätietoVoimassaPäivänä {
+          case l: Vammainen => l.vammainen
+        },
+        vaikeastiVammainen = lisätietoVoimassaPäivänä {
+          case l: VaikeastiVammainen => l.vaikeastiVammainen
+        },
+        vammainenJaAvustaja = lisätietoVoimassaPäivänä {
+          case l: VammainenJaAvustaja => l.vammainenJaAvustaja
+        },
+        opiskeluvalmiuksiaTukevatOpinnot = lisätietoVoimassaPäivänä {
+          case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.opiskeluvalmiuksiaTukevatOpinnot
+        },
+        vankilaopetuksessa = lisätietoVoimassaPäivänä {
+          case l: Vankilaopetuksessa => l.vankilaopetuksessa
+        },
+        pidennettyOppivelvollisuus = lisätietoVoimassaPäivänä {
+          case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
+          case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
+        },
+        joustavaPerusopetus = lisätietoVoimassaPäivänä {
+          case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.joustavaPerusopetus.toList)
+          case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => Some(l.joustavaPerusopetus.toList)
+        },
+        koulukoti = lisätietoVoimassaPäivänä {
+          case l: PerusopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
+          case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
+          case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot => l.koulukoti
+        },
+        oppimääränSuorittaja = o.suoritukset.exists {
+          case _: AikuistenPerusopetuksenOppimääränSuoritus => true
+          case _ => false
+        },
+        oppisopimusJossainPäätasonSuorituksessa = oppisopimusAikajaksot(o).exists(_.contains(päivä)),
+        maksuton = lisätietoVoimassaPäivänä {
+          case l: MaksuttomuusTieto => l.maksuttomuus.map(ms => ms.filter(_.maksuton))
+        },
+        maksullinen = lisätietoVoimassaPäivänä {
+          case l: MaksuttomuusTieto => l.maksuttomuus.map(ms => ms.filterNot(_.maksuton))
+        },
+        oikeuttaMaksuttomuuteenPidennetty = lisätietoVoimassaPäivänä {
+          case l: MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty
+        },
+        kotiopetus = lisätietoVoimassaPäivänä {
+          case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.kotiopetusjaksot.toList.flatten ++ l.kotiopetus.toList)
+        },
+        ulkomaanjakso = lisätietoVoimassaPäivänä {
+          case l: UlkomaanaikajaksojaSisältävä => Some(l.kaikkiUlkomaanaikajaksot)
+        }
+      ))
+      // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
+    }
   }
 
-  private def buildEsiopetusAikajaksoRowForOneDay(opiskeluoikeudenOid: String, o: EsiopetuksenOpiskeluoikeus, päivä: LocalDate): EsiopetusOpiskeluoikeusAikajaksoRow = {
+  private def buildEsiopetusAikajaksoRowForOneDay(opiskeluoikeudenOid: String, o: EsiopetuksenOpiskeluoikeus, päivä: LocalDate): Option[EsiopetusOpiskeluoikeusAikajaksoRow] = {
     val jakso = o.tila.opiskeluoikeusjaksot
       .filterNot(_.alku.isAfter(päivä))
       .lastOption.getOrElse(throw new RuntimeException(s"Opiskeluoikeusjaksoa ei löydy $opiskeluoikeudenOid $päivä"))
@@ -163,7 +169,7 @@ object AikajaksoRowBuilder {
     val päivänäAktiivisetPäätökset = erityisenTuenPäätökset.filter(_.contains(päivä))
     val aktiivistenErityisenTuenPäätöksienToteutuspaikat = päivänäAktiivisetPäätökset.flatMap(_.toteutuspaikka.map(_.koodiarvo))
 
-    EsiopetusOpiskeluoikeusAikajaksoRow(
+    Some(EsiopetusOpiskeluoikeusAikajaksoRow(
       opiskeluoikeudenOid,
       alku = Date.valueOf(päivä),
       loppu = Date.valueOf(päivä),
@@ -182,7 +188,8 @@ object AikajaksoRowBuilder {
       kuljetusetu = o.lisätiedot.exists(_.kuljetusetu.exists(_.contains(päivä))),
       sisäoppilaitosmainenMajoitus = o.lisätiedot.exists(_.sisäoppilaitosmainenMajoitus.exists(_.exists(_.contains(päivä)))),
       koulukoti = o.lisätiedot.exists(_.koulukoti.exists(_.exists(_.contains(päivä))))
-    )
+    ))
+    // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
   }
 
   val IndefiniteFuture = LocalDate.of(9999, 12, 31) // no special meaning, but must be after any possible real alkamis/päättymispäivä
