@@ -1,10 +1,17 @@
 package fi.oph.koski.koodisto
 
-case class KoodistoAsetus(koodisto: String, vaadiSuomenkielinenNimi: Boolean = true, vaadiRuotsinkielinenNimi: Boolean = true)
+case class KoodistoAsetus(
+  koodisto: String,
+  vaadiSuomenkielinenNimi: Boolean = true,
+  vaadiRuotsinkielinenNimi: Boolean = true,
+  koodistoVersio: Option[Int] = None
+) {
+  override def toString: String = koodisto + koodistoVersio.map(v => s"_$v").getOrElse("")
+}
 
 object Koodistot {
   // Koski-spesifiset koodistot.
-  private val koskiKoodistoAsetukset = List (
+  val koskiKoodistoAsetukset = List (
     KoodistoAsetus("aikuistenperusopetuksenkurssit2015"),
     KoodistoAsetus("aikuistenperusopetuksenalkuvaiheenkurssit2017"),
     KoodistoAsetus("aikuistenperusopetuksenalkuvaiheenoppiaineet"),
@@ -90,10 +97,10 @@ object Koodistot {
     KoodistoAsetus("valpasvastaanottotieto"),
     KoodistoAsetus("tuvajarjestamislupa"),
   )
-  val koskiKoodistot = koskiKoodistoAsetukset.map(_.koodisto)
+  val koskiKoodistot = koskiKoodistoAsetukset.map(_.toString)
 
   // Muut koodistot, joita Koski käyttää
-  private val muutKoodistoAsetukset = List (
+  val muutKoodistoAsetukset = List (
     KoodistoAsetus("ammatillisenoppiaineet"),
     KoodistoAsetus("ammatilliseentehtavaanvalmistavakoulutus"),
     KoodistoAsetus("hakutapa"),
@@ -102,6 +109,7 @@ object Koodistot {
     KoodistoAsetus("kieli"),
     KoodistoAsetus("kielivalikoima"),
     KoodistoAsetus("koulutus"),
+    KoodistoAsetus("koulutus", koodistoVersio = Some(11)),
     KoodistoAsetus("koulutustyyppi"),
     KoodistoAsetus("kunta"),
     KoodistoAsetus("lukionkurssit"),
@@ -125,7 +133,7 @@ object Koodistot {
     KoodistoAsetus("yhteystietotyypit"),
     KoodistoAsetus("opintokokonaisuudet")
   )
-  val muutKoodistot = muutKoodistoAsetukset.map(_.koodisto)
+  val muutKoodistot = muutKoodistoAsetukset.map(_.toString)
 
   val koodistoAsetukset = (koskiKoodistoAsetukset ++ muutKoodistoAsetukset).sortBy(_.koodisto)
   val koodistot = (koskiKoodistot ++ muutKoodistot).sorted
@@ -141,6 +149,8 @@ object Koodistot {
         mvn exec:java -Dexec.mainClass=fi.oph.koski.koodisto.KoodistoMockDataUpdater -Dopintopolku.virkailija.url=https://virkailija.opintopolku.fi -DkoskiKoodistot=false -DmuutKoodistot=true
     1c) Uusi Koski-spesifinen koodisto: Tee käsin koodistofileet src/main/resources/koodisto
         Lisää koodiston nimi yllä olevaan koskiKoodistot-listaan
+    1d) Koodiston versiointi: Jos haluat lisätä jostain koodistosta kokonaan eri version, niin lisää koodisto ja koodit json-tiedostojen loppuun koodiston versio alaviivalla erotettuna.
+        Esim: koulutus_11.json. Koodisto ilman määriteltyä versiota tulkitaan aina uusimmaksi versioksi.
 
     2) Kommitoi uudet json-fileet. Muutoksia olemassa oleviin fileisiin ei kannattane tässä yhteydessä kommitoida.
     3) Aja koski-applikaatio -Dconfig.resource=koskidev.conf -Dkoodisto.create=true, jolloin uusi koodisto kopioituu myös koskidev-ympäristöön.

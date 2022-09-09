@@ -49,6 +49,10 @@ function OpinnotPage() {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
       return opiskeluoikeus.find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste').text()
     },
+    getSuoritustapa: function(indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return opiskeluoikeus.find('.suoritus .property.suoritustapa .value').text()
+    },
     getKoulutusModuuli: function(indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
       return {
@@ -692,7 +696,7 @@ function VSTSuoritukset(prev) {
         }
         return VSTSuoritukset(found)
       }
-    }  
+    }
   }
   return _.merge(api, Editor(S(selectedOsasuoritus)), Property(function () { return S(selectedOsasuoritus) }))
 }

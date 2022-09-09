@@ -1,0 +1,23 @@
+{
+  "koodistoUri" : "koulutus",
+  "versio" : 11,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "koulutus",
+    "kuvaus" : "Koodistoa ylläpitävät Tuija Koskela (Opetushallitus,  Ammatillinen osaaminen yksikkö)  ammatillisen koulutuksen osalta ja Outi Kivipelto (Opetushallitus, Oppijanpalvelut yksikkö) korkeakoulujen osalta. Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKEn tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta. Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota."
+  }, {
+    "kieli" : "SV",
+    "nimi" : "koulutus",
+    "kuvaus" : "koulutus"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "koulutus",
+    "kuvaus" : "koulutus"
+  } ],
+  "codesGroupUri" : "http://koulutuskoodistot",
+  "voimassaAlkuPvm" : "2019-06-06",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 7
+}

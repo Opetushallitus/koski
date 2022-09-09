@@ -22,12 +22,12 @@ object KoodistoMockDataUpdater extends App with Logging {
       case Some(versio) =>
         logger.info("Päivitetään testidata koodistolle " + koodistoUri + "/" + versio)
         JsonFiles.writeFile(
-          MockKoodistoPalvelu.koodistoFileName(koodistoUri),
+          MockKoodistoPalvelu.koodistoFileName(koodistoUri, None),
           kp.getKoodisto(versio).map(sortKoodistoMetadata)
         )
         val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).map(sortKoodistoKoodiMetadata).sortBy(_.koodiArvo)
         JsonFiles.writeFile(
-          MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
+          MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri, None),
           koodit
         )
       case None =>

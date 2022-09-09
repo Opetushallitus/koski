@@ -95,17 +95,17 @@ describe('Muu ammatillinen koulutus', function() {
 
     describe('Tietojen muuttaminen', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('130320-899Y'))
-      
+
       describe('Täydentää tutkintoa', function() {
         before(
           editor.edit,
           editor.property('täydentääTutkintoa').addValue,
-          opinnot.tutkinto('.täydentääTutkintoa').select('autoalan perustutkinto'),
+          opinnot.tutkinto('.täydentääTutkintoa').select('autoalan työnjohdon'),
           editor.saveChangesAndWaitForSuccess
         )
 
         it('tutkinnon voi valita', function() {
-          expect(editor.property('täydentääTutkintoa').getText()).to.equal('Täydentää tutkintoa Autoalan perustutkinto 351301 39/011/2014')
+          expect(editor.property('täydentääTutkintoa').getText()).to.equal('Täydentää tutkintoa Autoalan työnjohdon erikoisammattitutkinto 357305 40/011/2001')
         })
       })
 

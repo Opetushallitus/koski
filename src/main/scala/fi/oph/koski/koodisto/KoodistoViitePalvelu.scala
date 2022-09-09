@@ -41,17 +41,9 @@ case class KoodistoViitePalvelu(config: Config, koodistoPalvelu: KoodistoPalvelu
   def validate(input: Koodistokoodiviite): Option[Koodistokoodiviite] = {
     val koodistoViite = toKoodistoViiteOptional(input)
 
-    val viite = koodistoViite.flatMap { v =>
-      val koodiviitteet = getKoodistoKoodiViitteet(v)
-      // Huom. koodiviitteet sisältävät duplikaatteja koodiarvoja vain lokaalissa kehitysympäristössä.
-      // Tällöin koodiviitteen koodistoVersio-kenttä erottaa saman koodiston sisällä olevat duplikaattiarvot toisistaan.
-      // Katso esim. koodistokoodiarvo koulutus/351301
-      koodiviitteet.find(k => k.koodiarvo == input.koodiarvo && k.koodistoVersio == input.koodistoVersio).orElse(
-        koodiviitteet.find(k => k.koodiarvo == input.koodiarvo)
-      )
-    }
+    val viite = koodistoViite.flatMap(getKoodistoKoodiViitteet(_).find(_.koodiarvo == input.koodiarvo))
 
-    if (!viite.isDefined) {
+    if (viite.isEmpty) {
       logger.warn("Koodia " + input.koodiarvo + " ei löydy koodistosta " + input.koodistoUri)
     }
     viite
@@ -70,12 +62,8 @@ case class KoodistoViitePalvelu(config: Config, koodistoPalvelu: KoodistoPalvelu
     validate(input).getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ei löydy koodistosta: " + input)))
   }
 
-  private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi): Koodistokoodiviite = {
-    config.getString("opintopolku.virkailija.url") match {
-      case "mock" => Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodi.versio))
-      case url => Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
-    }
-  }
+  private def toKoodiviite(koodisto: KoodistoViite)(koodi: KoodistoKoodi): Koodistokoodiviite =
+    Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))
 }
 
 object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(KoskiApplication.defaultConfig, MockKoodistoPalvelu())(GlobalCacheManager) {

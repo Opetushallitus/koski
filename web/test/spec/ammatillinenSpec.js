@@ -358,7 +358,11 @@ describe('Ammatillinen koulutus', function() {
       describe('Uutena opiskeluoikeutena', function() {
         before(
           prepareForNewOppija('kalle', '230872-7258'),
-          addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}),
+          addOppija.enterValidDataAmmatillinen({
+            suorituskieli: 'ruotsi',
+            tutkinto: 'Autoalan työnjoh',
+            suoritustapa: ''
+          }),
           addOppija.selectOppimäärä('Näyttötutkintoon valmistava koulutus'),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Näyttötutkintoon valmistava koulutus')
         )
@@ -379,18 +383,18 @@ describe('Ammatillinen koulutus', function() {
           )
           describe('Ennen lisäystä', function() {
             it('Esitäyttää tutkinnon näyttötutkintoon valmistavasta koulutuksesta', function() {
-              expect(lisääSuoritus.tutkinto()).to.equal('Autoalan perustutkinto 39/011/2014')
+              expect(lisääSuoritus.tutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto 40/011/2001')
             })
           })
           describe('Lisäyksen jälkeen', function() {
             before(
-              lisääSuoritus.selectTutkinto('Autoalan perustutkinto'),
-              lisääSuoritus.selectSuoritustapa('Näyttötutkinto'),
+              lisääSuoritus.selectTutkinto('Autoalan työnjohdon erikoisammattitutkinto'),
               lisääSuoritus.lisääSuoritus,
               editor.saveChanges
             )
-            it('Tutkinnon suoritus näytetään', function() {
-              expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
+            it('Tutkinnon suoritus ja suoritustapa näytetään', function() {
+              expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
+              expect(opinnot.getSuoritustapa()).to.equal('Näyttötutkinto')
             })
           })
         })
@@ -399,8 +403,8 @@ describe('Ammatillinen koulutus', function() {
         var lisääSuoritus = opinnot.lisääSuoritusDialog
         before(
           prepareForNewOppija('kalle', '230872-7258'),
-          addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi', suoritustapa: 'Näyttö'}),
-          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto'),
+          addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi', suoritustapa: '', tutkinto: 'Autoalan työnjohd'}),
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan työnjohdon erikoisammattitutkinto'),
           editor.edit,
           lisääSuoritus.open('lisää näyttötutkintoon valmistavan koulutuksen suoritus')
         )
@@ -414,7 +418,7 @@ describe('Ammatillinen koulutus', function() {
           })
 
           it('Esitäyttää tutkinnon tutkintokoulutuksen suorituksesta', function() {
-            expect(lisääSuoritus.tutkinto()).to.equal('Autoalan perustutkinto 39/011/2014')
+            expect(lisääSuoritus.tutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto 40/011/2001')
           })
         })
         describe('Lisäyksen jälkeen', function() {

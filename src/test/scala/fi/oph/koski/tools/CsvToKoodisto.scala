@@ -22,12 +22,12 @@ object CsvToKoodisto extends App {
       case List(nimi: String, koodi: String) => KoodistoKoodi(KoodistoKoodi.koodiUri(koodistoUri, koodi), koodi, List(KoodistoKoodiMetadata(kieli = Some("FI"), nimi = Some(nimi))), 1, None, None)
     }
   JsonFiles.writeFile(
-    MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
+    MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri, None),
     koodit
   )
   val koodisto = Koodisto(koodistoUri, 1, List(KoodistoMetadata("FI", Some(koodistoNimi), None)), "http://koski", LocalDate.now, "1.2.246.562.10.00000000001")
   JsonFiles.writeFile(
-    MockKoodistoPalvelu.koodistoFileName(koodistoUri),
+    MockKoodistoPalvelu.koodistoFileName(koodistoUri, None),
     koodisto
   )
 }
