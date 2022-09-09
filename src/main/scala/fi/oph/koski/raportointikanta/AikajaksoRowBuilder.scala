@@ -70,10 +70,10 @@ object AikajaksoRowBuilder {
         case _ => false
       },
       osaAikaisuus = o.lisätiedot.collect {
-        case a: AmmatillisenOpiskeluoikeudenLisätiedot => a
+          case a: OsaAikaisuusjaksollinen => a
       }.flatMap(_.osaAikaisuusjaksot).flatMap(_.find(_.contains(päivä))).map(_.osaAikaisuus).getOrElse(100).toByte,
       majoitus = lisätietoVoimassaPäivänä {
-        case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.majoitus
+        case l: Majoituksellinen => l.majoitus
       },
       majoitusetu = lisätietoVoimassaPäivänä {
         case l: Majoitusetuinen => Some(l.majoitusetu.toList)
@@ -85,17 +85,20 @@ object AikajaksoRowBuilder {
         case l: SisäoppilaitosmainenMajoitus => l.sisäoppilaitosmainenMajoitus
       },
       vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = lisätietoVoimassaPäivänä {
-        case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus
+        case l: VaativanErityisenTuenYhteydessäJärjestettävänMajoituksenSisältäväLisätieto => l.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus
       },
       erityinenTuki = lisätietoVoimassaPäivänä {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.erityinenTuki
+        case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot => l.erityinenTuki
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot =>
           Some(l.erityisenTuenPäätös.toList ::: l.erityisenTuenPäätökset.toList.flatten)
         case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot =>
           Some(l.erityisenTuenPäätös.toList ::: l.erityisenTuenPäätökset.toList.flatten)
+        case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot =>
+          l.erityisenTuenPäätökset
       },
       vaativanErityisenTuenErityinenTehtävä = lisätietoVoimassaPäivänä {
-        case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vaativanErityisenTuenErityinenTehtävä
+        case l: VaativanErityisenTuenErityisenTehtävänSisältäväLisätieto => l.vaativanErityisenTuenErityinenTehtävä
       },
       hojks = lisätietoVoimassaPäivänä {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => Some(l.hojks.toList)
@@ -107,17 +110,18 @@ object AikajaksoRowBuilder {
         case l: VaikeastiVammainen => l.vaikeastiVammainen
       },
       vammainenJaAvustaja = lisätietoVoimassaPäivänä {
-        case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vammainenJaAvustaja
+        case l: VammainenJaAvustaja => l.vammainenJaAvustaja
       },
       opiskeluvalmiuksiaTukevatOpinnot = lisätietoVoimassaPäivänä {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.opiskeluvalmiuksiaTukevatOpinnot
       },
       vankilaopetuksessa = lisätietoVoimassaPäivänä {
-        case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vankilaopetuksessa
+        case l: Vankilaopetuksessa => l.vankilaopetuksessa
       },
       pidennettyOppivelvollisuus = lisätietoVoimassaPäivänä {
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
         case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
+        case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
       },
       joustavaPerusopetus = lisätietoVoimassaPäivänä {
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.joustavaPerusopetus.toList)
@@ -126,6 +130,7 @@ object AikajaksoRowBuilder {
       koulukoti = lisätietoVoimassaPäivänä {
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
         case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => l.koulukoti
+        case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot => l.koulukoti
       },
       oppimääränSuorittaja = o.suoritukset.exists {
         case _: AikuistenPerusopetuksenOppimääränSuoritus => true
@@ -211,6 +216,12 @@ object AikajaksoRowBuilder {
   ): List[Aikajakso] = {
     (erityisenTuenPäätös.toList ++ erityisenTuenPäätökset.toList.flatten)
       .flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
+  }
+
+  private def aikajaksotTuvaErityisenTuenPäätöksistä(
+    erityisenTuenPäätökset: Option[List[TuvaErityisenTuenPäätös]]
+  ): List[Aikajakso] = {
+    erityisenTuenPäätökset.toList.flatten.flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
   }
 
   private def mahdollisetAikajaksojenAlkupäivät(o: KoskeenTallennettavaOpiskeluoikeus): Seq[LocalDate] = {
@@ -341,7 +352,9 @@ object AikajaksoRowBuilder {
           tpll.majoitusetu,
           tpll.kuljetusetu,
           tpll.pidennettyOppivelvollisuus
-        ).flatten ++ tpll.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
+        ).flatten ++
+          aikajaksotTuvaErityisenTuenPäätöksistä(tpll.erityisenTuenPäätökset) ++
+          tpll.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))
     }.getOrElse(Nil)
 
     val jaksot = lisätiedotAikajaksot ++ oppisopimusAikajaksot(o)

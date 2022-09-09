@@ -55,8 +55,20 @@ trait VaikeastiVammainen {
   def vaikeastiVammainen: Option[List[Aikajakso]]
 }
 
+trait VammainenJaAvustaja {
+  def vammainenJaAvustaja: Option[List[Aikajakso]]
+}
+
 trait PidennettyOppivelvollisuus extends Vammainen with VaikeastiVammainen with ErityisenTuenPäätöksiäSisältäväLisätieto {
   def pidennettyOppivelvollisuus: Option[Aikajakso]
+}
+
+trait OsaAikaisuusjaksollinen {
+  def osaAikaisuusjaksot: Option[List[OsaAikaisuusJakso]]
+}
+
+trait Majoituksellinen {
+  def majoitus: Option[List[Aikajakso]]
 }
 
 trait Majoitusetuinen {
@@ -70,6 +82,18 @@ trait Kuljetusetuinen {
 trait Kotiopetuksellinen {
   def kotiopetus: Option[Aikajakso]
   def kotiopetusjaksot: Option[List[Aikajakso]]
+}
+
+trait VaativanErityisenTuenYhteydessäJärjestettävänMajoituksenSisältäväLisätieto {
+  def vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Aikajakso]]
+}
+
+trait VaativanErityisenTuenErityisenTehtävänSisältäväLisätieto {
+  def vaativanErityisenTuenErityinenTehtävä: Option[List[Aikajakso]]
+}
+
+trait Vankilaopetuksessa {
+  def vankilaopetuksessa: Option[List[Aikajakso]]
 }
 
 trait MaksuttomuusTieto extends OpiskeluoikeudenLisätiedot {
