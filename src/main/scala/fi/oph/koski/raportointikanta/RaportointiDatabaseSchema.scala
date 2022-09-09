@@ -565,6 +565,7 @@ case class ROpiskeluoikeusAikajaksoRow(
   maksullinen: Boolean = false,
   oikeuttaMaksuttomuuteenPidennetty: Boolean = false,
   kotiopetus: Boolean = false,
+  ulkomaanJakso: Boolean = false,
   id: Long = 0
 ) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(
