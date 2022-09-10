@@ -16,7 +16,7 @@
     "bacon.atom": "^5.0.5",
     "baconjs": "^1.0.1",
     "baret": "^1.2.0",
-    "codemirror": "^5.65.7",
+    "codemirror": "^5.65.8",
     "core-js": "^1.2.7",
     "element-closest": "^2.0.2",
     "es6-promise": "^4.2.4",
