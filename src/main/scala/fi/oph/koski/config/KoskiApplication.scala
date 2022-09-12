@@ -39,7 +39,7 @@ import fi.oph.koski.valpas.kansalainen.ValpasKansalainenService
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusService
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusDatabaseService, ValpasRajapäivätService}
-import fi.oph.koski.valpas.oppija.{ValpasOppijaLaajatTiedotService, ValpasOppijalistatService, ValpasOppijanumerorekisteriService}
+import fi.oph.koski.valpas.oppija.{ValpasOppijaLaajatTiedotService, ValpasOppijalistatService, ValpasOppivelvollisuudestaVapautusService, ValpasOppijanumerorekisteriService}
 import fi.oph.koski.valpas.oppijahaku.ValpasOppijaSearchService
 import fi.oph.koski.valpas.oppivelvollisuudenkeskeytys.ValpasOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollisuudenKeskeytysService
@@ -171,6 +171,7 @@ class KoskiApplication(
   lazy val valpasOppivelvollisuudenKeskeytysRepository = new OppivelvollisuudenKeskeytysRepository(valpasDatabase, config)
   lazy val valpasOpiskeluoikeusDatabaseService = new ValpasOpiskeluoikeusDatabaseService(this)
   lazy val valpasRouhintaOppivelvollisuudenKeskeytysService = new ValpasRouhintaOppivelvollisuudenKeskeytysService(this)
+  lazy val valpasOppivelvollisuudestaVapautusService = new ValpasOppivelvollisuudestaVapautusService(this)
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))
