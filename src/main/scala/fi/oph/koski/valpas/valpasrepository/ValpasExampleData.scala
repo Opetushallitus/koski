@@ -288,4 +288,8 @@ object ValpasExampleData {
     email = Some(s"${mockUser.firstname}@gmail.com"),
     puhelinnumero = Some("040 123 4567")
   )
+
+  lazy val oppivelvollisuudestaVapautetut = List(
+    (ValpasMockOppijat.oppivelvollisuudestaVapautettu, ValpasMockUsers.valpasHelsinki.oid, LocalDate.of(2022, 9, 13)),
+  )
 }

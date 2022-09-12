@@ -10,6 +10,7 @@ class ValpasDatabaseFixtureLoader(app: KoskiApplication) extends Logging {
   private val lisätiedotRepository = app.valpasOpiskeluoikeusLisätiedotRepository
   private val rajapäivätService = app.valpasRajapäivätService
   private val oppivelvollisuudenKeskeytysRepository = app.valpasOppivelvollisuudenKeskeytysRepository
+  private val oppivelvollisuudenVapautusService = app.valpasOppivelvollisuudestaVapautusService
 
   def reset(): Unit = {
     logger.info("Resetting Valpas DB fixtures")
@@ -18,6 +19,7 @@ class ValpasDatabaseFixtureLoader(app: KoskiApplication) extends Logging {
     oppivelvollisuudenKeskeytysRepository.truncate()
     loadIlmoitukset()
     loadOppivelvollisuudenKeskeytykset()
+    loadOppivelvollisuudenVapautukset()
   }
 
   private def loadIlmoitukset(): Unit = {
@@ -41,5 +43,11 @@ class ValpasDatabaseFixtureLoader(app: KoskiApplication) extends Logging {
     val fixtures = ValpasExampleData.oppivelvollisuudenKeskeytykset
     logger.info(s"Inserting ${fixtures.length} oppivelvollisuuden keskeytys fixtures")
     fixtures.foreach(oppivelvollisuudenKeskeytysRepository.setKeskeytys)
+  }
+
+  def loadOppivelvollisuudenVapautukset(): Unit = {
+    val fixtures = ValpasExampleData.oppivelvollisuudestaVapautetut
+    logger.info(s"Inserting ${fixtures.length} oppivelvollisuuden vapautus fixtures")
+    fixtures.foreach { case (oppija, virkailija, pvm) => oppivelvollisuudenVapautusService.db.lisääOppivelvollisuudestaVapautus(oppija.oid, virkailija, pvm) }
   }
 }

@@ -14,7 +14,18 @@ case class OppijaHakutilanteillaSuppeatTiedot(
   kuntailmoitukset: Seq[ValpasKuntailmoitusSuppeatTiedot],
   oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
   lisätiedot: Seq[OpiskeluoikeusLisätiedot],
-)
+  poistettu: Option[Boolean] = None,
+) {
+  def asPoistettu: OppijaHakutilanteillaSuppeatTiedot = copy(
+    oppija = oppija.asPoistettu,
+    hakutilanteet = Nil,
+    hakutilanneError = None,
+    kuntailmoitukset = Nil,
+    oppivelvollisuudenKeskeytykset = Nil,
+    lisätiedot = Nil,
+    poistettu = Some(true),
+  )
+}
 
 object OppijaHakutilanteillaSuppeatTiedot {
   def apply(laajatTiedot: OppijaHakutilanteillaLaajatTiedot)
@@ -59,7 +70,12 @@ case class ValpasOppijaSuppeatTiedot(
   henkilö: ValpasHenkilöSuppeatTiedot,
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeusSuppeatTiedot],
   oppivelvollisuusVoimassaAsti: LocalDate
-) extends ValpasOppija
+) extends ValpasOppija {
+  def asPoistettu: ValpasOppijaSuppeatTiedot = copy(
+    opiskeluoikeudet = Nil,
+    oppivelvollisuusVoimassaAsti = LocalDate.of(2000, 1, 1),
+  )
+}
 
 object ValpasHenkilöSuppeatTiedot {
   def apply(laajatTiedot: ValpasHenkilöLaajatTiedot): ValpasHenkilöSuppeatTiedot = {
