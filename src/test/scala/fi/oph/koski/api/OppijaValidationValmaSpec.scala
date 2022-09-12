@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesValma
 import fi.oph.koski.documentation.ExamplesValma.valmaKoulutuksenSuoritus
 import fi.oph.koski.http.KoskiErrorCategory
@@ -18,10 +18,25 @@ class OppijaValidationValmaSpec extends TutkinnonPerusteetTest[AmmatillinenOpisk
   override def tag: TypeTag[AmmatillinenOpiskeluoikeus] = implicitly[TypeTag[AmmatillinenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus: AmmatillinenOpiskeluoikeus = ExamplesValma.valmaOpiskeluoikeus
 
-  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 31.8.2022 jälkeen" in {
+  "Opiskeluoikeuden tilan alkupäivämäärä voi olla 30.9.2022" in {
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(
       tila = AmmatillinenOpiskeluoikeudenTila(List(
-        AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2022, 9, 1), opiskeluoikeusLäsnä)
+        AmmatillinenOpiskeluoikeusjakso(
+          alku = LocalDate.of(2022, 9, 30),
+          tila = opiskeluoikeusLäsnä,
+          opintojenRahoitus = Some(valtionosuusRahoitteinen),
+        )
+      )),
+    )
+    putOpiskeluoikeus(opiskeluoikeus) {
+      verifyResponseStatusOk()
+    }
+  }
+
+  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 30.9.2022 jälkeen" in {
+    val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+      tila = AmmatillinenOpiskeluoikeudenTila(List(
+        AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2022, 10, 1), opiskeluoikeusLäsnä)
       ))
     )
     putOpiskeluoikeus(opiskeluoikeus) {

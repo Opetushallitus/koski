@@ -476,7 +476,7 @@ class KoskiValidator(
       case l: LukionOpiskeluoikeus if l.suoritukset.exists(_.tyyppi.koodiarvo == "lukionoppimaara")
         && l.suoritukset.count { case _: LukionPäätasonSuoritus => true } > 1 =>
         KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Opiskeluoikeudelle yritetään lukion oppimäärän lisäksi tallentaa useampi päätason suoritus. Lukion oppimäärän opiskelijalla voi olla vain yksi päätason suoritus.")
-      case a: AmmatillinenOpiskeluoikeus if a.suoritukset.exists(_.isInstanceOf[ValmaKoulutuksenSuoritus]) && a.tila.opiskeluoikeusjaksot.exists(_.alku.isAfter(LocalDate.of(2022, 8, 31))) => KoskiErrorCategory.badRequest.validation.tila.valmaTilaEiSallittu()
+      case a: AmmatillinenOpiskeluoikeus if a.suoritukset.exists(_.isInstanceOf[ValmaKoulutuksenSuoritus]) && a.tila.opiskeluoikeusjaksot.exists(_.alku.isAfter(LocalDate.of(2022, 9, 30))) => KoskiErrorCategory.badRequest.validation.tila.valmaTilaEiSallittu()
       case p: PerusopetuksenLisäopetuksenOpiskeluoikeus if p.suoritukset.exists(_.isInstanceOf[PerusopetuksenLisäopetuksenSuoritus]) && p.tila.opiskeluoikeusjaksot.exists(_.alku.isAfter(LocalDate.of(2022, 8, 31))) => KoskiErrorCategory.badRequest.validation.tila.perusopetuksenLisäopetuksenTilaEiSallittu()
       case p: IBOpiskeluoikeus
         if p.suoritukset.exists(_.isInstanceOf[PreIBSuoritus2019]) && p.suoritukset.exists(_.isInstanceOf[PreIBSuoritus2015]) =>
