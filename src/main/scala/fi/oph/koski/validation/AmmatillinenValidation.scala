@@ -17,7 +17,6 @@ object AmmatillinenValidation {
       case ammatillinen: AmmatillinenOpiskeluoikeus =>
         HttpStatus.fold(
           validatePerusteVoimassa(ammatillinen, ePerusteet, config),
-          validateOpiskeluoikeudenPäättyminenEnnenSiirtymäajanPäättymistä(ammatillinen, ePerusteet, config),
           validateUseaPäätasonSuoritus(ammatillinen),
           validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen, ePerusteet),
           validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen),
@@ -78,40 +77,13 @@ object AmmatillinenValidation {
     val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan")).minusDays(1)
     val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
 
-    if (opiskeluoikeus.aktiivinen && voimassaolotarkastusAstunutVoimaan) {
+    if (voimassaolotarkastusAstunutVoimaan) {
       opiskeluoikeus.suoritukset.head.koulutusmoduuli match {
         case diaarillinen: DiaarinumerollinenKoulutus if diaarillinen.perusteenDiaarinumero.isDefined =>
           ePerusteet.findUusinRakenne(diaarillinen.perusteenDiaarinumero.get) match {
             case Some(peruste) =>
-              if (peruste.voimassaoloLoppunut(opiskeluoikeus.alkamispäivä.getOrElse(LocalDate.now()))) {
-                // FIXME: Otetaan voimassaolon validaatio väliaikaisesti pois päältä
-                // KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
-                HttpStatus.ok
-              } else {
-                HttpStatus.ok
-              }
-            case _ => HttpStatus.ok
-          }
-        case _ => HttpStatus.ok
-      }
-    } else {
-      HttpStatus.ok
-    }
-  }
-
-  private def validateOpiskeluoikeudenPäättyminenEnnenSiirtymäajanPäättymistä(opiskeluoikeus: AmmatillinenOpiskeluoikeus, ePerusteet: EPerusteetRepository, config: Config): HttpStatus = {
-    val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan")).minusDays(1)
-    val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
-
-    if (voimassaolotarkastusAstunutVoimaan) {
-      opiskeluoikeus.suoritukset.head.koulutusmoduuli match {
-        case diaarillinen: DiaarinumerollinenKoulutus if diaarillinen.perusteenDiaarinumero.isDefined =>
-          (ePerusteet.findUusinRakenne(diaarillinen.perusteenDiaarinumero.get), opiskeluoikeus.päättymispäivä) match {
-            case (Some(peruste), Some(pp)) =>
-              if (peruste.siirtymäPäättynyt(pp)) {
-                // FIXME: Otetaan voimassaolon validaatio väliaikaisesti pois päältä
-                // KoskiErrorCategory.badRequest.validation.rakenne.siirtymäaikaPäättynyt()
-                HttpStatus.ok
+              if (peruste.siirtymäTaiVoimassaoloPäättynyt(opiskeluoikeus.alkamispäivä.getOrElse(LocalDate.now()))) {
+                KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
               } else {
                 HttpStatus.ok
               }

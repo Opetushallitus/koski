@@ -608,32 +608,13 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Vanhentunut tutkinnon rakenne" - {
-        "Sallitaan siirto, jos eperusteissa rakenteen siirtymäaika on päättynyt kun validaatio on voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014")
-          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
-          implicit val accessType = AccessType.write
-          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
-        }
-        "Sallitaan siirto, jos eperusteissa rakenteen voimassaolo on päättynyt ja siirtymäaikaa ei ole määritelty kun validaatio on voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "1000/011/2014", versio = Some(11))
-          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
-          implicit val accessType = AccessType.write
-          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
-        }
-
-        /*
-        FIXME: Väliaikaisesti otettu pois käytöstä perusteen voimassaolon validointi
         "Ei sallita siirtoa, jos eperusteissa rakenteen siirtymäaika on päättynyt kun validaatio on voimassa" in {
           val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014")
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
           val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.siirtymäaikaPäättynyt())
+          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
         }
 
         "Ei sallita siirtoa, jos eperusteissa rakenteen voimassaolo on päättynyt ja siirtymäaikaa ei ole määritelty kun validaatio on voimassa" in {
@@ -643,7 +624,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
           val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
           mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
-        }*/
+        }
 
         "Sallitaan siirto, kun validaatio ei vielä voimassa" in {
           val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014", versio = Some(11))
