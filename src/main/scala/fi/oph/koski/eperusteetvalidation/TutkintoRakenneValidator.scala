@@ -1,12 +1,12 @@
-package fi.oph.koski.validation
-
-import java.time.LocalDate
+package fi.oph.koski.eperusteetvalidation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.Koulutustyyppi._
-import fi.oph.koski.tutkinto._
+import fi.oph.koski.tutkinto.{Koulutustyyppi, _}
+
+import java.time.LocalDate
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
   def validate(suoritus: PäätasonSuoritus, alkamispäivä: Option[LocalDate]): HttpStatus = {
@@ -102,7 +102,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                 }
                 Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi(
                   s"Suoritukselle $tyyppiStr ei voi käyttää perustetta ${rakenne.diaarinumero}, jonka koulutustyyppi on ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. " +
-                  s"Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}"
+                    s"Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}"
                 ))
               case _ =>
                 Right(rakenne)
@@ -167,7 +167,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         } else None
       }
     suoritustapaJaRakenne match {
-      case Some(suoritustapaJaRakenne)  =>
+      case Some(suoritustapaJaRakenne) =>
         (suoritus.tutkinto, suoritus.tutkinnonOsanRyhmä) match {
           case (Some(tutkinto), _) =>
             // Tutkinnon osa toisesta tutkinnosta.
@@ -197,8 +197,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   }
 
   private def findTutkinnonOsa(rakenne: RakenneOsa, koulutusModuuliTunniste: Koodistokoodiviite): Option[TutkinnonOsa] = rakenne match {
-    case t:TutkinnonOsa if t.tunniste == koulutusModuuliTunniste => Some(t)
-    case t:RakenneModuuli => t.osat.flatMap(findTutkinnonOsa(_, koulutusModuuliTunniste)).headOption
+    case t: TutkinnonOsa if t.tunniste == koulutusModuuliTunniste => Some(t)
+    case t: RakenneModuuli => t.osat.flatMap(findTutkinnonOsa(_, koulutusModuuliTunniste)).headOption
     case _ => None
   }
 
@@ -230,7 +230,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       Perusteet.AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019.diaari
     )
 
-    if (lops2021Diaarinumerot.contains(diaarinumero) ) {
+    if (lops2021Diaarinumerot.contains(diaarinumero)) {
       KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari(s"Lukion aiemman opetusohjelman mukaisessa suorituksessa ei voi käyttää lukion 2019 opetussuunnitelman diaarinumeroa")
     } else {
       HttpStatus.ok

@@ -5,6 +5,7 @@ import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db.{KoskiDatabase, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig, ValpasDatabaseConfig}
 import fi.oph.koski.elasticsearch.{ElasticSearch, IndexManager}
 import fi.oph.koski.eperusteet.EPerusteetRepository
+import fi.oph.koski.eperusteetvalidation.EPerusteetValidator
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
@@ -91,6 +92,7 @@ class KoskiApplication(
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, virtaAccessChecker, Some(validator)))
   lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db)
+  lazy val ePerusteetValidator = new EPerusteetValidator(ePerusteet, config, tutkintoRepository, koodistoViitePalvelu)
   lazy val possu = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(
     masterDatabase.db,
     historyRepository,
@@ -99,7 +101,7 @@ class KoskiApplication(
     henkilöRepository.opintopolku,
     perustiedotSyncRepository,
     organisaatioRepository,
-    ePerusteet))
+    ePerusteetValidator))
   lazy val possuV2 = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepositoryV2(
     masterDatabase.db,
     historyRepository,
@@ -108,18 +110,16 @@ class KoskiApplication(
     henkilöRepository.opintopolku,
     perustiedotSyncRepository,
     organisaatioRepository,
-    ePerusteet))
+    ePerusteetValidator))
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator), koskiLocalizationRepository))
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, virta, ytr)
   lazy val opiskeluoikeusRepositoryV2 = new CompositeOpiskeluoikeusRepository(possuV2, virta, ytr)
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(replicaDatabase.db)
   lazy val validator: KoskiValidator = new KoskiValidator(
-    tutkintoRepository,
-    koodistoViitePalvelu,
     organisaatioRepository,
     possu,
     henkilöRepository,
-    ePerusteet,
+    ePerusteetValidator,
     validatingAndResolvingExtractor,
     suostumuksenPeruutusService,
     config

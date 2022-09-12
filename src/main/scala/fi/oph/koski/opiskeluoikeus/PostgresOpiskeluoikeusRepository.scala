@@ -4,6 +4,7 @@ import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
+import fi.oph.koski.eperusteetvalidation.EPerusteetValidator
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -34,9 +35,9 @@ class PostgresOpiskeluoikeusRepository(
   henkilöRepository: OpintopolkuHenkilöRepository,
   perustiedotSyncRepository: PerustiedotSyncRepository,
   organisaatioRepository: OrganisaatioRepository,
-  ePerusteet: EPerusteetRepository
+  ePerusteetValidator: EPerusteetValidator
 ) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with QueryMethods with Logging {
-  lazy val validator = new OpiskeluoikeusChangeValidator(organisaatioRepository, ePerusteet)
+  lazy val validator = new OpiskeluoikeusChangeValidator(organisaatioRepository, ePerusteetValidator)
   lazy val errorRepository = new OpiskeluoikeushistoriaErrorRepository(db)
 
   override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A] = {

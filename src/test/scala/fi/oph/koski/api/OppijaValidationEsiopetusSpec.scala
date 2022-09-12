@@ -753,12 +753,10 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
 
     def mockKoskiValidator(config: Config) = {
       new KoskiValidator(
-        KoskiApplicationForTests.tutkintoRepository,
-        KoskiApplicationForTests.koodistoViitePalvelu,
         KoskiApplicationForTests.organisaatioRepository,
         KoskiApplicationForTests.possu,
         KoskiApplicationForTests.henkilöRepository,
-        KoskiApplicationForTests.ePerusteet,
+        KoskiApplicationForTests.ePerusteetValidator,
         KoskiApplicationForTests.validatingAndResolvingExtractor,
         KoskiApplicationForTests.suostumuksenPeruutusService,
         config
