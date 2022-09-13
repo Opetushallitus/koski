@@ -358,12 +358,6 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
           )
         )
       ),
-      pidennettyOppivelvollisuus = Some(
-        Aikajakso(
-          alku = date(2021, 8, 1),
-          loppu = None
-        )
-      ),
       vammainen = Some(List(
         Aikajakso(
           alku = date(2021, 8, 1),

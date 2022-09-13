@@ -39,9 +39,6 @@
       "vammainen" : [ {
         "alku" : "2021-08-01"
       } ],
-      "pidennettyOppivelvollisuus" : {
-        "alku" : "2021-08-01"
-      },
       "pidennettyPäättymispäivä" : false,
       "erityisenTuenPäätökset" : [ {
         "alku" : "2021-08-01"

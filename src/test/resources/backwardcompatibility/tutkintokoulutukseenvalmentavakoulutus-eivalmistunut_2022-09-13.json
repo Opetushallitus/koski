@@ -1,5 +1,4 @@
 {
-  "ignoreKoskiValidator" : true,
   "henkilö" : {
     "hetu" : "040904A578H",
     "etunimet" : "Tuula",
@@ -37,7 +36,13 @@
         "alku" : "2021-08-01",
         "maksuton" : true
       } ],
-      "pidennettyPäättymispäivä" : false
+      "vammainen" : [ {
+        "alku" : "2021-08-01"
+      } ],
+      "pidennettyPäättymispäivä" : false,
+      "erityisenTuenPäätökset" : [ {
+        "alku" : "2021-08-01"
+      } ]
     },
     "suoritukset" : [ {
       "toimipiste" : {
