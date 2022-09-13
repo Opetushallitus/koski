@@ -50,10 +50,10 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
     }
   }
 
-  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 2.9.2022 jälkeen" in {
+  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 1.10.2022 jälkeen" in {
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(
       tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
-        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2022, 9, 3), opiskeluoikeusLäsnä)
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2022, 10, 2), opiskeluoikeusLäsnä)
       ))).withSuoritukset(
       List(defaultLisäopetuksenSuoritus)
     )

@@ -18,10 +18,10 @@ class OppijaValidationValmaSpec extends TutkinnonPerusteetTest[AmmatillinenOpisk
   override def tag: TypeTag[AmmatillinenOpiskeluoikeus] = implicitly[TypeTag[AmmatillinenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus: AmmatillinenOpiskeluoikeus = ExamplesValma.valmaOpiskeluoikeus
 
-  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 2.9.2022 jälkeen" in {
+  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 1.10.2022 jälkeen" in {
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(
       tila = AmmatillinenOpiskeluoikeudenTila(List(
-        AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2022, 9, 3), opiskeluoikeusLäsnä)
+        AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2022, 10, 2), opiskeluoikeusLäsnä)
       ))
     )
     putOpiskeluoikeus(opiskeluoikeus) {

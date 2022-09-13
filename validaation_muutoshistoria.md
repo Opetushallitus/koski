@@ -3,7 +3,7 @@
 
 ## 13.9.2022
 
-- VALMA- ja perusopetuksen lisäopetuksen opiskeluoikeuksille ei sallita uusia tiloja, joiden alkupäivämäärä on 3.9.2022 tai sen jälkeen.
+- VALMA- ja perusopetuksen lisäopetuksen opiskeluoikeuksille ei sallita uusia tiloja, joiden alkupäivämäärä on 2.10.2022 tai sen jälkeen.
 
 
 ## 19.8.2022
