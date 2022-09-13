@@ -537,7 +537,7 @@ class KoskiValidator(
     HttpStatus.fold(
       validateErityisenKoulutustehtävänJakso(opiskeluoikeus.lisätiedot),
       validatePidennettyOppivelvollisuus(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä),
-      validateTuvaPerusopetusErityinenTukiJaVammaisuus(opiskeluoikeus.lisätiedot)
+      validateTuvaPerusopetusErityinenTukiJaVammaisuusEiTuotannossa(opiskeluoikeus.lisätiedot)
     )
   }
 
@@ -757,6 +757,19 @@ class KoskiValidator(
           )
         )
       case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateTuvaPerusopetusErityinenTukiJaVammaisuusEiTuotannossa(
+    lisätiedot: Option[OpiskeluoikeudenLisätiedot]
+  ): HttpStatus =
+  {
+    // Käytetään tuotannossa toistaiseksi vanhoja validaatioita siihen asti, kunnes järjestelmätoimittajat ovat saaneet
+    // tarvittavat korjaukset tehtyä. Sen jälkeen tämän vanhan validaatiokoodin voi poistaa.
+    if (!Environment.isProdEnvironment(config)) {
+      validateTuvaPerusopetusErityinenTukiJaVammaisuus(lisätiedot)
+    } else {
+      HttpStatus.ok
     }
   }
 
