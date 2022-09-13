@@ -1,0 +1,74 @@
+// {type:activity}
+// {direction:leftToRight}
+// {generate:true}
+(1. Validoimaton opiskeluoikeus)->(2. Opiskeluoikeuden tietojen päivitys)
+(2. Opiskeluoikeuden tietojen päivitys)->(2.1 Puuttuvan oppilaitoksen ja koulutustoimijan lisäys)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.2 Puuttuvan koulutustyypin lisäys)->(2.3 Koulutustyypin validointi)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.4 Maksuttomuuden jaksojen validointi)->(2.5 Maksuttomuuden pidennyksen validointi)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.6 Perusteen nimen täydennys)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.7 Päätason suoritusten ja osasuoritusten laajuuksien täydennys)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.8 Lukion 2019 vieraiden kielien osasuoritusten täydennys)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.9 Suorituksen vahvistuksen poisto Lukion 2019 oppiaineiden oppimäärän suoritukselle)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.10 Organisaatiohistorian tyhjennys)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.11 Koodistopoikkeusten konversiot, esim. Lukion 2019 Historian kurssinimet)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.12 Lukion oppimäärän suoritustiedon täydennys)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.13 Deprekoitujen kenttien filtteröinti)-|b|
+(2. Opiskeluoikeuden tietojen päivitys)->(2.14 Redundantin datan poisto)-|b|
+|b|->(3. Kayttoikeuksien tarkistus)->(4. Lähdejärjestelmän validointi)->(5. Päätason suoritusten validointi)->(6. Kaikkien suoritusten tutkintorakenteen validointi)->|d|
+(6. Kaikkien suoritusten tutkintorakenteen validointi)->(6.1 Osaamisalojen validointi)->(6.2 Tutkinnon osien validointi)->(6. Kaikkien suoritusten tutkintorakenteen validointi)
+|d|->(7. Loput validoinnit)->|d1|
+|d1|->(7.1 Päätason suoritustyyppien validointi, eli onko disabloitu)-|e|
+|d1|->(7.2 Päätason suoritusluokkien validointi, eli onko disabloitu)-|e|
+|d1|->(7.3 Osasuoritusten suoritustyyppien validointi, eli onko disabloitu)-|e|
+|d1|->(7.4 Opintojen rahoitusmuodon validointi)-|e|
+|d1|->(7.5 Sisältyvyyden validointi)-|e|
+|d1|->(7.6 Päivämäärien validointi, mm. alkamispäivä, päättymispäivä ja tila)-|e|
+|d1|->(7.7 Päätason suorituksen tilan validointi)->(mm. Aikuisten perusopetus, Lukio 2019 Oppiaineiden oppimäärä)-|e|
+|d1|->(7.8 Opiskeluoikeuden lisätietojen validointi)->(Erityisen koulutustehtävän jakso)->(Pidennetty oppivelvollisuus)-|e|
+|d1|->(7.9 Perusopetuksen opiskeluoikeuden validointi)->(Nuorten perusopetuksen opiskeluoikeuden tila)->(Vuosiluokan alkamispäivät)->(Päätason suoritus)-|e|
+(Päätason suoritus)->(Valmistuneella opiskeluoikeudella yhdeksäs luokka, tai sitä ei tarvita)->(Päätason suoritus)
+|d1|->(7.10 Tiedonsiirrosta puuttuvien suoritusten validointi)->(Ei samaa alkamispäivää)-|e|
+|d1|->(7.11 Kaikkien suoritusten validointi)->(Yhteisiä validaatioita)
+(7.11 Kaikkien suoritusten validointi)-|e|
+(Yhteisiä validaatioita)->(Vahvistus- ja päättymispäivät)
+(Yhteisiä validaatioita)->(Alkamispäivä)
+(Yhteisiä validaatioita)->(Toimipiste)
+(Yhteisiä validaatioita)->(Status)
+(Yhteisiä validaatioita)->(Arvioinnit)
+(Yhteisiä validaatioita)->(Arviointien olemassaolo)
+(Yhteisiä validaatioita)->(Laajuus)
+(Yhteisiä validaatioita)->(Nuorten perusopetuksen pakollisten oppiaineiden laajuus)
+(Yhteisiä validaatioita)->(Suoritusten luokka-asteet)
+(Yhteisiä validaatioita)->(Oppiaineet)
+(Yhteisiä validaatioita)->(Päiväkodin esiopetus)
+(Yhteisiä validaatioita)->(Tutkinnon osan ryhmä)
+(Yhteisiä validaatioita)->(Osaamisen hankkimistavat)
+(Yhteisiä validaatioita)->(Yhteiset tutkinnon osat)
+(Yhteisiä validaatioita)->(Äidinkielen omainen kieli)
+(Yhteisiä validaatioita)->(Lukio2019 osasuoritukset)
+(Yhteisiä validaatioita)->(Lukio2019 vieraat kielet)
+(Yhteisiä validaatioita)->(Lukio2019 arvosanat)
+(Yhteisiä validaatioita)->(Lukion yhteiset validointi)
+(Yhteisiä validaatioita)->(Lukion valmistavan koulutuksen validointi)
+(Yhteisiä validaatioita)->(Vapaan sivistystyön validointi)
+(Yhteisiä validaatioita)->(VST kotoutumuskoulutus 2022 validointi)->(Osasuoritusten validointi)->(Kieli- ja viestintäsuoritusten laajuus)
+->(Osasuoritusten validointi)->(Kieli- ja viestintäosasuoritusten arviointi)
+(Yhteisiä validaatioita)->(TUVA-koulutuksen validointi)->(TUVA-koulutuksen suorituksen validointi)
+(Yhteisiä validaatioita)->(Duplikaattisuoritusten validointi)
+(Yhteisiä validaatioita)->(Osasuorituslistan validointi)->(Yhteisiä validaatioita)
+|d1|->(7.12 Tilan asettaminen, kun suoritus on vahvistettu -validointi)-|e|
+|d1|->(7.13 Suostumuksen peruutuksen validointi)-|e|
+|d1|->(7.14 Lukio2015:n oppimäärän suorittamisen validointi)-|e|
+|d1|->(7.15 Ammatillisen opiskeluoikeuden validointi)-|e|
+(Ammatillisen opiskeluoikeuden validointi)->(Peruste voimassa)
+(Ammatillisen opiskeluoikeuden validointi)->(Opiskeluoikeuden päättyminen ennen siirtymäajan päättymistä)
+(Ammatillisen opiskeluoikeuden validointi)->(Usea päätason suoritus)
+(Ammatillisen opiskeluoikeuden validointi)->(Viestintä ja vuorovaikutus äidinkielellä 2022)
+|d1|->(7.16 VST:n kotoutumiskoulutuksen validointi)->(Alkamispäivän validointi)-|e|
+|d1|->(7.17 Vapaan sivistystyön päätason opintokokonaisuuden validointi)-|e|
+|e|-(8. Opiskeluoikeuksen muutosten validointi)->(Opiskeluoikeuden tyypin muutoksen validointi)-|f|
+|e|-(8. Opiskeluoikeuksen muutosten validointi)->(Lähdejärjestelmän ID:n poiston validointi)-|f|
+|e|-(8. Opiskeluoikeuksen muutosten validointi)->(Oppilaitoksen muutoksen validointi)-|f|
+|e|-(8. Opiskeluoikeuksen muutosten validointi)->(Vanhan opiskeluoikeuden tapaukset)->(Tutkintokoodin tai suoritustavan muutos)-|f|
+|e|-(8. Opiskeluoikeuksen muutosten validointi)->(Järjestämisluvan muuttumisen validointi)-|f|
+|f|->(9. Validoitu ja täydennetty opiskeluoikeus)
