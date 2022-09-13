@@ -1,6 +1,11 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 13.9.2022
+
+- VALMA- ja perusopetuksen lisäopetuksen opiskeluoikeuksille ei sallita uusia tiloja, joiden alkupäivämäärä on 3.9.2022 tai sen jälkeen.
+
+
 ## 19.8.2022
 
 - Seuraavat validaatiomuutokset ovat toistaiseksi vain testiopintopolussa, ne viedään tuotantoon myöhemmin:
