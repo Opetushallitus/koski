@@ -5,8 +5,10 @@ import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.util.Monoids.rightSeqMonoid
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
+import fi.oph.koski.valpas.hakukooste.Hakukooste
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
@@ -106,6 +108,7 @@ class ValpasOppijaLaajatTiedotService(
     getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppijaOid, rooli, haeMyösVainOppijanumerorekisterissäOleva)
       .flatMap(withKuntailmoitukset)
       .map(withOikeusTehdäKuntailmoitus)
+      .map(withOikeusMitätöitäOppivelvollisuudenVapautus)
   }
 
   def getOppijaLaajatTiedotHakuJaYhteystiedoilla
@@ -133,7 +136,7 @@ class ValpasOppijaLaajatTiedotService(
         ValpasErrorCategory.internalError("Oppijan tietojen haku epäonnistui")
       })
       .map(opiskeluoikeudet =>
-        ValpasOppijaLaajatTiedot(
+        ValpasOppivelvollinenOppijaLaajatTiedot(
           henkilö = ValpasHenkilöLaajatTiedot(
             oid = dbRow.oppijaOid,
             kaikkiOidit = dbRow.kaikkiOppijaOidit.toSet,
@@ -153,6 +156,10 @@ class ValpasOppijaLaajatTiedotService(
           onOikeusValvoaMaksuttomuutta = dbRow.onOikeusValvoaMaksuttomuutta,
         )
       )
+      .map(oppija => dbRow.oppivelvollisuudestaVapautus match {
+        case Some(vapautus) => ValpasOppivelvollisuudestaVapautettuLaajatTiedot.apply(oppija, vapautus)
+        case None => oppija
+      })
   }
 
   def withVirallisetYhteystiedot(
@@ -164,12 +171,17 @@ class ValpasOppijaLaajatTiedotService(
       ))
 
   def fetchHakuYhteystiedoilla(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
-    val hakukoosteet = hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut = false, errorClue = s"oppija:${oppija.henkilö.oid}")
+    val hakukoosteet = if (oppija.oppivelvollisuudestaVapautettu) {
+      Right(Nil)
+    } else {
+      hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut = false, errorClue = s"oppija:${oppija.henkilö.oid}")
+    }
+
     OppijaHakutilanteillaLaajatTiedot.apply(oppija = oppija, yhteystietoryhmänNimi = localizationRepository.get("oppija__yhteystiedot"), haut = hakukoosteet)
   }
 
   private def fetchVirallisetYhteystiedot(oppija: ValpasOppijaLaajatTiedot): Either[HttpStatus, Seq[Yhteystiedot]] = {
-    if (oppija.henkilö.turvakielto) {
+    if (oppija.henkilö.turvakielto || oppija.oppivelvollisuudestaVapautettu) {
       Right(Seq.empty)
     } else {
       timed("fetchVirallisetYhteystiedot", 10) {
@@ -197,14 +209,16 @@ class ValpasOppijaLaajatTiedotService(
   private def fetchKuntailmoitukset(
     oppija: ValpasOppijaLaajatTiedot
   )(implicit session: ValpasSession): Either[HttpStatus, Seq[ValpasKuntailmoitusLaajatTiedot]] = {
-    timed("fetchKuntailmoitukset", 10) {
-      application.valpasKuntailmoitusService.getKuntailmoitukset(oppija)
-        .map(lisääAktiivisuustiedot(oppija))
-    }
+    oppija.mapOppivelvollinen { o =>
+      timed("fetchKuntailmoitukset", 10) {
+        application.valpasKuntailmoitusService.getKuntailmoitukset(oppija)
+          .map(lisääAktiivisuustiedot(o))
+      }
+    }(rightSeqMonoid)
   }
 
   def lisääAktiivisuustiedot(
-    oppija: ValpasOppijaLaajatTiedot
+    oppija: ValpasOppivelvollinenOppijaLaajatTiedot
   )(
     kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]
   ): Seq[ValpasKuntailmoitusLaajatTiedot] = {

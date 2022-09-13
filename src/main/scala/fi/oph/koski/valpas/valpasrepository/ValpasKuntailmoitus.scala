@@ -5,7 +5,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystietojenAlkuperä
 
 import java.time.LocalDateTime
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasRajapäivätService}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot, ValpasRajapäivätService}
 
 case class ValpasKuntailmoitusLaajatTiedot(
   oppijaOid: Option[String],

@@ -8,7 +8,7 @@ import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrderin
 import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService.defaultMockTarkastelupäivä
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasOpiskeluoikeus, ValpasOppijaLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot}
 import fi.oph.koski.valpas.ValpasTestBase
 import org.scalatest.BeforeAndAfterEach
 

@@ -1,11 +1,14 @@
 package fi.oph.koski.valpas.opiskeluoikeusrepository
 
+import cats.Monoid
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty}
 import fi.oph.koski.valpas.hakukooste._
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusService
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos.Oid
+import fi.oph.koski.valpas.oppija.OppivelvollisuudestaVapautus
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
 import java.time.{LocalDate, LocalDateTime}
@@ -21,9 +24,44 @@ trait ValpasOppija {
   def opiskelee: Boolean = opiskeluoikeudet.exists(_.isOpiskelu)
 }
 
-object ValpasOppijaLaajatTiedot {
-  def apply(henkilö: LaajatOppijaHenkilöTiedot, rajapäivätService: ValpasRajapäivätService, onTallennettuKoskeen: Boolean): ValpasOppijaLaajatTiedot = {
-    ValpasOppijaLaajatTiedot(
+trait ValpasOppijaLaajatTiedot extends ValpasOppija {
+  override def henkilö: ValpasHenkilöLaajatTiedot
+  @SyntheticProperty
+  override def opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
+  @SyntheticProperty
+  def hakeutumisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid]
+  @SyntheticProperty
+  def suorittamisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid]
+  @SyntheticProperty
+  def oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate
+  def onOikeusValvoaMaksuttomuutta: Boolean
+  def onOikeusValvoaKunnalla: Boolean
+  @SyntheticProperty
+  def oppivelvollisuudestaVapautettu: Boolean
+
+  def suorittaaOppivelvollisuutta: Boolean =
+    !oppivelvollisuudestaVapautettu && opiskeluoikeudet.exists(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && oo.isOpiskelu)
+
+  def ifOppivelvollinenOtherwise[A](default: A)(fn: ValpasOppivelvollinenOppijaLaajatTiedot => A): A =
+    this match {
+      case o: ValpasOppivelvollinenOppijaLaajatTiedot => fn(o)
+      case _ => default
+    }
+
+  def ifOppivelvollinen[A](fn: ValpasOppivelvollinenOppijaLaajatTiedot => ValpasOppijaLaajatTiedot): ValpasOppijaLaajatTiedot =
+    ifOppivelvollinenOtherwise(this)(fn)
+
+  def ifOppivelvollinenOtherwiseRight[L, R](default: R)(fn: ValpasOppivelvollinenOppijaLaajatTiedot => Either[L, R]): Either[L, R] =
+    ifOppivelvollinenOtherwise[Either[L, R]](Right(default))(fn)
+
+  // Importtaa sopiva monoidi kirjastosta fi.oph.koski.util.Monoid käyttääksesi tätä versiota
+  def mapOppivelvollinen[A](fn: ValpasOppivelvollinenOppijaLaajatTiedot => A)(implicit monoid: Monoid[A]): A =
+    ifOppivelvollinenOtherwise(monoid.empty)(fn)
+}
+
+object ValpasOppivelvollinenOppijaLaajatTiedot {
+  def apply(henkilö: LaajatOppijaHenkilöTiedot, rajapäivätService: ValpasRajapäivätService, onTallennettuKoskeen: Boolean): ValpasOppivelvollinenOppijaLaajatTiedot = {
+    ValpasOppivelvollinenOppijaLaajatTiedot(
       henkilö = ValpasHenkilöLaajatTiedot(henkilö, onTallennettuKoskeen),
       hakeutumisvalvovatOppilaitokset = Set.empty,
       suorittamisvalvovatOppilaitokset = Set.empty,
@@ -37,7 +75,7 @@ object ValpasOppijaLaajatTiedot {
   }
 }
 
-case class ValpasOppijaLaajatTiedot(
+case class ValpasOppivelvollinenOppijaLaajatTiedot(
   henkilö: ValpasHenkilöLaajatTiedot,
   hakeutumisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid],
   suorittamisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid],
@@ -46,10 +84,31 @@ case class ValpasOppijaLaajatTiedot(
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
   onOikeusValvoaMaksuttomuutta: Boolean,
   onOikeusValvoaKunnalla: Boolean
-) extends ValpasOppija {
-  def suorittaaOppivelvollisuutta: Boolean = {
-    opiskeluoikeudet.exists(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && oo.isOpiskelu)
-  }
+) extends ValpasOppijaLaajatTiedot {
+  def oppivelvollisuudestaVapautettu: Boolean = false
+}
+
+object ValpasOppivelvollisuudestaVapautettuLaajatTiedot {
+  def apply(tiedot: ValpasOppivelvollinenOppijaLaajatTiedot, vapautus: OppivelvollisuudestaVapautus): ValpasOppivelvollisuudestaVapautettuLaajatTiedot = ValpasOppivelvollisuudestaVapautettuLaajatTiedot(
+    henkilö = tiedot.henkilö,
+    oppivelvollisuusVoimassaAsti = vapautus.vapautettu,
+    oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = vapautus.vapautettu,
+    onOikeusValvoaMaksuttomuutta = tiedot.onOikeusValvoaMaksuttomuutta,
+    onOikeusValvoaKunnalla = tiedot.onOikeusValvoaKunnalla,
+  )
+}
+
+case class ValpasOppivelvollisuudestaVapautettuLaajatTiedot(
+  henkilö: ValpasHenkilöLaajatTiedot,
+  oppivelvollisuusVoimassaAsti: LocalDate,
+  oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
+  onOikeusValvoaMaksuttomuutta: Boolean,
+  onOikeusValvoaKunnalla: Boolean
+) extends ValpasOppijaLaajatTiedot {
+  def opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot] = List.empty
+  def hakeutumisvalvovatOppilaitokset: Set[Oid] = Set.empty
+  def suorittamisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid] = Set.empty
+  def oppivelvollisuudestaVapautettu: Boolean = true
 }
 
 object ValpasHenkilö {

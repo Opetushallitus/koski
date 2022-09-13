@@ -7,7 +7,8 @@ import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, OppijaKuntailmoituksillaSuppeatTiedot, ValpasAccessResolver}
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
-
+import fi.oph.koski.util.Monoids._
+import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedot
 
 class ValpasKuntavalvontaService(
   application: KoskiApplication
@@ -60,7 +61,7 @@ class ValpasKuntavalvontaService(
       .map(_.map(oppijaJaKuntailmoitusTuples => {
         val oppija = oppijaJaKuntailmoitusTuples.head._1
         val kuntailmoituksetLaajatTiedot = oppijaJaKuntailmoitusTuples.map(_._2)
-        val kuntailmoitukset = oppijaLaajatTiedotService.lisääAktiivisuustiedot(oppija)(kuntailmoituksetLaajatTiedot)
+        val kuntailmoitukset = oppija.mapOppivelvollinen(oppijaLaajatTiedotService.lisääAktiivisuustiedot(_)(kuntailmoituksetLaajatTiedot))(seqMonoid)
 
         OppijaHakutilanteillaLaajatTiedot(
           oppija = oppija,

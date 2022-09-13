@@ -9,6 +9,7 @@ import slick.jdbc.GetResult
 
 import java.time.LocalDate
 import fi.oph.koski.util.Timing
+import fi.oph.koski.valpas.oppija.OppivelvollisuudestaVapautus
 
 import scala.concurrent.duration.DurationInt
 
@@ -28,17 +29,8 @@ case class ValpasOppijaRow(
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
   onOikeusValvoaMaksuttomuutta: Boolean,
   onOikeusValvoaKunnalla: Boolean,
-  poistettuOppija: Boolean,
-) {
-  def asPoistettuOppija(pvm: LocalDate): ValpasOppijaRow = copy(
-    poistettuOppija = true,
-    hakeutumisvalvovatOppilaitokset = Set.empty,
-    suorittamisvalvovatOppilaitokset = Set.empty,
-    opiskeluoikeudet = JArray(Nil),
-    oppivelvollisuusVoimassaAsti = pvm,
-    oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = pvm,
-  )
-}
+  oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus],
+)
 
 case class ValpasOppivelvollisuustiedotRow(
   oppijaOid: String,
@@ -64,14 +56,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   def getOppijat(oppijaOids: Seq[String], rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Seq[ValpasOppijaRow] =
     if (oppijaOids.nonEmpty) {
       queryOppijat(oppijaOids, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki)
-        .filterNot(_.poistettuOppija)
+        .filter(_.oppivelvollisuudestaVapautus.isEmpty)
     } else {
       Seq.empty
     }
 
   def getOppijatByOppilaitos(oppilaitosOid: String, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value): Seq[ValpasOppijaRow] =
     queryOppijat(Seq.empty, Some(Seq(oppilaitosOid)), true, hakeutumisvalvontaTieto)
-      .filterNot(_.poistettuOppija)
+      .filter(_.oppivelvollisuudestaVapautus.isEmpty)
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -90,7 +82,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = r.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti"),
       onOikeusValvoaMaksuttomuutta = r.rs.getBoolean("onOikeusValvoaMaksuttomuutta"),
       onOikeusValvoaKunnalla = r.rs.getBoolean("onOikeusValvoaKunnalla"),
-      poistettuOppija = false,
+      oppivelvollisuudestaVapautus = None,
     )
   })
 
@@ -1339,7 +1331,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     }
 
     oppijanPoistoService.mapVapautetutOppijat(result, (r: ValpasOppijaRow) => r.kaikkiOppijaOidit) {
-      case (oppija, pvm) => oppija.asPoistettuOppija(pvm)
+      case (oppija, vapautus) => oppija.copy(oppivelvollisuudestaVapautus = Some(vapautus))
     }
   }
 

@@ -5,7 +5,7 @@ import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.validation.MaksuttomuusValidation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö.Oid
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppivelvollinenOppijaLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
@@ -17,7 +17,7 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
   def getOppijaLaajatTiedotOppijanumerorekisteristä
     (oppijaOid: Oid)
       (implicit session: ValpasSession)
-  : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
+  : Either[HttpStatus, ValpasOppivelvollinenOppijaLaajatTiedot] = {
     if (accessResolver.accessToAnyOrg(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)) {
       // Maksuttomuusoikeudet ovat laajemmat ja sisältävät kuntaoikeudet, joten haetaan ensisijaisesti niillä, jos
       // käyttäjällä on molemmat oikeudet
@@ -31,7 +31,7 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
 
   private def getMaksuttomuuskäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
     oppijaOid: ValpasHenkilö.Oid
-  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] =
+  ): Either[HttpStatus, ValpasOppivelvollinenOppijaLaajatTiedot] =
     getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
       onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija,
       oppijaOid
@@ -39,7 +39,7 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
 
   private def getKuntakäyttäjälleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
     oppijaOid: ValpasHenkilö.Oid
-  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] =
+  ): Either[HttpStatus, ValpasOppivelvollinenOppijaLaajatTiedot] =
     getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
       onKunnalleNäkyväVainOnrssäOlevaOppija,
       oppijaOid
@@ -47,7 +47,7 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
 
   def getKansalaiselleNäkyvätOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
     oppijaOid: ValpasHenkilö.Oid
-  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] =
+  ): Either[HttpStatus, ValpasOppivelvollinenOppijaLaajatTiedot] =
     getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
       onKansalaiselleNäkyväVainOnrssäOlevaOppija,
       oppijaOid
@@ -56,10 +56,10 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
   private def getOppijaLaajatTiedotOppijanumerorekisteristäIlmanKäyttöoikeustarkistusta(
     onPalautettavaOppija: OppijaHenkilö => Boolean,
     oppijaOid: ValpasHenkilö.Oid
-  ): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
+  ): Either[HttpStatus, ValpasOppivelvollinenOppijaLaajatTiedot] = {
     henkilöRepository.findByOid(oppijaOid, findMasterIfSlaveOid = true) match {
       case Some(henkilö) if onPalautettavaOppija(henkilö) =>
-        Right(ValpasOppijaLaajatTiedot(henkilö, rajapäivätService, onTallennettuKoskeen = false))
+        Right(ValpasOppivelvollinenOppijaLaajatTiedot(henkilö, rajapäivätService, onTallennettuKoskeen = false))
       case _ => Left(ValpasErrorCategory.forbidden.oppija())
     }
   }

@@ -39,20 +39,22 @@ class ValpasSuorittamisenValvontaService(
   private def poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka(
     oppija: OppijaHakutilanteillaLaajatTiedot
   ): OppijaHakutilanteillaLaajatTiedot = {
-    val uudetOpiskeluoikeudet =
-      oppija.oppija.opiskeluoikeudet.filterNot(
-        opiskeluoikeus => onEronnutJaUusiOpiskelupaikkaVoimassa(
-          opiskeluoikeus = opiskeluoikeus,
-          muutOppijanOpiskeluoikeudet =
-            oppija.oppija.opiskeluoikeudet.filterNot(opiskeluoikeus2 => opiskeluoikeus2.equals(opiskeluoikeus))
+    oppija.oppija.ifOppivelvollinenOtherwise(oppija) { o =>
+      val uudetOpiskeluoikeudet =
+        oppija.oppija.opiskeluoikeudet.filterNot(
+          opiskeluoikeus => onEronnutJaUusiOpiskelupaikkaVoimassa(
+            opiskeluoikeus = opiskeluoikeus,
+            muutOppijanOpiskeluoikeudet =
+              oppija.oppija.opiskeluoikeudet.filterNot(opiskeluoikeus2 => opiskeluoikeus2.equals(opiskeluoikeus))
+          )
+        )
+
+      oppija.copy(
+        oppija = o.copy(
+          opiskeluoikeudet = uudetOpiskeluoikeudet
         )
       )
-
-    oppija.copy(
-      oppija = oppija.oppija.copy(
-        opiskeluoikeudet = uudetOpiskeluoikeudet
-      )
-    )
+    }
   }
 
   private def onEronnutJaUusiOpiskelupaikkaVoimassa(

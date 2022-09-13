@@ -60,13 +60,15 @@ case class KansalainenOppija(
 }
 
 object KansalainenOppija {
-  def apply(oppija: ValpasOppijaLaajatTiedot): KansalainenOppija = KansalainenOppija(
-    henkilö = oppija.henkilö,
-    opiskeluoikeudet = oppija.opiskeluoikeudet.map(KansalainenOpiskeluoikeus.apply),
-    oppivelvollisuusVoimassaAsti = oppija.oppivelvollisuusVoimassaAsti,
-    oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
-    opiskelee = oppija.opiskelee,
-  )
+  def apply(oppija: ValpasOppijaLaajatTiedot): KansalainenOppija = {
+    KansalainenOppija(
+      henkilö = oppija.henkilö,
+      opiskeluoikeudet = oppija.opiskeluoikeudet.map(KansalainenOpiskeluoikeus.apply),
+      oppivelvollisuusVoimassaAsti = oppija.oppivelvollisuusVoimassaAsti,
+      oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+      opiskelee = oppija.opiskelee,
+    )
+  }
 }
 
 case class KansalainenOpiskeluoikeus(

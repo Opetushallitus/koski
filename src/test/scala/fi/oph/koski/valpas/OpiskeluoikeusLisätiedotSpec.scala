@@ -4,6 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppivelvollinenOppijaLaajatTiedot
 import fi.oph.koski.valpas.oppija.OppijaHakutilanteillaLaajatTiedot
 import fi.oph.koski.valpas.valpasuser.ValpasRooli
 import org.scalatest.BeforeAndAfterAll
@@ -33,7 +34,7 @@ class OpiskeluoikeusLisätiedotSpec extends ValpasTestBase with BeforeAndAfterAl
   }
 
   private lazy val vainViimeinenOpiskeluoikeus = oppijaLaajatTiedot.copy(
-    oppija = oppijaLaajatTiedot.oppija.copy(
+    oppija = oppijaLaajatTiedot.oppija.asInstanceOf[ValpasOppivelvollinenOppijaLaajatTiedot].copy(
       opiskeluoikeudet = oppijaLaajatTiedot.oppija.opiskeluoikeudet.drop(2)
     )
   )

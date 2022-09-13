@@ -33,7 +33,7 @@ class ValpasOppivelvollisuudestaVapautusServiceSpec extends ValpasTestBase with 
 
       service.lisääOppivelvollisuudestaVapautus(vapautettavaOppija.oid, LocalDate.of(2022, 9, 13))
       val result = service.mapVapautetutOppijat(oppijat, { o: LaajatOppijaHenkilöTiedot => List(o.oid) }) {
-        case (oppija, pvm) => oppija.copy(etunimet = s"*VAPAUTETTU ${pvm.format(finnishDateFormat)}*")
+        case (oppija, pvm) => oppija.copy(etunimet = s"*VAPAUTETTU ${pvm.vapautettu.format(finnishDateFormat)}*")
       }
 
       result.zip(oppijat).foreach {

@@ -5,7 +5,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
 
@@ -70,14 +70,15 @@ class ValpasKansalainenService(
   }
 
   private def withKuntailmoituksetIlmanKäyttöoikeustarkastusta(
-    o: OppijaHakutilanteillaLaajatTiedot
-  ): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
-    timed("fetchKuntailmoitukset", 10) {
-      application.valpasKuntailmoitusService.getKuntailmoituksetIlmanKäyttöoikeustarkistusta(o.oppija)
-        .map(oppijaLaajatTiedotService.lisääAktiivisuustiedot(o.oppija))
-        .map(kuntailmoitukset => o.copy(kuntailmoitukset = kuntailmoitukset))
+    oppija: OppijaHakutilanteillaLaajatTiedot
+  ): Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] =
+    oppija.oppija.ifOppivelvollinenOtherwiseRight(oppija) { o =>
+      timed("fetchKuntailmoitukset", 10) {
+        application.valpasKuntailmoitusService.getKuntailmoituksetIlmanKäyttöoikeustarkistusta(o)
+          .map(oppijaLaajatTiedotService.lisääAktiivisuustiedot(o))
+          .map(kuntailmoitukset => oppija.copy(kuntailmoitukset = kuntailmoitukset))
+      }
     }
-  }
 
   private def tarkistaKansalaisenTietojenNäkyvyys(
     oppija: OppijaHakutilanteillaLaajatTiedot

@@ -15,14 +15,12 @@ import java.time.LocalDate
 class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) extends Logging {
   val db = new ValpasOppivelvollisuudestaVapautusRepository(application.valpasDatabase.db)
 
-  def mapVapautetutOppijat[T](oppijat: Seq[T], toOids: T => Seq[String])(map: (T, LocalDate) => T): Seq[T] = {
+  def mapVapautetutOppijat[T](oppijat: Seq[T], toOids: T => Seq[String])(map: (T, OppivelvollisuudestaVapautus) => T): Seq[T] = {
     val oppijaOids = oppijat.flatMap(toOids)
     val vapautukset = db.getOppivelvollisuudestaVapautetutOppijat(oppijaOids)
     oppijat.map { oppija =>
       vapautukset.find(v => toOids(oppija).contains(v.oppijaOid)) match {
-        case Some(vapautus) => {
-          map(oppija, vapautus.vapautettu)
-        }
+        case Some(vapautus) => map(oppija, vapautus)
         case None => oppija
       }
     }
