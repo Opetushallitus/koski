@@ -698,6 +698,21 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää("suoritus.alkamispäivä (2016-08-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä (2015-05-31)"))))
         }
       }
+
+      "Keskiarvon asettaminen" - {
+        val keskeneräinenSuoritusKeskiarvolla = autoalanPerustutkinnonSuoritus().copy(keskiarvo = Option(4.0))
+        "estetään jos suoritus on kesken" - {
+          "palautetaan HTTP 400" in (putTutkintoSuoritus(keskeneräinenSuoritusKeskiarvolla)(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle("Opiskeluoikeudelle ei voi asettaa keskiarvoa ellei opiskeluoikeus ole valmis"))))
+        }
+        val valmisSuoritusKeskiarvolla = keskeneräinenSuoritusKeskiarvolla.copy(
+          vahvistus = vahvistus(date(2017, 5, 31)),
+          osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
+        "sallitaan jos suoritus on valmis" - {
+          "palautetaan HTTP 200" in (putTutkintoSuoritus(valmisSuoritusKeskiarvolla)(
+            verifyResponseStatusOk()))
+        }
+      }
     }
 
     "Ammatillinen perustutkinto opetussuunnitelman mukaisesti" - {
@@ -729,12 +744,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Syötetään keskiarvo" - {
-        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaOps, osasuoritukset = Some(List(tutkinnonOsaSuoritus)), keskiarvo = Option(2.1f))
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaOps, vahvistus = vahvistus(date(2016, 9, 1)), osasuoritukset = Some(List(tutkinnonOsaSuoritus)), keskiarvo = Option(2.1f))
         "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
 
       "Syötetään tieto siitä, että keskiarvo sisältää mukautettuja arvosanoja" - {
-        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaOps, osasuoritukset = Some(List(tutkinnonOsaSuoritus)), keskiarvo = Option(2.1f), keskiarvoSisältääMukautettujaArvosanoja = Some(true))
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapaOps, vahvistus = vahvistus(date(2016, 9, 1)), osasuoritukset = Some(List(tutkinnonOsaSuoritus)), keskiarvo = Option(2.1f), keskiarvoSisältääMukautettujaArvosanoja = Some(true))
         "palautetaan HTTP 200" in (putTutkintoSuoritus(suoritus)(verifyResponseStatusOk()))
       }
 

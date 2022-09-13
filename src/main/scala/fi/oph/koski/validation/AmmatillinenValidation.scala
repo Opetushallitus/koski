@@ -17,10 +17,19 @@ object AmmatillinenValidation {
           validatePerusteVoimassa(ammatillinen, ePerusteet, config),
           validateOpiskeluoikeudenPäättyminenEnnenSiirtymäajanPäättymistä(ammatillinen, ePerusteet, config),
           validateUseaPäätasonSuoritus(ammatillinen),
-          validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen, ePerusteet)
+          validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen, ePerusteet),
+          validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen)
         )
       case _ => HttpStatus.ok
     }
+  }
+
+  private def validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen: AmmatillinenOpiskeluoikeus) = {
+    val isValid = ammatillinen.suoritukset.forall {
+      case a: AmmatillisenTutkinnonSuoritus if (a.keskiarvo.isDefined) => a.valmis
+      case _ => true
+    }
+    if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle()
   }
 
   private def validateUseaPäätasonSuoritus(opiskeluoikeus: AmmatillinenOpiskeluoikeus): HttpStatus = {
