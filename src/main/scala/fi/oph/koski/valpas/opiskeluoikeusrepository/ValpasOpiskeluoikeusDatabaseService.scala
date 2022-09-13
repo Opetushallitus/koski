@@ -4,10 +4,10 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DatabaseConverters, SQLHelpers}
 import fi.oph.koski.log.Logging
-import org.json4s.JValue
+import org.json4s.{JArray, JNull, JValue}
 import slick.jdbc.GetResult
-import java.time.LocalDate
 
+import java.time.LocalDate
 import fi.oph.koski.util.Timing
 
 import scala.concurrent.duration.DurationInt
@@ -27,8 +27,18 @@ case class ValpasOppijaRow(
   oppivelvollisuusVoimassaAsti: LocalDate,
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
   onOikeusValvoaMaksuttomuutta: Boolean,
-  onOikeusValvoaKunnalla: Boolean
-)
+  onOikeusValvoaKunnalla: Boolean,
+  poistettuOppija: Boolean,
+) {
+  def asPoistettuOppija(pvm: LocalDate): ValpasOppijaRow = copy(
+    poistettuOppija = true,
+    hakeutumisvalvovatOppilaitokset = Set.empty,
+    suorittamisvalvovatOppilaitokset = Set.empty,
+    opiskeluoikeudet = JArray(Nil),
+    oppivelvollisuusVoimassaAsti = pvm,
+    oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = pvm,
+  )
+}
 
 case class ValpasOppivelvollisuustiedotRow(
   oppijaOid: String,
@@ -46,15 +56,22 @@ object HakeutumisvalvontaTieto extends Enumeration {
 class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
   private val db = application.raportointiDatabase
   private val rajapäivätService = application.valpasRajapäivätService
+  private val oppijanPoistoService = application.valpasOppivelvollisuudestaVapautusService
 
   def getOppija(oppijaOid: String, rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Option[ValpasOppijaRow] =
     queryOppijat(List(oppijaOid), None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki).headOption
 
   def getOppijat(oppijaOids: Seq[String], rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Seq[ValpasOppijaRow] =
-    if (oppijaOids.nonEmpty) queryOppijat(oppijaOids, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki) else Seq.empty
+    if (oppijaOids.nonEmpty) {
+      queryOppijat(oppijaOids, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki)
+        .filterNot(_.poistettuOppija)
+    } else {
+      Seq.empty
+    }
 
   def getOppijatByOppilaitos(oppilaitosOid: String, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value): Seq[ValpasOppijaRow] =
     queryOppijat(Seq.empty, Some(Seq(oppilaitosOid)), true, hakeutumisvalvontaTieto)
+      .filterNot(_.poistettuOppija)
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -72,7 +89,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       oppivelvollisuusVoimassaAsti = r.getLocalDate("oppivelvollisuusVoimassaAsti"),
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = r.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti"),
       onOikeusValvoaMaksuttomuutta = r.rs.getBoolean("onOikeusValvoaMaksuttomuutta"),
-      onOikeusValvoaKunnalla = r.rs.getBoolean("onOikeusValvoaKunnalla")
+      onOikeusValvoaKunnalla = r.rs.getBoolean("onOikeusValvoaKunnalla"),
+      poistettuOppija = false,
     )
   })
 
@@ -106,7 +124,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
 
     val nonEmptyOppijaOids = if (oppijaOids.nonEmpty) Some(oppijaOids) else None
 
-    timed(timedBlockname, 10) {
+    val result = timed(timedBlockname, 10) {
       db.runDbSync(timeout = 3.minutes, a = SQLHelpers.concatMany(
         Some(
           sql"""
@@ -1318,6 +1336,10 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     oppija.sukunimi,
     oppija.etunimet
     """)).as[ValpasOppijaRow])
+    }
+
+    oppijanPoistoService.mapVapautetutOppijat(result, (r: ValpasOppijaRow) => r.kaikkiOppijaOidit) {
+      case (oppija, pvm) => oppija.asPoistettuOppija(pvm)
     }
   }
 

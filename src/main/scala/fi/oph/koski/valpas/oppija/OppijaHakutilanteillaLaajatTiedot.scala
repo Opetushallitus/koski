@@ -18,7 +18,7 @@ case class OppijaHakutilanteillaLaajatTiedot(
   kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
   oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
   onOikeusTehdäKuntailmoitus: Option[Boolean],
-  lisätiedot: Seq[OpiskeluoikeusLisätiedot]
+  lisätiedot: Seq[OpiskeluoikeusLisätiedot],
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
