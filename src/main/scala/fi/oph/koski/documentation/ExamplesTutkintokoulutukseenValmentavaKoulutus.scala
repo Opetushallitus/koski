@@ -12,10 +12,6 @@ import java.time.LocalDate.{of => date}
 
 object ExamplesTutkintokoulutukseenValmentavaKoulutus {
 
-  val järjestämislupaAmmatillinen = "ammatillinen"
-  val järjestämislupaLukio = "lukio"
-  val järjestämislupaPerusopetus = "perusopetus"
-
   def tuvaSanallinenArviointi(
     arviointiPäivä: Option[LocalDate]
   ): Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]] = {

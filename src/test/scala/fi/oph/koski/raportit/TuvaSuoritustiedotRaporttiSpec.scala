@@ -46,17 +46,25 @@ class TuvaSuoritustiedotRaporttiSpec
 
     "Raportti näyttää oikealta" - {
       lazy val sheets = TuvaSuoritustiedotRaportti.buildRaportti(KoskiApplicationForTests.raportointiDatabase, stadinAmmattiopisto, date(2000, 1, 1), date(2022, 9, 30), t)
+      lazy val eiRivejäSheets = TuvaSuoritustiedotRaportti.buildRaportti(KoskiApplicationForTests.raportointiDatabase, stadinAmmattiopisto, date(1987, 1, 1), date(1988, 9, 30), t)
       lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
+
       "Taulukoiden tai sarakkeiden nimiä ei päädy duplikaattina raportille" in {
         verifyNoDuplicates(sheets.map(_.title))
         sheets.map(_.columnSettings.map(_.title)).foreach(verifyNoDuplicates)
       }
-      "Yksi taulukko per järjestämislupa" in {
-        sheets.foreach(s => println(s.title))
-        sheets.size shouldBe 3
+
+      "Yksi taulukko per datasta löytyvä järjestämislupa" in {
+        sheets.size shouldBe 2
         sheets.exists(_.title == "Ammatillisen järjestämislupa") shouldBe true
-        sheets.exists(_.title == "Lukion järjestämislupa") shouldBe true
         sheets.exists(_.title == "Perusopetuksen järjestämislupa") shouldBe true
+      }
+
+      "Yksi taulukko per oletusjärjestämislupa kun raportin hakuparametreilla ei löydy rivejä" in {
+        eiRivejäSheets.size shouldBe 3
+        eiRivejäSheets.exists(_.title == "Ammatillisen järjestämislupa") shouldBe true
+        eiRivejäSheets.exists(_.title == "Lukion järjestämislupa") shouldBe true
+        eiRivejäSheets.exists(_.title == "Perusopetuksen järjestämislupa") shouldBe true
       }
 
       "Sarakkeidein järjestys ammatillisen järjestysluvan taulukossa" in {
@@ -100,7 +108,7 @@ class TuvaSuoritustiedotRaporttiSpec
       }
 
       "Sarakkeidein järjestys lukion järjestysluvan taulukossa" in {
-        sheets.find(_.title == "Lukion järjestämislupa").get.columnSettings.map(_.title) should equal(Seq(
+        eiRivejäSheets.find(_.title == "Lukion järjestämislupa").get.columnSettings.map(_.title) should equal(Seq(
           "Opiskeluoikeuden oid",
           "Lähdejärjestelmä",
           "Koulutustoimija",
@@ -159,8 +167,8 @@ class TuvaSuoritustiedotRaporttiSpec
           "Koulukoti (pv)",
           "Kuljetusetu (pv)",
           "Ulkomaanjaksot (pv)",
-          "Vammaisten opetus (pv)",
-          "Vaikeasti vammaisten opetus (pv)",
+          "Muu kuin vaikeimmin kehitysvammainen (pv)",
+          "Vaikeimmin kehitysvammainen (pv)",
           "Pidennetty päättymispäivä"
         ))
       }
@@ -244,8 +252,8 @@ class TuvaSuoritustiedotRaporttiSpec
               "Koulukoti (pv)" -> Some(395),
               "Kuljetusetu (pv)" -> Some(395),
               "Ulkomaanjaksot (pv)" -> Some(0),
-              "Vammaisten opetus (pv)" -> Some(426),
-              "Vaikeasti vammaisten opetus (pv)" -> Some(0),
+              "Muu kuin vaikeimmin kehitysvammainen (pv)" -> Some(426),
+              "Vaikeimmin kehitysvammainen (pv)" -> Some(0),
               "Pidennetty päättymispäivä" -> Some(false)
             )
           ),

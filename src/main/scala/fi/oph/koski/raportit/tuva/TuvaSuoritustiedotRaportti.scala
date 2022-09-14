@@ -1,6 +1,5 @@
 package fi.oph.koski.raportit.tuva
 
-import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus.{järjestämislupaAmmatillinen, järjestämislupaLukio, järjestämislupaPerusopetus}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{Column, DynamicDataSheet}
@@ -54,9 +53,9 @@ case class TuvaSuoritustiedotRow(
   pidennettyPäättymispäivä: Option[Boolean]
 ){
   def kentät(järjestämislupa: String): Seq[Any] = järjestämislupa match {
-    case s: String if s == järjestämislupaAmmatillinen => ammatillisenKentät
-    case s: String if s == järjestämislupaLukio => lukioKentät
-    case s: String if s == järjestämislupaPerusopetus => perusopetusKentät
+    case s: String if s == TuvaSuoritustiedotRaportti.järjestämislupaAmmatillinen => ammatillisenKentät
+    case s: String if s == TuvaSuoritustiedotRaportti.järjestämislupaLukio => lukioKentät
+    case s: String if s == TuvaSuoritustiedotRaportti.järjestämislupaPerusopetus => perusopetusKentät
     case _ => yhteisetKentät
   }
 
@@ -119,6 +118,10 @@ case class TuvaSuoritustiedotRow(
 
 object TuvaSuoritustiedotRaportti {
 
+  val järjestämislupaAmmatillinen = "ammatillinen"
+  val järjestämislupaLukio = "lukio"
+  val järjestämislupaPerusopetus = "perusopetus"
+
   val defaultJärjestämisluvat = Seq(järjestämislupaAmmatillinen, järjestämislupaLukio, järjestämislupaPerusopetus)
 
   def buildRaportti(
@@ -133,7 +136,9 @@ object TuvaSuoritustiedotRaportti {
       .map(r => buildRow(alku, loppu, r, t))
       .groupBy(_.järjestämislupa)
 
-    rows.keys.toList.union(defaultJärjestämisluvat).distinct.map{ järjestämislupa =>
+    val järjestämisLuvatRaportilla = if(rows.nonEmpty) rows.keySet.toSeq else defaultJärjestämisluvat
+
+    järjestämisLuvatRaportilla.map{ järjestämislupa =>
       DynamicDataSheet(
         title = järjestämislupa match {
           case s: String if s == järjestämislupaAmmatillinen => t.get("raportti-excel-tuva-ammatillinen-sheet-name")
@@ -199,8 +204,8 @@ object TuvaSuoritustiedotRaportti {
       Column(t.get("raportti-excel-kolumni-koulukotiPäivät")),
       Column(t.get("raportti-excel-kolumni-kuljetusetuPäivät")),
       Column(t.get("raportti-excel-kolumni-ulkomaanjaksotPäivät")),
-      Column(t.get("raportti-excel-kolumni-vammainenPäivät")),
-      Column(t.get("raportti-excel-kolumni-vaikeastiVammainenPäivät")),
+      Column(t.get("raportti-excel-kolumni-muuKuinVaikeimminKehitysvammainenPäivät")),
+      Column(t.get("raportti-excel-kolumni-vaikeimminKehitysvammainen")),
       Column(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä"))
     )
 
