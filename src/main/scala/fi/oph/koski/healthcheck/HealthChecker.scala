@@ -104,7 +104,7 @@ trait HealthCheck extends Logging {
     }
   }
 
-  private def checkPeruste(diaarinumero: String) = get("ePerusteet", ePerusteet.findRakenne(diaarinumero), timeout = 15 seconds).flatMap {
+  private def checkPeruste(diaarinumero: String) = get("ePerusteet", ePerusteet.findTarkatRakenteet(diaarinumero, None).headOption, timeout = 15 seconds).flatMap {
     case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Tutkinnon rakennetta $diaarinumero ei löydy Perusteista"))
     case Some(rakenne) =>
       val rakenteet: List[ERakenneOsa] = rakenne.suoritustavat.toList.flatten.flatMap(_.rakenne)

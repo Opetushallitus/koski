@@ -6,6 +6,7 @@ import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
+import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
 
@@ -34,8 +35,9 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
     runIO(program).sortBy(_.koulutusvienti)
   }
 
-  def findRakenne(diaariNumero: String): Option[EPerusteTarkkaRakenne] = {
-    findPerusteenYksilöintitiedot(diaariNumero)
+  // TODO: Filtteröi päivällä
+  def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne] = {
+    findPerusteenYksilöintitiedot(diaariNumero, päivä)
       .map(e => rakenneCache(e.id.toString).getOrElse(throw new HttpStatusException(404, "Tutkinnon rakennetta ei löytynyt ePerusteista", "GET", s"/api/external/perusteet/${e.id}")))
   }
 
@@ -44,7 +46,8 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
     id => runIO(http.get(uri"/api/external/peruste/${id}")(Http.parseJsonOptional[EPerusteKokoRakenne]))
   )
 
-  def findRakenteet(diaarinumero: String): List[EPerusteRakenne] = {
+  // TODO: Filtteröi päivällä
+  def findRakenteet(diaarinumero: String, päivä: Option[LocalDate]): List[EPerusteRakenne] = {
     val program: IO[List[EPerusteOsaRakenne]] = for {
       (perusteetIlmanKoulutusvientiä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
       (perusteetKoulutusviennillä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&koulutusvienti=true&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
@@ -53,19 +56,29 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
     runIO(program).sortBy(_.koulutusvienti)
   }
 
-  def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne] = {
-    val rakenteet = findRakenteet(diaarinumero)
-    if (rakenteet.nonEmpty) {
-      Some(rakenteet.maxBy(_.luotu))
-    } else {
-      None
-    }
+  def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne] = {
+    val program: IO[List[EPerusteOsaRakenne]] = for {
+      (perusteetIlmanKoulutusvientiä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
+      (perusteetKoulutusviennillä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&koulutusvienti=true&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
+    } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data.map(_.copy(koulutusvienti = Some(true))))
+
+    runIO(program).sortBy(_.koulutusvienti)
   }
 
-  def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste] = yksilöintitiedotCache(diaariNumero)
+//  def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne] = {
+//    val rakenteet = findRakenteet(diaarinumero)
+//    if (rakenteet.nonEmpty) {
+//      Some(rakenteet.maxBy(_.luotu))
+//    } else {
+//      None
+//    }
+//  }
 
-  private val yksilöintitiedotCache = KeyValueCache[String, Option[EPerusteTunniste]](
+  // TODO: Filtteröi päivällä
+  def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste] = yksilöintitiedotCache(diaariNumero)
+
+  private val yksilöintitiedotCache = KeyValueCache[String, List[EPerusteTunniste]](
     ExpiringCache("EPerusteetRepository.yksilöintitiedot", 1.hour, 1000),
-    diaariNumero => findUusinRakenne(diaariNumero).map(_.toEPerusteTunniste)
+    diaariNumero => findKaikkiRakenteet(diaariNumero).map(_.toEPerusteTunniste)
   )
 }

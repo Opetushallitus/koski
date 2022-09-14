@@ -4,20 +4,22 @@ import com.typesafe.config.Config
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
+import java.time.LocalDate
+
 trait EPerusteetRepository {
   def findPerusteet(nimi: String): List[EPerusteRakenne]
 
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPerusteRakenne]
 
-  def findRakenne(diaariNumero: String): Option[EPerusteTarkkaRakenne]
+  def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne]
 
-  def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne]
+  def findRakenteet(diaarinumero: String, päivä: Option[LocalDate]): List[EPerusteRakenne]
 
-  def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste]
+  def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste]
 
   def findLinkToEperusteetWeb(diaariNumero: String, lang: String): Option[String] = {
     val linkLang = if (webLanguages.contains(lang)) lang else webLanguages.head
-    findPerusteenYksilöintitiedot(diaariNumero)
+    findPerusteenYksilöintitiedot(diaariNumero, None).headOption
       .map(peruste => {
         val betaEperusteKategoria = betaEperusteenTarvitsevatDiaarinumerot.find(
           _._2.contains(diaariNumero))

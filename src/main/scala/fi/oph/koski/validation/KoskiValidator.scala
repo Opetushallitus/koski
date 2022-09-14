@@ -102,7 +102,7 @@ class KoskiValidator(
             }
             .onSuccess {
               HttpStatus.fold(opiskeluoikeus.suoritukset.map(ePerusteetValidator.validateTutkintorakenne(_,
-                opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku))))
+                opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku), opiskeluoikeus.päättymispäivä)))
             })
             .onSuccess {
               HttpStatus.fold(

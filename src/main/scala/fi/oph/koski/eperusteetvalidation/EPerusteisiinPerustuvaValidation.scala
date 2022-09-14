@@ -24,7 +24,8 @@ class EPerusteetValidator(
   def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     koulutustyyppiTraversal.modify(oo) { koulutus =>
       val koulutustyyppi = koulutus match {
-        case np: NuortenPerusopetus => np.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_).map(_.koulutustyyppi))
+        // TODO: Välitä päivä opiskeluoikeudesta, ja käsittele monta löytynyttä
+        case np: NuortenPerusopetus => np.perusteenDiaarinumero.flatMap(diaarinumero => tutkintoRepository.findPerusteRakenteet(diaarinumero, None).headOption.map(_.koulutustyyppi))
         case _ =>
           val koulutustyyppiKoodisto = koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")
           val koulutusTyypit = koodistoViitePalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
@@ -41,18 +42,18 @@ class EPerusteetValidator(
       .field[Koulutusmoduuli]("koulutusmoduuli")
       .ifInstanceOf[Koulutus]
 
-  def validateTutkintorakenne(suoritus: PäätasonSuoritus, alkamispäivä: Option[LocalDate]): HttpStatus =
-    tutkintorakenneValidator.validate(suoritus, alkamispäivä)
+  def validateTutkintorakenne(suoritus: PäätasonSuoritus, alkamispäivä: Option[LocalDate], opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus =
+    tutkintorakenneValidator.validate(suoritus, alkamispäivä, opiskeluoikeudenPäättymispäivä)
 
   def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
     case a: AmmatillinenOpiskeluoikeus => a.withSuoritukset(
       a.suoritukset.map {
         case s: AmmatillisenTutkinnonSuoritus =>
-          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(perusteenNimi)))
+          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
         case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
-          s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(perusteenNimi)))
+          s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
         case s: AmmatillisenTutkinnonOsittainenSuoritus =>
-          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(perusteenNimi)))
+          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
         case o => o
       })
     case x => x
@@ -92,7 +93,8 @@ class EPerusteetValidator(
         }
     }
 
-    def koulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] = tutkintoRepository.findPerusteRakenne(diaarinumero).map(r => r.koulutustyyppi)
+    // TODO: tarkista, voiko koulutustyyppi muuttua. Jos voi, niin tässä pitää käsitellä ja palauttaa monta.
+    def koulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] = tutkintoRepository.findPerusteRakenteet(diaarinumero, None).headOption.map(r => r.koulutustyyppi)
 
     suoritus match {
       case s: AmmatillisenTutkinnonSuoritus => validateTutkinnonosaSuoritukset(s, s.osasuoritukset)
@@ -100,8 +102,10 @@ class EPerusteetValidator(
       case _ => HttpStatus.ok
     }
   }
-  private def perusteenNimi(diaariNumero: String): Option[LocalizedString] =
-    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero).map(_.nimi).flatMap(LocalizedString.sanitize)
+  private def perusteenNimi(diaariNumero: String, päivä: Option[LocalDate]): Option[LocalizedString] = {
+    // TODO: Käsittele monta perustetta oikein, luultavasti halutaan valita uusin, josta nimi otetaan
+    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero, päivä).headOption.map(_.nimi).flatMap(LocalizedString.sanitize)
+  }
 
   def validateAmmatillinenOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     opiskeluoikeus match {
@@ -132,7 +136,8 @@ class EPerusteetValidator(
     if (voimassaolotarkastusAstunutVoimaan) {
       opiskeluoikeus.suoritukset.head.koulutusmoduuli match {
         case diaarillinen: DiaarinumerollinenKoulutus if diaarillinen.perusteenDiaarinumero.isDefined =>
-          ePerusteet.findUusinRakenne(diaarillinen.perusteenDiaarinumero.get) match {
+          // TODO: Käsittele monta perustetta oikein, vertaa kaikkiin
+          ePerusteet.findRakenteet(diaarillinen.perusteenDiaarinumero.get, None).sortBy(_.luotu)(Ordering[Option[Long]].reverse).headOption match {
             case Some(peruste) =>
               if (peruste.siirtymäTaiVoimassaoloPäättynyt(opiskeluoikeus.alkamispäivä.getOrElse(LocalDate.now()))) {
                 KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
@@ -184,18 +189,20 @@ class EPerusteetValidator(
     if (vanhanTutkintokoodit.isEmpty || vanhanTutkintokoodit.exists(koodi => uudenTutkintokoodit.contains(koodi))) {
       true
     } else {
-      val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus)
-      val uudenTutkintokooditEperusteeettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus)
+      // TODO: Välitä päivä oikein opiskeluoikeudesta
+      val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, None)
+      val uudenTutkintokooditEperusteeettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, None)
 
       vanhanTutkintokooditEperusteettomat.count(koodi => uudenTutkintokooditEperusteeettomat.contains(koodi)) == vanhanTutkintokooditEperusteettomat.length
     }
   }
 
-  private def tutkintokooditPoislukienPerusteestaLöytymättömät(oo: AmmatillinenOpiskeluoikeus): List[String] = {
+  private def tutkintokooditPoislukienPerusteestaLöytymättömät(oo: AmmatillinenOpiskeluoikeus, päivä: Option[LocalDate]): List[String] = {
     oo.suoritukset.filter(suoritus =>
       suoritus.koulutusmoduuli match {
         case diaarillinen: DiaarinumerollinenKoulutus =>
-          diaarillinen.perusteenDiaarinumero.flatMap(diaari => ePerusteet.findRakenne(diaari)) match {
+          // TODO: Käsittele monta perustetta oikein, palauta kaikki kelvolliste tutkintokoodit
+          diaarillinen.perusteenDiaarinumero.flatMap(diaari => ePerusteet.findTarkatRakenteet(diaari, päivä).headOption) match {
             case Some(rakenne) =>
               rakenne.koulutukset.exists(_.koulutuskoodiArvo == diaarillinen.tunniste.koodiarvo)
             case _ => true
@@ -219,7 +226,7 @@ class EPerusteetValidator(
   }
 
   private def validateViestintäJaVuorovaikutusÄidinkielellä2022(
-    oo: AmmatillinenOpiskeluoikeus
+    oo: AmmatillinenOpiskeluoikeus,
   ): HttpStatus = {
     val rajapäivä = LocalDate.of(2022, 8, 1)
 
@@ -233,7 +240,8 @@ class EPerusteetValidator(
     def haePeruste(suoritus: AmmatillinenPäätasonSuoritus) =
       suoritus.koulutusmoduuli match {
         case diaarillinen: DiaarinumerollinenKoulutus =>
-          diaarillinen.perusteenDiaarinumero.flatMap(dNro => ePerusteet.findUusinRakenne(dNro))
+          // TODO: Käsittele monta paluuarvoa oikein
+          diaarillinen.perusteenDiaarinumero.flatMap(dNro => ePerusteet.findRakenteet(dNro, oo.päättymispäivä).headOption)
         case _ => None
       }
 

@@ -3,6 +3,8 @@ package fi.oph.koski.eperusteet
 import fi.oph.koski.json.{JsonFiles, JsonResources, JsonSerializer}
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
+import java.time.LocalDate
+
 object MockEPerusteetRepository extends EPerusteetRepository {
   lazy val rakenteet: List[EPerusteRakenne] = rakennenimet.map { id =>
     JsonSerializer.extract[EPerusteOsaRakenne](JsonResources.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
@@ -53,25 +55,24 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     kokoRakenteet.filter(r => koulutustyypit.map(k => s"${k.koodistoUri}_${k.koodiarvo}").contains(r.koulutustyyppi)).map(_.toEPeruste).sortBy(_.koulutusvienti)
   }
 
-  def findRakenne(diaariNumero: String): Option[EPerusteTarkkaRakenne] = {
+  // TODO: Filtteröi päivän mukaan, palauta monta vastausta
+  def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne] = {
     if (diaariNumero == "mock-empty-koulutukset") {
-      kokoRakenteet.find(_.diaarinumero == "39/011/2014").map(_.copy(koulutukset = Nil))
+      kokoRakenteet.find(_.diaarinumero == "39/011/2014").map(_.copy(koulutukset = Nil)).toList
     } else {
-      kokoRakenteet.find(_.diaarinumero == diaariNumero)
+      kokoRakenteet.find(_.diaarinumero == diaariNumero).toList
     }
   }
 
-  def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne] = {
+  // TODO: Filtteröi päivän mukaan
+  def findRakenteet(diaarinumero: String, päivä: Option[LocalDate]): List[EPerusteRakenne] = {
     val diaarinMukaan = rakenteet.filter(_.diaarinumero == diaarinumero)
-    if (diaarinMukaan.nonEmpty) {
-      Some(diaarinMukaan.maxBy(_.luotu))
-    } else {
-      None
-    }
+    diaarinMukaan
   }
 
-  def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste] = {
-    kokoRakenteet.find(_.diaarinumero == diaariNumero).map(_.toEPerusteTunniste)
+  // TODO: Filtteröi päivän mukaan
+  def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste] = {
+    kokoRakenteet.filter(_.diaarinumero == diaariNumero).map(_.toEPerusteTunniste)
   }
 
   override protected def webBaseUrl = "https://eperusteet.opintopolku.fi"
