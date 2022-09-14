@@ -50,6 +50,11 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
           raportit should contain(TuvaPerusopetuksenOppijaMääräRaportti.toString)
         }
       }
+      "sallii tuva perusopetuksen suoritustiedot-raportin ammatilliselle oppilaitokselle" in {
+        verifyMahdollisetRaportit(stadinAmmattiopisto) { raportit =>
+          raportit should contain(TuvaSuoritustietojenTarkistus.toString)
+        }
+      }
       "sallii suoritustietojen tarkistuksen osittaisista ammatillisista tutkinnoista ammatilliselle oppilaitokselle" in {
         verifyMahdollisetRaportit(stadinAmmattiopisto) { raportit =>
           raportit should contain(AmmatillinenOsittainenSuoritustietojenTarkistus.toString)
@@ -73,6 +78,11 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
       "sallii lukion raportin luki-opetusta järjestävälle oppilaitokselle" in {
         verifyMahdollisetRaportit(jyväskylänNormaalikoulu) { raportit =>
           raportit should contain(LukionSuoritustietojenTarkistus.toString)
+        }
+      }
+      "sallii IB-tutkinnon suoritustietojen raportin IB-tutkinnon suoritusta järjestävälle oppilaitokselle" in {
+        verifyMahdollisetRaportit(ressunLukio) { raportit =>
+          raportit should contain(IBSuoritustietojenTarkistus.toString)
         }
       }
     }

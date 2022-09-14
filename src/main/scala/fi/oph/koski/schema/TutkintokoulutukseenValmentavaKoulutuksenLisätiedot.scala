@@ -4,7 +4,12 @@ import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation.{OksaUri, SensitiveData, Tooltip}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, OnlyWhen, Title}
 
-trait TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
+trait TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
+  extends OpiskeluoikeudenLisätiedot
+    with MaksuttomuusTieto
+    with Ulkomaajaksollinen
+    with SisäoppilaitosmainenMajoitus
+    with PidennettyPäättymispäivä
 
 @Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden ammatillisen koulutuksen järjestämisluvan lisätiedot")
 @Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden ammatillisen koulutuksen järjestämisluvan lisätiedot")
@@ -58,8 +63,6 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
   @DefaultValue(Some(false))
   pidennettyPäättymispäivä: Option[Boolean] = Some(false),
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
-  with Ulkomaajaksollinen
-  with SisäoppilaitosmainenMajoitus
   with OsaAikaisuusjaksollinen
   with Majoituksellinen
   with VaikeastiVammainen
@@ -83,7 +86,6 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanL
   @Description("Onko opiskelija sisöoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
-  with SisäoppilaitosmainenMajoitus
 
 @Title("Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan lisätiedot")
 @Description("Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan lisätiedot")
@@ -127,7 +129,6 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLis
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
   with Majoitusetuinen
   with Kuljetusetuinen
-  with SisäoppilaitosmainenMajoitus
   with Vammainen
   with VaikeastiVammainen
   with ErityisenTuenPäätöksiäSisältäväLisätieto

@@ -80,6 +80,11 @@ const kaikkiRaportitKategorioittain = [
     heading: 'raporttikategoria-heading-tuva',
     raportit: [
       {
+        id: 'tuvasuoritustietojentarkistus',
+        name: 'raportti-tab-tuvasuoritustiedotraportti',
+        component: TuvaSuoritustiedotRaportti
+      },
+      {
         id: 'tuvaperusopetuksenoppijamääräraportti',
         name: 'raportti-tab-tuvaperusopetuksenoppijamäärätraportti',
         component: TuvaPerusopetuksenOppijamäärätRaportti
@@ -752,6 +757,23 @@ function PerusopetuksenOppijamäärätRaportti({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
+      example={exampleText}
+      lang={lang}
+    />
+  )
+}
+
+function TuvaSuoritustiedotRaportti({ stateP }) {
+  const titleText = <Text name='tuva-suoritustiedot-raportti-title' />
+  const shortDescriptionText = <Text name='tuva-suoritustiedot-raportti-short-description' />
+  const exampleText = <Paragraphs name='tuva-suoritustiedot-raportti-example' />
+
+  return (
+    <AikajaksoRaportti
+      stateP={stateP}
+      apiEndpoint={'/tuvasuoritustietojentarkistus'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
       example={exampleText}
       lang={lang}
     />
