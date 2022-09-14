@@ -11,6 +11,7 @@ import fi.oph.koski.raportit.lukio.LukioOppiaineenOppimaaranKurssikertymat.{Aiku
 import fi.oph.koski.raportit.lukio._
 import fi.oph.koski.raportit.lukio.lops2021._
 import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätAikajaksovirheetRaportti, PerusopetuksenOppijamäärätRaportti, PerusopetuksenRaportitRepository, PerusopetuksenVuosiluokkaRaportti}
+import fi.oph.koski.raportit.tuva.{TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti, TuvaPerusopetuksenOppijamäärätRaportti}
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 
@@ -42,6 +43,8 @@ class RaportitService(application: KoskiApplication) {
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val ibSuoritustiedotRepository = IBSuoritustiedotRaporttiRepository(raportointiDatabase.db)
   private val perusopetukseenValmistavanRepository = PerusopetukseenValmistavanRaportitRepository(raportointiDatabase.db)
+  private val tuvaPerusopetuksenOppijamäärätRaportti = TuvaPerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
+  private val tuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti = TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti(raportointiDatabase.db, application.organisaatioService)
 
   def viimeisinOpiskeluoikeuspäivitystenVastaanottoaika: LocalDateTime = {
     val status = raportointiDatabase.status
@@ -323,6 +326,20 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
+  def tuvaPerusopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "tuva")
+    OppilaitosRaporttiResponse(
+      sheets = Seq(
+        tuvaPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t),
+        tuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti.build(oppilaitosOids, request.paiva, t),
+        DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-tuva-perus-aikajaksovirheet-ohje-body"))
+      ),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-tuva-perusopetus-vos-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-tuva-perusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
   def perusopetuksenLisäopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid)
     OppilaitosRaporttiResponse(
@@ -352,7 +369,8 @@ class RaportitService(application: KoskiApplication) {
 
   def getRaportinOrganisatiotJaRaporttiTyypit(organisaatiot: Iterable[OrganisaatioHierarkia])(implicit user: KoskiSpecificSession) = {
     val koulutusmuodot = getKoulutusmuodot()
-    buildOrganisaatioJaRaporttiTyypit(organisaatiot, koulutusmuodot)
+    val result = buildOrganisaatioJaRaporttiTyypit(organisaatiot, koulutusmuodot)
+    result
   }
 
   def getKoulutusmuodot() = {

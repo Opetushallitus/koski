@@ -5,6 +5,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
+import fi.oph.koski.raportit.tuva.TuvaPerusopetuksenOppijamäärätRaportti
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
@@ -89,6 +90,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     case "aikuistenperusopetus" => Seq(AikuistenPerusopetusOppijaMäärienRaportti, AikuistenPerusopetusKurssikertymänRaportti)
     case "luva" => Seq(LuvaOpiskelijamaarat)
     case "perusopetukseenvalmistavaopetus" if !isKoulutustoimija => Seq(PerusopetukseenValmistavanOpetuksenTarkistus)
+    case "tuva" => Seq(TuvaPerusopetuksenOppijaMääräRaportti)
     case _ => Seq.empty[RaportinTyyppi]
   }
 
