@@ -3,6 +3,8 @@ on:
   push:
     branches-ignore:
       - "master"
+  workflow_dispatch:
+
 env:
   DOCKER_BUILDKIT: 1
   TZ: Europe/Helsinki
