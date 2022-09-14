@@ -1,3 +1,7 @@
+## 14.9.2022
+
+- Poistettu tutkintokoulutukseen valmentavan koulutuksen perusopetuksen järjestämisluvan lisätiedoista kenttä `pidennettyOppivelvollisuus`
+
 ## 22.8.2022
 
 - Korjattu bugi: tutkintokoulutukseen valmentavan koulutuksen tietomallissa opiskeluoikeuden tyyppi-kenttää ei ollut pakotettu arvoon "tuva"

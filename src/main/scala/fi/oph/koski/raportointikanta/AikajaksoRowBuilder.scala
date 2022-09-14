@@ -121,7 +121,6 @@ object AikajaksoRowBuilder {
       pidennettyOppivelvollisuus = lisätietoVoimassaPäivänä {
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
         case l: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
-        case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot => Some(l.pidennettyOppivelvollisuus.toList)
       },
       joustavaPerusopetus = lisätietoVoimassaPäivänä {
         case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l.joustavaPerusopetus.toList)
@@ -350,8 +349,7 @@ object AikajaksoRowBuilder {
           tpll.koulukoti
         ) ++ Seq(
           tpll.majoitusetu,
-          tpll.kuljetusetu,
-          tpll.pidennettyOppivelvollisuus
+          tpll.kuljetusetu
         ).flatten ++
           aikajaksotTuvaErityisenTuenPäätöksistä(tpll.erityisenTuenPäätökset) ++
           tpll.oikeuttaMaksuttomuuteenPidennetty.toList.flatten.map(j => Aikajakso(j.alku, Some(j.loppu)))

@@ -536,7 +536,8 @@ class KoskiValidator(
   private def validateOpiskeluoikeudenLisätiedot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(
       validateErityisenKoulutustehtävänJakso(opiskeluoikeus.lisätiedot),
-      validatePidennettyOppivelvollisuus(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä)
+      validatePidennettyOppivelvollisuus(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä),
+      validateTuvaPerusopetusErityinenTukiJaVammaisuusEiTuotannossa(opiskeluoikeus.lisätiedot)
     )
   }
 
@@ -759,10 +760,67 @@ class KoskiValidator(
     }
   }
 
+  private def validateTuvaPerusopetusErityinenTukiJaVammaisuusEiTuotannossa(
+    lisätiedot: Option[OpiskeluoikeudenLisätiedot]
+  ): HttpStatus =
+  {
+    // Käytetään tuotannossa toistaiseksi vanhoja validaatioita siihen asti, kunnes järjestelmätoimittajat ovat saaneet
+    // tarvittavat korjaukset tehtyä. Sen jälkeen tämän vanhan validaatiokoodin voi poistaa.
+    if (!Environment.isProdEnvironment(config)) {
+      validateTuvaPerusopetusErityinenTukiJaVammaisuus(lisätiedot)
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateTuvaPerusopetusErityinenTukiJaVammaisuus(
+    lisätiedot: Option[OpiskeluoikeudenLisätiedot]
+  ): HttpStatus = {
+    lisätiedot match {
+      case Some(lt: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot) =>
+        val kaikkiJaksot = lt.vammainen.getOrElse(List.empty) ++ lt.vaikeastiVammainen.getOrElse(List.empty)
+
+        val erityisenTuenJaksotYhdistettynä =
+          yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(lt.kaikkiErityisenTuenPäätöstenAikajaksot)
+
+        val vammaisuusJaksotYhdistettynä =
+          yhdistäPäällekäisetJaPeräkkäisetAikajaksot(kaikkiJaksot)
+
+        val erityinenTukiKaikkienVammaisuusjaksojenAjan =
+          vammaisuusJaksotYhdistettynä.forall(j => erityisenTuenJaksotYhdistettynä.exists(_.contains(j)))
+
+        val eiPäällekäisiäEriVammaisuustyypinJaksoja = {
+          !lt.vammainen.getOrElse(List.empty).exists(vj => lt.vaikeastiVammainen.getOrElse(List.empty).exists(_.overlaps(vj)))
+        }
+
+        HttpStatus.fold(
+          HttpStatus.validate(eiPäällekäisiäEriVammaisuustyypinJaksoja)(
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
+              "Vaikeasti vammaisuuden ja muun kuin vaikeasti vammaisuuden aikajaksot eivät voi olla voimassa samana päivänä"
+            )
+          ),
+          HttpStatus.validate(erityinenTukiKaikkienVammaisuusjaksojenAjan)(
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
+              "Vammaisuusjaksot sisältävät päiviä, joina ei ole voimassaolevaa erityisen tuen jaksoa"
+            )
+          ),
+        )
+      case _ => HttpStatus.ok
+    }
+  }
+
   // Yhdistää päällekkäiset aikajaksot sekä sellaiset jaksot, jotka alkavat seuraavana päivänä edellisen jakson päättymisestä
   // Palauttaa annetuista aikajaksoista yhdistetyt pisimmät mahdolliset yhtenäiset aikajaksot
-  def yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(
+  private def yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(
     kaikkiJaksot: List[MahdollisestiAlkupäivällinenJakso]
+  ): List[SuljettuJakso] = {
+    SuljettuJakso.yhdistäPäällekäisetJaPeräkkäiset(kaikkiJaksot.map(SuljettuJakso.apply))
+  }
+
+  // Yhdistää päällekkäiset aikajaksot sekä sellaiset jaksot, jotka alkavat seuraavana päivänä edellisen jakson päättymisestä
+  // Palauttaa annetuista aikajaksoista yhdistetyt pisimmät mahdolliset yhtenäiset aikajaksot
+  private def yhdistäPäällekäisetJaPeräkkäisetAikajaksot(
+    kaikkiJaksot: List[Aikajakso]
   ): List[SuljettuJakso] = {
     SuljettuJakso.yhdistäPäällekäisetJaPeräkkäiset(kaikkiJaksot.map(SuljettuJakso.apply))
   }
@@ -771,12 +829,19 @@ class KoskiValidator(
     alku: LocalDate,
     loppu: LocalDate
   ) extends Alkupäivällinen with DateContaining {
-    def contains(d: LocalDate): Boolean = !d.isBefore(alku) && (!d.isAfter(loppu))
+    def contains(d: LocalDate): Boolean = !(d.isBefore(alku) || d.isAfter(loppu))
+
+    def contains(j: SuljettuJakso): Boolean = contains(j.alku) && contains(j.loppu)
   }
 
   object SuljettuJakso {
     def apply(j: MahdollisestiAlkupäivällinenJakso): SuljettuJakso = SuljettuJakso(
       alku = j.alku.getOrElse(LocalDate.MIN),
+      loppu = j.loppu.getOrElse(LocalDate.MAX)
+    )
+
+    def apply(j: Aikajakso): SuljettuJakso = SuljettuJakso(
+      alku = j.alku,
       loppu = j.loppu.getOrElse(LocalDate.MAX)
     )
 

@@ -344,6 +344,123 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
       lisätiedot.pidennettyPäättymispäivä should equal(Some(false))
       lisätiedot.koulutusvienti should equal(Some(false))
     }
+
+    "Erityisen tuen ja vammaisuuden jaksot perusopetuksen järjestämisluvalla" - {
+      val alku = LocalDate.of(2021, 8, 5)
+
+      val opiskeluoikeus = tuvaOpiskeluOikeusEiValmistunut
+      val lisätiedot = opiskeluoikeus.lisätiedot.get.asInstanceOf[TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot].copy(
+        maksuttomuus = None
+      )
+
+      "Validointi onnistuu, kun opiskeluoikeus sisältää erityisen tuen päätöksen mutta ei vammaisuusjaksoja" in {
+        val oo = opiskeluoikeus.copy(
+          lisätiedot = Some(
+            lisätiedot.copy(
+              erityisenTuenPäätökset = Some(List(
+                TuvaErityisenTuenPäätös(
+                  alku = Some(alku),
+                  loppu = None
+                ),
+              )),
+              vammainen = None,
+              vaikeastiVammainen = None
+            )
+          )
+        )
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Validointi onnistu, kun vammaisuusjaksoja on lomittain ja ne kaikki osuvat johonkin lomittaiseen erityisen tuen päätökseen" in {
+        val jakso1 = Aikajakso(alku.plusDays(0), Some(alku.plusDays(4)))
+        val jakso2 = Aikajakso(alku.plusDays(3), Some(alku.plusDays(7)))
+        val jakso3 = Aikajakso(alku.plusDays(6), Some(alku.plusDays(10)))
+
+        val erityisenTuenPäätökset = List(jakso1, jakso2, jakso3).map(j => TuvaErityisenTuenPäätös.apply(Some(j.alku), j.loppu))
+
+        val jakso4 = Aikajakso(alku.plusDays(1), Some(alku.plusDays(5)))
+        val jakso5 = Aikajakso(alku.plusDays(9), Some(alku.plusDays(10)))
+
+        val vammainenJaksot = List(jakso4, jakso5)
+
+        val jakso6 = Aikajakso(alku.plusDays(6), Some(alku.plusDays(8)))
+        val jakso7 = Aikajakso(alku.plusDays(8), Some(alku.plusDays(8)))
+
+        val vaikeastiVammainenJaksot = List(jakso6, jakso7)
+
+        val oo = opiskeluoikeus.copy(
+          lisätiedot = Some(
+            lisätiedot.copy(
+              erityisenTuenPäätökset = Some(erityisenTuenPäätökset),
+              vammainen = Some(vammainenJaksot),
+              vaikeastiVammainen = Some(vaikeastiVammainenJaksot)
+            )
+          )
+        )
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Validointi ei onnistu, kun opiskeluoikeus sisältää osittain päällekäiset eri vammaisuuden jaksot" in {
+        val jakso1 = Aikajakso(alku, None)
+        val jakso2 = Aikajakso(alku.plusDays(5), Some(alku.plusDays(12)))
+
+        val oo = opiskeluoikeus.copy(
+          lisätiedot = Some(
+            lisätiedot.copy(
+              erityisenTuenPäätökset = Some(List(
+                TuvaErityisenTuenPäätös(
+                  alku = Some(alku),
+                  loppu = None
+                ),
+              )),
+              vammainen = Some(List(
+                jakso1
+              )),
+              vaikeastiVammainen = Some(List(
+                jakso2
+              ))
+            )
+          )
+        )
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(
+            expectedStatus = 400,
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden ja muun kuin vaikeasti vammaisuuden aikajaksot eivät voi olla voimassa samana päivänä")
+          )
+        }
+      }
+
+      "Validointi ei onnistu, kun vammaisuusjaksoja on osittain erityisen tuen päätösten ulkopuolella" in {
+        val jakso1 = Aikajakso(alku, None)
+        val jakso2 = Aikajakso(alku.plusDays(5), Some(alku.plusDays(12)))
+
+        val oo = opiskeluoikeus.copy(
+          lisätiedot = Some(
+            lisätiedot.copy(
+              erityisenTuenPäätökset = Some(List(
+                TuvaErityisenTuenPäätös(
+                  alku = Some(jakso2.alku),
+                  loppu = jakso2.loppu
+                ),
+              )),
+              vammainen = Some(List(
+                jakso1
+              ))
+            )
+          )
+        )
+        putOpiskeluoikeus(oo) {
+          verifyResponseStatus(
+            expectedStatus = 400,
+            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuusjaksot sisältävät päiviä, joina ei ole voimassaolevaa erityisen tuen jaksoa")
+          )
+        }
+      }
+    }
   }
 
   def putAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus, henkilö: Henkilö): TutkintokoulutukseenValmentavanOpiskeluoikeus = putOpiskeluoikeus(

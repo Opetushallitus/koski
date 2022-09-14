@@ -116,11 +116,6 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLis
   @Tooltip("Tieto siitä, jos oppija on koulukotikorotuksen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[Aikajakso]] = None,
-  @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta. Rahoituksen laskennassa käytettävä tieto.")
-  @Tooltip("Mahdollisen pidennetyn oppivelvollisuuden alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
-  pidennettyOppivelvollisuus: Option[Aikajakso] = None,
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
   @DefaultValue(Some(false))
   pidennettyPäättymispäivä: Option[Boolean] = Some(false),
@@ -130,10 +125,12 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLis
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityisenTuenPäätökset: Option[List[TuvaErityisenTuenPäätös]] = None
 ) extends TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot
-  with PidennettyOppivelvollisuus
   with Majoitusetuinen
   with Kuljetusetuinen
   with SisäoppilaitosmainenMajoitus
+  with Vammainen
+  with VaikeastiVammainen
+  with ErityisenTuenPäätöksiäSisältäväLisätieto
 {
   def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso] = {
     erityisenTuenPäätökset.getOrElse(List.empty)
