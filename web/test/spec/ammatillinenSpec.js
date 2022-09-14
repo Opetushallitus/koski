@@ -758,6 +758,19 @@ describe('Ammatillinen koulutus', function() {
               editor.edit,
               editor.property('keskiarvo').setValue(3.5),
               editor.property('keskiarvoSisältääMukautettujaArvosanoja').setValue(false),
+              opinnot.tutkinnonOsat(2).lisääTutkinnonOsa('Matemaattis-luonnontieteellinen osaaminen'),
+              opinnot.tutkinnonOsat(2).tutkinnonOsa(0).property('laajuus').setValue('35'),
+              opinnot.tutkinnonOsat(2).tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1),
+              opinnot.tutkinnonOsat(999999).lisääTutkinnonOsa('Ympäristöosaaminen'),
+              opinnot.tutkinnonOsat(999999).tutkinnonOsa(0).property('laajuus').setValue('35'),
+              opinnot.tutkinnonOsat(999999).tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1),
+              opinnot.tutkinnonOsat('1').tutkinnonOsa(1).poistaTutkinnonOsa,
+              opinnot.tutkinnonOsat('1').tutkinnonOsa(1).poistaTutkinnonOsa,
+              opinnot.tilaJaVahvistus.merkitseValmiiksi,
+              opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+              opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
+              opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('Rehtori'),
+              opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
               editor.saveChanges
             )
             it('toimii', function() {
