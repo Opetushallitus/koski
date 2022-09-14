@@ -264,9 +264,8 @@ class ValpasOppijaLaajatTiedotService(
   private def withOikeusTehdäKuntailmoitus(
     oppija: OppijaHakutilanteillaLaajatTiedot
   )(implicit session: ValpasSession): OppijaHakutilanteillaLaajatTiedot = {
-    val onOikeus = if (oppija.oppija.henkilö.onTallennettuKoskeen) {
-      application.valpasKuntailmoitusService.withOikeusTehdäKuntailmoitusOppijalle(oppija.oppija)
-        .fold(_ => false, _ => true)
+    val onOikeus = if (oppija.oppija.henkilö.onTallennettuKoskeen && !oppija.oppija.oppivelvollisuudestaVapautettu) {
+      application.valpasKuntailmoitusService.withOikeusTehdäKuntailmoitusOppijalle(oppija.oppija).isRight
     } else {
       false
     }

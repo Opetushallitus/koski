@@ -35,6 +35,7 @@ export type OppijanOppivelvollisuustiedotProps = {
   oppivelvollisuusVoimassaAsti: ISODate
   oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
   onOikeusTehdäKuntailmoitus?: boolean
+  oppivelvollisuudestaVapautettu: boolean
 }
 
 export const OppijanOppivelvollisuustiedot = (
@@ -60,19 +61,22 @@ export const OppijanOppivelvollisuustiedot = (
   return (
     <>
       <InfoTable>
-        <InfoTableRow
-          label={t("oppija__opiskelutilanne")}
-          value={t(
-            props.opiskelee
-              ? "oppija__opiskelutilanne__opiskelemassa"
-              : "oppija__opiskelutilanne__ei_opiskelupaikkaa"
-          )}
-        />
+        {!props.oppivelvollisuudestaVapautettu && (
+          <InfoTableRow
+            label={t("oppija__opiskelutilanne")}
+            value={t(
+              props.opiskelee
+                ? "oppija__opiskelutilanne__opiskelemassa"
+                : "oppija__opiskelutilanne__ei_opiskelupaikkaa"
+            )}
+          />
+        )}
         <InfoTableRow
           label={t("oppija__oppivelvollisuus_voimassa")}
           value={oppivelvollisuusValue(
             props.oppivelvollisuudenKeskeytykset,
             props.oppivelvollisuusVoimassaAsti,
+            props.oppivelvollisuudestaVapautettu,
             openKeskeytysModal
           )}
         />
@@ -84,37 +88,39 @@ export const OppijanOppivelvollisuustiedot = (
             ),
           })}
         />
-        <InfoTableRow
-          value={
-            <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
-              <RaisedButton
-                id="ovkeskeytys-btn"
-                data-testid="ovkeskeytys-btn"
-                hierarchy="secondary"
-                onClick={() => openKeskeytysModal()}
-              >
-                <T id="oppija__keskeytä_oppivelvollisuus" />
-              </RaisedButton>
+        {!props.oppivelvollisuudestaVapautettu && (
+          <InfoTableRow
+            value={
+              <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
+                <RaisedButton
+                  id="ovkeskeytys-btn"
+                  data-testid="ovkeskeytys-btn"
+                  hierarchy="secondary"
+                  onClick={() => openKeskeytysModal()}
+                >
+                  <T id="oppija__keskeytä_oppivelvollisuus" />
+                </RaisedButton>
 
-              {keskeytysModalVisible &&
-                (muokattavaKeskeytys ? (
-                  <OppivelvollisuudenKeskeytyksenMuokkausModal
-                    henkilö={props.henkilö}
-                    keskeytys={muokattavaKeskeytys}
-                    onClose={() => setKeskeytysModalVisible(false)}
-                    onSubmit={() => window.location.reload()}
-                    onDelete={() => window.location.reload()}
-                  />
-                ) : (
-                  <OppivelvollisuudenKeskeytyksenLisäysModal
-                    henkilö={props.henkilö}
-                    onClose={() => setKeskeytysModalVisible(false)}
-                    onSubmit={() => window.location.reload()}
-                  />
-                ))}
-            </VisibleForKäyttöoikeusrooli>
-          }
-        />
+                {keskeytysModalVisible &&
+                  (muokattavaKeskeytys ? (
+                    <OppivelvollisuudenKeskeytyksenMuokkausModal
+                      henkilö={props.henkilö}
+                      keskeytys={muokattavaKeskeytys}
+                      onClose={() => setKeskeytysModalVisible(false)}
+                      onSubmit={() => window.location.reload()}
+                      onDelete={() => window.location.reload()}
+                    />
+                  ) : (
+                    <OppivelvollisuudenKeskeytyksenLisäysModal
+                      henkilö={props.henkilö}
+                      onClose={() => setKeskeytysModalVisible(false)}
+                      onSubmit={() => window.location.reload()}
+                    />
+                  ))}
+              </VisibleForKäyttöoikeusrooli>
+            }
+          />
+        )}
         {props.onOikeusTehdäKuntailmoitus && (
           <InfoTableRow
             value={
@@ -173,8 +179,15 @@ export const OppijanOppivelvollisuustiedot = (
 const oppivelvollisuusValue = (
   oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[],
   oppivelvollisuusVoimassaAsti: ISODate,
+  oppivelvollisuudestaVapautettu: boolean,
   openKeskeytysModal: (keskeytys: OppivelvollisuudenKeskeytys) => void
 ): React.ReactNode => {
+  if (oppivelvollisuudestaVapautettu) {
+    return t("oppija__vapautettu_oppivelvollisuudesta", {
+      päivämäärä: oppivelvollisuusVoimassaAsti,
+    })
+  }
+
   const keskeytykset = oppivelvollisuudenKeskeytykset
     .filter((ovk) => ovk.voimassa || ovk.tulevaisuudessa)
     .map((ovk) => (

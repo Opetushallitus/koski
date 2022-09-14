@@ -40,6 +40,7 @@ export type OppijaLaajatTiedot = {
   oppivelvollisuusVoimassaAsti: ISODate
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: ISODate
   hakeutumisvalvovatOppilaitokset: Oid[]
+  oppivelvollisuudestaVapautettu: boolean
 }
 
 export type OppijaSuppeatTiedot = {

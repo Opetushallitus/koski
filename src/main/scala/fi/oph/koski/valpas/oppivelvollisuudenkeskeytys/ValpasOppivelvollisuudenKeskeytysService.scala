@@ -6,6 +6,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.UuidUtils
 import fi.oph.koski.valpas.db.ValpasSchema
 import fi.oph.koski.valpas.db.ValpasSchema.OppivelvollisuudenKeskeytyshistoriaRow
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppijaLaajatTiedot
 import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytyksenMuutos, UusiOppivelvollisuudenKeskeytys, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.oppija.{ValpasAccessResolver, ValpasErrorCategory}
@@ -27,9 +28,10 @@ class ValpasOppivelvollisuudenKeskeytysService(
     val haeMyösVainOppijanumerorekisterissäOleva = accessResolver.accessToAnyOrg(ValpasRooli.KUNTA)
 
     for {
-      saaTehdäIlmoituksen <- accessResolver.assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
-      oppija              <- oppijaLaajatTiedotService.getOppijaLaajatTiedot(keskeytys.oppijaOid, haeMyösVainOppijanumerorekisterissäOleva)
-      ovKeskeytys         <- ovKeskeytysRepositoryService.create(keskeytys)
+      saaTehdäIlmoituksen             <- accessResolver.assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
+      oppija                          <- oppijaLaajatTiedotService.getOppijaLaajatTiedot(keskeytys.oppijaOid, haeMyösVainOppijanumerorekisterissäOleva)
+      oppijaJonkaOvVoidaanKeskeyttää  <- validateKeskeytettäväOppija(oppija)
+      ovKeskeytys                     <- ovKeskeytysRepositoryService.create(keskeytys)
     } yield ovKeskeytys
   }
 
@@ -84,4 +86,11 @@ class ValpasOppivelvollisuudenKeskeytysService(
       .flatMap(o => oppijaLaajatTiedotService.getOppijaLaajatTiedot(o, haeMyösVainOppijanumerorekisterissäOleva)) // Tarkasta oikeus katsoa oppijan tietoja getOppijaLaajatTiedot avulla
       .map(_ => ovKeskeytyshistoria)
   }
+
+  private def validateKeskeytettäväOppija(oppija: ValpasOppijaLaajatTiedot): Either[HttpStatus, ValpasOppijaLaajatTiedot] =
+    if (oppija.oppivelvollisuudestaVapautettu) {
+      Left(ValpasErrorCategory.badRequest.validation.oppivelvollisuudenKeskeytyksenKohde("Oppivelvollisuuden keskeytystä ei voi kirjata henkilölle, joka on vapautettu oppivelvollisuudesta."))
+    } else {
+      Right(oppija)
+    }
 }

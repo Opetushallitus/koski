@@ -150,6 +150,8 @@
   "oppija__pohjatietojen_haku_epäonnistui": "Pohjatietojen haku epäonnistui. Yritä uudelleen myöhemmin.",
   "oppija__ei_oikeuksia_tehdä_ilmoitusta": "Sinulla ei ole oikeuksia tehdä kuntailmoitusta tästä oppijasta.",
   "oppija__muokkaa_oppivelvollisuuden_keskeytystä_btn": "Muokkaa",
+  "oppija__vapautettu_oppivelvollisuudesta": "Vapautettu oppivelvollisuudesta {{päivämäärä}}",
+  "oppija__vapautettu_oppivelvollisuudesta_info": "Asuinkunta on myöntänyt oppijalle vapautuksen oppivelvollisuudesta oppivelvollisuuslain 2 §:n mukaisesti, sillä oppijan maassa oleskelun perusteena on opiskelu ja hän on hakenut hakemuksella asuinkunnalta vapautuksen oppivelvollisuuden suorittamisesta.",
   "ovkeskeytys__otsikko": "Oppivelvollisuuden keskeytyksen lisäys",
   "ovkeskeytys__muokkaus_otsikko": "Oppivelvollisuuden keskeytyksen muokkaus",
   "ovkeskeytys__organisaatio": "Organisaatio",

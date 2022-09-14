@@ -36,7 +36,6 @@ trait ValpasOppijaLaajatTiedot extends ValpasOppija {
   def oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate
   def onOikeusValvoaMaksuttomuutta: Boolean
   def onOikeusValvoaKunnalla: Boolean
-  @SyntheticProperty
   def oppivelvollisuudestaVapautettu: Boolean
 
   def suorittaaOppivelvollisuutta: Boolean =
@@ -108,6 +107,7 @@ case class ValpasOppivelvollisuudestaVapautettuLaajatTiedot(
   def opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot] = List.empty
   def hakeutumisvalvovatOppilaitokset: Set[Oid] = Set.empty
   def suorittamisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid] = Set.empty
+  @SyntheticProperty
   def oppivelvollisuudestaVapautettu: Boolean = true
 }
 

@@ -10,7 +10,7 @@ import { isSuccess, mapError, mapLoading, mapSuccess } from "../../api/apiUtils"
 import { ButtonLabel } from "../../components/buttons/ButtonLabel"
 import { FlatLink } from "../../components/buttons/FlatButton"
 import { Page } from "../../components/containers/Page"
-import { BackIcon } from "../../components/icons/Icon"
+import { BackIcon, InfoIcon } from "../../components/icons/Icon"
 import { Spinner } from "../../components/icons/Spinner"
 import { Aikaleima } from "../../components/shared/Aikaleima"
 import { Heading } from "../../components/typography/headings"
@@ -55,6 +55,9 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
       {mapLoading(oppija, () => (
         <Spinner />
       ))}
+      {oppijaData?.oppija.oppivelvollisuudestaVapautettu && (
+        <OppivelvollisuudestaVapautettu />
+      )}
       {oppijaData && <Aikaleima />}
       {oppijaData && <OppijaGrid data={oppijaData} />}
     </Page>
@@ -145,3 +148,14 @@ const nimiWithOptionalHetu = (henkilö: HenkilöLaajatTiedot): string =>
   (henkilö.hetu ? ` (${henkilö.hetu})` : "")
 
 const SecondaryOppijaHeading = plainComponent("h2", b("secondaryheading"))
+
+const OppivelvollisuudestaVapautettu = () => (
+  <div className="aikaleima">
+    <div>
+      <InfoIcon />
+    </div>
+    <div>
+      <T id="oppija__vapautettu_oppivelvollisuudesta_info" />
+    </div>
+  </div>
+)
