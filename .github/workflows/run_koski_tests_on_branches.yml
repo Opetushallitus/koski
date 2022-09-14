@@ -273,6 +273,13 @@ jobs:
       - name: Run frontend tests
         run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner0"
 
+      - name: Archive test screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: web/target/screenshots/
+
   run_frontend_tests_1:
     name: Run Koski frontend tests runner 1
     runs-on: ubuntu-20.04
@@ -318,6 +325,13 @@ jobs:
 
       - name: Run frontend tests
         run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner1"
+
+      - name: Archive test screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: web/target/screenshots/
 
   run_frontend_tests_2:
     name: Run Koski frontend tests runner 2
@@ -365,6 +379,13 @@ jobs:
       - name: Run frontend tests
         run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner2"
 
+      - name: Archive test screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: web/target/screenshots/
+
   run_frontend_tests_3:
     name: Run Koski frontend tests runner 3
     runs-on: ubuntu-20.04
@@ -411,6 +432,13 @@ jobs:
       - name: Run frontend tests
         run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner3"
 
+      - name: Archive test screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: web/target/screenshots/
+
   run_frontend_tests_4:
     name: Run Koski frontend tests runner 4
     runs-on: ubuntu-20.04
@@ -456,6 +484,13 @@ jobs:
 
       - name: Run frontend tests
         run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner4"
+
+      - name: Archive test screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: web/target/screenshots/
 
   valpas_integration_tests_1:
     name: Valpas integration tests 1
