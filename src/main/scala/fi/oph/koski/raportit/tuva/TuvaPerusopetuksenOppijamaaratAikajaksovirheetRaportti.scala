@@ -25,7 +25,7 @@ case class TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti(db: DB, org
     val raporttiQuery = query(oppilaitosOids, date, t).as[TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 10.minutes)
     DataSheet(
-      title = t.get("raportti-excel-aikajaksovirheet-sheet-name"),
+      title = t.get("raportti-excel-tuva-perus-aikajaksovirheet-sheet-name"),
       rows = rows,
       columnSettings = columnSettings(t)
     )
