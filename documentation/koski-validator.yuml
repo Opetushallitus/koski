@@ -60,10 +60,10 @@
 |d1|->(7.13 Suostumuksen peruutuksen validointi)-|e|
 |d1|->(7.14 Lukio2015:n oppimäärän suorittamisen validointi)-|e|
 |d1|->(7.15 Ammatillisen opiskeluoikeuden validointi)-|e|
-(Ammatillisen opiskeluoikeuden validointi)->(Peruste voimassa)
-(Ammatillisen opiskeluoikeuden validointi)->(Opiskeluoikeuden päättyminen ennen siirtymäajan päättymistä)
-(Ammatillisen opiskeluoikeuden validointi)->(Usea päätason suoritus)
-(Ammatillisen opiskeluoikeuden validointi)->(Viestintä ja vuorovaikutus äidinkielellä 2022)
+(7.15 Ammatillisen opiskeluoikeuden validointi)->(Peruste voimassa)
+(7.15 Ammatillisen opiskeluoikeuden validointi)->(Opiskeluoikeuden päättyminen ennen siirtymäajan päättymistä)
+(7.15 Ammatillisen opiskeluoikeuden validointi)->(Usea päätason suoritus)
+(7.15 Ammatillisen opiskeluoikeuden validointi)->(Viestintä ja vuorovaikutus äidinkielellä 2022)
 |d1|->(7.16 VST:n kotoutumiskoulutuksen validointi)->(Alkamispäivän validointi)-|e|
 |d1|->(7.17 Vapaan sivistystyön päätason opintokokonaisuuden validointi)-|e|
 |e|-(8. Opiskeluoikeuksen muutosten validointi)->(Opiskeluoikeuden tyypin muutoksen validointi)-|f|
