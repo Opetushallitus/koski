@@ -96,6 +96,10 @@ trait Vankilaopetuksessa {
   def vankilaopetuksessa: Option[List[Aikajakso]]
 }
 
+trait PidennettyPäättymispäivä {
+  def pidennettyPäättymispäivä: Option[Boolean]
+}
+
 trait MaksuttomuusTieto extends OpiskeluoikeudenLisätiedot {
   import mojave._
   @Title("Koulutuksen maksuttomuus")

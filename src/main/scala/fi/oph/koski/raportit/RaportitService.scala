@@ -11,7 +11,7 @@ import fi.oph.koski.raportit.lukio.LukioOppiaineenOppimaaranKurssikertymat.{Aiku
 import fi.oph.koski.raportit.lukio._
 import fi.oph.koski.raportit.lukio.lops2021._
 import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätAikajaksovirheetRaportti, PerusopetuksenOppijamäärätRaportti, PerusopetuksenRaportitRepository, PerusopetuksenVuosiluokkaRaportti}
-import fi.oph.koski.raportit.tuva.{TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti, TuvaPerusopetuksenOppijamäärätRaportti}
+import fi.oph.koski.raportit.tuva.{TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti, TuvaPerusopetuksenOppijamäärätRaportti, TuvaSuoritustiedotRaportti}
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 
@@ -332,20 +332,6 @@ class RaportitService(application: KoskiApplication) {
       sheets = Seq(
         tuvaPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t),
         tuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti.build(oppilaitosOids, request.paiva, t),
-        DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-aikajaksovirheet-ohje-body"))
-      ),
-      workbookSettings = WorkbookSettings(t.get("raportti-excel-tuva-perusopetus-vos-title"), Some(request.password)),
-      filename = s"${t.get("raportti-excel-tuva-perusopetus-vos-tiedoston-etuliite")}-${request.paiva}.xlsx",
-      downloadToken = request.downloadToken
-    )
-  }
-
-  def tuvaPerusopetuksenOppijamäärät(request: RaporttiPäivältäRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
-    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "tuva")
-    OppilaitosRaporttiResponse(
-      sheets = Seq(
-        tuvaPerusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t),
-        tuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti.build(oppilaitosOids, request.paiva, t),
         DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-tuva-perus-aikajaksovirheet-ohje-body"))
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-tuva-perusopetus-vos-title"), Some(request.password)),
@@ -377,6 +363,17 @@ class RaportitService(application: KoskiApplication) {
         ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-ib-suoritustiedot-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-ib-suoritustiedot-tiedoston-etuliite")}_${IBSuoritustiedotRaporttiType.raporttiTypeLokalisoitu(request.raportinTyyppi, t)}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
+  def tuvaSuoritustiedot(request: AikajaksoRaporttiRequest, t: LocalizationReader)
+    (implicit u: KoskiSpecificSession): OppilaitosRaporttiResponse = {
+    OppilaitosRaporttiResponse(
+      sheets = TuvaSuoritustiedotRaportti
+        .buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu, t),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-tuva-suoritustiedot-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-tuva-suoritustiedot-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
     )
   }

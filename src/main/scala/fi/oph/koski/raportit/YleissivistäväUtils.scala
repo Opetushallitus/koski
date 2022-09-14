@@ -171,9 +171,12 @@ trait YleissivistäväRaporttiRows {
 }
 
 object YleissivistäväUtils {
-  def rahoitusmuodotOk(row: YleissivistäväRaporttiRows) = {
+
+  def rahoitusmuodotOk(row: YleissivistäväRaporttiRows): Boolean = rahoitusmuodotOk(row.aikajaksot)
+
+  def rahoitusmuodotOk(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Boolean = {
     val tarkistettavatTilat = Seq("lasna", "valmistunut")
-    row.aikajaksot
+    aikajaksot
       .filter(a => tarkistettavatTilat.contains(a.tila))
       .forall(_.opintojenRahoitus.nonEmpty)
   }
