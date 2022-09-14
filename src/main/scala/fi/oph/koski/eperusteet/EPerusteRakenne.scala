@@ -6,7 +6,10 @@ import java.time.{Instant, LocalDate, ZoneId, ZonedDateTime}
 
 case class EPerusteTunniste(
   id: Long,
-  nimi: Map[String, String]
+  nimi: Map[String, String],
+  voimassaoloAlkaa: Option[LocalDate],
+  voimassaoloLoppuu: Option[LocalDate],
+  siirtymaPaattyy: Option[LocalDate]
 )
 
 trait EPerusteRakenne {
@@ -23,7 +26,13 @@ trait EPerusteRakenne {
   def osaamisalat: List[EOsaamisala]
   def luotu: Option[Long]
 
-  def toEPerusteTunniste: EPerusteTunniste = EPerusteTunniste(id, nimi)
+  def toEPerusteTunniste: EPerusteTunniste = EPerusteTunniste(
+    id,
+    nimi,
+    voimassaoloAlkaaLocalDate,
+    voimassaoloLoppuuLocalDate,
+    siirtymäPäättyyLocalDate
+  )
 
   def siirtymäTaiVoimassaoloPäättynyt(vertailupäivämäärä: LocalDate): Boolean = if (siirtymaPaattyy.isDefined) {
     siirtymäPäättynyt(vertailupäivämäärä)
