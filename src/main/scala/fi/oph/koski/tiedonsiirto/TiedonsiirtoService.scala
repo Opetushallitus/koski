@@ -24,8 +24,6 @@ import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JValue, _}
 
-import scala.util.Random
-
 object TiedonsiirtoService {
   private val settings = Map(
     "analysis" -> Map(
@@ -534,24 +532,20 @@ case class TiedonsiirtoQuery(oppilaitos: Option[String],
 case class TiedonsiirtoKäyttäjä(oid: String, käyttäjätunnus: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: List[ErrorDetail])
 
-case class TiedonsiirtoDocument(
-  tallentajaKäyttäjäOid: String,
-  tallentajaKäyttäjätunnus: Option[String],
-  tallentajaOrganisaatioOid: String,
-  oppija: Option[TiedonsiirtoOppija],
-  oppilaitokset: Option[List[OidOrganisaatio]],
-  koulutusmuoto: Option[String],
-  suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]],
-  data: Option[JValue],
-  success: Boolean,
-  virheet: List[ErrorDetail],
-  lähdejärjestelmä: Option[String],
-  aikaleima: Timestamp,
-  requestId: String = Random.alphanumeric.take(6).mkString
-) {
+case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String,
+                                tallentajaKäyttäjätunnus: Option[String],
+                                tallentajaOrganisaatioOid: String,
+                                oppija: Option[TiedonsiirtoOppija],
+                                oppilaitokset: Option[List[OidOrganisaatio]],
+                                koulutusmuoto: Option[String],
+                                suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]],
+                                data: Option[JValue],
+                                success: Boolean,
+                                virheet: List[ErrorDetail],
+                                lähdejärjestelmä: Option[String],
+                                aikaleima: Timestamp) {
   def id: String = tallentajaOrganisaatioOid + "_" + oppijaId
-
-  private def oppijaId: String = oppija.flatMap(h => h.hetu.orElse(h.oid)).getOrElse(requestId)
+  private def oppijaId: String = oppija.flatMap(h => h.hetu.orElse(h.oid)).getOrElse("")
 }
 
 case class TiedonsiirtoSuoritusTiedot(

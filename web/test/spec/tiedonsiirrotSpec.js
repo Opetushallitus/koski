@@ -28,7 +28,6 @@ describe('Tiedonsiirrot', function() {
         ['280618-402H', 'Ammattilainen, Aarne', 'Aalto-yliopisto', '', 'virhe', 'tiedot'],
         ['24.2.1977', 'Hetuton, Heikki', 'Stadin ammatti- ja aikuisopisto', 'Autoalan perustutkinto', '', ''],
         ['270303-281N', 'Tiedonsiirto, Tiina', 'Stadin ammatti- ja aikuisopisto', 'Autoalan perustutkinto', '', ''],
-        ['', '', '', '', 'virhe', 'tiedot'],
         ['', '', '', '', 'virhe', 'tiedot']
       ].sort(sortByName))
     })
@@ -49,8 +48,7 @@ describe('Tiedonsiirrot', function() {
       expect(tiedonsiirrot.tiedot()).to.deep.equal([
         ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammatti- ja aikuisopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'Virheellinen muoto hetulla: epävalidiHetuvirhe', 'tiedot'],
         ['280618-402H', 'Ammattilainen, Aarne', 'Aalto-yliopisto', '', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot'],
-        ['', '', '', '', 'Viesti ei ole skeeman mukainen (notAnyOf henkilö)virhe', 'tiedot'],
-        [ '', '', '', '', 'Epäkelpo JSON-dokumenttivirhe', 'tiedot' ]
+        ['', '', '', '', 'Viesti ei ole skeeman mukainen (notAnyOf henkilö)virhe', 'tiedot']
       ])
     })
 
@@ -63,7 +61,7 @@ describe('Tiedonsiirrot', function() {
         })
       })
       describe('Kun valitaan rivi', function() {
-        before(tiedonsiirrot.setValintaViimeiseen(true))
+        before(tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_', true))
 
         it('Poista valitut nappi enabloituu', function() {
           expect(tiedonsiirrot.poistaNappiEnabloitu()).to.equal(true)
@@ -84,7 +82,7 @@ describe('Tiedonsiirrot', function() {
             })
 
             describe('Kun poistetaan viimeinen rivi', function() {
-              before(tiedonsiirrot.setValintaViimeiseen(false))
+              before(tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_', false))
 
               it('Poista valitut nappi on disabloitu', function() {
                 expect(tiedonsiirrot.poistaNappiEnabloitu()).to.equal(false)
@@ -95,7 +93,7 @@ describe('Tiedonsiirrot', function() {
       })
       describe('Kun poistetaan valittu rivi', function() {
         before(
-          tiedonsiirrot.setValintaViimeiseen(true),
+          tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_', true),
           // tiedonsiirrot.poista does page reload, so wait.forAjax is not enough
           wait.prepareForNavigation,
           tiedonsiirrot.poista,
@@ -105,8 +103,7 @@ describe('Tiedonsiirrot', function() {
         it('Se poistuu listauksesta', function() {
           expect(tiedonsiirrot.tiedot()).to.deep.equal([
             ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammatti- ja aikuisopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'Virheellinen muoto hetulla: epävalidiHetuvirhe', 'tiedot'],
-            ['280618-402H', 'Ammattilainen, Aarne', 'Aalto-yliopisto', '', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot'],
-            [ '', '', '', '', 'Viesti ei ole skeeman mukainen (notAnyOf henkilö)virhe', 'tiedot' ]
+            ['280618-402H', 'Ammattilainen, Aarne', 'Aalto-yliopisto', '', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot']
           ])
         })
         it('Poista valitut nappi on disabloitu', function () {

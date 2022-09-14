@@ -30,9 +30,6 @@ function TiedonsiirrotPage() {
     setValinta: function(id, selected) {
       return Page().setInputValue('#' + id.replace( /(\.)/g, '\\$1' ) + ' input', selected)
     },
-    setValintaViimeiseen: function(selected) {
-      return Page().setInputValue('.tiedonsiirrot tbody:last-child input', selected)
-    },
     openVirhesivu: seq(
       click('.virheet-link'),
       wait.untilVisible('#content .tiedonsiirto-virheet')
