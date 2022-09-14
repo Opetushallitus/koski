@@ -142,66 +142,66 @@ object TuvaSuoritustiedotRaportti {
           case _ => järjestämislupa
         },
         rows = rows.getOrElse(järjestämislupa, Seq.empty).map(_.kentät(järjestämislupa)),
-        columnSettings = columnSettings(järjestämislupa, t).map(_._2)
+        columnSettings = columnSettings(järjestämislupa, t)
       )
     }.sortBy(_.title)
   }
 
-  def columnSettings(järjestämislupa: String, t: LocalizationReader): Seq[(String, Column)] = {
+  def columnSettings(järjestämislupa: String, t: LocalizationReader): Seq[Column] = {
     val yhteisetSarakkeet = Seq(
-      "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
-      "lähdejärjestelmä" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmä")),
-      "koulutustoimijaNimi" -> Column(t.get("raportti-excel-kolumni-koulutustoimijaNimi")),
-      "oppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
-      "toimipisteNimi"-> Column(t.get("raportti-excel-kolumni-toimipisteNimi")),
-      "lähdejärjestelmänId" -> Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
-      "aikaleima"-> Column(t.get("raportti-excel-kolumni-päivitetty"), comment = Some(t.get("raportti-excel-kolumni-päivitetty-comment"))),
-      "yksiloity" -> Column(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
-      "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
-      "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
-      "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
-      "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
-      "opiskeluoikeudenAlkamispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
-      "opiskeluoikeudenViimeisinTila" -> Column(t.get("raportti-excel-kolumni-viimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-viimeisinTila-comment"))),
-      "opiskeluoikeudenTilatAikajaksonAikana" -> Column(t.get("raportti-excel-kolumni-kaikkiTilat"), comment = Some(t.get("raportti-excel-kolumni-kaikkiTilat-comment"))),
-      "päätasonSuoritukset" -> Column(t.get("raportti-excel-kolumni-koulutusmoduuliNimet")),
-      "opiskeluoikeudenPäättymispäivä" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
-      "rahoitukset" -> Column(t.get("raportti-excel-kolumni-rahoitukset"), comment = Some(t.get("raportti-excel-kolumni-rahoitukset-comment"))),
-      "rahoitusmuodotOk" -> Column(t.get("raportti-excel-kolumni-rahoitusmuodot"), comment = Some(t.get("raportti-excel-kolumni-rahoitusmuodot-comment"))),
-      "järjestämislupaNimi" -> Column(t.get("raportti-excel-kolumni-järjestämislupa")),
-      "maksuttomuus" -> Column(t.get("raportti-excel-kolumni-maksuttomuus"), comment = Some(t.get("raportti-excel-kolumni-maksuttomuus-comment"))),
-      "oikeuttaMaksuttomuuteenPidennetty" -> Column(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty"), comment = Some(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty-comment")))
+      Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
+      Column(t.get("raportti-excel-kolumni-lähdejärjestelmä")),
+      Column(t.get("raportti-excel-kolumni-koulutustoimijaNimi")),
+      Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+      Column(t.get("raportti-excel-kolumni-toimipisteNimi")),
+      Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
+      Column(t.get("raportti-excel-kolumni-päivitetty"), comment = Some(t.get("raportti-excel-kolumni-päivitetty-comment"))),
+      Column(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
+      Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      Column(t.get("raportti-excel-kolumni-hetu")),
+      Column(t.get("raportti-excel-kolumni-sukunimi")),
+      Column(t.get("raportti-excel-kolumni-etunimet")),
+      Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
+      Column(t.get("raportti-excel-kolumni-viimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-viimeisinTila-comment"))),
+      Column(t.get("raportti-excel-kolumni-kaikkiTilat"), comment = Some(t.get("raportti-excel-kolumni-kaikkiTilat-comment"))),
+      Column(t.get("raportti-excel-kolumni-koulutusmoduuliNimet")),
+      Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
+      Column(t.get("raportti-excel-kolumni-rahoitukset"), comment = Some(t.get("raportti-excel-kolumni-rahoitukset-comment"))),
+      Column(t.get("raportti-excel-kolumni-rahoitusmuodot"), comment = Some(t.get("raportti-excel-kolumni-rahoitusmuodot-comment"))),
+      Column(t.get("raportti-excel-kolumni-järjestämislupa")),
+      Column(t.get("raportti-excel-kolumni-maksuttomuus"), comment = Some(t.get("raportti-excel-kolumni-maksuttomuus-comment"))),
+      Column(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty"), comment = Some(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty-comment")))
     )
   lazy val ammatillisenSarakkeet = Seq(
-      "majoitusPäivät" -> Column(t.get("raportti-excel-kolumni-majoitusPäivät")),
-      "sisäoppilaitosmainenMajoitusPäivät" -> Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitusPäivät"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
-      "vaativanErityisenTuenYhteydessäJärjestettäväMajoitusPäivät" -> Column(t.get("raportti-excel-kolumni-vaativanErityisenTuenYhteydessäJärjestettäväMajoitusPäivät")),
-      "erityinenTukiPäivät" -> Column(t.get("raportti-excel-kolumni-erityinenTukiPäivät")),
-      "vaativanErityisenTuenErityinenTehtäväPäivät" -> Column(t.get("raportti-excel-kolumni-vaativanErityisenTuenErityinenTehtäväPäivät")),
-      "ulkomaanjaksot" -> Column(t.get("raportti-excel-kolumni-ulkomaanjaksotPäivät")),
-      "vaikeastiVammainenPäivät" -> Column(t.get("raportti-excel-kolumni-vaikeastiVammainenPäivät")),
-      "vammainenJaAvustajaPäivät" -> Column(t.get("raportti-excel-kolumni-vammainenJaAvustajaPäivät")),
-      "osaAikaisuusProsentit" -> Column(t.get("raportti-excel-kolumni-osaAikaisuusProsentit")),
-      "osaAikaisuusKeskimäärin" -> Column(t.get("raportti-excel-kolumni-osaAikaisuusKeskimäärin")),
-      "vankilaopetuksessaPäivät" -> Column(t.get("raportti-excel-kolumni-vankilaopetuksessaPäivät")),
-      "koulutusvienti" -> Column(t.get("raportti-excel-kolumni-lisätiedotKoulutusvienti")),
-      "pidennettyPäättymispäivä" -> Column(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä")),
+      Column(t.get("raportti-excel-kolumni-majoitusPäivät")),
+      Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitusPäivät"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
+      Column(t.get("raportti-excel-kolumni-vaativanErityisenTuenYhteydessäJärjestettäväMajoitusPäivät")),
+      Column(t.get("raportti-excel-kolumni-erityinenTukiPäivät")),
+      Column(t.get("raportti-excel-kolumni-vaativanErityisenTuenErityinenTehtäväPäivät")),
+      Column(t.get("raportti-excel-kolumni-ulkomaanjaksotPäivät")),
+      Column(t.get("raportti-excel-kolumni-vaikeastiVammainenPäivät")),
+      Column(t.get("raportti-excel-kolumni-vammainenJaAvustajaPäivät")),
+      Column(t.get("raportti-excel-kolumni-osaAikaisuusProsentit")),
+      Column(t.get("raportti-excel-kolumni-osaAikaisuusKeskimäärin")),
+      Column(t.get("raportti-excel-kolumni-vankilaopetuksessaPäivät")),
+      Column(t.get("raportti-excel-kolumni-lisätiedotKoulutusvienti")),
+      Column(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä")),
     )
   lazy val lukionSarakkeet = Seq(
-      "sisäoppilaitosmainenMajoitusPäivät" -> Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitusPäivät"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
-      "ulkomaanjaksot" -> Column(t.get("raportti-excel-kolumni-ulkomaanjaksotPäivät")),
-      "pidennettyPäättymispäivä" -> Column(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä")),
+      Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitusPäivät"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
+      Column(t.get("raportti-excel-kolumni-ulkomaanjaksotPäivät")),
+      Column(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä")),
     )
   lazy val perusopetuksenSarakkeet = Seq(
-      "majoitusetuPäivät"-> Column(t.get("raportti-excel-kolumni-majoitusetuPäivät"), comment = Some(t.get("raportti-excel-kolumni-majoitusetu-count-comment"))),
-      "sisäoppilaitosmainenMajoitusPäivät" -> Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitusPäivät"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
-      "erityisenTuenPäätöksetPäivät" -> Column(t.get("raportti-excel-kolumni-erityisenTuenPäätöksetPäivät")),
-      "koulukotiPäivät" -> Column(t.get("raportti-excel-kolumni-koulukotiPäivät")),
-      "kuljetusetuPäivät" -> Column(t.get("raportti-excel-kolumni-kuljetusetuPäivät")),
-      "ulkomaanjaksot" -> Column(t.get("raportti-excel-kolumni-ulkomaanjaksotPäivät")),
-      "vammainenPäivät" -> Column(t.get("raportti-excel-kolumni-vammainenPäivät")),
-      "vaikeastiVammainenPäivät" -> Column(t.get("raportti-excel-kolumni-vaikeastiVammainenPäivät")),
-      "pidennettyPäättymispäivä" -> Column(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä"))
+      Column(t.get("raportti-excel-kolumni-majoitusetuPäivät"), comment = Some(t.get("raportti-excel-kolumni-majoitusetu-count-comment"))),
+      Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitusPäivät"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
+      Column(t.get("raportti-excel-kolumni-erityisenTuenPäätöksetPäivät")),
+      Column(t.get("raportti-excel-kolumni-koulukotiPäivät")),
+      Column(t.get("raportti-excel-kolumni-kuljetusetuPäivät")),
+      Column(t.get("raportti-excel-kolumni-ulkomaanjaksotPäivät")),
+      Column(t.get("raportti-excel-kolumni-vammainenPäivät")),
+      Column(t.get("raportti-excel-kolumni-vaikeastiVammainenPäivät")),
+      Column(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä"))
     )
 
     järjestämislupa match {

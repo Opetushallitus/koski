@@ -90,6 +90,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     case "aikuistenperusopetus" => Seq(AikuistenPerusopetusOppijaMäärienRaportti, AikuistenPerusopetusKurssikertymänRaportti)
     case "luva" => Seq(LuvaOpiskelijamaarat)
     case "perusopetukseenvalmistavaopetus" if !isKoulutustoimija => Seq(PerusopetukseenValmistavanOpetuksenTarkistus)
+    case "tuva" if !isKoulutustoimija => Seq(TuvaSuoritustietojenTarkistus, TuvaPerusopetuksenOppijaMääräRaportti)
     case "tuva" => Seq(TuvaPerusopetuksenOppijaMääräRaportti)
     case _ => Seq.empty[RaportinTyyppi]
   }
