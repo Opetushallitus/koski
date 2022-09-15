@@ -828,6 +828,26 @@ describe('Ammatillinen koulutus', function() {
           })
           after(editor.cancelChanges)
         })
+        describe('Validin keskiarvon lisäys osittaiselle tutkinnolle', function() {
+          before(
+            editor.edit,
+            editor.property('keskiarvo').setValue(3.5),
+            editor.property('keskiarvoSisältääMukautettujaArvosanoja').setValue(false),
+            opinnot.tilaJaVahvistus.merkitseValmiiksi,
+            opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+            opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
+            opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('Rehtori'),
+            opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
+            editor.saveChanges
+          )
+          it('toimii', function () {
+            expect(page.isSavedLabelShown()).to.equal(true)
+          })
+          it('keskiarvo näytetään kahden desimaalin tarkkuudella', function () {
+            expect(editor.property('keskiarvo').getValue()).to.equal('3,50')
+            expect(!editor.property('keskiarvoSisältääMukautettujaArvosanoja').isVisible())
+          })
+        })
       })
     })
 
