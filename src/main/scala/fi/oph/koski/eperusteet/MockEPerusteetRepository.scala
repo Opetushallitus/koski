@@ -39,6 +39,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-puuteollisuuden-perustutkinto",
     "rakenne-virheellinen-puuteollisuuden-perustutkinto",
     "rakenne-valma",
+    "rakenne-valma-ei-voimassa",
     "rakenne-sosiaali-ja-terveysala",
     "rakenne-vst-oppivelvollisille-suunnattu",
     "rakenne-vst-maahanmuuttajien-kotoutumiskoulutus",

@@ -135,9 +135,9 @@ class EPerusteetValidator(
 
     if (voimassaolotarkastusAstunutVoimaan) {
       // TODO: Onko oikein, että tässä on vaan suoritukset.head? Jos voi olla monta suoritusta...
-      // TODO: Tarkista, että jos on VALMA, niin hyväksytään valmistuminen rajapäivään X asti perusteen voimassaolon jo loputtua
       (opiskeluoikeus.suoritukset.head.koulutusmoduuli, opiskeluoikeus.päättymispäivä) match {
-        case (diaarillinen: DiaarinumerollinenKoulutus, Some(päättymispäivä)) if diaarillinen.perusteenDiaarinumero.isDefined =>
+        // TODO: Siistimpi tapa käsitellä VALMAn poikkeus tässä: Sama päivämäärä on nyt kahdessa VALMA-validaatiossa duplikaattina.
+        case (diaarillinen: DiaarinumerollinenKoulutus, Some(päättymispäivä)) if diaarillinen.perusteenDiaarinumero.isDefined && (!opiskeluoikeus.suoritukset.head.isInstanceOf[ValmaKoulutuksenSuoritus] || päättymispäivä.isAfter(LocalDate.of(2022, 10, 1))) =>
           val kaikkiPerusteet = ePerusteet.findKaikkiRakenteet(diaarillinen.perusteenDiaarinumero.get)
           lazy val voimassaolleetPerusteet = ePerusteet.findRakenteet(diaarillinen.perusteenDiaarinumero.get, Some(päättymispäivä))
 
