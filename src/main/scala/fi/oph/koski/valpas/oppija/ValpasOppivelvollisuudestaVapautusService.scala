@@ -4,9 +4,12 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.{DB, QueryMethods}
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.Henkilö
+import fi.oph.koski.organisaatio.OrganisaatioService
+import fi.oph.koski.schema.{Henkilö, OrganisaatioWithOid}
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.valpas.kuntailmoitus.ValpasKunnat
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import slick.jdbc.GetResult
 
@@ -14,63 +17,111 @@ import java.time.LocalDate
 
 class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) extends Logging {
   val db = new ValpasOppivelvollisuudestaVapautusRepository(application.valpasDatabase.db)
+  private val organisaatioService = application.organisaatioService
+  private val accessResolver = new ValpasAccessResolver
 
   def mapVapautetutOppijat[T](oppijat: Seq[T], toOids: T => Seq[String])(map: (T, OppivelvollisuudestaVapautus) => T): Seq[T] = {
     val oppijaOids = oppijat.flatMap(toOids)
     val vapautukset = db.getOppivelvollisuudestaVapautetutOppijat(oppijaOids)
+    val aktiivisetKunnat = organisaatioService.aktiivisetKunnat()
     oppijat.map { oppija =>
-      vapautukset.find(v => toOids(oppija).contains(v.oppijaOid)) match {
-        case Some(vapautus) => map(oppija, vapautus)
-        case None => oppija
-      }
+      vapautukset
+        .map(OppivelvollisuudestaVapautus.apply(aktiivisetKunnat))
+        .find(v => toOids(oppija).contains(v.oppijaOid)) match {
+          case Some(vapautus) => map(oppija, vapautus)
+          case None => oppija
+        }
     }
   }
 
-  def lisääOppivelvollisuudestaVapautus(oppijaOid: Oid, vapautettu: LocalDate)(implicit session: ValpasSession): Unit =
-    db.lisääOppivelvollisuudestaVapautus(oppijaOid, session.oid, vapautettu)
+  def lisääOppivelvollisuudestaVapautus(oppijaOid: Oid, vapautettu: LocalDate, kotipaikkaKoodiarvo: String)(implicit session: ValpasSession): Either[HttpStatus, Unit] =
+    withAccessCheckToKunta(kotipaikkaKoodiarvo) { () =>
+      db.lisääOppivelvollisuudestaVapautus(oppijaOid, session.oid, vapautettu, kotipaikkaKoodiarvo)
+    }
 
-  def mitätöiOppivelvollisuudestaVapautus(oppijaOid: Oid)(implicit session: ValpasSession): Boolean =
-    db.mitätöiOppivelvollisuudestaVapautus(oppijaOid, session.oid)
+  def mitätöiOppivelvollisuudestaVapautus(oppijaOid: Oid, kotipaikkaKoodiarvo: String)(implicit session: ValpasSession): Either[HttpStatus, Unit] =
+    withAccessCheckToKunta(kotipaikkaKoodiarvo) { () =>
+      if (db.mitätöiOppivelvollisuudestaVapautus(oppijaOid, session.oid, kotipaikkaKoodiarvo)) {
+        Right(Unit)
+      } else {
+        Left(ValpasErrorCategory.notFound.vapautustaEiLöydy())
+      }
+    }
+
+  def pohjatiedot(implicit session: ValpasSession): OppivelvollisuudestaVapautuksenPohjatiedot = OppivelvollisuudestaVapautuksenPohjatiedot(
+    aikaisinPvm = LocalDate.of(2022, 8, 1),
+    kunnat = ValpasKunnat.getUserKunnat(organisaatioService)
+  )
+
+  private def withAccessCheckToKunta[T](kotipaikkaKoodiarvo: String)(fn: () => T)(implicit session: ValpasSession): Either[HttpStatus, T] =
+    if (accessResolver.accessToKuntaOrg(kotipaikkaKoodiarvo)) {
+      Right(fn())
+    } else {
+      Left(ValpasErrorCategory.forbidden.organisaatio())
+    }
 }
 
 class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMethods with Logging {
-  def getOppivelvollisuudestaVapautetutOppijat(oppijaOids: Seq[String]): Seq[OppivelvollisuudestaVapautus] =
+  def getOppivelvollisuudestaVapautetutOppijat(oppijaOids: Seq[String]): Seq[RawOppivelvollisuudestaVapautus] =
     runDbSync(sql"""
-      SELECT oppija_oid, vapautettu
+      SELECT oppija_oid, vapautettu, kunta_koodiarvo
         FROM oppivelvollisuudesta_vapautetut
         WHERE oppija_oid = any($oppijaOids)
           AND mitatoity IS NULL;
-    """.as[OppivelvollisuudestaVapautus])
+    """.as[RawOppivelvollisuudestaVapautus])
 
-  def lisääOppivelvollisuudestaVapautus(oppijaOid: Oid, virkailijaOid: Oid, vapautettu: LocalDate): Unit = {
+  def lisääOppivelvollisuudestaVapautus(oppijaOid: Oid, virkailijaOid: Oid, vapautettu: LocalDate, kotipaikkaKoodiarvo: String): Unit = {
     runDbSync(sql"""
       INSERT INTO oppivelvollisuudesta_vapautetut
-        (oppija_oid, virkailija_oid, vapautettu)
-        VALUES ($oppijaOid, $virkailijaOid, $vapautettu)
+        (oppija_oid, virkailija_oid, vapautettu, kunta_koodiarvo)
+        VALUES ($oppijaOid, $virkailijaOid, $vapautettu, $kotipaikkaKoodiarvo)
     """.asUpdate)
   }
 
-  def mitätöiOppivelvollisuudestaVapautus(oppijaOid: Oid, virkailijaOid: Oid): Boolean =
+  def mitätöiOppivelvollisuudestaVapautus(oppijaOid: Oid, virkailijaOid: Oid, kotipaikkaKoodiarvo: String): Boolean =
     runDbSync(sql"""
       UPDATE oppivelvollisuudesta_vapautetut
         SET mitatoity = now()
         WHERE oppija_oid = $oppijaOid
           AND virkailija_oid = $virkailijaOid
+          AND kunta_koodiarvo = $kotipaikkaKoodiarvo
           AND mitatoity IS NULL
-    """.asUpdate) > 0 // TODO: Heitä mielummin poikkeus, jos mätsäävää riviä ei löytynyt
+    """.asUpdate) > 0
 
   def deleteAll(): Unit =
     runDbSync(sql"""TRUNCATE oppivelvollisuudesta_vapautetut""".asUpdate)
 
-  private implicit def getOppivelvollisuudestaVapautus: GetResult[OppivelvollisuudestaVapautus] = GetResult(r =>
-    OppivelvollisuudestaVapautus(
+  private implicit def getOppivelvollisuudestaVapautus: GetResult[RawOppivelvollisuudestaVapautus] = GetResult(r =>
+    RawOppivelvollisuudestaVapautus(
       oppijaOid = r.rs.getString("oppija_oid"),
       vapautettu = r.rs.getDate("vapautettu").toLocalDate,
+      kunta = r.rs.getString("kunta_koodiarvo"),
     )
   )
 }
 
+case class RawOppivelvollisuudestaVapautus(
+  oppijaOid: Henkilö.Oid,
+  vapautettu: LocalDate,
+  kunta: String,
+)
+
 case class OppivelvollisuudestaVapautus(
   oppijaOid: Henkilö.Oid,
   vapautettu: LocalDate,
+  kunta: Option[OrganisaatioWithOid],
+)
+
+object OppivelvollisuudestaVapautus {
+  def apply(aktiivisetKunnat: Seq[OrganisaatioWithOid])(vapautus: RawOppivelvollisuudestaVapautus): OppivelvollisuudestaVapautus =
+    OppivelvollisuudestaVapautus(
+      oppijaOid = vapautus.oppijaOid,
+      vapautettu = vapautus.vapautettu,
+      kunta = aktiivisetKunnat.find(_.kotipaikka.exists(_.koodiarvo == vapautus.kunta)),
+    )
+}
+
+case class OppivelvollisuudestaVapautuksenPohjatiedot(
+  aikaisinPvm: LocalDate,
+  kunnat: Seq[OrganisaatioWithOid],
 )

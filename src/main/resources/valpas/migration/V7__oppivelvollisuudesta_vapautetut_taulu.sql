@@ -3,6 +3,7 @@
 CREATE TABLE oppivelvollisuudesta_vapautetut (
     oppija_oid text NOT NULL,
     virkailija_oid text NOT NULL,
+    kunta_koodiarvo text NOT NULL,
     vapautettu date NOT NULL,
     aikaleima timestamp without time zone NOT NULL DEFAULT now(),
     mitatoity timestamp without time zone

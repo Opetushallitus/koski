@@ -290,6 +290,6 @@ object ValpasExampleData {
   )
 
   lazy val oppivelvollisuudestaVapautetut = List(
-    (ValpasMockOppijat.oppivelvollisuudestaVapautettu, ValpasMockUsers.valpasHelsinki.oid, LocalDate.of(2022, 9, 13)),
+    (ValpasMockOppijat.oppivelvollisuudestaVapautettu, ValpasMockUsers.valpasHelsinki.oid, LocalDate.of(2022, 9, 13), "091"),
   )
 }

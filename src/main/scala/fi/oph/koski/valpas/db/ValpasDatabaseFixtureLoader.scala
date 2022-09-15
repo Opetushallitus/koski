@@ -48,6 +48,6 @@ class ValpasDatabaseFixtureLoader(app: KoskiApplication) extends Logging {
   def loadOppivelvollisuudenVapautukset(): Unit = {
     val fixtures = ValpasExampleData.oppivelvollisuudestaVapautetut
     logger.info(s"Inserting ${fixtures.length} oppivelvollisuuden vapautus fixtures")
-    fixtures.foreach { case (oppija, virkailija, pvm) => oppivelvollisuudenVapautusService.db.lisääOppivelvollisuudestaVapautus(oppija.oid, virkailija, pvm) }
+    fixtures.foreach { case (oppija, virkailija, pvm, kuntakoodi) => oppivelvollisuudenVapautusService.db.lisääOppivelvollisuudestaVapautus(oppija.oid, virkailija, pvm, kuntakoodi) }
   }
 }

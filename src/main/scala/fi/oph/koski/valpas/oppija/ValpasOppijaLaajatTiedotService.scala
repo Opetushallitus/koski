@@ -171,7 +171,7 @@ class ValpasOppijaLaajatTiedotService(
       ))
 
   def fetchHakuYhteystiedoilla(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
-    val hakukoosteet = if (oppija.oppivelvollisuudestaVapautettu) {
+    val hakukoosteet = if (oppija.oppivelvollisuudestaVapautettu.isDefined) {
       Right(Nil)
     } else {
       hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut = false, errorClue = s"oppija:${oppija.henkilö.oid}")
@@ -181,7 +181,7 @@ class ValpasOppijaLaajatTiedotService(
   }
 
   private def fetchVirallisetYhteystiedot(oppija: ValpasOppijaLaajatTiedot): Either[HttpStatus, Seq[Yhteystiedot]] = {
-    if (oppija.henkilö.turvakielto || oppija.oppivelvollisuudestaVapautettu) {
+    if (oppija.henkilö.turvakielto || oppija.oppivelvollisuudestaVapautettu.isDefined) {
       Right(Seq.empty)
     } else {
       timed("fetchVirallisetYhteystiedot", 10) {
@@ -264,7 +264,7 @@ class ValpasOppijaLaajatTiedotService(
   private def withOikeusTehdäKuntailmoitus(
     oppija: OppijaHakutilanteillaLaajatTiedot
   )(implicit session: ValpasSession): OppijaHakutilanteillaLaajatTiedot = {
-    val onOikeus = if (oppija.oppija.henkilö.onTallennettuKoskeen && !oppija.oppija.oppivelvollisuudestaVapautettu) {
+    val onOikeus = if (oppija.oppija.henkilö.onTallennettuKoskeen && oppija.oppija.oppivelvollisuudestaVapautettu.isEmpty) {
       application.valpasKuntailmoitusService.withOikeusTehdäKuntailmoitusOppijalle(oppija.oppija).isRight
     } else {
       false
