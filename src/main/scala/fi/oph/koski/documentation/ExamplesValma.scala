@@ -14,7 +14,7 @@ object ExamplesValma {
   val valmaKoulutuksenSuoritus = ValmaKoulutuksenSuoritus(
     vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto),
     toimipiste = stadinAmmattiopisto,
-    koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(65)), perusteenDiaarinumero = Some("5/011/2015")),
+    koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(65)), perusteenDiaarinumero = Some("OPH-2658-2017")),
     suorituskieli = suomenKieli,
     osasuoritukset = Some(List(
       valmaKoulutukseenOrientoitumine,
