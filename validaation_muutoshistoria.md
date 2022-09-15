@@ -1,17 +1,10 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## 15.9.2022
-- 19.8. testiopintopolussa jo käytetyt oppivelvollisuuden laajennuksen, vammaisuuden, vaikeasti vammaisuuden ja erityisen
-  tuen jaksojen validaatiomuutokset on otettu käyttöön. Poikkeuksena tutkintokoulutukseen valmentavan koulutuksen
-  perusopetuksen järjestämisluvalla järjestettävä opiskeluoikeus, josta on poistettu pidennetyn oppivelvollisuuden
-  tallennusmahdollisuus. Siinä validoidaan:
-  - ei sallita tiedon vaikeasti kehitysvammainen tai muu kuin vaikeasti kehitysvammainen siirtämistä, elleivät ne osu jollekin siirretylle erityisen tuen jaksolle
-  - ei sallita päällekkäisiä vaikeasti kehitysvammainen- ja muu kuin vaikeasti kehitysvammainen-jaksoja
-
 ## 13.9.2022
 
 - VALMA- ja perusopetuksen lisäopetuksen opiskeluoikeuksille ei sallita uusia tiloja, joiden alkupäivämäärä on 2.10.2022 tai sen jälkeen.
+
 
 ## 19.8.2022
 
