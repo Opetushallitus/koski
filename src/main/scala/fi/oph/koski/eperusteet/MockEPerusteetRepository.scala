@@ -32,7 +32,10 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-automekaanikon-erikoisammattitutkinto-uudempi",
     "rakenne-liiketalouden-perustutkinto-vanhempi",
     "rakenne-liiketalouden-perustutkinto-uudempi",
-    "rakenne-liiketalouden-perustutkinto-paattymistesti",
+    "rakenne-liiketalouden-perustutkinto-1000-011-2014_2016-08-01_2018-07-31_null",
+    "rakenne-liiketalouden-perustutkinto-2000-011-2014_2015-08-01_2017-07-31_null",
+    "rakenne-liiketalouden-perustutkinto-2000-011-2014_2016-08-01_2018-07-31_null",
+    "rakenne-liiketalouden-perustutkinto-3000-011-2014_2016-08-01_2018-07-31_2019-07-31",
     "rakenne-puuteollisuuden-perustutkinto",
     "rakenne-virheellinen-puuteollisuuden-perustutkinto",
     "rakenne-valma",
@@ -64,8 +67,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     }
   }
 
-  // TODO: Filtteröi päivän mukaan
-  def findRakenteet(diaarinumero: String, päivä: Option[LocalDate]): List[EPerusteRakenne] = {
+  def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne] = {
     val diaarinMukaan = rakenteet.filter(_.diaarinumero == diaarinumero)
     diaarinMukaan
   }

@@ -134,17 +134,19 @@ class EPerusteetValidator(
     val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
 
     if (voimassaolotarkastusAstunutVoimaan) {
-      opiskeluoikeus.suoritukset.head.koulutusmoduuli match {
-        case diaarillinen: DiaarinumerollinenKoulutus if diaarillinen.perusteenDiaarinumero.isDefined =>
-          // TODO: Käsittele monta perustetta oikein, vertaa kaikkiin
-          ePerusteet.findRakenteet(diaarillinen.perusteenDiaarinumero.get, None).sortBy(_.luotu)(Ordering[Option[Long]].reverse).headOption match {
-            case Some(peruste) =>
-              if (peruste.siirtymäTaiVoimassaoloPäättynyt(opiskeluoikeus.alkamispäivä.getOrElse(LocalDate.now()))) {
-                KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
-              } else {
-                HttpStatus.ok
-              }
-            case _ => HttpStatus.ok
+      // TODO: Onko oikein, että tässä on vaan suoritukset.head? Jos voi olla monta suoritusta...
+      // TODO: Tarkista, että jos on VALMA, niin hyväksytään valmistuminen rajapäivään X asti perusteen voimassaolon jo loputtua
+      (opiskeluoikeus.suoritukset.head.koulutusmoduuli, opiskeluoikeus.päättymispäivä) match {
+        case (diaarillinen: DiaarinumerollinenKoulutus, Some(päättymispäivä)) if diaarillinen.perusteenDiaarinumero.isDefined =>
+          val kaikkiPerusteet = ePerusteet.findKaikkiRakenteet(diaarillinen.perusteenDiaarinumero.get)
+          lazy val voimassaolleetPerusteet = ePerusteet.findRakenteet(diaarillinen.perusteenDiaarinumero.get, Some(päättymispäivä))
+
+          if (kaikkiPerusteet.isEmpty || voimassaolleetPerusteet.nonEmpty) {
+            // TODO: Miksi tässä on aiemmin hyväksytty tilanne, jossa perustetta ei löydy lainkaan? Ilmeisesti siksi, että diaari voi silti olla
+            // hyväksytty, koska on koodistossa, vaikkei perustetta löydy lainkaan?
+            HttpStatus.ok
+          } else {
+            KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
           }
         case _ => HttpStatus.ok
       }

@@ -13,7 +13,13 @@ trait EPerusteetRepository {
 
   def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne]
 
-  def findRakenteet(diaarinumero: String, päivä: Option[LocalDate]): List[EPerusteRakenne]
+  def findRakenteet(diaarinumero: String, päivä: Option[LocalDate]): List[EPerusteRakenne] = {
+    findKaikkiRakenteet(diaarinumero)
+      .filter(peruste => päivä.isEmpty || !peruste.siirtymäTaiVoimassaoloPäättynyt(päivä.get))
+      .sortBy(_.koulutusvienti)
+  }
+
+  def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne]
 
   def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste]
 

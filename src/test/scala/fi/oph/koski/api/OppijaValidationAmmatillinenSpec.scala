@@ -608,32 +608,91 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
       }
 
-      "Vanhentunut tutkinnon rakenne" - {
-        "Ei sallita siirtoa, jos eperusteissa rakenteen siirtymäaika on päättynyt kun validaatio on voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014")
+      "Tutkinnon rakenteen vanheneminen" - {
+        val validaatioVoimassaConfig = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
+
+        "Sallitaan siirto perusteen voimassaolon jälkeen alkaneelle, mutta keskeneräiselle opiskeluoikeudelle" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "1000/011/2014", alkamispäivä = LocalDate.of(2022, 1, 1))
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+          mockKoskiValidator(validaatioVoimassaConfig).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
         }
 
-        "Ei sallita siirtoa, jos eperusteissa rakenteen voimassaolo on päättynyt ja siirtymäaikaa ei ole määritelty kun validaatio on voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "1000/011/2014")
+        "Sallitaan siirto perusteen siirtymäajalla päättyneelle opiskeluoikeudelle" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2019, 7, 31)
+          )
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+
+          mockKoskiValidator(validaatioVoimassaConfig).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
+        }
+
+        "Ei sallita siirtoa perusteen siirtymäajan jälkeen päättyneelle opiskeluoikeudelle" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "3000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2019, 8, 1)
+          )
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+
+          mockKoskiValidator(validaatioVoimassaConfig).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+        }
+
+        "Sallitaan siirto perusteen voimassaoloaikana päättyneelle opiskeluoikeudelle, vaikka samalla diaarinumerolla löytyy luontipäivältään uudempi mutta päättynyt peruste" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "2000/011/2014",
+            alkamispäivä = LocalDate.of(2018, 1, 1),
+            päättymispäivä = LocalDate.of(2018, 7, 31)
+          )
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+
+         mockKoskiValidator(validaatioVoimassaConfig).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
+        }
+
+        "Ei sallita siirtoa perusteen voimassaolon jälkeen päättyneelle opiskeluoikeudelle" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101, diaariNumero = "1000/011/2014",
+            alkamispäivä = LocalDate.of(2017, 1, 1),
+            päättymispäivä = LocalDate.of(2018, 8, 1)
+          )
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+          mockKoskiValidator(validaatioVoimassaConfig).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+        }
+
+        "Sallitaan siirto perusteen voimassaolon jälkeen päättyneelle opiskeluoikeudelle, jos diaarinumero löytyy koodistosta" in {
+          // TODO, varmista asiantuntijoilta, halutaanko näin? Tämä voisi toimia hyvänä workaroundina, jos perusteisen voimassaolopäivissä on eperusteiden datoissa jotain häikkää.
         }
 
         "Sallitaan siirto, kun validaatio ei vielä voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "59/011/2014", versio = Some(11))
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101, diaariNumero = "1000/011/2014",
+            alkamispäivä = LocalDate.of(2017, 1, 1),
+            päättymispäivä = LocalDate.of(2018, 8, 1)
+          )
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
           val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().plusDays(1).toString))
-          mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
+           mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
         }
       }
     }

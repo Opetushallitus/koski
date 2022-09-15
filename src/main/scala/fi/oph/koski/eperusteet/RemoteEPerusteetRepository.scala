@@ -46,33 +46,14 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
     id => runIO(http.get(uri"/api/external/peruste/${id}")(Http.parseJsonOptional[EPerusteKokoRakenne]))
   )
 
-  // TODO: Filtteröi päivällä
-  def findRakenteet(diaarinumero: String, päivä: Option[LocalDate]): List[EPerusteRakenne] = {
-    val program: IO[List[EPerusteOsaRakenne]] = for {
-      (perusteetIlmanKoulutusvientiä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
-      (perusteetKoulutusviennillä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&koulutusvienti=true&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
-    } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data.map(_.copy(koulutusvienti = Some(true))))
-
-    runIO(program).sortBy(_.koulutusvienti)
-  }
-
   def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne] = {
     val program: IO[List[EPerusteOsaRakenne]] = for {
       (perusteetIlmanKoulutusvientiä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
       (perusteetKoulutusviennillä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&koulutusvienti=true&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data.map(_.copy(koulutusvienti = Some(true))))
 
-    runIO(program).sortBy(_.koulutusvienti)
+    runIO(program)
   }
-
-//  def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne] = {
-//    val rakenteet = findRakenteet(diaarinumero)
-//    if (rakenteet.nonEmpty) {
-//      Some(rakenteet.maxBy(_.luotu))
-//    } else {
-//      None
-//    }
-//  }
 
   // TODO: Filtteröi päivällä
   def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste] = yksilöintitiedotCache(diaariNumero)
