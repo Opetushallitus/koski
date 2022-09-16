@@ -130,7 +130,7 @@ object ConvertMigriSchema {
             case _ => None
           },
           ulkomaanjaksot = lisätiedot match {
-            case x: Ulkomaajaksollinen => x.ulkomaanjaksot.map(_.map(jakso => Aikajakso(jakso.alku, jakso.loppu)))
+            case x: Ulkomaanjaksollinen => x.ulkomaanjaksot.map(_.map(jakso => Aikajakso(jakso.alku, jakso.loppu)))
             case _ => None
           },
           koulutusvienti = lisätiedot match {
