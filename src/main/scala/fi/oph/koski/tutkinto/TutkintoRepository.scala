@@ -12,6 +12,8 @@ trait TutkintoRepository {
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste]
 
   def findPerusteRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[TutkintoRakenne]
+
+  def findUusinPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne]
 }
 
 object TutkintoRepository {
@@ -28,6 +30,13 @@ class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, koodistoPalvelu: 
 
   def findPerusteRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[TutkintoRakenne] = {
     eperusteet.findTarkatRakenteet(diaariNumero, päivä)
+      .map(rakenne => EPerusteetTutkintoRakenneConverter.convertRakenne(rakenne)(koodistoPalvelu))
+  }
+
+  def findUusinPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne] = {
+    eperusteet.findTarkatRakenteet(diaariNumero, None)
+      .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
+      .headOption
       .map(rakenne => EPerusteetTutkintoRakenneConverter.convertRakenne(rakenne)(koodistoPalvelu))
   }
 }

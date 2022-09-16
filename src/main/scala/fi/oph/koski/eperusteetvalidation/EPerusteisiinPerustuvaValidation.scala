@@ -24,8 +24,10 @@ class EPerusteetValidator(
   def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     koulutustyyppiTraversal.modify(oo) { koulutus =>
       val koulutustyyppi = koulutus match {
-        // TODO: Välitä päivä opiskeluoikeudesta, ja käsittele monta löytynyttä
-        case np: NuortenPerusopetus => np.perusteenDiaarinumero.flatMap(diaarinumero => tutkintoRepository.findPerusteRakenteet(diaarinumero, None).headOption.map(_.koulutustyyppi))
+        case np: NuortenPerusopetus =>
+          // Lue koulutustyyppi aina uusimmasta perusteesta, jos samalla diaarinumerolla sattuu olemaan monta. Käytännössä samalla diaarinumerolla
+          // julkaistussa perusteessa koulutustyyppi ei voi vaihtua.
+          np.perusteenDiaarinumero.flatMap(diaarinumero => tutkintoRepository.findUusinPerusteRakenne(diaarinumero).map(_.koulutustyyppi))
         case _ =>
           val koulutustyyppiKoodisto = koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")
           val koulutusTyypit = koodistoViitePalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
