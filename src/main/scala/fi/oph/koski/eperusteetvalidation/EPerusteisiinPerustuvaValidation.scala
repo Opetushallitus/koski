@@ -105,10 +105,12 @@ class EPerusteetValidator(
     }
   }
   private def perusteenNimi(diaariNumero: String, päivä: Option[LocalDate]): Option[LocalizedString] = {
-    // TODO: Käsittele monta perustetta oikein, luultavasti halutaan valita uusin, josta nimi otetaan
-    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero, päivä).headOption.map(_.nimi).flatMap(LocalizedString.sanitize)
+    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero, päivä)
+      .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
+      .headOption
+      .map(_.nimi)
+      .flatMap(LocalizedString.sanitize)
   }
-
   def validateAmmatillinenOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     opiskeluoikeus match {
       case ammatillinen: AmmatillinenOpiskeluoikeus =>
