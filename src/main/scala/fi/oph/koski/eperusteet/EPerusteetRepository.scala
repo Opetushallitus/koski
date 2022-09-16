@@ -17,6 +17,7 @@ trait EPerusteetRepository {
   def findRakenteet(diaarinumero: String, päivä: Option[LocalDate]): List[EPerusteRakenne] = {
     findKaikkiRakenteet(diaarinumero)
       .filter(perusteVoimassa(päivä))
+      // TODO: tämä sorttaus pitäisi kyllä tehdä vasta kälissä, missä sitä tarvitaan, ei täällä
       .sortBy(_.koulutusvienti)
   }
 
