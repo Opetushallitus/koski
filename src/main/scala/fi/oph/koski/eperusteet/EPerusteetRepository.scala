@@ -32,7 +32,7 @@ trait EPerusteetRepository {
   def findLinkToEperusteetWeb(diaariNumero: String, lang: String, päivä: LocalDate): Option[String] = {
     val linkLang = if (webLanguages.contains(lang)) lang else webLanguages.head
     findPerusteenYksilöintitiedot(diaariNumero, Some(päivä))
-      .sortBy(_.voimassaoloAlkaaLocalDate)(localDateOptionOrdering.reverse)
+      .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
       .headOption
       .map(peruste => {
         val betaEperusteKategoria = betaEperusteenTarvitsevatDiaarinumerot.find(

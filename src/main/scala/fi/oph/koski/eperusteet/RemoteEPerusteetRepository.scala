@@ -35,7 +35,6 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
     runIO(program).sortBy(_.koulutusvienti)
   }
 
-  // TODO: Filtteröi päivällä
   def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne] = {
     findPerusteenYksilöintitiedot(diaariNumero, päivä)
       .map(e => rakenneCache(e.id.toString).getOrElse(throw new HttpStatusException(404, "Tutkinnon rakennetta ei löytynyt ePerusteista", "GET", s"/api/external/perusteet/${e.id}")))
@@ -46,7 +45,17 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
     id => runIO(http.get(uri"/api/external/peruste/${id}")(Http.parseJsonOptional[EPerusteKokoRakenne]))
   )
 
-  def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne] = {
+  def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne] = osaRakenneCache(diaarinumero)
+
+  def findKaikkiPerusteenYksilöintitiedot(diaariNumero: String): List[EPerusteTunniste] =
+    osaRakenneCache(diaariNumero).map(_.toEPerusteTunniste)
+
+  private val osaRakenneCache = KeyValueCache[String, List[EPerusteOsaRakenne]](
+    ExpiringCache("EPerusteetRepository.osarakenne", 15.minutes, 250),
+    diaariNumero => fetchKaikkiRakenteet(diaariNumero)
+  )
+
+  private def fetchKaikkiRakenteet(diaarinumero: String): List[EPerusteOsaRakenne] = {
     val program: IO[List[EPerusteOsaRakenne]] = for {
       (perusteetIlmanKoulutusvientiä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
       (perusteetKoulutusviennillä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&koulutusvienti=true&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
@@ -54,12 +63,4 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
 
     runIO(program)
   }
-
-  def findKaikkiPerusteenYksilöintitiedot(diaariNumero: String): List[EPerusteTunniste] =
-    yksilöintitiedotCache(diaariNumero)
-
-  private val yksilöintitiedotCache = KeyValueCache[String, List[EPerusteTunniste]](
-    ExpiringCache("EPerusteetRepository.yksilöintitiedot", 1.hour, 1000),
-    diaariNumero => findKaikkiRakenteet(diaariNumero).map(_.toEPerusteTunniste)
-  )
 }
