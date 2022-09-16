@@ -61,7 +61,7 @@ class EPerusteetValidator(
     case x => x
   }
 
-  def validateTutkinnonosanRyhmä(suoritus: Suoritus): HttpStatus = {
+  def validateTutkinnonosanRyhmä(suoritus: Suoritus, opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus = {
     def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: TutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
         if (tutkinnonSuoritus.suoritustapa.koodiarvo == "ops" || tutkinnonSuoritus.suoritustapa.koodiarvo == "reformi") {
@@ -96,7 +96,7 @@ class EPerusteetValidator(
     }
 
     // TODO: tarkista, voiko koulutustyyppi muuttua. Jos voi, niin tässä pitää käsitellä ja palauttaa monta.
-    def koulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] = tutkintoRepository.findPerusteRakenteet(diaarinumero, None).headOption.map(r => r.koulutustyyppi)
+    def koulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] = tutkintoRepository.findPerusteRakenteet(diaarinumero, opiskeluoikeudenPäättymispäivä).headOption.map(r => r.koulutustyyppi)
 
     suoritus match {
       case s: AmmatillisenTutkinnonSuoritus => validateTutkinnonosaSuoritukset(s, s.osasuoritukset)
