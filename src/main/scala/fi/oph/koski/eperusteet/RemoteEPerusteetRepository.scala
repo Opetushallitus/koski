@@ -2,7 +2,6 @@ package fi.oph.koski.eperusteet
 
 import cats.effect.IO
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
-import fi.oph.koski.eperusteet.MockEPerusteetRepository.perusteVoimassa
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
@@ -56,8 +55,8 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
     runIO(program)
   }
 
-  def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste] =
-    yksilöintitiedotCache(diaariNumero).filter(perusteVoimassa(päivä))
+  def findKaikkiPerusteenYksilöintitiedot(diaariNumero: String): List[EPerusteTunniste] =
+    yksilöintitiedotCache(diaariNumero)
 
   private val yksilöintitiedotCache = KeyValueCache[String, List[EPerusteTunniste]](
     ExpiringCache("EPerusteetRepository.yksilöintitiedot", 1.hour, 1000),

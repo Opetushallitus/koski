@@ -73,10 +73,9 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     diaarinMukaan
   }
 
-  def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste] = {
+  def findKaikkiPerusteenYksilöintitiedot(diaariNumero: String): List[EPerusteTunniste] = {
     kokoRakenteet
       .filter(_.diaarinumero == diaariNumero)
-      .filter(perusteVoimassa(päivä))
       .map(_.toEPerusteTunniste)
   }
 

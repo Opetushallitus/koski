@@ -22,7 +22,11 @@ trait EPerusteetRepository {
 
   def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne]
 
-  def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste]
+  def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste] =
+    findKaikkiPerusteenYksilöintitiedot(diaariNumero)
+      .filter(perusteVoimassa(päivä))
+
+  def findKaikkiPerusteenYksilöintitiedot(diaariNumero: String): List[EPerusteTunniste]
 
   def findLinkToEperusteetWeb(diaariNumero: String, lang: String, päivä: LocalDate): Option[String] = {
     val linkLang = if (webLanguages.contains(lang)) lang else webLanguages.head
@@ -40,7 +44,7 @@ trait EPerusteetRepository {
       })
   }
 
-  protected def perusteVoimassa(päivä: Option[LocalDate])(peruste: EPerusteVoimassaololla): Boolean = {
+  private def perusteVoimassa(päivä: Option[LocalDate])(peruste: EPerusteVoimassaololla): Boolean = {
     //TODO tarviiko huomoioida voimassaolon alkamista?
 //    päivä.isEmpty || (peruste.voimassaOloAlkanut(päivä.get) && !peruste.siirtymäTaiVoimassaoloPäättynyt(päivä.get))
     päivä.isEmpty || !peruste.siirtymäTaiVoimassaoloPäättynyt(päivä.get)
