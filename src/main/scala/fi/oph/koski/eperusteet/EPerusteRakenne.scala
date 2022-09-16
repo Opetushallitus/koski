@@ -7,12 +7,13 @@ import java.time.{Instant, LocalDate, ZoneId, ZonedDateTime}
 case class EPerusteTunniste(
   id: Long,
   nimi: Map[String, String],
-  voimassaoloAlkaa: Option[LocalDate],
-  voimassaoloLoppuu: Option[LocalDate],
-  siirtymaPaattyy: Option[LocalDate]
-)
+  voimassaoloAlkaaLocalDate: Option[LocalDate],
+  voimassaoloLoppuuLocalDate: Option[LocalDate],
+  siirtymäPäättyyLocalDate: Option[LocalDate],
+  luotu: Option[Long]
+) extends EPerusteVoimassaololla
 
-trait EPerusteRakenne {
+trait EPerusteRakenne extends EPerusteVoimassaololla {
   def id: Long
   def nimi: Map[String, String]
   def diaarinumero: String
@@ -31,33 +32,48 @@ trait EPerusteRakenne {
     nimi,
     voimassaoloAlkaaLocalDate,
     voimassaoloLoppuuLocalDate,
-    siirtymäPäättyyLocalDate
+    siirtymäPäättyyLocalDate,
+    luotu
   )
 
-  def siirtymäTaiVoimassaoloPäättynyt(vertailupäivämäärä: LocalDate): Boolean = if (siirtymaPaattyy.isDefined) {
+  def voimassaoloAlkaaLocalDate: Option[LocalDate] = voimassaoloAlkaa.map(ms =>
+    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
+
+
+  def voimassaoloLoppuuLocalDate: Option[LocalDate] = voimassaoloLoppuu.map(ms =>
+    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
+
+
+  def siirtymäPäättyyLocalDate: Option[LocalDate] = siirtymaPaattyy.map(ms =>
+    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
+}
+
+trait EPerusteVoimassaololla {
+  def voimassaoloAlkaaLocalDate: Option[LocalDate]
+  def voimassaoloLoppuuLocalDate: Option[LocalDate]
+  def siirtymäPäättyyLocalDate: Option[LocalDate]
+
+  //TODO: poista tämä jos tarpeeton
+  //  def voimassaOloAlkanut(vertailupäivämäärä: LocalDate): Boolean = voimassaoloAlkaaLocalDate match {
+  //    case Some(alkupäivämäärä) => !alkupäivämäärä.isAfter(vertailupäivämäärä)
+  //    case _ => false
+  //  }
+
+  def siirtymäTaiVoimassaoloPäättynyt(vertailupäivämäärä: LocalDate): Boolean = if (siirtymäPäättyyLocalDate.isDefined) {
     siirtymäPäättynyt(vertailupäivämäärä)
   } else {
     voimassaoloLoppunut(vertailupäivämäärä)
   }
-
-  def voimassaoloAlkaaLocalDate: Option[LocalDate] = voimassaoloAlkaa.map(ms =>
-    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
 
   def voimassaoloLoppunut(vertailupäivämäärä: LocalDate): Boolean = voimassaoloLoppuuLocalDate match {
     case Some(loppupäivämäärä) => vertailupäivämäärä.isAfter(loppupäivämäärä)
     case None => false
   }
 
-  def voimassaoloLoppuuLocalDate: Option[LocalDate] = voimassaoloLoppuu.map(ms =>
-    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
-
   def siirtymäPäättynyt(vertailupäivämäärä: LocalDate): Boolean = siirtymäPäättyyLocalDate match {
     case Some(päättymispäivämäärä) => vertailupäivämäärä.isAfter(päättymispäivämäärä)
     case None => false
   }
-
-  def siirtymäPäättyyLocalDate: Option[LocalDate] = siirtymaPaattyy.map(ms =>
-    ZonedDateTime.ofInstant(Instant.ofEpochMilli(ms.toLong), ZoneId.systemDefault()).toLocalDate())
 }
 
 trait EPerusteTarkkaRakenne extends EPerusteRakenne {

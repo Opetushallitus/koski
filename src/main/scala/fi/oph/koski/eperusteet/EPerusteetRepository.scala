@@ -3,6 +3,7 @@ package fi.oph.koski.eperusteet
 import com.typesafe.config.Config
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
+import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 
 import java.time.LocalDate
 
@@ -15,7 +16,7 @@ trait EPerusteetRepository {
 
   def findRakenteet(diaarinumero: String, päivä: Option[LocalDate]): List[EPerusteRakenne] = {
     findKaikkiRakenteet(diaarinumero)
-      .filter(peruste => päivä.isEmpty || !peruste.siirtymäTaiVoimassaoloPäättynyt(päivä.get))
+      .filter(perusteVoimassa(päivä))
       .sortBy(_.koulutusvienti)
   }
 
@@ -23,9 +24,11 @@ trait EPerusteetRepository {
 
   def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste]
 
-  def findLinkToEperusteetWeb(diaariNumero: String, lang: String): Option[String] = {
+  def findLinkToEperusteetWeb(diaariNumero: String, lang: String, päivä: LocalDate): Option[String] = {
     val linkLang = if (webLanguages.contains(lang)) lang else webLanguages.head
-    findPerusteenYksilöintitiedot(diaariNumero, None).headOption
+    findPerusteenYksilöintitiedot(diaariNumero, Some(päivä))
+      .sortBy(_.voimassaoloAlkaaLocalDate)(localDateOptionOrdering.reverse)
+      .headOption
       .map(peruste => {
         val betaEperusteKategoria = betaEperusteenTarvitsevatDiaarinumerot.find(
           _._2.contains(diaariNumero))
@@ -35,6 +38,12 @@ trait EPerusteetRepository {
           s"$webBaseUrl/#/${linkLang}/kooste/${peruste.id}"
         }
       })
+  }
+
+  protected def perusteVoimassa(päivä: Option[LocalDate])(peruste: EPerusteVoimassaololla): Boolean = {
+    //TODO tarviiko huomoioida voimassaolon alkamista?
+//    päivä.isEmpty || (peruste.voimassaOloAlkanut(päivä.get) && !peruste.siirtymäTaiVoimassaoloPäättynyt(päivä.get))
+    päivä.isEmpty || !peruste.siirtymäTaiVoimassaoloPäättynyt(päivä.get)
   }
 
   protected val betaEperusteenTarvitsevatDiaarinumerot = Map(

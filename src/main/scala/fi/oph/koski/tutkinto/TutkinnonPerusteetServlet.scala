@@ -2,10 +2,11 @@ package fi.oph.koski.tutkinto
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{UserLanguage, Unauthenticated}
+import fi.oph.koski.koskiuser.{Unauthenticated, UserLanguage}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.servlet.{KoskiSpecificApiServlet, Cached, LanguageSupport}
+import fi.oph.koski.servlet.{Cached, KoskiSpecificApiServlet, LanguageSupport}
 
+import java.time.LocalDate
 import scala.concurrent.duration.{Duration, _}
 
 class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with Unauthenticated with Cached with LanguageSupport {
@@ -45,9 +46,12 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/peruste/*/linkki") {
     val diaari = params("splat")
+    val päättymispäivä = params.get("päättymispäivä")
+      .map(p => LocalDate.parse(p))
+      .getOrElse(LocalDate.now)
     val lang = UserLanguage.sanitizeLanguage(params.get("lang")).getOrElse("fi")
     renderEither[Map[String, String]](
-      application.ePerusteet.findLinkToEperusteetWeb(diaari, lang)
+      application.ePerusteet.findLinkToEperusteetWeb(diaari, lang, päättymispäivä)
         .map(url => Map("url" -> url))
         .toRight(KoskiErrorCategory.notFound())
     )

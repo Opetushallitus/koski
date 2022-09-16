@@ -73,9 +73,11 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     diaarinMukaan
   }
 
-  // TODO: Filtteröi päivän mukaan
   def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste] = {
-    kokoRakenteet.filter(_.diaarinumero == diaariNumero).map(_.toEPerusteTunniste)
+    kokoRakenteet
+      .filter(_.diaarinumero == diaariNumero)
+      .filter(perusteVoimassa(päivä))
+      .map(_.toEPerusteTunniste)
   }
 
   override protected def webBaseUrl = "https://eperusteet.opintopolku.fi"
