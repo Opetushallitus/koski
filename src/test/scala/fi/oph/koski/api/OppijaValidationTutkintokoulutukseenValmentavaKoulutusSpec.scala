@@ -1,14 +1,18 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.KoskiHttpSpec
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigValueFactory.fromAnyRef
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus._
 import fi.oph.koski.documentation.LukioExampleData
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
+import fi.oph.koski.validation.KoskiValidator
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -368,9 +372,8 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
             )
           )
         )
-        putOpiskeluoikeus(oo) {
-          verifyResponseStatusOk()
-        }
+
+        validate(oo).isRight should equal(true)
       }
 
       "Validointi onnistu, kun vammaisuusjaksoja on lomittain ja ne kaikki osuvat johonkin lomittaiseen erityisen tuen päätökseen" in {
@@ -399,9 +402,8 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
             )
           )
         )
-        putOpiskeluoikeus(oo) {
-          verifyResponseStatusOk()
-        }
+
+        validate(oo).isRight should equal(true)
       }
 
       "Validointi ei onnistu, kun opiskeluoikeus sisältää osittain päällekäiset eri vammaisuuden jaksot" in {
@@ -426,12 +428,34 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
             )
           )
         )
-        putOpiskeluoikeus(oo) {
-          verifyResponseStatus(
-            expectedStatus = 400,
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden ja muun kuin vaikeasti vammaisuuden aikajaksot eivät voi olla voimassa samana päivänä")
+
+        validate(oo).left.get should equal(KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden ja muun kuin vaikeasti vammaisuuden aikajaksot eivät voi olla voimassa samana päivänä"))
+      }
+
+      "Validointi onnistuu ennen rajapäivää, vaikka opiskeluoikeus sisältää osittain päällekäiset eri vammaisuuden jaksot" in {
+        val jakso1 = Aikajakso(alku, None)
+        val jakso2 = Aikajakso(alku.plusDays(5), Some(alku.plusDays(12)))
+
+        val oo = opiskeluoikeus.copy(
+          lisätiedot = Some(
+            lisätiedot.copy(
+              erityisenTuenPäätökset = Some(List(
+                TuvaErityisenTuenPäätös(
+                  alku = Some(alku),
+                  loppu = None
+                ),
+              )),
+              vammainen = Some(List(
+                jakso1
+              )),
+              vaikeastiVammainen = Some(List(
+                jakso2
+              ))
+            )
           )
-        }
+        )
+
+        validate(oo, 1).isRight should be(true)
       }
 
       "Validointi ei onnistu, kun vammaisuusjaksoja on osittain erityisen tuen päätösten ulkopuolella" in {
@@ -453,13 +477,35 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
             )
           )
         )
-        putOpiskeluoikeus(oo) {
-          verifyResponseStatus(
-            expectedStatus = 400,
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuusjaksot sisältävät päiviä, joina ei ole voimassaolevaa erityisen tuen jaksoa")
-          )
-        }
+
+        validate(oo).left.get should equal(KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuusjaksot sisältävät päiviä, joina ei ole voimassaolevaa erityisen tuen jaksoa"))
       }
+
+      def validate(oo: Opiskeluoikeus, voimaanastumispäivänOffsetTästäPäivästä: Long = 0): Either[HttpStatus, Oppija] = {
+        val oppija = Oppija(defaultHenkilö, List(oo))
+
+        implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+        implicit val accessType = AccessType.write
+
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.pidennetynOppivelvollisuudenYmsValidaatiotAstuvatVoimaan", fromAnyRef(LocalDate.now().plusDays(voimaanastumispäivänOffsetTästäPäivästä).toString))
+
+        mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija)
+      }
+
+      def mockKoskiValidator(config: Config) = {
+        new KoskiValidator(
+          KoskiApplicationForTests.tutkintoRepository,
+          KoskiApplicationForTests.koodistoViitePalvelu,
+          KoskiApplicationForTests.organisaatioRepository,
+          KoskiApplicationForTests.possu,
+          KoskiApplicationForTests.henkilöRepository,
+          KoskiApplicationForTests.ePerusteet,
+          KoskiApplicationForTests.validatingAndResolvingExtractor,
+          KoskiApplicationForTests.suostumuksenPeruutusService,
+          config
+        )
+      }
+
     }
   }
 

@@ -536,8 +536,8 @@ class KoskiValidator(
   private def validateOpiskeluoikeudenLisätiedot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(
       validateErityisenKoulutustehtävänJakso(opiskeluoikeus.lisätiedot),
-      validatePidennettyOppivelvollisuus(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä),
-      validateTuvaPerusopetusErityinenTukiJaVammaisuus(opiskeluoikeus.lisätiedot)
+      validatePidennettyOppivelvollisuusAikarajastaAlkaen(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä),
+      validateTuvaPerusopetusErityinenTukiJaVammaisuusAikarajastaAlkaen(opiskeluoikeus.lisätiedot)
     )
   }
 
@@ -563,6 +563,20 @@ class KoskiValidator(
           .map(jaksot => HttpStatus.fold(jaksot.map(_.tehtävä).map(validateKoodiarvo)))
           .getOrElse(HttpStatus.ok)
       case _ => HttpStatus.ok
+    }
+  }
+
+  private def validatePidennettyOppivelvollisuusAikarajastaAlkaen(
+    lisätiedot: Option[OpiskeluoikeudenLisätiedot],
+    opiskeluoikeudenAlkamispäivä: Option[LocalDate]
+  ): HttpStatus = {
+    val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.pidennetynOppivelvollisuudenYmsValidaatiotAstuvatVoimaan")).minusDays(1)
+    val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
+
+    if (voimassaolotarkastusAstunutVoimaan) {
+      validatePidennettyOppivelvollisuus(lisätiedot, opiskeluoikeudenAlkamispäivä)
+    } else {
+      HttpStatus.ok
     }
   }
 
@@ -680,6 +694,19 @@ class KoskiValidator(
           )
         )
       case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateTuvaPerusopetusErityinenTukiJaVammaisuusAikarajastaAlkaen(
+    lisätiedot: Option[OpiskeluoikeudenLisätiedot]
+  ): HttpStatus = {
+    val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.pidennetynOppivelvollisuudenYmsValidaatiotAstuvatVoimaan")).minusDays(1)
+    val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
+
+    if (voimassaolotarkastusAstunutVoimaan) {
+      validateTuvaPerusopetusErityinenTukiJaVammaisuus(lisätiedot)
+    } else {
+      HttpStatus.ok
     }
   }
 
