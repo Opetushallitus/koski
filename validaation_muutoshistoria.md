@@ -1,6 +1,9 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 19.9.2022
+- Ammatillisen tutkinnolle tai osatutkinnolle ei voi lisätä keskiarvoa ellei suoritus ole valmis.
+
 ## 15.9.2022
 - 19.8. testiopintopolussa jo käytetyt oppivelvollisuuden laajennuksen, vammaisuuden, vaikeasti vammaisuuden ja erityisen
   tuen jaksojen validaatiomuutokset on otettu käyttöön. Poikkeuksena tutkintokoulutukseen valmentavan koulutuksen

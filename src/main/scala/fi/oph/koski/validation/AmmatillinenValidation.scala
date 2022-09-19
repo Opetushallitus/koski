@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillinenPäätasonSuoritus, AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, AmmatillisenTutkinnonSuoritus, DiaarinumerollinenKoulutus, KoskeenTallennettavaOpiskeluoikeus, NäyttötutkintoonValmistavanKoulutuksenSuoritus}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillinenPäätasonSuoritus, AmmatillisenTutkinnonOsittainenSuoritus, AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, AmmatillisenTutkinnonSuoritus, DiaarinumerollinenKoulutus, KoskeenTallennettavaOpiskeluoikeus, NäyttötutkintoonValmistavanKoulutuksenSuoritus}
 
 import java.time.LocalDate
 import com.typesafe.config.Config
@@ -17,10 +17,20 @@ object AmmatillinenValidation {
           validatePerusteVoimassa(ammatillinen, ePerusteet, config),
           validateOpiskeluoikeudenPäättyminenEnnenSiirtymäajanPäättymistä(ammatillinen, ePerusteet, config),
           validateUseaPäätasonSuoritus(ammatillinen),
-          validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen, ePerusteet)
+          validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen, ePerusteet),
+          validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen)
         )
       case _ => HttpStatus.ok
     }
+  }
+
+  private def validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen: AmmatillinenOpiskeluoikeus) = {
+    val isValid = ammatillinen.suoritukset.forall {
+      case a: AmmatillisenTutkinnonSuoritus if (a.keskiarvo.isDefined) => a.valmis
+      case b: AmmatillisenTutkinnonOsittainenSuoritus if (b.keskiarvo.isDefined) => b.valmis
+      case _ => true
+    }
+    if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle()
   }
 
   private def validateUseaPäätasonSuoritus(opiskeluoikeus: AmmatillinenOpiskeluoikeus): HttpStatus = {
