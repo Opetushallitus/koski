@@ -18,7 +18,6 @@ import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import {lang} from '../i18n/i18n'
-import {currentLocation} from '../util/location.js'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -72,7 +71,7 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   },
-  currentLocation().params.tuva === 'true' ? {
+  {
     id: 'tuva',
     tab: 'raporttikategoria-tab-tuva',
     heading: 'raporttikategoria-heading-tuva',
@@ -88,7 +87,7 @@ const kaikkiRaportitKategorioittain = [
         component: TuvaPerusopetuksenOppijamäärätRaportti
       }
     ]
-  } : null,
+  },
   {
     id: 'aikuisten-perusopetus',
     tab: 'raporttikategoria-tab-aikuisten-perusopetus',
@@ -222,7 +221,7 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   }
-].filter(r => !!r)
+]
 
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map(tab => {
