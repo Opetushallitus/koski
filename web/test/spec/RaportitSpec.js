@@ -64,10 +64,13 @@ describe('Raporttien luominen', function() {
         expect(page.raporttikategoriat()).to.deep.equal([
           'Esiopetus',
           'Perusopetus',
+          'Perusopetukseen valmistava opetus',
+          'Tutkintokoulutukseen valmentava koulutus',
           'Aikuisten perusopetus',
           'Ammatillinen koulutus',
           'Lukiokoulutus',
           'Lukiokoulutus (Lops2021)',
+          'IB-koulutus',
           'Yleiset'
         ])
         expect(page.valittuRaporttikategoria()).to.equal('Esiopetus')
@@ -97,10 +100,13 @@ describe('Raporttien luominen', function() {
         expect(page.raporttikategoriat()).to.deep.equal([
           'Esiopetus',
           'Perusopetus',
+          'Perusopetukseen valmistava opetus',
+          'Tutkintokoulutukseen valmentava koulutus',
           'Aikuisten perusopetus',
           'Ammatillinen koulutus',
           'Lukiokoulutus',
           'Lukiokoulutus (Lops2021)',
+          'IB-koulutus',
           'Yleiset'
         ])
         expect(page.valittuRaporttikategoria()).to.equal('Esiopetus')
@@ -146,7 +152,7 @@ describe('Raporttien luominen', function() {
     })
 
     describe('Näyttää oikeat raportit kategorian vaihdon jälkeen', function() {
-      before(page.valitseRaporttikategoria(4)) // Lukio
+      before(page.valitseRaporttikategoria(6)) // Lukio
 
       it('Toimii', function() {
         expect(page.raportit()).to.deep.equal(lukionRaportit)
@@ -209,7 +215,7 @@ describe('Raporttien luominen', function() {
     })
 
     describe('Raporttikategorian vaihtaminen nollaa organisaatiovalinnan, jos edellistä valintaa ei ole listassa', function() {
-      before(page.valitseRaporttikategoria(2))
+      before(page.valitseRaporttikategoria(4))
 
       it('Toimii', function() {
         expect(page.valittuOrganisaatio()).to.equal('Jyväskylän normaalikoulu')
@@ -246,7 +252,7 @@ describe('Raporttien luominen', function() {
       Authentication().login('kalle'),
       page.openPage(),
       page.odotaRaporttikategoriat(),
-      page.valitseRaporttikategoria(6), // Muut
+      page.valitseRaporttikategoria(9), // Muut
       page.haeOrganisaatioita('helsin')
     )
 
@@ -265,7 +271,7 @@ describe('Raporttien luominen', function() {
       Authentication().login('pää'),
       page.openPage(),
       page.odotaRaporttikategoriat(),
-      page.valitseRaporttikategoria(6), // Muut
+      page.valitseRaporttikategoria(9), // Muut
       page.haeOrganisaatioita('itä-suomen yliopisto')
     )
 
@@ -286,7 +292,7 @@ describe('Raporttien luominen', function() {
       Authentication().login('pää'),
       page.openPage(),
       page.odotaRaporttikategoriat(),
-      page.valitseRaporttikategoria(6), // Muut
+      page.valitseRaporttikategoria(9), // Muut
       page.haeOrganisaatioita('aikuisopisto')
     )
 
@@ -332,7 +338,7 @@ describe('Raporttien luominen', function() {
       Authentication().login('kalle'),
       page.openPage(),
       page.odotaRaporttikategoriat(),
-      page.valitseRaporttikategoria(2) // Aikuisten perusopetus
+      page.valitseRaporttikategoria(4) // Aikuisten perusopetus
     )
 
     it('Oletuksena tyhjät kentät', function() {
@@ -349,7 +355,7 @@ describe('Raporttien luominen', function() {
       Authentication().login('kalle'),
       page.openPage(),
       page.odotaRaporttikategoriat(),
-      page.valitseRaporttikategoria(2) // Aikuisten perusopetus
+      page.valitseRaporttikategoria(4) // Aikuisten perusopetus
     )
 
     it('Latausnappi on harmaana', function() {
@@ -378,7 +384,7 @@ describe('Raporttien luominen', function() {
       Authentication().login('kalle'),
       page.openPage(),
       page.odotaRaporttikategoriat(),
-      page.valitseRaporttikategoria(6) // Muut
+      page.valitseRaporttikategoria(9) // Muut
     )
 
     it('Näyttää organisaatiovalitsimen', function() {

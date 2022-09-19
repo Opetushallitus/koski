@@ -18,7 +18,6 @@ import { contentWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { replaceLocation } from '../util/location'
 import { Paragraphs } from '../i18n/Paragraphs'
 import {lang} from '../i18n/i18n'
-import {currentLocation} from '../util/location.js'
 
 const kaikkiRaportitKategorioittain = [
   {
@@ -60,9 +59,7 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   },
-  // TODO: parametrin tarkistuksen voi poistaa sitten kun raportti julkaistaan kaikille käyttäjille
-  // Huom. tee silloin myös tarvittavat korjaukset RaportitSpec.js:ään
-  currentLocation().params.valmistava === 'true' ? {
+  {
     id: 'perusopetukseenvalmistava',
     tab: 'raporttikategoria-tab-perusopetukseenvalmistava',
     heading: 'raporttikategoria-heading-perusopetukseenvalmistava',
@@ -73,8 +70,8 @@ const kaikkiRaportitKategorioittain = [
         component: PerusopetukseenValmistavanTarkistusRaportti
       }
     ]
-  } : null,
-  currentLocation().params.tuva === 'true' ? {
+  },
+  {
     id: 'tuva',
     tab: 'raporttikategoria-tab-tuva',
     heading: 'raporttikategoria-heading-tuva',
@@ -90,7 +87,7 @@ const kaikkiRaportitKategorioittain = [
         component: TuvaPerusopetuksenOppijamäärätRaportti
       }
     ]
-  } : null,
+  },
   {
     id: 'aikuisten-perusopetus',
     tab: 'raporttikategoria-tab-aikuisten-perusopetus',
@@ -199,9 +196,7 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   },
-  // TODO: parametrin tarkistuksen voi poistaa sitten kun raportti julkaistaan kaikille käyttäjille
-  // Huom. tee silloin myös tarvittavat korjaukset RaportitSpec.js:ään
-  currentLocation().params.ibraportti === 'true' ? {
+  {
     id: 'ib',
     tab: 'raporttikategoria-tab-ib',
     heading: 'raporttikategoria-heading-ib',
@@ -212,7 +207,7 @@ const kaikkiRaportitKategorioittain = [
         component: IBSuoritustiedot
       }
     ]
-  } : null,
+  },
   {
     id: 'muut',
     tab: 'raporttikategoria-tab-muut',
@@ -226,7 +221,7 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   }
-].filter(r => !!r)
+]
 
 const getEnrichedRaportitKategorioittain = (organisaatiot) =>
   kaikkiRaportitKategorioittain.map(tab => {
