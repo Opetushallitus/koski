@@ -5,9 +5,9 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot}
-import fi.oph.koski.valpas.valpasuser.ValpasSession
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö
 import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, ValpasErrorCategory}
+import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 class ValpasKansalainenService(
   application: KoskiApplication

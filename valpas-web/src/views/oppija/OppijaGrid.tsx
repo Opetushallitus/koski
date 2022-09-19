@@ -58,7 +58,6 @@ export const KansalainenGrid = (props: KansalainenGridProps) => {
       {...props.data.oppija}
       {...props.data}
       kuntailmoitukset={kuntailmoitukset}
-      // TODO: Lisää tuki kansalaisen näkymälle
     />
   )
 }

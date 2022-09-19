@@ -5,7 +5,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, Maksuttomuus, OikeuttaMaksuttomu
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository.{ValpasKuntailmoituksenOppijanYhteystiedot, ValpasKuntailmoituksenTekijäLaajatTiedot, ValpasKuntailmoitusLaajatTiedot, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.yhteystiedot.ValpasYhteystiedot
-import fi.oph.koski.valpas.oppija.{OpiskeluoikeusLisätiedot, OppijaHakutilanteillaLaajatTiedot}
+import fi.oph.koski.valpas.oppija.{OpiskeluoikeusLisätiedot, OppijaHakutilanteillaLaajatTiedot, OppivelvollisuudestaVapautus}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -23,6 +23,7 @@ case class KansalainenOppijatiedot(
   kuntailmoitukset: Seq[KansalainenKuntailmoitus],
   oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
   lisätiedot: Seq[OpiskeluoikeusLisätiedot],
+  oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus],
 ) {
   def poistaTurvakiellonAlaisetTiedot: KansalainenOppijatiedot =
     this.copy(
@@ -31,6 +32,7 @@ case class KansalainenOppijatiedot(
       hakutilanneError = None,
       yhteystiedot = Seq.empty,
       kuntailmoitukset = kuntailmoitukset.map(_.poistaTurvakiellonAlaisetTiedot),
+      oppivelvollisuudestaVapautus = oppivelvollisuudestaVapautus.map(_.poistaTurvakiellonAlaisetTiedot),
     )
 }
 
@@ -43,6 +45,7 @@ object KansalainenOppijatiedot {
     kuntailmoitukset = tiedot.kuntailmoitukset.map(KansalainenKuntailmoitus.apply),
     oppivelvollisuudenKeskeytykset = tiedot.oppivelvollisuudenKeskeytykset,
     lisätiedot = tiedot.lisätiedot,
+    oppivelvollisuudestaVapautus = tiedot.oppija.oppivelvollisuudestaVapautus,
   )
 }
 

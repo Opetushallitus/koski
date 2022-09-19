@@ -16,6 +16,7 @@ import {
 } from "./opiskeluoikeus"
 import { OpiskeluoikeusLisätiedot } from "./oppija"
 import { OppivelvollisuudenKeskeytys } from "./oppivelvollisuudenkeskeytys"
+import { OppivelvollisuudestaVapautus } from "./oppivelvollisuudestavapautus"
 import { Oppilaitos, Organisaatio } from "./organisaatiot"
 import { Yhteystiedot, YhteystietojenAlkuperä } from "./yhteystiedot"
 
@@ -32,6 +33,7 @@ export type KansalainenOppijatiedot = {
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>[]
   kuntailmoitukset: KansalainenKuntailmoitus[]
   oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
+  oppivelvollisuudestaVapautus?: OppivelvollisuudestaVapautus
   lisätiedot: OpiskeluoikeusLisätiedot[]
 }
 
