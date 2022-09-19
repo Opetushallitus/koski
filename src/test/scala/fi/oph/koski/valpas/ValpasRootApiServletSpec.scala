@@ -330,6 +330,24 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         result should be(expectedResult)
       }
     }
+
+    "Palauttaa pelkässä esiopetuksessa olevan oppijan" in {
+      val expectedResult = ValpasLöytyiHenkilöhakuResult(
+        oid = ValpasMockOppijat.esikoululainen.oid,
+        hetu = ValpasMockOppijat.esikoululainen.hetu,
+        etunimet = ValpasMockOppijat.esikoululainen.etunimet,
+        sukunimi = ValpasMockOppijat.esikoululainen.sukunimi,
+        maksuttomuusVoimassaAstiIänPerusteella = Some(date(2035, 12, 31))
+      )
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.esikoululainen.oid), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+        verifyResponseStatusOk()
+
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+
+        result should be(expectedResult)
+      }
+    }
   }
 
   "Suorittamiskäyttäjän hetuhaku" - {
