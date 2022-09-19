@@ -17,14 +17,11 @@ trait EPerusteRakenne extends EPerusteVoimassaololla {
   def id: Long
   def nimi: Map[String, String]
   def diaarinumero: String
-  def koulutustyyppi: String
   def voimassaoloAlkaa: Option[String]
   def voimassaoloLoppuu: Option[String]
   def siirtymaPaattyy: Option[String]
   def koulutukset: List[EPerusteKoulutus]
   def koulutusvienti: Option[Boolean]
-  def suoritustavat: Option[List[ESuoritustapa]]
-  def osaamisalat: List[EOsaamisala]
   def luotu: Option[Long]
 
   def toEPerusteTunniste: EPerusteTunniste = EPerusteTunniste(
@@ -77,10 +74,12 @@ trait EPerusteVoimassaololla {
 }
 
 trait EPerusteTarkkaRakenne extends EPerusteRakenne {
-  override def suoritustavat: Option[List[ETarkkaSuoritustapa]]
+  def suoritustavat: Option[List[ETarkkaSuoritustapa]]
   def tutkinnonOsat: Option[List[ETutkinnonOsa]]
   def lukiokoulutus: Option[ELukiokoulutus]
   def muokattu: Option[Long]
+  def koulutustyyppi: String
+  def osaamisalat: List[EOsaamisala]
 }
 
 trait ESuoritustapa {
@@ -106,14 +105,11 @@ case class EPerusteOsaRakenne(
   id: Long,
   nimi: Map[String, String],
   diaarinumero: String,
-  koulutustyyppi: String,
   voimassaoloAlkaa: Option[String],
   voimassaoloLoppuu: Option[String],
   siirtymaPaattyy: Option[String],
   koulutukset: List[EPerusteKoulutus],
   koulutusvienti: Option[Boolean],
-  suoritustavat: Option[List[EOsaSuoritustapa]],
-  osaamisalat: List[EOsaamisala],
   luotu: Option[Long]
 ) extends EPerusteRakenne
 
@@ -147,14 +143,11 @@ case class EPerusteKokoRakenne(
     id,
     nimi,
     diaarinumero,
-    koulutustyyppi,
     voimassaoloAlkaa,
     voimassaoloLoppuu,
     siirtymaPaattyy,
     koulutukset,
     koulutusvienti,
-    suoritustavat.map(_.map(s => EOsaSuoritustapa(s.suoritustapakoodi, s.laajuusYksikko))),
-    osaamisalat,
     luotu
   )
 }

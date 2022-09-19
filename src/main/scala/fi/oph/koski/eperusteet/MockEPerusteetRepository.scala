@@ -56,7 +56,9 @@ object MockEPerusteetRepository extends EPerusteetRepository {
   }
 
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPerusteRakenne] = {
-    kokoRakenteet.filter(r => koulutustyypit.map(k => s"${k.koodistoUri}_${k.koodiarvo}").contains(r.koulutustyyppi)).map(_.toEPeruste).sortBy(_.koulutusvienti)
+    kokoRakenteet
+      .filter(r => koulutustyypit.map(k => s"${k.koodistoUri}_${k.koodiarvo}").contains(r.koulutustyyppi))
+      .map(_.toEPeruste).sortBy(_.koulutusvienti)
   }
 
   // TODO: Filtteröi päivän mukaan, palauta monta vastausta
