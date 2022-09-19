@@ -1,5 +1,5 @@
 {
-  "id": 2434073,
+  "id": 2434074,
   "globalVersion": {
     "aikaleima": 1509349477050
   },
@@ -41,9 +41,9 @@
   },
   "muutosmaaraykset": [],
   "diaarinumero": "OPH-1886-2017",
-  "voimassaoloAlkaa": 1512338400000,
-  "siirtymaPaattyy": 3040901600000,
-  "voimassaoloLoppuu": 3046207200000,
+  "voimassaoloAlkaa": 1546293600000,
+  "voimassaoloLoppuu": 3040901600000,
+  "siirtymaPaattyy": null,
   "paatospvm": 1507150800000,
   "luotu": 2491388585171,
   "muokattu": 2509349477217,

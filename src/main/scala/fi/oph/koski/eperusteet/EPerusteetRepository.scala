@@ -3,7 +3,6 @@ package fi.oph.koski.eperusteet
 import com.typesafe.config.Config
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
-import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 
 import java.time.LocalDate
 
@@ -46,9 +45,7 @@ trait EPerusteetRepository {
   }
 
   private def perusteVoimassa(päivä: Option[LocalDate])(peruste: EPerusteVoimassaololla): Boolean = {
-    //TODO tarviiko huomoioida voimassaolon alkamista?
-//    päivä.isEmpty || (peruste.voimassaOloAlkanut(päivä.get) && !peruste.siirtymäTaiVoimassaoloPäättynyt(päivä.get))
-    päivä.isEmpty || !peruste.siirtymäTaiVoimassaoloPäättynyt(päivä.get)
+    päivä.isEmpty || (peruste.voimassaOloAlkanut(päivä.get) && !peruste.siirtymäTaiVoimassaoloPäättynyt(päivä.get))
   }
 
   protected val betaEperusteenTarvitsevatDiaarinumerot = Map(

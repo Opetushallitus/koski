@@ -50,11 +50,10 @@ trait EPerusteVoimassaololla {
   def voimassaoloLoppuuLocalDate: Option[LocalDate]
   def siirtymäPäättyyLocalDate: Option[LocalDate]
 
-  //TODO: poista tämä jos tarpeeton
-  //  def voimassaOloAlkanut(vertailupäivämäärä: LocalDate): Boolean = voimassaoloAlkaaLocalDate match {
-  //    case Some(alkupäivämäärä) => !alkupäivämäärä.isAfter(vertailupäivämäärä)
-  //    case _ => false
-  //  }
+  def voimassaOloAlkanut(vertailupäivämäärä: LocalDate): Boolean = voimassaoloAlkaaLocalDate match {
+    case Some(alkupäivämäärä) => !alkupäivämäärä.isAfter(vertailupäivämäärä)
+    case _ => false
+  }
 
   def siirtymäTaiVoimassaoloPäättynyt(vertailupäivämäärä: LocalDate): Boolean = if (siirtymäPäättyyLocalDate.isDefined) {
     siirtymäPäättynyt(vertailupäivämäärä)
