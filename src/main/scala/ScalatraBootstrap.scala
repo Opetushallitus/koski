@@ -44,6 +44,7 @@ import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
 import fi.oph.koski.valpas._
 import fi.oph.koski.valpas.kansalainen.ValpasKansalainenApiServlet
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusApiServlet
+import fi.oph.koski.valpas.oppija.OppivelvollisuudestaVapautusServlet
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaApiServlet
 import fi.oph.koski.valpas.sso.ValpasOppijaCasServlet
 import fi.oph.koski.valpas.ytl.ValpasYtlServlet
@@ -150,6 +151,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/koski/valpas/api/rouhinta", new ValpasRouhintaApiServlet)
     mount("/koski/valpas/api/kansalainen", new ValpasKansalainenApiServlet)
     mount("/koski/valpas/api/luovutuspalvelu/ytl", new ValpasYtlServlet)
+    mount("/koski/valpas/api/vapautus", new OppivelvollisuudestaVapautusServlet)
     mount("/koski/valpas/logout", new ValpasLogoutServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
       mount("/koski/valpas/login", new LocalLoginServlet)
