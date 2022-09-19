@@ -3,7 +3,13 @@ import { nonNull } from "../../src/utils/arrays"
 import {
   contentEventuallyEquals,
   expectElementNotVisible,
+  textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
+
+export const mainHeadingEquals = (expected: string) =>
+  textEventuallyEquals("h1.heading--primary", expected)
+export const secondaryHeadingEquals = (expected: string) =>
+  textEventuallyEquals(".oppijaview__secondaryheading", expected)
 
 const cardBodyEquals = (id: string, innerSelector?: string) => (
   expected: string
@@ -33,12 +39,14 @@ const rivi = (label: string, value?: string) =>
   value ? [label + ":", value] : []
 
 export const oppivelvollisuustiedot = (p: {
-  opiskelutilanne: string
+  opiskelutilanne?: string
   oppivelvollisuus?: string
   oppivelvollisuudenKeskeytykset?: string[]
   maksuttomuusoikeus: string
   kuntailmoitusBtn?: true
   oppivelvollisuudenKeskeytysBtn?: true
+  merkitseVapautusBtn?: boolean
+  vapautuksenMitätöintiBtn?: boolean
 }) =>
   [
     ...rivi("Opiskelutilanne", p.opiskelutilanne),
@@ -46,6 +54,7 @@ export const oppivelvollisuustiedot = (p: {
       "Oppivelvollisuus",
       [
         p.oppivelvollisuus,
+        p.vapautuksenMitätöintiBtn ? "mode_edit" : null,
         ...flatten(
           (p.oppivelvollisuudenKeskeytykset || []).map((d) => [
             `Keskeytetty ${d}`,
@@ -61,15 +70,15 @@ export const oppivelvollisuustiedot = (p: {
     ...(p.kuntailmoitusBtn
       ? ["Tee ilmoitus valvontavastuusta", "info_outline"]
       : []),
+    ...(p.merkitseVapautusBtn
+      ? ["Merkitse oppivelvollisuudesta vapautus"]
+      : []),
   ]
     .filter(nonNull)
     .join("\n")
 
 export const historiaEiOpiskeluhistoriaa = () =>
-  [
-    "school",
-    "Oppijalle ei löytynyt opiskeluhistoriaa"
-  ].join("\n")
+  ["school", "Oppijalle ei löytynyt opiskeluhistoriaa"].join("\n")
 
 export const historiaOpintoOikeus = (p: {
   otsikko: string

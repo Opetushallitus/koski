@@ -17,7 +17,10 @@ import { Heading } from "../../components/typography/headings"
 import { T, t } from "../../i18n/i18n"
 import { withRequiresJokinOikeus } from "../../state/accessRights"
 import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
-import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
+import {
+  OppijaHakutilanteillaLaajatTiedot,
+  oppijaOnOppivelvollisuudestaVapautettu,
+} from "../../state/apitypes/oppija"
 import {
   hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg,
   hakutilannePathWithOrg,
@@ -55,10 +58,12 @@ export const OppijaView = withRequiresJokinOikeus((props: OppijaViewProps) => {
       {mapLoading(oppija, () => (
         <Spinner />
       ))}
-      {oppijaData?.oppija.oppivelvollisuudestaVapautettu && (
+      {oppijaData &&
+      oppijaOnOppivelvollisuudestaVapautettu(oppijaData.oppija) ? (
         <OppivelvollisuudestaVapautettu />
+      ) : (
+        oppijaData && <Aikaleima />
       )}
-      {oppijaData && <Aikaleima />}
       {oppijaData && <OppijaGrid data={oppijaData} />}
     </Page>
   )
@@ -155,7 +160,7 @@ const OppivelvollisuudestaVapautettu = () => (
       <InfoIcon />
     </div>
     <div>
-      <T id="oppija__vapautettu_oppivelvollisuudesta_info" />
+      <T id="ovvapautus__info" />
     </div>
   </div>
 )

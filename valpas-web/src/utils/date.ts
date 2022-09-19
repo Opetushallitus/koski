@@ -52,3 +52,15 @@ export const isValidSortedValues = (
 ) =>
   (value1 === null || isValidDate(value1)) &&
   (value2 === null || isValidDate(value2))
+
+export const maxNullableDate = (
+  date: ISODate | null,
+  ...dates: Array<ISODate | null>
+): ISODate | null =>
+  dates.reduce((a, b) => {
+    if (a === null) return b
+    if (b === null) return a
+    return parseISO(a) > parseISO(b) ? a : b
+  }, date)
+
+export const toISODate = (date: Date): ISODate => format(date, "yyyy-MM-dd")

@@ -17,6 +17,10 @@ import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { OppivelvollisuudenKeskeytys } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
 import {
+  onOppivelvollisuudestaVapautettu,
+  OppivelvollisuudestaVapautus,
+} from "../../state/apitypes/oppivelvollisuudestavapautus"
+import {
   Yhteystiedot,
   YhteystietojenAlkuperä,
 } from "../../state/apitypes/yhteystiedot"
@@ -54,7 +58,7 @@ export const KansalainenGrid = (props: KansalainenGridProps) => {
       {...props.data.oppija}
       {...props.data}
       kuntailmoitukset={kuntailmoitukset}
-      oppivelvollisuudestaVapautettu={false} // TODO: Lisää tuki kansalaisen näkymälle
+      // TODO: Lisää tuki kansalaisen näkymälle
     />
   )
 }
@@ -71,12 +75,13 @@ type GridProps = {
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>[]
   hakutilanteet: HakuLaajatTiedot[]
   hakutilanneError?: string
-  oppivelvollisuudestaVapautettu: boolean
+  oppivelvollisuudestaVapautus?: OppivelvollisuudestaVapautus
+  onOikeusMitätöidäOppivelvollisuudestaVapautus?: boolean
 }
 
 const Grid = (props: GridProps) => (
   <>
-    {!props.oppivelvollisuudestaVapautettu && (
+    {!onOppivelvollisuudestaVapautettu(props.oppivelvollisuudestaVapautus) && (
       <Kuntailmoitus
         aktiivisetKuntailmoitukset={props.kuntailmoitukset.filter(
           isAktiivinenKuntailmoitus
@@ -101,14 +106,17 @@ const Grid = (props: GridProps) => (
                 props.oppivelvollisuudenKeskeytykset
               }
               onOikeusTehdäKuntailmoitus={props.onOikeusTehdäKuntailmoitus}
-              oppivelvollisuudestaVapautettu={
-                props.oppivelvollisuudestaVapautettu
+              onOikeusMitätöidäOppivelvollisuudestaVapautus={
+                props.onOikeusMitätöidäOppivelvollisuudestaVapautus
               }
+              oppivelvollisuudestaVapautus={props.oppivelvollisuudestaVapautus}
             />
           </CardBody>
         </BorderlessCard>
       </Column>
-      {!props.oppivelvollisuudestaVapautettu && (
+      {!onOppivelvollisuudestaVapautettu(
+        props.oppivelvollisuudestaVapautus
+      ) && (
         <Column size={8}>
           <BorderlessCard id="yhteystiedot">
             <CardHeader>
@@ -125,7 +133,7 @@ const Grid = (props: GridProps) => (
         </Column>
       )}
     </ColumnsContainer>
-    {!props.oppivelvollisuudestaVapautettu && (
+    {!onOppivelvollisuudestaVapautettu(props.oppivelvollisuudestaVapautus) && (
       <ColumnsContainer>
         <Column size={4}>
           <BorderlessCard id="opiskeluhistoria">

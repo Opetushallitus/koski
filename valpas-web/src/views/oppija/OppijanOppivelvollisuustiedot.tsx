@@ -12,19 +12,21 @@ import { Spinner } from "../../components/icons/Spinner"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { InfoTooltip } from "../../components/tooltip/InfoTooltip"
 import { Error } from "../../components/typography/error"
-import { T, t } from "../../i18n/i18n"
+import { getLocalizedMaybe, T, t } from "../../i18n/i18n"
 import { kuntavalvontaAllowed } from "../../state/accessRights"
 import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import {
   isKeskeytysToistaiseksi,
   OppivelvollisuudenKeskeytys,
 } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
+import { OppivelvollisuudestaVapautus } from "../../state/apitypes/oppivelvollisuudestavapautus"
 import { ISODate } from "../../state/common"
 import { formatDate, formatNullableDate } from "../../utils/date"
 import { Ilmoituslomake } from "../../views/ilmoituslomake/Ilmoituslomake"
 import "./OppijaView.less"
 import { OppivelvollisuudenKeskeytyksenLisäysModal } from "./oppivelvollisuudenkeskeytys/OppivelvollisuudenKeskeytyksenLisäysModal"
 import { OppivelvollisuudenKeskeytyksenMuokkausModal } from "./oppivelvollisuudenkeskeytys/OppivelvollisuudenKeskeytyksenMuokkausModal"
+import { OppivelvollisuudestaVapautusModal } from "./oppivelvollisuudenkeskeytys/OppivelvollisuudestaVapautusModal"
 
 const b = bem("oppijaview")
 
@@ -35,7 +37,8 @@ export type OppijanOppivelvollisuustiedotProps = {
   oppivelvollisuusVoimassaAsti: ISODate
   oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[]
   onOikeusTehdäKuntailmoitus?: boolean
-  oppivelvollisuudestaVapautettu: boolean
+  onOikeusMitätöidäOppivelvollisuudestaVapautus?: boolean
+  oppivelvollisuudestaVapautus?: OppivelvollisuudestaVapautus
 }
 
 export const OppijanOppivelvollisuustiedot = (
@@ -45,6 +48,12 @@ export const OppijanOppivelvollisuustiedot = (
   const [muokattavaKeskeytys, setMuokattavaKeskeytys] = useState<
     OppivelvollisuudenKeskeytys | undefined
   >(undefined)
+
+  const [vapautusModalVisible, setVapautusModalVisible] = useState(false)
+  const [
+    vapautusMitätöintiModalVisible,
+    setVapautusMitätöintiModalVisible,
+  ] = useState(false)
 
   const openKeskeytysModal = useCallback(
     (keskeytys?: OppivelvollisuudenKeskeytys) => {
@@ -61,7 +70,7 @@ export const OppijanOppivelvollisuustiedot = (
   return (
     <>
       <InfoTable>
-        {!props.oppivelvollisuudestaVapautettu && (
+        {!props.oppivelvollisuudestaVapautus && (
           <InfoTableRow
             label={t("oppija__opiskelutilanne")}
             value={t(
@@ -76,10 +85,21 @@ export const OppijanOppivelvollisuustiedot = (
           value={oppivelvollisuusValue(
             props.oppivelvollisuudenKeskeytykset,
             props.oppivelvollisuusVoimassaAsti,
-            props.oppivelvollisuudestaVapautettu,
-            openKeskeytysModal
+            props.oppivelvollisuudestaVapautus,
+            openKeskeytysModal,
+            props.onOikeusMitätöidäOppivelvollisuudestaVapautus
+              ? () => setVapautusMitätöintiModalVisible(true)
+              : undefined
           )}
         />
+        {vapautusMitätöintiModalVisible && (
+          <OppivelvollisuudestaVapautusModal
+            henkilö={props.henkilö}
+            mitätöinti={props.oppivelvollisuudestaVapautus}
+            onClose={() => setVapautusMitätöintiModalVisible(false)}
+            onSubmit={() => window.location.reload()}
+          />
+        )}
         <InfoTableRow
           label={t("oppija__maksuttomuus_voimassa")}
           value={t("oppija__maksuttomuus_voimassa_value", {
@@ -88,7 +108,7 @@ export const OppijanOppivelvollisuustiedot = (
             ),
           })}
         />
-        {!props.oppivelvollisuudestaVapautettu && (
+        {!props.oppivelvollisuudestaVapautus && (
           <InfoTableRow
             value={
               <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
@@ -100,7 +120,6 @@ export const OppijanOppivelvollisuustiedot = (
                 >
                   <T id="oppija__keskeytä_oppivelvollisuus" />
                 </RaisedButton>
-
                 {keskeytysModalVisible &&
                   (muokattavaKeskeytys ? (
                     <OppivelvollisuudenKeskeytyksenMuokkausModal
@@ -171,6 +190,29 @@ export const OppijanOppivelvollisuustiedot = (
             }
           />
         )}
+        {!props.oppivelvollisuudestaVapautus && (
+          <InfoTableRow
+            value={
+              <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
+                <RaisedButton
+                  id="ovvapautus-btn"
+                  data-testid="ovvapautus-btn"
+                  hierarchy="secondary"
+                  onClick={() => setVapautusModalVisible(true)}
+                >
+                  <T id="ovvapautus__merkitse_btn" />
+                </RaisedButton>
+                {vapautusModalVisible && (
+                  <OppivelvollisuudestaVapautusModal
+                    henkilö={props.henkilö}
+                    onClose={() => setVapautusModalVisible(false)}
+                    onSubmit={() => window.location.reload()}
+                  />
+                )}
+              </VisibleForKäyttöoikeusrooli>
+            }
+          />
+        )}
       </InfoTable>
     </>
   )
@@ -179,13 +221,30 @@ export const OppijanOppivelvollisuustiedot = (
 const oppivelvollisuusValue = (
   oppivelvollisuudenKeskeytykset: OppivelvollisuudenKeskeytys[],
   oppivelvollisuusVoimassaAsti: ISODate,
-  oppivelvollisuudestaVapautettu: boolean,
-  openKeskeytysModal: (keskeytys: OppivelvollisuudenKeskeytys) => void
+  oppivelvollisuudestaVapautettu: OppivelvollisuudestaVapautus | undefined,
+  openKeskeytysModal: (keskeytys: OppivelvollisuudenKeskeytys) => void,
+  openMitätöiOppivelvollisuudestaVapautusModal?: () => void
 ): React.ReactNode => {
   if (oppivelvollisuudestaVapautettu) {
-    return t("oppija__vapautettu_oppivelvollisuudesta", {
-      päivämäärä: oppivelvollisuusVoimassaAsti,
-    })
+    return (
+      <>
+        <T
+          id="ovvapautus__vapautettu_oppivelvollisuudesta"
+          params={{
+            päivämäärä: formatDate(oppivelvollisuudestaVapautettu.vapautettu),
+            kunta:
+              getLocalizedMaybe(oppivelvollisuudestaVapautettu.kunta.nimi) ||
+              oppivelvollisuudestaVapautettu.kunta.oid,
+          }}
+        />
+        {openMitätöiOppivelvollisuudestaVapautusModal && (
+          <EditButton
+            onClick={openMitätöiOppivelvollisuudestaVapautusModal}
+            title={t("ovvapautus__mitätöinti_tooltip")}
+          />
+        )}
+      </>
+    )
   }
 
   const keskeytykset = oppivelvollisuudenKeskeytykset
@@ -202,15 +261,10 @@ const oppivelvollisuusValue = (
             })}
 
         <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
-          <FlatButton
-            className={b("editkeskeytysbtn")}
+          <EditButton
             onClick={() => openKeskeytysModal(ovk)}
-          >
-            <EditIcon
-              inline
-              title={t("oppija__muokkaa_oppivelvollisuuden_keskeytystä_btn")}
-            />
-          </FlatButton>
+            title={t("oppija__muokkaa_oppivelvollisuuden_keskeytystä_btn")}
+          />
         </VisibleForKäyttöoikeusrooli>
       </>
     ))
@@ -238,3 +292,14 @@ const oppivelvollisuusValue = (
     rows[0]
   )
 }
+
+type EditButtonProps = {
+  onClick: () => void
+  title: string
+}
+
+const EditButton = (props: EditButtonProps) => (
+  <FlatButton className={b("editkeskeytysbtn")} onClick={props.onClick}>
+    <EditIcon inline title={props.title} />
+  </FlatButton>
+)
