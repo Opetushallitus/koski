@@ -153,6 +153,7 @@
 
   "ovvapautus__merkitse_btn": "Merkitse oppivelvollisuudesta vapautus",
   "ovvapautus__vapautettu_oppivelvollisuudesta": "Vapautettu oppivelvollisuudesta {{päivämäärä}} alkaen, myöntäjä {{kunta}}",
+  "ovvapautus__vapautettu_oppivelvollisuudesta_ei_kuntaa": "Vapautettu oppivelvollisuudesta {{päivämäärä}} alkaen",
   "ovvapautus__info": "Asuinkunta on myöntänyt oppijalle vapautuksen oppivelvollisuudesta oppivelvollisuuslain 2 §:n mukaisesti, sillä oppijan maassa oleskelun perusteena on opiskelu ja hän on hakenut hakemuksella asuinkunnalta vapautuksen oppivelvollisuuden suorittamisesta.",
   "ovvapautus__mitätöinti_tooltip": "Mitätöi oppivelvollisuudesta vapautus",
   "ovvapautus__oppivelvollisuudesta_vapauttaminen_title": "Oppivelvollisuudesta vapauttaminen",

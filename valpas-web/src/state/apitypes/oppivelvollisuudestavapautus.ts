@@ -5,7 +5,7 @@ export type OppivelvollisuudestaVapautus = {
   oppijaOid: Oid
   vapautettu: ISODate
   tulevaisuudessa: boolean
-  kunta: OrganisaatioWithOid
+  kunta?: OrganisaatioWithOid
 }
 
 export type OppivelvollisuudestaVapautuksenPohjatiedot = {

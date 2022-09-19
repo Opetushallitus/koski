@@ -5,6 +5,7 @@ import fi.oph.koski.henkilo.Yhteystiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.util.Monoids.rightSeqMonoid
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
@@ -48,6 +49,7 @@ class ValpasOppijaLaajatTiedotService(
       case Some(oppijaRow) =>
         asValpasOppijaLaajatTiedot(oppijaRow)
           .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
+          .map(withTurvakieltosiivottuVapautus)
       case None if haeMyösVainOppijanumerorekisterissäOleva =>
         oppijanumerorekisteriService.getOppijaLaajatTiedotOppijanumerorekisteristä(oppijaOid)
       case _ =>
@@ -163,6 +165,27 @@ class ValpasOppijaLaajatTiedotService(
         case Some(vapautus) if !vapautus.tulevaisuudessa => ValpasOppivelvollisuudestaVapautettuLaajatTiedot.apply(oppija, vapautus)
         case _ => oppija
       })
+  }
+
+  def withTurvakieltosiivottuVapautus(oppija: ValpasOppijaLaajatTiedot)(implicit session: ValpasSession): ValpasOppijaLaajatTiedot = {
+    def onTurvakielto: Boolean = oppija.henkilö.turvakielto
+    def käyttäjänKuntaOidit: Seq[Oid] = ValpasKunnat.getUserKunnat(organisaatioService).map(_.oid)
+    def onKäyttäjänKunnanTekemäVapautus: Boolean = (
+        for {
+          vapautus    <- oppija.oppivelvollisuudestaVapautus
+          kunta       <- vapautus.kunta
+        } yield käyttäjänKuntaOidit.contains(kunta.oid)
+      ).getOrElse(false)
+
+    if (onTurvakielto && !onKäyttäjänKunnanTekemäVapautus) {
+      val vapautus = oppija.oppivelvollisuudestaVapautus.map(_.poistaTurvakiellonAlaisetTiedot)
+      oppija match {
+        case o: ValpasOppivelvollinenOppijaLaajatTiedot => o.copy(oppivelvollisuudestaVapautus = vapautus)
+        case o: ValpasOppivelvollisuudestaVapautettuLaajatTiedot => o.copy(oppivelvollisuudestaVapautus = vapautus)
+      }
+    } else {
+      oppija
+    }
   }
 
   def withVirallisetYhteystiedot(

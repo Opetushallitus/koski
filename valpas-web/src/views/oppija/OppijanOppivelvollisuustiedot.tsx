@@ -228,15 +228,24 @@ const oppivelvollisuusValue = (
   if (oppivelvollisuudestaVapautettu) {
     return (
       <>
-        <T
-          id="ovvapautus__vapautettu_oppivelvollisuudesta"
-          params={{
-            päivämäärä: formatDate(oppivelvollisuudestaVapautettu.vapautettu),
-            kunta:
-              getLocalizedMaybe(oppivelvollisuudestaVapautettu.kunta.nimi) ||
-              oppivelvollisuudestaVapautettu.kunta.oid,
-          }}
-        />
+        {oppivelvollisuudestaVapautettu.kunta ? (
+          <T
+            id="ovvapautus__vapautettu_oppivelvollisuudesta"
+            params={{
+              päivämäärä: formatDate(oppivelvollisuudestaVapautettu.vapautettu),
+              kunta:
+                getLocalizedMaybe(oppivelvollisuudestaVapautettu.kunta.nimi) ||
+                oppivelvollisuudestaVapautettu.kunta.oid,
+            }}
+          />
+        ) : (
+          <T
+            id="ovvapautus__vapautettu_oppivelvollisuudesta_ei_kuntaa"
+            params={{
+              päivämäärä: formatDate(oppivelvollisuudestaVapautettu.vapautettu),
+            }}
+          />
+        )}
         {openMitätöiOppivelvollisuudestaVapautusModal && (
           <EditButton
             onClick={openMitätöiOppivelvollisuudestaVapautusModal}
