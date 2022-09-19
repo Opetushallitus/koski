@@ -3,9 +3,11 @@
 
 ## 19.9.2022
 - Ammatillisen tutkinnolle tai osatutkinnolle ei voi lisätä keskiarvoa ellei suoritus ole valmis.
+- 15.9. käyttönotetut oppivelvollisuuden pidennyksen, vammaisuuden, vaikeasti vammaisuuden ja erityisen tuen jaksojen
+  validaatiot on poistettu käytöstä 1.10.2022 asti
 
 ## 15.9.2022
-- 19.8. testiopintopolussa jo käytetyt oppivelvollisuuden laajennuksen, vammaisuuden, vaikeasti vammaisuuden ja erityisen
+- 19.8. testiopintopolussa jo käytetyt oppivelvollisuuden pidennyksen, vammaisuuden, vaikeasti vammaisuuden ja erityisen
   tuen jaksojen validaatiomuutokset on otettu käyttöön. Poikkeuksena tutkintokoulutukseen valmentavan koulutuksen
   perusopetuksen järjestämisluvalla järjestettävä opiskeluoikeus, josta on poistettu pidennetyn oppivelvollisuuden
   tallennusmahdollisuus. Siinä validoidaan:
