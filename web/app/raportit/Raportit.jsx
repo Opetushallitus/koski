@@ -60,9 +60,7 @@ const kaikkiRaportitKategorioittain = [
       }
     ]
   },
-  // TODO: parametrin tarkistuksen voi poistaa sitten kun raportti julkaistaan kaikille käyttäjille
-  // Huom. tee silloin myös tarvittavat korjaukset RaportitSpec.js:ään
-  currentLocation().params.valmistava === 'true' ? {
+  {
     id: 'perusopetukseenvalmistava',
     tab: 'raporttikategoria-tab-perusopetukseenvalmistava',
     heading: 'raporttikategoria-heading-perusopetukseenvalmistava',
@@ -73,7 +71,7 @@ const kaikkiRaportitKategorioittain = [
         component: PerusopetukseenValmistavanTarkistusRaportti
       }
     ]
-  } : null,
+  },
   currentLocation().params.tuva === 'true' ? {
     id: 'tuva',
     tab: 'raporttikategoria-tab-tuva',
