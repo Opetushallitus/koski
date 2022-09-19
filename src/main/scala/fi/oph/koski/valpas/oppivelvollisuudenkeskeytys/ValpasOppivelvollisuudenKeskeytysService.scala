@@ -88,7 +88,7 @@ class ValpasOppivelvollisuudenKeskeytysService(
   }
 
   private def validateKeskeytettäväOppija(oppija: ValpasOppijaLaajatTiedot): Either[HttpStatus, ValpasOppijaLaajatTiedot] =
-    if (oppija.oppivelvollisuudestaVapautettu.isDefined) {
+    if (oppija.oppivelvollisuudestaVapautettu) {
       Left(ValpasErrorCategory.badRequest.validation.oppivelvollisuudenKeskeytyksenKohde("Oppivelvollisuuden keskeytystä ei voi kirjata henkilölle, joka on vapautettu oppivelvollisuudesta."))
     } else {
       Right(oppija)

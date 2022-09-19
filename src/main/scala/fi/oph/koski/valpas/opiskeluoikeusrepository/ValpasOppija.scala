@@ -37,10 +37,12 @@ trait ValpasOppijaLaajatTiedot extends ValpasOppija {
   def onOikeusValvoaMaksuttomuutta: Boolean
   def onOikeusValvoaKunnalla: Boolean
   @SyntheticProperty
-  def oppivelvollisuudestaVapautettu: Option[OppivelvollisuudestaVapautus] = None
+  def oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus] = None
+
+  def oppivelvollisuudestaVapautettu: Boolean = oppivelvollisuudestaVapautus.exists(!_.tulevaisuudessa)
 
   def suorittaaOppivelvollisuutta: Boolean =
-    oppivelvollisuudestaVapautettu.isEmpty && opiskeluoikeudet.exists(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && oo.isOpiskelu)
+    !oppivelvollisuudestaVapautettu && opiskeluoikeudet.exists(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && oo.isOpiskelu)
 
   def ifOppivelvollinenOtherwise[A](default: A)(fn: ValpasOppivelvollinenOppijaLaajatTiedot => A): A =
     this match {
@@ -70,7 +72,7 @@ object ValpasOppivelvollinenOppijaLaajatTiedot {
       oppivelvollisuusVoimassaAsti = rajapäivätService.oppivelvollisuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get),
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get),
       onOikeusValvoaMaksuttomuutta = true,
-      onOikeusValvoaKunnalla = true
+      onOikeusValvoaKunnalla = true,
     )
   }
 }
@@ -83,18 +85,20 @@ case class ValpasOppivelvollinenOppijaLaajatTiedot(
   oppivelvollisuusVoimassaAsti: LocalDate,
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
   onOikeusValvoaMaksuttomuutta: Boolean,
-  onOikeusValvoaKunnalla: Boolean
+  onOikeusValvoaKunnalla: Boolean,
+  override val oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus] = None,
 ) extends ValpasOppijaLaajatTiedot
 
 object ValpasOppivelvollisuudestaVapautettuLaajatTiedot {
-  def apply(tiedot: ValpasOppivelvollinenOppijaLaajatTiedot, vapautus: OppivelvollisuudestaVapautus): ValpasOppivelvollisuudestaVapautettuLaajatTiedot = ValpasOppivelvollisuudestaVapautettuLaajatTiedot(
-    henkilö = tiedot.henkilö,
-    oppivelvollisuusVoimassaAsti = vapautus.vapautettu,
-    oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = vapautus.vapautettu,
-    onOikeusValvoaMaksuttomuutta = tiedot.onOikeusValvoaMaksuttomuutta,
-    onOikeusValvoaKunnalla = tiedot.onOikeusValvoaKunnalla,
-    oppivelvollisuudestaVapautettu = Some(vapautus),
-  )
+  def apply(tiedot: ValpasOppivelvollinenOppijaLaajatTiedot, vapautus: OppivelvollisuudestaVapautus): ValpasOppivelvollisuudestaVapautettuLaajatTiedot =
+    ValpasOppivelvollisuudestaVapautettuLaajatTiedot(
+      henkilö = tiedot.henkilö,
+      oppivelvollisuusVoimassaAsti = tiedot.oppivelvollisuusVoimassaAsti,
+      oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = tiedot.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+      onOikeusValvoaMaksuttomuutta = tiedot.onOikeusValvoaMaksuttomuutta,
+      onOikeusValvoaKunnalla = tiedot.onOikeusValvoaKunnalla,
+      oppivelvollisuudestaVapautus = Some(vapautus),
+    )
 }
 
 case class ValpasOppivelvollisuudestaVapautettuLaajatTiedot(
@@ -103,7 +107,7 @@ case class ValpasOppivelvollisuudestaVapautettuLaajatTiedot(
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
   onOikeusValvoaMaksuttomuutta: Boolean,
   onOikeusValvoaKunnalla: Boolean,
-  override val oppivelvollisuudestaVapautettu: Option[OppivelvollisuudestaVapautus]
+  override val oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus],
 ) extends ValpasOppijaLaajatTiedot {
   def opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot] = List.empty
   def hakeutumisvalvovatOppilaitokset: Set[Oid] = Set.empty

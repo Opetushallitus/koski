@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DatabaseConverters, SQLHelpers}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.util.DateOrdering.localDateOrdering
 import org.json4s.{JArray, JNull, JValue}
 import slick.jdbc.GetResult
 
@@ -30,7 +31,9 @@ case class ValpasOppijaRow(
   onOikeusValvoaMaksuttomuutta: Boolean,
   onOikeusValvoaKunnalla: Boolean,
   oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus],
-)
+) {
+  def vapautettuOppivelvollisuudesta: Boolean = oppivelvollisuudestaVapautus.exists(!_.tulevaisuudessa)
+}
 
 case class ValpasOppivelvollisuustiedotRow(
   oppijaOid: String,
@@ -56,14 +59,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   def getOppijat(oppijaOids: Seq[String], rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Seq[ValpasOppijaRow] =
     if (oppijaOids.nonEmpty) {
       queryOppijat(oppijaOids, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki)
-        .filter(_.oppivelvollisuudestaVapautus.isEmpty)
+        .filterNot(_.vapautettuOppivelvollisuudesta)
     } else {
       Seq.empty
     }
 
   def getOppijatByOppilaitos(oppilaitosOid: String, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value): Seq[ValpasOppijaRow] =
     queryOppijat(Seq.empty, Some(Seq(oppilaitosOid)), true, hakeutumisvalvontaTieto)
-      .filter(_.oppivelvollisuudestaVapautus.isEmpty)
+      .filterNot(_.vapautettuOppivelvollisuudesta)
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -1331,7 +1334,13 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     }
 
     oppijanPoistoService.mapVapautetutOppijat(result, (r: ValpasOppijaRow) => r.kaikkiOppijaOidit) {
-      case (oppija, vapautus) => oppija.copy(oppivelvollisuudestaVapautus = Some(vapautus))
+      case (oppija, vapautus) => oppija.copy(
+        oppivelvollisuusVoimassaAsti = Seq(oppija.oppivelvollisuusVoimassaAsti, vapautus.oppivelvollisuusVoimassaAsti).min,
+        oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = Seq(oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti, vapautus.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti).min,
+        oppivelvollisuudestaVapautus = Some(vapautus),
+        onOikeusValvoaKunnalla = true,
+        onOikeusValvoaMaksuttomuutta = true,
+      )
     }
   }
 
@@ -1386,6 +1395,13 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         """
       )
     ).as[ValpasOppivelvollisuustiedotRow])
+
+    oppijanPoistoService.mapVapautetutOppijat(result, (r: ValpasOppivelvollisuustiedotRow) => r.kaikkiOppijaOidit) {
+      case (oppija, vapautus) => oppija.copy(
+        oppivelvollisuusVoimassaAsti = Seq(oppija.oppivelvollisuusVoimassaAsti, vapautus.oppivelvollisuusVoimassaAsti).min,
+        oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = Seq(oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti, vapautus.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti).min,
+      )
+    }
   }
 
   def haeOppijatHetuilla(hetut: Seq[String]): Seq[HetuMasterOid] = {

@@ -9,6 +9,7 @@ import fi.oph.koski.util.Monoids.rightSeqMonoid
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
 import fi.oph.koski.valpas.hakukooste.Hakukooste
+import fi.oph.koski.valpas.kuntailmoitus.ValpasKunnat
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository._
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
@@ -26,6 +27,7 @@ class ValpasOppijaLaajatTiedotService(
   private val lisätiedotRepository = application.valpasOpiskeluoikeusLisätiedotRepository
   private val rajapäivätService = application.valpasRajapäivätService
   private val oppijanumerorekisteriService = application.valpasOppijanumerorekisteriService
+  private val organisaatioService = application.organisaatioService
 
   private val accessResolver = new ValpasAccessResolver
 
@@ -108,7 +110,7 @@ class ValpasOppijaLaajatTiedotService(
     getOppijaLaajatTiedotHakuJaYhteystiedoilla(oppijaOid, rooli, haeMyösVainOppijanumerorekisterissäOleva)
       .flatMap(withKuntailmoitukset)
       .map(withOikeusTehdäKuntailmoitus)
-      .map(withOikeusMitätöitäOppivelvollisuudenVapautus)
+      .map(withOikeusMitätöidäOppivelvollisuudenVapautus)
   }
 
   def getOppijaLaajatTiedotHakuJaYhteystiedoilla
@@ -154,11 +156,12 @@ class ValpasOppijaLaajatTiedotService(
           oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = dbRow.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
           onOikeusValvoaKunnalla = dbRow.onOikeusValvoaKunnalla,
           onOikeusValvoaMaksuttomuutta = dbRow.onOikeusValvoaMaksuttomuutta,
+          oppivelvollisuudestaVapautus = dbRow.oppivelvollisuudestaVapautus,
         )
       )
-      .map(oppija => dbRow.oppivelvollisuudestaVapautus match {
-        case Some(vapautus) => ValpasOppivelvollisuudestaVapautettuLaajatTiedot.apply(oppija, vapautus)
-        case None => oppija
+      .map(oppija => oppija.oppivelvollisuudestaVapautus match {
+        case Some(vapautus) if !vapautus.tulevaisuudessa => ValpasOppivelvollisuudestaVapautettuLaajatTiedot.apply(oppija, vapautus)
+        case _ => oppija
       })
   }
 
@@ -171,7 +174,7 @@ class ValpasOppijaLaajatTiedotService(
       ))
 
   def fetchHakuYhteystiedoilla(oppija: ValpasOppijaLaajatTiedot): OppijaHakutilanteillaLaajatTiedot = {
-    val hakukoosteet = if (oppija.oppivelvollisuudestaVapautettu.isDefined) {
+    val hakukoosteet = if (oppija.oppivelvollisuudestaVapautettu) {
       Right(Nil)
     } else {
       hakukoosteService.getYhteishakujenHakukoosteet(oppijaOids = Set(oppija.henkilö.oid), ainoastaanAktiivisetHaut = false, errorClue = s"oppija:${oppija.henkilö.oid}")
@@ -181,7 +184,7 @@ class ValpasOppijaLaajatTiedotService(
   }
 
   private def fetchVirallisetYhteystiedot(oppija: ValpasOppijaLaajatTiedot): Either[HttpStatus, Seq[Yhteystiedot]] = {
-    if (oppija.henkilö.turvakielto || oppija.oppivelvollisuudestaVapautettu.isDefined) {
+    if (oppija.henkilö.turvakielto || oppija.oppivelvollisuudestaVapautettu) {
       Right(Seq.empty)
     } else {
       timed("fetchVirallisetYhteystiedot", 10) {
@@ -264,13 +267,23 @@ class ValpasOppijaLaajatTiedotService(
   private def withOikeusTehdäKuntailmoitus(
     oppija: OppijaHakutilanteillaLaajatTiedot
   )(implicit session: ValpasSession): OppijaHakutilanteillaLaajatTiedot = {
-    val onOikeus = if (oppija.oppija.henkilö.onTallennettuKoskeen && oppija.oppija.oppivelvollisuudestaVapautettu.isEmpty) {
+    val onOikeus = if (oppija.oppija.henkilö.onTallennettuKoskeen && !oppija.oppija.oppivelvollisuudestaVapautettu) {
       application.valpasKuntailmoitusService.withOikeusTehdäKuntailmoitusOppijalle(oppija.oppija).isRight
     } else {
       false
     }
     oppija.copy(onOikeusTehdäKuntailmoitus = Some(onOikeus))
   }
+
+  private def withOikeusMitätöidäOppivelvollisuudenVapautus (
+    oppija: OppijaHakutilanteillaLaajatTiedot
+  )(implicit session: ValpasSession): OppijaHakutilanteillaLaajatTiedot =
+    oppija.oppija.oppivelvollisuudestaVapautus
+      .flatMap(_.kunta)
+      .fold(oppija) { kunta =>
+        val onOikeus = ValpasKunnat.getUserKunnat(organisaatioService).exists(_.oid == kunta.oid)
+        oppija.copy(onOikeusMitätöidäOppivelvollisuudestaVapautus = Some(onOikeus))
+      }
 
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {
     HttpStatus.justStatus(

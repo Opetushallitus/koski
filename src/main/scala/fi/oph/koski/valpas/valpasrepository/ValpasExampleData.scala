@@ -290,6 +290,13 @@ object ValpasExampleData {
   )
 
   lazy val oppivelvollisuudestaVapautetut = List(
-    (ValpasMockOppijat.oppivelvollisuudestaVapautettu, ValpasMockUsers.valpasHelsinki.oid, LocalDate.of(2022, 9, 13), "091"),
+    (
+      ValpasMockOppijat.oppivelvollisuudestaVapautettu,
+      ValpasMockUsers.valpasHelsinki.oid,
+      // Huom! Oppivelvollisuudesta ei voi olla vapautettu ennen 1.8.2022, mutta testidatassa sitä käytetään, jotta
+      // vältetään koko testiaineiston päivitys.
+      LocalDate.of(2021, 8, 1),
+      "091",
+    ),
   )
 }

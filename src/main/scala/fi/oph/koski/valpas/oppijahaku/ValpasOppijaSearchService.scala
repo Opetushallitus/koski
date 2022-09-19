@@ -120,7 +120,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     if (onMahdollisestiLainPiirissä) {
       oppijaLaajatTiedotService.getOppijaLaajatTiedotIlmanOikeustarkastusta(henkilö.oid)
         .map({
-          case Some(o) if o.onOikeusValvoaMaksuttomuutta && o.oppivelvollisuudestaVapautettu.isEmpty => ValpasLöytyiHenkilöhakuResult(o, rajapäivätService)
+          case Some(o) if o.onOikeusValvoaMaksuttomuutta && !o.oppivelvollisuudestaVapautettu => ValpasLöytyiHenkilöhakuResult(o, rajapäivätService)
           // Henkilö, jonka tiedot löytyvät, mutta jolla maksuttomuus on päättynyt esim. toiselta asteelta
           // valmistumiseen, ei ole enää maksuttomuuden piirissä:
           case Some(o) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(o.henkilö.oid), o.henkilö.hetu)

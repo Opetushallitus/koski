@@ -6,10 +6,10 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpola
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
-import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.schema.{Henkilö, OrganisaatioWithOid}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKunnat
+import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import slick.jdbc.GetResult
 
@@ -18,6 +18,7 @@ import java.time.LocalDate
 class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) extends Logging {
   val db = new ValpasOppivelvollisuudestaVapautusRepository(application.valpasDatabase.db)
   private val organisaatioService = application.organisaatioService
+  private val rajapäivätService = application.valpasRajapäivätService
   private val accessResolver = new ValpasAccessResolver
 
   def mapVapautetutOppijat[T](oppijat: Seq[T], toOids: T => Seq[String])(map: (T, OppivelvollisuudestaVapautus) => T): Seq[T] = {
@@ -26,7 +27,7 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
     val aktiivisetKunnat = organisaatioService.aktiivisetKunnat()
     oppijat.map { oppija =>
       vapautukset
-        .map(OppivelvollisuudestaVapautus.apply(aktiivisetKunnat))
+        .map(OppivelvollisuudestaVapautus.apply(aktiivisetKunnat, rajapäivätService))
         .find(v => toOids(oppija).contains(v.oppijaOid)) match {
           case Some(vapautus) => map(oppija, vapautus)
           case None => oppija
@@ -34,14 +35,14 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
     }
   }
 
-  def lisääOppivelvollisuudestaVapautus(oppijaOid: Oid, vapautettu: LocalDate, kotipaikkaKoodiarvo: String)(implicit session: ValpasSession): Either[HttpStatus, Unit] =
-    withAccessCheckToKunta(kotipaikkaKoodiarvo) { () =>
-      db.lisääOppivelvollisuudestaVapautus(oppijaOid, session.oid, vapautettu, kotipaikkaKoodiarvo)
+  def lisääOppivelvollisuudestaVapautus(vapautus: UusiOppivelvollisuudestaVapautus)(implicit session: ValpasSession): Either[HttpStatus, Unit] =
+    withAccessCheckToKunta(vapautus.kuntakoodi) { () =>
+      db.lisääOppivelvollisuudestaVapautus(vapautus.oppijaOid, session.oid, vapautus.vapautettu, vapautus.kuntakoodi)
     }
 
-  def mitätöiOppivelvollisuudestaVapautus(oppijaOid: Oid, kotipaikkaKoodiarvo: String)(implicit session: ValpasSession): Either[HttpStatus, Unit] =
-    withAccessCheckToKunta(kotipaikkaKoodiarvo) { () =>
-      if (db.mitätöiOppivelvollisuudestaVapautus(oppijaOid, session.oid, kotipaikkaKoodiarvo)) {
+  def mitätöiOppivelvollisuudestaVapautus(vapautus: OppivelvollisuudestaVapautuksenMitätöinti)(implicit session: ValpasSession): Either[HttpStatus, Unit] =
+    withAccessCheckToKunta(vapautus.kuntakoodi) { () =>
+      if (db.mitätöiOppivelvollisuudestaVapautus(vapautus.oppijaOid, session.oid, vapautus.kuntakoodi)) {
         Right(Unit)
       } else {
         Left(ValpasErrorCategory.notFound.vapautustaEiLöydy())
@@ -50,7 +51,7 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
 
   def pohjatiedot(implicit session: ValpasSession): OppivelvollisuudestaVapautuksenPohjatiedot = OppivelvollisuudestaVapautuksenPohjatiedot(
     aikaisinPvm = LocalDate.of(2022, 8, 1),
-    kunnat = ValpasKunnat.getUserKunnat(organisaatioService)
+    kunnat = ValpasKunnat.getUserKunnat(organisaatioService).sortBy(_.nimi.map(_.get(session.lang)))
   )
 
   private def withAccessCheckToKunta[T](kotipaikkaKoodiarvo: String)(fn: () => T)(implicit session: ValpasSession): Either[HttpStatus, T] =
@@ -60,6 +61,17 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
       Left(ValpasErrorCategory.forbidden.organisaatio())
     }
 }
+
+case class UusiOppivelvollisuudestaVapautus(
+  oppijaOid: Oid,
+  vapautettu: LocalDate,
+  kuntakoodi: String,
+)
+
+case class OppivelvollisuudestaVapautuksenMitätöinti(
+  oppijaOid: Oid,
+  kuntakoodi: String,
+)
 
 class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMethods with Logging {
   def getOppivelvollisuudestaVapautetutOppijat(oppijaOids: Seq[String]): Seq[RawOppivelvollisuudestaVapautus] =
@@ -109,14 +121,16 @@ case class RawOppivelvollisuudestaVapautus(
 case class OppivelvollisuudestaVapautus(
   oppijaOid: Henkilö.Oid,
   vapautettu: LocalDate,
+  tulevaisuudessa: Boolean,
   kunta: Option[OrganisaatioWithOid],
 )
 
 object OppivelvollisuudestaVapautus {
-  def apply(aktiivisetKunnat: Seq[OrganisaatioWithOid])(vapautus: RawOppivelvollisuudestaVapautus): OppivelvollisuudestaVapautus =
+  def apply(aktiivisetKunnat: Seq[OrganisaatioWithOid], rajapäivätService: ValpasRajapäivätService)(vapautus: RawOppivelvollisuudestaVapautus): OppivelvollisuudestaVapautus =
     OppivelvollisuudestaVapautus(
       oppijaOid = vapautus.oppijaOid,
       vapautettu = vapautus.vapautettu,
+      tulevaisuudessa = rajapäivätService.tarkastelupäivä.isBefore(vapautus.vapautettu),
       kunta = aktiivisetKunnat.find(_.kotipaikka.exists(_.koodiarvo == vapautus.kunta)),
     )
 }
