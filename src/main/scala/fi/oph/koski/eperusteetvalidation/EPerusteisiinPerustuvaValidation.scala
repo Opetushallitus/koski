@@ -122,6 +122,46 @@ class EPerusteetValidator(
     }
   }
 
+  private def validatePerusteVoimassa(opiskeluoikeus: AmmatillinenOpiskeluoikeus): HttpStatus = {
+    val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan")).minusDays(1)
+    val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
+
+    if (voimassaolotarkastusAstunutVoimaan && opiskeluoikeus.päättymispäivä.isDefined) {
+      validatePerusteVoimassa(opiskeluoikeus.suoritukset, opiskeluoikeus.päättymispäivä.get)
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validatePerusteVoimassa(suoritukset: List[AmmatillinenPäätasonSuoritus], tarkastelupäivä: LocalDate): HttpStatus = {
+    HttpStatus.fold(
+      suoritukset.map(s =>
+        (s, s.koulutusmoduuli) match {
+          case (_: ValmaKoulutuksenSuoritus, _) if tarkastelupäivä.isBefore(LocalDate.of(2022, 10, 2)) =>
+            // Valmassa erikoistapauksena hyväksytään valmistuminen pidempään TUVA-siirtymän vuoksi
+            HttpStatus.ok
+          case (_, diaarillinen: DiaarinumerollinenKoulutus) if diaarillinen.perusteenDiaarinumero.isDefined =>
+            validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, tarkastelupäivä)
+          case _ => HttpStatus.ok
+        }
+      )
+    )
+  }
+
+  private def validatePerusteVoimassa(diaarinumero: String, tarkastelupäivä: LocalDate): HttpStatus = {
+    val kaikkiPerusteet = ePerusteet.findKaikkiRakenteet(diaarinumero)
+    lazy val voimassaolleetPerusteet = ePerusteet.findRakenteet(diaarinumero, Some(tarkastelupäivä))
+
+    if (kaikkiPerusteet.isEmpty || voimassaolleetPerusteet.nonEmpty) {
+      // TODO: Miksi tässä on aiemmin hyväksytty tilanne, jossa perustetta ei löydy lainkaan? Ilmeisesti siksi, että diaari voi silti olla
+      // hyväksytty, koska on koodistossa, vaikkei perustetta löydy lainkaan? Ehkä validaatiot voisi yhdistää jotenkin, tai jotenkin skipata
+      // automaattisesti kaikki perustevalidaatiot, jos perusteen nimi on koodistossa?
+      HttpStatus.ok
+    } else {
+      KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
+    }
+  }
+
   def validateVanhanOpiskeluoikeudenTapaukset(
     vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus
@@ -132,33 +172,7 @@ class EPerusteetValidator(
       case _ => HttpStatus.ok
     }
   }
-
-  private def validatePerusteVoimassa(opiskeluoikeus: AmmatillinenOpiskeluoikeus): HttpStatus = {
-    val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan")).minusDays(1)
-    val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
-
-    if (voimassaolotarkastusAstunutVoimaan) {
-      // TODO: Onko oikein, että tässä on vaan suoritukset.head? Jos voi olla monta suoritusta...
-      (opiskeluoikeus.suoritukset.head.koulutusmoduuli, opiskeluoikeus.päättymispäivä) match {
-        // TODO: Siistimpi tapa käsitellä VALMAn poikkeus tässä: Sama päivämäärä on nyt kahdessa VALMA-validaatiossa duplikaattina.
-        case (diaarillinen: DiaarinumerollinenKoulutus, Some(päättymispäivä)) if diaarillinen.perusteenDiaarinumero.isDefined && (!opiskeluoikeus.suoritukset.head.isInstanceOf[ValmaKoulutuksenSuoritus] || päättymispäivä.isAfter(LocalDate.of(2022, 10, 1))) =>
-          val kaikkiPerusteet = ePerusteet.findKaikkiRakenteet(diaarillinen.perusteenDiaarinumero.get)
-          lazy val voimassaolleetPerusteet = ePerusteet.findRakenteet(diaarillinen.perusteenDiaarinumero.get, Some(päättymispäivä))
-
-          if (kaikkiPerusteet.isEmpty || voimassaolleetPerusteet.nonEmpty) {
-            // TODO: Miksi tässä on aiemmin hyväksytty tilanne, jossa perustetta ei löydy lainkaan? Ilmeisesti siksi, että diaari voi silti olla
-            // hyväksytty, koska on koodistossa, vaikkei perustetta löydy lainkaan?
-            HttpStatus.ok
-          } else {
-            KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
-          }
-        case _ => HttpStatus.ok
-      }
-    } else {
-      HttpStatus.ok
-    }
-  }
-
+  
   private def validateTutkintokoodinTaiSuoritustavanMuutos(
     vanhaOpiskeluoikeus: AmmatillinenOpiskeluoikeus,
     uusiOpiskeluoikeus: AmmatillinenOpiskeluoikeus
