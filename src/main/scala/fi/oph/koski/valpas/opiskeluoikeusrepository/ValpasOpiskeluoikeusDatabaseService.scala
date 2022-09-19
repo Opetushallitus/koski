@@ -1118,7 +1118,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       CASE
         WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
         WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
-        ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+        ELSE COALESCE(valpastila_aikajakson_keskella.valpasopiskeluoikeudentila, valpastila_esiopetus_aikajakson_keskella.valpasopiskeluoikeudentila)
       END tarkastelupaivan_tila,
       NULL::jsonb AS perusopetus_tiedot,
       jsonb_build_object(
@@ -1130,7 +1130,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
             (CASE
               WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'voimassatulevaisuudessa'
               WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN valpastila_viimeisin.valpasopiskeluoikeudentila
-              ELSE valpastila_aikajakson_keskella.valpasopiskeluoikeudentila
+              ELSE COALESCE(valpastila_aikajakson_keskella.valpasopiskeluoikeudentila, valpastila_esiopetus_aikajakson_keskella.valpasopiskeluoikeudentila)
             END),
           'koodistoUri', 'valpasopiskeluoikeudentila'
         ),
@@ -1142,14 +1142,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
               -- ongelmaa.
               WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN 'lasna'
               WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.viimeisin_tila
-              ELSE aikajakson_keskella.tila
+              ELSE COALESCE(aikajakson_keskella.tila, esiopetus_aikajakson_keskella.tila)
             END),
           'koodistoUri', 'koskiopiskeluoikeudentila'
         ),
         'tarkastelupäivänKoskiTilanAlkamispäivä', (CASE
           WHEN $tarkastelupäivä < r_opiskeluoikeus.alkamispaiva THEN r_opiskeluoikeus.alkamispaiva
           WHEN $tarkastelupäivä > r_opiskeluoikeus.paattymispaiva THEN r_opiskeluoikeus.paattymispaiva
-          ELSE aikajakson_keskella.tila_alkanut
+          ELSE COALESCE(aikajakson_keskella.tila_alkanut, esiopetus_aikajakson_keskella.tila_alkanut)
         END),
         'valmistunutAiemminTaiLähitulevaisuudessa', (
           r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
@@ -1171,6 +1171,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         ON valpastila_aikajakson_keskella.koskiopiskeluoikeudentila = aikajakson_keskella.tila
       LEFT JOIN valpastila valpastila_viimeisin
         ON valpastila_viimeisin.koskiopiskeluoikeudentila = r_opiskeluoikeus.viimeisin_tila
+      LEFT JOIN esiopetus_opiskeluoik_aikajakso esiopetus_aikajakson_keskella
+        ON esiopetus_aikajakson_keskella.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        AND $tarkastelupäivä BETWEEN esiopetus_aikajakson_keskella.alku AND esiopetus_aikajakson_keskella.loppu
+      LEFT JOIN valpastila valpastila_esiopetus_aikajakson_keskella
+        ON valpastila_esiopetus_aikajakson_keskella.koskiopiskeluoikeudentila = esiopetus_aikajakson_keskella.tila
       CROSS JOIN LATERAL (
         SELECT jsonb_agg(
           jsonb_build_object(

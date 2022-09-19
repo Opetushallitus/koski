@@ -142,6 +142,13 @@ const eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaPath = oppijaPath.
   }
 )
 
+const pelkkäEsiopetusPath = oppijaPath.href(
+  "/virkailija",
+  {
+    oppijaOid: "1.2.246.562.24.00000000126",
+  }
+)
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -1152,6 +1159,22 @@ describe("Oppijakohtainen näkymä", () => {
           ryhmä: "9C",
           alkamispäivä: "15.8.2012",
           päättymispäivä: "30.5.2021",
+        })
+      )
+    )
+  })
+
+  it("Näyttää esiopetusoppijan tiedot", async () => {
+    await loginAs(pelkkäEsiopetusPath, "valpas-monta", true)
+    await mainHeadingEquals("Esikoululainen Valpas (270615A6481)")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000126")
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaOpintoOikeus({
+          otsikko: "Esiopetuksen suoritus 2021 –",
+          tila: "Läsnä",
+          toimipiste: "Jyväskylän normaalikoulu",
+          alkamispäivä: "13.8.2021",
         })
       )
     )
