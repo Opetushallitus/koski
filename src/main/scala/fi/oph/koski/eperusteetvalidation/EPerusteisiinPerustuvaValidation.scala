@@ -13,7 +13,7 @@ import mojave._
 
 import java.time.LocalDate
 
-class EPerusteetValidator(
+class EPerusteisiinPerustuvaValidation(
   ePerusteet: EPerusteetRepository,
   config: Config,
   tutkintoRepository: TutkintoRepository,

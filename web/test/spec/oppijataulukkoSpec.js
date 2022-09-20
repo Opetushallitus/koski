@@ -269,10 +269,9 @@ describe('Oppijataulukko', function() {
           'Lisä-Eskari, Essiina',
           'Lukioaineopiskelija, Aino',
           'Monikoululainen, Miia',
-          'Rikkinäinen, Kela',
-          'Valviralle, Veera'
+          'Rikkinäinen, Kela'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('17')
+        expect(page.opiskeluoikeudeTotal()).to.equal('16')
       })
     })
   })

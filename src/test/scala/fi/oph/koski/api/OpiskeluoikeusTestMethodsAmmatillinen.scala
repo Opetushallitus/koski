@@ -22,14 +22,18 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
     suoritukset = List(autoalanPerustutkinnonSuoritus(toimpiste).copy(alkamispäivä = Some(alkamispäivä.plusDays(1))))
   )
 
-  def päättymispäivällä(oo: AmmatillinenOpiskeluoikeus, päättymispäivä: LocalDate) =
+  def päättymispäivällä(
+    oo: AmmatillinenOpiskeluoikeus,
+    päättymispäivä: LocalDate,
+    osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None)))
+  ) =
     lisääTila(oo, päättymispäivä, ExampleData.opiskeluoikeusValmistunut).copy(
       suoritukset = oo.suoritukset.map {
         case s: AmmatillisenTutkinnonSuoritus => s.copy(
           alkamispäivä = oo.alkamispäivä,
           vahvistus = vahvistus(päättymispäivä, stadinAmmattiopisto, Some(helsinki)),
           keskiarvo = Some(4.0),
-          osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None)))
+          osasuoritukset = osasuoritukset
         )
         case _ => ???
       }

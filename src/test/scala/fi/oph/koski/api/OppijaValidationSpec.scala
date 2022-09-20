@@ -301,7 +301,8 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
             verifyResponseStatus(400, List(
               exact(KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää, "alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä (1999-05-31)"),
               exact(KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät, "tila.opiskeluoikeusjaksot: 2000-01-01 on oltava aiempi kuin 1999-05-31"),
-              exact(KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää, "suoritus.alkamispäivä (2000-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä (1999-05-31)")
+              exact(KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää, "suoritus.alkamispäivä (2000-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä (1999-05-31)"),
+              exact(KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt, "Tutkinnon perusteen voimassaoloaika tai siirtymäaika on päättynyt. Päättyneen opiskeluoikeuden tulee päättyä perusteen voimassaolo- tai siirtymäaikana.")
             ))
           })
 

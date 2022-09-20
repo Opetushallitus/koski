@@ -43,7 +43,7 @@ class OppijaValidationNayttotutkintoonValmistavaSpec extends TutkinnonPerusteetT
     ).copy(
       tila = AmmatillinenOpiskeluoikeudenTila(List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
-        AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusKatsotaanEronneeksi, Some(ExampleData.valtionosuusRahoitteinen))
+        AmmatillinenOpiskeluoikeusjakso(date(2016, 8, 1), opiskeluoikeusKatsotaanEronneeksi, Some(ExampleData.valtionosuusRahoitteinen))
       )))
 
     putOpiskeluoikeus(oo) {
