@@ -16,6 +16,7 @@ import { isError, isSuccess } from "../../../api/apiUtils"
 import { ButtonGroup } from "../../../components/buttons/ButtonGroup"
 import { RaisedButton } from "../../../components/buttons/RaisedButton"
 import { Modal } from "../../../components/containers/Modal"
+import { usePrompt } from "../../../components/containers/Prompt"
 import { LabeledCheckbox } from "../../../components/forms/Checkbox"
 import { DatePicker } from "../../../components/forms/DatePicker"
 import {
@@ -108,71 +109,90 @@ export const OppivelvollisuudestaVapautusModal = (
     }
   }, [kunta, mitätöinti, props])
 
+  const prompt = usePrompt()
+
   return (
-    <Modal
-      title={
-        props.mitätöinti
-          ? t("ovvapautus__oppivelvollisuuden_vapauttamisen_mitätöinti_title")
-          : t("ovvapautus__oppivelvollisuudesta_vapauttaminen_title")
-      }
-      testId="ovvapautus-modal"
-      onClose={props.onClose}
-    >
-      {isSuccess(pohjatiedot) && (
-        <section>
-          <SecondaryHeading data-testid="ovkeskeytys-secondary-heading">
-            {props.henkilö.sukunimi} {props.henkilö.etunimet}
-            {props.henkilö.hetu && ` (${props.henkilö.hetu})`}
-          </SecondaryHeading>
-          <TertiaryHeading>
-            <T id="ovvapautus__taho_heading" />
-          </TertiaryHeading>
-          <Dropdown
-            options={kuntaOptions}
-            value={kunta}
-            onChange={setKunta}
-            disabled={kuntaOptions.length < 2 || !!props.mitätöinti}
-          />
-          <TertiaryHeading>
-            <T id="ovvapautus__päivämäärä_heading" />
-          </TertiaryHeading>
-          <DatePicker
-            value={date}
-            onChange={setBoundedDate}
-            disabled={!!props.mitätöinti}
-          />
-          {!props.mitätöinti && (
-            <LabeledCheckbox
-              label={t(
-                props.mitätöinti
-                  ? "ovvapautus__mitätöinti_confirm_checkbox"
-                  : "ovvapautus__confirm_checkbox"
-              )}
-              value={confirmed}
-              onChange={setConfirmed}
-              className={b("confirmcb")}
-              testId={"ovvapautus-vahvistus"}
+    <>
+      <Modal
+        title={
+          props.mitätöinti
+            ? t("ovvapautus__oppivelvollisuuden_vapauttamisen_mitätöinti_title")
+            : t("ovvapautus__oppivelvollisuudesta_vapauttaminen_title")
+        }
+        testId="ovvapautus-modal"
+        onClose={props.onClose}
+      >
+        {isSuccess(pohjatiedot) && (
+          <section>
+            <SecondaryHeading data-testid="ovkeskeytys-secondary-heading">
+              {props.henkilö.sukunimi} {props.henkilö.etunimet}
+              {props.henkilö.hetu && ` (${props.henkilö.hetu})`}
+            </SecondaryHeading>
+            <TertiaryHeading>
+              <T id="ovvapautus__taho_heading" />
+            </TertiaryHeading>
+            <Dropdown
+              options={kuntaOptions}
+              value={kunta}
+              onChange={setKunta}
+              disabled={kuntaOptions.length < 2 || !!props.mitätöinti}
             />
-          )}
+            <TertiaryHeading>
+              <T id="ovvapautus__päivämäärä_heading" />
+            </TertiaryHeading>
+            <DatePicker
+              value={date}
+              onChange={setBoundedDate}
+              disabled={!!props.mitätöinti}
+            />
+            {!props.mitätöinti && (
+              <LabeledCheckbox
+                label={t(
+                  props.mitätöinti
+                    ? "ovvapautus__mitätöinti_confirm_checkbox"
+                    : "ovvapautus__confirm_checkbox"
+                )}
+                value={confirmed}
+                onChange={setConfirmed}
+                className={b("confirmcb")}
+                testId={"ovvapautus-vahvistus"}
+              />
+            )}
 
-          {isError(uusiVapautus) && <ApiErrors errors={uusiVapautus.errors} />}
-          {isError(mitätöinti) && <ApiErrors errors={mitätöinti.errors} />}
+            {isError(uusiVapautus) && (
+              <ApiErrors errors={uusiVapautus.errors} />
+            )}
+            {isError(mitätöinti) && <ApiErrors errors={mitätöinti.errors} />}
 
-          <ButtonGroup className={b("buttons")}>
-            <RaisedButton
-              onClick={props.mitätöinti ? submitMitätöinti : submitUusiVapautus}
-              disabled={!isValid && !props.mitätöinti}
-              hierarchy="danger"
-            >
-              {t(
-                props.mitätöinti
-                  ? "ovvapautus__mitätöinti_submit_btn"
-                  : "ovvapautus__vapautus_submit_btn"
-              )}
-            </RaisedButton>
-          </ButtonGroup>
-        </section>
-      )}
-    </Modal>
+            <ButtonGroup className={b("buttons")}>
+              <RaisedButton
+                onClick={
+                  props.mitätöinti
+                    ? () =>
+                        prompt.show(
+                          t("ovvapautus__mitätöinnin_varmistus"),
+                          submitMitätöinti
+                        )
+                    : () =>
+                        prompt.show(
+                          t("ovvapautus__vapautuksen_varmistus"),
+                          submitUusiVapautus
+                        )
+                }
+                disabled={!isValid && !props.mitätöinti}
+                hierarchy="danger"
+              >
+                {t(
+                  props.mitätöinti
+                    ? "ovvapautus__mitätöinti_submit_btn"
+                    : "ovvapautus__vapautus_submit_btn"
+                )}
+              </RaisedButton>
+            </ButtonGroup>
+          </section>
+        )}
+      </Modal>
+      {prompt.component}
+    </>
   )
 }
