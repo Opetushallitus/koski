@@ -125,6 +125,8 @@ case class OppivelvollisuudestaVapautus(
   kunta: Option[OrganisaatioWithOid],
 ) {
   def poistaTurvakiellonAlaisetTiedot: OppivelvollisuudestaVapautus = copy(kunta = None)
+  def oppivelvollisuusVoimassaAsti: LocalDate = vapautettu.minusDays(1)
+  def oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate = oppivelvollisuusVoimassaAsti
 }
 
 object OppivelvollisuudestaVapautus {

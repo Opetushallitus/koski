@@ -48,6 +48,7 @@ object Oppivelvollisuustiedot {
         FROM r_henkilo
         FULL JOIN oppivelvollisuustiedot ON r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid
         WHERE r_henkilo.oppija_oid = any($oids)
+        ORDER BY r_henkilo.oppija_oid
       """.as[OptionalOppivelvollisuustieto]
     )
   }

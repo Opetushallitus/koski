@@ -1356,7 +1356,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       )
     })
 
-    db.runDbSync(SQLHelpers.concatMany(
+    val result = db.runDbSync(SQLHelpers.concatMany(
       Some(
         sql"""
   WITH
