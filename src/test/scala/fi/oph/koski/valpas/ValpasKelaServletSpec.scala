@@ -268,6 +268,26 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           AuditLogTester.verifyNoAuditLogMessages()
         }
       }
+
+      "Oppivelvollisuudesta vapautetulle oppijalle palautetaan sen mukaiset päättymispäivät" in {
+        val expectedDate = ValpasExampleData.oppivelvollisuudestaVapautetut
+          .find(_._1.oid == ValpasMockOppijat.oppivelvollisuudestaVapautettu.oid)
+          .get._3
+          .minusDays(1)
+
+        KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+          .asetaMockTarkastelupäivä(expectedDate)
+        new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
+
+        postHetu(ValpasMockOppijat.oppivelvollisuudestaVapautettu.hetu.get) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[ValpasKelaOppija](body)
+
+
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(expectedDate)
+          response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(expectedDate))
+        }
+      }
     }
 
     "Usean oppijan rajapinta" - {
