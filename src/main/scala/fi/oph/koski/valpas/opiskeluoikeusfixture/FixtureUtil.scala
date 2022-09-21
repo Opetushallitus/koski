@@ -34,10 +34,10 @@ object FixtureUtil extends Logging {
   ): FixtureState = synchronized {
     ValpasMockUsers.mockUsersEnabled = true
     app.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService].asetaMockTarkastelupäivä(tarkastelupäivä)
+    new ValpasDatabaseFixtureLoader(app).reset()
     if (resetKoskiFixtures) {
       app.fixtureCreator.resetFixtures(app.fixtureCreator.valpasFixtureState, reloadRaportointikanta = true)
     }
-    new ValpasDatabaseFixtureLoader(app).reset()
     logger.info("Valpas mock data reset DONE")
     FixtureState(app)
   }

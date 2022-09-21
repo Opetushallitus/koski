@@ -35,7 +35,6 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       application.tiedonsiirtoService.index.deleteAll()
       application.päivitetytOpiskeluoikeudetJono.poistaKaikki()
       opiskeluoikeushistoriaErrorRepository.truncate
-      application.valpasOppivelvollisuudestaVapautusService.db.deleteAll()
 
       if (reloadRaportointikanta || fixtureNameHasChanged) {
         raportointikantaService.loadRaportointikanta(force = true)

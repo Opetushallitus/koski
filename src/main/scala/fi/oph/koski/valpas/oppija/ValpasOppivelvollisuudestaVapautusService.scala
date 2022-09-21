@@ -8,12 +8,13 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Henkilö, OrganisaatioWithOid}
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.util.ChunkReader
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKunnat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 import slick.jdbc.GetResult
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) extends Logging {
   val db = new ValpasOppivelvollisuudestaVapautusRepository(application.valpasDatabase.db)
@@ -54,6 +55,9 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
     kunnat = ValpasKunnat.getUserKunnat(organisaatioService).sortBy(_.nimi.map(_.get(session.lang)))
   )
 
+  def kaikkiVapautuksetIterator(pageSize: Int): ChunkReader[RawOppivelvollisuudestaVapautus] =
+    new ChunkReader(pageSize, chunk => db.readPage(chunk.offset, chunk.pageSize, rajapäivätService.tarkastelupäivä))
+
   private def withAccessCheckToKunta[T](kotipaikkaKoodiarvo: String)(fn: () => T)(implicit session: ValpasSession): Either[HttpStatus, T] =
     if (accessResolver.accessToKuntaOrg(kotipaikkaKoodiarvo)) {
       Right(fn())
@@ -79,7 +83,7 @@ class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMeth
       SELECT oppija_oid, vapautettu, kunta_koodiarvo
         FROM oppivelvollisuudesta_vapautetut
         WHERE oppija_oid = any($oppijaOids)
-          AND mitatoity IS NULL;
+          AND mitatoity IS NULL
     """.as[RawOppivelvollisuudestaVapautus])
 
   def lisääOppivelvollisuudestaVapautus(oppijaOid: Oid, virkailijaOid: Oid, vapautettu: LocalDate, kotipaikkaKoodiarvo: String): Unit = {
@@ -99,6 +103,22 @@ class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMeth
           AND kunta_koodiarvo = $kotipaikkaKoodiarvo
           AND mitatoity IS NULL
     """.asUpdate) > 0
+
+  def readPage(offset: Int, pageSize: Int, today: LocalDate): Seq[RawOppivelvollisuudestaVapautus] =
+    runDbSync(sql"""
+      SELECT
+        oppija_oid,
+        min(vapautettu) as vapautettu,
+        '' as kunta_koodiarvo
+      FROM oppivelvollisuudesta_vapautetut
+      WHERE
+        mitatoity IS NULL
+        AND vapautettu <= $today
+      GROUP BY oppija_oid
+      ORDER BY oppija_oid
+      OFFSET $offset
+      LIMIT $pageSize
+    """.as[RawOppivelvollisuudestaVapautus])
 
   def deleteAll(): Unit =
     runDbSync(sql"""TRUNCATE oppivelvollisuudesta_vapautetut""".asUpdate)

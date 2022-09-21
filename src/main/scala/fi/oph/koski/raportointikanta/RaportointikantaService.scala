@@ -88,6 +88,9 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def loadKoodistot(db: RaportointiDatabase = raportointiDatabase): Int =
     KoodistoLoader.loadKoodistot(application.koodistoPalvelu, db)
 
+  def loadOppivelvollisuudestaVapautukset(db: RaportointiDatabase = raportointiDatabase): Int =
+    OppivelvollisuudenVapautusLoader.loadOppivelvollisuudestaVapautukset(application.valpasOppivelvollisuudestaVapautusService, db)
+
   def isLoading: Boolean = loadDatabase.status.isLoading
 
   def isAvailable: Boolean = raportointiDatabase.status.isComplete
@@ -172,6 +175,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loadHenkilöt(loadDatabase)
     loadOrganisaatiot(loadDatabase)
     loadKoodistot(loadDatabase)
+    loadOppivelvollisuudestaVapautukset(loadDatabase)
     loadDatabase.createOtherIndexes()
     loadDatabase.createCustomFunctions
     loadDatabase.createMaterializedViews(application.valpasRajapäivätService)
