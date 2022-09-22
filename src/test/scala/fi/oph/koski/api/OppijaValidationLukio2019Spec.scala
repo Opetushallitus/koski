@@ -1573,7 +1573,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     val opiskeluoikeus = aktiivinenOpiskeluoikeus.copy(
       tila = LukionOpiskeluoikeudenTila(List(
         LukionOpiskeluoikeusjakso(LocalDate.of(2016, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
-        LukionOpiskeluoikeusjakso(LocalDate.of(2020, 5, 15), opiskeluoikeusEronnut)
+        LukionOpiskeluoikeusjakso(LocalDate.of(2021, 8, 15), opiskeluoikeusEronnut)
       )),
       suoritukset = List(oppimääränSuoritus)
     )

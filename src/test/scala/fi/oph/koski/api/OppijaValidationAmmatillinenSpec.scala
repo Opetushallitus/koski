@@ -609,14 +609,13 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Tutkinnon rakenteen vanheneminen" - {
-        val validaatioVoimassaConfig = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().toString))
 
         "Sallitaan siirto perusteen voimassaolon jälkeen alkaneelle, mutta keskeneräiselle opiskeluoikeudelle" in {
           val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "1000/011/2014", alkamispäivä = LocalDate.of(2022, 1, 1))
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          mockKoskiValidator(validaatioVoimassaConfig).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
         }
 
         "Sallitaan siirto ja täydennetään perusteen nimi oikein perusteen siirtymäajalla päättyneelle opiskeluoikeudelle" in {
@@ -631,7 +630,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
 
-          val validatedOppija = mockKoskiValidator(validaatioVoimassaConfig).updateFieldsAndValidateAsJson(oppija)
+          val validatedOppija = mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija)
 
           validatedOppija.isRight should equal (true)
 
@@ -650,7 +649,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
 
-          mockKoskiValidator(validaatioVoimassaConfig).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
         }
 
         "Sallitaan siirto ja täydennetään perusteen nimi oikein perusteen voimassaoloaikana päättyneelle opiskeluoikeudelle, vaikka samalla diaarinumerolla löytyy luontipäivältään uudempi mutta päättynyt peruste" in {
@@ -665,7 +664,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
 
-          val validatedOppija = mockKoskiValidator(validaatioVoimassaConfig).updateFieldsAndValidateAsJson(oppija)
+          val validatedOppija = mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija)
 
           validatedOppija.isRight should equal (true)
 
@@ -682,25 +681,11 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          mockKoskiValidator(validaatioVoimassaConfig).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
         }
 
         "Sallitaan siirto perusteen voimassaolon jälkeen päättyneelle opiskeluoikeudelle, jos diaarinumero löytyy koodistosta" in {
           // TODO, varmista asiantuntijoilta, halutaanko näin? Tämä voisi toimia hyvänä workaroundina, jos perusteisen voimassaolopäivissä on eperusteiden datoissa jotain häikkää.
-        }
-
-        "Sallitaan siirto, kun validaatio ei vielä voimassa" in {
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
-            MockOrganisaatiot.stadinAmmattiopisto,
-            koulutusKoodi = 331101, diaariNumero = "1000/011/2014",
-            alkamispäivä = LocalDate.of(2017, 1, 1),
-            päättymispäivä = LocalDate.of(2018, 8, 1)
-          )
-          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
-          implicit val accessType = AccessType.write
-          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan", fromAnyRef(LocalDate.now().plusDays(1).toString))
-           mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
         }
       }
     }
@@ -939,7 +924,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     "Valma" - {
       "suoritus.vahvistus.päivä > päättymispäivä" - {
         val suoritus = autoalanPerustutkinnonSuoritusValma().copy(vahvistus = vahvistus(date(2017, 5, 31)), osasuoritukset = Some(List(ExamplesValma.valmaKoulutukseenOrientoitumine)))
-        "palautetaan HTTP 200" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(suoritukset = List(suoritus)))(
+        "palautetaan HTTP 200" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2018, 1, 1)).copy(suoritukset = List(suoritus)))(
           verifyResponseStatusOk()
         )
       }
@@ -1166,7 +1151,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       KoskiApplicationForTests.henkilöRepository,
       new EPerusteisiinPerustuvaValidation(
         KoskiApplicationForTests.ePerusteet,
-        config,
         KoskiApplicationForTests.tutkintoRepository,
         KoskiApplicationForTests.koodistoViitePalvelu
       ),

@@ -52,7 +52,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2016-01-10",
+        "alku" : "2016-08-10",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -327,6 +327,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2015-09-01",
-    "päättymispäivä" : "2016-01-10"
+    "päättymispäivä" : "2016-08-10"
   } ]
 }

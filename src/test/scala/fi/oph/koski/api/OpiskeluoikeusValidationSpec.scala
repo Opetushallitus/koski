@@ -92,7 +92,6 @@ class OpiskeluoikeusValidationSpec extends AnyFreeSpec with Matchers with Opiske
       KoskiApplicationForTests.henkilöRepository,
       new EPerusteisiinPerustuvaValidation(
         KoskiApplicationForTests.ePerusteet,
-        config,
         KoskiApplicationForTests.tutkintoRepository,
         KoskiApplicationForTests.koodistoViitePalvelu
       ),
