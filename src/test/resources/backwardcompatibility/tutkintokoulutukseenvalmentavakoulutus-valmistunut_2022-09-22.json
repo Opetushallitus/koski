@@ -28,12 +28,20 @@
         "tila" : {
           "koodiarvo" : "lasna",
           "koodistoUri" : "koskiopiskeluoikeudentila"
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2021-12-31",
+        "alku" : "2022-08-01",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "koodistoUri" : "koskiopiskeluoikeudentila"
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
         }
       } ]
     },
@@ -654,7 +662,6 @@
       "koodistoUri" : "tuvajarjestamislupa"
     },
     "alkamispäivä" : "2021-08-01",
-    "päättymispäivä" : "2021-12-31"
-  } ],
-  "ignoreKoskiValidator" : true
+    "päättymispäivä" : "2022-08-01"
+  } ]
 }

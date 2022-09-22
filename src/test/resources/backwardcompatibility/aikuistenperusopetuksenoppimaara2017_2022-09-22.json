@@ -52,7 +52,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2016-06-04",
+        "alku" : "2018-06-04",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -496,11 +496,11 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "9",
+              "koodiarvo" : "O",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-01-09",
-            "hyväksytty" : true
+            "päivä" : "2016-12-29",
+            "hyväksytty" : false
           } ],
           "tyyppi" : {
             "koodiarvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
@@ -1592,10 +1592,17 @@
           },
           "arviointi" : [ {
             "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2014-12-28",
+            "hyväksytty" : true
+          }, {
+            "arvosana" : {
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-01-09",
+            "päivä" : "2015-12-29",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -1637,7 +1644,14 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-01-09",
+            "päivä" : "2014-12-28",
+            "hyväksytty" : true
+          }, {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2015-12-29",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -2284,7 +2298,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2008-08-15",
-    "päättymispäivä" : "2016-06-04"
-  } ],
-  "ignoreKoskiValidator" : true
+    "päättymispäivä" : "2018-06-04"
+  } ]
 }

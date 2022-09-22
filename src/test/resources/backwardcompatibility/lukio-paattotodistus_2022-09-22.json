@@ -10,10 +10,30 @@
       "oid" : "1.2.246.562.10.14613773812",
       "oppilaitosnumero" : {
         "koodiarvo" : "00204",
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "lyhytNimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
         "koodistoUri" : "oppilaitosnumero"
       },
       "nimi" : {
-        "fi" : "Jyväskylän normaalikoulu"
+        "fi" : "Jyväskylän normaalikoulu",
+        "sv" : "Jyväskylän normaalikoulu",
+        "en" : "Jyväskylän normaalikoulu"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "179",
+        "nimi" : {
+          "fi" : "Jyväskylä",
+          "sv" : "Jyväskylä"
+        },
+        "koodistoUri" : "kunta"
       }
     },
     "tila" : {
@@ -32,7 +52,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2016-06-08",
+        "alku" : "2016-08-08",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -50,13 +70,9 @@
     "lisätiedot" : {
       "pidennettyPäättymispäivä" : false,
       "ulkomainenVaihtoopiskelija" : false,
-      "alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy" : {
-        "fi" : "Pikkuvanha yksilö"
-      },
-      "yksityisopiskelija" : false,
       "erityisenKoulutustehtävänJaksot" : [ {
         "alku" : "2012-09-01",
-        "loppu" : "2012-09-01",
+        "loppu" : "2013-09-01",
         "tehtävä" : {
           "koodiarvo" : "103",
           "nimi" : {
@@ -79,7 +95,6 @@
           "fi" : "Harjoittelua ulkomailla"
         }
       } ],
-      "oikeusMaksuttomaanAsuntolapaikkaan" : true,
       "sisäoppilaitosmainenMajoitus" : [ {
         "alku" : "2012-09-01",
         "loppu" : "2013-09-01"
@@ -105,10 +120,30 @@
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
           "koodiarvo" : "00204",
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "lyhytNimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
           "koodistoUri" : "oppilaitosnumero"
         },
         "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu"
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä",
+            "sv" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
         }
       },
       "vahvistus" : {
@@ -124,10 +159,30 @@
           "oid" : "1.2.246.562.10.14613773812",
           "oppilaitosnumero" : {
             "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
             "koodistoUri" : "oppilaitosnumero"
           },
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu"
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
           }
         },
         "myöntäjäHenkilöt" : [ {
@@ -139,10 +194,30 @@
             "oid" : "1.2.246.562.10.14613773812",
             "oppilaitosnumero" : {
               "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
               "koodistoUri" : "oppilaitosnumero"
             },
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu"
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
             }
           }
         } ]
@@ -1012,10 +1087,17 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "9",
+              "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
             "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          }, {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2017-06-04",
             "hyväksytty" : true
           } ],
           "tyyppi" : {
@@ -3125,8 +3207,7 @@
                   "nimi" : {
                     "fi" : "Asennushitsaus"
                   },
-                  "koodistoUri" : "tutkinnonosat",
-                  "koodistoVersio" : 1
+                  "koodistoUri" : "tutkinnonosat"
                 },
                 "pakollinen" : true
               },
@@ -3464,14 +3545,20 @@
         "koodiarvo" : "lukionoppimaara",
         "koodistoUri" : "suorituksentyyppi"
       },
-      "ryhmä" : "12A"
+      "ryhmä" : "12A",
+      "koulusivistyskieli" : [ {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      } ]
     } ],
     "tyyppi" : {
       "koodiarvo" : "lukiokoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2012-09-01",
-    "päättymispäivä" : "2016-06-08"
-  } ],
-  "ignoreKoskiValidator" : true
+    "päättymispäivä" : "2016-08-08"
+  } ]
 }
