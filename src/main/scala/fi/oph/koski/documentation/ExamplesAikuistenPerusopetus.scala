@@ -67,7 +67,7 @@ object ExamplesAikuistenPerusopetus {
       tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         List(
           AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(muutaKauttaRahoitettu)),
-          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(muutaKauttaRahoitettu))
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 6, 4), opiskeluoikeusValmistunut, Some(muutaKauttaRahoitettu))
         )
       )
     )
@@ -118,7 +118,7 @@ object ExamplesAikuistenPerusopetus {
     tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
       List(
         AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
-        AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 6, 4), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
       )
     )
   )

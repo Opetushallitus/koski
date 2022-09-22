@@ -113,13 +113,13 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
   lazy val tuvaTilaValmistunut = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
     opiskeluoikeusjaksot = List(
       tuvaOpiskeluOikeusjakso(date(2021, 8, 1), "lasna"),
-      tuvaOpiskeluOikeusjakso(date(2021, 12, 31), "valmistunut")
+      tuvaOpiskeluOikeusjakso(date(2022, 8, 1), "valmistunut")
     )
   )
   lazy val tuvaTilaKatsotaanEronneeksi= TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
     opiskeluoikeusjaksot = List(
       tuvaOpiskeluOikeusjakso(date(2021, 8, 1), "lasna"),
-      tuvaOpiskeluOikeusjakso(date(2021, 12, 31), "katsotaaneronneeksi")
+      tuvaOpiskeluOikeusjakso(date(2022, 8, 1), "katsotaaneronneeksi")
     )
   )
 

@@ -81,7 +81,7 @@ object ExamplesPerusopetus {
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 6, 15), opiskeluoikeusLäsnä),
-        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2014, 5, 30), opiskeluoikeusEronnut)
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2015, 1, 1), opiskeluoikeusEronnut)
       )
     )
   )

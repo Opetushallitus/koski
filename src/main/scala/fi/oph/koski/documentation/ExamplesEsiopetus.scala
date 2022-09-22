@@ -52,8 +52,8 @@ object ExamplesEsiopetus {
     suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste = jyväskylänNormaalikoulu)),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
-        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2006, 8, 13), opiskeluoikeusLäsnä),
-        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2007, 6, 3), opiskeluoikeusValmistunut)
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2014, 8, 13), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2015, 8, 3), opiskeluoikeusValmistunut)
       )
     ),
     lisätiedot = Some(lisätiedot)

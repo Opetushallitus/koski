@@ -28,7 +28,7 @@ object ExamplesLukio {
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
-          LukionOpiskeluoikeusjakso(alku = date(2016, 6, 8), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2016, 8, 8), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(oppilaitos),
