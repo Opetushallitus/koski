@@ -14,16 +14,32 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       .onSuccess(validateDiaarinumerollinenAmmatillinen(suoritus, opiskeluoikeudenPäättymispäivä))
   }
 
-  private def validateTutkintoRakenne(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate], opiskeluoikeudenPäättymispäivä: Option[LocalDate]) = suoritus match {
+  private def validateTutkintoRakenne(
+    suoritus: PäätasonSuoritus,
+    alkamispäiväLäsnä: Option[LocalDate],
+    opiskeluoikeudenPäättymispäivä: Option[LocalDate]
+  ): HttpStatus = suoritus match {
     case tutkintoSuoritus: AmmatillisenTutkinnonSuoritus =>
       getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), opiskeluoikeudenPäättymispäivä, Some(tutkintoSuoritus)) match {
         case Left(status) => status
-        case Right(rakenne) =>
-          validateOsaamisalat(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), rakenne).onSuccess(HttpStatus.fold(suoritus.osasuoritusLista.map {
+        case Right(rakenteet) =>
+          HttpStatus.justStatus(
+            HttpStatus.any(
+              rakenteet.map(rakenne =>
+                validateOsaamisalat(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), rakenne).toEither
+              )
+            )
+          ).onSuccess(HttpStatus.fold(suoritus.osasuoritusLista.map {
             case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus =>
               HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                 case osa: ValtakunnallinenTutkinnonOsa =>
-                  validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä)
+                  HttpStatus.justStatus(
+                    HttpStatus.any(
+                      rakenteet.map(rakenne =>
+                        validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä).toEither
+                      )
+                    )
+                  )
                 case osa: PaikallinenTutkinnonOsa =>
                   HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
                 case osa: KorkeakouluopinnotTutkinnonOsa =>
@@ -64,6 +80,10 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit), opiskeluoikeudenPäättymispäivä)).onSuccess(validateLukio2015Diaarinumero(d))
         case d: LukioonValmistavaKoulutus =>
           HttpStatus.justStatus(getRakenne(d, Some(luvaKoulutustyypit), opiskeluoikeudenPäättymispäivä))
+        // Valmassa erikoistapauksena hyväksytään valmistuminen pidempään TUVA-siirtymän vuoksi
+        // Katso myös EPerusteisiinPerustuvaValidation.validatePerusteVoimassa
+        case d: ValmaKoulutus if opiskeluoikeudenPäättymispäivä.exists(päivä => päivä.isBefore(LocalDate.of(2022, 10, 2))) =>
+          HttpStatus.justStatus(getRakenne(d, Some(valmaKoulutustyypit), None))
         case d: ValmaKoulutus =>
           HttpStatus.justStatus(getRakenne(d, Some(valmaKoulutustyypit), opiskeluoikeudenPäättymispäivä))
         case d: TelmaKoulutus =>
@@ -83,30 +103,36 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       HttpStatus.ok
   }
 
-  private def getRakenne(tutkinto: Diaarinumerollinen, koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]], päivä: Option[LocalDate], suoritusVirheilmoitukseen: Option[PäätasonSuoritus] = None): Either[HttpStatus, TutkintoRakenne] = {
+  private def getRakenne(
+    tutkinto: Diaarinumerollinen,
+    koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]],
+    päivä: Option[LocalDate],
+    suoritusVirheilmoitukseen: Option[PäätasonSuoritus] = None
+  ): Either[HttpStatus, List[TutkintoRakenne]] = {
     validateDiaarinumero(tutkinto.perusteenDiaarinumero)
       .flatMap { diaarinumero =>
-        // TODO: käsittele monta paluuarvoa oikein, ehkä halutaan palauttaakin lista?
-        tutkintoRepository.findPerusteRakenteet(diaarinumero, päivä).headOption match {
-          case None =>
+        tutkintoRepository.findPerusteRakenteet(diaarinumero, päivä) match {
+          case Nil =>
             if (koodistoViitePalvelu.validate("koskikoulutustendiaarinumerot", diaarinumero).isEmpty) {
               Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + diaarinumero))
             } else {
               Left(KoskiErrorCategory.ok())
             }
-          case Some(rakenne) =>
+          case rakenteet =>
             koulutustyypit match {
-              case Some(koulutustyypit) if !koulutustyypit.contains(rakenne.koulutustyyppi) =>
+              case Some(koulutustyypit) if !rakenteet.exists(rakenne => koulutustyypit.contains(rakenne.koulutustyyppi)) =>
                 val tyyppiStr = suoritusVirheilmoitukseen.getOrElse(tutkinto) match {
                   case p: Product => p.productPrefix
                   case x: AnyRef => x.getClass.getSimpleName
                 }
                 Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi(
-                  s"Suoritukselle $tyyppiStr ei voi käyttää perustetta ${rakenne.diaarinumero}, jonka koulutustyyppi on ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. " +
-                    s"Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}"
+                  rakenteet.map(rakenne =>
+                    s"Suoritukselle $tyyppiStr ei voi käyttää perustetta ${rakenne.diaarinumero}, jonka koulutustyyppi on ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. "
+                  ).mkString +
+                    s"Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}."
                 ))
               case _ =>
-                Right(rakenne)
+                Right(rakenteet)
             }
         }
       }
@@ -121,8 +147,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   private def validateKoulutusmoduulinTunniste(tunniste: KoodiViite, diaariNumero: Option[String], opiskeluoikeudenPäättymispäivä: Option[LocalDate]) = diaariNumero match {
     case None => KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu()
     case Some(diaari) =>
-      // TODO: käsittele monta paluuarvoa oikein
-      val koulutukset = tutkintoRepository.findPerusteRakenteet(diaari, opiskeluoikeudenPäättymispäivä).headOption.map(_.koulutukset.map(_.koodiarvo)).toList.flatten
+      val koulutukset = tutkintoRepository.findPerusteRakenteet(diaari, opiskeluoikeudenPäättymispäivä).flatMap(_.koulutukset.map(_.koodiarvo))
       HttpStatus.validate(koulutukset.isEmpty || koulutukset.contains(tunniste.koodiarvo))(
         KoskiErrorCategory.badRequest.validation.rakenne.tunnisteenKoodiarvoaEiLöydyRakenteesta(
           s"Tunnisteen koodiarvoa ${tunniste.koodiarvo} ei löytynyt rakenteen ${diaariNumero.get} mahdollisista koulutuksista. Tarkista tutkintokoodit ePerusteista."
@@ -155,7 +180,14 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     }
   }
 
-  private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonOsanSuoritus, osa: ValtakunnallinenTutkinnonOsa, rakenne: TutkintoRakenne, suoritustapa: Koodistokoodiviite, alkamispäiväLäsnä: Option[LocalDate], opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus = {
+  private def validateTutkinnonOsa(
+    suoritus: AmmatillisenTutkinnonOsanSuoritus,
+    osa: ValtakunnallinenTutkinnonOsa,
+    rakenne: TutkintoRakenne,
+    suoritustapa: Koodistokoodiviite,
+    alkamispäiväLäsnä: Option[LocalDate],
+    opiskeluoikeudenPäättymispäivä: Option[LocalDate]
+  ): HttpStatus = {
     val suoritustapaJaRakenne = rakenne.findSuoritustapaJaRakenne(suoritustapa)
       .orElse {
         // TOR-384 Siirtymäaikana (vuonna 2018 aloittaneet) käytetään suoritustapaa "reformi", vaikka

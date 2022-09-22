@@ -61,18 +61,16 @@ object MockEPerusteetRepository extends EPerusteetRepository {
       .map(_.toEPeruste).sortBy(_.koulutusvienti)
   }
 
-  // TODO: Filtteröi päivän mukaan, palauta monta vastausta
   def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne] = {
     if (diaariNumero == "mock-empty-koulutukset") {
       kokoRakenteet.find(_.diaarinumero == "39/011/2014").map(_.copy(koulutukset = Nil)).toList
     } else {
-      kokoRakenteet.find(_.diaarinumero == diaariNumero).toList
+      findPerusteenYksilöintitiedot(diaariNumero, päivä).flatMap(p => kokoRakenteet.find(_.id == p.id))
     }
   }
 
   def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne] = {
-    val diaarinMukaan = rakenteet.filter(_.diaarinumero == diaarinumero)
-    diaarinMukaan
+    rakenteet.filter(_.diaarinumero == diaarinumero)
   }
 
   def findKaikkiPerusteenYksilöintitiedot(diaariNumero: String): List[EPerusteTunniste] = {

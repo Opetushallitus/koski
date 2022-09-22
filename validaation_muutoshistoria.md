@@ -2,8 +2,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
 ## xx.9.2022
-- Ammatillisen koulutuksen validaatioissa tarkastetaan, että opiskeluoikeuden alkamispäivä osuu perusteen voimassaoloaikaan,
-  tai viimeistään perusteen siirtymäaikaan. Tämä validaatio oli väliaikaisesti 15.8.2022 alkaen pois päältä.
+- Validaatioissa tarkastetaan, että opiskeluoikeuden päättymispäivä osuu perusteen voimassaoloaikaan,
+  tai viimeistään perusteen siirtymäaikaan. Tämä validaatio oli aiemmin toteutettu vain ammatillisen
+  koulutuksen opiskeluoikeuksille, ja se oli väliaikaisesti 15.8.2022 alkaen pois päältä.
 
 ## 30.9.2022
 - Korjaus ammatillisen validaatioon: keskiarvo vaaditaan vain perustutkinnolta, joka on päättynyt 15.1.2018 tai myöhemmin ja suoritustapana on reformi/ops.

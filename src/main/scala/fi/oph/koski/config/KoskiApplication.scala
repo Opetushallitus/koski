@@ -92,7 +92,7 @@ class KoskiApplication(
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, virtaAccessChecker, Some(validator)))
   lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db)
-  lazy val ePerusteetValidator = new EPerusteisiinPerustuvaValidation(ePerusteet, config, tutkintoRepository, koodistoViitePalvelu)
+  lazy val ePerusteetValidator = new EPerusteisiinPerustuvaValidation(ePerusteet, tutkintoRepository, koodistoViitePalvelu)
   lazy val possu = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(
     masterDatabase.db,
     historyRepository,

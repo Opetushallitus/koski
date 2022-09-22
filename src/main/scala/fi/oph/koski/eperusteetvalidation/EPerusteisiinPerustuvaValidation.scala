@@ -1,7 +1,6 @@
 package fi.oph.koski.eperusteetvalidation
 
-import com.typesafe.config.Config
-import fi.oph.koski.eperusteet.EPerusteetRepository
+import fi.oph.koski.eperusteet.{EPerusteRakenne, EPerusteetRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
@@ -15,7 +14,6 @@ import java.time.LocalDate
 
 class EPerusteisiinPerustuvaValidation(
   ePerusteet: EPerusteetRepository,
-  config: Config,
   tutkintoRepository: TutkintoRepository,
   koodistoViitePalvelu: KoodistoViitePalvelu
 ) extends Logging {
@@ -44,7 +42,17 @@ class EPerusteisiinPerustuvaValidation(
       .field[Koulutusmoduuli]("koulutusmoduuli")
       .ifInstanceOf[Koulutus]
 
-  def validateTutkintorakenne(suoritus: PäätasonSuoritus, alkamispäivä: Option[LocalDate], opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus =
+  def validateTutkintorakenne(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = HttpStatus.fold(
+    opiskeluoikeus.suoritukset.map(
+      validateTutkintorakenne(
+        _,
+        opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku),
+        opiskeluoikeus.päättymispäivä
+      )
+    )
+  )
+
+  private def validateTutkintorakenne(suoritus: PäätasonSuoritus, alkamispäivä: Option[LocalDate], opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus =
     tutkintorakenneValidator.validate(suoritus, alkamispäivä, opiskeluoikeudenPäättymispäivä)
 
   def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
@@ -115,32 +123,34 @@ class EPerusteisiinPerustuvaValidation(
     opiskeluoikeus match {
       case ammatillinen: AmmatillinenOpiskeluoikeus =>
         HttpStatus.fold(
-          validatePerusteVoimassa(ammatillinen),
           validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen)
         )
       case _ => HttpStatus.ok
     }
   }
 
-  private def validatePerusteVoimassa(opiskeluoikeus: AmmatillinenOpiskeluoikeus): HttpStatus = {
-    val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.ammatillisenPerusteidenVoimassaoloTarkastusAstuuVoimaan")).minusDays(1)
-    val voimassaolotarkastusAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
-
-    if (voimassaolotarkastusAstunutVoimaan && opiskeluoikeus.päättymispäivä.isDefined) {
+  def validatePerusteVoimassa(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    if(opiskeluoikeus.päättymispäivä.isDefined) {
       validatePerusteVoimassa(opiskeluoikeus.suoritukset, opiskeluoikeus.päättymispäivä.get)
     } else {
       HttpStatus.ok
     }
   }
 
-  private def validatePerusteVoimassa(suoritukset: List[AmmatillinenPäätasonSuoritus], tarkastelupäivä: LocalDate): HttpStatus = {
+  private def validatePerusteVoimassa(
+    suoritukset: List[KoskeenTallennettavaPäätasonSuoritus],
+    tarkastelupäivä: LocalDate
+  ): HttpStatus = {
     HttpStatus.fold(
       suoritukset.map(s =>
         (s, s.koulutusmoduuli) match {
           case (_: ValmaKoulutuksenSuoritus, _) if tarkastelupäivä.isBefore(LocalDate.of(2022, 10, 2)) =>
             // Valmassa erikoistapauksena hyväksytään valmistuminen pidempään TUVA-siirtymän vuoksi
+            // Katso myös TutkintoRakenneValidator.validateTutkintoRakenne
             HttpStatus.ok
-          case (_, diaarillinen: DiaarinumerollinenKoulutus) if diaarillinen.perusteenDiaarinumero.isDefined =>
+          case (s: NäyttötutkintoonValmistavanKoulutuksenSuoritus, _) if s.tutkinto.perusteenDiaarinumero.isDefined =>
+            validatePerusteVoimassa(s.tutkinto.perusteenDiaarinumero.get, tarkastelupäivä)
+          case (_, diaarillinen: Diaarinumerollinen) if diaarillinen.perusteenDiaarinumero.isDefined =>
             validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, tarkastelupäivä)
           case _ => HttpStatus.ok
         }
@@ -172,7 +182,7 @@ class EPerusteisiinPerustuvaValidation(
       case _ => HttpStatus.ok
     }
   }
-  
+
   private def validateTutkintokoodinTaiSuoritustavanMuutos(
     vanhaOpiskeluoikeus: AmmatillinenOpiskeluoikeus,
     uusiOpiskeluoikeus: AmmatillinenOpiskeluoikeus
@@ -197,7 +207,7 @@ class EPerusteisiinPerustuvaValidation(
   private def checkTutkintokooditLöytyvät(
     vanhaOpiskeluoikeus: AmmatillinenOpiskeluoikeus,
     uusiOpiskeluoikeus: AmmatillinenOpiskeluoikeus
-  ) = {
+  ): Boolean = {
     // Optimointi: Tarkistetaan eperusteista löytyvyys vain jos tarpeen eli jos tutkintokoodit eivät alustavasti mätsää
     val vanhanTutkintokoodit = tutkintokoodit(vanhaOpiskeluoikeus)
     val uudenTutkintokoodit = tutkintokoodit(uusiOpiskeluoikeus)
@@ -209,11 +219,10 @@ class EPerusteisiinPerustuvaValidation(
     if (vanhanTutkintokoodit.isEmpty || vanhanTutkintokoodit.exists(koodi => uudenTutkintokoodit.contains(koodi))) {
       true
     } else {
-      // TODO: Välitä päivä oikein opiskeluoikeudesta
-      val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, None)
-      val uudenTutkintokooditEperusteeettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, None)
+      val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, vanhaOpiskeluoikeus.päättymispäivä)
+      val uudenTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, uusiOpiskeluoikeus.päättymispäivä)
 
-      vanhanTutkintokooditEperusteettomat.count(koodi => uudenTutkintokooditEperusteeettomat.contains(koodi)) == vanhanTutkintokooditEperusteettomat.length
+      vanhanTutkintokooditEperusteettomat.count(koodi => uudenTutkintokooditEperusteettomat.contains(koodi)) == vanhanTutkintokooditEperusteettomat.length
     }
   }
 
@@ -221,11 +230,15 @@ class EPerusteisiinPerustuvaValidation(
     oo.suoritukset.filter(suoritus =>
       suoritus.koulutusmoduuli match {
         case diaarillinen: DiaarinumerollinenKoulutus =>
-          // TODO: Käsittele monta perustetta oikein, palauta kaikki kelvolliste tutkintokoodit
-          diaarillinen.perusteenDiaarinumero.flatMap(diaari => ePerusteet.findTarkatRakenteet(diaari, päivä).headOption) match {
-            case Some(rakenne) =>
-              rakenne.koulutukset.exists(_.koulutuskoodiArvo == diaarillinen.tunniste.koodiarvo)
-            case _ => true
+          diaarillinen
+            .perusteenDiaarinumero
+            .map(diaari => ePerusteet.findTarkatRakenteet(diaari, päivä))
+            .getOrElse(List.empty)
+            .map (
+              _.koulutukset.exists(_.koulutuskoodiArvo == diaarillinen.tunniste.koodiarvo)
+            ) match {
+            case Nil => true
+            case xs: List[Boolean] => xs.contains(true)
           }
         case _ => true
       }
@@ -257,19 +270,20 @@ class EPerusteisiinPerustuvaValidation(
       .map(_.koulutusmoduuli)
       .exists(k => k.tunniste.koodiarvo == "VVAI22")
 
-    def haePeruste(suoritus: AmmatillinenPäätasonSuoritus) =
+    def haePeruste(suoritus: AmmatillinenPäätasonSuoritus): Option[List[EPerusteRakenne]] =
       suoritus.koulutusmoduuli match {
         case diaarillinen: DiaarinumerollinenKoulutus =>
-          // TODO: Käsittele monta paluuarvoa oikein
-          diaarillinen.perusteenDiaarinumero.flatMap(dNro => ePerusteet.findRakenteet(dNro, oo.päättymispäivä).headOption)
+          diaarillinen.perusteenDiaarinumero.map(dNro => ePerusteet.findRakenteet(dNro, oo.päättymispäivä))
         case _ => None
       }
 
     HttpStatus.fold(
       oo.suoritukset.flatMap {
         case suoritus: AmmatillisenTutkinnonSuoritus if löytyyVVAI22(suoritus) =>
-          haePeruste(suoritus).map { peruste =>
-            HttpStatus.validate(peruste.voimassaoloAlkaaLocalDate.exists(d => !d.isBefore(rajapäivä))) {
+          haePeruste(suoritus).map { perusteet =>
+            HttpStatus.validate(
+              perusteet.exists(peruste => peruste.voimassaoloAlkaaLocalDate.exists(d => !d.isBefore(rajapäivä)))
+            ) {
               KoskiErrorCategory.badRequest.validation.ammatillinen.yhteinenTutkinnonOsaVVAI22()
             }
           }
