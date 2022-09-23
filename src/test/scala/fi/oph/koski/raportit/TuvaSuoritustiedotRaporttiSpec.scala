@@ -194,7 +194,7 @@ class TuvaSuoritustiedotRaporttiSpec
               "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
               "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna, valmistunut",
               "Päätason suoritusten nimet" -> Some("Tutkintokoulutukseen valmentava koulutus"),
-              "Opiskeluoikeuden päättymispäivä" -> Some(LocalDate.of(2021, 12, 31)),
+              "Opiskeluoikeuden päättymispäivä" -> Some(LocalDate.of(2022, 8, 1)),
               "Rahoitukset" -> "1, 1",
               "Läsnä/valmistunut-rahoitusmuodot syötetty" -> true,
               "Järjestämislupa" -> Some("Ammatillisen koulutuksen järjestämislupa (TUVA)"),

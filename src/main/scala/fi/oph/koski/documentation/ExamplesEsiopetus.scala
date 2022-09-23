@@ -17,9 +17,9 @@ object ExamplesEsiopetus {
     pidennettyOppivelvollisuus = Some(Aikajakso(date(2014, 8, 15), Some(date(2016, 6, 4)))),
     vammainen = Some(List(Aikajakso(date(2014, 8, 15), Some(date(2015,6, 5))))),
     vaikeastiVammainen = Some(List(Aikajakso(date(2015, 6, 6), Some(date(2016, 6, 4))))),
-    majoitusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
-    kuljetusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
-    sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
+    majoitusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2016, 8, 14)))),
+    kuljetusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2016, 8, 14)))),
+    sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2016, 9, 1))))),
     koulukoti = Some(List(Aikajakso(date(2011, 8, 14), None))),
     erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
       alku = Some(date(2014, 8, 15)),
@@ -65,8 +65,8 @@ object ExamplesEsiopetus {
     suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste = jyväskylänNormaalikoulu)),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
-        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2006, 8, 13), opiskeluoikeusLäsnä),
-        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2007, 6, 3), opiskeluoikeusValmistunut)
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2014, 8, 13), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2015, 6, 3), opiskeluoikeusValmistunut)
       )
     ),
     lisätiedot = Some(esiopetusaikaisetLisätiedot)
@@ -77,7 +77,7 @@ object ExamplesEsiopetus {
     suoritukset = List(päiväkotisuoritus(päiväkotiTouhula).copy(vahvistus = None, muutSuorituskielet = None)),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
-        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2006, 8, 12), opiskeluoikeusLäsnä)
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2014, 8, 12), opiskeluoikeusLäsnä)
       )
     ),
     järjestämismuoto = ostopalvelu
@@ -123,7 +123,7 @@ object ExamplesEsiopetus {
     toimipiste = toimipiste,
     suorituskieli = suomenKieli,
     muutSuorituskielet = Some(List(ruotsinKieli)),
-    vahvistus = vahvistusPaikkakunnalla(date(2007, 6, 3)),
+    vahvistus = vahvistusPaikkakunnalla(date(2015, 6, 3)),
     osaAikainenErityisopetus = Some(List(osaAikainenErityisopetusLukuvuodenAikanaLV1))
   )
 }

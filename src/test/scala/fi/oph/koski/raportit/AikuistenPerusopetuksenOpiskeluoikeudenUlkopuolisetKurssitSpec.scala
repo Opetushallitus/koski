@@ -32,7 +32,7 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec
   private val raporttiBuilder = AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(application.raportointiDatabase.db)
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2016, 12, 30), t)(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2018, 12, 30), t)(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow])
 
   override protected def alterFixture(): Unit = {
     lisääPäätasonSuorituksia(
@@ -52,7 +52,7 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec
     tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
       List(
         AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
-        AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 6, 4), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
       )
     ),
     koulutustoimija = None,
