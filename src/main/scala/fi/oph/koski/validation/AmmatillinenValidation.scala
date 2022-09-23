@@ -18,7 +18,8 @@ object AmmatillinenValidation {
           validateOpiskeluoikeudenPäättyminenEnnenSiirtymäajanPäättymistä(ammatillinen, ePerusteet, config),
           validateUseaPäätasonSuoritus(ammatillinen),
           validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen, ePerusteet),
-          validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen)
+          validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen),
+          validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen)
         )
       case _ => HttpStatus.ok
     }
@@ -26,11 +27,26 @@ object AmmatillinenValidation {
 
   private def validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen: AmmatillinenOpiskeluoikeus) = {
     val isValid = ammatillinen.suoritukset.forall {
-      case a: AmmatillisenTutkinnonSuoritus if (a.keskiarvo.isDefined) => a.valmis
-      case b: AmmatillisenTutkinnonOsittainenSuoritus if (b.keskiarvo.isDefined) => b.valmis
+      case a: AmmatillisenTutkinnonSuoritus if (a.keskiarvo.isDefined) => a.valmis | eronnutMuttaTutkinnonOsaOlemassa(a)
+      case b: AmmatillisenTutkinnonOsittainenSuoritus if (b.keskiarvo.isDefined) => b.valmis | eronnutMuttaTutkinnonOsaOlemassa(b)
       case _ => true
     }
     if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle()
+  }
+
+  private def eronnutMuttaTutkinnonOsaOlemassa(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = {
+    val eronnut = if (a.tila.isDefined) List("katsotaaneronneeksi", "eronnut", "keskeytynyt").contains(a.tila.get.koodiarvo) else false
+    val suorituksissaTutkinnonOsa = if (a.osasuoritukset.isDefined) a.osasuoritukset.get.exists(os => os.valmis) else false
+    eronnut & suorituksissaTutkinnonOsa
+  }
+
+  private def validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen: AmmatillinenOpiskeluoikeus) = {
+    val isValid = ammatillinen.suoritukset.forall {
+      case a: AmmatillisenTutkinnonSuoritus if (a.valmis & a.suoritustapa.koodiarvo != "naytto") => a.keskiarvo.isDefined
+      case b: AmmatillisenTutkinnonOsittainenSuoritus if (b.valmis & b.suoritustapa.koodiarvo != "naytto") => b.keskiarvo.isDefined
+      case _ => true
+    }
+    if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo()
   }
 
   private def validateUseaPäätasonSuoritus(opiskeluoikeus: AmmatillinenOpiskeluoikeus): HttpStatus = {

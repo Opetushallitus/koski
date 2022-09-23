@@ -26,7 +26,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
   )
 
   def valmisTutkinnonOsa = osittaisenTutkinnonOsaSuoritus
-  def osittainenSuoritusKesken = ammatillisenTutkinnonOsittainenSuoritus.copy(vahvistus = None)
+  def osittainenSuoritusKesken = ammatillisenTutkinnonOsittainenSuoritus.copy(vahvistus = None, keskiarvo = None)
 
   "Ammatillisen koulutuksen opiskeluoikeuden lisääminen" - {
     "Valideilla tiedoilla" - {
@@ -290,9 +290,9 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
     }
 
     "Tutkinnon tila ja arviointi" - {
-      def copySuoritus(ap: Option[LocalDate] = None, vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None) = {
+      def copySuoritus(ap: Option[LocalDate] = None, vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None, keskiarvo: Option[Double] = None) = {
         val alkamispäivä = ap.orElse(osittaisenTutkinnonOsaSuoritus.alkamispäivä)
-        osittainenSuoritusKesken.copy(alkamispäivä = alkamispäivä, vahvistus = vahvistus)
+        osittainenSuoritusKesken.copy(alkamispäivä = alkamispäivä, vahvistus = vahvistus, keskiarvo = keskiarvo)
       }
 
       def put(s: AmmatillisenTutkinnonOsittainenSuoritus)(f: => Unit) = {
@@ -306,14 +306,14 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
       }
 
       "Kun vahvistus on annettu" - {
-        "palautetaan HTTP 200" in (put(copySuoritus(vahvistus = vahvistus(LocalDate.now))) (
+        "palautetaan HTTP 200" in (put(copySuoritus(vahvistus = vahvistus(LocalDate.now), keskiarvo = Some(4.0))) (
           verifyResponseStatusOk()
         ))
       }
 
       "Suorituksen päivämäärät" - {
         def päivämäärillä(alkamispäivä: String, vahvistuspäivä: String) = {
-          copySuoritus(ap = Some(LocalDate.parse(alkamispäivä)), vahvistus = vahvistus(LocalDate.parse(vahvistuspäivä)))
+          copySuoritus(ap = Some(LocalDate.parse(alkamispäivä)), vahvistus = vahvistus(LocalDate.parse(vahvistuspäivä)), keskiarvo = Some(4.0))
         }
 
         "Päivämäärät kunnossa" - {

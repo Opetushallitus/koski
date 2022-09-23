@@ -218,6 +218,7 @@ object AmmatillinenPerustutkintoExample {
       suoritukset = List(
         AmmatillinenExampleData.ympäristöalanPerustutkintoValmis(toimipiste).copy(
           vahvistus = vahvistus(date(2016, 5, 31), vahvistuksenOrganisaatio, Some(helsinki)),
+          keskiarvo = Some(4.0)
         )
       )
     )
