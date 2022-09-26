@@ -9,8 +9,8 @@ import fi.oph.koski.tutkinto.{Koulutustyyppi, _}
 import java.time.LocalDate
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
-  def validate(suoritus: PäätasonSuoritus, alkamispäivä: Option[LocalDate], opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus = {
-    validateTutkintoRakenne(suoritus, alkamispäivä, opiskeluoikeudenPäättymispäivä)
+  def validate(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate], opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus = {
+    validateTutkintoRakenne(suoritus, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä)
       .onSuccess(validateDiaarinumerollinenAmmatillinen(suoritus, opiskeluoikeudenPäättymispäivä))
   }
 

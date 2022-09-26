@@ -3,7 +3,7 @@ package fi.oph.koski.opiskeluoikeus
 import fi.oph.koski.db.DB
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
-import fi.oph.koski.eperusteetvalidation.EPerusteisiinPerustuvaValidation
+import fi.oph.koski.eperusteetvalidation.EPerusteisiinPerustuvaValidator
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.HttpStatus
@@ -22,7 +22,7 @@ class PostgresOpiskeluoikeusRepositoryV2(override val db: DB,
                                          henkilöRepository: OpintopolkuHenkilöRepository,
                                          perustiedotSyncRepository: PerustiedotSyncRepository,
                                          organisaatioRepository: OrganisaatioRepository,
-                                         ePerusteetValidator: EPerusteisiinPerustuvaValidation)
+                                         ePerusteetValidator: EPerusteisiinPerustuvaValidator)
   extends PostgresOpiskeluoikeusRepository(db,
     historyRepository,
     henkilöCache,

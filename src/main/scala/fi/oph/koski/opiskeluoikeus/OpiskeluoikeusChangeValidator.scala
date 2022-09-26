@@ -1,12 +1,12 @@
 package fi.oph.koski.opiskeluoikeus
 
-import fi.oph.koski.eperusteetvalidation.EPerusteisiinPerustuvaValidation
+import fi.oph.koski.eperusteetvalidation.EPerusteisiinPerustuvaValidator
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.validation.TutkintokoulutukseenValmentavaKoulutusValidation
 
-class OpiskeluoikeusChangeValidator(organisaatioRepository: OrganisaatioRepository, ePerusteetValidator: EPerusteisiinPerustuvaValidation) {
+class OpiskeluoikeusChangeValidator(organisaatioRepository: OrganisaatioRepository, ePerusteetValidator: EPerusteisiinPerustuvaValidator) {
   def validateOpiskeluoikeusChange(oldState: KoskeenTallennettavaOpiskeluoikeus, newState: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(
       validateOpiskeluoikeudenTyypinMuutos(oldState, newState),

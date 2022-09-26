@@ -12,7 +12,7 @@ import mojave._
 
 import java.time.LocalDate
 
-class EPerusteisiinPerustuvaValidation(
+class EPerusteisiinPerustuvaValidator(
   ePerusteet: EPerusteetRepository,
   tutkintoRepository: TutkintoRepository,
   koodistoViitePalvelu: KoodistoViitePalvelu
@@ -52,8 +52,11 @@ class EPerusteisiinPerustuvaValidation(
     )
   )
 
-  private def validateTutkintorakenne(suoritus: PäätasonSuoritus, alkamispäivä: Option[LocalDate], opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus =
-    tutkintorakenneValidator.validate(suoritus, alkamispäivä, opiskeluoikeudenPäättymispäivä)
+  private def validateTutkintorakenne(
+    suoritus: PäätasonSuoritus,
+    alkamispäiväLäsnä: Option[LocalDate],
+    opiskeluoikeudenPäättymispäivä: Option[LocalDate]
+  ): HttpStatus = tutkintorakenneValidator.validate(suoritus, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä)
 
   def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
     case a: AmmatillinenOpiskeluoikeus => a.withSuoritukset(
