@@ -1,22 +1,11 @@
 {
   "henkilö" : {
-    "hetu" : "epävalidiHetu",
-    "etunimet" : "Tiina",
-    "kutsumanimi" : "Tiina",
-    "sukunimi" : "Tiedonsiirto"
+    "hetu" : "280618-402H",
+    "etunimet" : "Aarne",
+    "kutsumanimi" : "Aarne",
+    "sukunimi" : "Ammattilainen"
   },
   "opiskeluoikeudet" : [ {
-    "lähdejärjestelmänId" : {
-      "id" : "75489301",
-      "lähdejärjestelmä" : {
-        "koodiarvo" : "winnova",
-        "nimi" : {
-          "fi" : "Winnova"
-        },
-        "koodistoUri" : "lahdejarjestelma",
-        "koodistoVersio" : 1
-      }
-    },
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.52251087186",
       "oppilaitosnumero" : {
@@ -281,7 +270,8 @@
       "tyyppi" : {
         "koodiarvo" : "ammatillinentutkintoosittainen",
         "koodistoUri" : "suorituksentyyppi"
-      }
+      },
+      "keskiarvo" : 4.0
     } ],
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
@@ -289,6 +279,5 @@
     },
     "alkamispäivä" : "2012-09-01",
     "päättymispäivä" : "2016-06-04"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }
