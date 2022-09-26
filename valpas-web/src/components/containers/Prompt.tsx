@@ -13,10 +13,10 @@ export type PromptProps = {
 export const Prompt = (props: PromptProps) => (
   <Modal onClose={props.onReject} title={props.children}>
     <ButtonGroup>
-      <RaisedButton onClick={props.onConfirm}>
+      <RaisedButton onClick={props.onConfirm} testId="confirm-yes">
         <T id="Kyllä" />
       </RaisedButton>
-      <RaisedButton onClick={props.onReject}>
+      <RaisedButton onClick={props.onReject} testId="confirm-no">
         <T id="Ei" />
       </RaisedButton>
     </ButtonGroup>

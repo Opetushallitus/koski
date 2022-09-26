@@ -39,7 +39,7 @@ trait ValpasOppijaLaajatTiedot extends ValpasOppija {
   @SyntheticProperty
   def oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus] = None
 
-  def oppivelvollisuudestaVapautettu: Boolean = oppivelvollisuudestaVapautus.exists(!_.tulevaisuudessa)
+  def oppivelvollisuudestaVapautettu: Boolean = oppivelvollisuudestaVapautus.exists(v => !v.tulevaisuudessa && !v.mitätöitymässä)
 
   def suorittaaOppivelvollisuutta: Boolean =
     !oppivelvollisuudestaVapautettu && opiskeluoikeudet.exists(oo => oo.oppivelvollisuudenSuorittamiseenKelpaava && oo.isOpiskelu)

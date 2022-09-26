@@ -1334,13 +1334,23 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     }
 
     oppijanPoistoService.mapVapautetutOppijat(result, (r: ValpasOppijaRow) => r.kaikkiOppijaOidit) {
-      case (oppija, vapautus) => oppija.copy(
-        oppivelvollisuusVoimassaAsti = Seq(oppija.oppivelvollisuusVoimassaAsti, vapautus.oppivelvollisuusVoimassaAsti).min,
-        oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = Seq(oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti, vapautus.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti).min,
-        oppivelvollisuudestaVapautus = Some(vapautus),
-        onOikeusValvoaKunnalla = true,
-        onOikeusValvoaMaksuttomuutta = true,
-      )
+      case (oppija, vapautus) => {
+        oppija.copy(
+          oppivelvollisuusVoimassaAsti = if (vapautus.mitätöitymässä) {
+            oppija.oppivelvollisuusVoimassaAsti
+          } else {
+            Seq(oppija.oppivelvollisuusVoimassaAsti, vapautus.oppivelvollisuusVoimassaAsti).min
+          },
+          oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = if (vapautus.mitätöitymässä) {
+            oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+          } else {
+            Seq(oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti, vapautus.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti).min
+          },
+          oppivelvollisuudestaVapautus = Some(vapautus),
+          onOikeusValvoaKunnalla = true,
+          onOikeusValvoaMaksuttomuutta = true,
+        )
+      }
     }
   }
 
@@ -1398,8 +1408,16 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
 
     oppijanPoistoService.mapVapautetutOppijat(result, (r: ValpasOppivelvollisuustiedotRow) => r.kaikkiOppijaOidit) {
       case (oppija, vapautus) => oppija.copy(
-        oppivelvollisuusVoimassaAsti = Seq(oppija.oppivelvollisuusVoimassaAsti, vapautus.oppivelvollisuusVoimassaAsti).min,
-        oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = Seq(oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti, vapautus.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti).min,
+        oppivelvollisuusVoimassaAsti = if (vapautus.mitätöitymässä) {
+          oppija.oppivelvollisuusVoimassaAsti
+        } else {
+          Seq(oppija.oppivelvollisuusVoimassaAsti, vapautus.oppivelvollisuusVoimassaAsti).min
+        },
+        oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = if (vapautus.mitätöitymässä) {
+          oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+        } else {
+          Seq(oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti, vapautus.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti).min
+        },
       )
     }
   }

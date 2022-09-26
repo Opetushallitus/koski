@@ -1,5 +1,10 @@
 import { oppijaPath } from "../../src/state/paths"
 import {
+  clickElement,
+  expectElementEventuallyVisible,
+  testId,
+} from "../integrationtests-env/browser/content"
+import {
   allowNetworkError,
   FORBIDDEN,
 } from "../integrationtests-env/browser/fail-on-console"
@@ -10,6 +15,10 @@ import {
   oppivelvollisuustiedotEquals,
   secondaryHeadingEquals,
 } from "./oppija.shared"
+
+const vapautetettavaPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000001",
+})
 
 const oppivelvollisuudestaVapautettuPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000157",
@@ -69,7 +78,73 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
       await validateOppivelvollisuudestaVapautettuEiNäy()
     })
   })
+
+  describe("Vapautuksen merkitseminen", () => {
+    it("Happy path: vapautus", async () => {
+      await loginAs(vapautetettavaPath, "valpas-monta", true, tarkastelupäivä)
+
+      await merkitseOvVapautus()
+
+      await oppivelvollisuustiedotEquals(
+        oppivelvollisuustiedot({
+          oppivelvollisuus:
+            "Vapautettu oppivelvollisuudesta 1.10.2021 alkaen, myöntäjä Helsingin kaupunki",
+          vapautuksenMitätöintiBtn: true,
+          maksuttomuusoikeus: "30.9.2021 asti",
+        })
+      )
+    })
+  })
+
+  it("Happy path: mitätöinti", async () => {
+    const validateTiedot = () =>
+      oppivelvollisuustiedotEquals(
+        oppivelvollisuustiedot({
+          opiskelutilanne: "Opiskelemassa",
+          oppivelvollisuus: "21.11.2023 asti",
+          maksuttomuusoikeus: "31.12.2025 asti",
+          oppivelvollisuudenKeskeytysBtn: true,
+          kuntailmoitusBtn: true,
+          merkitseVapautusBtn: true,
+        })
+      )
+
+    await loginAs(vapautetettavaPath, "valpas-monta", true, tarkastelupäivä)
+
+    await validateTiedot()
+
+    await merkitseOvVapautus()
+    await mitätöiOvVapautus()
+
+    await validateTiedot()
+  })
+
+  it("Ennen raportointikannan viimeisintä päivitystä tehdyn vapautuksen mitätöinti", () => {
+    // TODO
+  })
 })
+
+const merkitseOvVapautus = async () => {
+  await expectElementEventuallyVisible(testId("ovvapautus-btn"))
+  await clickElement(testId("ovvapautus-btn"))
+
+  await expectElementEventuallyVisible(testId("ovvapautus-vahvistus"))
+  await clickElement(testId("ovvapautus-vahvistus"))
+  await clickElement(testId("ovvapautus-submit"))
+
+  await expectElementEventuallyVisible(testId("confirm-yes"))
+  await clickElement(testId("confirm-yes"))
+}
+
+const mitätöiOvVapautus = async () => {
+  await expectElementEventuallyVisible(testId("ovvapautus-mitatointi-btn"))
+  await clickElement(testId("ovvapautus-mitatointi-btn"))
+
+  await clickElement(testId("ovvapautus-submit"))
+
+  await expectElementEventuallyVisible(testId("confirm-yes"))
+  await clickElement(testId("confirm-yes"))
+}
 
 const validateOppivelvollisuudestaVapautettu = async (
   vapautuksenMitätöintiSallittu: boolean

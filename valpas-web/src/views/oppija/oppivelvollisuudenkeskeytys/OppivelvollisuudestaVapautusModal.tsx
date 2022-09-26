@@ -136,6 +136,7 @@ export const OppivelvollisuudestaVapautusModal = (
               value={kunta}
               onChange={setKunta}
               disabled={kuntaOptions.length < 2 || !!props.mitätöinti}
+              testId="ovvapautus-kunta-dropdown"
             />
             <TertiaryHeading>
               <T id="ovvapautus__päivämäärä_heading" />
@@ -181,6 +182,7 @@ export const OppivelvollisuudestaVapautusModal = (
                 }
                 disabled={!isValid && !props.mitätöinti}
                 hierarchy="danger"
+                testId="ovvapautus-submit"
               >
                 {t(
                   props.mitätöinti

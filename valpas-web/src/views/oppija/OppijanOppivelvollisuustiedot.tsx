@@ -19,7 +19,10 @@ import {
   isKeskeytysToistaiseksi,
   OppivelvollisuudenKeskeytys,
 } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
-import { OppivelvollisuudestaVapautus } from "../../state/apitypes/oppivelvollisuudestavapautus"
+import {
+  onOppivelvollisuudestaVapautettu,
+  OppivelvollisuudestaVapautus,
+} from "../../state/apitypes/oppivelvollisuudestavapautus"
 import { ISODate } from "../../state/common"
 import { formatDate, formatNullableDate } from "../../utils/date"
 import { Ilmoituslomake } from "../../views/ilmoituslomake/Ilmoituslomake"
@@ -108,7 +111,9 @@ export const OppijanOppivelvollisuustiedot = (
             ),
           })}
         />
-        {!props.oppivelvollisuudestaVapautus && (
+        {!onOppivelvollisuudestaVapautettu(
+          props.oppivelvollisuudestaVapautus
+        ) && (
           <InfoTableRow
             value={
               <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
@@ -190,7 +195,9 @@ export const OppijanOppivelvollisuustiedot = (
             }
           />
         )}
-        {!props.oppivelvollisuudestaVapautus && (
+        {!onOppivelvollisuudestaVapautettu(
+          props.oppivelvollisuudestaVapautus
+        ) && (
           <InfoTableRow
             value={
               <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
@@ -225,7 +232,10 @@ const oppivelvollisuusValue = (
   openKeskeytysModal: (keskeytys: OppivelvollisuudenKeskeytys) => void,
   openMitätöiOppivelvollisuudestaVapautusModal?: () => void
 ): React.ReactNode => {
-  if (oppivelvollisuudestaVapautettu) {
+  if (
+    oppivelvollisuudestaVapautettu &&
+    !oppivelvollisuudestaVapautettu.mitätöitymässä
+  ) {
     return (
       <>
         {oppivelvollisuudestaVapautettu.kunta ? (
@@ -250,6 +260,7 @@ const oppivelvollisuusValue = (
           <EditButton
             onClick={openMitätöiOppivelvollisuudestaVapautusModal}
             title={t("ovvapautus__mitätöinti_tooltip")}
+            testId="ovvapautus-mitatointi-btn"
           />
         )}
       </>
@@ -305,10 +316,15 @@ const oppivelvollisuusValue = (
 type EditButtonProps = {
   onClick: () => void
   title: string
+  testId?: string
 }
 
 const EditButton = (props: EditButtonProps) => (
-  <FlatButton className={b("editkeskeytysbtn")} onClick={props.onClick}>
+  <FlatButton
+    className={b("editkeskeytysbtn")}
+    onClick={props.onClick}
+    testId={props.testId}
+  >
     <EditIcon inline title={props.title} />
   </FlatButton>
 )

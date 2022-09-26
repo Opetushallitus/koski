@@ -10,17 +10,19 @@ export type DisableState = false | true | "byLook"
 export type RaisedButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
   hierarchy?: ButtonHierarchy
   disabled?: DisableState
+  testId?: string
 }
 
 export type ButtonHierarchy = "primary" | "secondary" | "danger"
 
 export const RaisedButton = (props: RaisedButtonProps) => {
-  const { children, disabled, onClick, className, ...rest } = props
+  const { children, disabled, onClick, className, testId, ...rest } = props
   return (
     <button
       className={raisedButtonClassName(props)}
       onClick={disabled === true ? undefined : onClick}
       disabled={disabled === true}
+      data-testid={testId}
       {...rest}
     >
       <span className={b("content")}>{children}</span>

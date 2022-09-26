@@ -6,6 +6,7 @@ export type OppivelvollisuudestaVapautus = {
   vapautettu: ISODate
   tulevaisuudessa: boolean
   kunta?: OrganisaatioWithOid
+  mitätöitymässä: boolean
 }
 
 export type OppivelvollisuudestaVapautuksenPohjatiedot = {
@@ -27,4 +28,4 @@ export type OppivelvollisuudestaVapautuksenMitätöinti = {
 export const onOppivelvollisuudestaVapautettu = (
   vapautus?: OppivelvollisuudestaVapautus
 ): vapautus is OppivelvollisuudestaVapautus =>
-  vapautus?.tulevaisuudessa === false
+  vapautus?.tulevaisuudessa === false && !vapautus.mitätöitymässä
