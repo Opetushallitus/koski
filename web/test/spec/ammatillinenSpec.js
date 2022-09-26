@@ -2272,8 +2272,8 @@ describe('Ammatillinen koulutus', function() {
             'Näyttötutkintoon valmistava koulutus 2012—2016, Valmistunut'
           ])
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-            'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.5.2016\n' +
-            'Tila 31.5.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+            'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.8.2016\n' +
+            'Tila 31.8.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
             '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)'
           )
         })
@@ -2378,8 +2378,8 @@ describe('Ammatillinen koulutus', function() {
         before(opinnot.expandAll)
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-            'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.5.2016\n' +
-            'Tila 31.5.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+            'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.8.2016\n' +
+            'Tila 31.8.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
             '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)'
           )
         })

@@ -19,8 +19,8 @@ describe('Lukiokoulutus', function( ){
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
-        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 8.6.2016\n' +
-          'Tila 8.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 8.8.2016\n' +
+          'Tila 8.8.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
           '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
           'Oppimäärä suoritettu kyllä\n' +
           'Lisätiedot\n' +
@@ -421,8 +421,8 @@ describe('Lukiokoulutus', function( ){
     describe('Kaikki tiedot näkyvissä', function () {
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Opiskeluoikeuden voimassaoloaika : 1.9.2015 — 10.1.2016\n' +
-          'Tila 10.1.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          'Opiskeluoikeuden voimassaoloaika : 1.9.2015 — 10.8.2016\n' +
+          'Tila 10.8.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
           '1.9.2015 Läsnä (valtionosuusrahoitteinen koulutus)')
       })
 

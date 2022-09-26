@@ -363,8 +363,8 @@ describe('Perusopetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('280598-2415'))
 
     it('näyttää opiskeluoikeuden tiedot', function() {
-      expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-        'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+      expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2018\n' +
+        'Tila 4.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
         '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
     })
 
@@ -372,8 +372,8 @@ describe('Perusopetus', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('280598-326W', '280598-2415'))
 
       it('hakee opiskeluoikeuden tiedot', function() {
-        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-          'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2018\n' +
+          'Tila 4.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
           '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
       })
     })
@@ -1377,13 +1377,13 @@ describe('Perusopetus', function() {
         })
 
         describe('Virkailijalle jolla ei ole luottamuksellisten tietojen katseluoikeutta', function() {
-          before(Authentication().logout, Authentication().login('jyvas-eiluottoa'), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+          before(Authentication().logout, Authentication().login('jyvas-eiluottoa'), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
 
           it('oppimäärää ei näytetä', function() {
             expect(opinnot.oppiaineet.oppiaine('pakollinen.KT').expandable()).to.equal(false)
           })
 
-          after(resetFixtures, Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+          after(resetFixtures, Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
         })
       })
 
@@ -3138,10 +3138,10 @@ describe('Perusopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
-        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, Perusopetuksen oppiaineen oppimäärä (2008—2016, valmistunut)'])
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, Perusopetuksen oppiaineen oppimäärä (2008—2018, valmistunut)'])
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-          'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2018\n' +
+          'Tila 4.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
           '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
       })
 
@@ -3161,7 +3161,7 @@ describe('Perusopetus', function() {
     describe('Monta oppiainetta', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('131298-5248'))
       it('näyttää opiskeluoikeuden otsikon oikein', function() {
-        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, Perusopetuksen oppiaineen oppimäärä (2008—2016, valmistunut)'])
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, Perusopetuksen oppiaineen oppimäärä (2008—2018, valmistunut)'])
       })
     })
 
@@ -3471,11 +3471,11 @@ describe('Perusopetus', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Opiskeluoikeuden voimassaoloaika : 15.8.2007 — 1.6.2008\n' +
-          'Tila 1.6.2008 Valmistunut\n' +
-          '6.1.2008 Läsnä\n' +
-          '20.12.2007 Loma\n' +
-          '15.8.2007 Läsnä')
+          'Opiskeluoikeuden voimassaoloaika : 15.8.2017 — 1.6.2018\n' +
+          'Tila 1.6.2018 Valmistunut\n' +
+          '6.1.2018 Läsnä\n' +
+          '20.12.2017 Loma\n' +
+          '15.8.2017 Läsnä')
       })
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
@@ -3483,7 +3483,7 @@ describe('Perusopetus', function() {
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
           'Kokonaislaajuus 11 vuosiviikkotuntia\n' +
-          'Suoritus valmis Vahvistus : 1.6.2008 Jyväskylä Reijo Reksi , rehtori')
+          'Suoritus valmis Vahvistus : 1.6.2018 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
@@ -3616,6 +3616,7 @@ describe('Perusopetus', function() {
       Authentication().login(),
       page.openPage,
       page.oppijaHaku.searchAndSelect('220109-784L'),
+      opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'),
       editor.edit,
       editor.property('tila').removeItem(0),
       opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,

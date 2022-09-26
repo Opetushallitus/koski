@@ -47,9 +47,9 @@ describe('Huollettavien tiedot', function () {
             'Päiväkoti Majakka'
           ], [
             'Peruskoulun esiopetus (2022—, läsnä)',
-            'Peruskoulun esiopetus (2006—2007, valmistunut)',
-            'Päiväkodin esiopetus (2006—, läsnä)',
-            'Päiväkodin esiopetus (2006—, läsnä)'
+            'Peruskoulun esiopetus (2014—2015, valmistunut)',
+            'Päiväkodin esiopetus (2014—, läsnä)',
+            'Päiväkodin esiopetus (2014—, läsnä)'
           ])
         })
       })

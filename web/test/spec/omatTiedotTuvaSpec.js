@@ -11,7 +11,7 @@ describe('Omat tiedot - TUVA', function () {
     before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('270504A317P'), wait.until(omattiedot.isVisible))
 
     it('Opiskeluoikeus näytetään listassa', function () {
-      expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.contain('Tutkintokoulutukseen valmentava koulutus (2021—2021, valmistunut)')
+      expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.contain('Tutkintokoulutukseen valmentava koulutus (2021—2022, valmistunut)')
     })
 
     it('Näytetään opiskeluoikeudet', function () {
@@ -23,7 +23,7 @@ describe('Omat tiedot - TUVA', function () {
 
     describe('Kun opiskeluoikeus avataan', function () {
       before(
-        opinnot.valitseOmatTiedotOpiskeluoikeus('Tutkintokoulutukseen valmentava koulutus (2021—2021, valmistunut)')
+        opinnot.valitseOmatTiedotOpiskeluoikeus('Tutkintokoulutukseen valmentava koulutus (2021—2022, valmistunut)')
       )
 
       it('näytetään suorituksen yleiset tiedot', function () {
