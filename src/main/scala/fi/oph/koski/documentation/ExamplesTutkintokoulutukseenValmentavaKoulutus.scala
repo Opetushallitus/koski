@@ -159,7 +159,8 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
             maksuton = true
           )
         )
-      )
+      ),
+      erityinenTuki = Some(List(Aikajakso(alku = date(2021, 8, 1), loppu = None)))
     )),
     organisaatiohistoria = Some(opiskeluoikeudenOrganisaatioHistoria),
     suoritukset = List(
