@@ -26,6 +26,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
   lazy val helsinginRaportti = loadRaportti(MockOrganisaatiot.helsinginKaupunki)
   lazy val stadinRaportti = loadRaportti(MockOrganisaatiot.stadinAmmattiopisto)
   lazy val keskuksenRaportti = loadRaportti(MockOrganisaatiot.stadinOppisopimuskeskus)
+  lazy val jyväskylänNormaalikoulunRaportti = loadRaportti(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2006, 8, 12), LocalDate.of(2006, 8, 13))
 
   "Päällekkäisten opiskeluoikeuksien raportti" - {
     "Lataus onnistuu ja tuottaa auditlogin" in {
@@ -139,6 +140,50 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
       ))
     }
 
+    "Päällekkäinen opiskeluoikeus -raportti sisältää myös esiopetuksen opiskeluoikeudet" in {
+      val rivit = eskariEssinRivit(jyväskylänNormaalikoulunRaportti)
+
+      rivit.map(withOppilaitos(_.viimeisinTila)) should contain theSameElementsAs(Seq(
+        ("Päiväkoti Touhula", "valmistunut"),
+        ("Päiväkoti Majakka", "valmistunut")
+      ))
+
+      rivit.map(withOppilaitos(_.paallekkainenViimeisinTila)) should contain theSameElementsAs(Seq(
+        ("Päiväkoti Touhula", "lasna"),
+        ("Päiväkoti Majakka", "lasna")
+      ))
+
+      rivit.map(withOppilaitos(_.paallekkainenAlkanutEka)) should contain theSameElementsAs(Seq(
+        ("Päiväkoti Touhula", "kyllä"),
+        ("Päiväkoti Majakka", "kyllä")
+      ))
+
+      rivit.map(withOppilaitos(_.rahoitusmuodot)) should contain theSameElementsAs(Seq(
+        ("Päiväkoti Touhula", None),
+        ("Päiväkoti Majakka", None)
+      ))
+
+      rivit.map(withOppilaitos(_.paallekkainenRahoitusmuodot)) should contain theSameElementsAs(Seq(
+        ("Päiväkoti Touhula", None),
+        ("Päiväkoti Majakka", None)
+      ))
+
+      rivit.map(withOppilaitos(_.rahoitusmuodotParametrienSisalla)) should contain theSameElementsAs(Seq(
+        ("Päiväkoti Touhula", None),
+        ("Päiväkoti Majakka", None)
+      ))
+
+      rivit.map(withOppilaitos(_.paallekkainenRahoitusmuodotParametrienSisalla)) should contain theSameElementsAs(Seq(
+        ("Päiväkoti Touhula", None),
+        ("Päiväkoti Majakka", None)
+      ))
+
+      rivit.map(withOppilaitos(_.paallekkainenVoimassaParametrienSisalla)) should contain theSameElementsAs(Seq(
+        ("Päiväkoti Touhula", true),
+        ("Päiväkoti Majakka", true)
+      ))
+    }
+
     "Päällekkäisen opiskeluoikeuden sisältämistä suorituksista käytetävän nimi" - {
       "International school" - {
         "Yksikin 10-luokan MYP-suoritus tulkitaan lukion suoritukseksi, vaikka opiskeluoikeudella on useita alemman vuosiluokan suorituksia" in {
@@ -199,13 +244,20 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
   private def pekanRivit(raportti:Seq[PaallekkaisetOpiskeluoikeudetRow]) =
     raportti.filter(_.oppijaOid == KoskiSpecificMockOppijat.paallekkaisiOpiskeluoikeuksia.oid)
 
-  private def loadRaportti(oppilaitos: String) = {
+  private def eskariEssinRivit(raportti:Seq[PaallekkaisetOpiskeluoikeudetRow]) =
+    raportti.filter(_.oppijaOid == KoskiSpecificMockOppijat.eskari.oid)
+
+  private def loadRaportti(
+    oppilaitos: String,
+    alku: LocalDate =  LocalDate.of(2020, 6, 30),
+    loppu: LocalDate = LocalDate.of(2020, 11, 30)
+  ) = {
     val request = AikajaksoRaporttiRequest(
       oppilaitosOid = oppilaitos,
       downloadToken = None,
       password = "password",
-      alku = LocalDate.of(2020, 6, 30),
-      loppu = LocalDate.of(2020, 11, 30),
+      alku = alku,
+      loppu = loppu,
       lang = "fi"
     )
 

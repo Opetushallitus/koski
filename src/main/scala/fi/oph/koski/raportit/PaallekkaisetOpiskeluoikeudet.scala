@@ -83,11 +83,22 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         select
           distinct r_opiskeluoikeus.opiskeluoikeus_oid
         from r_opiskeluoikeus
-          join r_opiskeluoikeus_aikajakso on r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-            where oppilaitos_oid = any($oppilaitosOids)
+          left join r_opiskeluoikeus_aikajakso on r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+          left join esiopetus_opiskeluoik_aikajakso on esiopetus_opiskeluoik_aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+        where oppilaitos_oid = any($oppilaitosOids)
+          and (
+            ( r_opiskeluoikeus_aikajakso.opiskeluoikeus_oid is not null
               and r_opiskeluoikeus_aikajakso.alku <= $viimeistaan
               and r_opiskeluoikeus_aikajakso.loppu >= $aikaisintaan
               and r_opiskeluoikeus_aikajakso.tila in ('lasna', 'valiaikaisestikeskeytynyt', 'valmistunut')
+            )
+            or
+            ( esiopetus_opiskeluoik_aikajakso.opiskeluoikeus_oid is not null
+              and esiopetus_opiskeluoik_aikajakso.alku <= $viimeistaan
+              and esiopetus_opiskeluoik_aikajakso.loppu >= $aikaisintaan
+              and esiopetus_opiskeluoik_aikajakso.tila in ('lasna', 'valiaikaisestikeskeytynyt', 'valmistunut')
+            )
+          )
       ) haetun_organisaation_opiskeluoikeudet
         join paallekkaiset_opiskeluoikeudet on paallekkaiset_opiskeluoikeudet.opiskeluoikeus_oid = haetun_organisaation_opiskeluoikeudet.opiskeluoikeus_oid
         left join lateral (
@@ -135,12 +146,30 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
               and oman_organisaation_aikajakso.alku <= $viimeistaan
               and oman_organisaation_aikajakso.loppu >= $aikaisintaan
             group by opiskeluoikeus_oid
+          union
+          select
+            opiskeluoikeus_oid,
+            string_agg(tila, ',' order by alku) tilat
+          from esiopetus_opiskeluoik_aikajakso oman_organisaation_aikajakso
+            where opiskeluoikeus_oid = haetun_organisaation_opiskeluoikeudet.opiskeluoikeus_oid
+              and oman_organisaation_aikajakso.alku <= $viimeistaan
+              and oman_organisaation_aikajakso.loppu >= $aikaisintaan
+            group by opiskeluoikeus_oid
         ) haetun_opiskeluoikeuden_tilat_parametrien_sisalla on haetun_organisaation_opiskeluoikeudet.opiskeluoikeus_oid = haetun_opiskeluoikeuden_tilat_parametrien_sisalla.opiskeluoikeus_oid
         left join lateral (
           select
             opiskeluoikeus_oid,
             string_agg(tila, ',' order by alku) tilat
           from r_opiskeluoikeus_aikajakso oman_organisaation_aikajakso
+            where opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
+              and oman_organisaation_aikajakso.alku <= $viimeistaan
+              and oman_organisaation_aikajakso.loppu >= $aikaisintaan
+            group by opiskeluoikeus_oid
+          union
+          select
+            opiskeluoikeus_oid,
+            string_agg(tila, ',' order by alku) tilat
+          from esiopetus_opiskeluoik_aikajakso oman_organisaation_aikajakso
             where opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
               and oman_organisaation_aikajakso.alku <= $viimeistaan
               and oman_organisaation_aikajakso.loppu >= $aikaisintaan
