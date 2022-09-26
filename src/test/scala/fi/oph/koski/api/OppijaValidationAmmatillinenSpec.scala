@@ -707,10 +707,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Keskiarvon asettaminen" - {
-        val keskeneräinenSuoritusKeskiarvolla = autoalanPerustutkinnonSuoritus().copy(keskiarvo = Option(4.0))
+        val keskeneräinenSuoritusKeskiarvolla = autoalanPerustutkinnonSuoritus().copy(keskiarvo = Some(4.0))
         "estetään jos suoritus on kesken" - {
           "palautetaan HTTP 400" in (putTutkintoSuoritus(keskeneräinenSuoritusKeskiarvolla)(
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle("Opiskeluoikeudelle ei voi asettaa keskiarvoa ellei opiskeluoikeus ole valmis"))))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle("Suoritukselle ei voi asettaa keskiarvoa ellei suoritus ole valmis"))))
         }
         val valmisSuoritusKeskiarvolla = keskeneräinenSuoritusKeskiarvolla.copy(
           vahvistus = vahvistus(date(2017, 5, 31)),
@@ -718,6 +718,14 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         "sallitaan jos suoritus on valmis" - {
           "palautetaan HTTP 200" in (putTutkintoSuoritus(valmisSuoritusKeskiarvolla)(
             verifyResponseStatusOk()))
+        }
+        val valmisSuoritusIlmanKeskiarvoa = autoalanPerustutkinnonSuoritus().copy(
+          vahvistus = vahvistus(date(2017, 5, 31)),
+          keskiarvo = None,
+          osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
+        "vaaditaan jos suoritus on valmis" - {
+          "palautetaan HTTP 400" in (putTutkintoSuoritus(valmisSuoritusIlmanKeskiarvoa)(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis"))))
         }
       }
     }

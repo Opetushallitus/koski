@@ -739,6 +739,7 @@ object AmmatillinenExampleData {
       alkamispäivä = None,
       toimipiste = stadinToimipiste,
       vahvistus = vahvistus(date(2016, 1, 1), stadinAmmattiopisto, Some(helsinki)),
+      keskiarvo = Some(4.0),
       osasuoritukset = Some(List(
         tutkinnonOsanSuoritus("100832", "Kasvun tukeminen ja ohjaus", ammatillisetTutkinnonOsat, hylätty, 2).copy(
           arviointi = Some(List(
@@ -815,6 +816,7 @@ object AmmatillinenExampleData {
       alkamispäivä = None,
       toimipiste = stadinToimipiste,
       vahvistus = vahvistus(date(2016, 1, 1), stadinAmmattiopisto, Some(helsinki)),
+      keskiarvo = Some(4.0),
       osasuoritukset = Some(List(
         osittaisenTutkinnonTutkinnonOsanSuoritus(h2, ammatillisetTutkinnonOsat, "100001", "Audiovisuaalisen tuotannon toteuttaminen", 2).copy(
           arviointi = Some(List(

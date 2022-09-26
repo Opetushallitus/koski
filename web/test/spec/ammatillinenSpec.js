@@ -1940,6 +1940,7 @@ describe('Ammatillinen koulutus', function() {
             'Työtehtävät Toimi harjoittelijana Sortti-asemalla\n' +
             'Laajuus 5 osp\n' +
             'Ryhmä YMP14SN\n' +
+            'Painotettu keskiarvo 4,00\n' +
             'Suoritus valmis Vahvistus : 31.5.2016 Helsinki Reijo Reksi , rehtori')
         })
 
@@ -2241,6 +2242,7 @@ describe('Ammatillinen koulutus', function() {
           'Suorituskieli suomi\n' +
           'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
           'Todistuksella näkyvät lisätiedot Suorittaa toista osaamisalaa\n' +
+          'Painotettu keskiarvo 4,00\n' +
           'Suoritus valmis Vahvistus : 4.6.2016 Reijo Reksi , rehtori'
         )
       })
