@@ -87,15 +87,15 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   private def isTelma(diaari: String) = {
-    val telmaDiaarit = application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(
+    val diaaritKoodistosta = application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(
       application.koodistoViitePalvelu.getLatestVersionRequired("koskikoulutustendiaarinumerot"),
       Koulutustyyppi.telma
-    )
+    ).getOrElse(List.empty).map(_.koodiarvo)
 
-    telmaDiaarit match {
-      case Some(diaarit) => diaarit.map(_.koodiarvo).contains(diaari)
-      case None => false
-    }
+    lazy val diaaritEperusteista = application.ePerusteet.findPerusteetByKoulutustyyppi(Set(Koulutustyyppi.telma))
+      .map(p => p.diaarinumero)
+
+    diaaritKoodistosta.contains(diaari) || diaaritEperusteista.contains(diaari)
   }
 
   private def tutkinnonOsienKoodit(rakenneOsa: RakenneOsa): List[Koodistokoodiviite] =
