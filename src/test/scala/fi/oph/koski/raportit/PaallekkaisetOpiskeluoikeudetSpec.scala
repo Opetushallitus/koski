@@ -102,7 +102,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
       pekanRivit(keskuksenRaportti).map(_.tilatParametrienSisalla) shouldBe(Seq("lasna","lasna"))
       pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenTilatParametrienSisalla)) should contain theSameElementsAs (Seq(
         ("Stadin ammatti- ja aikuisopisto", Some("lasna,eronnut")),
-        ("Omnia", None)
+        ("Omnia", Some("-"))
       ))
     }
     "Näytetään opiskeluoikeuden päättymispäivä jos sellainen on" in {
@@ -122,7 +122,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
       ))
       pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenRahoitusmuodotParametrienSisalla)) should contain theSameElementsAs(Seq(
         ("Stadin ammatti- ja aikuisopisto", Some("1")),
-        ("Omnia", None)
+        ("Omnia", Some("-"))
       ))
     }
     "Päällekkäinen opiskeluoikeus alkanut aikasemmin" in {
@@ -159,23 +159,23 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
       ))
 
       rivit.map(withOppilaitos(_.rahoitusmuodot)) should contain theSameElementsAs(Seq(
-        ("Päiväkoti Touhula", None),
-        ("Päiväkoti Majakka", None)
+        ("Päiväkoti Touhula", Some("-")),
+        ("Päiväkoti Majakka", Some("-"))
       ))
 
       rivit.map(withOppilaitos(_.paallekkainenRahoitusmuodot)) should contain theSameElementsAs(Seq(
-        ("Päiväkoti Touhula", None),
-        ("Päiväkoti Majakka", None)
+        ("Päiväkoti Touhula", Some("-")),
+        ("Päiväkoti Majakka", Some("-"))
       ))
 
       rivit.map(withOppilaitos(_.rahoitusmuodotParametrienSisalla)) should contain theSameElementsAs(Seq(
-        ("Päiväkoti Touhula", None),
-        ("Päiväkoti Majakka", None)
+        ("Päiväkoti Touhula", Some("-")),
+        ("Päiväkoti Majakka", Some("-"))
       ))
 
       rivit.map(withOppilaitos(_.paallekkainenRahoitusmuodotParametrienSisalla)) should contain theSameElementsAs(Seq(
-        ("Päiväkoti Touhula", None),
-        ("Päiväkoti Majakka", None)
+        ("Päiväkoti Touhula", Some("-")),
+        ("Päiväkoti Majakka", Some("-"))
       ))
 
       rivit.map(withOppilaitos(_.paallekkainenVoimassaParametrienSisalla)) should contain theSameElementsAs(Seq(
