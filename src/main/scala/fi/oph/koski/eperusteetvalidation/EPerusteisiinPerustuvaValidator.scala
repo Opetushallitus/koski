@@ -163,7 +163,12 @@ class EPerusteisiinPerustuvaValidator(
     if (onKoodistossa(diaarinumero) || voimassaolleetPerusteet.nonEmpty) {
       HttpStatus.ok
     } else {
-      KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
+      val kaikkiPerusteet = ePerusteet.findKaikkiRakenteet(diaarinumero)
+      if (kaikkiPerusteet.isEmpty) {
+        KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + diaarinumero)
+      } else {
+        KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
+      }
     }
   }
 
