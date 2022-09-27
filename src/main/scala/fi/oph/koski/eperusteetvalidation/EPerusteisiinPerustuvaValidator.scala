@@ -4,7 +4,7 @@ import fi.oph.koski.eperusteet.{EPerusteRakenne, EPerusteetRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{DiaarinumerollinenKoulutus, _}
 import fi.oph.koski.tutkinto.Koulutustyyppi.{Koulutustyyppi, ammatillinenPerustutkintoErityisopetuksena, ammatillisenPerustutkinnonTyypit, valmaErityisopetuksena}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import mojave.{lens, traversal}
@@ -162,13 +162,9 @@ class EPerusteisiinPerustuvaValidator(
   }
 
   private def validatePerusteVoimassa(diaarinumero: String, tarkastelupäivä: LocalDate): HttpStatus = {
-    val kaikkiPerusteet = ePerusteet.findKaikkiRakenteet(diaarinumero)
     lazy val voimassaolleetPerusteet = ePerusteet.findRakenteet(diaarinumero, Some(tarkastelupäivä))
 
-    if (kaikkiPerusteet.isEmpty || voimassaolleetPerusteet.nonEmpty) {
-      // TODO: Miksi tässä on aiemmin hyväksytty tilanne, jossa perustetta ei löydy lainkaan? Ilmeisesti siksi, että diaari voi silti olla
-      // hyväksytty, koska on koodistossa, vaikkei perustetta löydy lainkaan? Ehkä validaatiot voisi yhdistää jotenkin, tai jotenkin skipata
-      // automaattisesti kaikki perustevalidaatiot, jos perusteen nimi on koodistossa?
+    if (onKoodistossa(diaarinumero) || voimassaolleetPerusteet.nonEmpty) {
       HttpStatus.ok
     } else {
       KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
@@ -233,15 +229,12 @@ class EPerusteisiinPerustuvaValidator(
     oo.suoritukset.filter(suoritus =>
       suoritus.koulutusmoduuli match {
         case diaarillinen: DiaarinumerollinenKoulutus =>
-          diaarillinen
-            .perusteenDiaarinumero
-            .map(diaari => ePerusteet.findTarkatRakenteet(diaari, päivä))
-            .getOrElse(List.empty)
-            .map (
-              _.koulutukset.exists(_.koulutuskoodiArvo == diaarillinen.tunniste.koodiarvo)
-            ) match {
-            case Nil => true
-            case xs: List[Boolean] => xs.contains(true)
+          diaarillinen.perusteenDiaarinumero match {
+            case Some(diaarinumero) if !onKoodistossa(diaarinumero) =>
+              ePerusteet
+                .findTarkatRakenteet(diaarinumero, päivä)
+                .exists(_.koulutukset.exists(_.koulutuskoodiArvo == diaarillinen.tunniste.koodiarvo))
+            case _ => true
           }
         case _ => true
       }
@@ -273,25 +266,26 @@ class EPerusteisiinPerustuvaValidator(
       .map(_.koulutusmoduuli)
       .exists(k => k.tunniste.koodiarvo == "VVAI22")
 
-    def haePeruste(suoritus: AmmatillinenPäätasonSuoritus): Option[List[EPerusteRakenne]] =
-      suoritus.koulutusmoduuli match {
-        case diaarillinen: DiaarinumerollinenKoulutus =>
-          diaarillinen.perusteenDiaarinumero.map(dNro => ePerusteet.findRakenteet(dNro, oo.päättymispäivä))
-        case _ => None
-      }
+    def haePerusteet(perusteenDiaarinumero: String) =
+      ePerusteet.findRakenteet(perusteenDiaarinumero, oo.päättymispäivä)
 
     HttpStatus.fold(
-      oo.suoritukset.flatMap {
+      oo.suoritukset.map {
         case suoritus: AmmatillisenTutkinnonSuoritus if löytyyVVAI22(suoritus) =>
-          haePeruste(suoritus).map { perusteet =>
-            HttpStatus.validate(
-              perusteet.exists(peruste => peruste.voimassaoloAlkaaLocalDate.exists(d => !d.isBefore(rajapäivä)))
-            ) {
-              KoskiErrorCategory.badRequest.validation.ammatillinen.yhteinenTutkinnonOsaVVAI22()
-            }
+          suoritus.koulutusmoduuli.perusteenDiaarinumero match {
+            case Some(diaarinumero) if !onKoodistossa(diaarinumero) =>
+              HttpStatus.validate(
+                haePerusteet(diaarinumero).exists(peruste => peruste.voimassaoloAlkaaLocalDate.exists(d => !d.isBefore(rajapäivä)))
+              ) {
+                KoskiErrorCategory.badRequest.validation.ammatillinen.yhteinenTutkinnonOsaVVAI22()
+              }
+            case _ => HttpStatus.ok
           }
-        case _ => Some(HttpStatus.ok)
+        case _ => HttpStatus.ok
       }
     )
   }
+
+  private def onKoodistossa(diaarinumero: String): Boolean =
+    koodistoViitePalvelu.validate("koskikoulutustendiaarinumerot", diaarinumero).isDefined
 }
