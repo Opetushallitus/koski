@@ -26,7 +26,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
   lazy val helsinginRaportti = loadRaportti(MockOrganisaatiot.helsinginKaupunki)
   lazy val stadinRaportti = loadRaportti(MockOrganisaatiot.stadinAmmattiopisto)
   lazy val keskuksenRaportti = loadRaportti(MockOrganisaatiot.stadinOppisopimuskeskus)
-  lazy val jyväskylänNormaalikoulunRaportti = loadRaportti(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2006, 8, 12), LocalDate.of(2006, 8, 13))
+  lazy val jyväskylänNormaalikoulunRaportti = loadRaportti(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2014, 8, 12), LocalDate.of(2014, 8, 13))
 
   "Päällekkäisten opiskeluoikeuksien raportti" - {
     "Lataus onnistuu ja tuottaa auditlogin" in {

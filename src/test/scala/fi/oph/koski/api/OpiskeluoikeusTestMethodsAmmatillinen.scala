@@ -25,14 +25,15 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
   def päättymispäivällä(
     oo: AmmatillinenOpiskeluoikeus,
     päättymispäivä: LocalDate,
-    osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None)))
+    osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None))),
+    keskiarvo: Option[Double] = Some(4.0)
   ) =
     lisääTila(oo, päättymispäivä, ExampleData.opiskeluoikeusValmistunut).copy(
       suoritukset = oo.suoritukset.map {
         case s: AmmatillisenTutkinnonSuoritus => s.copy(
           alkamispäivä = oo.alkamispäivä,
           vahvistus = vahvistus(päättymispäivä, stadinAmmattiopisto, Some(helsinki)),
-          keskiarvo = Some(4.0),
+          keskiarvo = keskiarvo,
           osasuoritukset = osasuoritukset
         )
         case _ => ???

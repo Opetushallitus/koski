@@ -146,7 +146,8 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
             osasuoritukset = Some(List(
               tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", None, hyväksytty)
                 .copy(vahvistus = None)
-            ))
+            )),
+            keskiarvo = None
           )
         )
         nimi(opiskeluoikeus.getOppilaitos) should equal("Stadin ammatti- ja aikuisopisto -vanha")

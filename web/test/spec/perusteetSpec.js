@@ -54,6 +54,7 @@ describe('EPerusteet', function() {
         page.openPage,
         page.oppijaHaku.searchAndSelect('251176-003P'),
         editor.edit,
+        editor.property('keskiarvo').setValue(3.5),
         tilaJaVahvistus.merkitseValmiiksi,
         opinnot.tilaJaVahvistus.lisääVahvistus(paattymispaiva),
         opinnot.avaaLisaysDialogi,

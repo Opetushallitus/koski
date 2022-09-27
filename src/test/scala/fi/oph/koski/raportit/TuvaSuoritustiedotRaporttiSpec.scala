@@ -203,7 +203,7 @@ class TuvaSuoritustiedotRaporttiSpec
               "Majoitus (pv)" -> Some(0),
               "Sisäoppilaitosmainen majoitus (pv)" -> Some(0),
               "Vaativan erityisen tuen yhteydessä järjestettävä majoitus (pv)" -> Some(0),
-              "Erityinen tuki (pv)" -> Some(153),
+              "Erityinen tuki (pv)" -> Some(366),
               "Vaativat erityisen tuen tehtävä (pv)" -> Some(0),
               "Ulkomaanjaksot (pv)" -> Some(0),
               "Vaikeasti vammaisten opetus (pv)" -> Some(0),

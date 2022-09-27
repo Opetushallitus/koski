@@ -34,7 +34,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2021-12-31",
+        "alku" : "2022-08-01",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "koodistoUri" : "koskiopiskeluoikeudentila"
@@ -665,7 +665,6 @@
       "koodistoUri" : "tuvajarjestamislupa"
     },
     "alkamispäivä" : "2021-08-01",
-    "päättymispäivä" : "2021-12-31"
-  } ],
-  "ignoreKoskiValidator" : true
+    "päättymispäivä" : "2022-08-01"
+  } ]
 }
