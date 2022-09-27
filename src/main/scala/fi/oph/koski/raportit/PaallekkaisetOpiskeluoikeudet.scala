@@ -69,13 +69,13 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
     sql"""
       select
         paallekkaiset_opiskeluoikeudet.*,
-        rahoitusmuodot.koodiarvot rahoitusmuodot,
-        rahoitusmuodot_osuu_parametreille.koodiarvot rahoitusmuodot_osuu_parametreille,
+        coalesce(rahoitusmuodot.koodiarvot, '-') rahoitusmuodot,
+        coalesce(rahoitusmuodot_osuu_parametreille.koodiarvot, '-') rahoitusmuodot_osuu_parametreille,
         paallekkaiset_opiskeluoikeudet.paallekkainen_alkamispaiva = paallekkaiset_opiskeluoikeudet.alkamispaiva sama_alkupaiva,
         paallekkaiset_opiskeluoikeudet.paallekkainen_alkamispaiva < paallekkaiset_opiskeluoikeudet.alkamispaiva paallekkainen_alkanut_eka,
-        paallekkainen_rahoitusmuodot.koodiarvot paallekkainen_rahoitusmuodot,
-        paallekkainen_rahoitusmuodot_osuu_parametreille.koodiarvot paallekkainen_rahoitusmuodot_parametrien_sisalla,
-        paallekkaisen_opiskeluoikeuden_tilat_parametrien_sisalla.tilat paallekkainen_tilat_parametrien_sisalla,
+        coalesce(paallekkainen_rahoitusmuodot.koodiarvot, '-') paallekkainen_rahoitusmuodot,
+        coalesce(paallekkainen_rahoitusmuodot_osuu_parametreille.koodiarvot, '-') paallekkainen_rahoitusmuodot_parametrien_sisalla,
+        coalesce(paallekkaisen_opiskeluoikeuden_tilat_parametrien_sisalla.tilat, '-') paallekkainen_tilat_parametrien_sisalla,
         haetun_opiskeluoikeuden_tilat_parametrien_sisalla.tilat tilat_parametrien_sisalla,
         paatason_suoritukset.tyyppi_ja_koodiarvo paallekkainen_paatason_suoritukset,
         paallekkainen_alkamispaiva <= $viimeistaan and coalesce(paallekkainen_paattymispaiva, '9999-12-31'::date) >= $aikaisintaan paallekkainen_voimassa_aikajaksolla
