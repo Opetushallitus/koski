@@ -27,17 +27,17 @@ object AmmatillinenValidation {
 
   private def validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen: AmmatillinenOpiskeluoikeus) = {
     val isValid = ammatillinen.suoritukset.forall {
-      case a: AmmatillisenTutkinnonSuoritus if (a.keskiarvo.isDefined) => a.valmis | eronnutMuttaTutkinnonOsaOlemassa(a)
-      case b: AmmatillisenTutkinnonOsittainenSuoritus if (b.keskiarvo.isDefined) => b.valmis | eronnutMuttaTutkinnonOsaOlemassa(b)
+      case a: AmmatillisenTutkinnonSuoritus if (a.keskiarvo.isDefined) => a.valmis | katsotaanEronneeksiJaTutkinnonOsaOlemassa(a)
+      case b: AmmatillisenTutkinnonOsittainenSuoritus if (b.keskiarvo.isDefined) => b.valmis | katsotaanEronneeksiJaTutkinnonOsaOlemassa(b)
       case _ => true
     }
     if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle()
   }
 
-  private def eronnutMuttaTutkinnonOsaOlemassa(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = {
-    val eronnut = if (a.tila.isDefined) List("katsotaaneronneeksi", "eronnut", "keskeytynyt").contains(a.tila.get.koodiarvo) else false
+  private def katsotaanEronneeksiJaTutkinnonOsaOlemassa(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = {
+    val katsotaanEronneeksi = if (a.tila.isDefined) a.tila.get.koodiarvo == "katsotaaneronneeksi" else false
     val suorituksissaTutkinnonOsa = if (a.osasuoritukset.isDefined) a.osasuoritukset.get.exists(os => os.valmis) else false
-    eronnut & suorituksissaTutkinnonOsa
+    katsotaanEronneeksi & suorituksissaTutkinnonOsa
   }
 
   private def validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen: AmmatillinenOpiskeluoikeus) = {
