@@ -28,6 +28,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
     ))
 
     TutkintoRakenne(
+      rakenne.id,
       rakenne.diaarinumero,
       parseKoulutustyyppi(rakenne.koulutustyyppi),
       suoritustavat,

@@ -407,5 +407,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
   )))
 
   override def vääräntyyppisenPerusteenDiaarinumero: String = "60/011/2015"
+  override def vääräntyyppisenPerusteenId: Long = 1372910
   def eperusteistaLöytymätönValidiDiaarinumero: String = "13/011/2009"
 }

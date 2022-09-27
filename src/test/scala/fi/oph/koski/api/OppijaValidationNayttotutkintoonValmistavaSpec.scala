@@ -18,6 +18,7 @@ class OppijaValidationNayttotutkintoonValmistavaSpec extends TutkinnonPerusteetT
 
   override def eperusteistaLöytymätönValidiDiaarinumero: String = "13/011/2009"
   override def vääräntyyppisenPerusteenDiaarinumero: String = "60/011/2015"
+  override def vääräntyyppisenPerusteenId: Long = 1372910
 
   "Voi merkitä valmiiksi vaikka ei sisällä osasuorituksia" in {
      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(näyttötutkintoonValmistavanKoulutuksenSuoritus.copy(osasuoritukset = None)))) {

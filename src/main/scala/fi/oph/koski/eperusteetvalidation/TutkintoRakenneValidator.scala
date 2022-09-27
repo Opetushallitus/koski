@@ -23,21 +23,17 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), opiskeluoikeudenPäättymispäivä, Some(tutkintoSuoritus)) match {
         case Left(status) => status
         case Right(rakenteet) =>
-          HttpStatus.justStatus(
-            HttpStatus.any(
-              rakenteet.map(rakenne =>
-                validateOsaamisalat(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), rakenne).toEither
-              )
+          HttpStatus.fold(
+            rakenteet.map(rakenne =>
+              validateOsaamisalat(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), rakenne)
             )
           ).onSuccess(HttpStatus.fold(suoritus.osasuoritusLista.map {
             case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus =>
               HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                 case osa: ValtakunnallinenTutkinnonOsa =>
-                  HttpStatus.justStatus(
-                    HttpStatus.any(
-                      rakenteet.map(rakenne =>
-                        validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä).toEither
-                      )
+                  HttpStatus.fold(
+                    rakenteet.map(rakenne =>
+                      validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä)
                     )
                   )
                 case osa: PaikallinenTutkinnonOsa =>
@@ -127,7 +123,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                 }
                 Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi(
                   rakenteet.map(rakenne =>
-                    s"Suoritukselle $tyyppiStr ei voi käyttää perustetta ${rakenne.diaarinumero}, jonka koulutustyyppi on ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. "
+                    s"Suoritukselle $tyyppiStr ei voi käyttää perustetta ${rakenne.diaarinumero} (${rakenne.id}), jonka koulutustyyppi on ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. "
                   ).mkString +
                     s"Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}."
                 ))
@@ -166,10 +162,10 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   }
 
   private def validateOsaamisalat(osaamisalat: List[Koodistokoodiviite], rakenne: TutkintoRakenne): HttpStatus = {
-    val tuntemattomatOsaamisalat: List[Koodistokoodiviite] = osaamisalat.filter(osaamisala => !findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)
+    val tuntemattomatOsaamisalat: List[Koodistokoodiviite] = osaamisalat.filter(osaamisala => findOsaamisala(rakenne, osaamisala.koodiarvo).isEmpty)
 
     HttpStatus.fold(tuntemattomatOsaamisalat.map {
-      osaamisala: Koodistokoodiviite => KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala " + osaamisala.koodiarvo + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero)
+      osaamisala: Koodistokoodiviite => KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala(s"Osaamisala ${osaamisala.koodiarvo} ei löydy tutkintorakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
     })
   }
 
@@ -216,13 +212,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
             findTutkinnonOsa(suoritustapaJaRakenne, osa.tunniste) match {
               case None =>
                 KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(
-                  "Tutkinnon osa " + osa.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapaJaRakenne.suoritustapa.koodiarvo)
+                  s"Tutkinnon osa ${osa.tunniste} ei löydy tutkintorakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id}) - suoritustapa ${suoritustapaJaRakenne.suoritustapa.koodiarvo}")
               case Some(tutkinnonOsa) =>
                 HttpStatus.ok
             }
         }
       case None =>
-        KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta()
+        KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta(s"Suoritustapaa ei löydy tutkinnon rakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
     }
   }
 
