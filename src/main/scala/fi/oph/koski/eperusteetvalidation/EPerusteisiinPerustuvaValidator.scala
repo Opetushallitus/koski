@@ -23,9 +23,7 @@ class EPerusteisiinPerustuvaValidator(
     koulutustyyppiTraversal.modify(oo) { koulutus =>
       val koulutustyyppi = koulutus match {
         case np: NuortenPerusopetus =>
-          // Lue koulutustyyppi aina uusimmasta perusteesta, jos samalla diaarinumerolla sattuu olemaan monta. Käytännössä samalla diaarinumerolla
-          // julkaistussa perusteessa koulutustyyppi ei voi vaihtua.
-          np.perusteenDiaarinumero.flatMap(diaarinumero => tutkintoRepository.findUusinPerusteRakenne(diaarinumero).map(_.koulutustyyppi))
+          np.perusteenDiaarinumero.flatMap(haeKoulutustyyppi)
         case _ =>
           val koulutustyyppiKoodisto = koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")
           val koulutusTyypit = koodistoViitePalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
@@ -95,7 +93,7 @@ class EPerusteisiinPerustuvaValidator(
     }
 
     def validateTutkinnonosaSuoritukset(tutkinnonSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, suoritukset: Option[List[TutkinnonOsanSuoritus]]) = {
-      koulutustyyppi(tutkinnonSuoritus.koulutusmoduuli.perusteenDiaarinumero.get)
+      haeKoulutustyyppi(tutkinnonSuoritus.koulutusmoduuli.perusteenDiaarinumero.get)
         .map(tyyppi => tutkinnonSuoritus match {
           case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => HttpStatus.fold(suoritukset.toList.flatten.map(s => validateTutkinnonosaSuoritus(tutkinnonSuoritus, s, tyyppi)))
           case _ => HttpStatus.ok
@@ -106,15 +104,13 @@ class EPerusteisiinPerustuvaValidator(
         }
     }
 
-    // TODO: tarkista, voiko koulutustyyppi muuttua. Jos voi, niin tässä pitää käsitellä ja palauttaa monta.
-    def koulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] = tutkintoRepository.findPerusteRakenteet(diaarinumero, opiskeluoikeudenPäättymispäivä).headOption.map(r => r.koulutustyyppi)
-
     suoritus match {
       case s: AmmatillisenTutkinnonSuoritus => validateTutkinnonosaSuoritukset(s, s.osasuoritukset)
       case s: AmmatillisenTutkinnonOsittainenSuoritus => validateTutkinnonosaSuoritukset(s, s.osasuoritukset)
       case _ => HttpStatus.ok
     }
   }
+
   private def perusteenNimi(diaariNumero: String, päivä: Option[LocalDate]): Option[LocalizedString] = {
     ePerusteet.findPerusteenYksilöintitiedot(diaariNumero, päivä)
       .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
@@ -285,6 +281,11 @@ class EPerusteisiinPerustuvaValidator(
       }
     )
   }
+
+  private def haeKoulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] =
+    // Lue koulutustyyppi aina uusimmasta perusteesta. Käytännössä samalla diaarinumerolla
+    // julkaistuissa perusteessa koulutustyyppi ei voi vaihtua.
+    tutkintoRepository.findUusinPerusteRakenne(diaarinumero).map(r => r.koulutustyyppi)
 
   private def onKoodistossa(diaarinumero: String): Boolean =
     koodistoViitePalvelu.validate("koskikoulutustendiaarinumerot", diaarinumero).isDefined
