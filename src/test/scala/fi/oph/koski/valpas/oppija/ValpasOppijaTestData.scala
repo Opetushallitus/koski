@@ -784,6 +784,30 @@ object ValpasOppijaTestData {
       )
     ),
     (
+      ValpasMockOppijat.keväänUlkopuolellaValmistunut17v,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.keväänUlkopuolellaValmistunutYsiluokkalainen,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.keväänUlkopuolellaEronnut17v,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.keväänUlkopuolellaEronnutYsiluokkalainen,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("eronnut", "eronnut")),
+        )
+      )
+    ),
+    (
       ValpasMockOppijat.eronnutOppijaTarkastelupäivänJälkeen,
       List(
         ExpectedData(
