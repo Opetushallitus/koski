@@ -295,7 +295,7 @@ object ValpasExampleData {
       ValpasMockUsers.valpasHelsinki.oid,
       // Huom! Oppivelvollisuudesta ei voi olla vapautettu ennen 1.8.2022, mutta testidatassa sitä käytetään, jotta
       // vältetään koko testiaineiston päivitys.
-      LocalDate.of(2021, 10, 1),
+      LocalDate.of(2000, 8, 1),
       "091",
     ),
   )

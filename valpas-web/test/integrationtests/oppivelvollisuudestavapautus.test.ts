@@ -156,12 +156,11 @@ const validateOppivelvollisuudestaVapautettu = async (
   await oppivelvollisuustiedotEquals(
     oppivelvollisuustiedot({
       oppivelvollisuus:
-        "Vapautettu oppivelvollisuudesta 1.8.2021 alkaen, myöntäjä Helsingin kaupunki",
+        "Vapautettu oppivelvollisuudesta 1.8.2000 alkaen, myöntäjä Helsingin kaupunki",
       vapautuksenMitätöintiBtn: vapautuksenMitätöintiSallittu,
-      maksuttomuusoikeus: "31.7.2021 asti",
+      maksuttomuusoikeus: "31.7.2000 asti",
     })
   )
-  // TODO: Lisää tarkastukset, ettei hakuja yms. näy
 }
 
 const validateOppivelvollisuudestaVapautettuEiNäy = async () => {

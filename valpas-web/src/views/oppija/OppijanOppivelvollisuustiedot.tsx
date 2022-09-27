@@ -103,14 +103,16 @@ export const OppijanOppivelvollisuustiedot = (
             onSubmit={() => window.location.reload()}
           />
         )}
-        <InfoTableRow
-          label={t("oppija__maksuttomuus_voimassa")}
-          value={t("oppija__maksuttomuus_voimassa_value", {
-            date: formatNullableDate(
-              props.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
-            ),
-          })}
-        />
+        {!props.oppivelvollisuudestaVapautus?.mitätöitymässä && (
+          <InfoTableRow
+            label={t("oppija__maksuttomuus_voimassa")}
+            value={t("oppija__maksuttomuus_voimassa_value", {
+              date: formatNullableDate(
+                props.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+              ),
+            })}
+          />
+        )}
         {!onOppivelvollisuudestaVapautettu(
           props.oppivelvollisuudestaVapautus
         ) && (
@@ -195,9 +197,8 @@ export const OppijanOppivelvollisuustiedot = (
             }
           />
         )}
-        {!onOppivelvollisuudestaVapautettu(
-          props.oppivelvollisuudestaVapautus
-        ) && (
+        {(!props.oppivelvollisuudestaVapautus ||
+          props.oppivelvollisuudestaVapautus.mitätöitymässä) && (
           <InfoTableRow
             value={
               <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
@@ -232,13 +233,12 @@ const oppivelvollisuusValue = (
   openKeskeytysModal: (keskeytys: OppivelvollisuudenKeskeytys) => void,
   openMitätöiOppivelvollisuudestaVapautusModal?: () => void
 ): React.ReactNode => {
-  if (
-    oppivelvollisuudestaVapautettu &&
-    !oppivelvollisuudestaVapautettu.mitätöitymässä
-  ) {
+  if (oppivelvollisuudestaVapautettu) {
     return (
       <>
-        {oppivelvollisuudestaVapautettu.kunta ? (
+        {oppivelvollisuudestaVapautettu.mitätöitymässä ? (
+          <T id="ovvapautus__vapautus_oppivelvollisuudesta_mitätöitymässä" />
+        ) : oppivelvollisuudestaVapautettu.kunta ? (
           <T
             id="ovvapautus__vapautettu_oppivelvollisuudesta"
             params={{
@@ -256,13 +256,14 @@ const oppivelvollisuusValue = (
             }}
           />
         )}
-        {openMitätöiOppivelvollisuudestaVapautusModal && (
-          <EditButton
-            onClick={openMitätöiOppivelvollisuudestaVapautusModal}
-            title={t("ovvapautus__mitätöinti_tooltip")}
-            testId="ovvapautus-mitatointi-btn"
-          />
-        )}
+        {openMitätöiOppivelvollisuudestaVapautusModal &&
+          !oppivelvollisuudestaVapautettu.mitätöitymässä && (
+            <EditButton
+              onClick={openMitätöiOppivelvollisuudestaVapautusModal}
+              title={t("ovvapautus__mitätöinti_tooltip")}
+              testId="ovvapautus-mitatointi-btn"
+            />
+          )}
       </>
     )
   }

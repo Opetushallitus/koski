@@ -150,10 +150,10 @@
   "oppija__pohjatietojen_haku_epäonnistui": "Pohjatietojen haku epäonnistui. Yritä uudelleen myöhemmin.",
   "oppija__ei_oikeuksia_tehdä_ilmoitusta": "Sinulla ei ole oikeuksia tehdä kuntailmoitusta tästä oppijasta.",
   "oppija__muokkaa_oppivelvollisuuden_keskeytystä_btn": "Muokkaa",
-
   "ovvapautus__merkitse_btn": "Merkitse oppivelvollisuudesta vapautus",
   "ovvapautus__vapautettu_oppivelvollisuudesta": "Vapautettu oppivelvollisuudesta {{päivämäärä}} alkaen, myöntäjä {{kunta}}",
   "ovvapautus__vapautettu_oppivelvollisuudesta_ei_kuntaa": "Vapautettu oppivelvollisuudesta {{päivämäärä}} alkaen",
+  "ovvapautus__vapautus_oppivelvollisuudesta_mitätöitymässä": "Vapautus oppivelvollisuudesta on mitätöitymässä. Oppivelvollisuuden päättymispäivää ja oikeuden maksuttomaan koulutuksen päättymispäivää ei pystytä näyttämään tällä hetkellä. Tieto on saatavilla tavallisesti noin vuorokauden kuluessa.",
   "ovvapautus__info": "Asuinkunta on myöntänyt oppijalle vapautuksen oppivelvollisuudesta oppivelvollisuuslain 2 §:n mukaisesti, sillä oppijan maassa oleskelun perusteena on opiskelu ja hän on hakenut hakemuksella asuinkunnalta vapautuksen oppivelvollisuuden suorittamisesta.",
   "ovvapautus__mitätöinti_tooltip": "Mitätöi oppivelvollisuudesta vapautus",
   "ovvapautus__oppivelvollisuudesta_vapauttaminen_title": "Oppivelvollisuudesta vapauttaminen",
@@ -166,7 +166,6 @@
   "ovvapautus__mitätöinti_submit_btn": "Mitätöi oppivelvollisuuden vapautus -merkintä",
   "ovvapautus__vapautuksen_varmistus": "Haluatko varmasti merkitä oppivelvollisuudesta vapautuksen?",
   "ovvapautus__mitätöinnin_varmistus": "Haluatko varmasti mitätöidä oppivelvollisuudesta vapautuksen?",
-
   "ovkeskeytys__otsikko": "Oppivelvollisuuden keskeytyksen lisäys",
   "ovkeskeytys__muokkaus_otsikko": "Oppivelvollisuuden keskeytyksen muokkaus",
   "ovkeskeytys__organisaatio": "Organisaatio",

@@ -6,6 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpola
 import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
+import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.{Henkilö, OrganisaatioWithOid}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
@@ -22,6 +23,7 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
   private val organisaatioService = application.organisaatioService
   private val rajapäivätService = application.valpasRajapäivätService
   private val accessResolver = new ValpasAccessResolver
+  private val raportitService = new RaportitService(application)
 
   private val VAPAUTUS_SALLITTU_AIKAISINTAAN = if (Environment.isMockEnvironment(application.config)) {
     LocalDate.of(1999, 8, 1)
@@ -33,9 +35,11 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
     val oppijaOids = oppijat.flatMap(toOids)
     val vapautukset = db.getOppivelvollisuudestaVapautetutOppijat(oppijaOids)
     val aktiivisetKunnat = organisaatioService.aktiivisetKunnat()
+    val dueTime = raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika
+
     oppijat.map { oppija =>
       vapautukset
-        .map(OppivelvollisuudestaVapautus.apply(aktiivisetKunnat, rajapäivätService))
+        .flatMap(OppivelvollisuudestaVapautus.apply(aktiivisetKunnat, rajapäivätService, dueTime))
         .find(v => toOids(oppija).contains(v.oppijaOid)) match {
           case Some(vapautus) => map(oppija, vapautus)
           case None => oppija
@@ -95,7 +99,8 @@ class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMeth
         oppija_oid,
         vapautettu,
         kunta_koodiarvo,
-        mitatoity
+        mitatoity,
+        aikaleima
       FROM oppivelvollisuudesta_vapautetut
         WHERE oppija_oid = any($oppijaOids)
           AND (
@@ -127,12 +132,13 @@ class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMeth
         oppija_oid,
         min(vapautettu) as vapautettu,
         '' as kunta_koodiarvo,
-        NULL as mitatoity
+        NULL as mitatoity,
+        aikaleima
       FROM oppivelvollisuudesta_vapautetut
       WHERE
         mitatoity IS NULL
         AND vapautettu <= $today
-      GROUP BY oppija_oid
+      GROUP BY oppija_oid, aikaleima
       ORDER BY oppija_oid
       OFFSET $offset
       LIMIT $pageSize
@@ -146,7 +152,8 @@ class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMeth
       oppijaOid = r.rs.getString("oppija_oid"),
       vapautettu = r.getLocalDate("vapautettu"),
       kunta = r.rs.getString("kunta_koodiarvo"),
-      mitätöity = r.getLocalDateOption("mitatoity"),
+      mitätöity = Option(r.rs.getTimestamp("mitatoity")).map(_.toLocalDateTime),
+      aikaleima = r.rs.getTimestamp("aikaleima").toLocalDateTime,
     )
   )
 }
@@ -155,7 +162,8 @@ case class RawOppivelvollisuudestaVapautus(
   oppijaOid: Henkilö.Oid,
   vapautettu: LocalDate,
   kunta: String,
-  mitätöity: Option[LocalDate],
+  mitätöity: Option[LocalDateTime],
+  aikaleima: LocalDateTime,
 )
 
 case class OppivelvollisuudestaVapautus(
@@ -171,14 +179,27 @@ case class OppivelvollisuudestaVapautus(
 }
 
 object OppivelvollisuudestaVapautus {
-  def apply(aktiivisetKunnat: Seq[OrganisaatioWithOid], rajapäivätService: ValpasRajapäivätService)(vapautus: RawOppivelvollisuudestaVapautus): OppivelvollisuudestaVapautus =
-    OppivelvollisuudestaVapautus(
-      oppijaOid = vapautus.oppijaOid,
-      vapautettu = vapautus.vapautettu,
-      tulevaisuudessa = rajapäivätService.tarkastelupäivä.isBefore(vapautus.vapautettu),
-      mitätöitymässä = vapautus.mitätöity.isDefined,
-      kunta = aktiivisetKunnat.find(_.kotipaikka.exists(_.koodiarvo == vapautus.kunta)),
-    )
+  def apply(
+    aktiivisetKunnat: Seq[OrganisaatioWithOid],
+    rajapäivätService: ValpasRajapäivätService,
+    raportointikantaDueTime: LocalDateTime
+  )(vapautus: RawOppivelvollisuudestaVapautus): Option[OppivelvollisuudestaVapautus] = {
+    val mitätöity = vapautus.mitätöity.isDefined
+    val mitätöintiPäivittynytRaportointikantaan = vapautus.mitätöity.exists(_.isBefore(raportointikantaDueTime))
+    val raportointikantaanEiVieläOlePäivitettyVapautusta = vapautus.aikaleima.isAfter(raportointikantaDueTime)
+
+    if (mitätöity && (mitätöintiPäivittynytRaportointikantaan || raportointikantaanEiVieläOlePäivitettyVapautusta)) {
+      None
+    } else {
+      Some(OppivelvollisuudestaVapautus(
+        oppijaOid = vapautus.oppijaOid,
+        vapautettu = vapautus.vapautettu,
+        tulevaisuudessa = rajapäivätService.tarkastelupäivä.isBefore(vapautus.vapautettu),
+        mitätöitymässä = vapautus.mitätöity.isDefined,
+        kunta = aktiivisetKunnat.find(_.kotipaikka.exists(_.koodiarvo == vapautus.kunta)),
+      ))
+    }
+  }
 }
 
 case class OppivelvollisuudestaVapautuksenPohjatiedot(
