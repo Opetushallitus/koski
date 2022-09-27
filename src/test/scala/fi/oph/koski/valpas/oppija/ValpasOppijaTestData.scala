@@ -635,6 +635,18 @@ object ValpasOppijaTestData {
       )
     ),
     (
+      ValpasMockOppijat.keskeyttänytLokakuussa17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.kasiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "valiaikaisestikeskeytynyt")),
+        )
+      )
+    ),
+    (
       ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
       List(
         ExpectedData(

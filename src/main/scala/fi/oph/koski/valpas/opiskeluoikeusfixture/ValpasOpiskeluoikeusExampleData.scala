@@ -813,6 +813,15 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def kasiluokkaKeskeytetty2021Opiskeluoikeus = kasiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 3, 1), opiskeluoikeusValiaikaisestiKeskeytynyt)
+      )
+    )
+  )
+
   def kotiopetusMeneilläänOpiskeluoikeus = oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
     lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
       kotiopetusjaksot = Some(List(
