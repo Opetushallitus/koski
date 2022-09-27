@@ -1486,7 +1486,8 @@
       "tyyppi" : {
         "koodiarvo" : "ammatillinentutkintoosittainen",
         "koodistoUri" : "suorituksentyyppi"
-      }
+      },
+      "keskiarvo" : 4.0
     } ],
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
@@ -1494,6 +1495,5 @@
     },
     "alkamispäivä" : "2012-09-01",
     "päättymispäivä" : "2016-06-04"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }

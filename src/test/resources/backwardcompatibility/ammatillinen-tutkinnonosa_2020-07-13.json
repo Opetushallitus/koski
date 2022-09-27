@@ -279,5 +279,6 @@
     },
     "alkamispäivä" : "2012-09-01",
     "päättymispäivä" : "2016-06-04"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

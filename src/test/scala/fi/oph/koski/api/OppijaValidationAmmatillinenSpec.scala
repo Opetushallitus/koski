@@ -145,7 +145,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 osasuoritukset = Some(List(yhtSuoritus)))
               val suoritus = reformiSuoritus.copy(
                 osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos))),
-                vahvistus = vahvistus(date(2018, 1, 1))
+                vahvistus = vahvistus(date(2018, 1, 1)),
+                keskiarvo = Some(4.0)
               )
 
               "Palautetaan HTTP 400" in (
@@ -174,7 +175,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                   osasuoritukset = Some(List(yhtSuoritus)))
                 val suoritus = reformiSuoritus.copy(
                   osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos))),
-                  vahvistus = vahvistus(date(2018, 1, 1))
+                  vahvistus = vahvistus(date(2018, 1, 1)),
+                  keskiarvo = Some(4.0)
                 )
                 "Palautetaan HTTP 400" in (
                   putTutkintoSuoritus(suoritus)(
@@ -197,7 +199,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                   osasuoritukset = Some(yhtSuoritukset))
                 val suoritus = reformiSuoritus.copy(
                   osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos))),
-                  vahvistus = vahvistus(date(2018, 1, 1))
+                  vahvistus = vahvistus(date(2018, 1, 1)),
+                  keskiarvo = Some(4.0)
                 )
                 "Palautetaan HTTP 200" in (
                   putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
@@ -209,7 +212,9 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               val yhtOsanSuoritus = yhtTutkinnonOsanSuoritus.copy(koulutusmoduuli = yhtTutkinnonOsanSuoritus.koulutusmoduuli.copy(laajuus = Some(LaajuusOsaamispisteissä(13.0))))
               val suoritus = autoalanPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaOps,
                 osasuoritukset = Some(List(yhtOsanSuoritus, yhtOsanSuoritus)),
-                vahvistus = vahvistus(date(2018,1,1)))
+                vahvistus = vahvistus(date(2018,1,1)),
+                keskiarvo = Some(4.0)
+              )
               "Palautetaan HTTP 400" in (
                 putTutkintoSuoritus(suoritus) (
                   verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Suorituksella koulutus/351301 on useampi yhteinen osasuoritus samalla koodilla")))
@@ -227,7 +232,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 osasuoritukset = Some(yhtSuoritukset))
               val suoritus = reformiSuoritus.copy(
                 osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos))),
-                vahvistus = vahvistus(date(2018, 1, 1))
+                vahvistus = vahvistus(date(2018, 1, 1)),
+                keskiarvo = Some(4.0)
               )
               "Palautetaan HTTP 400" in (
                 putTutkintoSuoritus(suoritus) (
@@ -502,6 +508,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               )),
               suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
                 vahvistus = vahvistus(date(2017, 1, 1)),
+                keskiarvo = Some(4.0),
                 osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus))
               )))
             putOpiskeluoikeus(opiskeluoikeus) {
@@ -649,9 +656,9 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     }
 
     "Tutkinnon tila ja arviointi" - {
-      def copySuoritus(v: Option[HenkilövahvistusValinnaisellaPaikkakunnalla], ap: Option[LocalDate] = None) = {
+      def copySuoritus(v: Option[HenkilövahvistusValinnaisellaPaikkakunnalla], ap: Option[LocalDate] = None, keskiarvo: Option[Double] = None) = {
         val alkamispäivä = ap.orElse(tutkinnonOsaSuoritus.alkamispäivä)
-        val suoritus = autoalanPerustutkinnonSuoritus().copy(vahvistus = v, alkamispäivä = alkamispäivä)
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(vahvistus = v, alkamispäivä = alkamispäivä, keskiarvo = keskiarvo)
         v.map(_ => suoritus.copy(osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus)))).getOrElse(suoritus)
       }
 
@@ -672,7 +679,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Suorituksella on vahvistus" - {
-        "palautetaan HTTP 200" in (put(copySuoritus(vahvistus(LocalDate.parse("2016-08-08")))) (
+        "palautetaan HTTP 200" in (put(copySuoritus(vahvistus(LocalDate.parse("2016-08-08")), keskiarvo = Some(4.0))) (
           verifyResponseStatusOk()
         ))
       }
@@ -685,7 +692,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       "Suorituksen päivämäärät" - {
         def päivämäärillä(alkamispäivä: String, vahvistuspäivä: String) = {
-          copySuoritus(vahvistus(LocalDate.parse(vahvistuspäivä)), Some(LocalDate.parse(alkamispäivä)))
+          copySuoritus(vahvistus(LocalDate.parse(vahvistuspäivä)), Some(LocalDate.parse(alkamispäivä)), keskiarvo = Some(4.0))
         }
 
         "Päivämäärät kunnossa" - {
@@ -700,10 +707,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Keskiarvon asettaminen" - {
-        val keskeneräinenSuoritusKeskiarvolla = autoalanPerustutkinnonSuoritus().copy(keskiarvo = Option(4.0))
+        val keskeneräinenSuoritusKeskiarvolla = autoalanPerustutkinnonSuoritus().copy(keskiarvo = Some(4.0))
         "estetään jos suoritus on kesken" - {
           "palautetaan HTTP 400" in (putTutkintoSuoritus(keskeneräinenSuoritusKeskiarvolla)(
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle("Opiskeluoikeudelle ei voi asettaa keskiarvoa ellei opiskeluoikeus ole valmis"))))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle("Suoritukselle ei voi asettaa keskiarvoa ellei suoritus ole valmis"))))
         }
         val valmisSuoritusKeskiarvolla = keskeneräinenSuoritusKeskiarvolla.copy(
           vahvistus = vahvistus(date(2017, 5, 31)),
@@ -711,6 +718,14 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         "sallitaan jos suoritus on valmis" - {
           "palautetaan HTTP 200" in (putTutkintoSuoritus(valmisSuoritusKeskiarvolla)(
             verifyResponseStatusOk()))
+        }
+        val valmisSuoritusIlmanKeskiarvoa = autoalanPerustutkinnonSuoritus().copy(
+          vahvistus = vahvistus(date(2017, 5, 31)),
+          keskiarvo = None,
+          osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
+        "vaaditaan jos suoritus on valmis" - {
+          "palautetaan HTTP 400" in (putTutkintoSuoritus(valmisSuoritusIlmanKeskiarvoa)(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis"))))
         }
       }
     }
@@ -756,6 +771,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       "suoritus.vahvistus.päivä > päättymispäivä" - {
         "palautetaan HTTP 400" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(
           suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
+            keskiarvo = Some(4.0),
             vahvistus = vahvistus(date(2017, 5, 31)),
             osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus))
           ))))(

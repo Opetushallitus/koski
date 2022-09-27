@@ -73,7 +73,7 @@ class OppivelvollisuustietoSpec
         "Ammatillisella tutkinnolla vahvistus" in {
           resetFixtures
           insert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
-          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1))))
+          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1)), keskiarvo = Some(4.0)))
           insert(slave2, lukionOppimäärä(vahvistus = None))
           updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
@@ -89,7 +89,7 @@ class OppivelvollisuustietoSpec
         "Molemmilla vahvistus" in {
           resetFixtures
           insert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
-          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1))))
+          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2020, 1, 1)), keskiarvo = Some(4.0)))
           insert(slave2, lukionOppimäärä(vahvistus = Some(date(2019, 1, 1))))
           updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
@@ -109,24 +109,24 @@ class OppivelvollisuustietoSpec
       "Jos suorittaa vain ammatillista tutkintoa, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
         "Syntymäaika päättää oppivelvollisuuden aikaisemmin, ensimmäisenä vahvistetun tutkinnon vahvistus päättää oikeuden maksuttomuuteen aikaisemmin" in {
           resetFixtures
-          insert(master, ammatillinenTutkinto(vahvistus = Some(date(2030, 1, 1))))
-          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2023, 1, 1))))
-          insert(slave2, ammatillinenTutkinto(vahvistus = Some(date(2024, 1, 1))))
+          insert(master, ammatillinenTutkinto(vahvistus = Some(date(2030, 1, 1)), keskiarvo = Some(4.0)))
+          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2023, 1, 1)), keskiarvo = Some(4.0)))
+          insert(slave2, ammatillinenTutkinto(vahvistus = Some(date(2024, 1, 1)), keskiarvo = Some(4.0)))
           updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2023, 1, 1))
         }
         "Syntymäaika päättää molemmat aikaisemmin" in {
           resetFixtures
           insert(master, ammatillinenTutkinto(vahvistus = None))
-          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2025, 1, 1))))
-          insert(slave2, ammatillinenTutkinto(vahvistus = Some(date(2024, 12, 31))))
+          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2025, 1, 1)), keskiarvo = Some(4.0)))
+          insert(slave2, ammatillinenTutkinto(vahvistus = Some(date(2024, 12, 31)), keskiarvo = Some(4.0)))
           updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           resetFixtures
-          insert(master, ammatillinenTutkinto(vahvistus = Some(date(2021, 1, 1))))
-          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2025, 1, 1))))
+          insert(master, ammatillinenTutkinto(vahvistus = Some(date(2021, 1, 1)), keskiarvo = Some(4.0)))
+          insert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2025, 1, 1)), keskiarvo = Some(4.0)))
           insert(slave2, ammatillinenTutkinto(vahvistus = None))
           updateRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
@@ -275,11 +275,12 @@ class OppivelvollisuustietoSpec
     }
   }
 
-  private def ammatillinenTutkinto(vahvistus: Option[LocalDate], lisääMaksuttomuus: Boolean = true): Opiskeluoikeus = {
+  private def ammatillinenTutkinto(vahvistus: Option[LocalDate], lisääMaksuttomuus: Boolean = true, keskiarvo: Option[Double] = None): Opiskeluoikeus = {
     defaultOpiskeluoikeus.copy(
       suoritukset = List(
         autoalanPerustutkinnonSuoritus().copy(
           vahvistus = vahvistus.flatMap(date => ExampleData.vahvistus(date, stadinAmmattiopisto, Some(helsinki))),
+          keskiarvo = keskiarvo,
           osasuoritukset = Some(AmmatillinenOldExamples.tutkinnonOsat),
         )
       ),

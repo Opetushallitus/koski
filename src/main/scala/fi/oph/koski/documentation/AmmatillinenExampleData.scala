@@ -375,21 +375,23 @@ object AmmatillinenExampleData {
   def perustutkintoOpiskeluoikeusValmisVahvistettuKoulutustoimijalla(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) =
     perustutkintoOpiskeluoikeusValmis(oppilaitos, toimipiste).copy(
       suoritukset = List(ympäristöalanPerustutkintoValmis(toimipiste).copy(
-        vahvistus = vahvistus(date(2016, 5, 31), länsirannikonKoulutusOy, Some(helsinki))
+        vahvistus = vahvistus(date(2016, 5, 31), länsirannikonKoulutusOy, Some(helsinki)),
+        keskiarvo = Some(4.0)
       )),
     )
 
   def perustutkintoOpiskeluoikeusValmisVahvistettuYrityksessä(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) =
     perustutkintoOpiskeluoikeusValmis(oppilaitos, toimipiste).copy(
       suoritukset = List(ympäristöalanPerustutkintoValmis(toimipiste).copy(
-        vahvistus = vahvistus(date(2016, 5, 31), autokorjaamoOy, Some(helsinki))
+        vahvistus = vahvistus(date(2016, 5, 31), autokorjaamoOy, Some(helsinki)),
+        keskiarvo = Some(4.0)
       ))
     )
 
   def perustutkintoOpiskeluoikeusKesken(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     oppilaitos = Some(oppilaitos),
-    suoritukset = List(ympäristöalanPerustutkintoKesken(toimipiste)),
+    suoritukset = List(ympäristöalanPerustutkintoKesken(toimipiste).copy(keskiarvo = None, vahvistus = None)),
     tila = AmmatillinenOpiskeluoikeudenTila(
       List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
@@ -482,6 +484,7 @@ object AmmatillinenExampleData {
       toimipiste = toimipiste,
       vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
       ryhmä = Some("YMP14SN"),
+      keskiarvo = Some(4.0),
       osasuoritukset = Some(List(
         tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", ammatillisetTutkinnonOsat, k3, 40).copy(arviointi = Some(List(arviointi(k3).copy(päivä = date(2015, 1, 1))))),
         tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", ammatillisetTutkinnonOsat, k3, 35).copy(näyttö = Some(
@@ -597,6 +600,7 @@ object AmmatillinenExampleData {
     suoritustapa = suoritustapaOps,
     järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
     suorituskieli = suomenKieli,
+    keskiarvo = Some(4.0),
     vahvistus = vahvistus(),
     alkamispäivä = None,
     toimipiste = stadinToimipiste,
@@ -618,6 +622,7 @@ object AmmatillinenExampleData {
     suoritustapa = suoritustapaReformi,
     järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
     suorituskieli = suomenKieli,
+    keskiarvo = Some(4.0),
     vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
     alkamispäivä = None,
     toimipiste = stadinToimipiste,
@@ -734,6 +739,7 @@ object AmmatillinenExampleData {
       alkamispäivä = None,
       toimipiste = stadinToimipiste,
       vahvistus = vahvistus(date(2016, 1, 1), stadinAmmattiopisto, Some(helsinki)),
+      keskiarvo = Some(4.0),
       osasuoritukset = Some(List(
         tutkinnonOsanSuoritus("100832", "Kasvun tukeminen ja ohjaus", ammatillisetTutkinnonOsat, hylätty, 2).copy(
           arviointi = Some(List(
@@ -810,6 +816,7 @@ object AmmatillinenExampleData {
       alkamispäivä = None,
       toimipiste = stadinToimipiste,
       vahvistus = vahvistus(date(2016, 1, 1), stadinAmmattiopisto, Some(helsinki)),
+      keskiarvo = Some(4.0),
       osasuoritukset = Some(List(
         osittaisenTutkinnonTutkinnonOsanSuoritus(h2, ammatillisetTutkinnonOsat, "100001", "Audiovisuaalisen tuotannon toteuttaminen", 2).copy(
           arviointi = Some(List(

@@ -1,6 +1,10 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 27.9.2022
+- Ammatillisen suoritukselle pitää lisätä keskiarvo kun suoritus on valmis
+- Ammatillisen suoritukselle sallitaan keskiarvo, kun opiskeluoikeuden tilana on "katsotaan eronneeksi" ja suorituksissa on vähintään yksi tutkinnon osa
+
 ## 19.9.2022
 - Ammatillisen tutkinnolle tai osatutkinnolle ei voi lisätä keskiarvoa ellei suoritus ole valmis.
 - 15.9. käyttöönotetut oppivelvollisuuden pidennyksen, vammaisuuden, vaikeasti vammaisuuden ja erityisen tuen jaksojen

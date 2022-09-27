@@ -28,6 +28,7 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
         case s: AmmatillisenTutkinnonSuoritus => s.copy(
           alkamispäivä = oo.alkamispäivä,
           vahvistus = vahvistus(päättymispäivä, stadinAmmattiopisto, Some(helsinki)),
+          keskiarvo = Some(4.0),
           osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None)))
         )
         case _ => ???

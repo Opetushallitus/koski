@@ -60,7 +60,8 @@ object PaallekkaisetOpiskeluoikeudetFixtures {
     suoritukset = List(
       AmmatillinenExampleData.ympäristöalanPerustutkintoValmis().copy(
         alkamispäivä = Some(date(2020, 12, 31)),
-        vahvistus = None
+        vahvistus = None,
+        keskiarvo = None
       )
     ),
     arvioituPäättymispäivä = None

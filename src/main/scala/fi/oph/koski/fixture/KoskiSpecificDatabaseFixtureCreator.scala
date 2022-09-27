@@ -108,6 +108,8 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         suoritukset = List(
           AmmatillinenExampleData.ympäristöalanPerustutkintoValmis().copy(
             suoritustapa = Koodistokoodiviite("rikkinäinenKoodi", "ammatillisentutkinnonsuoritustapa"),
+            vahvistus = None,
+            keskiarvo = None,
             osasuoritukset = Some(List(
               AmmatillinenExampleData
                 .tutkinnonOsanSuoritus(
@@ -331,6 +333,7 @@ object AmmatillinenOpiskeluoikeusTestData {
         toimipiste = oppilaitos,
         suorituskieli = suomenKieli,
         suoritustapa = AmmatillinenExampleData.suoritustapaOps,
+        keskiarvo = Some(4.0),
         vahvistus = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(
           päivä = LocalDate.of(2019, 5, 15),
           myöntäjäOrganisaatio = oppilaitos,
