@@ -196,7 +196,7 @@ object KoskiErrorCategory {
         val muutettuSuoritustapaaTaiTutkintokoodia = subcategory("muutettuSuoritustapaaTaiTutkintokoodia", "Ammatillisessa opiskeluoikeudessa, jossa päätason suorituksena on ammatillisen tutkintokoulutuksen suoritus, ei voi vaihtaa suoritettavan tutkintokoulutuksen tutkintokoodia tai suoritustapaa. Jos on vahingossa luotu ammatillisen tutkintokoulutuksen opiskeluoikeus väärällä tutkintokoodilla tai suoritustavalla, väärän tutkintokoodin tai suoritustavan sisältävä opiskeluoikeus on ensin mitätöitävä, ja sitten on luotava uusi opiskeluoikeus oikeilla tiedoilla.")
         val useampiPäätasonSuoritus = subcategory("useampiPäätasonSuoritus", "Ammatillinen opiskeluoikeus, jossa päätason suorituksena on ammatillisen tutkintokoulutuksen suoritus, ei voi sisältää useampaa kuin yhtä päätason suoritusta, ellei kyseessä ole opiskeluoikeus, jossa suoritetaan ns. vanhamallista näyttötutkintoa ja siihen liittyvää näyttötutkintoon valmistavaa koulutusta.")
         val yhteinenTutkinnonOsaVVAI22 = subcategory("yhteinenTutkinnonOsaVVAI22", "Ennen 1.8.2022 voimaan tulleen perusteen kanssa ei voi lisätä yhteisen tutkinnon osan osa-alueen suoritusta VVAI22.")
-        val keskiarvoaEiSallitaKeskeneräiselleSuoritukselle = subcategory("keskiarvoVaikkaSuoritusEiValmis", "Suoritukselle ei voi asettaa keskiarvoa ellei suoritus ole valmis")
+        val keskiarvoaEiSallitaKeskeneräiselleSuoritukselle = subcategory("keskiarvoVaikkaSuoritusEiValmis", "Suoritukselle ei voi asettaa keskiarvoa ellei suoritus ole päättynyt")
         val valmiillaSuorituksellaPitääOllaKeskiarvo = subcategory("valmiillaSuorituksellaPitääOllaKeskiarvo", "Suorituksella pitää olla keskiarvo kun suoritus on valmis")
       }
       val ammatillinen = new Ammatillinen
