@@ -1,0 +1,22 @@
+name: Valpas integration test
+
+inputs:
+  index:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+
+    - name: "🔨 Setup backend and databases"
+      uses: ./.github/actions/setup_backend
+
+    - name: Run tests
+      run: |
+        cd valpas-web
+        npm ci
+        cd ..
+        make valpas-fronttest-${{ inputs.index }}
+      shell: bash

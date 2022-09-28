@@ -1,0 +1,23 @@
+inputs:
+  index:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+
+    - name: "🔨 Setup backend and databases"
+      uses: ./.github/actions/setup_backend
+
+    - name: Run frontend tests
+      run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner${{ inputs.index }}"
+      shell: bash
+
+    - name: Archive test screenshots
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: screenshots
+        path: web/target/screenshots/
