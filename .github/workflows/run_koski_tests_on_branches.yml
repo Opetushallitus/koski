@@ -228,269 +228,34 @@ jobs:
           fi.oph.koski.frontendvalvonta, fi.oph.koski.tiedonsiirto"
 
   run_frontend_tests_0:
-    name: Run Koski frontend tests runner 0
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Java 8
-        uses: actions/setup-java@v1
-        with:
-          java-version: "8"
-          architecture: x64
-
-      - name: Setup Node 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Configure sysctl limits for Elasticsearch
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-
-      - name: Start Postgres and ES containers
-        run: docker-compose up -d
-
-      - name: Run frontend tests
-        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner0"
-
-      - name: Archive test screenshots
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: screenshots
-          path: web/target/screenshots/
+    name: Koski frontend tests 1 of 5
+    uses: ./.github/workflows/koski_frontend_test.yml
+    with:
+      index: 0
 
   run_frontend_tests_1:
-    name: Run Koski frontend tests runner 1
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Java 8
-        uses: actions/setup-java@v1
-        with:
-          java-version: "8"
-          architecture: x64
-
-      - name: Setup Node 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Configure sysctl limits for Elasticsearch
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-
-      - name: Start Postgres and ES containers
-        run: docker-compose up -d
-
-      - name: Run frontend tests
-        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner1"
-
-      - name: Archive test screenshots
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: screenshots
-          path: web/target/screenshots/
+    name: Koski frontend tests 2 of 5
+    uses: ./.github/workflows/koski_frontend_test.yml
+    with:
+      index: 1
 
   run_frontend_tests_2:
-    name: Run Koski frontend tests runner 2
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Java 8
-        uses: actions/setup-java@v1
-        with:
-          java-version: "8"
-          architecture: x64
-
-      - name: Setup Node 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Configure sysctl limits for Elasticsearch
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-
-      - name: Start Postgres and ES containers
-        run: docker-compose up -d
-
-      - name: Run frontend tests
-        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner2"
-
-      - name: Archive test screenshots
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: screenshots
-          path: web/target/screenshots/
+    name: Koski frontend tests 3 of 5
+    uses: ./.github/workflows/koski_frontend_test.yml
+    with:
+      index: 2
 
   run_frontend_tests_3:
-    name: Run Koski frontend tests runner 3
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Java 8
-        uses: actions/setup-java@v1
-        with:
-          java-version: "8"
-          architecture: x64
-
-      - name: Setup Node 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Configure sysctl limits for Elasticsearch
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-
-      - name: Start Postgres and ES containers
-        run: docker-compose up -d
-
-      - name: Run frontend tests
-        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner3"
-
-      - name: Archive test screenshots
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: screenshots
-          path: web/target/screenshots/
+    name: Koski frontend tests 4 of 5
+    uses: ./.github/workflows/koski_frontend_test.yml
+    with:
+      index: 3
 
   run_frontend_tests_4:
-    name: Run Koski frontend tests runner 4
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Java 8
-        uses: actions/setup-java@v1
-        with:
-          java-version: "8"
-          architecture: x64
-
-      - name: Setup Node 14
-        uses: actions/setup-node@v2
-        with:
-          node-version: "14"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Configure sysctl limits for Elasticsearch
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-
-      - name: Start Postgres and ES containers
-        run: docker-compose up -d
-
-      - name: Run frontend tests
-        run: mvn test -Pmocharunner -Dsuites="fi.oph.koski.mocha.KoskiMochaSpecRunner4"
-
-      - name: Archive test screenshots
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: screenshots
-          path: web/target/screenshots/
+    name: Koski frontend tests 5 of 5
+    uses: ./.github/workflows/koski_frontend_test.yml
+    with:
+      index: 4
 
   valpas_integration_tests_1:
     name: Valpas integration tests 1 of 4
