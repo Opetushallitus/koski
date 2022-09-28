@@ -2,13 +2,14 @@ package fi.oph.koski.eperusteetvalidation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
+import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.{Koulutustyyppi, _}
 
 import java.time.LocalDate
 
-case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
+case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
   def validate(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate], opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus = {
     validateTutkintoRakenne(suoritus, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä)
       .onSuccess(validateDiaarinumerollinenAmmatillinen(suoritus, opiskeluoikeudenPäättymispäivä))
@@ -111,8 +112,12 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           Left(KoskiErrorCategory.ok())
         } else {
           tutkintoRepository.findPerusteRakenteet(diaarinumero, päivä) match {
-            case Nil =>
-              Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + diaarinumero))
+            case Nil => {
+              val päiväInfo = päivä.map(p => s", joka on voimassa tai siirtymäajalla ${p.toString}, ").getOrElse("")
+
+              logger.warn(s"Tutkinnon perustetta ${päiväInfo}ei löydy diaarinumerolla " + diaarinumero + " eperusteista eikä koskikoulutustendiaarinumerot-koodistosta")
+              Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari(s"Tutkinnon perustetta ${päiväInfo}ei löydy diaarinumerolla " + diaarinumero))
+            }
             case rakenteet =>
               koulutustyypit match {
                 case Some(koulutustyypit) if !rakenteet.exists(rakenne => koulutustyypit.contains(rakenne.koulutustyyppi)) =>
@@ -270,5 +275,5 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   }
 
   private def onKoodistossa(diaarinumero: String): Boolean =
-    koodistoViitePalvelu.validate("koskikoulutustendiaarinumerot", diaarinumero).isDefined
+    koodistoViitePalvelu.onKoodistossa("koskikoulutustendiaarinumerot", diaarinumero)
 }

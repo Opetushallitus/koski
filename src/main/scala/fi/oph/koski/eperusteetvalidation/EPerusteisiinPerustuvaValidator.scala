@@ -293,5 +293,5 @@ class EPerusteisiinPerustuvaValidator(
     tutkintoRepository.findUusinPerusteRakenne(diaarinumero).map(r => r.koulutustyyppi)
 
   private def onKoodistossa(diaarinumero: String): Boolean =
-    koodistoViitePalvelu.validate("koskikoulutustendiaarinumerot", diaarinumero).isDefined
+    koodistoViitePalvelu.onKoodistossa("koskikoulutustendiaarinumerot", diaarinumero)
 }
