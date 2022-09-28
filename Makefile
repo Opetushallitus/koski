@@ -177,6 +177,14 @@ valpas-fronttest-1:
 valpas-fronttest-2:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec2"
 
+.PHONY: valpas-fronttest-3
+valpas-fronttest-3:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec3"
+
+.PHONY: valpas-fronttest-4
+valpas-fronttest-4:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec4"
+
 ### Dist
 
 .PHONY: dist
