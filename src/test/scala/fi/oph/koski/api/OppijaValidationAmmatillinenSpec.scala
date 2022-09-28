@@ -727,6 +727,16 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "palautetaan HTTP 400" in (putTutkintoSuoritus(valmisSuoritusIlmanKeskiarvoa)(
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis"))))
         }
+        val osasuoritusJaKeskiarvo = autoalanPerustutkinnonSuoritus().copy(
+          vahvistus = None,
+          keskiarvo = Some(4.0),
+          osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
+        val opiskeluoikeus = lisääTila(defaultOpiskeluoikeus.copy(suoritukset = List(osasuoritusJaKeskiarvo)), LocalDate.now().minusYears(1), opiskeluoikeusKatsotaanEronneeksi)
+        "sallitaan jos tila on katsotaan eronneeksi mutta tutkinnon osa löytyy" - {
+          "palautetaan HTTP 200" in (putOpiskeluoikeus(opiskeluoikeus)(
+            verifyResponseStatusOk()
+          ))
+        }
       }
     }
 
