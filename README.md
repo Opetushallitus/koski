@@ -332,8 +332,8 @@ Yleiskäyttöisten palveluiden dokumentaatio löytyy [OPH yleiskäyttöiset palv
 
 | Kuvaus                            | URL                                                        | Yhteystiedot                                                                                                                         |
 | --------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| CSC Virta                         | [kuvaus][virta-description] [api-dokumentaatio][virta-api] | virta@csc.fi, [Flowdock](https://www.flowdock.com/app/cybercom/tor-virta)                                                            |
-| Ylioppilastutkintorekisteri (YTR) |                                                            | 0295 338 200, lautakunta@ylioppilastutkinto.fi, [henkilökunta](https://www.ylioppilastutkinto.fi/yhteystiedot/kanslian-henkilokunta) |
+| CSC Virta                         | [kuvaus][virta-description] [api-dokumentaatio][virta-api] | virta@csc.fi, [Slack](https://opetushallitus.slack.com/archives/C03JKTYM810)                                                            |
+| Ylioppilastutkintorekisteri (YTR) |                                                            | 0295 338 200, lautakunta@ylioppilastutkinto.fi, [henkilökunta](https://www.ylioppilastutkinto.fi/yhteystiedot/kanslian-henkilokunta), [Slack](https://opetushallitus.slack.com/archives/C03PD4A55U4) |
 
 ## Testiympäristö
 
