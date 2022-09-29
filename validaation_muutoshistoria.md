@@ -3,7 +3,7 @@
 
 ## 29.9.2022
 - Ammatillisen suoritukselle pitää lisätä keskiarvo kun suoritus on valmis
-- Ammatillisen suoritukselle sallitaan keskiarvo, kun opiskeluoikeuden tilana on "katsotaan eronneeksi" ja suorituksissa on vähintään yksi tutkinnon osa
+- Ammatillisen suoritukselle sallitaan keskiarvo, kun opiskeluoikeuden on tilassa "katsotaan eronneeksi" ja suorituksissa on vähintään yksi tutkinnon osa
 
 ## 19.9.2022
 - Ammatillisen tutkinnolle tai osatutkinnolle ei voi lisätä keskiarvoa ellei suoritus ole valmis.

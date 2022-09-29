@@ -710,7 +710,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         val keskeneräinenSuoritusKeskiarvolla = autoalanPerustutkinnonSuoritus().copy(keskiarvo = Some(4.0))
         "estetään jos suoritus on kesken" - {
           "palautetaan HTTP 400" in (putTutkintoSuoritus(keskeneräinenSuoritusKeskiarvolla)(
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle("Suoritukselle ei voi asettaa keskiarvoa ellei suoritus ole valmis"))))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle("Suoritukselle ei voi asettaa keskiarvoa ellei suoritus ole päättynyt"))))
         }
         val valmisSuoritusKeskiarvolla = keskeneräinenSuoritusKeskiarvolla.copy(
           vahvistus = vahvistus(date(2017, 5, 31)),
