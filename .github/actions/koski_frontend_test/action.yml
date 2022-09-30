@@ -6,8 +6,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v2
-
     - name: "🔨 Setup backend and databases"
       uses: ./.github/actions/setup_backend
 
