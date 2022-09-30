@@ -15,24 +15,7 @@ jobs:
 
   build:
     name: Build and upload artifacts
-    needs:
-      [
-        lint_koski,
-        run_backend_tests_api,
-        run_backend_tests_nonmock,
-        run_backend_tests_other_1,
-        run_backend_tests_other_2,
-        run_frontend_tests_0,
-        run_frontend_tests_1,
-        run_frontend_tests_2,
-        run_frontend_tests_3,
-        run_frontend_tests_4,
-        valpas_integration_tests_1,
-        valpas_integration_tests_2,
-        valpas_integration_tests_3,
-        valpas_integration_tests_4,
-        valpas_frontend_unit_tests,
-      ]
+    needs: [tests]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
