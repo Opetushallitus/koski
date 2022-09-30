@@ -16,6 +16,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
+import fi.oph.koski.tutkinto.Koulutustyyppi
 import fi.oph.koski.validation.KoskiValidator
 
 import java.time.LocalDate
@@ -720,13 +721,16 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             verifyResponseStatusOk()))
         }
         val valmisSuoritusIlmanKeskiarvoa = autoalanPerustutkinnonSuoritus().copy(
-          vahvistus = vahvistus(date(2017, 5, 31)),
+          vahvistus = vahvistus(date(2019, 5, 31)),
           keskiarvo = None,
-          osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
+          osasuoritukset = Some(List(tutkinnonOsaSuoritus)),
+          koulutusmoduuli = autoalanPerustutkinto.copy(koulutustyyppi = Some(Koulutustyyppi.ammatillinenPerustutkinto))
+        )
         "vaaditaan jos suoritus on valmis" - {
           "palautetaan HTTP 400" in (putTutkintoSuoritus(valmisSuoritusIlmanKeskiarvoa)(
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis"))))
         }
+
         val osasuoritusJaKeskiarvo = autoalanPerustutkinnonSuoritus().copy(
           vahvistus = None,
           keskiarvo = Some(4.0),
