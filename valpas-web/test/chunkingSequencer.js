@@ -13,10 +13,11 @@ class ChunkingSequencer extends Sequencer {
       )
 
       console.log(
-        `Running test chunk ${chunking[0]} (${testChunk.length} of ${sortedTests.length} tests)`
+        `Running test chunk ${chunking[0]} (${testChunk.length} of ${sortedTests.length} tests):`
       )
+      testChunk.forEach((test) => console.log(test.path))
 
-      return testChunk
+      return process.env.LIST_ONLY ? [] : testChunk
     } else {
       return sortedTests
     }

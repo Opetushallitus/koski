@@ -12,12 +12,8 @@ class GithubActionsSpec extends AnyFreeSpec with Matchers {
     new File("./src/test/scala/fi/oph/koski/").listFiles.filter(_.isDirectory).map("fi.oph.koski." + _.getName)
 
   "Github Actions" - {
-    "Tarkistetaan, että tiedostossa run_koski_tests_on_branches.yml on mainittu kaikki testipaketit" in {
-      checkTestIntegrity(".github/workflows/run_koski_tests_on_branches.yml")
-    }
-
-    "Tarkistetaan, että tiedostossa test_build_deploy_master.yml on mainittu kaikki testipaketit" in {
-      checkTestIntegrity(".github/workflows/test_build_deploy_master.yml")
+    "Tarkistetaan, että tiedostossa all_tests.yml on mainittu kaikki testipaketit" in {
+      checkTestIntegrity(".github/workflows/all_tests.yml")
     }
   }
 
