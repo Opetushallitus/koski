@@ -113,7 +113,6 @@ class EPerusteisiinPerustuvaValidator(
 
   private def perusteenNimi(diaariNumero: String, päivä: Option[LocalDate]): Option[LocalizedString] = {
     ePerusteet.findPerusteenYksilöintitiedot(diaariNumero, päivä)
-      .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
       .headOption
       .map(_.nimi)
       .flatMap(LocalizedString.sanitize)

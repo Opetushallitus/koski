@@ -25,13 +25,13 @@ trait EPerusteetRepository {
   def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste] =
     findKaikkiPerusteenYksilöintitiedot(diaariNumero)
       .filter(perusteVoimassa(päivä))
+      .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
 
   def findKaikkiPerusteenYksilöintitiedot(diaariNumero: String): List[EPerusteTunniste]
 
   def findLinkToEperusteetWeb(diaariNumero: String, lang: String, päivä: LocalDate): Option[String] = {
     val linkLang = if (webLanguages.contains(lang)) lang else webLanguages.head
     findPerusteenYksilöintitiedot(diaariNumero, Some(päivä))
-      .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
       .headOption
       .map(peruste => {
         val betaEperusteKategoria = betaEperusteenTarvitsevatDiaarinumerot.find(

@@ -30,13 +30,11 @@ class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, koodistoPalvelu: 
 
   def findPerusteRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[TutkintoRakenne] = {
     eperusteet.findTarkatRakenteet(diaariNumero, päivä)
-      .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
       .map(rakenne => EPerusteetTutkintoRakenneConverter.convertRakenne(rakenne)(koodistoPalvelu))
   }
 
   def findUusinPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne] = {
     eperusteet.findTarkatRakenteet(diaariNumero, None)
-      .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
       .headOption
       .map(rakenne => EPerusteetTutkintoRakenneConverter.convertRakenne(rakenne)(koodistoPalvelu))
   }
