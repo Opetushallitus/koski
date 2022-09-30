@@ -102,7 +102,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/suoritustavat/*") {
     val diaari = params("splat")
-    renderEither[List[Koodistokoodiviite]](application.tutkintoRepository.findPerusteRakenteet(diaari, None).headOption match {
+    renderEither[List[Koodistokoodiviite]](application.tutkintoRepository.findUusinPerusteRakenne(diaari) match {
       case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari"))
       case Some(rakenne) => Right(rakenne.suoritustavat.map(_.suoritustapa))
     })
