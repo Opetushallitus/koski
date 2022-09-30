@@ -19,8 +19,6 @@ object ValpasMockOppijat {
   val luokalleJäänytYsiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("LuokallejäänytYsiluokkalainen", "Valpas", "020805A5625", kotikunta = Some("091"))
   val luokallejäänytYsiluokkalainenJollaUusiYsiluokka = valpasOppijat.oppijaSyntymäaikaHetusta("LuokallejäänytYsiluokkalainenJatkaa", "Valpas", "060205A7222", kotikunta = Some("091"))
   val valmistunutYsiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Ysiluokka-valmis-keväällä-2021", "Valpas", "190605A006K", kotikunta = Some("091"))
-  val keväänUlkopuolellaValmistunut17v = valpasOppijat.oppijaSyntymäaikaHetusta("Ysiluokka-valmis-syksyllä-2021", "Valpas", "190604A006K", kotikunta = Some("091"))
-  val keväänUlkopuolellaEronnut17v = valpasOppijat.oppijaSyntymäaikaHetusta("Ysiluokka-eronnut-syksyllä-2021", "Valpas", "190604A006K", kotikunta = Some("091"))
   val luokalleJäänytYsiluokkalainenVaihtanutKoulua = valpasOppijat.oppijaSyntymäaikaHetusta("LuokallejäänytYsiluokkalainenKouluvaihto", "Valpas", "050605A7684", kotikunta = Some("091"))
   val luokalleJäänytYsiluokkalainenVaihtanutKouluaMuualta = valpasOppijat.oppijaSyntymäaikaHetusta("LuokallejäänytYsiluokkalainenKouluvaihtoMuualta", "Valpas", "021105A624K", kotikunta = Some("091"))
   val kasiinAstiToisessaKoulussaOllut = valpasOppijat.oppijaSyntymäaikaHetusta("KasiinAstiToisessaKoulussaOllut", "Valpas", "170805A613F", äidinkieli = Some("sv"), kotikunta = Some("091"))
@@ -55,8 +53,6 @@ object ValpasMockOppijat {
   val eronnutMaaliskuussa17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Eronnut-maaliskuussa-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "280904A2768", kotikunta = Some("091"))
   val eronnutKeväänValmistumisJaksolla17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Eronnut-kevään-valmistumisjaksolla-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "121004A189X", kotikunta = Some("091"))
   val eronnutElokuussa17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Eronnut-elokuussa-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "110904A007L", kotikunta = Some("091"))
-  val läsnäLokakuussa17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Läsnä-lokakuussa-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "101104A349L", kotikunta = Some("091"))
-  val keskeyttänytLokakuussa17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Keskeyttänyt-lokakuussa-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "101104A349L", kotikunta = Some("091"))
   val valmistunutYsiluokkalainenVsop = valpasOppijat.oppijaSyntymäaikaHetusta("Ysiluokka-valmis-keväällä-2021-vsop", "Valpas", "190705A575R", kotikunta = Some("091"))
   val ysiluokkaKeskenVsop = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollinen-ysiluokka-kesken-vsop", "Valpas", "240305A7103", kotikunta = Some("091"))
   val valmistunutKasiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Valmistunut-kasiluokkalainen-alle-17-vuotias", "Valpas", "090605A768P", kotikunta = Some("091"))
@@ -164,6 +160,10 @@ object ValpasMockOppijat {
   val alkukesästäEronneeksiKatsottuNivelvaiheenOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Alkukesästä-eronneeksi-katsottu-nivelvaiheen-opiskelija", "Valpas", "180105A1064", kotikunta = Some("091"))
   val alkuvuodestaEronnutNivelvaiheenOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Alkuvuodesta-eronnut-nivelvaiheen-opiskelija", "Valpas", "290805A6137", kotikunta = Some("091"))
   val alkuvuodestaEronneeksiKatsottuNivelvaiheenOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Alkuvuodesta-eronneeksi-katsottu-nivelvaiheen-opiskelija", "Valpas", "100405A2202", kotikunta = Some("091"))
+  val keväänUlkopuolellaValmistunut17v = valpasOppijat.oppijaSyntymäaikaHetusta("Ysiluokka-valmis-syksyllä-2021", "Valpas", "190604A006K", kotikunta = Some("091"))
+  val keväänUlkopuolellaEronnut17v = valpasOppijat.oppijaSyntymäaikaHetusta("Ysiluokka-eronnut-syksyllä-2021", "Valpas", "190604A006K", kotikunta = Some("091"))
+  val läsnä17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Läsnä-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "101104A349L", kotikunta = Some("091"))
+  val keskeyttänyt17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Keskeyttänyt-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "101104A349L", kotikunta = Some("091"))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

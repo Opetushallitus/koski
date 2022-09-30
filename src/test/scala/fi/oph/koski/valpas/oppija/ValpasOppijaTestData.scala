@@ -623,7 +623,7 @@ object ValpasOppijaTestData {
       )
     ),
     (
-      ValpasMockOppijat.läsnäLokakuussa17VuottaTäyttäväKasiluokkalainen,
+      ValpasMockOppijat.läsnä17VuottaTäyttäväKasiluokkalainen,
       List(
         ExpectedData(
           ValpasOpiskeluoikeusExampleData.kasiluokkaKeskenKeväällä2021Opiskeluoikeus,
@@ -635,7 +635,7 @@ object ValpasOppijaTestData {
       )
     ),
     (
-      ValpasMockOppijat.keskeyttänytLokakuussa17VuottaTäyttäväKasiluokkalainen,
+      ValpasMockOppijat.keskeyttänyt17VuottaTäyttäväKasiluokkalainen,
       List(
         ExpectedData(
           ValpasOpiskeluoikeusExampleData.kasiluokkaKeskenKeväällä2021Opiskeluoikeus,
