@@ -117,10 +117,6 @@ case class EOsaSuoritustapa(
   laajuusYksikko: Option[String]
 ) extends ESuoritustapa
 
-case class EPerusteKokoRakenteet(
-  data: List[EPerusteKokoRakenne]
-)
-
 case class EPerusteKokoRakenne(
   id: Long,
   nimi: Map[String, String],
