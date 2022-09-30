@@ -684,8 +684,19 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
         }
 
-        "Sallitaan siirto perusteen voimassaolon jälkeen päättyneelle opiskeluoikeudelle, jos diaarinumero löytyy koodistosta" in {
-          // TODO, varmista asiantuntijoilta, halutaanko näin? Tämä voisi toimia hyvänä workaroundina, jos perusteisen voimassaolopäivissä on eperusteiden datoissa jotain häikkää.
+        "Ei validoida perusteen voimassaoloa tai rakennetta, jos diaarinumero löytyy koodistosta" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101, diaariNumero = "13/011/2009",
+            alkamispäivä = LocalDate.of(2017, 1, 1),
+            päättymispäivä = LocalDate.of(2099, 8, 1)
+          )
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+
+          val validatedOppija = mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija)
+          validatedOppija.isRight should equal (true)
         }
       }
     }
