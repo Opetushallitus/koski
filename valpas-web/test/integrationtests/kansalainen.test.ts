@@ -5,8 +5,11 @@ import { dropdownSelectContains } from "../integrationtests-env/browser/forms"
 import { loginKansalainenAs } from "../integrationtests-env/browser/resetKansalainen"
 import { getIlmoitusData } from "./kuntailmoitus.shared"
 import {
-  hautEquals, historiaEiOpiskeluhistoriaa,
-  historiaOpintoOikeus, historiaOppivelvollisuudenKeskeytys, historiaOppivelvollisuudenKeskeytysToistaiseksi,
+  hautEquals,
+  historiaEiOpiskeluhistoriaa,
+  historiaOpintoOikeus,
+  historiaOppivelvollisuudenKeskeytys,
+  historiaOppivelvollisuudenKeskeytysToistaiseksi,
   historiaVastuuilmoitus,
   ilmoitetutYhteystiedot,
   ilmoitetutYhteystiedotEquals,
@@ -27,22 +30,34 @@ const hetut = {
   huollettavaTurvakielto: "290904A4030",
   huollettavaEiTietoja: "060488-681S",
   eiKoskessaOppivelvollinen: "240105A7049",
-  eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia: "260705A1119"
+  eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia: "260705A1119",
 }
 
 describe("Kansalaisen näkymä", () => {
   it("Näyttää oppijan omat tiedot", async () => {
-    await loginKansalainenAs(omatTiedotPath, hetut.huollettavaOppivelvollinen)
+    await loginKansalainenAs(
+      omatTiedotPath,
+      hetut.huollettavaOppivelvollinen,
+      true
+    )
     await expectHuollettavaOppivelvollinenKaikkiTiedot()
   })
 
   it("Näyttää vain oppijanumerorekisterissä olevan kansalaisen omat Valpas-tiedot, jos niitä on tallennettu", async () => {
-    await loginKansalainenAs(omatTiedotPath, hetut.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia)
+    await loginKansalainenAs(
+      omatTiedotPath,
+      hetut.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia
+    )
     await expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot()
   })
 
   it("Näyttää vain oppijanumerorekisterissä olevan kansalaisen omat Valpas-tiedot, jos niitä on tallennettu, vaikka olisi ohitettu vuosi, jolloin kansalainen täyttää 25 vuotta", async () => {
-    await loginKansalainenAs(omatTiedotPath, hetut.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia, false, "2031-01-01")
+    await loginKansalainenAs(
+      omatTiedotPath,
+      hetut.eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksia,
+      false,
+      "2031-01-01"
+    )
     await expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot()
   })
 
@@ -52,12 +67,22 @@ describe("Kansalaisen näkymä", () => {
   })
 
   it("Näyttää vain oppijanumerorekisterissä olevan kansalaisen tiedot, vaikka olisi yli 18-vuotias", async () => {
-    await loginKansalainenAs(omatTiedotPath, hetut.eiKoskessaOppivelvollinen, false, "2024-01-01")
+    await loginKansalainenAs(
+      omatTiedotPath,
+      hetut.eiKoskessaOppivelvollinen,
+      false,
+      "2024-01-01"
+    )
     await expectEiKoskessaOppivelvollinenKaikkiTiedot()
   })
 
   it("Ei näytä vain ONR:ssä olevan kansalaisen tietoja, jos on ohitettu vuosi, jolloin kansalainen täyttää 25 vuotta", async () => {
-    await loginKansalainenAs(omatTiedotPath, hetut.eiKoskessaOppivelvollinen, false, "2031-01-01")
+    await loginKansalainenAs(
+      omatTiedotPath,
+      hetut.eiKoskessaOppivelvollinen,
+      false,
+      "2031-01-01"
+    )
     await expectNotValpasOppija()
   })
 
@@ -184,10 +209,7 @@ const expectHuollettavaOppivelvollinenKaikkiTiedot = async () => {
 }
 
 const expectEiKoskessaOppivelvollinenKaikkiTiedot = async () => {
-  await oppijaHeaderEquals(
-    "Kosketon Valpas",
-    "24.1.2005"
-  )
+  await oppijaHeaderEquals("Kosketon Valpas", "24.1.2005")
 
   await oppivelvollisuustiedotEquals(
     oppivelvollisuustiedot({
@@ -207,11 +229,7 @@ const expectEiKoskessaOppivelvollinenKaikkiTiedot = async () => {
     })
   )
 
-  await opiskeluhistoriaEquals(
-    merge(
-      historiaEiOpiskeluhistoriaa(),
-    )
-  )
+  await opiskeluhistoriaEquals(merge(historiaEiOpiskeluhistoriaa()))
 
   await hautEquals(`
     list_alt
@@ -244,8 +262,7 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot = as
       lähiosoite: "Esimerkkikatu 123",
       postitoimipaikka: "99999 Helsinki",
       matkapuhelin: "0401234567",
-      sähköposti:
-        "Valpas.Kosketon-keskeytyksiä-ilmoituksia@gmail.com",
+      sähköposti: "Valpas.Kosketon-keskeytyksiä-ilmoituksia@gmail.com",
       lähde: "Hakulomake – Yhteishaku 2021",
     })
   )
@@ -263,19 +280,17 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot = as
     merge(
       historiaEiOpiskeluhistoriaa(),
       historiaOppivelvollisuudenKeskeytysToistaiseksi("1.9.2021"),
-      historiaVastuuilmoitus(
-        {
+      historiaVastuuilmoitus({
         päivämäärä: "15.8.2021",
         ilmoittaja: "Jyväskylän normaalikoulu",
         tahoJolleIlmoitettu: "Pyhtää",
       }),
-      historiaVastuuilmoitus(
-        {
-          päivämäärä: "8.4.2021",
-          ilmoittaja: "Jyväskylän normaalikoulu",
-          tahoJolleIlmoitettu: "Helsinki",
-        }),
-      historiaOppivelvollisuudenKeskeytys("1.1.2019 – 1.12.2019"),
+      historiaVastuuilmoitus({
+        päivämäärä: "8.4.2021",
+        ilmoittaja: "Jyväskylän normaalikoulu",
+        tahoJolleIlmoitettu: "Helsinki",
+      }),
+      historiaOppivelvollisuudenKeskeytys("1.1.2019 – 1.12.2019")
     )
   )
 
