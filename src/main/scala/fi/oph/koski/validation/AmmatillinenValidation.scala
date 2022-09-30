@@ -18,8 +18,8 @@ object AmmatillinenValidation {
           validateOpiskeluoikeudenPäättyminenEnnenSiirtymäajanPäättymistä(ammatillinen, ePerusteet, config),
           validateUseaPäätasonSuoritus(ammatillinen),
           validateViestintäJaVuorovaikutusÄidinkielellä2022(ammatillinen, ePerusteet),
-          validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen),
-          validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen)
+          //validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen),
+          //validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen)
         )
       case _ => HttpStatus.ok
     }

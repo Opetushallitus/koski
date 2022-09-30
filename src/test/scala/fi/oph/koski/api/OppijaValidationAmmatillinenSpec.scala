@@ -706,7 +706,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
       }
 
-      "Keskiarvon asettaminen" - {
+      /*"Keskiarvon asettaminen" - {
         val keskeneräinenSuoritusKeskiarvolla = autoalanPerustutkinnonSuoritus().copy(keskiarvo = Some(4.0))
         "estetään jos suoritus on kesken" - {
           "palautetaan HTTP 400" in (putTutkintoSuoritus(keskeneräinenSuoritusKeskiarvolla)(
@@ -738,7 +738,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           ))
         }
       }
-    }
+    }*/
 
     "Ammatillinen perustutkinto opetussuunnitelman mukaisesti" - {
       "Tutkinnonosan ryhmä on määritetty" - {
