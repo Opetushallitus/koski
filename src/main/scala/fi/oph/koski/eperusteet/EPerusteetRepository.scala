@@ -27,9 +27,9 @@ trait EPerusteetRepository {
 
   def findKaikkiPerusteenYksilöintitiedot(diaariNumero: String): List[EPerusteTunniste]
 
-  def findLinkToEperusteetWeb(diaariNumero: String, lang: String, päivä: LocalDate): Option[String] = {
+  def findLinkToEperusteetWeb(diaariNumero: String, lang: String, päivä: Option[LocalDate]): Option[String] = {
     val linkLang = if (webLanguages.contains(lang)) lang else webLanguages.head
-    findPerusteenYksilöintitiedot(diaariNumero, Some(päivä))
+    findPerusteenYksilöintitiedot(diaariNumero, päivä)
       .headOption
       .map(peruste => {
         val betaEperusteKategoria = betaEperusteenTarvitsevatDiaarinumerot.find(

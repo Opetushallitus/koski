@@ -48,7 +48,6 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     val diaari = params("splat")
     val päättymispäivä = params.get("päättymispäivä")
       .map(p => LocalDate.parse(p))
-      .getOrElse(LocalDate.now)
     val lang = UserLanguage.sanitizeLanguage(params.get("lang")).getOrElse("fi")
     renderEither[Map[String, String]](
       application.ePerusteet.findLinkToEperusteetWeb(diaari, lang, päättymispäivä)
