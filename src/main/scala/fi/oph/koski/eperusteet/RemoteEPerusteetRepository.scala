@@ -14,11 +14,15 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
   private val http: Http = Http(ePerusteetRoot, "eperusteet")
 
   override protected def webBaseUrl: String = ePerusteetWebBaseUrl
+  val externalPerusteetApi = "/api/external/perusteet"
+  val externalPerusteApi = "/api/external/peruste"
+  val externalPerusteetApiPoistuneillaJaSivukoolla = s"$externalPerusteetApi?poistuneet=true&sivukoko=100"
+  val koulutusVientiQuery = "koulutusvienti=true"
 
   def findPerusteet(query: String): List[EPerusteRakenne] = {
     val program: IO[List[EPerusteOsaRakenne]] = for {
-      (perusteetIlmanKoulutusvientiä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&nimi=${query}")(Http.parseJson[EPerusteOsaRakenteet])
-      (perusteetKoulutusviennillä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&nimi=${query}&koulutusvienti=true")(Http.parseJson[EPerusteOsaRakenteet])
+      (perusteetIlmanKoulutusvientiä) <- http.get(uri"$externalPerusteetApiPoistuneillaJaSivukoolla&nimi=${query}")(Http.parseJson[EPerusteOsaRakenteet])
+      (perusteetKoulutusviennillä) <- http.get(uri"$externalPerusteetApiPoistuneillaJaSivukoolla&nimi=${query}&$koulutusVientiQuery")(Http.parseJson[EPerusteOsaRakenteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data.map(_.copy(koulutusvienti = Some(true))))
 
     runIO(program).sortBy(_.koulutusvienti)
@@ -28,8 +32,8 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
     Nil
   } else {
     val program: IO[List[EPerusteOsaRakenne]] = for {
-      (perusteetIlmanKoulutusvientiä) <- http.get(s"/api/external/perusteet?poistuneet=true&sivukoko=100&${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}".toUri)(Http.parseJson[EPerusteOsaRakenteet])
-      (perusteetKoulutusviennillä) <- http.get(s"/api/external/perusteet?poistuneet=true&koulutusvienti=true&sivukoko=100&${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}".toUri)(Http.parseJson[EPerusteOsaRakenteet])
+      (perusteetIlmanKoulutusvientiä) <- http.get(s"$externalPerusteetApiPoistuneillaJaSivukoolla&${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}".toUri)(Http.parseJson[EPerusteOsaRakenteet])
+      (perusteetKoulutusviennillä) <- http.get(s"$externalPerusteetApiPoistuneillaJaSivukoolla&$koulutusVientiQuery&${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}".toUri)(Http.parseJson[EPerusteOsaRakenteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data.map(_.copy(koulutusvienti = Some(true))))
 
     runIO(program)
@@ -37,12 +41,12 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
 
   def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne] = {
     findPerusteenYksilöintitiedot(diaariNumero, päivä)
-      .map(e => rakenneCache(e.id.toString).getOrElse(throw new HttpStatusException(404, "Tutkinnon rakennetta ei löytynyt ePerusteista", "GET", s"/api/external/perusteet/${e.id}")))
+      .map(e => rakenneCache(e.id.toString).getOrElse(throw new HttpStatusException(404, "Tutkinnon rakennetta ei löytynyt ePerusteista", "GET", s"$externalPerusteetApi/${e.id}")))
   }
 
   private val rakenneCache = KeyValueCache[String, Option[EPerusteKokoRakenne]](
     ExpiringCache("EPerusteetRepository.rakenne", 2.minutes, 50),
-    id => runIO(http.get(uri"/api/external/peruste/${id}")(Http.parseJsonOptional[EPerusteKokoRakenne]))
+    id => runIO(http.get(uri"$externalPerusteApi/${id}")(Http.parseJsonOptional[EPerusteKokoRakenne]))
   )
 
   def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne] = osaRakenneCache(diaarinumero)
@@ -57,8 +61,8 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
 
   private def fetchKaikkiRakenteet(diaarinumero: String): List[EPerusteOsaRakenne] = {
     val program: IO[List[EPerusteOsaRakenne]] = for {
-      (perusteetIlmanKoulutusvientiä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
-      (perusteetKoulutusviennillä) <- http.get(uri"/api/external/perusteet?poistuneet=true&sivukoko=100&koulutusvienti=true&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
+      (perusteetIlmanKoulutusvientiä) <- http.get(uri"$externalPerusteetApiPoistuneillaJaSivukoolla&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
+      (perusteetKoulutusviennillä) <- http.get(uri"$externalPerusteetApiPoistuneillaJaSivukoolla&$koulutusVientiQuery&diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteOsaRakenteet])
     } yield(perusteetIlmanKoulutusvientiä.data ++ perusteetKoulutusviennillä.data.map(_.copy(koulutusvienti = Some(true))))
 
     runIO(program)

@@ -335,7 +335,7 @@ object AmmatillinenOpiskeluoikeusTestData {
         suoritustapa = AmmatillinenExampleData.suoritustapaOps,
         keskiarvo = Some(4.0),
         vahvistus = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(
-          päivä = alkamispäivä.minusDays(15), // TODO: Miksi tämä vahvistuspäivä on testidatassa näin aikaisin?
+          päivä = alkamispäivä,
           myöntäjäOrganisaatio = oppilaitos,
           myöntäjäHenkilöt = List(Organisaatiohenkilö("Reksi Rehtori", LocalizedString.finnish("rehtori"), oppilaitos)
         ))),

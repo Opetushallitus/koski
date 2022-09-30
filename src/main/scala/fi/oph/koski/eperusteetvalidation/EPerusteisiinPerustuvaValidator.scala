@@ -25,6 +25,7 @@ class EPerusteisiinPerustuvaValidator(
         case np: NuortenPerusopetus =>
           np.perusteenDiaarinumero.flatMap(haeKoulutustyyppi)
         case _ =>
+          // 30.9.2022: voisiko koulutustyypit hakea EPerusteista myös lopuille tapauksille?
           val koulutustyyppiKoodisto = koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")
           val koulutusTyypit = koodistoViitePalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
           koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
