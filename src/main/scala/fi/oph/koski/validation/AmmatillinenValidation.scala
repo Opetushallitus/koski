@@ -6,6 +6,8 @@ import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillinenPäätasonSu
 
 import java.time.LocalDate
 import com.typesafe.config.Config
+import fi.oph.koski.tutkinto.Koulutustyyppi
+import org.http4s.dsl.&
 
 object AmmatillinenValidation {
   def validateAmmatillinenOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
@@ -40,11 +42,18 @@ object AmmatillinenValidation {
 
   private def validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen: AmmatillinenOpiskeluoikeus) = {
     val isValid = ammatillinen.suoritukset.forall {
-      case a: AmmatillisenTutkinnonSuoritus if (a.valmis & a.suoritustapa.koodiarvo != "naytto") => a.keskiarvo.isDefined
-      case b: AmmatillisenTutkinnonOsittainenSuoritus if (b.valmis & b.suoritustapa.koodiarvo != "naytto") => b.keskiarvo.isDefined
+      case a: AmmatillisenTutkinnonSuoritus if (valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(a)) => a.keskiarvo.isDefined
+      case b: AmmatillisenTutkinnonOsittainenSuoritus if (valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(b)) => b.keskiarvo.isDefined
       case _ => true
     }
     if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo()
+  }
+
+  private def valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = {
+    a.koulutusmoduuli.koulutustyyppi.contains(Koulutustyyppi.ammatillinenPerustutkinto) &
+    a.valmis &
+    a.vahvistus.exists(it => it.päivä.isAfter(LocalDate.of(2018, 1, 15))) &
+    List("ops", "reformi").contains(a.suoritustapa.koodiarvo)
   }
 
   private def validateUseaPäätasonSuoritus(opiskeluoikeus: AmmatillinenOpiskeluoikeus): HttpStatus = {

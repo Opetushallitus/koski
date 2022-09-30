@@ -1,6 +1,9 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 30.9.2022
+- Korjaus ammatillisen validaatioon: keskiarvo vaaditaan vain perustutkinnolta, joka on päättynyt 15.1.2018 tai myöhemmin ja suoritustapana on reformi/ops.
+
 ## 29.9.2022
 - Ammatillisen suoritukselle pitää lisätä keskiarvo kun suoritus on valmis
 - Ammatillisen suoritukselle sallitaan keskiarvo, kun opiskeluoikeuden on tilassa "katsotaan eronneeksi" ja suorituksissa on vähintään yksi tutkinnon osa
