@@ -4,11 +4,9 @@ import fi.oph.koski.eperusteet.{EPerusteRakenne, EPerusteetRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{DiaarinumerollinenKoulutus, _}
-import fi.oph.koski.tutkinto.Koulutustyyppi.{Koulutustyyppi, ammatillinenPerustutkintoErityisopetuksena, ammatillisenPerustutkinnonTyypit, valmaErityisopetuksena}
+import fi.oph.koski.schema._
+import fi.oph.koski.tutkinto.Koulutustyyppi.{Koulutustyyppi, ammatillisenPerustutkinnonTyypit}
 import fi.oph.koski.tutkinto.TutkintoRepository
-import mojave.{lens, traversal}
-import mojave._
 
 import java.time.LocalDate
 
@@ -16,30 +14,8 @@ class EPerusteisiinPerustuvaValidator(
   ePerusteet: EPerusteetRepository,
   tutkintoRepository: TutkintoRepository,
   koodistoViitePalvelu: KoodistoViitePalvelu
-) extends Logging {
+) extends EPerusteetValidationUtils(tutkintoRepository, koodistoViitePalvelu) with Logging {
   private val tutkintorakenneValidator: TutkintoRakenneValidator = TutkintoRakenneValidator(tutkintoRepository, koodistoViitePalvelu)
-
-  def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
-    koulutustyyppiTraversal.modify(oo) { koulutus =>
-      val koulutustyyppi = koulutus match {
-        case np: NuortenPerusopetus =>
-          np.perusteenDiaarinumero.flatMap(haeKoulutustyyppi)
-        case _ =>
-          // 30.9.2022: voisiko koulutustyypit hakea EPerusteista myös lopuille tapauksille?
-          val koulutustyyppiKoodisto = koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")
-          val koulutusTyypit = koodistoViitePalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
-          koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
-      }
-      lens[Koulutus].field[Option[Koodistokoodiviite]]("koulutustyyppi").set(koulutus)(koulutustyyppi)
-    }
-  }
-
-  private def koulutustyyppiTraversal =
-    traversal[KoskeenTallennettavaOpiskeluoikeus]
-      .field[List[PäätasonSuoritus]]("suoritukset")
-      .items
-      .field[Koulutusmoduuli]("koulutusmoduuli")
-      .ifInstanceOf[Koulutus]
 
   def validateTutkintorakenne(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = HttpStatus.fold(
     opiskeluoikeus.suoritukset.map(
@@ -56,20 +32,6 @@ class EPerusteisiinPerustuvaValidator(
     alkamispäiväLäsnä: Option[LocalDate],
     opiskeluoikeudenPäättymispäivä: Option[LocalDate]
   ): HttpStatus = tutkintorakenneValidator.validate(suoritus, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä)
-
-  def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
-    case a: AmmatillinenOpiskeluoikeus => a.withSuoritukset(
-      a.suoritukset.map {
-        case s: AmmatillisenTutkinnonSuoritus =>
-          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
-        case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
-          s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
-        case s: AmmatillisenTutkinnonOsittainenSuoritus =>
-          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
-        case o => o
-      })
-    case x => x
-  }
 
   def validateTutkinnonosanRyhmä(suoritus: Suoritus, opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus = {
     def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: TutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
@@ -112,12 +74,6 @@ class EPerusteisiinPerustuvaValidator(
     }
   }
 
-  private def perusteenNimi(diaariNumero: String, päivä: Option[LocalDate]): Option[LocalizedString] = {
-    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero, päivä)
-      .headOption
-      .map(_.nimi)
-      .flatMap(LocalizedString.sanitize)
-  }
   def validateAmmatillinenOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     opiskeluoikeus match {
       case ammatillinen: AmmatillinenOpiskeluoikeus =>
@@ -172,89 +128,6 @@ class EPerusteisiinPerustuvaValidator(
     }
   }
 
-  def validateVanhanOpiskeluoikeudenTapaukset(
-    vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus
-  ): HttpStatus = {
-    (vanhaOpiskeluoikeus, uusiOpiskeluoikeus) match {
-      case (vanha: AmmatillinenOpiskeluoikeus, uusi: AmmatillinenOpiskeluoikeus) =>
-        validateTutkintokoodinTaiSuoritustavanMuutos(vanha, uusi)
-      case _ => HttpStatus.ok
-    }
-  }
-
-  private def validateTutkintokoodinTaiSuoritustavanMuutos(
-    vanhaOpiskeluoikeus: AmmatillinenOpiskeluoikeus,
-    uusiOpiskeluoikeus: AmmatillinenOpiskeluoikeus
-  ): HttpStatus = {
-    val vanhanSuoritustavat = suoritustavat(vanhaOpiskeluoikeus)
-    val uudenSuoritustavat = suoritustavat(uusiOpiskeluoikeus)
-
-    // Päätason suorituksia on enemmän kuin 1 vain näyttötutkinto + näyttöön valmistavan tapauksessa,
-    // joka on hiljalleen poistumassa käytöstä. Jotta voidaan tukea päätason suorituksen poistoa,
-    // kun halutaan poistaa virheellisesti lisätty näyttöön valmistavan suoritus, riittää, että
-    // 1 tutkintokoodi mätsää.
-    val suoritusTavatLöytyvät = vanhanSuoritustavat.isEmpty || vanhanSuoritustavat.exists(koodi => uudenSuoritustavat.contains(koodi))
-    val tutkintokooditLöytyvät = checkTutkintokooditLöytyvät(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
-
-    if (suoritusTavatLöytyvät && tutkintokooditLöytyvät) {
-      HttpStatus.ok
-    } else {
-      KoskiErrorCategory.badRequest.validation.ammatillinen.muutettuSuoritustapaaTaiTutkintokoodia()
-    }
-  }
-
-  private def checkTutkintokooditLöytyvät(
-    vanhaOpiskeluoikeus: AmmatillinenOpiskeluoikeus,
-    uusiOpiskeluoikeus: AmmatillinenOpiskeluoikeus
-  ): Boolean = {
-    // Optimointi: Tarkistetaan eperusteista löytyvyys vain jos tarpeen eli jos tutkintokoodit eivät alustavasti mätsää
-    val vanhanTutkintokoodit = tutkintokoodit(vanhaOpiskeluoikeus)
-    val uudenTutkintokoodit = tutkintokoodit(uusiOpiskeluoikeus)
-
-    // Päätason suorituksia on enemmän kuin 1 vain näyttötutkinto + näyttöön valmistavan tapauksessa,
-    // joka on hiljalleen poistumassa käytöstä. Jotta voidaan tukea päätason suorituksen poistoa,
-    // kun halutaan poistaa virheellisesti lisätty näyttöön valmistavan suoritus, riittää, että
-    // 1 tutkintokoodi mätsää.
-    if (vanhanTutkintokoodit.isEmpty || vanhanTutkintokoodit.exists(koodi => uudenTutkintokoodit.contains(koodi))) {
-      true
-    } else {
-      val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, vanhaOpiskeluoikeus.päättymispäivä)
-      val uudenTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, uusiOpiskeluoikeus.päättymispäivä)
-
-      vanhanTutkintokooditEperusteettomat.count(koodi => uudenTutkintokooditEperusteettomat.contains(koodi)) == vanhanTutkintokooditEperusteettomat.length
-    }
-  }
-
-  private def tutkintokooditPoislukienPerusteestaLöytymättömät(oo: AmmatillinenOpiskeluoikeus, päivä: Option[LocalDate]): List[String] = {
-    oo.suoritukset.filter(suoritus =>
-      suoritus.koulutusmoduuli match {
-        case diaarillinen: DiaarinumerollinenKoulutus =>
-          diaarillinen.perusteenDiaarinumero match {
-            case Some(diaarinumero) if !onKoodistossa(diaarinumero) =>
-              ePerusteet
-                .findTarkatRakenteet(diaarinumero, päivä)
-                .exists(_.koulutukset.exists(_.koulutuskoodiArvo == diaarillinen.tunniste.koodiarvo))
-            case _ => true
-          }
-        case _ => true
-      }
-    ).map(_.koulutusmoduuli.tunniste.koodiarvo)
-  }
-
-  private def tutkintokoodit(oo: AmmatillinenOpiskeluoikeus): List[String] = {
-    oo.suoritukset.map(
-      _.koulutusmoduuli.tunniste.koodiarvo
-    )
-  }
-
-  private def suoritustavat(oo: AmmatillinenOpiskeluoikeus): List[String] = {
-    oo.suoritukset.collect {
-      case osittainenTaiKokonainen: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => osittainenTaiKokonainen.suoritustapa.koodiarvo
-      case _: NäyttötutkintoonValmistavanKoulutuksenSuoritus => "valmentava"
-    }
-  }
-
   private def validateViestintäJaVuorovaikutusÄidinkielellä2022(
     oo: AmmatillinenOpiskeluoikeus,
   ): HttpStatus = {
@@ -267,7 +140,7 @@ class EPerusteisiinPerustuvaValidator(
       .map(_.koulutusmoduuli)
       .exists(k => k.tunniste.koodiarvo == "VVAI22")
 
-    def haePerusteet(perusteenDiaarinumero: String) =
+    def haePerusteet(perusteenDiaarinumero: String): List[EPerusteRakenne] =
       ePerusteet.findRakenteet(perusteenDiaarinumero, oo.päättymispäivä)
 
     HttpStatus.fold(
@@ -286,12 +159,4 @@ class EPerusteisiinPerustuvaValidator(
       }
     )
   }
-
-  private def haeKoulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] =
-    // Lue koulutustyyppi aina uusimmasta perusteesta. Käytännössä samalla diaarinumerolla
-    // julkaistuissa perusteessa koulutustyyppi ei voi vaihtua.
-    tutkintoRepository.findUusinPerusteRakenne(diaarinumero).map(r => r.koulutustyyppi)
-
-  private def onKoodistossa(diaarinumero: String): Boolean =
-    koodistoViitePalvelu.onKoodistossa("koskikoulutustendiaarinumerot", diaarinumero)
 }

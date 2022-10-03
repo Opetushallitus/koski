@@ -8,7 +8,7 @@ import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkin
 import fi.oph.koski.documentation.AmmatillinenReforminMukainenPerustutkintoExample.{jatkoOpintovalmiuksiaTukevienOpintojenSuoritus, korkeakouluopintoSuoritus}
 import fi.oph.koski.documentation.ExampleData.{helsinki, _}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, ExamplesValma}
-import fi.oph.koski.eperusteetvalidation.EPerusteisiinPerustuvaValidator
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
@@ -1161,6 +1161,11 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       KoskiApplicationForTests.possu,
       KoskiApplicationForTests.henkilöRepository,
       new EPerusteisiinPerustuvaValidator(
+        KoskiApplicationForTests.ePerusteet,
+        KoskiApplicationForTests.tutkintoRepository,
+        KoskiApplicationForTests.koodistoViitePalvelu
+      ),
+      new EPerusteetFiller(
         KoskiApplicationForTests.ePerusteet,
         KoskiApplicationForTests.tutkintoRepository,
         KoskiApplicationForTests.koodistoViitePalvelu

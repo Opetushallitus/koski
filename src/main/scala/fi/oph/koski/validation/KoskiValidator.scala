@@ -5,7 +5,7 @@ import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
-import fi.oph.koski.eperusteetvalidation.EPerusteisiinPerustuvaValidator
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -33,6 +33,7 @@ class KoskiValidator(
   koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,
   henkilöRepository: HenkilöRepository,
   ePerusteetValidator: EPerusteisiinPerustuvaValidator,
+  ePerusteetFiller: EPerusteetFiller,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
   config: Config
@@ -151,10 +152,10 @@ class KoskiValidator(
       }
 
     fillMissingOrganisations(oo)
-      .map(ePerusteetValidator.addKoulutustyyppi)
+      .map(ePerusteetFiller.addKoulutustyyppi)
       .flatMap(lipsuTarvittaessa(validateKoulutustyypinLöytyminenAmmatillisissa))
       .flatMap(lipsuTarvittaessa(MaksuttomuusValidation.validateAndFillJaksot))
-      .map(ePerusteetValidator.fillPerusteenNimi)
+      .map(ePerusteetFiller.fillPerusteenNimi)
       .map(fillLaajuudet)
       .map(fillVieraatKielet)
       .map(clearVahvistukset)

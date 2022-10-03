@@ -498,6 +498,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
           KoskiApplicationForTests.possu,
           KoskiApplicationForTests.henkilöRepository,
           KoskiApplicationForTests.ePerusteetValidator,
+          KoskiApplicationForTests.ePerusteetFiller,
           KoskiApplicationForTests.validatingAndResolvingExtractor,
           KoskiApplicationForTests.suostumuksenPeruutusService,
           config
