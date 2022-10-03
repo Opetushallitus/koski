@@ -153,6 +153,7 @@ export const OppijanOppivelvollisuustiedot = (
               <>
                 <div className={b("ilmoitusbuttonwithinfo")}>
                   <RaisedButton
+                    id="ilmoitus-btn"
                     disabled={isLoading(pohjatiedot)}
                     hierarchy="secondary"
                     onClick={() => pohjatiedot.call(oppijaOids)}
