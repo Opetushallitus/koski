@@ -34,7 +34,7 @@ describe('EPerusteet', function() {
     })
   })
 
-  describe('Perusteen linkki virkalijan oppija-näkymässä', function() {
+  describe('Perusteen linkki virkailijan oppija-näkymässä', function() {
     describe('Kun opiskeluoikeuden suoritus on kesken, linkitetään uusimpaan perusteeseen', function () {
       before(
         resetFixtures,
