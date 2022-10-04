@@ -329,21 +329,10 @@ describe('VST', function () {
           ...lisääKieliopinto('Kuullun ymmärtäminen', 10, 'A1.1'),
           ...lisääKieliopinto('Luetun ymmärtäminen', 10, 'A1.1'),
           vst.selectArvosana('Kieli- ja viestintäosaaminen', 'Hyväksytty'),
-          editor.saveChangesAndExpectError
+          editor.saveChanges
         )
 
-        it('ei onnistu liian vähillä opintopisteillä', function () {
-          expectError('Oppiaineen \'Kieli- ja viestintäosaaminen\' suoritettu laajuus liian suppea (30.0 op, pitäisi olla vähintään 40.0 op)')
-        })
-
-        describe('mutta kun opintopisteitä on tarpeeksi', function() {
-          before(
-            vst.enterLaajuus('Kirjoittaminen', 10),
-            vst.enterLaajuus('Puhuminen', 10),
-            editor.saveChanges
-          )
-          it('tallentaminen onnistuu', function () {})
-        })
+        it('tallentaminen onnistuu', function () {})
       })
 
       describe('Yhteiskunta- ja työelämän opintojen lisäys', function() {

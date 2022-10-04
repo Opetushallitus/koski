@@ -1,3 +1,7 @@
+## 4.10.2022
+
+- Lisätty VST-KOTO-koulutuksen kieli- ja viestintäopintojen osasuorituksen alaosasuorituksen hyväksyttyihin arvosanoihin `alle_A1.1` ja `yli_C1.1`.
+
 ## 14.9.2022
 
 - Poistettu tutkintokoulutukseen valmentavan koulutuksen perusopetuksen järjestämisluvan lisätiedoista kenttä `pidennettyOppivelvollisuus`
