@@ -143,6 +143,8 @@ case class VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi(
   @KoodistoKoodiarvo("C1.2")
   @KoodistoKoodiarvo("C2.1")
   @KoodistoKoodiarvo("C2.2")
+  @KoodistoKoodiarvo("alle_A1.1")
+  @KoodistoKoodiarvo("yli_C1.1")
   arvosana: Koodistokoodiviite,
   arviointipäivä: Option[LocalDate] = None,
 ) extends Arviointi {
