@@ -67,13 +67,13 @@ export const resetMockData = async (
   ) {
     await setTextInput(inputSelector, tarkastelupäivä)
     await clickElement("#resetMockData")
-    await textEventuallyEquals("#resetMockDataState", "success", longTimeout)
+    await textEventuallyEquals("#resetMockDataState", "SUCCESS", longTimeout)
   }
 }
 
 export const clearMockData = async () => {
   await clickElement("#clearMockData")
-  await textEventuallyEquals("#clearMockDataState", "success", longTimeout)
+  await textEventuallyEquals("#clearMockDataState", "SUCCESS", longTimeout)
 }
 
 export const clearLocalStorage = async () => {
@@ -82,4 +82,13 @@ export const clearLocalStorage = async () => {
 
 export const clearSessionStorage = async () => {
   await driver.executeScript("window.sessionStorage.clear()")
+}
+
+export const resetRaportointikanta = async () => {
+  await clickElement("#loadRaportointikanta")
+  await textEventuallyEquals(
+    "#loadRaportointikantaState",
+    "SUCCESS",
+    longTimeout
+  )
 }
