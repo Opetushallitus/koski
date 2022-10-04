@@ -1,6 +1,9 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 4.10.2022
+- Poistettu laajuuden validointi VST-KOTO-opintojen kieli- ja viestintäosaamisen osasuoritukselta.
+
 ## 30.9.2022
 - Korjaus ammatillisen validaatioon: keskiarvo vaaditaan vain perustutkinnolta, joka on päättynyt 15.1.2018 tai myöhemmin ja suoritustapana on reformi/ops.
 

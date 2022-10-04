@@ -72,15 +72,7 @@ object VSTKotoutumiskoulutus2022Validation {
     }
 
   def validateKieliJaViestintä(osasuoritus: VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022): HttpStatus =
-    HttpStatus.fold(
-      validateKieliJaViestintäLaajuus(osasuoritus),
-      validateKieliJaViestintäOsasuoritustenArviointi(osasuoritus),
-    )
-
-  def validateKieliJaViestintäLaajuus(suoritus: VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022): HttpStatus =
-    josArvioitu(suoritus) {
-      validateLaajuus(suoritus, 40)
-    }
+    validateKieliJaViestintäOsasuoritustenArviointi(osasuoritus)
 
   def validateKieliJaViestintäOsasuoritustenArviointi(suoritus: VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022): HttpStatus =
     josArvioitu(suoritus) {
