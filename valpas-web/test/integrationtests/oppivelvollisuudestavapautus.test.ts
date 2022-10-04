@@ -8,7 +8,10 @@ import {
   allowNetworkError,
   FORBIDDEN,
 } from "../integrationtests-env/browser/fail-on-console"
-import { loginAs } from "../integrationtests-env/browser/reset"
+import {
+  loginAs,
+  resetRaportointikanta,
+} from "../integrationtests-env/browser/reset"
 import {
   mainHeadingEquals,
   oppivelvollisuustiedot,
@@ -119,8 +122,31 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
     await validateTiedot()
   })
 
-  it("Ennen raportointikannan viimeisintä päivitystä tehdyn vapautuksen mitätöinti", () => {
-    // TODO
+  it("Ennen raportointikannan viimeisintä päivitystä tehdyn vapautuksen mitätöinti", async () => {
+    await loginAs(vapautetettavaPath, "valpas-monta", true, tarkastelupäivä)
+
+    await merkitseOvVapautus()
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        oppivelvollisuus:
+          "Vapautettu oppivelvollisuudesta 1.10.2021 alkaen, myöntäjä Helsingin kaupunki",
+        vapautuksenMitätöintiBtn: true,
+        maksuttomuusoikeus: "30.9.2021 asti",
+      })
+    )
+
+    await resetRaportointikanta()
+
+    await mitätöiOvVapautus()
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        oppivelvollisuus:
+          "Vapautus oppivelvollisuudesta on mitätöitymässä. Oppivelvollisuuden päättymispäivää ja oikeuden maksuttomaan koulutuksen päättymispäivää ei pystytä näyttämään tällä hetkellä. Tieto on saatavilla tavallisesti noin vuorokauden kuluessa.",
+        oppivelvollisuudenKeskeytysBtn: true,
+        kuntailmoitusBtn: true,
+        merkitseVapautusBtn: true,
+      })
+    )
   })
 })
 

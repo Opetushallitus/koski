@@ -42,7 +42,7 @@ export const oppivelvollisuustiedot = (p: {
   opiskelutilanne?: string
   oppivelvollisuus?: string
   oppivelvollisuudenKeskeytykset?: string[]
-  maksuttomuusoikeus: string
+  maksuttomuusoikeus?: string
   kuntailmoitusBtn?: true
   oppivelvollisuudenKeskeytysBtn?: true
   merkitseVapautusBtn?: boolean
