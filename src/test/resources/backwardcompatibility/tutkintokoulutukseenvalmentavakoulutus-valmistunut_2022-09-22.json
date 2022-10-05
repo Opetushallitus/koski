@@ -1,0 +1,667 @@
+{
+  "henkilö" : {
+    "hetu" : "270504A317P",
+    "etunimet" : "Turo",
+    "kutsumanimi" : "Turo",
+    "sukunimi" : "Vaara"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "koulutustoimija" : {
+      "oid" : "1.2.246.562.10.346830761110",
+      "nimi" : {
+        "fi" : "Helsingin kaupunki"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2021-08-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "koodistoUri" : "koskiopiskeluoikeudentila"
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2022-08-01",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "koodistoUri" : "koskiopiskeluoikeudentila"
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "lisätiedot" : {
+      "maksuttomuus" : [ {
+        "alku" : "2021-08-01",
+        "maksuton" : true
+      } ],
+      "koulutusvienti" : false,
+      "pidennettyPäättymispäivä" : false
+    },
+    "suoritukset" : [ {
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.52251087186",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "10105",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto"
+        }
+      },
+      "tyyppi" : {
+        "koodiarvo" : "tuvakoulutuksensuoritus",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999908",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "OPH-1488-2021",
+        "koulutustyyppi" : {
+          "koodiarvo" : "40",
+          "koodistoUri" : "koulutustyyppi"
+        },
+        "laajuus" : {
+          "arvo" : 12.0,
+          "yksikkö" : {
+            "koodiarvo" : "8",
+            "nimi" : {
+              "fi" : "viikkoa",
+              "sv" : "veckor",
+              "en" : "weeks"
+            },
+            "lyhytNimi" : {
+              "fi" : "vk",
+              "sv" : "veckor",
+              "en" : "weeks"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2021-12-31",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.52251087186",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "10105",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "101",
+            "nimi" : {
+              "fi" : "Opiskelu- ja urasuunnittelutaidot",
+              "sv" : "Opiskelu- ja urasuunnittelutaidot",
+              "en" : "Opiskelu- ja urasuunnittelutaidot"
+            },
+            "koodistoUri" : "koulutuksenosattuva"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "8",
+              "nimi" : {
+                "fi" : "viikkoa",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "vk",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
+          },
+          "kuvaus" : {
+            "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
+          },
+          "päivä" : "2021-09-01",
+          "hyväksytty" : true
+        } ],
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "nimi" : {
+            "fi" : "suomi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tutkintokoulutukseenvalmentava",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "107",
+            "nimi" : {
+              "fi" : "Perustaitojen vahvistaminen",
+              "sv" : "Perustaitojen vahvistaminen",
+              "en" : "Perustaitojen vahvistaminen"
+            },
+            "koodistoUri" : "koulutuksenosattuva"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "8",
+              "nimi" : {
+                "fi" : "viikkoa",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "vk",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
+          },
+          "kuvaus" : {
+            "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
+          },
+          "päivä" : "2021-09-01",
+          "hyväksytty" : true
+        } ],
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "nimi" : {
+            "fi" : "suomi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tuvaperusopetus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "105",
+            "nimi" : {
+              "fi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+              "sv" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+              "en" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen"
+            },
+            "koodistoUri" : "koulutuksenosattuva"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "8",
+              "nimi" : {
+                "fi" : "viikkoa",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "vk",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
+          },
+          "kuvaus" : {
+            "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
+          },
+          "päivä" : "2021-10-01",
+          "hyväksytty" : true
+        } ],
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "nimi" : {
+            "fi" : "suomi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tuvaammatillinenkoulutus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "102",
+            "nimi" : {
+              "fi" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
+              "sv" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
+              "en" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen"
+            },
+            "koodistoUri" : "koulutuksenosattuva"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "8",
+              "nimi" : {
+                "fi" : "viikkoa",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "vk",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
+          },
+          "kuvaus" : {
+            "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
+          },
+          "päivä" : "2021-10-01",
+          "hyväksytty" : true
+        } ],
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "nimi" : {
+            "fi" : "suomi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tutkintokoulutukseenvalmentava",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "103",
+            "nimi" : {
+              "fi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
+              "sv" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
+              "en" : "Arjen ja yhteiskunnallisen osallisuuden taidot"
+            },
+            "koodistoUri" : "koulutuksenosattuva"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "8",
+              "nimi" : {
+                "fi" : "viikkoa",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "vk",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
+          },
+          "kuvaus" : {
+            "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
+          },
+          "päivä" : "2021-11-01",
+          "hyväksytty" : true
+        } ],
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "nimi" : {
+            "fi" : "suomi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tutkintokoulutukseenvalmentava",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "106",
+            "nimi" : {
+              "fi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+              "sv" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+              "en" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen"
+            },
+            "koodistoUri" : "koulutuksenosattuva"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "8",
+              "nimi" : {
+                "fi" : "viikkoa",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "vk",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
+          },
+          "kuvaus" : {
+            "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
+          },
+          "päivä" : "2021-11-01",
+          "hyväksytty" : true
+        } ],
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "nimi" : {
+            "fi" : "suomi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "tuvalukiokoulutus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "tunnustettu" : {
+          "osaaminen" : {
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "ENA1",
+                "koodistoUri" : "lukionkurssit"
+              },
+              "laajuus" : {
+                "arvo" : 1.0,
+                "yksikkö" : {
+                  "koodiarvo" : "4",
+                  "koodistoUri" : "opintojenlaajuusyksikko"
+                }
+              },
+              "kurssinTyyppi" : {
+                "koodiarvo" : "pakollinen",
+                "koodistoUri" : "lukionkurssintyyppi"
+              }
+            },
+            "arviointi" : [ {
+              "arvosana" : {
+                "koodiarvo" : "8",
+                "koodistoUri" : "arviointiasteikkoyleissivistava"
+              },
+              "päivä" : "2016-06-04",
+              "hyväksytty" : true
+            } ],
+            "tyyppi" : {
+              "koodiarvo" : "lukionkurssi",
+              "koodistoUri" : "suorituksentyyppi"
+            }
+          },
+          "selite" : {
+            "fi" : "Tunnustettu lukion kurssi"
+          },
+          "rahoituksenPiirissä" : false
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "104",
+            "nimi" : {
+              "fi" : "Valinnaiset koulutuksen osat",
+              "sv" : "Valinnaiset koulutuksen osat",
+              "en" : "Valinnaiset koulutuksen osat"
+            },
+            "koodistoUri" : "koulutuksenosattuva"
+          },
+          "laajuus" : {
+            "arvo" : 5.0,
+            "yksikkö" : {
+              "koodiarvo" : "8",
+              "nimi" : {
+                "fi" : "viikkoa",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "lyhytNimi" : {
+                "fi" : "vk",
+                "sv" : "veckor",
+                "en" : "weeks"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkotuva"
+          },
+          "kuvaus" : {
+            "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
+          },
+          "päivä" : "2021-12-01",
+          "hyväksytty" : true
+        } ],
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "nimi" : {
+            "fi" : "suomi"
+          },
+          "koodistoUri" : "kieli"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "nimi" : {
+              "fi" : "Valinnainen kurssi 1"
+            },
+            "tunniste" : {
+              "koodiarvo" : "VALKU1",
+              "nimi" : {
+                "fi" : "Paikallinen kurssisuoritus"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "8",
+                "nimi" : {
+                  "fi" : "viikkoa",
+                  "sv" : "veckor",
+                  "en" : "weeks"
+                },
+                "lyhytNimi" : {
+                  "fi" : "vk",
+                  "sv" : "veckor",
+                  "en" : "weeks"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkotuva"
+            },
+            "kuvaus" : {
+              "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
+            },
+            "päivä" : "2021-12-01",
+            "hyväksytty" : true
+          } ],
+          "suorituskieli" : {
+            "koodiarvo" : "FI",
+            "nimi" : {
+              "fi" : "suomi"
+            },
+            "koodistoUri" : "kieli"
+          },
+          "tyyppi" : {
+            "koodiarvo" : "tutkintokoulutukseenvalmentava",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "nimi" : {
+              "fi" : "Valinnainen kurssi 2"
+            },
+            "tunniste" : {
+              "koodiarvo" : "VALKU2",
+              "nimi" : {
+                "fi" : "Paikallinen kurssisuoritus"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "8",
+                "nimi" : {
+                  "fi" : "viikkoa",
+                  "sv" : "veckor",
+                  "en" : "weeks"
+                },
+                "lyhytNimi" : {
+                  "fi" : "vk",
+                  "sv" : "veckor",
+                  "en" : "weeks"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Hyväksytty",
+              "koodistoUri" : "arviointiasteikkotuva"
+            },
+            "kuvaus" : {
+              "fi" : "Hyväksytty tutkintokoulutukseen valmentavan koulutuksen osasuoritus."
+            },
+            "päivä" : "2021-12-01",
+            "hyväksytty" : true
+          } ],
+          "suorituskieli" : {
+            "koodiarvo" : "FI",
+            "nimi" : {
+              "fi" : "suomi"
+            },
+            "koodistoUri" : "kieli"
+          },
+          "tyyppi" : {
+            "koodiarvo" : "tutkintokoulutukseenvalmentava",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "tutkintokoulutukseenvalmentava",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "tuva",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "organisaatiohistoria" : [ {
+      "muutospäivä" : "2021-08-01",
+      "oppilaitos" : {
+        "oid" : "1.2.246.562.10.52251087186",
+        "nimi" : {
+          "fi" : "Stadin ammatti- ja aikuisopisto"
+        }
+      },
+      "koulutustoimija" : {
+        "oid" : "1.2.246.562.10.346830761110",
+        "nimi" : {
+          "fi" : "Helsingin kaupunki"
+        }
+      }
+    } ],
+    "järjestämislupa" : {
+      "koodiarvo" : "ammatillinen",
+      "koodistoUri" : "tuvajarjestamislupa"
+    },
+    "alkamispäivä" : "2021-08-01",
+    "päättymispäivä" : "2022-08-01"
+  } ]
+}

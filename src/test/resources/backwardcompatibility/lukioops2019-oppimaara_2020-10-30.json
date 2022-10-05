@@ -1548,5 +1548,6 @@
     },
     "alkamispäivä" : "2019-08-01",
     "päättymispäivä" : "2020-05-15"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

@@ -38,15 +38,26 @@ case class KoodistoViitePalvelu(config: Config, koodistoPalvelu: KoodistoPalvelu
     validate(Koodistokoodiviite(koodiArvo, koodistoUri))
   }
 
-  def validate(input: Koodistokoodiviite): Option[Koodistokoodiviite] = {
-    val koodistoViite = toKoodistoViiteOptional(input)
+  def onKoodistossa(koodistoUri: String, koodiArvo: String): Boolean = {
+    onKoodistossa(Koodistokoodiviite(koodiArvo, koodistoUri))
+  }
 
-    val viite = koodistoViite.flatMap(getKoodistoKoodiViitteet(_).find(_.koodiarvo == input.koodiarvo))
+  def validate(input: Koodistokoodiviite): Option[Koodistokoodiviite] = {
+    val viite = toKoodistokoodiviiteOptional(input)
 
     if (viite.isEmpty) {
       logger.warn("Koodia " + input.koodiarvo + " ei löydy koodistosta " + input.koodistoUri)
     }
     viite
+  }
+
+  def onKoodistossa(input: Koodistokoodiviite): Boolean = {
+    toKoodistokoodiviiteOptional(input).isDefined
+  }
+
+  private def toKoodistokoodiviiteOptional(input: Koodistokoodiviite): Option[Koodistokoodiviite] = {
+    val koodistoViite = toKoodistoViiteOptional(input)
+    koodistoViite.flatMap(getKoodistoKoodiViitteet(_).find(_.koodiarvo == input.koodiarvo))
   }
 
   private def toKoodistoViiteOptional(koodiviite: Koodistokoodiviite): Option[KoodistoViite] = koodiviite

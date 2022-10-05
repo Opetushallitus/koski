@@ -1430,6 +1430,7 @@ object ValpasOpiskeluoikeusExampleData {
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2011, 6, 3), opiskeluoikeusValmistunut)
       )
     ),
+    suoritukset = ExamplesEsiopetus.opiskeluoikeus.suoritukset.map(s => s.copy(vahvistus = vahvistusPaikkakunnalla(date(2007, 6, 3))))
   )
 
   def perusopetukseenValmistavanOpetuksenOpiskeluoikeusAlkaaSyys2021 = perusopetukseenValmistavanOpetuksenOpiskeluoikeus.copy(

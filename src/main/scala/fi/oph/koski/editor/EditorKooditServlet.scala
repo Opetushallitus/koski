@@ -21,7 +21,8 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
 
   get[List[EnumValue]]("/osaamisalat/osaamisala/*") {
     val diaari = params("splat")
-    val osaamisalat = application.tutkintoRepository.findPerusteRakenne(diaari)
+    // Valitaan uusimman perusteen mukainen rakenne, jos samalla diaarinumerolla löytyy useita perusteita
+    val osaamisalat = application.tutkintoRepository.findPerusteRakenteet(diaari, None).headOption
       .map(_.osaamisalat)
       .getOrElse(koodistojenKoodit(koodistotByString("osaamisala")))
     toKoodistoEnumValues(osaamisalat)
@@ -29,7 +30,8 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
 
   get[List[EnumValue]]("/koulutukset/koulutus/*") {
     val diaari = params("splat")
-    val koulutukset = application.tutkintoRepository.findPerusteRakenne(diaari)
+    // Valitaan uusimman perusteen mukainen rakenne, jos samalla diaarinumerolla löytyy useita perusteita
+    val koulutukset = application.tutkintoRepository.findPerusteRakenteet(diaari, None).headOption
       .map(_.koulutukset).toList.flatten
     toKoodistoEnumValues(koulutukset)
   }
@@ -79,7 +81,10 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
     val oppimaaraKoodiarvo = params.get("oppimaaraKoodiarvo")
     val oppimääränDiaarinumero = params.get("oppimaaraDiaarinumero")
 
-    val ePerusteetRakenne = oppimääränDiaarinumero.flatMap(application.ePerusteet.findRakenne)
+    // Valitaan uusimman perusteen mukainen rakenne, jos samalla diaarinumerolla löytyy useita perusteita
+    val ePerusteetRakenne = oppimääränDiaarinumero.flatMap(diaariNumero =>
+      application.ePerusteet.findTarkatRakenteet(diaariNumero, None).headOption
+    )
 
     val ePerusteidenMukaisetKurssit = {
       val oppiaine = for {

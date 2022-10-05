@@ -14,7 +14,7 @@ object ExamplesPerusopetukseenValmistavaOpetus {
   val perusopetukseenValmistavanOpetuksenSuoritus = PerusopetukseenValmistavanOpetuksenSuoritus(
     koulutusmoduuli = PerusopetukseenValmistavaOpetus(perusteenDiaarinumero = Some("57/011/2015")),
     toimipiste = jyväskylänNormaalikoulu,
-    vahvistus = vahvistusPaikkakunnalla(päivä = date(2008, 6, 1)),
+    vahvistus = vahvistusPaikkakunnalla(päivä = date(2018, 6, 1)),
     suorituskieli = suomenKieli,
     osasuoritukset = Some(List(
       PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
@@ -38,10 +38,10 @@ object ExamplesPerusopetukseenValmistavaOpetus {
 
   val perusopetukseenValmistavaOpiskeluoikeus = PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
     tila = PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(List(
-      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2007, 8, 15), opiskeluoikeusLäsnä),
-      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2007, 12, 20), opiskeluoikeusLoma),
-      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2008, 1, 6), opiskeluoikeusLäsnä),
-      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2008, 6, 1), opiskeluoikeusValmistunut)
+      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2017, 8, 15), opiskeluoikeusLäsnä),
+      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2017, 12, 20), opiskeluoikeusLoma),
+      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2018, 1, 6), opiskeluoikeusLäsnä),
+      PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(date(2018, 6, 1), opiskeluoikeusValmistunut)
     )),
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(

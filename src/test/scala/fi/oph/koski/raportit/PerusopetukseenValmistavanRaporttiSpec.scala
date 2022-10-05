@@ -40,13 +40,13 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
     sukunimi = "Koululainen",
     etunimet = "Kaisa",
     kansalaisuus = None,
-    opiskeluoikeudenAlkamispäivä = Option(LocalDate.parse("2007-08-15")),
+    opiskeluoikeudenAlkamispäivä = Option(LocalDate.parse("2017-08-15")),
     opiskeluoikeudenTila = Option("valmistunut"),
     opiskeluoikeudenTilatAikajaksonAikana = "lasna,loma,lasna,valmistunut",
     suoritustyyppi = "perusopetukseenvalmistavaopetus",
     suorituksenTila = "valmis",
-    suorituksenVahvistuspaiva = "2008-06-01",
-    läsnäolopäiviäAikajaksonAikana = 274
+    suorituksenVahvistuspaiva = "2018-06-01",
+    läsnäolopäiviäAikajaksonAikana = 273
   )
 
   "Valmistavan opetuksen raportti" - {

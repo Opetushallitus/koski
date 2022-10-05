@@ -5,12 +5,15 @@ import fi.oph.koski.eperusteet._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.LocalizedString
 
+import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
 trait TutkintoRepository {
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste]
 
-  def findPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne]
+  def findPerusteRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[TutkintoRakenne]
+
+  def findUusinPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne]
 }
 
 object TutkintoRepository {
@@ -25,8 +28,14 @@ class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, koodistoPalvelu: 
     }
   }
 
-  def findPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne] = {
-    eperusteet.findRakenne(diaariNumero)
+  def findPerusteRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[TutkintoRakenne] = {
+    eperusteet.findTarkatRakenteet(diaariNumero, päivä)
+      .map(rakenne => EPerusteetTutkintoRakenneConverter.convertRakenne(rakenne)(koodistoPalvelu))
+  }
+
+  def findUusinPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne] = {
+    eperusteet.findTarkatRakenteet(diaariNumero, None)
+      .headOption
       .map(rakenne => EPerusteetTutkintoRakenneConverter.convertRakenne(rakenne)(koodistoPalvelu))
   }
 }

@@ -24,7 +24,7 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
       "päättymispäivämäärä" in {
         resetFixtures
         insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 1, 9)), eero)
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2013, 1, 9)), teija)
+        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2015, 8, 9)), teija)
 
         val queryString: String = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31"
         val oppijat = queryOppijat("?" + queryString)

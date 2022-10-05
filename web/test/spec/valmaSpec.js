@@ -73,15 +73,15 @@ describe('VALMA koulutus', function() {
         before(opinnot.expandAll)
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-            'Opiskeluoikeuden voimassaoloaika : 14.9.2009 — 4.6.2016\n' +
-            'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+            'Opiskeluoikeuden voimassaoloaika : 14.9.2009 — 1.1.2018\n' +
+            'Tila 1.1.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
             '14.9.2009 Läsnä (valtionosuusrahoitteinen koulutus)'
           )
         })
 
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Koulutus Ammatilliseen koulutukseen valmentava koulutus (VALMA) 999901 5/011/2015\n' +
+            'Koulutus Ammatilliseen koulutukseen valmentava koulutus (VALMA) 999901 OPH-2658-2017\n' +
             'Laajuus 65 osp\n' +
             'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto\n' +
             'Suorituskieli suomi\n' +

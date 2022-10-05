@@ -1,6 +1,11 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 5.10.2022
+- Validaatioissa tarkastetaan, että opiskeluoikeuden päättymispäivä osuu perusteen voimassaoloaikaan,
+  tai viimeistään perusteen siirtymäaikaan. Tämä validaatio oli aiemmin toteutettu vain ammatillisen
+  koulutuksen opiskeluoikeuksille, ja se oli väliaikaisesti 15.8.2022 alkaen pois päältä.
+
 ## 4.10.2022
 - Poistettu laajuuden validointi VST-KOTO-opintojen kieli- ja viestintäosaamisen osasuoritukselta.
 

@@ -4,22 +4,33 @@ import com.typesafe.config.Config
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
+import java.time.LocalDate
+
 trait EPerusteetRepository {
-  def findPerusteet(query: String): List[EPeruste]
+  def findPerusteet(nimi: String): List[EPerusteRakenne]
 
-  def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste]
+  def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPerusteRakenne]
 
-  def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste]
+  def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne]
 
-  def findRakenne(diaariNumero: String): Option[EPerusteRakenne]
+  def findRakenteet(diaarinumero: String, päivä: Option[LocalDate]): List[EPerusteRakenne] = {
+    findKaikkiRakenteet(diaarinumero)
+      .filter(perusteVoimassa(päivä))
+  }
 
-  def findUusinRakenne(diaarinumero: String): Option[EPerusteRakenne]
+  def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne]
 
-  def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste]
+  def findPerusteenYksilöintitiedot(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTunniste] =
+    findKaikkiPerusteenYksilöintitiedot(diaariNumero)
+      .filter(perusteVoimassa(päivä))
+      .sortBy(_.luotu)(Ordering[Option[Long]]).reverse
 
-  def findLinkToEperusteetWeb(diaariNumero: String, lang: String): Option[String] = {
+  def findKaikkiPerusteenYksilöintitiedot(diaariNumero: String): List[EPerusteTunniste]
+
+  def findLinkToEperusteetWeb(diaariNumero: String, lang: String, päivä: Option[LocalDate]): Option[String] = {
     val linkLang = if (webLanguages.contains(lang)) lang else webLanguages.head
-    findPerusteenYksilöintitiedot(diaariNumero)
+    findPerusteenYksilöintitiedot(diaariNumero, päivä)
+      .headOption
       .map(peruste => {
         val betaEperusteKategoria = betaEperusteenTarvitsevatDiaarinumerot.find(
           _._2.contains(diaariNumero))
@@ -29,6 +40,10 @@ trait EPerusteetRepository {
           s"$webBaseUrl/#/${linkLang}/kooste/${peruste.id}"
         }
       })
+  }
+
+  private def perusteVoimassa(päivä: Option[LocalDate])(peruste: EPerusteVoimassaololla): Boolean = {
+    päivä.isEmpty || (peruste.voimassaOloAlkanut(päivä.get) && !peruste.siirtymäTaiVoimassaoloPäättynyt(päivä.get))
   }
 
   protected val betaEperusteenTarvitsevatDiaarinumerot = Map(

@@ -5,11 +5,10 @@ import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
-import fi.oph.koski.eperusteet.EPerusteetRepository
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -19,7 +18,6 @@ import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosT
 import fi.oph.koski.schema.{MahdollisestiAlkupäivällinenJakso, VapaanSivistystyönPäätasonSuoritus, _}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tutkinto.Koulutustyyppi._
-import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.util.Timing
 import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
 import fi.oph.koski.validation.DateValidation._
@@ -31,12 +29,11 @@ import org.json4s.{JArray, JValue}
 // scalastyle:off number.of.methods
 
 class KoskiValidator(
-  tutkintoRepository: TutkintoRepository,
-  koodistoPalvelu: KoodistoViitePalvelu,
   organisaatioRepository: OrganisaatioRepository,
   koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,
   henkilöRepository: HenkilöRepository,
-  ePerusteet: EPerusteetRepository,
+  ePerusteetValidator: EPerusteisiinPerustuvaValidator,
+  ePerusteetFiller: EPerusteetFiller,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
   config: Config
@@ -105,8 +102,10 @@ class KoskiValidator(
               validatePäätasonSuoritukset(opiskeluoikeus)
             }
             .onSuccess {
-              HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validate(_,
-                opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku))))
+              ePerusteetValidator.validatePerusteVoimassa(opiskeluoikeus)
+            }
+            .onSuccess {
+              ePerusteetValidator.validateTutkintorakenne(opiskeluoikeus)
             })
             .onSuccess {
               HttpStatus.fold(
@@ -124,7 +123,8 @@ class KoskiValidator(
                 TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
                 SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService),
                 Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus),
-                AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, ePerusteet, config),
+                AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus),
+                ePerusteetValidator.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus),
                 VSTKotoutumiskoulutus2022Validation.validate(opiskeluoikeus),
                 VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus)
               )
@@ -152,10 +152,10 @@ class KoskiValidator(
       }
 
     fillMissingOrganisations(oo)
-      .map(addKoulutustyyppi)
+      .map(ePerusteetFiller.addKoulutustyyppi)
       .flatMap(lipsuTarvittaessa(validateKoulutustyypinLöytyminenAmmatillisissa))
       .flatMap(lipsuTarvittaessa(MaksuttomuusValidation.validateAndFillJaksot))
-      .map(fillPerusteenNimi)
+      .map(ePerusteetFiller.fillPerusteenNimi)
       .map(fillLaajuudet)
       .map(fillVieraatKielet)
       .map(clearVahvistukset)
@@ -164,20 +164,6 @@ class KoskiValidator(
       .map(fillLukionOppimääräSuoritettu)
       .map(PerusopetuksenOpiskeluoikeusValidation.filterDeprekoidutKentät)
       .map(RedundantinDatanPoisto.dropRedundantData)
-  }
-
-  private def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
-    case a: AmmatillinenOpiskeluoikeus => a.withSuoritukset(
-      a.suoritukset.map {
-        case s: AmmatillisenTutkinnonSuoritus =>
-          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(perusteenNimi)))
-        case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
-          s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(perusteenNimi)))
-        case s: AmmatillisenTutkinnonOsittainenSuoritus =>
-          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(perusteenNimi)))
-        case o => o
-      })
-    case x => x
   }
 
   private def fillLaajuudet(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
@@ -252,9 +238,6 @@ class KoskiValidator(
       case l: LukionOppiaineidenOppimäärienSuoritus2019 => l.copy(vahvistus = None)
       case l: Any => l
     })
-
-  private def perusteenNimi(diaariNumero: String): Option[LocalizedString] =
-    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero).map(_.nimi).flatMap(LocalizedString.sanitize)
 
   private def fillMissingOrganisations(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     addOppilaitos(oo).flatMap(addKoulutustoimija).map(setOrganizationNames)
@@ -348,19 +331,6 @@ class KoskiValidator(
         Left(KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvatusta järjestävälle koulutustoimijalle"))
       case _ =>
         Left(KoskiErrorCategory.badRequest.validation.organisaatio.koulutustoimijaPakollinen("Koulutustoimijaa ei voi yksiselitteisesti päätellä käyttäjätunnuksesta. Koulutustoimija on pakollinen."))
-    }
-  }
-
-  private def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
-    koulutustyyppiTraversal.modify(oo) { koulutus =>
-      val koulutustyyppi = koulutus match {
-        case np: NuortenPerusopetus => np.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_).map(_.koulutustyyppi))
-        case _ =>
-          val koulutustyyppiKoodisto = koodistoPalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")
-          val koulutusTyypit = koodistoPalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
-          koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
-      }
-      lens[Koulutus].field[Option[Koodistokoodiviite]]("koulutustyyppi").set(koulutus)(koulutustyyppi)
     }
   }
 
@@ -921,7 +891,7 @@ class KoskiValidator(
         :: validateSuoritustenLuokkaAsteet(suoritus, opiskeluoikeus)
         :: validateOppiaineet(suoritus)
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
-        :: validateTutkinnonosanRyhmä(suoritus)
+        :: ePerusteetValidator.validateTutkinnonosanRyhmä(suoritus, opiskeluoikeus.päättymispäivä)
         :: validateOsaamisenHankkimistavat(suoritus)
         :: validateYhteisetTutkinnonOsat(suoritus, opiskeluoikeus)
         :: validateÄidinkielenOmainenKieli(suoritus)
@@ -1248,49 +1218,6 @@ class KoskiValidator(
 
   private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
     suoritus.koulutusmoduuli.tunniste
-  }
-
-  private def validateTutkinnonosanRyhmä(suoritus: Suoritus): HttpStatus = {
-    def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: TutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
-      if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
-        if (tutkinnonSuoritus.suoritustapa.koodiarvo == "ops" || tutkinnonSuoritus.suoritustapa.koodiarvo == "reformi") {
-          // OPS- tai reformi -suoritustapa => vaaditaan ryhmittely
-          //suoritus.tutkinnonOsanRyhmä
-          //  .map(_ => HttpStatus.ok)
-          //  .getOrElse(KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta " + suoritus.koulutusmoduuli.tunniste + " puuttuu tutkinnonosan ryhmä, joka on pakollinen ammatillisen perustutkinnon tutkinnonosille." ))
-          // !Väliaikainen! Solenovo ei osannut ajoissa korjata datojaan. Poistetaan mahd pian. Muistutus kalenterissa 28.5.
-          HttpStatus.ok
-        } else {
-          // Näyttö-suoritustapa => ei vaadita ryhmittelyä
-          HttpStatus.ok
-        }
-      } else {
-        // Ei ammatillinen perustutkinto => ryhmittely ei sallittu
-        suoritus.tutkinnonOsanRyhmä
-          .map(_ => KoskiErrorCategory.badRequest.validation.rakenne.koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä("Tutkinnonosalle " + suoritus.koulutusmoduuli.tunniste + " on määritetty tutkinnonosan ryhmä, vaikka kyseessä ei ole ammatillinen perustutkinto."))
-          .getOrElse(HttpStatus.ok)
-      }
-    }
-
-    def validateTutkinnonosaSuoritukset(tutkinnonSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, suoritukset: Option[List[TutkinnonOsanSuoritus]]) = {
-      koulutustyyppi(tutkinnonSuoritus.koulutusmoduuli.perusteenDiaarinumero.get)
-        .map(tyyppi => tutkinnonSuoritus match {
-          case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => HttpStatus.fold(suoritukset.toList.flatten.map(s => validateTutkinnonosaSuoritus(tutkinnonSuoritus, s, tyyppi)))
-          case _ => HttpStatus.ok
-        })
-        .getOrElse {
-          logger.warn("Ammatilliselle tutkintokoulutukselle " + tutkinnonSuoritus.koulutusmoduuli.perusteenDiaarinumero.get + " ei löydy koulutustyyppiä e-perusteista.")
-          HttpStatus.ok
-        }
-    }
-
-    def koulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] = tutkintoRepository.findPerusteRakenne(diaarinumero).map(r => r.koulutustyyppi)
-
-    suoritus match {
-      case s: AmmatillisenTutkinnonSuoritus => validateTutkinnonosaSuoritukset(s, s.osasuoritukset)
-      case s: AmmatillisenTutkinnonOsittainenSuoritus => validateTutkinnonosaSuoritukset(s, s.osasuoritukset)
-      case _ => HttpStatus.ok
-    }
   }
 
   private def validatePäättötodistuksenSanallinenArviointi(oppimäärä: NuortenPerusopetuksenOppimääränSuoritus) = {

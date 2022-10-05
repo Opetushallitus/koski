@@ -137,7 +137,19 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
 
       "Käytetään nimeä joka organisaatiolla oli opiskeluoikeuden päättymisen aikaan" in {
-        val opiskeluoikeus = createOpiskeluoikeus(oppija, päättymispäivällä(oo, LocalDate.of(2010, 10, 10)))
+        val opiskeluoikeus = createOpiskeluoikeus(
+          oppija, päättymispäivällä(
+            oo = oo.copy(suoritukset = List(autoalanErikoisammattitutkinnonSuoritus().copy(
+              suoritustapa = Koodistokoodiviite("naytto", "ammatillisentutkinnonsuoritustapa")
+            ))),
+            päättymispäivä = LocalDate.of(2010, 10, 10),
+            osasuoritukset = Some(List(
+              tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", None, hyväksytty)
+                .copy(vahvistus = None)
+            )),
+            keskiarvo = None
+          )
+        )
         nimi(opiskeluoikeus.getOppilaitos) should equal("Stadin ammatti- ja aikuisopisto -vanha")
         nimi(opiskeluoikeus.koulutustoimija.get) should equal("Helsingin kaupunki -vanha")
         nimi(tutkinnonSuoritus(opiskeluoikeus).toimipiste) should equal("Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka -vanha")

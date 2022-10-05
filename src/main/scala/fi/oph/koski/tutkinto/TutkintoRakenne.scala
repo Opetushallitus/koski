@@ -4,6 +4,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 case class TutkintoRakenne(
+  id: Long,
   diaarinumero: String,
   koulutustyyppi: Koulutustyyppi,
   suoritustavat: List[SuoritustapaJaRakenne],

@@ -2,10 +2,11 @@ package fi.oph.koski.tutkinto
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{UserLanguage, Unauthenticated}
+import fi.oph.koski.koskiuser.{Unauthenticated, UserLanguage}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
-import fi.oph.koski.servlet.{KoskiSpecificApiServlet, Cached, LanguageSupport}
+import fi.oph.koski.servlet.{Cached, KoskiSpecificApiServlet, LanguageSupport}
 
+import java.time.LocalDate
 import scala.concurrent.duration.{Duration, _}
 
 class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with Unauthenticated with Cached with LanguageSupport {
@@ -16,11 +17,6 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
      case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => Right(application.tutkintoRepository.findTutkinnot(oppilaitosId, query))
      case _ => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
    })
-  }
-
-  get("/diaarinumerot/koulutustyyppi/:koulutustyypit") {
-    val koulutustyypit: Set[Koodistokoodiviite] = params("koulutustyypit").split(",").map(t => Koodistokoodiviite(t, "koulutustyyppi")).toSet
-    perusteetService.diaarinumerotByKoulutustyypit(koulutustyypit)
   }
 
   get("/diaarinumerot/suorituksentyyppi/:suorituksenTyyppi") {
@@ -50,9 +46,11 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/peruste/*/linkki") {
     val diaari = params("splat")
+    val päättymispäivä = params.get("päättymispäivä")
+      .map(p => LocalDate.parse(p))
     val lang = UserLanguage.sanitizeLanguage(params.get("lang")).getOrElse("fi")
     renderEither[Map[String, String]](
-      application.ePerusteet.findLinkToEperusteetWeb(diaari, lang)
+      application.ePerusteet.findLinkToEperusteetWeb(diaari, lang, päättymispäivä)
         .map(url => Map("url" -> url))
         .toRight(KoskiErrorCategory.notFound())
     )
@@ -88,15 +86,15 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   private def isTelma(diaari: String) = {
-    val telmaDiaarit = application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(
+    val diaaritKoodistosta = application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(
       application.koodistoViitePalvelu.getLatestVersionRequired("koskikoulutustendiaarinumerot"),
       Koulutustyyppi.telma
-    )
+    ).getOrElse(List.empty).map(_.koodiarvo)
 
-    telmaDiaarit match {
-      case Some(diaarit) => diaarit.map(_.koodiarvo).contains(diaari)
-      case None => false
-    }
+    lazy val diaaritEperusteista = application.ePerusteet.findPerusteetByKoulutustyyppi(Set(Koulutustyyppi.telma))
+      .map(p => p.diaarinumero)
+
+    diaaritKoodistosta.contains(diaari) || diaaritEperusteista.contains(diaari)
   }
 
   private def tutkinnonOsienKoodit(rakenneOsa: RakenneOsa): List[Koodistokoodiviite] =
@@ -104,7 +102,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/suoritustavat/*") {
     val diaari = params("splat")
-    renderEither[List[Koodistokoodiviite]](application.tutkintoRepository.findPerusteRakenne(diaari) match {
+    renderEither[List[Koodistokoodiviite]](application.tutkintoRepository.findUusinPerusteRakenne(diaari) match {
       case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy(s"Rakennetta ei löydy diaarinumerolla $diaari"))
       case Some(rakenne) => Right(rakenne.suoritustavat.map(_.suoritustapa))
     })
@@ -138,7 +136,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   private def perusteenRakenne
     (diaari: String, suoritustapa: Option[String], failWhenNotFound: Boolean = true)
   : Either[HttpStatus, List[RakenneOsa]] = {
-    val rakenne: Option[TutkintoRakenne] = application.tutkintoRepository.findPerusteRakenne(diaari)
+    val rakenne: Option[TutkintoRakenne] = application.tutkintoRepository.findPerusteRakenteet(diaari, None).headOption
     val rakenteenSuoritustavat = rakenne.toList.flatMap(_.suoritustavat)
     val suoritustavat = suoritustapa match {
       case Some(suoritustapa) =>

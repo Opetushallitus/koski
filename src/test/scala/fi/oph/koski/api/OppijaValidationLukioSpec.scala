@@ -155,8 +155,8 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     }
     "valmistunut -tila vaaditaan opintojen rahoitus" in {
       val tila = LukionOpiskeluoikeudenTila(List(
-        LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
-        LukionOpiskeluoikeusjakso(date(2016, 6, 8), opiskeluoikeusValmistunut))
+        LukionOpiskeluoikeusjakso(date(2015, 9, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+        LukionOpiskeluoikeusjakso(date(2019, 6, 8), opiskeluoikeusValmistunut))
       )
       putOpiskeluoikeus(ExamplesLukio.päättötodistus().copy(tila = tila)) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))

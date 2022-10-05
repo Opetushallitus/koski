@@ -39,26 +39,6 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_1040112014",
-  "koodiArvo" : "104/011/2014",
-  "metadata" : [ {
-    "nimi" : "Perusopetuksen opetussuunnitelman perusteet 2014",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna för läroplanen för den grundläggande utbildningen 2014",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_16",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_1050112014",
   "koodiArvo" : "105/011/2014",
   "metadata" : [ {
@@ -507,22 +487,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_380112001",
-  "koodiArvo" : "38/011/2001",
-  "metadata" : [ {
-    "nimi" : "Automekaanikon erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för bilmekaniker",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_390112001",
   "koodiArvo" : "39/011/2001",
   "metadata" : [ {
@@ -815,26 +779,6 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_600112015",
-  "koodiArvo" : "60/011/2015",
-  "metadata" : [ {
-    "nimi" : "Lukion opetussuunnitelman perusteet 2015",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna för gymnasiets läroplan 2015",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_2",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_650112002",
   "koodiArvo" : "65/011/2002",
   "metadata" : [ {
@@ -902,26 +846,6 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_oph12802017",
-  "koodiArvo" : "OPH-1280-2017",
-  "metadata" : [ {
-    "nimi" : "Aikuisten perusopetuksen opetussuunnitelman perusteet 2017",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna för läroplanen för den grundläggande utbildningen för vuxna 2017",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_17",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_oph49582020",
   "koodiArvo" : "OPH-4958-2020",

@@ -8,7 +8,7 @@ import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 
 object EPerusteetTutkintoRakenneConverter extends Logging {
-  def convertRakenne(rakenne: EPerusteRakenne)(implicit koodistoPalvelu: KoodistoViitePalvelu): TutkintoRakenne = {
+  def convertRakenne(rakenne: EPerusteTarkkaRakenne)(implicit koodistoPalvelu: KoodistoViitePalvelu): TutkintoRakenne = {
     val suoritustavat = rakenne.suoritustavat.toList.flatten
       .filter(onAmmatillisenSuoritustapa(rakenne))
       .flatMap(suoritustapa =>
@@ -28,6 +28,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
     ))
 
     TutkintoRakenne(
+      rakenne.id,
       rakenne.diaarinumero,
       parseKoulutustyyppi(rakenne.koulutustyyppi),
       suoritustavat,
@@ -36,14 +37,14 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
     )
   }
 
-  private def onAmmatillisenSuoritustapa(rakenne: EPerusteRakenne)(suoritustapa: ESuoritustapa): Boolean = {
+  private def onAmmatillisenSuoritustapa(rakenne: EPerusteTarkkaRakenne)(suoritustapa: ETarkkaSuoritustapa): Boolean = {
     Koulutustyyppi.ammatillisetKoulutustyypit.contains(
       convertKoulutusTyyppi(rakenne.koulutustyyppi, suoritustapa.suoritustapakoodi)
     )
   }
 
   private def convertRakenneOsa
-    (rakenne: EPerusteRakenne, suoritustapa: ESuoritustapa)
+    (rakenne: EPerusteTarkkaRakenne, suoritustapa: ETarkkaSuoritustapa)
     (rakenneOsa: ERakenneOsa)
     (implicit koodistoPalvelu: KoodistoViitePalvelu)
   : RakenneOsa = rakenneOsa match {
@@ -53,7 +54,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
   }
 
   private def makeRakenneModuuli
-    (rakenne: EPerusteRakenne, suoritustapa: ESuoritustapa, moduuli: ERakenneModuuli)
+    (rakenne: EPerusteTarkkaRakenne, suoritustapa: ETarkkaSuoritustapa, moduuli: ERakenneModuuli)
     (implicit koodistoPalvelu: KoodistoViitePalvelu)
   : RakenneModuuli = RakenneModuuli(
     nimi = LocalizedString.sanitizeRequired(moduuli.nimi.getOrElse(Map.empty), LocalizedString.missingString),
@@ -63,7 +64,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
   )
 
   private def makeTutkinnonOsa
-    (rakenne: EPerusteRakenne, suoritustapa: ESuoritustapa, koodistoPalvelu: KoodistoViitePalvelu, o: ERakenneTutkinnonOsa)
+    (rakenne: EPerusteTarkkaRakenne, suoritustapa: ETarkkaSuoritustapa, koodistoPalvelu: KoodistoViitePalvelu, o: ERakenneTutkinnonOsa)
   : TutkinnonOsa =
     suoritustapa.tutkinnonOsaViitteet.toList.flatten.find(v => v.id.toString == o._tutkinnonOsaViite) match {
       case None => throw new RuntimeException("Tutkinnonosaviitettä ei löydy: " + o._tutkinnonOsaViite)

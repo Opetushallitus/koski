@@ -10,7 +10,7 @@ import fi.oph.koski.schema._
 
 object LukioKurssikertymaRaporttiFixtures {
 
-  lazy val date = LocalDate.of(1998, 6, 6)
+  lazy val date = LocalDate.of(2016, 8, 6)
 
   lazy val raportinAikajaksoAlku = date.minusMonths(13)
   lazy val raportinAikajaksoLoppu = date.plusMonths(2)

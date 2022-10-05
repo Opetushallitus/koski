@@ -31,7 +31,8 @@ describe('Kela', function () {
     before(
       Authentication().login('Laaja'),
       kela.openPage,
-      kela.searchAndSelect('220109-784L', 'Kaisa')
+      kela.searchAndSelect('220109-784L', 'Kaisa'),
+      kela.selectOpiskeluoikeusByTyyppi('Perusopetus')
     )
     it('Näytetään valitun henkilon opinnot', function () {
       expect(kela.getOppijanNimi()).to.equal('Koululainen, Kaisa (220109-784L)')
@@ -61,7 +62,7 @@ describe('Kela', function () {
         before(kela.selectOpiskeluoikeusByTyyppi('Perusopetukseen valmistava opetus'))
 
         it('Näytetään valitun opiskeluoikeuden tiedot', function () {
-          expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include('Jyväskylän normaalikoulu (2007 - 2008, Valmistunut)')
+          expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include('Jyväskylän normaalikoulu (2017 - 2018, Valmistunut)')
         })
       })
     })
@@ -97,7 +98,8 @@ describe('Kela', function () {
     before(
       Authentication().login('Suppea'),
       kela.openPage,
-      kela.searchAndSelect('220109-784L', 'Kaisa')
+      kela.searchAndSelect('220109-784L', 'Kaisa'),
+      kela.selectOpiskeluoikeusByTyyppi('Perusopetus')
     )
 
     it('Näytetään valitun henkilon opinnot', function () {
@@ -267,6 +269,7 @@ describe('Kela', function () {
           Authentication().login('Laaja'),
           kela.openPage,
           kela.searchAndSelect(oppijanHetu),
+          kela.selectOpiskeluoikeusByTyyppi('Perusopetus'),
           kela.openVersiohistoria
         )
 

@@ -1,0 +1,317 @@
+{
+  "henkilö" : {
+    "hetu" : "220109-784L",
+    "etunimet" : "Kaisa",
+    "kutsumanimi" : "Kaisa",
+    "sukunimi" : "Koululainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "lyhytNimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu",
+        "sv" : "Jyväskylän normaalikoulu",
+        "en" : "Jyväskylän normaalikoulu"
+      },
+      "kotipaikka" : {
+        "koodiarvo" : "179",
+        "nimi" : {
+          "fi" : "Jyväskylä",
+          "sv" : "Jyväskylä"
+        },
+        "koodistoUri" : "kunta"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2017-08-15",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2017-12-20",
+        "tila" : {
+          "koodiarvo" : "loma",
+          "nimi" : {
+            "fi" : "Loma"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2018-01-06",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2018-06-01",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999905",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "57/011/2015"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "lyhytNimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu",
+          "sv" : "Jyväskylän normaalikoulu",
+          "en" : "Jyväskylän normaalikoulu"
+        },
+        "kotipaikka" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä",
+            "sv" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2018-06-01",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "ai",
+            "nimi" : {
+              "fi" : "Äidinkieli"
+            }
+          },
+          "laajuus" : {
+            "arvo" : 10.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "Vuosiviikkotuntia"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "opetuksenSisältö" : {
+            "fi" : "Suullinen ilmaisu ja kuullun ymmärtäminen"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "kuvaus" : {
+            "fi" : "Keskustelee sujuvasti suomeksi"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetukseenvalmistavanopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FY",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : false,
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "koodistoUri" : "kieli"
+        },
+        "luokkaAste" : {
+          "koodiarvo" : "7",
+          "koodistoUri" : "perusopetuksenluokkaaste"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suoritustapa" : {
+          "koodiarvo" : "erityinentutkinto",
+          "koodistoUri" : "perusopetuksensuoritustapa"
+        }
+      } ],
+      "kokonaislaajuus" : {
+        "arvo" : 11.0,
+        "yksikkö" : {
+          "koodiarvo" : "3",
+          "nimi" : {
+            "fi" : "vuosiviikkotuntia",
+            "sv" : "årsveckotimmar",
+            "en" : "weekly lessons per year"
+          },
+          "lyhytNimi" : {
+            "fi" : "vuosiviikkotuntia",
+            "sv" : "årsveckotimmar",
+            "en" : "weekly lessons per year"
+          },
+          "koodistoUri" : "opintojenlaajuusyksikko"
+        }
+      },
+      "tyyppi" : {
+        "koodiarvo" : "perusopetukseenvalmistavaopetus",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "perusopetukseenvalmistavaopetus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2017-08-15",
+    "päättymispäivä" : "2018-06-01"
+  } ]
+}

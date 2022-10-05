@@ -300,7 +300,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
 }
 
 object AmmatillinenOpiskeluoikeusTestData {
-  def opiskeluoikeus(oppilaitosId: String, koulutusKoodi: Int = 351301, diaariNumero: String = "39/011/2014", versio: Option[Int] = None): AmmatillinenOpiskeluoikeus = {
+  def opiskeluoikeus(oppilaitosId: String, koulutusKoodi: Int = 351301, diaariNumero: String = "39/011/2014", versio: Option[Int] = None, alkamispäivä: LocalDate = date(2019, 5, 30)): AmmatillinenOpiskeluoikeus = {
     val oppilaitos: Oppilaitos = Oppilaitos(oppilaitosId, None, None)
     val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", versio)
 
@@ -312,17 +312,17 @@ object AmmatillinenOpiskeluoikeusTestData {
         suorituskieli = suomenKieli,
         suoritustapa = AmmatillinenExampleData.suoritustapaOps
       )),
-      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2019, 5, 30), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)))),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)))),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,
-        erityinenTuki = Some(List(Aikajakso(date(2019, 5, 30), None))),
-        vaikeastiVammainen = Some(List(Aikajakso(date(2019, 5, 30), None))),
-        vankilaopetuksessa = Some(List(Aikajakso(date(2019, 5, 30), None)))
+        erityinenTuki = Some(List(Aikajakso(alkamispäivä, None))),
+        vaikeastiVammainen = Some(List(Aikajakso(alkamispäivä, None))),
+        vankilaopetuksessa = Some(List(Aikajakso(alkamispäivä, None)))
       )),
     )
   }
 
-  def päättynytOpiskeluoikeus(oppilaitosId: String, koulutusKoodi: Int = 351301, diaariNumero: String = "39/011/2014"): AmmatillinenOpiskeluoikeus = {
+  def päättynytOpiskeluoikeus(oppilaitosId: String, koulutusKoodi: Int = 351301, diaariNumero: String = "39/011/2014", alkamispäivä: LocalDate = date(2019, 5, 30), päättymispäivä: LocalDate = date(2020, 5, 30)): AmmatillinenOpiskeluoikeus = {
     val oppilaitos: Oppilaitos = Oppilaitos(oppilaitosId, None, None)
     val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", None)
 
@@ -335,18 +335,21 @@ object AmmatillinenOpiskeluoikeusTestData {
         suoritustapa = AmmatillinenExampleData.suoritustapaOps,
         keskiarvo = Some(4.0),
         vahvistus = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(
-          päivä = LocalDate.of(2019, 5, 15),
+          päivä = alkamispäivä,
           myöntäjäOrganisaatio = oppilaitos,
           myöntäjäHenkilöt = List(Organisaatiohenkilö("Reksi Rehtori", LocalizedString.finnish("rehtori"), oppilaitos)
         ))),
         osasuoritukset = Some(List(tutkinnonOsanSuoritus("101050", "Yritystoiminnan suunnittelu", ammatillisetTutkinnonOsat, k3, 40)))
       )),
-      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2020, 5, 30), ExampleData.opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen)))),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(
+        AmmatillinenOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+        AmmatillinenOpiskeluoikeusjakso(päättymispäivä, ExampleData.opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      )),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,
-        erityinenTuki = Some(List(Aikajakso(date(2019, 5, 30), None))),
-        vaikeastiVammainen = Some(List(Aikajakso(date(2019, 5, 30), None))),
-        vankilaopetuksessa = Some(List(Aikajakso(date(2019, 5, 30), None)))
+        erityinenTuki = Some(List(Aikajakso(alkamispäivä, None))),
+        vaikeastiVammainen = Some(List(Aikajakso(alkamispäivä, None))),
+        vankilaopetuksessa = Some(List(Aikajakso(alkamispäivä, None)))
       )),
     )
   }

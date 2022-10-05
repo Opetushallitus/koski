@@ -416,7 +416,7 @@ object AmmatillinenExampleData {
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
-      AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      AmmatillinenOpiskeluoikeusjakso(date(2016, 8, 1), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(

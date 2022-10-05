@@ -150,7 +150,7 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.dippainssi) shouldEqual "Dipl.ins., konetekniikka"
         ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.amkValmistunut) shouldEqual "Fysioterapeutti (AMK)"
         ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.ylioppilas) shouldEqual "Ylioppilastutkinto"
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.koululainen) shouldEqual "Perusopetus"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(KoskiSpecificMockOppijat.koululainen) shouldEqual "Perusopetukseen valmistava opetus"
       }
     }
   }
