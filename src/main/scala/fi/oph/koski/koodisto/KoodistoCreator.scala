@@ -20,17 +20,17 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
   private val updateable = Koodistot.koodistot.filter { koodistoUri =>
     updateExistingStr match {
       case "all" => true
-      case "koskiKoodistot" => Koodistot.koskiKoodistot.contains(koodistoUri)
-      case "muutKoodistot" => Koodistot.muutKoodistot.contains(koodistoUri)
+      case "koskiKoodistot" => Koodistot.ympäristöihinPäivitettävätKoskiKoodistot.contains(koodistoUri)
+      case "muutKoodistot" => Koodistot.ympäristöihinPäivitettävätMuutKoodistot.contains(koodistoUri)
       case _ => updateExistingStr.split(",").contains(koodistoUri)
     }
   }
   private val createable = Koodistot.koodistot.filter { koodistoUri =>
     createMissingStr match {
       case "all" => true
-      case "koskiKoodistot" => Koodistot.koskiKoodistot.contains(koodistoUri)
-      case "muutKoodistot" => Koodistot.muutKoodistot.contains(koodistoUri)
-      case "true" => Koodistot.koskiKoodistot.contains(koodistoUri) // the former default case
+      case "koskiKoodistot" => Koodistot.ympäristöihinPäivitettävätKoskiKoodistot.contains(koodistoUri)
+      case "muutKoodistot" => Koodistot.ympäristöihinPäivitettävätMuutKoodistot.contains(koodistoUri)
+      case "true" => Koodistot.ympäristöihinPäivitettävätKoskiKoodistot.contains(koodistoUri) // the former default case
       case _ => createMissingStr.split(",").contains(koodistoUri)
     }
   }

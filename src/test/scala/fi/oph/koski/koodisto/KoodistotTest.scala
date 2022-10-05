@@ -75,6 +75,11 @@ class KoodistotTest extends AnyFreeSpec with TestEnvironment with Matchers {
     }
   }
 
+  "Päivitetään vain halutut koodistot KoodistoCreatorilla ympäristöihin" in {
+    Koodistot.koskiKoodistot should contain("koskikoulutustendiaarinumerot")
+    Koodistot.ympäristöihinPäivitettävätKoskiKoodistot should not contain("koskikoulutustendiaarinumerot")
+  }
+
   private def getKoodisto(koodistoUri: String, koodistoVersio: Option[Int]) = {
     val versio = koodistoVersio.map(v => KoodistoViite(koodistoUri, v))
       .getOrElse(MockKoodistoPalvelu().getLatestVersionRequired(koodistoUri))

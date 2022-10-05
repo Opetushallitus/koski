@@ -4,7 +4,8 @@ case class KoodistoAsetus(
   koodisto: String,
   vaadiSuomenkielinenNimi: Boolean = true,
   vaadiRuotsinkielinenNimi: Boolean = true,
-  koodistoVersio: Option[Int] = None
+  koodistoVersio: Option[Int] = None,
+  päivitäMockDataYmpäristöihin: Boolean = true
 ) {
   override def toString: String = koodisto + koodistoVersio.map(v => s"_$v").getOrElse("")
 }
@@ -48,6 +49,7 @@ object Koodistot {
     KoodistoAsetus("erityisopetuksentoteutuspaikka"),
     KoodistoAsetus("internationalschooldiplomatype", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("internationalschoolluokkaaste", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
+    KoodistoAsetus("koskikoulutustendiaarinumerot", päivitäMockDataYmpäristöihin = false),
     KoodistoAsetus("koskiopiskeluoikeudentila"),
     KoodistoAsetus("koskioppiaineetyleissivistava"),
     KoodistoAsetus("koskiyoarvosanat", vaadiRuotsinkielinenNimi = false),
@@ -97,6 +99,7 @@ object Koodistot {
     KoodistoAsetus("tuvajarjestamislupa"),
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.toString)
+  val ympäristöihinPäivitettävätKoskiKoodistot = koskiKoodistoAsetukset.filter(_.päivitäMockDataYmpäristöihin).map(_.toString)
 
   // Muut koodistot, joita Koski käyttää
   val muutKoodistoAsetukset = List (
@@ -107,7 +110,6 @@ object Koodistot {
     KoodistoAsetus("jarjestamismuoto"),
     KoodistoAsetus("kieli"),
     KoodistoAsetus("kielivalikoima"),
-    KoodistoAsetus("koskikoulutustendiaarinumerot"),
     KoodistoAsetus("koulutus"),
     KoodistoAsetus("koulutus", koodistoVersio = Some(11)),
     KoodistoAsetus("koulutustyyppi"),
@@ -134,6 +136,7 @@ object Koodistot {
     KoodistoAsetus("opintokokonaisuudet")
   )
   val muutKoodistot = muutKoodistoAsetukset.map(_.toString)
+  val ympäristöihinPäivitettävätMuutKoodistot = muutKoodistoAsetukset.filter(_.päivitäMockDataYmpäristöihin).map(_.toString)
 
   val koodistoAsetukset = (koskiKoodistoAsetukset ++ muutKoodistoAsetukset).sortBy(_.koodisto)
   val koodistot = (koskiKoodistot ++ muutKoodistot).sorted
