@@ -24,19 +24,36 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       validateKoulutustyypitJaHaeRakenteet(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), opiskeluoikeudenPäättymispäivä, Some(tutkintoSuoritus)) match {
         case Left(status) => status
         case Right(rakenteet) =>
-          HttpStatus.fold(
-            rakenteet.map(rakenne =>
+          HttpStatus.fold {
+            val tulokset = rakenteet.map(rakenne =>
               validateOsaamisalat(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), rakenne)
             )
-          ).onSuccess(HttpStatus.fold(suoritus.osasuoritusLista.map {
+            if(tulokset.exists(_.isOk)) {
+              List(HttpStatus.ok)
+            } else {
+              tulokset
+            }
+          }.onSuccess(HttpStatus.fold(suoritus.osasuoritusLista.map {
             case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus =>
               HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                 case osa: ValtakunnallinenTutkinnonOsa =>
-                  HttpStatus.fold(
-                    rakenteet.map(rakenne =>
-                      validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä)
+                  HttpStatus.fold {
+                    val tulokset = rakenteet.map(rakenne =>
+                      validateTutkinnonOsa(
+                        osaSuoritus,
+                        osa,
+                        rakenne,
+                        tutkintoSuoritus.suoritustapa,
+                        alkamispäiväLäsnä,
+                        opiskeluoikeudenPäättymispäivä
+                      )
                     )
-                  )
+                    if(tulokset.exists(_.isOk)) {
+                      List(HttpStatus.ok)
+                    } else {
+                      tulokset
+                    }
+                  }
                 case osa: PaikallinenTutkinnonOsa =>
                   HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
                 case osa: KorkeakouluopinnotTutkinnonOsa =>
