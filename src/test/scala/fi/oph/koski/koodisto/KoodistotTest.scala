@@ -14,7 +14,8 @@ class KoodistotTest extends AnyFreeSpec with TestEnvironment with Matchers {
   }
 
   "Muiden koodistojen mockdata löytyy, ja codesGroupUri on oikein" - {
-    Koodistot.muutKoodistoAsetukset.foreach { koodistoAsetus =>
+    // Suodata pois koskikoulutustendiaarinumerot joka on siirretty muihin koodistoihin jotta sitä ei yritetä luoda ympäristöihin
+    Koodistot.muutKoodistoAsetukset.filter(_.koodisto != "koskikoulutustendiaarinumerot").foreach { koodistoAsetus =>
       s"${koodistoAsetus.koodisto}/${koodistoAsetus.koodistoVersio}" in {
         getKoodisto(koodistoAsetus.koodisto, koodistoAsetus.koodistoVersio).codesGroupUri should not equal("http://koski")
       }
