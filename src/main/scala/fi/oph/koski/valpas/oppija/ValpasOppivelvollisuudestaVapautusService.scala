@@ -103,7 +103,11 @@ case class OppivelvollisuudestaVapautuksenMitätöinti(
 )
 
 class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMethods with Logging {
-  def getOppivelvollisuudestaVapautetutOppijat(oppijaOids: Seq[String]): Seq[RawOppivelvollisuudestaVapautus] =
+  // Vuotta 9999 käytetään ei-mitätöidyn vapautuksen indikaattorina, jotta uniikkius saadaan varmistettua tietokantatasolla
+  // unique constraintilla. Taikalukua käytettävä NULLin sijaan, koska Postgresql käsittelee kaikki NULL-arvot keskenään uniikkeina.
+  val VOIMASSA_OLEVAN_VAPAUTUKSEN_MITÄTÖINTIVUOSI = 9999
+
+  def getOppivelvollisuudestaVapautetutOppijat(oppijaOids: Seq[String]): Seq[RawOppivelvollisuudestaVapautus] = {
     runDbSync(sql"""
       SELECT
         oppija_oid,
@@ -114,10 +118,11 @@ class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMeth
       FROM oppivelvollisuudesta_vapautetut
         WHERE oppija_oid = any($oppijaOids)
           AND (
-            mitatoity IS NULL
+            extract(year from mitatoity) = #$VOIMASSA_OLEVAN_VAPAUTUKSEN_MITÄTÖINTIVUOSI
             OR mitatoity + interval '1 day' > now()
           )
     """.as[RawOppivelvollisuudestaVapautus])
+  }
 
   def lisääOppivelvollisuudestaVapautus(oppijaOid: Oid, virkailijaOid: Oid, vapautettu: LocalDate, kotipaikkaKoodiarvo: String): Unit = {
     runDbSync(sql"""
@@ -133,19 +138,18 @@ class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMeth
         SET mitatoity = now()
         WHERE oppija_oid = $oppijaOid
           AND kunta_koodiarvo = $kotipaikkaKoodiarvo
-          AND mitatoity IS NULL
+          AND extract(year from mitatoity) = #$VOIMASSA_OLEVAN_VAPAUTUKSEN_MITÄTÖINTIVUOSI
     """.asUpdate) > 0
 
   def readPage(offset: Int, pageSize: Int): Seq[RawOppivelvollisuudestaVapautus] =
     runDbSync(sql"""
       SELECT
         oppija_oid,
-        min(vapautettu) as vapautettu,
-        '' as kunta_koodiarvo,
-        NULL as mitatoity,
+        vapautettu,
+        kunta_koodiarvo,
+        mitatoity,
         aikaleima
       FROM oppivelvollisuudesta_vapautetut
-      GROUP BY oppija_oid, aikaleima
       ORDER BY aikaleima, oppija_oid
       OFFSET $offset
       LIMIT $pageSize
@@ -159,7 +163,9 @@ class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMeth
       oppijaOid = r.rs.getString("oppija_oid"),
       vapautettu = r.getLocalDate("vapautettu"),
       kunta = r.rs.getString("kunta_koodiarvo"),
-      mitätöity = Option(r.rs.getTimestamp("mitatoity")).map(_.toLocalDateTime),
+      mitätöity = Option(r.rs.getTimestamp("mitatoity"))
+        .map(_.toLocalDateTime)
+        .flatMap(d => if (d.getYear == VOIMASSA_OLEVAN_VAPAUTUKSEN_MITÄTÖINTIVUOSI) None else Some(d)),
       aikaleima = r.rs.getTimestamp("aikaleima").toLocalDateTime,
     )
   )
