@@ -1,6 +1,6 @@
 package fi.oph.koski.util
 
-class ChunkReader[T](pageSize: Int, read: Chunk => Seq[T]) extends Iterator[Seq[T]] {
+class ChunkReader[T](pageSize: Int, read: Chunk => Option[Seq[T]]) extends Iterator[Seq[T]] {
   private var chunk: Option[Seq[T]] = None
   private var finished: Boolean = false
   private var offset: Int = 0
@@ -25,11 +25,12 @@ class ChunkReader[T](pageSize: Int, read: Chunk => Seq[T]) extends Iterator[Seq[
     if (!finished) {
       val data = read(Chunk(offset, pageSize))
       offset += pageSize
-      if (data.isEmpty) {
-        finished = true
-        chunk = None
-      } else {
-        chunk = Some(data)
+      data match {
+        case None =>
+          finished = true
+          chunk = None
+        case Some(data) =>
+          chunk = Some(data)
       }
     }
     chunk.getOrElse(Seq.empty)

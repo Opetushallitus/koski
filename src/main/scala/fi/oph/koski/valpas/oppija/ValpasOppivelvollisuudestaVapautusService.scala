@@ -9,6 +9,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.{Henkilö, OrganisaatioWithOid}
 import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.util.ChainingSyntax.localDateOps
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import fi.oph.koski.util.ChunkReader
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKunnat
@@ -66,8 +67,17 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
     kunnat = ValpasKunnat.getUserKunnat(organisaatioService).sortBy(_.nimi.map(_.get(session.lang)))
   )
 
-  def kaikkiVapautuksetIterator(pageSize: Int): ChunkReader[RawOppivelvollisuudestaVapautus] =
-    new ChunkReader(pageSize, chunk => db.readPage(chunk.offset, chunk.pageSize, rajapäivätService.tarkastelupäivä))
+  def kaikkiVapautuksetIterator(pageSize: Int): ChunkReader[RawOppivelvollisuudestaVapautus] = {
+    val pvmRaja = rajapäivätService.tarkastelupäivä
+    new ChunkReader(pageSize, chunk => {
+      val list = db.readPage(chunk.offset, chunk.pageSize)
+      if (list.isEmpty) {
+        None
+      } else {
+        Some(list.filter(e => e.mitätöity.isEmpty && e.vapautettu.isEqualOrBefore(pvmRaja)))
+      }
+    })
+  }
 
   private def withValidation[T](aloitusPvm: Option[LocalDate], kotipaikkaKoodiarvo: String)(fn: () => T)(implicit session: ValpasSession): Either[HttpStatus, T] =
     if (accessResolver.accessToKuntaOrg(kotipaikkaKoodiarvo)) {
@@ -126,7 +136,7 @@ class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMeth
           AND mitatoity IS NULL
     """.asUpdate) > 0
 
-  def readPage(offset: Int, pageSize: Int, today: LocalDate): Seq[RawOppivelvollisuudestaVapautus] =
+  def readPage(offset: Int, pageSize: Int): Seq[RawOppivelvollisuudestaVapautus] =
     runDbSync(sql"""
       SELECT
         oppija_oid,
@@ -135,11 +145,8 @@ class ValpasOppivelvollisuudestaVapautusRepository(val db: DB) extends QueryMeth
         NULL as mitatoity,
         aikaleima
       FROM oppivelvollisuudesta_vapautetut
-      WHERE
-        mitatoity IS NULL
-        AND vapautettu <= $today
       GROUP BY oppija_oid, aikaleima
-      ORDER BY oppija_oid
+      ORDER BY aikaleima, oppija_oid
       OFFSET $offset
       LIMIT $pageSize
     """.as[RawOppivelvollisuudestaVapautus])
