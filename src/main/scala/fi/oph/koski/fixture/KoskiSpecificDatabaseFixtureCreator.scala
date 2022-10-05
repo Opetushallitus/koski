@@ -1,7 +1,7 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, ammatillisetTutkinnonOsat, k3, puuteollisuudenPerustutkinnonSuoritus, puuteollisuudenPerustutkinto, stadinAmmattiopisto, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus, tutkinnonOsanSuoritus}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, ammatillisetTutkinnonOsat, k3, puuteollisuudenPerustutkinnonSuoritus, puuteollisuudenPerustutkinto, stadinAmmattiopisto, stadinToimipiste, tietoJaViestintäTekniikanPerustutkinnonSuoritus, pakollinenTutkinnonOsanSuoritus}
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, peruskoulusuoritus, päiväkotisuoritus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
@@ -112,7 +112,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
             keskiarvo = None,
             osasuoritukset = Some(List(
               AmmatillinenExampleData
-                .tutkinnonOsanSuoritus(
+                .pakollinenTutkinnonOsanSuoritus(
                   "100431",
                   "Kestävällä tavalla toimiminen",
                   AmmatillinenExampleData.ammatillisetTutkinnonOsat,
@@ -339,7 +339,7 @@ object AmmatillinenOpiskeluoikeusTestData {
           myöntäjäOrganisaatio = oppilaitos,
           myöntäjäHenkilöt = List(Organisaatiohenkilö("Reksi Rehtori", LocalizedString.finnish("rehtori"), oppilaitos)
         ))),
-        osasuoritukset = Some(List(tutkinnonOsanSuoritus("101050", "Yritystoiminnan suunnittelu", ammatillisetTutkinnonOsat, k3, 40)))
+        osasuoritukset = Some(List(pakollinenTutkinnonOsanSuoritus("101050", "Yritystoiminnan suunnittelu", ammatillisetTutkinnonOsat, k3, 40, alkamispäivä)))
       )),
       tila = AmmatillinenOpiskeluoikeudenTila(List(
         AmmatillinenOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),

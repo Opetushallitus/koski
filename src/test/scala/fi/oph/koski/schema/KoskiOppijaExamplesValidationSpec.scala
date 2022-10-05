@@ -42,7 +42,7 @@ class KoskiOppijaExamplesValidationSpec extends AnyFreeSpec with TestEnvironment
       testDeserialization[Henkilö](TäydellisetHenkilötiedot(oid, Some("123456-7890"), Some(LocalDate.of(1977, 2, 2)), "etu", "kutsu", "suku", Some(Koodistokoodiviite("fi", "kieli")), Some(List(Koodistokoodiviite("fi", "maatjavaltiot2")))))
     }
     "Suoritus" in {
-      testDeserialization[Suoritus](tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", None, k3, 15))
+      testDeserialization[Suoritus](pakollinenTutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", None, k3, 15))
       testDeserialization[Suoritus](ympäristöalanPerustutkintoValmis())
     }
     "Järjestämismuoto" in {
