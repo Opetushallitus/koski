@@ -64,7 +64,7 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
     kunnat = ValpasKunnat.getUserKunnat(organisaatioService).sortBy(_.nimi.map(_.get(session.lang)))
   )
 
-  def kaikkiVapautuksetIterator(pageSize: Int): ChunkReader[RawOppivelvollisuudestaVapautus] = {
+  def kaikkiVapautuksetIteratorIlmanKäyttöoikeustarkastusta(pageSize: Int): ChunkReader[RawOppivelvollisuudestaVapautus] = {
     val pvmRaja = rajapäivätService.tarkastelupäivä
     new ChunkReader(pageSize, chunk => {
       val list = db.readPage(chunk.offset, chunk.pageSize)

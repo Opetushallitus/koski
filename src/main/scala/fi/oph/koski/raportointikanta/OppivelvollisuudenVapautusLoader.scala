@@ -9,7 +9,7 @@ object OppivelvollisuudenVapautusLoader extends Logging {
   def loadOppivelvollisuudestaVapautukset(ovVapautusService: ValpasOppivelvollisuudestaVapautusService, db: RaportointiDatabase): Int = {
     logger.info("Ladataan oppivelvollisuudesta vapautuksia...")
     var rowCount = 0
-    ovVapautusService.kaikkiVapautuksetIterator(1000)
+    ovVapautusService.kaikkiVapautuksetIteratorIlmanKäyttöoikeustarkastusta(1000)
       .map(_.map(v => ROppivelvollisuudestaVapautusRow(
         oppijaOid = v.oppijaOid,
         vapautettu = Timestamp.valueOf(v.vapautettu.atStartOfDay),
