@@ -5,7 +5,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (41)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia oppijoita (45)"
 export const jklNormaalikouluTableContent = `
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Eroaja-myöhemmin Valpas                                 | 29.9.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -19,6 +19,7 @@ export const jklNormaalikouluTableContent = `
   KahdenKoulunYsi-ilmo Valpas                             | 21.11.2004  | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   KasiinAstiToisessaKoulussaOllut Valpas                  | 17.8.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   KasiinAstiToisessaKoulussaOllut-ilmo Valpas             | 2.5.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Keskeyttänyt-17-vuotta-täyttävä-8-luokkalainen Valpas   | 10.11.2004  | 8C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Kotiopetus-menneisyydessä Valpas                        | 6.2.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   LukioVanhallaOpsilla Valpas                             | 6.7.2004    | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   LukionAineopinnotAloittanut Valpas                      | 4.3.2005    | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -28,6 +29,7 @@ export const jklNormaalikouluTableContent = `
   LukionLokakuussaAloittanut Valpas                       | 18.4.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | hourglass_empty3.10.2021 alkaen: Jyväskylän normaalikoulu, Lukiokoulutus   |
   LuokallejäänytYsiluokkalainen Valpas                    | 2.8.2005    | 9A | –          | 2 hakua              | –                           | –                         | –                                                                          |
   LuokallejäänytYsiluokkalainenJatkaa Valpas              | 6.2.2005    | 9B | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Läsnä-17-vuotta-täyttävä-8-luokkalainen Valpas          | 10.11.2004  | 8C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollinen-hetullinen Valpas                       | 3.1.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas   | 22.11.2005  | 9C | –          | Hakenut open_in_new  | 2. Helsingin medialukio     | doneHelsingin medialukio  | –                                                                          |
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021-rikkinäinen-7-luokka Valpas | 21.3.2005 | 9C | – | Ei hakemusta | –                           | –                         | –                                                                          |
@@ -45,9 +47,11 @@ export const jklNormaalikouluTableContent = `
   UseampiYsiluokkaSamassaKoulussa Valpas                  | 25.8.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Valmistunut-ei-ysiluokkaa Valpas                        | 24.9.2005   | –  | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Valmistunut-kasiluokkalainen-alle-17-vuotias Valpas     | 9.6.2005    | 8C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Ysiluokka-eronnut-syksyllä-2021 Valpas                  | 19.6.2004   | 9C | –  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Ysiluokka-valmis-keväällä-2021 Valpas                   | 19.6.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Ysiluokka-valmis-keväällä-2021-ilmo Valpas              | 26.8.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Ysiluokka-valmis-keväällä-2021-vsop Valpas              | 19.7.2005   | vsop 9C | 30.5.2021 | Ei hakemusta     | –                           | –                         | –                                                                          |
+  Ysiluokka-valmis-syksyllä-2021 Valpas                   | 19.6.2004   | 9C | 1.9.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
 `
 
 export const internationalSchoolTableHead =

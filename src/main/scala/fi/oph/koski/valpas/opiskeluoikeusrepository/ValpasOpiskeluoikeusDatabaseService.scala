@@ -257,14 +257,15 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       )
       AND (
         -- (5a) opiskeluoikeus on läsnä tai väliaikaisesti keskeytynyt tai lomalla tällä hetkellä.
+        -- 5a.1 vasta syksyllä (1.8. tai myöhemmin) 9. luokan aloittavia ei näytetä ennen kevään viimeistä rajapäivää.
+        -- 17v täyttävät läsnä/väliaikaisesti keskeytynyt- tilassa olevat oppijat näkyvät perusopetuksen hakeutumisvelvollisten listanäkymässä 30.9. jälkeenkin
         -- Huomaa, että tulevaisuuteen luotuja opiskeluoikeuksia ei tarkoituksella haluta näkyviin.
         (
-          (aikajakson_keskella.tila IS NOT NULL
-            AND aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}'))
-          -- 5a.1 vasta syksyllä (1.8. tai myöhemmin) 9. luokan aloittavia ei näytetä ennen kevään viimeistä rajapäivää.
+          aikajakson_keskella.tila = any('{lasna, valiaikaisestikeskeytynyt, loma}')
           AND (
             r_paatason_suoritus.data ->> 'alkamispäivä' <= $keväänValmistumisjaksoLoppu
             OR $tarkastelupäivä > $keväänValmistumisjaksollaValmistuneidenViimeinenTarkastelupäivä
+            OR ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
           )
         )
         -- TAI:
@@ -297,6 +298,15 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
               AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva >= $keväänUlkopuolellaValmistumisjaksoAlku)
             )
           )
+        )
+        -- TAI oppija täyttää 17v, on valmistunut/eronnut kevätlukukauden ulkopuolella ja korkeintaan 2 kk sitten
+        OR (
+          ($tarkastelupäivä >= ov_kelvollinen_opiskeluoikeus.paattymispaiva)
+          AND ov_kelvollinen_opiskeluoikeus.henkilo_tayttaa_vahintaan_17_tarkasteluvuonna
+          AND (ov_kelvollinen_opiskeluoikeus.paattymispaiva
+            NOT BETWEEN $keväänValmistumisjaksoAlku AND $keväänValmistumisjaksoLoppu)
+          AND ov_kelvollinen_opiskeluoikeus.viimeisin_tila = any('{valmistunut, hyvaksytystisuoritettu, eronnut, katsotaaneronneeksi, keskeytynyt}')
+          AND ($tarkastelupäivä <= ov_kelvollinen_opiskeluoikeus.paattymispaiva + interval '2 months')
         )
       )
   )

@@ -160,6 +160,10 @@ object ValpasMockOppijat {
   val alkukesästäEronneeksiKatsottuNivelvaiheenOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Alkukesästä-eronneeksi-katsottu-nivelvaiheen-opiskelija", "Valpas", "180105A1064", kotikunta = Some("091"))
   val alkuvuodestaEronnutNivelvaiheenOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Alkuvuodesta-eronnut-nivelvaiheen-opiskelija", "Valpas", "290805A6137", kotikunta = Some("091"))
   val alkuvuodestaEronneeksiKatsottuNivelvaiheenOpiskelija = valpasOppijat.oppijaSyntymäaikaHetusta("Alkuvuodesta-eronneeksi-katsottu-nivelvaiheen-opiskelija", "Valpas", "100405A2202", kotikunta = Some("091"))
+  val keväänUlkopuolellaValmistunut17v = valpasOppijat.oppijaSyntymäaikaHetusta("Ysiluokka-valmis-syksyllä-2021", "Valpas", "190604A006K", kotikunta = Some("091"))
+  val keväänUlkopuolellaEronnut17v = valpasOppijat.oppijaSyntymäaikaHetusta("Ysiluokka-eronnut-syksyllä-2021", "Valpas", "190604A006K", kotikunta = Some("091"))
+  val läsnä17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Läsnä-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "101104A349L", kotikunta = Some("091"))
+  val keskeyttänyt17VuottaTäyttäväKasiluokkalainen = valpasOppijat.oppijaSyntymäaikaHetusta("Keskeyttänyt-17-vuotta-täyttävä-8-luokkalainen", "Valpas", "101104A349L", kotikunta = Some("091"))
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(

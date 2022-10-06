@@ -623,6 +623,30 @@ object ValpasOppijaTestData {
       )
     ),
     (
+      ValpasMockOppijat.läsnä17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.kasiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.keskeyttänyt17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.kasiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "valiaikaisestikeskeytynyt")),
+        )
+      )
+    ),
+    (
       ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia,
       List(
         ExpectedData(
@@ -756,6 +780,30 @@ object ValpasOppijaTestData {
           onHakeutumisvalvovaOppilaitos = true,
           onSuorittamisvalvovaOppilaitos = false,
           perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.keväänUlkopuolellaValmistunut17v,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.keväänUlkopuolellaValmistunutYsiluokkalainen,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.keväänUlkopuolellaEronnut17v,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.keväänUlkopuolellaEronnutYsiluokkalainen,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("eronnut", "eronnut")),
         )
       )
     ),
