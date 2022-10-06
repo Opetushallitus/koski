@@ -30,6 +30,7 @@ trait KoskiOpiskeluoikeusRepository {
   ): Seq[LocalDate]
   def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid: String): HttpStatus
   def suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oid: String): Boolean
+  def isKuoriOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean
 }
 
 trait AuxiliaryOpiskeluoikeusRepository {

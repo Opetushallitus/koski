@@ -123,7 +123,7 @@ class KoskiValidator(
                 TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
                 SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService),
                 Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus),
-                AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus),
+                AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, koskiOpiskeluoikeudet),
                 ePerusteetValidator.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus),
                 VSTKotoutumiskoulutus2022Validation.validate(opiskeluoikeus),
                 VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus)
