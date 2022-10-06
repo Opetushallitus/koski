@@ -1,7 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.log.Logging
-import fi.oph.koski.valpas.oppija.ValpasOppivelvollisuudestaVapautusService
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudestaVapautusService
 
 import java.sql.Timestamp
 

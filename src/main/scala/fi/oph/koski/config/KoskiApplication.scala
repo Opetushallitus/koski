@@ -5,7 +5,7 @@ import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db.{KoskiDatabase, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig, ValpasDatabaseConfig}
 import fi.oph.koski.elasticsearch.{ElasticSearch, IndexManager}
 import fi.oph.koski.eperusteet.EPerusteetRepository
-import fi.oph.koski.eperusteetvalidation.{EPerusteetOpiskeluoikeusChangeValidator, EPerusteetFiller, EPerusteisiinPerustuvaValidator}
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetOpiskeluoikeusChangeValidator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
@@ -39,9 +39,10 @@ import fi.oph.koski.valpas.kansalainen.ValpasKansalainenService
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusService
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusDatabaseService, ValpasRajapäivätService}
-import fi.oph.koski.valpas.oppija.{ValpasOppijaLaajatTiedotService, ValpasOppijalistatService, ValpasOppivelvollisuudestaVapautusService, ValpasOppijanumerorekisteriService}
+import fi.oph.koski.valpas.oppija.{ValpasOppijaLaajatTiedotService, ValpasOppijalistatService, ValpasOppijanumerorekisteriService}
 import fi.oph.koski.valpas.oppijahaku.ValpasOppijaSearchService
 import fi.oph.koski.valpas.oppivelvollisuudenkeskeytys.ValpasOppivelvollisuudenKeskeytysService
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudestaVapautusService
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.valpasrepository.{OpiskeluoikeusLisätiedotRepository, OppivelvollisuudenKeskeytysRepository, OppivelvollisuudenKeskeytysRepositoryService, ValpasKuntailmoitusRepository}
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}

@@ -8,7 +8,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Maksuttomuus, O
 import fi.oph.koski.valpas.hakukooste._
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusService
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos.Oid
-import fi.oph.koski.valpas.oppija.OppivelvollisuudestaVapautus
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.OppivelvollisuudestaVapautus
 import fi.oph.scalaschema.annotation.SyntheticProperty
 
 import java.time.{LocalDate, LocalDateTime}

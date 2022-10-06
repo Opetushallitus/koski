@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.valpas.log.ValpasAuditLog
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.{OppivelvollisuudestaVapautuksenMitätöinti, UusiOppivelvollisuudestaVapautus}
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
 

@@ -10,7 +10,7 @@ import slick.jdbc.GetResult
 
 import java.time.LocalDate
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.oppija.OppivelvollisuudestaVapautus
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.OppivelvollisuudestaVapautus
 
 import scala.concurrent.duration.DurationInt
 

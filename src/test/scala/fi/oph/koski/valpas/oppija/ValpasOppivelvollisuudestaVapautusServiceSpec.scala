@@ -6,6 +6,7 @@ import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import fi.oph.koski.valpas.ValpasTestBase
 import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.{UusiOppivelvollisuudestaVapautus, ValpasOppivelvollisuudestaVapautusService}
 import fi.oph.koski.valpas.valpasrepository.ValpasExampleData
 import org.scalatest.BeforeAndAfterAll
 
