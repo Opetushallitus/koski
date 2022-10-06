@@ -53,7 +53,7 @@ class ValpasOppijalistatService(
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     rouhintaTimed("getOppijalista", oppijaOids.size) {
       HttpStatus.foldEithers({
-        val oppijat = opiskeluoikeusDbService.getOppijat(oppijaOids, rajaaOVKelpoisiinOpiskeluoikeuksiin = false)
+        val oppijat = opiskeluoikeusDbService.getOppijat(oppijaOids, rajaaOVKelpoisiinOpiskeluoikeuksiin = false, haeMyösOppivelvollisuudestaVapautetut = false)
 
         rouhintaTimed("getOppijalista:asValpasOppijaLaajatTiedot", oppijat.size) {
           oppijat.map(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot)

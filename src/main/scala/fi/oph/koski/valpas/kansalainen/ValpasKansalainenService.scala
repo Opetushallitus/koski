@@ -49,7 +49,7 @@ class ValpasKansalainenService(
 
     val oppijaLaajatTiedot =
       opiskeluoikeusDbService
-        .getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin = false)
+        .getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin = false, haeMyösOppivelvollisuudestaVapautettu = true)
         .toRight(ValpasErrorCategory.notFound.oppijaEiOppivelvollisuuslainPiirissä())
         .flatMap(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot) match {
         case Left(_) =>

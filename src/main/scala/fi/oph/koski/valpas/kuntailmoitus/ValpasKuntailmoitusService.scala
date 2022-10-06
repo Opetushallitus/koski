@@ -106,7 +106,7 @@ class ValpasKuntailmoitusService(
         // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
         val oppijaOids = ilmoitukset.map(_.oppijaOid.get)
         val oppijat = opiskeluoikeusDbService
-          .getOppijat(oppijaOids)
+          .getOppijat(oppijaOids, rajaaOVKelpoisiinOpiskeluoikeuksiin = true, haeMyösOppivelvollisuudestaVapautetut = false)
           .flatMap(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot(_).toOption)
         val oppijatJoihinKatseluoikeus = accessResolver
           .filterByOppijaAccess(rooli)(oppijat)

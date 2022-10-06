@@ -53,13 +53,23 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
   private val rajapäivätService = application.valpasRajapäivätService
   private val oppijanPoistoService = application.valpasOppivelvollisuudestaVapautusService
 
-  def getOppija(oppijaOid: String, rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Option[ValpasOppijaRow] =
-    queryOppijat(List(oppijaOid), None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki).headOption
+  def getOppija(
+    oppijaOid: String,
+    rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean,
+    haeMyösOppivelvollisuudestaVapautettu: Boolean,
+  ): Option[ValpasOppijaRow] = {
+    val oppija = queryOppijat(List(oppijaOid), None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki).headOption
+    if (haeMyösOppivelvollisuudestaVapautettu || !oppija.exists(_.vapautettuOppivelvollisuudesta)) oppija else None
+  }
 
-  def getOppijat(oppijaOids: Seq[String], rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Seq[ValpasOppijaRow] =
+  def getOppijat(
+    oppijaOids: Seq[String],
+    rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean,
+    haeMyösOppivelvollisuudestaVapautetut: Boolean,
+  ): Seq[ValpasOppijaRow] =
     if (oppijaOids.nonEmpty) {
-      queryOppijat(oppijaOids, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki)
-        .filterNot(_.vapautettuOppivelvollisuudesta)
+      val kaikkiOppijat = queryOppijat(oppijaOids, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki)
+      if (haeMyösOppivelvollisuudestaVapautetut) kaikkiOppijat else kaikkiOppijat.filterNot(_.vapautettuOppivelvollisuudesta)
     } else {
       Seq.empty
     }

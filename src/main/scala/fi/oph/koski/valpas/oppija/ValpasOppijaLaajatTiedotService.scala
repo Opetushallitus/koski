@@ -45,7 +45,7 @@ class ValpasOppijaLaajatTiedotService(
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     val rajaaOVKelpoisiinOpiskeluoikeuksiin = !roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.contains(rooli)
 
-    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin) match {
+    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin, haeMyösOppivelvollisuudestaVapautettu = true) match {
       case Some(oppijaRow) =>
         asValpasOppijaLaajatTiedot(oppijaRow)
           .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
@@ -59,7 +59,7 @@ class ValpasOppijaLaajatTiedotService(
 
   def getOppijaLaajatTiedotIlmanOikeustarkastusta(oppijaOid: ValpasHenkilö.Oid) : Either[HttpStatus, Option[ValpasOppijaLaajatTiedot]] = {
     val rajaaOVKelpoisiinOpiskeluoikeuksiin = false
-    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin) match {
+    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin, haeMyösOppivelvollisuudestaVapautettu = true) match {
       case Some(dbRow) => asValpasOppijaLaajatTiedot(dbRow).map(Some(_))
       case _ => Right(None)
     }
@@ -88,7 +88,7 @@ class ValpasOppijaLaajatTiedotService(
     (oppijaOid: ValpasHenkilö.Oid, haeMyösVainOppijanumerorekisterissäOleva: Boolean = false)
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
-    opiskeluoikeusDbService.getOppija(oppijaOid) match {
+    opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin = true, haeMyösOppivelvollisuudestaVapautettu = true) match {
       case Some(oppijaRow) =>
         asValpasOppijaLaajatTiedot(oppijaRow)
           .flatMap(accessResolver.withOppijaAccess(_))
