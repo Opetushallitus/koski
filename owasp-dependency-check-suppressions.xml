@@ -41,7 +41,7 @@
     <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
     <vulnerabilityName>CVE-2021-23337</vulnerabilityName>
   </suppress>
-  <suppress until="2022-10-01Z">
+  <suppress until="2022-12-01Z">
     <notes>
       <![CDATA[ file name: aws-java-sdk-secretsmanager-1.12.148.jar]]> Dependency of
       com.amazonaws.secretsmanager:aws-secretsmanager-jdbc, which most probably is not affected by the vulnerability
