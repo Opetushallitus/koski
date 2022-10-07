@@ -121,7 +121,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     "Organisaation nimi on muuttunut" - {
 
       val tutkinto: AmmatillisenTutkinnonSuoritus = defaultOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus]
-      val tutkintoOsasuorituksilla = tutkinto.copy(osasuoritukset = Some(List(tutkinnonOsanSuoritus("100031", "Moottorin ja voimansiirron huolto ja korjaus", ammatillisetTutkinnonOsat, k3, 40).copy(vahvistus = None))))
+      val tutkintoOsasuorituksilla = tutkinto.copy(osasuoritukset = Some(List(pakollinenTutkinnonOsanSuoritus("100031", "Moottorin ja voimansiirron huolto ja korjaus", ammatillisetTutkinnonOsat, k3, 40).copy(vahvistus = None))))
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoOsasuorituksilla))
 
       def nimi(org: OrganisaatioWithOid) = org.nimi.get.get("fi")

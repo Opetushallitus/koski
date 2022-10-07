@@ -671,6 +671,27 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           validatedOppija.right.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 3")
         }
 
+        "Sallitaan siirto ja läpäistään validaatio, vaikka samalla diaarinumerolla löytyy monta perustetta jotka ovat voimassa mutta kaikkiin ei validoidu" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "2000/011/2014",
+            alkamispäivä = LocalDate.of(2016, 1, 1),
+            päättymispäivä = LocalDate.of(2016, 8, 1)
+          )
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+
+          val validatedOppija = mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija)
+
+          validatedOppija.isRight should equal (true)
+
+          // Validoituu perusteeseen "Liiketalouden perustutkinto - päättymisajan testi 3", mutta ei perusteeseen "Liiketalouden perustutkinto - päättymisajan testi 2".
+          // Kuitenkin perusteen nimi valitaan myöhemmän luotu-timestampin sisältävältä perusteelta "Liiketalouden perustutkinto - päättymisajan testi 2".
+          validatedOppija.right.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 2")
+        }
+
         "Ei sallita siirtoa perusteen voimassaolon jälkeen päättyneelle opiskeluoikeudelle" in {
           val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
             MockOrganisaatiot.stadinAmmattiopisto,
