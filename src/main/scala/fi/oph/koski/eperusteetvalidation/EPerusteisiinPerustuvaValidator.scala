@@ -22,7 +22,7 @@ class EPerusteisiinPerustuvaValidator(
       validateTutkintorakenne(
         _,
         opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku),
-        opiskeluoikeus.päättymispäivä
+        opiskeluoikeus.päättymispäivä.getOrElse(LocalDate.now)
       )
     )
   )
@@ -30,10 +30,10 @@ class EPerusteisiinPerustuvaValidator(
   private def validateTutkintorakenne(
     suoritus: PäätasonSuoritus,
     alkamispäiväLäsnä: Option[LocalDate],
-    opiskeluoikeudenPäättymispäivä: Option[LocalDate]
-  ): HttpStatus = tutkintorakenneValidator.validate(suoritus, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä)
+    vaadittuPerusteenVoimassaolopäivä: LocalDate
+  ): HttpStatus = tutkintorakenneValidator.validate(suoritus, alkamispäiväLäsnä, vaadittuPerusteenVoimassaolopäivä)
 
-  def validateTutkinnonosanRyhmä(suoritus: Suoritus, opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus = {
+  def validateTutkinnonosanRyhmä(suoritus: Suoritus, vaadittuPerusteenVoimassaolopäivä: LocalDate): HttpStatus = {
     def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: TutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
         if (tutkinnonSuoritus.suoritustapa.koodiarvo == "ops" || tutkinnonSuoritus.suoritustapa.koodiarvo == "reformi") {
@@ -85,36 +85,34 @@ class EPerusteisiinPerustuvaValidator(
   }
 
   def validatePerusteVoimassa(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    if(opiskeluoikeus.päättymispäivä.isDefined) {
-      validatePerusteVoimassa(opiskeluoikeus.suoritukset, opiskeluoikeus.päättymispäivä.get)
-    } else {
-      HttpStatus.ok
-    }
+    validatePerusteVoimassa(opiskeluoikeus.suoritukset, opiskeluoikeus.päättymispäivä.getOrElse(LocalDate.now))
   }
 
   private def validatePerusteVoimassa(
     suoritukset: List[KoskeenTallennettavaPäätasonSuoritus],
-    tarkastelupäivä: LocalDate
+    vaadittuPerusteenVoimassaolopäivä: LocalDate
   ): HttpStatus = {
     HttpStatus.fold(
       suoritukset.map(s =>
         (s, s.koulutusmoduuli) match {
-          case (_: ValmaKoulutuksenSuoritus, _) if tarkastelupäivä.isBefore(LocalDate.of(2022, 10, 2)) =>
-            // Valmassa erikoistapauksena hyväksytään valmistuminen pidempään TUVA-siirtymän vuoksi
-            // Katso myös TutkintoRakenneValidator.validateTutkintoRakenne
-            HttpStatus.ok
+          // Valmassa erikoistapauksena hyväksytään valmistuminen pidempään TUVA-siirtymän vuoksi
+          // Katso myös TutkintoRakenneValidator.validateTutkintoRakenne
+          case (_: ValmaKoulutuksenSuoritus, diaarillinen: Diaarinumerollinen) if vaadittuPerusteenVoimassaolopäivä.isBefore(LocalDate.of(2022, 7, 31)) =>
+            validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, vaadittuPerusteenVoimassaolopäivä)
+          case (_: ValmaKoulutuksenSuoritus, diaarillinen: Diaarinumerollinen) if vaadittuPerusteenVoimassaolopäivä.isBefore(LocalDate.of(2022, 10, 2)) =>
+            validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, LocalDate.of(2022, 7, 31))
           case (s: NäyttötutkintoonValmistavanKoulutuksenSuoritus, _) if s.tutkinto.perusteenDiaarinumero.isDefined =>
-            validatePerusteVoimassa(s.tutkinto.perusteenDiaarinumero.get, tarkastelupäivä)
+            validatePerusteVoimassa(s.tutkinto.perusteenDiaarinumero.get, vaadittuPerusteenVoimassaolopäivä)
           case (_, diaarillinen: Diaarinumerollinen) if diaarillinen.perusteenDiaarinumero.isDefined =>
-            validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, tarkastelupäivä)
+            validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, vaadittuPerusteenVoimassaolopäivä)
           case _ => HttpStatus.ok
         }
       )
     )
   }
 
-  private def validatePerusteVoimassa(diaarinumero: String, tarkastelupäivä: LocalDate): HttpStatus = {
-    lazy val voimassaolleetPerusteet = ePerusteet.findRakenteet(diaarinumero, Some(tarkastelupäivä))
+  private def validatePerusteVoimassa(diaarinumero: String, vaadittuPerusteenVoimassaolopäivä: LocalDate): HttpStatus = {
+    lazy val voimassaolleetPerusteet = ePerusteet.findRakenteet(diaarinumero, Some(vaadittuPerusteenVoimassaolopäivä))
 
     if (onKoodistossa(diaarinumero) || voimassaolleetPerusteet.nonEmpty) {
       HttpStatus.ok
@@ -123,7 +121,7 @@ class EPerusteisiinPerustuvaValidator(
       if (kaikkiPerusteet.isEmpty) {
         KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + diaarinumero)
       } else {
-        KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt()
+        KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa()
       }
     }
   }

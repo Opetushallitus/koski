@@ -54,7 +54,7 @@ class EPerusteetFiller(
   }
 
   private def perusteenNimi(diaariNumero: String, päivä: Option[LocalDate]): Option[LocalizedString] = {
-    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero, päivä)
+    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero, Some(päivä.getOrElse(LocalDate.now)))
       .headOption
       .map(_.nimi)
       .flatMap(LocalizedString.sanitize)

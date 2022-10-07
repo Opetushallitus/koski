@@ -60,7 +60,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             suoritustapa = Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"),
             osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("3053", "osaamisala")))))
 
-          "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014 (612)"))))
+          "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala 3053 ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle 39/011/2014 (612)"))))
         }
         "Osaamisala virheellinen" - {
           val suoritus = autoalanPerustutkinnonSuoritus().copy(
@@ -82,7 +82,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Tutkinnon osa ei kuulu tutkintorakenteeseen" - {
             "Pakolliset ja ammatilliset tutkinnon osat" - {
               "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen), tutkinnonSuoritustapaNäyttönä)(
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta perusteelle 39/011/2014 (612) - suoritustapa naytto"))))
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle 39/011/2014 (612) - suoritustapa naytto"))))
             }
             "Vapaavalintaiset tutkinnon osat" - {
               "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(
@@ -317,7 +317,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(osanSuoritusToisestaTutkinnosta(
               autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = Some("Boom boom kah")),
               johtaminenJaHenkilöstönKehittäminen), tutkinnonSuoritustapaNäyttönä)(
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla Boom boom kah"))))
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari(s"Opiskeluoikeuden voimassaoloaikana voimassaolevaa tutkinnon perustetta ei löydy diaarinumerolla Boom boom kah"))))
           }
 
           "Kun tutkinnon diaarinumero on muodoltaan virheellinen" - {
@@ -339,7 +339,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Tunnisteen koodiarvo ei löydy rakenteen koulutuksista" - {
             val suoritus =  autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinto.copy(tunniste = autoalanPerustutkinto.tunniste.copy(koodiarvo = "361902")))
             "palautetaan HTTP 400" in (putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))))(
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tunnisteenKoodiarvoaEiLöydyRakenteesta("Tunnisteen koodiarvoa 361902 ei löytynyt rakenteen 39/011/2014 mahdollisista koulutuksista. Tarkista tutkintokoodit ePerusteista."))
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tunnisteenKoodiarvoaEiLöydyRakenteesta("Tunnisteen koodiarvoa 361902 ei löytynyt opiskeluoikeuden voimassaoloaikana voimassaolleen rakenteen 39/011/2014 mahdollisista koulutuksista. Tarkista tutkintokoodit ePerusteista."))
             )
           }
 
@@ -610,12 +610,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       "Tutkinnon rakenteen vanheneminen" - {
 
-        "Sallitaan siirto perusteen voimassaolon jälkeen alkaneelle, mutta keskeneräiselle opiskeluoikeudelle" in {
+        "Ei sallita siirtoa perusteen voimassaolon jälkeen alkaneelle keskeneräiselle opiskeluoikeudelle" in {
           val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 331101, diaariNumero = "1000/011/2014", alkamispäivä = LocalDate.of(2022, 1, 1))
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).isRight should equal (true)
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
         }
 
         "Sallitaan siirto ja täydennetään perusteen nimi oikein perusteen siirtymäajalla päättyneelle opiskeluoikeudelle" in {
@@ -649,7 +649,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
 
-          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
         }
 
         "Sallitaan siirto ja täydennetään perusteen nimi oikein perusteen voimassaoloaikana päättyneelle opiskeluoikeudelle, vaikka samalla diaarinumerolla löytyy luontipäivältään uudempi mutta päättynyt peruste" in {
@@ -702,7 +702,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
         }
 
         "Ei validoida perusteen voimassaoloa tai rakennetta, jos diaarinumero löytyy koodistosta" in {
@@ -925,12 +925,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
         "Alkamispäivä 2019" - {
           "palautetaan HTTP 400" in putOppija(oppija(LocalDate.of(2019, 1, 1), suoritus()))(
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta("Suoritustapaa ei löydy tutkinnon rakenteesta perusteelle 39/011/2014 (612)")))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta("Suoritustapaa ei löydy tutkinnon rakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle 39/011/2014 (612)")))
         }
         "Alkamispäivä 2018, rakenne ei validi" - {
           val johtaminenJaHenkilöstönKehittäminen = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None)
           "palautetaan HTTP 400" in putOppija(oppija(LocalDate.of(2018, 1, 1), suoritus(tutkinnonOsaSuoritus.copy(koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen))))(
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta perusteelle 39/011/2014 (612) - suoritustapa ops")))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle 39/011/2014 (612) - suoritustapa ops")))
         }
       }
 
@@ -986,7 +986,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       "Suoritustapana OPS" - {
         val suoritus = erikoisammattitutkintoSuoritus(tutkinnonOsanSuoritus.copy(tutkinnonOsanRyhmä = None)).copy(suoritustapa = suoritustapaOps)
-        "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta("Suoritustapaa ei löydy tutkinnon rakenteesta perusteelle 40/011/2001 (1013059)"))))
+        "palautetaan HTTP 400" in (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta("Suoritustapaa ei löydy tutkinnon rakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle 40/011/2001 (1013059)"))))
       }
     }
 

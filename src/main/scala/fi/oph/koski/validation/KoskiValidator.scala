@@ -896,7 +896,7 @@ class KoskiValidator(
         :: validateSuoritustenLuokkaAsteet(suoritus, opiskeluoikeus)
         :: validateOppiaineet(suoritus)
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
-        :: ePerusteetValidator.validateTutkinnonosanRyhmä(suoritus, opiskeluoikeus.päättymispäivä)
+        :: ePerusteetValidator.validateTutkinnonosanRyhmä(suoritus, opiskeluoikeus.päättymispäivä.getOrElse(LocalDate.now))
         :: validateOsaamisenHankkimistavat(suoritus)
         :: validateYhteisetTutkinnonOsat(suoritus, opiskeluoikeus)
         :: validateÄidinkielenOmainenKieli(suoritus)

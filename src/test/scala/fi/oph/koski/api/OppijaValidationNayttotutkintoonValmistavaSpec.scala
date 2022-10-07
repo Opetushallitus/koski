@@ -63,7 +63,7 @@ class OppijaValidationNayttotutkintoonValmistavaSpec extends TutkinnonPerusteetT
       )))
 
     putOpiskeluoikeus(oo) {
-      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.perusteenVoimassaoloPäättynyt())
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
     }
   }
 }

@@ -5,6 +5,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema._
 import org.scalatest.freespec.AnyFreeSpec
 
+import java.time.LocalDate
 import scala.reflect.runtime.universe.TypeTag
 
 trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[T] {
@@ -25,13 +26,14 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends AnyFreeSpec with PutOp
 
     "Kun yritetään liittää suoritus tuntemattomaan tutkinnon perusteeseen" - {
       "palautetaan HTTP 400 virhe"  in {
-        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some("39/xxx/2014"))) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla 39/xxx/2014")))
+        val opiskeluoikeus = opiskeluoikeusWithPerusteenDiaarinumero(Some("39/xxx/2014"))
+        putTodistus(opiskeluoikeus) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari(s"Tutkinnon perustetta ei löydy diaarinumerolla 39/xxx/2014")))
       }
     }
 
     "Kun yritetään liittää suoritus väärään koulutustyyppiin liittyvään perusteeseen" - {
       "palautetaan HTTP 400 virhe"  in {
-        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(vääräntyyppisenPerusteenDiaarinumero))) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi, s".*ei voi käyttää perustetta $vääräntyyppisenPerusteenDiaarinumero \\($vääräntyyppisenPerusteenId\\), jonka koulutustyyppi on .*. Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat.*".r)))
+        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(vääräntyyppisenPerusteenDiaarinumero))) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi, s".*ei voi käyttää opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta $vääräntyyppisenPerusteenDiaarinumero \\($vääräntyyppisenPerusteenId\\), jonka koulutustyyppi on .*. Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat.*".r)))
       }
     }
 
