@@ -34,7 +34,7 @@ trait HealthCheck extends Logging {
     val oppija = findOrCreateOppija
     val checks: List[() => HttpStatus] = List(
       () => oppijaCheck(oppija),
-      () => elasticCheck(oppija),
+      () => openSearchCheck(oppija),
       () => koodistopalveluCheck,
       () => organisaatioPalveluCheck,
       () => ePerusteetCheck,
@@ -65,9 +65,9 @@ trait HealthCheck extends Logging {
 
   private def oppijaCheck(oppija: Either[HttpStatus, NimellinenHenkilö]): HttpStatus = oppija.left.getOrElse(HttpStatus.ok)
 
-  private def elasticCheck(oppija: Either[HttpStatus, NimellinenHenkilö]): HttpStatus = oppija.flatMap { henkilö =>
-    get("elasticsearch", application.perustiedotRepository.findOids(henkilö.kokonimi))
-      .filterOrElse(_.contains(oid), KoskiErrorCategory.notFound.oppijaaEiLöydy(s"Healthcheck user $oid, not found from elasticsearch"))
+  private def openSearchCheck(oppija: Either[HttpStatus, NimellinenHenkilö]): HttpStatus = oppija.flatMap { henkilö =>
+    get("opensearch", application.perustiedotRepository.findOids(henkilö.kokonimi))
+      .filterOrElse(_.contains(oid), KoskiErrorCategory.notFound.oppijaaEiLöydy(s"Healthcheck user $oid, not found from OpenSearch"))
   }.left.getOrElse(HttpStatus.ok)
 
   private def koodistopalveluCheck: HttpStatus =

@@ -1,24 +1,24 @@
-package fi.oph.koski.elasticsearch
+package fi.oph.koski.opensearch
 
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.PaginationSettings
 
-case class ElasticSearchConfig(host: String, protocol: String, port: Int)
+case class OpenSearchConfig(host: String, protocol: String, port: Int)
 
-case class ElasticSearch(config: Config) extends Logging {
-  private val ElasticSearchConfig(host, protocol, port) = (sys.env.get("ES_ENDPOINT")) match {
-    case Some(host) => ElasticSearchConfig(host, "https", 443)
-    case _ => ElasticSearchConfig(config.getString("elasticsearch.host"), config.getString("elasticsearch.protocol"), config.getInt("elasticsearch.port"))
+case class OpenSearch(config: Config) extends Logging {
+  private val OpenSearchConfig(host, protocol, port) = (sys.env.get("ES_ENDPOINT")) match {
+    case Some(host) => OpenSearchConfig(host, "https", 443)
+    case _ => OpenSearchConfig(config.getString("opensearch.host"), config.getString("opensearch.protocol"), config.getInt("opensearch.port"))
   }
 
   private val url = s"$protocol://$host:$port"
 
-  val http: Http = Http(url, "elasticsearch")
+  val http: Http = Http(url, "opensearch")
 }
 
-object ElasticSearch {
+object OpenSearch {
   private val emptyFilter = Map("match_all" -> Map.empty)
 
   def allFilter(queries: List[Map[String, Any]]): Map[String, AnyRef] = queries match {

@@ -91,11 +91,11 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
 
       application.perustiedotIndexer.updatePerustiedot(muuttuneidenHenkilötiedot, upsert = false, refresh) match {
         case Right(updatedCount) => {
-          logger.info(s"Updated ${updatedInKoskiHenkilöCache.length} entries to henkilö table and $updatedCount to elasticsearch, latest oppija modified timestamp: $lastModified")
+          logger.info(s"Updated ${updatedInKoskiHenkilöCache.length} entries to henkilö table and $updatedCount to OpenSearch, latest oppija modified timestamp: $lastModified")
           HenkilöUpdateContext(lastModified)
         }
         case Left(HttpStatus(_, errors)) => {
-          logger.error(s"Couldn't update data to elasticsearch ${errors.mkString}")
+          logger.error(s"Couldn't update data to OpenSearch ${errors.mkString}")
           HenkilöUpdateContext(oppijatByOid(updatedInKoskiHenkilöCache.head).modified - 1000)
         }
       }

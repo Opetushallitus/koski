@@ -60,7 +60,7 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
       "Sisältävän opiskeluoikeuden organisaatio löytää sisältyvän opiskeluoikeuden hakutoiminnolla" in {
         val originalId = opiskeluoikeusId(fixture.original).get
         val sisältyväId = opiskeluoikeusId(sisältyvä).get
-        syncPerustiedotToElasticsearch(searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoTallentaja)
+        syncPerustiedotToOpenSearch(searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoTallentaja)
           .map(_.id).contains(originalId) && searchForPerustiedot(Map("toimipiste" -> omnia), stadinAmmattiopistoTallentaja)
           .map(_.id).contains(sisältyväId))
         searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoTallentaja).map(_.id) should contain(originalId)
@@ -103,7 +103,7 @@ class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with Opisk
   def opiskeluoikeusId(oo: AmmatillinenOpiskeluoikeus): Option[Int] =
     oo.oid.flatMap(oid => runDbSync(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)
 
-  private def syncPerustiedotToElasticsearch(waitCondition: => Boolean): Unit = {
+  private def syncPerustiedotToOpenSearch(waitCondition: => Boolean): Unit = {
     KoskiApplicationForTests.perustiedotIndexer.sync(refresh = true)
     Wait.until(waitCondition, timeoutMs = 120000)
   }

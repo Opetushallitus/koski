@@ -1,10 +1,10 @@
 package fi.oph.koski.perustiedot
 
-import fi.oph.koski.elasticsearch.ElasticSearchIndex
+import fi.oph.koski.opensearch.OpenSearchIndex
 import fi.oph.koski.json.JsonSerializer.extract
 import org.json4s.JsonAST.JValue
 
-case class OpiskeluoikeudenPerustiedotStatistics(index: ElasticSearchIndex) {
+case class OpiskeluoikeudenPerustiedotStatistics(index: OpenSearchIndex) {
   def statistics: OpiskeluoikeusTilasto = {
     rawStatistics.map { case (oppilaitosTotal, stats) =>
       OpiskeluoikeusTilasto(

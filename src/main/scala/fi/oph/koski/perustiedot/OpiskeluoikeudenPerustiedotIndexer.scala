@@ -2,7 +2,7 @@ package fi.oph.koski.perustiedot
 
 import fi.oph.koski.db.KoskiTables.{OpiskeluOikeudet, PerustiedotManualSync}
 import fi.oph.koski.documentation.KoskiApiOperations.opiskeluoikeus
-import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
+import fi.oph.koski.opensearch.{OpenSearch, OpenSearchIndex}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
@@ -82,14 +82,14 @@ object OpiskeluoikeudenPerustiedotIndexer {
 }
 
 class OpiskeluoikeudenPerustiedotIndexer(
-  elastic: ElasticSearch,
-  opiskeluoikeusQueryService: OpiskeluoikeusQueryService,
-  perustiedotSyncRepository: PerustiedotSyncRepository,
-  perustiedotManualSyncRepository: PerustiedotManualSyncRepository
+                                          openSearch: OpenSearch,
+                                          opiskeluoikeusQueryService: OpiskeluoikeusQueryService,
+                                          perustiedotSyncRepository: PerustiedotSyncRepository,
+                                          perustiedotManualSyncRepository: PerustiedotManualSyncRepository
 ) extends Logging {
 
-  val index = new ElasticSearchIndex(
-    elastic = elastic,
+  val index = new OpenSearchIndex(
+    openSearch = openSearch,
     name = "perustiedot",
     mappingVersion = 3,
     mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
@@ -121,7 +121,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
   }
 
   /**
-   * manualSync-funktiota käytetään ElasticSearch-indeksin manuaaliseen päivittämiseen.
+   * manualSync-funktiota käytetään OpenSearch-indeksin manuaaliseen päivittämiseen.
    * @param refresh
    */
   def manualSync(refresh: Boolean): Unit = synchronized {
@@ -157,14 +157,14 @@ class OpiskeluoikeudenPerustiedotIndexer(
         }
       val toSyncAgain = failedOpiskeluoikeusIds.flatMap { id =>
         items.find{ doc => docId(doc) == id}.orElse{
-          logger.warn(s"Elasticsearch reported failed id $id that was not found in ${items.map(docId)}");
+          logger.warn(s"OpenSearch reported failed id $id that was not found in ${items.map(docId)}");
           None
         }
       }
 
       perustiedotSyncRepository.addToSyncQueueRaw(toSyncAgain, upsert) // FIXME: Sivuvaikutuksena timestamppi päivittyy, kun rivi lisätään uudestaan jonoon. Oikea korjaus olisi käyttää opiskeluoikeuden versionumeroa.
 
-      val msg = s"""Elasticsearch indexing failed for ids ${failedOpiskeluoikeusIds.mkString(", ")}.
+      val msg = s"""OpenSearch indexing failed for ids ${failedOpiskeluoikeusIds.mkString(", ")}.
 Response from ES: ${JsonMethods.pretty(response)}.
 Will retry soon."""
       logger.error(msg)
@@ -188,7 +188,7 @@ Will retry soon."""
         perustiedotSyncRepository.addDeletesToSyncQueue(itemIds)
         val msg =
           s"""
-              Elasticsearch indexing failed for ids ${itemIds.mkString(", ")}.
+              OpenSearch indexing failed for ids ${itemIds.mkString(", ")}.
               Exception from ES: ${err.getMessage}.
               Will retry soon.
               """
@@ -201,7 +201,7 @@ Will retry soon."""
     val doc = perustiedot.asInstanceOf[JObject] match {
       case JObject(fields) => JObject(
         fields.filter {
-          case ("henkilö", JNull) => false // to prevent removing these from ElasticSearch
+          case ("henkilö", JNull) => false // to prevent removing these from OpenSearch
           case ("henkilöOid", JNull) => false
           case _ => true
         }
@@ -257,7 +257,7 @@ Will retry soon."""
     observable.subscribe(
       {
         case UpdateStatus(countSoFar, actuallyChanged) => if (countSoFar > 0) {
-          logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")
+          logger.info(s"Updated OpenSearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")
         }
       },
       { e: Throwable => logger.error(e)("Error while indexing perustiedot documents") },

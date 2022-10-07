@@ -3,7 +3,7 @@ package fi.oph.koski.tiedonsiirto
 import java.sql.Timestamp
 import java.time.LocalDate
 
-import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
+import fi.oph.koski.opensearch.{OpenSearch, OpenSearchIndex}
 import fi.oph.koski.henkilo.{HenkilöOid, HenkilöRepository, Hetu}
 import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.{extract, validateAndExtract}
@@ -70,15 +70,15 @@ object TiedonsiirtoService {
 }
 
 class TiedonsiirtoService(
-  elastic: ElasticSearch,
-  organisaatioRepository: OrganisaatioRepository,
-  henkilöRepository: HenkilöRepository,
-  koodistoviitePalvelu: KoodistoViitePalvelu,
-  hetu: Hetu
+                           openSearch: OpenSearch,
+                           organisaatioRepository: OrganisaatioRepository,
+                           henkilöRepository: HenkilöRepository,
+                           koodistoviitePalvelu: KoodistoViitePalvelu,
+                           hetu: Hetu
 ) extends Logging {
 
-  val index = new ElasticSearchIndex(
-    elastic = elastic,
+  val index = new OpenSearchIndex(
+    openSearch = openSearch,
     name = "tiedonsiirto",
     mappingVersion = 2,
     mapping = TiedonsiirtoService.mapping,
@@ -106,7 +106,7 @@ class TiedonsiirtoService(
   }
 
   def delete(ids: List[String])(implicit koskiSession: KoskiSpecificSession): Unit = {
-    val query = toJValue(Map("query" -> ElasticSearch.allFilter(
+    val query = toJValue(Map("query" -> OpenSearch.allFilter(
       Map("terms" -> Map("_id" -> ids))
         :: Map("exists" -> Map("field" -> "virheet.key"))
         :: tallentajaOrganisaatioFilters(AccessType.tiedonsiirronMitätöinti))))
@@ -116,7 +116,7 @@ class TiedonsiirtoService(
   private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSpecificSession): List[Map[String, Any]] = {
     // vastaavasti kuin yhteenveto-kyselyssä, käytä tallentajaOrganisaatioOid:ia jos ja vain jos oppilaitos-OID puuttuu
     query.oppilaitos.toList.map(oppilaitos => {
-      ElasticSearch.anyFilter(List(
+      OpenSearch.anyFilter(List(
         Map("term" -> Map("oppilaitokset.oid" -> oppilaitos)),
         Map("bool" -> Map(
           "must_not" -> Map("exists" -> Map("field" -> "oppilaitokset.oid")),
@@ -136,12 +136,12 @@ class TiedonsiirtoService(
     if (session.hasGlobalReadAccess) {
       None
     } else {
-      val orgFilter = ElasticSearch.anyFilter(List(
+      val orgFilter = OpenSearch.anyFilter(List(
         Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(accessType))),
         Map("terms" -> Map("oppilaitokset.oid" -> session.organisationOids(accessType)))
       ))
       val filter = if (session.hasKoulutusmuotoRestrictions) {
-        ElasticSearch.allFilter(List(orgFilter, Map(
+        OpenSearch.allFilter(List(orgFilter, Map(
           "terms" -> Map("koulutusmuoto" -> session.allowedOpiskeluoikeusTyypit)
         )))
       } else {
@@ -159,8 +159,8 @@ class TiedonsiirtoService(
       AuditLog.log(KoskiAuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> oid)))
     }
 
-    val query = toJValue(ElasticSearch.applyPagination(paginationSettings, Map(
-      "query" -> ElasticSearch.allFilter(filters),
+    val query = toJValue(OpenSearch.applyPagination(paginationSettings, Map(
+      "query" -> OpenSearch.allFilter(filters),
       "sort" -> List(Map("aikaleima" -> "desc"), Map("oppija.sukunimi.keyword" -> "asc"), Map("oppija.etunimet.keyword" -> "asc"))
     )))
 
@@ -215,7 +215,7 @@ class TiedonsiirtoService(
     juuriOrganisaatiot.foreach((org: OrganisaatioWithOid) => {
       val (data: Option[JValue], virheet: Option[List[ErrorDetail]]) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
-      storeToElasticSearch(henkilö, org, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet, lahdejarjestelma, koskiSession.oid, Some(koskiSession.username), new Timestamp(System.currentTimeMillis))
+      storeToOpenSearch(henkilö, org, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet, lahdejarjestelma, koskiSession.oid, Some(koskiSession.username), new Timestamp(System.currentTimeMillis))
 
       if (error.isDefined) {
         tiedonSiirtoVirheet.inc
@@ -223,7 +223,7 @@ class TiedonsiirtoService(
     })
   }
 
-  def storeToElasticSearch(
+  def storeToOpenSearch(
     henkilö: Option[TiedonsiirtoOppija],
     org: OrganisaatioWithOid,
     oppilaitokset: Option[List[OidOrganisaatio]],
@@ -253,7 +253,7 @@ class TiedonsiirtoService(
     tiedonsiirtoBuffer.append(tiedonsiirtoDoc)
   }
 
-  def syncToElasticsearch(refresh: Boolean): Unit = synchronized {
+  def syncToOpenSearch(refresh: Boolean): Unit = synchronized {
     val tiedonsiirrot = tiedonsiirtoBuffer.popAll
     if (tiedonsiirrot.nonEmpty) {
       logger.debug(s"Syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
@@ -267,7 +267,7 @@ class TiedonsiirtoService(
         .grouped(1000)
         .map(group => index.updateBulk(group, upsert = true, refresh = refresh))
         .collect { case (errors, response) if errors => JsonMethods.pretty(response) }
-        .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
+        .foreach(resp => logger.error(s"OpenSearch indexing failed: $resp"))
       logger.debug(s"Done syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
     }
   }

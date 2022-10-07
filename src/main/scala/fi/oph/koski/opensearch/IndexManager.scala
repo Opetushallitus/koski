@@ -1,9 +1,9 @@
-package fi.oph.koski.elasticsearch
+package fi.oph.koski.opensearch
 
-class IndexManager(indexes: List[ElasticSearchIndex]) {
+class IndexManager(indexes: List[OpenSearchIndex]) {
   private val namedIndexes = indexes.map(i => i.name -> i).toMap
 
-  private def withNamedIndex[T](indexName: String, operation: ElasticSearchIndex => T): Option[T] = {
+  private def withNamedIndex[T](indexName: String, operation: OpenSearchIndex => T): Option[T] = {
     namedIndexes.get(indexName) match {
       case Some(index) => Some(operation(index))
       case None => None
