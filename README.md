@@ -79,7 +79,7 @@ Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista 
 tarpeen mukaan.
 
 - PostgreSQL 12.5 -tietokanta
-- Elasticsearch 7.9 -hakuindeksi
+- OpenSearch -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.12 -ohjelmointikieli ja -kääntäjä
   - Scalatra-web-framework
@@ -107,7 +107,7 @@ Minimissään tarvitset nämä:
   `brew cask install adoptopenjdk8`)
 - Maven 3 (osx: `brew install maven`)
 - Node.js (`.nvmrc`-tiedoston mukainen versio)
-- Docker PostgreSQL:n ja Elasticsearchin ajamiseen konteissa
+- Docker PostgreSQL:n ja OpenSearchin ajamiseen konteissa
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA)
 
 ## Buildi ja ajaminen
@@ -145,7 +145,7 @@ make run
 
 Avaa selaimessa [http://localhost:7021/koski/virkailija](http://localhost:7021/koski/virkailija). Selaimeen avautuu login-sivu, josta pääset eteenpäin käyttäjätunnuksella "kalle". Salasana on sama kuin käyttäjätunnus.
 
-Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja Elasticsearch-hakuindeksiä, jotka voi käynnistää docker-composella. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
+Näin ajettuna sovellus käyttää paikallista PostgreSQL-kantaa ja OpenSearch-hakuindeksiä, jotka voi käynnistää docker-composella. Sovellus ei myöskään käytä mitään ulkoisia palveluja. Sillä on siis turvallista leikkiä.
 
 Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta `target/webapp`, jonka sisältö luodaan webpack-buildilla ([webpack.config.js](web/webpack.config.js)). Webpack-build muun muassa kopioi staattisia resursseja paikoilleen
 hakemistosta [`web/`](web/) ja sen alihakemistoista.
@@ -173,7 +173,7 @@ Tällä asetuksella käytetään tiedostoa `src/main/resources/qa.conf`. Tämä 
 
 ### Kehitysympäristön tietokannat
 
-Kehityskäyttöön tarvitaan PostgreSQL-tietokanta ja Elasticsearch-hakuindeksi.
+Kehityskäyttöön tarvitaan PostgreSQL-tietokanta ja OpenSearch-hakuindeksi.
 
 Kehitystietokannat käynnistetään docker-composella. Tämän voi tehdä seuraavalla
 komennolla:
@@ -213,9 +213,9 @@ Tietokannan rakenne luodaan ja päivitetään Flywayn migraatioskripteillä, jot
 
 Koski-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
-### Elasticsearch-hakuindeksien hallinta
+### OpenSearch-hakuindeksien hallinta
 
-Elasticsearch-hakuindeksejä voidaan hallita Kosken API:n kautta. API sallii
+OpenSearch-hakuindeksejä voidaan hallita Kosken API:n kautta. API sallii
 kutsut ainoastaan localhostista, joten pilviympäristöjen hallintaa varten on
 palvelimille konfiguroitava pääsy SSH:lla.
 
@@ -232,28 +232,28 @@ Esimerkki kuvaa tilannetta jossa indeksin mappingia tai asetuksia halutaan päiv
 
 Uuden perustiedot-indeksin luonti versiota 2 vastaavalla nimellä:
 
-    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/elasticsearch/perustiedot/create/2'
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/opensearch/perustiedot/create/2'
 
 Kirjoitusaliaksen siirto versiosta 1 versioon 2:
 
-    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/elasticsearch/perustiedot/migrateAlias/write/1/2'
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/opensearch/perustiedot/migrateAlias/write/1/2'
 
 Reindeksointi versiosta 1 versioon 2:
 
-    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/elasticsearch/perustiedot/reindex/1/2'
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/opensearch/perustiedot/reindex/1/2'
 
 Huomaa, että reindeksointi jää käyntiin taustalle. Tietoja sen edistymisestä
-kirjoitetaan Kosken lokiin INFO-tasolla. Prosessia voi seurata myös Elasticsearchin
+kirjoitetaan Kosken lokiin INFO-tasolla. Prosessia voi seurata myös OpenSearchin
 task-apin avulla.
 
 Kun reindeksointi on valmis, lukualiaksen siirto versiosta 1 versioon 2:
 
-    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/elasticsearch/perustiedot/migrateAlias/read/1/2'
+    curl -N -u 'käyttäjätunnus:salasana' -X POST 'localhost:8080/koski/api/opensearch/perustiedot/migrateAlias/read/1/2'
 
-Kosken indeksinhallinta-apin lisäksi ainakin Elasticsearchin `/_cat/indices?v`
+Kosken indeksinhallinta-apin lisäksi ainakin OpenSearchin `/_cat/indices?v`
 ja `/_cat/aliases?v` apit voivat olla avuksi:
 
-    curl 'https://vpc-koski-elasticsearch-me2iad5ogsn4dchkttci6ytgfy.eu-west-1.es.amazonaws.com/_cat/indices?v'
+    curl 'https://vpc-koski-opensearch-h2qymngshxuiefd5lzmlpnpp5u.eu-west-1.es.amazonaws.com/_cat/indices?v'
 
 ### Testit
 
@@ -298,7 +298,7 @@ Koski merkitsee tapahtumia erillisiin logitiedostoihin:
 4. `koski-ip-tracking.log` eli IP-seurantalogi sisältää tiedonsiirtoon oikeutettujen käyttäjien IP-osoitteiden muutokset.
 5. `koski.log` eli "sovelluslogi" sisältää kehitys- ja diagnostiikkatietoa, kuten kaikki virheilmoitukset.
 
-Kaikkien logien tapahtumat siirretään testiympäristön palvelimilta Filebeat-agentilla Elasticsearch -tietokantaan, josta ne ovat katseltavissa Kibana-käyttöliittymän avulla.
+Kaikkien logien tapahtumat siirretään testiympäristön palvelimilta Filebeat-agentilla OpenSearch -tietokantaan, josta ne ovat katseltavissa Kibana-käyttöliittymän avulla.
 
 Loggaus on konfiguroitu tiedostolla `log4j2.xml`, joka määrittää loggauksen kehitysympäristössä (tuotanto- ja kehitysympäristöjen lokitus määritellään `docker-build` -kansiossa konfiguraatiotiedostoilla). Tämän konfiguraatiotiedoston avulla määritellään esimerkiksi se, mitä logataan mihin tiedostoon. Kuten konfiguraatiotiedostosta ilmenee, tapahtuu access-loggaus ohjaamalla Jettyn `RequestLog`-luokan logitus `koski-access.log` -tiedostoon. Vastaavasti `fi.vm.sade.auditlog.Audit`-luokan loggaus ohjataan tiedostoon `koski-audit.log`, `fi.oph.koski.tiedonsiirto.IPTracking`-luokan loggaus tiedostoon `koski-ip-tracking.log` ja `fi.oph.koski.util.Timer` -luokan loggaus tiedostoon `koski-performance.log`. Kaikki muut logit menevät tiedostoon `koski.log`.
 

@@ -1,6 +1,6 @@
-# Elasticsearchin indeksin manuaalinen päivittäminen
+# OpenSearchin indeksin manuaalinen päivittäminen
 
-Jos tulee tarve päivittää Elasticsearchin indeksoimia opiskeluoikeuksia manuaalisesti, niin se on mahdollista lisäämällä
+Jos tulee tarve päivittää OpenSearchin indeksoimia opiskeluoikeuksia manuaalisesti, niin se on mahdollista lisäämällä
 opiskeluoikeuksien OID:t `perustiedot_manual_sync`-tauluun seuraavalla kyselyllä:
 
 ```sql
