@@ -395,6 +395,55 @@ describe("Oppijahaku", () => {
       "maksuttomuusoppijasearch"
     )
   })
+
+  describe("Oppivelvollisuudesta vapautettu oppija", () => {
+    const hetu = "060605A538B"
+
+    it("Kunnan hetuhaku", async () => {
+      await hakuLogin(
+        "valpas-helsinki",
+        kunnanHetuhakuPath.href("/virkailija"),
+        "article#kuntahetuhaku"
+      )
+      await fillQueryField(hetu)
+      await submit()
+      await expectResultToBe(
+        "Löytyi: Oppivelvollisuudesta-vapautettu Valpas (060605A538B)",
+        oppijaPath.href("/virkailija", {
+          oppijaOid: "1.2.246.562.24.00000000157",
+          prev: kunnanHetuhakuPath.href(),
+        })
+      )
+    })
+
+    it("Suorittamisvalvonnan hetuhaku", async () => {
+      allowNetworkError(
+        `api/henkilohaku/suorittaminen/${hetu}`,
+        "403 (Forbidden)"
+      )
+      await hakuLogin(
+        "valpas-pelkkä-suorittaminen",
+        suorittaminenHetuhakuPath.href("/virkailija"),
+        "article#suorittaminenhetuhaku"
+      )
+      await fillQueryField(hetu)
+      await submit()
+      await expectResultToBe(
+        "Hakuehdolla ei löytynyt oppijaa tai sinulla ei ole oikeuksia nähdä kyseisen oppijan tietoja"
+      )
+    })
+
+    it("Maksuttomuusoikeuden arvioinnin hetuhaku", async () => {
+      await hakuLogin()
+      await fillQueryField(hetu, "maksuttomuusoppijasearch")
+      await submit("maksuttomuusoppijasearch")
+      await expectResultToBe(
+        "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, kotikunta ei ole Suomessa, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+        undefined,
+        "maksuttomuusoppijasearch"
+      )
+    })
+  })
 })
 
 const hakuLogin = async (
