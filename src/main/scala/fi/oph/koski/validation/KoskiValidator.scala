@@ -1422,24 +1422,16 @@ class KoskiValidator(
 
     suoritus match {
       case s: AmmatillisenTutkinnonSuoritus if s.koulutusmoduuli.koulutustyyppi.contains(ammatillinenPerustutkinto) =>
+        // Jätetään validaation tulokset huomioimatta, jos kyseessä kuoriopiskeluoikeus eli linkitetty opiskeluoikeus.
+        // Tämä tutkiminen tehdään vasta validaatioiden jälkeen, koska linkitysten tutkiminen aiheuttaa ylimääräisiä
+        // tietokantakyselyitä.
         val validaationTulos = yhteistenValidaatiot(s)
-
         if (validaationTulos.isOk) {
           validaationTulos
+        } else if (koskiOpiskeluoikeudet.isKuoriOpiskeluoikeus(opiskeluoikeus)) {
+          HttpStatus.ok
         } else {
-          // Jätetään validaation tulokset huomioimatta, jos kyseessä kuoriopiskeluoikeus eli linkitetty opiskeluoikeus.
-          // Tämä tutkiminen tehdään vasta validaatioiden jälkeen, koska linkitysten tutkiminen aiheuttaa ylimääräisiä
-          // tietokantakyselyitä.
-          if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
-            val oids = koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(opiskeluoikeus.oid.get)(KoskiSpecificSession.systemUser).right.getOrElse(List())
-            if (linkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, oids)) {
-              HttpStatus.ok
-            } else {
-              validaationTulos
-            }
-          } else {
-            validaationTulos
-          }
+          validaationTulos
         }
       case _ => HttpStatus.ok
     }
