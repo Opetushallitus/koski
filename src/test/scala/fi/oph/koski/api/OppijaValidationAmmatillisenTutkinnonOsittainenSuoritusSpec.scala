@@ -238,6 +238,19 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
                 putOpiskeluoikeus(kuoriOpiskeluoikeus)(verifyResponseStatusOk())
               }
 
+              "Samaan oppilaitokseen valmis kuoriopiskeluoikeus ilman keskiarvoa, palautetaan HTTP 200" in {
+                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
+                val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(stadinOpiskeluoikeus, MockOrganisaatiot.omnia).copy(
+                  suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
+                    keskiarvo = None,
+                    vahvistus = vahvistus(LocalDate.of(2020,1, 1)),
+                    osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_.filterNot(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus]))
+                  ))
+                )
+
+                putOpiskeluoikeus(kuoriOpiskeluoikeus)(verifyResponseStatusOk())
+              }
+
               "Eri oppilaitokseen, palautetaan HTTP 200" in {
                 val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
                 val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(stadinOpiskeluoikeus, MockOrganisaatiot.omnia).copy(
