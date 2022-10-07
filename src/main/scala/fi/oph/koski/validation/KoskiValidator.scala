@@ -1028,8 +1028,8 @@ class KoskiValidator(
   private def validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = {
     if (osasuorituksetKunnossa(suoritus, opiskeluoikeus) || ostettuOpiskeluoikeusValmisEnnenVuotta2019(opiskeluoikeus)) {
       HttpStatus.ok
-    } else if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
-      validateLinkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, suoritus)
+    } else if (koskiOpiskeluoikeudet.isKuoriOpiskeluoikeus(opiskeluoikeus)) {
+      HttpStatus.ok
     } else {
       valmiiksiMerkitylläEiOsasuorituksia(suoritus)
     }
