@@ -5,7 +5,7 @@ import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db.{KoskiDatabase, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig, ValpasDatabaseConfig}
 import fi.oph.koski.elasticsearch.{ElasticSearch, IndexManager}
 import fi.oph.koski.eperusteet.EPerusteetRepository
-import fi.oph.koski.eperusteetvalidation.{EPerusteetOpiskeluoikeusChangeValidator, EPerusteetFiller, EPerusteisiinPerustuvaValidator}
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetOpiskeluoikeusChangeValidator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
@@ -42,6 +42,7 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasOpiskeluoikeusDatabas
 import fi.oph.koski.valpas.oppija.{ValpasOppijaLaajatTiedotService, ValpasOppijalistatService, ValpasOppijanumerorekisteriService}
 import fi.oph.koski.valpas.oppijahaku.ValpasOppijaSearchService
 import fi.oph.koski.valpas.oppivelvollisuudenkeskeytys.ValpasOppivelvollisuudenKeskeytysService
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudestaVapautusService
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.valpasrepository.{OpiskeluoikeusLisätiedotRepository, OppivelvollisuudenKeskeytysRepository, OppivelvollisuudenKeskeytysRepositoryService, ValpasKuntailmoitusRepository}
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
@@ -171,6 +172,7 @@ class KoskiApplication(
   lazy val valpasOppivelvollisuudenKeskeytysRepository = new OppivelvollisuudenKeskeytysRepository(valpasDatabase, config)
   lazy val valpasOpiskeluoikeusDatabaseService = new ValpasOpiskeluoikeusDatabaseService(this)
   lazy val valpasRouhintaOppivelvollisuudenKeskeytysService = new ValpasRouhintaOppivelvollisuudenKeskeytysService(this)
+  lazy val valpasOppivelvollisuudestaVapautusService = new ValpasOppivelvollisuudestaVapautusService(this)
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val indexManager = new IndexManager(List(perustiedotIndexer.index, tiedonsiirtoService.index))

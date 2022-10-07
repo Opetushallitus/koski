@@ -288,4 +288,15 @@ object ValpasExampleData {
     email = Some(s"${mockUser.firstname}@gmail.com"),
     puhelinnumero = Some("040 123 4567")
   )
+
+  lazy val oppivelvollisuudestaVapautetut = List(
+    (
+      ValpasMockOppijat.oppivelvollisuudestaVapautettu,
+      ValpasMockUsers.valpasHelsinki.oid,
+      // Huom! Oppivelvollisuudesta ei voi olla vapautettu ennen 1.8.2022, mutta testidatassa sitä käytetään, jotta
+      // vältetään koko testiaineiston päivitys.
+      LocalDate.of(2000, 8, 1),
+      "091",
+    ),
+  )
 }

@@ -18,6 +18,8 @@
   border: none;
   margin: 0;
   padding: 0;
+
+  transition: all 100ms;
 }
 
 .button__content {
@@ -32,11 +34,24 @@
   color: @color-white;
   border: 2px solid @color-blue;
   border-radius: 3px;
+
+  &:enabled:hover {
+    background: @color-blue-darken-1;
+    color: @color-blue-lighten-4;
+    border-color: @color-blue-darken-1;
+    transition: all 0ms;
+  }
 }
 
 .button--secondary {
   background: @color-white;
   color: @color-blue;
+
+  &:enabled:hover {
+    background: @color-blue-lighten-4;
+    color: @color-blue-darken-1;
+    transition: all 0ms;
+  }
 }
 
 .button--disabled,
@@ -53,4 +68,10 @@ input.button {
   background: @color-red;
   color: @color-white;
   border-color: @color-red;
+}
+
+.button--danger:enabled:hover {
+  background: @color-red-darken-1;
+  color: @color-white;
+  border-color: @color-red-darken-1;
 }

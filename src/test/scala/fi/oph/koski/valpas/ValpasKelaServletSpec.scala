@@ -14,6 +14,8 @@ import fi.oph.koski.valpas.valpasrepository.ValpasExampleData
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.scalatest.BeforeAndAfterEach
 
+import java.time.LocalDate
+
 class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   override protected def beforeEach() {
     super.beforeEach()
@@ -266,6 +268,26 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         postHetu(ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.hetu.get, ValpasMockUsers.valpasHelsinki) {
           verifyResponseStatus(403, ValpasErrorCategory.forbidden())
           AuditLogTester.verifyNoAuditLogMessages()
+        }
+      }
+
+      "Oppivelvollisuudesta vapautetulle oppijalle palautetaan sen mukaiset päättymispäivät" in {
+        val expectedDate = ValpasExampleData.oppivelvollisuudestaVapautetut
+          .find(_._1.oid == ValpasMockOppijat.oppivelvollisuudestaVapautettu.oid)
+          .get._3
+          .minusDays(1)
+
+        KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+          .asetaMockTarkastelupäivä(expectedDate)
+        new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
+
+        postHetu(ValpasMockOppijat.oppivelvollisuudestaVapautettu.hetu.get) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[ValpasKelaOppija](body)
+
+
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(expectedDate)
+          response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(expectedDate))
         }
       }
     }

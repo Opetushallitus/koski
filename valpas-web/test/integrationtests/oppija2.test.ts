@@ -307,6 +307,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
+        merkitseVapautusBtn: true,
       })
     )
   })
@@ -348,6 +349,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
+        merkitseVapautusBtn: true,
       })
     )
   })
@@ -424,6 +426,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
+        merkitseVapautusBtn: true,
       })
     )
   })
@@ -620,6 +623,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         oppivelvollisuudenKeskeytykset: ["toistaiseksi 1.9.2021 alkaen"],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
+        merkitseVapautusBtn: true,
       })
     )
     await contentEventuallyEquals(
@@ -665,6 +669,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         ],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
+        merkitseVapautusBtn: true,
       })
     )
   })

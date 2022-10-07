@@ -48,6 +48,7 @@ object Oppivelvollisuustiedot {
         FROM r_henkilo
         FULL JOIN oppivelvollisuustiedot ON r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid
         WHERE r_henkilo.oppija_oid = any($oids)
+        ORDER BY r_henkilo.oppija_oid
       """.as[OptionalOppivelvollisuustieto]
     )
   }
@@ -201,6 +202,15 @@ object Oppivelvollisuustiedot {
             where paatason_suoritus.suorituksen_tyyppi = 'diatutkintovaihe'
               and paatason_suoritus.vahvistus_paiva is not null
 
+        ),
+
+        oppivelvollisuudesta_vapautus as (
+
+          select
+            master_oid,
+            vapautettu - interval '1 day' as oppivelvollisuudesta_vapautus
+          from #${s.name}.r_oppivelvollisuudesta_vapautus
+          left join #${s.name}.r_henkilo on r_oppivelvollisuudesta_vapautus.oppija_oid = r_henkilo.oppija_oid
         )
 
         select
@@ -215,10 +225,34 @@ object Oppivelvollisuustiedot {
           -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
           -- että logiikka säilyy samana.
           case
-            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
-            when suorittaa_ammattitutkintoa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, ammattitutkinnon_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
-            when suorittaa_lukionoppimaaraa then least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
-            else least(dia_tutkinnon_vahvistuspaiva, ib_tutkinnon_vahvistuspaiva, international_schoolin_toisen_asteen_vahvistus_paiva, (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
+            when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then least(
+              oppivelvollisuudesta_vapautus,
+              dia_tutkinnon_vahvistuspaiva,
+              ib_tutkinnon_vahvistuspaiva,
+              international_schoolin_toisen_asteen_vahvistus_paiva,
+              (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
+
+            when suorittaa_ammattitutkintoa then least(
+              oppivelvollisuudesta_vapautus,
+              dia_tutkinnon_vahvistuspaiva,
+              ib_tutkinnon_vahvistuspaiva,
+              international_schoolin_toisen_asteen_vahvistus_paiva,
+              ammattitutkinnon_vahvistus_paiva,
+              (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
+
+            when suorittaa_lukionoppimaaraa then least(
+              oppivelvollisuudesta_vapautus,
+              dia_tutkinnon_vahvistuspaiva,
+              ib_tutkinnon_vahvistuspaiva,
+              international_schoolin_toisen_asteen_vahvistus_paiva,
+              (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
+
+            else least(
+              oppivelvollisuudesta_vapautus,
+              dia_tutkinnon_vahvistuspaiva,
+              ib_tutkinnon_vahvistuspaiva,
+              international_schoolin_toisen_asteen_vahvistus_paiva,
+              (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
           end
             oppivelvollisuusVoimassaAsti,
 
@@ -226,12 +260,14 @@ object Oppivelvollisuustiedot {
           -- että logiikka säilyy samana.
           case
             when suorittaa_ammattitutkintoa and suorittaa_lukionoppimaaraa then least(
+              oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
               ib_tutkinnon_vahvistuspaiva,
               international_schoolin_toisen_asteen_vahvistus_paiva,
               #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
 
             when suorittaa_ammattitutkintoa then least(
+              oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
               ib_tutkinnon_vahvistuspaiva,
               international_schoolin_toisen_asteen_vahvistus_paiva,
@@ -239,6 +275,7 @@ object Oppivelvollisuustiedot {
               #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
 
             else least(
+              oppivelvollisuudesta_vapautus,
               dia_tutkinnon_vahvistuspaiva,
               ib_tutkinnon_vahvistuspaiva,
               international_schoolin_toisen_asteen_vahvistus_paiva,
@@ -253,6 +290,7 @@ object Oppivelvollisuustiedot {
           left join internationalschool on oppivelvolliset_henkilot.master_oid = internationalschool.master_oid
           left join ibtutkinto on oppivelvolliset_henkilot.master_oid = ibtutkinto.master_oid
           left join diatutkinto on oppivelvolliset_henkilot.master_oid = diatutkinto.master_oid
+          left join oppivelvollisuudesta_vapautus on oppivelvolliset_henkilot.master_oid = oppivelvollisuudesta_vapautus.master_oid
       """
   }
 

@@ -1,15 +1,20 @@
 import { getLocalizedMaybe } from "../../i18n/i18n"
 import { LocalizedString, Oid } from "../common"
+import { KoodistoKoodiviite } from "./koodistot"
 
 export type Organisaatio = {
   oid: Oid
   nimi?: LocalizedString
 }
 
+export type OrganisaatioWithOid = Organisaatio & {
+  kotipaikka?: KoodistoKoodiviite<"kunta">
+}
+
 export type Oppilaitos = Organisaatio
 export type Toimipiste = Organisaatio
 
-export const organisaatioWithOid = (oid: Oid): Organisaatio => ({
+export const organisaatioWithOid = (oid: Oid): OrganisaatioWithOid => ({
   oid,
   nimi: {},
 })

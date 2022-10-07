@@ -216,6 +216,34 @@ object ValpasAuditLog {
     }
   }
 
+  def auditOppivelvollisuudestaVapauttaminen
+    (kuntaOid: String, oppijaOid: String)
+    (implicit session: ValpasSession)
+  : Unit = {
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMINEN,
+      session,
+      Map(
+        ValpasAuditLogMessageField.oppijaHenkilöOid -> oppijaOid,
+        ValpasAuditLogMessageField.ilmoittajaOrganisaatioOid -> kuntaOid,
+      )
+    ))
+  }
+
+  def auditOppivelvollisuudestaVapauttamisenMitätöinti
+    (kuntaOid: String, oppijaOid: String)
+    (implicit session: ValpasSession)
+  : Unit = {
+    AuditLog.log(ValpasAuditLogMessage(
+      ValpasOperation.VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMISEN_POISTO,
+      session,
+      Map(
+        ValpasAuditLogMessageField.oppijaHenkilöOid -> oppijaOid,
+        ValpasAuditLogMessageField.ilmoittajaOrganisaatioOid -> kuntaOid,
+      )
+    ))
+  }
+
   def auditLogKansalainenOmatTiedot
     (tiedot: KansalaisnäkymänTiedot)
     (implicit session: ValpasSession)
@@ -286,7 +314,9 @@ object ValpasOperation extends Enumeration {
       VALPAS_ROUHINTA_HETUHAKU,
       VALPAS_ROUHINTA_KUNTA,
       VALPAS_KANSALAINEN_KATSOMINEN,
-      VALPAS_KANSALAINEN_HUOLTAJA_KATSOMINEN = Value
+      VALPAS_KANSALAINEN_HUOLTAJA_KATSOMINEN,
+      VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMINEN,
+      VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMISEN_POISTO = Value
 }
 
 private class ValpasAuditLogOperation(op: ValpasOperation) extends AuditLogOperation(op)

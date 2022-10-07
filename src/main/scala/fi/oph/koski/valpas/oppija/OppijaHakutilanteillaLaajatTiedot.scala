@@ -18,7 +18,8 @@ case class OppijaHakutilanteillaLaajatTiedot(
   kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot],
   oppivelvollisuudenKeskeytykset: Seq[ValpasOppivelvollisuudenKeskeytys],
   onOikeusTehdäKuntailmoitus: Option[Boolean],
-  lisätiedot: Seq[OpiskeluoikeusLisätiedot]
+  onOikeusMitätöidäOppivelvollisuudestaVapautus: Option[Boolean],
+  lisätiedot: Seq[OpiskeluoikeusLisätiedot],
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
@@ -46,6 +47,7 @@ object OppijaHakutilanteillaLaajatTiedot {
       kuntailmoitukset = Seq.empty,
       oppivelvollisuudenKeskeytykset = Seq.empty,
       onOikeusTehdäKuntailmoitus = None,
+      onOikeusMitätöidäOppivelvollisuudestaVapautus = None,
       lisätiedot = Seq.empty
     )
   }
@@ -59,6 +61,7 @@ object OppijaHakutilanteillaLaajatTiedot {
       kuntailmoitukset = kuntailmoitukset,
       oppivelvollisuudenKeskeytykset = Seq.empty,
       onOikeusTehdäKuntailmoitus = None,
+      onOikeusMitätöidäOppivelvollisuudestaVapautus = None,
       lisätiedot = Seq.empty
     )
   }
@@ -72,6 +75,7 @@ object OppijaHakutilanteillaLaajatTiedot {
       kuntailmoitukset = Seq.empty,
       oppivelvollisuudenKeskeytykset = Seq.empty,
       onOikeusTehdäKuntailmoitus = None,
+      onOikeusMitätöidäOppivelvollisuudestaVapautus = None,
       lisätiedot = Seq.empty
     )
   }

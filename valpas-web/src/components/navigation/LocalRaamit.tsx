@@ -1,18 +1,20 @@
 import bem from "bem-ts"
 import React, { useEffect, useState } from "react"
 import { ApiResponse } from "../../api/apiFetch"
-import { useApiMethod, useApiOnce } from "../../api/apiHooks"
+import { useApiMethod, useApiOnce, useOnApiSuccess } from "../../api/apiHooks"
 import { mapSuccess } from "../../api/apiUtils"
 import {
   clearMockData,
   FixtureState,
   getMockStatus,
+  loadRaportointikanta,
   resetMockDataToDate,
 } from "../../api/testApi"
 import { getLanguage, setLanguage, T } from "../../i18n/i18n"
 import { supportedLanguages } from "../../state/apitypes/appConfiguration"
 import { CurrentUser } from "../../state/auth"
 import { Language } from "../../state/common"
+import { useSafeState } from "../../state/useSafeState"
 import { joinClassNames } from "../../utils/classnames"
 import "./LocalRaamit.less"
 
@@ -60,7 +62,7 @@ const TestApiButtons = () => {
         <TestApiButton
           fetchFunc={resetMockDataToDate(state.tarkastelupäivä, force)}
           id={"resetMockData"}
-          title={"Use Valpas mock data"}
+          title={"Load mocks"}
           onStateUpdated={() => current.call()}
         />
         <SimpleTextField
@@ -76,11 +78,16 @@ const TestApiButtons = () => {
           />
           Full reset
         </label>
+        <TestApiButton
+          fetchFunc={loadRaportointikanta}
+          id="loadRaportointikanta"
+          title="Load raportointikanta"
+        />
         {state.fixture === "VALPAS" && (
           <TestApiButton
             fetchFunc={clearMockData}
             id={"clearMockData"}
-            title={"Unload Valpas mock data"}
+            title={"Reset to Koski data"}
             onStateUpdated={() => current.call()}
           />
         )}
@@ -89,34 +96,43 @@ const TestApiButtons = () => {
   )
 }
 
-type TestApiButtonProps = {
-  fetchFunc: () => Promise<ApiResponse<FixtureState>>
+type TestApiButtonProps<T> = {
+  fetchFunc: () => Promise<ApiResponse<T>>
   id: string
   title: string
-  onStateUpdated: () => void
+  onStateUpdated?: () => void
 }
 
-const TestApiButton = ({
+const TestApiButton = <T,>({
   fetchFunc,
   id,
   title,
   onStateUpdated,
-}: TestApiButtonProps) => {
+}: TestApiButtonProps<T>) => {
   const apiFetch = useApiMethod(fetchFunc)
+  const [successHidden, hideSuccess] = useSafeState(false)
+
+  useOnApiSuccess(apiFetch, () => {
+    setTimeout(() => hideSuccess(true), 3000)
+  })
 
   return (
     <button
       className={b("testapibutton")}
       id={id}
       onClick={async () => {
+        hideSuccess(false)
         apiFetch.clear()
         await apiFetch.call()
-        onStateUpdated()
+        onStateUpdated?.()
       }}
     >
       {title}{" "}
       <span id={id + "State"} className={b("testapistate")}>
-        {apiFetch.state}
+        {apiFetch.state !== "initial" &&
+        (apiFetch.state !== "success" || !successHidden)
+          ? apiFetch.state
+          : ""}
       </span>
     </button>
   )
@@ -184,7 +200,7 @@ const LanguageButtons = ({ currentLanguage }: LanguageButtonsProps) => (
 )
 
 const Fixture = ({ children, ...rest }: React.HTMLAttributes<HTMLElement>) => (
-  <span {...rest} className={b("fixture")}>
+  <span {...rest} className={b("fixture", { warning: children !== "VALPAS" })}>
     Fixture:{" "}
     <span id="current-fixture" className={b("fixturevalue")}>
       {children}

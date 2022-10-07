@@ -1,5 +1,4 @@
 import { oppijaPath } from "../../src/state/paths"
-import { textEventuallyEquals } from "../integrationtests-env/browser/content"
 import { $$, goToLocation } from "../integrationtests-env/browser/core"
 import {
   allowNetworkError,
@@ -12,10 +11,12 @@ import {
   historiaOpintoOikeus,
   ilmoitetutYhteystiedot,
   ilmoitetutYhteystiedotEquals,
+  mainHeadingEquals,
   merge,
   opiskeluhistoriaEquals,
   oppivelvollisuustiedot,
   oppivelvollisuustiedotEquals,
+  secondaryHeadingEquals,
   turvakieltoVaroitusEquals,
   turvakieltoVaroitusNotVisible,
   virallisetYhteystiedot,
@@ -62,11 +63,6 @@ const vsopPath = oppijaPath.href("/virkailija", {
 const opiskeluoikeusIntSchoolPerusopetusPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000094",
 })
-
-const mainHeadingEquals = (expected: string) =>
-  textEventuallyEquals("h1.heading--primary", expected)
-const secondaryHeadingEquals = (expected: string) =>
-  textEventuallyEquals(".oppijaview__secondaryheading", expected)
 
 describe("Oppijakohtainen näkymä 1/2", () => {
   it("Näyttää oppijan tiedot, johon käyttäjällä on lukuoikeus", async () => {
@@ -584,6 +580,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         maksuttomuusoikeus: "31.12.2024 asti",
         kuntailmoitusBtn: true,
         oppivelvollisuudenKeskeytysBtn: true,
+        merkitseVapautusBtn: true,
       })
     )
     await opiskeluhistoriaEquals(

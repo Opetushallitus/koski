@@ -50,7 +50,8 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     RKoodistoKoodit,
     RaportointikantaStatus,
     MuuAmmatillinenOsasuoritusRaportointi,
-    TOPKSAmmatillinenOsasuoritusRaportointi
+    TOPKSAmmatillinenOsasuoritusRaportointi,
+    ROppivelvollisuudestaVapautukset,
   )
 
   def vacuumAnalyze(): Unit = {
@@ -366,6 +367,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   def status: RaportointikantaStatusResponse =
     RaportointikantaStatusResponse(schema.name, queryStatus)
 
+  def loadOppivelvollisuudenVapautukset(vapautukset: Seq[ROppivelvollisuudestaVapautusRow]): Unit = {
+    runDbSync(ROppivelvollisuudestaVapautukset ++= vapautukset)
+  }
+
   private def queryStatus = {
     if (statusTableExists) {
       try {
@@ -512,6 +517,11 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   lazy val TOPKSAmmatillinenOsasuoritusRaportointi = schema match {
     case Public => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiTable]
     case Temp => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiTableTemp]
+  }
+
+  lazy val ROppivelvollisuudestaVapautukset = schema match {
+    case Public => TableQuery[ROppivelvollisuudestaVapautusTable]
+    case Temp => TableQuery[ROppivelvollisuudestaVapautusTableTemp]
   }
 }
 

@@ -7,7 +7,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.validation.MaksuttomuusValidation
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot, ValpasRajapäivätService}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot, ValpasRajapäivätService}
 import fi.oph.koski.valpas.oppija.{ValpasAccessResolver, ValpasErrorCategory}
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.scalaschema.annotation.SyntheticProperty
@@ -120,7 +120,7 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
     if (onMahdollisestiLainPiirissä) {
       oppijaLaajatTiedotService.getOppijaLaajatTiedotIlmanOikeustarkastusta(henkilö.oid)
         .map({
-          case Some(o) if o.onOikeusValvoaMaksuttomuutta => ValpasLöytyiHenkilöhakuResult(o, rajapäivätService)
+          case Some(o) if o.onOikeusValvoaMaksuttomuutta && !o.oppivelvollisuudestaVapautettu => ValpasLöytyiHenkilöhakuResult(o, rajapäivätService)
           // Henkilö, jonka tiedot löytyvät, mutta jolla maksuttomuus on päättynyt esim. toiselta asteelta
           // valmistumiseen, ei ole enää maksuttomuuden piirissä:
           case Some(o) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(o.henkilö.oid), o.henkilö.hetu)

@@ -5,7 +5,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema.Henkilö
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppijaLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot}
 import fi.oph.koski.valpas.oppija.OppijaHakutilanteillaLaajatTiedot
 
 trait ValpasHakukoosteService {
@@ -17,6 +17,7 @@ trait ValpasHakukoosteService {
 
   def fetchHautYhteystiedoilla(errorClue: String, oppijatJoilleHaetaanHakutiedot: Seq[Henkilö.Oid])(oppijat: Seq[ValpasOppijaLaajatTiedot]): Seq[OppijaHakutilanteillaLaajatTiedot] = {
     val oppijaOids = oppijat
+      .collect { case o: ValpasOppivelvollinenOppijaLaajatTiedot => o }
       .map(_.henkilö.oid)
       .filter(oppijatJoilleHaetaanHakutiedot.contains)
       .toSet

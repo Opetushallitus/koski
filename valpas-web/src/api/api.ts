@@ -14,6 +14,11 @@ import {
   UusiOppivelvollisuudenKeskeytys,
 } from "../state/apitypes/oppivelvollisuudenkeskeytys"
 import {
+  OppivelvollisuudestaVapautuksenMitätöinti,
+  OppivelvollisuudestaVapautuksenPohjatiedot,
+  UusiOppivelvollisuudestaVapautus,
+} from "../state/apitypes/oppivelvollisuudestavapautus"
+import {
   HetuhakuInput,
   KuntarouhinnanTulos,
   KuntarouhintaInput,
@@ -365,6 +370,28 @@ export const updateOppivelvollisuudenKeskeytys = (
 ) =>
   handleExpiredSession(
     apiPut<void>("valpas/api/oppija/ovkeskeytys", { body: keskeytys })
+  )
+
+/**
+ * Oppivelvollisuudesta vapauttamisen pohjatietojen haku
+ */
+export const fetchOvVapautuksenPohjatiedot = () =>
+  handleExpiredSession(
+    apiGet<OppivelvollisuudestaVapautuksenPohjatiedot>(
+      "valpas/api/vapautus/pohjatiedot"
+    )
+  )
+
+export const createOvVapautus = (vapautus: UusiOppivelvollisuudestaVapautus) =>
+  handleExpiredSession(
+    apiPost<null>("valpas/api/vapautus", { body: vapautus })
+  )
+
+export const deleteOvVapautus = (
+  vapautus: OppivelvollisuudestaVapautuksenMitätöinti
+) =>
+  handleExpiredSession(
+    apiDelete<null>("valpas/api/vapautus", { body: vapautus })
   )
 
 /**

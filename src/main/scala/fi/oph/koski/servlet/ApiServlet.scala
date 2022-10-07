@@ -11,6 +11,7 @@ import org.json4s.jackson.JsonMethods
 import org.scalatra._
 
 import scala.reflect.runtime.universe.{TypeRefApi, TypeTag}
+import scala.runtime.BoxedUnit
 
 trait ApiServlet extends BaseServlet with Logging with TimedServlet with ContentEncodingSupport with CacheControlSupport {
   def withJsonBody[T: TypeTag](block: JValue => T)(parseErrorHandler: HttpStatus => T = haltWithStatus(_)): T = {
@@ -20,13 +21,21 @@ trait ApiServlet extends BaseServlet with Logging with TimedServlet with Content
     }
   }
 
+  def renderWithJsonBody[T: TypeTag](fn: T => Either[HttpStatus, _]): Unit = {
+    withJsonBody({ body => renderEither(fn(JsonSerializer.extract[T](body))) })()
+  }
+
   def renderStatus(status: HttpStatus) = {
     response.setStatus(status.statusCode)
     renderObject(status.errors)
   }
 
   def renderObject[T: TypeTag](x: T): Unit = {
-    writeJson(toJsonString(x))
+    x match {
+      case _: Unit => response.setStatus(204)
+      case _: BoxedUnit => response.setStatus(204)
+      case _ => writeJson(toJsonString(x))
+    }
   }
 
   def toJsonString[T: TypeTag](x: T): String

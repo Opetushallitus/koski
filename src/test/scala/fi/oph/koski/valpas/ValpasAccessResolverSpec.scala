@@ -3,7 +3,7 @@ package fi.oph.koski.valpas
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusPerusopetusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasPäätasonSuoritus, ValpasToimipiste}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusPerusopetusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasOppivelvollinenOppijaLaajatTiedot, ValpasPäätasonSuoritus, ValpasToimipiste}
 import fi.oph.koski.valpas.oppija.{ValpasAccessResolver, ValpasErrorCategory}
 import fi.oph.koski.valpas.valpasuser.ValpasRooli
 
@@ -90,7 +90,7 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
     onOikeusValvoaMaksuttomuutta: Boolean = false,
     onOikeusValvoaKunnalla: Boolean = false
   ) =
-    ValpasOppijaLaajatTiedot(
+    ValpasOppivelvollinenOppijaLaajatTiedot(
       henkilö = henkilö,
       hakeutumisvalvovatOppilaitokset = hakeutumisvalvovatOppilaitokset,
       suorittamisvalvovatOppilaitokset = suorittamisvalvovatOppilaitokset,

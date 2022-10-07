@@ -17,7 +17,7 @@ export const eventually = async <T>(
       return await test()
     } catch (err) {
       error = err
-      await sleep(timeout / 10)
+      await sleep(10)
     }
   }
 }

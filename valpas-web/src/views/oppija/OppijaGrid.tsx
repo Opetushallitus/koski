@@ -17,6 +17,10 @@ import { isAktiivinenKuntailmoitus } from "../../state/apitypes/kuntailmoitus"
 import { OppijaHakutilanteillaLaajatTiedot } from "../../state/apitypes/oppija"
 import { OppivelvollisuudenKeskeytys } from "../../state/apitypes/oppivelvollisuudenkeskeytys"
 import {
+  onOppivelvollisuudestaVapautettu,
+  OppivelvollisuudestaVapautus,
+} from "../../state/apitypes/oppivelvollisuudestavapautus"
+import {
   Yhteystiedot,
   YhteystietojenAlkuperä,
 } from "../../state/apitypes/yhteystiedot"
@@ -70,15 +74,19 @@ type GridProps = {
   yhteystiedot: Yhteystiedot<YhteystietojenAlkuperä>[]
   hakutilanteet: HakuLaajatTiedot[]
   hakutilanneError?: string
+  oppivelvollisuudestaVapautus?: OppivelvollisuudestaVapautus
+  onOikeusMitätöidäOppivelvollisuudestaVapautus?: boolean
 }
 
 const Grid = (props: GridProps) => (
   <>
-    <Kuntailmoitus
-      aktiivisetKuntailmoitukset={props.kuntailmoitukset.filter(
-        isAktiivinenKuntailmoitus
-      )}
-    />
+    {!onOppivelvollisuudestaVapautettu(props.oppivelvollisuudestaVapautus) && (
+      <Kuntailmoitus
+        aktiivisetKuntailmoitukset={props.kuntailmoitukset.filter(
+          isAktiivinenKuntailmoitus
+        )}
+      />
+    )}
     <ColumnsContainer>
       <Column size={4}>
         <BorderlessCard id="oppivelvollisuustiedot">
@@ -97,57 +105,67 @@ const Grid = (props: GridProps) => (
                 props.oppivelvollisuudenKeskeytykset
               }
               onOikeusTehdäKuntailmoitus={props.onOikeusTehdäKuntailmoitus}
-            />
-          </CardBody>
-        </BorderlessCard>
-      </Column>
-      <Column size={8}>
-        <BorderlessCard id="yhteystiedot">
-          <CardHeader>
-            <T id="oppija__yhteystiedot_otsikko" />
-            <InfoTooltip content={t("oppija__yhteystiedot_tooltip")} />
-          </CardHeader>
-          <CardBody>
-            <OppijanYhteystiedot
-              henkilö={props.henkilö}
-              yhteystiedot={props.yhteystiedot}
-            />
-          </CardBody>
-        </BorderlessCard>
-      </Column>
-    </ColumnsContainer>
-    <ColumnsContainer>
-      <Column size={4}>
-        <BorderlessCard id="opiskeluhistoria">
-          <CardHeader>
-            <T id="oppija__opiskeluhistoria_otsikko" />
-          </CardHeader>
-          <CardBody>
-            <OppijanOpiskeluhistoria
-              henkilö={props.henkilö}
-              opiskeluoikeudet={props.opiskeluoikeudet}
-              kuntailmoitukset={props.kuntailmoitukset}
-              oppivelvollisuudenKeskeytykset={
-                props.oppivelvollisuudenKeskeytykset
+              onOikeusMitätöidäOppivelvollisuudestaVapautus={
+                props.onOikeusMitätöidäOppivelvollisuudestaVapautus
               }
+              oppivelvollisuudestaVapautus={props.oppivelvollisuudestaVapautus}
             />
           </CardBody>
         </BorderlessCard>
       </Column>
-      <Column size={8}>
-        <BorderlessCard id="haut">
-          <CardHeader>
-            <T id="oppija__haut_otsikko" />
-          </CardHeader>
-          <CardBody>
-            <OppijanHaut
-              hakutilanteet={props.hakutilanteet}
-              hakutilanneError={props.hakutilanneError}
-            />
-          </CardBody>
-        </BorderlessCard>
-      </Column>
+      {!onOppivelvollisuudestaVapautettu(
+        props.oppivelvollisuudestaVapautus
+      ) && (
+        <Column size={8}>
+          <BorderlessCard id="yhteystiedot">
+            <CardHeader>
+              <T id="oppija__yhteystiedot_otsikko" />
+              <InfoTooltip content={t("oppija__yhteystiedot_tooltip")} />
+            </CardHeader>
+            <CardBody>
+              <OppijanYhteystiedot
+                henkilö={props.henkilö}
+                yhteystiedot={props.yhteystiedot}
+              />
+            </CardBody>
+          </BorderlessCard>
+        </Column>
+      )}
     </ColumnsContainer>
+    {!onOppivelvollisuudestaVapautettu(props.oppivelvollisuudestaVapautus) && (
+      <ColumnsContainer>
+        <Column size={4}>
+          <BorderlessCard id="opiskeluhistoria">
+            <CardHeader>
+              <T id="oppija__opiskeluhistoria_otsikko" />
+            </CardHeader>
+            <CardBody>
+              <OppijanOpiskeluhistoria
+                henkilö={props.henkilö}
+                opiskeluoikeudet={props.opiskeluoikeudet}
+                kuntailmoitukset={props.kuntailmoitukset}
+                oppivelvollisuudenKeskeytykset={
+                  props.oppivelvollisuudenKeskeytykset
+                }
+              />
+            </CardBody>
+          </BorderlessCard>
+        </Column>
+        <Column size={8}>
+          <BorderlessCard id="haut">
+            <CardHeader>
+              <T id="oppija__haut_otsikko" />
+            </CardHeader>
+            <CardBody>
+              <OppijanHaut
+                hakutilanteet={props.hakutilanteet}
+                hakutilanneError={props.hakutilanneError}
+              />
+            </CardBody>
+          </BorderlessCard>
+        </Column>
+      </ColumnsContainer>
+    )}
   </>
 )
 

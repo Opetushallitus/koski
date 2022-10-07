@@ -89,7 +89,8 @@ object RaportointiDatabaseSchema {
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_koodisto_koodi CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.raportointikanta_status CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.muu_ammatillinen_raportointi CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.topks_ammatillinen_raportointi CASCADE"
+    sqlu"DROP TABLE IF EXISTS #${s.name}.topks_ammatillinen_raportointi CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_oppivelvollisuudesta_vapautus CASCADE"
   )
 
   val createRolesIfNotExists = DBIO.seq(
@@ -476,6 +477,13 @@ object RaportointiDatabaseSchema {
     def * = (name, count, lastUpdate, loadStarted, loadCompleted, dueTime) <> (RaportointikantaStatusRow.tupled, RaportointikantaStatusRow.unapply)
   }
   class RaportointikantaStatusTableTemp(tag: Tag) extends RaportointikantaStatusTable(tag, Temp)
+
+  class ROppivelvollisuudestaVapautusTable(tag: Tag, schema: Schema = Public) extends Table[ROppivelvollisuudestaVapautusRow](tag, schema.nameOpt, "r_oppivelvollisuudesta_vapautus") {
+    val oppijaOid = column[String]("oppija_oid", O.PrimaryKey)
+    val vapautettu = column[Timestamp]("vapautettu")
+    def * = (oppijaOid, vapautettu) <> (ROppivelvollisuudestaVapautusRow.tupled, ROppivelvollisuudestaVapautusRow.unapply)
+  }
+  class ROppivelvollisuudestaVapautusTableTemp(tag: Tag) extends ROppivelvollisuudestaVapautusTable(tag, Temp)
 }
 
 trait AikajaksoRow[A] {
@@ -777,6 +785,11 @@ case class RaportointikantaStatusRow(
   loadStarted: Option[Timestamp],
   loadCompleted: Option[Timestamp],
   dueTime: Option[Timestamp],
+)
+
+case class ROppivelvollisuudestaVapautusRow(
+  oppijaOid: String,
+  vapautettu: Timestamp,
 )
 
 case class MuuAmmatillinenOsasuoritusRaportointiRow(

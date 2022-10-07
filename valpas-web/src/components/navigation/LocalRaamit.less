@@ -21,6 +21,11 @@
   z-index: @z-index-raamit;
 }
 
+#resetMockData {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .localraamit {
   background: @color-blue-lighten-1;
   color: white;
@@ -65,69 +70,74 @@
     }
   }
 
-  .localraamit__testapibutton {
-    font-size: 1em;
-    background: @color-blue-lighten-1;
-    border-radius: 2px;
-    margin: 0 10px;
-    padding: 0 5px;
-    height: 20px;
-    font-weight: @font-weight-bold;
-    color: @color-black;
+  .localraamit__testapibutton,
+  .localraamit__logoutbutton {
+    font-size: 0.8em;
+    color: @color-blue;
+    background: @color-white;
+    border: 2px solid white;
+    border-radius: 6px;
     cursor: pointer;
     display: inline-block;
     text-align: center;
     border: none;
+
+    margin-left: 1rem;
+    padding: 0.2rem 0.5rem;
+
+    &:hover {
+      background: @color-blue-lighten-4;
+    }
+  }
+
+  .localraamit__logoutbutton {
+    margin-right: 20px;
   }
 
   .localraamit__testapistate {
-    color: @color-red-lighten-1;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .localraamit__input {
+    background: @color-blue-darken-1;
+    color: @color-white;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8em;
+    border: 1px solid @color-blue-darken-1;
+    border-radius: 0 6px 6px 0;
   }
 
   .localraamit__userinfo {
     float: right;
     line-height: 47px;
+
     .localraamit__username {
-      margin-right: 10px;
+      font-size: 0.8em;
+      margin-right: 20px;
     }
 
     .localraamit__languagebutton {
-      font-size: 1em;
-      background: @color-blue-lighten-1;
-      border-radius: 3px;
-      padding: 0 5px;
-      height: 40px;
-      font-weight: @font-weight-bold;
+      background: @color-blue-darken-1;
+      border-radius: 15px;
+      padding: 5px;
+      width: 30px;
+      height: 30px;
+      margin-right: 2px;
       color: white;
       cursor: pointer;
       display: inline-block;
       text-align: center;
       border: none;
+      font-size: 0.8em;
     }
 
     .localraamit__languagebutton.localraamit__currentlanguage {
-      background: @color-blue-lighten-2;
+      font-weight: @font-weight-bold;
+      background: @color-blue-lighten-1;
     }
 
     .localraamit__languagebutton:hover {
-      background: @color-blue-lighten-2;
-    }
-
-    .localraamit__logoutbutton {
-      font-size: 1em;
-      background: @color-blue-lighten-1;
-      border-radius: 3px;
-      padding: 0 20px;
-      height: 40px;
-      font-weight: @font-weight-bold;
-      color: white;
-      cursor: pointer;
-      display: inline-block;
-      text-align: center;
-      border: none;
-    }
-
-    .localraamit__logoutbutton:hover {
       background: @color-blue-lighten-2;
     }
   }
@@ -135,13 +145,18 @@
   .localraamit__fixture {
     margin-left: 1rem;
     padding: 0.2rem 0.5rem;
-    background: @color-white;
-    color: @color-blue;
-    border-radius: 3px;
-    font-size: 80%;
+    font-size: 0.8em;
+    color: @color-white;
+    border: 2px solid @color-white;
+    border-radius: 6px;
 
     .localraamit__fixturevalue {
       font-weight: 600;
+    }
+
+    &.localraamit__fixture--warning {
+      border-color: @color-red;
+      background-color: @color-red;
     }
   }
 }

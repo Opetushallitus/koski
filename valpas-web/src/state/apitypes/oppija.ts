@@ -11,6 +11,10 @@ import {
   OpiskeluoikeusSuppeatTiedot,
 } from "./opiskeluoikeus"
 import { OppivelvollisuudenKeskeytys } from "./oppivelvollisuudenkeskeytys"
+import {
+  onOppivelvollisuudestaVapautettu,
+  OppivelvollisuudestaVapautus,
+} from "./oppivelvollisuudestavapautus"
 import { Yhteystiedot, YhteystietojenAlkuperä } from "./yhteystiedot"
 
 export type OppijaHakutilanteillaLaajatTiedot = {
@@ -40,6 +44,7 @@ export type OppijaLaajatTiedot = {
   oppivelvollisuusVoimassaAsti: ISODate
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: ISODate
   hakeutumisvalvovatOppilaitokset: Oid[]
+  oppivelvollisuudestaVapautus?: OppivelvollisuudestaVapautus
 }
 
 export type OppijaSuppeatTiedot = {
@@ -69,3 +74,8 @@ export type OppijaKuntailmoituksillaSuppeatTiedot = {
   oppija: OppijaSuppeatTiedot
   kuntailmoitukset: LuotuKuntailmoitusSuppeatTiedot[]
 }
+
+export const oppijaOnOppivelvollisuudestaVapautettu = (
+  oppija: OppijaLaajatTiedot
+): boolean =>
+  onOppivelvollisuudestaVapautettu(oppija.oppivelvollisuudestaVapautus)

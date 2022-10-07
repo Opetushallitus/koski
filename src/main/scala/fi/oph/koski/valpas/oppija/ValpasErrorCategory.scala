@@ -14,6 +14,7 @@ object ValpasErrorCategory {
       val jsonSchema = subcategory("jsonSchema", "JSON-schema -validointi epäonnistui. Paluuviestin sisällä virheilmoitukset JSON-muodossa.")
       val epävalidiUuid = subcategory("epävalidiUuid", "UUID ei ollut validi")
       val virheellinenPäivämäärä = subcategory("virheellinenPäivämäärä", "Virheellinen päivämäärä")
+      val oppivelvollisuudenKeskeytyksenKohde = subcategory("oppivelvollisuudenKeskeytyksenKohde", "Oppivelvollisuuden keskeytyksen kohteen validointi epäonnistui.")
     }
 
     val validation = new Validation
@@ -33,6 +34,7 @@ object ValpasErrorCategory {
     val oppijaaEiLöydyTaiEiOikeuksia = subcategory("oppijaaEiLöydyTaiEiOikeuksia", "Oppijaa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
     val oppijaEiOppivelvollisuuslainPiirissä = subcategory("oppijaaEiLöydy", "Oppijaa ei löydy, koska hän ei ole oppivelvollisuuslain piirissä.")
     val oppijaaEiLöydyOpintopolusta = subcategory("oppijaaEiLöydyOpintopolusta", "Oppijaa ei löydy Opintopolusta.")
+    val vapautustaEiLöydy = subcategory("vapautustaEiLöydy", "Annetun kunnan tekemää oppivelvollisuudesta vapautusta oppijalle ei löydy")
   }
 
   object internalError extends ErrorCategory("internalError", 500, "Palvelinvirhe")

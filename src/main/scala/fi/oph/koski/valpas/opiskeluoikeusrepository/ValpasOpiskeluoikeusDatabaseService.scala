@@ -4,11 +4,13 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DatabaseConverters, SQLHelpers}
 import fi.oph.koski.log.Logging
-import org.json4s.JValue
+import fi.oph.koski.util.DateOrdering.localDateOrdering
+import org.json4s.{JArray, JNull, JValue}
 import slick.jdbc.GetResult
-import java.time.LocalDate
 
+import java.time.LocalDate
 import fi.oph.koski.util.Timing
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.OppivelvollisuudestaVapautus
 
 import scala.concurrent.duration.DurationInt
 
@@ -27,8 +29,11 @@ case class ValpasOppijaRow(
   oppivelvollisuusVoimassaAsti: LocalDate,
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
   onOikeusValvoaMaksuttomuutta: Boolean,
-  onOikeusValvoaKunnalla: Boolean
-)
+  onOikeusValvoaKunnalla: Boolean,
+  oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus],
+) {
+  def vapautettuOppivelvollisuudesta: Boolean = oppivelvollisuudestaVapautus.exists(!_.tulevaisuudessa)
+}
 
 case class ValpasOppivelvollisuustiedotRow(
   oppijaOid: String,
@@ -46,15 +51,32 @@ object HakeutumisvalvontaTieto extends Enumeration {
 class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends DatabaseConverters with Logging with Timing {
   private val db = application.raportointiDatabase
   private val rajapäivätService = application.valpasRajapäivätService
+  private val oppijanPoistoService = application.valpasOppivelvollisuudestaVapautusService
 
-  def getOppija(oppijaOid: String, rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Option[ValpasOppijaRow] =
-    queryOppijat(List(oppijaOid), None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki).headOption
+  def getOppija(
+    oppijaOid: String,
+    rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean,
+    haeMyösOppivelvollisuudestaVapautettu: Boolean,
+  ): Option[ValpasOppijaRow] = {
+    val oppija = queryOppijat(List(oppijaOid), None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki).headOption
+    if (haeMyösOppivelvollisuudestaVapautettu || !oppija.exists(_.vapautettuOppivelvollisuudesta)) oppija else None
+  }
 
-  def getOppijat(oppijaOids: Seq[String], rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true): Seq[ValpasOppijaRow] =
-    if (oppijaOids.nonEmpty) queryOppijat(oppijaOids, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki) else Seq.empty
+  def getOppijat(
+    oppijaOids: Seq[String],
+    rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean,
+    haeMyösOppivelvollisuudestaVapautetut: Boolean,
+  ): Seq[ValpasOppijaRow] =
+    if (oppijaOids.nonEmpty) {
+      val kaikkiOppijat = queryOppijat(oppijaOids, None, rajaaOVKelpoisiinOpiskeluoikeuksiin, HakeutumisvalvontaTieto.Kaikki)
+      if (haeMyösOppivelvollisuudestaVapautetut) kaikkiOppijat else kaikkiOppijat.filterNot(_.vapautettuOppivelvollisuudesta)
+    } else {
+      Seq.empty
+    }
 
   def getOppijatByOppilaitos(oppilaitosOid: String, hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value): Seq[ValpasOppijaRow] =
     queryOppijat(Seq.empty, Some(Seq(oppilaitosOid)), true, hakeutumisvalvontaTieto)
+      .filterNot(_.vapautettuOppivelvollisuudesta)
 
   private implicit def getResult: GetResult[ValpasOppijaRow] = GetResult(r => {
     ValpasOppijaRow(
@@ -72,7 +94,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       oppivelvollisuusVoimassaAsti = r.getLocalDate("oppivelvollisuusVoimassaAsti"),
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = r.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti"),
       onOikeusValvoaMaksuttomuutta = r.rs.getBoolean("onOikeusValvoaMaksuttomuutta"),
-      onOikeusValvoaKunnalla = r.rs.getBoolean("onOikeusValvoaKunnalla")
+      onOikeusValvoaKunnalla = r.rs.getBoolean("onOikeusValvoaKunnalla"),
+      oppivelvollisuudestaVapautus = None,
     )
   })
 
@@ -106,7 +129,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
 
     val nonEmptyOppijaOids = if (oppijaOids.nonEmpty) Some(oppijaOids) else None
 
-    timed(timedBlockname, 10) {
+    val result = timed(timedBlockname, 10) {
       db.runDbSync(timeout = 3.minutes, a = SQLHelpers.concatMany(
         Some(
           sql"""
@@ -1319,6 +1342,26 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     oppija.etunimet
     """)).as[ValpasOppijaRow])
     }
+
+    oppijanPoistoService.mapVapautetutOppijat(result, (r: ValpasOppijaRow) => r.kaikkiOppijaOidit) {
+      case (oppija, vapautus) => {
+        oppija.copy(
+          oppivelvollisuusVoimassaAsti = if (vapautus.mitätöitymässä) {
+            oppija.oppivelvollisuusVoimassaAsti
+          } else {
+            Seq(oppija.oppivelvollisuusVoimassaAsti, vapautus.oppivelvollisuusVoimassaAsti).min
+          },
+          oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = if (vapautus.mitätöitymässä) {
+            oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+          } else {
+            Seq(oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti, vapautus.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti).min
+          },
+          oppivelvollisuudestaVapautus = Some(vapautus),
+          onOikeusValvoaKunnalla = true,
+          onOikeusValvoaMaksuttomuutta = true,
+        )
+      }
+    }
   }
 
   def getOppivelvollisuusTiedot(hetut: Seq[String]): Seq[ValpasOppivelvollisuustiedotRow] = {
@@ -1333,7 +1376,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       )
     })
 
-    db.runDbSync(SQLHelpers.concatMany(
+    val result = db.runDbSync(SQLHelpers.concatMany(
       Some(
         sql"""
   WITH
@@ -1372,6 +1415,21 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         """
       )
     ).as[ValpasOppivelvollisuustiedotRow])
+
+    oppijanPoistoService.mapVapautetutOppijat(result, (r: ValpasOppivelvollisuustiedotRow) => r.kaikkiOppijaOidit) {
+      case (oppija, vapautus) => oppija.copy(
+        oppivelvollisuusVoimassaAsti = if (vapautus.mitätöitymässä) {
+          oppija.oppivelvollisuusVoimassaAsti
+        } else {
+          Seq(oppija.oppivelvollisuusVoimassaAsti, vapautus.oppivelvollisuusVoimassaAsti).min
+        },
+        oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = if (vapautus.mitätöitymässä) {
+          oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+        } else {
+          Seq(oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti, vapautus.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti).min
+        },
+      )
+    }
   }
 
   def haeOppijatHetuilla(hetut: Seq[String]): Seq[HetuMasterOid] = {

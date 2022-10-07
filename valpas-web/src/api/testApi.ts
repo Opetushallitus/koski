@@ -28,3 +28,6 @@ export const clearMockData = () =>
 
 export const getMockStatus = () =>
   apiGet<FixtureState>("valpas/test/current-mock-status")
+
+export const loadRaportointikanta = () =>
+  apiGet<{}>("valpas/test/load-raportointikanta")
