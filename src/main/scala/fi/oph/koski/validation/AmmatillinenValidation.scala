@@ -25,8 +25,8 @@ object AmmatillinenValidation {
 
   private def validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen: AmmatillinenOpiskeluoikeus) = {
     val isValid = ammatillinen.suoritukset.forall {
-      case a: AmmatillisenTutkinnonSuoritus if (a.keskiarvo.isDefined) => a.valmis | (katsotaanEronneeksi(ammatillinen) & tutkinnonOsaOlemassa(a))
-      case b: AmmatillisenTutkinnonOsittainenSuoritus if (b.keskiarvo.isDefined) => b.valmis | (katsotaanEronneeksi(ammatillinen) & tutkinnonOsaOlemassa(b))
+      case a: AmmatillisenTutkinnonSuoritus if (a.keskiarvo.isDefined) => a.valmis || (katsotaanEronneeksi(ammatillinen) & tutkinnonOsaOlemassa(a))
+      case b: AmmatillisenTutkinnonOsittainenSuoritus if (b.keskiarvo.isDefined) => b.valmis || (katsotaanEronneeksi(ammatillinen) & tutkinnonOsaOlemassa(b))
       case _ => true
     }
     if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle()
@@ -37,11 +37,11 @@ object AmmatillinenValidation {
   private def tutkinnonOsaOlemassa(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = if (a.osasuoritukset.isDefined) a.osasuoritukset.get.exists(os => os.valmis) else false
 
   private def validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen: AmmatillinenOpiskeluoikeus, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository) = {
-    val kuoriopiskeluoikeus = koskiOpiskeluoikeudet.isKuoriOpiskeluoikeus(ammatillinen)
+    lazy val kuoriopiskeluoikeus = koskiOpiskeluoikeudet.isKuoriOpiskeluoikeus(ammatillinen)
 
     val isValid = ammatillinen.suoritukset.forall {
-      case a: AmmatillisenTutkinnonSuoritus if (valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(a)) => a.keskiarvo.isDefined | kuoriopiskeluoikeus
-      case b: AmmatillisenTutkinnonOsittainenSuoritus if (valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(b)) => b.keskiarvo.isDefined | kuoriopiskeluoikeus
+      case a: AmmatillisenTutkinnonSuoritus if (valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(a)) => a.keskiarvo.isDefined || kuoriopiskeluoikeus
+      case b: AmmatillisenTutkinnonOsittainenSuoritus if (valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(b)) => b.keskiarvo.isDefined || kuoriopiskeluoikeus
       case _ => true
     }
     if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo()
