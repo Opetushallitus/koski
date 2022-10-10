@@ -48,9 +48,9 @@ object AmmatillinenValidation {
   }
 
   private def valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = {
-    a.koulutusmoduuli.koulutustyyppi.contains(Koulutustyyppi.ammatillinenPerustutkinto) &
-      a.valmis &
-      a.vahvistus.exists(it => it.päivä.isAfter(LocalDate.of(2018, 1, 15))) &
+    a.koulutusmoduuli.koulutustyyppi.contains(Koulutustyyppi.ammatillinenPerustutkinto) &&
+      a.valmis &&
+      a.vahvistus.exists(it => it.päivä.isAfter(LocalDate.of(2018, 1, 15))) &&
       List("ops", "reformi").contains(a.suoritustapa.koodiarvo)
   }
 
