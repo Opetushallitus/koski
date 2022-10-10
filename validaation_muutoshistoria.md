@@ -1,6 +1,9 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 7.10.2022
+- Ammatillisen suorituksen voi tallentaa valmis-tilaisena ilman keskiarvoa mikäli kyseessä on linkitetty opiskeluoikeus.
+
 ## 5.10.2022
 - Validaatioissa tarkastetaan, että opiskeluoikeuden päättymispäivä osuu perusteen voimassaoloaikaan,
   tai viimeistään perusteen siirtymäaikaan. Tämä validaatio oli aiemmin toteutettu vain ammatillisen

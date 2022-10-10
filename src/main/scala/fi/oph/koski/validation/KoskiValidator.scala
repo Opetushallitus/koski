@@ -123,7 +123,7 @@ class KoskiValidator(
                 TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
                 SuostumuksenPeruutusValidaatiot.validateSuostumuksenPeruutus(opiskeluoikeus, suostumuksenPeruutusService),
                 Lukio2015Validation.validateOppimääräSuoritettu(opiskeluoikeus),
-                AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus),
+                AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, koskiOpiskeluoikeudet),
                 ePerusteetValidator.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus),
                 VSTKotoutumiskoulutus2022Validation.validate(opiskeluoikeus),
                 VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus)
@@ -1028,8 +1028,8 @@ class KoskiValidator(
   private def validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = {
     if (osasuorituksetKunnossa(suoritus, opiskeluoikeus) || ostettuOpiskeluoikeusValmisEnnenVuotta2019(opiskeluoikeus)) {
       HttpStatus.ok
-    } else if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
-      validateLinkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, suoritus)
+    } else if (koskiOpiskeluoikeudet.isKuoriOpiskeluoikeus(opiskeluoikeus)) {
+      HttpStatus.ok
     } else {
       valmiiksiMerkitylläEiOsasuorituksia(suoritus)
     }
@@ -1083,15 +1083,6 @@ class KoskiValidator(
     case a: AmmatillinenOpiskeluoikeus => a.ostettu && a.päättymispäivä.exists(_.isBefore(LocalDate.of(2019, 1, 1)))
     case _ => false
   }
-
-  private def validateLinkitysTehty(opiskeluoikeusOid: String, oppilaitosOid: Organisaatio.Oid, suoritus: PäätasonSuoritus): HttpStatus =
-    koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid)(KoskiSpecificSession.systemUser).map { oppijaOids =>
-      if (linkitysTehty(opiskeluoikeusOid, oppilaitosOid, oppijaOids)) {
-        HttpStatus.ok
-      } else {
-        valmiiksiMerkitylläEiOsasuorituksia(suoritus)
-      }
-    }.merge
 
   private def valmiiksiMerkitylläEiOsasuorituksia(suoritus: PäätasonSuoritus) = suoritus match {
     case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
@@ -1422,24 +1413,16 @@ class KoskiValidator(
 
     suoritus match {
       case s: AmmatillisenTutkinnonSuoritus if s.koulutusmoduuli.koulutustyyppi.contains(ammatillinenPerustutkinto) =>
+        // Jätetään validaation tulokset huomioimatta, jos kyseessä kuoriopiskeluoikeus eli linkitetty opiskeluoikeus.
+        // Tämä tutkiminen tehdään vasta validaatioiden jälkeen, koska linkitysten tutkiminen aiheuttaa ylimääräisiä
+        // tietokantakyselyitä.
         val validaationTulos = yhteistenValidaatiot(s)
-
         if (validaationTulos.isOk) {
           validaationTulos
+        } else if (koskiOpiskeluoikeudet.isKuoriOpiskeluoikeus(opiskeluoikeus)) {
+          HttpStatus.ok
         } else {
-          // Jätetään validaation tulokset huomioimatta, jos kyseessä kuoriopiskeluoikeus eli linkitetty opiskeluoikeus.
-          // Tämä tutkiminen tehdään vasta validaatioiden jälkeen, koska linkitysten tutkiminen aiheuttaa ylimääräisiä
-          // tietokantakyselyitä.
-          if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
-            val oids = koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(opiskeluoikeus.oid.get)(KoskiSpecificSession.systemUser).right.getOrElse(List())
-            if (linkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, oids)) {
-              HttpStatus.ok
-            } else {
-              validaationTulos
-            }
-          } else {
-            validaationTulos
-          }
+          validaationTulos
         }
       case _ => HttpStatus.ok
     }

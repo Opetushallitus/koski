@@ -157,6 +157,18 @@ class PostgresOpiskeluoikeusRepository(
     runDbSync(KoskiTables.OpiskeluOikeudet.filter(rivi => rivi.oid === oid && rivi.suoritusjakoTehty === true).result).nonEmpty
   }
 
+  override def isKuoriOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean = {
+    if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
+      val ooid = opiskeluoikeus.oid.get
+      val oppijaOids = getOppijaOidsForOpiskeluoikeus(ooid)(KoskiSpecificSession.systemUser).right.getOrElse(List())
+
+      findByOppijaOids(oppijaOids)(KoskiSpecificSession.systemUser)
+        .exists(_.sisältyyOpiskeluoikeuteen.exists(_.oid == ooid))
+    } else {
+      false
+    }
+  }
+
   private def findByOppijaOidsAction(oids: List[String])(implicit user: KoskiSpecificSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] = {
     OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid inSetBind oids).result
   }
