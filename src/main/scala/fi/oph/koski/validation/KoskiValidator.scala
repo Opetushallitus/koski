@@ -1084,15 +1084,6 @@ class KoskiValidator(
     case _ => false
   }
 
-  private def validateLinkitysTehty(opiskeluoikeusOid: String, oppilaitosOid: Organisaatio.Oid, suoritus: PäätasonSuoritus): HttpStatus =
-    koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid)(KoskiSpecificSession.systemUser).map { oppijaOids =>
-      if (linkitysTehty(opiskeluoikeusOid, oppilaitosOid, oppijaOids)) {
-        HttpStatus.ok
-      } else {
-        valmiiksiMerkitylläEiOsasuorituksia(suoritus)
-      }
-    }.merge
-
   private def valmiiksiMerkitylläEiOsasuorituksia(suoritus: PäätasonSuoritus) = suoritus match {
     case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys")
