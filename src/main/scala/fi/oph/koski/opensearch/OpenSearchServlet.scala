@@ -1,4 +1,4 @@
-package fi.oph.koski.elasticsearch
+package fi.oph.koski.opensearch
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import org.scalatra._
 
-class ElasticSearchServlet(implicit val application: KoskiApplication)
+class OpenSearchServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
     with RequiresVirkailijaOrPalvelukäyttäjä
     with NoCache
@@ -16,7 +16,7 @@ class ElasticSearchServlet(implicit val application: KoskiApplication)
   private def withNamedIndex[T](operation: IndexManager => Option[T])(renderer: T => Unit): Unit = {
     operation(application.indexManager) match {
       case Some(result) => renderer(result)
-      case None => haltWithStatus(KoskiErrorCategory.notFound("Elasticsearch index not found"))
+      case None => haltWithStatus(KoskiErrorCategory.notFound("OpenSearch index not found"))
     }
   }
 

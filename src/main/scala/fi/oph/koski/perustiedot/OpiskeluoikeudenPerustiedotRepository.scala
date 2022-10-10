@@ -1,7 +1,7 @@
 package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
-import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.opensearch.OpenSearch
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.extract
@@ -28,7 +28,7 @@ class OpiskeluoikeudenPerustiedotRepository(
         case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) => OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
       })
     } else {
-      // Other queries got to ElasticSearch
+      // Other queries go to OpenSearch
       findFromIndex(filters, sorting, pagination)
     }
   }
@@ -41,7 +41,7 @@ class OpiskeluoikeudenPerustiedotRepository(
     def luokka(order: String) = Map("luokka.keyword" -> order) :: nimi(order)
     def alkamispäivä(order: String) = Map("alkamispäivä" -> order):: nimi(order)
     def päättymispäivä(order: String) = Map("päättymispäivä" -> order):: nimi(order)
-    val elasticSort = sorting match {
+    val openSearchSort = sorting match {
       case Ascending("nimi") => nimi("asc")
       case Ascending("luokka") => luokka("asc")
       case Ascending("alkamispäivä") => alkamispäivä("asc")
@@ -57,20 +57,20 @@ class OpiskeluoikeudenPerustiedotRepository(
       case SuorituksenTyyppi(tyyppi) => List(Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case Tutkintohaku(hakusana) =>
         indexer.index.analyze(hakusana).map { namePrefix =>
-          ElasticSearch.anyFilter(List(
+          OpenSearch.anyFilter(List(
             Map("prefix" -> Map(s"suoritukset.koulutusmoduuli.tunniste.nimi.${session.lang}" -> namePrefix)),
             Map("prefix" -> Map(s"suoritukset.osaamisala.nimi.${session.lang}" -> namePrefix)),
             Map("prefix" -> Map(s"suoritukset.tutkintonimike.nimi.${session.lang}" -> namePrefix))
           ))
         }
       case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(
-        ElasticSearch.anyFilter(toimipisteet.map{ toimipiste =>
+        OpenSearch.anyFilter(toimipisteet.map{ toimipiste =>
           Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid))
         })
       )
       case OpiskeluoikeusQueryFilter.VarhaiskasvatuksenToimipiste(toimipisteet) => List(
-        ElasticSearch.anyFilter(toimipisteet.map{ toimipiste =>
-          ElasticSearch.allFilter(List(
+        OpenSearch.anyFilter(toimipisteet.map{ toimipiste =>
+          OpenSearch.allFilter(List(
             Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid)),
             Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> "esiopetuksensuoritus"))
           ))
@@ -81,10 +81,10 @@ class OpiskeluoikeudenPerustiedotRepository(
 
     val suoritusFilter = suoritusFilters match {
       case Nil => Nil
-      case filters => List(ElasticSearch.nestedFilter("suoritukset", ElasticSearch.allFilter(filters)))
+      case filters => List(OpenSearch.nestedFilter("suoritukset", OpenSearch.allFilter(filters)))
     }
 
-    val elasticFilters: List[Map[String, Any]] = filters.flatMap {
+    val openSearchFilters: List[Map[String, Any]] = filters.flatMap {
       case Nimihaku(hakusana) => nameFilter(hakusana)
       case Luokkahaku(hakusana) => hakusana.trim.split(" ").toList.map(_.toLowerCase).map { prefix =>
         Map("prefix" -> Map("luokka.keyword" -> prefix))
@@ -92,13 +92,13 @@ class OpiskeluoikeudenPerustiedotRepository(
       case OpiskeluoikeudenTyyppi(tyyppi) => List(Map("term" -> Map("tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case OpiskeluoikeudenTila(tila) =>
         List(
-          ElasticSearch.nestedFilter("tilat",
-            ElasticSearch.allFilter(List(
+          OpenSearch.nestedFilter("tilat",
+            OpenSearch.allFilter(List(
               Map("term" -> Map("tilat.tila.koodiarvo" -> tila.koodiarvo)),
               Map("range" -> Map("tilat.alku" -> Map("lte" -> "now/d", "format" -> "yyyy-MM-dd"))),
-              ElasticSearch.anyFilter(List(
+              OpenSearch.anyFilter(List(
                 Map("range" -> Map("tilat.loppu" -> Map("gte" -> "now/d", "format" -> "yyyy-MM-dd"))),
-                ElasticSearch.noneFilter(List(
+                OpenSearch.noneFilter(List(
                   Map(
                     "exists" -> Map(
                       "field" -> "tilat.loppu"
@@ -122,14 +122,14 @@ class OpiskeluoikeudenPerustiedotRepository(
       case _ => Nil
     } ++ oppilaitosFilter(session) ++ suoritusFilter ++ mitätöityFilter
 
-    val elasticQuery = elasticFilters match {
+    val openSearchQuery = openSearchFilters match {
       case Nil => Map.empty
-      case _ => ElasticSearch.allFilter(elasticFilters)
+      case _ => OpenSearch.allFilter(openSearchFilters)
     }
 
-    val doc = toJValue(ElasticSearch.applyPagination(Some(pagination), Map(
-      "query" -> elasticQuery,
-      "sort" -> elasticSort,
+    val doc = toJValue(OpenSearch.applyPagination(Some(pagination), Map(
+      "query" -> openSearchQuery,
+      "sort" -> openSearchSort,
       "track_total_hits" -> true
     )))
 
@@ -177,7 +177,7 @@ class OpiskeluoikeudenPerustiedotRepository(
     val filters = nameFilter(hakusana) ++ oppilaitosFilter(session) ++ mitätöityFilter
     val doc = toJValue(Map(
       "_source" -> "henkilö.oid",
-      "query" -> ElasticSearch.allFilter(filters),
+      "query" -> OpenSearch.allFilter(filters),
       "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))
     ))
 
@@ -191,10 +191,10 @@ class OpiskeluoikeudenPerustiedotRepository(
       Nil
     } else {
       val varhaiskasvatusOikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = session.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
-      List(ElasticSearch.anyFilter(List(
+      List(OpenSearch.anyFilter(List(
         Map("terms" -> Map("sisältyyOpiskeluoikeuteen.oppilaitos.oid" -> session.organisationOids(AccessType.read))),
         Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read))),
-        ElasticSearch.allFilter(List(
+        OpenSearch.allFilter(List(
           Map("terms" -> Map("oppilaitos.oid" -> varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid))),
           Map("terms" -> Map("koulutustoimija.oid" -> varhaiskasvatusOikeudet.map(_.koulutustoimija.oid)))
         ))
@@ -209,8 +209,8 @@ class OpiskeluoikeudenPerustiedotRepository(
   }
 
   private def mitätöityFilter: List[Map[String, Any]] = List(
-    ElasticSearch.noneFilter(List(
-      ElasticSearch.nestedFilter("tilat", ElasticSearch.allFilter(List(
+    OpenSearch.noneFilter(List(
+      OpenSearch.nestedFilter("tilat", OpenSearch.allFilter(List(
         Map("term" -> Map("tilat.tila.koodiarvo" -> "mitatoity"))
       )))
     ))
@@ -218,7 +218,7 @@ class OpiskeluoikeudenPerustiedotRepository(
 
   private def nameFilter(hakusana: String) =
     indexer.index.analyze(hakusana).map { namePrefix =>
-      ElasticSearch.anyFilter(List(
+      OpenSearch.anyFilter(List(
         Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
         Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
       ))

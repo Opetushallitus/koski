@@ -28,7 +28,7 @@ runs:
         restore-keys: |
           ${{ runner.os }}-node-
 
-    - name: Configure sysctl limits for Elasticsearch
+    - name: Configure sysctl limits for OpenSearch
       run: |
         sudo swapoff -a
         sudo sysctl -w vm.swappiness=1
@@ -36,6 +36,6 @@ runs:
         sudo sysctl -w vm.max_map_count=262144
       shell: bash
 
-    - name: Start Postgres and ES containers
+    - name: Start Postgres and OS containers
       run: docker-compose up -d
       shell: bash

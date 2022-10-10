@@ -1,4 +1,4 @@
-package fi.oph.koski.elasticsearch
+package fi.oph.koski.opensearch
 
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
@@ -12,16 +12,16 @@ import org.json4s.jackson.JsonMethods
 
 import scala.concurrent.duration.DurationInt
 
-class ElasticSearchIndex(
-  val name: String,
-  private val elastic: ElasticSearch,
-  private val mapping: Map[String, Any],
-  private val mappingVersion: Int,
-  private val settings: Map[String, Any],
-  private val initialLoader: () => Unit
+class OpenSearchIndex(
+                          val name: String,
+                          private val openSearch: OpenSearch,
+                          private val mapping: Map[String, Any],
+                          private val mappingVersion: Int,
+                          private val settings: Map[String, Any],
+                          private val initialLoader: () => Unit
 ) extends Logging {
 
-  private def http: Http = elastic.http
+  private def http: Http = openSearch.http
 
   private val currentIndexName: String = versionedIndexName(mappingVersion)
 
@@ -31,7 +31,7 @@ class ElasticSearchIndex(
 
   lazy val init: Unit = {
     if (indexExists(currentIndexName)) {
-      logger.info(s"ElasticSearch index $name exists")
+      logger.info(s"OpenSearch index $name exists")
       if (settingsChanged()) {
         throw new IllegalArgumentException(s"Index $name settings changed but mapping version not updated")
         // Mapping version should be bumped when settings are changed so that we know to reindex
@@ -88,7 +88,7 @@ class ElasticSearchIndex(
     Http.runIO(http.head(uri"/$indexName", timeout = 5.seconds)(Http.statusCode)) match {
       case 200 => true
       case 404 => false
-      case statusCode: Int => throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
+      case statusCode: Int => throw new RuntimeException("Unexpected status code from opensearch: " + statusCode)
     }
   }
 
@@ -96,7 +96,7 @@ class ElasticSearchIndex(
     Http.runIO(http.head(uri"/_alias/$aliasName")(Http.statusCode)) match {
       case 200 => true
       case 404 => false
-      case statusCode: Int => throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
+      case statusCode: Int => throw new RuntimeException("Unexpected status code from opensearch: " + statusCode)
     }
   }
 
@@ -115,17 +115,17 @@ class ElasticSearchIndex(
     val mergedSettings = serverSettings.merge(toJValue(settings))
     val alreadyApplied = mergedSettings == serverSettings
     if (alreadyApplied) {
-      logger.info(s"Elasticsearch index $name settings are up to date")
+      logger.info(s"OpenSearch index $name settings are up to date")
       false
     } else {
-      logger.info(s"Elasticsearch index $name settings need updating")
+      logger.info(s"OpenSearch index $name settings need updating")
       true
     }
   }
 
   def createIndex(version: Int): String = {
     val indexName = versionedIndexName(version)
-    logger.info(s"Creating Elasticsearch index $indexName")
+    logger.info(s"Creating OpenSearch index $indexName")
     Http.runIO(http.put(uri"/$indexName", toJValue(Map(
       "settings" -> settings,
       "mappings" -> mapping

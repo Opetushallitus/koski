@@ -55,7 +55,7 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
       verifyResponseStatusOk()
     }
-    tiedonsiirtoService.syncToElasticsearch(refresh = true)
+    tiedonsiirtoService.syncToOpenSearch(refresh = true)
     authGet("api/tiedonsiirrot/yhteenveto", user = MockUsers.helsinginKaupunkiPalvelukäyttäjä) {
       verifyResponseStatusOk()
       val yhteenveto = JsonSerializer.parse[List[TiedonsiirtoYhteenveto]](body)
@@ -268,7 +268,7 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   }
 
   private def getTiedonsiirrot(user: UserWithPassword, url: String = "api/tiedonsiirrot"): List[HenkilönTiedonsiirrot] = {
-    tiedonsiirtoService.syncToElasticsearch(refresh = true)
+    tiedonsiirtoService.syncToOpenSearch(refresh = true)
     authGet(url, user) {
       verifyResponseStatusOk()
       readPaginatedResponse[Tiedonsiirrot].henkilöt

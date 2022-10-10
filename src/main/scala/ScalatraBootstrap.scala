@@ -2,7 +2,7 @@ import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.{Environment, KoskiApplication, RunMode}
 import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
-import fi.oph.koski.elasticsearch.ElasticSearchServlet
+import fi.oph.koski.opensearch.OpenSearchServlet
 import fi.oph.koski.etk.ElaketurvakeskusServlet
 import fi.oph.koski.fixture.FixtureServlet
 import fi.oph.koski.frontendvalvonta.{FrontendValvontaMode, FrontendValvontaRaportointiServlet}
@@ -91,7 +91,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/koski/api/editor", new EditorServlet)
     mount("/koski/api/editor/koodit", new EditorKooditServlet)
     mount("/koski/api/elaketurvakeskus", new ElaketurvakeskusServlet)
-    mount("/koski/api/elasticsearch", new ElasticSearchServlet)
+    mount("/koski/api/opensearch", new OpenSearchServlet)
     mount("/koski/api/healthcheck", new HealthCheckApiServlet)
     mount("/koski/api/status", new StatusApiServlet)
     mount("/koski/api/henkilo", new HenkilötiedotServlet)

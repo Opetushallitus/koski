@@ -31,6 +31,8 @@ scripts/site.retry
 elastic-data
 /elasticsearch/data
 /elasticsearch/log
+/opensearch/data
+/opensearch/log
 !/src/main/resources/reference.conf
 fact_cache
 scripts/deploy.retry

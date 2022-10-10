@@ -56,7 +56,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
       throw new RuntimeException(s"Trying to use fixtures against a database with more than ${application.masterDatabase.smallDatabaseMaxRows} rows")
     }
     if (useFixtures && application.perustiedotIndexer.indexIsLarge) {
-      throw new RuntimeException(s"Trying to use fixtures against an ElasticSearch index with more than ${application.perustiedotIndexer.SmallIndexMaxRows} rows")
+      throw new RuntimeException(s"Trying to use fixtures against an OpenSearch index with more than ${application.perustiedotIndexer.SmallIndexMaxRows} rows")
     }
     useFixtures
   }

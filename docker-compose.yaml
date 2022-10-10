@@ -13,14 +13,16 @@ services:
     volumes:
     - "./postgresql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
 
-  elasticsearch:
-    build: "./elasticsearch"
+  opensearch:
+    build: "./opensearch"
     environment:
-    - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    - "OPENSEARCH_JAVA_OPTS=-Xms256m -Xmx256m"
+    - "discovery.type=single-node"
+    - "plugins.security.disabled=true"
     ports:
     - "9200:9200"
     volumes:
-    - "./elasticsearch/elasticsearch-docker.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
+    - "./opensearch/opensearch-docker.yml:/usr/share/opensearch/config/opensearch.yml:ro"
 
   dynamodb:
     image: "amazon/dynamodb-local"
