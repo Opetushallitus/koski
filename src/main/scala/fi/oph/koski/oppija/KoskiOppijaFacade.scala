@@ -286,6 +286,8 @@ class KoskiOppijaFacade(
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(now, mitätöity)))
       case t: KorkeakoulunOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
       case t: YlioppilastutkinnonOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
+      case t: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila =>
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(now, mitätöity)))
     }).map(oo.withTila)
   }
 

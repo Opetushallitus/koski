@@ -2,6 +2,7 @@ const kaikkiOrganisaatiot = [
   'Aalto-yliopisto',
   'Aapajoen koulu',
   'Helsingin Saksalainen koulu',
+  'Helsingin eurooppalainen koulu',
   'Helsingin medialukio',
   'Helsingin yliopisto',
   'International School of Helsinki',
@@ -259,6 +260,7 @@ describe('Raporttien luominen', function() {
     it('Rajaa organisaatiot hakusanan "helsin" perusteella', function() {
       expect(page.valittavatOrganisaatiot()).to.deep.equal([
         'Helsingin Saksalainen koulu',
+        'Helsingin eurooppalainen koulu',
         'Helsingin medialukio',
         'Helsingin yliopisto',
         'International School of Helsinki'

@@ -129,6 +129,7 @@ describe('Esiopetus', function() {
           expect(addOppija.toimipisteet()).to.deep.equal([
             'Helsingin normaalilyseo',
             'Helsingin yliopiston Viikin normaalikoulu',
+            'Helsingin eurooppalainen koulu',
             'International School of Helsinki',
             'Joensuun normaalikoulu  (lakkautettu)',
             'Rantakylän normaalikoulu',

@@ -273,7 +273,7 @@ class KäyttöoikeusryhmätSpec
     }
 
     "näkee vain perusopetuksen opiskeluoikeudet" in {
-      queryOppijat(user = perusopetusViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).distinct.sorted should be(List("aikuistenperusopetus", "esiopetus", "internationalschool", "perusopetukseenvalmistavaopetus", "perusopetuksenlisaopetus", "perusopetus"))
+      queryOppijat(user = perusopetusViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("aikuistenperusopetus", "esiopetus", "europeanschoolofhelsinki", "internationalschool", "perusopetukseenvalmistavaopetus", "perusopetuksenlisaopetus", "perusopetus"))
     }
 
     "ei näe muun typpisiä opiskeluoikeuksia" in {
@@ -292,7 +292,7 @@ class KäyttöoikeusryhmätSpec
     }
 
     "näkee vain toisen asteen opiskeluoikeudet" in {
-      queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("tuva", "ammatillinenkoulutus", "ibtutkinto", "internationalschool", "lukiokoulutus", "luva", "diatutkinto", "vapaansivistystyonkoulutus"))
+      queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("tuva", "ammatillinenkoulutus", "europeanschoolofhelsinki", "ibtutkinto", "internationalschool", "lukiokoulutus", "luva", "diatutkinto", "vapaansivistystyonkoulutus"))
       authGet("api/oppija/" + KoskiSpecificMockOppijat.ylioppilas.oid, toinenAsteViranomainen) {
         verifyResponseStatusOk()
       }
