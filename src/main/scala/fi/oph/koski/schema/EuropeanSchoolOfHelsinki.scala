@@ -24,7 +24,7 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeus(
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 }
 
-// TODO: Saatetaan tarvita
+// TODO: TOR-1685 Saatetaan tarvita
 /*
 object EuropeanSchoolOfHelsinkiOpiskeluoikeus {
   def onPeruskouluaVastaavaInternationalSchoolinSuoritus(
@@ -80,7 +80,7 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
-// TODO: Mitkä vaihtoehdot opintojen rahoitukseen?
+// TODO: TOR-1685 Mitkä vaihtoehdot opintojen rahoitukseen?
 case class EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoKoodiarvo("eronnut")
@@ -96,7 +96,7 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
 
-// TODO: Pidetäänkö ulkomaanjaksot jne.. ?
+// TODO: TOR-1685 Pidetäänkö ulkomaanjaksot jne.. ?
 case class EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Rahoituksen laskennassa käytettävä tieto.")
