@@ -152,6 +152,7 @@ object KoskiErrorCategory {
         val valmiiksiMerkityltäPuuttuuOsasuorituksia = subcategory("valmiiksiMerkitylläEiOsasuorituksia", "Valmiiksi merkityllä päätason suorituksella ei voi olla tyhjä osasuorituslista tai opiskeluoikeuden pitää olla linkitetty")
         val tilaltaPuuttuuRahoitusmuoto = subcategory("tilaltaPuuttuuRahoitusmuoto", "Opiskeluoikeuden tilalta vaaditaan rahoitusmuoto")
         val tilallaEiSaaOllaRahoitusmuotoa = subcategory("tilallaEiSaaOllaRahoitusmuotoa", "Opiskeluoikeuden tilalla ei saa olla rahoitusmuotoa")
+        val tilanRahoitusmuotoEiSaaOllaJotpa = subcategory("tilanRahoitusmuotoEiSaaOllaJotpa", "Opiskeluoikeuden tilalla ei voi olla JOTPA-rahoitteista rahoitusmuotoa")
         val osasuoritusPuuttuu = subcategory("osasuoritusPuuttuu", "Opiskeluoikeutta ei voi merkitä valmiiksi kun sen suoritukselta puuttuu tarvittava osasuoritus")
         val vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus = subcategory("vapaaSivistysTyöLaajuusVäärä", "Vahvistetuksi merkatun vapaan sivistyöstyön koulutuksen laajuuden tulee olla 53")
         val vapaanSivistystyönVapaatavoitteisenKoulutuksenPäätasonOsasuoritukset = subcategory("vapaanSivistystyönVapaatavoitteisenKoulutuksenPäätasonOsasuoritukset", "Vapaatavoitteisella vapaan sivistystyön koulutuksella tulee olla vähintään yksi arvioitu osasuoritus")

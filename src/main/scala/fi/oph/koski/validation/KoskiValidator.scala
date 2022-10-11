@@ -126,7 +126,8 @@ class KoskiValidator(
                 AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus, koskiOpiskeluoikeudet),
                 ePerusteetValidator.validateAmmatillinenOpiskeluoikeus(opiskeluoikeus),
                 VSTKotoutumiskoulutus2022Validation.validate(opiskeluoikeus),
-                VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus)
+                VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus),
+                JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus),
               )
             } match {
             case HttpStatus.ok => Right(opiskeluoikeus)
