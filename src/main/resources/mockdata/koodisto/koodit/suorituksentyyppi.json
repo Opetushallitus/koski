@@ -1771,20 +1771,62 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinki",
-  "koodiArvo" : "europeanschoolofhelsinki",
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkanursery",
+  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkanursery",
   "metadata" : [ {
-    "nimi" : "TODO",
+    "nimi" : "European School of Helsinki nursery cycle year class",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "TODO",
+    "nimi" : "European School of Helsinki nursery cycle year class",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "TODO",
+    "nimi" : "European School of Helsinki nursery cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkaprimary",
+  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkaprimary",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki primary cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkasecondary",
+  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkasecondary",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki secondary cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle year class",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"

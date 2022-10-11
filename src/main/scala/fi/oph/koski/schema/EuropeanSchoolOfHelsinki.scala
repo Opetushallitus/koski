@@ -1,7 +1,6 @@
 package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
@@ -106,30 +105,108 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaanjaksollinen with MaksuttomuusTieto
 
-// TODO: Mietitään myöhemmin
-trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen {
+trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+  extends KoskeenTallennettavaPäätasonSuoritus
+    with Toimipisteellinen
+    with Arvioinniton
+    with Suorituskielellinen
+    with LuokalleJääntiTiedonSisältäväSuoritus {
+  @Title("Koulutus")
   def tyyppi: Koodistokoodiviite
   @Description("Luokan tunniste, esimerkiksi 9C.")
   @Tooltip("Luokan tunniste, esimerkiksi 9C.")
   def luokka: Option[String]
+  def jääLuokalle: Boolean
+  @Tooltip("Vuosiluokan alkamispäivä")
+  def alkamispäivä: Option[LocalDate]
 }
 
-case class DummyVuosiluokanSuoritus(
-                                     @Title("Koulutus")
-                                     koulutusmoduuli: EuropeanSchoolOfHelsinkiLuokkaAste,
-                                     luokka: Option[String] = None,
-                                     @Tooltip("Vuosiluokan alkamispäivä")
-                                     override val alkamispäivä: Option[LocalDate] = None,
-                                     toimipiste: OrganisaatioWithOid,
-                                     vahvistus: Option[HenkilövahvistusPaikkakunnalla],
-                                     @Hidden
-                                     suorituskieli: Koodistokoodiviite,
-                                     @KoodistoKoodiarvo("europeanschoolofhelsinki")
-                                     tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinki", koodistoUri = "suorituksentyyppi")
+case class NurseryVuosiluokanSuoritus(
+  koulutusmoduuli: NurseryLuokkaAste,
+  luokka: Option[String] = None,
+  override val alkamispäivä: Option[LocalDate] = None,
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
+  suorituskieli: Koodistokoodiviite,
+  @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkanursery")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkanursery", koodistoUri = "suorituksentyyppi"),
+  jääLuokalle: Boolean = false,
+//  override val osasuoritukset: Option[List[OppiaineenSuoritus]] = None
 ) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
 
-case class EuropeanSchoolOfHelsinkiLuokkaAste(
-  tunniste: PaikallinenKoodiviite
-) extends Koulutusmoduuli {
-  override def nimi: LocalizedString = Finnish("TODO")
+case class PrimaryVuosiluokanSuoritus(
+  koulutusmoduuli: PrimaryLuokkaAste,
+  luokka: Option[String] = None,
+  override val alkamispäivä: Option[LocalDate] = None,
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
+  suorituskieli: Koodistokoodiviite,
+  @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkaprimary")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkaprimary", koodistoUri = "suorituksentyyppi"),
+  jääLuokalle: Boolean = false,
+  //  override val osasuoritukset: Option[List[OppiaineenSuoritus]] = None
+) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+
+case class SecondaryVuosiluokanSuoritus(
+  koulutusmoduuli: SecondaryLuokkaAste,
+  luokka: Option[String] = None,
+  override val alkamispäivä: Option[LocalDate] = None,
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
+  suorituskieli: Koodistokoodiviite,
+  @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondary")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkasecondary", koodistoUri = "suorituksentyyppi"),
+  jääLuokalle: Boolean = false,
+  //  override val osasuoritukset: Option[List[OppiaineenSuoritus]] = None
+) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+
+trait EuropeanSchoolOfHelsinkiLuokkaAste extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
+  @KoodistoUri("europeanschoolofhelsinkiluokkaaste")
+  def tunniste: Koodistokoodiviite
+}
+
+case class NurseryLuokkaAste(
+  @KoodistoKoodiarvo("N1")
+  @KoodistoKoodiarvo("N2")
+  tunniste: Koodistokoodiviite
+) extends EuropeanSchoolOfHelsinkiLuokkaAste
+
+object NurseryLuokkaAste {
+  def apply(koodistokoodiarvo: String): NurseryLuokkaAste = {
+    NurseryLuokkaAste(tunniste = Koodistokoodiviite(koodistokoodiarvo, "europeanschoolofhelsinkiluokkaaste"))
+  }
+}
+
+case class PrimaryLuokkaAste(
+  @KoodistoKoodiarvo("P1")
+  @KoodistoKoodiarvo("P2")
+  @KoodistoKoodiarvo("P3")
+  @KoodistoKoodiarvo("P4")
+  @KoodistoKoodiarvo("P5")
+  tunniste: Koodistokoodiviite
+) extends EuropeanSchoolOfHelsinkiLuokkaAste
+
+
+object PrimaryLuokkaAste {
+  def apply(koodistokoodiarvo: String): PrimaryLuokkaAste = {
+    PrimaryLuokkaAste(tunniste = Koodistokoodiviite(koodistokoodiarvo, "europeanschoolofhelsinkiluokkaaste"))
+  }
+}
+
+case class SecondaryLuokkaAste(
+  @KoodistoKoodiarvo("S1")
+  @KoodistoKoodiarvo("S2")
+  @KoodistoKoodiarvo("S3")
+  @KoodistoKoodiarvo("S4")
+  @KoodistoKoodiarvo("S5")
+  @KoodistoKoodiarvo("S6")
+  @KoodistoKoodiarvo("S7")
+  tunniste: Koodistokoodiviite
+) extends EuropeanSchoolOfHelsinkiLuokkaAste
+
+
+object SecondaryLuokkaAste {
+  def apply(koodistokoodiarvo: String): SecondaryLuokkaAste = {
+    SecondaryLuokkaAste(tunniste = Koodistokoodiviite(koodistokoodiarvo, "europeanschoolofhelsinkiluokkaaste"))
+  }
 }

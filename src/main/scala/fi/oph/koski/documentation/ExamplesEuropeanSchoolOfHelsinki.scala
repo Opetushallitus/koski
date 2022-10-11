@@ -1,16 +1,16 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData._
-import fi.oph.koski.documentation.ExampleData.helsinki
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.schema._
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 object ExamplesEuropeanSchoolOfHelsinki {
-  val alkamispaiva = date(2022, 8, 1)
-  val paattymispaiva = date(2024, 5, 31)
+  val alkamispäivä = date(2022, 8, 1)
+  val päättymispäivä = alkamispäivä.plusYears(15).withMonth(5).withDayOfMonth(31)
   val lisätiedot = EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
     erityisenKoulutustehtävänJaksot = Some(List(ExamplesLukio.erityisenKoulutustehtävänJakso)),
     ulkomaanjaksot = Some(List(ExamplesLukio.ulkomaanjakso)),
@@ -29,23 +29,35 @@ object ExamplesEuropeanSchoolOfHelsinki {
     ))*/
   )
 
-  val suoritusVahvistus = ExampleData.vahvistusPaikkakunnalla(paattymispaiva, europeanSchoolOfHelsinki, helsinki)
-
-  val suoritus = DummyVuosiluokanSuoritus(
-    koulutusmoduuli = EuropeanSchoolOfHelsinkiLuokkaAste(PaikallinenKoodi("foo.bar", Finnish("bar.baz"))), luokka = Some("1A"), alkamispäivä = Some(alkamispaiva), toimipiste = europeanSchoolOfHelsinki, vahvistus = None, suorituskieli = ExampleData.englanti)
-
   val opiskeluoikeus = EuropeanSchoolOfHelsinkiOpiskeluoikeus(
     oppilaitos = Some(europeanSchoolOfHelsinki),
     lisätiedot = Some(lisätiedot),
     tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
       List(
-        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispaiva, LukioExampleData.opiskeluoikeusAktiivinen)
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen)
       )
     ),
-    suoritukset = List(suoritus)
+    suoritukset = List(
+      nurserySuoritus("N1", alkamispäivä.plusYears(0)),
+      nurserySuoritus("N2", alkamispäivä.plusYears(1)),
+      primarySuoritus("P1", alkamispäivä.plusYears(2)),
+      primarySuoritus("P2", alkamispäivä.plusYears(3), jääLuokalle = true).copy(vahvistus = None),
+      primarySuoritus("P2", alkamispäivä.plusYears(4)),
+      primarySuoritus("P3", alkamispäivä.plusYears(5)),
+      primarySuoritus("P4", alkamispäivä.plusYears(6)),
+      primarySuoritus("P5", alkamispäivä.plusYears(7)),
+      secondarySuoritus("S1", alkamispäivä.plusYears(8)),
+      secondarySuoritus("S2", alkamispäivä.plusYears(9)),
+      secondarySuoritus("S3", alkamispäivä.plusYears(10)),
+      secondarySuoritus("S4", alkamispäivä.plusYears(11)),
+      secondarySuoritus("S5", alkamispäivä.plusYears(12)),
+      secondarySuoritus("S6", alkamispäivä.plusYears(13)),
+      secondarySuoritus("S7", alkamispäivä.plusYears(14)),
+    )
   )
 
   val examples = List(
     Example("europeanschoolofhelsinki", "European School of Helsinki", Oppija(asUusiOppija(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki), List(opiskeluoikeus)))
   )
+
 }

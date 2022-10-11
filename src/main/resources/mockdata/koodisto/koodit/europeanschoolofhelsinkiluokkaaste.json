@@ -1,0 +1,170 @@
+[ {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_n1",
+  "koodiArvo" : "N1",
+  "metadata" : [ {
+    "nimi" : "Class N1",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class N1",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_n2",
+  "koodiArvo" : "N2",
+  "metadata" : [ {
+    "nimi" : "Class N2",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class N2",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_p1",
+  "koodiArvo" : "P1",
+  "metadata" : [ {
+    "nimi" : "Class P1",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class P1",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_p2",
+  "koodiArvo" : "P2",
+  "metadata" : [ {
+    "nimi" : "Class P2",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class P2",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_p3",
+  "koodiArvo" : "P3",
+  "metadata" : [ {
+    "nimi" : "Class P3",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class P3",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_p4",
+  "koodiArvo" : "P4",
+  "metadata" : [ {
+    "nimi" : "Class P4",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class P4",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_p5",
+  "koodiArvo" : "P5",
+  "metadata" : [ {
+    "nimi" : "Class P5",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class P5",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s1",
+  "koodiArvo" : "S1",
+  "metadata" : [ {
+    "nimi" : "Class S1",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class S1",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s2",
+  "koodiArvo" : "S2",
+  "metadata" : [ {
+    "nimi" : "Class S2",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class S2",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s3",
+  "koodiArvo" : "S3",
+  "metadata" : [ {
+    "nimi" : "Class S3",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class S3",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s4",
+  "koodiArvo" : "S4",
+  "metadata" : [ {
+    "nimi" : "Class S4",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class S4",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s5",
+  "koodiArvo" : "S5",
+  "metadata" : [ {
+    "nimi" : "Class S5",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class S5",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s6",
+  "koodiArvo" : "S6",
+  "metadata" : [ {
+    "nimi" : "Class S6",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class S6",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkiluokkaaste_s7",
+  "koodiArvo" : "S7",
+  "metadata" : [ {
+    "nimi" : "Class S7",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Class S7",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}
+]
