@@ -550,15 +550,15 @@ class RaportointikantaSpec
             mitätöity = t._1.mitätöity,
             suostumusPeruttu = t._1.suostumusPeruttu,
             tyyppi = t._1.oppijaOid match {
-              case "1.2.246.562.24.00000000001" => "perusopetus"
-              case "1.2.246.562.24.00000000013" => "ammatillinenkoulutus"
-              case "1.2.246.562.24.00000000129" => "vapaansivistystyonkoulutus"
+              case KoskiSpecificMockOppijat.eero.oid => "perusopetus"
+              case KoskiSpecificMockOppijat.lukiolainen.oid => "ammatillinenkoulutus"
+              case KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid => "vapaansivistystyonkoulutus"
               case _ => "???"
             },
             päätasonSuoritusTyypit = t._1.oppijaOid match {
-              case "1.2.246.562.24.00000000001" => List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
-              case "1.2.246.562.24.00000000013" => List("ammatillinentutkinto")
-              case "1.2.246.562.24.00000000129" => List("vstvapaatavoitteinenkoulutus")
+              case KoskiSpecificMockOppijat.eero.oid => List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
+              case KoskiSpecificMockOppijat.lukiolainen.oid => List("ammatillinentutkinto")
+              case KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid => List("vstvapaatavoitteinenkoulutus")
               case _ => List("???")
             },
           ))
