@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 import fi.oph.koski.koodisto.{KoodistoViite, MockKoodistoViitePalvelu}
+import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
@@ -256,3 +257,11 @@ trait ErityisopetuksellinenPäätasonSuoritus extends PäätasonSuoritus {
 }
 
 trait SuostumusPeruttavissaOpiskeluoikeudelta extends PäätasonSuoritus
+
+trait LuokalleJääntiTiedonSisältäväSuoritus {
+  @Description("Tieto siitä, että oppilas jää luokalle")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @DefaultValue(false)
+  @Title("Oppilas jää luokalle")
+  def jääLuokalle: Boolean
+}
