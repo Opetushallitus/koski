@@ -2,6 +2,7 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
+import fi.oph.koski.schema.OppisopimuksenPurkaminen
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo, SensitiveData}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
@@ -245,7 +246,8 @@ case class Järjestämismuotojakso(
 )
 
 case class Oppisopimus(
-  työnantaja: Yritys
+  työnantaja: Yritys,
+  oppisopimuksenPurkaminen: Option[OppisopimuksenPurkaminen]
 )
 
 case class Yritys(
