@@ -1715,5 +1715,26 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinki",
+  "koodiArvo" : "europeanschoolofhelsinki",
+  "metadata" : [ {
+    "nimi" : "TODO",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "TODO",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "TODO",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }
 ]

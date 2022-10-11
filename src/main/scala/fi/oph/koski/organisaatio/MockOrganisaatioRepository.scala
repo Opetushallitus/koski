@@ -61,6 +61,7 @@ object MockOrganisaatiot {
   val valvira = "1.2.246.562.10.52577249361"
   val kuopionAikuislukio = "1.2.246.562.10.42923230215"
   val kallavedenLukio = "1.2.246.562.10.63813695861"
+  val europeanSchoolOfHelsinki = "1.2.246.562.10.13349113236"
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,
@@ -83,7 +84,8 @@ object MockOrganisaatiot {
     varsinaisSuomenKansanopisto,
     lakkautettuOppilaitosHelsingissä,
     kuopionAikuislukio,
-    kallavedenLukio
+    kallavedenLukio,
+    europeanSchoolOfHelsinki
   )
 }
 

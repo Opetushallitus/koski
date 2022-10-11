@@ -106,6 +106,7 @@ object OpiskeluoikeudenTyyppi {
   val ylioppilastutkinto = apply("ylioppilastutkinto")
   val vapaansivistystyonkoulutus = apply("vapaansivistystyonkoulutus")
   val tuva = apply("tuva")
+  val europeanschoolofhelsinki = apply("europeanschoolofhelsinki")
 
   private def apply(koodiarvo: String): Koodistokoodiviite = {
     val tyyppi = Koodistokoodiviite(koodiarvo, "opiskeluoikeudentyyppi")

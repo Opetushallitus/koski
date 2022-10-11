@@ -23209,6 +23209,192 @@
       ],
       "aliOrganisaatioMaara": 0,
       "status": "AKTIIVINEN"
+    },
+    {
+      "oid": "1.2.246.562.10.962346066210",
+      "alkuPvm": 1217538000000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.00000000001",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Helsingin eurooppalainen koulu",
+        "sv": "Helsingin eurooppalainen koulu",
+        "en": "Helsingin eurooppalainen koulu"
+      },
+      "lyhytNimi": {},
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_4#1"
+      ],
+      "kotipaikkaUri": "kunta_091",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.13349113236",
+          "alkuPvm": 1217538000000,
+          "parentOid": "1.2.246.562.10.962346066210",
+          "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.962346066210",
+          "oppilaitosKoodi": "03782",
+          "oppilaitostyyppi": "oppilaitostyyppi_19#1",
+          "toimipistekoodi": "03782",
+          "match": true,
+          "nimi": {
+            "fi": "Helsingin eurooppalainen koulu",
+            "sv": "Helsingin eurooppalainen koulu",
+            "en": "Helsingin eurooppalainen koulu"
+          },
+          "lyhytNimi": {},
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
+          "kotipaikkaUri": "kunta_091",
+          "children": [
+            {
+              "oid": "1.2.246.562.10.12798841685",
+              "alkuPvm": 1217538000000,
+              "parentOid": "1.2.246.562.10.13349113236",
+              "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.962346066210/1.2.246.562.10.13349113236",
+              "toimipistekoodi": "0378201",
+              "match": true,
+              "nimi": {
+                "fi": "Helsingin eurooppalainen koulu",
+                "sv": "Helsingin eurooppalainen koulu",
+                "en": "Helsingin eurooppalainen koulu"
+              },
+              "lyhytNimi": {},
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_091",
+              "children": [],
+              "subRows": [],
+              "aliOrganisaatioMaara": 0,
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "status": "AKTIIVINEN"
+            }
+          ],
+          "subRows": [
+            {
+              "oid": "1.2.246.562.10.12798841685",
+              "alkuPvm": 1217538000000,
+              "parentOid": "1.2.246.562.10.13349113236",
+              "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.962346066210/1.2.246.562.10.13349113236",
+              "toimipistekoodi": "0378201",
+              "match": true,
+              "nimi": {
+                "fi": "Helsingin eurooppalainen koulu",
+                "sv": "Helsingin eurooppalainen koulu",
+                "en": "Helsingin eurooppalainen koulu"
+              },
+              "lyhytNimi": {},
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_091",
+              "children": [],
+              "subRows": [],
+              "aliOrganisaatioMaara": 0,
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "status": "AKTIIVINEN"
+            }
+          ],
+          "aliOrganisaatioMaara": 1,
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ],
+          "status": "AKTIIVINEN"
+        }
+      ],
+      "subRows": [
+        {
+          "oid": "1.2.246.562.10.13349113236",
+          "alkuPvm": 1217538000000,
+          "parentOid": "1.2.246.562.10.962346066210",
+          "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.962346066210",
+          "oppilaitosKoodi": "03782",
+          "oppilaitostyyppi": "oppilaitostyyppi_19#1",
+          "toimipistekoodi": "03782",
+          "match": true,
+          "nimi": {
+            "fi": "Helsingin eurooppalainen koulu",
+            "sv": "Helsingin eurooppalainen koulu",
+            "en": "Helsingin eurooppalainen koulu"
+          },
+          "lyhytNimi": {},
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
+          "kotipaikkaUri": "kunta_091",
+          "children": [
+            {
+              "oid": "1.2.246.562.10.12798841685",
+              "alkuPvm": 1217538000000,
+              "parentOid": "1.2.246.562.10.13349113236",
+              "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.962346066210/1.2.246.562.10.13349113236",
+              "toimipistekoodi": "0378201",
+              "match": true,
+              "nimi": {
+                "fi": "Helsingin eurooppalainen koulu",
+                "sv": "Helsingin eurooppalainen koulu",
+                "en": "Helsingin eurooppalainen koulu"
+              },
+              "lyhytNimi": {},
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_091",
+              "children": [],
+              "subRows": [],
+              "aliOrganisaatioMaara": 0,
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "status": "AKTIIVINEN"
+            }
+          ],
+          "subRows": [
+            {
+              "oid": "1.2.246.562.10.12798841685",
+              "alkuPvm": 1217538000000,
+              "parentOid": "1.2.246.562.10.13349113236",
+              "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.962346066210/1.2.246.562.10.13349113236",
+              "toimipistekoodi": "0378201",
+              "match": true,
+              "nimi": {
+                "fi": "Helsingin eurooppalainen koulu",
+                "sv": "Helsingin eurooppalainen koulu",
+                "en": "Helsingin eurooppalainen koulu"
+              },
+              "lyhytNimi": {},
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_091",
+              "children": [],
+              "subRows": [],
+              "aliOrganisaatioMaara": 0,
+              "organisaatiotyypit": [
+                "organisaatiotyyppi_03"
+              ],
+              "status": "AKTIIVINEN"
+            }
+          ],
+          "aliOrganisaatioMaara": 1,
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ],
+          "status": "AKTIIVINEN"
+        }
+      ],
+      "aliOrganisaatioMaara": 1,
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_01"
+      ],
+      "virastoTunnus": "0660032-2",
+      "status": "AKTIIVINEN"
     }
   ]
 }

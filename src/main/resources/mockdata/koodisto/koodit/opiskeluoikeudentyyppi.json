@@ -238,4 +238,20 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_europeanschoolofhelsinki",
+  "koodiArvo" : "europeanschoolofhelsinki",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki",
+    "lyhytNimi" : "European School of Helsinki",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki",
+    "lyhytNimi" : "European School of Helsinki",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
