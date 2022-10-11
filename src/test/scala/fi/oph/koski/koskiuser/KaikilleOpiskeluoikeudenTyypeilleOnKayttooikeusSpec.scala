@@ -22,7 +22,8 @@ class KaikilleOpiskeluoikeudenTyypeilleOnKayttooikeusSpec extends AnyFreeSpec wi
       Rooli.PERUSOPETUS,
       Rooli.YLIOPPILASTUTKINTO,
       Rooli.VAPAANSIVISTYSTYONKOULUTUS,
-      Rooli.TUVA
+      Rooli.TUVA,
+      Rooli.ESH,
     ).map(_.toLowerCase))
   }
 }
