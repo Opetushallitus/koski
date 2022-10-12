@@ -678,6 +678,6 @@ case class NuortenPerusopetuksenOpiskeluoikeudenTila(
 case class NuortenPerusopetuksenOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite
-) extends KoskiOpiskeluoikeusjakso
+) extends KoskiLaajaOpiskeluoikeusjakso
 
 
