@@ -167,28 +167,12 @@ trait Opiskeluoikeusjakso extends Alkupäivällinen {
   def opiskeluoikeusPäättynyt: Boolean
 }
 
-object KoskiSuppeaOpiskeluoikeusjakso {
-  // Jälkimmäiset kaksi tilakoodia ovat Vapaan sivistystyön koulutusta varten
-  def päätöstilat = List("valmistunut", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt")
-}
-
-trait KoskiSuppeaOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
-  @KoodistoUri("koskiopiskeluoikeudentila")
-  @KoodistoKoodiarvo("katsotaaneronneeksi")
-  @KoodistoKoodiarvo("lasna")
-  @KoodistoKoodiarvo("mitatoity")
-  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
-  @KoodistoKoodiarvo("valmistunut")
-  def tila: Koodistokoodiviite
-  def opiskeluoikeusPäättynyt = KoskiSuppeaOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
-}
-
 object KoskiOpiskeluoikeusjakso {
   // Jälkimmäiset kaksi tilakoodia ovat Vapaan sivistystyön koulutusta varten
   def päätöstilat = List("valmistunut", "eronnut", "peruutettu", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt")
 }
 
-trait KoskiOpiskeluoikeusjakso extends KoskiSuppeaOpiskeluoikeusjakso {
+trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   @KoodistoUri("koskiopiskeluoikeudentila")
   @KoodistoKoodiarvo("eronnut")
   @KoodistoKoodiarvo("peruutettu")
