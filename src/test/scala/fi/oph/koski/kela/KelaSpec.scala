@@ -64,6 +64,20 @@ class KelaSpec
         tuvaOpiskeluoikeus.suoritukset.head.osasuoritukset.get.length shouldBe 7
       }
     }
+
+    "Palauttaa tiedon oppisopimuksen purkamisesta" in {
+      postHetu(KoskiSpecificMockOppijat.reformitutkinto.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        oppija.opiskeluoikeudet.length.shouldBe(1)
+        oppija.opiskeluoikeudet.head.suoritukset.length.shouldBe(1)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
+        suoritus.osaamisenHankkimistavat.map(oht => oht.length).shouldBe(Some(2))
+        suoritus.osaamisenHankkimistavat.map(oht => oht.last.osaamisenHankkimistapa.isInstanceOf[OppisopimuksellinenOsaamisenHankkimistapa]).shouldBe(Some(true))
+        val hankkimistapa = suoritus.osaamisenHankkimistavat.map(oht => oht.last.osaamisenHankkimistapa.asInstanceOf[OppisopimuksellinenOsaamisenHankkimistapa])
+        hankkimistapa.get.oppisopimus.oppisopimuksenPurkaminen.exists(_.päivä.equals(LocalDate.of(2013,3,20))).shouldBe(true)
+      }
+    }
     "Ei palauta mitätöityä opiskeluoikeutta" in {
       postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
         verifyResponseStatusOk()
