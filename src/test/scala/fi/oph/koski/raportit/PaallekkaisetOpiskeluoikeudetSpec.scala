@@ -185,6 +185,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
     }
 
     "Päällekkäisen opiskeluoikeuden sisältämistä suorituksista käytetävän nimi" - {
+      // TODO: TOR-1685 Eurooppalainen koulu
       "International school" - {
         "Yksikin 10-luokan MYP-suoritus tulkitaan lukion suoritukseksi, vaikka opiskeluoikeudella on useita alemman vuosiluokan suorituksia" in {
           val jsonb = """

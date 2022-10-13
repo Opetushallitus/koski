@@ -66,6 +66,7 @@ object OppijaEditorModel extends Timing {
       case oo: IBOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ibSuoritustenJärjestysKriteeri))
       case oo: DIAOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(diaSuoritustenJärjestysKritteri))
       case oo: InternationalSchoolOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(internationalSchoolJärjestysKriteeri))
+      // TODO: TOR-1685 Eurooppalainen koulu
       case oo: KorkeakoulunOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.vahvistus.map(_.päivä))(localDateOptionOrdering).reverse)
       case oo: Any => oo
     })
@@ -127,6 +128,8 @@ object OppijaEditorModel extends Timing {
   } else {
     0 - s.koulutusmoduuli.tunniste.koodiarvo.toInt
   }
+
+  // TODO: TOR-1685 Eurooppalainen koulu
 }
 
 object EditorSchema {

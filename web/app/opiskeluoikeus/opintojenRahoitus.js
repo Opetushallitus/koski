@@ -18,6 +18,7 @@ export const autoFillRahoitusmuoto = ({vaatiiRahoituksen, rahoitusValittu, setDe
 }
 
 export const opiskeluoikeudenTilaVaatiiRahoitusmuodon = (opiskeluoikeudenTyyppi, tila) => {
+// TODO: TOR-1685 Eurooppalainen koulu
   if (['aikuistenperusopetus', 'lukiokoulutus', 'luva', 'ibtutkinto', 'internationalschool', 'diatutkinto', 'tuva'].includes(opiskeluoikeudenTyyppi)) {
     return ['lasna', 'valmistunut'].includes(tila)
   }

@@ -280,6 +280,7 @@ class KoskiOppijaFacade(
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ DIAOpiskeluoikeusjakso(now, mitätöity)))
       case t: InternationalSchoolOpiskeluoikeudenTila =>
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ InternationalSchoolOpiskeluoikeusjakso(now, mitätöity)))
+      // TODO: TOR-1685 Eurooppalainen koulu
       case t: VapaanSivistystyönOpiskeluoikeudenTila =>
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ VapaanSivistystyönOpiskeluoikeusjakso(now, mitätöity)))
       case t: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila =>
@@ -303,6 +304,7 @@ class KoskiOppijaFacade(
               | _: AikuistenPerusopetuksenOpiskeluoikeus
               | _: AmmatillinenOpiskeluoikeus
               | _: InternationalSchoolOpiskeluoikeus
+              // TODO: TOR-1685 Eurooppalainen koulu
               | _: IBOpiskeluoikeus
               | _: EsiopetuksenOpiskeluoikeus, _) => delete(päätasonSuoritus, oo)
         case (_, _: LukionOppiaineenOppimääränSuoritus2015) => delete(päätasonSuoritus, oo)

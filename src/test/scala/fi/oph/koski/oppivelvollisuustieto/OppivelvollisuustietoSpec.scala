@@ -295,6 +295,8 @@ class OppivelvollisuustietoSpec
     )
   }
 
+  // TODO: TOR-1685 Eurooppalainen koulu, lisää myös tähän testiin
+
   private def internationalSchoolToinenAste(vahvistusGrade12: Option[LocalDate], lisääMaksuttomuus: Boolean = true): Opiskeluoikeus = {
     ExamplesInternationalSchool.opiskeluoikeus.copy(
       lisätiedot = if (lisääMaksuttomuus) {

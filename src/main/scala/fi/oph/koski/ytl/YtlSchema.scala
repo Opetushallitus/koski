@@ -13,6 +13,7 @@ object YtlSchema {
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[YtlOppija]).asInstanceOf[ClassSchema])
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] =
+  // TODO: TOR-1685 Eurooppalainen koulu
     List("lukiokoulutus", "ammatillinenkoulutus", "ibtutkinto", "internationalschool")
 }
 

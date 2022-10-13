@@ -292,6 +292,7 @@ trait ValpasOppijaTestBase extends ValpasTestBase with BeforeAndAfterEach {
           case p: InternationalSchoolVuosiluokanSuoritus => Some(p)
           case _ => None
         }).sortBy(s => s.alkamispäivä)(localDateOptionOrdering).reverse.headOption.flatMap(r => r.luokka)
+      // TODO: TOR-1685 Eurooppalainen koulu
       // Esim. lukiossa jne. voi olla monta päätason suoritusta, eikä mitään järkevää sorttausparametria päätasolla (paitsi mahdollisesti oleva vahvistus).
       // => oletetaan, että saadaan taulukossa viimeisenä olevan suorituksen ryhmä
       case oo: Any =>

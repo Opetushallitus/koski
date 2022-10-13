@@ -27,6 +27,7 @@ export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<
   | "esiopetus"
   | "ibtutkinto"
   | "internationalschool"
+  // TODO: TOR-1685 Eurooppalainen koulu
   | "korkeakoulutus"
   | "lukiokoulutus"
   | "luva"

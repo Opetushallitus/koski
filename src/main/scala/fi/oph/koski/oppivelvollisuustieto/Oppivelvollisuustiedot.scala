@@ -88,6 +88,7 @@ object Oppivelvollisuustiedot {
 
     val oppivelvollisuudenUlkopuolisetKunnatList = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
 
+    // TODO: TOR-1685 Eurooppalainen koulu
     sqlu"""
       create materialized view #${s.name}.oppivelvollisuustiedot as
         with

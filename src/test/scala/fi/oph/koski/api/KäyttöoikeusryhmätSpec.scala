@@ -186,6 +186,7 @@ class KäyttöoikeusryhmätSpec
       }
     }
 
+    // TODO: TOR-1685 Eurooppalainen koulu, jos esiopetus handlataan?
     "voi hakea ja katsella esiopetuksen opiskeluoikeuksia omassa organisaatiossa" in {
       searchForNames(KoskiSpecificMockOppijat.eskari.etunimet, user) should equal(List(KoskiSpecificMockOppijat.eskari.etunimet + " " + KoskiSpecificMockOppijat.eskari.sukunimi, KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla.etunimet + " " + KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla.sukunimi))
       authGet("api/oppija/" + KoskiSpecificMockOppijat.eskari.oid, user) {
@@ -272,6 +273,7 @@ class KäyttöoikeusryhmätSpec
       searchForNames("kaisa", perusopetusViranomainen) should be(List("Kaisa Koululainen", "Kaisa Kymppiluokkalainen"))
     }
 
+    // TODO: TOR-1685 Eurooppalainen koulu
     "näkee vain perusopetuksen opiskeluoikeudet" in {
       queryOppijat(user = perusopetusViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("aikuistenperusopetus", "esiopetus", "europeanschoolofhelsinki", "internationalschool", "perusopetukseenvalmistavaopetus", "perusopetuksenlisaopetus", "perusopetus"))
     }
@@ -291,6 +293,7 @@ class KäyttöoikeusryhmätSpec
       searchForNames("eero", toinenAsteViranomainen) should equal(List("Jouni Çelik-Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
+    // TODO: TOR-1685 Eurooppalainen koulu
     "näkee vain toisen asteen opiskeluoikeudet" in {
       queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("tuva", "ammatillinenkoulutus", "europeanschoolofhelsinki", "ibtutkinto", "internationalschool", "lukiokoulutus", "luva", "diatutkinto", "vapaansivistystyonkoulutus"))
       authGet("api/oppija/" + KoskiSpecificMockOppijat.ylioppilas.oid, toinenAsteViranomainen) {

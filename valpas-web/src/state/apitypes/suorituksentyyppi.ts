@@ -28,4 +28,5 @@ export const suorituksenTyyppiToKoulutustyyppi = (
   } else {
     return getLocalizedMaybe(tyyppi.nimi) || tyyppi.koodiarvo
   }
+  // TODO: TOR-1685 Eurooppalainen koulu
 }

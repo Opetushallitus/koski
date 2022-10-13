@@ -223,6 +223,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
 
           resetFixtures()
         }
+        // TODO: TOR-1685 Eurooppalainen koulu
         "International Schoolin vahvistettu ysiluokka ilman opiskeluoikeuden päättymistä" in {
           val opiskeluoikeus = ExamplesInternationalSchool.opiskeluoikeus.copy(
             tila = InternationalSchoolOpiskeluoikeudenTila(
@@ -399,6 +400,8 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
   }
+
+  // TODO: TOR-1685 Eurooppalainen koulu
 
   "International school MYPVuosiluokanSuoritus" - {
     val lisätiedot = InternationalSchoolOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(date(2021, 8, 1), None, true))))

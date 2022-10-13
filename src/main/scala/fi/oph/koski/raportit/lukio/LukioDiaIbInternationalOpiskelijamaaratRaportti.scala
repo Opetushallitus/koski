@@ -27,6 +27,7 @@ case class LukioDiaIbInternationalOpiskelijamaaratRaportti(db: DB) extends Query
 
   private def query(oppilaitosOids: Seq[String], päivä: LocalDate, lang: String)  = {
     val organisaatioNimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
+    // TODO: TOR-1685 Eurooppalainen koulu
    sql"""
 with oppija as (select
                   r_opiskeluoikeus.opiskeluoikeus_oid,
