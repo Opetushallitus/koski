@@ -1,9 +1,9 @@
 {
   "henkilö" : {
-    "hetu" : "220109-784L",
-    "etunimet" : "Kaisa",
-    "kutsumanimi" : "Kaisa",
-    "sukunimi" : "Koululainen"
+    "hetu" : "270926-380M",
+    "etunimet" : "Luke",
+    "kutsumanimi" : "Luke",
+    "sukunimi" : "Lukioonvalmistautuja2019"
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
@@ -38,7 +38,7 @@
     },
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2007-08-15",
+        "alku" : "2016-08-15",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -46,29 +46,13 @@
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2007-12-20",
-        "tila" : {
-          "koodiarvo" : "loma",
-          "nimi" : {
-            "fi" : "Loma"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2008-01-06",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2008-06-01",
+        "alku" : "2021-08-01",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -76,16 +60,45 @@
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
         }
       } ]
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "999905",
+          "koodiarvo" : "999906",
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "57/011/2015"
+        "perusteenDiaarinumero" : "OPH-4958-2020",
+        "laajuus" : {
+          "arvo" : 3.0,
+          "yksikkö" : {
+            "koodiarvo" : "2",
+            "nimi" : {
+              "fi" : "opintopistettä",
+              "sv" : "studiepoäng",
+              "en" : "ECTS credits"
+            },
+            "lyhytNimi" : {
+              "fi" : "op",
+              "sv" : "sp",
+              "en" : "ECTS cr"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
+        }
+      },
+      "oppimäärä" : {
+        "koodiarvo" : "nuortenops",
+        "nimi" : {
+          "fi" : "Nuorten ops"
+        },
+        "koodistoUri" : "lukionoppimaara",
+        "koodistoVersio" : 1
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
@@ -118,7 +131,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2008-06-01",
+        "päivä" : "2016-06-04",
         "paikkakunta" : {
           "koodiarvo" : "179",
           "nimi" : {
@@ -203,53 +216,80 @@
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "ai",
+            "koodiarvo" : "LVATK",
             "nimi" : {
-              "fi" : "Äidinkieli"
+              "fi" : "Tietojenkäsittely"
             }
           },
-          "laajuus" : {
-            "arvo" : 10.0,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "Vuosiviikkotuntia"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
+          "kuvaus" : {
+            "fi" : "Tietojenkäsittely"
           },
-          "opetuksenSisältö" : {
-            "fi" : "Suullinen ilmaisu ja kuullun ymmärtäminen"
-          }
+          "pakollinen" : false
         },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "kuvaus" : {
-            "fi" : "Keskustelee sujuvasti suomeksi"
-          },
           "hyväksytty" : true
         } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ATK1",
+              "nimi" : {
+                "fi" : "Tietokoneen käytön peruskurssi"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Kurssilla opiskellaan tietokoneen, toimisto-ohjelmien sekä internetin ja sähköpostin peruskäyttöä."
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "luvakurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
-          "koodiarvo" : "perusopetukseenvalmistavanopetuksenoppiaine",
+          "koodiarvo" : "luvaoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "FY",
+            "koodiarvo" : "AOM",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
-          "pakollinen" : false,
-          "laajuus" : {
-            "arvo" : 1.0,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          }
+          "kieli" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -258,37 +298,82 @@
           },
           "hyväksytty" : true
         } ],
-        "luokkaAste" : {
-          "koodiarvo" : "7",
-          "koodistoUri" : "perusopetuksenluokkaaste"
-        },
+        "suoritettuErityisenäTutkintona" : false,
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "RUA4",
+              "koodistoUri" : "moduulikoodistolops2021"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "pakollinen" : true
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2021-09-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionvaltakunnallinenmoduuli",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa",
+          "koodiarvo" : "luvalukionoppiaine2019",
           "koodistoUri" : "suorituksentyyppi"
-        },
-        "suoritustapa" : {
-          "koodiarvo" : "erityinentutkinto",
-          "koodistoUri" : "perusopetuksensuoritustapa"
         }
       } ],
-      "kokonaislaajuus" : {
-        "arvo" : 11.0,
-        "yksikkö" : {
-          "koodiarvo" : "3",
-          "koodistoUri" : "opintojenlaajuusyksikko"
-        }
-      },
       "tyyppi" : {
-        "koodiarvo" : "perusopetukseenvalmistavaopetus",
+        "koodiarvo" : "luva",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
     "tyyppi" : {
-      "koodiarvo" : "perusopetukseenvalmistavaopetus",
+      "koodiarvo" : "luva",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
-    "alkamispäivä" : "2007-08-15",
-    "päättymispäivä" : "2008-06-01"
-  } ],
-  "ignoreKoskiValidator" : true
+    "lisätiedot" : {
+      "pidennettyPäättymispäivä" : true,
+      "ulkomainenVaihtoopiskelija" : false,
+      "ulkomaanjaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2013-09-01",
+        "maa" : {
+          "koodiarvo" : "752",
+          "nimi" : {
+            "fi" : "Ruotsi"
+          },
+          "koodistoUri" : "maatjavaltiot2"
+        },
+        "kuvaus" : {
+          "fi" : "Harjoittelua ulkomailla"
+        }
+      } ],
+      "sisäoppilaitosmainenMajoitus" : [ {
+        "alku" : "2013-09-01",
+        "loppu" : "2013-12-12"
+      } ]
+    },
+    "alkamispäivä" : "2016-08-15",
+    "päättymispäivä" : "2021-08-01"
+  } ]
 }

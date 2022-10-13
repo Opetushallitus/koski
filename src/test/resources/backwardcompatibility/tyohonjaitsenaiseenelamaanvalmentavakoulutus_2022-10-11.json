@@ -33,7 +33,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2016-06-04",
+        "alku" : "2018-06-04",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -54,7 +54,7 @@
           "koodiarvo" : "999903",
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "6/011/2015"
+        "perusteenDiaarinumero" : "OPH-2659-2017"
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.52251087186",
@@ -366,8 +366,7 @@
             "nimi" : {
               "fi" : "Auton lisävarustetyöt"
             },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodistoUri" : "tutkinnonosat"
           },
           "pakollinen" : false,
           "laajuus" : {
@@ -418,7 +417,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2009-09-14",
-    "päättymispäivä" : "2016-06-04"
-  } ],
-  "ignoreKoskiValidator" : true
+    "päättymispäivä" : "2018-06-04"
+  } ]
 }
