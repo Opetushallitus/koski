@@ -96,6 +96,7 @@ object Koodistot {
     KoodistoAsetus("valpasvastaanottotieto"),
     KoodistoAsetus("tuvajarjestamislupa"),
     KoodistoAsetus("europeanschoolofhelsinkiluokkaaste"),
+    KoodistoAsetus("europeanschoolofhelsinkicurriculum"),
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.toString)
 

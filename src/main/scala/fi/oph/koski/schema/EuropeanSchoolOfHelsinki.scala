@@ -159,12 +159,15 @@ case class SecondaryVuosiluokanSuoritus(
 trait EuropeanSchoolOfHelsinkiLuokkaAste extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
   @KoodistoUri("europeanschoolofhelsinkiluokkaaste")
   def tunniste: Koodistokoodiviite
+  @KoodistoUri("europeanschoolofhelsinkicurriculum")
+  def curriculum: Koodistokoodiviite
 }
 
 case class NurseryLuokkaAste(
   @KoodistoKoodiarvo("N1")
   @KoodistoKoodiarvo("N2")
-  tunniste: Koodistokoodiviite
+  tunniste: Koodistokoodiviite,
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
 ) extends EuropeanSchoolOfHelsinkiLuokkaAste
 
 object NurseryLuokkaAste {
@@ -179,7 +182,8 @@ case class PrimaryLuokkaAste(
   @KoodistoKoodiarvo("P3")
   @KoodistoKoodiarvo("P4")
   @KoodistoKoodiarvo("P5")
-  tunniste: Koodistokoodiviite
+  tunniste: Koodistokoodiviite,
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
 ) extends EuropeanSchoolOfHelsinkiLuokkaAste
 
 
@@ -197,7 +201,8 @@ case class SecondaryLuokkaAste(
   @KoodistoKoodiarvo("S5")
   @KoodistoKoodiarvo("S6")
   @KoodistoKoodiarvo("S7")
-  tunniste: Koodistokoodiviite
+  tunniste: Koodistokoodiviite,
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
 ) extends EuropeanSchoolOfHelsinkiLuokkaAste
 
 
