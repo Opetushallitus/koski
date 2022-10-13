@@ -80,7 +80,6 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
-// TODO: TOR-1685 Mitkä vaihtoehdot opintojen rahoitukseen?
 case class EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoKoodiarvo("eronnut")
@@ -89,9 +88,8 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
   @KoodistoKoodiarvo("valmistunut")
   tila: Koodistokoodiviite,
-  @Description("Opintojen rahoitus. Mikäli kyseessä on kaksoitutkintoa suorittava opiskelija, jonka rahoituksen saa ammatillinen oppilaitos, tulee käyttää arvoa 6: Muuta kautta rahoitettu. Muussa tapauksessa käytetään arvoa 1: Valtionosuusrahoitteinen koulutus.")
+  @Description("Opintojen rahoitus. Toistaiseksi läsnä- ja valmistunut-tiloille aina 6: Muuta kautta rahoitettu")
   @KoodistoUri("opintojenrahoitus")
-  @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
