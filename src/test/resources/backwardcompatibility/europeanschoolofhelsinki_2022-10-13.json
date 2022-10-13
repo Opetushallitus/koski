@@ -1004,17 +1004,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "lisätiedot" : {
-      "erityisenKoulutustehtävänJaksot" : [ {
-        "alku" : "2012-09-01",
-        "loppu" : "2013-09-01",
-        "tehtävä" : {
-          "koodiarvo" : "103",
-          "nimi" : {
-            "fi" : "Kieliin painottuva koulutus"
-          },
-          "koodistoUri" : "erityinenkoulutustehtava"
-        }
-      } ],
       "ulkomaanjaksot" : [ {
         "alku" : "2012-09-01",
         "loppu" : "2013-09-01",
