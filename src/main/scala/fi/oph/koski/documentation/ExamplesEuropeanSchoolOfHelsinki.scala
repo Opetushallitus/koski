@@ -12,7 +12,6 @@ object ExamplesEuropeanSchoolOfHelsinki {
   val alkamispäivä = date(2022, 8, 1)
   val päättymispäivä = alkamispäivä.plusYears(15).withMonth(5).withDayOfMonth(31)
   val lisätiedot = EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
-    erityisenKoulutustehtävänJaksot = Some(List(ExamplesLukio.erityisenKoulutustehtävänJakso)),
     ulkomaanjaksot = Some(List(ExamplesLukio.ulkomaanjakso)),
     /*maksuttomuus = Some(
       List(
