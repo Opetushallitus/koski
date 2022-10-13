@@ -4,7 +4,7 @@
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "kielivalikoima",
-    "kuvaus" : "kielivalikoima"
+    "kuvaus" : "kielivalikoima - käytetään ainakin KOSKI-palvelussa oppiaineiden kieliä määriteltäessä"
   }, {
     "kieli" : "SV",
     "nimi" : "kielivalikoima",
@@ -14,10 +14,10 @@
     "nimi" : "kielivalikoima",
     "kuvaus" : "kielivalikoima"
   } ],
-  "codesGroupUri" : "http://koulutuskoodistot",
+  "codesGroupUri" : "koulutuskoodistot",
   "voimassaAlkuPvm" : "2013-01-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 0
+  "version" : 1
 }

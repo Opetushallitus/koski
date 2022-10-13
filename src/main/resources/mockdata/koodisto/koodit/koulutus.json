@@ -20,6 +20,7 @@
   "koodiArvo" : "000002",
   "metadata" : [ {
     "nimi" : "Ammatillinen erityisopettajan koulutus",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Specialyrkeslärarutbildning",
@@ -210,45 +211,6 @@
     "kieli" : "SV"
   } ],
   "versio" : 12
-}, {
-  "koodiUri" : "koulutus_999909",
-  "koodiArvo" : "999909",
-  "metadata" : [ {
-    "nimi" : "Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille",
-    "lyhytNimi" : "Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Fritt bildningsarbete ",
-    "lyhytNimi" : "Fritt bildningsarbete ",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "koulutus_999910",
-  "koodiArvo" : "999910",
-  "metadata" : [ {
-    "nimi" : "Kansanopistojen vapaan sivistystyön maahanmuuttajien kotoutuskoulutus oppivelvollisille",
-    "lyhytNimi" : "Kansanopistojen vapaan sivistystyön maahanmuuttajien kotoutuskoulutus oppivelvollisille",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Fritt bildningsarbete ",
-    "lyhytNimi" : "Fritt bildningsarbete ",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "koulutus_999911",
-  "koodiArvo" : "999911",
-  "metadata" : [ {
-    "nimi" : "Kansanopistojen vapaan sivistystyön lukutaitokoulutus",
-    "lyhytNimi" : "Kansanopistojen vapaan sivistystyön lukutaitokoulutus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kansanopistojen vapaan sivistystyön lukutaitokoulutus",
-    "lyhytNimi" : "Kansanopistojen vapaan sivistystyön lukutaitokoulutus",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
 }, {
   "koodiUri" : "koulutus_100000",
   "koodiArvo" : "100000",
@@ -1962,15 +1924,15 @@
   "koodiUri" : "koulutus_324117",
   "koodiArvo" : "324117",
   "metadata" : [ {
-    "nimi" : "Saamenkäsityökisällin ammattitutkinto",
+    "nimi" : "Saamenkäsityöalan ammattitutkinto",
     "lyhytNimi" : "Saamenkäsityökisällin at",
     "kieli" : "FI"
   }, {
-    "nimi" : "Yrkesexamen för sameslöjdsgesäll",
+    "nimi" : "Yrkesexamen i sameslöjd",
     "lyhytNimi" : "Yrkesexamen för sameslöjdsgesäll",
     "kieli" : "SV"
   }, {
-    "nimi" : "Further vocational qualification in Sami Crafts",
+    "nimi" : "Further Vocational Qualification in Sami Handicrafts",
     "lyhytNimi" : "Further vocational qualification in Sami Crafts",
     "kieli" : "EN"
   } ],
@@ -3925,6 +3887,23 @@
     "kieli" : "EN"
   } ],
   "versio" : 12
+}, {
+  "koodiUri" : "koulutus_334121",
+  "koodiArvo" : "334121",
+  "metadata" : [ {
+    "nimi" : "Yrittäjyyden ammattitutkinto",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkesexamen i företagande",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Further vocational qualification in entrepreneurship",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "koulutus_334145",
   "koodiArvo" : "334145",
@@ -6418,23 +6397,6 @@
     "kieli" : "EN"
   } ],
   "versio" : 7
-}, {
-  "koodiUri" : "koulutus_451741",
-  "koodiArvo" : "451741",
-  "metadata" : [ {
-    "nimi" : "Puuteollisuuden perustutkinto",
-    "lyhytNimi" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grundexamen inom träindustrin",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vocational Qualification in the Wood Industry",
-    "lyhytNimi" : "Vocational Qualification in the Wood Industry",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
 }, {
   "koodiUri" : "koulutus_351751",
   "koodiArvo" : "351751",
@@ -9412,15 +9374,15 @@
   "koodiArvo" : "354646",
   "metadata" : [ {
     "nimi" : "Prosessiteollisuuden ammattitutkinto",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Prosessiteollisuuden at",
     "kieli" : "FI"
   }, {
     "nimi" : "Yrkesexamen inom processindustrin",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "YE inom processindustrin",
     "kieli" : "SV"
   }, {
     "nimi" : "Further vocational qualification in the Process Industry",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "FVQ in the Process Industry",
     "kieli" : "EN"
   } ],
   "versio" : 7
@@ -15363,6 +15325,23 @@
   } ],
   "versio" : 12
 }, {
+  "koodiUri" : "koulutus_374125",
+  "koodiArvo" : "374125",
+  "metadata" : [ {
+    "nimi" : "Vammaisalan ammattitutkinto",
+    "lyhytNimi" : "Vammaisalan ammattitutkinto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkesexamen inom funktionshinderområdet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Further vocational qualification in Disability Services",
+    "lyhytNimi" : "Further vocational qualification in Disability Services",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koulutus_374147",
   "koodiArvo" : "374147",
   "metadata" : [ {
@@ -15784,7 +15763,7 @@
     "lyhytNimi" : "Matkailualan perustutk",
     "kieli" : "FI"
   }, {
-    "nimi" : "Grundexamen i turism",
+    "nimi" : "Grundexamen inom turismbranschen",
     "lyhytNimi" : "Grundexamen i turism",
     "kieli" : "SV"
   }, {
@@ -17821,15 +17800,15 @@
   "koodiArvo" : "384201",
   "metadata" : [ {
     "nimi" : "Asioimistulkkauksen ammattitutkinto",
-    "lyhytNimi" : "Asioimistulkkauksen ammattitutkinto",
+    "lyhytNimi" : "Asioimistulkkauksen at",
     "kieli" : "FI"
   }, {
     "nimi" : "Yrkesexamen i kontakttolkning",
-    "lyhytNimi" : "Yrkesexamen i kontakttolkning",
+    "lyhytNimi" : "YE i kontakttolkning",
     "kieli" : "SV"
   }, {
     "nimi" : "Further vocational qualification for Community Interpreting",
-    "lyhytNimi" : "Further vocational qualification for Community Interpreting",
+    "lyhytNimi" : "FVQ for Community Interpreting",
     "kieli" : "EN"
   } ],
   "versio" : 12
@@ -18024,8 +18003,8 @@
     "lyhytNimi" : "Lastinkäsittelyalan at",
     "kieli" : "FI"
   }, {
-    "nimi" : "Yrkesexamen inom lasthantering",
-    "lyhytNimi" : "Yrkesexamen inom lasthantering",
+    "nimi" : "Yrkesexamen i lasthantering",
+    "lyhytNimi" : "Yrkesexamen i lasthantering",
     "kieli" : "SV"
   }, {
     "nimi" : "Further vocational qualification in Cargo Handling",
@@ -19159,15 +19138,15 @@
   "koodiUri" : "koulutus_427116",
   "koodiArvo" : "427116",
   "metadata" : [ {
-    "nimi" : "Saamenkäsityömestarin erikoisammattitutkinto",
+    "nimi" : "Saamenkäsityöalan erikoisammattitutkinto",
     "lyhytNimi" : "Saamenkäsityömestarin eat",
     "kieli" : "FI"
   }, {
-    "nimi" : "Specialyrkesexamen för sameslöjdsmästare",
+    "nimi" : "Specialyrkesexamen i sameslöjd",
     "lyhytNimi" : "Specialyrkesexamen för sameslöjdsmästare",
     "kieli" : "SV"
   }, {
-    "nimi" : "Specialist vocational qualification in Sámi Crafts",
+    "nimi" : "Specialist Vocational Qualification in Sami Handicrafts",
     "lyhytNimi" : "Specialist vocational qualification in Sámi Crafts",
     "kieli" : "EN"
   } ],
@@ -20802,11 +20781,11 @@
   "koodiArvo" : "457641",
   "metadata" : [ {
     "nimi" : "Prosessiteollisuuden erikoisammattitutkinto",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Prosessiteollisuuden eat",
     "kieli" : "FI"
   }, {
     "nimi" : "Specialyrkesexamen inom processindustrin",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "SYE inom processindustrin",
     "kieli" : "SV"
   }, {
     "nimi" : "Specialist vocational qualification in the Process Industry",
@@ -22341,8 +22320,8 @@
     "lyhytNimi" : "Maaseudun kehittämisen eat",
     "kieli" : "FI"
   }, {
-    "nimi" : "Specialyrkesexamen för utveckling av landsbygden",
-    "lyhytNimi" : "Specialyrkesexamen för utveckling av landsbygden",
+    "nimi" : "Specialyrkesexamen i utveckling av landsbygden",
+    "lyhytNimi" : "Specialyrkesexamen i utveckling av landsbygden",
     "kieli" : "SV"
   }, {
     "nimi" : "Specialist Qualification in Rural Development",
@@ -22474,15 +22453,15 @@
   "koodiArvo" : "477102",
   "metadata" : [ {
     "nimi" : "Puhevammaisten tulkkauksen erikoisammattitutkinto",
-    "lyhytNimi" : "Puhevammaisten tulkkauksen erikoisammattitutkinto",
+    "lyhytNimi" : "Puhevammaisten tulkkauksen eat",
     "kieli" : "FI"
   }, {
     "nimi" : "Specialyrkesexamen i tolkning för talskadade",
-    "lyhytNimi" : "Specialyrkesexamen i tolkning för talskadade",
+    "lyhytNimi" : "SYE i tolkning för talskadade",
     "kieli" : "SV"
   }, {
     "nimi" : "Specialist vocational qualification in Interpreting for Persons with Speech Impairments",
-    "lyhytNimi" : "Specialist vocational qualification in Interpreting for Persons with Speech Impairments",
+    "lyhytNimi" : "SVQ in Interpreting for Persons with Speech Impairments",
     "kieli" : "EN"
   } ],
   "versio" : 7
@@ -22859,11 +22838,11 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Specialyrkesexamen i rättstolkning",
-    "lyhytNimi" : "Specialyrkesexamen i rättstolkning",
+    "lyhytNimi" : "SYE i rättstolkning",
     "kieli" : "SV"
   }, {
     "nimi" : "Specialist Vocational Qualification in Court Interpreting",
-    "lyhytNimi" : "Specialist Vocational Qualification in Court Interpreting",
+    "lyhytNimi" : "SVQ in Court Interpreting",
     "kieli" : "EN"
   } ],
   "versio" : 7
@@ -27425,15 +27404,15 @@
   "koodiUri" : "koulutus_612101",
   "koodiArvo" : "612101",
   "metadata" : [ {
-    "nimi" : "Kasvatustieteiden kandidaatti (alempi), lastentarhanopettaja",
+    "nimi" : "Kasvatust. kand., varhaiskasvatuksen opettaja; kasvatust. kand. (alempi), lastentarhanopettaja",
     "lyhytNimi" : "KK (al), lastentarhanopettaja",
     "kieli" : "FI"
   }, {
-    "nimi" : "Ped. kand. (lägre), barnträdgårdslärare",
+    "nimi" : "Ped. kand., lärare inom småbarnspedagogik; Ped. kand. (lägre), barnträdgårdslärare",
     "lyhytNimi" : "PeK (lägre), barntr.",
     "kieli" : "SV"
   }, {
-    "nimi" : "BA, Kindergarten Teacher",
+    "nimi" : "Bachelor of Arts (Education), Teacher in Early Childhood Education and Care; Bachelor of Arts (Education), Kindergarten Teacher",
     "lyhytNimi" : "Bachelor of Arts (Education), Kindergarten Teacher",
     "kieli" : "EN"
   } ],
@@ -28556,8 +28535,8 @@
     "lyhytNimi" : "Teatteri-ilmaisun ohj. (AMK)",
     "kieli" : "FI"
   }, {
-    "nimi" : "Scenkonstpedagog (YH)",
-    "lyhytNimi" : "Scenkonstpedagog (YH)",
+    "nimi" : "Dramainstruktör (YH)",
+    "lyhytNimi" : "Dramainstruktör (YH)",
     "kieli" : "SV"
   }, {
     "nimi" : "Bachelor of Culture and Arts",
@@ -29504,7 +29483,7 @@
   "koodiUri" : "koulutus_623199",
   "koodiArvo" : "623199",
   "metadata" : [ {
-    "nimi" : "Hum, kand., muu tai tuntematon kieli",
+    "nimi" : "Hum. kand., muu tai tuntematon kieli",
     "lyhytNimi" : "HuK, muu kieli",
     "kieli" : "FI"
   }, {
@@ -30320,12 +30299,12 @@
   "koodiUri" : "koulutus_631101",
   "koodiArvo" : "631101",
   "metadata" : [ {
-    "nimi" : "Tradenomi, talous, hallinto ja markkinointi",
-    "lyhytNimi" : "Tradenomi, tal., hall., markk.",
+    "nimi" : "Tradenomi (AMK), talous, hallinto ja markkinointi",
+    "lyhytNimi" : "Tradenomi (AMK), tal., hall., markk.",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tradenom, ekonomi, förvaltning och marknadsföring",
-    "lyhytNimi" : "Tradenom, ekon., förv., markn.",
+    "nimi" : "Tradenom (YH), ekonomi, förvaltning och marknadsföring",
+    "lyhytNimi" : "Tradenom (YH), ekon., förv., markn.",
     "kieli" : "SV"
   }, {
     "nimi" : "BBA (Poly), Econ. Adm., Mark.",
@@ -30337,12 +30316,12 @@
   "koodiUri" : "koulutus_631104",
   "koodiArvo" : "631104",
   "metadata" : [ {
-    "nimi" : "Tradenomi, sihteerityö ja kielet",
-    "lyhytNimi" : "Tradenomi, sihteerityö, kielet",
+    "nimi" : "Tradenomi (AMK), sihteerityö ja kielet",
+    "lyhytNimi" : "Tradenomi (AMK), sihteerityö, kielet",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tradenom, sekreterararbete och språk",
-    "lyhytNimi" : "Tradenom, sekr.arbete o språk",
+    "nimi" : "Tradenom (YH), sekreterararbete och språk",
+    "lyhytNimi" : "Tradenom (YH), sekr.arbete o språk",
     "kieli" : "SV"
   }, {
     "nimi" : "BBA (Poly), Secr., Lang.",
@@ -30354,12 +30333,12 @@
   "koodiUri" : "koulutus_631107",
   "koodiArvo" : "631107",
   "metadata" : [ {
-    "nimi" : "Tradenomi, tietojenkäsittely",
-    "lyhytNimi" : "Tradenomi, tietojenkäsittely",
+    "nimi" : "Tradenomi (AMK), tietojenkäsittely",
+    "lyhytNimi" : "Tradenomi (AMK), tietojenkäsittely",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tradenom, databehandling",
-    "lyhytNimi" : "Tradenom, databehandling",
+    "nimi" : "Tradenom (YH), databehandling",
+    "lyhytNimi" : "Tradenom (YH), databehandling",
     "kieli" : "SV"
   }, {
     "nimi" : "BBA (Poly), Data Proc.",
@@ -30384,12 +30363,12 @@
   "koodiUri" : "koulutus_631109",
   "koodiArvo" : "631109",
   "metadata" : [ {
-    "nimi" : "Tradenomi, kirjasto- ja informaatiopalvelut",
-    "lyhytNimi" : "Tradenomi, kirjasto-,inform.p.",
+    "nimi" : "Tradenomi (AMK), kirjasto- ja informaatiopalvelut",
+    "lyhytNimi" : "Tradenomi (AMK), kirjasto-,inform.p.",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tradenom, biblioteks- och informationstjänster",
-    "lyhytNimi" : "Tradenom, bibl.- o inf.tjänst.",
+    "nimi" : "Tradenom (YH), biblioteks- och informationstjänster",
+    "lyhytNimi" : "Tradenom (YH), bibl.- o inf.tjänst.",
     "kieli" : "SV"
   }, {
     "nimi" : "BBA (Poly), Lib, Inf. Serv.",
@@ -30401,12 +30380,12 @@
   "koodiUri" : "koulutus_631110",
   "koodiArvo" : "631110",
   "metadata" : [ {
-    "nimi" : "Tradenomi, matkailu",
-    "lyhytNimi" : "Tradenomi, matkailu",
+    "nimi" : "Tradenomi (AMK), matkailu",
+    "lyhytNimi" : "Tradenomi (AMK), matkailu",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tradenom, turism",
-    "lyhytNimi" : "Tradenom, turism",
+    "nimi" : "Tradenom (YH), turism",
+    "lyhytNimi" : "Tradenom (YH), turism",
     "kieli" : "SV"
   }, {
     "nimi" : "BBA (Poly), Tourism",
@@ -30418,12 +30397,12 @@
   "koodiUri" : "koulutus_631199",
   "koodiArvo" : "631199",
   "metadata" : [ {
-    "nimi" : "Tradenomi, muu tai tuntematon ala",
-    "lyhytNimi" : "Tradenomi, muu ala",
+    "nimi" : "Tradenomi (AMK), muu tai tuntematon ala",
+    "lyhytNimi" : "Tradenomi (AMK), muu ala",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tradenom, annat eller okänt område",
-    "lyhytNimi" : "Tradenom, annat område",
+    "nimi" : "Tradenom (YH), annat eller okänt område",
+    "lyhytNimi" : "Tradenom (YH), annat område",
     "kieli" : "SV"
   }, {
     "nimi" : "BBA (Poly), Other Field",
@@ -32513,8 +32492,8 @@
     "lyhytNimi" : "Ingenjör (YH), datateknik",
     "kieli" : "SV"
   }, {
-    "nimi" : "BEng (Poly), IT",
-    "lyhytNimi" : "Bachelor of Engineering (Polytechnic), Information Technology",
+    "nimi" : "Bachelor of Engineering (Polytechnic), Information Technology",
+    "lyhytNimi" : "BEng (Poly), IT",
     "kieli" : "EN"
   } ],
   "versio" : 12
@@ -32535,6 +32514,23 @@
     "kieli" : "EN"
   } ],
   "versio" : 12
+}, {
+  "koodiUri" : "koulutus_651303",
+  "koodiArvo" : "651303",
+  "metadata" : [ {
+    "nimi" : "Insinööri (AMK), robotiikka ja tekoäly",
+    "lyhytNimi" : "Insinööri (AMK), robotiikka ja tekoäly",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Ingenjör (YH), robotteknik och artificiell intelligens",
+    "lyhytNimi" : "Ingenjör (YH), robotteknik och artificiell intelligens",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Bachelor of Engineering (UAS), robotisation and artificial intelligence",
+    "lyhytNimi" : "Bachelor of Engineering (UAS), robotisation and artificial intelligence",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "koulutus_651399",
   "koodiArvo" : "651399",
@@ -33160,6 +33156,23 @@
     "kieli" : "EN"
   } ],
   "versio" : 12
+}, {
+  "koodiUri" : "koulutus_652901",
+  "koodiArvo" : "652901",
+  "metadata" : [ {
+    "nimi" : "Tietojärjestelmäsuunnittelija (AMK)",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Systemvetare (YH)",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Bachelor of Information Technology (UAS)",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "koulutus_652999",
   "koodiArvo" : "652999",
@@ -38925,8 +38938,8 @@
     "lyhytNimi" : "Tradenom (h. YH), ekon., markn",
     "kieli" : "SV"
   }, {
-    "nimi" : "MBA (Poly), Econ., Adm., Mark.",
-    "lyhytNimi" : "Master of Business Administration (Polytechnic), Economics, Administration and Marketing",
+    "nimi" : "Master of Business Administration (Polytechnic), Economics, Administration and Marketing",
+    "lyhytNimi" : "MBA (Poly), Econ., Adm., Mark.",
     "kieli" : "EN"
   } ],
   "versio" : 12
@@ -40559,6 +40572,23 @@
   } ],
   "versio" : 7
 }, {
+  "koodiUri" : "koulutus_742705",
+  "koodiArvo" : "742705",
+  "metadata" : [ {
+    "nimi" : "Fil. maist., farmaseuttiset tieteet",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Fil. mag., farmaceutiska vetenskaper",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Master of Science, pharmaceutical sciences",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koulutus_742900",
   "koodiArvo" : "742900",
   "metadata" : [ {
@@ -40797,6 +40827,23 @@
   } ],
   "versio" : 12
 }, {
+  "koodiUri" : "koulutus_750204",
+  "koodiArvo" : "750204",
+  "metadata" : [ {
+    "nimi" : "Insinööri (ylempi AMK), kuljetustekniikka",
+    "lyhytNimi" : "Insinööri (ylempi AMK), kuljetustekniikka",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Ingenjör (högre YH), transportteknik",
+    "lyhytNimi" : "Ingenjör (högre YH), transportteknik",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Master of Engineering (UAS), Transportation Engineering",
+    "lyhytNimi" : "Master of Engineering (UAS), Transportation Engineering",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koulutus_750205",
   "koodiArvo" : "750205",
   "metadata" : [ {
@@ -40865,12 +40912,15 @@
   "koodiArvo" : "750304",
   "metadata" : [ {
     "nimi" : "Insinööri (ylempi AMK), sähkövoimatekniikka",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Ingenjör (högre YH), elkraftsteknik",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Master of Engineering (Polytechnic), Electrical Power Engineering",
+    "lyhytNimi" : "",
     "kieli" : "EN"
   } ],
   "versio" : 8
@@ -41294,8 +41344,8 @@
     "lyhytNimi" : "DI, energiteknik",
     "kieli" : "SV"
   }, {
-    "nimi" : "MSc, Energy Eng.",
-    "lyhytNimi" : "Master of Science (Technology), Energy Engineering",
+    "nimi" : "Master of Science (Technology), Energy Engineering",
+    "lyhytNimi" : "MSc, Energy Eng",
     "kieli" : "EN"
   } ],
   "versio" : 12
@@ -41435,6 +41485,23 @@
     "kieli" : "EN"
   } ],
   "versio" : 12
+}, {
+  "koodiUri" : "koulutus_751303",
+  "koodiArvo" : "751303",
+  "metadata" : [ {
+    "nimi" : "Dipl.ins., tietojohtaminen",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Dipl.ing., kunskapshantering",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Master of Science (Technology), Information and Knowledge Management",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "koulutus_751400",
   "koodiArvo" : "751400",
@@ -41647,8 +41714,8 @@
     "lyhytNimi" : "DI, produktionsekonomi",
     "kieli" : "SV"
   }, {
-    "nimi" : "MSc, Industrial Management",
-    "lyhytNimi" : "Master of Science (Technology), Industrial Management",
+    "nimi" : "Master of Science (Technology), Industrial Management",
+    "lyhytNimi" : "MSc, Industrial Management",
     "kieli" : "EN"
   } ],
   "versio" : 12
@@ -49943,8 +50010,8 @@
     "lyhytNimi" : "TkD, automationsteknik",
     "kieli" : "SV"
   }, {
-    "nimi" : "DSc, Automation Eng.",
-    "lyhytNimi" : "Doctor of Science (Technology), Automation Engineering",
+    "nimi" : "Doctor of Science (Technology), Automation Engineering",
+    "lyhytNimi" : "DSc, Automation Eng.",
     "kieli" : "EN"
   } ],
   "versio" : 12
@@ -52501,14 +52568,53 @@
   "koodiArvo" : "999908",
   "metadata" : [ {
     "nimi" : "Tutkintokoulutukseen valmentava koulutus",
-    "lyhytNimi" : "Tutkintokoulutukseen valmentava koulutus",
+    "lyhytNimi" : "TUVA",
     "kieli" : "FI"
   }, {
     "nimi" : "Utbildning som handleder för examensutbildning",
-    "lyhytNimi" : "Utbildning som handleder för examensutbildning",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 6
+  "versio" : 1
+}, {
+  "koodiUri" : "koulutus_999909",
+  "koodiArvo" : "999909",
+  "metadata" : [ {
+    "nimi" : "Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille",
+    "lyhytNimi" : "Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Folkhögskolornas utbildning inom fritt bildningsarbete för läropliktiga",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koulutus_999910",
+  "koodiArvo" : "999910",
+  "metadata" : [ {
+    "nimi" : "Kotoutumiskoulutus oppivelvollisille",
+    "lyhytNimi" : "Kotoutumiskoulutus oppivelvollisille",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Integrationsutbildning för läropliktiga",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koulutus_999911",
+  "koodiArvo" : "999911",
+  "metadata" : [ {
+    "nimi" : "Lukutaitokoulutus oppivelvollisille",
+    "lyhytNimi" : "Lukutaitokoulutus oppivelvollisille",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Litteracitetsutbildning för läropliktiga",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "koulutus_999999",
   "koodiArvo" : "999999",

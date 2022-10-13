@@ -1,6 +1,6 @@
 {
   "koodistoUri" : "oppilaitoksenopetuskieli",
-  "versio" : 1,
+  "versio" : 2,
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "oppilaitoksen opetuskieli",
@@ -14,14 +14,14 @@
     "nimi" : "oppilaitoksen opetuskieli",
     "kuvaus" : "oppilaitoksen opetuskieli"
   } ],
-  "codesGroupUri" : "http://oppilaitoskoodistot",
-  "voimassaAlkuPvm" : "2013-01-01",
+  "codesGroupUri" : "oppilaitoskoodistot",
+  "voimassaAlkuPvm" : "2021-06-08",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {
     "codesUri" : "oppilaitosnumero",
     "codesVersion" : 1,
     "passive" : false
   } ],
-  "tila" : "HYVAKSYTTY",
-  "version" : 4
+  "tila" : "LUONNOS",
+  "version" : 2
 }

@@ -108,6 +108,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "tutkintonimikkeet_10000",
+  "koodiArvo" : "10000",
+  "metadata" : [ {
+    "nimi" : "Välinehuoltaja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkintonimikkeet_10001",
   "koodiArvo" : "10001",
   "metadata" : [ {
@@ -124,6 +132,14 @@
     "kieli" : "EN"
   } ],
   "versio" : 2
+}, {
+  "koodiUri" : "tutkintonimikkeet_10002",
+  "koodiArvo" : "10002",
+  "metadata" : [ {
+    "nimi" : "Maapalvelutyöntekijä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "tutkintonimikkeet_10003",
   "koodiArvo" : "10003",
@@ -245,6 +261,32 @@
     "kieli" : "SV"
   } ],
   "versio" : 2
+}, {
+  "koodiUri" : "tutkintonimikkeet_10012",
+  "koodiArvo" : "10012",
+  "metadata" : [ {
+    "nimi" : "Kuorma-autonkuljettaja",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lastbilsförare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10013",
+  "koodiArvo" : "10013",
+  "metadata" : [ {
+    "nimi" : "Yhdistelmäajoneuvonkuljettaja",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kombinationsfordonsförare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "tutkintonimikkeet_10014",
   "koodiArvo" : "10014",
@@ -504,6 +546,19 @@
   } ],
   "versio" : 2
 }, {
+  "koodiUri" : "tutkintonimikkeet_10032",
+  "koodiArvo" : "10032",
+  "metadata" : [ {
+    "nimi" : "Linja-autonkuljettaja",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Bussförare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkintonimikkeet_10033",
   "koodiArvo" : "10033",
   "metadata" : [ {
@@ -608,6 +663,19 @@
   } ],
   "versio" : 2
 }, {
+  "koodiUri" : "tutkintonimikkeet_10041",
+  "koodiArvo" : "10041",
+  "metadata" : [ {
+    "nimi" : "Palvelulogistiikkatyöntekijä",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Servicelogistikarbetare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkintonimikkeet_10042",
   "koodiArvo" : "10042",
   "metadata" : [ {
@@ -633,6 +701,32 @@
     "kieli" : "SV"
   } ],
   "versio" : 2
+}, {
+  "koodiUri" : "tutkintonimikkeet_10044",
+  "koodiArvo" : "10044",
+  "metadata" : [ {
+    "nimi" : "Kunnossapitotyöntekijä",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Underhållsarbetare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10045",
+  "koodiArvo" : "10045",
+  "metadata" : [ {
+    "nimi" : "Maapalvelutyöntekijä",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Marktjänstarbetare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "tutkintonimikkeet_10046",
   "koodiArvo" : "10046",
@@ -871,6 +965,46 @@
   } ],
   "versio" : 2
 }, {
+  "koodiUri" : "tutkintonimikkeet_10063",
+  "koodiArvo" : "10063",
+  "metadata" : [ {
+    "nimi" : "eläintenhoitaja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10064",
+  "koodiArvo" : "10064",
+  "metadata" : [ {
+    "nimi" : "Turkiseläinten hoitaja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10065",
+  "koodiArvo" : "10065",
+  "metadata" : [ {
+    "nimi" : "Turkiseläintenhoitaja",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Pälsdjursuppfödare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10066",
+  "koodiArvo" : "10066",
+  "metadata" : [ {
+    "nimi" : "Automekaanikko",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Bilmekaniker",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkintonimikkeet_10067",
   "koodiArvo" : "10067",
   "metadata" : [ {
@@ -887,6 +1021,28 @@
     "kieli" : "EN"
   } ],
   "versio" : 2
+}, {
+  "koodiUri" : "tutkintonimikkeet_10068",
+  "koodiArvo" : "10068",
+  "metadata" : [ {
+    "nimi" : "Ajoneuvomyyjä",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Fordonsförsäljare",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10069",
+  "koodiArvo" : "10069",
+  "metadata" : [ {
+    "nimi" : "Pienkonemekaanikko",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Småmaskinsmekaniker",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "tutkintonimikkeet_10070",
   "koodiArvo" : "10070",
@@ -952,6 +1108,17 @@
   } ],
   "versio" : 2
 }, {
+  "koodiUri" : "tutkintonimikkeet_10074",
+  "koodiArvo" : "10074",
+  "metadata" : [ {
+    "nimi" : "Autokorimekaanikko",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Karosseri- och bilplåtsmekaniker",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkintonimikkeet_10075",
   "koodiArvo" : "10075",
   "metadata" : [ {
@@ -1008,18 +1175,27 @@
   } ],
   "versio" : 2
 }, {
+  "koodiUri" : "tutkintonimikkeet_10079",
+  "koodiArvo" : "10079",
+  "metadata" : [ {
+    "nimi" : "Diagnoosimekaanikko",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Diagnosmekaniker",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkintonimikkeet_10080",
   "koodiArvo" : "10080",
   "metadata" : [ {
     "nimi" : "Hyötyajoneuvomekaanikko",
-    "lyhytNimi" : "Hyötyajoneuvomekaanikko",
     "kieli" : "FI"
   }, {
     "nimi" : "Nyttofordonsmekaniker",
-    "lyhytNimi" : "Nyttofordonsmekaniker",
     "kieli" : "SV"
   } ],
-  "versio" : 2
+  "versio" : 1
 }, {
   "koodiUri" : "tutkintonimikkeet_10081",
   "koodiArvo" : "10081",
@@ -1033,6 +1209,17 @@
     "kieli" : "SV"
   } ],
   "versio" : 2
+}, {
+  "koodiUri" : "tutkintonimikkeet_10082",
+  "koodiArvo" : "10082",
+  "metadata" : [ {
+    "nimi" : "Huoltomyyjä",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Serviceförsäljare",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "tutkintonimikkeet_10083",
   "koodiArvo" : "10083",
@@ -1050,6 +1237,39 @@
     "kieli" : "EN"
   } ],
   "versio" : 2
+}, {
+  "koodiUri" : "tutkintonimikkeet_10084",
+  "koodiArvo" : "10084",
+  "metadata" : [ {
+    "nimi" : "Poronhoitaja (AT)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Renskötare (YE)",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10085",
+  "koodiArvo" : "10085",
+  "metadata" : [ {
+    "nimi" : "Koulunkäynninohjaaja",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Skolgångshandledare",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10086",
+  "koodiArvo" : "10086",
+  "metadata" : [ {
+    "nimi" : "Koulunkäynninohjaaja",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Skolgångshandledare",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "tutkintonimikkeet_10087",
   "koodiArvo" : "10087",
@@ -1145,6 +1365,28 @@
     "kieli" : "SV"
   } ],
   "versio" : 2
+}, {
+  "koodiUri" : "tutkintonimikkeet_10094",
+  "koodiArvo" : "10094",
+  "metadata" : [ {
+    "nimi" : "Koulunkäynninohjaaja",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Skolgångshandledare",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10095",
+  "koodiArvo" : "10095",
+  "metadata" : [ {
+    "nimi" : "Koulunkäynninohjaaja",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Skolgångshandledare",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "tutkintonimikkeet_10098",
   "koodiArvo" : "10098",
@@ -2267,6 +2509,58 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "tutkintonimikkeet_10227",
+  "koodiArvo" : "10227",
+  "metadata" : [ {
+    "nimi" : "Lentokonehuoltaja",
+    "lyhytNimi" : "Lentokonehuoltaja",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Skötare av flygplansunderhåll",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10228",
+  "koodiArvo" : "10228",
+  "metadata" : [ {
+    "nimi" : "Kuorma-auton kuljettaja",
+    "lyhytNimi" : "Kuorma-auton kuljettaja",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lastbilförare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10229",
+  "koodiArvo" : "10229",
+  "metadata" : [ {
+    "nimi" : "Palvelulogistiikkatyöntekijä",
+    "lyhytNimi" : "Palvelulogistiikkatyöntekijä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_10230",
+  "koodiArvo" : "10230",
+  "metadata" : [ {
+    "nimi" : "Kunnossapitotyöntekijä",
+    "lyhytNimi" : "Kunnossapitotyöntekijä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "Artesaani",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkintonimikkeet_20001",
   "koodiArvo" : "20001",
   "metadata" : [ {
@@ -2584,6 +2878,10 @@
     "nimi" : "Fastighetsskötare (YE)",
     "lyhytNimi" : "Fastighetsskötare (YE)",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Property Maintenance Operative (FQ)",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2597,6 +2895,10 @@
     "nimi" : "Teknisk fastighetsskötare",
     "lyhytNimi" : "Teknisk fastighetsskötare",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Technical Property Maintenance Operative",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2610,6 +2912,10 @@
     "nimi" : "Personlig assistent",
     "lyhytNimi" : "Personlig assistent",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Personal Assistant",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2623,6 +2929,10 @@
     "nimi" : "Hemskötare (YE)",
     "lyhytNimi" : "Hemskötare (YE)",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Housekeeper (FQ)",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2636,6 +2946,10 @@
     "nimi" : "Anstaltsvårdare",
     "lyhytNimi" : "Anstaltsvårdare",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Institutional Cleaner",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2649,6 +2963,10 @@
     "nimi" : "Lokalvårdare (YE)",
     "lyhytNimi" : "Lokalvårdare (YE)",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Site Facilities Operator (FQ)",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3605,8 +3923,8 @@
     "lyhytNimi" : "Stailaaja (AT)",
     "kieli" : "FI"
   }, {
-    "nimi" : "Stailaaja (AT)",
-    "lyhytNimi" : "Stailaaja (AT)",
+    "nimi" : "Stylist (YE)",
+    "lyhytNimi" : "Stylist(YE)",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3618,8 +3936,8 @@
     "lyhytNimi" : "Tekstiilien valmistaja (AT)",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tekstiilien valmistaja (AT)",
-    "lyhytNimi" : "Tekstiilien valmistaja (AT)",
+    "nimi" : "En textiltillverkare (YE)",
+    "lyhytNimi" : "En textiltillverkare (YE)",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3631,8 +3949,8 @@
     "lyhytNimi" : "Designtekstiilien valmistaja (AT)",
     "kieli" : "FI"
   }, {
-    "nimi" : "Designtekstiilien valmistaja (AT)",
-    "lyhytNimi" : "Designtekstiilien valmistaja (AT)",
+    "nimi" : "Tllverkare av designtextilier (YE)",
+    "lyhytNimi" : "Tillverkare av designtextilier (YE)",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3644,8 +3962,8 @@
     "lyhytNimi" : "Suutari (AT)",
     "kieli" : "FI"
   }, {
-    "nimi" : "Suutari (AT)",
-    "lyhytNimi" : "Suutari (AT)",
+    "nimi" : "Skomakare(YE)",
+    "lyhytNimi" : "Skomakare(YE)",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -3657,8 +3975,8 @@
     "lyhytNimi" : "Tekstiilihuoltaja (AT)",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tekstiilihuoltaja (AT)",
-    "lyhytNimi" : "Tekstiilihuoltaja (AT)",
+    "nimi" : "Textilvårdare(YE)",
+    "lyhytNimi" : "Textilvårdare(YE)",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -4196,6 +4514,57 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "tutkintonimikkeet_20134",
+  "koodiArvo" : "20134",
+  "metadata" : [ {
+    "nimi" : "Erikoislaborantti",
+    "lyhytNimi" : "Erikoislaborantti",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Speciallaborant",
+    "lyhytNimi" : "Speciallaborant",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Specialist laboratory technician",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20135",
+  "koodiArvo" : "20135",
+  "metadata" : [ {
+    "nimi" : "Kehitysvamma-alan ohjaaja (AT)",
+    "lyhytNimi" : "Kehitysvamma-alan ohjaaja (AT)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Handledare för personer med intellektuell funktionsnedsättning (YE)",
+    "lyhytNimi" : "Handledare för personer med intellektuell funktionsnedsättning (YE)",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20136",
+  "koodiArvo" : "20136",
+  "metadata" : [ {
+    "nimi" : "Henkilökohtainen avustaja",
+    "lyhytNimi" : "Henkilökohtainen avustaja",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Personlig assistent",
+    "lyhytNimi" : "Personlig assistent",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "Kelloseppä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkintonimikkeet_30001",
   "koodiArvo" : "30001",
   "metadata" : [ {
@@ -4661,6 +5030,10 @@
     "nimi" : "Liikuntapaikkamestari",
     "lyhytNimi" : "Liikuntapaikkamestari",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Idrottsanläggningsmästare",
+    "lyhytNimi" : "Idrottsanläggningsmästare",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -4995,8 +5368,8 @@
     "lyhytNimi" : "Floristimestari",
     "kieli" : "FI"
   }, {
-    "nimi" : "Floristimestari",
-    "lyhytNimi" : "Floristimestari",
+    "nimi" : "Floristmästare",
+    "lyhytNimi" : "Floristmästare",
     "kieli" : "SV"
   }, {
     "nimi" : "Floristimestari",
@@ -5012,8 +5385,8 @@
     "lyhytNimi" : "Golfkenttämestari",
     "kieli" : "FI"
   }, {
-    "nimi" : "Golfkenttämestari",
-    "lyhytNimi" : "Golfkenttämestari",
+    "nimi" : "Golfbanemästare",
+    "lyhytNimi" : "Golfbanemästare",
     "kieli" : "SV"
   }, {
     "nimi" : "Golfkenttämestari",
@@ -5087,8 +5460,8 @@
     "lyhytNimi" : "Hitsauskoordinoija",
     "kieli" : "FI"
   }, {
-    "nimi" : "Hitsauskoordinoija",
-    "lyhytNimi" : "Hitsauskoordinoija",
+    "nimi" : "Svetskoordinator",
+    "lyhytNimi" : "Svetskoordinator",
     "kieli" : "SV"
   }, {
     "nimi" : "Hitsauskoordinoija",
@@ -5121,6 +5494,10 @@
     "lyhytNimi" : "Sähköasennusmestari",
     "kieli" : "FI"
   }, {
+    "nimi" : "Elinstallationsmästare",
+    "lyhytNimi" : "Elinstallationsmästare",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Electrician (SQ)",
     "lyhytNimi" : "Electrician (SQ)",
     "kieli" : "EN"
@@ -5134,6 +5511,10 @@
     "lyhytNimi" : "Automaatioasennusmestari",
     "kieli" : "FI"
   }, {
+    "nimi" : "Automationsinstallationsmästare",
+    "lyhytNimi" : "Automationsinstallationsmästare",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Automation Assembler (SQ)",
     "lyhytNimi" : "Automation Assembler (SQ)",
     "kieli" : "EN"
@@ -5146,6 +5527,10 @@
     "nimi" : "Lukkoseppämestari",
     "lyhytNimi" : "Lukkoseppämestari",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Låssmedsmästare",
+    "lyhytNimi" : "Låssmedsmästare",
+    "kieli" : "SV"
   }, {
     "nimi" : "Locksmith (SQ)",
     "lyhytNimi" : "Locksmith (SQ)",
@@ -5249,6 +5634,10 @@
     "nimi" : "Kalatalousmestari",
     "lyhytNimi" : "Kalatalousmestari",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fiskerinäringsmästare",
+    "lyhytNimi" : "Fiskerinäringsmästare",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5258,6 +5647,10 @@
     "nimi" : "Kalastusmestari",
     "lyhytNimi" : "Kalastusmestari",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fiskerimästare",
+    "lyhytNimi" : "Fiskerimästare",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5267,6 +5660,10 @@
     "nimi" : "Eläintenkouluttaja (EAT)",
     "lyhytNimi" : "Eläintenkouluttaja (EAT)",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Djurtränare (SYE)",
+    "lyhytNimi" : "Djurtränare (SYE)",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5276,6 +5673,10 @@
     "nimi" : "Klinikkaeläinhoitaja (EAT)",
     "lyhytNimi" : "Klinikkaeläinhoitaja (EAT)",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Djurskötare på klinik (SYE)",
+    "lyhytNimi" : "Djurskötare på klinik (SYE)",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5285,6 +5686,10 @@
     "nimi" : "Koe-eläinhoitaja (EAT)",
     "lyhytNimi" : "Koe-eläinhoitaja (EAT)",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skötare av försöksdjur (SYE)",
+    "lyhytNimi" : "Skötare av försöksdjur (SYE)",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5347,6 +5752,10 @@
     "lyhytNimi" : "Korjaamon esimies",
     "kieli" : "FI"
   }, {
+    "nimi" : "Verkstadschef",
+    "lyhytNimi" : "Verkstadschef",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Workshop Manager",
     "lyhytNimi" : "",
     "kieli" : "EN"
@@ -5359,6 +5768,10 @@
     "nimi" : "Korjaamon työnjohtaja",
     "lyhytNimi" : "Korjaamon työnjohtaja",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetsledare i verkstad",
+    "lyhytNimi" : "Arbetsledare i verkstad",
+    "kieli" : "SV"
   }, {
     "nimi" : "Workshop Supervisor",
     "lyhytNimi" : "",
@@ -5391,6 +5804,10 @@
     "lyhytNimi" : "Autokorimestari",
     "kieli" : "FI"
   }, {
+    "nimi" : "Karosserimästare",
+    "lyhytNimi" : "Karosserimästare",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Vehicle Body Repairer (SQ)",
     "lyhytNimi" : "",
     "kieli" : "EN"
@@ -5403,6 +5820,10 @@
     "nimi" : "Automaalarimestari",
     "lyhytNimi" : "Automaalarimestari",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Billackermästare",
+    "lyhytNimi" : "Billackermästare",
+    "kieli" : "SV"
   }, {
     "nimi" : "Vehicle Painter (SQ)",
     "lyhytNimi" : "",
@@ -5417,6 +5838,10 @@
     "lyhytNimi" : "Automyyjä (EAT)",
     "kieli" : "FI"
   }, {
+    "nimi" : "Bilförsäljare (SYE)",
+    "lyhytNimi" : "Bilförsäljare (SYE)",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Car Salesperson (SQ)",
     "lyhytNimi" : "",
     "kieli" : "EN"
@@ -5430,6 +5855,10 @@
     "lyhytNimi" : "Konemyyjä (EAT)",
     "kieli" : "FI"
   }, {
+    "nimi" : "Maskinförsäljare (SYE)",
+    "lyhytNimi" : "Maskinförsäljare (SYE)",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Machinery Salesperson (SQ)",
     "lyhytNimi" : "",
     "kieli" : "EN"
@@ -5442,6 +5871,10 @@
     "nimi" : "Varaosamyyjä (EAT)",
     "lyhytNimi" : "Varaosamyyjä (EAT)",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Reservdelsförsäljare (SYE)",
+    "lyhytNimi" : "Reservdelsförsäljare (SYE)",
+    "kieli" : "SV"
   }, {
     "nimi" : "Parts Salesperson (SQ)",
     "lyhytNimi" : "",
@@ -5472,6 +5905,10 @@
     "nimi" : "Ikääntyneen ihmisen palveluohjaaja (EAT)",
     "lyhytNimi" : "Ikääntyneen ihmisen palveluohjaaja (EAT)",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Servicehandledare för äldre (SYE)",
+    "lyhytNimi" : "Servicehandledare för äldre (SYE)",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5481,6 +5918,10 @@
     "nimi" : "Muistihoitaja (EAT)",
     "lyhytNimi" : "Muistihoitaja (EAT)",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Minnesskötare (SYE)",
+    "lyhytNimi" : "Minnesskötare (SYE)",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5490,6 +5931,10 @@
     "nimi" : "Ikävalmentaja (EAT)",
     "lyhytNimi" : "Ikävalmentaja (EAT)",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Handledare för äldre (SYE)",
+    "lyhytNimi" : "Handledare för äldre (SYE)",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -5498,6 +5943,18 @@
   "metadata" : [ {
     "nimi" : "Saattohoitaja (EAT)",
     "lyhytNimi" : "Saattohoitaja (EAT)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vårdare i livets slutskede (SYE)",
+    "lyhytNimi" : "Vårdare i livets slutskede (SYE)",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "Mikromekaanikko",
     "kieli" : "FI"
   } ],
   "versio" : 1

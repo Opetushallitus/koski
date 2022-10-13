@@ -4,7 +4,7 @@
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "kunta",
-    "kuvaus" : "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset."
+    "kuvaus" : "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. Koodistoa ylläpidetään Opetushallituksessa (Heidi Bergström)"
   }, {
     "kieli" : "SV",
     "nimi" : "kommun",
@@ -14,7 +14,7 @@
     "nimi" : "municipality",
     "kuvaus" : "municipality"
   } ],
-  "codesGroupUri" : "http://alueet",
+  "codesGroupUri" : "alueet",
   "voimassaAlkuPvm" : "2018-02-08",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {
@@ -27,5 +27,5 @@
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 4
+  "version" : 5
 }

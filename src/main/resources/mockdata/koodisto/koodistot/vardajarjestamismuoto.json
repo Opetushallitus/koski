@@ -4,16 +4,16 @@
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "Varda Järjestämismuoto",
-    "kuvaus" : "Vardan Järjestämismuoto koodisto"
+    "kuvaus" : "Vardan Järjestämismuoto koodisto. Ylläpitäjä Opetushallitus, Varda-tiimi."
   }, {
     "kieli" : "SV",
     "nimi" : "Varda Form för anordnandet",
     "kuvaus" : "Varda Form för anordnandet"
   } ],
-  "codesGroupUri" : "http://varda",
+  "codesGroupUri" : "varda",
   "voimassaAlkuPvm" : "2019-01-01",
-  "organisaatioOid" : "1.2.246.562.10.2013112012294919827487",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 1
+  "version" : 2
 }

@@ -1,63 +1,23 @@
 {
-  "koodistoUri": "yhteystietotyypit",
-  "resourceUri": "https://virkailija.testiopintopolku.fi/koodisto-service/rest/codes/yhteystietotyypit",
-  "omistaja": "Opetushallitus",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "codesGroupUri": "http://alueet",
-  "version": 2,
-  "versio": 1,
-  "paivitysPvm": "2019-02-08",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2014-04-07",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "kieli": "EN",
-      "nimi": "Yhteystietotyypit",
-      "kuvaus": "Koodistolla luokitellaan henkilöiden yhteystietoja.",
-      "kayttoohje": "",
-      "kasite": "",
-      "kohdealue": null,
-      "sitovuustaso": "",
-      "kohdealueenOsaAlue": "",
-      "toimintaymparisto": "",
-      "tarkentaaKoodistoa": "",
-      "huomioitavaKoodisto": "",
-      "koodistonLahde": ""
-    },
-    {
-      "kieli": "FI",
-      "nimi": "Yhteystietotyypit",
-      "kuvaus": "Koodistolla luokitellaan henkilöiden yhteystietoja. Käytössä ainakin Organisaatiopalvelussa.\n\nYlläpitäjä on Heidi Bergström",
-      "kayttoohje": "",
-      "kasite": "",
-      "kohdealue": null,
-      "sitovuustaso": "",
-      "kohdealueenOsaAlue": "",
-      "toimintaymparisto": "",
-      "tarkentaaKoodistoa": "",
-      "huomioitavaKoodisto": "",
-      "koodistonLahde": ""
-    },
-    {
-      "kieli": "SV",
-      "nimi": "Yhteystietotyypit",
-      "kuvaus": "Koodistolla luokitellaan henkilöiden yhteystietoja.",
-      "kayttoohje": "",
-      "kasite": "",
-      "kohdealue": null,
-      "sitovuustaso": "",
-      "kohdealueenOsaAlue": "",
-      "toimintaymparisto": "",
-      "tarkentaaKoodistoa": "",
-      "huomioitavaKoodisto": "",
-      "koodistonLahde": ""
-    }
-  ],
-  "codesVersions": [],
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": []
+  "koodistoUri" : "yhteystietotyypit",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Yhteystietotyypit",
+    "kuvaus" : ""
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Yhteystietotyypit",
+    "kuvaus" : ""
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Yhteystietotyypit",
+    "kuvaus" : ""
+  } ],
+  "codesGroupUri" : "alueet",
+  "voimassaAlkuPvm" : "2014-04-07",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 3
 }

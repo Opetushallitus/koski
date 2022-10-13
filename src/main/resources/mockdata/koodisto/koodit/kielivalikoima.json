@@ -111,6 +111,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "kielivalikoima_fa",
+  "koodiArvo" : "FA",
+  "metadata" : [ {
+    "nimi" : "persia, farsi",
+    "lyhytNimi" : "persia, farsi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "persiska",
+    "lyhytNimi" : "persiska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Persian, Farsi",
+    "lyhytNimi" : "Persian, Farsi",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "kielivalikoima_fi",
   "koodiArvo" : "FI",
   "metadata" : [ {
@@ -158,6 +175,23 @@
   }, {
     "nimi" : "Hebrew",
     "lyhytNimi" : "Hebrew",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_hi",
+  "koodiArvo" : "HI",
+  "metadata" : [ {
+    "nimi" : "hindi",
+    "lyhytNimi" : "hindi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "hindi",
+    "lyhytNimi" : "hindi",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Hindi",
+    "lyhytNimi" : "Hindi",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -349,6 +383,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "kielivalikoima_ri",
+  "koodiArvo" : "RI",
+  "metadata" : [ {
+    "nimi" : "romani",
+    "lyhytNimi" : "romani",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "romani",
+    "lyhytNimi" : "romani",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Romani",
+    "lyhytNimi" : "Romani",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "kielivalikoima_ru",
   "koodiArvo" : "RU",
   "metadata" : [ {
@@ -379,6 +430,23 @@
   }, {
     "nimi" : "Northern Sami",
     "lyhytNimi" : "Northern Sami",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_sq",
+  "koodiArvo" : "SQ",
+  "metadata" : [ {
+    "nimi" : "albania",
+    "lyhytNimi" : "albania",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "albanska",
+    "lyhytNimi" : "albanska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Albanian",
+    "lyhytNimi" : "Albanian",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -479,6 +547,74 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "kielivalikoima_xai11",
+  "koodiArvo" : "XAI11",
+  "metadata" : [ {
+    "nimi" : "suomi viittomakielisille",
+    "lyhytNimi" : "suomi viittomakielisille",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "finska för teckenspråkiga",
+    "lyhytNimi" : "finska för teckenspråkiga",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Finnish for sign language users",
+    "lyhytNimi" : "Finnish for sign language users",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_xai12",
+  "koodiArvo" : "XAI12",
+  "metadata" : [ {
+    "nimi" : "ruotsi viittomakielisille",
+    "lyhytNimi" : "ruotsi viittomakielisille",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "svenska för teckenspråkiga",
+    "lyhytNimi" : "svenska för teckenspråkiga",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Swedish for sign language users",
+    "lyhytNimi" : "Swedish for sign language users",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_xai7",
+  "koodiArvo" : "XAI7",
+  "metadata" : [ {
+    "nimi" : "suomi toisena kielenä",
+    "lyhytNimi" : "suomi toisena kielenä",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "finska som andraspråk",
+    "lyhytNimi" : "finska som andraspråk",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Finnish as a second language",
+    "lyhytNimi" : "Finnish as a second language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_xai8",
+  "koodiArvo" : "XAI8",
+  "metadata" : [ {
+    "nimi" : "ruotsi toisena kielenä",
+    "lyhytNimi" : "ruotsi toisena kielenä",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "svenska som andraspråk",
+    "lyhytNimi" : "svenska som andraspråk",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Swedish as a second language",
+    "lyhytNimi" : "Swedish as a second language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "kielivalikoima_xx",
   "koodiArvo" : "XX",
   "metadata" : [ {
@@ -510,6 +646,15 @@
     "nimi" : "Chinese",
     "lyhytNimi" : "Chinese",
     "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_fil",
+  "koodiArvo" : "fil",
+  "metadata" : [ {
+    "nimi" : "filipino",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
   } ],
   "versio" : 1
 } ]

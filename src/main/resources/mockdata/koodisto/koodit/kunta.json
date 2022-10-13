@@ -226,10 +226,16 @@
   "koodiArvo" : "020",
   "metadata" : [ {
     "nimi" : "Akaa",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Akaa",
+    "lyhytNimi" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Akaa",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 2
 }, {
@@ -717,10 +723,16 @@
   "koodiArvo" : "090",
   "metadata" : [ {
     "nimi" : "Heinävesi",
+    "lyhytNimi" : "Heinävesi",
     "kieli" : "FI"
   }, {
     "nimi" : "Heinävesi",
+    "lyhytNimi" : "Heinävesi",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Heinävesi",
+    "lyhytNimi" : "Heinävesi",
+    "kieli" : "EN"
   } ],
   "versio" : 2
 }, {
@@ -811,9 +823,11 @@
   "koodiArvo" : "098",
   "metadata" : [ {
     "nimi" : "Hollola",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Hollola",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 2
@@ -822,9 +836,11 @@
   "koodiArvo" : "099",
   "metadata" : [ {
     "nimi" : "Honkajoki",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Honkajoki",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 2
@@ -1000,9 +1016,11 @@
   "koodiArvo" : "142",
   "metadata" : [ {
     "nimi" : "Iitti",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Iitti",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 2
@@ -1114,9 +1132,11 @@
   "koodiArvo" : "152",
   "metadata" : [ {
     "nimi" : "Isokyrö",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Storkyro",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 2
@@ -1243,10 +1263,16 @@
   "koodiArvo" : "171",
   "metadata" : [ {
     "nimi" : "Joroinen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Jorois",
+    "lyhytNimi" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Joroinen",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 2
 }, {
@@ -2512,9 +2538,11 @@
   "koodiArvo" : "291",
   "metadata" : [ {
     "nimi" : "Kuhmoinen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kuhmoinen",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 2
@@ -2845,9 +2873,11 @@
   "koodiArvo" : "320",
   "metadata" : [ {
     "nimi" : "Kemijärvi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kemijärvi",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 2

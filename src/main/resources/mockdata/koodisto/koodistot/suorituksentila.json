@@ -6,7 +6,7 @@
     "nimi" : "Suorituksen tila",
     "kuvaus" : ""
   } ],
-  "codesGroupUri" : "http://henkilokoodistot",
+  "codesGroupUri" : "henkilokoodistot",
   "voimassaAlkuPvm" : "2014-11-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
