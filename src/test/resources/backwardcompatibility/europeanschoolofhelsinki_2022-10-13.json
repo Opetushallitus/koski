@@ -34,6 +34,10 @@
         "tunniste" : {
           "koodiarvo" : "N1",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "N1A",
@@ -101,6 +105,10 @@
         "tunniste" : {
           "koodiarvo" : "N2",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "N2A",
@@ -168,6 +176,10 @@
         "tunniste" : {
           "koodiarvo" : "P1",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "P1A",
@@ -235,6 +247,10 @@
         "tunniste" : {
           "koodiarvo" : "P2",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "P2A",
@@ -266,6 +282,10 @@
         "tunniste" : {
           "koodiarvo" : "P2",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "P2A",
@@ -333,6 +353,10 @@
         "tunniste" : {
           "koodiarvo" : "P3",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "P3A",
@@ -400,6 +424,10 @@
         "tunniste" : {
           "koodiarvo" : "P4",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "P4A",
@@ -467,6 +495,10 @@
         "tunniste" : {
           "koodiarvo" : "P5",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "P5A",
@@ -534,6 +566,10 @@
         "tunniste" : {
           "koodiarvo" : "S1",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "S1A",
@@ -601,6 +637,10 @@
         "tunniste" : {
           "koodiarvo" : "S2",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "S2A",
@@ -668,6 +708,10 @@
         "tunniste" : {
           "koodiarvo" : "S3",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "S3A",
@@ -735,6 +779,10 @@
         "tunniste" : {
           "koodiarvo" : "S4",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "S4A",
@@ -802,6 +850,10 @@
         "tunniste" : {
           "koodiarvo" : "S5",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "S5A",
@@ -869,6 +921,10 @@
         "tunniste" : {
           "koodiarvo" : "S6",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "S6A",
@@ -936,6 +992,10 @@
         "tunniste" : {
           "koodiarvo" : "S7",
           "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "S7A",

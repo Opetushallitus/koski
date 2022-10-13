@@ -131,3 +131,4 @@ class BackwardCompatibilitySpec extends AnyFreeSpec with TestEnvironment with Ma
     case _ => json
   }
 }
+
