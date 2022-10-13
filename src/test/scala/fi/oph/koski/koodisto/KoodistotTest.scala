@@ -56,7 +56,12 @@ class KoodistotTest extends AnyFreeSpec with TestEnvironment with Matchers {
       "koskiyoarvosanat_i-2",
       "koskiyoarvosanat_i-3",
       "erityinenkoulutustehtava_ib-1",
-      "lahdejarjestelma_espoovarda"
+      "lahdejarjestelma_espoovarda",
+      "lahdejarjestelma_espoovarda-1",
+      "arviointiasteikkoib_fail",
+      "suorituksentyyppi_lukionoppiaineidenoppimaarat2019",
+      "suorituksentyyppi_lukionpaikallinenopintojakso2019",
+      "suorituksentyyppi_lukionvaltakunnallinenmoduuli2019",
     )
     // Tässä koodistossa on niin monta poikkeusta ettei erikseen luetella niitä tässä.
     val PoikkeavatKoodistot = Seq(
