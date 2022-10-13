@@ -95,12 +95,11 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(
 ) extends KoskiOpiskeluoikeusjakso
 
 case class EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
-  erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Rahoituksen laskennassa käytettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
-) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaanjaksollinen with MaksuttomuusTieto
+) extends OpiskeluoikeudenLisätiedot with Ulkomaanjaksollinen with MaksuttomuusTieto
 
 trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
   extends KoskeenTallennettavaPäätasonSuoritus
