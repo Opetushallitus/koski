@@ -118,7 +118,7 @@ describe('TUVA', function () {
           )
           it('voidaan lisätä', function () {
             expect(extractAsText(S('.suoritus-taulukko'))).to.include(
-              'Valinnaiset koulutuksen osat'
+              'Valinnaiset opinnot'
             )
           })
 
@@ -143,7 +143,7 @@ describe('TUVA', function () {
             )
             it('voidaan lisätä', function () {
               expect(extractAsText(S('.suoritus-taulukko'))).to.include(
-                'Valinnaiset koulutuksen osat 2 vk'
+                'Valinnaiset opinnot 2 vk'
               )
             })
           })
@@ -154,7 +154,7 @@ describe('TUVA', function () {
               opinnot.avaaKaikki,
               function () {
                 return tuva
-                  .selectOsasuoritus('Valinnaiset koulutuksen osat')()
+                  .selectOsasuoritus('Valinnaiset opinnot')()
                   .lisääArvosana(
                     'Hyväksytty',
                     '.tuva-osasuoritusrivi-1 .dropdown-wrapper'
@@ -165,8 +165,8 @@ describe('TUVA', function () {
             )
             it('voidaan lisätä', function () {
               expect(extractAsText(S('.suoritus-taulukko'))).to.include(
-                'Valinnaiset koulutuksen osat 2 vk Hyväksytty'
-              ) //  2 vk
+                'Valinnaiset opinnot 2 vk Hyväksytty'
+              ) // TODO: Refaktoroi, koska jos ylempää testiä ei aja, niin pelkästään tämän ajaminen failaa..
             })
           })
         })

@@ -82,13 +82,13 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
       describe('Voidaan vaihtaa koulutuskoodia', function () {
 
         before(
-          valitseIdeksistä(2),
+          valitseIdeksistä(1),
           editor.saveChanges
         )
 
         it('koulutuskoodi on vaihtunut', function () {
           expect(suorituksenKoulutusKenttä()).to.equalIgnoreNewlines(
-            'Koulutus Puuteollisuuden perustutkinto 451741 OPH-2455-2017'
+            'Koulutus Puuteollisuuden perustutkinto 351741 OPH-2455-2017'
           )
         })
       })

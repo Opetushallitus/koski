@@ -182,7 +182,7 @@ describe('Kela', function () {
 
     describe('Päätason suorituksen välilehdessä näytetään suorituksen tyyppi, jos koulutumoduulin tunnisteella ei ole nimeä (lops2019 oppiaineen oppimäärä', function () {
       it('toimii', function () {
-        expect(extractAsText(S('.tabs'))).to.equal('Lukion oppiaineet')
+        expect(extractAsText(S('.tabs'))).to.equal('Lukion aineopinnot')
       })
     })
   })
