@@ -11,6 +11,27 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "arviointiasteikkointernationalschool_completed",
+  "koodiArvo" : "completed",
+  "metadata" : [ {
+    "nimi" : "Completed",
+    "lyhytNimi" : "Completed",
+    "kuvaus" : "Completed",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Completed",
+    "lyhytNimi" : "Completed",
+    "kuvaus" : "Completed",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Completed",
+    "lyhytNimi" : "Completed",
+    "kuvaus" : "Completed",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "arviointiasteikkointernationalschool_fail",
   "koodiArvo" : "fail",
   "metadata" : [ {
@@ -30,6 +51,48 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Learning Toward",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkointernationalschool_learningwithin",
+  "koodiArvo" : "learningwithin",
+  "metadata" : [ {
+    "nimi" : "Learning Within",
+    "lyhytNimi" : "Learning Within",
+    "kuvaus" : "Learning Within",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Learning Within",
+    "lyhytNimi" : "Learning Within",
+    "kuvaus" : "Learning Within",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Learning Within",
+    "lyhytNimi" : "Learning Within",
+    "kuvaus" : "Learning Within",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkointernationalschool_needssupport",
+  "koodiArvo" : "needssupport",
+  "metadata" : [ {
+    "nimi" : "Needs Support",
+    "lyhytNimi" : "Needs Support",
+    "kuvaus" : "Needs Support",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Needs Support",
+    "lyhytNimi" : "Needs Support",
+    "kuvaus" : "Needs Support",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Needs Support",
+    "lyhytNimi" : "Needs Support",
+    "kuvaus" : "Needs Support",
     "kieli" : "EN"
   } ],
   "versio" : 1,

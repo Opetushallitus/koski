@@ -5,7 +5,7 @@
     "kieli" : "FI",
     "nimi" : "Lukioon valmistavan koulutuksen kurssit 2015"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2018-05-11",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {

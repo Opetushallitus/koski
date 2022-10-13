@@ -5,7 +5,7 @@
     "kieli" : "FI",
     "nimi" : "Uskonnon oppimäärä"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2019-03-29",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],

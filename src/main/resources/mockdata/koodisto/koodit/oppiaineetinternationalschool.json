@@ -11,6 +11,27 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetinternationalschool_art",
+  "koodiArvo" : "ART",
+  "metadata" : [ {
+    "nimi" : "Art",
+    "lyhytNimi" : "Art",
+    "kuvaus" : "Art",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Art",
+    "lyhytNimi" : "Art",
+    "kuvaus" : "Art",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Art",
+    "lyhytNimi" : "Art",
+    "kuvaus" : "Art",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetinternationalschool_dd",
   "koodiArvo" : "DD",
   "metadata" : [ {
@@ -78,6 +99,27 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Film",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetinternationalschool_ffl",
+  "koodiArvo" : "FFL",
+  "metadata" : [ {
+    "nimi" : "Finnish Foreign Language",
+    "lyhytNimi" : "Finnish Foreign Language",
+    "kuvaus" : "Finnish Foreign Language",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Finnish Foreign Language",
+    "lyhytNimi" : "Finnish Foreign Language",
+    "kuvaus" : "Finnish Foreign Language",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Finnish Foreign Language",
+    "lyhytNimi" : "Finnish Foreign Language",
+    "kuvaus" : "Finnish Foreign Language",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -166,6 +208,27 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Independent language studies",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetinternationalschool_ins",
+  "koodiArvo" : "INS",
+  "metadata" : [ {
+    "nimi" : "Integrated Studies",
+    "lyhytNimi" : "Integrated Studies",
+    "kuvaus" : "Integrated Studies",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Integrated Studies",
+    "lyhytNimi" : "Integrated Studies",
+    "kuvaus" : "Integrated Studies",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Integrated Studies",
+    "lyhytNimi" : "Integrated Studies",
+    "kuvaus" : "Integrated Studies",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -286,6 +349,27 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Media",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetinternationalschool_mf",
+  "koodiArvo" : "MF",
+  "metadata" : [ {
+    "nimi" : "Math Foundations",
+    "lyhytNimi" : "Math Foundations",
+    "kuvaus" : "Math Foundations",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Math Foundations",
+    "lyhytNimi" : "Math Foundations",
+    "kuvaus" : "Math Foundations",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Math Foundations",
+    "lyhytNimi" : "Math Foundations",
+    "kuvaus" : "Math Foundations",
     "kieli" : "EN"
   } ],
   "versio" : 1,

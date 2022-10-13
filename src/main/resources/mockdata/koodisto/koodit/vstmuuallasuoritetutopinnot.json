@@ -6,20 +6,30 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkesinriktade examensdelar",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-    "koodiUri" : "vstmuuallasuoritetutopinnot_avoimetkorkeakouluopinnot",
-    "koodiArvo" : "avoimetkorkeakouluopinnot",
-    "metadata" : [ {
-      "nimi" : "Avoimet korkeakouluopinnot",
-      "lyhytNimi" : "",
-      "kuvaus" : "",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
+  "koodiUri" : "vstmuuallasuoritetutopinnot_avoimetkorkeakouluopinnot",
+  "koodiArvo" : "avoimetkorkeakouluopinnot",
+  "metadata" : [ {
+    "nimi" : "Avoimet korkeakouluopinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Högskolestudier",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "vstmuuallasuoritetutopinnot_lukioopinnot",
   "koodiArvo" : "lukioopinnot",
@@ -28,6 +38,23 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier inom gymnasieutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstmuuallasuoritetutopinnot_perusopetuksenarvosanankorottaminen",
+  "koodiArvo" : "perusopetuksenarvosanankorottaminen",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen arvosanan korottaminen",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Höjning av vitsord inom den grundläggande utbildningen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -39,6 +66,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetslivsorientering",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -50,7 +82,12 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier inom fritt bildningsarbete",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}]
+} ]

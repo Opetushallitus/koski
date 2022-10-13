@@ -683,6 +683,85 @@
     "passive" : false
   } ]
 }, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_arua1",
+  "koodiArvo" : "ARUA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "lyhytNimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kuvaus" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "lyhytNimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "kuvaus" : "Grunderna i språket: Utgångspunkter för studier",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "lyhytNimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kuvaus" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_arua2",
+  "koodiArvo" : "ARUA2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "lyhytNimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kuvaus" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "lyhytNimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kuvaus" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_arua3",
+  "koodiArvo" : "ARUA3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "lyhytNimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kuvaus" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "lyhytNimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kuvaus" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_arua4",
+  "koodiArvo" : "ARUA4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "lyhytNimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kuvaus" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "lyhytNimi" : "Grunderna i språket: Utbildning och studier",
+    "kuvaus" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_as21",
   "koodiArvo" : "AS21",
   "metadata" : [ {
@@ -1563,6 +1642,56 @@
     "passive" : false
   } ]
 }, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_imo1",
+  "koodiArvo" : "IMO1",
+  "metadata" : [ {
+    "nimi" : "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
+    "lyhytNimi" : "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utgångspunkter för studier i svenska och litteratur",
+    "lyhytNimi" : "Utgångspunkter för studier i svenska och litteratur",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
+    "lyhytNimi" : "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_is21",
+  "koodiArvo" : "IS21",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
+    "lyhytNimi" : "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier i svenska",
+    "lyhytNimi" : "Grunderna i språket: Utgångspunkter för studier i svenska",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
+    "lyhytNimi" : "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
   "koodiUri" : "aikuistenperusopetuksenalkuvaiheenkurssit2017_lma1",
   "koodiArvo" : "LMA1",
   "metadata" : [ {
@@ -1930,57 +2059,4 @@
     "codeElementVersion" : 1,
     "passive" : false
   } ]
-}, {
-  "koodiUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_is21",
-  "koodiArvo": "IS21",
-  "metadata": [
-    {
-      "nimi": "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
-      "lyhytNimi": "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
-      "kieli": "EN"
-    },
-    {
-      "nimi": "Grunderna i språket: Utgångspunkter för studier i svenska",
-      "lyhytNimi": "Grunderna i språket: Utgångspunkter för studier i svenska",
-      "kieli": "SV"
-    },
-    {
-      "nimi": "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
-      "lyhytNimi": "Kielitaidon alkeet: Lähtökohtia ruotsin kielen opiskelulle",
-      "kieli": "FI"
-    }
-  ],
-  "versio": 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri": "aikuistenperusopetuksenalkuvaiheenkurssit2017_imo1",
-  "koodiArvo": "IMO1",
-  "metadata": [
-    {
-      "nimi": "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
-      "lyhytNimi": "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
-      "kieli": "EN"
-    },
-    {
-      "nimi": "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
-      "lyhytNimi": "Ruotsin kielen ja kirjallisuuden opiskelun perustaidot",
-      "kieli": "FI"
-    },
-    {
-      "nimi": "Utgångspunkter för studier i svenska och litteratur",
-      "lyhytNimi": "Utgångspunkter för studier i svenska och litteratur",
-      "kieli": "SV"
-    }
-  ],
-  "versio": 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_ai",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}
-]
+} ]

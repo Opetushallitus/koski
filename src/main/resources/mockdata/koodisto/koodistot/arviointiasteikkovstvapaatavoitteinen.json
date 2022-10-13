@@ -1,24 +1,20 @@
 {
-  "koodistoUri": "arviointiasteikkovstvapaatavoitteinen",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Arviointiasteikko VST vapaatavoitteinen"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "Arviointiasteikko VST vapaatavoitteinen"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "Arviointiasteikko VST vapaatavoitteinen"
-    }
-  ],
-  "codesGroupUri": "http://koski",
-  "voimassaAlkuPvm": "2020-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "koodistoUri" : "arviointiasteikkovstvapaatavoitteinen",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko VST vapaatavoitteinen"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Arviointiasteikko VST vapaatavoitteinen"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Arviointiasteikko VST vapaatavoitteinen"
+  } ],
+  "codesGroupUri" : "koski",
+  "voimassaAlkuPvm" : "2020-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
 }

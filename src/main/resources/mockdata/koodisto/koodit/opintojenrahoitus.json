@@ -63,6 +63,43 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "opintojenrahoitus_13",
+  "koodiArvo" : "13",
+  "metadata" : [ {
+    "nimi" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
+    "lyhytNimi" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
+    "kuvaus" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus). Vain Pohjoiskalotin koulutussäätiö käyttää rahoituskoodia.",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetskraftsutbildning (som baserar sig på ett avtal med staten)",
+    "lyhytNimi" : "Arbetskraftsutbildning (som baserar sig på ett avtal med staten)",
+    "kuvaus" : "Arbetskraftsutbildning (som baserar sig på ett avtal med staten). Endast Utbildning Nord använder kod.",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
+    "lyhytNimi" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
+    "kuvaus" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opintojenrahoitus_14",
+  "koodiArvo" : "14",
+  "metadata" : [ {
+    "nimi" : "Jatkuvan oppimisen rahoitus (JOTPA)",
+    "lyhytNimi" : "",
+    "kuvaus" : "Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoittamat koulutukset.",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Finansiering av kontinuerligt lärande (JOTPA)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "opintojenrahoitus_2",
   "koodiArvo" : "2",
   "metadata" : [ {

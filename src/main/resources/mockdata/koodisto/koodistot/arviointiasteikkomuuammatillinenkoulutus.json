@@ -6,7 +6,7 @@
     "nimi" : "Arviointiasteikko muu ammatillinen koulutus",
     "kuvaus" : "Muun ammatillisen koulutuksen käyttämät arviointiasteikot, joita ei löydy ammatillisen koulutuksen arviointiasteikoista"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2020-01-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],

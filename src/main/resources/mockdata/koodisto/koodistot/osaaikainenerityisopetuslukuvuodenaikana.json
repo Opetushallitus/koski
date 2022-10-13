@@ -5,7 +5,7 @@
     "kieli" : "FI",
     "nimi" : "Osa-aikainen erityisopetus lukuvuoden aikana"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2020-06-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],

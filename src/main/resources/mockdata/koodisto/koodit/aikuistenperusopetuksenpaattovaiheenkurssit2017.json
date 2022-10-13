@@ -1771,6 +1771,158 @@
     "passive" : false
   } ]
 }, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rua1",
+  "koodiArvo" : "RUA1",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "lyhytNimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kuvaus" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "lyhytNimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kuvaus" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rua2",
+  "koodiArvo" : "RUA2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "lyhytNimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kuvaus" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "lyhytNimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kuvaus" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rua3",
+  "koodiArvo" : "RUA3",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "lyhytNimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kuvaus" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "lyhytNimi" : "Växande språkkunskap: Jag och min miljö",
+    "kuvaus" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rua4",
+  "koodiArvo" : "RUA4",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "lyhytNimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kuvaus" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "lyhytNimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kuvaus" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rua5",
+  "koodiArvo" : "RUA5",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "lyhytNimi" : "Kulttuurikohtaamisia",
+    "kuvaus" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "lyhytNimi" : "Kulturmöten",
+    "kuvaus" : "Kulturmöten",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rua6",
+  "koodiArvo" : "RUA6",
+  "metadata" : [ {
+    "nimi" : "Kieli maailmassa",
+    "lyhytNimi" : "Kieli maailmassa",
+    "kuvaus" : "Kieli maailmassa",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i världen",
+    "lyhytNimi" : "Språket i världen",
+    "kuvaus" : "Språket i världen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kieli maailmassa",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rua7",
+  "koodiArvo" : "RUA7",
+  "metadata" : [ {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "lyhytNimi" : "Liikkuvuus ja kansainvälisyys",
+    "kuvaus" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "lyhytNimi" : "Rörlighet och internationella kontakter",
+    "kuvaus" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rua8",
+  "koodiArvo" : "RUA8",
+  "metadata" : [ {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "lyhytNimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kuvaus" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "lyhytNimi" : "Nycklar till livslångt språklärande",
+    "kuvaus" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub1-1",
   "koodiArvo" : "RUB1",
   "metadata" : [ {

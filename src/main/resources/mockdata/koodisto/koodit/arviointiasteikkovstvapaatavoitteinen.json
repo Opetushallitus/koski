@@ -1,98 +1,151 @@
-[
-  {
-    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_1",
-    "koodiArvo": "1",
-    "metadata": [
-      {
-        "nimi": "1",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "1",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "1",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
+[ {
+  "koodiUri" : "arviointiasteikkovstvapaatavoitteinen_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "1",
+    "kieli" : "FI"
   }, {
-    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_2",
-    "koodiArvo": "2",
-    "metadata": [
-      {
-        "nimi": "2",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "2",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "2",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
+    "nimi" : "1",
+    "kieli" : "SV"
   }, {
-    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_3",
-    "koodiArvo": "3",
-    "metadata": [
-      {
-        "nimi": "3",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "3",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "3",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
+    "nimi" : "1",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkovstvapaatavoitteinen_10",
+  "koodiArvo" : "10",
+  "metadata" : [ {
+    "nimi" : "10",
+    "kieli" : "FI"
   }, {
-    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_4",
-    "koodiArvo": "4",
-    "metadata": [
-      {
-        "nimi": "4",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "4",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "4",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
+    "nimi" : "10",
+    "kieli" : "SV"
   }, {
-    "koodiUri": "arviointiasteikkovstvapaatavoitteinen_5",
-    "koodiArvo": "5",
-    "metadata": [
-      {
-        "nimi": "5",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "5",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "5",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  }
-]
+    "nimi" : "10",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkovstvapaatavoitteinen_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "2",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "2",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "2",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkovstvapaatavoitteinen_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "3",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "3",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "3",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkovstvapaatavoitteinen_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "4",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "4",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "4",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkovstvapaatavoitteinen_5",
+  "koodiArvo" : "5",
+  "metadata" : [ {
+    "nimi" : "5",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "5",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "5",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkovstvapaatavoitteinen_6",
+  "koodiArvo" : "6",
+  "metadata" : [ {
+    "nimi" : "6",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "6",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "6",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkovstvapaatavoitteinen_7",
+  "koodiArvo" : "7",
+  "metadata" : [ {
+    "nimi" : "7",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "7",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "7",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkovstvapaatavoitteinen_8",
+  "koodiArvo" : "8",
+  "metadata" : [ {
+    "nimi" : "8",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "8",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "8",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkovstvapaatavoitteinen_9",
+  "koodiArvo" : "9",
+  "metadata" : [ {
+    "nimi" : "9",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "9",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "9",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

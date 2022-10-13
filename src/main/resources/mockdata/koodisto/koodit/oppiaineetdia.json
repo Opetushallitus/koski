@@ -300,4 +300,13 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_vt",
+  "koodiArvo" : "VT",
+  "metadata" : [ {
+    "nimi" : "Vanhojen tanssit",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

@@ -1,17 +1,15 @@
 {
-  "koodistoUri": "valpashaunvalintatila",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Valpas: haun valintatila",
-      "kuvaus": "Valppaan käyttöliittymässä näytettävä haun valintatila"
-    }
-  ],
-  "codesGroupUri": "http://koski",
-  "voimassaAlkuPvm": "2021-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "koodistoUri" : "valpashaunvalintatila",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Valpas: haun valintatila",
+    "kuvaus" : "Valppaan käyttöliittymässä näytettävä haun valintatila"
+  } ],
+  "codesGroupUri" : "koski",
+  "voimassaAlkuPvm" : "2021-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
 }

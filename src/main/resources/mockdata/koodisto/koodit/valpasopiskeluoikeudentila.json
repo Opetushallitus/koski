@@ -20,83 +20,20 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "valpasopiskeluoikeudentila_voimassa",
-  "koodiArvo" : "voimassa",
+  "koodiUri" : "valpasopiskeluoikeudentila_hyvaksytystisuoritettu",
+  "koodiArvo" : "hyvaksytystisuoritettu",
   "metadata" : [ {
-    "nimi" : "Opiskeluoikeus voimassa",
+    "nimi" : "Hyväksytysti suoritettu",
     "lyhytNimi" : "",
-    "kuvaus" : "",
+    "kuvaus" : "Opiskeluoikeus suoritettu hyväksytysti",
     "kieli" : "FI"
   }, {
-    "nimi" : "Opiskeluoikeus voimassa",
+    "nimi" : "Slutförd",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Opiskeluoikeus voimassa",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_voimassatulevaisuudessa",
-  "koodiArvo" : "voimassatulevaisuudessa",
-  "metadata" : [ {
-    "nimi" : "Opiskeluoikeus voimassa tulevaisuudessa",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus ei ole tällä hetkellä voimassa, mutta on voimassa tulevaisuudessa",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Opiskeluoikeus voimassa tulevaisuudessa",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Opiskeluoikeus voimassa tulevaisuudessa",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_valmistunut",
-  "koodiArvo" : "valmistunut",
-  "metadata" : [ {
-    "nimi" : "Valmistunut",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus päättynyt suorituksen valmistumiseen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utexaminerad",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Graduated",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_mitatoity",
-  "koodiArvo" : "mitatoity",
-  "metadata" : [ {
-    "nimi" : "Mitätöity",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus mitätöity",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Annullerad",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Invalidated",
+    "nimi" : "Completed",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"
@@ -118,6 +55,48 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Considered as discontinued",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "valpasopiskeluoikeudentila_keskeytynyt",
+  "koodiArvo" : "keskeytynyt",
+  "metadata" : [ {
+    "nimi" : "Keskeytynyt",
+    "lyhytNimi" : "",
+    "kuvaus" : "Opiskeluoikeus keskeytynyt",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Stoppat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Halted",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "valpasopiskeluoikeudentila_mitatoity",
+  "koodiArvo" : "mitatoity",
+  "metadata" : [ {
+    "nimi" : "Mitätöity",
+    "lyhytNimi" : "",
+    "kuvaus" : "Opiskeluoikeus mitätöity",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Annullerad",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Invalidated",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"
@@ -167,20 +146,20 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "valpasopiskeluoikeudentila_keskeytynyt",
-  "koodiArvo" : "keskeytynyt",
+  "koodiUri" : "valpasopiskeluoikeudentila_valmistunut",
+  "koodiArvo" : "valmistunut",
   "metadata" : [ {
-    "nimi" : "Keskeytynyt",
+    "nimi" : "Valmistunut",
     "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus keskeytynyt",
+    "kuvaus" : "Opiskeluoikeus päättynyt suorituksen valmistumiseen",
     "kieli" : "FI"
   }, {
-    "nimi" : "Stoppat",
+    "nimi" : "Utexaminerad",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Halted",
+    "nimi" : "Graduated",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"
@@ -188,20 +167,36 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "valpasopiskeluoikeudentila_hyvaksytystisuoritettu",
-  "koodiArvo" : "hyvaksytystisuoritettu",
+  "koodiUri" : "valpasopiskeluoikeudentila_voimassa",
+  "koodiArvo" : "voimassa",
   "metadata" : [ {
-    "nimi" : "Hyväksytysti suoritettu",
+    "nimi" : "Opiskeluoikeus voimassa",
     "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus suoritettu hyväksytysti",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Slutförd",
+    "nimi" : "Studierättens giltighetstid",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "valpasopiskeluoikeudentila_voimassatulevaisuudessa",
+  "koodiArvo" : "voimassatulevaisuudessa",
+  "metadata" : [ {
+    "nimi" : "Opiskeluoikeus voimassa tulevaisuudessa",
+    "lyhytNimi" : "",
+    "kuvaus" : "Opiskeluoikeus ei ole tällä hetkellä voimassa, mutta on voimassa tulevaisuudessa",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Studierätten är giltig i framtiden",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Completed",
+    "nimi" : "Opiskeluoikeus voimassa tulevaisuudessa",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"

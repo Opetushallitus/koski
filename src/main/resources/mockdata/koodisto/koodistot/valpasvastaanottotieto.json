@@ -1,17 +1,15 @@
 {
-  "koodistoUri": "valpasvastaanottotieto",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Valpas: vastaanottotieto",
-      "kuvaus": "Valppaan käyttöliittymässä näytettävä haun vastaanoton tila"
-    }
-  ],
-  "codesGroupUri": "http://koski",
-  "voimassaAlkuPvm": "2021-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 1
+  "koodistoUri" : "valpasvastaanottotieto",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Valpas: vastaanottotieto",
+    "kuvaus" : "Valppaan käyttöliittymässä näytettävä haun vastaanoton tila"
+  } ],
+  "codesGroupUri" : "koski",
+  "voimassaAlkuPvm" : "2021-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
 }

@@ -191,15 +191,15 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "opiskeluoikeudentyyppi_ylioppilastutkinto",
-  "koodiArvo" : "ylioppilastutkinto",
+  "koodiUri" : "opiskeluoikeudentyyppi_tuva",
+  "koodiArvo" : "tuva",
   "metadata" : [ {
-    "nimi" : "Ylioppilastutkinto",
-    "lyhytNimi" : "Ylioppilastutkinto",
+    "nimi" : "Tutkintokoulutukseen valmentava koulutus",
+    "lyhytNimi" : "Tutkintokoulutukseen valmentava koulutus",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Studentexamen",
+    "nimi" : "Utbildning som handleder för examensutbildning",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -222,16 +222,16 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-} , {
-  "koodiUri" : "opiskeluoikeudentyyppi_tuva",
-  "koodiArvo" : "tuva",
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_ylioppilastutkinto",
+  "koodiArvo" : "ylioppilastutkinto",
   "metadata" : [ {
-    "nimi" : "Tutkintokoulutukseen valmentava koulutus",
-    "lyhytNimi" : "Tutkintokoulutukseen valmentava koulutus",
+    "nimi" : "Ylioppilastutkinto",
+    "lyhytNimi" : "Ylioppilastutkinto",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Utbildning som handleder för examensutbildning",
+    "nimi" : "Studentexamen",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"

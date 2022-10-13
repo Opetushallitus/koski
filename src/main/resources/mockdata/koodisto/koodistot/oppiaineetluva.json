@@ -10,7 +10,7 @@
     "nimi" : "Samhällskunskap och kulturkännedom",
     "kuvaus" : ""
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2017-03-24",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],

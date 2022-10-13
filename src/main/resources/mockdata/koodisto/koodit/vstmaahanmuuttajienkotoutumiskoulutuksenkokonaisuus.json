@@ -1,63 +1,64 @@
-[
-  {
-    "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
-    "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
-    "metadata" : [ {
-      "nimi" : "Työelämä- ja yhteiskuntataidot",
-      "kieli" : "FI"
-    }, {
-      "nimi" : "Färdigheter för arbetsliv och samhälle",
-      "kieli" : "SV"
-    }, {
-      "nimi" : "Työelämä- ja yhteiskuntataidot",
-      "kieli" : "EN"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
+[ {
+  "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
+  "metadata" : [ {
+    "nimi" : "Suomen kieli ja viestintätaidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
   }, {
-    "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
-    "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
-    "metadata" : [ {
-      "nimi" : "Valinnaiset opinnot",
-      "kieli" : "FI"
-    }, {
-      "nimi" : "Valfria studier",
-      "kieli" : "SV"
-    }, {
-      "nimi" : "Valinnaiset opinnot",
-      "kieli" : "EN"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
+    "nimi" : "Svenska och kommunikativa färdigheter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
+  "metadata" : [ {
+    "nimi" : "Ohjaus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
   }, {
-    "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
-    "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
-    "metadata" : [ {
-      "nimi" : "Suomen kieli ja viestintätaidot",
-      "kieli" : "FI"
-    }, {
-      "nimi" : "Svenska och kommunikativa färdigheter",
-      "kieli" : "SV"
-    }, {
-      "nimi" : "Suomen kieli ja viestintätaidot",
-      "kieli" : "EN"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
+    "nimi" : "Handledning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
+  "metadata" : [ {
+    "nimi" : "Työelämä- ja yhteiskuntataidot",
+    "kieli" : "FI"
   }, {
-    "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
-    "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
-    "metadata" : [ {
-      "nimi" : "Ohjaus",
-      "kieli" : "FI"
-    }, {
-      "nimi" : "Handledning",
-      "kieli" : "SV"
-    }, {
-      "nimi" : "Ohjaus",
-      "kieli" : "EN"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  }
-]
+    "nimi" : "Färdigheter för arbetsliv och samhälle",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Työelämä- ja yhteiskuntataidot",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
+  "metadata" : [ {
+    "nimi" : "Valinnaiset opinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Valfria studier",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

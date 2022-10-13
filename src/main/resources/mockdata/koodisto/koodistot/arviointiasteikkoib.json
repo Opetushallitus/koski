@@ -11,7 +11,7 @@
     "kieli" : "EN",
     "nimi" : "Arviointiasteikko ib"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2016-09-09",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
