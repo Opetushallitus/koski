@@ -53,6 +53,7 @@ export default ({opiskeluoikeus, callback}) => {
   }</span>)
 }
 
+// TODO: TOR-1685 Eurooppalainen koulu
 const popups = [
   UusiPerusopetuksenOppiaineenOppimääränSuoritus,
   UusiPerusopetuksenVuosiluokanSuoritus,

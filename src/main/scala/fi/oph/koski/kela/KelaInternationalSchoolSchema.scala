@@ -7,6 +7,8 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
+// TODO: TOR-1685 Eurooppalainen koulu, lisää vastaava ESH:lle
+
 @Title("International school opiskeluoikeus")
 @Description("International school opiskeluoikeus")
 case class KelaInternationalSchoolOpiskeluoikeus(

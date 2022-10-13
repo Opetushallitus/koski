@@ -94,6 +94,7 @@ class ValpasSuorittamisenValvontaService(
       // International school on toista astetta, jos siinä on luokka-asteen 10+ suoritus. Tämä on tarkistettu jo SQL:ssä,
       // joten tässä riittää tutkia, onko perusopetuksen jälkeisiä tietoja määritelty.
       case "internationalschool" if oo.perusopetuksenJälkeinenTiedot.isDefined => true
+      // TODO: TOR-1685 Eurooppalainen koulu
       // Lukiokoulutus on toista astetta, jos siinä ei ole pelkkiä aineopintoja:
       case "lukiokoulutus"
         if oo.päätasonSuoritukset.exists(pts => pts.suorituksenTyyppi.koodiarvo == "lukionoppimaara") => true

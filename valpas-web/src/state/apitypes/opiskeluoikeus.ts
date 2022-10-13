@@ -105,6 +105,8 @@ export const isNuortenPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
 export const isInternationalSchool = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "internationalschool"
 
+// TODO: TOR-1685 Eurooppalainen koulu
+
 export const hakeutumisvalvottavatOpiskeluoikeudet = (
   organisaatioOid: Oid | undefined,
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[]

@@ -20,14 +20,14 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
       "Korjaa tämän testin md5-tarkastusluvut vasta kun olet varma siitä että nykyinen toteutus voidaan viedä eteenpäin." in {
       val dir = "./src/main/scala/fi/oph/koski/raportointikanta"
       val expectedChecksums = Map(
-        "AikajaksoRowBuilder.scala"                                 -> "1aa66905ced53fe972c356a859f25a23",
+        "AikajaksoRowBuilder.scala"                                 -> "8a83a4e996ea67063ac7f629c1601691",
         "HenkiloLoader.scala"                                       -> "8bb9b09ac2dd771c741dff417b34f79e",
         "KoodistoLoader.scala"                                      -> "86c90ec069d1c5ec5ee9faa65fb1399e",
         "KoskiEventBridgeClient.scala"                              -> "f8a09d358ebb3fe2ed4d8875ccccef12",
         "LoaderUtils.scala"                                         -> "38d31b4d1cfa5e3892083bb39f7f0047",
         "MuuAmmatillinenRaporttiRowBuilder.scala"                   -> "31774fb0fbd06a775a07325e867a951f",
         "OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.scala" -> "4498412891d88ddd2daf422144664086",
-        "OpiskeluoikeusLoader.scala"                                -> "8f19b017a0eb0b81db9a57af2038d0e4",
+        "OpiskeluoikeusLoader.scala"                                -> "f6dc79f0baa2303f2aacb62b1cfc3d9b",
         "OppivelvollisuudenVapautusLoader.scala"                    -> "2870707413fff5719b7cb7063dd424c4",
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "9e2e45da33ed335af4a7b0a31b139a7",

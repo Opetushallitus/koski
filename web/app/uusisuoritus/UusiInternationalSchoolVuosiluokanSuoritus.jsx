@@ -8,6 +8,7 @@ import {modelData, modelItems, modelLookup, modelSet, modelSetData} from '../edi
 import {copySuorituskieli, copyToimipiste, newSuoritusProto} from '../suoritus/Suoritus'
 import {suoritusPrototypeKey} from '../internationalschool/internationalschoolSuoritus'
 
+// TODO: TOR-1685 Eurooppalainen koulu, tarvitsee vastaavan
 
 export const UusiInternationalSchoolVuosiluokanSuoritus = ({opiskeluoikeus, resultCallback}) => {
   const suoritusAtom = Atom()

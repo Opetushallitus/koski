@@ -588,6 +588,7 @@ class YtlSpec
         KoskiSpecificMockOppijat.ibPreIB2019,
         KoskiSpecificMockOppijat.dia,
         KoskiSpecificMockOppijat.internationalschool,
+        // TODO: TOR-1685 Eurooppalainen koulu
         KoskiSpecificMockOppijat.eskari,
         KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla,
         KoskiSpecificMockOppijat.master,

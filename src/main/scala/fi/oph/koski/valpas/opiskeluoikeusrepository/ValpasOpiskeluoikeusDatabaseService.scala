@@ -130,6 +130,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     val nonEmptyOppijaOids = if (oppijaOids.nonEmpty) Some(oppijaOids) else None
 
     val result = timed(timedBlockname, 10) {
+      // TODO: TOR-1685 Eurooppalainen koulu
       db.runDbSync(timeout = 3.minutes, a = SQLHelpers.concatMany(
         Some(
           sql"""
