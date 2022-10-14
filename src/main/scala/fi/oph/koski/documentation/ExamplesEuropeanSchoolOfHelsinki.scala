@@ -41,7 +41,7 @@ object ExamplesEuropeanSchoolOfHelsinki {
       nurserySuoritus("N1", alkamispäivä.plusYears(0)),
       nurserySuoritus("N2", alkamispäivä.plusYears(1)),
       primarySuoritus("P1", alkamispäivä.plusYears(2)),
-      primarySuoritus("P2", alkamispäivä.plusYears(3), jääLuokalle = true).copy(vahvistus = None),
+      primarySuoritus("P2", alkamispäivä.plusYears(3), jääLuokalle = true),
       primarySuoritus("P2", alkamispäivä.plusYears(4)),
       primarySuoritus("P3", alkamispäivä.plusYears(5)),
       primarySuoritus("P4", alkamispäivä.plusYears(6)),

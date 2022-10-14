@@ -91,10 +91,9 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(
   @Description("Opintojen rahoitus. Toistaiseksi läsnä- ja valmistunut-tiloille aina 6: Muuta kautta rahoitettu")
   @KoodistoUri("opintojenrahoitus")
   @KoodistoKoodiarvo("6")
-  override val opintojenRahoitus: Option[Koodistokoodiviite] = None
+  override val opintojenRahoitus: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("6", "opintojenrahoitus"))
 ) extends KoskiOpiskeluoikeusjakso
 
-// TODO: TOR-1685 Pidetäänkö ulkomaanjaksot jne.. ?
 case class EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Rahoituksen laskennassa käytettävä tieto.")

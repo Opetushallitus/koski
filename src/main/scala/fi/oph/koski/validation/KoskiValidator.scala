@@ -163,6 +163,7 @@ class KoskiValidator(
       .map(KoodistopoikkeustenKonversiot.konvertoiKoodit)
       .map(fillLukionOppimääräSuoritettu)
       .map(PerusopetuksenOpiskeluoikeusValidation.filterDeprekoidutKentät)
+      .map(EuropeanSchoolOfHelsinkiValidation.fillRahoitusmuodot)
       .map(RedundantinDatanPoisto.dropRedundantData)
   }
 
@@ -356,6 +357,10 @@ class KoskiValidator(
       case j: AmmatillinenOpiskeluoikeusjakso => vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut", "loma")
       case j: LukionOpiskeluoikeusjakso => vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut")
       case j: AikuistenPerusopetuksenOpiskeluoikeusjakso => vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut")
+      case j: EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso => HttpStatus.fold(
+        vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut"),
+        rahoitusmuotoKiellettyTiloilta(j, "eronnut", "mitatoity", "valiaikaisestikeskeytynyt")
+      )
       case j: DIAOpiskeluoikeusjakso => HttpStatus.fold(
         vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut"),
         rahoitusmuotoKiellettyTiloilta(j, "eronnut", "katsotaaneronneeksi", "mitatoity", "peruutettu", "valiaikaisestikeskeytynyt")
