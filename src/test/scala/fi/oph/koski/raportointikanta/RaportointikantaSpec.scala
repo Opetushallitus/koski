@@ -474,7 +474,7 @@ class RaportointikantaSpec
       "Vapaan sivistystyön opiskeluoikeuden lisätiedot" in {
         val opiskeluoikeus = vstOpiskeluoikeus.copy(
           tila = VapaanSivistystyönOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
-            VapaanSivistystyönOpiskeluoikeusjakso(alku = LocalDate.of(2016, 1, 15), tila = Läsnä)
+            YleinenVapaanSivistystyönOpiskeluoikeusjakso(alku = LocalDate.of(2016, 1, 15), tila = Läsnä)
           )),
           lisätiedot = Some(
             VapaanSivistystyönOpiskeluoikeudenLisätiedot(

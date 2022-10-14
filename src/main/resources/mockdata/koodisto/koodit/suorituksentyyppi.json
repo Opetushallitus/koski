@@ -1854,5 +1854,47 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstjotpakoulutus",
+  "koodiArvo" : "vstjotpakoulutus",
+  "metadata" : [ {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstjotpakoulutuksenosasuoritus",
+  "koodiArvo" : "vstjotpakoulutuksenosasuoritus",
+  "metadata" : [ {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }
 ]

@@ -32,7 +32,7 @@ class OppijaValidationVapaaSivistystyöLukutaitoSpec extends TutkinnonPerusteetT
       )).withTila(
         VapaanSivistystyönOpiskeluoikeudenTila(
           List(
-            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
+            YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
           )
         )
       )
@@ -51,7 +51,7 @@ class OppijaValidationVapaaSivistystyöLukutaitoSpec extends TutkinnonPerusteetT
       )).withTila(
         VapaanSivistystyönOpiskeluoikeudenTila(
           List(
-            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
+            YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
           )
         )
       )

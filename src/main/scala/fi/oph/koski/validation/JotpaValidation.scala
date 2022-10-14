@@ -1,7 +1,7 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeusjakso, KoskeenTallennettavaOpiskeluoikeus, KoskiOpiskeluoikeusjakso, Opiskeluoikeusjakso}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeusjakso, KoskeenTallennettavaOpiskeluoikeus, KoskiOpiskeluoikeusjakso, Opiskeluoikeusjakso, VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso}
 
 object JotpaValidation {
   def JOTPARAHOITUS_KOODIARVOT = List("14", "15")
@@ -15,10 +15,12 @@ object JotpaValidation {
   def validateOpiskeluoikeusjaksonRahoitusmuoto(jakso: Opiskeluoikeusjakso): HttpStatus = {
     val jotpaRahoitteinen = rahoitusmuoto(jakso).exists(JOTPARAHOITUS_KOODIARVOT.contains)
 
-    // Huom! Tähän lisätään myöhemmin VST-JOTPA ja MUKS-JOTPA, kunhan niiden tietomallit valmistuvat.
+    // Huom! Tähän lisätään myöhemmin MUKS-JOTPA, kunhan sen tietomalli valmistuu.
     jakso match {
+      case j: VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso if j.opintojenRahoitus.isEmpty => KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto()
       case _: Opiskeluoikeusjakso if !jotpaRahoitteinen => HttpStatus.ok
       case _: AmmatillinenOpiskeluoikeusjakso => HttpStatus.ok
+      case _: VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso => HttpStatus.ok
       case _ => KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuotoEiSaaOllaJotpa()
     }
   }

@@ -25,7 +25,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
           VapaanSivistystyönOpiskeluoikeudenTila(
             List(
-              VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKatsotaanEronneeksi)
+              YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKatsotaanEronneeksi)
             )
           )
         )
@@ -39,7 +39,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
           VapaanSivistystyönOpiskeluoikeudenTila(
             List(
-              VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusValmistunut)
+              YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusValmistunut)
             )
           )
         )
@@ -53,7 +53,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
           VapaanSivistystyönOpiskeluoikeudenTila(
             List(
-              VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusLäsnä)
+              YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusLäsnä)
             )
           )
         )
@@ -183,7 +183,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
       tila = VapaanSivistystyönOpiskeluoikeudenTila(
         oo.tila.opiskeluoikeusjaksot ++
           List(
-            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusMitätöity)
+            YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusMitätöity)
           )
       )
     )
@@ -192,7 +192,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
   private def vahvistettuPäätasonSuoritusKeskeytynytOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus) = {
     oo.copy(
       tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-        VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
+        YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
       ))
     )
   }

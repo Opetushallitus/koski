@@ -58,7 +58,7 @@ class OppijaValidationMitätöintiSpec extends AnyFreeSpec with PutOpiskeluoikeu
       tila = VapaanSivistystyönOpiskeluoikeudenTila(
         oo.tila.opiskeluoikeusjaksot ++
           List(
-            VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusMitätöity)
+            YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusMitätöity)
           )
       )
     )

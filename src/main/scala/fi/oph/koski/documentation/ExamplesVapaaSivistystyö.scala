@@ -27,7 +27,7 @@ object VapaaSivistystyöExample {
   lazy val opiskeluoikeusKOPS = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-      VapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä)
+      YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä)
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
@@ -37,7 +37,7 @@ object VapaaSivistystyöExample {
   lazy val opiskeluoikeusKOTO = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-      VapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä)
+      YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä)
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
@@ -47,7 +47,7 @@ object VapaaSivistystyöExample {
   lazy val opiskeluoikeusLukutaito = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-      VapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä)
+      YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä)
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
@@ -57,7 +57,7 @@ object VapaaSivistystyöExample {
   lazy val opiskeluoikeusVapaatavoitteinen = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-      VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
+      YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
@@ -67,7 +67,7 @@ object VapaaSivistystyöExample {
   lazy val opiskeluoikeusVapaatavoitteinenIlmanOpintokokonaisuutta = VapaanSivistystyönOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2022, 5, 31)),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-      VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
+      YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
     )),
     lisätiedot = None,
     oppilaitos = Some(varsinaisSuomenKansanopisto),
