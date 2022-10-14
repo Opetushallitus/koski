@@ -139,7 +139,7 @@ class EPerusteisiinPerustuvaValidator(
       .exists(k => k.tunniste.koodiarvo == "VVAI22")
 
     def haePerusteet(perusteenDiaarinumero: String): List[EPerusteRakenne] =
-      ePerusteet.findRakenteet(perusteenDiaarinumero, oo.päättymispäivä)
+      ePerusteet.findRakenteet(perusteenDiaarinumero, oo.päättymispäivä.orElse(Some(LocalDate.now)))
 
     HttpStatus.fold(
       oo.suoritukset.map {
