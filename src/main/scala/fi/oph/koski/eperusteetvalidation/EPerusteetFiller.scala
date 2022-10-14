@@ -43,11 +43,11 @@ class EPerusteetFiller(
     case a: AmmatillinenOpiskeluoikeus => a.withSuoritukset(
       a.suoritukset.map {
         case s: AmmatillisenTutkinnonSuoritus =>
-          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
+          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(EPerusteetValidationUtils.getVaadittuPerusteenVoimassaolopäivä(oo.alkamispäivä, oo.päättymispäivä))))))
         case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
-          s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
+          s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(EPerusteetValidationUtils.getVaadittuPerusteenVoimassaolopäivä(oo.alkamispäivä, oo.päättymispäivä))))))
         case s: AmmatillisenTutkinnonOsittainenSuoritus =>
-          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
+          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(EPerusteetValidationUtils.getVaadittuPerusteenVoimassaolopäivä(oo.alkamispäivä, oo.päättymispäivä))))))
         case o => o
       })
     case x => x

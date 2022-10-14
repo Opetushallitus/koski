@@ -4,6 +4,7 @@
 ## xx.10.2022
 - Lisätty validaatio siitä, että diaarinumeron määrittelemä peruste on voimassa, vaikka opiskeluoikeus ei
   olisikaan vielä päättynyt. Tässä tapauksessa perusteen pitää olla parhaillaan voimassa.
+- Jos opiskeluoikeus on asetettu alkamaan tulevaisuudessa, diaarinumeron määrittelemän perusteen tulee olla voimassa opiskeluoikeuden alkamispäivänä.
 
 ## 12.10.2022
 - Ammatillisen suorituksen voi tallentaa valmis-tilaisena ilman keskiarvoa mikäli kyseessä on linkitetyn opiskeluoikeuden suoritus.

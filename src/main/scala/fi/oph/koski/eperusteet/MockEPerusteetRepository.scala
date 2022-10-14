@@ -38,6 +38,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-liiketalouden-perustutkinto-2000-011-2014_2015-08-01_2017-07-31_null",
     "rakenne-liiketalouden-perustutkinto-2000-011-2014_2016-08-01_2018-07-31_null",
     "rakenne-liiketalouden-perustutkinto-3000-011-2014_2016-08-01_2018-07-31_2019-07-31",
+    "rakenne-liiketalouden-perustutkinto-4000-011-2014_2066-05-12_null_null",
     "rakenne-puuteollisuuden-perustutkinto",
     "rakenne-virheellinen-puuteollisuuden-perustutkinto",
     "rakenne-valma",

@@ -719,6 +719,34 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           val validatedOppija = mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija)
           validatedOppija.isRight should equal (true)
         }
+
+        "Sallitaan siirto ja läpäistään validaatio tulevaisuudessa alkavalla opiskeluoikeudella, jos peruste on voimassa opiskeluoikeuden alkamisen päivänä" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "4000/011/2014",
+            alkamispäivä = LocalDate.of(2066, 5, 12)
+          )
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+          val validatedOppija = mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija)
+          validatedOppija.isRight should equal (true)
+          validatedOppija.right.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 5")
+        }
+
+        "Ei sallita siirtoa tulevaisuudessa alkavalle opiskeluoikeudelle, jos peruste ei ole voimassa opiskeluoikeuden alkamisen päivänä" in {
+          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            koulutusKoodi = 331101,
+            diaariNumero = "4000/011/2014",
+            alkamispäivä = LocalDate.of(2066, 5, 11)
+          )
+          implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+          implicit val accessType = AccessType.write
+          val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
+        }
       }
     }
 

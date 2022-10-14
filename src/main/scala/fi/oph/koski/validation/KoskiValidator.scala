@@ -5,7 +5,7 @@ import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste}
-import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustuvaValidator}
+import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetValidationUtils, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -896,7 +896,7 @@ class KoskiValidator(
         :: validateSuoritustenLuokkaAsteet(suoritus, opiskeluoikeus)
         :: validateOppiaineet(suoritus)
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
-        :: ePerusteetValidator.validateTutkinnonosanRyhmä(suoritus, opiskeluoikeus.päättymispäivä.getOrElse(LocalDate.now))
+        :: ePerusteetValidator.validateTutkinnonosanRyhmä(suoritus, EPerusteetValidationUtils.getVaadittuPerusteenVoimassaolopäivä(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä))
         :: validateOsaamisenHankkimistavat(suoritus)
         :: validateYhteisetTutkinnonOsat(suoritus, opiskeluoikeus)
         :: validateÄidinkielenOmainenKieli(suoritus)

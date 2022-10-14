@@ -62,8 +62,14 @@ class EPerusteetOpiskeluoikeusChangeValidator(
     if (vanhanTutkintokoodit.isEmpty || vanhanTutkintokoodit.exists(koodi => uudenTutkintokoodit.contains(koodi))) {
       true
     } else {
-      val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, vanhaOpiskeluoikeus.päättymispäivä.getOrElse(LocalDate.now))
-      val uudenTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, uusiOpiskeluoikeus.päättymispäivä.getOrElse(LocalDate.now))
+      val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus,
+        EPerusteetValidationUtils
+          .getVaadittuPerusteenVoimassaolopäivä(vanhaOpiskeluoikeus.alkamispäivä, vanhaOpiskeluoikeus.päättymispäivä)
+      )
+      val uudenTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus,
+        EPerusteetValidationUtils
+          .getVaadittuPerusteenVoimassaolopäivä(uusiOpiskeluoikeus.alkamispäivä, uusiOpiskeluoikeus.päättymispäivä)
+      )
 
       vanhanTutkintokooditEperusteettomat.count(koodi => uudenTutkintokooditEperusteettomat.contains(koodi)) == vanhanTutkintokooditEperusteettomat.length
     }

@@ -22,7 +22,8 @@ class EPerusteisiinPerustuvaValidator(
       validateTutkintorakenne(
         _,
         opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku),
-        opiskeluoikeus.päättymispäivä.getOrElse(LocalDate.now)
+        EPerusteetValidationUtils
+          .getVaadittuPerusteenVoimassaolopäivä(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)
       )
     )
   )
@@ -85,7 +86,10 @@ class EPerusteisiinPerustuvaValidator(
   }
 
   def validatePerusteVoimassa(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    validatePerusteVoimassa(opiskeluoikeus.suoritukset, opiskeluoikeus.päättymispäivä.getOrElse(LocalDate.now))
+    validatePerusteVoimassa(opiskeluoikeus.suoritukset,
+      EPerusteetValidationUtils
+        .getVaadittuPerusteenVoimassaolopäivä(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)
+    )
   }
 
   private def validatePerusteVoimassa(
@@ -138,8 +142,10 @@ class EPerusteisiinPerustuvaValidator(
       .map(_.koulutusmoduuli)
       .exists(k => k.tunniste.koodiarvo == "VVAI22")
 
-    def haePerusteet(perusteenDiaarinumero: String): List[EPerusteRakenne] =
-      ePerusteet.findRakenteet(perusteenDiaarinumero, oo.päättymispäivä.orElse(Some(LocalDate.now)))
+    def haePerusteet(perusteenDiaarinumero: String): List[EPerusteRakenne] = ePerusteet.findRakenteet(
+      perusteenDiaarinumero,
+      Some(EPerusteetValidationUtils.getVaadittuPerusteenVoimassaolopäivä(oo.alkamispäivä, oo.päättymispäivä))
+    )
 
     HttpStatus.fold(
       oo.suoritukset.map {
