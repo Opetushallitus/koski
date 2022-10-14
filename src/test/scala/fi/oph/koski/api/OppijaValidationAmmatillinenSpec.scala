@@ -332,6 +332,15 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.samaTutkintokoodi("Tutkinnon osalle tutkinnonosat/104052 on merkitty tutkinto, jossa on sama diaarinumero 39/011/2014 kuin tutkinnon suorituksessa"))))
           }
+
+          "Kun vahvistettu osa ei kuulu annetun tutkinnon rakenteeseen eikä sen peruste ole voimassa" - {
+            val suoritus = osanSuoritusToisestaTutkinnosta(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("331101", "koulutus"), Some("1000/011/2014")), johtaminenJaHenkilöstönKehittäminen) match {
+              case m: MuunAmmatillisenTutkinnonOsanSuoritus => m.copy(vahvistus = vahvistusValinnaisellaTittelillä(date(2020, 1, 1)))
+            }
+            "palautetaan HTTP 200 (ei validoida rakennetta tässä)" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaOps)(
+              verifyResponseStatusOk()))
+          }
+
         }
 
         "Tunnisteen koodiarvon validointi" - {
