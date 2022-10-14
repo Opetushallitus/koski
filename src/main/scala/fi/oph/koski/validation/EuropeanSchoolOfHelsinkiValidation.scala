@@ -1,7 +1,7 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.documentation.ExampleData.muutaKauttaRahoitettu
-import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso1, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 
 object EuropeanSchoolOfHelsinkiValidation {
   def fillRahoitusmuodot(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
@@ -17,7 +17,7 @@ object EuropeanSchoolOfHelsinkiValidation {
 
   private def fillRahoitusmuodot(opiskeluoikeusjaksot: List[EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso]): List[EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso] = {
     opiskeluoikeusjaksot.map {
-      case j if rahoitusmuotoTäydennetään(j) =>
+      case j: EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso1 if rahoitusmuotoTäydennetään(j) =>
         j.copy(opintojenRahoitus = Some(muutaKauttaRahoitettu))
       case j => j
     }

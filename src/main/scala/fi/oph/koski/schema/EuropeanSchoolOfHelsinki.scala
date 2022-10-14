@@ -80,19 +80,48 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
-case class EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(
+trait EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso extends KoskiOpiskeluoikeusjakso {
+  def alku: LocalDate
+  def tila: Koodistokoodiviite
+  @Description("Opintojen rahoitus. Toistaiseksi läsnä- ja valmistunut-tiloille aina 6: Muuta kautta rahoitettu")
+  @KoodistoUri("opintojenrahoitus")
+  @KoodistoKoodiarvo("6")
+  override def opintojenRahoitus: Option[Koodistokoodiviite] = None
+}
+
+object EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso {
+  def apply(alku: LocalDate, tila: Koodistokoodiviite, opintojenRahoitus: Option[Koodistokoodiviite] = None) = {
+    tila.koodiarvo match {
+      case "lasna" | "valmistunut" => EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso1(alku, tila, opintojenRahoitus)
+      case _ =>  EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso2(alku, tila, opintojenRahoitus)
+    }
+  }
+}
+
+case class EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso1(
   alku: LocalDate,
-  @KoodistoKoodiarvo("eronnut")
   @KoodistoKoodiarvo("lasna")
-  @KoodistoKoodiarvo("mitatoity")
-  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
   @KoodistoKoodiarvo("valmistunut")
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus. Toistaiseksi läsnä- ja valmistunut-tiloille aina 6: Muuta kautta rahoitettu")
   @KoodistoUri("opintojenrahoitus")
   @KoodistoKoodiarvo("6")
+  //@DefaultValue(Some(Koodistokoodiviite("6", "opintojenrahoitus")))
   override val opintojenRahoitus: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("6", "opintojenrahoitus"))
-) extends KoskiOpiskeluoikeusjakso
+) extends EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso
+
+case class EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso2(
+  alku: LocalDate,
+  @KoodistoKoodiarvo("eronnut")
+  @KoodistoKoodiarvo("mitatoity")
+  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
+  tila: Koodistokoodiviite,
+  @Description("Opintojen rahoitus. Toistaiseksi läsnä- ja valmistunut-tiloille aina 6: Muuta kautta rahoitettu")
+  @KoodistoUri("opintojenrahoitus")
+  @KoodistoKoodiarvo("6")
+  //@DefaultValue(None)
+  override val opintojenRahoitus: Option[Koodistokoodiviite] = None
+) extends EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso
 
 case class EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
   @Description("Rahoituksen laskennassa käytettävä tieto.")
