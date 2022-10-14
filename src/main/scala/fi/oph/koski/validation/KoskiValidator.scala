@@ -153,7 +153,7 @@ class KoskiValidator(
 
     fillMissingOrganisations(oo)
       .map(ePerusteetFiller.addKoulutustyyppi)
-      .flatMap(lipsuTarvittaessa(validateKoulutustyypinLöytyminenAmmatillisissa))
+      .flatMap(lipsuTarvittaessa(ePerusteetValidator.validateKoulutustyypinLöytyminenAmmatillisissa))
       .flatMap(lipsuTarvittaessa(MaksuttomuusValidation.validateAndFillJaksot))
       .map(ePerusteetFiller.fillPerusteenNimi)
       .map(fillLaajuudet)
@@ -334,23 +334,6 @@ class KoskiValidator(
         Left(KoskiErrorCategory.badRequest.validation.organisaatio.koulutustoimijaPakollinen("Koulutustoimijaa ei voi yksiselitteisesti päätellä käyttäjätunnuksesta. Koulutustoimija on pakollinen."))
     }
   }
-
-  private def validateKoulutustyypinLöytyminenAmmatillisissa(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
-    // Ammatillisille tutkinnoille varmistetaan että koulutustyyppi löytyi (halutaan erottaa
-    // ammatilliset perustutkinnot, erityisammattitutkinnot, yms - muissa tapauksissa jo suorituksen tyyppi
-    // on riittävä tarkkuus)
-    koulutustyyppiTraversal.toIterable(oo).collectFirst { case k: AmmatillinenTutkintoKoulutus if k.koulutustyyppi.isEmpty => k } match {
-      case Some(koulutus) => Left(KoskiErrorCategory.badRequest.validation.koodisto.koulutustyyppiPuuttuu(s"Koulutuksen ${koulutus.tunniste.koodiarvo} koulutustyyppiä ei löydy koulutustyyppi-koodistosta."))
-      case None => Right(oo)
-    }
-  }
-
-  private def koulutustyyppiTraversal =
-    traversal[KoskeenTallennettavaOpiskeluoikeus]
-      .field[List[PäätasonSuoritus]]("suoritukset")
-      .items
-      .field[Koulutusmoduuli]("koulutusmoduuli")
-      .ifInstanceOf[Koulutus]
 
   private def validateOpintojenrahoitus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
     HttpStatus.fold(opiskeluoikeus.tila.opiskeluoikeusjaksot.map {

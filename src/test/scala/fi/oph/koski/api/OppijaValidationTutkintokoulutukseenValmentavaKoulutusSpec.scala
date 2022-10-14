@@ -222,6 +222,20 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuvaOsasuorituksiaLiianVähän())
         }
       }
+
+      "koulutustyyppi täydennetään automaattisesti perusteista" in {
+
+        val defaultKoulutustyyppi = defaultOpiskeluoikeus.suoritukset.head.koulutusmoduuli match {
+          case k: TutkintokoulutukseenValmentavanKoulutus => k.koulutustyyppi.map(_.koodiarvo)
+        }
+        defaultKoulutustyyppi shouldBe None
+
+        val tuva = putAndGetOpiskeluoikeus(defaultOpiskeluoikeus, tuvaHenkilöValmis)
+        val täydennettyKoulutustyyppi = tuva.suoritukset.head.koulutusmoduuli match {
+          case k: TutkintokoulutukseenValmentavanKoulutus => k.koulutustyyppi.map(_.koodiarvo)
+        }
+        täydennettyKoulutustyyppi shouldBe Some("40")
+      }
     }
 
     "Katsotaan eronneeksi tilaan päättyneellä opiskeluoikeudella ei saa olla arvioimattomia osasuorituksia" in {

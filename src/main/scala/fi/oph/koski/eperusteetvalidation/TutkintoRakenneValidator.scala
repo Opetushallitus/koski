@@ -9,7 +9,9 @@ import fi.oph.koski.tutkinto.{Koulutustyyppi, _}
 
 import java.time.LocalDate
 
-case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
+case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu)
+  extends EPerusteetValidationUtils(tutkintoRepository, koodistoViitePalvelu) with Logging {
+
   def validate(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate], vaadittuPerusteenVoimassaolopäivä: LocalDate): HttpStatus = {
     validateTutkintoRakenne(suoritus, alkamispäiväLäsnä, vaadittuPerusteenVoimassaolopäivä)
       .onSuccess(validateDiaarinumerollinenAmmatillinen(suoritus, vaadittuPerusteenVoimassaolopäivä))
@@ -295,6 +297,15 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     }
   }
 
-  private def onKoodistossa(diaarinumero: String): Boolean =
-    koodistoViitePalvelu.onKoodistossa("koskikoulutustendiaarinumerot", diaarinumero)
+  def validateKoulutustyypinLöytyminenAmmatillisissa(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+    // Ammatillisille tutkinnoille varmistetaan että koulutustyyppi löytyi (halutaan erottaa
+    // ammatilliset perustutkinnot, erityisammattitutkinnot, yms - muissa tapauksissa jo suorituksen tyyppi
+    // on riittävä tarkkuus)
+    koulutustyyppiTraversal.toIterable(oo).collectFirst { case k: AmmatillinenTutkintoKoulutus if k.koulutustyyppi.isEmpty => k } match {
+      case Some(koulutus) if koulutus.perusteenDiaarinumero.isEmpty => Left(KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu())
+      case Some(koulutus) if !koulutus.perusteenDiaarinumero.exists(onKoodistossa) => Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari(s"Tutkinnon perustetta ei löydy diaarinumerolla ${koulutus.perusteenDiaarinumero.getOrElse("")}"))
+      case Some(koulutus) => Left(KoskiErrorCategory.badRequest.validation.koodisto.koulutustyyppiPuuttuu(s"Koulutuksen ${koulutus.tunniste.koodiarvo} koulutustyyppiä ei löydy koulutustyyppi-koodistosta."))
+      case None => Right(oo)
+    }
+  }
 }

@@ -34,6 +34,10 @@ class EPerusteisiinPerustuvaValidator(
     vaadittuPerusteenVoimassaolopäivä: LocalDate
   ): HttpStatus = tutkintorakenneValidator.validate(suoritus, alkamispäiväLäsnä, vaadittuPerusteenVoimassaolopäivä)
 
+  def validateKoulutustyypinLöytyminenAmmatillisissa(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+    tutkintorakenneValidator.validateKoulutustyypinLöytyminenAmmatillisissa(oo)
+  }
+
   def validateTutkinnonosanRyhmä(suoritus: Suoritus, vaadittuPerusteenVoimassaolopäivä: LocalDate): HttpStatus = {
     def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: TutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {

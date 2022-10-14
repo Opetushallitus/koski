@@ -19,10 +19,9 @@ class EPerusteetFiller(
   def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     koulutustyyppiTraversal.modify(oo) { koulutus =>
       val koulutustyyppi = koulutus match {
-        case np: NuortenPerusopetus =>
-          np.perusteenDiaarinumero.flatMap(haeKoulutustyyppi)
+        case d: Diaarinumerollinen if !d.perusteenDiaarinumero.exists(onKoodistossa) =>
+          d.perusteenDiaarinumero.flatMap(haeKoulutustyyppi)
         case _ =>
-          // 30.9.2022: voisiko koulutustyypit hakea EPerusteista myös lopuille tapauksille?
           val koulutustyyppiKoodisto = koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")
           val koulutusTyypit = koodistoViitePalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
           koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
@@ -30,14 +29,6 @@ class EPerusteetFiller(
       lens[Koulutus].field[Option[Koodistokoodiviite]]("koulutustyyppi").set(koulutus)(koulutustyyppi)
     }
   }
-
-  private def koulutustyyppiTraversal =
-    traversal[KoskeenTallennettavaOpiskeluoikeus]
-      .field[List[PäätasonSuoritus]]("suoritukset")
-      .items
-      .field[Koulutusmoduuli]("koulutusmoduuli")
-      .ifInstanceOf[Koulutus]
-
 
   def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
     case a: AmmatillinenOpiskeluoikeus => a.withSuoritukset(
