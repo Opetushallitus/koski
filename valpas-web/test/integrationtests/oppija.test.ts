@@ -89,11 +89,11 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           alkamispäivä: "15.8.2012",
         }),
         historiaOpintoOikeus({
-          otsikko: "Esiopetuksen suoritus 2010 – 2011",
+          otsikko: "Esiopetuksen suoritus 2010 – 2015",
           tila: "Valmistunut",
           toimipiste: "Jyväskylän normaalikoulu",
           alkamispäivä: "13.8.2010",
-          päättymispäivä: "3.6.2011",
+          päättymispäivä: "1.1.2015",
         })
       )
     )

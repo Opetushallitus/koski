@@ -9,8 +9,8 @@ describe('Telma', function () {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Opiskeluoikeuden voimassaoloaika : 14.9.2009 — 4.6.2016\n' +
-            'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          'Opiskeluoikeuden voimassaoloaika : 14.9.2009 — 4.6.2018\n' +
+            'Tila 4.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
             '14.9.2009 Läsnä (valtionosuusrahoitteinen koulutus)'
         )
       })
@@ -21,7 +21,7 @@ describe('Telma', function () {
             S('.suoritus > .properties, .suoritus > .tila-vahvistus')
           )
         ).to.equal(
-          'Koulutus Työhön ja itsenäiseen elämään valmentava koulutus (TELMA) 999903 6/011/2015\n' +
+          'Koulutus Työhön ja itsenäiseen elämään valmentava koulutus (TELMA) 999903 OPH-2659-2017\n' +
             'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto\n' +
             'Suorituskieli suomi\n' +
             'Suoritus valmis Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori'
