@@ -1,0 +1,2250 @@
+{
+  "id": 1667890,
+  "globalVersion": {
+    "aikaleima": 1503056774303
+  },
+  "nimi": {
+    "_id": "2691193",
+    "_tunniste": "ee4ce597-f8ab-4590-9616-c18bffc40faa",
+    "fi": "Lukioon valmistavan koulutuksen opetussuunnitelman perusteet",
+    "sv": "Grunderna för läroplanen för utbildning som förbereder för gymnasieutbildning 2015"
+  },
+  "koulutustyyppi": "koulutustyyppi_23",
+  "toteutus": "yksinkertainen",
+  "koulutukset": [],
+  "kielet": [
+    "fi",
+    "sv"
+  ],
+  "kuvaus": null,
+  "maarayskirje": {
+    "id": 1940621,
+    "url": {},
+    "liitteet": {}
+  },
+  "muutosmaaraykset": [],
+  "diaarinumero": "56/011/2015",
+  "voimassaoloAlkaa": 1469998800000,
+  "siirtymaPaattyy": null,
+  "voimassaoloLoppuu": null,
+  "paatospvm": 1447365600000,
+  "viimeisinJulkaisuAika": null,
+  "luotu": 1465204451968,
+  "muokattu": 1503056774303,
+  "tila": "valmis",
+  "tyyppi": "normaali",
+  "koulutusvienti": false,
+  "korvattavatDiaarinumerot": [],
+  "osaamisalat": [],
+  "tyotehtavatJoissaVoiToimia": null,
+  "suorittaneenOsaaminen": null,
+  "perusteenAikataulut": [],
+  "suoritustavat": [
+    {
+      "suoritustapakoodi": "lukiokoulutus",
+      "laajuusYksikko": "KURSSI"
+    }
+  ],
+  "lukiokoulutus": {
+    "sisalto": {
+      "id": 1646715,
+      "lapset": [
+        {
+          "id": 1646718,
+          "perusteenOsa": {
+            "id": 1667913,
+            "luotu": 1465204549868,
+            "muokattu": 1503056773845,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1921885",
+              "fi": "Lukiokoulutukseen valmistavan koulutuksen tehtävä",
+              "sv": "Syftet med utbildningen som förbereder för gymnasieutbildning"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1921455",
+              "fi": "<p>Maahanmuuttajille ja vieraskielisille järjestettävän lukiokoulutukseen valmistavan koulutuksen tavoitteena on antaa opiskelijalle kielelliset ja muut tarvittavat valmiudet lukiokoulutukseen siirtymistä varten. Lisäksi koulutuksen tulee tukea opiskelijoiden edellytyksiä elinikäiseen oppimiseen ja itsensä kehittämiseen elämänsä aikana<a href=\"#_ftn1\">[1]</a>. Näin edistetään yhteiskunnallista yhdenvertaisuutta sekä parannetaan maahanmuuttajien ja vieraskielisten mahdollisuuksia suorittaa lukiokoulutus. Koulutusta voidaan tarjota sekä nuorille että aikuisille maahanmuuttajille ja vieraskielisille. Maahanmuuttajalla tarkoitetaan Suomeen muuttanutta henkilöä, joka oleskelee maassa muuta kuin matkailua tai siihen verrattavaa lyhytaikaista oleskelua varten myönnetyllä luvalla tai jonka oleskeluoikeus on rekisteröity taikka jolle on myönnetty ulkomaalaislain<a href=\"#_ftn2\">[2]</a> 161 §:ssä tarkoitettu oleskelukortti<a href=\"#_ftn3\">[3]</a>. Vieraskielisellä tarkoitetaan henkilöä, jonka äidinkieli on väestötietojärjestelmästä ja Väestörekisterikeskuksen varmennepalveluista annetun lain (661/2009) tarkoittamassa väestötietojärjestelmässä muu kuin suomi, ruotsi tai saame<a href=\"#_ftn4\">[4]</a>.</p>\n\n<p>Koulutuksessa noudatetaan näiden opetussuunnitelman perusteiden pohjalta laadittua opetussuunnitelmaa. Opetushallitus on näissä perusteissa päättänyt eri aineiden ja aineryhmien opetuksen tavoitteista ja keskeisistä sisällöistä sekä oppilaitoksen ja kodin yhteistyön ja opiskeluhuollon keskeisistä periaatteista ja opetustoimeen kuuluvan opiskeluhuollon tavoitteista<a href=\"#_ftn5\">[5]</a>.</p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Lukiolaki (629/1998)2 § (1044/2013)</p>\n\n<p><a href=\"#_ftnref2\">[2]</a> Ulkomaalaislaki (301/2004, 360/2007)</p>\n\n<p><a href=\"#_ftnref3\">[3]</a> Lukiolaki (629/1998) 2a § (1044/2013)</p>\n\n<p><a href=\"#_ftnref4\">[4]</a> Laki lukiolain muuttamisesta (1044/2013) 2 a §</p>\n\n<p><a href=\"#_ftnref5\">[5]</a> Lukiolaki (629/1998) 10 §, Valtioneuvoston asetus lukiolaissa tarkoitetun koulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta (942/2014)</p>",
+              "sv": "<p>Syftet med utbildningen som förbereder för gymnasieutbildning som ordnas för invandrare och studerande med ett främmande språk som modersmål är att ge de stud- erande språkfärdigheter och andra färdigheter som behövs för att inleda gymnasieutbildning. Utbildningen ska också stödja de studerandes förutsättningar för livslångt lärande och för att utvecklas under hela sitt liv. Målet är att främja jämlikhet i samhället och förbättra förutsättningarna för invandrare och personer med främmande språk som modersmål att genomföra gymnasieutbildning. Utbildningen kan erbjudas såväl unga som vuxna invandrare och personer med främmande språk som modersmål. Med invandrare avses en person som flyttat till Finland och som vistas i landet med ett tillstånd som beviljats för annat än turism eller därmed jämförbar kortvarig vistel- se eller vars uppehållsrätt har registrerats eller som har beviljats uppehållskort<strong> </strong>som avses i 161 § i utlänningslagen. Med person med ett annat språk som modersmål avses en person, vars modersmål i befolkningsdatasystemet som avses i lagen om befolkningsdatasystemet och Befolkningsregistercentralens certifikattjänster (661/2009) är något annat än svenska, finska eller samiska.</p>\n\n<p> </p>\n\n<p>I utbildningen följs en läroplan som utarbetats utgående från föreliggande grunder för läroplanen. Utbildningsstyrelsen har i grunderna för läroplanen beslutat om målen och det centrala innehållet i de olika läroämnena och ämnesgrupperna och om de centrala principerna för samarbetet mellan hem och skola och för studerandevården samt om målen för den studerandevård som hör till undervisningsväsendet<strong>.</strong></p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "1667913"
+        },
+        {
+          "id": 1646719,
+          "perusteenOsa": {
+            "id": 1667914,
+            "luotu": 1465204560445,
+            "muokattu": 1503056773853,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1921135",
+              "fi": "Koulutuksen järjestämisen lähtökohdat ja opintojen rakenne",
+              "sv": "Utgångspunkterna för utbildningen och studiernas uppbyggnad"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1943504",
+              "fi": "<p>Lukiokoulutukseen valmistavaan koulutukseen voidaan ottaa opiskelijaksi henkilö,</p>\n\n<p>1. joka on maahanmuuttaja tai vieraskielinen;</p>\n\n<p>2. joka on suorittanut perusopetuksen oppimäärän tai sitä vastaavan oppimäärän taikka jolla katsotaan muutoin olevan vastaavat tiedot ja taidot;</p>\n\n<p>3. jolla ei ole riittäviä kielellisiä valmiuksia suoriutua lukio-opinnoista suomen tai ruotsin kielellä;</p>\n\n<p>4. jonka tavoitteena on jatkaa opiskelua lukiossa lukiokoulutukseen valmistavan koulutuksen jälkeen; ja</p>\n\n<p>5. joka ei ole suorittanut yliopistolain (558/2009) 37 §:n 1 momentissa mainittua tutkintoa tai korkeakoulututkintoa.<a href=\"#_ftn1\">[1]</a></p>\n\n<p> </p>\n\n<p>Opiskelijaksi ottamisesta päättää lukiolain 20 §:n mukaan tarkemmin koulutuksen järjestäjä. Hakijoihin on sovellettava yhdenvertaisia valintaperusteita<a href=\"#_ftn2\">[2]</a>. Opiskelijaksi voidaan koulutuksen järjestäjän päätöksellä ottaa perustellusta syystä myös paluumuuttaja. Lukiokoulutukseen valmistavaan koulutukseen ei voi ottaa opiskelijaa, joka on suorittanut ylioppilastutkinnon järjestämisestä annetussa laissa (672/2005) tarkoitetun tutkinnon, vähintään kolmivuotisen ammatillisen perustutkinnon tai sitä vastaavat aikaisemmat opinnot, ammatillisesta aikuiskoulutuksesta annetussa laissa (631/1998) tarkoitetun ammatillisen perustutkinnon, ammattitutkinnon, erikoisammattitutkinnon tai niitä vastaavan aikaisemman tutkinnon, ulkomaisen koulutuksen, joka asianomaisessa maassa antaa kelpoisuuden vastaaviin korkeakouluopintoihin tai korkeakoulututkinnon.</p>\n\n<p>Lukiokoulutukseen valmistava koulutus ei johda tutkintoon eikä anna oikeutta lukiokoulutukseen, vaan opiskelijan tulee hakea lukion aloituspaikkaa yhteishaussa. Lukiokoulutukseen jo valittu opiskelija voidaan ottaa opiskelijaksi lukiokoulutukseen valmistavaan koulutukseen, mikäli se on tarkoituksenmukaista lukiokoulutuksessa menestymisen kannalta.</p>\n\n<p>Lukiokoulutukseen valmistavan koulutuksen laajuus on 25 kurssia. Lukiokoulutukseen valmistavan koulutuksen oppimäärä tulee suorittaa yhdessä vuodessa<a href=\"#_ftn3\">[3]</a>. Lukiokoulutukseen valmistavan koulutuksen voi perustellusta syystä jakaa kahdelle peräkkäiselle lukuvuodelle. Koulutus on kuitenkin suunniteltu yhtenäiseksi kokonaisuudeksi, jota ei sen vuoksi ole mahdollista suorittaa erillisinä kursseina eli aineopintoina.</p>\n\n<p>Lukiokoulutukseen valmistava koulutus on laajuudeltaan yhden lukuvuoden opintokokonaisuus, ja se sisältää erityisesti suomen tai ruotsin kielen ja tarvittaessa muiden kielten opintoja, lukio- opintoja sekä lukio-opiskelussa vaadittavia tietoja ja taitoja. Lukiokoulutukseen valmistavan koulutuksen opiskelijalle tulee antaa opinto-ohjausta<a href=\"#_ftn4\">[4]</a>. Suomen/ruotsin kielen opintojen tavoitteena on parantaa opiskelijoiden valmiuksia opiskella lukiokoulutuksessa suomen tai ruotsin kielellä. Erityisesti tavoitteena on vahvistaa opiskelijoiden monilukutaitoa, jolla tarkoitetaan erilaisten viestien tulkinnan, tuottamisen ja arvottamisen taitoja. Se luo perustan ajattelutaidoille ja kyvylle hankkia, muokata, tuottaa, esittää ja arvioida tietoa erilaisissa monimediaisissa oppimisympäristöissä ja -tilanteissa. Monilukutaito on osa kaikkien oppiaineiden opiskelua lukiokoulutukseen valmistavassa koulutuksessa. Oppiminen etenee perustaitojen hallinnasta kohti laaja-alaisia tekstien ymmärtämis- ja tuottamistaitoja. Opiskelijaa ohjataan ymmärtämään ja hallitsemaan eri oppiaineille tyypillisiä tapoja käsitteellistää ja ilmaista asioita. Opiskelijat saavat valmiuksia välittää hankkimaansa tietoa, etsiä ratkaisuja ongelmiin ja tuottaa uutta tietoa monessa eri muodossa ja eri välinein. Opetus mahdollistaa opiskelijan viestintätaitojen kehittymisen monimediaisissa ja teknologisesti tuetuissa oppimisympäristöissä. Opetus mahdollistaa erilaisten tekstien tulkinnan, käyttämisen ja tuottamisen sekä yksin että yhdessä muiden kanssa.</p>\n\n<p>Muut kielet -aineryhmä jaetaan vieraiden kielten, toisen kotimaisen kielen sekä mahdollisesti opiskelijan oman äidinkielen välillä<a href=\"#_ftn5\">[5]</a>. Tästä syystä muiden kielten opintoihin varattava kurssimäärä voidaan jakaa vieraiden kielten, toisen kotimaisen kielen ja/tai mahdollisuuksien mukaan opiskelijan oman äidinkielen opintojen välillä opiskelijan tarpeiden mukaisesti. Opiskelijan henkilökohtaisessa opiskelusuunnitelmassa määritellään tarkemmin näistä muiden kielten opinnoista.</p>\n\n<p>Matemaattiset ja luonnontieteelliset opinnot -aineryhmä sisältää matematiikkaa, fysiikkaa, kemiaa, biologiaa ja maantiedettä sekä yhteiskuntatietous ja kulttuurintuntemus -aineryhmä historiaa ja yhteiskuntaoppia<a href=\"#_ftn6\">[6]</a>.</p>\n\n<p>Lukiokoulutukseen valmistavassa koulutuksessa tavoitteena on kehittää lukio-opiskelussa vaadittavia opiskelutaitoja sekä lisätä tietämystä suomalaisesta yhteiskunnasta ja kulttuurista. Tavoitteena on syventää erityisesti eri tiedonalojen käsitteiden, ajattelutapojen ja ilmaisun hallintaa. Lisäksi vahvistetaan opiskelijoiden tiedonhankinta ja -soveltamistaitoja sekä tieto- ja viestintäteknistä osaamista. Yhteiskuntatietouden ja kulttuurintuntemuksen avulla opiskelija tutustuu suomalaiseen koulutus- ja yhteiskuntajärjestelmään. Opinto-ohjauksen avulla opiskelijalle muodostuu käsitys suomalaisen lukiokoulutuksen ja muun koulutusjärjestelmän toimintamalleista ja vaatimuksista ja hän oppii asettamaan realistisesti koulutustaan ja kehitystään koskevia tavoitteita.</p>\n\n<p>Valinnaisiin opintoihin voi sisältyä lukiolaissa tarkoitetun koulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta annetussa valtioneuvoston asetuksessa (942/2014, 9 ja 10 §) säädettyjä kursseja tai muita koulutuksen järjestäjän tarjoamia opiskelijan lukio-opintovalmiuksia edistäviä opintoja. Ne voivat olla myös perusopetuksen päättötodistuksen korottamiseen tarkoitettuja opintoja<a href=\"#_ftn7\">[7]</a>. Opiskelija voi siis oppilaitoksen opetustarjonnan mukaan suorittaa lukiokoulutukseen valmistavan koulutuksen aikana myös perusopetuksen ja/tai lukiokoulutuksen opintoja. Perusopetuksen ja lukiokoulutuksen opinnot voidaan sisällyttää valinnaisiin (6 kurssia) opintoihin tai niitä voidaan järjestää vähimmäiskurssimäärän (25 kurssia) lisäksi.</p>\n\n<p>Lukiokoulutukseen valmistavaa koulutusta voivat järjestää koulutuksen järjestäjät, joilla on lukiokoulutuksen järjestämislupa. Opetus- ja kulttuuriministeriö voi myöntää kunnalle, kuntayhtymälle, rekisteröidylle yhteisölle tai säätiölle luvan lukiokoulutuksen järjestämiseen. Lupa voidaan myöntää myös ulkomailla järjestettävää opetusta varten. Lupa sisältää oikeuden järjestää maahanmuuttajille ja vieraskielisille lukiokoulutukseen valmistavaa koulutusta<a href=\"#_ftn8\">[8]</a>. Perusopetuksen opintojen suorittaminen ja arvosanojen korottaminen on mahdollista lukiokoulutukseen valmistavan koulutuksen aikana yhteistyössä perusopetusta antavien koulujen kanssa.</p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Lukiolaki (629/1998) 20 § (1044/2013)</p>\n\n<p><a href=\"#_ftnref2\">[2]</a> Lukiolaki (629/1998) 20 § (1044/2013)</p>\n\n<p><a href=\"#_ftnref3\">[3]</a> Lukiolaki (629/1998) 24 § (1044/2013)</p>\n\n<p><a href=\"#_ftnref4\">[4]</a> Lukiolaki (629/1998) 7 § (1044/2013)</p>\n\n<p><a href=\"#_ftnref5\">[5]</a> Valtioneuvoston asetus lukiolaissa tarkoitetun koulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta (942/2014) 11 §</p>\n\n<p><a href=\"#_ftnref6\">[6]</a> Valtioneuvoston asetus lukiolaissa tarkoitetun koulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta (942/2014) 11 §</p>\n\n<p><a href=\"#_ftnref7\">[7]</a> Valtioneuvoston asetus lukiolaissa tarkoitetun koulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta (942/2014) 11 §</p>\n\n<p><a href=\"#_ftnref8\">[8]</a> Lukiolaki (629/1998) 3 § (1044/2013)</p>",
+              "sv": "<p>Till utbildning som förbereder för gymnasieutbildning kan antas en person som</p>\n\n<p>1. är invandrare eller har ett främmande språk som modersmål;</p>\n\n<p>2. har slutfört den grundläggande utbildningens lärokurs eller en motsvarande lärokurs eller annars anses ha motsvarande kunskaper och färdigheter;</p>\n\n<p>3. inte har tillräckliga språkliga färdigheter för att klara av gymnasiestudier på svenska eller finska;</p>\n\n<p>4. har för avsikt att fortsätta studera vid gymnasiet efter utbildningen som förbereder för gymnasieutbildning; och</p>\n\n<p>5. inte har avlagt en examen eller högskoleexamen som nämns i 37 § 1 mom. i universitetslagen (558/2009).</p>\n\n<p>I enlighet med 20 § i gymnasielagen beslutar utbildningsanordnaren närmare om antagningen av studerande. Enhetliga antagningsgrunder ska tillämpas på de sö- kande. Av grundad anledning kan också återflyttare enligt utbildningsanordnarens beslut antas som studerande. Till utbildning som förbereder för gymnasieutbildning kan inte antas en studerande som avlagt den examen som avses i lagen om anordnande av studentexamen (672/2005), en yrkesinriktad grundexamen som omfattar minst tre år eller motsvarande tidigare studier, sådan yrkesinriktad grundexamen, yrkesexamen, specialyrkesexamen eller motsvarande tidigare examen som avses i la- gen om yrkesinriktad vuxenutbildning (631/1998), en utländsk utbildning som i landet i fråga ger behörighet för motsvarande högskolestudier eller högskoleexa- men.</p>\n\n<p> </p>\n\n<p>Utbildningen som förbereder för gymnasieutbildning omfattar 25 kurser. Lärokursen för utbildningen som förbereder för gymnasieutbildning ska slutföras inom ett år. Av grundad anledning kan utbildningen uppdelas på två på varandra följande läsår. Utbildningen är dock planerad som en sammanhängande helhet och kan därför inte genomföras som separata kurser, s.k. ämnesstudier.</p>\n\n<p> </p>\n\n<p>Utbildningen som förbereder för gymnasieutbildning är en studiehelhet som omfattar ett läsår och innehåller i synnerhet studier i svenska eller finska och vid behov övriga språk, gymnasiestudier samt studier som ger sådana kunskaper och fär- digheter som behövs i gymnasieutbildningen. Alla som studerar inom utbildningen som förbereder för gymnasieutbildning ska få studiehandledning. Målet med stu- dierna i svenska/finska är att förbättra de studerandes förutsättningar att genomföra gymnasieutbildning på svenska eller finska. Ett särskilt mål är att stärka de studerandes kompetens i multilitteracitet, med andra ord förmågan att tolka, producera och bedöma olika budskap. Denna kompetens bidrar till att utveckla tänkandet och förmågan att skaffa, bearbeta, producera, presentera och bedöma information i olika mediala och multimediala lärmiljöer och -situationer. Kompetens i multilitteracitet ska ingå i alla läroämnen i utbildningen som förbereder för gymnasieut- bildning. Lärandet ska utvecklas från grundläggande basfärdigheter mot bred kompetens att förstå och producera texter av många olika slag. De studerande ska lära sig förstå, abstrahera och uttrycka begrepp på det sätt som är typiskt för olika läroämnen. De studerande ska lära sig att förmedla information de skaffat, söka lös- ningar på problem och producera ny information i olika former och med olika verktyg. Undervisningen ska ge de studerande möjlighet att utveckla sina kommu- nikativa färdigheter i multimediala och teknologistödda lärmiljöer. Undervisningen ska också ge de studerande möjlighet att tolka, använda och producera olika texter både individuellt och tillsammans med andra.</p>\n\n<p> </p>\n\n<p>Ämnesgruppen övriga språk omfattar främmande språk, det andra inhemska språket och eventuellt den studerandes eget modersmål. Därför kan antalet kurser som reserveras för studier i övriga språk fördelas mellan studier i främmande språk, i det andra inhemska språket och/eller i mån av möjlighet i den studerandes eget mo- dersmål i enlighet med den studerandes behov. Om studierna i övriga språk bestäms närmare i den studerandes individuella studieplan.</p>\n\n<p> </p>\n\n<p>Ämnesgruppen matematiska och naturvetenskapliga studier innehåller matematik, fysik, kemi, biologi och geografi. Ämnesgruppen samhällskunskap och kulturkännedom innefattar läroämnena historia och samhällslära.</p>\n\n<p> </p>\n\n<p>I utbildningen som förbereder för gymnasieutbildning är målet att utveckla studiefärdigheter som krävs för gymnasiestudier och att öka kännedomen om det fin- ländska samhället och finländsk kultur. Målet är att fördjupa i synnerhet förmågan att förstå begrepp, tankesätt och uttryck inom olika ämnesområden. Ett annat mål är att stärka de studerandes förmåga att söka och tillämpa information samt deras färdigheter i informations- och kommunikationsteknik. Studier i samhällskunskap och kulturkännedom ger de studerande en bild av det finländska utbildnings- och samhällssystemet. Genom studiehandledningen får de studerande en uppfattning om hand- lingsmodellerna och kraven i den finländska gymnasieutbildningen och det övriga utbildningssystemet så att de kan ställa upp realistiska mål för sin utbildning och utveckling.</p>\n\n<p> </p>\n\n<p>De valfria studierna kan inkludera kurser som omnämns i gymnasielagen och som fastställts i statsrådets förordning (942/2014, 9 och 10 §) eller andra studier som utbildningsanordnaren erbjuder, som främjar den studerandes förutsättningar för gymnasiestudier. De kan också bestå av studier, där avsikten är att höja vitsord i avgångsbetyget från den grundläggande utbildningen. Beroende på läroanstaltens undervisningsutbud kan de studerande alltså under utbildningen som förbereder för gymnasieutbildning också genomföra studier som hör till den grundläggande utbildningen och/eller gymnasieutbildningen. Studier som hör till den grundläggande utbildningen eller gymnasieutbildningen kan inkluderas i de valfria studierna (6 kurser) eller gen- omföras utöver minimiantalet kurser (25 kurser).</p>\n\n<p> </p>\n\n<p>Utbildning som förbereder för gymnasieutbildning kan ordnas av alla utbildningsanordnare som har tillstånd att ordna gymnasieutbildning. Undervisnings- och kul- turministeriet kan bevilja en kommun, samkommun eller en registrerad sammanslutning eller stiftelse tillstånd att ordna gymnasieutbildning. Tillstånd kan också beviljas för undervisning utomlands. Tillståndet ger rätt att ordna utbildning som förbereder invandrare och studerande med ett främmande språk som modersmål för gymnasieutbildning. Samarbete med skolor som ger grundläggande utbildning ger de studerande möjlighet att under utbildningen som förbereder för gymnasieutbildning genomföra studier eller höja vitsord som hör till den grundläggande utbildningen.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 1668140,
+              "perusteenOsa": {
+                "id": 1667915,
+                "luotu": 1465204797701,
+                "muokattu": 1503056773879,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921137",
+                  "fi": "Opintojen rakenne",
+                  "sv": "Studiernas uppbyggnad"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1943375",
+                  "fi": "<p>Lukiokoulutukseen valmistava koulutus on laajuudeltaan vähintään 25 kurssia. Nuorille suunnattavan opetuksen kesto on keskimäärin 38 tuntia kurssia kohden ja aikuisille keskimäärin 28 tuntia kurssia kohden. Lähiopetuksessa opetukseen tulee tuntia kohti käyttää vähintään 45 minuuttia ja aikuisille tarkoitetussa opetuksessa vähintään 40 minuuttia.<a href=\"#_ftn1\">[1]</a> Maahanmuuttajille ja vieraskielisille järjestettävän lukiokoulutukseen valmistavan koulutuksen tuntijako on seuraava:</p>\n\n<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px\">\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>Oppiaine ja aineryhmä</td>\n\t\t\t<td>Pakolliset kurssit</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>Äidinkieli ja kirjallisuus* </td>\n\t\t\t<td>10</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>Muut kielet** </td>\n\t\t\t<td>3</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>Matemaattiset ja luonnontieteelliset opinnot***</td>\n\t\t\t<td>2</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>Yhteiskuntatietous ja kulttuurintuntemus****</td>\n\t\t\t<td>2</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>Opinto-ohjaus </td>\n\t\t\t<td>2</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>Valinnaiset opinnot*****</td>\n\t\t\t<td>6</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n<p> </p>\n\n<p>*Äidinkieli ja kirjallisuus -oppiaine opetetaan suomi toisena kielenä ja kirjallisuus tai ruotsi toisena kielenä ja kirjallisuus -oppimäärän mukaan.</p>\n\n<p>**Muut kielet -aineryhmä jaetaan vieraiden kielten, toisen kotimaisen kielen sekä mahdollisesti opiskelijan oman äidinkielen välillä.</p>\n\n<p>***Matemaattiset ja luonnontieteelliset opinnot -aineryhmä sisältää matematiikkaa, fysiikkaa, kemiaa, biologiaa ja maantiedettä.</p>\n\n<p>****Yhteiskuntatietous ja kulttuurintuntemus -aineryhmä sisältää historiaa ja yhteiskuntaoppia.</p>\n\n<p>*****Valinnaisiin opintoihin voi sisältyä 9 ja 10 §:ssä säädettyjä kursseja tai muita koulutuksen järjestäjän tarjoamia opiskelijan lukio-opintovalmiuksia edistäviä opintoja. Ne voivat olla myös perusopetuksen päättötodistuksen korottamiseen tarkoitettuja opintoja<a href=\"#_ftn2\">[2]</a>.</p>\n\n<p> </p>\n\n<p>Kurssien suoritusjärjestys on vapaa. Lukiokoulutukseen valmistavan koulutuksen aikana on mahdollisuus suorittaa perusopetuksen opintoja tai lukiokoulutuksen kursseja opiskelijan henkilökohtaisessa opiskelusuunnitelmassa määritellyllä tavalla. Nämä opinnot voivat sisältyä valinnaisiin opintoihin tai ne voidaan suorittaa lukiokoulutukseen valmistavan koulutuksen vähimmäiskurssimäärän lisäksi. Lukiokoulutukseen valmistava koulutus on päätoimista, kun sen laajuus on vähintään 25 kurssia<a href=\"#_ftn3\">[3]</a>.</p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Lukioasetus (810/1998) 1 § (52/2014)</p>\n\n<p><a href=\"#_ftnref2\">[2]</a> Valtioneuvoston asetus lukiolaissa tarkoitetun koulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta (942/2014)</p>\n\n<p><a href=\"#_ftnref3\">[3]</a> Lukioasetus (810/1998) 15 § (52/2014)</p>",
+                  "sv": "<p>Utbildningen som förbereder för gymnasieutbildning ska omfatta minst 25 kurser. I undervisningen för unga består en kurs i genomsnitt av 38 lektioner, i undervisningen för vuxna i genomsnitt av 28 lektioner. I närundervisning ska längden på en lekti- on vara minst 45 minuter och i undervisning för vuxna minst 40 minuter.<strong> </strong>I ut- bildning som förbereder invandrare och studerande med ett främmande språk för gymnasieutbildning är timfördelningen följande:</p>\n\n<p> </p>\n\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p>Läroämne och ämnesgrupp</p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p>Antal obligatoriska kurser</p>\n\t\t\t</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t<p>Modersmål och litteratur* Övriga språk**</p>\n\n\t\t\t<p>Matematiska och naturvetenskapliga studier***</p>\n\n\t\t\t<p>Samhällskunskap och kulturkännedom **** Studiehandledning</p>\n\n\t\t\t<p> Valfria studier***** </p>\n\t\t\t</td>\n\t\t\t<td>\n\t\t\t<p>10</p>\n\n\t\t\t<p>3</p>\n\n\t\t\t<p>2</p>\n\n\t\t\t<p>2</p>\n\n\t\t\t<p>2</p>\n\n\t\t\t<p>6 </p>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n<p>* Ämnet modersmål och litteratur undervisas enligt lärokursen för svenska/finska som andra- språk och litteratur.</p>\n\n<p>** Ämnesgruppen Övriga språk omfattar främmande språk, det andra inhemska språket och eventuellt den studerandes eget modersmål.</p>\n\n<p>*** Ämnesgruppen Matematiska och naturvetenskapliga studier innehåller matematik, fysik, kemi, biologi och geografi.</p>\n\n<p>**** Ämnesgruppen samhällskunskap och kulturkännedom omfattar historia och samhällslära.</p>\n\n<p>***** De valfria studierna kan inkludera kurser som fastställts i 9 och 10 § eller andra studier som utbildningsanordnaren erbjuder, som främjar den studerandes förutsättningar för gymnasie- studier. De kan också bestå av studier, där avsikten är att höja vitsord i avgångsbetyget från den grundläggande utbildningen.</p>\n\n<p> </p>\n\n<p>Kurserna får avläggas i valfri ordning. Under utbildningen som förbereder för gymnasieutbildning har de studerande möjlighet att genomföra studier som hör till den grundläggande utbildningen eller gymnasieutbildningen i enlighet med sin in- dividuella studieplan. Sådana studier kan inkluderas i de valfria studierna eller ge- nomföras utöver minimiantalet kurser i utbildningen som förbereder för gymnasie- utbildning. Utbildningen som förbereder för gymnasieutbildning är utbildning på heltid när den omfattar minst 25 kurser.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1667915"
+            },
+            {
+              "id": 1668141,
+              "perusteenOsa": {
+                "id": 1667916,
+                "luotu": 1465204812527,
+                "muokattu": 1503056773882,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921139",
+                  "fi": "Perusopetuksen opintojen suorittaminen",
+                  "sv": "Genomförande av studier som hör till den grundläggande utbildningen"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921320",
+                  "fi": "<p>Lukiokoulutukseen valmistavan koulutuksen aikana opiskelija voi suorittaa perusopetuksen opintoja joko lukiokoulutukseen valmistavaan koulutukseen kuuluvina valinnaisina opintoina tai valmistavan koulutuksen minimikurssimäärän ulkopuolella. Hyväksytyistä perusopetuksen opinnoista opiskelija voi saada todistuksen osallistumalla perusopetuslaissa (38 §) tarkoitettuun erityiseen tutkintoon. Erityisessä tutkinnossa voidaan suorittaa perusopetuksen oppiaineen koko oppimäärä tai osia siitä, kuten jonkin vuosiluokan oppimäärä. Perusopetuksen opintojen suorittamistavoista lukiokoulutukseen valmistavan koulutuksen aikana päätetään opetussuunnitelmassa.</p>\n\n<p>Perusopetuksen opintojen suorittamista varten lukiokoulutukseen valmistavan koulutuksen järjestäjän tulee sopia perusopetuksen järjestäjän kanssa, miten opiskelijat voivat halutessaan suorittaa perusopetuksen opintoja, millaisia opetusjärjestelyjä se edellyttää ja miten erityinen tutkinto järjestetään.</p>",
+                  "sv": "<p>Under utbildningen som förbereder för gymnasieutbildning kan den studerande ge- nomföra studier som hör till den grundläggande utbildningen, antingen som valfria studier eller utöver minimiantalet kurser i utbildningen som förbereder för gymna- sieutbildning. Den studerande kan få ett betyg över godkända studier inom den grundläggande utbildningen genom att delta i en särskild examen som avses i lagen om grundläggande utbildning (38 §). I den särskilda examen kan den studerande ge- nomföra en hel eller delar av en lärokurs i ett läroämne i den grundläggande ut- bildningen, t.ex. lärokursen för en bestämd årskurs. Om genomförandet av studier som hör till den grundläggande utbildningen under utbildningen som förbereder för gymnasieutbildning bestäms i läroplanen.</p>\n\n<p>När en studerande genomför studier i den grundläggande utbildningen, ska anordnaren av utbildning som förbereder för gymnasieutbildning komma överens med anordnaren av grundläggande utbildning om hur studierna ska genomföras, vil- ka undervisningsarrangemang som förutsätts och hur den särskilda examen ska ord- nas.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1667916"
+            },
+            {
+              "id": 1668142,
+              "perusteenOsa": {
+                "id": 1667917,
+                "luotu": 1465204829257,
+                "muokattu": 1503056773884,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921321",
+                  "fi": "Lukiokoulutuksen opintojen suorittaminen",
+                  "sv": "Genomförande av gymnasiestudier"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921322",
+                  "fi": "<p>Lukiokoulutukseen valmistavan koulutuksen valinnaisiin opintoihin voi sisältyä valtioneuvoston asetuksessa lukiokoulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta säädettyjä pakollisia, syventäviä ja soveltavia kursseja. Lukiokoulutukseen valmistavassa koulutuksessa voidaan järjestää valinnaisia opintoja myös niissä lukion oppiaineissa, joita ei opiskella perusopetuksessa. Valinnaisina opintoina suoritetut lukiokoulutuksen kurssit merkitään todistukseen lukion opetussuunnitelman mukaisesti.</p>",
+                  "sv": "<p>De valfria studierna i utbildningen som förbereder för gymnasieutbildning kan inne- hålla sådana obligatoriska, fördjupade och tillämpade kurser som fastställs i statsrådets förordning om allmänna riksomfattande mål för gymnasieutbildningen och om tim- fördelningen i gymnasieutbildningen. I utbildningen som förbereder för gymnasieut- bildning kan valfria studier också ordnas i sådana gymnasieämnen som inte ingår i den grundläggande utbildningen. Gymnasiekurser som genomförts som valfria studier an- tecknas i betyget i enlighet med gymnasiets läroplan.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1667917"
+            }
+          ],
+          "_perusteenOsa": "1667914"
+        },
+        {
+          "id": 1668145,
+          "perusteenOsa": {
+            "id": 1682062,
+            "luotu": 1465304345744,
+            "muokattu": 1503056773855,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1921323",
+              "fi": "Opetussuunnitelma",
+              "sv": "Läroplan"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1943376",
+              "fi": "<p>Lukiokoulutukseen valmistavan koulutuksen opetussuunnitelman laatimisesta vastaa koulutuksen järjestäjä. Lähtökohdan opetussuunnitelman laatimiselle muodostavat lukiokoulutukseen valmistavan koulutuksen opetussuunnitelman perusteiden lisäksi valtioneuvoston asetuksessa (942/2014) määritellyt yleiset ja lukiokoulutukseen valmistavaa koulutusta koskevat valtakunnalliset tavoitteet sekä kaikki mitä lukiolaissa sekä lukioasetuksessa säädetään. Opetussuunnitelma laaditaan tämän opetussuunnitelman perusteasiakirjan mukaan.</p>\n\n<p>Lukiokoulutukseen valmistavan koulutuksen opetussuunnitelmassa tulee olla</p>\n\n<p>• koulutuksen yleiset tavoitteet</p>\n\n<p>• opetusjärjestelyt</p>\n\n<p>• ohjaussuunnitelma, jossa kuvataan ohjauksen tavoitteet sekä ohjaukseen osallistuvien tehtävät ja työnjako</p>\n\n<p>• opiskelijan henkilökohtaisen opiskelusuunnitelman laadintakäytänteet sekä menettelytavat opiskelijan lähtötilanteen selvittämiseksi ja tämän tiedon dokumentoimiseksi ja opiskelijan opintojen seuraamiseksi</p>\n\n<p>• suomen kielen, muiden kielten, matemaattisten ja luonnontieteellisten opintojen, yhteiskuntatietouden ja kulttuurintuntemuksen, opinto-ohjauksen ja opiskelutaitojen sekä tarjottavien valinnaisten opintojen tavoitteet ja keskeiset sisällöt sekä mahdolliset opintojen suoritusjärjestystä koskevat rajoitteet</p>\n\n<p>• perusopetuksen opintojen suorittaminen ja perusopetuksen arvosanojen korottaminen lukiokoulutukseen valmistavan koulutuksen aikana</p>\n\n<p>• lukiokoulutuksen opintojen suorittaminen sekä yhteistyö ja osallistaminen lukion toimintaan</p>\n\n<p>• kodin ja oppilaitoksen yhteistyö lukiokoulutukseen valmistavassa koulutuksessa</p>\n\n<p>• suunnitelma kurinpitokeinojen käyttämisestä ja niihin liittyvistä menettelytavoista</p>\n\n<p>• arvioinnin ja palautteen antamisen menetelmät ja käytänteet sekä todistukset ja niihin merkittävät tiedot.</p>\n\n<p> </p>\n\n<p>Naisten ja miesten välisestä tasa-arvosta annetun lain<a href=\"#_ftn1\">[1]</a> mukaan koulutuksen järjestäjä vastaa siitä, että vuosittain laaditaan oppilaitoskohtaisesti tasa-arvosuunnitelma yhteistyössä henkilöstön ja oppilaiden tai opiskelijoiden kanssa. Vuosittaisen tarkastelun sijaan suunnitelma voidaan laatia enintään kahdeksi tai kolmeksi vuodeksi kerrallaan. Tasa-arvosuunnitelma voidaan sisällyttää osaksi opetussuunnitelmaa tai muuta oppilaitoksen suunnitelmaa.</p>\n\n<p> </p>\n\n<p>Yhdenvertaisuuslain<a href=\"#_ftn2\">[2]</a> mukaan koulutuksen järjestäjän on huolehdittava siitä, että oppilaitoksella on suunnitelma tarvittavista toimenpiteistä yhdenvertaisuuden edistämiseksi. Yhdenvertaisuussuunnitelma voi sisältyä opetussuunnitelmaan.</p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Laki naisten ja miesten välisestä tasa-arvosta <strong>(609/1986, muutettu 1329/2014) 5 a §</strong></p>\n\n<p><a href=\"#_ftnref2\">[2]</a> Yhdenvertaisuuslaki (1325/2014) 6 §</p>\n\n<p> </p>",
+              "sv": "<p>Utbildningsanordnaren ska utarbeta en läroplan för utbildningen som förbereder för gymnasieutbildning. Läroplanen ska utarbetas utgående från grunderna för läroplanen för utbildning som förbereder för gymnasieutbildning, de allmänna mål och de mål som gäller utbildningen som förbereder för gymnasieutbildning som fastställs i statsrådets förordning (942/2014) samt från det som bestäms i gymnasielagen och gymnasieförordningen. Läroplanen ska utarbetas i enlighet med föreliggande grunder för läroplanen.</p>\n\n<p> </p>\n\n<p>Läroplanen för utbildning som förbereder för gymnasieutbildning ska innehålla</p>\n\n<p>• utbildningens allmänna mål</p>\n\n<p>• undervisningsarrangemang</p>\n\n<p>• en handledningsplan, som beskriver handledningens mål samt arbetsuppgifterna och arbetsfördelningen bland dem som medverkar i handledningen</p>\n\n<p>• en beskrivning av hur de studerandes individuella studieplaner görs upp, på vilket sätt de studerandes utgångsläge kartläggs och dokumenteras och hur studierna följs upp</p>\n\n<p>• målen och det centrala innehållet i svenska, övriga språk, matematiska och naturvetenskapliga studier, samhällskunskap och kulturkännedom, studiehandledning och studiefärdigheter samt de valfria studier som erbjuds samt eventuella begränsningar för i vilken ordning studierna ska genomföras</p>\n\n<p>• genomförande av studier och höjning av vitsord som hör till den grundläggande utbildningen under utbildningen som förbereder för gymnasieutbildning</p>\n\n<p>• genomförande av gymnasiestudier samt samarbete och delaktighet i gymnasiets</p>\n\n<p>verksamhet</p>\n\n<p>• en beskrivning av samarbetet mellan hem och skola i utbildningen som förbereder för gymnasieutbildning</p>\n\n<p>• en plan för användningen av disciplinära åtgärder och förfaringssätt</p>\n\n<p>• bedömnings- och responsmetoder och -praxis samt betyg och betygsanteckningar.</p>\n\n<p> </p>\n\n<p>Enligt lagen om jämställdhet mellan kvinnor och män<strong> </strong>ansvarar utbildningsanordnaren för att det i samarbete med personalen och eleverna eller de studerande årligen utarbetas en jämställdhetsplan för varje läroanstalt. I stället för en årlig genomgång kan planen utarbetas för högst två eller tre år i sänder. Jämställdhetspla- nen kan inkluderas i läroplanen eller i någon annan av läroanstaltens planer.</p>\n\n<p> </p>\n\n<p>Enligt diskrimineringslagen<strong> </strong>ska utbildningsanordnaren se till att varje läroanstalt har en plan för de åtgärder som behövs för att främja likabehandling. Likabe- handlingsplanen kan ingå i läroplanen.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "1682062"
+        },
+        {
+          "id": 1668146,
+          "perusteenOsa": {
+            "id": 1682063,
+            "luotu": 1465304496059,
+            "muokattu": 1503056773858,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1921325",
+              "fi": "Opetuksen toteuttaminen",
+              "sv": "Undervisningen"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 1668147,
+              "perusteenOsa": {
+                "id": 1682064,
+                "luotu": 1465304516826,
+                "muokattu": 1503056773886,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921326",
+                  "fi": "Arvoperusta",
+                  "sv": "Värdegrunden"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921452",
+                  "fi": "<p>Lukiokoulutukseen valmistavan koulutuksen arvoperusta noudattaa suomalaisen koulutusjärjestelmän arvoperustaa. Suomi turvaa perustuslain nojalla maahanmuuttajien tasa-arvoiset ja yhdenvertaiset oikeudet. Koulutuksen järjestämisen näkökulmasta tasa-arvo tarkoittaa alueellista ja sukupuolten tasa-arvoa sekä opiskelijan taloudellisesta asemasta tai muista henkilökohtaisista ominaisuuksista riippumatonta tasa-arvoa. Yhdenvertaisuuslain mukaan ketään ei saa syrjiä iän, etnisen tai kansallisen alkuperän, kansalaisuuden, kielen, uskonnon, vakaumuksen, mielipiteen, terveydentilan, vammaisuuden, sukupuolisen suuntautumisen tai muun henkilöön liittyvän syyn perusteella. Yhdenvertaisuuslaki edellyttää viranomaiselta yhdenvertaisuuden aktiivista edistämistä. </p>\n\n<p>Lukiokoulutukseen valmistavan koulutuksen yleisenä arvolähtökohtana on elämän ja ihmisoikeuksien kunnioitus. Sivistysihanteena on pyrkimys hyvyyteen, totuuteen ja kauneuteen. Koulutus edistää yhteiskunnallista oikeudenmukaisuutta, luo edellytyksiä avoimelle demokratialle ja hyvinvoinnille sekä ehkäisee syrjäytymistä. Lisäksi lukiokoulutukseen valmistava koulutus harjaannuttaa nuoria ja aikuisia maahanmuuttajia kestävään elämäntapaan ja arjen taitoihin.</p>\n\n<p>Lukiokoulutukseen valmistava koulutus ohjaa tunnistamaan eri kulttuureja yhdistäviä hyvän elämän arvoja ja periaatteita. Opiskelu tukee maahanmuuttajien omia kulttuuriperinteitä sekä auttaa arvioimaan ja uudistamaan niitä, jos ne ovat ristiriidassa Suomessa vallitsevien lakien kanssa. Opiskelu vahvistaa opiskelijan taitoja toimia kulttuurisesti monimuotoisessa yhteiskunnassa sekä kartuttaa opiskelijan kulttuurienvälistä toimintakykyä. Koulutus kannustaa vuorovaikutukseen eri kulttuuriryhmien välille ja kantaväestön kanssa. Lukiokoulutukseen valmistavassa koulutuksessa edistetään hyviä etnisiä suhteita. Syrjintää, rasismia, väkivaltaa tai kiusaamista ei sallita missään muodossa eikä keneltäkään.</p>\n\n<p>Opiskelijaa rohkaistaan arvioimaan julkilausuttujen arvojen ja todellisuuden mahdollisia ristiriitoja sekä pohtimaan kriittisesti suomalaisen yhteiskunnan mahdollisuuksia ja epäkohtia. Opiskelussa arvoja ja periaatteita kielennetään mahdollisuuksien mukaan. Tavoitteena on arvojen toteutuminen koulutuksen järjestämistavoissa ja opetuksessa sekä eetoksessa ja toimintakulttuurissa.</p>",
+                  "sv": "<p>Värdegrunden i utbildningen som förbereder för gymnasieutbildning ska följa vär- degrunden i det finländska utbildningssystemet. Med stöd av grundlagen garante- rar Finland invandrare jämlika och likvärdiga rättigheter. Med tanke på utbildningen innebär det här regional jämlikhet, jämställdhet mellan könen och likvärdighet oberoende av de studerandes ekonomiska ställning eller andra personliga egenskaper. Enligt lagen om likabehandling får ingen diskrimineras på grund av ålder, etniskt eller nationellt ursprung, nationalitet, språk, religion, övertygelse, åsikt, hälsotillstånd, funktionshinder, sexuell läggning eller av någon annan orsak som gäller hans eller hennes person. Lagen om likabehandling förutsätter att myndigheterna aktivt främjar likabehandling.</p>\n\n<p> </p>\n\n<p>I utbildningen som förbereder för gymnasieutbildning är den allmänna utgångspunkten att respektera liv och mänskliga rättigheter. Bildningsidealet är strävan efter det goda, det sanna och det sköna. Utbildningen ska främja rättvisa i sam- hället, skapa förutsättningar för öppen demokrati och välfärd och förebygga mar- ginalisering. Utöver det ska utbildningen hjälpa unga och vuxna invandrare att tillägna sig vardagsfärdigheter och en hållbar livsstil.</p>\n\n<p> </p>\n\n<p>Utbildningen som förbereder för gymnasieutbildning ska utveckla förmåga att identifiera goda livsvärden och -principer som förenar olika kulturer. Studierna ska stödja invandrarnas egna kulturtraditioner och hjälpa dem att utvärdera och revidera dem om de står i konflikt med finsk lag. Studierna ska stärka de studerandes förmåga att verka i ett kulturellt mångskiftande samhälle och öka deras interkulturella kompetens. Utbildningen ska uppmuntra interaktion mellan olika kulturgrupper och med den finländska befolkningen. Goda etniska relationer ska främjas i utbildningen. Ingen form av diskriminering, rasism, våld eller mobbning ska accepteras.</p>\n\n<p> </p>\n\n<p>De studerande ska uppmuntras att bedöma eventuella motsatsförhållanden mellan uttalade värden och verkligheten och att kritiskt reflektera över missförhållanden och möjligheter i det finländska samhället. Värden och principer ska konkretiseras i studierna så långt det är möjligt. Målet är att värdena ska genomsyra såväl utbildningsarrangemangen och undervisningen som etos och verksamhetskulturen.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1682064"
+            },
+            {
+              "id": 1668148,
+              "perusteenOsa": {
+                "id": 1682065,
+                "luotu": 1465304602184,
+                "muokattu": 1503056773888,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921328",
+                  "fi": "Oppimiskäsitys",
+                  "sv": "Synen på lärande"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921329",
+                  "fi": "<p>Oppiminen on prosessi, jossa opiskelija rakentaa tietoa aikaisemman tietoperustan pohjalle aktiivisesti ja tavoitteellisesti. Uusi tieto suhteutetaan tietoperustaan ja samalla tietoperustaa muovataan uudelleen. Tiedon rakentaminen on valintaa, vertailemista, jäsentämistä ja järjestämistä sekä tulkitsemista, arvioimista ja soveltamista uusissa tilanteissa. Lukiokoulutukseen valmistavassa koulutuksessa korostuu oppiminen sosiaalisessa vuorovaikutuksessa opettajan ja muiden opiskelijoiden kanssa.</p>\n\n<p>Oppimisessa kielen merkitys on keskeinen. Sen avulla rakennetaan ja muovataan tietoperustaa. Kieli ei ole vain oppimisen väline, vaan kielellä luodaan merkityksiä ja todellisuutta koskevaa tietoa. Lukio-opiskelu edellyttää opiskelijalta tiedonalojen kielten hallintaa. Opiskelija oppii eri tiedonalojen kieltä, kielenkäytössä vaadittavia tekstitaitoja ja tapoja.</p>\n\n<p>Monilukutaito eli taito ymmärtää, tulkita ja tuottaa erilaisia tekstejä on lukiokoulutukseen valmistavassa koulutuksessa olennainen ja kaikissa opinnoissa välttämätön tavoite. Monilukutaito perustuu laajaan tekstikäsitykseen, jolloin teksteillä ei tarkoiteta ainoastaan kirjoitettuja tekstejä, vaan myös esimerkiksi puhuttuja ja kuvallisia tekstejä.</p>",
+                  "sv": "<p>Lärandet är en process där den studerande aktivt och målinriktat bygger kunskap på en tidigare kunskapsgrund. Den nya kunskapen ställs i relation till den tidigare kun- skapsgrunden som samtidigt omformas. Att bygga kunskap innebär att välja, jämföra, strukturera och ordna samt att tolka, bedöma och tillämpa i nya situationer. I utbild- ningen som förbereder för gymnasieutbildning sker lärandet till stor del genom soci- al interaktion med läraren och övriga studerande.</p>\n\n<p> </p>\n\n<p>Språket spelar en viktig roll i lärandet. Kunskapsgrunden byggs och formas med hjälp av språket. Språket är inte bara ett verktyg för lärande utan genom språket ska- pas betydelser och kunskap om verkligheten. Gymnasiestudierna förutsätter att de studerande behärskar språket inom olika ämnesområden. De studerande ska tillägna sig språket inom olika ämnesområden samt den textkompetens och de kutymer som förutsätts inom dem.</p>\n\n<p> </p>\n\n<p>Kompetens i multilitteracitet, det vill säga förmågan att förstå, tolka och produ- cera olika texter, är ett viktigt och nödvändigt mål i alla studier inom utbildningen som förbereder för gymnasieutbildning. Multilitteracitetsbegreppet är en utvidgning av det vidgade textbegreppet, där en text inte endast avser en skriven text, utan också exem- pelvis verbala eller visuella texter.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1682065"
+            },
+            {
+              "id": 1668149,
+              "perusteenOsa": {
+                "id": 1682066,
+                "luotu": 1465304658458,
+                "muokattu": 1503056773891,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921390",
+                  "fi": "Toimintakulttuuri",
+                  "sv": "Verksamhetskulturen"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921391",
+                  "fi": "<p>Yhteisön toimintakulttuuri on sen historiallisesti ja kulttuurisesti muotoutunut tapa toimia. Koska lukiokoulutukseen valmistavaan koulutukseen opiskelijat voivat tulla hyvinkin erilaisista kulttuureista ja koulukulttuureista, on alusta asti tärkeää luoda ja kehittää yhteistä toimintakulttuuria. Lukiokoulutukseen valmistavan koulutuksen toimintakulttuuri rakentuu oppivan yhteisön periaatteille. Se tukee kaikkien yhteisön jäsenten hyvinvointia ja oppimista. Se on jatkuvan kehittämisen kohde osana koko lukion toimintakulttuuria.</p>",
+                  "sv": "<p>Med verksamhetskulturen i ett samhälle avses samhällets historiskt och kulturellt for- made handlingsmönster. Eftersom de studerande inom utbildningen som förbereder för gymnasieutbildning kan komma från mycket olika kulturer och skolkulturer, är det viktigt att från början skapa och utveckla en gemensam verksamhetskultur. Verksam- hetskulturen ska bygga på principen om en lärgemenskap. Den ska stödja samtliga medlemmars välbefinnande och lärande. Verksamhetskulturen ska kontinuerligt ut- vecklas som en del av hela gymnasiets verksamhetskultur.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1682066"
+            },
+            {
+              "id": 1682300,
+              "perusteenOsa": {
+                "id": 1682067,
+                "luotu": 1465304714478,
+                "muokattu": 1503056773893,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921392",
+                  "fi": "Opiskeluympäristö ja työtavat",
+                  "sv": "Studiemiljöer och arbetssätt"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921393",
+                  "fi": "<p>Lukiokoulutukseen valmistava koulutus niveltyy osaksi lukion toimintaa ja siellä vallitsevaa toimintakulttuuria, mutta myös vaikuttaa lukion toimintakulttuurin ja käytänteiden kehittämiseen. Opiskelijat harjaantuvat valmistavan koulutuksen aikana lukion työtapoihin. Tavoitteena on, että opiskelijat pystyvät jäsentämään opiskeluaan, luomaan strategioita opiskelulleen luokattomana toimivassa lukiossa sekä harjaantuvat oppimaan oppimisen taidoissaan.</p>\n\n<p>Lukiokoulutukseen valmistavan koulutuksen aikana opiskellaan erityisesti yleisluontoisia eli geneerisiä taitoja. Näitä ovat muun muassa itsenäinen työskentely, tiimityöskentely, tieto- ja viestintätekniset taidot, tiedonhakutaidot, kriittinen lukutaito ja etenkin oppimaan oppimisen taito. Opiskelijaa on kannustettava itse- ja vertaisarviointiin.</p>\n\n<p>Oppiminen on sidoksissa opiskelijan aiempiin tietoihin ja oppimisstrategioihin ja on siten yksilöllistä. Siksi opetuksessa tulee käyttää monipuolisia opiskeluympäristöjä, opetusmenetelmiä ja väyliä. </p>\n\n<p>Eri oppiaineiden tekstikäytänteet ja oppiaineissa vaadittavat tekstitaidot ovat olennainen osa opiskelua lukiokoulutukseen valmistavassa koulutuksessa, koska kaikki opiskelijat ovat suomea opettelevia. Tämä edellyttää kielitietoisia työtapoja kaikissa oppiaineissa. Erilaisten tekstien lukemisen, ymmärtämisen, tulkitsemisen ja tuottamisen taidot ovat keskeisiä. Työtavat edellyttävät opettajien yhteistyötä ja yhteistä ymmärrystä kielen merkityksestä valmistavassa koulutuksessa.</p>\n\n<p>Työtapojen tulee olla monipuolisia, opiskelijaa aktivoivia ja eriyttäviä, esimerkiksi ryhmä-, pari- ja projektityötä sekä itsenäistä työskentelyä. Työtapojen tulee virittää opiskelijassa halu oppia ja ottaa vastuuta omasta oppimisestaan. Niiden tulee kehittää opiskelijan oppimisstrategioita sekä tieto- ja viestintäteknisiä valmiuksia.</p>\n\n<p>Opetus voidaan toteuttaa kokonaan lähiopetuksena tai yhdistämällä joustavasti lähiopetusta ja itsenäistä työskentelyä ja/tai etäopetusta. Opetuksessa hyödynnetään tieto- ja viestintäteknologiaa ja sen erilaisia mahdollisuuksia. Itsenäistä työskentelyä lisätään opiskelijan omien opiskelu- ja tekstitaitojen kehittyessä. Suomen kielen ja muiden aineryhmien kursseja voidaan järjestää osittain samanaikaisopetuksena, mikä vahvistaa osaltaan opiskelijan monilukutaitoa ja kielitaidon kehittymistä. Tällöin tulee varmistaa, että molempien kurssien tavoitteet ja sisällöt toteutuvat, esimerkiksi opiskelijan itsenäisen työskentelyn, etätehtävien ja projektitöiden avulla. Samanaikaisopetusta voidaan hyödyntää myös muiden aineryhmien kurssien opetuksessa.</p>\n\n<p>Lähiopetuksessa tuetaan opiskelijoiden vertaisoppimista, kannustetaan keskinäisen tuen antamiseen ja vahvistetaan kuuluvuutta opiskelijoiden ja koko lukion yhteisöön. On tärkeää, että lukiokoulutukseen valmistavassa koulutuksessa olevat opiskelijat osallistuvat asianomaisen lukion yhteisiin tilaisuuksiin ja tapahtumiin. Näin valmistava koulutus tulee osaksi asianomaisen lukion toimintakulttuuria.</p>\n\n<p>Opettajan merkitys oppimisen ohjaajana korostuu. Opiskelijat otetaan aktiivisesti mukaan kurssin suunnitteluun, kokeen tai muun näytön suunnitteluun sekä arviointiprosessiin.</p>",
+                  "sv": "<p>Utbildningen som förbereder för gymnasieutbildning ska vara en del av gymnasiets verksamhet och verksamhetskultur men också påverka utvecklingen av gymnasiets</p>\n\n<p>verksamhetskultur och arbetsmetoder. Under utbildningen som förbereder för gymnasieutbildning ska de studerande tillägna sig gymnasiets arbetssätt. Målet är att de studerande kan planera och utarbeta strategier för sina studier i det kursbundna gymnasiet och att de utvecklar sina lärfärdigheter.</p>\n\n<p> </p>\n\n<p>I utbildningen som förbereder för gymnasieutbildning ska i synnerhet allmän- na, det vill säga generiska färdigheter betonas. Sådana är bl.a. förmåga att arbeta självständigt och i grupp, färdigheter i informations- och kommunikationsteknik, förmåga att söka information och läsa kritiskt och framför allt förmåga att lära sig lära. De studerande ska uppmuntras att utvärdera sig själva och varandra.</p>\n\n<p> </p>\n\n<p>Lärandet är bundet till de studerandes tidigare kunskaper och inlärningsstrate- gier och är således individuellt. Därför ska mångsidiga studiemiljöer, undervis- ningsmetoder och kanaler användas i undervisningen.</p>\n\n<p> </p>\n\n<p>Textbruket och den textkompetens som krävs i olika läroämnen är en viktig del av studierna i utbildningen som förbereder för gymnasieutbildning, eftersom alla studerande samtidigt lär sig svenska. Det här förutsätter språkmedvetna arbetssätt i alla läroämnen. Det är viktigt att kunna läsa, förstå, tolka och producera olika text- er. Arbetssätten förutsätter samarbete mellan lärarna och att alla förstår vilken be- tydelse språket har inom den förberedande utbildningen.</p>\n\n<p> </p>\n\n<p>Arbetssätten ska vara mångsidiga, aktivera de studerande och ge möjlighet till differentiering, till exempel grupparbete, pararbete, projektarbete och självständiga studier. Arbetssätten ska väcka de studerandes vilja att lära sig och ta ansvar för sitt lärande. De ska också utveckla de studerandes inlärningsstrategier och deras färdig- heter i informations- och kommunikationsteknik.</p>\n\n<p> </p>\n\n<p>Undervisningen kan i sin helhet genomföras som närundervisning eller genom att flexibelt kombinera närundervisning och självständiga studier och/eller distans- undervisning. Informations- och kommunikationsteknologi och dess olika möjlig- heter ska utnyttjas i undervisningen. Andelen självständiga studier ska utökas i takt med att de studerandes studiefärdigheter och textkompetens utvecklas. Kurser i svenska och övriga ämnesgrupper kan delvis ordnas som kompanjonundervisning för att utveckla de studerandes språkfärdighet och mångsidiga läskunnighet. I såda- na fall är det viktigt att se till att målen och innehållet i bägge kurserna uppnås, t.ex. med hjälp av självständiga studier, distansuppgifter och projektarbeten. Kompan- jonundervisning kan också användas i undervisningen i andra ämnesgrupper.</p>\n\n<p> </p>\n\n<p>I närundervisningen ska man stödja ömsesidigt lärande, uppmuntra de stude- rande att stödja varandra och stärka samhörigheten mellan de studerande och i hela gymnasiet. Det är viktigt att de studerande inom utbildningen som förbereder för gymnasieutbildning deltar i ifrågavarande gymnasiums gemensamma evenemang och tillställningar. På så vis blir den förberedande utbildningen en del av gymna- siets verksamhetskultur.</p>\n\n<p> </p>\n\n<p>Läraren som styr lärandet har en viktig roll. De studerande ska ges möjlighet att vara med i bedömningsprocessen och planera kurser, prov eller andra kunskapsre- dovisningar.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1682067"
+            }
+          ],
+          "_perusteenOsa": "1682063"
+        },
+        {
+          "id": 1682302,
+          "perusteenOsa": {
+            "id": 1682069,
+            "luotu": 1465304875258,
+            "muokattu": 1503056773860,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1921394",
+              "fi": "Opiskelun ohjaus ja tuki",
+              "sv": "Stöd och handledning för studierna"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1921451",
+              "fi": "<p>Opiskelijaa ohjataan ja tuetaan lukiokoulutukseen valmistavan koulutuksen suorittamisessa ja lukio-opintoihin hakeutumisessa. Ohjauksen avulla opiskelija oppii suunnittelemaan opintonsa, tekemään yksilöllisiä valintoja, seuraamaan opinnoissa etenemistään ja arvioimaan omaa oppimistaan. Ohjausta antavat opinto-ohjaajat sekä lukiokoulutukseen valmistavan koulutuksen opettajat.</p>",
+              "sv": "<p>De studerande ska få handledning och stöd i utbildningen som förbereder för gymnasieutbildning och när de söker till gymnasiet. Genom handledningen lär de sig att planera sina studier, göra individuella val, följa upp hur studierna framskrider och bedöma sitt lärande. Handledningen ges av studiehandledare och lärare inom utbildningen som förbereder för gymnasieutbildning.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 1682303,
+              "perusteenOsa": {
+                "id": 1682370,
+                "luotu": 1465304923738,
+                "muokattu": 1503056773895,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921396",
+                  "fi": "Ohjauksen järjestäminen",
+                  "sv": "Handledning"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921450",
+                  "fi": "<p>Ohjaustoiminta lukiokoulutukseen valmistavassa koulutuksessa muodostaa kokonaisuuden, jonka tarkoituksena on tukea opiskelijaa opintojen kaikissa vaiheissa. Opiskelijaa ohjataan arvioimaan aikaisempia opintojaan tai muutoin hankittua osaamistaan, suunnittelemaan opintojensa sisältöä ja tekemään tarkoituksenmukaisia valintoja omista tavoitteistaan käsin. Opiskelijaa ohjataan etsimään tietoa lukiokoulutuksen valinnoista ja niiden vaikutuksista jatko-opintoihin. Opiskelijan tulee koulutuksen aikana oppia käyttämään tietoverkkoja tiedonhakuun sekä löytämään itselleen sopivia lukiovaihtoehtoja, joihin hän voi hakeutua lukiokoulutukseen valmistavan koulutuksen jälkeen. </p>\n\n<p>Lukiokoulutukseen valmistavassa koulutuksessa ohjaus järjestetään henkilökohtaisena ja ryhmämuotoisena ohjauksena. Opinto-ohjausta antavat opinto-ohjaajat ja aineenopettajat. Opinto-ohjaaja vastaa opiskelijan ohjauksesta kokonaisvaltaisesti opintojen aikana ja aineenopettajat ohjaavat opiskelijaa oman tiedonalansa käsitteisiin ja tiedonkäsittelytapoihin. Henkilökohtaisessa ohjauksessa opiskelijan kanssa keskustellaan hänen opintoihinsa, tulevaisuuteensa ja elämäntilanteeseensa liittyvistä kysymyksistä. Ryhmämuotoisessa ohjauksessa käydään opiskelijoiden kanssa läpi lukio-opintoihin liittyvät vaatimukset ja mahdollisuudet. Tavoitteena on, että opiskelijat oppivat tekemään tarkoituksenmukaisia ja heille soveltuvia oppiaine- ja oppimäärävalintoja.</p>",
+                  "sv": "<p>I utbildningen som förbereder för gymnasieutbildning ska handledningen utgöra en helhet, vars syfte är att stödja de studerande under hela studietiden. De studerande ska lära sig utvärdera sina tidigare studier eller kunskaper som de inhämtat på annat sätt, planera innehållet i sina studier och göra ändamålsenliga val utgående från sina mål. De studerande ska uppmuntras att söka information om valet av gymnasiekurser och hur det påverkar fortsatta studier. De studerande ska också lära sig att använda data- nät för informationssökning och att hitta lämpliga gymnasiealternativ dit de kan söka efter den förberedande utbildningen.</p>\n\n<p> </p>\n\n<p>I utbildningen som förbereder för gymnasieutbildning ska de studerande få handledning både individuellt och i grupp. Studiehandledningen ges av studiehandledare och ämneslärare. Studiehandledaren bär det övergripande ansvaret för handledningen av de studerande under studierna och ämneslärarna stödjer inlärning av begreppen och sättet att behandla information inom respektive ämnesområde. I den individuella handledningen diskuteras frågor som gäller de studerandes studier, framtid och livssituation. I grupphandledningen går man tillsammans med de studerande igenom vilka krav och möjligheter som är förknippade med gymnasiestudier. Målet är att de studerande lär sig göra ändamålsenliga ämnes- och kursval som lämpar sig för dem.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1682370"
+            },
+            {
+              "id": 1682305,
+              "perusteenOsa": {
+                "id": 1682372,
+                "luotu": 1465305010204,
+                "muokattu": 1503056773897,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921398",
+                  "fi": "Henkilökohtainen opiskelusuunnitelma",
+                  "sv": "Individuell studieplan"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921399",
+                  "fi": "<p>Koulutuksen alussa laaditaan yhdessä opiskelijan kanssa henkilökohtainen opiskelusuunnitelma, joka perustuu opiskelijan aikaisemmin hankkimiin tietoihin ja taitoihin. Siksi valmistavan koulutuksen alussa selvitetään opiskelijan kielitaidon taso ja oppimishistoria, joiden perusteella opiskelun tavoitteet asetetaan. Henkilökohtaisessa opiskelusuunnitelmassa määritellään opiskelun tavoitteet, opinto-ohjelma, opintojen suoritustavat ja suoritusjärjestys sekä mahdolliset tukitoimet. </p>\n\n<p>Lukiokoulutukseen valmistavan koulutuksen aikana opiskelija voi opiskella perusopetuksen oppiaineita ja korottaa perusopetuksen oppiaineiden arvosanoja erityisessä tutkinnossa. Lukiokoulutukseen valmistavassa koulutuksessa opiskelija parantaa opetuskielen hallintaansa ja oppimaan oppimisen taitojaan sekä useiden oppiaineiden osaamista opetuskielellä. Lisäksi opiskelija voi suorittaa lukiokursseja. Henkilökohtaiseen opiskelusuunnitelmaan voi siis kuulua näiden perusteiden mukaisia opintoja sekä perusopetuksen ja lukiokoulutuksen opintoja. Henkilökohtaisen opiskelusuunnitelman toteutumista seurataan ja sitä päivitetään säännöllisesti osana opinto-ohjausta (katso luku 6.5).</p>",
+                  "sv": "<p>I början av utbildningen utarbetas tillsammans med den studerande en individuell studieplan som grundar sig på den studerandes tidigare kunskaper och färdigheter. Därför ska man i början av den förberedande utbildningen utreda de studerandes språkfärdighetsnivå och utgående från den ställa upp mål för studierna. I den individuella studieplanen fastställs målen för studierna, studieprogrammet, hur och i vilken ordning studierna genomförs, och eventuella stödåtgärder.</p>\n\n<p> </p>\n\n<p>Under utbildningen som förbereder för gymnasieutbildning kan de studerande genomföra studier eller höja vitsord som hör till den grundläggande utbildningen i en särskild examen. De studerande ska förbättra sina kunskaper i undervisningsspråket, sin förmåga att lära sig lära och sina kunskaper i flera läroämnen på undervisningsspråket. De studerande kan också genomföra gymnasiekurser. Den individuella studieplanen kan alltså innehålla både studier enligt föreliggande läroplansgrunder och studier som hör till den grundläggande utbildningen och gymnasieutbildningen. Den individuella studieplanen följs upp och uppdateras regelbundet som en del av studiehandledningen (se kap. 6.5).</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1682372"
+            },
+            {
+              "id": 1682306,
+              "perusteenOsa": {
+                "id": 1682373,
+                "luotu": 1465305064859,
+                "muokattu": 1503056773899,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921456",
+                  "fi": "Opiskeluhuolto",
+                  "sv": "Studerandevård"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1943377",
+                  "fi": "<p>Lukiokoulutukseen valmistavan koulutuksen opiskeluhuollon järjestämisessä ja toteuttamisessa noudatetaan samoja periaatteita kuin lukion opiskelijoille annettavassa opiskeluhuollossa<a href=\"#_ftn1\">[1]</a>. Lukiokoulutukseen valmistavan koulutuksen järjestäjällä tulee olla oppilas- ja opiskelijahuoltolain edellyttämä oppilaitoskohtainen opiskeluhuoltosuunnitelma, jonka laatimisesta määrätään nuorille tarkoitetun lukiokoulutuksen opetussuunnitelman perusteissa. Suunnitelmassa otetaan huomioon valmistavaan koulutukseen osallistuvien opiskelijoiden tausta ja yksilölliset tarpeet yhteisöllistä ja yksilökohtaista opiskeluhuoltoa järjestettäessä ja toteutettaessa. Oppilaitoskohtaiseen opiskeluhuoltosuunnitelmaan sisältyvät asiat voidaan sisällyttää samaan suunnitelmaan lukion opiskeluhuollon suunnitelman kanssa. Oppilaitoskohtaiseen opiskeluhuoltosuunnitelmaan tulee sisältyä myös suunnitelma oppilaiden suojaamiseksi väkivallalta, kiusaamiselta ja häirinnältä.</p>\n\n<p> </p>\n\n<p>Opiskeluhuolto järjestetään monialaisessa yhteistyössä opetustoimen ja sosiaali- ja terveystoimen kanssa siten, että siitä muodostuu toimiva ja yhtenäinen kokonaisuus. Siihen sisältyvät koulutuksen järjestäjän hyväksymän opetussuunnitelman mukainen opiskeluhuolto sekä opiskeluhuollon palvelut, joita ovat psykologi- ja kuraattoripalvelut sekä opiskeluterveydenhuollon palvelut. Palveluiden järjestämisestä vastaa oppilaitoksen sijaintikunta. Opiskelijalla on oikeus saada maksutta sellainen opiskeluhuolto, jota koulutukseen osallistuminen edellyttää lukuun ottamatta yli 18-vuotiaiden opiskelijoiden sairaanhoitopalveluja.</p>\n\n<p> </p>\n\n<p>Opiskeluhuoltoa toteutetaan sekä yhteisöllisenä että yksilökohtaisena opiskeluhuoltona. Yhteisöllinen opiskeluhuolto on osa lukiokoulutukseen valmistavan koulutuksen toimintakulttuuria ja toimia, joilla edistetään opiskelijoiden osallisuutta, oppimista, hyvinvointia ja terveyttä. Lisäksi edistetään ja seurataan opiskeluyhteisön hyvinvointia sekä opiskeluympäristön terveellisyyttä, turvallisuutta ja esteettömyyttä. Sitä toteutetaan yhteistyössä opiskelijoiden, heidän huoltajiensa sekä tarvittaessa kunnan muiden nuorten hyvinvointia, terveyttä ja turvallisuutta edistävien viranomaisten ja toimijoiden kanssa.</p>\n\n<p> </p>\n\n<p>Yksilökohtaisella opiskeluhuollolla tarkoitetaan opiskelijalle annettavia opiskeluhuollon palveluja, joita ovat opiskeluterveydenhuolto, opiskeluhuollon psykologi- ja kuraattoripalvelut sekä yksittäistä opiskelijaa koskeva monialainen opiskeluhuolto, jota toteutetaan tapauskohtaisesti koottavassa monialaisessa asiantuntijaryhmässä.</p>\n\n<p> </p>\n\n<p>Yksilökohtaisen opiskeluhuollon tehtävänä on edistää hyvinvointia, terveyttä ja opiskelukykyä sekä tunnistaa näihin ja opiskelijan elämäntilanteeseen liittyviä yksilöllisiä tarpeita. Tavoitteena on myös varhaisessa vaiheessa ehkäistä ongelmia ja huolehtia tarvittavan tuen järjestämisestä.</p>\n\n<p> </p>\n\n<p>Yksilökohtaista opiskeluhuoltoa toteutetaan yhteistyössä opiskelijan kanssa ja hänen suostumuksellaan. Opiskelijalle ja hänen huoltajalleen annetaan tietoa opiskeluhuollon toimintatavoista, yksittäisen opiskelijan oikeuksista opiskeluhuollossa sekä asioiden käsittelyyn liittyvistä lain edellyttämistä menettelytavoista ja tietojen käsittelystä. Toiminnassa otetaan huomioon opiskelijan itsenäinen asema opiskeluhuoltoon liittyvissä kysymyksissä. Lähtökohtana on opiskelijaa arvostava, hänen mielipiteitään kuunteleva ja luottamusta rakentava vuorovaikutus.</p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Oppilas- ja opiskelijahuoltolaki (1287/2013) 24 § (791/2014)</p>",
+                  "sv": "<p>I utbildningen som förbereder för gymnasieutbildning ska studerandevården ordnas och genomföras enligt samma principer som i gymnasieutbildningen för ungdomar. Den som ordnar utbildning som förbereder för gymnasieutbildning ska enligt lagen om elev- och studerandevård utarbeta en studerandevårdsplan för varje läroanstalt. I grunderna för gymnasiets läroplan för ungdomar bestäms om uppgörandet av planen. Planen ska beskriva hur de studerandes bakgrund och individuella behov beaktas i ordnandet och genomförandet av den gemensamma och individuella studerandevården. Studerandevårdsplanen för utbildning som förbereder för gymnasieutbildning kan inkluderas i studerandevårdsplanen för gymnasieutbildning för ungdomar. Läroanstaltens studerandevårdsplan ska även inkludera en plan för att skydda de studerande mot våld, mobbning och trakasseri.</p>\n\n<p> </p>\n\n<p>Studerandevården ska ordnas genom yrkesövergripande samarbete med undervisningsväsendet och social- och hälsovårdsväsendet så att den bildar en fungerande och sammanhängande helhet. Den ska omfatta studerandevård i enlighet med en läroplan som utbildningsanordnaren godkänt, studerandevårdstjänster bestående av psykolog- och kuratorstjänster samt tjänster inom studerandehälsovården. Den kommun där läroanstalten är belägen ansvarar för att tillhandahålla tjänsterna. Den studerande har rätt att avgiftsfritt få sådan studerandevård som förutsätts för att han eller hon ska kunna delta i utbildningen, med undantag av sjukvårdstjänster för studerande som fyllt 18 år.</p>\n\n<p> </p>\n\n<p>Studerandevården ska bestå av både gemensam och individuell studerandevård. Den gemensamma studerandevården ska vara en del av verksamhetskulturen i ut- bildningen som förbereder för gymnasieutbildning och omfatta åtgärder som främjar de studerandes delaktighet, lärande, välbefinnande och hälsa. Det är också viktigt att främja och följa upp hela läroanstaltens välbefinnande och värna om en sund, trygg och tillgänglig studiemiljö. Studerandevården ska genomföras i samarbete med de studerande, deras vårdnadshavare och vid behov med andra kommunala myndigheter och aktörer som främjar de ungas välbefinnande, hälsa och trygghet.</p>\n\n<p> </p>\n\n<p>Med individuell studerandevård avses studerandevårdstjänster som den studerande har rätt till, nämligen studerandehälsovård, psykolog- och kuratorstjänster inom studerandevården samt yrkesövergripande studerandevård som gäller en enskild studerande och genomförs av en yrkesövergripande expertgrupp som tillsätts från fall till fall.</p>\n\n<p> </p>\n\n<p>Syftet med den individuella studerandevården är att främja den studerandes välbefinnande, hälsa och studieförmåga och att identifiera individuella behov i anslut- ning till dem eller till den studerandes livssituation. Målet är också att i ett tidigt skede förebygga problem och tillhandahålla det stöd som behövs.</p>\n\n<p> </p>\n\n<p>Individuell studerandevård ska genomföras i samverkan med den studerande och med hans eller hennes samtycke. Den studerande och vårdnadshavarna ska informeras om förfaringssätten inom studerandevården, den enskilda studerandes rättigheter i studerandevården och om vad lagen föreskriver om förfaringssätt och behandling av uppgifter i anslutning till olika ärenden. Den studerandes integritet ska beaktas i frågor som gäller studerandevården. Studerandevården ska bygga på förtroendefull interaktion som präglas av respekt för den studerande och lyhördhet för hans eller hennes åsikter.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1682373"
+            },
+            {
+              "id": 1682307,
+              "perusteenOsa": {
+                "id": 1682374,
+                "luotu": 1465305144098,
+                "muokattu": 1503056773902,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921459",
+                  "fi": "Oppimisen ja opiskelun tuki",
+                  "sv": "Stöd för lärande och studier"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921540",
+                  "fi": "<p>Lukiokoulutukseen valmistavassa koulutuksessa opiskelijan osaamisessa voi olla vaihtelua koulutustaustojen moninaisuuden vuoksi tai opiskelun edellytykset voivat olla heikentyneet sairauden, vamman tai muun toimintavajavuuden vuoksi. Opiskelijalla voi olla myös elämäntilanteeseen liittyviä ongelmia, joissa tarvitaan tukea. </p>\n\n<p>Lukiokoulutukseen valmistavan koulutuksen opetussuunnitelmassa määritellään, miten tukea tarvitsevien opiskelijoiden muut opetuksen tukitoimet järjestetään.</p>",
+                  "sv": "<p>I utbildningen som förbereder för gymnasieutbildning kan de studerande ha varierande kunskaper på grund av olika utbildningsbakgrund, eller ha sämre förutsättning- ar för studier på grund av sjukdom, handikapp eller någon annan funktionsnedsättning. De studerande kan också behöva stöd på grund av problem som anknyter till deras livssituation.</p>\n\n<p> </p>\n\n<p>Läroplanen för utbildningen som förbereder för gymnasieutbildning ska beskriva hur stödåtgärderna ordnas för studerande som behöver stöd.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1682374"
+            },
+            {
+              "id": 1682308,
+              "perusteenOsa": {
+                "id": 1682375,
+                "luotu": 1465305190886,
+                "muokattu": 1503056773904,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921541",
+                  "fi": "Suunnitelma kurinpitokeinojen käyttämisestä ja niihin liittyvistä menettelytavoista",
+                  "sv": "Plan för användningen av disciplinära åtgärder och för- faringssätt"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921542",
+                  "fi": "<p>Lukiolain<a href=\"#_ftn1\">[1]</a> mukaan opiskelijalla on oikeus turvalliseen opiskeluympäristöön. Lukioyhteisön yhteistyö ja erilaiset pedagogiset ratkaisut luovat edellytyksiä hyvän työrauhan rakentumiselle. Lukiokoulutukseen valmistavaa koulutusta järjestävällä lukiokoulutuksen järjestäjällä on oikeus käyttää lukiolain mukaisia kurinpitokeinoja.</p>\n\n<p>Lukiolain<a href=\"#_ftn2\">[2]</a> mukaan koulutuksen järjestäjän tulee opetussuunnitelman yhteydessä laatia ja ohjeistaa suunnitelma kurinpitokeinojen käyttämisestä ja niihin liittyvistä menettelytavoista. Opetushallitus antaa määräykset suunnitelman laatimisesta opetussuunnitelman perusteissa. Suunnitelman tarkoituksena on varmistaa toimintatapojen laillisuus ja yhdenmukaisuus sekä opiskelijoiden yhdenvertainen kohtelu. Suunnittelu tukee myös oppilaitoksen järjestyssääntöjen toteutumista.</p>\n\n<p>Suunnitelman laadinnassa on otettava huomioon, että kurinpidossa ja työrauhan turvaamisessa voidaan käyttää vain lainmukaisia keinoja ja että näitä keinoja käytettäessä noudatetaan hallinnon yleisiä oikeusturvaperiaatteita. Keinojen käytön tulee perustua asiallisiin, yleisesti hyväksyttäviin ja objektiivisiin syihin. Samanlaisista teoista tulee tekijästä riippumatta määrätä samanlainen seuraamus, kuitenkin siten, että tekojen toistuminen voidaan ottaa huomioon raskauttavana tekijänä. Kurinpitoseuraamusten tulee olla oikeassa suhteessa tekoon, eikä niitä saa käyttää asiaan kuulumattomassa tarkoituksessa, kuten esimerkiksi häpäisemistarkoituksessa.</p>\n\n<p>Koulutuksen järjestäjä laatii suunnitelman kurinpitokeinojen käyttämisestä ja niihin liittyvistä menettelytavoista yhteistyössä oppilaitoksen henkilöstön ja opiskelijoiden kanssa. Ennen suunnitelman hyväksymistä tai sen päivittämistä koulutuksen järjestäjän tulee kuulla opiskelijakuntaa ja oppilaitoksen henkilöstöä sekä varata lukion kaikille opiskelijoille mahdollisuus ilmaista mielipiteensä siitä. Yhteistyö opiskelijoiden huoltajien sekä sosiaali- ja terveydenhuollon ja muiden tarvittavien viranomaistahojen kanssa tukee suunnitelman laatimista ja toteuttamista.</p>\n\n<p>Suunnitelman kurinpitokeinojen käyttämisestä ja niihin liittyvistä menettelytavoista tulee sisältää seuraavat asiakokonaisuudet:</p>\n\n<ul>\n\t<li>\n\t<p>menettelytavat rike- ja häiriötilanteissa, asioiden selvittämisvastuut, työnjako sekä kuulemis- ja kirjaamismenettelyt</p>\n\t</li>\n\t<li>\n\t<p>periaatteet hallinnon yleisten oikeusturvaperiaatteiden noudattamiseen kurinpitokeinoja käytettäessä</p>\n\t</li>\n\t<li>\n\t<p>henkilökunnan osaamisen varmistaminen kurinpidollisten toimivaltuuksien käyttämisessä</p>\n\t</li>\n\t<li>\n\t<p>suunnitelmasta, järjestyssäännöistä ja laissa säädetyistä kurinpitokeinoista tiedottaminen eri tahoille</p>\n\t</li>\n\t<li>\n\t<p>yhteistyö eri viranomaistahojen ja huoltajien kanssa</p>\n\t</li>\n\t<li>\n\t<p>menettelytavat suunnitelman seurantaa sekä sen toteutumisen ja vaikuttavuuden arviointia varten.</p>\n\t</li>\n</ul>\n\n<p>Suunnitelma kurinpitokeinojen käyttämisestä ja niihin liittyvistä menettelytavoista voi sisältyä opetussuunnitelmaan, tai se voi olla erillinen. Lukiokoulutukseen valmistavan koulutuksen osalta tämä suunnitelma voi olla myös yhteinen lukiokoulutuksen suunnitelman kanssa. Suunnitelma koskee vain alle 18-vuotiaita opiskelijoita.</p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Lukiolaki (629/1998) 21 § (1268/2013)</p>\n\n<p><a href=\"#_ftnref2\">[2]</a> Lukiolaki (629/1998) 21 § (1268/2013)</p>",
+                  "sv": "<p>Enligt gymnasielagen<strong> </strong>har den studerande rätt till en trygg studiemiljö. Samarbete och olika pedagogiska lösningar i gymnasiet skapar förutsättningar för en bra arbetsro. Den som ordnar utbildning som förbereder för gymnasieutbildning har rätt att an- vända sådana disciplinära åtgärder som nämns i gymnasielagen.</p>\n\n<p> </p>\n\n<p>Enligt gymnasielagen<strong> </strong>ska utbildningsanordnaren i samband med läroplanen utarbeta en plan för och anvisningar om användningen av disciplinära åtgärder och förfaringssätt. Utbildningsstyrelsen ger i grunderna för läroplanen anvisningar om hur planen ska utarbetas. Syftet med planen är att se till att förfaringssätten är lagenliga och enhetliga och att de studerande behandlas jämlikt. Planen bidrar också till att läroanstaltens ordningsregler följs.</p>\n\n<p> </p>\n\n<p>Vid utarbetandet av planen är det viktigt att notera att man i samband med disciplinära åtgärder och då man tryggar arbetsron, endast bör använda lagenliga discip- linära åtgärder. Dessa åtgärder ska iaktta de allmänna rättsskyddsprinciperna inom förvaltningen. Användningen av åtgärder ska grunda sig på sakliga, allmänt godtagbara och objektiva skäl. Konsekvenserna av likartade gärningar ska vara de samma, oberoende av gärningsman, dock så att upprepade gärningar kan anses som en försvårande omständighet. De disciplinära konsekvenserna ska stå i proportion till gär- ningen och får inte användas på ett osakligt sätt, till exempel i kränkande syfte.</p>\n\n<p> </p>\n\n<p>Utbildningsanordnaren ska utarbeta planen för användning av disciplinära åtgärder och förfaringssätt i samarbete med läroanstaltens personal och de studerande. Innan planen godkänns eller uppdateras ska utbildningsanordnaren höra studerandekåren och läroanstaltens personal samt erbjuda alla studerande i gymnasiet möjlighet att framföra sin åsikt om den. Samarbete med vårdnadshavarna, social- och hälsovården samt andra myndigheter som behövs stödjer utarbetandet och genomförandet av planen.</p>\n\n<p> </p>\n\n<p>Planen för användning av disciplinära åtgärder och förfaringssätt ska beskriva:</p>\n\n<p>• förfaringssätt som används vid förseelser och störande beteende, ansvars- och arbetsfördelning samt metoder för samråd och dokumentering</p>\n\n<p>• hur man vid användningen av disciplinära åtgärder ser till att förvaltningens allmänna rättsskyddsprinciper iakttas</p>\n\n<p>• hur man ser till att personalen har den kompetens som behövs för att utöva disciplinära befogenheter</p>\n\n<p>• hur olika parter informeras om planen, ordningsreglerna och de lagstadgade disciplinära åtgärderna</p>\n\n<p>• samarbetet med olika myndigheter och vårdnadshavarna</p>\n\n<p>• med vilka metoder man följer upp planen och utvärderar genomförandet och effekten av åtgärderna.</p>\n\n<p> </p>\n\n<p>Planen för användningen av disciplinära åtgärder och förfaringssätt kan ingå i läroplanen eller utgöra en separat plan. I den förberedande gymnasieutbildningen kan denna plan vara gemensam med gymnasiets läroplan. Planen gäller endast studerande som är under 18 år gamla.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1682375"
+            },
+            {
+              "id": 1682309,
+              "perusteenOsa": {
+                "id": 1682376,
+                "luotu": 1465305252700,
+                "muokattu": 1503056773906,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1921543",
+                  "fi": "Kodin ja oppilaitoksen yhteistyö",
+                  "sv": "Samarbetet mellan hem och läroanstalt"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1921544",
+                  "fi": "<p>Nuoren opiskelijan kannalta on tärkeää, että huoltajat tukevat nuoren opiskelua. Oppilaitoksen tulee olla aloitteellinen yhteistyön käynnistämisessä ja ylläpitämisessä huoltajien kanssa. </p>\n\n<p>Huoltajille tulee järjestää yhteisiä tapaamisia, joissa keskustellaan suomalaisesta koulutusjärjestelmästä, lukiokoulutukseen valmistavasta koulutuksesta ja niistä vaatimuksista, joita lukiossa opiskelu edellyttää. Yhteisissä tapaamissa huoltajien kanssa korostetaan sitä, että kiinnostus omien nuorten opintoihin ja opinnoissa suoriutumiseen on ensiarvoisen tärkeää opiskelijan opinnoissa menestymisen kannalta. Huoltajille on tärkeää kertoa muun muassa luokattomana toimivasta lukiosta ja sen jaksojärjestelmästä, lukion kieliohjelmasta ja oman äidinkielen opiskelumahdollisuuksista sekä opiskelijoiden mahdollisuuksista osallistua omien opintojensa suunnitteluun.</p>\n\n<p>Koulutuksen järjestäjän tulee kuvata opetussuunnitelmassa, millaisia kodin ja oppilaitoksen yhteistyömuotoja käytetään. Kodin ja oppilaitoksen yhteistyötä koskeva opetussuunnitelman osa voidaan laatia yhteistyössä erityisesti kunnan sosiaali- ja terveydenhuollon toimeenpanoon kuuluvia tehtäviä hoitavien viranomaisten kanssa. Kodin ja koulun yhteistyötä koskeva osuus koskee vain alle 18-vuotiaita opiskelijoita.</p>",
+                  "sv": "<p>Det är viktigt att vårdnadshavarna stödjer de ungas studier. Läroanstalter ska aktivt sätta igång och upprätthålla samarbete med vårdnadshavarna.</p>\n\n<p> </p>\n\n<p>Skolan ska ordna gemensamma möten med vårdnadshavarna, där man disku- terar det finländska utbildningssystemet, utbildningen som förbereder för gymna- sieutbildning och vilka krav gymnasiestudierna ställer. Vid mötena med vårdnadshavarna är det viktigt att betona att det med tanke på studieframgången är synner- ligen viktigt att vårdnadshavarna engagerar sig i ungdomarnas studier. Det är också viktigt att vårdnadshavarna informeras bland annat om det kursbundna gymnasiet och periodsystemet, gymnasiets språkprogram och möjligheterna att studera det egna modersmålet och att de studerande har möjlighet att delta i planeringen av sina studier.</p>\n\n<p> </p>\n\n<p>Utbildningsanordnaren ska i sin läroplan beskriva vilka former av samarbete som tillämpas mellan hem och skola. Den del av läroplanen som gäller samarbete mellan hem och skola kan utarbetas i synnerhet i samråd med de myndigheter som sköter uppgifter i samband med verkställandet av social- och hälsovården i kommunen. Kapitlet om samarbete mellan hem och läroanstalt gäller endast studerande under 18 år.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1682376"
+            }
+          ],
+          "_perusteenOsa": "1682069"
+        },
+        {
+          "id": 1682520,
+          "perusteenOsa": {
+            "id": 1682377,
+            "luotu": 1465305324435,
+            "muokattu": 1503056773863,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1682483",
+              "fi": "Oppimistavoitteet ja opetuksen keskeiset sisällöt"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 1646714,
+              "perusteenOsa": {
+                "id": 1667910,
+                "luotu": 1465204451978,
+                "muokattu": 1503056773834,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1667834",
+                  "fi": "Opetuksen yleiset tavoitteet"
+                },
+                "tila": "valmis",
+                "tunniste": "normaali",
+                "valmis": false,
+                "kaannettava": false,
+                "uuidTunniste": "90b80dc7-6686-446c-add7-0bc3340e876d",
+                "otsikko": {
+                  "_id": "1943501",
+                  "fi": "Opetuksen yleiset tavoitteet"
+                },
+                "kuvaus": {
+                  "_id": "1943500",
+                  "fi": "<p>Maahanmuuttajille ja vieraskielisille järjestettävän lukiokoulutukseen valmistavan koulutuksen tavoitteena on parantaa opiskelijan valmiuksia oppilaitoksen opetuskielessä sekä parantaa opiskelijan opiskelutaitoja. Lisäksi tavoitteena on antaa opiskelijalle valmiuksia toimia aktiivisena kansalaisena suomalaisessa yhteiskunnassa. Koulutuksen tavoitteena on myös mahdollisuuksien mukaan tukea ja edistää opiskelijoiden oman äidinkielen hallintaa<a href=\"#_ftn1\">[1]</a>. </p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Valtioneuvoston asetus lukiolaissa tarkoitetun koulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta (942/2014) 7 §</p>"
+                },
+                "osanTyyppi": "opetuksenyleisettavoitteet"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1667910"
+            },
+            {
+              "id": 1646716,
+              "perusteenOsa": {
+                "id": 1667911,
+                "luotu": 1465204451982,
+                "muokattu": 1503056773837,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1667835",
+                  "fi": "Oppiaineet"
+                },
+                "tila": "valmis",
+                "tunniste": "rakenne",
+                "valmis": false,
+                "kaannettava": false,
+                "osanTyyppi": "rakenne"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1667911"
+            },
+            {
+              "id": 1940795,
+              "perusteenOsa": {
+                "id": 1940861,
+                "luotu": 1475064041091,
+                "muokattu": 1503056773908,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1942010",
+                  "fi": "Valinnaiset opinnot (vähintään 6 kurssia)"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1942011",
+                  "fi": "<p>Valinnaisiin opintoihin voi sisältyä edellä määriteltyjä lukiokoulutukseen valmistavan koulutuksen eri aineryhmien valinnaisia kursseja tai muita saman tai muun koulutuksen järjestäjän järjestämiä lukio-opintovalmiuksia edistäviä opintoja. Valinnaisiin opintoihin voi sisältyä valtioneuvoston asetuksessa lukiokoulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta säädettyjä lukion pakollisia, syventäviä ja soveltavia kursseja. Valinnaisiksi kursseiksi opiskelijoita ohjataan valitsemaan ensisijaisesti kunkin oppiaineen lukio-opetuksen ensimmäisiä kursseja. </p>\n\n<p>Lukiokoulutukseen valmistavassa koulutuksessa voidaan järjestää valinnaisia opintoja myös niissä lukion aineissa, joita ei opiskella perusopetuksessa. Valinnaisiin opintoihin voi sisältyä myös perusopetuksen opintoja. Valinnaisina opintoina suoritetuista hyväksytyistä perusopetuksen opinnoista opiskelija voi saada todistuksen osallistumalla perusopetuslaissa (38 §) tarkoitettuun erityiseen tutkintoon. Erityisessä tutkinnossa voidaan suorittaa oppiaineen koko oppimäärä tai osia siitä, kuten jonkin vuosiluokan oppimäärä.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1940861"
+            }
+          ],
+          "_perusteenOsa": "1682377"
+        },
+        {
+          "id": 1940796,
+          "perusteenOsa": {
+            "id": 1940862,
+            "luotu": 1475064168781,
+            "muokattu": 1503056773866,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1942012",
+              "fi": "Arviointi"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 1940797,
+              "perusteenOsa": {
+                "id": 1940863,
+                "luotu": 1475064185634,
+                "muokattu": 1503056773910,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1942013",
+                  "fi": "Arvioinnin tavoitteet"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1943505",
+                  "fi": "<p><strong>”</strong><em>Opiskelijan arvioinnilla pyritään ohjaamaan ja kannustamaan opiskelua sekä kehittämään opiskelijan edellytyksiä itsearviointiin. Opiskelijan oppimista ja työskentelyä tulee arvioida monipuolisesti.</em>”<a href=\"#_ftn1\">[1]</a> Opiskelijan oppimisen arvioinnin tehtävänä on antaa opiskelijalle palautetta opintojen edistymisestä ja oppimistuloksista sekä lukiokoulutukseen valmistavan koulutuksen aikana että sen päättyessä. Palautteen tarkoituksena on kannustaa ja ohjata opiskelijaa opintojen suorittamisessa. Lisäksi arviointi antaa tietoja opiskelijalle tai alle 18-vuotiaan opiskelijan huoltajalle koulutuksen järjestäjien, työelämän ja muiden vastaavien tahojen tarpeita varten. Arvosanan antaminen on yksi arvioinnin muoto. Arvioinnilla kannustetaan opiskelijaa myönteisellä tavalla omien tavoitteidensa asettamiseen ja työskentelytapojensa tarkentamiseen. Arvioinnin tulee olla oppimista tukevaa.</p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Lukiolaki (629/1998) 17 § (1116/2008)</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1940863"
+            },
+            {
+              "id": 1940798,
+              "perusteenOsa": {
+                "id": 1940864,
+                "luotu": 1475064232186,
+                "muokattu": 1503056773868,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1942015",
+                  "fi": "Kurssisuorituksen arviointi"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1942016",
+                  "fi": "<p>Arvioinnin tehtävänä on antaa palautetta opiskelijalle kurssin tavoitteiden saavuttamisesta ja opiskelun etenemisestä. Kurssin arvioinnin tulee olla monipuolista ja perustua mahdollisten kirjallisten kokeiden lisäksi suullisiin kokeisiin ja muihin osaamisen osoittamistapoihin sekä opintojen edistymisen jatkuvaan havainnointiin sekä opiskelijan tietojen ja taitojen arviointiin. Myös opiskelijan oma itsearviointi voidaan ottaa huomioon ja hyödyntää muun muassa kurssin arviointikeskustelussa. Arvioinnin menetelmistä ja käytänteistä päätetään tarkemmin opetussuunnitelmassa.</p>\n\n<p>Opiskelijan opiskelema kurssi arvioidaan sen päätyttyä. Lukiokoulutukseen valmistavan koulutuksen opetussuunnitelman perusteissa määritellyt kurssit arvioidaan suoritettu–hylätty. Kirjallisesti annettu sanallinen arviointi ja suullisesti arviointikeskustelussa annettu palaute voivat myös täydentää ja täsmentää arvosanaa. Lukiokoulutukseen valmistavassa koulutuksessa suoritetut lukiokurssit arvioidaan lukion opetussuunnitelman mukaisesti. Opetussuunnitelmassa määritellyt lukiokoulutukseen valmistavan koulutuksen valinnaiset kurssit arvioidaan siten kuin opetussuunnitelmassa määrätään. </p>\n\n<p>Todetut kielelliset vaikeudet sekä muut syyt, jotka vaikeuttavat osaamisen osoittamista, tulee ottaa huomioon arvioinnissa siten, että opiskelijalla on mahdollisuus erityisjärjestelyihin ja muuhunkin kuin kirjalliseen näyttöön. Kyseiset vaikeudet voidaan ottaa huomioon määrättäessä opiskelijan kurssiarvosanaa. Kesken olevan kurssisuorituksen merkintätavasta voidaan päättää opetussuunnitelmassa. </p>\n\n<p>Opiskelijan arvioinnista päättää kunkin oppiaineen tai aineryhmän osalta opiskelijan opettaja tai, jos opettajia on useita, opettajat yhdessä.<a href=\"#_ftn1\">[1]</a> Opiskelijalla on oikeus saada tieto arviointiperusteista ja niiden soveltamisesta häneen.<a href=\"#_ftn2\">[2]</a> Arviointiperusteista tiedottaminen parantaa opettajien ja opiskelijoiden oikeusturvaa ja motivaatiota. Yleisten arviointiperusteiden lisäksi kunkin kurssin arviointiperusteet on selvitettävä opiskelijalle kurssin alussa, jolloin niistä keskustellaan opiskelijoiden kanssa.</p>\n\n<p> </p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Lukiolaki (629/1998) 17 a § (1116/2008)</p>\n\n<p><a href=\"#_ftnref2\">[2]</a> Lukiolaki (629/1998) 17 § (1116/2008)</p>\n\n<p> </p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1940864"
+            },
+            {
+              "id": 1940799,
+              "perusteenOsa": {
+                "id": 1940865,
+                "luotu": 1475064309585,
+                "muokattu": 1503056773870,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1942017",
+                  "fi": "Aineryhmän/oppiaineen oppimäärän arviointi"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1942018",
+                  "fi": "<p>Aineryhmän tai oppiaineen oppimäärä muodostuu opiskelijan henkilökohtaisen opiskelusuunnitelman mukaisesti opiskelemista pakollisista ja/tai valinnaisista kursseista. Samassa aineryhmässä tai oppiaineessa eri opiskelijoilla voi olla erilaiset kurssimäärät. Lukiokoulutukseen valmistavan koulutuksen opinnoista opiskelijalla saa olla hylättyjä kurssisuorituksia aineryhmittäin enintään seuraavasti:</p>\n\n<table border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width:500px\">\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>1–2 kurssia </td>\n\t\t\t<td>0</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>3–5 kurssia </td>\n\t\t\t<td>1</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>6–8 kurssia </td>\n\t\t\t<td>2</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>9 kurssia tai enemmän </td>\n\t\t\t<td>2</td>\n\t\t</tr>\n\t</tbody>\n</table>\n\n<p> </p>\n\n<p>Jos opiskelijalla on liikaa hylättyjä kurssisuorituksia, hänelle on varattava mahdollisuus hylättyjen kurssien suorittamiseen. hmän/oppiaineen oppimäärän arviointi</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1940865"
+            },
+            {
+              "id": 1942140,
+              "perusteenOsa": {
+                "id": 1940866,
+                "luotu": 1475064470668,
+                "muokattu": 1503056773873,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1942019",
+                  "fi": "Lukiokoulutukseen valmistavan koulutuksen aikana suoritetut perusopetuksen opinnot"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1942160",
+                  "fi": "<p>Lukiokoulutukseen valmistavan koulutuksen valinnaisina opintoina suoritetuista hyväksytyistä perusopetuksen opinnoista opiskelija voi saada todistuksen osallistumalla perusopetuslaissa (38 §) tarkoitettuun erityiseen tutkintoon. Erityisessä tutkinnossa selvitetään eri tavoin, vastaavatko opiskelijan tiedot ja taidot perusopetuksen oppimäärän mukaisia tietoja ja taitoja kyseisessä oppiaineessa. Tutkintoon osallistuvan opiskelijan osaamista arvioidaan suhteessa perusopetuksen opetussuunnitelman perusteissa määriteltyihin ja paikallisessa opetussuunnitelmassa tarkennettuihin eri oppiaineiden tavoitteisiin. Opiskelijan osaamisen tason määrittelyssä käytetään apuna perusopetuksen opetussuunnitelman perusteisiin sisältyviä hyvän osaamisen kuvauksia ja päättöarvioinnin kriteerejä. Erityisessä tutkinnossa voidaan suorittaa oppiaineen koko oppimäärä tai osia siitä, kuten jonkin vuosiluokan oppimäärä. Erityisessä tutkinnossa käytettäviä todistuksia koskevat määräykset sisältyvät perusopetuksen opetussuunnitelman perusteisiin.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1940866"
+            },
+            {
+              "id": 1942141,
+              "perusteenOsa": {
+                "id": 1940867,
+                "luotu": 1475064510205,
+                "muokattu": 1503056773875,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1942162",
+                  "fi": "Lukiokoulutukseen valmistava koulutus"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1942163",
+                  "fi": "<p>Opiskelijan henkilökohtaiseen opiskelusuunnitelmaan kuuluvia kursseja tulee opiskella vähintään siinä laajuudessa kuin ne on määritelty valtioneuvoston asetuksessa<a href=\"#_ftn1\">[1]</a>. Opiskelija on suorittanut lukiokoulutukseen valmistavan koulutuksen silloin, kun hän on suorittanut aineryhmien tai oppiaineiden oppimäärät edellä esitetyllä tavalla hyväksytysti ja lukiokoulutukseen valmistavan koulutuksen vähimmäiskurssimäärä 25 kurssia täyttyy.</p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Valtioneuvoston asetus lukiolaissa tarkoitetun koulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta (942/2014) 11 §</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1940867"
+            },
+            {
+              "id": 1942142,
+              "perusteenOsa": {
+                "id": 1940868,
+                "luotu": 1475064550725,
+                "muokattu": 1503056773877,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1942164",
+                  "fi": "Todistukset ja niihin merkittävät tiedot"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1942165",
+                  "fi": "<p>Lukiokoulutukseen valmistavan koulutuksen suoritetuista opinnoista saa todistuksen<a href=\"#_ftn1\">[1]</a>.</p>\n\n<p>Todistuksen tulee sisältää seuraavat tiedot:</p>\n\n<p>• todistuksen nimi</p>\n\n<p>• koulutuksen järjestäjän nimi</p>\n\n<p>• oppilaitoksen nimi</p>\n\n<p>• opiskelijan nimi ja henkilötunnus</p>\n\n<p>• suoritetut lukiokoulutukseen valmistavan koulutuksen opinnot</p>\n\n<p>• hyväksytysti suoritetut lukiokurssit</p>\n\n<p>• todistuksen antamispäivämäärä ja rehtorin allekirjoitus</p>\n\n<p>• opetus- ja kulttuuriministeriön myöntämän lukiokoulutuksen järjestämisluvan päivämäärä</p>\n\n<p>• todistuksessa käytettyjen kirjainmerkkien selitykset</p>\n\n<p>• maininta siitä, että todistus on lukiokoulutukseen valmistavan koulutuksen osalta Opetushallituksen määräyksen 56/011/2015 mukainen.</p>\n\n<p> </p>\n\n<p>Todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (suoritettu). Lukiokoulutukseen valmistavan koulutuksen koko oppimäärän suorittamisesta ei anneta yhteistä arvosanaa oppiaineiden arvosanojen keskiarvona eikä muullakaan tavalla. Todistukseen merkitään opiskelijan suorittama kokonaiskurssimäärä. </p>\n\n<p>Lukiokurssit arvioidaan ja merkitään todistukseen siten kuin niistä on määrätty joko voimassa olevissa nuorten tai aikuisten lukiokoulutuksen opetussuunnitelman perusteissa. Opetushallituksen antaman kyseisen määräyksen numero tulee mainita todistuksessa. </p>\n\n<p>Jos opiskelija on suorittanut lukiokoulutukseen valmistavan koulutuksen aikana perusopetuksen opintoja, niiden suorittamisesta erityisessä tutkinnossa annettu todistus voidaan liittää lukiokoulutukseen valmistavan koulutuksen todistuksen liitteeksi.</p>\n\n<p>Todistukseen kuuluu myös kohta lisätietoja. Tähän kohtaan merkitään mahdolliset todistuksen liitteenä annettavat ja sitä täydentävät todistukset. Lukiokoulutuksen järjestäjä päättää todistuksen ulkoasusta. </p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Lukioasetus (810/1998) 8 § (52/2014)</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1940868"
+            }
+          ],
+          "_perusteenOsa": "1940862"
+        },
+        {
+          "id": 1646713,
+          "perusteenOsa": {
+            "id": 1657329,
+            "luotu": 1465204451974,
+            "muokattu": 1503056773826,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1667832",
+              "fi": "Aihekokonaisuudet"
+            },
+            "tila": "valmis",
+            "tunniste": "normaali",
+            "valmis": false,
+            "kaannettava": false,
+            "uuidTunniste": "26aa1566-9016-4050-91b3-a56f4cf6670f",
+            "otsikko": {
+              "_id": "1667833",
+              "fi": "Aihekokonaisuudet"
+            },
+            "yleiskuvaus": null,
+            "aihekokonaisuudet": [],
+            "osanTyyppi": "aihekokonaisuudet"
+          },
+          "lapset": [],
+          "_perusteenOsa": "1657329"
+        }
+      ]
+    },
+    "aihekokonaisuudet": {
+      "id": 1657329,
+      "luotu": 1465204451974,
+      "muokattu": 1503056773826,
+      "muokkaaja": "1.2.246.562.24.77925329174",
+      "nimi": {
+        "_id": "1667832",
+        "fi": "Aihekokonaisuudet"
+      },
+      "tila": "valmis",
+      "tunniste": "normaali",
+      "valmis": false,
+      "kaannettava": false,
+      "uuidTunniste": "26aa1566-9016-4050-91b3-a56f4cf6670f",
+      "otsikko": {
+        "_id": "1667833",
+        "fi": "Aihekokonaisuudet"
+      },
+      "yleiskuvaus": null,
+      "aihekokonaisuudet": [],
+      "osanTyyppi": "aihekokonaisuudet"
+    },
+    "opetuksenYleisetTavoitteet": {
+      "id": 1667910,
+      "luotu": 1465204451978,
+      "muokattu": 1503056773834,
+      "muokkaaja": "1.2.246.562.24.77925329174",
+      "nimi": {
+        "_id": "1667834",
+        "fi": "Opetuksen yleiset tavoitteet"
+      },
+      "tila": "valmis",
+      "tunniste": "normaali",
+      "valmis": false,
+      "kaannettava": false,
+      "uuidTunniste": "90b80dc7-6686-446c-add7-0bc3340e876d",
+      "otsikko": {
+        "_id": "1943501",
+        "fi": "Opetuksen yleiset tavoitteet"
+      },
+      "kuvaus": {
+        "_id": "1943500",
+        "fi": "<p>Maahanmuuttajille ja vieraskielisille järjestettävän lukiokoulutukseen valmistavan koulutuksen tavoitteena on parantaa opiskelijan valmiuksia oppilaitoksen opetuskielessä sekä parantaa opiskelijan opiskelutaitoja. Lisäksi tavoitteena on antaa opiskelijalle valmiuksia toimia aktiivisena kansalaisena suomalaisessa yhteiskunnassa. Koulutuksen tavoitteena on myös mahdollisuuksien mukaan tukea ja edistää opiskelijoiden oman äidinkielen hallintaa<a href=\"#_ftn1\">[1]</a>. </p>\n\n<hr />\n<p><a href=\"#_ftnref1\">[1]</a> Valtioneuvoston asetus lukiolaissa tarkoitetun koulutuksen yleisistä valtakunnallisista tavoitteista ja tuntijaosta (942/2014) 7 §</p>"
+      },
+      "osanTyyppi": "opetuksenyleisettavoitteet"
+    },
+    "rakenne": {
+      "perusteId": 1667890,
+      "oppiaineet": [
+        {
+          "id": 1939635,
+          "parentId": null,
+          "tunniste": "0be9ebe7-f972-476f-a1bd-71093dbd5bff",
+          "jarjestys": 1,
+          "koodiArvo": "AI",
+          "koodiUri": "oppiaineetyleissivistava2_ai",
+          "nimi": {
+            "_id": "1946988",
+            "fi": "Äidinkieli ja kirjallisuus"
+          },
+          "koosteinen": true,
+          "abstrakti": false,
+          "pakollinenKurssiKuvaus": null,
+          "syventavaKurssiKuvaus": null,
+          "soveltavaKurssiKuvaus": null,
+          "tavoitteet": {
+            "otsikko": {
+              "_id": "1947102",
+              "fi": "Opetuksen tavoitteet"
+            },
+            "teksti": {
+              "_id": "1947104",
+              "fi": "<p>Suomen kielen opetuksen tavoitteena on monilukutaito, jonka avulla opiskelija ymmärtää, tuottaa, osaa arvioida ja analysoida erilaisia puhuttuja ja kirjoitettuja suomenkielisiä tekstejä sekä päivittäisessä vuorovaikutuksessa, koulutyöskentelyssä että yhteiskunnassa. Monilukutaitoa kehitetään koko lukiokoulutukseen valmistavan koulutuksen ajan, ei ainoastaan suomen kielen opetuksessa.</p>\n\n<p>Suomen kielen opetuksessa korostuu viestinnällisyys sekä toiminnallisuus eli se, miten erilaisissa kielenkäyttötilanteissa toimitaan ja mihin kieltä käytetään. Lukiokoulutukseen valmistavassa koulutuksessa vahvistetaan perusopetuksen aikana opittuja sisältöjä sekä annetaan valmiuksia lukio-opintoja varten. Opetuksessa tuetaan kielitaidon eri osa-alueiden sekä eri tiedonalojen kielen kehittymistä.</p>\n\n<p>Lukiokoulutukseen valmistavassa koulutuksessa varmistetaan, että opiskelija on saavuttanut perusopetuksen suomi toisena kielenä -oppimäärän tavoitteet. Suomen kielen opetuksen perusoletuksena lukiokoulutukseen valmistavassa koulutuksessa onkin, että opiskelija hallitsee kehittyvän peruskielitaidon eli osaa toimia tarkoituksenmukaisella tavalla erilaisissa kielenkäyttötilanteissa, osaa tulkita puhuttuja ja kirjoitettuja tekstejä kriittisesti sekä käyttää kieltä monipuolisesti ja luovasti, tuntee kirjallisuutta ja kulttuuria, rakentaa monikielistä ja -kulttuurista identiteettiään sekä osaa arvioida ja käyttää kielellisiä valmiuksiaan kaiken oppimisen tukena. Lukiokoulutukseen valmistavan koulutuksen aikana näitä taitoja syvennetään ja varmistetaan.</p>\n\n<p>Lukiokoulutukseen valmistavan koulutuksen alussa opiskelijan kielitaito kartoitetaan ja opiskelijalle asetetaan oppimistavoitteet siten, että opiskelijan kielitaitoprofiili kehittyy tasaisesti. Kielitaito koostuu tulkintataidoista eli kuullun ja luetun ymmärtämisestä sekä tuottamistaidoista eli puhumisesta ja kirjoittamisesta. Näihin kaikkiin osa-alueisiin sisältyy sanaston ja rakenteiden hallinta. Lukiokoulutukseen valmistavan koulutuksen päättyessä opiskelijalla tulisi olla toimiva tai sujuva peruskielitaito (kielitaidon tasojen kuvausasteikon taso B1). Kielitaidon eri osa-alueiden osaamista kuvaava kielitaitoprofiili voi kuitenkin vaihdella opiskelijakohtaisesti.</p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Toisen kielen oppimisessa koko kohdekielinen ympäristö tukee opiskelijan kielitaidon kehittymistä. Näin ollen erityisesti suomen kielessä hyödynnetään luokkahuoneen ulkopuolisia ja digitaalisia ympäristöjä. Opiskelijaa kannustetaan erilaisten verkossa tarjolla olevien interaktiivisten oppimisympäristöjen käyttöön. Huomiota kiinnitetään erityisesti kriittiseen tiedonhakuun ja opiskelijan omaan osallistumiseen.</p>\n\n<p>Opiskelijan kielitaidon kokonaisvaltaista kehittämistä tukee se, kun opetuksessa huomioidaan mahdollisuuksien mukaan muissa oppiaineissa käytettyä materiaalia. Näistä voidaan poimia kielellistä ainesta, joiden avulla vahvistetaan eri tekstilajien ymmärtämistä ja tuottamista.</p>"
+            }
+          },
+          "arviointi": {
+            "otsikko": {
+              "_id": "1947048",
+              "fi": "Arviointi"
+            },
+            "teksti": {
+              "_id": "1947103",
+              "fi": "<p>Opiskelijalle annetaan monipuolista sanallista palautetta hänen edistymisestään kielitaidon eri osa-alueilla, jotta opiskelijalle muodostuu realistinen käsitys omasta kielitaidostaan. Lukiokoulutukseen valmistavan koulutuksen todistukseen merkitään opiskelijan saavuttama kielitaidon taso suomen kielen luetun ymmärtämisessä, kirjoittamisessa, kuullun ymmärtämisessä ja puhumisessa kielitaidon tason kuvausasteikon mukaisesti. Lukiokoulutukseen valmistavassa koulutuksessa käytetään voimassa oleviin lukiokoulutuksen opetussuunnitelman perusteisiin sisältyvää kielitaidon tasojen kuvausasteikkoa. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+            }
+          },
+          "tehtava": null,
+          "oppimaarat": [
+            {
+              "id": 1939636,
+              "parentId": 1939635,
+              "tunniste": "8c45a99e-fb23-448d-a1e2-082b52c24e62",
+              "jarjestys": 1,
+              "koodiArvo": "AI7",
+              "koodiUri": "oppiaineetyleissivistava2_ai7",
+              "nimi": {
+                "_id": "1947046",
+                "fi": "Suomi toisena kielenä ja kirjallisuus (vähintään 10 kurssia)"
+              },
+              "koosteinen": false,
+              "abstrakti": null,
+              "pakollinenKurssiKuvaus": null,
+              "syventavaKurssiKuvaus": null,
+              "soveltavaKurssiKuvaus": null,
+              "tavoitteet": null,
+              "arviointi": null,
+              "tehtava": null,
+              "oppimaarat": [],
+              "kurssit": [
+                {
+                  "id": 1695331,
+                  "oppiaineId": 1939636,
+                  "jarjestys": 1,
+                  "tunniste": "035377f5-5110-4783-8505-7a376628fb8a",
+                  "koodiUri": "lukionkurssit_lvs1",
+                  "koodiArvo": "LVS1",
+                  "lokalisoituKoodi": {
+                    "_id": "1695426",
+                    "fi": "LVS1"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1695425",
+                    "fi": "Kielen rakenteet funktionaalisesta näkökulmasta",
+                    "sv": "Språkstrukturer ur funktionell synvinkel"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1695429",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1695460",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tuntee kielitaitonsa vahvuudet ja kehittämiskohteet</p>\n\n<p>• kertaa perusopetuksen suomen kielen oppimäärän keskeisiä sisältöjä ja kehittää kielen rakenteen hallintaansa</p>\n\n<p>• vahvistaa morfologisen sekä sana- ja lausetason osaamistaan</p>\n\n<p>• hallitsee ne lausetason taidot, joilla vahvistetaan opiskelijan kirjoittamisen taitoa.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1695427",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1830459",
+                      "fi": "<p>• opiskelijan kielitaidon kartoitus</p>\n\n<p>• keskeinen morfologia</p>\n\n<p>• syntaksin vahvistaminen ja kirjoittamistaidon kehittyminen</p>\n\n<p>• lausetyyppien, sanajärjestyksen ja rektioiden harjoittelu</p>\n\n<p>• puhutun kielen ja kirjoitetun kielen morfologiset ja syntaktiset erot sekä niiden vaikutus kielenkäyttöön</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1830510",
+                      "fi": "Arviointi"
+                    },
+                    "teksti": {
+                      "_id": "1830511",
+                      "fi": "<p>suoritettu – hylätty</p>"
+                    }
+                  }
+                },
+                {
+                  "id": 1938890,
+                  "oppiaineId": 1939636,
+                  "jarjestys": 2,
+                  "tunniste": "0865ecbc-93eb-43c5-9abf-d1713e826225",
+                  "koodiUri": "lukionkurssit_lvs2",
+                  "koodiArvo": "LVS2",
+                  "lokalisoituKoodi": {
+                    "_id": "1938816",
+                    "fi": "LVS2"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1938815",
+                    "fi": "Tekstin rakenteet funktionaalisesta näkökulmasta",
+                    "sv": "Textstrukturer ur funktionell synvinkel"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1938819",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1938922",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kertaa perusopetuksen suomen kielen oppimäärän keskeisiä sisältöjä ja kehittää kielen rakenteen hallintaansa</p>\n\n<p>• vahvistaa tekstikieliopin hallintaa</p>\n\n<p>• tutustuu tekstilajien rakennepiirteisiin.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1938818",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1938921",
+                      "fi": "<p>• kirjoitetun kielen rakenteet tekstitasolla</p>\n\n<p>• erilajisten tekstien rakentuminen ja keinot niiden rakentamiseen</p>\n\n<p>• metatekstit, koheesio ja sidoksisuus</p>\n\n<p>• päälause, rinnasteinen ja alisteinen sivulause</p>\n\n<p>• lausekeajattelu luetun ymmärtämisen tukena</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1938891,
+                  "oppiaineId": 1939636,
+                  "jarjestys": 3,
+                  "tunniste": "9950e0b4-1ce8-4e36-a398-eaac62a168cd",
+                  "koodiUri": "lukionkurssit_lvs3",
+                  "koodiArvo": "LVS3",
+                  "lokalisoituKoodi": {
+                    "_id": "1938924",
+                    "fi": "LVS3"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1938923",
+                    "fi": "Eri tiedonalojen kieli",
+                    "sv": "Språket inom olika ämnesområden"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1938929",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1938950",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kehittää eri tiedonalojen kielen hallintaa</p>\n\n<p>• kehittää käsitteellisen kielen hallintaa</p>\n\n<p>• ymmärtää oppiaineiden tekstien erilaisia tapoja kuvata/hahmottaa ilmiöitä ja rakennepiirteitä</p>\n\n<p>• hallitsee eri oppiaineiden tekstikäytänteitä</p>\n\n<p>• tuntee eri oppiaineiden tyypillisiä tekstilajeja.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1938927",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1938928",
+                      "fi": "<p>• eri tiedonalojen tyypilliset käsitteet, määritelmät ja tekstilajit</p>\n\n<p>• eri tiedonalojen tekstien rakennepiirteet</p>\n\n<p>• tietotekstien käsitesisällöt omassa puheessa</p>\n\n<p>• tietotekstien käsitteistön ymmärtäminen ja aktiivinen tuottaminen</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1938892,
+                  "oppiaineId": 1939636,
+                  "jarjestys": 4,
+                  "tunniste": "659b2c00-3bfe-4f95-93c4-8954597f300c",
+                  "koodiUri": "lukionkurssit_lvs4",
+                  "koodiArvo": "LVS4",
+                  "lokalisoituKoodi": {
+                    "_id": "1938952",
+                    "fi": "LVS4"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1938951",
+                    "fi": "Tekstejä kirjoittamaan",
+                    "sv": "Skriva texter"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1938957",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1938958",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kirjoittaa eri tiedonalojen opiskeluun liittyviä tekstejä </p>\n\n<p>• ymmärtää ja tulkitsee suullisesti ja kirjallisesti eri tiedonaloille tyypillisiä tekstejä</p>\n\n<p>• harjoittelee yhdessä kirjoittamista.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1938955",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1938956",
+                      "fi": "<p>• erilaisten arkipäivän tekstien tuottaminen, esimerkiksi blogiviesti tai muu verkkoteksti, mielipide, kommentti, kritiikki, formaali ja ei-formaali sähköposti</p>\n\n<p>• opiskeluun liittyvien tekstien tuottaminen, esimerkiksi tutkielma, koevastaus, essee, käsitemäärittely, lähteiden käyttö tai tiedon esittäminen visuaalisesti (esim. diagrammi ja taulukko)</p>\n\n<p>• tarkka kuvailu ja yksityiskohtainen kerronta</p>\n\n<p>• sanaston varioivuus ja idiomaattisuus</p>\n\n<p>• käsitteiden määrittely sekä systemaattinen sanojen johtaminen</p>\n\n<p>• yhdessä kirjoittaminen</p>\n\n<p>• omien ja toisten tekstien huoltaminen ja oikeakielisyys, esimerkiksi alkukirjain, välimerkit, kappalejako</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1938893,
+                  "oppiaineId": 1939636,
+                  "jarjestys": 5,
+                  "tunniste": "875407a3-0ae2-4da2-af1c-95456c4e8cc3",
+                  "koodiUri": "lukionkurssit_lvs5",
+                  "koodiArvo": "LVS5",
+                  "lokalisoituKoodi": {
+                    "_id": "1939000",
+                    "fi": "LVS5"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1938959",
+                    "fi": "Kuunnellaan ja puhutaan 1",
+                    "sv": "Lyssna och tala 1"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1939005",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1939006",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kehittää ilmaisutaitojaan</p>\n\n<p>• kehittää puhutun kielen ymmärtämisen ja tuottamisen taitoaan.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1939003",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1939004",
+                      "fi": "<p>• suomen kielen kuuntelemisen ja puhumisen harjoittelu</p>\n\n<p>• ilmaisutaidon harjoituksia (pari- ja ryhmäharjoituksia), roolileikkejä, fiktiivisiä tekstejä, runoja ja riimejä</p>\n\n<p>• puheen pitäminen vapaasta aiheesta</p>\n\n<p>• idiomaattinen reagointi</p>\n\n<p>• huomion kiinnittymistä puhekielen tilanteiseen variaatioon</p>\n\n<p>• läpäisevästi huomiota ääntämiseen, lausepainoon ja puheen rytmiin</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1938894,
+                  "oppiaineId": 1939636,
+                  "jarjestys": 6,
+                  "tunniste": "b080621f-c000-47eb-abfc-2107449df0a8",
+                  "koodiUri": "lukionkurssit_lvs6",
+                  "koodiArvo": "LVS6",
+                  "lokalisoituKoodi": {
+                    "_id": "1939008",
+                    "fi": "LVS6"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1939007",
+                    "fi": "Suomalainen kirjallisuus ja kulttuuri",
+                    "sv": "Litteratur och kultur i Finland"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1939043",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1939044",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tutustuu suomalaiseen nykykirjallisuuteen ja kulttuuriin</p>\n\n<p>• tutustuu kirjallisuuden keskeisiin analyysikäsitteisiin.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1939041",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1939042",
+                      "fi": "<p>• Suomen nykykirjallisuuden ja kulttuurin peruskäsitteitä </p>\n\n<p>• lyhyt katsaus muutamaan tärkeään nykykirjailijaan</p>\n\n<p>• kirjallisuuden tekstilajit, esimerkiksi romaani, novelli, runo, näytelmä</p>\n\n<p>• erilaisiin tekstilajeihin tutustuminen lukemalla</p>\n\n<p>• kirjallisuuden analysoinnin käsitteitä sekä erilaisia analyysikeinoja</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1938895,
+                  "oppiaineId": 1939636,
+                  "jarjestys": 7,
+                  "tunniste": "35962cc0-49eb-4191-a293-9f59020eb807",
+                  "koodiUri": "lukionkurssit_lvs7",
+                  "koodiArvo": "LVS7",
+                  "lokalisoituKoodi": {
+                    "_id": "1939150",
+                    "fi": "LVS7"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1939049",
+                    "fi": "Maailmankirjallisuus ja kulttuurinen monimuotoisuus",
+                    "sv": "Världslitteratur och kulturell mångfald"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1939155",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1939156",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tulee tietoiseksi kulttuurisesta monimuotoisuudesta</p>\n\n<p>• vahvistaa kulttuurista identiteettiään.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1939153",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1939154",
+                      "fi": "<p>• kulttuurinen monimuotoisuus ja moninaiset identiteetit </p>\n\n<p>• toiseuden kokemus</p>\n\n<p>• kirjallisuuteen liittyvä monimediainen esitys luetun teoksen pohjalta</p>\n\n<p>• omien fiktiivisten tekstien tuottaminen</p>\n\n<p>• kulttuurinen monimuotoisuus: ihmisryhmien monenlaiset ja muuttuvat elämänmuodot, esimerkiksi nuorison ajankohtaiset alakulttuurit: erilaiset nettiyhteisöt ja fanifiktio</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1938896,
+                  "oppiaineId": 1939636,
+                  "jarjestys": 8,
+                  "tunniste": "a4e53e65-54f9-41b0-be9a-2b47a0813b00",
+                  "koodiUri": "lukionkurssit_lvs8",
+                  "koodiArvo": "LVS8",
+                  "lokalisoituKoodi": {
+                    "_id": "1939158",
+                    "fi": "LVS8"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1939157",
+                    "fi": "Kuunnellaan ja puhutaan 2",
+                    "sv": "Lyssna och tala 2"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1939203",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1939204",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kehittyy yhteistyö- ja neuvottelutaidoissa</p>\n\n<p>• kehittyy tiedottavan ja vaikuttavan puhumisen taidoissa</p>\n\n<p>• vahvistaa analysoivan kuuntelemisen taitoaan.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1939201",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1939202",
+                      "fi": "<p>• vahvistetaan digitaalisia tekstitaitoja</p>\n\n<p>• kiinnitetään huomiota sosiaalisessa mediassa käytettyyn kieleen analysoinnin ja harjoittelun keinoin</p>\n\n<p>• harjoitellaan verkkosivustojen luotettavuuden vertailua</p>\n\n<p>• arvioidaan verkkotekstejä</p>\n\n<p>• tuotetaan erilaisia digitaalisia tekstejä huomioiden kuvat, videot, linkitys ja liikkuva kuva</p>\n\n<p>• oppija aktiivisena tiedontuottajana: oppijan pääsy (tuovat itse valitsemiaan tekstejä oppitunnille), osallisuus ja toimijuus suhteessa teksteihin</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1938898,
+                  "oppiaineId": 1939636,
+                  "jarjestys": 9,
+                  "tunniste": "f7a88b22-0495-41bc-867d-fb699a5a2408",
+                  "koodiUri": "lukionkurssit_lvs9",
+                  "koodiArvo": "LVS9",
+                  "lokalisoituKoodi": {
+                    "_id": "1939374",
+                    "fi": "LVS9"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1939373",
+                    "fi": "Digitaaliset tekstitaidot",
+                    "sv": "Digital textkompetens"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1939379",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1939420",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tutustuu mediakulttuuriin osana omaa elämäänsä</p>\n\n<p>• tuottaa erilaisia mediatekstejä erilaisin teknologisin välinein</p>\n\n<p>• pohtii sosiaalisen median merkitystä oman elämänsä näkökulmasta.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1939377",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1939378",
+                      "fi": "<p>• vahvistetaan digitaalisia tekstitaitoja</p>\n\n<p>• kiinnitetään huomiota sosiaalisessa mediassa käytettyyn kieleen analysoinnin ja harjoittelun keinoin</p>\n\n<p>• harjoitellaan verkkosivustojen luotettavuuden vertailua</p>\n\n<p>• arvioidaan verkkotekstejä</p>\n\n<p>• tuotetaan erilaisia digitaalisia tekstejä huomioiden kuvat, videot, linkitys ja liikkuva kuva</p>\n\n<p>• oppija aktiivisena tiedontuottajana: oppijan pääsy (tuovat itse valitsemiaan tekstejä oppitunnille), osallisuus ja toimijuus suhteessa teksteihin</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1938897,
+                  "oppiaineId": 1939636,
+                  "jarjestys": 10,
+                  "tunniste": "0305aadc-95a2-4aa4-bad1-3fe73506c707",
+                  "koodiUri": "lukionkurssit_lvs10",
+                  "koodiArvo": "LVS10",
+                  "lokalisoituKoodi": {
+                    "_id": "1939206",
+                    "fi": "LVS10"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1939205",
+                    "fi": "Mediakulttuuri",
+                    "sv": "Mediakulttuuri"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1939370",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1939371",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tutustuu mediakulttuuriin yhteiskunnallisesta näkökulmasta</p>\n\n<p>• pohtii sosiaalisen median merkitystä yhteiskunnallisena ilmiönä.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1939278",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1939279",
+                      "fi": "<p>• mediat ja niiden ilmaisukeinot</p>\n\n<p>• uutiskriteerit</p>\n\n<p>• aikakauslehdet</p>\n\n<p>• vaikuttamaan pyrkivän viestinnän osatekijöiden analyysi (esim. mainosten kieli)</p>\n\n<p>• kuvat ja kuvanlukeminen</p>\n\n<p>• oppijoiden itsensä valitsemien verkkovideoiden analyysikeinoja</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                }
+              ]
+            }
+          ],
+          "kurssit": []
+        },
+        {
+          "id": 1689430,
+          "parentId": null,
+          "tunniste": "013422f5-8889-43e5-ae29-3d7097db00ad",
+          "jarjestys": 2,
+          "koodiArvo": "MK2",
+          "koodiUri": "oppiaineetyleissivistava2_mk2",
+          "nimi": {
+            "_id": "1931254",
+            "fi": "Muut kielet (vähintään 3 kurssia)",
+            "sv": "Övriga språk (minst 3 kurser)"
+          },
+          "koosteinen": true,
+          "abstrakti": false,
+          "pakollinenKurssiKuvaus": null,
+          "syventavaKurssiKuvaus": null,
+          "soveltavaKurssiKuvaus": null,
+          "tavoitteet": null,
+          "arviointi": null,
+          "tehtava": {
+            "otsikko": null,
+            "teksti": {
+              "_id": "1689276",
+              "fi": "<p>Muiden kielten opinnot voivat lukiokoulutukseen valmistavassa koulutuksessa muodostua yhdentai useamman kielen kursseista. Valittavia kursseja ovat toisen kotimaisen kielen, vieraiden kieltenja mahdollisuuksien mukaan opiskelijan oman äidinkielen kurssit, joista koulutuksen järjestäjäntulee tarjota yhteensä vähintään kolme.</p>"
+            }
+          },
+          "oppimaarat": [
+            {
+              "id": 1689431,
+              "parentId": 1689430,
+              "tunniste": "8c034dc3-2940-4aed-91cd-cc9c6effa21e",
+              "jarjestys": 1,
+              "koodiArvo": "POAK",
+              "koodiUri": "oppiaineetyleissivistava2_poak",
+              "nimi": {
+                "_id": "1931255",
+                "fi": "Perusopetuksessa alkanut kieli",
+                "sv": "Språk som påbörjats i den grundläggande  utbildningen"
+              },
+              "koosteinen": false,
+              "abstrakti": true,
+              "pakollinenKurssiKuvaus": null,
+              "syventavaKurssiKuvaus": null,
+              "soveltavaKurssiKuvaus": null,
+              "tavoitteet": {
+                "otsikko": {
+                  "_id": "1941611",
+                  "fi": "Opetuksen tavoitteet"
+                },
+                "teksti": {
+                  "_id": "1941612",
+                  "fi": "<p>Opetuksen päätavoitteena on vahvistaa perusopetuksessa tai muualla saatua toisen kotimaisen tai vieraan kielen taitoa.</p>\n\n<p>Lisäksi tavoitteena on, että opiskelija</p>\n\n<p>• osaa viestiä kohdekielelle ja sen kulttuurille ominaisella tavalla</p>\n\n<p>• osaa arvioida kielitaitoaan suhteissa tavoitteisiin</p>\n\n<p>• tuntee omat vahvuutensa ja kehittymistarpeensa viestijänä ja kielen opiskelijana</p>\n\n<p>• osaa kehittää kielitaitoaan tarkoituksenmukaisin strategioin</p>\n\n<p>• ymmärtää opiskeltavan kielen merkityksen oman tulevaisuuden kannalta sekä sen merkityksen Suomelle ja kansainvälisesti. </p>\n\n<p> </p>\n\n<p>Opetuksen tavoitetason määrittelyssä hyödynnetään perusopetuksen opetussuunnitelman perusteissa 2014 määriteltyjä tavoitetasoja.</p>\n\n<p> </p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Opiskeluympäristön ja käytettävien työtapojen tulee tukea aikaisempiin kokemuksiin pohjautuvaa tiedonrakentumista ja auttaa asetettujen tavoitteiden saavuttamista. Opiskeluympäristön tulee antaa tilaisuuksia kokeilla ja löytää itselleen sopivia työskentelymuotoja. Erilaisia apuvälineitä kuten digitaalisia sanakirjoja ja lähdemateriaaleja voidaan käyttää tuntityöskentelyssä ja kokeissa. Autenttiseen materiaaliin, tiedon hakuun ja sen arviointiin sekä kannustavaan palautteeseen kiinnitetään erityistä huomiota.</p>"
+                }
+              },
+              "arviointi": {
+                "otsikko": {
+                  "_id": "1941610",
+                  "fi": "Arviointi"
+                },
+                "teksti": {
+                  "_id": "1941613",
+                  "fi": "<p>Arviointi perustuu jatkuvaan näyttöön sekä monipuolisiin arviointimenetelmiin, esimerkiksi kirjallisiin ja suullisiin kokeisiin, suulliseen ilmaisuun tai muihin näyttötapoihin. Oppimista tukevaa arviointia toteutetaan myös opiskelijan itsearvioinnin ja vertaisarvioinnin sekä arviointi- ja kehityskeskustelujen avulla. Kokeissa tai vastaavissa suositaan lähteiden ja apuvälineiden käyttöä. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+                }
+              },
+              "tehtava": null,
+              "oppimaarat": [],
+              "kurssit": [
+                {
+                  "id": 1938899,
+                  "oppiaineId": 1689431,
+                  "jarjestys": 1,
+                  "tunniste": "df941774-a219-44af-95fe-b463c496097a",
+                  "koodiUri": "lukionkurssit_lvka1",
+                  "koodiArvo": "LVKA1",
+                  "lokalisoituKoodi": {
+                    "_id": "1939422",
+                    "fi": "LVKA1"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1939421",
+                    "fi": "Kielitaito osana opiskelua ja muita elämänalueita",
+                    "sv": "Språkfärdighet som en del av studierna och andra livsområden"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1939491",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1939492",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tekee yhdessä opettajan kanssa kurssin alussa arvion omista lähtökohdistaan ja erityisesti omista opiskelutaidoistaan</p>\n\n<p>• ottaa vastuun oman kielitaitonsa kehittämisestä</p>\n\n<p>• pystyy keskustelemaan kurssin aihepiirin liittyvistä teemoista sekä tuottamaan niistä kirjallisen esityksen.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1939429",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1939490",
+                      "fi": "<p>• perusrakenteiden vahvistaminen sekä puheen ja kirjoittamisen käytänteiden harjoittelua</p>\n\n<p>• opiskeluun ja muihin itselle tärkeisiin elämänalueisiin liittyvä kirjallinen ja suullinen harjoittelu</p>\n\n<p>• oman esityksen tuottaminen ja muokkaaminen myös vertaispalautetta hyödyntäen</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1939510,
+                  "oppiaineId": 1689431,
+                  "jarjestys": 2,
+                  "tunniste": "63967034-fcd8-4099-b540-a5b0a45ff178",
+                  "koodiUri": "lukionkurssit_lvka2",
+                  "koodiArvo": "LVKA2",
+                  "lokalisoituKoodi": {
+                    "_id": "1939494",
+                    "fi": "LVKA2"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1939493",
+                    "fi": "Arkipäivän tilanteet",
+                    "sv": "Vardagssituationer"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1939543",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1939544",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• selviytyy erilaisista jokapäiväisistä kielenkäyttötilanteista</p>\n\n<p>• osaa tuottaa suullisesti kertomuksen, kuvauksen, ohjeen ja perustellun mielipiteen</p>\n\n<p>• puhuu ja kirjoittaa tilanteen mukaisesti</p>\n\n<p>• kehittää vuorovaikutustaitoja</p>\n\n<p>• osaa arvioida vertaisiaan.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1939541",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1939542",
+                      "fi": "<p>• vuorovaikutus- ja asiointiharjoitukset erilaisissa kasvokkaisissa ja monimediaisissa viestintätilanteissa, esim. ostoksilla, pankissa, postissa, lääkärissä sekä liikenne-, majoitus- ja ateriapalveluita käytettäessä</p>\n\n<p>• erilaisia suullisia harjoituksia yksin ja ryhmässä</p>\n\n<p>• oman tuotoksen muokkaaminen palautetta hyödyntäen</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1939511,
+                  "oppiaineId": 1689431,
+                  "jarjestys": 3,
+                  "tunniste": "cef175e6-be02-4881-b32d-673c6a2bb94a",
+                  "koodiUri": "lukionkurssit_lvka3",
+                  "koodiArvo": "LVKA3",
+                  "lokalisoituKoodi": {
+                    "_id": "1939546",
+                    "fi": "LVKA3"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1939545",
+                    "fi": "Mediat",
+                    "sv": "Medier"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1939571",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1939572",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• hallitsee perustiedot medioista ja osaa käyttää viestintävälineitä monipuolisesti</p>\n\n<p>• osaa etsiä tietoa erilaisista lähteistä</p>\n\n<p>• osaa hyödyntää tieto- ja viestintäteknologiaa opiskelussaan.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1939549",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1939570",
+                      "fi": "<p>• suppea tutkielma tai projekti tai portfolio aiheesta, joka liittyy yhteiskuntatietouteen tai kult tuurintuntemukseen tai luonnontieteisiin</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                }
+              ]
+            },
+            {
+              "id": 1939630,
+              "parentId": 1689430,
+              "tunniste": "578dc0b2-4bc0-41e4-8d9c-411a63cd4a82",
+              "jarjestys": 2,
+              "koodiArvo": "LVAK",
+              "koodiUri": "oppiaineetyleissivistava2_lvak",
+              "nimi": {
+                "_id": "1939579",
+                "fi": "Lukiokoulutukseen valmistavassa koulutuksessa alkava kieli"
+              },
+              "koosteinen": false,
+              "abstrakti": null,
+              "pakollinenKurssiKuvaus": null,
+              "syventavaKurssiKuvaus": null,
+              "soveltavaKurssiKuvaus": null,
+              "tavoitteet": {
+                "otsikko": {
+                  "_id": "1939640",
+                  "fi": "Opetuksen tavoitteet"
+                },
+                "teksti": {
+                  "_id": "1940148",
+                  "fi": "<p>Opetuksen päätavoitteena on tutustuttaa opiskelija uuteen lukiokoulutuksessa alkavaan kieleen, sen kielialueisiin ja kulttuureihin.</p>\n\n<p>Lisäksi tavoitteena on, että opiskelija</p>\n\n<p>• saa tuntuman kielen perussanastoon ja -rakenteisiin</p>\n\n<p>• selviytyy yksinkertaisista vuorovaikutustilanteista ja osaa kertoa itsestään ja arkielämästään</p>\n\n<p>• pystyy kirjoittamaan lyhyitä viestejä tutuissa arkielämän tilanteissa.</p>\n\n<p>Tavoitetasot</p>\n\n<p>• lukiokoulutukseen valmistavassa koulutuksessa alkava oppimäärä A1.1</p>\n\n<p> </p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Opiskeluympäristön tulee antaa tilaisuuksia kokeilla ja löytää itselleen sopivia työskentelymuotoja. Erilaisia apuvälineitä kuten digitaalisia sanakirjoja ja lähdemateriaaleja voidaan käyttää tuntityöskentelyssä ja kokeissa. Autenttiseen materiaaliin, tiedon hakuun ja sen arviointiin sekä kannustavaan palautteeseen kiinnitetään erityistä huomiota.</p>"
+                }
+              },
+              "arviointi": {
+                "otsikko": {
+                  "_id": "1939578",
+                  "fi": "Arviointi"
+                },
+                "teksti": {
+                  "_id": "1940149",
+                  "fi": "<p>Arviointi perustuu jatkuvaan näyttöön sekä monipuolisiin arviointimenetelmiin, esimerkiksi kirjallisiin ja suullisiin kokeisiin, suulliseen ilmaisuun tai muihin näyttötapoihin. Oppimista tukevaa arviointia toteutetaan myös opiskelijan itsearvioinnin ja vertaisarvioinnin sekä arviointi- ja kehityskeskustelujen avulla. Kokeissa tai vastaavissa suositaan lähteiden ja apuvälineiden käyttöä. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+                }
+              },
+              "tehtava": null,
+              "oppimaarat": [],
+              "kurssit": [
+                {
+                  "id": 1939512,
+                  "oppiaineId": 1939630,
+                  "jarjestys": 1,
+                  "tunniste": "28c66161-817c-4c42-b0dc-db16f0ab2d42",
+                  "koodiUri": "lukionkurssit_lvkb1",
+                  "koodiArvo": "LVKB1",
+                  "lokalisoituKoodi": {
+                    "_id": "1941300",
+                    "fi": "LVKB1"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1941259",
+                    "fi": "Kieleen tutustuminen",
+                    "sv": "Introduktion i språket"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1941305",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1941306",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• oppii kielen äänteet, intonaatiota sekä perussanastoa ja -rakenteita</p>\n\n<p>• ymmärtää tuttavallista puhetta ja käyttää tavallisia puheilmauksia yleisissä arkipäivän tilanteissa</p>\n\n<p>• hahmottaa yksinkertaisen kirjoitetun viestin pääajatuksen ja osaa kirjoittaa yksinkertaisia viestejä.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1941303",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1941304",
+                      "fi": "<p>• henkilötietojen ja itseä koskevien perustietojen antaminen</p>\n\n<p>• tervehdykset, keskustelun aloittaminen, kuulumisista kertominen, kysyminen ja vastaaminen</p>\n\n<p>• yksinkertaisten viestien lukeminen ja kirjoittaminen</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1939513,
+                  "oppiaineId": 1939630,
+                  "jarjestys": 2,
+                  "tunniste": "f702de92-e329-4d9f-91ef-5522de6c114a",
+                  "koodiUri": "lukionkurssit_lvkb2",
+                  "koodiArvo": "LVKB2",
+                  "lokalisoituKoodi": {
+                    "_id": "1941308",
+                    "fi": "LVKB2"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1941307",
+                    "fi": "Asioiminen ja harrastukset",
+                    "sv": "Vardagsärenden och fritid"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1941343",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1941344",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• oppii arkielämän keskeistä sanastoa ja ilmauksia</p>\n\n<p>• tutustuu yksinkertaisiin lauserakenteisiin ja teksteihin</p>\n\n<p>• oppii työskentelemään pareittain tai ryhmässä</p>\n\n<p>• oppii käyttämään kieltä erilaisissa sosiaalisissa tilanteissa.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1941341",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1941342",
+                      "fi": "<p>• tiedustelujen tekoa, puhelinasiointia</p>\n\n<p>• erilaisten arkipäivän palvelujen käyttöä, kaupassa asiointia, liikennevälineissä käyttäytymistä</p>\n\n<p>• harrastuksiin ja vapaa-ajan viettoon liittyviä vuorovaikutustilanteita</p>\n\n<p>• helppojen tekstien lukua</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1939514,
+                  "oppiaineId": 1939630,
+                  "jarjestys": 3,
+                  "tunniste": "3ea14f84-23c3-4108-9d9a-8bd7010d6ad0",
+                  "koodiUri": "lukionkurssit_lvkb3",
+                  "koodiArvo": "LVKB3",
+                  "lokalisoituKoodi": {
+                    "_id": "1941346",
+                    "fi": "LVKB3"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1941345",
+                    "fi": "Elinympäristö ja sosiaaliset verkostot",
+                    "sv": "Livsmiljö och sociala nätverk"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1941371",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1941372",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• oppii kirjallisesti ja suullisesti kertomaan elinympäristöstään, lähipiiristään ja ystävistään</p>\n\n<p>• oppii havainnoimaan kaksikielistä ympäristöä Suomessa</p>\n\n<p>• oppii tekemään yksinkertaista tiedonhakua kohdekielellä.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1941349",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1941370",
+                      "fi": "<p>• tekstin ymmärtämisen ja tuottamisen harjoittelu</p>\n\n<p>• kaksikielisiin ilmiöihin tutustuminen erilaisissa ympäristöissä</p>\n\n<p>• opiskelijan elinympäristöstä kertova kirjallinen tai suullinen esitys</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                }
+              ]
+            },
+            {
+              "id": 1939631,
+              "parentId": 1689430,
+              "tunniste": "4bcd5943-f230-4739-9d5a-4530018c7dfb",
+              "jarjestys": 3,
+              "koodiArvo": "AIAI6",
+              "koodiUri": "oppiaineetyleissivistava2_aiai6",
+              "nimi": {
+                "_id": "1941374",
+                "fi": "Opiskelijan oma äidinkieli"
+              },
+              "koosteinen": false,
+              "abstrakti": null,
+              "pakollinenKurssiKuvaus": null,
+              "syventavaKurssiKuvaus": null,
+              "soveltavaKurssiKuvaus": null,
+              "tavoitteet": {
+                "otsikko": {
+                  "_id": "1941375",
+                  "fi": "Opetuksen tavoitteet"
+                },
+                "teksti": {
+                  "_id": "1941376",
+                  "fi": "<p>Opetuksen päätavoitteena on, että opiskelija ylläpitää ja kehittää oman äidinkielen taitoaan ja että opiskelija saa yleiskuvan kieliyhteisönsä kulttuuripiirteistä. </p>\n\n<p>Opiskelijan oman äidinkielen taito kartoitetaan ja tulosten perusteella laaditaan kullekin opiskelijalle henkilökohtainen opiskelusuunnitelma. Opiskelijalle tulee kurssien aikana tutuksi jokin oman maan kulttuuriteos.</p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Opetus perustuu toiminnalliseen kielitaitokäsitykseen, jonka mukaan opiskelija käyttää äidinkieltään monipuolisesti omiin viestintätarpeisiinsa. Opiskelun aikana käytetään autenttista opiskelumateriaalia ja luonnollisia kielenkäyttötilanteita.</p>"
+                }
+              },
+              "arviointi": {
+                "otsikko": {
+                  "_id": "1941373",
+                  "fi": "Arviointi"
+                },
+                "teksti": {
+                  "_id": "1941377",
+                  "fi": "<p>Arviointi perustuu jatkuvaan näyttöön sekä monipuolisiin arviointimenetelmiin, esimerkiksi kirjallisiin ja suullisiin kokeisiin, suulliseen ilmaisuun tai muihin näyttötapoihin. Oppimista tukevaa arviointia toteutetaan myös opiskelijan itsearvioinnin ja vertaisarvioinnin sekä arviointi- ja kehityskeskustelujen avulla. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+                }
+              },
+              "tehtava": null,
+              "oppimaarat": [],
+              "kurssit": [
+                {
+                  "id": 1939515,
+                  "oppiaineId": 1939631,
+                  "jarjestys": 1,
+                  "tunniste": "821ae2a6-5860-4fe6-b22f-cca3cf3ef43a",
+                  "koodiUri": "lukionkurssit_lvmai1",
+                  "koodiArvo": "LVMAI1",
+                  "lokalisoituKoodi": {
+                    "_id": "1941379",
+                    "fi": "LVMAI1"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1941378",
+                    "fi": "Kieli ja identiteetti",
+                    "sv": "Språk och identitet"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1941464",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1941465",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• oppii tuntemaan oman kielialueensa kehityksen vaiheita</p>\n\n<p>• arvostaa omaa kielellistä kulttuuriaan ja ymmärtää sen merkityksen itselleen ja tulevaisuudelleen</p>\n\n<p>• tuntee kielialueensa keskeisiä teoksia ja teemoja</p>\n\n<p>• ymmärtää kaksi- ja monikielisyyden merkityksen identiteetilleen ja omalle kehitykselleen.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1941462",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1941463",
+                      "fi": "<p>• luetun ja kuullun ymmärtämisen harjoituksia autenttista materiaalia käyttäen (esimerkiksi elokuva, sanomalehtiartikkeli, kaunokirjallinen teos, uutiset)</p>\n\n<p>• johonkin oman kulttuuripiirin teokseen perehtyminen ja siitä kertominen suullisesti tai kirjallisesti</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1939516,
+                  "oppiaineId": 1939631,
+                  "jarjestys": 2,
+                  "tunniste": "f8c56b3e-a479-4ca2-a982-d7d402f51036",
+                  "koodiUri": "lukionkurssit_lvmai2",
+                  "koodiArvo": "LVMAI2",
+                  "lokalisoituKoodi": {
+                    "_id": "1941467",
+                    "fi": "LVMAI2"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1941466",
+                    "fi": "Kirjoittaminen ja nykykulttuuri",
+                    "sv": "Skrivande och modern kultur"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1941492",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1941493",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tutustuu monipuolisesti kieliyhteisönsä nykykulttuuriin ja samalla kehittää oman äidinkielen kirjoittamisen taitojaan</p>\n\n<p>• pystyy ilmaisemaan itseään kirjallisesti ja suullisesti</p>\n\n<p>• tunnistaa tekstilajeja ja perehtyy oppiaineiden keskeisiin käsitteisiin omalla äidinkielellään.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1941490",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1941491",
+                      "fi": "<p>• kieliyhteisön kulttuurisiin ilmiöihin tutustuminen autenttisen materiaalin avulla</p>\n\n<p>• kirjallisen referaatin tai analyysin laatiminen opiskelijan valitsemasta aiheesta</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                },
+                {
+                  "id": 1939517,
+                  "oppiaineId": 1939631,
+                  "jarjestys": 3,
+                  "tunniste": "51b76375-bd2f-4168-96db-451124bc57f1",
+                  "koodiUri": "lukionkurssit_lvmai3",
+                  "koodiArvo": "LVMAI3",
+                  "lokalisoituKoodi": {
+                    "_id": "1941495",
+                    "fi": "LVMAI3"
+                  },
+                  "tyyppi": "PAKOLLINEN",
+                  "nimi": {
+                    "_id": "1941494",
+                    "fi": "Puheviestinnän taitojen syventäminen",
+                    "sv": "Fördjupade färdigheter i muntlig kommunikation"
+                  },
+                  "kuvaus": null,
+                  "tavoitteet": {
+                    "otsikko": {
+                      "_id": "1941530",
+                      "fi": "Tavoitteet"
+                    },
+                    "teksti": {
+                      "_id": "1941531",
+                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kehittää ilmaisuvarmuuttaan esiintymistilanteissa ja ryhmätyöskentelyssä</p>\n\n<p>• pystyy arvioimaan puheviestinnän merkitystä ihmissuhteissa ja opiskelussa</p>\n\n<p>• opiskelijan ääntäminen ja intonaatio ovat luontevia.</p>"
+                    }
+                  },
+                  "keskeisetSisallot": {
+                    "otsikko": {
+                      "_id": "1941498",
+                      "fi": "Keskeiset sisällöt"
+                    },
+                    "teksti": {
+                      "_id": "1941499",
+                      "fi": "<p>• vuorovaikutustilanteiden ominaispiirteitä</p>\n\n<p>• erilaisia vuorovaikutus- ja vertaisarviointitilanteita (haastattelu, väittely, kommentointi)</p>\n\n<p>• suullisen esitelmän pitäminen, vertaispalautteen antaminen ja vastaanottaminen</p>"
+                    }
+                  },
+                  "tavoitteetJaKeskeisetSisallot": null
+                }
+              ]
+            }
+          ],
+          "kurssit": []
+        },
+        {
+          "id": 1939632,
+          "parentId": null,
+          "tunniste": "cdf38a45-26f5-46b7-9527-6ddd0dabebd0",
+          "jarjestys": 3,
+          "koodiArvo": "MLO",
+          "koodiUri": "oppiaineetyleissivistava2_mlo",
+          "nimi": {
+            "_id": "1943370",
+            "fi": "Matemaattiset ja luonnontieteelliset opinnot (vähintään 2 kurssia)"
+          },
+          "koosteinen": false,
+          "abstrakti": null,
+          "pakollinenKurssiKuvaus": null,
+          "syventavaKurssiKuvaus": null,
+          "soveltavaKurssiKuvaus": null,
+          "tavoitteet": {
+            "otsikko": {
+              "_id": "1941535",
+              "fi": "Opetuksen tavoitteet"
+            },
+            "teksti": {
+              "_id": "1941536",
+              "fi": "<p>Matemaattisten ja luonnontieteellisten aineiden opinnoissa syvennetään perusopetuksen oppimäärään sisältyviä tietoja painottaen kyseisen tiedonalan käsitteiden ja sanaston hallintaa. Tiedollisesti varmistetaan perusopetuksen oppimäärän ydinasioiden osaaminen sekä valmistaudutaan lukiossa vaadittavaan opiskelutekniikkaan matematiikassa ja luonnontieteissä. Opintojen aikana arvioidaan minkä laajuinen oppimäärä matematiikassa, fysiikassa ja kemiassa on tarkoituksenmukainen opiskelijalle. </p>\n\n<p>Maantieteen ja biologian kurssi toteutetaan yhteistyössä suomi toisena kielenä -kurssien 3 ja 4 kanssa. Opintoja tulee eriyttää opiskelijoiden osaamien taitojen mukaan.</p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Kielitietoiset työtavat matematiikassa liittyvät ohjeiden ja opetuspuheen avaamiseen ja sanallisten tehtävien purkamiseen. Kemiassa ja fysiikassa ne tarkoittavat käsitemäärittelyjen, selostusten ja muiden aineille tyypillisten tekstilajien (esim. oppikirjatekstien) harjoittelemista. Maantieteessä ja biologiassa kielitietoisia työtapoja ovat käsitemäärittelyharjoitukset karttojen, diagrammien ja taulukoiden tulkintaharjoitukset ja omien tekstien tuottaminen ohjatusti. </p>"
+            }
+          },
+          "arviointi": {
+            "otsikko": {
+              "_id": "1941532",
+              "fi": "Arviointi"
+            },
+            "teksti": {
+              "_id": "1941537",
+              "fi": "<p>Arvioinnissa otetaan huomioon opiskelijan lähtötaso ja valmiudet. Arvioinnissa käytetään monipuolisia arviointimenetelmiä. Opiskelijat oppivat tuntemaan lukiolle ominaiset arviointimenetelmät kuten kurssikokeet. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+            }
+          },
+          "tehtava": null,
+          "oppimaarat": [],
+          "kurssit": [
+            {
+              "id": 1939518,
+              "oppiaineId": 1939632,
+              "jarjestys": 1,
+              "tunniste": "040bbbc6-1d0a-4590-9b80-430ae41d0ae6",
+              "koodiUri": "lukionkurssit_lvluma1",
+              "koodiArvo": "LVLUMA1",
+              "lokalisoituKoodi": {
+                "_id": "1941615",
+                "fi": "LVLUMA1"
+              },
+              "tyyppi": "PAKOLLINEN",
+              "nimi": {
+                "_id": "1941614",
+                "fi": "Matematiikkaa, fysiikkaa ja kemiaa",
+                "sv": "Matematik, fysik och kemi"
+              },
+              "kuvaus": null,
+              "tavoitteet": {
+                "otsikko": {
+                  "_id": "1941670",
+                  "fi": "Tavoitteet"
+                },
+                "teksti": {
+                  "_id": "1941671",
+                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• vahvistaa perusopetuksessa hankittuja matemaattisia taitojaan ja kertaa oppiaineiden keskeisiä käsitteitä</p>\n\n<p>• osaa valita osaamistasoaan vastaavat oppimäärät lukiossa.</p>"
+                }
+              },
+              "keskeisetSisallot": {
+                "otsikko": {
+                  "_id": "1941618",
+                  "fi": "Keskeiset sisällöt"
+                },
+                "teksti": {
+                  "_id": "1941619",
+                  "fi": "<p>• luvut ja laskutoimitukset, algebra, funktiot, geometria, todennäköisyys ja tilastot</p>\n\n<p>• liike ja voima, värähdys- ja aaltoliike, lämpö, sähkö, luonnon rakenteet</p>\n\n<p>• luonnon tutkimisen taitoja</p>"
+                }
+              },
+              "tavoitteetJaKeskeisetSisallot": null
+            },
+            {
+              "id": 1939519,
+              "oppiaineId": 1939632,
+              "jarjestys": 2,
+              "tunniste": "f68aa293-e420-4454-bb8c-8a61b356fa45",
+              "koodiUri": "lukionkurssit_lvluma2",
+              "koodiArvo": "LVLUMA2",
+              "lokalisoituKoodi": {
+                "_id": "1941673",
+                "fi": "LVLUMA2"
+              },
+              "tyyppi": "PAKOLLINEN",
+              "nimi": {
+                "_id": "1941672",
+                "fi": "Biologiaa ja maantiedettä",
+                "sv": "Biologi och geografi"
+              },
+              "kuvaus": null,
+              "tavoitteet": {
+                "otsikko": {
+                  "_id": "1941678",
+                  "fi": "Tavoitteet"
+                },
+                "teksti": {
+                  "_id": "1941679",
+                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• perehtyy oppiaineiden keskeisiin ilmiöihin ja niitä kuvaaviin käsitteisiin </p>\n\n<p>• tutustuu luonnon ja ympäristön erityispiirteisiin.</p>"
+                }
+              },
+              "keskeisetSisallot": {
+                "otsikko": {
+                  "_id": "1941676",
+                  "fi": "Keskeiset sisällöt"
+                },
+                "teksti": {
+                  "_id": "1941677",
+                  "fi": "<p>• biologian tutkimustaidot, luonto ja ekosysteemi, elämä ja evoluutio, ihminen, yhteinen ympäristö</p>\n\n<p>• maantieteelliset taidot, Suomen, Euroopan ja maailman jäsentäminen, yhteinen ympäristö</p>\n\n<p>• luonnon tutkimisen taitoja</p>"
+                }
+              },
+              "tavoitteetJaKeskeisetSisallot": null
+            }
+          ]
+        },
+        {
+          "id": 1939633,
+          "parentId": null,
+          "tunniste": "df0b97b6-d277-4736-8927-f62a8327ff14",
+          "jarjestys": 4,
+          "koodiArvo": "YHK",
+          "koodiUri": "oppiaineetyleissivistava2_yhk",
+          "nimi": {
+            "_id": "1943371",
+            "fi": "Yhteiskuntatietous ja kulttuurintuntemus (vähintään 2 kurssia)"
+          },
+          "koosteinen": false,
+          "abstrakti": null,
+          "pakollinenKurssiKuvaus": null,
+          "syventavaKurssiKuvaus": null,
+          "soveltavaKurssiKuvaus": null,
+          "tavoitteet": {
+            "otsikko": {
+              "_id": "1941733",
+              "fi": "Opetuksen tavoitteet"
+            },
+            "teksti": {
+              "_id": "1941734",
+              "fi": "<p>Yhteiskuntatietouden ja kulttuurintuntemuksen kurssit syventävät opiskelijan tietoja suomalaisesta yhteiskunnasta ja antavat opiskelijalle työkaluja erilaisten yhteiskunnallisten ilmiöiden itsenäiseen arvioimiseen ja tutkimiseen. Opinnot liittyvät Suomen historiaan sekä sen eurooppalaisiin ja kansainvälisiin yhteyksiin. Kulttuurintuntemuksessa kiinnitetään huomiota kulttuurien monimuotoisuuteen ja monikerroksisuuteen. Kurssit syventävät perusopetuksen tietoja ja johdattavat opiskelijoita lukion yhteiskuntaopin ja historian kurssien tavoitteisiin ja sisältöihin. Opetuksessa harjaannutetaan yhteiskuntaopille ja historialle ominaisia opiskelu- ja tekstitaitoja.</p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Kielitietoiset työtavat vahvistavat opiskelijoiden monilukutaitoa. Tekstilähtöinen lukemisen ja kirjoittamisen samanaikainen opiskelu, koevastausten ja itsearvioinnin harjoittelu, käsitemäärittely, omien sanastojen tekeminen, keskusteluharjoitukset ja erilaisten lähteiden pohjalta tehdyt päättelyharjoitukset ovat historiaan soveltuvia työtapoja. Taideaineiden työtavat ja opintokäynnit soveltuvat kulttuurintuntemuksen opintoihin. </p>"
+            }
+          },
+          "arviointi": {
+            "otsikko": {
+              "_id": "1941730",
+              "fi": "Arviointi"
+            },
+            "teksti": {
+              "_id": "1941735",
+              "fi": "<p>Arvioinnissa käytetään joustavia ja monipuolisia menetelmiä. Oppimispäiväkirjat, prosessitehtävät eri aiheista, esitelmät, referaatit, esseet ja pienoistutkielmat ovat yhteiskunta- ja kulttuurituntemukseen soveltuvia menetelmiä. Käsitteen määrittelytehtävät voivat olla osa oppimista tukevaa arviointia. Lukiolle tyypillisiä kurssikokeita käytetään oppimistehtävinä. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+            }
+          },
+          "tehtava": null,
+          "oppimaarat": [],
+          "kurssit": [
+            {
+              "id": 1941780,
+              "oppiaineId": 1939633,
+              "jarjestys": 1,
+              "tunniste": "cf75dbf1-3d45-404d-84a5-30887daa0948",
+              "koodiUri": "lukionkurssit_lvhy1",
+              "koodiArvo": "LVHY1",
+              "lokalisoituKoodi": {
+                "_id": "1941737",
+                "fi": "LVHY1"
+              },
+              "tyyppi": "PAKOLLINEN",
+              "nimi": {
+                "_id": "1941736",
+                "fi": "Historian perusteita",
+                "sv": "Grunderna i historia"
+              },
+              "kuvaus": null,
+              "tavoitteet": {
+                "otsikko": {
+                  "_id": "1941802",
+                  "fi": "Tavoitteet"
+                },
+                "teksti": {
+                  "_id": "1941803",
+                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tuntee kulttuurin peruskäsitteitä</p>\n\n<p>• tuntee Euroopan ja maailman kulttuurien tärkeimpiä käännekohtia ja osaa suhteuttaa nykyajan ilmiöitä historialliseen kehitykseen</p>\n\n<p>• tuntee erilaisia syitä, jotka ovat johtaneet muuttoliikkeisiin – taloudelliset ja poliittiset syyt,konfliktit, ympäristölliset syyt</p>\n\n<p>• tuntee historialle ja kulttuurihistorialle ominaisia tekstilajeja.</p>"
+                }
+              },
+              "keskeisetSisallot": {
+                "otsikko": {
+                  "_id": "1941800",
+                  "fi": "Keskeiset sisällöt"
+                },
+                "teksti": {
+                  "_id": "1941801",
+                  "fi": "<p>• kulttuurihistorian kausia ja käännekohtia pääpiirteittäin keräily- ja pyyntikulttuurista jälkiteolliseen aikaan ja yksilöllistymiseen</p>\n\n<p>• muuttoliikkeet osana ihmiskunnan historiaa</p>\n\n<p>• historian tekstien lukeminen ja kirjoittaminen: käsitteiden avaaminen ja omien sanastojen tekeminen, tekstin rakennepiirteet, kuvien, karttojen ja tilastojen ymmärtäminen ja tulkitseminen eri sisältöjen yhteydessä</p>"
+                }
+              },
+              "tavoitteetJaKeskeisetSisallot": null
+            },
+            {
+              "id": 1941781,
+              "oppiaineId": 1939633,
+              "jarjestys": 2,
+              "tunniste": "17ccdfb1-a619-46a7-9a2c-fee39883c971",
+              "koodiUri": "lukionkurssit_lvhy2",
+              "koodiArvo": "LVHY2",
+              "lokalisoituKoodi": {
+                "_id": "1941805",
+                "fi": "LVHY2"
+              },
+              "tyyppi": "PAKOLLINEN",
+              "nimi": {
+                "_id": "1941804",
+                "fi": "Suomen yhteiskunta ja kulttuurit",
+                "sv": "Samhället och kulturerna i Finland"
+              },
+              "kuvaus": null,
+              "tavoitteet": {
+                "otsikko": {
+                  "_id": "1941830",
+                  "fi": "Tavoitteet"
+                },
+                "teksti": {
+                  "_id": "1941831",
+                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• ymmärtää kulttuurien monimuotoisuutta sekä kulttuurienvälistä vuorovaikutusta ja saa sen myötä interkulttuurista kompetenssia</p>\n\n<p>• tuntee suomalaista yhteiskunta- ja talousjärjestelmää koskevia peruskäsitteitä, joiden avulla hän voi käsitellä ja arvioida yhteiskunnallista tietoa ja toimia aktiivisena kansalaisena</p>\n\n<p>• tuntee Suomen kieli- ja kulttuuriryhmiä ja niiden historiaa</p>\n\n<p>• oppii tuntemaan kansainvälisten suhteiden ja kansainvälisten järjestöjen toiminnan perusteet</p>\n\n<p>• osaa lukea ja tulkita yhteiskuntaopille ominaisia tiedon esittämistapoja ja tuottaa itse yhteiskuntaopille ominaisia tekstejä.</p>"
+                }
+              },
+              "keskeisetSisallot": {
+                "otsikko": {
+                  "_id": "1941808",
+                  "fi": "Keskeiset sisällöt"
+                },
+                "teksti": {
+                  "_id": "1941809",
+                  "fi": "<p>• valta ja vaikuttaminen: valta ja erilaiset vallankäytön muodot, suomalainen demokratia ja poliittinen järjestelmä ja aktiivinen kansalaisuus</p>\n\n<p>• kansalaisen taloustaito</p>\n\n<p>• oikeusvaltio: perusoikeudet, vallan kolmijako (-oppi) ja kansalaisuus</p>\n\n<p>• Suomen kulttuurihistoria ja kansallisvaltion rakentaminen 1800-luvulla</p>\n\n<p>• suomalaisia perinteitä ja tapakulttuuria sekä niiden muotoutuminen vuorovaikutuksessa muiden kulttuurien kanssa</p>\n\n<p>• Suomi osana Pohjoismaita, Eurooppaa ja maailmaa</p>\n\n<p>• moninainen Suomi: vähemmistöt Suomessa</p>\n\n<p>• yhteiskuntaan liittyvien käsitteiden avaaminen ja käsitteiden määrittelyharjoitukset kaikkiin sisältöihin liittyen</p>"
+                }
+              },
+              "tavoitteetJaKeskeisetSisallot": null
+            }
+          ]
+        },
+        {
+          "id": 1939634,
+          "parentId": null,
+          "tunniste": "4177d83e-7ef1-4223-b88c-e0037a4c6de4",
+          "jarjestys": 5,
+          "koodiArvo": "OP",
+          "koodiUri": "oppiaineetyleissivistava2_op",
+          "nimi": {
+            "_id": "1943372",
+            "fi": "Opinto-ohjaus (vähintään 2 kurssia)"
+          },
+          "koosteinen": false,
+          "abstrakti": null,
+          "pakollinenKurssiKuvaus": {
+            "_id": "1943373",
+            "fi": "<p> </p>\n\n<p>Henkilökohtaisessa ohjauksessa opiskelijan kanssa keskustellaan opiskelijan opinnoista, koulutusvalinnoista sekä ammatti- ja uratoiveista. Henkilökohtaisessa ohjauksessa opintojen tavoitteet asetetaan yhdessä opiskelijan kanssa aikaisempien opintojen ja muutoin hankitun osaamisen pohjalta.</p>"
+          },
+          "syventavaKurssiKuvaus": null,
+          "soveltavaKurssiKuvaus": null,
+          "tavoitteet": {
+            "otsikko": {
+              "_id": "1941835",
+              "fi": "Opetuksen tavoitteet"
+            },
+            "teksti": {
+              "_id": "1941838",
+              "fi": "<p>Opinto-ohjauksen tavoitteena on, että opiskelija </p>\n\n<p>• saa tietoa lukiokoulutukseen valmistavasta koulutuksesta ja siihen sisältyvistä valintamahdollisuuksista</p>\n\n<p>• oppii tuntemaan suomalaisen lukion erityispiirteet ja opiskelukulttuurin</p>\n\n<p>• muodostaa realistisen käsityksen lukioon pääsymahdollisuuksista, lukio-opiskelusta ja siihen sisältyvistä valintamahdollisuuksista</p>\n\n<p>• kehittää lukiokoulutuksessa tarvittavia opiskelutaitoja</p>\n\n<p>• oppii arvioimaan omia opintosuorituksiaan.</p>\n\n<p> </p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Ohjauksessa otetaan huomioon opiskelijoiden aikaisemmin hankittu osaaminen ja henkilökohtaiset kiinnostuksen kohteet kytkemällä opittavat tiedot ja taidot opiskelijoille merkityksellisiin kokemuksiin ja toimintamuotoihin. Opiskelijoita ohjataan yksilöllisten tarpeiden mukaan.</p>\n\n<p>Opiskelijaa ohjataan ottamaan vastuuta omasta oppimisestaan ja oppimistavoitteiden suuntaisesta toiminnasta. Opiskelijoita aktivoidaan tekemään yhteistyötä ja soveltamaan yhteistoiminnallisia työtapoja. Ohjaustilanteissa kannustetaan opiskelijoita pohtimaan yhdessä opintoihin liittyviä asioita sekä tuomaan omia näkemyksiä ja kokemuksia yhteiseen keskusteluun. Tällä vahvistetaan opiskelijoiden keskinäistä yhteisymmärrystä. Vertaistuki ja ryhmän tuki ovat tärkeitä oppimisessa. </p>\n\n<p>Opiskeluympäristössä on opiskelutilojen ja -välineiden oltava sellaisia, että ne mahdollistavat monipuolisten opiskelumenetelmien ja työtapojen käytön. Opiskelijoita ohjataan hyödyntämään tehokkaasti uutta teknologiaa opintojen suunnittelussa, tiedonhaussa ja koulutuksen hakupalveluissa. Teknologisesti tuettujen opiskeluympäristöjen avulla voidaan toiminta laajentaa oppilaitoksen fyysisten rajojen ulkopuolelle. </p>"
+            }
+          },
+          "arviointi": {
+            "otsikko": {
+              "_id": "1941832",
+              "fi": "Arviointi"
+            },
+            "teksti": {
+              "_id": "1941839",
+              "fi": "<p>Opiskelijoiden itse- ja vertaisarviointeja hyödynnetään tehtäessä kokonaisarvioita opiskelijan opinnoissa suoriutumisesta ja motivoitumisesta lukiokoulutuksessa opiskeluun. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+            }
+          },
+          "tehtava": {
+            "otsikko": null,
+            "teksti": {
+              "_id": "1941837",
+              "fi": "<p>Ohjaustoiminnalla tuetaan opiskelijan opiskelua lukiokoulutukseen valmistavan koulutuksen kaikissa vaiheissa. Opinto-ohjaus auttaa opiskelijaa suunnittelemaan opintojaan ja tekemään omien tavoitteidensa mukaisia lukiokoulutusta koskevia valintoja ja ratkaisuja.</p>"
+            }
+          },
+          "oppimaarat": [],
+          "kurssit": [
+            {
+              "id": 1941782,
+              "oppiaineId": 1939634,
+              "jarjestys": 1,
+              "tunniste": "fd1e4a47-91c8-4d34-85bd-b05500ead587",
+              "koodiUri": "lukionkurssit_lvop1",
+              "koodiArvo": "LVOP1",
+              "lokalisoituKoodi": {
+                "_id": "1941901",
+                "fi": "LVOP1"
+              },
+              "tyyppi": "PAKOLLINEN",
+              "nimi": {
+                "_id": "1941900",
+                "fi": "Opinto-ohjaus 1",
+                "sv": "Studiehandledning 1"
+              },
+              "kuvaus": null,
+              "tavoitteet": {
+                "otsikko": {
+                  "_id": "1941906",
+                  "fi": "Tavoitteet"
+                },
+                "teksti": {
+                  "_id": "1941907",
+                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• perehtyy suomalaiseen koulutusjärjestelmään ja erityisesti lukiokoulutukseen</p>\n\n<p>• oppii laatimaan henkilökohtaisen opiskelusuunnitelman sekä seuraamaan ja arvioimaan sen toteutumista</p>\n\n<p>• oppii käyttämään monipuolisesti tietolähteitä ja hakupalveluita opintojensa suunnittelussa ja jatkokoulutuspaikkojen haussa.</p>"
+                }
+              },
+              "keskeisetSisallot": {
+                "otsikko": {
+                  "_id": "1941904",
+                  "fi": "Keskeiset sisällöt"
+                },
+                "teksti": {
+                  "_id": "1941905",
+                  "fi": "<p>• suomalainen koulutusjärjestelmä</p>\n\n<p>• lukiokoulutukseen hakeutuminen</p>\n\n<p>• opiskelu kurssimuotoisessa lukiokoulutuksessa</p>\n\n<p>• opiskelijan aikaisemmat opinnot ja suomen kielen lähtötaso</p>\n\n<p>• lukiokoulutukseen valmistavan koulutuksen opintokokonaisuudet</p>\n\n<p>• perusopetuksen arvosanojen korottamistarpeet ja suorittamismahdollisuudet</p>\n\n<p>• lukiokoulutuksen kurssien suorittamismahdollisuudet</p>\n\n<p>• henkilökohtainen opiskelusuunnitelma</p>\n\n<p>• omien lukio-opintojen alustava suunnittelu</p>"
+                }
+              },
+              "tavoitteetJaKeskeisetSisallot": null
+            },
+            {
+              "id": 1941783,
+              "oppiaineId": 1939634,
+              "jarjestys": 2,
+              "tunniste": "69f1f7ed-11b7-4893-a84f-c07a67b26333",
+              "koodiUri": "lukionkurssit_lvop2",
+              "koodiArvo": "LVOP2",
+              "lokalisoituKoodi": {
+                "_id": "1941962",
+                "fi": "LVOP2"
+              },
+              "tyyppi": "PAKOLLINEN",
+              "nimi": {
+                "_id": "1941961",
+                "fi": "Opinto-ohjaus 2",
+                "sv": "Studiehandledning 2"
+              },
+              "kuvaus": {
+                "_id": "1941963",
+                "fi": "<p>Kurssilla opiskelija oppii arvioimaan omia oppimistapojaan. Opiskelijaa ohjataan tiedostamaan ja kokeilemaan myös muita oppimistapoja, joita hän voi hyödyntää opiskelussa. Opiskelija saa ohjauksen avulla välineitä tiedon hankkimiseen ja tuottamiseen sekä tiedon luotettavuuden arviointiin. Opiskelijaa ohjataan hyödyntämään opinnoissaan tieto- ja viestintäteknologiaa sekä kirjastojen tarjoamia palveluita. Opiskelija tottuu työskentelemään itsenäisesti mutta myös yhteistyössä muiden opiskelijoiden kanssa. Opiskelija ymmärtää, että kumuloituvien tietojen ja taitojen oppiminen vaatii pitkäjänteisyyttä.</p>\n\n<p>Henkilökohtaisessa ohjauksessa arvioidaan opiskelijan opiskelutaitojen kehittämistarpeita. Opiskelijan kanssa käydään läpi opiskeluun ja oppimiseen liittyviä mahdollisuuksia ja haasteita. Opiskelijaa kannustetaan laajentamaan ja syventämään opiskelumenetelmiään.</p>"
+              },
+              "tavoitteet": {
+                "otsikko": {
+                  "_id": "1941968",
+                  "fi": "Tavoitteet"
+                },
+                "teksti": {
+                  "_id": "1941969",
+                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• oppii arvioimaan omia oppimistapojaan </p>\n\n<p>• perehtyy lukiokoulutuksessa tarvittaviin opiskelutaitoihin ja erilaisiin oppimistapoihin </p>\n\n<p>• rohkaistuu kokeilemaan uusia työtapoja ja oppimismenetelmiä</p>\n\n<p>• ymmärtää oppimisen prosessuaalisen ja tavoitteellisen luonteen</p>\n\n<p>• toimii joustavasti ja kannustavasti vuorovaikutustilanteissa</p>\n\n<p>• ottaa vastuuta omasta oppimisestaan ja tietää miten siihen voi vaikuttaa.</p>"
+                }
+              },
+              "keskeisetSisallot": {
+                "otsikko": {
+                  "_id": "1941966",
+                  "fi": "Keskeiset sisällöt"
+                },
+                "teksti": {
+                  "_id": "1941967",
+                  "fi": "<p>• opiskelutaidot</p>\n\n<p>• tiedonhankintataidot ja monimediaisten oppimisympäristöjen hyödyntäminen</p>\n\n<p>• henkilökohtaisen opiskelusuunnitelman toteutumisen seuranta, arviointi ja ajantasaistaminen</p>\n\n<p>• yhteistoiminnallisuus ja vuorovaikutustaidot</p>\n\n<p>• itsearviointitaidot</p>\n\n<p>• oma-aloitteisuus ja tuen etsiminen opiskeluun liittyvissä ongelmatilanteissa</p>"
+                }
+              },
+              "tavoitteetJaKeskeisetSisallot": null
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -46,7 +46,7 @@ class OppijaValidationLukioonValmistavaSpec extends TutkinnonPerusteetTest[Lukio
     "valmistunut -tila vaaditaan opintojen rahoitus" in {
       val tila = LukionOpiskeluoikeudenTila(List(
         LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
-        LukionOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut))
+        LukionOpiskeluoikeusjakso(date(2016, 8, 1), opiskeluoikeusValmistunut))
       )
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila)) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))

@@ -1,0 +1,827 @@
+{
+  "id": 718900,
+  "globalVersion": {
+    "aikaleima": 1471931108453
+  },
+  "nimi": {
+    "_id": "1887451",
+    "fi": "Lisäopetuksen opetussuunnitelman perusteet 2014",
+    "sv": "Grunderna för påbyggnads-undervisningens läroplan 2014"
+  },
+  "koulutustyyppi": "koulutustyyppi_6",
+  "toteutus": "yksinkertainen",
+  "koulutukset": [
+    {
+      "nimi": {
+        "fi": "Perusopetuksen lisäopetus",
+        "sv": "Påbyggnadsundervisning efter den grundläggande utbildningen"
+      },
+      "koulutuskoodiArvo": "020075",
+      "koulutuskoodiUri": "koulutus_020075",
+      "koulutusalakoodi": "koulutusalaoph2002_0",
+      "opintoalakoodi": "opintoalaoph2002_002"
+    }
+  ],
+  "kielet": [
+    "fi",
+    "sv"
+  ],
+  "kuvaus": {
+    "_id": "1887450",
+    "fi": "<p>Lisäopetuksen opetussuunitelman perusteet 2014</p>"
+  },
+  "maarayskirje": {
+    "id": 1887460,
+    "url": {},
+    "liitteet": {}
+  },
+  "muutosmaaraykset": [],
+  "diaarinumero": "105/011/2014",
+  "voimassaoloAlkaa": 1420063200000,
+  "siirtymaPaattyy": null,
+  "voimassaoloLoppuu": null,
+  "paatospvm": 1419199200000,
+  "viimeisinJulkaisuAika": null,
+  "luotu": 1425539656030,
+  "muokattu": 1471931108453,
+  "tila": "valmis",
+  "tyyppi": "normaali",
+  "koulutusvienti": false,
+  "korvattavatDiaarinumerot": [
+    "17/011/2014",
+    "3/011/2004"
+  ],
+  "osaamisalat": [],
+  "tyotehtavatJoissaVoiToimia": null,
+  "suorittaneenOsaaminen": null,
+  "perusteenAikataulut": [],
+  "esiopetus": {
+    "sisalto": {
+      "id": 718920,
+      "lapset": [
+        {
+          "id": 718921,
+          "perusteenOsa": {
+            "id": 719010,
+            "luotu": 1425540038176,
+            "muokattu": 1427831509124,
+            "muokkaaja": "1.2.246.562.24.74040922019",
+            "nimi": {
+              "_id": "881210",
+              "fi": "Lisäopetuksen järjestämisen lähtökohdat",
+              "sv": "Utgångspunkter för påbyggnadsundervisningen"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 718923,
+              "perusteenOsa": {
+                "id": 719012,
+                "luotu": 1425540140432,
+                "muokattu": 1454325752534,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869645",
+                  "fi": "Lisäopetuksen järjestäminen ja tehtävä",
+                  "sv": "Påbyggnadsundervisningens uppdrag"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1438516",
+                  "fi": "<p>Perusopetuksen oppimäärän suorittaneille nuorille voidaan järjestää perusopetuslain mukaista lisäopetusta. Lisäopetus voidaan toteuttaa myös opetuksen järjestäjien yhteistyönä.</p>\n\n<p>Lisäopetukseen voidaan ottaa opiskelijaksi nuori, joka on saanut perusopetuksen <abbr data-viite=\"Viite11425545814286\">päättötodistuksen</abbr> samana tai edellisenä vuonna. Muista opiskelijaksi ottamisen perusteista sekä opiskelijaksi ottamisesta päättää opetuksen järjestäjä. Näissä opetussuunnitelman perusteissa perusopetuslain tarkoittamasta oppilaasta käytetään käsitettä opiskelija.</p>\n\n<p>Lisäopetus kestää yhden lukuvuoden ja sen <abbr data-viite=\"Viite21425545844659\">laajuus</abbr> on vähintään 1100 tuntia. Tämä merkitsee sitä, että lisäopetuksen opiskelijalla on oikeus saada lukuvuoden aikana opetusta ja ohjausta vähintään 1100 tuntia. Lisäopetuksen järjestäjä päättää opetuksen järjestämistavasta. Lisäopetusta voidaan toteuttaa perus­ope­tusta antavan koulun tai muun oppilaitoksen yh­teydessä yksilöllisesti tai erillisessä lisäopetusryhmässä. Lisäopetukseen voi sisältyä myös työelämässä, järjestöissä ja muissa oppimisympäristöissä tapahtuvaa ohjat­tua opiskelua. Opetuksessa noudatetaan valtakunnallisesti yhtenäisiä perusteita siten kuin perusopetuslaissa säädetään (katso Perusopetuksen opetussuunnitelman perusteet, <a href=\"https://eperusteet.opintopolku.fi/#/fi/perusopetus/419550/tekstikappale/426524\" target=\"_blank\">Opetuksen järjestämistä ohjaavat velvoitteet</a>).</p>\n\n<p>Lisäopetus jatkaa perusopetuksen opetus- ja kasvatustehtävää. Lisäopetuksessa tuetaan opiskelijoiden kehitystä, oppimista ja kokonaisvaltaista hyvinvointia. Yhteistyö huoltajien kanssa on tärkeää. Se tukee sekä opetuksen että opiskelijoiden opintojen onnistumista (katso Perusopetuksen opetussuunnitelman perusteet, <a href=\"https://eperusteet.opintopolku.fi/#/fi/perusopetus/419550/tekstikappale/426529\" target=\"_blank\">Perusopetuksen tehtävä</a>).</p>\n\n<p>Perusasteen ja toisen asteen koulutuksen nivelvaiheessa on useita koulutusvaihtoehtoja. Lisäopetuksen erityisenä tehtävänä on tarjota opiskelijoille mahdollisuus parantaa edellytyksiään jatko-opintoihin ja tukea opiskelijoiden kiinnittymistä ajatukseen opintojen jatkamisesta. Tämä edellyttää opiskelijoiden erilaisten lähtökohtien huomioonottamista opetuksen järjestämisessä ja toteuttamisessa. Opiskelijoiden kannalta mahdollisimman hyödyllisten opintopolkujen sekä tukitoimien suunnittelu ja monipuolisten oppimisympäristöjen tarjoaminen yhteistyössä perusopetuksen ja muiden oppilaitosten sekä työelämän kanssa edistää lisäopetuksen tehtävässä onnistumista. Ohjauksella ja opiskeluhuollolla on lisäopetuksessa keskeinen asema.</p>\n\n<p>Lisäopetus palvelee koulutusratkaisuna erityisesti niitä perusopetuksen päättäneitä nuoria, joilla on tarvetta vahvistaa opinnoissa tarvittavia tietoja, taitoja ja opiskelumotivaatiota tai jotka tarvitsevat lisäaikaa tulevaisuutensa suunnitteluun. Lisäopetuksen tehtävänä on myös tukea opiskelijoiden elämänhallintaa ja siten vahvistaa edellytyksiä itsestä huolehtimiseen, muutosten kohtaamiseen ja valintojen tekemiseen.</p>\n\n<p>Lisäopetuksessa voi korottaa perusopetuksen päättötodistuksen arvosanoja, suorittaa ennalta lukio-opintoja, ammatillisen koulutuksen opintoja ja muita opintoja sekä tutustua työelämään ja eri koulutusvaihtoehtoihin.</p>",
+                  "sv": "<p>För unga som har fullgjort den grundläggande utbildningens lärokurs kan utbildningsordnare ordna påbyggnadsundervisning enligt lagen om grundläggande utbildning. Påbyggnadsundervisningen kan också ordnas i samarbete mellan flera utbildningsanordnare.</p>\n\n<p>Till påbyggnadsundervisningen kan antas en ung studerande som fått <abbr data-viite=\"Viite11425545814286\">avgångsbetyg</abbr> från den grundläggande utbildningen samma eller föregående år. Utbildningsanordnaren beslutar om övriga antagningsgrunder och om antagningen av studerande. I dessa grunder för läroplanen används benämningen studerande för det som i lagen om grundläggande utbildning avses med elev.</p>\n\n<p>Påbyggnadsundervisningen <abbr data-viite=\"Viite21425545844659\">omfattar</abbr> ett läsår och minst 1100 timmar. Det innebär att en studerande som deltar i påbyggnadsundervisning har rätt att få minst 1 100 timmar undervisning och handledning under läsåret. Utbildningsanordnaren beslutar om hur påbyggnadsundervisningen ska ordnas. Påbyggnadsundervisning kan ordnas individuellt eller i en särskild undervisningsgrupp i samband med de&shy;n grundl&shy;äggande utbildni&shy;ngen eller vid någon annan läroanstalt. Påbyggnadsundervisningen kan också innehålla handledda studier i arbetslivet, inom olika organi&shy;sationer och i andra lärmiljöer. Undervisningen ska följa de enhetliga nationella grunderna för läroplanen enligt lagen om grundläggande utbildning (se Grunderna för läroplanen för den grundläggande utbildningen, Förpliktelser som reglerar undervisningen).</p>\n\n<p>Den grundläggande utbildningens uppdrag att undervisa och fostra fortsätter i påbyggnadsundervisningen. Påbyggnadsundervisningen ska stödja de studerandes utveckling, lärande och helhetsmässiga välbefinnande. Samarbetet med vårdnadshavarna är viktigt. Ett gott samarbete stödjer både undervisningen och de studerandes studier (se Grunderna för läroplanen för den grundläggande utbildningen, Den grundläggande utbildningens uppdrag).</p>\n\n<p>Det finns många utbildningsalternativ vid övergången mellan den grundläggande utbildningen och utbildningen på andra stadiet. Påbyggnadsundervisningen har som särskilt uppdrag att ge de studerande möjlighet att öka sina förutsättningar för fortsatta studier och att få dem att ta till sig tanken på att fortsätta studera. Det förutsätter att undervisningen ordnas och genomförs med hänsyn till de studerandes olika utgångslägen. Genom att för de studerande planera så ändamålsenliga studievägar och stödåtgärder som möjligt och genom att i samarbete med den grundläggande utbildningen, andra läroanstalter och arbetslivet erbjuda mångsidiga lärmiljöer bidrar man till att påbyggnadsundervisningen lyckas. Handledningen och studerandevården har en central ställning i påbyggnadsundervisningen.</p>\n\n<p>Som utbildningsalternativ är påbyggnadsundervisningen till nytta i synnerhet för unga som gått ut den grundläggande utbildningen och har behov av att stärka kunskaper, färdigheter och studiemotivation för fortsatta studier eller som behöver mera tid att planera sin framtid. Påbyggnadsundervisningen ska också stödja de studerandes livskompetens och stärka deras förutsättningar att ta hand om sig själva, att möta förändringar och göra val.</p>\n\n<p>I påbyggnadsundervisningen kan de studerande höja vitsord i avgångsbetyget från den grundläggande utbildningen, genomföra gymnasiestudier, yrkesstudier och andra studier på förhand samt bekanta sig med arbetslivet och olika utbildningsalternativ.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719012"
+            },
+            {
+              "id": 718924,
+              "perusteenOsa": {
+                "id": 719013,
+                "luotu": 1425540609322,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869646",
+                  "fi": "Opetuksen arvoperusta",
+                  "sv": "Värdegrunden"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "871338",
+                  "fi": "<p>Lisäopetuksen järjestämistä ja toteuttamista ohjaa sama arvoperusta kuin perusopetusta (katso Perusopetuksen opetussuunnitelman perusteet, Perusopetuksen arvoperusta).<strong> </strong>Arvoperusta muodostuu neljästä perusperiaatteesta, jotka ovat:</p>\n\n<ul>\n\t<li>Opiskelijan ainutlaatuisuus ja oikeus hyvään opetukseen</li>\n\t<li>Ihmisyys, sivistys, tasa-arvo ja demokratia</li>\n\t<li>Kulttuurinen moninaisuus rikkautena</li>\n\t<li>Kestävän elämäntavan välttämättömyys</li>\n</ul>\n\n<p>Lisäopetuksessa erityisen tärkeätä on välittävä ja arvostava vuorovaikutus sekä jokaisen opiskelijan kohtaaminen yksilönä. Aidon osallistumisen kautta opiskelijat voivat kasvaa ottamaan enenevässä määrin vastuuta opinnoistaan, päätöksistään ja elämästään sekä harjaantua demokraattiseen toimintaan. Lisäopetusvuosi antaa aikaa tunnetaitojen ja sosiaalisten taitojen vahvistamiseen sekä terveellisten elämäntapojen omaksumiseen. Se edistää yhteiskuntaan kiinnittymistä ja ohjaa elämän ja ihmisoikeuksien kunnioittamiseen sekä vastuullisuuteen. Lisäopetus tukee opiskelijoita arvojen ymmärtämisessä ja oman arvoperustan muodostamisessa.</p>",
+                  "sv": "<p>Påbyggnadsundervisningen ska ordnas och genomföras enligt samma värdegrund som den grundläggande utbildningen (se Grunderna för läroplanen för den grundläggande utbildningen, Värdegrunden för den grundläggande utbildningen). Värdegrunden består av fyra grundprinciper</p>\n\n<ul>\n\t<li>Alla studerande är unika och har rätt till god undervisning</li>\n\t<li>Humanitet, bildning, jämlikhet och demokrati</li>\n\t<li>Kulturell mångfald är en rikedom</li>\n\t<li>Nödvändigheten av en hållbar livsstil.</li>\n</ul>\n\n<p>I påbyggnadsundervisningen är det särskilt viktigt att kommunikationen präglas av omsorg och respekt och att alla studerande bemöts som individer. Genom verklig delaktighet lär sig de studerande att ta allt mera ansvar för sina studier, sina beslut och sitt liv och får insikt i hur demokrati fungerar i praktiken. Påbyggnadsåret ska ge de studerande tid att stärka sina emotionella och sociala färdigheter och att tillägna sig hälsosamma levnadsvanor. Det ska hjälpa de studerande att komma in i samhället och lära dem att ta ansvar och respektera livet och mänskliga rättigheter. Påbyggnadsundervisningen ska hjälpa de studerande att förstå värderingar och att bilda sig en egen värdegrund.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719013"
+            },
+            {
+              "id": 718925,
+              "perusteenOsa": {
+                "id": 719014,
+                "luotu": 1425540673438,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869647",
+                  "fi": "Oppimiskäsitys",
+                  "sv": "Synen på lärande"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "871339",
+                  "fi": "<p>Lisäopetuksen järjestämistä ja toteuttamista ohjaa sama oppimiskäsitys kuin perusopetusta, (katso Perusopetuksen opetussuunnitelman perusteet, Oppimiskäsitys)</p>\n\n<p>Lisäopetuksessa opiskelumotivaation ja oppimaan oppimisen taitojen merkitys korostuu. Erityisen tärkeätä on ohjata opiskelijoita tiedostamaan omat tapansa oppia sekä luoda edellytyksiä oppimisen ilon löytämiseen kokemusten, elämysten ja oman oivaltamisen kautta. Kannustava palaute ja ohjaus lujittavat opiskelijoiden itsetuntoa ja realistista minäkuvaa sekä vahvistavat luottamusta omiin kykyihin, mahdollisuuksiin ja tulevaisuuteen.</p>\n\n<p> </p>\n\n<p>Lisäopetuksessa opiskelijoita ohjataan omaksumaan elinikäistä oppimista edistäviä toimintatapoja. Opetuksessa kiinnitetään huomiota työskentely- ja ajattelutaitojen sekä oppimisstrategioiden harjaannuttamiseen. Opiskelijoiden kanssa pohditaan, mikä on opiskelun merkitys omalle tulevaisuudelle ja ohjataan heitä arvioimaan omaa toimintaansa. Opiskelijoita innostetaan miettimään tulevaisuuden tavoitteitaan ja vahvistetaan heidän suuntautumistaan jatko-opintoihin.</p>",
+                  "sv": "<p>Påbyggnadsundervisningen ska ordnas och genomföras enligt samma syn på lärande som den grundläggande utbildningen (se Grunderna för läroplanen för den grundläggande utbildningen, Synen på lärande).</p>\n\n<p>Studiemotivationen och förmågan att lära sig är centrala i påbyggnadsundervisningen. Särskilt viktigt är det att hjälpa de studerande att bli medvetna om sitt sätt att lära sig och att ge dem möjligheter att hitta glädje i lärandet via upplevelser, erfarenheter och egen insikt. Uppmuntrande respons och handledning stärker de studerandes självkänsla och realistiska bild av sig själva samt tilltron till sin egen förmåga, sina möjligheter och framtiden.</p>\n\n<p>I påbyggnadsundervisningen ska de studerande vägledas i att anamma studiesätt som främjar livslångt lärande. I undervisningen ska man fästa vikt vid att träna arbetsförmågan, tänkandet och olika strategier för lärandet. Man ska tillsammans med de studerande fundera över vad studierna betyder för den egna framtiden och uppmuntra dem att utvärdera sig själva. I påbyggnadsundervisningen ska de studerande sporras att ställa upp mål för sin framtid och inrikta sig på fortsatta studier.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719014"
+            }
+          ],
+          "_perusteenOsa": "719010"
+        },
+        {
+          "id": 718927,
+          "perusteenOsa": {
+            "id": 719016,
+            "luotu": 1425540836411,
+            "muokattu": 1427831549362,
+            "muokkaaja": "1.2.246.562.24.74040922019",
+            "nimi": {
+              "_id": "881211",
+              "fi": "Lisäopetuksen tavoitteet ja keskeinen sisältö",
+              "sv": "Mål och centralt innehåll i påbyggnadsundervisningen"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 718929,
+              "perusteenOsa": {
+                "id": 719018,
+                "luotu": 1425540977195,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869649",
+                  "fi": "Lisäopetuksen tavoitteet",
+                  "sv": "Målen för påbyggnadsundervisningen"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "870224",
+                  "fi": "<p>Opetuksen ja kasvatuksen valtakunnallisista <abbr data-viite=\"Viite31425545875771\">tavoitteista</abbr> säädetään perusopetuslaissa sekä tarkemmin valtioneuvoston asetuksessa. Nämä tavoitteet ohjaavat myös lisäopetusta. Asetuksessa ei ole määritelty lisäopetukselle omaa tuntijakoa.</p>\n\n<p>Lisäopetuksessa noudatetaan valtioneuvoston asetuksessa määriteltyjä yleisiä tavoitteita ja lisäopetukselle säädettyä erityistä tavoitetta. Valtioneuvoston asetuksessa mainitut oppiainerajat ylittävän osaamisen tavoitteet ovat erityisen tärkeitä lisäopetuksessa.</p>\n\n<p>Tavoitteet vaikuttavat opetussuunnitelman perusteiden kaikkiin osa-alueisiin. Ne ohjaavat myös paikallisen opetussuunnitelman laadintaa ja koulutyötä.</p>\n\n<p>Kun seuraavassa tarkastellaan valtioneuvoston asetuksen sisältöä, käytetään asetuksen mukaista ilmaisua oppilas. Muutoin lisäopetuksessa käytetään ilmaisua opiskelija.</p>\n\n<p><em>Kasvu ihmisyyteen ja yhteiskunnan jäsenyyteen </em></p>\n\n<p>Valtioneuvoston asetuksen 2&sect;:ssä korostetaan koulun kasvatus- ja opetustehtävää. Keskeisenä tavoitteena on tukea oppilaiden kasvua ihmisyyteen ja eettisesti vastuulliseen yhteiskunnan jäsenyyteen. Opetuksen ja kasvatuksen tulee myös tukea kasvua tasapainoisiksi ja terveen itsetunnon omaaviksi ihmisiksi. Asetuksen mukaan opetus edistää kulttuurien sekä aatteellisten, maailmankatsomuksellisten ja uskonnollisten, kuten kristillisten, perinteiden sekä länsimaisen humanismin perinteen tuntemista ja ymmärtämistä. Elämän, toisten ihmisten ja luonnon kunnioittamisen rinnalla korostetaan ihmisarvon loukkaamattomuutta, ihmisoikeuksien kunnioittamista ja suomalaisen yhteiskunnan demokraattisia arvoja, kuten yhdenvertaisuutta ja tasa-arvoa. Sivistykseen nähdään kuuluvaksi myös yhteistyö ja vastuullisuus, terveyden ja hyvinvoinnin edistäminen, kasvu hyviin tapoihin sekä kestävän kehityksen edistäminen.</p>\n\n<p><em>Tarpeelliset tiedot ja taidot </em></p>\n\n<p>Asetuksen 3&sect;:n mukaan opetuksen keskeisenä tavoitteena on luoda perusta oppilaan laajan yleissivistyksen muodostumiselle sekä maailmankuvan avartumiselle. Tähän tarvitaan sekä eri tiedonalojen tietoja ja taitoja että tiedonalat läpileikkaavaa ja yhdistävää osaamista. Taitojen merkitys korostuu. Opetettavan tiedon tulee perustua tieteelliseen tietoon. Pykälässä säädetään myös muulla kuin äidinkielellä annettavan opetuksen sekä erityiseen maailmankatsomukseen ja kasvatusopilliseen järjestelmään perustuvan opetuksen järjestämisestä ja tavoitteista.</p>\n\n<p><em>Sivistyksen, tasa-arvoisuuden ja elinikäisen oppimisen edistäminen </em></p>\n\n<p>Asetuksen 4&sect; sisältää tavoitteita ja periaatteita, joiden mukaisesti opetus ja kasvatus sekä oppilashuolto tulee järjestää. Kaiken toiminnan tulee vahvistaa koulutuksellista tasa-arvoa ja yhdenvertaisuutta sekä parantaa oppimaan oppimisen taitoja ja edellytyksiä elinikäiseen oppimiseen. Asetuksessa korostuu vuorovaikutteisten oppimisympäristöjen hyödyntäminen sekä koulun ulkopuolella tapahtuva oppiminen opetustyön resurssina. Samoin korostuu kasvua ja oppimista edistävän toimintakulttuurin sekä toimivan oppilashuollon merkitys.</p>\n\n<p><em>Lisäopetuksen erityinen tavoite </em></p>\n\n<p>Asetuksen 5&sect;:ssä säädetään, että lisäopetuksen erityisenä tavoitteena on kehittää nuoren valmiuksia uranvalintaan, parantaa edellytyksiä jatko-opintoihin sekä edistää elämänhallintataitoja.</p>\n\n<p>Näiden tavoitteiden saavuttamiseksi lisäopetuksessa on tärkeätä vahvistaa opiskelijoiden itsetuntemusta ja itsetuntoa, yhdessä työskentelyn ja vuorovaikutuksen taitoja sekä oppimaan oppimisen taitoja.</p>",
+                  "sv": "<p>De nationella <abbr data-viite=\"Viite31425545875771\">målen</abbr> för undervisning och fostran regleras i lagen om grundläggande utbildning och närmare i statsrådets förordning. Samma mål gäller också påbyggnadsundervisningen. I förordningen fastställs ingen egen timfördelning för påbyggnadsundervisningen.</p>\n\n<p>Påbyggnadsundervisningen ska följa de allmänna mål och det särskilda mål som fastställs för påbyggnadsundervisningen i statsrådets förordning. Målen för färdigheter som går över läroämnesgränserna som nämns i statsrådets förordning är särskilt viktiga i påbyggnadsundervisningen.</p>\n\n<p>De nationella målen återspeglas i alla delar av grunderna för läroplanen. De ska också styra det lokala läroplansarbetet och skolarbetet.</p>\n\n<p>Då innehållet i statsrådets förordning i det följande granskas används begreppet elev. I övriga fall används begreppet studerande inom påbyggnadsutbildningen.</p>\n\n<p><em>Utveckling till humana människor och samhällsmedlemmar</em></p>\n\n<p>I 2 &sect; i statsrådets förordning framhålls betydelsen av skolans uppdrag att undervisa och fostra. Det centrala målet är att stödja elevernas utveckling till humana och etiskt ansvarsfulla samhällsmedlemmar. Undervisningen och fostran ska också stödja att eleverna utvecklas till harmoniska människor med en sund självkänsla. Enligt förordningen ska undervisningen främja förståelsen för och kännedomen om kulturer samt traditioner som baserar sig på ideella, ideologiska och religiösa, såsom kristna, grunder. Vidare ska undervisningen främja kännedomen om och förståelsen för den västerländska humanistiska traditionen. De studerande ska lära sig att respektera livet, andra människor och naturen men också människovärdets integritet, de mänskliga rättigheterna och demokratiska värden i det finländska samhället, såsom jämlikhet och jämställdhet. I bildning ingår också samarbete och ansvar, främjande av hälsa och välbefinnande, ett gott uppförande och strävan efter en hållbar utveckling.</p>\n\n<p><em>Behövliga kunskaper och färdigheter</em></p>\n\n<p>Enligt 3 &sect; i förordningen är det centrala målet för undervisningen att lägga grund för en bred allmänbildning och vidga de studerandes världsbild. Det förutsätter såväl kunskaper och färdigheter inom olika vetenskapsgrenar som tvärvetenskapliga kompetens som kombinerar olika vetenskapsgrenar. Färdigheternas betydelse betonas. Den kunskap som lärs ut ska stå på vetenskaplig grund. I förordningen föreskrivs också om undervisning som sker på annat språk än modersmålet och om undervisning som grundar sig på en viss världsåskådning eller pedagogisk princip.</p>\n\n<p><em>Främjande av bildning, jämlikhet och livslångt lärande </em></p>\n\n<p>I 4 &sect; i förordningen beskrivs de mål och principer som ska ligga till grund för undervisningen och fostran samt studerandevården. All verksamhet ska stärka jämlikhet och likabehandling i utbildningen samt förbättra färdigheten att lära sig och förutsättningarna för livslångt lärande. I förordningen betonas att lärmiljöerna ska stödja kommunikation och att lärande utanför skolan ska ses som en resurs i undervisningsarbetet. Betydelsen av en verksamhetskultur som främjar växande och lärande och av en fungerande studerandevård framhävs.</p>\n\n<p><em>Särskilt mål för påbyggnadsundervisningen </em></p>\n\n<p>Enligt 5 &sect; i förordningen har påbyggnadsundervisningen som särskilt mål att utveckla den ungas förmåga att välja yrke, förbättra förutsättningarna för fortsatta studier och främja förmågan att ha kontroll över sitt liv.</p>\n\n<p>För att nå detta mål är det viktigt att påbyggnadsundervisningen stärker de studerandes självkännedom och självkänsla, förmåga att samarbeta och kommunicera samt deras förmåga att lära sig.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719018"
+            },
+            {
+              "id": 719341,
+              "perusteenOsa": {
+                "id": 719360,
+                "luotu": 1425541062095,
+                "muokattu": 1427830103356,
+                "muokkaaja": "1.2.246.562.24.74040922019",
+                "nimi": {
+                  "_id": "869760",
+                  "fi": "Tavoitteena laaja-alainen osaaminen",
+                  "sv": "Mångsidig kompetens som mål"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "881051",
+                  "fi": "<p>Valtioneuvoston asetuksessa säädetyt tavoitteet ohjaavat tarkastelemaan opetusta kokonaisuutena, joka rakentaa tässä ajassa tarvittavaa yleissivistystä. Tiedonalakohtaisen osaamisen lisäksi tavoitellaan oppiainerajat ylittävää osaamista. Tähän pohjautuen perusopetuksen opetussuunnitelman perusteissa määritellään tavoitteet ja sisällöt yhteisille oppiaineille sekä tavoitteet oppiaineita yhdistäville laaja-alaisille osaamisalueille ja monialaisille oppimiskokonaisuuksille (katso Perusopetuksen opetussuunnitelman perusteet, Tavoitteena laaja-alainen osaaminen sekä Opetuksen eheyttäminen ja monialaiset oppimiskokonaisuudet).</p>\n\n<p>Laaja-alaisella osaamisella tarkoitetaan tietojen, taitojen, arvojen, asenteiden ja tahdon muodostamaa kokonaisuutta. Osaaminen tarkoittaa myös kykyä käyttää tietoja ja taitoja tilanteen edellyttämällä tavalla. Laaja-alaisen osaamisen lisääntynyt tarve nousee ympäröivän maailman muutoksista. Ihmisenä kasvaminen, opiskelu ja työnteko sekä kansalaisena toimiminen nyt ja tulevaisuudessa edellyttävät tiedon- ja taidonrajat ylittävää osaamista. Pelkkä tiedon omaksuminen ei riitä.</p>\n\n<p>Perusopetukselle määritellyt laaja-alaisen osaamisen seitsemän aluetta ovat</p>\n\n<ul>\n\t<li>ajattelu ja oppimaan oppiminen</li>\n\t<li>kulttuurinen osaaminen, vuorovaikutus ja ilmaisu</li>\n\t<li>itsestä huolehtiminen ja arjen taidot</li>\n\t<li>monilukutaito</li>\n\t<li>tieto- ja viestintäteknologinen osaaminen</li>\n\t<li>työelämätaidot ja yrittäjyys</li>\n\t<li>osallistuminen, vaikuttaminen ja kestävän tulevaisuuden rakentaminen.</li>\n</ul>\n\n<p>Osaamisalueilla on useita liittymäkohtia toisiinsa. Niiden yhteisenä tavoitteena on tukea ihmisenä kasvamista sekä edistää demokraattisen yhteiskunnan rakentavan jäsenyyden ja kestävän elämäntavan edellyttämää osaamista. Opiskelijoita rohkaistaan tunnistamaan oma erityislaatunsa, omat vahvuutensa ja kehittymismahdollisuutensa sekä arvostamaan itseään.</p>\n\n<p>Lisäopetuksessa laaja-alaisen osaamisen kehittäminen on erityisen tärkeätä. Laaja-alaiseen osaamiseen sisältyvät tiedot ja taidot vahvistavat edellytyksiä jatko-opintoihin ja työelämään. Samalla ne antavat välineitä oman elämän hallintaan sekä rakentavaan vuorovaikutukseen. Osaamisen kehittymiseen vaikuttaa omaksuttavia tietosisältöjä enemmän se, miten työskennellään ja miten oppijan ja ympäristön vuorovaikutus toimii. Opiskelijoille annettava palaute sekä oppimisen ohjaus ja tuki vaikuttavat etenkin asenteisiin, motivaatioon ja tahtoon toimia. Lisäopetuksessa tulee huolehtia opiskelijoiden mahdollisuudesta vahvistaa osaamistaan tässä määritellyillä seitsemällä laaja-alaisella osaamisalueella.</p>",
+                  "sv": "<p>Enligt målen i statsrådets förordning ska undervisningen ses som en helhet som ska utveckla sådan allmänbildning som behövs i dag. Utöver kompetens inom olika vetenskapsgrenar är målet ämnesöverskridande kompetens. Därför fastställer grunderna för läroplanen för den grundläggande utbildningen såväl mål och innehåll för gemensamma läroämnen som mål för kompetensområden och helhetsskapande lärområden som förenar olika läroämnen (se Grunderna för läroplanen för den grundläggande utbildningen, Mångsidig kompetens som mål och Helhetsskapande undervisning och mångvetenskapliga lärområden).</p>\n\n<p>Med mångsidig kompetens avses en helhet som består av kunskaper, färdigheter, värderingar, attityder och vilja. Kompetens innebär också förmåga att använda sina kunskaper och färdigheter på det sätt situationen kräver. Det ökade behovet av mångsidig kompetens beror på förändringarna i omvärlden. Att växa som människa, att studera och att fungera som medborgare nu och i framtiden förutsätter kompetens som går över kunskaps- och färdighetsgränserna. Att enbart inhämta kunskaper räcker inte.</p>\n\n<p>De sju kompetensområden som fastställs för den grundläggande utbildningen är</p>\n\n<ul>\n\t<li>förmåga att tänka och lära sig</li>\n\t<li>kulturell och kommunikativ kompetens</li>\n\t<li>vardagskompetens</li>\n\t<li>multilitteracitet</li>\n\t<li>digital kompetens</li>\n\t<li>arbetslivskompetens och entreprenörskap</li>\n\t<li>förmåga att delta, påverka och bidra till en hållbar framtid.</li>\n</ul>\n\n<p>Kompetensområdena har många beröringspunkter med varandra. Det gemensamma målet för dem är att stödja den studerandes utveckling som människa och främja den kompetens som förutsätts för konstruktiv delaktighet i ett demokratiskt samhälle och en hållbar livsstil. De studerande ska uppmuntras att identifiera sin särart, sina styrkor och utvecklingsmöjligheter och att värdesätta sig själva.</p>\n\n<p>I påbyggnadsundervisningen är det särskilt viktigt att utveckla mångsidig kompetens. Kunskaperna och färdigheterna som ingår i mångsidig kompetens stärker förutsättningarna för fortsatta studier och arbetslivet. Samtidigt ger de verktyg för att klara olika livssituationer och för konstruktiv kommunikation. Utvecklingen av kompetens påverkas i högre grad av arbetssätten och kommunikationen mellan den studerande och omgivningen än av kunskapsinnehållet. Responsen som de studerande ges samt handledningen och stödet för lärande inverkar framför allt på attityderna, motivationen och handlingsviljan. Påbyggnadsundervisningen ska ge de studerande möjlighet att stärka sina kunskaper och färdigheter inom de ovannämnda sju kompetensområdena.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719360"
+            },
+            {
+              "id": 719340,
+              "perusteenOsa": {
+                "id": 719019,
+                "luotu": 1425541044272,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869761",
+                  "fi": "Lisäopetuksen keskeinen sisältö",
+                  "sv": "Centralt innehåll i påbyggnadsundervisningen"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "871336",
+                  "fi": "<p>Lisäopetusta varten ei ole valtakunnallista tuntijakoa, joka määrittelisi, mitä oppiaineita lisäopetuksessa tulee opettaa ja miten opetustunnit jaetaan näiden oppiaineiden kesken. Lisäopetukseen ei myöskään erikseen määritellä valtakunnallista oppimäärää eli opetettavien oppiaineiden tai muun opetuksen tavoitteita ja keskeisiä sisältöjä. Opetuksen lähtökohtana ovat perusopetuksen opetussuunnitelman perusteissa määritellyt ja paikallisessa perusopetuksen opetussuunnitelmassa tarkennetut laaja-alaisen osaamisen tavoitteet sekä eri oppiaineiden tavoitteet ja sisällöt. Kunkin opiskelijan osalta toteutuva sisältö täsmennetään henkilökohtaisessa opiskelusuunnitelmassa<strong> </strong>(katso myös Opiskelijan opintojen suunnittelu).</p>\n\n<p>Lisäopetuksen sisällön tulee tukea lisäopetukselle asetettujen tavoitteiden saavuttamista. Opetuksen suunnittelussa kiinnitetään erityistä huomiota siihen, miten sisällöt ja niiden toteuttamistavat lisäävät opiskelijoiden valmiuksia uranvalintaan, parantavat edellytyksiä jatko-opintoihin ja edistävät elämänhallintataitoja.</p>\n\n<p>Lisäopetus tulee paikallisesti suunnitella ja toteuttaa siten, että opiskelijoilla on halutessaan mahdollisuus korottaa kaikkien perusopetuksen yhteisten oppiaineiden arvosanoja. Tämä edellyttää, että perusopetuksen yhteisten oppiaineiden opetuksessa noudatetaan näille oppiaineille perusopetuksen opetussuunnitelman perusteissa määriteltyjä ja paikallisessa opetussuunnitelmassa tarkennettuja oppimääriä. Opiskelijoille voidaan tarjota mahdollisuus korottaa myös perusopetuksen valinnaisten oppiaineiden arvosanoja.</p>\n\n<p>Opiskelijoiden ei ole välttämätöntä opiskella kaikkia perusopetuksen yhteisiä oppiaineita, vaan he voivat tarvittaessa keskittyä omien opiskelutarpeiden ja jatko-opintojen kannalta keskeisiin oppiaineisiin sekä muihin opintoihin. Lisäopetuksen suunnittelussa huolehditaan siitä, että kullakin opiskelijalla on mahdollisuus opiskella jatko-opintojensa kannalta tarpeellisia oppiaineita.</p>\n\n<p>Lisäopetuksessa opiskelijan opintoihin sisältyy aina opinto-ohjausta. Opintoihin voi sisältyä</p>\n\n<ul>\n\t<li>perusopetuksen oppimäärään kuuluvia kaikille yhteisiä oppiaineita</li>\n\t<li>perusopetuksen tehtävän mukaisia, oppilaalle valinnaisia oppiaineita</li>\n\t<li>monialaisia oppimiskokonaisuuksia ja niihin liittyviä projektitehtäviä</li>\n\t<li>opintokäyntejä</li>\n\t<li>lukio- ja ammatillisia opintoja sekä niihin valmistavia opintoja</li>\n\t<li>työelämässä suoritettavia ohjattuja opintoja ja työelämään tutustumista.</li>\n</ul>",
+                  "sv": "<p>Det finns ingen timfördelning för påbyggnadsundervisningen som fastställer vilka läroämnen som ska undervisas och hur undervisningstimmarna ska fördelas mellan läroämnena. För påbyggnadsundervisningen fastställs heller inte skilt någon riksomfattande lärokurs med mål och centralt innehåll för läroämnena eller den övriga undervisningen. Utgångspunkt för undervisningen är de mål för mångsidig kompetens och de mål och innehåll i de enskilda läroämnena som föreskrivs i grunderna för läroplanen för den grundläggande utbildningen och förtydligas i den lokala läroplanen. Innehållet i de enskilda studerandenas studier beskrivs i deras individuella studieplaner (se även Planering av studierna).</p>\n\n<p>Innehållet i påbyggnadsundervisningen ska stödja de särskilda mål som fastställts för påbyggnadsundervisningen. Undervisningen ska planeras med särskild hänsyn till hur innehållet och arbetssätten utvecklar de studerandes förmåga att välja yrke, förbättrar förutsättningarna för fortsatta studier och främjar livskompetensen.</p>\n\n<p>På lokal nivå ska påbyggnadsundervisningen planeras och genomföras så att studerandena om de vill har möjlighet att höja vitsorden i alla den grundläggande utbildningens gemensamma ämnen. Det förutsätter att undervisningen i de gemensamma läroämnena följer de lärokurser som fastställts för läroämnena i grunderna för läroplanen för den grundläggande utbildningen och de lärokurser som preciserats för dessa i den lokala läroplanen. De studerande kan också ges möjlighet att höja vitsord i den grundläggande utbildningens valfria ämnen.</p>\n\n<p>De studerande behöver nödvändigtvis inte studera alla gemensamma läroämnen som finns inom den grundläggande utbildningen, utan kan vid behov koncentrera sig på läroämnen och övriga studier som är relevanta med tanke på deras individuella behov och fortsatta studier. Påbyggnadsundervisningen ska planeras så att varje studerande har möjlighet att studera läroämnen som behövs för den studerandes fortsatta studier.</p>\n\n<p>I påbyggnadsundervisningen ingår studiehandledning alltid i studierna. En studerandes studier kan omfatta</p>\n\n<ul>\n\t<li>gemensamma läroämnen som hör till den grundläggande utbildningens lärokurs</li>\n\t<li>valfria ämnen som är förenliga med den grundläggande utbildningens uppdrag</li>\n\t<li>helhetsskapande lärområden och projektuppgifter som anknyter till dem</li>\n\t<li>studiebesök</li>\n\t<li>gymnasie- och yrkesstudier och studier som förbereder för dem</li>\n\t<li>handledda studier i arbetslivet och praktisk arbetslivsorientering.</li>\n</ul>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719019"
+            }
+          ],
+          "_perusteenOsa": "719016"
+        },
+        {
+          "id": 719342,
+          "perusteenOsa": {
+            "id": 719361,
+            "luotu": 1425541778424,
+            "muokattu": 1427831582696,
+            "muokkaaja": "1.2.246.562.24.74040922019",
+            "nimi": {
+              "_id": "881212",
+              "fi": "Lisäopetuksen toimintakulttuuri",
+              "sv": "Verksamhetskulturen i påbyggnadsundervisningen"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 719343,
+              "perusteenOsa": {
+                "id": 719362,
+                "luotu": 1425541804380,
+                "muokattu": 1427830301553,
+                "muokkaaja": "1.2.246.562.24.74040922019",
+                "nimi": {
+                  "_id": "869763",
+                  "fi": "Toimintakulttuurin kehittäminen",
+                  "sv": "Utvecklandet av verksamhetskulturen"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "881052",
+                  "fi": "<p>Lisäopetuksen toimintakulttuurin kehittämistä ohjaavat samat periaatteet kuin perusopetuksessa. Periaatteet ovat</p>\n\n<ul>\n\t<li>oppiva yhteisö toimintakulttuurin ytimenä</li>\n\t<li>hyvinvointi ja turvallinen arki</li>\n\t<li>vuorovaikutus ja monipuolinen työskentely</li>\n\t<li>kulttuurinen moninaisuus ja kielitietoisuus</li>\n\t<li>osallistuminen ja demokraattinen toiminta</li>\n\t<li>yhdenvertaisuus ja tasa-arvo</li>\n\t<li>vastuu ympäristöstä ja kestävään tulevaisuuteen suuntautuminen (katso Perusopetuksen opetussuunnitelman perusteet, Toimintakulttuurin kehittämistä ohjaavat periaatteet).</li>\n</ul>\n\n<p>Lisäopetuksessa toimitaan oppivan yhteisön periaatteiden mukaisesti, jolloin dialogi, yhteisöllisyys, yhdessä tekeminen ja osallisuuden kokemukset ovat tärkeitä. Toiminta on johdonmukaisesti tavoitteisiin pyrkivää ja johtaminen kohdistuu oppimisen edellytyksistä huolehtimiseen Vuorovaikutusta ja monipuolista työskentelyä käytetään suunnitelmallisesti oppimisen edistämiseen. Kulttuurinen moninaisuus ja erilaiset kielelliset lähtökohdat otetaan huomioon ja edistetään yhteisön kielitietoisuutta. Lisäopetuksessa luodaan edellytyksiä demokraattisen toiminnan harjoittelulle ja mallinnetaan ympäristövastuullista ja kestävään tulevaisuuteen suuntautuvaa toimintaa.</p>\n\n<p>Lisäopetuksen toimintakulttuurissa erityisen tärkeää on opiskelijoiden myönteistä ja realistista minäkuvaa vahvistava vuorovaikutus ja yhteistyö, ongelmien rakentava käsittely sekä huomion suuntaaminen myönteisiin ratkaisuihin. Toiminnan ja ilmapiirin kehittämisellä huolehditaan, että jokainen opiskelija voi kokea kuuluvansa yhteisöön, olevansa siinä tervetullut ja arvostettu ja voivansa toimia sen aktiivisena jäsenenä.</p>\n\n<p>Ryhmissä toimittaessa harjaannutaan toisten huomioon ottamiseen sekä omien vahvuuksien hyödyntämiseen ja vertaistuen antamiseen. Toiminnan selkeys, rauhallisuus, suunnitelmallisuus ja säännönmukaisuus tukevat elämänhallintataitoja. Samalla tarvitaan opiskelijoiden tarpeet huomioonottavaa joustavuutta ja toiminnan monipuolisuutta. Toiminnassa tulee olla käytänteitä ja rakenteita yhteisöllisyyden kehittämiseen ja opiskelijoiden aktiivisen roolin vahvistamiseen. Käytännön osallistuminen ja vaikuttamisen kokemukset luovat edellytyksiä yhteiseen vastuunottoon kasvamiselle ja osallisuudelle.</p>",
+                  "sv": "<p>Verksamhetskulturen i påbyggnadsundervisningen ska utvecklas enligt samma principer som i den grundläggande utbildningen. Principerna är</p>\n\n<ul>\n\t<li>en lärande organisation är kärnan i verksamhetskulturen</li>\n\t<li>välbefinnande och en trygg vardag</li>\n\t<li>kommunikation och mångsidiga arbetssätt</li>\n\t<li>kulturell mångfald och språkmedvetenhet</li>\n\t<li>delaktighet och demokrati</li>\n\t<li>likabehandling och jämlikhet</li>\n\t<li>ansvar för miljön och en hållbar framtid (se Grunderna för läroplanen för den grundläggande utbildningen, Principer för utvecklandet av verksamhetskulturen).</li>\n</ul>\n\n<p>I påbyggnadsundervisningen ska principerna om en lärgemenskap följas, vilket innebär att dialog, gruppsamverkan, gemensamt arbete och känsla av delaktighet är viktiga element. Arbetet ska konsekvent sträva mot målen och ledningen ska inrikta sig på att trygga förutsättningarna för lärande. Kommunikation och mångsidiga arbetsformer ska metodiskt användas för att främja lärandet. Kulturell mångfald och olika språklig bakgrund ska beaktas och språkmedvetenheten i gruppen främjas. Påbyggnadsundervisningen ska skapa förutsättningar för att träna demokrati och ge exempel på handlingssätt som är miljövänliga och främjar en hållbar utveckling.</p>\n\n<p>I verksamhetskulturen i påbyggnadsundervisningen är det särskilt viktigt med kommunikation och samarbete som stärker de studerandes positiva och realistiska bild av sig själva, att förhålla sig konstruktivt till problem och fokusera på positiva lösningar. Verksamheten och atmosfären ska utvecklas så att varje studerande känner tillhörighet och upplever sig som en välkommen och uppskattad medlem med möjlighet att aktivt delta i gemenskapen.</p>\n\n<p>Genom att arbeta i grupper lär sig de studerande att ta hänsyn till andra, att dra nytta av sina styrkor och att ge kamratstöd. Tydlig, harmonisk, planmässig och regelbunden verksamhet stödjer de studerandes livskompetens. Samtidigt behövs flexibilitet och mångsidighet som tar hänsyn till de studerandes behov. Verksamheten ska omfatta rutiner och strukturer som utvecklar gemenskapen och stärker de studerandes aktiva roll. Erfarenheter av möjlighet att delta och påverka ger de studerande förutsättningar att utveckla ett gemensamt ansvar och känna sig delaktiga.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719362"
+            },
+            {
+              "id": 719344,
+              "perusteenOsa": {
+                "id": 719363,
+                "luotu": 1425541862890,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869764",
+                  "fi": "Oppimisympäristöt ja työtavat",
+                  "sv": "Lärmiljöer och arbetssätt"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "871611",
+                  "fi": "<p>Oppimisympäristöjen ja työtapojen kehittämistä ohjaavat samat tavoitteet kuin perusopetuksessakin (katso Perusopetuksen opetussuunnitelman perusteet, Oppimisympäristöt ja työtavat). Lisäopetuksessa huolehditaan erityisesti siitä, että oppimisympäristöt ja työtavat ovat opiskelijoiden näkökulmasta kiinnostavia ja kannustavia, ja että ne monipuolisuudellaan vahvistavat opiskelumotivaatiota. Opiskelijoiden mahdolliset tuen tarpeet otetaan huomioon oppimisympäristöjen suunnittelussa ja työtapojen valinnassa.</p>\n\n<p>Lisäopetuksen oppimisympäristöjen tärkeänä osana ovat ne työelämäympäristöt, joissa opiskelijat tutustuvat työelämään tai suorittavat työpaikalla tapahtuvia opintoja. Eri oppimisympäristöjä hyödynnetään kunkin opiskelijan opiskelusuunnitelmassa kuvatulla tavalla. Opiskelijoiden turvallisuudesta sekä opintojen seuraamisesta ja ohjaamisesta samoin kuin palautteen antamisesta ja tuesta huolehditaan kaikissa opiskeluun liittyvissä ympäristöissä.</p>\n\n<p>Työtapoja valittaessa lähtökohtina ovat opiskelijoiden edellytykset ja tarpeet, lisäopetukselle asetetut tavoitteet sekä opiskelijoiden opiskelusuunnitelmissa määritellyt henkilökohtaiset tavoitteet. Työtapojen valinnalla ja työskentelyn käytännönläheisyydellä voidaan luoda edellytyksiä myönteisiin oppimiskokemuksiin ja vahvistaa opiskelumotivaatiota. Huomiota kiinnitetään opiskelijoiden tietoihin ja taitoihin mahdollisesti jääneisiin puutteisiin aiemmilta opiskeluvuosilta ja etsitään yhdessä tapoja tieto- ja taitopohjan vahvistamiseen.</p>\n\n<p>Oppimaan oppimisen kannalta on tärkeää, että opiskelijoita ohjataan asettamaan työlleen tavoitteita sekä suunnittelemaan ja arvioimaan opiskeluaan ja että he ovat mukana myös työtapojen suunnittelussa. Tieto- ja viestintäteknologiaa käytetään tukemaan erityisesti opiskelijoiden vuorovaikutus- ja työskentelytaitoja sekä tiedonhankinnan, muokkaamisen ja tuottamisen taitoja. Opiskelijoita kannustetaan omaan ilmaisuun ja luovaan tuottamiseen.</p>",
+                  "sv": "<p>Utvecklandet av lärmiljöer och arbetssätt styrs av samma mål som i den grundläggande utbildningen (se Grunderna för läroplanen för den grundläggande utbildningen, Lärmiljöer och arbetssätt). I påbyggnadsundervisningen är det speciellt viktigt att de studerande upplever lärmiljöerna och arbetssätten som intressanta och inspirerande och att de genom sin mångsidighet stärker studiemotivationen. Den studerandes eventuella behov av stöd beaktas vid planering av lärmiljöer och val av arbetssätt.</p>\n\n<p>De arbetsmiljöer som de studerande bekantar sig med under praktisk arbetslivsorientering eller under studier på arbetsplatser är en viktig del av lärmiljöerna i påbyggnadsundervisningen. Olika lärmiljöer ska utnyttjas på det sätt som beskrivs i den studerandes studieplan. I alla miljöer som anknyter till studierna ska man värna om de studerandes säkerhet, följa upp studierna och ge handledning, respons och stöd.</p>\n\n<p>Arbetssätten ska väljas utifrån de studerandes förutsättningar och behov, målen för påbyggnadsundervisningen och de individuella mål som fastställs i de studerandes studieplan. Genom valet av arbetssätt och praktiskt arbete kan man skapa förutsättningar för positiva upplevelser av lärande och stärka studiemotivationen. Det är viktigt att fästa uppmärksamhet vid eventuella brister i de studerandes kunskaper och färdigheter från tidigare studieår och att tillsammans hitta sätt att stärka kunskaps- och färdighetsbasen.</p>\n\n<p>Med tanke på färdigheten att lära sig är det viktigt att de studerande lär sig att ställa upp mål för sitt arbete, att planera och utvärdera sina studier och att de är med och planerar arbetssätten. Informations- och kommunikationsteknik ska användas för att stödja i synnerhet de studerandes kommunikativa färdigheter och arbetsförmåga samt deras förmåga att söka, bearbeta och producera information. De studerande ska uppmuntras att uttrycka sig själva och vara kreativa.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719363"
+            }
+          ],
+          "_perusteenOsa": "719361"
+        },
+        {
+          "id": 719345,
+          "perusteenOsa": {
+            "id": 719364,
+            "luotu": 1425541928019,
+            "muokattu": 1427831621064,
+            "muokkaaja": "1.2.246.562.24.74040922019",
+            "nimi": {
+              "_id": "881213",
+              "fi": "Lisäopetuksen toteuttaminen",
+              "sv": "Utgångspunkter för hur påbyggnadsundervisningen ska genomföras"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 719346,
+              "perusteenOsa": {
+                "id": 719365,
+                "luotu": 1425541961624,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869766",
+                  "fi": "Opiskelijan opintojen suunnittelu",
+                  "sv": "Planering av studierna"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "751678",
+                  "fi": "<p>Lisäopetuksen tavoitteet edellyttävät opiskelijoiden yksilöllistä ohjaamista. Koska lisäopetusta varten ei ole valtakunnallista oppimäärää, jokaiselle lisäopetuksen opiskelijalle laaditaan henkilökohtainen suunnitelma, jota kutsutaan opiskelusuunnitelmaksi. Opetuksen järjestäjä huolehtii, että suunnitelman laadinnan vastuuhenkilö on nimetty. Opiskelusuunnitelma laaditaan yhteistyössä opiskelijan kanssa ja opiskelijan omaa vastuunottoa tuetaan. Yhteistyötä tehdään tarvittaessa myös huoltajan kanssa. Suunnitelma ohjaa kunkin opiskelijan opintojen rakentumista ja etenemistä ja vahvistaa myös opiskelijan omaa suunnitelmallisuutta opiskelussa.</p>\n\n<p>Suunnitteluun paneudutaan heti lisäopetusvuoden alussa. Opiskelusuunnitelman toteutumista seurataan koko lisäopetuksen ajan. Opiskelusuunnitelmaa voidaan muuttaa lukuvuoden aikana, ja se tarkistetaan aina tarvittaessa. Tarkistamisajankohdista voidaan sopia myös ennalta. Tärkeätä on huolehtia, että opiskelun välittömien tavoitteiden rinnalla opiskelusuunnitelman toimivuutta tarkastellaan myös opiskelijan tulevaisuuden suunnitelmien näkökulmasta. Sekä opiskelusuunnitelman laatimisessa että sen toteutumisen seurannassa tehdään tarvittaessa moniammatillista yhteistyötä.</p>\n\n<p>Opiskelusuunnitelman laatimisen lähtökohtina ovat opiskelijan vahvuudet, tarpeet ja tavoitteet sekä osaamisen taso lisäopetuksen alussa. Opiskelijan elämäntilanne sekä aiemmat oppimiskokemukset tulee myös ottaa huomioon. Lähtötilanteen selvittämiseen kiinnitetään erityistä huomiota. Opiskelusuunnitelman tarkoituksena on ohjata opiskelijan tiedollista ja taidollista sekä elämänhallintaan liittyvää kehittymistä asetettujen tavoitteiden saavuttamiseksi.</p>\n\n<p>Opiskelusuunnitelmaan kirjataan</p>\n\n<ul>\n\t<li>opiskelijan opinto-ohjelma eli ne opinnot, joita opiskelijan on tarkoitus suorittaa lisäopetuksen aikana omassa koulussa, muissa oppilaitoksissa, työelämässä, järjestöissä tai muissa oppimisympäristöissä</li>\n\t<li>eri oppiaineiden ja muiden opintojen tuntimäärät</li>\n\t<li>tiedolliset ja taidolliset tavoitteet sekä osaamisen vahvuudet ja kehittämistarpeet</li>\n\t<li>suunnitelma jatko-opinnoista</li>\n\t<li>ohjaukselliset tavoitteet</li>\n\t<li>opiskelijan mahdollisesti tarvitsemat yleisen tuen tukitoimet</li>\n\t<li>opiskelusuunnitelman laadinnasta, toteutumisesta ja seurannasta ensisijaisesti vastaava opettaja.</li>\n</ul>\n\n<p>Opiskelusuunnitelmaan voidaan sisällyttää myös opiskelutaitojen kehittämiseen sekä tarvittaessa opiskelijan hyvinvointiin ja elämänhallintaan liittyviä tavoitteita.</p>\n\n<p>Opiskelusuunnitelman sijaan tehostettua tukea tarvitsevalle opiskelijalle laaditaan oppimissuunnitelma. Jos opiskelijalla on erityisen tuen tarve, hänelle laaditaan henkilökohtainen opetuksen järjestämistä koskeva suunnitelma eli HOJKS.</p>",
+                  "sv": "<p>Påbyggnadsundervisningens mål förutsätter individuell handledning av de studerande. Eftersom det inte finns någon riksomfattande lärokurs för påbyggnadsundervisningen, ska för varje studerande utarbetas en individuell plan, en så kallad studieplan. Utbildningsanordnaren ser till att en ansvarsperson utses för att utarbeta planen. Studieplanen ska utarbetas i samarbete med den studerande och den studerandes eget ansvar ska stödjas. Vid behov ska man också samarbeta med vårdnadshavaren. Planen beskriver studiernas uppbyggnad och gång och hjälper också den studerande att uppnå bättre planmässighet i sina studier.</p>\n\n<p>Genast när läsåret inleds ska man sätta sig in i planeringen av varje studerandes studier. Studieplanen följs upp under hela påbyggnadsundervisningen. Studieplanen kan uppdateras under läsåret och ska alltid granskas vid behov. Man kan också på förhand komma överens om när planen ska granskas. Det är viktigt att man vid sidan av de direkta målen för studierna också granskar hur studieplanen fungerar med tanke på den studerandes framtidsplaner. Vid behov utarbetas och följs studieplanen upp genom yrkesövergripande samarbete.</p>\n\n<p>Studieplanen utarbetas utifrån den studerandes styrkor, behov och mål samt den kunskaps- och färdighetsnivå den studerande befinner sig på när påbyggnadsundervisningen inleds. Den studerandes livssituation och tidigare inlärningserfarenheter ska också beaktas. Kartläggningen av utgångsnivån är särskilt viktig. Syftet med studieplanen är att styra utvecklingen av den studerandes kunskaper och färdigheter samt livskompetens mot de uppställda målen.</p>\n\n<p>I studieplanen antecknas</p>\n\n<ul>\n\t<li>de studier som den studerande under påbyggnadsundervisningen har för avsikt att genomföra i den egna skolan, vid andra läroanstalter, i arbetslivet, i organisationer eller i andra lärmiljöer</li>\n\t<li>antalet timmar i olika läroämnen och i övriga studier</li>\n\t<li>kunskaps- och färdighetsmål, kunskapsstyrkor och utvecklingsbehov</li>\n\t<li>en plan för fortsatta studier</li>\n\t<li>mål för handledningen</li>\n\t<li>eventuella stödåtgärder inom allmänt stöd som den studerande behöver</li>\n\t<li>den lärare som i första hand ansvarar för utarbetandet, genomförandet och uppföljningen av studieplanen.</li>\n</ul>\n\n<p>Studieplanen kan också innehålla mål för utvecklande av studiefärdigheterna och vid behov också mål som gäller den studerandes välbefinnande och livskompetens.</p>\n\n<p>För en studerande som behöver intensifierat stöd utarbetas en plan för lärande i stället för en studieplan. Ifall den studerande har behov av särskilt stöd, utarbetas en individuell plan för hur undervisningen ska ordnas (IP).</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719365"
+            },
+            {
+              "id": 719347,
+              "perusteenOsa": {
+                "id": 719366,
+                "luotu": 1425542007553,
+                "muokattu": 1427831900353,
+                "muokkaaja": "1.2.246.562.24.74040922019",
+                "nimi": {
+                  "_id": "869767",
+                  "fi": "Opiskelijoiden osallisuus",
+                  "sv": "De studerandes delaktighet"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "881217",
+                  "fi": "<p>Lisäopetuksessa vahvistetaan opiskelijoiden osallisuutta. Opiskelijoiden on tarpeen saada kokemuksia yhteistyöstä, osallistumisesta, vaikuttamisesta ja demokraattisesta toiminnasta arjen opiskelutilanteissa sekä yhteistä koulutyötä ja työympäristöä suunniteltaessa. Keskeistä on opiskelijoiden aktiivinen ja vastuullinen rooli oman opiskelusuunnitelman laadinnassa ja opiskelussa.<abbr data-viite=\"Viite41425545908284\"> Lain </abbr>mukaan opiskelijoille tulee järjestää mahdollisuus osallistua myös opetussuunnitelman ja siihen liittyvien suunnitelmien sekä koulun järjestyssääntöjen valmisteluun.</p>\n\n<p>Lisäopetuksen opiskelijat kuuluvat sen koulun <abbr data-viite=\"Viite51425545933294\">oppilaskuntaan</abbr>, jossa he opiskelevat. Oppilaskuntatoiminta sekä kunnan ja koulun muut osallistumista tukevat rakenteet ja toimintatavat tarjoavat opiskelijoille tilaisuuksia harjoitella demokratiataitoja käytännössä.</p>",
+                  "sv": "<p>De studerandes delaktighet ska stärkas i påbyggnadsundervisningen. Det är nödvändigt att de studerande får erfarenheter av samarbete, delaktighet, påverkan och demokrati i studievardagen och vid planering av det gemensamma skolarbetet och arbetsmiljön. Centralt är att de studerande är aktiva och tar ansvar för att utarbeta sin studieplan och för sina studier. <abbr data-viite=\"Viite41425545908284\">Enligt lagen</abbr> ska de studerande ges möjlighet att delta i beredandet av läroplanen, planerna som anknyter till läroplanen och skolans ordningsregler.</p>\n\n<p>Studerande i påbyggnadsundervisningen hör till <abbr data-viite=\"Viite51425545933294\">elevkåren</abbr> i den skola, där de studerar. Elevkårsverksamheten, liksom andra strukturer och rutiner som stödjer delaktighet i kommunen och skolan, erbjuder de studerande möjligheter att träna demokrati i praktiken.</p>\n\n<p> </p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719366"
+            },
+            {
+              "id": 719348,
+              "perusteenOsa": {
+                "id": 719367,
+                "luotu": 1425542092006,
+                "muokattu": 1427831939382,
+                "muokkaaja": "1.2.246.562.24.74040922019",
+                "nimi": {
+                  "_id": "869768",
+                  "fi": "Yhteistyö",
+                  "sv": "Samarbete"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "881218",
+                  "fi": "<p><abbr data-viite=\"Viite61425545980098\">Perusopetuslain</abbr> mukaan opetuksessa tulee olla yhteistyössä kotien kanssa. Tätä yhteistyötä tarvitaan myös lisäopetuksessa. Arvosanojen korottaminen, opiskelumotivaation ja -taitojen vahvistaminen sekä opintojen jatkamiseen liittyvien suunnitelmien tekeminen ovat haasteita, joissa opiskelija tarvitsee perheensä tukea. Opiskelun arvostaminen ja tukeminen on tärkeää myös opiskelijan hyvinvoinnin kannalta. Huoltajilta saatu tieto ja tuki auttavat lisäopetuksen opettajia opetuksen suunnittelussa ja kasvatustyössä.</p>\n\n<p>Opiskelijoiden opiskelusuunnitelmien laatiminen ja opetuksen joustava toteuttaminen edellyttävät lisäopetuksessa opettavien keskinäistä yhteistyötä sekä yhteistyötä niiden peruskoulujen kanssa, joista opiskelijat tulevat. Lisäopetuksen opetustarjonta, opintoihin sisältyvät työelämäjaksot, opiskelujaksot muissa oppilaitoksissa sekä erilaiset opintokäynnit ja työpajat edellyttävät hyvää yhteistyötä lukioiden, ammatillisten oppilaitosten ja muiden oppilaitosten sekä työelämän ja muiden yhteistyökumppaneiden kanssa. Opinto-ohjauksen, oppimisen ja koulunkäynnin tuen sekä opiskeluhuollon edellyttämää yhteistyötä käsitellään luvussa 5.</p>",
+                  "sv": "<p>Enligt <abbr data-viite=\"Viite61425545980098\">lagen om grundläggande utbildning</abbr> ska undervisningen genomföras i samarbete med hemmen. Också i påbyggnadsundervisningen behövs samarbete. Att höja sina vitsord, stärka studiemotivationen och studiefärdigheten och planera fortsatta studier är utmaningar där den studerande behöver stöd av sin familj. Uppskattning och stöd i studierna är viktigt också med tanke på den studerandes välbefinnande. Information och stöd av vårdnadshavarna underlättar lärarnas undervisningsplanering och fostrande arbete.</p>\n\n<p>För att kunna utarbeta studieplaner för de studerande och genomföra undervisningen flexibelt förutsätts samarbete mellan lärarna i påbyggnadsundervisningen och med de grundskolor, där de studerande tidigare gått. Påbyggnadsundervisningens undervisningsutbud, arbetslivsperioder, undervisningsperioder vid andra läroanstalter och olika slags studiebesök och verkstäder som ingår i studierna i påbyggnadsundervisningen förutsätter ett bra samarbete med gymnasierna, yrkesläroanstalterna och andra läroanstalter samt med arbetslivet och andra samarbetspartner. Det samarbete som studiehandledningen, stödet för lärande och skolgång samt studerandevården förutsätter behandlas i Stöd för studierna och välbefinnandet.</p>\n\n<p> </p>\n\n<hr />"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719367"
+            },
+            {
+              "id": 719349,
+              "perusteenOsa": {
+                "id": 719368,
+                "luotu": 1425542330876,
+                "muokattu": 1427832047431,
+                "muokkaaja": "1.2.246.562.24.74040922019",
+                "nimi": {
+                  "_id": "869769",
+                  "fi": "Kasvatuskeskustelu ja kurinpidollisten keinojen käyttö",
+                  "sv": "Fostringssamtal och disciplinära åtgärder"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "881219",
+                  "fi": "<p>Opetukseen osallistuvalla on oikeus turvalliseen opiskeluympäristöön, jossa työrauha ja opiskelun esteetön sujuminen on varmistettu. Työrauhaan voidaan vaikuttaa monilla koulun keinoilla, joista keskeisiä ovat opettajan antama ohjaus ja palaute, yhteistyö sekä yhteinen vastuunotto ja huolenpito. Pedagogisia ratkaisuja kehittämällä sekä luottamuksen ja välittämisen ilmapiiriä vahvistamalla luodaan edellytykset hyvän työrauhan rakentumiselle. Opetuksen järjestäjällä on oikeus käyttää työrauhan turvaamiseksi ja epäasialliseen käyttäytymiseen puuttumiseksi myös kasvatuskeskustelua ja erilaisia kurinpidollisia keinoja. Kasvatuskeskustelussa ja kurinpitoasioissa noudatettavasta menettelystä säädetään <abbr data-viite=\"Viite71425546027463\">perusopetuslaissa</abbr>.</p>\n\n<p>Kasvatuskeskustelu on ensisijainen tapa puuttua opiskelijan epäasialliseen käyttäytymiseen. Keskustelun tarkoituksena on yhdessä opiskelijan kanssa yksilöidä toimenpiteeseen johtanut teko tai laiminlyönti, kuulla opiskelijaa, selvittää laajemmin käyttäytymisen syyt ja seuraukset sekä pohtia keinot tilanteen korjaamiseksi. Menettelyn tavoitteena on löytää myönteisiä keinoja koulussa käyttäytymisen ja opiskelijan hyvinvoinnin parantamiseksi. Opetuksen järjestäjä päättää, millaisissa tapauksissa kasvatuskeskustelua käytetään.</p>\n\n<p>Kurinpidollisia keinoja ovat <abbr data-viite=\"Viite81425546049059\">perusopetuslain</abbr> mukaan jälki-istunto, kirjallinen varoitus ja määräaikainen erottaminen. Opetusta häiritsevä opiskelija voidaan määrätä poistumaan luokkahuoneesta tai muusta tilasta, jossa opetusta annetaan, taikka koulun tilaisuudesta. Lisäksi työrauhan turvaamiseksi opiskelijan oikeus osallistua opetukseen voidaan evätä enintään jäljellä olevan työpäivän ajaksi, jos on olemassa vaara, että toisen opiskelijan tai muun henkilön turvallisuus kärsii oppilaan väkivaltaisen tai uhkaavan käyttäytymisen vuoksi taikka opetus tai siihen liittyvä toiminta vaikeutuu kohtuuttomasti opiskelijan häiritsevän käyttäytymisen vuoksi.</p>\n\n<p><abbr data-viite=\"Viite91425546072521\">Perusopetuslaki</abbr> velvoittaa opetuksen järjestäjän laatimaan ja ohjeistamaan opetussuunnitelman yhteydessä suunnitelman kasvatuskeskustelujen ja kurinpidollisten keinojen käyttämisestä ja niihin liittyvistä menettelytavoista. Suunnittelun tarkoituksena on varmistaa toimintatapojen laillisuus ja yhdenmukaisuus sekä oppilaiden yhdenvertainen kohtelu. Suunnittelu tukee myös koulun järjestyssääntöjen toteutumista.</p>\n\n<p>Opetuksen järjestäjä huolehtii siitä, että jokaisella sen alaisella koululla on käytössään kasvatuskeskustelujen ja kurinpidollisten menettelyjen toteuttamista koskeva suunnitelma. Suunnitelma voidaan laatia osana opetussuunnitelmaa tai erillisenä. Se voidaan laatia kokonaisuudessaan koulujen yhteisenä tai siten, että suunnitelman rakenne ja keskeiset toimintatapalinjaukset ovat yhteisiä ja suunnitelma täsmennetään koulukohtaisesti.</p>\n\n<p>Suunnitelman laadinnassa on otettava huomioon, että kurinpidossa ja työrauhan turvaamisessa voidaan käyttää vain laissa mainittuja keinoja ja että näitä keinoja käytettäessä noudatetaan hallinnon yleisiä oikeusturvaperiaatteita. Keinojen käytön tulee perustua asiallisiin, yleisesti hyväksyttäviin ja objektiivisiin syihin. Samanlaisista teoista tulee tekijästä riippumatta määrätä samanlainen seuraamus, kuitenkin siten, että tekojen toistuminen voidaan ottaa huomioon raskauttavana tekijänä. Kurinpitoseuraamusten tulee olla suhteessa tekoon. Kurinpidollisia keinoja ei saa käyttää opiskelijoita häpäisevällä tai loukkaavalla tavalla.</p>\n\n<p>Opetuksen järjestäjä päättää suunnitelman laatimisesta ja valmisteluun osallistuvista tahoista. Opiskelijoille tulee <abbr data-viite=\"Viite101425546090829\">lain</abbr> mukaan järjestää mahdollisuus osallistua suunnitelman valmisteluun. Yhteistyö huoltajien ja muun muassa sosiaali- ja terveydenhuollon edustajien kanssa tukee suunnitelman toteutumista. Henkilöstöä ja oppilaskuntaa tulee kuulla ennen suunnitelman hyväksymistä tai päivittämistä.</p>",
+                  "sv": "<p>Den som deltar i utbildning har rätt till en trygg studiemiljö, arbetsro och ostörda studier. Skolan kan påverka arbetsron på många sätt, främst genom utveckling av verksamhetskulturen, samarbete, gemensamt ansvar och omsorg. Genom att utveckla pedagogiska lösningar och bygga upp en atmosfär som präglas av förtroende och omsorg skapas förutsättningar för en bra arbetsro. För att trygga arbetsron och ta itu med olämpligt uppförande har utbildningsanordnaren också rätt att använda fostrande samtal och olika disciplinära åtgärder. Om förfaringssätten vid fostrande samtal och disciplinära åtgärder regleras i <abbr data-viite=\"Viite71425546027463\">lagen om grundläggande utbildning</abbr>.</p>\n\n<p>Fostrande samtal används som första åtgärd för att ta itu med studerandes olämpliga uppförande. Syftet med samtalet är att tillsammans med den studerande specificera den gärning eller försummelse som föranlett åtgärden, höra den studerande, utreda orsakerna till och konsekvenserna av uppförandet i mera omfattande utsträckning samt fundera över hur situationen kan förbättras. Avsikten med åtgärden är att komma fram till hur den studerandes uppförande i skolan och hens välbefinnande kan förbättras på ett positivt sätt. Utbildningsanordnaren beslutar i hurdana fall fostrande samtal används.</p>\n\n<p>Disciplinära åtgärder är enligt <abbr data-viite=\"Viite81425546049059\">lagen om grundläggande utbildning</abbr> kvarsittning, skriftlig varning och avstängning för viss tid. En studerande som stör undervisningen kan uppmanas att lämna klassrummet eller det rum där undervisningen ges, eller en skoltillställning. En studerande kan dessutom förvägras rätt att delta i undervisningen för högst den återstående arbetsdagen, om hen uppför sig våldsamt eller hotfullt och hotar säkerheten för en annan studerande eller person eller om undervisningen eller därtill hörande verksamhet försvåras orimligt mycket på grund av den studerandes störande beteende.</p>\n\n<p><abbr data-viite=\"Viite91425546072521\">Lagen om grundläggande utbildning</abbr> förpliktar utbildningsanordnaren att i samband med läroplanen utarbeta en plan och anvisningar om användningen av fostrande samtal och disciplinära åtgärder och förfaringssätt.</p>\n\n<p>Syftet med planen är att se till att förfaringssätten är lagenliga och enhetliga och att de studerande behandlas jämlikt. Planen bidrar också till att skolans ordningsregler följs.</p>\n\n<p>Utbildningsanordnaren ska se till varje skola har en plan för hur fostrande samtal och disciplinära åtgärder ska användas. Planen kan utarbetas gemensamt för alla utbildningsanordnarens skolor eller så att planens struktur och de centrala gemensamma riktlinjerna ingår i den lokala läroplanen och planen sedan preciseras skolvis. Den skolvisa planen kan utarbetas separat eller inkluderas i den eventuella skolvisa läroplanen.</p>\n\n<p>Vid utarbetandet av planen är det viktigt att notera att endast disciplinära åtgärder som nämns i lagen får användas och att man vid användningen av disciplinära åtgärder ska iaktta de allmänna rättsskyddsprinciperna inom förvaltningen. Användningen av åtgärder ska grunda sig på sakliga, allmänt godtagbara och objektiva skäl. Konsekvenserna av likartade gärningar ska vara de samma, oberoende av gärningsman, dock så att upprepade gärningar kan anses som en försvårande omständighet. De disciplinära konsekvenserna ska stå i proportion till gärningen. Också den studerandes ålder och utvecklingsstadium ska beaktas. Disciplinära åtgärder får inte användas på ett sätt som kränker eller förolämpar den studerande.</p>\n\n<p>Utbildningsanordnaren beslutar om vilka parter som ska delta i utarbetandet och beredningen av planen. De studerande ska <abbr data-viite=\"Viite101425546090829\">enligt lagen</abbr> ges möjlighet att delta i beredningen av planen. Samarbete med vårdnadshavarna och företrädare för bland annat social- och hälsovården stödjer genomförandet av planen. Personalen och elevkåren ska höras innan planen godkänns eller uppdateras.</p>\n\n<hr />"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "719368"
+            }
+          ],
+          "_perusteenOsa": "719364"
+        },
+        {
+          "id": 720470,
+          "perusteenOsa": {
+            "id": 719369,
+            "luotu": 1425542396483,
+            "muokattu": 1427831654519,
+            "muokkaaja": "1.2.246.562.24.74040922019",
+            "nimi": {
+              "_id": "881214",
+              "fi": "Opiskelijoiden opintojen ja hyvinvoinnin tukeminen",
+              "sv": "Stöd för studierna och välbefinnandet"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 720471,
+              "perusteenOsa": {
+                "id": 720500,
+                "luotu": 1425542424102,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869871",
+                  "fi": "Opinto-ohjaus",
+                  "sv": "Studiehandledning"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "871613",
+                  "fi": "<p>Opiskelijoiden kokonaisvaltainen ohjaus on kaikkien lisäopetuksen opiskelijoiden kanssa työskentelevien yhteinen tehtävä. Lisäopetuksen opinto-ohjaus toteutetaan perusopetuksen oppilaanohjauksen periaatteiden mukaisesti (katso Perusopetuksen opetussuunnitelman perusteet, Opetus vuosiluokilla 7-9).<strong> </strong>Lisäopetuksessa opinto-ohjauksen merkitys on erityisen suuri. Tehtävänä on tukea opiskelijoita siten, että he voivat onnistua opinnoissaan, motivoituvat jatkamaan opiskelua ja löytävät paikkansa seuraavan koulutusvaiheen opinnoissa. Keskeiset ohjaukselliset tavoitteet kirjataan jokaiselle opiskelijalle laadittavaan opiskelusuunnitelmaan.</p>\n\n<p>Opinto-ohjauksessa korostuu opiskelijan henkilökohtainen ohjaus. Jokainen opiskelija tarvitsee jatkuvaa myönteistä ja rakentavaa palautetta sekä onnistumisen kokemuksia. Näissä opinto-ohjauksella on keskeinen rooli. Opinto-ohjauksen tehtävänä on tukea opiskelussa ja etenkin jatko-opiskelussa tarvittavien taitojen kehittymistä. Myös ammatillisen suuntautumisen vahvistaminen on tärkeää. Opinto-ohjauksella huolehditaan, että opiskelijan työelämätuntemus lisääntyy ja että opiskelija pääsee tutustumaan erilaisiin ammatteihin. Työelämätuntemuksen lisäämisessä apuna voidaan käyttää työelämään tutustumista ja työelämässä suoritettavia ohjattuja opintoja. Työelämätuntemuksen lisääntyessä opiskelija voi paremmin pohtia omia henkilökohtaisia opiskelu- ja uravaihtoehtojaan.</p>\n\n<p>Opiskelijan tulevaisuuden suunnittelua tuetaan eri koulutusvaihtoehtojen selvittämisellä. Opiskelijalla tulee olla mahdollisuus tutustua myös käytännössä erilaisiin koulutusvaihtoehtoihin kuten lukiokoulutukseen ja ammatilliseen koulutukseen sekä näihin valmistaviin koulutuksiin, oppisopimuskoulutukseen ja työpajoihin. Lisäopetuksen aikana on mahdollista toteuttaa opiskelujaksoja muissa oppilaitoksissa. Tarvittaessa opiskelija voidaan ohjata lisäopetusta sopivampaan opiskeluvaihtoehtoon.</p>\n\n<p>Henkilökohtainen ohjaus on erityisen tärkeää jatko-opintoihin liittyvissä kysymyksissä ja jatko-opintoihin hakeuduttaessa. Opinto-ohjauksen avulla opiskelijaa autetaan suunnittelemaan lisäopetuksen jälkeisiä opintoja ja tuetaan käytännön hakumenettelyissä.</p>",
+                  "sv": "<p>En gemensam uppgift för alla som arbetar med studerande i påbyggnadsundervisningen är att ge dem en helhetsbetonad handledning (se Grunderna för läroplanen för den grundläggande utbildningen, Årskurshelheten 7-9). Studiehandledningen i påbyggnadsundervisningen förverkligas enligt principerna för elevhandledning inom den grundläggande utbildningen. Studiehandledningen är särskilt viktig i påbyggnadsundervisningen. Dess uppgift är att stödja de studerande så att de kan lyckas i sina studier, fortsätta sina studier och hitta sin studieplats på följande utbildningsstadium. i De centrala målen för studiehandledningen ska beskrivas i den studieplan, som ska utarbetas för varje studerande.</p>\n\n<p>Studiehandledningen ska fokusera på individuell handledning. Varje studerande behöver kontinuerlig, positiv och konstruktiv respons och få uppleva att han eller hon lyckas. Här har studiehandledningen en central roll. Studiehandledningen uppgift är att stödja i studierna och i synnerhet i utvecklingen av färdigheter som behövs i fortsatta studier. Det är också viktigt att stärka yrkesinriktningen. Studiehandledningen ska öka den studerandes kunskap om arbetslivet och ge den studerande möjlighet att bekanta sig med olika yrken. För att öka kunskapen om arbetslivet kan man använda sig av praktisk arbetslivsorientering (PRAO) och handledda studier i arbetslivet. När kunskapen om arbetslivet ökar har den studerande lättare att ta ställning till olika studie- och karriäralternativ.</p>\n\n<p>En kartläggning av olika utbildningsalternativ stödjer den studerandes framtidsplanering. Den studerande ska ges möjlighet att också i praktiken bekanta sig med olika utbildningsalternativ, såsom gymnasieutbildning och yrkesutbildning samt med utbildningar som förbereder för dem, läroavtalsutbildning och verkstäder. Under påbyggnadsundervisningen kan de studerande också ges möjlighet till studieperioder vid andra läroanstalter. Vid behov kan man visa på alternativ som är lämpligare för den studerande än påbyggnadsundervisning.</p>\n\n<p>Det är särskilt viktigt med individuell handledning i frågor som rör fortsatta studier och när den studerande söker till fortsatta studier. Studiehandledningen ska hjälpa den studerande att planera sina studier efter påbyggnadsundervisningen och erbjuda stöd med de praktiska ansökningsförfarandena.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "720500"
+            },
+            {
+              "id": 720472,
+              "perusteenOsa": {
+                "id": 720501,
+                "luotu": 1425542507709,
+                "muokattu": 1427832131086,
+                "muokkaaja": "1.2.246.562.24.74040922019",
+                "nimi": {
+                  "_id": "869872",
+                  "fi": "Oppimisen ja koulunkäynnin tuki",
+                  "sv": "Stöd för lärande och skolgång"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "881320",
+                  "fi": "<p>Lisäopetuksessa oppimisen ja koulunkäynnin tuki toteutetaan perusopetuksen kolmiportaisen tuen periaatteiden mukaisest<strong>i </strong>(katso Perusopetuksen opetussuunnitelman perusteet, Oppimisen ja koulunkäynnin tuki).<strong> </strong>Opiskelijalla on <abbr data-viite=\"Viite111425546123070\">oikeus </abbr>riittävään tukeen heti tuen tarpeen ilmetessä. Tämä merkitsee oikeutta perusopetuslain mukaisiin tukimuotoihin kuten tukiopetukseen, osa-aikaiseen erityisopetukseen, tulkitsemis- ja avustajapalveluihin, erityisiin apuvälineisiin sekä erityisopetukseen. Käytettävät tukimuodot määritellään opiskelijan tarpeiden mukaisesti. Perusopetuksessa annettu tehostettu tuki on päättynyt ja erityisen tuen päätös on rauennut perusopetuksen päättyessä.</p>\n\n<p><em>Yleinen tuki lisäopetuksessa</em></p>\n\n<p>Lisäopetus on lähtökohtaisesti yksilöllistä ja joustavaa sekä kunkin opiskelijan omaan opiskelusuunnitelmaan perustuvaa. Lisäopetuksessa opiskelija voi paikata perusopetuksessa osaamiseen mahdollisesti jääneitä aukkoja sekä korottaa perusopetuksesta saatuja arvosanoja. Jokaisen opiskelijan tuen tarve arvioidaan erikseen. Tuen ensimmäinen vaihe on yleinen tuki. Opiskelijan tarvitseman tuen järjestäminen ja tukimuodot kirjataan opiskelijalle laadittavaan opiskelusuunnitelmaan.</p>\n\n<p><em>Tehostettu tuki lisäopetuksessa</em></p>\n\n<p>Opiskelijalla on oikeus tehostettuun tukeen sitä tarvitessaan. Tehostettua tukea perusopetuksessa saaneen opiskelijan tarve tuen jatkamiseen lisäopetuksessa arvioidaan lisäopetuksen alkaessa. Myös opiskelija, jolle ei ole annettu tehostettua tukea perusopetuksen aikana, voi saada tehostettua tukea lisäopetuksessa.</p>\n\n<p>Tehostetun tuen tarpeen selvittämiseksi opiskelijan tilanteesta tehdään pedagoginen arvio. Mikäli pedagogisen arvion perusteella todetaan tehostetun tuen tarve, käsitellään tuen aloittaminen ja järjestäminen moniammatillisessa yhteistyössä opiskeluhuollon ammattihenkilöiden kanssa ja opiskelijalle laaditaan oppimissuunnitelma. Tällöin hänelle ei laadita erikseen opiskelusuunnitelmaa, vaan kaikki tarvittavat tiedot kirjataan oppimissuunnitelmaan.</p>\n\n<p><em>Erityinen tuki lisäopetuksessa</em></p>\n\n<p>Opiskelijalla on mahdollisuus saada erityistä tukea lisäopetuksessa sitä tarvitessaan. Erityistä tukea perusopetuksessa saaneen opiskelijan tarve tuen jatkamiseen lisäopetuksessa arvioidaan lisäopetuksen alkaessa. Myös opiskelija, jolle ei ole annettu erityistä tukea perusopetuksen aikana, voi saada erityistä tukea lisäopetuksessa.</p>\n\n<p>Erityisen tuen tarpeen selvittämiseksi opiskelijan tilanteesta tehdään pedagoginen selvitys. Mikäli pedagogisen selvityksen perusteella todetaan erityisen tuen tarve, opetuksen järjestäjä tekee kirjallisen päätöksen erityisestä tuesta ja opiskelijalle laaditaan henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, HOJKS. Tällöin opiskelijalle ei laadita erikseen opiskelusuunnitelmaa, vaan kaikki tarvittavat tiedot kirjataan HOJKSiin.</p>\n\n<p>Opiskelijan tuen tarvetta arvioitaessa ja tukea suunniteltaessa hyödynnetään perusopetuksen aikana laadittuja, opiskelijaa koskevia pedagogisia asiakirjoja. <abbr data-viite=\"Viite121425546150058\">Tiedonsiirtoa </abbr>koskevat lisäopetuksessa samat säännökset kuin perusopetuksessakin.</p>\n\n<p>Lisäopetuksessa opiskelijalla on mahdollisuus korottaa perusopetuksessa annettuja arvosanoja myös niissä oppiaineissa, joissa hänellä on ollut yksilöllistetty oppimäärä perusopetuksen aikana. Mikäli opiskelijan on tarpeen opiskella myös lisäopetuksessa yksilöllistetyn oppimäärän mukaan yhdessä tai useammassa oppiaineessa, erityisen tuen päätöksessä määrätään ne oppiaineet, jotka opiskelija opiskelee yksilöllistetyn oppimäärän mukaisesti. Lisäopetus voidaan järjestää myös toiminta-alueittain.</p>",
+                  "sv": "<p>Stöd för lärande och skolgång i påbyggnadsundervisningen ges på tre nivåer enligt samma principer som i den grundläggande utbildningen (se Grunderna för läroplanen för den grundläggande utbildningen, Stöd för lärande och skolgång). Den studerande har <abbr data-viite=\"Viite111425546123070\">rätt till</abbr> tillräckligt stöd genast när behov uppstår. Det innebär rätt till de stödformer som fastställs i lagen om grundläggande utbildning, såsom stödundervisning, specialundervisning på deltid, tolknings- och biträdestjänster, särskilda hjälpmedel och specialundervisning. Vilka former av stöd som används bestäms utifrån den studerandes behov. Det intensifierade stödet upphör och beslutet om särskilt stöd upphör att gälla när den grundläggande utbildningen avslutas.</p>\n\n<p><em>Allmänt stöd i påbyggnadsundervisningen</em></p>\n\n<p>Påbyggnadsundervisningen är i princip individuell och flexibel och utgår från varje studerandes egen studieplan. I påbyggnadsundervisningen kan den studerande fylla eventuella kunskapsluckor och höja vitsord från den grundläggande utbildningen. Varje studerandes behov av stöd ska bedömas separat. Den första nivån av stöd är allmänt stöd. Hur man ordnar stödet för den studerande och vilka stödformerna är ska beskrivas i den studerandes studieplan.</p>\n\n<p><em>Intensifierat stöd i påbyggnadsundervisningen</em></p>\n\n<p>Den studerande har vid behov rätt till intensifierat stöd. För en studerande som fått intensifierat stöd i den grundläggande utbildningen bedöms behovet av fortsatt stöd när påbyggnadsundervisningen inleds. Även studerande som inte fått intensifierat stöd i den grundläggande utbildningen kan få intensifierat stöd i påbyggnadsundervisningen.</p>\n\n<p>För att utreda behovet av intensifierat stöd görs en pedagogisk bedömning av den studerandes situation. Ifall man utifrån den pedagogiska bedömningen konstaterar att den studerande har behov av intensifierat stöd, ska inledandet och ordnandet av stöd behandlas genom yrkesövergripande samarbete med yrkespersoner inom elev- och studerandevården och en plan för den studerandes lärande utarbetas. I det fallet utarbetas ingen studieplan för den studerande, utan alla uppgifter antecknas i planen för lärande.</p>\n\n<p><em>Särskilt stöd i påbyggnadsundervisningen</em></p>\n\n<p>Den studerande har vid behov rätt att få särskilt stöd i påbyggnadsundervisningen. För en studerande som fått särskilt stöd i den grundläggande utbildningen bedöms behovet av fortsatt stöd när påbyggnadsundervisningen inleds. Även studerande som inte fått särskilt stöd i den grundläggande utbildningen kan få särskilt stöd i påbyggnadsundervisningen.</p>\n\n<p>För att utreda behovet av särskilt stöd görs en pedagogisk utredning av den studerandes situation. Ifall man utifrån den pedagogiska utredningen konstaterar att den studerande har behov av särskilt stöd, ska utbildningsanordnaren fatta ett skriftligt beslut om särskilt stöd och en individuell plan (IP) för hur undervisningen ska ordnas utarbetas för den studerande. I det fallet utarbetas ingen studieplan för den studerande, utan alla uppgifter antecknas i IP.</p>\n\n<p>När man bedömer den studerandes behov av stöd och när stödet planeras ska pedagogiska dokument som uppgjorts under den grundläggande utbildningen utnyttjas. I fråga om <abbr data-viite=\"Viite121425546150058\">överföring av information</abbr> gäller samma föreskrifter i påbyggnadsundervisningen som i den grundläggande utbildningen.</p>\n\n<p>I påbyggnadsundervisningen kan den studerande höja vitsord från den grundläggande utbildningen också i sådana läroämnen, som han eller hon studerat enligt individualiserad lärokurs i den grundläggande utbildningen. Ifall den studerande har behov av att också i påbyggnadsundervisningen studera enligt en individualiserad lärokurs i ett eller flera läroämnen, ska man genom ett beslut om särskilt stöd fastställa i vilka läroämnen hen studerar enligt en individualiserad lärokurs. Påbyggnadsundervisningen kan också ordnas enligt verksamhetsområde.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "720501"
+            },
+            {
+              "id": 720473,
+              "perusteenOsa": {
+                "id": 720502,
+                "luotu": 1425542592586,
+                "muokattu": 1427832194010,
+                "muokkaaja": "1.2.246.562.24.74040922019",
+                "nimi": {
+                  "_id": "869873",
+                  "fi": "Opiskeluhuolto",
+                  "sv": "Studerandevård"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "881321",
+                  "fi": "<p>Lisäopetuksen opiskeluhuollon järjestämistä ja toteuttamista koskevat samat periaatteet kuin perusopetuksen oppilashuollossa. Myös opiskelijoilla on samat oikeudet kuin perusopetuksessa. Opetuksen järjestäjällä tulee olla <abbr data-viite=\"Viite131425546167998\">oppilas- ja opiskelijahuoltolain</abbr> edellyttämä oppilaitoskohtainen opiskeluhuoltosuunnitelma, jonka laatimisesta on määrätty perusopetuksen opetussuunnitelman perusteissa. Lisäopetuksen oppilaitoskohtainen opiskeluhuoltosuunnitelma voidaan sisällyttää perusopetusta koskevaan koulukohtaiseen oppilashuoltosuunnitelmaan.</p>\n\n<p>Lisäopetuksessa opiskelijalla on oikeus opetukseen osallistumisen edellyttämään maksuttomaan opiskeluhuoltoon. Yhteisön ja yksittäisten opiskelijoiden hyvinvoinnista ja turvallisuudesta huolehtiminen ulottuu kaikkeen lisäopetuksen koulutyöhön. Opiskeluhuolto on kaikkien kouluyhteisössä työskentelevien ja opiskeluhuoltopalveluista vastaavien työntekijöiden yhteinen tehtävä.</p>\n\n<p>Opiskeluhuoltoa toteutetaan sekä yhteisöllisenä että yksilökohtaisena. Yhteisöllinen opiskeluhuolto on osa lisäopetuksen toimintakulttuuria ja ensisijainen tapa toteuttaa opiskeluhuoltoa. Yhteisöllinen opiskeluhuolto on ennaltaehkäisevää ja sen tehtävänä on vahvistaa osallisuuden, turvallisuuden ja huolenpidon ilmapiiriä lisäopetuksessa.</p>\n\n<p>Opiskeluhuoltotyötä ohjaa opiskelijan edun ensisijaisuus. Yksilökohtaista opiskeluhuoltoa toteutetaan opiskelijan ja tarvittaessa huoltajan suostumuksella. Psykologi- ja kuraattoripalvelut sekä kouluterveydenhuollon palvelut ovat opiskelijan saatavilla ja ne järjestetään lain edellyttämässä määräajassa. Opiskelijan yksilölliset edellytykset, voimavarat ja tarpeet otetaan huomioon lisäopetuksen arjessa sekä tarvittavan tuen suunnittelussa ja toteutuksessa. Työssä turvataan opiskelijan ja huoltajan osallisuus, työskentelyn luottamuksellisuus sekä kunnioittava vuorovaikutus.</p>\n\n<p>Monialainen yhteistyö on lisäopetuksen opiskeluhuollossa tärkeää. Opiskeluhuolto järjestetään opetustoimen sekä sosiaali- ja terveystoimen yhteistyönä siten, että siitä muodostuu toimiva kokonaisuus. Sitä toteutetaan yhteistyössä opiskelijan, huoltajan ja tarvittaessa muiden yhteistyötahojen kanssa. Opiskeluhuollon yhteistyö lisäopetuksessa on tärkeää erityisesti opiskelijan ohjauksessa, siirtymävaiheissa sekä jatko-opintojen yksilöllisessä suunnittelussa.</p>",
+                  "sv": "<p>I påbyggnadsundervisningen ska studerandevården ordnas och genomföras enligt samma principer som elevvården i den grundläggande utbildningen. De studerande har också samma rättigheter som i den grundläggande utbildningen. Enligt <abbr data-viite=\"Viite131425546167998\">lagen om elev- och studerandevård</abbr> ska utbildningsanordnaren utarbeta en studerandevårdsplan för varje läroanstalt. Föreskrifter om planen finns i grunderna för läroplanen för den grundläggande utbildningen. Den skolspecifika studerandevårdsplanen för påbyggnadsundervisningen kan inkluderas i den skolspecifika elevvårdsplanen för den grundläggande utbildningen.</p>\n\n<p>Den studerande har i påbyggnadsundervisningen rätt till sådan avgiftsfri studerandevård som behövs för att den studerande ska kunna delta i undervisningen. Skolgemenskapens och de enskilda studerandenas välbefinnande och trygghet ska beaktas i allt skolarbete i påbyggnadsundervisningen. Studerandevården är en gemensam uppgift för alla som arbetar i skolgemenskapen och alla som ansvarar för studerandevårdstjänsterna.</p>\n\n<p>Studerandevården ska bestå av både gemensam och individuell studerandevård. Den gemensamma studerandevården ska vara en del av påbyggnadsundervisningens verksamhetskultur och vara det primära sättet att genomföra studerandevård. Den gemensamma studerandevården ska vara förebyggande och stärka atmosfären av delaktighet, omsorg och trygghet.</p>\n\n<p>Studerandevårdsarbetet ska utgå från den studerandes bästa. Den individuella studerandevården ska genomföras med den studerandes och vid behov med vårdnadshavarens samtycke. Psykolog- och kuratorstjänster samt skolhälsovårdstjänster ska vara tillgängliga för den studerande och ordnas inom lagstadgad tid. Den studerandes individuella förutsättningar, resurser och behov ska beaktas i påbyggnadsundervisningens vardag och vid planeringen och genomförandet av stöd. Arbetet ska bygga på den studerandes och vårdnadshavarens delaktighet, konfidentialitet och en respektfull växelverkan.</p>\n\n<p>Yrkesövergripande samarbete är viktigt i påbyggnadsundervisningens studerandevård. Studerandevården ska ordnas genom samarbete mellan undervisningsväsendet och social- och hälsovårdsväsendet så att den bildar en fungerande helhet. Den ska genomföras i samverkan med den studerande, vårdnadshavaren och vid behov andra samarbetspartner. Samarbetet inom påbyggnadsundervisningens studerandevård är särskilt viktigt vid handledningen av den studerande, vid övergångarna och vid individuell planering av fortsatta studier.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "720502"
+            },
+            {
+              "id": 720474,
+              "perusteenOsa": {
+                "id": 720503,
+                "luotu": 1425542687681,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869874",
+                  "fi": "Kieleen ja kulttuuriin liittyviä erityiskysymyksiä",
+                  "sv": "Särskilda frågor i anslutning till språk och kultur"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "871615",
+                  "fi": "<p>Lisäopetuksessa opiskelijoiden kielelliset ja kulttuuriset taustat ja valmiudet otetaan huomioon. Taustaltaan saamelaisten, romanien, viittomakielisten, maahanmuuttajien ja muiden monikielisten opiskelijoiden opetuksen järjestämisessä noudatetaan soveltuvin osin perusopetuksen opetussuunnitelman perusteiden linjauksia<strong> </strong>(katso Perusopetuksen opetussuunnitelman perusteet, Kieleen ja kulttuuriin liittyviä erityiskysymyksiä).</p>\n\n<p>Maahanmuuttajataustaisten ja vieraskielisten opiskelijoiden opetuksen tavoitteiden asettamisessa ja sisältöjen valinnassa otetaan huomioon opiskelijoiden vaihteleva suomen kielen taito sekä aiemmin opitut tiedot ja taidot. Suomen kielen taitoa kehitetään kaikilla kielen käytön osa-alueilla, joita ovat kuullun ymmärtäminen, puhuminen, luetun ymmärtäminen ja kirjoittaminen. Ymmärtämis- ja tuottamistaitojen kehittyminen nivoutuvat toisiinsa. Opetustarjonta suunnitellaan ottaen huomioon opiskelijoiden oppimistarpeet sekä kielenoppimisen vaihe. Tavoitteena on vahvistaa osaamisen laajenemista arkielämän konkreettisesta kielestä käsitteellisen ajattelun kieleen. Opiskelijoiden tulee saada myös valmiudet havaintojen ja ilmiöiden sekä omien ajatusten, tunteiden ja mielipiteiden ilmaisemiseen tilanteeseen sopivalla tavalla. Suomen kielen oppiminen tukee kotoutumista suomalaiseen yhteiskuntaan. Opetuksessa arvostetaan ja hyödynnetään myös muita opiskelijoiden osaamia kieliä.</p>\n\n<p>Jokaisen opiskelijan kieli- ja kulttuuri-identiteetin kehitystä tuetaan monipuolisesti. Tavoitteena on tukea monikielisyyttä sekä opettaa opiskelijoita arvostamaan eri kieliä ja kulttuureja. Eri kieli- ja kulttuuritaustaisten opiskelijoiden ja heidän huoltajiensa tietämystä oman kieli- ja kulttuurialueensa luonnosta, elämäntavoista, kielistä ja kulttuureista hyödynnetään opetuksessa.</p>",
+                  "sv": "<p>De studerandes varierande språkliga och kulturella bakgrund och färdigheter ska beaktas i påbyggnadsundervisningen. Undervisningen för samer, romer, teckenspråkiga, invandrare och andra flerspråkiga studerande ska i tillämpliga delar ordnas enligt riktlinjerna i grunderna för läroplanen för den grundläggande utbildningen (se Grunderna för läroplanen för den grundläggande utbildningen, Särskilda frågor som anknyter till språk och kultur).</p>\n\n<p>Vid uppställande av mål och vid val av innehåll för studerande med invandrarbakgrund och studerande med främmande modersmål beaktas de studerandes varierande färdigheter i svenska samt tidigare införskaffade kunskaper och färdigheter. Språkkunskapen ska utvecklas inom alla delområden: hörförståelse, tal, läsförståelse och skrivande. Utveckling av förmågan att förstå och förmågan att producera sammanlänkas. Undervisningsutbudet planeras med beaktande av de studerandes behov och språkliga utgångsläge. Målet är att de studerandes språkkunskaper utvidgas från konkret vardagsspråk till ett språk som lämpar sig för abstrakt tänkande. De studerande ska ges övning i att uttrycka iakttagelser och företeelser samt sina personliga tankar, känslor och åsikter på ett för situationen lämpligt sätt. Kunskaper i svenska stödjer integreringen i det finländska samhället. I undervisningen ska de studerandes samtliga språk värdesättas och utnyttjas.</p>\n\n<p>Utvecklingen av varje studerandes språkliga och kulturella identitet ska mångsidigt stödjas. Målet är att stödja flerspråkighet och lära de studerande att uppskatta olika språk och kulturer. Kunskapen som studerande som tillhör olika språk- och kulturgrupper och deras vårdnadshavare har om naturen, levnadsvanor, språk och kulturer inom det egna språk- och kulturområdet ska utnyttjas i undervisningen.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "720503"
+            }
+          ],
+          "_perusteenOsa": "719369"
+        },
+        {
+          "id": 720475,
+          "perusteenOsa": {
+            "id": 720504,
+            "luotu": 1425542727231,
+            "muokattu": 1427831688799,
+            "muokkaaja": "1.2.246.562.24.74040922019",
+            "nimi": {
+              "_id": "881215",
+              "fi": "Oppimisen arviointi ja palaute sekä todistukset lisäopetuksessa",
+              "sv": "Bedömning av lärande samt betyg i påbyggnadsundervisningen"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 720476,
+              "perusteenOsa": {
+                "id": 720505,
+                "luotu": 1425542772048,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869876",
+                  "fi": "Oppimista tukeva arviointikulttuuri",
+                  "sv": "Bedömningskultur som stödjer lärandet"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "805528",
+                  "fi": "<p>Lisäopetuksessa vallitsee oppimista tukeva, opiskelijoita eteenpäin kannustava ja vuorovaikutukseen perustuva arviointikulttuuri. Arviointikulttuuri tulee rakentaa osaksi lisäopetuksen toimintakulttuuria ja sen lähtökohtina ovat perusopetuksen arvoperusta ja käsitys oppimisesta.</p>\n\n<p>Oppimista tukevan arviointikulttuurin keskeisiä piirteitä ovat</p>\n\n<ul>\n\t<li>rohkaiseva ja yrittämään kannustava ilmapiiri</li>\n\t<li>opiskelijoiden osallisuutta edistävä, keskusteleva ja vuorovaikutteinen toimintatapa</li>\n\t<li>opiskelijoiden ohjaaminen ymmärtämään omaa oppimisprosessiaan ja kehittämään itsearviointitaitojaan sekä edistymisen näkyväksi tekeminen koko oppimisprosessin ajan</li>\n\t<li>arvioinnin oikeudenmukaisuus ja eettisyys</li>\n\t<li>arvioinnin monipuolisuus</li>\n\t<li>arvioinnin avulla saadun tiedon hyödyntäminen koulutyön suunnittelussa.</li>\n</ul>\n\n<p>Arvioinnin oikeudenmukaisuus ja eettisyys edellyttävät opiskelijoiden edistymisen ja osaamisen huolellista seurantaa ja tarkastelua suhteessa tavoitteisiin ja arviointikriteereihin sekä opiskelijoita kunnioittavaa palautteen antoa. Lisäopetuksessa keskeistä on jokaisen opiskelijan oppimisen ohjaaminen sekä motivointi ja kannustaminen. Opiskelijoiden on tärkeää saada onnistumisen kokemuksia opiskelussaan.</p>\n\n<p>Opettaja nivoo arvioinnin osaksi opetusta ja ohjausta. Opettajan antama palaute on luonteeltaan laadullista ja kuvailevaa, oppimisen solmukohtia analysoivaa ja ratkovaa vuorovaikutusta.Opiskelijoita ohjataan palautteen avulla tiedostamaan ja myös itse ohjaamaan omaa oppimistaan sekä käyttämään onnistumista parantavia oppimisstrategioita. Opettajan tehtävänä on kehittää opiskelijoiden edellytyksiä itsearviointiin ja opettaa itsearviointitaitoja. Opiskelijoiden itsearviointitaitoihin sisältyvät erityisesti heidän valmiutensa asettaa opiskelulleen tavoitteita, tarkastella ja ohjata omaa työskentelyään, tunnistaa edistymistään sekä suunnitella tulevaisuuttaan.</p>\n\n<p>Lisäopetuksessa on tärkeätä, että opiskelijat voivat osoittaa osaamistaan monipuolisesti heille soveltuvin tavoin. Tämä edellyttää, että opettaja kokoaa tietoa opiskelijoiden edistymisestä oppimisen eri osa-alueilla monenlaisin menetelmin ja erilaisissa oppimistilanteissa. Erilaisissa näyttö- ja koetilanteissa varmistetaan tehtäväksi annon ymmärtäminen, riittävä aika, tieto- ja viestintäteknologian hyödyntämisen mahdollisuudet, opiskelijoiden mahdollisesti tarvitsemien apuvälineiden saatavuus sekä tarvittavat avustajapalvelut. Opiskelijan oppimisvaikeudet ja puutteellinen opetuskielen hallinta otetaan huomioon näyttö- ja koetilanteita suunniteltaessa ja toteutettaessa.</p>",
+                  "sv": "<p>I påbyggnadsundervisningen ska råda en bedömningskultur som bygger på kommunikation och som stödjer och uppmuntrar de studerande. Bedömningskulturen ska utformas som en del av påbyggnadsundervisningens verksamhetskultur och utifrån påbyggnadsundervisningens värdegrund och syn på lärande.</p>\n\n<p>En bedömningskultur som stödjer lärande kännetecknas av</p>\n\n<ul>\n\t<li>en uppmuntrande och stimulerande atmosfär</li>\n\t<li>arbetssätt som främjar kommunikation, interaktion och de studerandes delaktighet</li>\n\t<li>arbetssätt som hjälper de studerande att förstå sin lärprocess och utveckla sina färdigheter i självvärdering och som synliggör framstegen under hela lärprocessen</li>\n\t<li>rättvis och etisk bedömning</li>\n\t<li>mångsidig bedömning</li>\n\t<li>användning av bedömningsinformation för planering av skolarbetet.</li>\n</ul>\n\n<p>Rättvis och etisk bedömning förutsätter att de studerandes framsteg och kunskaper noggrant följs upp och utvärderas i relation till målen och bedömningskriterierna och att de studerande ges uppskattande respons. I påbyggnadsundervisningen är det viktigt att handleda, motivera och uppmuntra varje studerande i lärandet. Det är viktigt att de studerande upplever att de lyckas i sina studier.</p>\n\n<p>Läraren ska integrera bedömningen i undervisningen och handledningen. Lärarens respons ska bestå av kvalitativ och beskrivande kommunikation som analyserar och söker lösningar på problematiska moment i lärandet. De studerande ska med hjälp av responsen lära sig att uppfatta och själva styra sitt lärande och att tillämpa lärstrategier som förbättrar resultaten. Läraren ska utveckla de studerandes förutsättningar för självvärdering och lära dem att utvärdera sig själva. Färdigheter i självvärdering innebär förmåga att ställa upp mål för sina studier, analysera och styra sitt arbete, ge akt på sina framsteg och planera sin framtid.</p>\n\n<p>Det är viktigt att de studerande i påbyggnadsundervisningen kan visa sina kunskaper på olika sätt som lämpar sig för dem. Det förutsätter att läraren med mångsidiga metoder och i olika lärsituationer samlar information om de studerandes framsteg inom olika områden av lärandet. I redovisnings- och provsituationer ska man försäkra sig om att de studerande förstår uppgiften, har tillräckligt med tid, möjligheter att använda informations- och kommunikationsteknik samt tillgång till de hjälpmedel och eventuella biträdestjänster som de behöver. Inlärningssvårigheter och bristande kunskaper i undervisningsspråket ska särskilt beaktas vid planeringen och genomförandet av redovisnings- och provtillfällen.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "720505"
+            },
+            {
+              "id": 720477,
+              "perusteenOsa": {
+                "id": 720506,
+                "luotu": 1425542870493,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869877",
+                  "fi": "Osaamisen ja opintosuoritusten arviointi",
+                  "sv": "Bedömning av lärande och studieprestationer"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "806659",
+                  "fi": "<p>Lisäopetuksessa osaamisen ja opintosuoritusten arviointi sekä palautteen antaminen opiskelijoille perustuvat asetettuihin tavoitteisiin. Opiskelijoiden osaamista tai suorituksia ei verrata keskenään, eikä arviointi kohdistu henkilökohtaisiin ominaisuuksiin tai temperamenttiin.</p>\n\n<p>Perusopetuksen oppimäärään kuuluvissa yhteisissä oppiaineissa todistuksin annettavan arvioinnin tulee perustua näiden oppiaineiden oppimäärien valtakunnallisiin tavoitteisiin sekä päättöarvioinnin kriteereihin, jotka Opetushallitus on määritellyt perusopetuksen opetussuunnitelman perusteissa. Yhteisten oppiaineiden arvioinnissa ja todistusmerkinnöissä noudatetaan muutoinkin, mitä asiasta on päättöarviointia koskien päätetty perusopetuksen opetussuunnitelman perusteissa.</p>\n\n<p>Mikäli opiskelijalle on perusopetuksen aikana tehty erityisen tuen päätös, jossa jonkin oppiaineen oppimäärä on yksilöllistetty, ja mikäli yksilöllistämistä on erityisen tuen päätöksessä jatkettu lisäopetuksen alkaessa, arvioidaan opiskelijan osaamista ja suoriutumista tässä oppiaineessa suhteessa HOJKSissa määriteltyihin yksilöllistettyihin tavoitteisiin. Tällöin saatu arvosana tai arvio varustetaan tähdellä (*).</p>\n\n<p>Valinnaisten oppiaineiden arvioinnissa ja todistusmerkinnöissä noudatetaan, mitä näiden aineiden arvioinnista on perusopetuksen opetussuunnitelman perusteissa päättöarviointia koskien päätetty.</p>\n\n<p>Muissa opinnoissa arviointi perustuu paikallisessa lisäopetuksen opetussuunnitelmassa tai opiskelijan opiskelusuunnitelmassa asetettuihin tavoitteisiin. Näissä opinnoissa todistusarviointi voidaan antaa numeroarvosanana tai sanallisena arviona paikallisesti päätettävällä tavalla.</p>\n\n<p>Lisäopetuksen opiskelijan suoriutuminen opinnoistaan on hyväksytty, jos hän saa opiskelemistaan perusopetuksen yhteisistä oppiaineista, valinnaisten aineiden opinnoista ja muista opinnoista vähintään todistusarvosanan viisi (5) tai sanallisen arvion &rdquo;hyväksytty&rdquo;.</p>\n\n<p>Mahdollisesti tulossa olevasta hylätystä todistusarvosanasta tai -arvioista tulee kertoa opiskelijalle ja hänen huoltajalleen mahdollisimman varhaisessa vaiheessa. Samassa yhteydessä voidaan selvittää tuen tarve ja suunnitella mahdollinen tuki. Opiskelijan opinto-ohjelmaa voidaan tarvittaessa myös tarkistaa ja muuttaa yhteistyössä opiskelijan ja huoltajan kanssa. Opiskelijalle, jonka lukuvuoden suoriutuminen suhteessa tavoitteisiin on jossakin oppiaineessa tai muissa vastaavissa opinnoissa hylätty (numeroarvosana neljä tai sanallinen arvio &rdquo;hylätty&rdquo;), tulee varata mahdollisuus erillisessä kokeessa osoittaa saavuttaneensa hyväksyttävät tiedot ja taidot. Jos hylätty suoritus koskee muunlaisia opintoja, esimerkiksi työelämään tutustumista, voidaan erillinen koe toteuttaa myös antamalla opiskelijalle tarkoitukseen soveltuvia tehtäviä, joiden hyväksytty suorittaminen korvaa hylätyt opinnot. Mahdollisuus erilliseen kokeeseen ja korvaaviin tehtäviin voidaan antaa joko lukuvuoden aikana tai lukuvuoden koulutyön päätyttyä.</p>",
+                  "sv": "<p>I påbyggnadsundervisningen ska bedömningen av kunskaper och studieprestationer samt responsen till de studerande utgå från de uppställda målen. De studerandes kunskaper eller prestationer ska inte jämföras med varandra och bedömningen ska inte gälla temperament eller andra personliga egenskaper.</p>\n\n<p>I de gemensamma läroämnen som hör till den grundläggande utbildningens lärokurs ska den bedömning som ges i betyget grunda sig på de nationella målen för ifrågavarande ämneslärokurser och på de kriterier för slutbedömningen som Utbildningsstyrelsen fastställt i grunderna för läroplanen för den grundläggande utbildningen. Vid bedömningen av gemensamma läroämnen ska man även i övrigt iaktta de beslut som gjorts gällande slutbedömningen i grunderna för den grundläggande utbildningen.</p>\n\n<p>Ifall den studerande under den grundläggande utbildningen fått beslut om särskilt stöd som föreskriver individualisering av lärokursen i ett läroämne, och ifall individualiseringen enligt beslut om särskilt stöd ska fortsätta i påbyggnadsundervisningen, ska den studerandes kunskaper och prestationer i läroämnet i fråga bedömas i relation till de individuella målen i IP:n. I det fallet markeras vitsordet eller omdömet med en asterisk (*).</p>\n\n<p>Bedömningen och betygsanteckningarna för valfria ämnen ska följa det som fastställs om slutbedömningen av ifrågavarande ämnen i grunderna för läroplanen för den grundläggande utbildningen.</p>\n\n<p>I övriga studier ska bedömningen grunda sig på de mål som ställts upp i den lokala läroplanen för påbyggnadsundervisningen eller i den studerandes studieplan. Studierna kan bedömas med antingen siffervitsord eller verbala omdömen på det sätt som bestäms lokalt.</p>\n\n<p>Den studerandes prestationer i påbyggnadsundervisningen är godkända, om den studerande i den grundläggande utbildningens gemensamma ämnen, studierna i valfria ämnen och övriga studier får minst vitsordet fem (5) eller det verbala omdömet &quot;godkänd&quot;.</p>\n\n<p>Den studerande och vårdnadshavaren ska så tidigt som möjligt informeras ifall den studerande eventuellt kommer att få ett underkänt vitsord eller omdöme i följande betyg. Samtidigt kan man kartlägga behovet av stöd och planera eventuellt stöd. Den studerandes studieprogram kan vid behov också ses över och uppdateras i samråd med den studerande och vårdnadshavaren. En studerande, vars prestation för läsåret är underkänd i relation till målen (vitsordet fyra eller det verbala omdömet &quot;underkänd&quot;) i något läroämne eller övriga motsvarande studier, ska ges möjlighet att i ett särskilt prov visa att han eller hon inhämtat godtagbara kunskaper och färdigheter. Om den underkända prestationen gäller andra slags studier, till exempel praktisk arbetslivsorientering, kan det särskilda provet också genomföras så att den studerande får lämpliga uppgifter som kan ersätta de underkända studierna om de utförs med godkänt resultat. Möjligheten till ett särskilt prov eller ersättande uppgifter kan ges antingen under läsåret eller efter att det avslutats.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "720506"
+            },
+            {
+              "id": 720478,
+              "perusteenOsa": {
+                "id": 720507,
+                "luotu": 1425542941728,
+                "muokattu": 1427789538522,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "869878",
+                  "fi": "Lisäopetuksessa käytettävät todistukset",
+                  "sv": "Betyg i påbyggnadsundervisningen"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "806690",
+                  "fi": "<p>Lisäopetuksessa käytettävät todistukset ovat</p>\n\n<ul>\n\t<li>Välitodistus, jonka antamisesta päätetään paikallisessa opetussuunnitelmassa</li>\n\t<li>Todistus lisäopetuksen suorittamisesta: annetaan opiskelijalle, joka on suorittanut kaikki opinnot hyväksytysti (vähintään numeroarvosana 5 tai sanallinen arvio &rdquo;hyväksytty&rdquo;)</li>\n\t<li>Todistus lisäopetuksessa suoritetuista opinnoista: annetaan opiskelijalle, joka on suorittanut vain osan opinnoista hyväksytysti tai keskeyttänyt opintonsa</li>\n</ul>\n\n<p>Lisäopetuksessa käytettäviin todistuksiin merkitään</p>\n\n<ul>\n\t<li>todistuksen nimi</li>\n\t<li>opiskelijan nimi ja henkilötunnus</li>\n\t<li>opetuksen järjestäjän ja koulun nimi</li>\n\t<li>rehtorin allekirjoitus</li>\n\t<li>lukuvuosi ja todistuksen antamispäivämäärä</li>\n\t<li>maininta, että todistus on Opetushallituksen 22.12.2014 hyväksymien opetussuunnitelman perusteiden mukainen.</li>\n</ul>\n\n<p>Arviota opiskelijan käyttäytymisestä ei merkitä todistuksiin.</p>\n\n<p>Mikäli osa opiskelijan opinnoista on tapahtunut muussa oppilaitoksessa, työpaikalla tai työpaikkaan rinnastettavassa muussa paikassa, tulee siitä tehdä merkintä todistuksiin.</p>\n\n<p>Uskonnon ja elämänkatsomustiedon arvio tai arvosana merkitään lisäopetuksessa käytettäviin todistuksiin muodossa &rdquo;uskonto/elämänkatsomustieto&rdquo; erittelemättä sitä, kumpaa oppiainetta oppilas on opiskellut. Oppilaan opiskelemaa uskonnon oppimäärää ei merkitä todistuksiin. Jos oppilas saa oman uskonnon opetusta, hänen saamansa arvio merkitään todistuksiin, mikäli kyseinen opetus on perusopetuksen järjestäjän antamaa. Uskonnollisen yhdyskunnan antamasta opetuksesta mahdollisesti saatua arvosanaa ei merkitä todistuksiin.</p>\n\n<p>Yksilöllistettyjen oppimäärien mukaisesti opiskelluissa oppiaineissa voidaan todistuksissa käyttää numeroarvioinnin sijasta sanallista arviota. Toiminta-alueittain opiskeltaessa käytetään sanallista arviointia. Sanallisesta arviosta on käytävä ilmi, onko oppilaan suoritus hyväksytty vai hylätty. Jos erityisen tuen päätöksessä on päätetty, että oppilas opiskelee yhdessä tai useammassa oppiaineessa yksilöllistetyn oppimäärän mukaan, varustetaan kyseisen oppiaineen numeroarvosana sekä sanallinen arvio tähdellä (*). Todistuksen lisätietoja -kohtaan tulee maininta siitä, että oppilas on opiskellut tähdellä (*) merkityt oppiaineet yksilöllistetyn oppimäärän mukaan.</p>\n\n<p>Opiskelijalle tulee antaa tarvittaessa jatko-opintoihin pyrkimistä varten välitodistus.</p>\n\n<p>Opiskelija saa pyynnöstä todistuksen liitteen, jossa arvioidaan hänen työskentelyään ja käyttäytymistään lisäopetuksessa. Todistuksen liitteenä voi olla myös:</p>\n\n<p>- tarkempia tietoja oppilaan opinto-ohjelmasta ja opinnoissa menestymisestä</p>\n\n<p>- seloste muissa oppilaitoksissa suoritetuista opinnoista</p>\n\n<p>- arvio työpaikalla tapahtuneesta oppimisesta sekä kuvaus opiskelijan työtehtävistä</p>\n\n<p>- seloste opiskelijan harrastuksista.</p>\n\n<p>Liitteestä ei tule merkintää todistukseen.</p>\n\n<p><em>Todistus koko lisäopetuksen suorittamisesta</em></p>\n\n<p>Mikäli opiskelija suorittaa hyväksytysti kaikki opinto-ohjelmaansa kuuluvat opinnot, annetaan hänelle Todistus lisäopetuksen suorittamisesta.</p>\n\n<p>Todistukseen sisällytetään kohta Lisäopetuksen aikana suoritetut opinnot. Tähän merkitään opiskelijan opinto-ohjelma ja oppiaineittain tai aineryhmittäin arvio kaikista lisäopetuksessa suoritetuista opinnoista. Tähän merkitään myös ne perusopetuksen yhteiset ja valinnaiset oppiaineet, jotka opiskelija on suorittanut hyväksytysti lisäopetuksen aikana, mutta joissa hän ei ole korottanut perusopetuksen päättötodistuksessa saamaansa arvosanaa.</p>\n\n<p>Todistukseen sisällytetään tarvittaessa erikseen kohta Perusopetuksen päättöarvosanojen korottaminen. Jos opiskelijan lisäopetuksessa saama uusi arvosana perusopetuksen yhteisissä tai valinnaisissa oppiaineissa on korkeampi kuin perusopetuksen päättöarvosana, se merkitään tähän.</p>\n\n<p><em>Todistus lisäopetuksessa suoritetuista opinnoista</em></p>\n\n<p>Mikäli opiskelija suorittaa vain osan opinto-ohjelmaansa kuuluneista opinnoista hyväksytysti tai keskeyttää opintonsa, annetaan hänelle Todistus lisäopetuksessa suoritetuista opinnoista.</p>\n\n<p>Opiskelijan hyväksytysti suorittamat opinnot merkitään kohtaan Lisäopetuksen aikana suoritetut opinnot. Tähän merkitään myös ne perusopetuksen yhteiset ja valinnaiset oppiaineet, jotka opiskelija on suorittanut hyväksytysti lisäopetuksen aikana, mutta joissa hän ei ole korottanut perusopetuksen päättötodistuksessa saamaansa arvosanaa.</p>\n\n<p>Jos opiskelija on korottanut jonkin perusopetuksen yhteisen tai valinnaisen oppiaineen arvosanaa, se merkitään todistuksessa kohtaan Perusopetuksen päättöarvosanojen korottaminen.</p>",
+                  "sv": "<p>Betyg som används i påbyggnadsundervisningen</p>\n\n<ul>\n\t<li>Mellanbetyg: hur det ges bestäms i den lokala läroplanen</li>\n\t<li>Betyg över påbyggnadsundervisningens lärokurs: ges studerande, som slutfört alla studier med godkänt resultat (minst vitsordet 5 eller det verbala omdömet &quot;godkänd&quot;)</li>\n\t<li>Betyg över studier som fullgjorts under påbyggnadsundervisningen: ges studerande som slutfört endast en del av studierna med godkänt resultat eller avbrutit sina studier.</li>\n</ul>\n\n<p> </p>\n\n<p> </p>\n\n<p>I betygen som används i påbyggnadsundervisningen antecknas</p>\n\n<ul>\n\t<li>betygets namn</li>\n\t<li>den studerandes namn och personbeteckning</li>\n\t<li>utbildningsanordnarens och skolans namn</li>\n\t<li>rektors underskrift</li>\n\t<li>läsår och datum när betyget utfärdas</li>\n\t<li>en anteckning om att betyget utfärdats enligt de grunder för läroplanen som Utbildningsstyrelsen godkänt 22.12.2014.</li>\n</ul>\n\n<p>Bedömningen av den studerandes uppförande antecknas inte i betygen.</p>\n\n<p>Ifall den studerande har genomfört en del av studierna vid en annan läroanstalt, på en arbetsplats eller annan därmed jämförbar plats, ska detta antecknas i betygen.</p>\n\n<p>Vitsordet i religion och livsåskådningskunskap antecknas i betyget över påbyggnadsundervisning i formen &rdquo;religion/livsåskådningskunskap&rdquo; utan att särskilja vilket av läroämnena den studerande har studerat. Lärokursens omfattning antecknas inte i betygen. Om en studerande får undervisning i sin egen religion, antecknas vitsordet i avgångsbetyget, om undervisningen ges av den som ordnar den grundläggande utbildningen. Eventuella vitsord från undervisning som ges av något religiöst samfund antecknas inte i betyget.</p>\n\n<p>Vid bedömning av läroämnen som studerats enligt en individualiserad lärokurs kan man i betyget i stället för siffervitsord använda verbal bedömning. För en studerande vars undervisning har ordnats enligt verksamhetsområde används verbal bedömning. Av den verbala bedömningen ska framgå om den studerande är godkänd eller underkänd i sina studier. Om det i ett beslut om särskilt stöd har fattats beslut om att den studerande studerar ett eller flera läroämnen enligt en individualiserad lärokurs ska såväl siffervitsordet som den verbala bedömningen förses med en asterisk (*). I betyget antecknas under punkten Tilläggsuppgifter att den studerande har studerat de läroämnen som är försedda med asterisk (*) enligt en individualiserad lärokurs.</p>\n\n<p>Den studerande ska vid behov ges ett separat mellanbetyg för ansökan till fortsatta studier.</p>\n\n<p>Den studerande ska på begäran få en betygsbilaga med en bedömning av sitt arbete och uppförande under påbyggnadsundervisningen. Som bilaga till betyget kan också ges</p>\n\n<ul>\n\t<li>mera detaljerade uppgifter om den studerandes studieplan och framgång i studierna</li>\n\t<li>en redogörelse över studier som genomförts vid andra läroanstalter</li>\n\t<li>en bedömning av lärandet på arbetsplatser och en beskrivning av den studerandes arbetsuppgifter</li>\n\t<li>en redogörelse över den studerandes fritidsintressen.</li>\n</ul>\n\n<p> </p>\n\n<p>Betygsbilagan ska inte omnämnas i betyget.</p>\n\n<p> </p>\n\n<p><em>Betyg över fullgjord påbyggnadsundervisning</em></p>\n\n<p>Om den studerande har fullgjort alla studier som ingår i hans eller hennes studieplan med godkänt vitsord, ges ett Betyg över påbyggnadsundervisningens lärokurs.</p>\n\n<p>I betyget ska ingå punkten Studier som fullgjorts under påbyggnadsundervisningen. Där antecknas den studerandes studieplan och en bedömning enligt läroämne eller läroämnesgrupp av alla studier som fullgjorts under påbyggnadsundervisningen. I denna punkt antecknas också de gemensamma och valfria läroämnen i den grundläggande utbildningen som den studerande under påbyggnadsundervisningen har avlagt med godkänt resultat, men inte höjt vitsordet i avgångsbetyget från den grundläggande utbildningen i.</p>\n\n<p>Vid behov ska det i betyget ingå punkten Höjning av slutvitsorden från den grundläggande utbildningen. Om det vitsord som den studerande under påbyggnadsundervisningen fått i den grundläggande utbildningens gemensamma eller valfria läroämnen är högre än vitsordet på avgångsbetyget från den grundläggande utbildningen, antecknas det nya vitsordet i denna punkt.</p>\n\n<p><em>Betyg över fullgjorda studier i påbyggnadsundervisningen</em></p>\n\n<p>Om den studerande fullgör endast en del av de studier som ingår i hans eller hennes studieplan med godkänt resultat eller avbryter studierna ges ett Betyg över fullgjorda studier i påbyggnadsundervisningen.</p>\n\n<p> </p>\n\n<p>De studier som den studerande fullgjort med godkänt resultat antecknas på betyget i punkten Studier som fullgjorts under påbyggnadsundervisningen. I denna punkt antecknas också de gemensamma och valfria läroämnen i den grundläggande utbildningen som den studerande under påbyggnadsundervisningen har avlagt med godkänt resultat, men inte höjt vitsordet i avgångsbetyget från den grundläggande utbildningen i.</p>\n\n<p>Om den studerande har höjt något vitsord i den grundläggande utbildningens gemensamma eller valfria läroämnen, antecknas detta i betyget i punkten Höjning av slutvitsorden från den grundläggande utbildningen.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "720507"
+            }
+          ],
+          "_perusteenOsa": "720504"
+        },
+        {
+          "id": 720479,
+          "perusteenOsa": {
+            "id": 720508,
+            "luotu": 1425543031198,
+            "muokattu": 1427831708637,
+            "muokkaaja": "1.2.246.562.24.74040922019",
+            "nimi": {
+              "_id": "881216",
+              "fi": "Paikallinen opetussuunnitelma",
+              "sv": "Den lokala läroplanen"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 721270,
+              "perusteenOsa": {
+                "id": 720509,
+                "luotu": 1425543063018,
+                "muokattu": 1427832262821,
+                "muokkaaja": "1.2.246.562.24.74040922019",
+                "nimi": {
+                  "_id": "881054",
+                  "fi": "Opetussuunnitelman merkitys",
+                  "sv": "Läroplanens betydelse"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "881322",
+                  "fi": "<p>Lisäopetuksen opetussuunnitelman perusteet ovat Opetushallituksen antama määräys, jonka mukaisesti paikallinen opetussuunnitelma laaditaan. Opetuksen järjestäjällä on vastuu paikallisen <abbr data-viite=\"Viite141425546191701\">opetussuunnitelman</abbr> laadinnasta.</p>\n\n<p>Paikallinen opetussuunnitelma on tärkeä osa opetuksen ohjausjärjestelmää. Se on strateginen ja pedagoginen työkalu, joka linjaa opetuksen järjestäjän toimintaa sekä koulujen työtä. Se liittää koulujen toiminnan kunnan muuhun toimintaan nuorten hyvinvoinnin ja oppimisen edistämiseksi. Opetussuunnitelma luo yhteisen perustan ja suunnan päivittäiselle koulutyölle. Paikallisen opetussuunnitelman tehtävänä on edistää opetuksen laatua, vahvistaa koulutuksellista jatkumoa ja luoda hyvä perusta seuraavaan koulutusvaiheeseen siirtymiselle.</p>\n\n<p>Opiskelijoiden opiskelusuunnitelmat ja muut yksilölliset suunnitelmat rakennetaan yhteisen opetussuunnitelman varaan. Opetuksen järjestäjä huolehtii myös opetussuunnitelmaan perustuvan lukuvuosisuunnitelman laadinnasta. <abbr data-viite=\"Viite151425546207843\">Perusopetusasetus</abbr> velvoittaa tiedottamaan opiskelijoille ja näiden huoltajille keskeisistä lukuvuosisuunnitelmassa päätetyistä asioista.</p>",
+                  "sv": "<p>Grunderna för läroplanen är en av Utbildningsstyrelsen utfärdad föreskrift, enligt vilket de lokala läroplanerna utarbetas. Utbildningsanordnaren ansvarar för att utarbeta en lokal <abbr data-viite=\"Viite141425546191701\">läroplan</abbr>.</p>\n\n<p>Den lokala läroplanen är en viktig del av styrsystemet för utbildningen. Den är ett strategiskt och pedagogiskt verktyg som styr utbildningsanordnarens verksamhet och skolornas arbete. Läroplanen förenar skolornas verksamhet med kommunens övriga verksamhet som främjar de ungas välbefinnande och lärande. Läroplanen ger en gemensam grund och riktlinjer för det dagliga skolarbetet. Den lokala läroplanen ska främja undervisningens kvalitet, stärka utbildningens kontinuitet och skapa en god grund för övergången till följande utbildningsstadium.</p>\n\n<p>De studerandes studieplaner och andra individuella planer ska utarbetas utgående från den allmänna läroplanen. Utbildningsanordnaren ansvarar också för att en läsårsplan utarbetas utgående från läroplanen. Enligt <abbr data-viite=\"Viite151425546207843\">förordningen om grundläggande utbildning</abbr> ska de studerande och deras vårdnadshavare informeras om centrala frågor som fastställs i läsårsplanen.</p>\n\n<hr />"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "720509"
+            },
+            {
+              "id": 721272,
+              "perusteenOsa": {
+                "id": 721441,
+                "luotu": 1425543100390,
+                "muokattu": 1427832390113,
+                "muokkaaja": "1.2.246.562.24.74040922019",
+                "nimi": {
+                  "_id": "881055",
+                  "fi": "Opetussuunnitelman laatiminen",
+                  "sv": "Läroplanens utformning"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "881323",
+                  "fi": "<p>Paikallisessa opetussuunnitelmassa päätetään lisäopetuksen järjestämistavasta ja toteuttamisesta.Siinä täydennetään ja painotetaan opetussuunnitelman perusteissa määrättyjä tavoitteita, toimintaa ohjaavia linjauksia, opetuksen ja opiskeluhuollon keskeisiä sisältöjä sekä muita opetuksen järjestämiseen liittyviä seikkoja paikallisesta näkökulmasta. Opetuksen järjestäjä ottaa opetussuunnitelmaa laatiessaan huomioon opiskelijoiden tarpeet, paikalliset erityispiirteet sekä itsearvioinnin ja kehittämisen tulokset. Koulukohtaisissa lukuvuosisuunnitelmissa täsmennetään, miten opetussuunnitelmaa kyseisen lukuvuoden aikana toteutetaan.</p>\n\n<p>Opetussuunnitelman laadinnassa otetaan huomioon muut paikalliset suunnitelmat kuten</p>\n\n<ul>\n\t<li>perusopetuksen opetussuunnitelma</li>\n\t<li>lukion opetussuunnitelma ja ammatillisen koulutuksen suunnitelmat</li>\n\t<li>mahdollinen lukiokoulutukseen valmistavan koulutuksen <abbr data-viite=\"Viite161425546235498\">opetussuunnitelma</abbr></li>\n\t<li><abbr data-viite=\"Viite171425546262938\">lastensuojelulain</abbr> mukainen lasten ja nuorten hyvinvointisuunnitelma,</li>\n\t<li><abbr data-viite=\"Viite181425546287598\">yhdenvertaisuuslain</abbr> mukainen yhdenvertaisuussuunnitelma,</li>\n\t<li>mahdollinen kestävän kehityksen suunnitelma sekä muut opetuksen järjestäjän tekemät, erityisesti koulutusta, lapsia, nuoria ja perheitä koskevat suunnitelmat ja päätökset.</li>\n</ul>\n\n<p>Opetuksen järjestäjä hyväksyy opetussuunnitelman erikseen suomenkielistä, ruotsinkielistä, saamenkielistä sekä tarvittaessa muulla kielellä annettavaa opetusta varten. Opetuksen järjestäjät voivat sopia järjestäjärajat ylittävästä yhteistyöstä ja yhteisistä alueellisista opetussuunnitelma-linjauksista.</p>\n\n<p>Opetuksen järjestäjän tehtävänä on seurata ja arvioida opetussuunnitelman toteutumista ja kehittää opetussuunnitelmaa.</p>\n\n<p>Yhteistyö opetussuunnitelman ja lukuvuosisuunnitelman laadinnassa lisää osapuolten tietoa koulutyöstä ja edistää sitoutumista yhteisiin tavoitteisiin. Opetuksen järjestäjän tehtävänä on huolehtia opetustoimen henkilöstön, <abbr data-viite=\"Viite191425546314080\">opiskelijoiden</abbr> ja huoltajien mahdollisuuksista osallistua yhteistyöhön sekä eri ryhmien välisestä monialaisesta yhteistyöstä opetussuunnitelman ja lukuvuosisuunnitelman laadinnassa ja toimeenpanossa.</p>\n\n<p>Yhteistyö myös koulun ulkopuolisten toimijoiden kanssa rikastaa koulutyötä ja liittää sen ympäröivän yhteisön elämään. <abbr data-viite=\"Viite201425546329295\">Perusopetuslaki </abbr>velvoittaa laatimaan opetussuunnitelman opiskeluhuoltoa sekä kodin ja koulun yhteistyötä koskevilta osin yhteistyössä kunnan sosiaali- ja terveydenhuollon tehtäviä hoitavien viranomaisten kanssa. Yhteistyötä tarvitaan myös muiden hallintokuntien ja organisaatioiden kanssa, jotta kaikkien opiskelijoiden opiskelua ja hyvinvointia voidaan tukea parhaalla mahdollisella tavalla.</p>",
+                  "sv": "<p>Den lokala läroplanen ska fastställa hur påbyggnadsundervisningen ordnas och genomförs. I den lokala läroplanen ska de mål, riktlinjer och centrala innehåll för undervisningen och studerandevården samt övriga detaljer som gäller undervisningen som fastställs i grunderna för läroplanen kompletteras och prioriteras ur ett lokalt perspektiv. Utbildningsanordnaren ska vid utarbetandet av läroplanen beakta de studerandes behov, de lokala särdragen samt resultaten från intern utvärdering och utveckling. De skolvisa läsårsplanerna ska precisera hur läroplanen kommer att genomföras under det aktuella läsåret.</p>\n\n<p>Läroplanen ska utarbetas med hänsyn till övriga lokala planer, såsom</p>\n\n<ul>\n\t<li>läroplanen för den grundläggande utbildningen</li>\n\t<li>gymnasiets läroplan och läroplanerna inom yrkesutbildningen</li>\n\t<li>eventuell <abbr data-viite=\"Viite161425546235498\">läroplan</abbr> för utbildning som förbereder för gymnasieutbildning</li>\n\t<li>välfärdsplan för barn och unga enligt <abbr data-viite=\"Viite171425546262938\">barnskyddslagen</abbr></li>\n\t<li>plan för likabehandling enligt lagen om <abbr data-viite=\"Viite181425546287598\">likabehandling</abbr></li>\n\t<li>eventuell plan för hållbar utveckling samt övriga planer och beslut som utbildningsanordnaren fattat, i synnerhet angående utbildning, barn, ungdomar och familjer.</li>\n</ul>\n\n<p>Utbildningsanordnaren ska godkänna läroplanen separat för undervisning på svenska, finska eller samiska samt vid behov för undervisning på något annat språk. Olika utbildningsanordnare kan komma överens om gränsöverskridande samarbete och om gemensamma regionala riktlinjer för läroplanerna.</p>\n\n<p>Utbildningsanordnaren ska följa upp och utvärdera hur läroplanen genomförs och utveckla den.</p>\n\n<p>Samarbete kring läroplanen och läsårsplanen bidrar till att öka de olika parternas kunskap om skolarbetet och deras vilja att engagera sig i gemensamma mål. Utbildningsanordnaren ska se till att personalen inom undervisningsväsendet, <abbr data-viite=\"Viite191425546314080\">de studerande</abbr> och vårdnadshavarna har möjlighet att delta i samarbetet och att läroplanen och läsårsplanen utarbetas och verkställs genom sektorsövergripande samarbete mellan olika grupper.</p>\n\n<p>Också samarbete med aktörer utanför skolan berikar skolarbetet och knyter det till det omgivande samhället. Till de delar läroplanen berör studerandevård och samarbete mellan hem och skola förpliktar <abbr data-viite=\"Viite201425546329295\">lagen om grundläggande utbildning</abbr> utbildningsanordnaren att utarbeta läroplanen i samarbete med de myndigheter som sköter uppgifter inom den kommunala social- och hälsovården. Också samarbete med andra förvaltningar och organisationer behövs, för att man ska kunna stödja varje studerandes studier och välbefinnande på bästa möjliga sätt.</p>\n\n<hr />"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "721441"
+            },
+            {
+              "id": 721273,
+              "perusteenOsa": {
+                "id": 721442,
+                "luotu": 1425543149568,
+                "muokattu": 1428491742686,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "881056",
+                  "fi": "Opetussuunnitelman valmistelu ja sisältö",
+                  "sv": "Läroplanens innehåll"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "909404",
+                  "fi": "<p>Paikallinen lisäopetuksen opetussuunnitelma laaditaan siten, että se määrittelee, ohjaa ja kuvaa sekä opetuksen järjestämistä että koulutyötä. Opetuksen järjestäjä voi myös päättää, että osa tässä luvussa määrätyistä asioista kuvataan koulukohtaisessa opetussuunnitelmassa tai opetussuunnitelmaan perustuvassa lukuvuosisuunnitelmassa.</p>\n\n<p>Opetuksen järjestäjä tekee opetussuunnitelman rakenteeseen, kieleen, muotoon ja laatimistapaan liittyvät ratkaisut ja päättää, miten valmistelutyö toteutetaan. Päätettäviä asioita ovat</p>\n\n<ul>\n\t<li>laaditaanko opetussuunnitelma koulujen yhteisenä, kokonaan tai osin koulukohtaisena, seudullisena vai käytetäänkö muuta ratkaisua</li>\n\t<li>millä kielillä annettavaa opetusta varten opetussuunnitelma laaditaan ja hyväksytään (suomenkielistä, ruotsinkielistä, saamenkielistä sekä tarvittaessa muulla kielellä annettavaa opetusta varten)</li>\n\t<li>mikä on opetussuunnitelman rakenne ja asioiden käsittelyjärjestys ja missä muodossa opetussuunnitelma julkaistaan</li>\n\t<li>miten henkilöstö ja opiskelijat sekä huoltajat osallistuvat opetussuunnitelman laatimiseen, arviointiin ja kehittämiseen</li>\n\t<li>miten opetussuunnitelman laatimiseen liittyvä yhteistyö perusopetuksen sekä muiden, opetuksen järjestämisen kannalta keskeisten yhteistyökumppaneiden kanssa järjestetään</li>\n\t<li>mitkä muut tahot ovat mukana opetussuunnitelman laadinnassa ja toteutuksessa ja miten yhteistyö järjestetään</li>\n\t<li>miten paikalliset erityispiirteet ja –tarpeet, arviointien ja kehittämistyön tuottama tieto ja kehittämisen tavoitteet sekä muut paikalliset suunnitelmat otetaan valmistelussa huomioon.</li>\n</ul>\n\n<p>Seuraavat opetussuunnitelmaan liittyvät asiat päätetään paikallisesti ja kirjataan opetussuunnitelmaan:</p>\n\n<ul>\n\t<li>miten huolehditaan opiskeluhuoltoa ja kodin ja koulun yhteistyötä käsittelevien osuuksien laatimisesta yhteistyössä kunnan sosiaali- ja terveydenhuollon viranomaisten kanssa</li>\n\t<li>miten opetussuunnitelman toteutumista seurataan, miten lisäopetusta ja sen opetussuunnitelmaa arvioidaan ja kehitetään</li>\n\t<li>mitkä ovat ne paikalliset suunnitelmat ja ohjelmat, jotka täydentävät ja toteuttavat opetussuunnitelmaa (esimerkiksi kestävän kehityksen ohjelma, kulttuurikasvatusohjelma, tietostrategia).</li>\n</ul>\n\n<p>Opetuksen järjestämiseen liittyvät ratkaisut päätetään paikallisesti ja kuvataan opetussuunnitelmassa</p>\n\n<ul>\n\t<li>miten lisäopetus järjestetään</li>\n\t<li>mitkä ovat opiskelijaksi ottamisen perusteet ja käytännöt</li>\n\t<li>mitkä ovat mahdolliset paikalliset painotukset lisäopetuksen tehtävään</li>\n\t<li>mitkä ovat lisäopetuksen valtakunnallisia tavoitteita mahdollisesti täydentävät paikalliset näkökulmat ja miten tavoitteet ilmenevät opetuksen järjestämisessä ja koulutyössä</li>\n\t<li>mitkä ovat lisäopetuksen arvoperustaa ja oppimiskäsitystä mahdollisesti täydentävät paikalliset näkökulmat ja miten arvoperusta ja oppimiskäsitys ilmenevät opetuksen järjestämisessä ja koulutyössä</li>\n\t<li>mitkä ovat lisäopetuksen toimintakulttuurin kehittämisen painopisteet sekä toimenpiteet ja yhteistyö toimintakulttuurin kehittämiseksi</li>\n\t<li>mitkä ovat kodin ja koulun yhteistyön tavoitteet ja miten yhteistyö järjestetään</li>\n\t<li>mitkä ovat opiskelijoiden osallisuuteen liittyvät tavoitteet ja miten osallisuus toteutetaan käytännössä</li>\n\t<li>mitkä ovat opetussuunnitelman perusteissa määritellyn laaja-alaisen osaamisen mahdolliset paikalliset painotukset sekä toimenpiteet, joiden avulla laaja-alaisen osaamisen kehittymistä seurataan ja tuetaan.</li>\n\t<li>mitkä ovat tarjottavien opintojen tavoitteet ja keskeiset sisällöt</li>\n\t<li>mitkä ovat oppimisympäristön ja työtapojen valintaa ja kehittämistä ohjaavat tavoitteet ja toimintatavat tavoitteiden toteuttamiseksi</li>\n\t<li>mitkä ovat opiskelijan opiskelusuunnitelman laadintakäytänteet sekä rakenne ja suunnitelmaan sisällytettävät asiat</li>\n\t<li>mitkä ovat menettelytavat opiskelijan lähtötilanteen selvittämiseksi ja tämän tiedon dokumentoimiseksi sekä opiskelijan opintojen ja edistymisen seuraamiseksi</li>\n\t<li>mitkä ovat muiden opintojen suorittamismahdollisuudet ja suorittamistavat (lukio-opinnot, ammatilliset opinnot; muissa oppilaitoksissa, työelämässä, järjestöissä ja yhteisöissä tapahtuva ohjattu opiskelu)</li>\n\t<li>miten toteutetaan opetukseen liittyvä yhteistyö muiden oppilaitosten, eri hallinnonalojen ja työelämän edustajien sekä mahdollisten muiden yhteistyökumppaneiden kanssa</li>\n\t<li>mitkä ovat opinto-ohjauksen tavoitteet ja miten opinto-ohjaus järjestetään</li>\n</ul>\n\n<ul>\n\t<li>miten kieleen ja kulttuuriin liittyvät erityiskysymykset otetaan opetuksessa huomioon</li>\n\t<li>mitkä ovat arvioinnin ja palautteen antamisen menetelmät ja käytänteet sekä todistukset ja niihin merkittävät tiedot; miten arvioinnista tiedotetaan opiskelijoille ja huoltajille</li>\n\t<li>käytetäänkö muissa kuin kaikille yhteisissä tai valinnaisissa opinnoissa sanallista vai numeroarviointia.</li>\n</ul>\n\n<p><em>Kasvatuskeskustelu ja kurinpidolliset keinot paikallisessa opetussuunnitelmassa </em></p>\n\n<p>Opetuksen järjestäjä vastaa kasvatuskeskusteluja ja kurinpidollisia keinoja koskevan suunnitelman laatimisesta. Suunnitelma voi olla osa paikallista opetussuunnitelmaa tai erillinen suunnitelma, jolloin siitä tulee mainita opetussuunnitelmassa.</p>\n\n<p>Suunnitelmassa päätetään ja kuvataan</p>\n\n<ul>\n\t<li>mitkä ovat lainsäädäntöä tarkentavat ja täydentävät menettelytavat rike-, vilppi- ja häiriötilanteissa, asioiden selvittämisvastuut, työnjako sekä kuulemis- ja kirjaamismenettelyt</li>\n\t<li>minkälaisissa tilanteissa kasvatuskeskustelua käytetään ja mitkä ovat keskustelujen toteuttamista ohjaavat periaatteet</li>\n\t<li>miten hallinnon yleisten oikeusturvaperiaatteiden noudattaminen varmistetaan kurinpitokeinoja käytettäessä</li>\n\t<li>miten huolehditaan henkilökunnan perehdyttämisestä ja osaamisen varmistamisesta kurinpidollisten toimivaltuuksien käyttämisessä</li>\n\t<li>miten suunnitelmasta tiedotetaan eri tahoille</li>\n\t<li>mitkä ovat menettelytavat suunnitelman seuraamista sekä toteutumisen ja vaikuttavuuden arviointia varten.</li>\n</ul>\n\n<p><em>Oppimisen ja koulunkäynnin tuki paikallisessa opetussuunnitelmassa</em></p>\n\n<p>Jos lisäopetuksen järjestäjä järjestää myös perusopetusta, oppimisen ja koulunkäynnin tuen käytännön järjestämiseen liittyvissä keskeisissä paikallisissa linjauksissa ja muissa paikallisesti päätettävissä asioissa noudatetaan perusopetuksen opetussuunnitelmaa.</p>\n\n<p>Mikäli lisäopetuksen järjestäjällä ei ole perusopetuksen järjestämislupaa, tulee perusopetuksen opetussuunnitelman perusteiden Oppimisen ja koulunkäynnin tuki osiossa määrätyt keskeiset paikalliset linjaukset päättää ja kuvata lisäopetuksen opetussuunnitelmassa. Sen lisäksi paikallisesti päätetään ja opetussuunnitelmassa kuvataan</p>\n\n<ul>\n\t<li>miten oppimisen ja koulunkäynnin tuki järjestetään käytännössä</li>\n\t<li>yhteistyö, vastuut ja työnjako yleisen, tehostetun ja erityisen tuen järjestämisessä sekä pedagogisten asiakirjojen laadinnassa</li>\n\t<li>tehostetun tuen aloittamiseen ja erityiseen tuen päätökseen liittyvät menettelytavat ja toimivaltuudet</li>\n\t<li>miten perusopetuslaissa säädetyt tukimuodot järjestetään käytännössä.</li>\n</ul>\n\n<p><em>Opiskeluhuolto paikallisessa opetussuunnitelmassa</em></p>\n\n<p>Opetussuunnitelmaan liitetään Opetushallituksen määräyksen 17/011/2014 perusteella tehty paikallinen suunnitelma opiskeluhuollon järjestämisestä. Opetuksen järjestäjä vastaa siitä, että opiskeluhuollon toteuttamista, arviointia ja kehittämistä varten laaditaan oppilas- ja opiskelijahuoltolain edellyttämä oppilaitoskohtainen opiskeluhuoltosuunnitelma. Suunnitelma tarkistetaan vuoden kuluessa siitä, kun kunnan lasten ja nuoren hyvinvointisuunnitelma on tarkistettu.</p>\n\n<p>Jos lisäopetuksen järjestäjä järjestää myös perusopetusta, opiskeluhuollon paikallisissa linjauksissa noudatetaan perusopetuksen opetussuunnitelmaa. Tällöin myös oppilaitoskohtainen opiskeluhuoltosuunnitelma voidaan laatia yhteisenä perusopetukselle ja lisäopetukselle.</p>\n\n<p>Mikäli lisäopetuksen järjestäjällä ei ole perusopetuksen järjestämislupaa, tulee perusopetuksen opetussuunnitelman<strong> </strong>perusteiden Oppilashuolto osiossa määrätyt keskeiset paikalliset linjaukset (ml. oppilaitoskohtainen opiskeluhuoltosuunnitelma) kuvata lisäopetuksen opetussuunnitelmassa.</p>",
+                  "sv": "<p>Den lokala läroplanen för påbyggnadsundervisningen ska utarbetas så att den fastställer, styr och beskriver både undervisningen och skolarbetet. Utbildningsanordnaren kan också besluta att en del av de frågor som beskrivs i detta kapitel ska beskrivas i den skolspecifika läroplanen eller i den läsårsplan som bygger på läroplanen.</p>\n\n<p> </p>\n\n<p>Utbildningsanordnaren beslutar om läroplanens struktur, språk och utformning och på vilket sätt den utarbetas. Frågor som ska beskrivas i läroplanen</p>\n\n<ul>\n\t<li>om den läroplan som utarbetas ska vara gemensam för skolorna, helt eller delvis skolspecifik, regional eller om man har en annan lösning</li>\n\t<li>för vilka undervisningsspråk läroplanen utarbetas och godkänns (svenska, finska, samiska och vid behov för något annat undervisningsspråk)</li>\n\t<li>läroplanens struktur, i vilken ordning frågorna behandlas och i vilken form läroplanen publiceras</li>\n\t<li>hur personalen och de studerande och deras vårdnadshavare är delaktiga när läroplanen utarbetas, utvärderas och utvecklas</li>\n\t<li>hur samarbetet med den grundläggande utbildningen och andra samarbetspartner som är viktiga med tanke på anordnandet av undervisning ordnas då läroplanen utarbetas</li>\n\t<li>vilka andra aktörer som deltar då läroplanen utarbetas och förverkligas och hur samarbetet ordnas</li>\n\t<li>hur lokala särdrag och behov, information från utvärderingar och utvecklingsarbete, mål för utveckling samt övriga lokala planer beaktas i då läroplanen utarbetas.</li>\n</ul>\n\n<p> </p>\n\n<p>Följande frågor ska avgöras på lokal nivå och beskrivas i läroplanen</p>\n\n<ul>\n\t<li>hur samarbetet med social- och hälsovårdsmyndigheterna ordnas när man gör upp de avsnitt som behandlar studerandevård och samarbete mellan hem och skola</li>\n\t<li>hur man följer upp att läroplanen genomförs, hur påbyggnadsundervisningen och dess läroplan utvärderas och utvecklas</li>\n\t<li>vilka de planer och program är som kompletterar läroplanen (till exempel program för hållbar utveckling, kulturfostran, informationsstrategi) och som man i den lokala läroplanen förbinder sig att förverkliga.</li>\n</ul>\n\n<p> </p>\n\n<p>Följande frågor gällande undervisningen ska avgöras på lokal nivå och beskrivas i läroplanen</p>\n\n<ul>\n\t<li>hur påbyggnadsundervisningen ordnas</li>\n\t<li>grunderna och praxis för antagningen av studerande</li>\n\t<li>vilka de eventuella lokala prioriteringarna är med tanke på påbyggnadsundervisningens uppdrag</li>\n\t<li>eventuella lokala aspekter som kompletterar de riksomfattande målen för påbyggnadsundervisningen och hur målen återspeglas i undervisningen och skolarbetet</li>\n\t<li>eventuella lokala aspekter som kompletterar påbyggnadsundervisningens värdegrund och syn på lärande och hur värdegrunden och synen på lärande återspeglas i undervisningen och skolarbetet</li>\n\t<li>tyngdpunkterna i utvecklandet av verksamhetskulturen och genom vilka åtgärder och med hurdant samarbete verksamheten utvecklas</li>\n\t<li>målen för samarbetet mellan hem och skola och hur samarbetet ordnas</li>\n\t<li>målen för de studerandes delaktighet och hur de studerande i praktiken ges möjlighet att delta</li>\n\t<li>eventuella lokala prioriteringar beträffande den mångsidiga kompetens som fastställs i grunderna för läroplanen samt genom vilka åtgärder utvecklingen av mångsidig kompetens stöds och följs upp</li>\n\t<li>målen och det centrala innehållet i de studier som erbjuds</li>\n\t<li>mål för valet och utvecklandet av lärmiljöer och arbetssätt samt strategier för att nå målen</li>\n\t<li>rutinerna för utarbetandet av studieplan för den studerande, planens struktur och innehåll</li>\n\t<li>förfaringssätten för att utreda den studerandes utgångsläge, dokumentera uppgifterna och följa upp den studerandes studier och framsteg</li>\n\t<li>vilka möjligheter den studerande har att genomföra andra studier och hur studierna genomförs (gymnasiestudier, yrkesstudier; vid andra läroanstalter, i arbetslivet, i en organisation eller ett samfund)</li>\n\t<li>hur samarbetet med andra läroanstalter, olika förvaltningsområden, arbetslivsrepresentanter och eventuella andra samarbetspartner i anslutning till undervisningen genomförs</li>\n\t<li>målen för studiehandledning och hur studiehandledningen ordnas</li>\n</ul>\n\n<ul>\n\t<li>hur särskilda frågor i anslutning till språk och kultur beaktas i undervisningen</li>\n\t<li>metoder och praxis gällande bedömning och respons samt betyg och betygsanteckningar; hur de studerande och vårdnadshavarna informeras om bedömningen</li>\n\t<li>ska verbal bedömning eller sifferbedömning användas i de läroämnen som inte är gemensamma eller valfria studier.</li>\n</ul>\n\n<p><em>Fostringssamtal och disciplinära åtgärder i den lokala läroplanen</em></p>\n\n<p>Utbildningsanordnaren ansvarar för att en plan för fostrande samtal och disciplinära åtgärder utarbetas. Planen kan ingå i den lokala läroplanen eller utgöra en separat plan. I det fallet ska den omnämnas i läroplanen.</p>\n\n<p> </p>\n\n<p>I planen ska fastställas och beskrivas</p>\n\n<ul>\n\t<li>i vilka fall fostrande samtal används och hur samtalen genomförs i praktiken</li>\n\t<li>vilka lagstadgade förfaringssätt som används vid förseelser, fusk och störande beteende, ansvars- och arbetsfördelning samt metoder för samråd och dokumentering</li>\n\t<li>hur man vid användningen av disciplinära åtgärder garanterar att förvaltningens allmänna rättsskyddsprinciper iakttas</li>\n\t<li>hur man ser till att personalen instrueras och har den kompetens som behövs för att utöva disciplinära befogenheter</li>\n\t<li>hur olika parter informeras om planen, ordningsreglerna och de lagstadgade disciplinära åtgärderna</li>\n\t<li>med vilka metoder man följer upp planen och utvärderar genomförandet och effekten av åtgärderna.</li>\n</ul>\n\n<p> </p>\n\n<p> </p>\n\n<p><em>Stöd för lärande och skolgång i den lokala läroplanen</em></p>\n\n<p>Om den utbildningsanordnare som ordnar påbyggnadsundervisning också ordnar grundläggande utbildning följer man läroplanen för den grundläggande utbildningen när det gäller centrala riktlinjer för hur man ordnar stöd för lärande och skolgång och övriga frågor som avgörs lokalt.</p>\n\n<p>Om den utbildningsanordnare som ordnar påbyggnadsutbildning inte har tillstånd att ordna grundläggande utbildning ska man besluta om och i påbyggnadsundervisningens läroplan beskriva de centrala riktlinjer som föreskrivs i Stöd för lärande och skolgång i grunderna för läroplanen för den grundläggande utbildningen. Dessutom ska följande frågor avgöras och beskrivas i läroplanen</p>\n\n<ul>\n\t<li>hur stödet för lärande och skolgång ordnas i praktiken</li>\n\t<li>samarbete, ansvar och arbetsfördelning när man ordnar intensifierat och särskilt stöd och när man gör upp de pedagogiska dokument som hör samman med stödet</li>\n\t<li>tillvägagångssätt och befogenheter när man inleder intensifierat stöd och avslutar särskilt stöd</li>\n\t<li>hur de stödformer som föreskrivs i lagen om grundläggande utbildning ordnas i praktiken.</li>\n</ul>\n\n<p><em>Studerandevården i den lokala läroplanen</em></p>\n\n<p>Till läroplanen bifogas den lokala planen för anordnande av studerandevård som uppgjorts utgående från Utbildningsstyrelsens föreskrift 17/011/2014. Utbildningsanordnaren ansvarar för att det för läroanstalten utarbetas en studerandevårdsplan enligt vad som förutsätts i elev- och studerandevårdslagen där man beskriver hur studerandevården förverkligas, utvärderas och utvecklas. Planen ska granskas inom ett år efter att den kommunala välfärdsplanen för barn och unga har granskats.</p>\n\n<p>Om den utbildningsanordnare som ordnar påbyggnadsundervisningen också ordnar grundläggande utbildning följer man läroplanen för den grundläggande utbildningen när det gäller lokala riktlinjer för studerandevården.</p>\n\n<p>Om den utbildningsanordnare som ordnar påbyggnadsutbildning inte har tillstånd att ordna grundläggande utbildning ska man i påbyggnadsundervisningens läroplan beskriva de centrala riktlinjer som föreskrivs i Elevvård i grunderna för läroplanen för den grundläggande utbildningen (gäller även studerandevårdsplan för läroanstalten).</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "721442"
+            }
+          ],
+          "_perusteenOsa": "720508"
+        }
+      ]
+    }
+  }
+}

@@ -97,7 +97,7 @@ object ExamplesLukioonValmistavaKoulutus {
     koulutustoimija = None,
     tila = LukionOpiskeluoikeudenTila(List(
       LukionOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
-      LukionOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      LukionOpiskeluoikeusjakso(date(2016, 8, 1), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     suoritukset = List(lukioonValmistavanKoulutuksenSuoritus),
     lisätiedot = Some(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
@@ -110,6 +110,10 @@ object ExamplesLukioonValmistavaKoulutus {
   )
 
   val lukioonValmistavanKoulutuksenOpiskeluoikeus2019 = lukioonValmistavanKoulutuksenOpiskeluoikeus.copy(
+    tila = LukionOpiskeluoikeudenTila(List(
+      LukionOpiskeluoikeusjakso(date(2016, 8, 15), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      LukionOpiskeluoikeusjakso(date(2021, 8, 1), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+    )),
     suoritukset = List(lukioonValmistavanKoulutuksenSuoritus2019),
   )
 

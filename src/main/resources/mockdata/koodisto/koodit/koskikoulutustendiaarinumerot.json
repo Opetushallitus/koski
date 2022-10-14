@@ -1,4 +1,15 @@
 [ {
+  "koodiUri": "koskikoulutustendiaarinumerot_20111994",
+  "metadata": [
+    {
+      "nimi": "Lukion opetussuunnitelman perusteet 1994",
+      "lyhytNimi": "Lukion opetussuunnitelman perusteet 1994",
+      "kieli": "FI"
+    }
+  ],
+  "versio": 1,
+  "koodiArvo": "2/011/1994"
+}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_10112004",
   "koodiArvo" : "1/011/2004",
   "metadata" : [ {
@@ -18,62 +29,6 @@
     "codeElementVersion" : 2,
     "passive" : false
   } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_1020112014",
-  "koodiArvo" : "102/011/2014",
-  "metadata" : [ {
-    "nimi" : "Esiopetuksen opetussuunnitelman perusteet 2014",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna för förskoleundervisningens läroplan 2014",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_15",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_1050112014",
-  "koodiArvo" : "105/011/2014",
-  "metadata" : [ {
-    "nimi" : "Lisäopetuksen opetussuunnitelman perusteet 2014",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna för påbyggnadsundervisningens läroplan 2014",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_6",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_120112009",
-  "koodiArvo" : "12/011/2009",
-  "metadata" : [ {
-    "nimi" : "Liikenne-esimiehen erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för trafikförman",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_1210111995",
   "koodiArvo" : "121/011/1995",
@@ -100,54 +55,6 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Yrkesexamen för producent inom rytmmusik",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_150112006",
-  "koodiArvo" : "15/011/2006",
-  "metadata" : [ {
-    "nimi" : "Valmentajan ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för tränare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_160112009",
-  "koodiArvo" : "16/011/2009",
-  "metadata" : [ {
-    "nimi" : "Lentoasemapalvelujen ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för flygfältsservice",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_190112004",
-  "koodiArvo" : "19/011/2004",
-  "metadata" : [ {
-    "nimi" : "Pienkonemekaanikon ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för småmaskinsinstallatör",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -191,38 +98,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_210112008",
-  "koodiArvo" : "21/011/2008",
-  "metadata" : [ {
-    "nimi" : "Raskaskalustomekaanikon ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för tungmaterielsmekaniker",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_220111998",
-  "koodiArvo" : "22/011/1998",
-  "metadata" : [ {
-    "nimi" : "Nahanvalmistajan ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för läderberedare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_220112004",
   "koodiArvo" : "22/011/2004",
   "metadata" : [ {
@@ -255,22 +130,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_250112008",
-  "koodiArvo" : "25/011/2008",
-  "metadata" : [ {
-    "nimi" : "Sahamestarin erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för sågmästare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_30112004",
   "koodiArvo" : "3/011/2004",
   "metadata" : [ {
@@ -290,54 +149,6 @@
     "codeElementVersion" : 2,
     "passive" : false
   } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_30112015",
-  "koodiArvo" : "3/011/2015",
-  "metadata" : [ {
-    "nimi" : "Valmentajan erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för tränare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_310112015",
-  "koodiArvo" : "31/011/2015",
-  "metadata" : [ {
-    "nimi" : "Autokorimekaanikon ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för karosseri- och bilplåtsmekaniker",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_320112015",
-  "koodiArvo" : "32/011/2015",
-  "metadata" : [ {
-    "nimi" : "Autokorimestarin erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för karosseri- och bilplåtsmästare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_330112003",
   "koodiArvo" : "33/011/2003",
@@ -359,22 +170,6 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_330112015",
-  "koodiArvo" : "33/011/2015",
-  "metadata" : [ {
-    "nimi" : "Automaalarin ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för billackerare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_340112008",
   "koodiArvo" : "34/011/2008",
   "metadata" : [ {
@@ -391,22 +186,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_340112015",
-  "koodiArvo" : "34/011/2015",
-  "metadata" : [ {
-    "nimi" : "Automaalarimestarin erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för billackerarmästare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_350112008",
   "koodiArvo" : "35/011/2008",
   "metadata" : [ {
@@ -416,86 +195,6 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Yrkesexamen för förgyllare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_350112015",
-  "koodiArvo" : "35/011/2015",
-  "metadata" : [ {
-    "nimi" : "Kultaajakisällin ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för förgyllare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_360112014",
-  "koodiArvo" : "36/011/2014",
-  "metadata" : [ {
-    "nimi" : "Valmentajan ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för tränare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_360112015",
-  "koodiArvo" : "36/011/2015",
-  "metadata" : [ {
-    "nimi" : "Kultaajamestarin erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för förgyllare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_370112012",
-  "koodiArvo" : "37/011/2012",
-  "metadata" : [ {
-    "nimi" : "Rengasalan ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen inom däckbranschen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_390112001",
-  "koodiArvo" : "39/011/2001",
-  "metadata" : [ {
-    "nimi" : "Autoalan myyjän erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för försäljare inom bilbranschen",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -523,90 +222,6 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_410112006",
-  "koodiArvo" : "41/011/2006",
-  "metadata" : [ {
-    "nimi" : "Faktorin erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för faktor",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_460112004",
-  "koodiArvo" : "46/011/2004",
-  "metadata" : [ {
-    "nimi" : "Painajamestarin/rotaatiomestarin erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för tryckmästare/rotationsmästare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_480112006",
-  "koodiArvo" : "48/011/2006",
-  "metadata" : [ {
-    "nimi" : "Henkilöautomekaanikon ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för personbilsmekaniker",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_480112009",
-  "koodiArvo" : "48/011/2009",
-  "metadata" : [ {
-    "nimi" : "Jälkikäsittelykoneenhoitajan ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för efterbearbetare inom tryckmedia",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_50112015",
-  "koodiArvo" : "5/011/2015",
-  "metadata" : [ {
-    "nimi" : "Ammatilliseen peruskoulutukseen valmentava koulutus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Handledande utbildning för grundläggande yrkesutbildning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_18",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_500112001",
   "koodiArvo" : "50/011/2001",
   "metadata" : [ {
@@ -616,22 +231,6 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Yrkesexamen för elektronikmontör",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_500112006",
-  "koodiArvo" : "50/011/2006",
-  "metadata" : [ {
-    "nimi" : "Valmentajan erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för tränare",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -655,54 +254,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_520112002",
-  "koodiArvo" : "52/011/2002",
-  "metadata" : [ {
-    "nimi" : "Autokorimekaanikon ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för karosseri- och bilplåtsmekaniker",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_530112002",
-  "koodiArvo" : "53/011/2002",
-  "metadata" : [ {
-    "nimi" : "Autokorimestarin erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för karosseri- och bilplåtsmästare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_540112002",
-  "koodiArvo" : "54/011/2002",
-  "metadata" : [ {
-    "nimi" : "Automaalarimestarin erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för billackerarmästare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_550112002",
   "koodiArvo" : "55/011/2002",
   "metadata" : [ {
@@ -719,151 +270,14 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_560112015",
-  "koodiArvo" : "56/011/2015",
-  "metadata" : [ {
-    "nimi" : "Lukiokoulutukseen valmistava koulutus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utbildning som förbereder för gymnasieutbildning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_23",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_570112015",
-  "koodiArvo" : "57/011/2015",
-  "metadata" : [ {
-    "nimi" : "Perusopetukseen valmistavan opetuksen opetussuunnitelman perusteet 2015",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna för läroplanen för den undervisning som förbereder för den grundläggande utbildningen 2015",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_22",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_60112015",
-  "koodiArvo" : "6/011/2015",
-  "metadata" : [ {
-    "nimi" : "Työhön ja itsenäiseen elämään valmentava koulutus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utbildning som handleder fö arbete och ett självständigt liv",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_5",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_650112002",
-  "koodiArvo" : "65/011/2002",
-  "metadata" : [ {
-    "nimi" : "Varaosamyyjän ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för reservdelsförsäljare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_660112002",
-  "koodiArvo" : "66/011/2002",
-  "metadata" : [ {
-    "nimi" : "Automyyjän ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för bilförsäljare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_700112015",
-  "koodiArvo" : "70/011/2015",
-  "metadata" : [ {
-    "nimi" : "Aikuisten lukiokoulutus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Gymnasieutbildning för vuxna",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_14",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_80112009",
-  "koodiArvo" : "8/011/2009",
-  "metadata" : [ {
-    "nimi" : "Isännöinnin ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen inom fastighetsförvalning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_oph49582020",
-  "koodiArvo" : "OPH-4958-2020",
-  "metadata" : [ {
-    "nimi" : "Lukiokoulutukseen valmistavan koulutuksen opetussuunnitelman perusteet 2021",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Lukiokoulutukseen valmistavan koulutuksen opetussuunnitelman perusteet 2021",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_23",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
+  "koodiUri": "koskikoulutustendiaarinumerot_251986",
+  "metadata": [
+    {
+      "nimi": "Lukion opetussuunnitelman perusteet 1985",
+      "lyhytNimi": null,
+      "kieli": "FI"
+    }
+  ],
+  "versio": 1,
+  "koodiArvo": "25/1986"
 } ]
