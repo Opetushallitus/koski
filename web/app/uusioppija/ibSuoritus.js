@@ -1,10 +1,10 @@
 export const makeSuoritus = (oppilaitos, suoritustyyppi, suorituskieli) => {
-  if (!oppilaitos || !suoritustyyppi || ! suorituskieli) return null
+  if (!oppilaitos || !suoritustyyppi || !suorituskieli) return null
 
   switch (suoritustyyppi.koodiarvo) {
     case 'ibtutkinto':
       return {
-        suorituskieli : suorituskieli,
+        suorituskieli,
         koulutusmoduuli: {
           tunniste: {
             koodiarvo: '301102',
@@ -17,7 +17,7 @@ export const makeSuoritus = (oppilaitos, suoritustyyppi, suorituskieli) => {
 
     case 'preiboppimaara':
       return {
-        suorituskieli : suorituskieli,
+        suorituskieli,
         koulutusmoduuli: {
           tunniste: {
             koodiarvo: 'preiboppimaara',

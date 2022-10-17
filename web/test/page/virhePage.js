@@ -1,10 +1,9 @@
 function VirhePage() {
-
   var api = {
-    isVisible: function() {
+    isVisible: function () {
       return isElementVisible(S('.odottamaton-virhe')) && !isLoading()
     },
-    teksti: function() {
+    teksti: function () {
       return S('body').text()
     }
   }

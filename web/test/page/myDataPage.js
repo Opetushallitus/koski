@@ -1,65 +1,80 @@
 function MyDataPage() {
-
-  var callbackURL = window.location.origin + "/koski/pulssi#linkki"
+  var callbackURL = window.location.origin + '/koski/pulssi#linkki'
 
   var api = {
-    openPage: function() {
-      return openPage("/koski/omadata/valtuutus/hsl?callback=" + encodeURIComponent(callbackURL), function() { return true  })()
+    openPage: function () {
+      return openPage(
+        '/koski/omadata/valtuutus/hsl?callback=' +
+          encodeURIComponent(callbackURL),
+        function () {
+          return true
+        }
+      )()
     },
-    callbackURL: callbackURL,
-    go: function() {
+    callbackURL,
+    go: function () {
       return openPage('/koski/omadata/valtuutus/hsl')()
     },
-    isVisible: function() {
-      return isElementVisible(S('.username')) && isElementVisible(S('.user > .dateofbirth'))
+    isVisible: function () {
+      return (
+        isElementVisible(S('.username')) &&
+        isElementVisible(S('.user > .dateofbirth'))
+      )
     },
-    login: function() {
+    login: function () {
       return click(findSingle('.lander button'))
     },
-    delAuthCookie: function() {
-      document.cookie = '_shibsession_=; path=/; expires=Thu, 01 Jan 1980 00:00:01 GMT; Max-Age=0'
+    delAuthCookie: function () {
+      document.cookie =
+        '_shibsession_=; path=/; expires=Thu, 01 Jan 1980 00:00:01 GMT; Max-Age=0'
     },
-    addLangCookie: function(lang) {
-      document.cookie = "lang=" + lang + "; path=/"
+    addLangCookie: function (lang) {
+      document.cookie = 'lang=' + lang + '; path=/'
     },
-    getUserName: function() {
+    getUserName: function () {
       return extractAsText(S('.user > .username'))
     },
-    getBirthDate: function() {
+    getBirthDate: function () {
       return extractAsText(S('.user > .dateofbirth'))
     },
-    getMemberName: function() {
+    getMemberName: function () {
       return extractAsText(S('.acceptance-member-name'))
     },
-    getMemberPurpose: function() {
+    getMemberPurpose: function () {
       return extractAsText(S('.acceptance-member-purpose'))
     },
-    clickAccept: function() {
+    clickAccept: function () {
       return click('.acceptance-button-container > .acceptance-button')()
     },
-    clickLogout: function() {
+    clickLogout: function () {
       return click('.logout > a')()
     },
-    clickCancel: function() {
+    clickCancel: function () {
       return click('.decline-link > a')()
     },
-    clickChangeLang: function() {
+    clickChangeLang: function () {
       return click('.lang > .change-lang')()
     },
-    isInFinnish: function() {
-      return isElementVisible(S('.change-lang')) && extractAsText(S('.change-lang')) === 'På svenska'
+    isInFinnish: function () {
+      return (
+        isElementVisible(S('.change-lang')) &&
+        extractAsText(S('.change-lang')) === 'På svenska'
+      )
     },
-    isInSwedish: function() {
-      return isElementVisible(S('.change-lang')) && extractAsText(S('.change-lang')) === 'Suomeksi'
+    isInSwedish: function () {
+      return (
+        isElementVisible(S('.change-lang')) &&
+        extractAsText(S('.change-lang')) === 'Suomeksi'
+      )
     },
     accepted: {
-      isVisible: function() {
+      isVisible: function () {
         return isElementVisible(S('.acceptance-title-success'))
       },
-      isReturnButtonVisible: function() {
+      isReturnButtonVisible: function () {
         return isElementVisible(S('.acceptance-return-button'))
       },
-      clickReturn: function() {
+      clickReturn: function () {
         return click('.acceptance-return-button')()
       }
     }

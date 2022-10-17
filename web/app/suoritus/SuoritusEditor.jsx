@@ -1,10 +1,16 @@
-import {addContext, modelData, modelItems, modelLookup, removeCommonPath} from '../editor/EditorModel'
+import {
+  addContext,
+  modelData,
+  modelItems,
+  modelLookup,
+  removeCommonPath
+} from '../editor/EditorModel'
 import React from 'baret'
 import { pathOr } from 'ramda'
-import {t} from '../i18n/i18n'
-import {PropertiesEditor} from '../editor/PropertiesEditor'
-import {Editor} from '../editor/Editor'
-import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor'
+import { t } from '../i18n/i18n'
+import { PropertiesEditor } from '../editor/PropertiesEditor'
+import { Editor } from '../editor/Editor'
+import { TilaJaVahvistusEditor } from './TilaJaVahvistusEditor'
 import {
   arviointiPuuttuu,
   osasuoritukset,
@@ -13,54 +19,78 @@ import {
   suoritusValmis
 } from './Suoritus'
 import Text from '../i18n/Text'
-import {resolveOsasuorituksetEditor, resolvePropertyEditor} from './suoritusEditorMapping'
-import {flatMapArray} from '../util/util'
+import {
+  resolveOsasuorituksetEditor,
+  resolvePropertyEditor
+} from './suoritusEditorMapping'
+import { flatMapArray } from '../util/util'
 import DeletePaatasonSuoritusButton from './DeletePaatasonSuoritusButton'
-import {currentLocation} from '../util/location'
+import { currentLocation } from '../util/location'
 import {
   isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus,
   isVälisuoritus
 } from '../ammatillinen/TutkinnonOsa'
-import {ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu, isOstettu} from '../ammatillinen/AmmatillinenOsittainenTutkinto'
-import {AmmatillinenArviointiasteikko} from '../ammatillinen/AmmatillinenArviointiasteikko'
+import {
+  ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu,
+  isOstettu
+} from '../ammatillinen/AmmatillinenOsittainenTutkinto'
+import { AmmatillinenArviointiasteikko } from '../ammatillinen/AmmatillinenArviointiasteikko'
 
 export class SuoritusEditor extends React.Component {
   showDeleteButtonIfAllowed() {
-    const {model} = this.props
+    const { model } = this.props
 
     const editingAny = !!currentLocation().params.edit
     const showEditLink = model.context.opiskeluoikeus.editable && !editingAny
-    const isSingleSuoritus = modelItems(model.context.opiskeluoikeus, 'suoritukset').length == 1
-    const showDeleteLink = model.invalidatable && !showEditLink && !isSingleSuoritus
+    const isSingleSuoritus =
+      modelItems(model.context.opiskeluoikeus, 'suoritukset').length == 1
+    const showDeleteLink =
+      model.invalidatable && !showEditLink && !isSingleSuoritus
 
-    return showDeleteLink && (
-      <DeletePaatasonSuoritusButton
-        opiskeluoikeus={model.context.opiskeluoikeus}
-        päätasonSuoritus={model}
-      />
+    return (
+      showDeleteLink && (
+        <DeletePaatasonSuoritusButton
+          opiskeluoikeus={model.context.opiskeluoikeus}
+          päätasonSuoritus={model}
+        />
+      )
     )
   }
 
   render() {
-    const excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'vahvistus', 'jääLuokalle', 'pakollinen']
+    const excludedProperties = [
+      'osasuoritukset',
+      'käyttäytymisenArvio',
+      'vahvistus',
+      'jääLuokalle',
+      'pakollinen'
+    ]
 
-    let {model} = this.props
-    model = addContext(model, { suoritus: model, toimipiste: modelLookup(model, 'toimipiste')})
+    let { model } = this.props
+    model = addContext(model, {
+      suoritus: model,
+      toimipiste: modelLookup(model, 'toimipiste')
+    })
     const osasuorituksetEditor = resolveOsasuorituksetEditor(model)
 
-    let className = 'suoritus ' + model.value.classes.join(' ')
+    const className = 'suoritus ' + model.value.classes.join(' ')
 
     return (
       <div className={className}>
         {this.showDeleteButtonIfAllowed()}
         <PropertiesEditor
           model={model}
-          propertyFilter={p => !excludedProperties.includes(p.key) && (model.context.edit || modelData(p.model) !== false)}
-          getValueEditor={(prop, getDefault) => resolvePropertyEditor(prop, model) || getDefault()}
+          propertyFilter={(p) =>
+            !excludedProperties.includes(p.key) &&
+            (model.context.edit || modelData(p.model) !== false)
+          }
+          getValueEditor={(prop, getDefault) =>
+            resolvePropertyEditor(prop, model) || getDefault()
+          }
           className={model.context.kansalainen ? 'kansalainen' : ''}
         />
         <TilaJaVahvistusEditor model={model} />
-        <AmmatillinenArviointiasteikko model={model}/>
+        <AmmatillinenArviointiasteikko model={model} />
         <div className="osasuoritukset">{osasuorituksetEditor}</div>
       </div>
     )
@@ -71,53 +101,97 @@ export class SuoritusEditor extends React.Component {
   }
 }
 
-SuoritusEditor.validateModel = model => {
+SuoritusEditor.validateModel = (model) => {
   if (suoritusValmis(model) && arviointiPuuttuu(model)) {
-    return [{key: 'missing', message: <Text name='Suoritus valmis, mutta arvosana puuttuu'/>}]
+    return [
+      {
+        key: 'missing',
+        message: <Text name="Suoritus valmis, mutta arvosana puuttuu" />
+      }
+    ]
   }
 
-  const validateSuoritus = suoritus => flatMapArray(osasuoritukset(suoritus), osasuoritus => {
-    if (suoritusValmis(suoritus) && suoritusKesken(osasuoritus) && !isVälisuoritus(suoritus)) {
-      return isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus(osasuoritus)
-        ? validateKeskeneräinenOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus(osasuoritus)
-        : validationError(osasuoritus, 'Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.')
-    } else {
-      return validateSuoritus(osasuoritus)
-    }
-  })
+  const validateSuoritus = (suoritus) =>
+    flatMapArray(osasuoritukset(suoritus), (osasuoritus) => {
+      if (
+        suoritusValmis(suoritus) &&
+        suoritusKesken(osasuoritus) &&
+        !isVälisuoritus(suoritus)
+      ) {
+        return isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus(
+          osasuoritus
+        )
+          ? validateKeskeneräinenOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus(
+              osasuoritus
+            )
+          : validationError(
+              osasuoritus,
+              'Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.'
+            )
+      } else {
+        return validateSuoritus(osasuoritus)
+      }
+    })
 
-  const validateKeskeneräinenOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus = suoritus => (
-    osasuorituksetVahvistettu(suoritus)
-      ? validateSuoritus(suoritus)
-      : validationError(suoritus, 'Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi')
-  )
+  const validateKeskeneräinenOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus =
+    (suoritus) =>
+      osasuorituksetVahvistettu(suoritus)
+        ? validateSuoritus(suoritus)
+        : validationError(
+            suoritus,
+            'Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi'
+          )
 
-  const validateValmisOsittaisenAmmatillisenTutkinnonSuoritus = suoritus => (
-    ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu(suoritus) && suoritusValmis(suoritus) &&
+  const validateValmisOsittaisenAmmatillisenTutkinnonSuoritus = (suoritus) =>
+    ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu(
+      suoritus
+    ) &&
+    suoritusValmis(suoritus) &&
     !isOstettu(suoritus)
-      ? [{key: 'missing', message: <Text name='Ei voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillinen tutkinnon osa...'/>}]
+      ? [
+          {
+            key: 'missing',
+            message: (
+              <Text name="Ei voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillinen tutkinnon osa..." />
+            )
+          }
+        ]
       : []
-  )
 
-  const validateLuokkaAsteSallittuVainErityiselleTutkinnolle = suoritus => {
+  const validateLuokkaAsteSallittuVainErityiselleTutkinnolle = (suoritus) => {
     const luokkaAste = modelLookup(suoritus, 'luokkaAste')
     const suoritustapa = modelLookup(suoritus, 'suoritustapa')
-    const isErityinenTutkinto = pathOr('', ['value', 'value'], suoritustapa) === 'perusopetuksensuoritustapa_erityinentutkinto'
-    const isVuosiluokkaSelected = pathOr('eivalintaa', ['value', 'value'], luokkaAste) !== 'eivalintaa'
-    if(!isErityinenTutkinto && isVuosiluokkaSelected) {
-      return [{path: 'luokkaAste', key: 'luokkaAsteInvalid', message: <Text name={t('luokkaAstettaEiVoiValitaKoulutusSuoritukselle')}/>}]
+    const isErityinenTutkinto =
+      pathOr('', ['value', 'value'], suoritustapa) ===
+      'perusopetuksensuoritustapa_erityinentutkinto'
+    const isVuosiluokkaSelected =
+      pathOr('eivalintaa', ['value', 'value'], luokkaAste) !== 'eivalintaa'
+    if (!isErityinenTutkinto && isVuosiluokkaSelected) {
+      return [
+        {
+          path: 'luokkaAste',
+          key: 'luokkaAsteInvalid',
+          message: (
+            <Text name={t('luokkaAstettaEiVoiValitaKoulutusSuoritukselle')} />
+          )
+        }
+      ]
     }
     return []
   }
 
   const validationError = (suoritus, virheviesti) => {
     const subPath = removeCommonPath(suoritus.path, model.path)
-    return [{
-      path: subPath.concat('arviointi'),
-      key: 'osasuorituksenTila',
-      message: <Text name={virheviesti}/>
-    }]
+    return [
+      {
+        path: subPath.concat('arviointi'),
+        key: 'osasuorituksenTila',
+        message: <Text name={virheviesti} />
+      }
+    ]
   }
 
-  return validateSuoritus(model).concat(validateValmisOsittaisenAmmatillisenTutkinnonSuoritus(model)).concat(validateLuokkaAsteSallittuVainErityiselleTutkinnolle(model))
+  return validateSuoritus(model)
+    .concat(validateValmisOsittaisenAmmatillisenTutkinnonSuoritus(model))
+    .concat(validateLuokkaAsteSallittuVainErityiselleTutkinnolle(model))
 }

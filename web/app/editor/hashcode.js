@@ -1,25 +1,27 @@
 export const hashCode = (x) => {
   if (x === undefined || x === null) return 0
   let hash = 0
-  if (typeof x == 'string') {
+  if (typeof x === 'string') {
     if (x.length == 0) return hash
     for (var i = 0; i < x.length; i++) {
-      var char = x.charCodeAt(i)
+      const char = x.charCodeAt(i)
       hash = hashAdd(hash, char)
     }
     return hash
   }
-  if (typeof x == 'number') {
+  if (typeof x === 'number') {
     return hashCode(x.toString())
   }
-  if (typeof x == 'boolean') {
+  if (typeof x === 'boolean') {
     return x ? 1 : 0
   }
   if (x instanceof Date) {
     return x.getTime()
   }
-  if (typeof x == 'object') {
-    Object.getOwnPropertyNames(x).forEach((name) => hash = hashAdd(hash, hashCode(x[name])))
+  if (typeof x === 'object') {
+    Object.getOwnPropertyNames(x).forEach(
+      (name) => (hash = hashAdd(hash, hashCode(x[name])))
+    )
     return hash
   }
   if (x instanceof Array) {
@@ -33,6 +35,6 @@ export const hashCode = (x) => {
 }
 
 export const hashAdd = (hash, y) => {
-  hash = ((hash<<5)-hash)+y
+  hash = (hash << 5) - hash + y
   return hash & hash // Convert to 32bit integer
 }

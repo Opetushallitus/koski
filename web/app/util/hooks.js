@@ -9,8 +9,8 @@ export function useBaconProperty(property) {
   const [value, setValue] = useState(null)
 
   useEffect(() => {
-    const dispose = property.onValue(val => setValue(val))
-    const errorDispose = property.onError(err => console.log(err))
+    const dispose = property.onValue((val) => setValue(val))
+    const errorDispose = property.onError((err) => console.log(err))
     return () => {
       dispose()
       errorDispose()

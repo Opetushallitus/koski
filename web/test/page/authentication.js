@@ -1,12 +1,12 @@
 function Authentication() {
   return {
-    login: function(username) {
+    login: function (username) {
       if (!username) username = 'kalle'
-      return function() {
-        return postJson('/koski/user/login', {username: username, password: username})
+      return function () {
+        return postJson('/koski/user/login', { username, password: username })
       }
     },
-    logout: function() {
+    logout: function () {
       return Q($.ajax('/koski/user/logout'))
     }
   }

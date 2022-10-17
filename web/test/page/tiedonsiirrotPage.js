@@ -4,43 +4,56 @@ function TiedonsiirrotPage() {
   }
 
   var api = {
-    openPage: function() {
+    openPage: function () {
       return openPage('/koski/tiedonsiirrot', api.isVisible)()
     },
-    isVisible: function() {
-      return isElementVisible(S('#content .tiedonsiirrot-content .tiedonsiirto-taulukko'))
+    isVisible: function () {
+      return isElementVisible(
+        S('#content .tiedonsiirrot-content .tiedonsiirto-taulukko')
+      )
     },
-    tiedot: function() {
-      return S('.tiedonsiirrot-content table tbody tr').toArray().map(function (row) {
-        return $(row).find('td:not(.tila):not(.aika):not(.valitse)').toArray().map(function (td) {
-          return $(td).text().trim()
+    tiedot: function () {
+      return S('.tiedonsiirrot-content table tbody tr')
+        .toArray()
+        .map(function (row) {
+          return $(row)
+            .find('td:not(.tila):not(.aika):not(.valitse)')
+            .toArray()
+            .map(function (td) {
+              return $(td).text().trim()
+            })
         })
-      })
     },
     poista: click('button.remove-selected'),
-    poistaNappiNäkyvissä: function() {
+    poistaNappiNäkyvissä: function () {
       return isElementVisible(poistaNappi())
     },
-    poistaNappiEnabloitu: function() {
+    poistaNappiEnabloitu: function () {
       return poistaNappi().is(':visible') && poistaNappi().is(':enabled')
     },
-    rivinValintaNäkyvissä: function() {
+    rivinValintaNäkyvissä: function () {
       return isElementVisible(S('.tiedonsiirto-taulukko .valitse'))
     },
-    setValinta: function(id, selected) {
-      return Page().setInputValue('#' + id.replace( /(\.)/g, '\\$1' ) + ' input', selected)
+    setValinta: function (id, selected) {
+      return Page().setInputValue(
+        '#' + id.replace(/(\.)/g, '\\$1') + ' input',
+        selected
+      )
     },
-    setValintaViimeiseen: function(selected) {
-      return Page().setInputValue('.tiedonsiirrot tbody:last-child input', selected)
+    setValintaViimeiseen: function (selected) {
+      return Page().setInputValue(
+        '.tiedonsiirrot tbody:last-child input',
+        selected
+      )
     },
     openVirhesivu: seq(
       click('.virheet-link'),
       wait.untilVisible('#content .tiedonsiirto-virheet')
     ),
     openYhteenveto: seq(
-        click('.yhteenveto-link'),
-        wait.untilVisible('#content .tiedonsiirto-yhteenveto'),
-        wait.forAjax
+      click('.yhteenveto-link'),
+      wait.untilVisible('#content .tiedonsiirto-yhteenveto'),
+      wait.forAjax
     )
   }
   return api

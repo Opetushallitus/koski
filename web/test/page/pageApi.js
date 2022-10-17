@@ -1,63 +1,75 @@
 function Page(mainElement) {
   if (!mainElement) {
-    mainElement = function() {return S('body')}
+    mainElement = function () {
+      return S('body')
+    }
   }
-  if (typeof mainElement != 'function') {
+  if (typeof mainElement !== 'function') {
     var el = mainElement
-    mainElement = function () { return el }
+    mainElement = function () {
+      return el
+    }
   }
   var api = {
-    getInput: function(selector) {
+    getInput: function (selector) {
       return Input(findSingle(selector, mainElement))
     },
-    getRadioLabel: function(selector) {
+    getRadioLabel: function (selector) {
       return Input(function () {
         return mainElement().find(selector)
       })
     },
-    setInputValue: function(selector, value, index) {
-      return function() {
+    setInputValue: function (selector, value, index) {
+      return function () {
         var input = api.getInput(selector)
         var isRadio = input.attr('type') === 'radio'
         var visibleElement = isRadio ? api.getRadioLabel(selector) : input
-        return wait.until(visibleElement.isVisible)()
-          .then(function() {return input.setValue(value, index)})
+        return wait
+          .until(visibleElement.isVisible)()
+          .then(function () {
+            return input.setValue(value, index)
+          })
           .then(wait.forAjax)
       }
     },
-    getInputValue: function(selector) {
+    getInputValue: function (selector) {
       return api.getInput(selector).value()
     },
-    getInputOptions: function(selector) {
+    getInputOptions: function (selector) {
       return api.getInput(selector).getOptions()
     },
-    button: function(el) {
+    button: function (el) {
       return Clickable(el)
     },
-    elementText: function(id) {
+    elementText: function (id) {
       return api.elementTextBySelector('#' + escapeSelector(id))
     },
-    elementTextBySelector: function(selector) {
+    elementTextBySelector: function (selector) {
       var found = mainElement().find(selector).first()
-      if (found.prop('tagName') === 'TEXTAREA' ||
+      if (
+        found.prop('tagName') === 'TEXTAREA' ||
         found.prop('tagName') === 'INPUT' ||
-        found.prop('tagName') === 'SELECT') {
+        found.prop('tagName') === 'SELECT'
+      ) {
         throw new Error('Use Input.value() to read inputs from form elements')
       }
       return found.text().trim()
     },
-    classAttributeOf: function(htmlId) {
-      return mainElement().find('#' + escapeSelector(htmlId)).first().attr('class')
+    classAttributeOf: function (htmlId) {
+      return mainElement()
+        .find('#' + escapeSelector(htmlId))
+        .first()
+        .attr('class')
     }
   }
   return api
 
   function Input(el) {
     return {
-      element: function() {
+      element: function () {
         return el()
       },
-      value: function() {
+      value: function () {
         var e = el()
         var ic = e.find('.input-container input')
         if (ic.length !== 0) {
@@ -68,16 +80,16 @@ function Page(mainElement) {
         }
         return e.val()
       },
-      attr: function(name) {
+      attr: function (name) {
         return el().attr(name)
       },
-      isVisible: function() {
+      isVisible: function () {
         return isElementVisible(el)
       },
       isEnabled: function () {
         return el().is(':enabled')
       },
-      setValue: function(value, i) {
+      setValue: function (value, i) {
         var input = el()
         var index = i || 0
         switch (inputType(input)) {
@@ -92,25 +104,36 @@ function Page(mainElement) {
               var domElem = el()[0]
               // Workaround for react-dom > 15.6
               // React tracks input.value = 'foo' changes too, so when the event is dispatched, it doesn't see any changes in the value and thus the event is ignored
-              Object.getOwnPropertyDescriptor(Object.getPrototypeOf(domElem), 'value').set.call(domElem, value)
+              Object.getOwnPropertyDescriptor(
+                Object.getPrototypeOf(domElem),
+                'value'
+              ).set.call(domElem, value)
             }
             return triggerEvent(input, 'input')()
           case 'CHECKBOX':
             if (value != input.is(':checked')) {
-              if(window.callPhantom) {
+              if (window.callPhantom) {
                 input.prop('checked', value)
               }
               return click(input)()
             }
             break
           case 'RADIO':
-            var radioOption = _(input).find(function(item) { return $(item).prop('value') == value })
+            var radioOption = _(input).find(function (item) {
+              return $(item).prop('value') == value
+            })
+            // eslint-disable-next-line no-use-before-define
             if (!option) throw new Error('Option ' + value + ' not found')
             S(radioOption).click()
             return click(S(radioOption))()
           case 'SELECT':
-            var option = _(input.children()).find(function(item) { return $(item).prop('value') == value })
-            if (!option) throw new Error('Option ' + value + ' not found in ' + htmlOf(input))
+            var option = _(input.children()).find(function (item) {
+              return $(item).prop('value') == value
+            })
+            if (!option)
+              throw new Error(
+                'Option ' + value + ' not found in ' + htmlOf(input)
+              )
             input.val($(option).attr('value'))
             return triggerEvent(input, 'change')()
           case 'DROPDOWN': // Dropdown.jsx
@@ -118,26 +141,36 @@ function Page(mainElement) {
               click(findSingle('.select', S(input)), 'click')()
             }
 
-            var result = S(input).find('.options li.option').filter(function(i, v) {return $(v).text().includes(value)})[index]
+            var result = S(input)
+              .find('.options li.option')
+              .filter(function (i, v) {
+                return $(v).text().includes(value)
+              })[index]
 
-            if(result) {
+            if (result) {
               return triggerEvent(result, 'mousedown')()
             } else {
-              throw new Error('Option with value ' + value + ' and index ' + index + ' was not found.')
+              throw new Error(
+                'Option with value ' +
+                  value +
+                  ' and index ' +
+                  index +
+                  ' was not found.'
+              )
             }
-            break
           case 'AUTOCOMPLETE': // Autocomplete.jsx
             var selectedItem = findSingle('.results .selected', input)
 
-            return Page(input).setInputValue('input', value)()
+            return Page(input)
+              .setInputValue('input', value)()
               .then(wait.untilVisible(selectedItem))
               .then(click(selectedItem))
 
-				  default:
-						throw new Error('Unknown input type: ' + inputType(input))
+          default:
+            throw new Error('Unknown input type: ' + inputType(input))
         }
       },
-      getOptions: function() {
+      getOptions: function () {
         var input = el()
         switch (inputType(input)) {
           case 'DROPDOWN': // Dropdown.jsx
@@ -151,18 +184,19 @@ function Page(mainElement) {
     function inputType(el) {
       if (el.prop('tagName') == 'SELECT' || el.prop('tagName') == 'TEXTAREA')
         return el.prop('tagName')
-      else if ($(el).hasClass('dropdown')) // Dropdown.jsx
+      else if ($(el).hasClass('dropdown'))
+        // Dropdown.jsx
         return 'DROPDOWN'
-      else if ($(el).hasClass('autocomplete')) // Autocomplete.jsx
+      else if ($(el).hasClass('autocomplete'))
+        // Autocomplete.jsx
         return 'AUTOCOMPLETE'
-      else
-        return el.prop('type').toUpperCase()
+      else return el.prop('type').toUpperCase()
     }
   }
 
   function Clickable(el) {
     return {
-      element: function() {
+      element: function () {
         return el()
       },
       isDisabled: function () {
@@ -171,10 +205,10 @@ function Page(mainElement) {
       isEnabled: function () {
         return el().is(':enabled')
       },
-      isVisible: function() {
+      isVisible: function () {
         return isElementVisible(el())
       },
-      text: function() {
+      text: function () {
         return el().text()
       },
       click: function () {
@@ -183,7 +217,7 @@ function Page(mainElement) {
     }
   }
 
-  function escapeSelector(s){
-    return s.replace( /(:|\.|\[|\])/g, '\\$1' )
+  function escapeSelector(s) {
+    return s.replace(/(:|\.|\[|\])/g, '\\$1')
   }
 }

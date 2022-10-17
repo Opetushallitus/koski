@@ -1,4 +1,3 @@
-
 const words = [
   // arvosana with 10+ characters
   'appro-batur',
@@ -22,7 +21,7 @@ const words = [
   'compe-tence'
 ]
 
-const regexps = words.map(word => {
+const regexps = words.map((word) => {
   const parts = word.split('-')
   return new RegExp(`\\b(${parts[0]})(${parts[1]})\\b`, 'i')
 })

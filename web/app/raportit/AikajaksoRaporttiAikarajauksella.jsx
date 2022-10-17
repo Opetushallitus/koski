@@ -2,11 +2,17 @@ import React from 'baret'
 import Text from '../i18n/Text'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import {showError} from '../util/location'
-import {formatISODate} from '../date/date'
-import {generateRandomPassword} from '../util/password'
-import {downloadExcel} from './downloadExcel'
-import { AikajaksoValinta, Listavalinta, LyhytKuvaus, RaportinLataus, Vinkit } from './raporttiComponents'
+import { showError } from '../util/location'
+import { formatISODate } from '../date/date'
+import { generateRandomPassword } from '../util/password'
+import { downloadExcel } from './downloadExcel'
+import {
+  AikajaksoValinta,
+  Listavalinta,
+  LyhytKuvaus,
+  RaportinLataus,
+  Vinkit
+} from './raporttiComponents'
 import { selectFromState } from './raporttiUtils'
 
 export const osasuoritusTypes = {
@@ -18,22 +24,34 @@ export const osasuoritusTypes = {
 const KaikkiSuorituksetLabel = ({ osasuoritusType }) => {
   switch (osasuoritusType) {
     case osasuoritusTypes.TUTKINNON_OSA:
-      return <Text name='Raportille valitaan kaikki tutkinnon osat riippumatta niiden suoritusajankohdasta' />
+      return (
+        <Text name="Raportille valitaan kaikki tutkinnon osat riippumatta niiden suoritusajankohdasta" />
+      )
     case osasuoritusTypes.KURSSI:
-      return <Text name='Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta' />
+      return (
+        <Text name="Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta" />
+      )
     case osasuoritusTypes.OPINNOT:
-      return <Text name='Raportille valitaan kaikki opinnot riippumatta niiden suoritusajankohdasta' />
+      return (
+        <Text name="Raportille valitaan kaikki opinnot riippumatta niiden suoritusajankohdasta" />
+      )
   }
 }
 
 const AikarajatutSuorituksetLabel = ({ osasuoritusType }) => {
   switch (osasuoritusType) {
     case osasuoritusTypes.TUTKINNON_OSA:
-      return <Text name='Raportille valitaan vain sellaiset tutkinnon osat, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
+      return (
+        <Text name="Raportille valitaan vain sellaiset tutkinnon osat, joiden arviointipäivä osuu yllä määritellylle aikajaksolle" />
+      )
     case osasuoritusTypes.KURSSI:
-      return <Text name='Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
+      return (
+        <Text name="Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle" />
+      )
     case osasuoritusTypes.OPINNOT:
-      return <Text name='Raportille valitaan vain sellaiset opinnot, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
+      return (
+        <Text name="Raportille valitaan vain sellaiset opinnot, joiden arviointipäivä osuu yllä määritellylle aikajaksolle" />
+      )
   }
 }
 
@@ -54,39 +72,54 @@ export const AikajaksoRaporttiAikarajauksella = ({
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    selectedOrganisaatioP, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom,
-    (o, a, l, r) => o && a && l && (l.valueOf() >= a.valueOf()) && {
-      oppilaitosOid: o.oid,
-      alku: formatISODate(a),
-      loppu: formatISODate(l),
-      osasuoritustenAikarajaus: r,
-      lang: lang,
-      password,
-      baseUrl: `/koski/api/raportit${apiEndpoint}`
-    })
+    selectedOrganisaatioP,
+    alkuAtom,
+    loppuAtom,
+    osasuoritustenAikarajausAtom,
+    (o, a, l, r) =>
+      o &&
+      a &&
+      l &&
+      l.valueOf() >= a.valueOf() && {
+        oppilaitosOid: o.oid,
+        alku: formatISODate(a),
+        loppu: formatISODate(l),
+        osasuoritustenAikarajaus: r,
+        lang,
+        password,
+        baseUrl: `/koski/api/raportit${apiEndpoint}`
+      }
+  )
 
-  const downloadExcelE = submitBus.map(downloadExcelP).flatMapLatest(downloadExcel)
+  const downloadExcelE = submitBus
+    .map(downloadExcelP)
+    .flatMapLatest(downloadExcel)
 
-  downloadExcelE.onError(e => showError(e))
+  downloadExcelE.onError((e) => showError(e))
 
   const inProgressP = submitBus.awaiting(downloadExcelE.mapError())
-  const submitEnabledP = downloadExcelP.map(x => !!x).and(inProgressP.not())
+  const submitEnabledP = downloadExcelP.map((x) => !!x).and(inProgressP.not())
 
   return (
     <section>
       <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
-      <AikajaksoValinta
-        alkuAtom={alkuAtom}
-        loppuAtom={loppuAtom}
-      />
+      <AikajaksoValinta alkuAtom={alkuAtom} loppuAtom={loppuAtom} />
 
       <Listavalinta
         seamless
         atom={osasuoritustenAikarajausAtom}
         options={[
-          { key: false, value: <KaikkiSuorituksetLabel osasuoritusType={osasuoritusType} /> },
-          { key: true, value: <AikarajatutSuorituksetLabel osasuoritusType={osasuoritusType} /> }
+          {
+            key: false,
+            value: <KaikkiSuorituksetLabel osasuoritusType={osasuoritusType} />
+          },
+          {
+            key: true,
+            value: (
+              <AikarajatutSuorituksetLabel osasuoritusType={osasuoritusType} />
+            )
+          }
         ]}
       />
 

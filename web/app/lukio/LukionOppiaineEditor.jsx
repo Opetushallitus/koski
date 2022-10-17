@@ -1,13 +1,18 @@
 import React from 'baret'
 import * as R from 'ramda'
 
-import {modelData, modelItems, modelLookup, pushRemoval} from '../editor/EditorModel'
-import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
-import {KurssitEditor} from '../kurssi/KurssitEditor'
-import {tilaText} from '../suoritus/Suoritus'
-import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
-import {saveOrganizationalPreference} from '../virkailija/organizationalPreferences'
-import {doActionWhileMounted} from '../util/util'
+import {
+  modelData,
+  modelItems,
+  modelLookup,
+  pushRemoval
+} from '../editor/EditorModel'
+import { suorituksenTilaSymbol } from '../suoritus/Suoritustaulukko'
+import { KurssitEditor } from '../kurssi/KurssitEditor'
+import { tilaText } from '../suoritus/Suoritus'
+import { isPaikallinen } from '../suoritus/Koulutusmoduuli'
+import { saveOrganizationalPreference } from '../virkailija/organizationalPreferences'
+import { doActionWhileMounted } from '../util/util'
 import {
   arvioidutOsasuoritukset,
   hylkäämättömätOsasuoritukset,
@@ -15,33 +20,35 @@ import {
   laajuudet,
   suoritetutKurssit
 } from './lukio'
-import {Arviointi, KoulutusmoduuliPropertiesEditor, Nimi} from './fragments/LukionOppiaine'
-import {numberToString} from '../util/format'
-import {PropertiesEditor} from '../editor/PropertiesEditor'
+import {
+  Arviointi,
+  KoulutusmoduuliPropertiesEditor,
+  Nimi
+} from './fragments/LukionOppiaine'
+import { numberToString } from '../util/format'
+import { PropertiesEditor } from '../editor/PropertiesEditor'
 
 export class LukionOppiaineEditor extends React.Component {
   saveChangedPreferences() {
     if (!this.state || !this.state.changed) return null
 
-    const {oppiaine} = this.props
+    const { oppiaine } = this.props
 
     const osasuoritukset = modelItems(oppiaine, 'osasuoritukset')
 
-    const tallennettavatSuoritukset = [oppiaine, ...osasuoritukset].filter(os => isPaikallinen(modelLookup(os, 'koulutusmoduuli')))
+    const tallennettavatSuoritukset = [oppiaine, ...osasuoritukset].filter(
+      (os) => isPaikallinen(modelLookup(os, 'koulutusmoduuli'))
+    )
 
-    tallennettavatSuoritukset.forEach(suoritus => {
+    tallennettavatSuoritukset.forEach((suoritus) => {
       const data = modelData(suoritus, 'koulutusmoduuli')
       const organisaatioOid = modelData(suoritus.context.toimipiste).oid
       const key = data.tunniste.koodiarvo
 
-      const moduulinTyyppi = modelLookup(suoritus, 'koulutusmoduuli').value.classes[0]
+      const moduulinTyyppi = modelLookup(suoritus, 'koulutusmoduuli').value
+        .classes[0]
 
-      saveOrganizationalPreference(
-        organisaatioOid,
-        moduulinTyyppi,
-        key,
-        data
-      )
+      saveOrganizationalPreference(organisaatioOid, moduulinTyyppi, key, data)
     })
   }
 
@@ -68,85 +75,97 @@ export class LukionOppiaineEditor extends React.Component {
 
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
 
-    const {edit} = oppiaine.context
+    const { edit } = oppiaine.context
 
     const laajuusArvo = () => {
       if (forceLaajuusOpintopisteinä) {
         return '2'
-      }
-      else if (useOppiaineLaajuus) {
+      } else if (useOppiaineLaajuus) {
         return modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
       } else {
-        return numberToString(laajuudet(
-          useHylkäämättömätLaajuus ? hylkäämättömätOsasuoritukset(kurssit) : arvioidutOsasuoritukset(kurssit)))
+        return numberToString(
+          laajuudet(
+            useHylkäämättömätLaajuus
+              ? hylkäämättömätOsasuoritukset(kurssit)
+              : arvioidutOsasuoritukset(kurssit)
+          )
+        )
       }
     }
 
     return (
-      <tr className={'oppiaine oppiaine-rivi ' + modelData(oppiaine, 'koulutusmoduuli.tunniste.koodiarvo')}>
-        <td className='suorituksentila' title={tilaText(oppiaine)}>
-          <div>
-            {suorituksenTilaSymbol(oppiaine)}
-          </div>
+      <tr
+        className={
+          'oppiaine oppiaine-rivi ' +
+          modelData(oppiaine, 'koulutusmoduuli.tunniste.koodiarvo')
+        }
+      >
+        <td className="suorituksentila" title={tilaText(oppiaine)}>
+          <div>{suorituksenTilaSymbol(oppiaine)}</div>
         </td>
-        <td className='oppiaine'>
-          <div className='title'>
-            <Nimi oppiaine={oppiaine}/>
-            <KoulutusmoduuliPropertiesEditor oppiaine={oppiaine} additionalEditableProperties={additionalEditableKoulutusmoduuliProperties}/>
+        <td className="oppiaine">
+          <div className="title">
+            <Nimi oppiaine={oppiaine} />
+            <KoulutusmoduuliPropertiesEditor
+              oppiaine={oppiaine}
+              additionalEditableProperties={
+                additionalEditableKoulutusmoduuliProperties
+              }
+            />
           </div>
-          {
-            additionalEditableProperties && <PropertiesEditor model={oppiaine} propertyFilter={p => additionalEditableProperties.includes(p.key)}/>
-          }
-          {
-            edit && additionalOnlyEditableProperties &&
+          {additionalEditableProperties && (
             <PropertiesEditor
               model={oppiaine}
-              propertyFilter={p => additionalOnlyEditableProperties.includes(p.key)}
+              propertyFilter={(p) =>
+                additionalEditableProperties.includes(p.key)
+              }
             />
-          }
+          )}
+          {edit && additionalOnlyEditableProperties && (
+            <PropertiesEditor
+              model={oppiaine}
+              propertyFilter={(p) =>
+                additionalOnlyEditableProperties.includes(p.key)
+              }
+            />
+          )}
           <KurssitEditor
             model={oppiaine}
             customTitle={customOsasuoritusTitle}
-            customAlternativesCompletionFn={customOsasuoritusAlternativesCompletionFn}
+            customAlternativesCompletionFn={
+              customOsasuoritusAlternativesCompletionFn
+            }
             customKurssitSortFn={customKurssitSortFn}
           />
         </td>
-        {
-          showLaajuus &&
-          <td className='laajuus'>{laajuusArvo()}</td>
-        }
-        {
-          showHyväksytystiArvioitujenLaajuus &&
-          (<td className='laajuus arvioitu'>{
-              numberToString(laajuudet(hyväksytystiArvioidutOsasuoritukset(kurssit)))
-          }</td>)
-        }
-        {
-          showArviointi && (
-            <td className='arvosana'>
-              {showArviointiEditor && (
-                <Arviointi
-                  oppiaine={oppiaine}
-                  suoritetutKurssit={suoritetutKurssit(kurssit)}
-                  footnote={footnote}
-                  showKeskiarvo={showKeskiarvo}
-                />
-              )}
-            </td>
-          )
-        }
-        {
-          edit && allowOppiaineRemoval && (
-            <td className='remove-row'>
-              <a className='remove-value' onClick={() => pushRemoval(oppiaine)}/>
-            </td>
-          )
-        }
-        {
-          doActionWhileMounted(oppiaine.context.saveChangesBus, () => {
-            this.saveChangedPreferences()
-          })
-        }
+        {showLaajuus && <td className="laajuus">{laajuusArvo()}</td>}
+        {showHyväksytystiArvioitujenLaajuus && (
+          <td className="laajuus arvioitu">
+            {numberToString(
+              laajuudet(hyväksytystiArvioidutOsasuoritukset(kurssit))
+            )}
+          </td>
+        )}
+        {showArviointi && (
+          <td className="arvosana">
+            {showArviointiEditor && (
+              <Arviointi
+                oppiaine={oppiaine}
+                suoritetutKurssit={suoritetutKurssit(kurssit)}
+                footnote={footnote}
+                showKeskiarvo={showKeskiarvo}
+              />
+            )}
+          </td>
+        )}
+        {edit && allowOppiaineRemoval && (
+          <td className="remove-row">
+            <a className="remove-value" onClick={() => pushRemoval(oppiaine)} />
+          </td>
+        )}
+        {doActionWhileMounted(oppiaine.context.saveChangesBus, () => {
+          this.saveChangedPreferences()
+        })}
       </tr>
     )
   }
@@ -155,6 +174,6 @@ export class LukionOppiaineEditor extends React.Component {
     const currentData = modelData(this.props.oppiaine)
     const newData = modelData(nextProps.oppiaine)
 
-    if (!R.equals(currentData, newData)) this.setState({changed: true})
+    if (!R.equals(currentData, newData)) this.setState({ changed: true })
   }
 }

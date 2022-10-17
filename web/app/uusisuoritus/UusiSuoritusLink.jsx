@@ -1,6 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
-import {onLopputilassa} from '../opiskeluoikeus/OpiskeluoikeudenTilaEditor'
+import { onLopputilassa } from '../opiskeluoikeus/OpiskeluoikeudenTilaEditor'
 import UusiPerusopetuksenVuosiluokanSuoritus from './UusiPerusopetuksenVuosiluokanSuoritus'
 import UusiPerusopetuksenOppiaineenOppimääränSuoritus from './UusiPerusopetuksenOppiaineenOppimaaranSuoritus'
 import UusiAikuistenPerusopetuksenOppimaaranSuoritus from './UusiAikuistenPerusopetuksenOppimaaranSuoritus'
@@ -17,40 +17,48 @@ import {
   UusiDIATutkinnonSuoritus,
   UusiValmistavanDIAVaiheenSuoritus
 } from './UusiDIATutkinnonSuoritus'
-import {UusiInternationalSchoolVuosiluokanSuoritus} from './UusiInternationalSchoolVuosiluokanSuoritus'
+import { UusiInternationalSchoolVuosiluokanSuoritus } from './UusiInternationalSchoolVuosiluokanSuoritus'
 
-export default ({opiskeluoikeus, callback}) => {
-  return (<span className="add-suoritus tab">{
-    opiskeluoikeus.context.edit && !onLopputilassa(opiskeluoikeus) && findPopUps(opiskeluoikeus).map((PopUp, i) => {
-      let addingAtom = Atom(false)
-      let resultCallback = (suoritus) => {
-        if (suoritus) {
-          callback(suoritus)
-        } else {
-          addingAtom.set(false)
-        }
-      }
+export default ({ opiskeluoikeus, callback }) => {
+  return (
+    <span className="add-suoritus tab">
+      {opiskeluoikeus.context.edit &&
+        !onLopputilassa(opiskeluoikeus) &&
+        findPopUps(opiskeluoikeus).map((PopUp, i) => {
+          const addingAtom = Atom(false)
+          const resultCallback = (suoritus) => {
+            if (suoritus) {
+              callback(suoritus)
+            } else {
+              addingAtom.set(false)
+            }
+          }
 
-      let startAdding = () => {
-        if (PopUp.createSuoritus) {
-          PopUp.createSuoritus(opiskeluoikeus).onValue(callback)
-        } else {
-          addingAtom.modify(x => !x)
-        }
-      }
+          const startAdding = () => {
+            if (PopUp.createSuoritus) {
+              PopUp.createSuoritus(opiskeluoikeus).onValue(callback)
+            } else {
+              addingAtom.modify((x) => !x)
+            }
+          }
 
-      return (<span key={i}>
-        {
-          opiskeluoikeus.context.edit && !onLopputilassa(opiskeluoikeus) && (
-            <a className="add-suoritus-link" onClick={startAdding}><span className="plus">{''}</span>{PopUp.addSuoritusTitle(opiskeluoikeus)}</a>
+          return (
+            <span key={i}>
+              {opiskeluoikeus.context.edit && !onLopputilassa(opiskeluoikeus) && (
+                <a className="add-suoritus-link" onClick={startAdding}>
+                  <span className="plus">{''}</span>
+                  {PopUp.addSuoritusTitle(opiskeluoikeus)}
+                </a>
+              )}
+              {addingAtom.map(
+                (adding) =>
+                  adding && <PopUp {...{ opiskeluoikeus, resultCallback }} />
+              )}
+            </span>
           )
-        }
-        {
-          addingAtom.map(adding => adding && <PopUp {...{opiskeluoikeus, resultCallback}}/>)
-        }
-      </span>)
-    })
-  }</span>)
+        })}
+    </span>
+  )
 }
 
 // TODO: TOR-1685 Eurooppalainen koulu
@@ -68,4 +76,5 @@ const popups = [
   UusiInternationalSchoolVuosiluokanSuoritus
 ]
 
-const findPopUps = (opiskeluoikeus) => popups.filter(popup => popup.canAddSuoritus(opiskeluoikeus))
+const findPopUps = (opiskeluoikeus) =>
+  popups.filter((popup) => popup.canAddSuoritus(opiskeluoikeus))

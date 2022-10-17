@@ -11,19 +11,20 @@ export const setLang = (newLang) => {
 }
 
 export const t = (s, ignoreMissing, languageOverride) => {
-  let usedLanguage = languageOverride || lang
+  const usedLanguage = languageOverride || lang
   if (!s) return ''
-  if (typeof s == 'object') {
+  if (typeof s === 'object') {
     // assume it's a localized string
-    return s[usedLanguage] || s['fi'] || s['sv'] || s['en']
+    return s[usedLanguage] || s.fi || s.sv || s.en
   }
-  if (typeof s == 'string') {
+  if (typeof s === 'string') {
     // try to find a localization from the bundle
-    let localizedString = texts[s] || {}
+    const localizedString = texts[s] || {}
     if (!localizedString[usedLanguage]) {
       if (ignoreMissing === true) return null
       if (!missing[usedLanguage + '.' + s]) {
-        if (usedLanguage == 'fi') console.error(`Localization missing for language ${usedLanguage}:`, s)
+        if (usedLanguage == 'fi')
+          console.error(`Localization missing for language ${usedLanguage}:`, s)
         missing[usedLanguage + '.' + s] = true
       }
       return s

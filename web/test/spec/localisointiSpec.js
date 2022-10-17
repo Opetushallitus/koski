@@ -1,71 +1,87 @@
-describe('Lokalisointi', function() {
+describe('Lokalisointi', function () {
   var page = KoskiPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
 
-  describe('Ruotsinkielisellä käyttäjällä', function() {
+  describe('Ruotsinkielisellä käyttäjällä', function () {
     before(Authentication().login('pärre'), resetFixtures, page.openPage)
-    describe('Oppijataulukko', function() {
-      it('Näyttää ruotsinkielisen tekstin, mikäli käännös löytyy', function() {
-        expect(S('.oppija-haku h3').text()).to.equal('Sök eller lägg till studerande')
+    describe('Oppijataulukko', function () {
+      it('Näyttää ruotsinkielisen tekstin, mikäli käännös löytyy', function () {
+        expect(S('.oppija-haku h3').text()).to.equal(
+          'Sök eller lägg till studerande'
+        )
       })
-      it('Näyttää suomenkielisen tekstin, mikäli käännös puuttuu', function() {
+      it('Näyttää suomenkielisen tekstin, mikäli käännös puuttuu', function () {
         expect(S('#logo').text()).to.equal('Opintopolku.fi')
       })
     })
   })
-  describe('Sovelluksen käyttöliittymätekstien muokkaus', function() {
-    function editLink() { return S('.edit-localizations') }
+  describe('Sovelluksen käyttöliittymätekstien muokkaus', function () {
+    function editLink() {
+      return S('.edit-localizations')
+    }
     var startEdit = click(editLink)
-    var saveEdits = click(findSingle('.localization-edit-bar button:not(:disabled)'))
+    var saveEdits = click(
+      findSingle('.localization-edit-bar button:not(:disabled)')
+    )
     var cancelEdits = click(findSingle('.localization-edit-bar .cancel'))
 
     function selectLanguage(lang) {
-      return function() {
-        var selector = '.localization-edit-bar .languages .' + lang + '.selected'
+      return function () {
+        var selector =
+          '.localization-edit-bar .languages .' + lang + '.selected'
         return Q()
           .then(click(S('.localization-edit-bar .languages .' + lang)))
           .then(wait.untilVisible(findSingle(selector)))
       }
     }
-    function changeText(selector, value) { return function() {
-      var el = findSingle(selector + ' .editing')()
-      el[0].textContent = value
-      return triggerEvent(el, 'input')()
-    }}
+    function changeText(selector, value) {
+      return function () {
+        var el = findSingle(selector + ' .editing')()
+        el[0].textContent = value
+        return triggerEvent(el, 'input')()
+      }
+    }
 
-    describe('Tavallisella käyttäjällä', function() {
+    describe('Tavallisella käyttäjällä', function () {
       before(Authentication().login(), resetFixtures, page.openPage)
-      it('Ei näytetä', function() {
+      it('Ei näytetä', function () {
         expect(editLink().is(':visible')).to.equal(false)
       })
     })
 
-    describe('Käyttäjällä, jolla on lokalisoinnin CRUD-oikeudet', function() {
+    describe('Käyttäjällä, jolla on lokalisoinnin CRUD-oikeudet', function () {
       before(Authentication().login('pää'), resetFixtures, page.openPage)
 
-      it('Näytetään muokkauslinkki', function() {
+      it('Näytetään muokkauslinkki', function () {
         expect(editLink().is(':visible')).to.equal(true)
       })
 
-      describe('Muokattaessa ruotsinkielisiä tekstejä', function() {
-        before(startEdit, selectLanguage('sv'), changeText('.oppija-haku h3', 'Hae juttuja'), saveEdits)
+      describe('Muokattaessa ruotsinkielisiä tekstejä', function () {
+        before(
+          startEdit,
+          selectLanguage('sv'),
+          changeText('.oppija-haku h3', 'Hae juttuja'),
+          saveEdits
+        )
 
-        it('Muokattu teksti näytetään', function() {
+        it('Muokattu teksti näytetään', function () {
           expect(S('.oppija-haku h3').text()).to.equal('Hae juttuja')
         })
 
-        describe('Vaihdettaessa takaisin suomen kieleen', function() {
+        describe('Vaihdettaessa takaisin suomen kieleen', function () {
           before(startEdit, selectLanguage('fi'), cancelEdits)
 
-          it('Suomenkielinen teksti näytetään', function() {
-            expect(S('.oppija-haku h3').text()).to.equal('Hae tai lisää opiskelija')
+          it('Suomenkielinen teksti näytetään', function () {
+            expect(S('.oppija-haku h3').text()).to.equal(
+              'Hae tai lisää opiskelija'
+            )
           })
 
-          describe('Vaihdettaessa vielä takaisin ruotsin kieleen', function() {
+          describe('Vaihdettaessa vielä takaisin ruotsin kieleen', function () {
             before(startEdit, selectLanguage('sv'), cancelEdits)
 
-            it('Muokattu teksti näytetään', function() {
+            it('Muokattu teksti näytetään', function () {
               expect(S('.oppija-haku h3').text()).to.equal('Hae juttuja')
             })
           })
@@ -74,60 +90,75 @@ describe('Lokalisointi', function() {
     })
   })
 
-  describe('Ruotsinkielisen virkailijan syöttämä paikallinen oppiaine', function() {
+  describe('Ruotsinkielisen virkailijan syöttämä paikallinen oppiaine', function () {
     var oppiaineet = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
     var paikallinen = editor.subEditor('.pakollinen.paikallinen')
     before(
-      Authentication().login('pärre'), resetFixtures,
-      page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
+      Authentication().login('pärre'),
+      resetFixtures,
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('220109-784L'),
       opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'),
-      editor.edit, oppiaineet.selectValue('Lägg till'),
+      editor.edit,
+      oppiaineet.selectValue('Lägg till'),
       paikallinen.propertyBySelector('.arvosana').selectValue('7'),
       paikallinen.propertyBySelector('.koodi').setValue('TNS'),
       paikallinen.propertyBySelector('.nimi').setValue('Dans'),
       editor.saveChanges,
-      Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
+      Authentication().login(),
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('220109-784L'),
       opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus')
     )
 
-    it('Näkyy myös suomenkieliselle virkailijalle', function() {
-      expect(paikallinen.propertyBySelector('.oppiaine').getText()).to.equal('Dans')
+    it('Näkyy myös suomenkieliselle virkailijalle', function () {
+      expect(paikallinen.propertyBySelector('.oppiaine').getText()).to.equal(
+        'Dans'
+      )
     })
   })
 
-  describe('Monikieliset tekstit muokattavassa datassa', function() {
+  describe('Monikieliset tekstit muokattavassa datassa', function () {
     var property = editor.property('todistuksellaNäkyvätLisätiedot')
 
-    describe('Syötettäessä suomenkielisellä käyttäjällä', function() {
+    describe('Syötettäessä suomenkielisellä käyttäjällä', function () {
       before(
-        Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
-        editor.edit, property.setValue('Hyvä meininki'),
+        Authentication().login(),
+        resetFixtures,
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('220109-784L'),
+        editor.edit,
+        property.setValue('Hyvä meininki'),
         editor.saveChanges
       )
-      it('Teksti merkitään suomenkieliseksi', function() {
+      it('Teksti merkitään suomenkieliseksi', function () {
         expect(property.getLanguage()).to.equal('fi')
       })
 
-      describe('Muokattaessa suomenkielistä tekstiä ruotsinkielisen käyttäjän toimesta', function() {
-        before(Authentication().login('pärre'), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+      describe('Muokattaessa suomenkielistä tekstiä ruotsinkielisen käyttäjän toimesta', function () {
+        before(
+          Authentication().login('pärre'),
+          page.openPage,
+          page.oppijaHaku.searchAndSelect('220109-784L')
+        )
 
-        it('Ennen muokkausta näytetään suomenkielinen teksti', function() {
+        it('Ennen muokkausta näytetään suomenkielinen teksti', function () {
           expect(property.getLanguage()).to.equal('fi')
         })
 
-        describe('Muokkauksen jälkeen', function() {
+        describe('Muokkauksen jälkeen', function () {
           before(
             editor.edit,
             property.setValue('Erittäin hyvä meininki'),
             editor.saveChanges
           )
 
-          it('Teksti säilyy suomenkielisenä', function() {
+          it('Teksti säilyy suomenkielisenä', function () {
             expect(property.getValue()).to.equal('Erittäin hyvä meininki')
             expect(property.getLanguage()).to.equal('fi')
           })
 
-          describe('Kun poistetaan teksti, tallennetaan ja muokataan uudelleen', function() {
+          describe('Kun poistetaan teksti, tallennetaan ja muokataan uudelleen', function () {
             before(
               editor.edit,
               property.setValue(''),
@@ -137,27 +168,28 @@ describe('Lokalisointi', function() {
               editor.saveChanges
             )
 
-            it('Uusi teksti merkitään ruotsinkieliseksi', function() {
+            it('Uusi teksti merkitään ruotsinkieliseksi', function () {
               expect(property.getValue()).to.equal('Jättebra')
               expect(property.getLanguage()).to.equal('sv')
             })
 
-            describe('Muokattaessa ruotsinkielistä tekstiä suomenkielisen käyttäjän toimesta', function() {
+            describe('Muokattaessa ruotsinkielistä tekstiä suomenkielisen käyttäjän toimesta', function () {
               before(
-                Authentication().login('kalle'), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
+                Authentication().login('kalle'),
+                page.openPage,
+                page.oppijaHaku.searchAndSelect('220109-784L'),
                 editor.edit,
                 property.setValue('Jättebra!!'),
                 editor.saveChanges
               )
 
-              it('Teksti säilyy ruotsinkielisenä', function() {
+              it('Teksti säilyy ruotsinkielisenä', function () {
                 expect(property.getValue()).to.equal('Jättebra!!')
                 expect(property.getLanguage()).to.equal('sv')
               })
             })
           })
         })
-
       })
     })
   })

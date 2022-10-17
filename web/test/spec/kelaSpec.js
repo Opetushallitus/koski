@@ -5,10 +5,7 @@ describe('Kela', function () {
   var page = KoskiPage()
 
   describe('Sivun latauksessa ei tapahdu virheitä', function () {
-    before(
-      Authentication().login('Laaja'),
-      kela.openPage
-    )
+    before(Authentication().login('Laaja'), kela.openPage)
 
     it('ok', function () {
       expect(page.getErrorMessage()).to.equal('')
@@ -36,33 +33,43 @@ describe('Kela', function () {
     )
     it('Näytetään valitun henkilon opinnot', function () {
       expect(kela.getOppijanNimi()).to.equal('Koululainen, Kaisa (220109-784L)')
-      expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include('Jyväskylän normaalikoulu (2008 - 2016, Valmistunut)')
-      expect(extractAsText(S('table.osasuoritukset'))).to.include('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus')
-      expect(extractAsText(S('table.osasuoritukset'))).to.include('B1-kieli, ruotsi')
+      expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include(
+        'Jyväskylän normaalikoulu (2008 - 2016, Valmistunut)'
+      )
+      expect(extractAsText(S('table.osasuoritukset'))).to.include(
+        'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus'
+      )
+      expect(extractAsText(S('table.osasuoritukset'))).to.include(
+        'B1-kieli, ruotsi'
+      )
     })
 
     it('Kaikkien osasuoritusten yhteislaajuus', function () {
-      expect(extractAsText(S('.yhteislaajuus'))).to.include('Yhteislaajuus 23.5 vuosiviikkotuntia')
+      expect(extractAsText(S('.yhteislaajuus'))).to.include(
+        'Yhteislaajuus 23.5 vuosiviikkotuntia'
+      )
     })
 
     describe('Valitaan toinen päätason suoritus', function () {
-      before(
-        kela.selectSuoritus('9. vuosiluokka')
-      )
+      before(kela.selectSuoritus('9. vuosiluokka'))
       it('Näytetään valitun suorituksen tiedot', function () {
         expect(extractAsText(S('.suoritukset .properties'))).to.equal(
           'Toimipiste Jyväskylän normaalikoulu\n' +
-          'Tyyppi Perusopetuksen vuosiluokka\n' +
-          'Alkamispäivä 2015-08-15\n' +
-          'Jää luokalle ei'
+            'Tyyppi Perusopetuksen vuosiluokka\n' +
+            'Alkamispäivä 2015-08-15\n' +
+            'Jää luokalle ei'
         )
       })
 
       describe('Valitaan toinen opiskeluoikeus', function () {
-        before(kela.selectOpiskeluoikeusByTyyppi('Perusopetukseen valmistava opetus'))
+        before(
+          kela.selectOpiskeluoikeusByTyyppi('Perusopetukseen valmistava opetus')
+        )
 
         it('Näytetään valitun opiskeluoikeuden tiedot', function () {
-          expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include('Jyväskylän normaalikoulu (2017 - 2018, Valmistunut)')
+          expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include(
+            'Jyväskylän normaalikoulu (2017 - 2018, Valmistunut)'
+          )
         })
       })
     })
@@ -75,21 +82,28 @@ describe('Kela', function () {
       kela.searchAndSelect('280618-402H', 'Aarne')
     )
 
-    var osasuorituksenSisältö = 'Osasuoritukset Laajuus (osaamispistettä) Arviointipäivä Hyväksytty\n' +
+    var osasuorituksenSisältö =
+      'Osasuoritukset Laajuus (osaamispistettä) Arviointipäivä Hyväksytty\n' +
       'Matematiikka 3 20.10.2014 kyllä\n' +
       'Fysiikka ja kemia 3 20.10.2014 kyllä\n'
 
     describe('Osasuorituksen osasuoritukset on valmiiksi auki', function () {
       it('Toimii', function () {
-        expect(extractAsText(S('table.osasuoritukset'))).to.include(osasuorituksenSisältö)
+        expect(extractAsText(S('table.osasuoritukset'))).to.include(
+          osasuorituksenSisältö
+        )
       })
     })
 
     describe('Osasuoritus voidaan sulkea', function () {
-      before(kela.selectOsasuoritus('Matemaattis-luonnontieteellinen osaaminen'))
+      before(
+        kela.selectOsasuoritus('Matemaattis-luonnontieteellinen osaaminen')
+      )
 
       it('Ei näy sulkemisen jälkeen', function () {
-        expect(extractAsText(S('table.osasuoritukset'))).to.not.include(osasuorituksenSisältö)
+        expect(extractAsText(S('table.osasuoritukset'))).to.not.include(
+          osasuorituksenSisältö
+        )
       })
     })
   })
@@ -104,15 +118,14 @@ describe('Kela', function () {
 
     it('Näytetään valitun henkilon opinnot', function () {
       expect(kela.getOppijanNimi()).to.equal('Koululainen, Kaisa (220109-784L)')
-      expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include('Jyväskylän normaalikoulu (2008 - 2016, Valmistunut)')
+      expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include(
+        'Jyväskylän normaalikoulu (2008 - 2016, Valmistunut)'
+      )
     })
   })
 
   describe('Kela käyttöoikeuksilla henkilö ohjataan Kelan käyttölittymään', function () {
-    before(
-      Authentication().login('Suppea'),
-      kela.openVirkailijaPage(),
-    )
+    before(Authentication().login('Suppea'), kela.openVirkailijaPage())
 
     it('Uudelleen ohjaus toimii', function () {
       expect(kela.getCurrentUrl().endsWith('/koski/kela')).to.equal(true)
@@ -126,20 +139,24 @@ describe('Kela', function () {
       kela.searchAndSelect('151013-2195', 'Dia')
     )
 
-    var ensimmäisenTasonOsasuoritus = 'Osasuoritukset Laajuus (vuosiviikkotuntia)\n' +
-      'Äidinkieli, saksa 3'
+    var ensimmäisenTasonOsasuoritus =
+      'Osasuoritukset Laajuus (vuosiviikkotuntia)\n' + 'Äidinkieli, saksa 3'
 
-    var toisenTasonOsasuoritus = 'Osasuoritukset Laajuus (vuosiviikkotuntia) Arviointipäivä Hyväksytty\n' +
+    var toisenTasonOsasuoritus =
+      'Osasuoritukset Laajuus (vuosiviikkotuntia) Arviointipäivä Hyväksytty\n' +
       '10/I 1 4.6.2016 kyllä'
 
     it('Ensimmäisen tason osasuorituksella ei ole arviointi-sarakkeita', function () {
-      expect(extractAsText(S('table.osasuoritukset'))).to.include(ensimmäisenTasonOsasuoritus)
+      expect(extractAsText(S('table.osasuoritukset'))).to.include(
+        ensimmäisenTasonOsasuoritus
+      )
     })
 
     it('Toisen tason osasuorituksella on arviointi-sarakkeet', function () {
-      expect(extractAsText(S('table.osasuoritukset'))).to.include(toisenTasonOsasuoritus)
+      expect(extractAsText(S('table.osasuoritukset'))).to.include(
+        toisenTasonOsasuoritus
+      )
     })
-
   })
 
   describe('Jos käännös on vain englanniksi, suomenkielinen virkailija näkee käännöksen englanniksi', function () {
@@ -151,11 +168,13 @@ describe('Kela', function () {
     )
 
     it('Näytetään englanninkielinen käännös', function () {
-      expect(extractAsText(S('table.osasuoritukset.nested'))).to.include('FIN_S1')
+      expect(extractAsText(S('table.osasuoritukset.nested'))).to.include(
+        'FIN_S1'
+      )
     })
   })
 
-  describe('Jos osasuorituksella ei ole arviointia, käyttöliittymä ei näytä suoritusta hylätyksi', function() {
+  describe('Jos osasuorituksella ei ole arviointia, käyttöliittymä ei näytä suoritusta hylätyksi', function () {
     before(
       Authentication().login('Laaja'),
       kela.openPage,
@@ -163,7 +182,9 @@ describe('Kela', function () {
     )
 
     it('toimii', function () {
-      expect(extractAsText(S('table.osasuoritukset'))).to.include('Ulkoilureittien rakentaminen ja hoitaminen\n')
+      expect(extractAsText(S('table.osasuoritukset'))).to.include(
+        'Ulkoilureittien rakentaminen ja hoitaminen\n'
+      )
     })
   })
 
@@ -176,7 +197,9 @@ describe('Kela', function () {
 
     describe('Piilotetaan päätason suorituksen vahvistus lops2019 oppiaineen oppimäärän suorituksilta, koska tietomallissa sitä ei ole', function () {
       it('toimii', function () {
-        expect(extractAsText(S('.suoritukset')).toLowerCase()).to.not.include('suoritus kesken')
+        expect(extractAsText(S('.suoritukset')).toLowerCase()).to.not.include(
+          'suoritus kesken'
+        )
       })
     })
 
@@ -195,7 +218,9 @@ describe('Kela', function () {
     )
 
     it('Näytetään rahoitusmuoto', function () {
-      expect(extractAsText(S('.opiskeluoikeus.tila'))).to.include('Valmistunut ( Työnantajan kokonaan rahoittama )\n')
+      expect(extractAsText(S('.opiskeluoikeus.tila'))).to.include(
+        'Valmistunut ( Työnantajan kokonaan rahoittama )\n'
+      )
     })
   })
 
@@ -228,7 +253,9 @@ describe('Kela', function () {
       )
 
       it('Toimii versiohistoria oikein', function () {
-        expect(kela.getValittuVersioVersiohistoriasta()).to.be.a('string').and.satisfy(str => str.startsWith('1 '))
+        expect(kela.getValittuVersioVersiohistoriasta())
+          .to.be.a('string')
+          .and.satisfy((str) => str.startsWith('1 '))
       })
 
       it('Näytetään palaa versiohistoriasta linkki', function () {
@@ -236,16 +263,18 @@ describe('Kela', function () {
       })
 
       describe('Palataan versiohistoriasta', function () {
-        before(
-          kela.clickPalaaVersiohistoriasta
-        )
+        before(kela.clickPalaaVersiohistoriasta)
 
         it('Linkkiä ei enää näytetä', function () {
           expect(kela.palaaVersiohistoriastaLinkkiIsVisible()).to.equal(false)
         })
         it('Nähdään muut opiskeluoikeudet', function () {
-          expect(extractAsText(S('.opiskeluoikeus-tabs > ul'))).to.include('Perusopetus')
-          expect(extractAsText(S('.opiskeluoikeus-tabs > ul'))).to.include('Perusopetukseen valmistava opetus')
+          expect(extractAsText(S('.opiskeluoikeus-tabs > ul'))).to.include(
+            'Perusopetus'
+          )
+          expect(extractAsText(S('.opiskeluoikeus-tabs > ul'))).to.include(
+            'Perusopetukseen valmistava opetus'
+          )
         })
       })
     })
@@ -260,7 +289,10 @@ describe('Kela', function () {
         editor.edit,
         opinnot.avaaLisätiedot,
         editor.property('ulkomaanjaksot').addItem,
-        editor.property('ulkomaanjaksot').propertyBySelector('.alku').setValue('18.5.2022'),
+        editor
+          .property('ulkomaanjaksot')
+          .propertyBySelector('.alku')
+          .setValue('18.5.2022'),
         editor.saveChanges
       )
 
@@ -274,8 +306,12 @@ describe('Kela', function () {
         )
 
         it('Näytetään uusin versio (2) ja tämän hetkinen versio näytetään valittuna versiohistorian listassa', function () {
-          expect(extractAsText(S('.ulkomaanjaksot'))).to.equal('Ulkomaanjaksot 18.5.2022 -')
-          expect(kela.getValittuVersioVersiohistoriasta()).to.be.a('string').and.satisfy(str => str.startsWith('2 '))
+          expect(extractAsText(S('.ulkomaanjaksot'))).to.equal(
+            'Ulkomaanjaksot 18.5.2022 -'
+          )
+          expect(kela.getValittuVersioVersiohistoriasta())
+            .to.be.a('string')
+            .and.satisfy((str) => str.startsWith('2 '))
         })
 
         describe('Kun valitaan versio', function () {
@@ -287,7 +323,9 @@ describe('Kela', function () {
 
           it('Näytetään valitun version opiskeluoikeus ja valittu versio on valittuna versiohistorian listassa', function () {
             // expect(extractAsText(S('.suoritustapa'))).to.equal('Suoritustapa Koulutus')
-            expect(kela.getValittuVersioVersiohistoriasta()).to.be.a('string').and.satisfy(str => str.startsWith('1 '))
+            expect(kela.getValittuVersioVersiohistoriasta())
+              .to.be.a('string')
+              .and.satisfy((str) => str.startsWith('1 '))
           })
         })
       })

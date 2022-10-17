@@ -1,21 +1,22 @@
 function KelaPage() {
-
-  var pageApi = Page(function() {return S('#content')})
+  var pageApi = Page(function () {
+    return S('#content')
+  })
 
   var api = {
-    openPage: function() {
-      return openPage("/koski/kela", api.isReady)()
+    openPage: function () {
+      return openPage('/koski/kela', api.isReady)()
     },
     openVirkailijaPage: function () {
-      return openPage("/koski/virkailija")
+      return openPage('/koski/virkailija')
     },
-    getCurrentUrl: function() {
+    getCurrentUrl: function () {
       return testFrame().location.href
     },
-    isVisible: function() {
+    isVisible: function () {
       return isElementVisible(S('#content .kela'))
     },
-    isReady: function() {
+    isReady: function () {
       return api.isVisible() && !isLoading()
     },
     getOppijanNimi: function () {
@@ -25,55 +26,75 @@ function KelaPage() {
       return S('h3.otsikko').text()
     },
     setSearchInputValue: function (value) {
-      return function() {
+      return function () {
         return pageApi.setInputValue('#kela-search-query', value)()
       }
     },
     searchAndSelect: function (hetu) {
-      return function() {
-        return api.setSearchInputValue(hetu)()
+      return function () {
+        return api
+          .setSearchInputValue(hetu)()
           .then(wait.forAjax)
-          .then(wait.until(function () { return isElementVisible(S('.opiskeluoikeus-tabs'))}))
+          .then(
+            wait.until(function () {
+              return isElementVisible(S('.opiskeluoikeus-tabs'))
+            })
+          )
       }
     },
     selectOpiskeluoikeusByTyyppi: function (opiskeluoikeudenTyyppi) {
       return function () {
         var opiskeluoikeudet = S('.opiskeluoikeus-tabs > ul > li').toArray()
-        var opiskeluoikeus = opiskeluoikeudet.find(function(li) { return $(li).text().includes(opiskeluoikeudenTyyppi)})
+        var opiskeluoikeus = opiskeluoikeudet.find(function (li) {
+          return $(li).text().includes(opiskeluoikeudenTyyppi)
+        })
         return click(opiskeluoikeus)()
       }
     },
     selectSuoritus: function (suoritusTabNimi) {
       return function () {
         var suoritukset = S('.suoritukset > .tabs > ul > li').toArray()
-        var suoritus = suoritukset.find(function (li) { return $(li).text().includes(suoritusTabNimi)})
+        var suoritus = suoritukset.find(function (li) {
+          return $(li).text().includes(suoritusTabNimi)
+        })
         return click(suoritus)()
       }
     },
     selectOsasuoritus: function (osasuoritukseNimi) {
       return function () {
-        var osasuoritukset = S('tr.osasuoritukset > td > span.suorituksen-nimi').toArray()
-        var osasuoritus = osasuoritukset.find(function (li) { return $(li).text().includes(osasuoritukseNimi)})
+        var osasuoritukset = S(
+          'tr.osasuoritukset > td > span.suorituksen-nimi'
+        ).toArray()
+        var osasuoritus = osasuoritukset.find(function (li) {
+          return $(li).text().includes(osasuoritukseNimi)
+        })
         return click(osasuoritus)()
       }
     },
     selectFromVersiohistoria: function (versionumero) {
       return function () {
-        var versiot = S('.versiohistoria > .kela-modal > .kela-modal-content > ol > li > a').toArray()
-        var versio = versiot.find(function (li) { return $(li).text().startsWith(versionumero)})
+        var versiot = S(
+          '.versiohistoria > .kela-modal > .kela-modal-content > ol > li > a'
+        ).toArray()
+        var versio = versiot.find(function (li) {
+          return $(li).text().startsWith(versionumero)
+        })
         return click(versio)()
       }
     },
-    openVersiohistoria: function() {
+    openVersiohistoria: function () {
       return click(S('.versiohistoria > span'))()
     },
-    getValittuVersioVersiohistoriasta: function() {
+    getValittuVersioVersiohistoriasta: function () {
       return extractAsText(S('.kela-modal-content > ol > li.selected'))
     },
-    palaaVersiohistoriastaLinkkiIsVisible: function() {
-      return extractAsText(S('.palaa-versiohistoriasta')) === 'Palaa versiohistoriasta yleisnäkymään'
+    palaaVersiohistoriastaLinkkiIsVisible: function () {
+      return (
+        extractAsText(S('.palaa-versiohistoriasta')) ===
+        'Palaa versiohistoriasta yleisnäkymään'
+      )
     },
-    clickPalaaVersiohistoriasta: function() {
+    clickPalaaVersiohistoriasta: function () {
       return click(S('.palaa-versiohistoriasta > a'))()
     }
   }

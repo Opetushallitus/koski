@@ -1,4 +1,4 @@
-describe('Omat tiedot', function() {
+describe('Omat tiedot', function () {
   var page = KoskiPage()
   var omattiedot = OmatTiedotPage()
   var opinnot = OpinnotPage()
@@ -6,40 +6,54 @@ describe('Omat tiedot', function() {
   var login = LoginPage()
   before(authentication.login(), resetFixtures)
 
-  describe('Virkailijana', function() {
-    before(authentication.login('Oili'), openPage('/koski/omattiedot'), wait.until(login.isVisible))
-    it('siirrytään login-sivulle', function () {
-    })
+  describe('Virkailijana', function () {
+    before(
+      authentication.login('Oili'),
+      openPage('/koski/omattiedot'),
+      wait.until(login.isVisible)
+    )
+    it('siirrytään login-sivulle', function () {})
   })
 
-  describe('Kansalaisena', function() {
+  describe('Kansalaisena', function () {
     var etusivu = LandingPage()
     var korhopankki = KorhoPankki()
     before(authentication.logout, etusivu.openPage)
 
-    describe('Kun kirjaudutaan sisään', function() {
-      before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('251029-7230', 'Kansalainen', 'VÃ¤inÃ¶ TÃµnis', 'VÃ¤inÃ¶'), wait.until(omattiedot.isVisible))
-      describe('Sivun sisältö', function() {
-        it('Näytetään opiskeluoikeudet', function() {
+    describe('Kun kirjaudutaan sisään', function () {
+      before(
+        etusivu.login(),
+        wait.until(korhopankki.isReady),
+        korhopankki.login(
+          '251029-7230',
+          'Kansalainen',
+          'VÃ¤inÃ¶ TÃµnis',
+          'VÃ¤inÃ¶'
+        ),
+        wait.until(omattiedot.isVisible)
+      )
+      describe('Sivun sisältö', function () {
+        it('Näytetään opiskeluoikeudet', function () {
           expect(omattiedot.nimi()).to.equal('Väinö Tõnis Kansalainen')
           expect(omattiedot.oppija()).to.equal('Opintoni')
-          expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal(['Itä-Suomen yliopisto' ])
+          expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
+            'Itä-Suomen yliopisto'
+          ])
         })
 
-        it('Näytetään opintoni-ingressi', function() {
+        it('Näytetään opintoni-ingressi', function () {
           expect(omattiedot.ingressi()).to.equal(
             'Tällä sivulla näkyvät kaikki sähköisesti tallennetut opintosuoritukset yksittäisistä kursseista kokonaisiin tutkintoihin.'
           )
         })
 
-        it("Näytetään nimi ja syntymäaika", function() {
+        it('Näytetään nimi ja syntymäaika', function () {
           expect(omattiedot.headerNimi()).to.equal(
-            'Väinö Tõnis Kansalainen\n' +
-            's. 25.10.1929'
+            'Väinö Tõnis Kansalainen\n' + 's. 25.10.1929'
           )
         })
 
-        it('Näytetään virheraportointi-painike', function() {
+        it('Näytetään virheraportointi-painike', function () {
           expect(!!omattiedot.virheraportointiButton().length).to.equal(true)
         })
 
@@ -48,9 +62,22 @@ describe('Omat tiedot', function() {
         })
 
         describe('Ruotsinkielinen sisältö', function () {
-          before(click(findSingle('#logout')), wait.until(etusivu.isVisible), etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('251029-7230', 'Kansalainen', 'VÃ¤inÃ¶ TÃµnis', 'VÃ¤inÃ¶', 'sv'), wait.until(omattiedot.isVisible))
+          before(
+            click(findSingle('#logout')),
+            wait.until(etusivu.isVisible),
+            etusivu.login(),
+            wait.until(korhopankki.isReady),
+            korhopankki.login(
+              '251029-7230',
+              'Kansalainen',
+              'VÃ¤inÃ¶ TÃµnis',
+              'VÃ¤inÃ¶',
+              'sv'
+            ),
+            wait.until(omattiedot.isVisible)
+          )
 
-          it('Näytetään ruotsinkielinen ingressi', function() {
+          it('Näytetään ruotsinkielinen ingressi', function () {
             expect(omattiedot.ingressi()).to.equal(
               'På denna sida syns alla studieprestationer som sparats elektroniskt, från enskilda kurser till hela examina.'
             )
@@ -60,19 +87,21 @@ describe('Omat tiedot', function() {
 
       describe('Kun kirjaudutaan ulos', function () {
         before(click(findSingle('#logout')), wait.until(etusivu.isVisible))
-        it('Näytetään länderi', function() {
-
-        })
+        it('Näytetään länderi', function () {})
       })
 
       describe('Kun henkilöllä on syntymäaika-tieto', function () {
         before(authentication.logout, etusivu.openPage)
-        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('220627-833V'), wait.until(omattiedot.isVisible))
+        before(
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('220627-833V'),
+          wait.until(omattiedot.isVisible)
+        )
 
-        it('Näytetään nimi ja syntymäaika', function() {
+        it('Näytetään nimi ja syntymäaika', function () {
           expect(omattiedot.headerNimi()).to.equal(
-            'Sylvi Syntynyt\n' +
-            's. 1.1.1970'
+            'Sylvi Syntynyt\n' + 's. 1.1.1970'
           )
         })
       })
@@ -89,21 +118,30 @@ describe('Omat tiedot', function() {
         )
 
         it('näytetään jos ne löytyy', function () {
-          expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
+          expect(
+            extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))
+          ).to.equal(
             'Tutkintokerta Koe Pisteet Arvosana\n' +
-            '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur Näytä koesuoritus\n' +
-            '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur Näytä koesuoritus\n' +
-            '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur Näytä koesuoritus\n' +
-            '2012 kevät Maantiede 26 Magna cum laude approbatur Näytä koesuoritus\n' +
-            '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur Näytä koesuoritus'
+              '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur Näytä koesuoritus\n' +
+              '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur Näytä koesuoritus\n' +
+              '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur Näytä koesuoritus\n' +
+              '2012 kevät Maantiede 26 Magna cum laude approbatur Näytä koesuoritus\n' +
+              '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur Näytä koesuoritus'
           )
-          expect(findFirst('.koesuoritus a')().attr('href')).to.equal('/koski/koesuoritus/2345K_XX_12345.pdf')
+          expect(findFirst('.koesuoritus a')().attr('href')).to.equal(
+            '/koski/koesuoritus/2345K_XX_12345.pdf'
+          )
         })
       })
 
       describe('Virheistä raportointi', function () {
         before(authentication.logout, etusivu.openPage)
-        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('180497-112F'), wait.until(omattiedot.isVisible))
+        before(
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('180497-112F'),
+          wait.until(omattiedot.isVisible)
+        )
 
         it('Aluksi ei näytetä lomaketta', function () {
           expect(omattiedot.virheraportointiForm.isVisible()).to.equal(false)
@@ -117,10 +155,10 @@ describe('Omat tiedot', function() {
           it('näytetään lista tiedoista, joita palvelussa ei pystytä näyttämään', function () {
             expect(form.contentsAsText()).to.equal(
               'Huomioithan, että Koski-palvelussa ei pystytä näyttämään seuraavia tietoja:\n' +
-              'Korkeakoulututkintoja ennen vuotta 1995. Tässä voi olla korkeakoulukohtaisia poikkeuksia.\n' +
-              'Ennen vuotta 1990 suoritettuja ylioppilastutkintoja.\n' +
-              'Ennen vuoden 2018 tammikuuta suoritettuja peruskoulun, lukion tai ammattikoulun suorituksia ja opiskeluoikeuksia.\n' +
-              'Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'
+                'Korkeakoulututkintoja ennen vuotta 1995. Tässä voi olla korkeakoulukohtaisia poikkeuksia.\n' +
+                'Ennen vuotta 1990 suoritettuja ylioppilastutkintoja.\n' +
+                'Ennen vuoden 2018 tammikuuta suoritettuja peruskoulun, lukion tai ammattikoulun suorituksia ja opiskeluoikeuksia.\n' +
+                'Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'
             )
           })
 
@@ -146,7 +184,7 @@ describe('Omat tiedot', function() {
             it('ei vielä näytetä yhteystietoja', function () {
               expect(form.oppilaitosOptionsText()).to.equal(
                 'Voit tiedustella asiaa oppilaitokseltasi.\n' +
-                'Kulosaaren ala-aste Jyväskylän normaalikoulu Muu'
+                  'Kulosaaren ala-aste Jyväskylän normaalikoulu Muu'
               )
             })
 
@@ -155,8 +193,7 @@ describe('Omat tiedot', function() {
 
               it('näytetään sähköpostiosoite ja oppilaitoksen nimi', function () {
                 expect(form.yhteystiedot()).to.equal(
-                  'joku.osoite@example.com\n' +
-                  'Jyväskylän normaalikoulu'
+                  'joku.osoite@example.com\n' + 'Jyväskylän normaalikoulu'
                 )
               })
 
@@ -167,25 +204,25 @@ describe('Omat tiedot', function() {
               it('näytetään yhteystiedot kopioitavana tekstinä', function () {
                 expect(form.yhteystiedotTekstinä()).to.equal(
                   'Muista mainita sähköpostissa seuraavat tiedot:\n' +
-                  'Nimi: Miia Monikoululainen\n' +
-                  'Oppijanumero: 1.2.246.562.24.00000000012' +
-                  ' ' +
-                  'Kopioi'
+                    'Nimi: Miia Monikoululainen\n' +
+                    'Oppijanumero: 1.2.246.562.24.00000000012' +
+                    ' ' +
+                    'Kopioi'
                 )
               })
 
               it('mailto-linkissä on oikea viestipohja', function () {
                 expect(form.sähköpostiButtonMailtoContents()).to.equal(
                   'mailto:joku.osoite@example.com?' +
-                  'subject=Tiedustelu%20opintopolun%20tiedoista&' +
-                  'body=' +
-                  encodeURIComponent(
-                    '***Kirjoita viestisi tähän***\n\n' +
-                    '———————————————————————————————\n\n' +
-                    'Allaoleva teksti on luotu automaattisesti Opintopolun tiedoista. Koulu tarvitsee näitä tietoja pystyäkseen käsittelemään kysymystäsi.\n\n' +
-                    'Nimi: Miia Monikoululainen\n' +
-                    'Oppijanumero: 1.2.246.562.24.00000000012'
-                  )
+                    'subject=Tiedustelu%20opintopolun%20tiedoista&' +
+                    'body=' +
+                    encodeURIComponent(
+                      '***Kirjoita viestisi tähän***\n\n' +
+                        '———————————————————————————————\n\n' +
+                        'Allaoleva teksti on luotu automaattisesti Opintopolun tiedoista. Koulu tarvitsee näitä tietoja pystyäkseen käsittelemään kysymystäsi.\n\n' +
+                        'Nimi: Miia Monikoululainen\n' +
+                        'Oppijanumero: 1.2.246.562.24.00000000012'
+                    )
                 )
               })
             })
@@ -196,8 +233,8 @@ describe('Omat tiedot', function() {
               it('näytetään ainoastaan virheviesti', function () {
                 expect(form.oppilaitosOptionsText()).to.equal(
                   'Voit tiedustella asiaa oppilaitokseltasi.\n' +
-                  'Kulosaaren ala-aste Jyväskylän normaalikoulu Muu\n' +
-                  'Oppilaitokselle ei löytynyt yhteystietoja.'
+                    'Kulosaaren ala-aste Jyväskylän normaalikoulu Muu\n' +
+                    'Oppilaitokselle ei löytynyt yhteystietoja.'
                 )
               })
             })
@@ -214,8 +251,7 @@ describe('Omat tiedot', function() {
 
                 it('näytetään sähköpostiosoite ja oppilaitoksen nimi', function () {
                   expect(form.yhteystiedot()).to.equal(
-                    'joku.osoite@example.com\n' +
-                    'Ressun lukio'
+                    'joku.osoite@example.com\n' + 'Ressun lukio'
                   )
                 })
 
@@ -226,10 +262,10 @@ describe('Omat tiedot', function() {
                 it('näytetään yhteystiedot kopioitavana tekstinä', function () {
                   expect(form.yhteystiedotTekstinä()).to.equal(
                     'Muista mainita sähköpostissa seuraavat tiedot:\n' +
-                    'Nimi: Miia Monikoululainen\n' +
-                    'Oppijanumero: 1.2.246.562.24.00000000012' +
-                    ' ' +
-                    'Kopioi'
+                      'Nimi: Miia Monikoululainen\n' +
+                      'Oppijanumero: 1.2.246.562.24.00000000012' +
+                      ' ' +
+                      'Kopioi'
                   )
                 })
               })
@@ -242,8 +278,16 @@ describe('Omat tiedot', function() {
 
           describe('kun ei lukiosuorituksia', function () {
             before(authentication.logout, etusivu.openPage)
-            before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('210244-374K'), wait.until(omattiedot.isVisible))
-            before(click(omattiedot.virheraportointiButton), form.acceptDisclaimer)
+            before(
+              etusivu.login(),
+              wait.until(korhopankki.isReady),
+              korhopankki.login('210244-374K'),
+              wait.until(omattiedot.isVisible)
+            )
+            before(
+              click(omattiedot.virheraportointiButton),
+              form.acceptDisclaimer
+            )
 
             it('näytetään oppilaitoksissa ylioppilastutkintolautakunta, ei lukiota, lisäksi suorituksen tyyppi (ylioppilastutkinto)', function () {
               expect(form.oppilaitosNames()).to.deep.equal([
@@ -262,8 +306,16 @@ describe('Omat tiedot', function() {
 
           describe('kun myös lukiosuorituksia', function () {
             before(authentication.logout, etusivu.openPage)
-            before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('080698-967F'), wait.until(omattiedot.isVisible))
-            before(click(omattiedot.virheraportointiButton), form.acceptDisclaimer)
+            before(
+              etusivu.login(),
+              wait.until(korhopankki.isReady),
+              korhopankki.login('080698-967F'),
+              wait.until(omattiedot.isVisible)
+            )
+            before(
+              click(omattiedot.virheraportointiButton),
+              form.acceptDisclaimer
+            )
 
             it('näytetään oppilaitoksissa ylioppilastutkintolautakunta ja lukio', function () {
               expect(form.oppilaitosNames()).to.deep.equal([
@@ -294,67 +346,86 @@ describe('Omat tiedot', function() {
           wait.until(omattiedot.isVisible)
         )
         describe('Monta oppiaineen oppimäärää samassa opiskeluoikeudessa', function () {
-          it('Näytetään suorituksen tyyppi', function() {
-            expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
+          it('Näytetään suorituksen tyyppi', function () {
+            expect(
+              opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()
+            ).to.deep.equal([
               'Perusopetuksen oppiaineen oppimäärä (2008—2018, valmistunut)'
             ])
           })
         })
       })
 
-      describe('Suoritusjako', function() {
+      describe('Suoritusjako', function () {
         before(authentication.logout, etusivu.openPage)
-        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('180497-112F'), wait.until(omattiedot.isVisible))
+        before(
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('180497-112F'),
+          wait.until(omattiedot.isVisible)
+        )
 
         var form = omattiedot.suoritusjakoForm
         window.secrets = {}
 
         describe('Jakaminen', function () {
-          it('Aluksi ei näytetä lomaketta', function() {
+          it('Aluksi ei näytetä lomaketta', function () {
             expect(form.isVisible()).to.equal(false)
           })
 
-          describe('Kun painetaan painiketta', function() {
+          describe('Kun painetaan painiketta', function () {
             before(click(omattiedot.suoritusjakoButton))
 
-            it('näytetään ingressi', function() {
+            it('näytetään ingressi', function () {
               expect(form.ingressi()).to.equal(
                 'Luomalla jakolinkin voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-                'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'
+                  'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'
               )
             })
 
-            it('näytetään suoritusvaihtoehtojen otsikko', function() {
-              expect(form.suoritusvaihtoehdotOtsikkoText()).to.equal('Valitse jaettavat suoritustiedot')
+            it('näytetään suoritusvaihtoehtojen otsikko', function () {
+              expect(form.suoritusvaihtoehdotOtsikkoText()).to.equal(
+                'Valitse jaettavat suoritustiedot'
+              )
             })
 
-            it('näytetään suoritusvaihtoehdot', function() {
+            it('näytetään suoritusvaihtoehdot', function () {
               expect(form.suoritusvaihtoehdotText()).to.equal(
                 'Kulosaaren ala-aste\n' +
-                '7. vuosiluokka\n' +
-                '6. vuosiluokka\n' +
-                'Jyväskylän normaalikoulu\n' +
-                '9. vuosiluokka\n' +
-                '8. vuosiluokka'
+                  '7. vuosiluokka\n' +
+                  '6. vuosiluokka\n' +
+                  'Jyväskylän normaalikoulu\n' +
+                  '9. vuosiluokka\n' +
+                  '8. vuosiluokka'
               )
             })
 
-            it('jakopainike on disabloitu', function() {
+            it('jakopainike on disabloitu', function () {
               expect(form.canCreateSuoritusjako()).to.equal(false)
             })
           })
 
-          describe('Kun valitaan suoritus', function() {
-            before(form.selectSuoritus(null, '1.2.246.562.10.14613773812', 'perusopetuksenvuosiluokka', '8'))
+          describe('Kun valitaan suoritus', function () {
+            before(
+              form.selectSuoritus(
+                null,
+                '1.2.246.562.10.14613773812',
+                'perusopetuksenvuosiluokka',
+                '8'
+              )
+            )
 
-            it('jakopainike on enabloitu', function() {
+            it('jakopainike on enabloitu', function () {
               expect(form.canCreateSuoritusjako()).to.equal(true)
             })
 
             describe('Kun painetaan suoritusjaon luomispainiketta', function () {
-              before(form.createSuoritusjako(), wait.until(form.suoritusjako(1).isVisible))
+              before(
+                form.createSuoritusjako(),
+                wait.until(form.suoritusjako(1).isVisible)
+              )
 
-              it('suoritusjako näytetään', function() {
+              it('suoritusjako näytetään', function () {
                 var jako = form.suoritusjako(1)
                 var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
                 window.secrets.perusopetus = secret[secret.length - 1]
@@ -362,83 +433,109 @@ describe('Omat tiedot', function() {
                 expect(jako.isVisible()).to.equal(true)
               })
 
-              it('suoritusjaon tiedot näytetään', function() {
+              it('suoritusjaon tiedot näytetään', function () {
                 var jako = form.suoritusjako(1)
 
                 var date = new Date()
                 var targetMonth = date.getMonth() + 6
                 date.setMonth(targetMonth)
-                if (date.getMonth() != (targetMonth % 12)) {
+                if (date.getMonth() != targetMonth % 12) {
                   // match java.time.LocalDate.plusMonths behavior, in case e.g. today is May 31st, and
                   // November 31st doesn't exist
                   date.setDate(0)
                 }
 
                 expect(jako.url()).to.match(/^.+\/opinnot\/[0-9a-f]{32}$/)
-                expect(jako.voimassaoloaika()).to.equal('' +
-                  date.getDate() + '.' +
-                  (date.getMonth() + 1) + '.' +
-                  date.getFullYear()
+                expect(jako.voimassaoloaika()).to.equal(
+                  '' +
+                    date.getDate() +
+                    '.' +
+                    (date.getMonth() + 1) +
+                    '.' +
+                    date.getFullYear()
                 )
                 expect(jako.esikatseluLinkHref()).to.equal(jako.url())
               })
             })
           })
 
-          describe('Voimassaoloajan muuttaminen', function() {
-            const formattedDate = function(dayDiff) {
+          describe('Voimassaoloajan muuttaminen', function () {
+            const formattedDate = function (dayDiff) {
               const date = new Date()
               date.setDate(date.getDate() + dayDiff)
-              return '' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+              return (
+                '' +
+                date.getDate() +
+                '.' +
+                (date.getMonth() + 1) +
+                '.' +
+                date.getFullYear()
+              )
             }
 
             const validDate = formattedDate(1)
             const tooBigDate = formattedDate(1337)
             const invalidDate = formattedDate(-10)
 
-            describe('kun voimassaoloaika on validi', function() {
-              before(form.suoritusjako(1).setVoimassaoloaika(validDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
-              it('päivittäminen onnistuu', function() {
-                expect(form.suoritusjako(1).feedbackText.value()).to.equal('Muutokset tallennettu')
+            describe('kun voimassaoloaika on validi', function () {
+              before(
+                form.suoritusjako(1).setVoimassaoloaika(validDate),
+                wait.until(form.suoritusjako(1).feedbackText.isVisible)
+              )
+              it('päivittäminen onnistuu', function () {
+                expect(form.suoritusjako(1).feedbackText.value()).to.equal(
+                  'Muutokset tallennettu'
+                )
               })
             })
 
-            describe('kun voimassaoloaika on liian suuri', function() {
-              before(form.suoritusjako(1).setVoimassaoloaika(tooBigDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
-              it('näytetään virheilmoitus', function() {
-                expect(form.suoritusjako(1).feedbackText.value()).to.equal('Pisin voimassaoloaika on vuosi')
+            describe('kun voimassaoloaika on liian suuri', function () {
+              before(
+                form.suoritusjako(1).setVoimassaoloaika(tooBigDate),
+                wait.until(form.suoritusjako(1).feedbackText.isVisible)
+              )
+              it('näytetään virheilmoitus', function () {
+                expect(form.suoritusjako(1).feedbackText.value()).to.equal(
+                  'Pisin voimassaoloaika on vuosi'
+                )
               })
             })
 
-            describe('kun voimassaoloaika on menneisyydessä', function() {
-              before(form.suoritusjako(1).setVoimassaoloaika(invalidDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
-              it('näytetään virheilmoitus', function() {
-                expect(form.suoritusjako(1).feedbackText.value()).to.equal('Virheellinen päivämäärä')
+            describe('kun voimassaoloaika on menneisyydessä', function () {
+              before(
+                form.suoritusjako(1).setVoimassaoloaika(invalidDate),
+                wait.until(form.suoritusjako(1).feedbackText.isVisible)
+              )
+              it('näytetään virheilmoitus', function () {
+                expect(form.suoritusjako(1).feedbackText.value()).to.equal(
+                  'Virheellinen päivämäärä'
+                )
               })
             })
-
           })
         })
 
         describe('Katselu', function () {
           var suoritusjako = SuoritusjakoPage()
 
-          before(authentication.logout, suoritusjako.openPage('perusopetus'), wait.until(suoritusjako.isVisible))
+          before(
+            authentication.logout,
+            suoritusjako.openPage('perusopetus'),
+            wait.until(suoritusjako.isVisible)
+          )
 
           it('linkki toimii', function () {
             expect(suoritusjako.isVisible()).to.equal(true)
           })
 
-          describe('Sivun sisältö', function() {
-            it('Näytetään otsikko, nimi ja syntymäaika', function() {
+          describe('Sivun sisältö', function () {
+            it('Näytetään otsikko, nimi ja syntymäaika', function () {
               expect(suoritusjako.headerText()).to.equal(
-                'Opinnot' +
-                'Miia Monikoululainen' +
-                's. 18.4.1997'
+                'Opinnot' + 'Miia Monikoululainen' + 's. 18.4.1997'
               )
             })
 
-            it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function() {
+            it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function () {
               expect(suoritusjako.oppilaitosTitleText()).to.deep.equal([
                 'Jyväskylän normaalikoulu'
               ])
@@ -447,38 +544,42 @@ describe('Omat tiedot', function() {
               ])
             })
 
-            it('Ei näytetä virheraportointi-painiketta', function() {
-              expect(!!omattiedot.virheraportointiButton().length).to.equal(false)
+            it('Ei näytetä virheraportointi-painiketta', function () {
+              expect(!!omattiedot.virheraportointiButton().length).to.equal(
+                false
+              )
             })
 
-            it('Ei näytetä suoritusjako-painiketta', function() {
+            it('Ei näytetä suoritusjako-painiketta', function () {
               expect(!!omattiedot.suoritusjakoButton().length).to.equal(false)
             })
 
             describe('Kun avataan oppilaitos', function () {
               before(suoritusjako.avaaOpiskeluoikeus('(2008—, läsnä)'))
 
-              it('näytetään oikeat opiskeluoikeudet', function() {
-                expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()).to.equal(1)
-                expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
-                  'Perusopetus (2008—, läsnä)'
-                ])
+              it('näytetään oikeat opiskeluoikeudet', function () {
+                expect(
+                  opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()
+                ).to.equal(1)
+                expect(
+                  opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()
+                ).to.deep.equal(['Perusopetus (2008—, läsnä)'])
               })
             })
           })
 
-          describe('Kielen vaihto', function() {
+          describe('Kielen vaihto', function () {
             before(
               click(suoritusjako.changeLanguageButton),
               wait.forMilliseconds(150), // page reloads
-              wait.until(function() { return isElementVisible(suoritusjako.header()) })
+              wait.until(function () {
+                return isElementVisible(suoritusjako.header())
+              })
             )
 
-            it('toimii', function() {
+            it('toimii', function () {
               expect(suoritusjako.headerText()).to.equal(
-                'Studier' +
-                'Miia Monikoululainen' +
-                'f. 18.4.1997'
+                'Studier' + 'Miia Monikoululainen' + 'f. 18.4.1997'
               )
             })
 
@@ -499,12 +600,17 @@ describe('Omat tiedot', function() {
 
           describe('Tutkintosuorituksen jakaminen', function () {
             before(
-              form.selectSuoritus('1114082125', '1.2.246.562.10.56753942459', 'korkeakoulututkinto', '751101'),
+              form.selectSuoritus(
+                '1114082125',
+                '1.2.246.562.10.56753942459',
+                'korkeakoulututkinto',
+                '751101'
+              ),
               form.createSuoritusjako(),
               wait.until(form.suoritusjako(1).isVisible)
             )
 
-            it('onnistuu', function() {
+            it('onnistuu', function () {
               var jako = form.suoritusjako(1)
               var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
               window.secrets.korkeakoulututkinto = secret[secret.length - 1]
@@ -517,15 +623,21 @@ describe('Omat tiedot', function() {
             describe('voidaan jakaa', function () {
               before(
                 form.openAdditionalSuoritusjakoForm(),
-                form.selectSuoritus(null, '1.2.246.562.10.56753942459', 'korkeakoulunopintojakso', null),
+                form.selectSuoritus(
+                  null,
+                  '1.2.246.562.10.56753942459',
+                  'korkeakoulunopintojakso',
+                  null
+                ),
                 form.createSuoritusjako(),
                 wait.until(form.suoritusjako(2).isVisible)
               )
 
-              it('yhtenä kokonaisuutena', function() {
+              it('yhtenä kokonaisuutena', function () {
                 var jako = form.suoritusjako(2)
                 var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
-                window.secrets.korkeakoulunopintojaksot = secret[secret.length - 1]
+                window.secrets.korkeakoulunopintojaksot =
+                  secret[secret.length - 1]
 
                 expect(jako.isVisible()).to.equal(true)
               })
@@ -534,11 +646,11 @@ describe('Omat tiedot', function() {
             describe('ei voida', function () {
               before(form.openAdditionalSuoritusjakoForm())
 
-              it('valita jaettaviksi yksittäin', function() {
+              it('valita jaettaviksi yksittäin', function () {
                 expect(form.suoritusvaihtoehdotText()).to.equal(
                   'Aalto-yliopisto\n' +
-                  'Dipl.ins., konetekniikka ( 2013 — 2016 , päättynyt )\n' +
-                  '8 opintojaksoa'
+                    'Dipl.ins., konetekniikka ( 2013 — 2016 , päättynyt )\n' +
+                    '8 opintojaksoa'
                 )
               })
             })
@@ -550,19 +662,28 @@ describe('Omat tiedot', function() {
               etusivu.openPage,
               etusivu.login(),
               wait.until(korhopankki.isReady),
-              korhopankki.login('060458-331R', 'Korkeakoululainen', 'Kompleksi'),
+              korhopankki.login(
+                '060458-331R',
+                'Korkeakoululainen',
+                'Kompleksi'
+              ),
               wait.until(omattiedot.isVisible),
               click(omattiedot.suoritusjakoButton)
             )
 
             describe('Opiskelijaliikkuvuus', function () {
               before(
-                form.selectSuoritus('10065_1700969', '1.2.246.562.10.56753942459', 'muukorkeakoulunsuoritus', '8'),
+                form.selectSuoritus(
+                  '10065_1700969',
+                  '1.2.246.562.10.56753942459',
+                  'muukorkeakoulunsuoritus',
+                  '8'
+                ),
                 form.createSuoritusjako(),
                 wait.until(form.suoritusjako(1).isVisible)
               )
 
-              it('jakaminen onnistuu', function() {
+              it('jakaminen onnistuu', function () {
                 var jako = form.suoritusjako(1)
 
                 expect(jako.isVisible()).to.equal(true)
@@ -572,12 +693,17 @@ describe('Omat tiedot', function() {
             describe('Erikoistumisopinnot', function () {
               before(
                 form.openAdditionalSuoritusjakoForm(),
-                form.selectSuoritus('1927', '1.2.246.562.10.56753942459', 'muukorkeakoulunsuoritus', '12'),
+                form.selectSuoritus(
+                  '1927',
+                  '1.2.246.562.10.56753942459',
+                  'muukorkeakoulunsuoritus',
+                  '12'
+                ),
                 form.createSuoritusjako(),
                 wait.until(form.suoritusjako(2).isVisible)
               )
 
-              it('jakaminen onnistuu', function() {
+              it('jakaminen onnistuu', function () {
                 var jako = form.suoritusjako(2)
 
                 expect(jako.isVisible()).to.equal(true)
@@ -587,12 +713,17 @@ describe('Omat tiedot', function() {
             describe('Täydennyskoulutus', function () {
               before(
                 form.openAdditionalSuoritusjakoForm(),
-                form.selectSuoritus('46737839', '1.2.246.562.10.91392558028', 'muukorkeakoulunsuoritus', '10'),
+                form.selectSuoritus(
+                  '46737839',
+                  '1.2.246.562.10.91392558028',
+                  'muukorkeakoulunsuoritus',
+                  '10'
+                ),
                 form.createSuoritusjako(),
                 wait.until(form.suoritusjako(3).isVisible)
               )
 
-              it('jakaminen onnistuu', function() {
+              it('jakaminen onnistuu', function () {
                 var jako = form.suoritusjako(3)
 
                 expect(jako.isVisible()).to.equal(true)
@@ -602,47 +733,63 @@ describe('Omat tiedot', function() {
             describe('Opintojaksot', function () {
               before(
                 form.openAdditionalSuoritusjakoForm(),
-                form.selectSuoritus('1927', '1.2.246.562.10.56753942459', 'korkeakoulunopintojakso', ''),
+                form.selectSuoritus(
+                  '1927',
+                  '1.2.246.562.10.56753942459',
+                  'korkeakoulunopintojakso',
+                  ''
+                ),
                 form.createAndStoreSuoritusjako('opintojaksot')
               )
 
-              it('jakaminen onnistuu', function() {
+              it('jakaminen onnistuu', function () {
                 expect(form.suoritusjako(4).isVisible()).to.equal(true)
               })
 
               describe('Katselu', function () {
                 var suoritusjako = SuoritusjakoPage()
-                before(suoritusjako.openPage('opintojaksot'), wait.until(suoritusjako.isVisible))
+                before(
+                  suoritusjako.openPage('opintojaksot'),
+                  wait.until(suoritusjako.isVisible)
+                )
 
                 it('onnistuu', function () {
                   expect(suoritusjako.isVisible()).to.equal(true)
-                  expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal(['12 opintojaksoa (2011—2013, päättynyt)'])
+                  expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal([
+                    '12 opintojaksoa (2011—2013, päättynyt)'
+                  ])
                 })
 
                 describe('Kun avataan oppilaitos', function () {
-                  before(suoritusjako.avaaOpiskeluoikeus('12 opintojaksoa (2011—2013, päättynyt)'))
+                  before(
+                    suoritusjako.avaaOpiskeluoikeus(
+                      '12 opintojaksoa (2011—2013, päättynyt)'
+                    )
+                  )
 
                   it('näytetään oikeat opiskeluoikeudet', function () {
-                    expect(extractAsText(S('.opiskeluoikeus-content'))).to.equal(
-                    'Opiskeluoikeuden voimassaoloaika : 24.8.2011 — 20.6.2013\n' +
-                    'Tila 21.6.2013 päättynyt\n' +
-                    '24.8.2011 aktiivinen\n' +
-                    'Lisätiedot\n' +
-                    'Opintojakso Laajuus Arvosana\n' +
-                    '+\nLaajaverkot 3 op 5\n' +
-                    '+\nIP-verkkojen hallinta 4 op 1\n' +
-                    '+\nTietoverkkojen tietoturva 5 op 5\n' +
-                    '+\nTekninen tietoturva 3 op 4\n' +
-                    '+\nWeb-ohjelmointi 5 op 3\n' +
-                    '+\nLinuxin asennus ja ylläpito 5 op hyväksytty\n' +
-                    '+\nTietoturvallisuuden perusteet 3 op 2\n' +
-                    '+\nPhotoshopin perusteet 3 op hyväksytty\n' +
-                    '+\nVirtuaalilähiverkot (CCNA3) 3 op 5\n' +
-                    '+\nReititinverkot (CCNA2) 3 op 4\n' +
-                    '+\nLähiverkot (CCNA1) 3 op 4\n' +
-                    '+\nMikrotietokoneen hallinta 3 op hyväksytty\n' +
-                    'Yhteensä 43 op'
-                  )
+                    expect(
+                      extractAsText(S('.opiskeluoikeus-content'))
+                    ).to.equal(
+                      'Opiskeluoikeuden voimassaoloaika : 24.8.2011 — 20.6.2013\n' +
+                        'Tila 21.6.2013 päättynyt\n' +
+                        '24.8.2011 aktiivinen\n' +
+                        'Lisätiedot\n' +
+                        'Opintojakso Laajuus Arvosana\n' +
+                        '+\nLaajaverkot 3 op 5\n' +
+                        '+\nIP-verkkojen hallinta 4 op 1\n' +
+                        '+\nTietoverkkojen tietoturva 5 op 5\n' +
+                        '+\nTekninen tietoturva 3 op 4\n' +
+                        '+\nWeb-ohjelmointi 5 op 3\n' +
+                        '+\nLinuxin asennus ja ylläpito 5 op hyväksytty\n' +
+                        '+\nTietoturvallisuuden perusteet 3 op 2\n' +
+                        '+\nPhotoshopin perusteet 3 op hyväksytty\n' +
+                        '+\nVirtuaalilähiverkot (CCNA3) 3 op 5\n' +
+                        '+\nReititinverkot (CCNA2) 3 op 4\n' +
+                        '+\nLähiverkot (CCNA1) 3 op 4\n' +
+                        '+\nMikrotietokoneen hallinta 3 op hyväksytty\n' +
+                        'Yhteensä 43 op'
+                    )
                   })
                 })
               })
@@ -655,32 +802,45 @@ describe('Omat tiedot', function() {
             var suoritusjako = SuoritusjakoPage()
 
             describe('Tutkintosuorituksen jako', function () {
-              before(suoritusjako.openPage('korkeakoulututkinto'), wait.until(suoritusjako.isVisible))
+              before(
+                suoritusjako.openPage('korkeakoulututkinto'),
+                wait.until(suoritusjako.isVisible)
+              )
 
               it('linkki toimii', function () {
                 expect(suoritusjako.isVisible()).to.equal(true)
               })
 
-              describe('Sivun sisältö', function() {
-                it('Näytetään oikea otsikko, nimi ja syntymäaika', function() {
+              describe('Sivun sisältö', function () {
+                it('Näytetään oikea otsikko, nimi ja syntymäaika', function () {
                   expect(suoritusjako.headerText()).to.equal(
-                    'Opinnot' +
-                    'Dilbert Dippainssi' +
-                    's. 10.8.1969'
+                    'Opinnot' + 'Dilbert Dippainssi' + 's. 10.8.1969'
                   )
                 })
 
-                it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function() {
-                  expect(suoritusjako.oppilaitosTitleText()).to.deep.equal(['Aalto-yliopisto'])
-                  expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal(['Dipl.ins., konetekniikka (2013—2016, päättynyt)'])
+                it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function () {
+                  expect(suoritusjako.oppilaitosTitleText()).to.deep.equal([
+                    'Aalto-yliopisto'
+                  ])
+                  expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal([
+                    'Dipl.ins., konetekniikka (2013—2016, päättynyt)'
+                  ])
                 })
 
                 describe('Kun avataan oppilaitos', function () {
-                  before(suoritusjako.avaaOpiskeluoikeus('Dipl.ins., konetekniikka (2013—2016, päättynyt)'))
+                  before(
+                    suoritusjako.avaaOpiskeluoikeus(
+                      'Dipl.ins., konetekniikka (2013—2016, päättynyt)'
+                    )
+                  )
 
-                  it('näytetään oikeat opiskeluoikeudet', function() {
-                    expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()).to.equal(1)
-                    expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
+                  it('näytetään oikeat opiskeluoikeudet', function () {
+                    expect(
+                      opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()
+                    ).to.equal(1)
+                    expect(
+                      opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()
+                    ).to.deep.equal([
                       'Dipl.ins., konetekniikka (2013—2016, päättynyt)'
                     ])
                   })
@@ -689,34 +849,41 @@ describe('Omat tiedot', function() {
             })
 
             describe('Opintojaksojen jako', function () {
-              before(suoritusjako.openPage('korkeakoulunopintojaksot'), wait.until(suoritusjako.isVisible))
+              before(
+                suoritusjako.openPage('korkeakoulunopintojaksot'),
+                wait.until(suoritusjako.isVisible)
+              )
 
               it('linkki toimii', function () {
                 expect(suoritusjako.isVisible()).to.equal(true)
               })
 
-              describe('Sivun sisältö', function() {
-                it('Näytetään oikea otsikko, nimi ja syntymäaika', function() {
+              describe('Sivun sisältö', function () {
+                it('Näytetään oikea otsikko, nimi ja syntymäaika', function () {
                   expect(suoritusjako.headerText()).to.equal(
-                    'Opinnot' +
-                    'Dilbert Dippainssi' +
-                    's. 10.8.1969'
+                    'Opinnot' + 'Dilbert Dippainssi' + 's. 10.8.1969'
                   )
                 })
 
-                it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function() {
-                  expect(suoritusjako.oppilaitosTitleText()).to.deep.equal(['Aalto-yliopisto'])
-                  expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal(['8 opintojaksoa'])
+                it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function () {
+                  expect(suoritusjako.oppilaitosTitleText()).to.deep.equal([
+                    'Aalto-yliopisto'
+                  ])
+                  expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal([
+                    '8 opintojaksoa'
+                  ])
                 })
 
                 describe('Kun avataan oppilaitos', function () {
                   before(suoritusjako.avaaOpiskeluoikeus('8 opintojaksoa'))
 
-                  it('näytetään oikeat opiskeluoikeudet', function() {
-                    expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()).to.equal(1)
-                    expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
-                      '8 opintojaksoa'
-                    ])
+                  it('näytetään oikeat opiskeluoikeudet', function () {
+                    expect(
+                      opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()
+                    ).to.equal(1)
+                    expect(
+                      opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()
+                    ).to.deep.equal(['8 opintojaksoa'])
                   })
                 })
               })
@@ -737,25 +904,30 @@ describe('Omat tiedot', function() {
           describe('Suoritusvaihtoehdoissa', function () {
             before(click(omattiedot.suoritusjakoButton))
 
-            it('näytetään tuplattu luokka vain kerran', function() {
+            it('näytetään tuplattu luokka vain kerran', function () {
               expect(form.suoritusvaihtoehdotText()).to.equal(
                 'Jyväskylän normaalikoulu\n' +
-                'Päättötodistus\n' +
-                '9. vuosiluokka\n' +
-                '8. vuosiluokka\n' +
-                '7. vuosiluokka'
+                  'Päättötodistus\n' +
+                  '9. vuosiluokka\n' +
+                  '8. vuosiluokka\n' +
+                  '7. vuosiluokka'
               )
             })
           })
 
           describe('Jakaminen', function () {
             before(
-              form.selectSuoritus(null, '1.2.246.562.10.14613773812', 'perusopetuksenvuosiluokka', '7'),
+              form.selectSuoritus(
+                null,
+                '1.2.246.562.10.14613773812',
+                'perusopetuksenvuosiluokka',
+                '7'
+              ),
               form.createSuoritusjako(),
               wait.until(form.suoritusjako(1).isVisible)
             )
 
-            it('onnistuu', function() {
+            it('onnistuu', function () {
               var jako = form.suoritusjako(1)
               var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
               window.secrets.tuplattu = secret[secret.length - 1]
@@ -767,39 +939,56 @@ describe('Omat tiedot', function() {
           describe('Katselu', function () {
             var suoritusjako = SuoritusjakoPage()
 
-            before(authentication.logout, suoritusjako.openPage('tuplattu'), wait.until(suoritusjako.isVisible))
+            before(
+              authentication.logout,
+              suoritusjako.openPage('tuplattu'),
+              wait.until(suoritusjako.isVisible)
+            )
 
             it('linkki toimii', function () {
               expect(suoritusjako.isVisible()).to.equal(true)
             })
 
-            describe('Sivun sisältö', function() {
-              it('Näytetään oikea otsikko, nimi ja syntymäaika', function() {
+            describe('Sivun sisältö', function () {
+              it('Näytetään oikea otsikko, nimi ja syntymäaika', function () {
                 expect(suoritusjako.headerText()).to.equal(
-                  'Opinnot' +
-                  'Lasse Luokallejäänyt' +
-                  's. 17.1.1986'
+                  'Opinnot' + 'Lasse Luokallejäänyt' + 's. 17.1.1986'
                 )
               })
 
-              it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function() {
-                expect(suoritusjako.oppilaitosTitleText()).to.deep.equal(['Jyväskylän normaalikoulu'])
-                expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal(['Perusopetus (2008—2016, valmistunut)'])
+              it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function () {
+                expect(suoritusjako.oppilaitosTitleText()).to.deep.equal([
+                  'Jyväskylän normaalikoulu'
+                ])
+                expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal([
+                  'Perusopetus (2008—2016, valmistunut)'
+                ])
               })
 
               describe('Kun avataan oppilaitos', function () {
-                before(suoritusjako.avaaOpiskeluoikeus('(2008—2016, valmistunut)'))
+                before(
+                  suoritusjako.avaaOpiskeluoikeus('(2008—2016, valmistunut)')
+                )
 
-                it('näytetään oikeat opiskeluoikeudet', function() {
-                  expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()).to.equal(1)
-                  expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
-                    'Perusopetus (2008—2016, valmistunut)'
-                  ])
+                it('näytetään oikeat opiskeluoikeudet', function () {
+                  expect(
+                    opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()
+                  ).to.equal(1)
+                  expect(
+                    opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()
+                  ).to.deep.equal(['Perusopetus (2008—2016, valmistunut)'])
                 })
 
-                it('näytetään oikea suoritus (ei luokallejäänti-suoritusta)', function() {
-                  expect(opinnot.suoritusTabs('(2008—2016, valmistunut)', true)).to.deep.equal(['7. vuosiluokka'])
-                  expect(opinnot.opiskeluoikeusEditor(undefined, true).property('luokka').getValue()).to.equal('7A')
+                it('näytetään oikea suoritus (ei luokallejäänti-suoritusta)', function () {
+                  expect(
+                    opinnot.suoritusTabs('(2008—2016, valmistunut)', true)
+                  ).to.deep.equal(['7. vuosiluokka'])
+                  expect(
+                    opinnot
+                      .opiskeluoikeusEditor(undefined, true)
+                      .property('luokka')
+                      .getValue()
+                  ).to.equal('7A')
                 })
               })
             })
@@ -818,47 +1007,58 @@ describe('Omat tiedot', function() {
           korhopankki.login('080698-967F'),
           wait.until(omattiedot.isVisible),
           click(omattiedot.suoritusjakoButton),
-          form.selectSuoritus('', '1.2.246.562.10.14613773812', 'ylioppilastutkinto', '301000'),
+          form.selectSuoritus(
+            '',
+            '1.2.246.562.10.14613773812',
+            'ylioppilastutkinto',
+            '301000'
+          ),
           form.createAndStoreSuoritusjako('ylioppilastutkinto'),
           suoritusjako.openPage('ylioppilastutkinto'),
           wait.until(suoritusjako.isVisible),
           suoritusjako.avaaOpiskeluoikeus('Ylioppilastutkinto')
         )
 
-        it('näytetään opiskeluoikeuden tiedot ilman koesuorituslinkkejä', function() {
+        it('näytetään opiskeluoikeuden tiedot ilman koesuorituslinkkejä', function () {
           expect(extractAsText(S('.opiskeluoikeus-content'))).to.equal(
             'Ylioppilastutkinto\n' +
-            'Koulutus Ylioppilastutkinto\n' +
-            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-            'Pakolliset kokeet suoritettu kyllä\n' +
-            'Koulusivistyskieli suomi\n' +
-            'Suoritus valmis Vahvistus : 2.6.2012 Helsinki\n' +
-            'Tutkintokerta Koe Pisteet Arvosana\n' +
-            '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur\n' +
-            '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur\n' +
-            '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur\n' +
-            '2012 kevät Maantiede 26 Magna cum laude approbatur\n' +
-            '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur'
+              'Koulutus Ylioppilastutkinto\n' +
+              'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+              'Pakolliset kokeet suoritettu kyllä\n' +
+              'Koulusivistyskieli suomi\n' +
+              'Suoritus valmis Vahvistus : 2.6.2012 Helsinki\n' +
+              'Tutkintokerta Koe Pisteet Arvosana\n' +
+              '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur\n' +
+              '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur\n' +
+              '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur\n' +
+              '2012 kevät Maantiede 26 Magna cum laude approbatur\n' +
+              '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur'
           )
         })
       })
 
-      describe('Kun tiedot löytyvät vain YTR:stä', function() {
+      describe('Kun tiedot löytyvät vain YTR:stä', function () {
         before(authentication.logout, etusivu.openPage)
 
-        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('010342-8411'), wait.until(omattiedot.isVisible))
+        before(
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('010342-8411'),
+          wait.until(omattiedot.isVisible)
+        )
 
-        describe('Sivun sisältö', function() {
-          it('Näytetään opiskeluoikeudet', function() {
+        describe('Sivun sisältö', function () {
+          it('Näytetään opiskeluoikeudet', function () {
             expect(omattiedot.nimi()).to.equal('Mia Orvokki Numminen')
             expect(omattiedot.oppija()).to.equal('Opintoni')
             expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
-              'Ylioppilastutkintolautakunta' ])
+              'Ylioppilastutkintolautakunta'
+            ])
           })
         })
       })
 
-      describe('Ostettu tietoa', function() {
+      describe('Ostettu tietoa', function () {
         before(
           authentication.logout,
           etusivu.openPage,
@@ -866,11 +1066,15 @@ describe('Omat tiedot', function() {
           wait.until(korhopankki.isReady),
           korhopankki.login('080154-770R'),
           wait.until(omattiedot.isVisible),
-          SuoritusjakoPage().avaaOpiskeluoikeus('Autoalan perustutkinto (2019—, läsnä)')
+          SuoritusjakoPage().avaaOpiskeluoikeus(
+            'Autoalan perustutkinto (2019—, läsnä)'
+          )
         )
 
-        it('ei näytetä', function() {
-          expect(extractAsText(S('.opiskeluoikeus-content'))).not.to.contain('Ostettu')
+        it('ei näytetä', function () {
+          expect(extractAsText(S('.opiskeluoikeus-content'))).not.to.contain(
+            'Ostettu'
+          )
         })
       })
 
@@ -882,32 +1086,50 @@ describe('Omat tiedot', function() {
           wait.until(korhopankki.isReady),
           korhopankki.login('200994-834A'),
           wait.until(omattiedot.isVisible),
-          SuoritusjakoPage().avaaOpiskeluoikeus('Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu (2016—, läsnä)')
+          SuoritusjakoPage().avaaOpiskeluoikeus(
+            'Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu (2016—, läsnä)'
+          )
         )
 
         it('ei näytetä', function () {
-          expect(extractAsText(S('.opiskeluoikeus-content'))).not.to.contain('Opiskeluoikeuden organisaatiohistoria')
+          expect(extractAsText(S('.opiskeluoikeus-content'))).not.to.contain(
+            'Opiskeluoikeuden organisaatiohistoria'
+          )
         })
       })
 
-      describe('Kun Virta-tietoja ei saada haettua', function() {
+      describe('Kun Virta-tietoja ei saada haettua', function () {
         before(authentication.logout, etusivu.openPage)
 
-        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('250390-680P'), wait.until(omattiedot.isVisible))
-        it('Näytetään varoitusteksti', function() {
+        before(
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('250390-680P'),
+          wait.until(omattiedot.isVisible)
+        )
+        it('Näytetään varoitusteksti', function () {
           expect(omattiedot.nimi()).to.equal('Eivastaa Virtanen')
-          expect(omattiedot.varoitukset()).to.equal('Korkeakoulujen opintoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.')
+          expect(omattiedot.varoitukset()).to.equal(
+            'Korkeakoulujen opintoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.'
+          )
         })
       })
 
-      describe('Virhetilanne', function() {
+      describe('Virhetilanne', function () {
         before(authentication.logout, etusivu.openPage)
 
-        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('010342-8413'), wait.until(VirhePage().isVisible))
+        before(
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('010342-8413'),
+          wait.until(VirhePage().isVisible)
+        )
 
-        describe('Sivun sisältö', function() {
-          it('Näytetään virhesivu', function() {
-            expect(VirhePage().teksti().trim()).to.equalIgnoreNewlines('Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen\n          Palaa etusivulle')
+        describe('Sivun sisältö', function () {
+          it('Näytetään virhesivu', function () {
+            expect(VirhePage().teksti().trim()).to.equalIgnoreNewlines(
+              'Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen\n          Palaa etusivulle'
+            )
           })
         })
       })

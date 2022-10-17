@@ -17,7 +17,7 @@ const kaikkiOrganisaatiot = [
   'Ressun lukio',
   'Sockenbacka lågstadieskola',
   'Stadin ammatti- ja aikuisopisto',
-  "Varsinais-Suomen kansanopisto",
+  'Varsinais-Suomen kansanopisto',
   'WinNova',
   'Ylioppilastutkintolautakunta',
   'Yrkeshögskolan Arcada'
@@ -35,7 +35,7 @@ const lukionRaportit = [
   'VOS-tunnusluvut: LUVA-opiskelijamäärät'
 ]
 
-describe('Raporttien luominen', function() {
+describe('Raporttien luominen', function () {
   var page = RaportitPage()
   var login = LoginPage()
 
@@ -45,23 +45,23 @@ describe('Raporttien luominen', function() {
     page.odotaRaportointikantaOnLatautunut
   )
 
-  describe('Tietoturva', function() {
+  describe('Tietoturva', function () {
     before(Authentication().logout, page.openPage())
 
-    it('näytetään login, kun käyttäjä ei ole kirjautunut sisään', function() {
+    it('näytetään login, kun käyttäjä ei ole kirjautunut sisään', function () {
       expect(login.isVisible()).to.equal(true)
     })
   })
 
-  describe('Raporttikategoriat', function() {
-    describe('Testipääkäyttäjä: kaikki välilehdet', function() {
+  describe('Raporttikategoriat', function () {
+    describe('Testipääkäyttäjä: kaikki välilehdet', function () {
       before(
         Authentication().login('pää'),
         page.openPage(),
         page.odotaRaporttikategoriat()
       )
 
-      it('Näyttää oikeat välilehdet', function() {
+      it('Näyttää oikeat välilehdet', function () {
         expect(page.raporttikategoriat()).to.deep.equal([
           'Esiopetus',
           'Perusopetus',
@@ -77,7 +77,7 @@ describe('Raporttien luominen', function() {
         expect(page.valittuRaporttikategoria()).to.equal('Esiopetus')
       })
 
-      it('Näyttää oikeat organisaatiot oikeassa järjestyksessä', function() {
+      it('Näyttää oikeat organisaatiot oikeassa järjestyksessä', function () {
         expect(page.valittavatOrganisaatiot()).to.deep.equal([
           'Helsingin kaupunki',
           'Kulosaaren ala-aste',
@@ -90,14 +90,14 @@ describe('Raporttien luominen', function() {
       })
     })
 
-    describe('Testikäyttäjä kalle: kaikki välilehdet', function() {
+    describe('Testikäyttäjä kalle: kaikki välilehdet', function () {
       before(
         Authentication().login('kalle'),
         page.openPage(),
         page.odotaRaporttikategoriat()
       )
 
-      it('Näyttää oikeat välilehdet', function() {
+      it('Näyttää oikeat välilehdet', function () {
         expect(page.raporttikategoriat()).to.deep.equal([
           'Esiopetus',
           'Perusopetus',
@@ -114,14 +114,14 @@ describe('Raporttien luominen', function() {
       })
     })
 
-    describe('Testikäyttäjä stadin-esiopetus: rajatut välilehdet', function() {
+    describe('Testikäyttäjä stadin-esiopetus: rajatut välilehdet', function () {
       before(
         Authentication().login('stadin-esiopetus'),
         page.openPage(),
         page.odotaRaporttikategoriat()
       )
 
-      it('Näyttää oikeat välilehdet', function() {
+      it('Näyttää oikeat välilehdet', function () {
         expect(page.raporttikategoriat()).to.deep.equal([
           'Esiopetus',
           'Yleiset'
@@ -129,7 +129,7 @@ describe('Raporttien luominen', function() {
       })
     })
 
-    describe('Vaihtaa välilehdeltä toiselle', function() {
+    describe('Vaihtaa välilehdeltä toiselle', function () {
       before(
         Authentication().login('kalle'),
         page.openPage(),
@@ -137,49 +137,56 @@ describe('Raporttien luominen', function() {
         page.valitseRaporttikategoria(1) // Perusopetus
       )
 
-      it('Toimii', function() {
+      it('Toimii', function () {
         expect(page.valittuRaporttikategoria()).to.equal('Perusopetus')
         expect(page.otsikko()).to.equal('Perusopetuksen raportit')
       })
     })
   })
 
-  describe('Raporttivalitsin', function() {
-    before(Authentication().login('kalle'), page.openPage(), page.odotaRaporttikategoriat())
+  describe('Raporttivalitsin', function () {
+    before(
+      Authentication().login('kalle'),
+      page.openPage(),
+      page.odotaRaporttikategoriat()
+    )
 
-    it('Näyttää oikeat raportit latauksen jälkeen', function() {
+    it('Näyttää oikeat raportit latauksen jälkeen', function () {
       expect(page.raportit()).to.deep.equal(esiopetuksenRaportit)
       expect(page.valittuRaportti()).to.equal(esiopetuksenRaportit[0])
     })
 
-    describe('Näyttää oikeat raportit kategorian vaihdon jälkeen', function() {
+    describe('Näyttää oikeat raportit kategorian vaihdon jälkeen', function () {
       before(page.valitseRaporttikategoria(6)) // Lukio
 
-      it('Toimii', function() {
+      it('Toimii', function () {
         expect(page.raportit()).to.deep.equal(lukionRaportit)
         expect(page.valittuRaportti()).to.equal(lukionRaportit[0])
       })
     })
 
-    describe('Raportin valinta', function() {
+    describe('Raportin valinta', function () {
       before(page.valitseRaportti(1))
 
-      it('Toimii', function() {
+      it('Toimii', function () {
         expect(page.valittuRaportti()).to.equal(lukionRaportit[1])
       })
     })
 
-    describe('Ensimmäisen raportin valinta kategorian vaihtuessa', function() {
+    describe('Ensimmäisen raportin valinta kategorian vaihtuessa', function () {
       before(page.valitseRaporttikategoria(0))
 
-      it('Toimii', function() {
+      it('Toimii', function () {
         expect(page.valittuRaportti()).to.equal(esiopetuksenRaportit[0])
       })
     })
   })
 
-  describe('Organisaatiovalitsin', function() {
-    const esiopetuksenOrganisaatiot = [ 'Jyväskylän normaalikoulu', 'Kulosaaren ala-aste' ]
+  describe('Organisaatiovalitsin', function () {
+    const esiopetuksenOrganisaatiot = [
+      'Jyväskylän normaalikoulu',
+      'Kulosaaren ala-aste'
+    ]
 
     before(
       Authentication().login('kalle'),
@@ -187,46 +194,62 @@ describe('Raporttien luominen', function() {
       page.odotaRaporttikategoriat()
     )
 
-    it('Valittavat organisaatiot oikein', function() {
-      expect(page.valittavatOrganisaatiot()).to.deep.equal(esiopetuksenOrganisaatiot)
+    it('Valittavat organisaatiot oikein', function () {
+      expect(page.valittavatOrganisaatiot()).to.deep.equal(
+        esiopetuksenOrganisaatiot
+      )
     })
 
-    describe('Toisen organisaation valitseminen', function() {
+    describe('Toisen organisaation valitseminen', function () {
       before(page.valitseOrganisaatio(1))
 
-      it('Toimii', function() {
-        expect(page.valittuOrganisaatio()).to.equal(esiopetuksenOrganisaatiot[1])
+      it('Toimii', function () {
+        expect(page.valittuOrganisaatio()).to.equal(
+          esiopetuksenOrganisaatiot[1]
+        )
       })
     })
 
-    describe('Raportin vaihtaminen säilyttää organisaatiovalinnan', function() {
+    describe('Raportin vaihtaminen säilyttää organisaatiovalinnan', function () {
       before(page.valitseRaportti(1))
 
-      it('Toimii', function() {
-        expect(page.valittuOrganisaatio()).to.equal(esiopetuksenOrganisaatiot[1])
+      it('Toimii', function () {
+        expect(page.valittuOrganisaatio()).to.equal(
+          esiopetuksenOrganisaatiot[1]
+        )
       })
     })
 
-    describe('Raporttikategorian vaihtaminen säilyttää organisaatiovalinnan', function() {
+    describe('Raporttikategorian vaihtaminen säilyttää organisaatiovalinnan', function () {
       before(page.valitseRaporttikategoria(1))
 
-      it('Toimii', function() {
-        expect(page.valittuOrganisaatio()).to.equal(esiopetuksenOrganisaatiot[1])
+      it('Toimii', function () {
+        expect(page.valittuOrganisaatio()).to.equal(
+          esiopetuksenOrganisaatiot[1]
+        )
       })
     })
 
-    describe('Raporttikategorian vaihtaminen nollaa organisaatiovalinnan, jos edellistä valintaa ei ole listassa', function() {
+    describe('Raporttikategorian vaihtaminen nollaa organisaatiovalinnan, jos edellistä valintaa ei ole listassa', function () {
       before(page.valitseRaporttikategoria(4))
 
-      it('Toimii', function() {
+      it('Toimii', function () {
         expect(page.valittuOrganisaatio()).to.equal('Jyväskylän normaalikoulu')
       })
     })
   })
 
-  describe('Organisaatiovalitsin koulutustoimijan käyttäjällä', function() {
-    const esiopetuksenOrganisaatiot = [ 'Helsingin kaupunki', 'Kulosaaren ala-aste', 'Ostopalvelu/palveluseteli' ]
-    const perusopetuksenOrganisaatiot = [ 'Helsingin kaupunki', 'Kulosaaren ala-aste', 'Stadin ammatti- ja aikuisopisto' ]
+  describe('Organisaatiovalitsin koulutustoimijan käyttäjällä', function () {
+    const esiopetuksenOrganisaatiot = [
+      'Helsingin kaupunki',
+      'Kulosaaren ala-aste',
+      'Ostopalvelu/palveluseteli'
+    ]
+    const perusopetuksenOrganisaatiot = [
+      'Helsingin kaupunki',
+      'Kulosaaren ala-aste',
+      'Stadin ammatti- ja aikuisopisto'
+    ]
 
     before(
       Authentication().login('hki-tallentaja'),
@@ -234,21 +257,25 @@ describe('Raporttien luominen', function() {
       page.odotaRaporttikategoriat()
     )
 
-    it('Valittavat organisaatiot oikein esiopetukselle', function() {
-      expect(page.valittavatOrganisaatiot()).to.deep.equal(esiopetuksenOrganisaatiot)
+    it('Valittavat organisaatiot oikein esiopetukselle', function () {
+      expect(page.valittavatOrganisaatiot()).to.deep.equal(
+        esiopetuksenOrganisaatiot
+      )
     })
 
-    describe('Valittavat organisaatiot oikein perusopetukselle', function() {
+    describe('Valittavat organisaatiot oikein perusopetukselle', function () {
       before(
-        page.valitseRaporttikategoria(1), // Perusopetus
+        page.valitseRaporttikategoria(1) // Perusopetus
       )
-      it('Ostopalvelu ei valittavana', function() {
-        expect(page.valittavatOrganisaatiot()).to.deep.equal(perusopetuksenOrganisaatiot)
+      it('Ostopalvelu ei valittavana', function () {
+        expect(page.valittavatOrganisaatiot()).to.deep.equal(
+          perusopetuksenOrganisaatiot
+        )
       })
     })
   })
 
-  describe('Organisaatiovalitsimen hakutoiminto', function() {
+  describe('Organisaatiovalitsimen hakutoiminto', function () {
     before(
       Authentication().login('kalle'),
       page.openPage(),
@@ -257,7 +284,7 @@ describe('Raporttien luominen', function() {
       page.haeOrganisaatioita('helsin')
     )
 
-    it('Rajaa organisaatiot hakusanan "helsin" perusteella', function() {
+    it('Rajaa organisaatiot hakusanan "helsin" perusteella', function () {
       expect(page.valittavatOrganisaatiot()).to.deep.equal([
         'Helsingin Saksalainen koulu',
         'Helsingin eurooppalainen koulu',
@@ -268,7 +295,7 @@ describe('Raporttien luominen', function() {
     })
   })
 
-  describe('Organisaatiovalitsimen hakutoiminto juuriorganisaatioille', function() {
+  describe('Organisaatiovalitsimen hakutoiminto juuriorganisaatioille', function () {
     before(
       Authentication().login('pää'),
       page.openPage(),
@@ -277,7 +304,7 @@ describe('Raporttien luominen', function() {
       page.haeOrganisaatioita('itä-suomen yliopisto')
     )
 
-    it('Rajaa näkyviin kaikki Itä-Suomen yliopiston toimipaikat', function() {
+    it('Rajaa näkyviin kaikki Itä-Suomen yliopiston toimipaikat', function () {
       expect(page.valittavatOrganisaatiot()).to.deep.equal([
         'Itä-Suomen yliopisto',
         /**/ 'Itä-Suomen yliopisto',
@@ -289,7 +316,7 @@ describe('Raporttien luominen', function() {
     })
   })
 
-  describe('Organisaatiovalitsimen hakutoiminto toimipisteille', function() {
+  describe('Organisaatiovalitsimen hakutoiminto toimipisteille', function () {
     before(
       Authentication().login('pää'),
       page.openPage(),
@@ -298,7 +325,7 @@ describe('Raporttien luominen', function() {
       page.haeOrganisaatioita('aikuisopisto')
     )
 
-    it('Rajaa näkyviin kaikki Itä-Suomen yliopiston toimipaikat', function() {
+    it('Rajaa näkyviin kaikki Itä-Suomen yliopiston toimipaikat', function () {
       expect(page.valittavatOrganisaatiot()).to.deep.equal([
         'Espoon seudun koulutuskuntayhtymä Omnia',
         /**/ 'Omnian aikuisopisto',
@@ -309,33 +336,35 @@ describe('Raporttien luominen', function() {
     })
   })
 
-  describe('Päivävalitsin', function() {
+  describe('Päivävalitsin', function () {
     before(
       Authentication().login('kalle'),
       page.openPage(),
       page.odotaRaporttikategoriat()
     )
 
-    it('Oletuksena tämä päivä', function() {
+    it('Oletuksena tämä päivä', function () {
       const today = new Date()
-      const todayStr = `${today.getDate()}.${today.getMonth() + 1}.${today.getFullYear()}`
+      const todayStr = `${today.getDate()}.${
+        today.getMonth() + 1
+      }.${today.getFullYear()}`
       expect(page.valitutPäivät()).to.deep.equal([todayStr])
     })
 
-    it('Latausnappi oletuksena aktiivisena', function() {
+    it('Latausnappi oletuksena aktiivisena', function () {
       expect(page.latausnappiAktiivinen()).to.equal(true)
     })
 
-    describe('Latausnappi harmaana, jos virheellinen päivämäärä', function() {
+    describe('Latausnappi harmaana, jos virheellinen päivämäärä', function () {
       before(page.syötäAika(0, '12.12'))
 
-      it('Toimii', function() {
+      it('Toimii', function () {
         expect(page.latausnappiAktiivinen()).to.equal(false)
       })
     })
   })
 
-  describe('Aikajaksovalitsin', function() {
+  describe('Aikajaksovalitsin', function () {
     before(
       Authentication().login('kalle'),
       page.openPage(),
@@ -343,16 +372,16 @@ describe('Raporttien luominen', function() {
       page.valitseRaporttikategoria(4) // Aikuisten perusopetus
     )
 
-    it('Oletuksena tyhjät kentät', function() {
+    it('Oletuksena tyhjät kentät', function () {
       expect(page.valitutPäivät()).to.deep.equal(['', ''])
     })
 
-    it('Latausnappi harmaana', function() {
+    it('Latausnappi harmaana', function () {
       expect(page.latausnappiAktiivinen()).to.equal(false)
     })
   })
 
-  describe('Aikajaksollinen raportti', function() {
+  describe('Aikajaksollinen raportti', function () {
     before(
       Authentication().login('kalle'),
       page.openPage(),
@@ -360,28 +389,28 @@ describe('Raporttien luominen', function() {
       page.valitseRaporttikategoria(4) // Aikuisten perusopetus
     )
 
-    it('Latausnappi on harmaana', function() {
+    it('Latausnappi on harmaana', function () {
       expect(page.latausnappiAktiivinen()).to.equal(false)
     })
 
-    describe('Syötetään aikajakson alku', function() {
+    describe('Syötetään aikajakson alku', function () {
       before(page.syötäAika(0, '1.1.2020'))
 
-      it('Latausnappi pysyy harmaana', function() {
+      it('Latausnappi pysyy harmaana', function () {
         expect(page.latausnappiAktiivinen()).to.equal(false)
       })
     })
 
-    describe('Syötetään aikajakson loppu', function() {
+    describe('Syötetään aikajakson loppu', function () {
       before(page.syötäAika(1, '31.1.2020'))
 
-      it('Latausnappi aktivoituu', function() {
+      it('Latausnappi aktivoituu', function () {
         expect(page.latausnappiAktiivinen()).to.equal(true)
       })
     })
   })
 
-  describe('Päällekkäisten opiskeluoikeuksien raportti', function() {
+  describe('Päällekkäisten opiskeluoikeuksien raportti', function () {
     before(
       Authentication().login('kalle'),
       page.openPage(),
@@ -389,16 +418,18 @@ describe('Raporttien luominen', function() {
       page.valitseRaporttikategoria(9) // Muut
     )
 
-    it('Näyttää organisaatiovalitsimen', function() {
+    it('Näyttää organisaatiovalitsimen', function () {
       expect(page.organisaatioValitsinNäkyvillä()).to.equal(true)
     })
 
-    it('Näyttää organisaatiovalitsimessa kaikki organisaatiot', function() {
+    it('Näyttää organisaatiovalitsimessa kaikki organisaatiot', function () {
       expect(page.valittavatOrganisaatiot()).to.deep.equal(kaikkiOrganisaatiot)
     })
 
-    it('Raportin päivitysaika näkyy oikein', function() {
-      expect(page.raportinPäivitysaika()).to.match(/^\d{1,2}\.\d{1,2}\.\d{4} \d{1,2}:\d{2}$/)
+    it('Raportin päivitysaika näkyy oikein', function () {
+      expect(page.raportinPäivitysaika()).to.match(
+        /^\d{1,2}\.\d{1,2}\.\d{4} \d{1,2}:\d{2}$/
+      )
     })
   })
 })

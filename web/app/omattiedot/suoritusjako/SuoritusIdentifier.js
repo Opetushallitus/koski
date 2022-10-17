@@ -1,13 +1,18 @@
-import {modelData} from '../../editor/EditorModel'
-import {isOpintojakso} from '../../opiskeluoikeus/OpiskeluoikeusEditor'
+import { modelData } from '../../editor/EditorModel'
+import { isOpintojakso } from '../../opiskeluoikeus/OpiskeluoikeusEditor'
 
 const suoritusIdProto = {
   lähdejärjestelmänId: undefined,
   oppilaitosOid: undefined,
   suorituksenTyyppi: undefined,
   koulutusmoduulinTunniste: undefined,
-  toString: function() {
-    return [this.lähdejärjestelmänId, this.oppilaitosOid, this.suorituksenTyyppi, this.koulutusmoduulinTunniste].join('__')
+  toString: function () {
+    return [
+      this.lähdejärjestelmänId,
+      this.oppilaitosOid,
+      this.suorituksenTyyppi,
+      this.koulutusmoduulinTunniste
+    ].join('__')
   }
 }
 

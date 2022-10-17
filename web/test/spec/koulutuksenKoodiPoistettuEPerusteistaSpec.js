@@ -1,22 +1,27 @@
 describe('Koulutuksen koodi poistettu ePerusteista', function () {
-  before(
-    Authentication().login(),
-    resetFixtures
-  )
+  before(Authentication().login(), resetFixtures)
 
   function suorituksenKoulutusKenttä() {
-    return extractAsText(S('.suoritus > .properties > table > tbody > .koulutusmoduuli'))
+    return extractAsText(
+      S('.suoritus > .properties > table > tbody > .koulutusmoduuli')
+    )
   }
 
   function valitseIdeksistä(indeksi) {
     return seq(
       click('.tunniste-koodiarvo > span > span > .dropdown > .select'),
-      click('.tunniste-koodiarvo > span > span > .dropdown > .options li:nth-child(' + indeksi + ')')
+      click(
+        '.tunniste-koodiarvo > span > span > .dropdown > .options li:nth-child(' +
+          indeksi +
+          ')'
+      )
     )
   }
 
   function vaihtoehdot() {
-    return extractAsText(findSingle('.tunniste-koodiarvo > span > span > .dropdown'))
+    return extractAsText(
+      findSingle('.tunniste-koodiarvo > span > span > .dropdown')
+    )
   }
 
   var page = KoskiPage()
@@ -24,7 +29,6 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
   var editor = opinnot.opiskeluoikeusEditor()
 
   describe('Vanhentunut koulutuskoodi, ei löydy enää ePerusteista', function () {
-
     before(
       Authentication().login(),
       page.openPage,
@@ -51,7 +55,6 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
   })
 
   describe('Monta koulutuskoodia', function () {
-
     before(
       Authentication().login(),
       page.openPage,
@@ -72,19 +75,13 @@ describe('Koulutuksen koodi poistettu ePerusteista', function () {
       describe('Näytetään vaihtehdot', function () {
         it('toimii', function () {
           expect(vaihtoehdot()).to.equalIgnoreNewlines(
-            '12345\n' +
-            '351741\n' +
-            '451741'
+            '12345\n' + '351741\n' + '451741'
           )
         })
       })
 
       describe('Voidaan vaihtaa koulutuskoodia', function () {
-
-        before(
-          valitseIdeksistä(1),
-          editor.saveChanges
-        )
+        before(valitseIdeksistä(1), editor.saveChanges)
 
         it('koulutuskoodi on vaihtunut', function () {
           expect(suorituksenKoulutusKenttä()).to.equalIgnoreNewlines(

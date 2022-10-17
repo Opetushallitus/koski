@@ -1,7 +1,7 @@
-export const sortOpiskeluoikeudetJaSuoritukset = opiskeluoikeudet => {
-  return opiskeluoikeudet.sort(opiskeluoikeusOrdering).map(opiskeluoikeus => {
+export const sortOpiskeluoikeudetJaSuoritukset = (opiskeluoikeudet) => {
+  return opiskeluoikeudet.sort(opiskeluoikeusOrdering).map((opiskeluoikeus) => {
     const suorituksetSorted = opiskeluoikeus.suoritukset.sort(suoritusOrdering)
-    return {...opiskeluoikeus, suoritukset: suorituksetSorted }
+    return { ...opiskeluoikeus, suoritukset: suorituksetSorted }
   })
 }
 
@@ -26,18 +26,18 @@ const suoritusOrdering = (s1, s2) => {
   return vahvistus2 - vavhistus1
 }
 
-const alkamispaivaAsDate = opiskeluoikeus => {
+const alkamispaivaAsDate = (opiskeluoikeus) => {
   const alkamispaiva = opiskeluoikeus.alkamispäivä || infinity
   return new Date(alkamispaiva)
 }
 
-const paattymispaivaAsDate = opiskeluoikeus => {
+const paattymispaivaAsDate = (opiskeluoikeus) => {
   const päättymispäivä = opiskeluoikeus.päättymispäivä || infinity
   return new Date(päättymispäivä)
 }
 
-const vahvistuspaivaAsDate = suoritus => {
-  const paiva = suoritus.vahvistus && suoritus.vahvistus.päivä || infinity
+const vahvistuspaivaAsDate = (suoritus) => {
+  const paiva = (suoritus.vahvistus && suoritus.vahvistus.päivä) || infinity
   return new Date(paiva)
 }
 

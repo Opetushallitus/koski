@@ -1,5 +1,5 @@
 const isInTestFrame = window.self !== window.top
-const delay = isInTestFrame ? (() => 0) : (d => d)
+const delay = isInTestFrame ? () => 0 : (d) => d
 
 export default () => {
   return {

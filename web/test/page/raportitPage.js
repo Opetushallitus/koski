@@ -1,7 +1,7 @@
 function RaportitPage() {
-
   const tabsElementti = 'div.main-content .tabs-container'
-  const raporttivalitsinElementti = 'div.main-content .raportti-valitsin .pills-container'
+  const raporttivalitsinElementti =
+    'div.main-content .raportti-valitsin .pills-container'
 
   var api = {
     openPage: function (predicate) {
@@ -9,19 +9,26 @@ function RaportitPage() {
         return openPage('/koski/raportit?tilastoraportit=true', predicate)()
       }
     },
-    lataaRaportointikanta: function() {
-      return Q($.ajax({ url: '/koski/api/raportointikanta/load', method: 'get'}))
+    lataaRaportointikanta: function () {
+      return Q(
+        $.ajax({ url: '/koski/api/raportointikanta/load', method: 'get' })
+      )
     },
     odotaRaportointikantaOnLatautunut: function () {
       return api.checkRaportointikantaStatus(30)
     },
     checkRaportointikantaStatus: function (retriesLeft) {
-      return api.raportointikantaStatus()
+      return api
+        .raportointikantaStatus()
         .then(function () {})
         .catch(function (err) {
           if (err.status == 503) {
             if (retriesLeft > 0) {
-              return wait.forMilliseconds(1000)().then(function () {return api.checkRaportointikantaStatus(retriesLeft - 1)})
+              return wait
+                .forMilliseconds(1000)()
+                .then(function () {
+                  return api.checkRaportointikantaStatus(retriesLeft - 1)
+                })
             } else {
               throw Error('Timeout: Raportointikanta ei ole latautunut')
             }
@@ -31,66 +38,77 @@ function RaportitPage() {
         })
     },
     raportointikantaStatus: function () {
-      return $.ajax({ url: '/koski/api/raportit/paivitysaika', method: 'get'})
+      return $.ajax({ url: '/koski/api/raportit/paivitysaika', method: 'get' })
     },
     odotaRaporttikategoriat: function () {
       return wait.untilVisible(() => S(tabsElementti))
     },
-    raporttikategoriat: function() {
+    raporttikategoriat: function () {
       return getAsTextArray(`${tabsElementti} .tabs-item-text`)
     },
-    valittuRaporttikategoria: function() {
+    valittuRaporttikategoria: function () {
       return S(`${tabsElementti} .tabs-item-selected .tabs-item-text`).text()
     },
-    valitseRaporttikategoria: function(index) {
-      return wait.until(() => S(`${tabsElementti} .tabs-item:nth-child(${index + 1})`).click())
+    valitseRaporttikategoria: function (index) {
+      return wait.until(() =>
+        S(`${tabsElementti} .tabs-item:nth-child(${index + 1})`).click()
+      )
     },
-    otsikko: function() {
+    otsikko: function () {
       return S('div.main-content > h2').text()
     },
-    raportit: function(raportit) {
+    raportit: function (raportit) {
       return getAsTextArray(`${raporttivalitsinElementti} .pills-item`)
     },
-    valittuRaportti: function() {
+    valittuRaportti: function () {
       return S(`${raporttivalitsinElementti} .pills-item-selected`).text()
     },
-    valitseRaportti: function(index) {
-      return wait.until(() => S(`${raporttivalitsinElementti} .pills-item:nth-child(${index + 1})`).click())
+    valitseRaportti: function (index) {
+      return wait.until(() =>
+        S(
+          `${raporttivalitsinElementti} .pills-item:nth-child(${index + 1})`
+        ).click()
+      )
     },
-    organisaatioValitsinNäkyvillä: function() {
+    organisaatioValitsinNäkyvillä: function () {
       return isElementVisible(S('.organisaatio-dropdown'))
     },
-    valitseOrganisaatio: function(index) {
+    valitseOrganisaatio: function (index) {
       return seq(
         () => S('.organisaatio-dropdown input').click(),
         wait.untilVisible(() => S('.organisaatio-dropdown .options.open')),
-        () => S(`.organisaatio-dropdown .options .option:nth-child(${index + 1}) .value`).click(),
+        () =>
+          S(
+            `.organisaatio-dropdown .options .option:nth-child(${
+              index + 1
+            }) .value`
+          ).click(),
         wait.untilHidden(() => S('.organisaatio-dropdown .options.open'))
       )
     },
-    haeOrganisaatioita: function(hakusana) {
-      return function() {
+    haeOrganisaatioita: function (hakusana) {
+      return function () {
         setInputValue('.organisaatio-dropdown input', hakusana)
       }
     },
-    valittuOrganisaatio: function() {
+    valittuOrganisaatio: function () {
       return S('.organisaatio-dropdown .input-container input').val()
     },
-    valittavatOrganisaatiot: function() {
+    valittavatOrganisaatiot: function () {
       return getAsTextArray('.organisaatio-dropdown .options > .option .value')
     },
-    valitutPäivät: function() {
+    valitutPäivät: function () {
       return getValuesAsArray('.date-editor')
     },
-    latausnappiAktiivinen: function() {
+    latausnappiAktiivinen: function () {
       return !S('.raportti-download-button button').prop('disabled')
     },
-    syötäAika: function(inputIndex, aika) {
-      return function() {
+    syötäAika: function (inputIndex, aika) {
+      return function () {
         setInputValue(S('.date-editor')[inputIndex], aika)
       }
     },
-    raportinPäivitysaika: function() {
+    raportinPäivitysaika: function () {
       return S('.update-time .datetime').text()
     }
   }

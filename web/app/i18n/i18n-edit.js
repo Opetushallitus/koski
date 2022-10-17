@@ -1,14 +1,17 @@
 import Atom from 'bacon.atom'
-import {lang} from './i18n'
+import { lang } from './i18n'
 import http from '../util/http'
-import {userP} from '../util/user'
+import { userP } from '../util/user'
 import * as L from 'partial.lenses'
 import * as R from 'ramda'
-import {parseBool} from '../util/util'
+import { parseBool } from '../util/util'
 
-let changes = Atom({})
+const changes = Atom({})
 export const hasEditAccess = userP.map('.hasLocalizationWriteAccess')
-hasEditAccess.not().filter(R.identity).onValue(() => editAtom.set(false))
+hasEditAccess
+  .not()
+  .filter(R.identity)
+  .onValue(() => editAtom.set(false))
 export const editAtom = Atom(parseBool(localStorage.editLocalizations))
 try {
   localStorage.editLocalizations = false
@@ -18,10 +21,14 @@ try {
 export const startEdit = () => {
   editAtom.set(true)
 }
-export const hasChanges = changes.map(c => R.keys(c).length > 0)
+export const hasChanges = changes.map((c) => R.keys(c).length > 0)
 export const saveChanges = () => {
-  let changeList = R.toPairs(changes.get()).map(([langAndKey, value]) => ({ key: langAndKey.substring(3), value, locale: langAndKey.substring(0, 2)}))
-  changeList.forEach(({key, value, locale}) => {
+  const changeList = R.toPairs(changes.get()).map(([langAndKey, value]) => ({
+    key: langAndKey.substring(3),
+    value,
+    locale: langAndKey.substring(0, 2)
+  }))
+  changeList.forEach(({ key, value, locale }) => {
     window.koskiLocalizationMap[key][locale] = value
   })
   http.put('/koski/api/localization', changeList)
@@ -31,6 +38,7 @@ export const cancelChanges = () => {
   changes.set({})
   editAtom.set(false)
 }
-export const changeText = (key, value, language) => changes.modify(cs => L.set([(language || lang) + '.' + key], value, cs))
+export const changeText = (key, value, language) =>
+  changes.modify((cs) => L.set([(language || lang) + '.' + key], value, cs))
 
 export const languages = ['fi', 'sv', 'en']

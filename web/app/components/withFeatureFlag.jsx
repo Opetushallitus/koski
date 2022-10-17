@@ -1,11 +1,18 @@
 import React from 'react'
 import featureFlags from '../../featureFlags'
 
-export const withFeatureFlag = (featureFlagName, FeatureComponent) => props => {
-  const currentEnvFeatures = featureFlags[window.environment]
-  const featureEnabled = currentEnvFeatures && currentEnvFeatures[featureFlagName]
-  if (featureEnabled === undefined) {
-    console.warn('Feature flag ' + featureFlagName + ' not found for env ' + window.environment)
+export const withFeatureFlag =
+  (featureFlagName, FeatureComponent) => (props) => {
+    const currentEnvFeatures = featureFlags[window.environment]
+    const featureEnabled =
+      currentEnvFeatures && currentEnvFeatures[featureFlagName]
+    if (featureEnabled === undefined) {
+      console.warn(
+        'Feature flag ' +
+          featureFlagName +
+          ' not found for env ' +
+          window.environment
+      )
+    }
+    return featureEnabled === true && <FeatureComponent {...props} />
   }
-  return featureEnabled === true && <FeatureComponent {...props}/>
-}

@@ -1,25 +1,29 @@
 import React from 'baret'
-import {rekursiivisetOsasuoritukset} from '../suoritus/Suoritus'
-import {modelData, modelItems} from '../editor/EditorModel'
+import { rekursiivisetOsasuoritukset } from '../suoritus/Suoritus'
+import { modelData, modelItems } from '../editor/EditorModel'
 import * as R from 'ramda'
 import Text from '../i18n/Text'
 
-export const AmmatillinenArviointiasteikko = ({model}) => {
+export const AmmatillinenArviointiasteikko = ({ model }) => {
   if (!isAmmatillinenPaatasonSuoritus(model)) return null
 
   const asteikko = kaytossaOlevaAsteikko(model)
 
-  return asteikko ?
-    <div className='ammatillinenarviointiasteikko'>
-      <h5><Text name='Tutkinnon osien arviointiasteikko'/>{':'}</h5>
-      <Text name={asteikko}/>
+  return asteikko ? (
+    <div className="ammatillinenarviointiasteikko">
+      <h5>
+        <Text name="Tutkinnon osien arviointiasteikko" />
+        {':'}
+      </h5>
+      <Text name={asteikko} />
     </div>
-    : null
+  ) : null
 }
 
-const isAmmatillinenPaatasonSuoritus = model => model.value.classes.includes('ammatillinenpaatasonsuoritus')
+const isAmmatillinenPaatasonSuoritus = (model) =>
+  model.value.classes.includes('ammatillinenpaatasonsuoritus')
 
-const kaytossaOlevaAsteikko = model => {
+const kaytossaOlevaAsteikko = (model) => {
   const asteikot = rekursiivisetOsasuoritukset(model).map(arviointiasteikko)
 
   if (asteikot.includes('arviointiasteikkoammatillinen15')) {
@@ -34,7 +38,7 @@ const kaytossaOlevaAsteikko = model => {
   return undefined
 }
 
-const arviointiasteikko = model => {
+const arviointiasteikko = (model) => {
   const viimeisinArviointi = R.last(modelItems(model, 'arviointi'))
   const arvosana = modelData(viimeisinArviointi, 'arvosana')
   return arvosana && arvosana.koodistoUri

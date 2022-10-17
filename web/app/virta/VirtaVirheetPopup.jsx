@@ -2,7 +2,7 @@ import React from 'baret'
 import ModalDialog from '../editor/ModalDialog'
 import Atom from 'bacon.atom'
 
-export const VirtaVirheetPopup = ({virheet, onDismiss}) => {
+export const VirtaVirheetPopup = ({ virheet, onDismiss }) => {
   const checkboxAtom = Atom(false)
   console.log(virheet)
 
@@ -13,16 +13,23 @@ export const VirtaVirheetPopup = ({virheet, onDismiss}) => {
   }
   console.log(virheetTyypeittäin)
 
-  return (<ModalDialog className='peru-suostumus-popup-modal'
+  return (
+    <ModalDialog
+      className="peru-suostumus-popup-modal"
       onDismiss={onDismiss}
-      submitOnEnterKey='false'
-      validP={checkboxAtom}>
-    {
-      Object.keys(virheetTyypeittäin).map(function(key) {
+      submitOnEnterKey="false"
+      validP={checkboxAtom}
+    >
+      {Object.keys(virheetTyypeittäin).map(function (key, i) {
         return (
-          <span>{"Avaimella '" + key + "' löytyi virheet: " + virheetTyypeittäin[key].join(', ')}</span>
+          <span key={`${key}_${i}`}>
+            {"Avaimella '" +
+              key +
+              "' löytyi virheet: " +
+              virheetTyypeittäin[key].join(', ')}
+          </span>
         )
-      })
-    }
-  </ModalDialog>)
+      })}
+    </ModalDialog>
+  )
 }

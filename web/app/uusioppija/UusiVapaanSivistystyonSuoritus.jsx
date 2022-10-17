@@ -3,22 +3,29 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Peruste from './Peruste'
 import Suoritustyyppi from './Suoritustyyppi'
-import {koodistoValues} from './koodisto'
-import {ift} from '../util/util'
+import { koodistoValues } from './koodisto'
+import { ift } from '../util/util'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
 import Http from '../util/http'
 import { useBaconProperty } from '../util/hooks'
 import { modelProperty } from '../editor/EditorModel'
 
 const editorPrototypeP = (modelName) => {
-  const url = `/koski/api/editor/prototype/fi.oph.koski.schema.${encodeURIComponent(modelName)}`
-  return Http.cachedGet(url, { errorMapper: (e) => {
-    switch(e.errorStatus) {
-      case 404: return null
-      case 500: return null
-      default: return new Bacon.Error(e)
+  const url = `/koski/api/editor/prototype/fi.oph.koski.schema.${encodeURIComponent(
+    modelName
+  )}`
+  return Http.cachedGet(url, {
+    errorMapper: (e) => {
+      switch (e.errorStatus) {
+        case 404:
+          return null
+        case 500:
+          return null
+        default:
+          return new Bacon.Error(e)
+      }
     }
-  }}).toProperty()
+  }).toProperty()
 }
 
 const toInfoProperty = (optionalPrototype) => ({
@@ -55,92 +62,114 @@ const Opintokokonaisuus = ({ opintokokonaisuusAtom, opintokokonaisuudetP }) => {
   )
 }
 
-
-export default ({suoritusAtom, suoritustyyppiAtom, oppilaitosAtom, suorituskieliAtom, opintokokonaisuusAtom}) => {
+export default ({
+  suoritusAtom,
+  suoritustyyppiAtom,
+  oppilaitosAtom,
+  suorituskieliAtom,
+  opintokokonaisuusAtom
+}) => {
   const perusteAtom = Atom()
 
-  const suoritustyypitP = koodistoValues('suorituksentyyppi/vstoppivelvollisillesuunnattukoulutus,vstmaahanmuuttajienkotoutumiskoulutus,vstlukutaitokoulutus,vstvapaatavoitteinenkoulutus')
+  const suoritustyypitP = koodistoValues(
+    'suorituksentyyppi/vstoppivelvollisillesuunnattukoulutus,vstmaahanmuuttajienkotoutumiskoulutus,vstlukutaitokoulutus,vstvapaatavoitteinenkoulutus'
+  )
   const opintokokonaisuudetP = koodistoValues('opintokokonaisuudet')
 
-  Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, perusteAtom, suorituskieliAtom, opintokokonaisuusAtom, makeSuoritus)
-    .onValue(suoritus => suoritusAtom.set(suoritus))
+  Bacon.combineWith(
+    oppilaitosAtom,
+    suoritustyyppiAtom,
+    perusteAtom,
+    suorituskieliAtom,
+    opintokokonaisuusAtom,
+    makeSuoritus
+  ).onValue((suoritus) => suoritusAtom.set(suoritus))
 
   return (
     <div>
-      <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title="Suoritustyyppi" />
-      {suoritustyyppiAtom.map('.koodiarvo').map(tyyppi => {
-        if (tyyppi === 'vstvapaatavoitteinenkoulutus') return <Opintokokonaisuus opintokokonaisuusAtom={opintokokonaisuusAtom} opintokokonaisuudetP={opintokokonaisuudetP} />
+      <Suoritustyyppi
+        suoritustyyppiAtom={suoritustyyppiAtom}
+        suoritustyypitP={suoritustyypitP}
+        title="Suoritustyyppi"
+      />
+      {suoritustyyppiAtom.map('.koodiarvo').map((tyyppi) => {
+        if (tyyppi === 'vstvapaatavoitteinenkoulutus')
+          return (
+            <Opintokokonaisuus
+              opintokokonaisuusAtom={opintokokonaisuusAtom}
+              opintokokonaisuudetP={opintokokonaisuudetP}
+            />
+          )
         return null
       })}
-      {ift(suoritustyyppiAtom,
-        <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />
+      {ift(
+        suoritustyyppiAtom,
+        <Peruste {...{ suoritusTyyppiP: suoritustyyppiAtom, perusteAtom }} />
       )}
     </div>
   )
 }
 
-const makeSuoritus = (oppilaitos, suoritustyyppi, peruste, suorituskieli, opintokokonaisuus) => {
+const makeSuoritus = (
+  oppilaitos,
+  suoritustyyppi,
+  peruste,
+  suorituskieli,
+  opintokokonaisuus
+) => {
   switch (suoritustyyppi?.koodiarvo) {
     case 'vstoppivelvollisillesuunnattukoulutus':
-      return (
-        {
-          suorituskieli : suorituskieli,
-          koulutusmoduuli: {
-            tunniste: {
-              koodiarvo: '999909',
-              koodistoUri: 'koulutus'
-            },
-            perusteenDiaarinumero: peruste
+      return {
+        suorituskieli,
+        koulutusmoduuli: {
+          tunniste: {
+            koodiarvo: '999909',
+            koodistoUri: 'koulutus'
           },
-          toimipiste: oppilaitos,
-          tyyppi: suoritustyyppi
-        }
-      )
+          perusteenDiaarinumero: peruste
+        },
+        toimipiste: oppilaitos,
+        tyyppi: suoritustyyppi
+      }
     case 'vstmaahanmuuttajienkotoutumiskoulutus':
-      return (
-        {
-          suorituskieli : suorituskieli,
-          koulutusmoduuli: {
-            tunniste: {
-              koodiarvo: '999910',
-              koodistoUri: 'koulutus'
-            },
-            perusteenDiaarinumero: peruste
+      return {
+        suorituskieli,
+        koulutusmoduuli: {
+          tunniste: {
+            koodiarvo: '999910',
+            koodistoUri: 'koulutus'
           },
-          toimipiste: oppilaitos,
-          tyyppi: suoritustyyppi
-        }
-      )
+          perusteenDiaarinumero: peruste
+        },
+        toimipiste: oppilaitos,
+        tyyppi: suoritustyyppi
+      }
     case 'vstlukutaitokoulutus':
-      return (
-        {
-          suorituskieli : suorituskieli,
-          koulutusmoduuli: {
-            tunniste: {
-              koodiarvo: '999911',
-              koodistoUri: 'koulutus'
-            },
-            perusteenDiaarinumero: peruste
+      return {
+        suorituskieli,
+        koulutusmoduuli: {
+          tunniste: {
+            koodiarvo: '999911',
+            koodistoUri: 'koulutus'
           },
-          toimipiste: oppilaitos,
-          tyyppi: suoritustyyppi
-        }
-      )
+          perusteenDiaarinumero: peruste
+        },
+        toimipiste: oppilaitos,
+        tyyppi: suoritustyyppi
+      }
     case 'vstvapaatavoitteinenkoulutus':
-      return (
-        {
-          suorituskieli : suorituskieli,
-          koulutusmoduuli: {
-            tunniste: {
-              koodiarvo: '099999',
-              koodistoUri: 'koulutus'
-            },
-            opintokokonaisuus: opintokokonaisuus
+      return {
+        suorituskieli,
+        koulutusmoduuli: {
+          tunniste: {
+            koodiarvo: '099999',
+            koodistoUri: 'koulutus'
           },
-          toimipiste: oppilaitos,
-          tyyppi: suoritustyyppi
-        }
-      )
+          opintokokonaisuus
+        },
+        toimipiste: oppilaitos,
+        tyyppi: suoritustyyppi
+      }
     default:
       return undefined
   }

@@ -1,14 +1,14 @@
 function RaporttiPage() {
   var api = {
-    openPage: function(predicate) {
-      return function() {
+    openPage: function (predicate) {
+      return function () {
         return openPage('/koski/pulssi/raportti', predicate)()
       }
     },
-    isVisible: function() {
+    isVisible: function () {
       return isElementVisible(S('#raportti'))
     },
-    metric: function(name) {
+    metric: function (name) {
       return Metric(findSingle('li.' + name))
     }
   }

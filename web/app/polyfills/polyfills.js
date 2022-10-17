@@ -20,5 +20,5 @@ import 'core-js/es6/set'
 
 if (!history.pushState) {
   console.log('history.pushState not available')
-  history.pushState = function() {}
+  history.pushState = function () {}
 }

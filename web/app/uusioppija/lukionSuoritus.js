@@ -1,12 +1,18 @@
-import {perusteenDiaarinumeroToOppimäärä} from '../lukio/lukio'
+import { perusteenDiaarinumeroToOppimäärä } from '../lukio/lukio'
 
-export const makeSuoritus = (oppilaitos, suoritustyyppi, peruste, suorituskieli, oppiaineenSuoritus) => {
-  if (!oppilaitos || !suoritustyyppi || !peruste || ! suorituskieli) return null
+export const makeSuoritus = (
+  oppilaitos,
+  suoritustyyppi,
+  peruste,
+  suorituskieli,
+  oppiaineenSuoritus
+) => {
+  if (!oppilaitos || !suoritustyyppi || !peruste || !suorituskieli) return null
 
   switch (suoritustyyppi.koodiarvo) {
     case 'lukionoppimaara':
       return {
-        suorituskieli : suorituskieli,
+        suorituskieli,
         koulutusmoduuli: {
           tunniste: {
             koodiarvo: '309902',
@@ -24,7 +30,7 @@ export const makeSuoritus = (oppilaitos, suoritustyyppi, peruste, suorituskieli,
 
     case 'lukionaineopinnot':
       return {
-        suorituskieli : suorituskieli,
+        suorituskieli,
         koulutusmoduuli: {
           tunniste: {
             koodiarvo: 'lukionaineopinnot'

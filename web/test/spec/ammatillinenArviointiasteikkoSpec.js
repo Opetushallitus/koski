@@ -1,10 +1,13 @@
 describe('Ammatillisten koulutusten arviointiasteikko', function () {
-
-  var verifyArviointiasteikko = function(expectedText) {
-    return expect(extractAsText(S('.ammatillinenpaatasonsuoritus > .ammatillinenarviointiasteikko'))).to.equal(expectedText)
+  var verifyArviointiasteikko = function (expectedText) {
+    return expect(
+      extractAsText(
+        S('.ammatillinenpaatasonsuoritus > .ammatillinenarviointiasteikko')
+      )
+    ).to.equal(expectedText)
   }
 
-  describe('Virkailijan käyttöliittymässä', function() {
+  describe('Virkailijan käyttöliittymässä', function () {
     before(Authentication().login())
     var page = KoskiPage()
 
@@ -17,7 +20,7 @@ describe('Ammatillisten koulutusten arviointiasteikko', function () {
       it('Näytetään käyttöliittymässä', function () {
         verifyArviointiasteikko(
           'Tutkinnon osien arviointiasteikko :\n' +
-          '1-5, Hylätty tai Hyväksytty'
+            '1-5, Hylätty tai Hyväksytty'
         )
       })
     })
@@ -25,10 +28,10 @@ describe('Ammatillisten koulutusten arviointiasteikko', function () {
     describe('Arviointi 1-3, Hyväksytty tai Hylätty', function () {
       before(page.openPage, page.oppijaHaku.searchAndSelect('140493-2798'))
 
-      it('Näytetään käyttöliittymässä', function() {
+      it('Näytetään käyttöliittymässä', function () {
         verifyArviointiasteikko(
           'Tutkinnon osien arviointiasteikko :\n' +
-          '1-3, Hylätty tai Hyväksytty'
+            '1-3, Hylätty tai Hyväksytty'
         )
       })
     })
@@ -36,10 +39,9 @@ describe('Ammatillisten koulutusten arviointiasteikko', function () {
     describe('Hyväksytty tai hylätty', function () {
       before(page.openPage, page.oppijaHaku.searchAndSelect('130320-899Y'))
 
-      it('Näytetään käyttöliittymässä', function() {
+      it('Näytetään käyttöliittymässä', function () {
         verifyArviointiasteikko(
-          'Tutkinnon osien arviointiasteikko :\n' +
-          'Hylätty tai Hyväksytty'
+          'Tutkinnon osien arviointiasteikko :\n' + 'Hylätty tai Hyväksytty'
         )
       })
     })
@@ -64,8 +66,7 @@ describe('Ammatillisten koulutusten arviointiasteikko', function () {
 
     it('ok', function () {
       verifyArviointiasteikko(
-        'Tutkinnon osien arviointiasteikko :\n' +
-        '1-3, Hylätty tai Hyväksytty'
+        'Tutkinnon osien arviointiasteikko :\n' + '1-3, Hylätty tai Hyväksytty'
       )
     })
   })
