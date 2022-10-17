@@ -201,7 +201,7 @@ const OpiskeluhistoriaOpinto = ({
           label={t("oppija__opiskeluoikeuden_alkamispäivä")}
           value={formatDate(aiempienOpintojenAlkamispäivä(opiskeluoikeus))}
         />
-
+        {/* TODO: TOR-1685 Eurooppalainen koulu */}
         {isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa(
           opiskeluoikeus
         ) && (
@@ -455,6 +455,10 @@ const isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisu
   oo.perusopetusTiedot !== undefined &&
   oo.perusopetusTiedot.valmistunutAiemminTaiLähitulevaisuudessa &&
   oo.perusopetusTiedot.päättymispäivä !== undefined
+
+{
+  /*TODO: TOR-1685 Eurooppalainen koulu*/
+}
 
 const isPerusopetuksenJälkeinenOpiskeluoikeus = (
   opiskeluoikeus: MinimiOpiskeluoikeus

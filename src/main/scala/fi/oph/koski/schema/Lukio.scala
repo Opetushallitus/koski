@@ -129,7 +129,7 @@ case class LukionOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
-) extends KoskiOpiskeluoikeusjakso
+) extends KoskiLaajaOpiskeluoikeusjakso
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot")
 trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with Diaarinumerollinen {

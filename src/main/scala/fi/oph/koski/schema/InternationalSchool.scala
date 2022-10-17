@@ -86,7 +86,7 @@ case class InternationalSchoolOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
-) extends KoskiOpiskeluoikeusjakso
+) extends KoskiLaajaOpiskeluoikeusjakso
 
 case class InternationalSchoolOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,

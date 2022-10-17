@@ -31,7 +31,7 @@ object TxtToKoodisto extends App {
     MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri, None),
     koodit
   )
-  val koodisto = Koodisto(koodistoUri, 1, List(KoodistoMetadata("FI", Some(koodistoNimi), None)), "http://koski", LocalDate.now, "1.2.246.562.10.00000000001")
+  val koodisto = Koodisto(koodistoUri, 1, List(KoodistoMetadata("FI", Some(koodistoNimi), None)), "koski", LocalDate.now, "1.2.246.562.10.00000000001")
   JsonFiles.writeFile(
     MockKoodistoPalvelu.koodistoFileName(koodistoUri, None),
     koodisto

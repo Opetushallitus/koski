@@ -19,6 +19,7 @@ object KelaSchema {
     "ibtutkinto",
     "diatutkinto",
     "internationalschool",
+    // TODO: TOR-1685 Eurooppalainen koulu
     "lukiokoulutus",
     "luva",
     "perusopetukseenvalmistavaopetus",

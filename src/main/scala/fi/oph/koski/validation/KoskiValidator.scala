@@ -163,6 +163,7 @@ class KoskiValidator(
       .map(KoodistopoikkeustenKonversiot.konvertoiKoodit)
       .map(fillLukionOppimääräSuoritettu)
       .map(PerusopetuksenOpiskeluoikeusValidation.filterDeprekoidutKentät)
+      .map(EuropeanSchoolOfHelsinkiValidation.fillRahoitusmuodot)
       .map(RedundantinDatanPoisto.dropRedundantData)
   }
 
@@ -356,6 +357,10 @@ class KoskiValidator(
       case j: AmmatillinenOpiskeluoikeusjakso => vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut", "loma")
       case j: LukionOpiskeluoikeusjakso => vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut")
       case j: AikuistenPerusopetuksenOpiskeluoikeusjakso => vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut")
+      case j: EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso => HttpStatus.fold(
+        vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut"),
+        rahoitusmuotoKiellettyTiloilta(j, "eronnut", "mitatoity", "valiaikaisestikeskeytynyt")
+      )
       case j: DIAOpiskeluoikeusjakso => HttpStatus.fold(
         vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut"),
         rahoitusmuotoKiellettyTiloilta(j, "eronnut", "katsotaaneronneeksi", "mitatoity", "peruutettu", "valiaikaisestikeskeytynyt")
@@ -937,6 +942,7 @@ class KoskiValidator(
       case s: PerusopetuksenVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
       case s: DiplomaVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
       case s: MYPVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "10" => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
+      // TODO: TOR-1685 Eurooppalainen koulu , jos tämä halutaan validoitavan, luultavasti halutaan?
       case _ => HttpStatus.ok
     }
   }
@@ -1097,6 +1103,9 @@ class KoskiValidator(
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suorituksen ${suorituksenTunniste(suoritus)} opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys")
     case s: LukionOppiaineidenOppimäärienSuoritus2019 if s.oppimäärä.koodiarvo == "aikuistenops" =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suorituksen ${suorituksenTunniste(suoritus)} opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys")
+    // TODO: TOR-1685 validoi, kuten halutaan, kun osasuoritukset toteutettu
+    case s: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus  =>
+      HttpStatus.ok
     case s =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys")
   }

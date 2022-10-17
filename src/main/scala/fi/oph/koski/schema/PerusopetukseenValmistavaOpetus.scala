@@ -110,13 +110,5 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(
 
 case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(
   alku: LocalDate,
-  @KoodistoKoodiarvo("eronnut")
-  @KoodistoKoodiarvo("katsotaaneronneeksi")
-  @KoodistoKoodiarvo("lasna")
-  @KoodistoKoodiarvo("loma")
-  @KoodistoKoodiarvo("mitatoity")
-  @KoodistoKoodiarvo("peruutettu")
-  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
-  @KoodistoKoodiarvo("valmistunut")
   tila: Koodistokoodiviite
-) extends KoskiOpiskeluoikeusjakso
+) extends KoskiLomanSallivaLaajaOpiskeluoikeusjakso

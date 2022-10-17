@@ -106,6 +106,7 @@ object OpiskeluoikeudenTyyppi {
   val ylioppilastutkinto = apply("ylioppilastutkinto")
   val vapaansivistystyonkoulutus = apply("vapaansivistystyonkoulutus")
   val tuva = apply("tuva")
+  val europeanschoolofhelsinki = apply("europeanschoolofhelsinki")
 
   private def apply(koodiarvo: String): Koodistokoodiviite = {
     val tyyppi = Koodistokoodiviite(koodiarvo, "opiskeluoikeudentyyppi")
@@ -167,34 +168,32 @@ trait Opiskeluoikeusjakso extends Alkupäivällinen {
   def opiskeluoikeusPäättynyt: Boolean
 }
 
-object KoskiSuppeaOpiskeluoikeusjakso {
+object KoskiOpiskeluoikeusjakso {
   // Jälkimmäiset kaksi tilakoodia ovat Vapaan sivistystyön koulutusta varten
-  def päätöstilat = List("valmistunut", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt")
+  def päätöstilat = List("valmistunut", "eronnut", "peruutettu", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt")
 }
 
-trait KoskiSuppeaOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
+trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   @KoodistoUri("koskiopiskeluoikeudentila")
+  def tila: Koodistokoodiviite
+  override def opiskeluoikeusPäättynyt = KoskiOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
+  def opintojenRahoitus: Option[Koodistokoodiviite] = None
+}
+
+trait KoskiLaajaOpiskeluoikeusjakso extends KoskiOpiskeluoikeusjakso {
+  @KoodistoKoodiarvo("eronnut")
+  @KoodistoKoodiarvo("peruutettu")
   @KoodistoKoodiarvo("katsotaaneronneeksi")
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("mitatoity")
   @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
   @KoodistoKoodiarvo("valmistunut")
   def tila: Koodistokoodiviite
-  def opiskeluoikeusPäättynyt = KoskiSuppeaOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
 }
 
-object KoskiOpiskeluoikeusjakso {
-  // Jälkimmäiset kaksi tilakoodia ovat Vapaan sivistystyön koulutusta varten
-  def päätöstilat = List("valmistunut", "eronnut", "peruutettu", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt")
-}
-
-trait KoskiOpiskeluoikeusjakso extends KoskiSuppeaOpiskeluoikeusjakso {
-  @KoodistoUri("koskiopiskeluoikeudentila")
-  @KoodistoKoodiarvo("eronnut")
-  @KoodistoKoodiarvo("peruutettu")
+trait KoskiLomanSallivaLaajaOpiskeluoikeusjakso extends KoskiLaajaOpiskeluoikeusjakso {
+  @KoodistoKoodiarvo("loma")
   def tila: Koodistokoodiviite
-  override def opiskeluoikeusPäättynyt = KoskiOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
-  def opintojenRahoitus: Option[Koodistokoodiviite] = None
 }
 
 trait Alkupäivällinen {

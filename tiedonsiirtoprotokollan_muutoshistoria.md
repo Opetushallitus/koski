@@ -1,3 +1,8 @@
+## 17.10.2022
+
+- Tietomalliin lisätty osittainen toteutus Helsingin eurooppalaista koulua varten. Tämän tietomallin mukaisia opiskeluoikeuksia
+ei pysty vielä tallentamaan.
+
 ## 4.10.2022
 
 - Lisätty VST-KOTO-koulutuksen kieli- ja viestintäopintojen osasuorituksen alaosasuorituksen hyväksyttyihin arvosanoihin `alle_A1.1` ja `yli_C1.1`.

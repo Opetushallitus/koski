@@ -32,12 +32,25 @@ case class VapaanSivistystyönOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[VapaanSivistystyönOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
+object VapaanSivistystyönOpiskeluoikeusjakso {
+  // Jälkimmäiset kaksi tilakoodia ovat Vapaan sivistystyön koulutusta varten
+  def päätöstilat = List("valmistunut", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt")
+}
+
 case class VapaanSivistystyönOpiskeluoikeusjakso(
   alku: LocalDate,
+  @KoodistoUri("koskiopiskeluoikeudentila")
+  @KoodistoKoodiarvo("katsotaaneronneeksi")
+  @KoodistoKoodiarvo("lasna")
+  @KoodistoKoodiarvo("mitatoity")
+  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
+  @KoodistoKoodiarvo("valmistunut")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
   @KoodistoKoodiarvo("keskeytynyt")
   tila: Koodistokoodiviite
-) extends KoskiSuppeaOpiskeluoikeusjakso
+) extends Opiskeluoikeusjakso {
+  def opiskeluoikeusPäättynyt = VapaanSivistystyönOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
+}
 
 case class VapaanSivistystyönOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,

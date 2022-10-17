@@ -84,6 +84,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     case "ibtutkinto" if !isKoulutustoimija => Seq(LukioDiaIbInternationalOpiskelijamaarat, IBSuoritustietojenTarkistus)
     case "ibtutkinto" => Seq(LukioDiaIbInternationalOpiskelijamaarat)
     case "diatutkinto" => Seq(LukioDiaIbInternationalOpiskelijamaarat)
+    // TODO: TOR-1685 Eurooppalainen koulu
     case "internationalschool" => Seq(LukioDiaIbInternationalOpiskelijamaarat)
     case "esiopetus" => Seq(EsiopetuksenRaportti, EsiopetuksenOppijaMäärienRaportti)
     case "aikuistenperusopetus" if !isKoulutustoimija => Seq(AikuistenPerusopetusSuoritustietojenTarkistus, AikuistenPerusopetusOppijaMäärienRaportti, AikuistenPerusopetusKurssikertymänRaportti)

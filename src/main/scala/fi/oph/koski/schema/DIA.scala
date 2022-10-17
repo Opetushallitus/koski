@@ -42,7 +42,7 @@ case class DIAOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
-) extends KoskiOpiskeluoikeusjakso
+) extends KoskiLaajaOpiskeluoikeusjakso
 
 @Description("DIA-opiskeluoikeuden lisätiedot")
 case class DIAOpiskeluoikeudenLisätiedot(

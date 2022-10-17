@@ -223,6 +223,7 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
       />
     );
   }
+  {/* TODO: TOR-1685 Eurooppalainen koulu */}
   if (oneOf("diavalmistavanvaiheensuoritus", "diatutkinnonsuoritus")) {
     const TutkinnonOppiaineetComponent = kansalainen
       ? OmatTiedotRyhmiteltyOppiaineet

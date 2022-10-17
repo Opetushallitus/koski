@@ -41,12 +41,6 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
 
 case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   alku: LocalDate,
-  @KoodistoKoodiarvo("katsotaaneronneeksi")
-  @KoodistoKoodiarvo("lasna")
-  @KoodistoKoodiarvo("mitatoity")
-  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
-  @KoodistoKoodiarvo("valmistunut")
-  @KoodistoKoodiarvo("loma")
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")
@@ -54,7 +48,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("6")
   @KoodistoKoodiarvo("10")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
-) extends KoskiOpiskeluoikeusjakso
+) extends KoskiLomanSallivaLaajaOpiskeluoikeusjakso
 
 trait TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus
   extends KoskeenTallennettavaPäätasonSuoritus

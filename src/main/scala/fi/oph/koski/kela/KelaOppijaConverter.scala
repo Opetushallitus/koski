@@ -50,6 +50,7 @@ object KelaOppijaConverter extends Logging {
          _: schema.DIAOpiskeluoikeus |
          _: schema.IBOpiskeluoikeus |
          _: schema.InternationalSchoolOpiskeluoikeus |
+         // TODO: TOR-1685 Eurooppalainen koulu
          _: schema.PerusopetuksenOpiskeluoikeus |
          _: schema.PerusopetukseenValmistavanOpetuksenOpiskeluoikeus |
          _: schema.PerusopetuksenLisäopetuksenOpiskeluoikeus |

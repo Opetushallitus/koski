@@ -90,6 +90,7 @@ object LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures {
       )
     )
 
+  // TODO: TOR-1685 Eurooppalainen koulu, lisää myös tällä raportille tämän fikstuurin lisäksi
   val international = InternationalSchoolOpiskeluoikeus(
     oppilaitos = Some(ressunLukio),
     lisätiedot = Some(InternationalSchoolOpiskeluoikeudenLisätiedot(

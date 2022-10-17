@@ -115,6 +115,9 @@ export default ({opiskeluoikeusAtom}) => {
       ift(oppilaitosAtom, <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />)
     }
     {
+      /* TODO: TOR-1685 Eurooppalainen koulu? */
+    }
+    {
       ift(tyyppiAtom.map(tyyppi => tyyppi && tyyppi.koodiarvo !== 'internationalschool'), <Suorituskieli suorituskieliAtom={suorituskieliAtom} suorituskieletP={suorituskieletP} />)
     }
     {
@@ -131,6 +134,7 @@ export default ({opiskeluoikeusAtom}) => {
         if (tyyppi === 'lukiokoulutus') return <UusiLukionSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi === 'ibtutkinto') return <UusiIBSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi === 'diatutkinto') return <UusiDIASuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        // TODO: TOR-1685 Eurooppalainen koulu?
         if (tyyppi === 'internationalschool') return <UusiInternationalSchoolSuoritus suoritusAtom={suoritusAtom} dateAtom={dateAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi === 'vapaansivistystyonkoulutus') return <UusiVapaanSivistystyonSuoritus suoritusAtom={suoritusAtom} opintokokonaisuusAtom={opintokokonaisuusAtom} suoritustyyppiAtom={suoritustyyppiAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom}/>
         if (tyyppi === 'luva') return <UusiLukioonValmistavanKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom}/>
@@ -229,6 +233,7 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
 
 const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) => {
 
+  // TODO: TOR-1685 Eurooppalainen koulu
   const options = Bacon.combineWith(tyyppiAtom, opintojenRahoituksetP, (tyyppi, rahoitukset) => {
       if (koodiarvoMatch('aikuistenperusopetus', 'lukiokoulutus', 'internationalschool', 'ibtutkinto')(tyyppi)) {
         return rahoitukset.filter(v => sallitutRahoituskoodiarvot.includes(v.koodiarvo))

@@ -588,6 +588,7 @@ class YtlSpec
         KoskiSpecificMockOppijat.ibPreIB2019,
         KoskiSpecificMockOppijat.dia,
         KoskiSpecificMockOppijat.internationalschool,
+        // TODO: TOR-1685 Eurooppalainen koulu
         KoskiSpecificMockOppijat.eskari,
         KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla,
         KoskiSpecificMockOppijat.master,
@@ -743,14 +744,13 @@ class YtlSpec
       headers = authHeaders(user) ++ jsonContent
     )(f)
   }
-
   private def expectedMaksuttomuuttaPidennetty2(opiskeluoikeusOidit: Seq[String], aikaleimat: Seq[String]) =
     s"""
        |[
        |  {
        |    "henkilö": {
-       |      "pääoppijaOid": "1.2.246.562.24.00000000114",
-       |      "oid": "1.2.246.562.24.00000000114",
+       |      "pääoppijaOid": "${KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid}",
+       |      "oid": "${KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid}",
        |      "hetu": "220835-2325",
        |      "syntymäaika": "2004-01-01",
        |      "etunimet": "Maksuttomuutta2",

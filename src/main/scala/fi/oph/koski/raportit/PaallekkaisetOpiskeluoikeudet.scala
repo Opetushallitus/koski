@@ -250,9 +250,11 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       case (_, ("preiboppimaara", _)) => t.get("raportti-excel-default-value-ibsuoritus")
       case (_, (suorituksenTyyppi, koodiarvo))
         if InternationalSchoolOpiskeluoikeus.onLukiotaVastaavaInternationalSchoolinSuoritus(suorituksenTyyppi, koodiarvo) => t.get("raportti-excel-default-value-intschoollukio")
+      // TODO: TOR-1685 Eurooppalainen koulu
       case (acc, (_, _)) if acc == t.get("raportti-excel-default-value-intschoollukio") => acc
       case (_, (suorituksenTyyppi, koodiarvo))
         if InternationalSchoolOpiskeluoikeus.onPeruskouluaVastaavaInternationalSchoolinSuoritus(suorituksenTyyppi, koodiarvo) => t.get("raportti-excel-default-value-intschoolperusopetus")
+      // TODO: TOR-1685 Eurooppalainen koulu
       case (_, ("lukionoppiaineenoppimaara", _)) => t.get("raportti-excel-default-value-lukionaineopiskelija")
       case (_, ("lukionaineopinnot", _)) => t.get("raportti-excel-default-value-lukionaineopiskelija")
       case (_, ("lukionoppimaara", _)) => t.get("raportti-excel-default-value-lukionoppimäärä")

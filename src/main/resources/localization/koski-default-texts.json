@@ -684,6 +684,7 @@
   "description:Tieto siitä, suoritetaanko perusopetusta normaalina...": "Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona",
   "description:Organisaation kotipaikka": "Organisaation kotipaikka",
   "description:Opintojen rahoitus. Mikäli kyseessä on...": "Opintojen rahoitus. Mikäli kyseessä on kaksoitutkintoa suorittava opiskelija, jonka rahoituksen saa ammatillinen oppilaitos, tulee käyttää arvoa 6: Muuta kautta rahoitettu. Muussa tapauksessa käytetään arvoa 1: Valtionosuusrahoitteinen koulutus.",
+  "description:Opintojen rahoitus. Toistaiseksi läsnä- ja..." : "Opintojen rahoitus. Toistaiseksi läsnä- ja valmistunut-tiloille aina 6: Muuta kautta rahoitettu",
   "description:Kurssin tyyppi voi olla joko...": "Kurssin tyyppi voi olla joko syventävä, soveltava tai pakollinen",
   "description:Aikuisten perusopetuksen kurssin tunnistetiedot": "Aikuisten perusopetuksen kurssin tunnistetiedot",
   "description:Pre-IB-kurssin tunnistetiedot": "Pre-IB-kurssin tunnistetiedot",
@@ -2392,5 +2393,6 @@
   "Lisää yhteiskunta- ja työosaamiskoulutuksen alaosasuoritus": "Lisää yhteiskunta- ja työosaamiskoulutuksen alaosasuoritus",
   "Lisää valinnainen alaosasuoritus": "Lisää valinnainen alaosasuoritus",
   "Poista osasuoritus. Poistaminen ei vaikuta olemassa oleviin suorituksiin.": "Poista osasuoritus. Poistaminen ei vaikuta olemassa oleviin suorituksiin.",
-  "description:TUVA-opiskeluoikeuden erityisen tuen päätöstiedot" : "TUVA-opiskeluoikeuden erityisen tuen päätöstiedot"
+  "description:TUVA-opiskeluoikeuden erityisen tuen päätöstiedot" : "TUVA-opiskeluoikeuden erityisen tuen päätöstiedot",
+  "Curriculum" : "Curriculum"
 }

@@ -77,6 +77,7 @@ object MaksuttomuusValidation {
 
   // Huom! Valpas käyttää myös tätä funktiota!
   def oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean =
+  // TODO: TOR-1685 Eurooppalainen koulu
     opiskeluoikeus.suoritukset.collectFirst {
       case myp: MYPVuosiluokanSuoritus
         if InternationalSchoolOpiskeluoikeus.onLukiotaVastaavaInternationalSchoolinSuoritus(myp.tyyppi.koodiarvo, myp.koulutusmoduuli.tunniste.koodiarvo) => myp
