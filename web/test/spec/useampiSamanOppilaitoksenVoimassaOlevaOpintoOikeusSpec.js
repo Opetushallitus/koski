@@ -1,4 +1,4 @@
-describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', function() {
+describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', function () {
   var addOppija = AddOppijaPage()
   var opinnot = OpinnotPage()
   var page = KoskiPage()
@@ -11,10 +11,13 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
     prepareForNewOppija('kalle', '230872-7258'),
     addOppija.enterValidDataMuuAmmatillinen(),
     addOppija.enterPaikallinenKoulutusmoduuliData(),
-    addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Varaston täyttäminen'),
+    addOppija.submitAndExpectSuccess(
+      'Tyhjä, Tero (230872-7258)',
+      'Varaston täyttäminen'
+    )
   )
 
-  describe('perusopetuksessa', function() {
+  describe('perusopetuksessa', function () {
     before(
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Aalto-yliopisto'),
@@ -25,11 +28,13 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       addOppija.selectOpiskeluoikeudenTyyppi('Perusopetus'),
       addOppija.submitModal
     )
-    it('ei ole sallittu', function() {
-      expect(page.getErrorMessage()).to.equal('Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.')
+    it('ei ole sallittu', function () {
+      expect(page.getErrorMessage()).to.equal(
+        'Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.'
+      )
     })
   })
-  describe('ammatillisessa koulutuksessa', function() {
+  describe('ammatillisessa koulutuksessa', function () {
     before(
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
@@ -48,10 +53,12 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal
     )
-    it('ei ole sallittu', function() {
-      expect(page.getErrorMessage()).to.equal('Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.')
+    it('ei ole sallittu', function () {
+      expect(page.getErrorMessage()).to.equal(
+        'Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.'
+      )
     })
-    describe('kun suoritustyyppi eroaa', function() {
+    describe('kun suoritustyyppi eroaa', function () {
       before(
         opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
         addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
@@ -63,31 +70,39 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
         addOppija.submitModal
       )
-      it('on sallittu', function() {
+      it('on sallittu', function () {
         expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(3)
       })
     })
   })
-  describe('muussa ammatillisessa koulutuksessa', function() {
+  describe('muussa ammatillisessa koulutuksessa', function () {
     before(
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
       addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'),
-      addOppija.selectKoulutusmoduuli('Ammatilliseen tehtävään valmistava koulutus'),
-      addOppija.enterAmmatilliseenTehtäväänvalmistava('Ansio- ja liikennelentäjä'),
+      addOppija.selectKoulutusmoduuli(
+        'Ammatilliseen tehtävään valmistava koulutus'
+      ),
+      addOppija.enterAmmatilliseenTehtäväänvalmistava(
+        'Ansio- ja liikennelentäjä'
+      ),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal,
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
       addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'),
-      addOppija.selectKoulutusmoduuli('Ammatilliseen tehtävään valmistava koulutus'),
-      addOppija.enterAmmatilliseenTehtäväänvalmistava('Ansio- ja liikennelentäjä'),
+      addOppija.selectKoulutusmoduuli(
+        'Ammatilliseen tehtävään valmistava koulutus'
+      ),
+      addOppija.enterAmmatilliseenTehtäväänvalmistava(
+        'Ansio- ja liikennelentäjä'
+      ),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal
     )
-    it('on sallittu', function() {
+    it('on sallittu', function () {
       expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(5)
     })
   })

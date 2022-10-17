@@ -6,6 +6,7 @@ export const tapLeft = <T>(leftSideEffect: (left: T) => void) =>
     return left
   })
 
-export const tapLeftP = <T>(leftSideEffect: (left: T) => void) => async <A>(
-  promise: Promise<E.Either<T, A>>
-): Promise<E.Either<T, A>> => promise.then(tapLeft(leftSideEffect))
+export const tapLeftP =
+  <T>(leftSideEffect: (left: T) => void) =>
+  async <A>(promise: Promise<E.Either<T, A>>): Promise<E.Either<T, A>> =>
+    promise.then(tapLeft(leftSideEffect))

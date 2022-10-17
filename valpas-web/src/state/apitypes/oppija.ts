@@ -61,14 +61,12 @@ export type OpiskeluoikeusLisätiedot = {
   muuHaku: boolean
 }
 
-export const lisätietoMatches = (
-  oppijaOid: Oid,
-  opiskeluoikeusOid: Oid,
-  oppilaitosOid: Oid
-) => (lisätiedot: OpiskeluoikeusLisätiedot) =>
-  lisätiedot.oppijaOid === oppijaOid &&
-  lisätiedot.opiskeluoikeusOid === opiskeluoikeusOid &&
-  oppilaitosOid === oppilaitosOid
+export const lisätietoMatches =
+  (oppijaOid: Oid, opiskeluoikeusOid: Oid, oppilaitosOid: Oid) =>
+  (lisätiedot: OpiskeluoikeusLisätiedot) =>
+    lisätiedot.oppijaOid === oppijaOid &&
+    lisätiedot.opiskeluoikeusOid === opiskeluoikeusOid &&
+    oppilaitosOid === oppilaitosOid
 
 export type OppijaKuntailmoituksillaSuppeatTiedot = {
   oppija: OppijaSuppeatTiedot

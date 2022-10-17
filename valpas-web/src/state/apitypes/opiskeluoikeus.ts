@@ -85,19 +85,17 @@ export type PäätasonSuoritus = {
   suorituksenTyyppi: Suorituksentyyppi
 }
 
-export const isHakeutumisvalvottavaOpiskeluoikeus = (
-  organisaatioOid: string | undefined
-) => (oo: OpiskeluoikeusSuppeatTiedot) =>
-  oo.onHakeutumisValvottava && oo.oppilaitos.oid == organisaatioOid
+export const isHakeutumisvalvottavaOpiskeluoikeus =
+  (organisaatioOid: string | undefined) => (oo: OpiskeluoikeusSuppeatTiedot) =>
+    oo.onHakeutumisValvottava && oo.oppilaitos.oid == organisaatioOid
 
-export const isSuorittamisvalvottavaOpiskeluoikeus = (
-  organisaatioOid: string | undefined
-) => (oo: OpiskeluoikeusSuppeatTiedot) =>
-  oo.onSuorittamisValvottava &&
-  oo.oppilaitos.oid == organisaatioOid &&
-  // Redundantti tarkistus bugien varalta. Suorittamisvalvottavien pitäisi
-  // kaikkien olla perusopetuksen jälkeisiä opintoja sisältäviä opiskeluoikeuksia:
-  oo.perusopetuksenJälkeinenTiedot !== undefined
+export const isSuorittamisvalvottavaOpiskeluoikeus =
+  (organisaatioOid: string | undefined) => (oo: OpiskeluoikeusSuppeatTiedot) =>
+    oo.onSuorittamisValvottava &&
+    oo.oppilaitos.oid == organisaatioOid &&
+    // Redundantti tarkistus bugien varalta. Suorittamisvalvottavien pitäisi
+    // kaikkien olla perusopetuksen jälkeisiä opintoja sisältäviä opiskeluoikeuksia:
+    oo.perusopetuksenJälkeinenTiedot !== undefined
 
 export const isNuortenPerusopetus = (oo: OpiskeluoikeusSuppeatTiedot) =>
   oo.tyyppi.koodiarvo === "perusopetus"
@@ -134,14 +132,14 @@ export const suorittamisvalvottavatOpiskeluoikeudet = (
     isSuorittamisvalvottavaOpiskeluoikeus(organisaatioOid)
   )
 
-export const voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus = (
-  opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
-): boolean => {
-  const tiedot = opiskeluoikeus.perusopetuksenJälkeinenTiedot
-  const tila = tiedot?.tarkastelupäivänTila.koodiarvo
-  const näytäMuuna = tiedot?.näytäMuunaPerusopetuksenJälkeisenäOpintona
+export const voimassaolevaTaiTulevaPeruskoulunJälkeinenMuunaOpintonaNäytettäväOpiskeluoikeus =
+  (opiskeluoikeus: OpiskeluoikeusSuppeatTiedot): boolean => {
+    const tiedot = opiskeluoikeus.perusopetuksenJälkeinenTiedot
+    const tila = tiedot?.tarkastelupäivänTila.koodiarvo
+    const näytäMuuna = tiedot?.näytäMuunaPerusopetuksenJälkeisenäOpintona
 
-  return (
-    (tila === "voimassa" || tila === "voimassatulevaisuudessa") && !!näytäMuuna
-  )
-}
+    return (
+      (tila === "voimassa" || tila === "voimassatulevaisuudessa") &&
+      !!näytäMuuna
+    )
+  }

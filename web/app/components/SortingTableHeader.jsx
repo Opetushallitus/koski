@@ -4,25 +4,47 @@ import Text from '../i18n/Text'
 
 export default class extends React.Component {
   render() {
-    var { field, titleKey, defaultSort } = this.props
-    let params = currentLocation().params
-    let [ sortBy, sortOrder ] = params.sort
+    const { field, titleKey, defaultSort } = this.props
+    const params = currentLocation().params
+    const [sortBy, sortOrder] = params.sort
       ? params.sort.split(':')
       : defaultSort
-        ? [field, defaultSort]
-        : []
+      ? [field, defaultSort]
+      : []
 
-    let selected = sortBy == field
+    const selected = sortBy == field
 
-    return (<th className={sortBy == field ? field + ' sorted' : field}>
-      <div className="sorting" onClick={() => navigateWithQueryParams({ sort: field + ':' + (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')})}>
-        <div className="title"><Text name={titleKey}/></div>
-        <div className="sort-indicator">
-          <div className={selected && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
-          <div className={selected && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
+    return (
+      <th className={sortBy == field ? field + ' sorted' : field}>
+        <div
+          className="sorting"
+          onClick={() =>
+            navigateWithQueryParams({
+              sort:
+                field +
+                ':' +
+                (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')
+            })
+          }
+        >
+          <div className="title">
+            <Text name={titleKey} />
+          </div>
+          <div className="sort-indicator">
+            <div
+              className={
+                selected && sortOrder == 'asc' ? 'asc selected' : 'asc'
+              }
+            ></div>
+            <div
+              className={
+                selected && sortOrder == 'desc' ? 'desc selected' : 'desc'
+              }
+            ></div>
+          </div>
         </div>
-      </div>
-      {this.props.children}
-    </th>)
+        {this.props.children}
+      </th>
+    )
   }
 }

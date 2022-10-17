@@ -21,9 +21,8 @@ export type IconColor =
   | "white"
   | "green"
 
-const defineIcon = (name: string, color?: IconColor) => (props: IconProps) => (
+const defineIcon = (name: string, color?: IconColor) => (props: IconProps) =>
   <MaterialDesignIcon name={name} color={color} {...props} />
-)
 
 export const SearchIcon = defineIcon("search")
 export const ArrowDropDownIcon = defineIcon("arrow_drop_down")

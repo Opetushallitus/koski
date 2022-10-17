@@ -63,7 +63,10 @@ export const declarePath = <A extends any[] = never[]>(
   }
 }
 
-const passParamsThru = <T extends object>() => (params: T): T => params
+const passParamsThru =
+  <T extends object>() =>
+  (params: T): T =>
+    params
 
 export type OrganisaatioOidProps = { organisaatioOid: Oid }
 export type OrganisaatioOidRouteProps = RouteComponentProps<

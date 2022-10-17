@@ -353,7 +353,11 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Tutkintokoulutukseen valmentava koulutus'))
+          .then(
+            api.selectOpiskeluoikeudenTyyppi(
+              'Tutkintokoulutukseen valmentava koulutus'
+            )
+          )
           .then(api.selectJärjestämislupa(params.järjestämislupa))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
@@ -372,7 +376,11 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('Tutkintokoulutukseen valmentava koulutus'))
+          .then(
+            api.selectOpiskeluoikeudenTyyppi(
+              'Tutkintokoulutukseen valmentava koulutus'
+            )
+          )
           .then(api.selectJärjestämislupa(params.järjestämislupa))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpiskeluoikeudenTila(params.tila))
@@ -464,9 +472,9 @@ function AddOppijaPage() {
       }
     },
     selectSuoritustapa: function (suoritustapa) {
-      if (suoritustapa)
-        {return selectFromDropdown('.suoritustapa .dropdown', suoritustapa)}
-      else return function () {}
+      if (suoritustapa) {
+        return selectFromDropdown('.suoritustapa .dropdown', suoritustapa)
+      } else return function () {}
     },
     selectAloituspäivä: function (date) {
       return pageApi.setInputValue('.aloituspaiva input', date)
@@ -478,7 +486,11 @@ function AddOppijaPage() {
     },
     selectMaksuttomuus: function (index) {
       return function () {
-        return click(S('[data-test-id="maksuttomuus-radio-buttons"] .radio-option-container')[index])()
+        return click(
+          S(
+            '[data-test-id="maksuttomuus-radio-buttons"] .radio-option-container'
+          )[index]
+        )()
       }
     },
     henkilötiedot: function () {
@@ -586,10 +598,18 @@ function AddOppijaPage() {
       return pageApi.getInputOptions('.opiskeluoikeudentila .dropdown')
     },
     tutkinnot: function () {
-      return extractAsText(S("[data-test-id='tutkinto-autocomplete'] [data-test-id='autocomplete-results']"))
+      return extractAsText(
+        S(
+          "[data-test-id='tutkinto-autocomplete'] [data-test-id='autocomplete-results']"
+        )
+      )
     },
-    tutkinnotIsVisible: function() {
-      return isElementVisible(S("[data-test-id='tutkinto-autocomplete'] [data-test-id='autocomplete-results']"))
+    tutkinnotIsVisible: function () {
+      return isElementVisible(
+        S(
+          "[data-test-id='tutkinto-autocomplete'] [data-test-id='autocomplete-results']"
+        )
+      )
     },
     selectPeruste: function (peruste) {
       return selectFromDropdown("[data-test-id='peruste-dropdown']", peruste)
@@ -604,7 +624,7 @@ function AddOppijaPage() {
       return selectFromDropdown('.koulutusmoduuli .dropdown', koulutusmoduuli)
     },
     goBack: click(findSingle('h1 a')),
-    selectFromDropdown: selectFromDropdown,
+    selectFromDropdown,
     selectVarhaiskasvatusOrganisaationUlkopuolelta: function (checked) {
       return pageApi.setInputValue('#varhaiskasvatus-checkbox', checked)
     },

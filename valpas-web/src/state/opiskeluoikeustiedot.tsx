@@ -80,13 +80,12 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
   opiskeluoikeudet: OpiskeluoikeusSuppeatTiedot[],
   käsiteltäväOpiskeluoikeus: OpiskeluoikeusSuppeatTiedot
 ): Value | null => {
-  const ooTiedots: Array<
-    [OpiskeluoikeusSuppeatTiedot, OpintotasonTiedot]
-  > = pipe(
-    opiskeluoikeudet,
-    A.filter((oo) => oo.oid != käsiteltäväOpiskeluoikeus.oid),
-    A.chain(perusopetuksenJälkeistäPreferoivaNäytettäväOpiskeluoikeusTieto)
-  )
+  const ooTiedots: Array<[OpiskeluoikeusSuppeatTiedot, OpintotasonTiedot]> =
+    pipe(
+      opiskeluoikeudet,
+      A.filter((oo) => oo.oid != käsiteltäväOpiskeluoikeus.oid),
+      A.chain(perusopetuksenJälkeistäPreferoivaNäytettäväOpiskeluoikeusTieto)
+    )
 
   const toValue = (
     ooTiedot: [OpiskeluoikeusSuppeatTiedot, OpintotasonTiedot]

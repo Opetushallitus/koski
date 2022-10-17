@@ -77,9 +77,8 @@ export const fetchYlatasonOrganisaatiotJaKayttooikeusroolit = async () =>
     )
   )
 
-export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache = createLocalThenApiCache(
-  fetchYlatasonOrganisaatiotJaKayttooikeusroolit
-)
+export const fetchYlatasonOrganisaatiotJaKayttooikeusroolitCache =
+  createLocalThenApiCache(fetchYlatasonOrganisaatiotJaKayttooikeusroolit)
 
 /**
  * Hae suppeat tiedot oppijoista
@@ -147,9 +146,8 @@ export const fetchNivelvaiheenOppijatHakutiedoilla = (
     )
   )
 
-export const fetchNivelvaiheenOppijatHakutiedoillaCache = createPreferLocalCache(
-  fetchNivelvaiheenOppijatHakutiedoilla
-)
+export const fetchNivelvaiheenOppijatHakutiedoillaCache =
+  createPreferLocalCache(fetchNivelvaiheenOppijatHakutiedoilla)
 
 /**
  * Hae hakeutumisvalvonnan kunnalle tekemät ilmoitukset
@@ -163,9 +161,8 @@ export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset = (
     )
   )
 
-export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache = createLocalThenApiCache(
-  fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset
-)
+export const fetchHakeutumisvalvonnanKunnalleTehdytIlmoituksetCache =
+  createLocalThenApiCache(fetchHakeutumisvalvonnanKunnalleTehdytIlmoitukset)
 
 /**
  * Hae suppeat tiedot oppijoista suorittamisen valvontanäkymään
@@ -193,9 +190,8 @@ export const fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset = (
     )
   )
 
-export const fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache = createLocalThenApiCache(
-  fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset
-)
+export const fetchSuorittamisvalvonnanKunnalleTehdytIlmoituksetCache =
+  createLocalThenApiCache(fetchSuorittamisvalvonnanKunnalleTehdytIlmoitukset)
 
 /**
  * Hae yksittäisen oppijan laajat tiedot
@@ -266,9 +262,8 @@ export const fetchKuntarouhinta = (query: KuntarouhintaInput) =>
     })
   )
 
-export const fetchKuntarouhintaCache = createPreferLocalCache(
-  fetchKuntarouhinta
-)
+export const fetchKuntarouhintaCache =
+  createPreferLocalCache(fetchKuntarouhinta)
 
 /**
  * Kunnan rouhintalista (spreadsheet)
@@ -383,9 +378,7 @@ export const fetchOvVapautuksenPohjatiedot = () =>
   )
 
 export const createOvVapautus = (vapautus: UusiOppivelvollisuudestaVapautus) =>
-  handleExpiredSession(
-    apiPost<null>("valpas/api/vapautus", { body: vapautus })
-  )
+  handleExpiredSession(apiPost<null>("valpas/api/vapautus", { body: vapautus }))
 
 export const deleteOvVapautus = (
   vapautus: OppivelvollisuudestaVapautuksenMitätöinti

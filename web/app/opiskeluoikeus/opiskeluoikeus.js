@@ -1,18 +1,45 @@
-const internationalSchoolTilat = [ 'eronnut', 'lasna', 'valmistunut', 'valiaikaisestikeskeytynyt' ]
-const vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat = ['hyvaksytystisuoritettu', 'keskeytynyt']
-const tuvaTilat = ['katsotaaneronneeksi', 'lasna', 'valiaikaisestikeskeytynyt', 'valmistunut']
+const internationalSchoolTilat = [
+  'eronnut',
+  'lasna',
+  'valmistunut',
+  'valiaikaisestikeskeytynyt'
+]
+const vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat = [
+  'hyvaksytystisuoritettu',
+  'keskeytynyt'
+]
+const tuvaTilat = [
+  'katsotaaneronneeksi',
+  'lasna',
+  'valiaikaisestikeskeytynyt',
+  'valmistunut'
+]
 const tuvaAmmatillinenTilat = [...tuvaTilat, 'loma']
 const alwaysExclude = ['mitatoity']
 
-const defaultGetKoodiarvo = x => x && x.koodiarvo
-export const filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi = (opiskeluoikeudenTyyppi, tuvaJärjestämislupa, suorituksenTyyppi, koodiarvo = defaultGetKoodiarvo) => tilat => {
-  const prefilteredTilat = tilat.filter(t => !alwaysExclude.includes(koodiarvo(t)))
-  return filterBySuorituksenTyyppi(
+const defaultGetKoodiarvo = (x) => x && x.koodiarvo
+export const filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi =
+  (
+    opiskeluoikeudenTyyppi,
+    tuvaJärjestämislupa,
     suorituksenTyyppi,
-    filterByOpiskeluoikeudenTyyppi(opiskeluoikeudenTyyppi, tuvaJärjestämislupa, prefilteredTilat, koodiarvo),
-    koodiarvo
-  )
-}
+    koodiarvo = defaultGetKoodiarvo
+  ) =>
+  (tilat) => {
+    const prefilteredTilat = tilat.filter(
+      (t) => !alwaysExclude.includes(koodiarvo(t))
+    )
+    return filterBySuorituksenTyyppi(
+      suorituksenTyyppi,
+      filterByOpiskeluoikeudenTyyppi(
+        opiskeluoikeudenTyyppi,
+        tuvaJärjestämislupa,
+        prefilteredTilat,
+        koodiarvo
+      ),
+      koodiarvo
+    )
+  }
 
 const filterByOpiskeluoikeudenTyyppi = (
   opiskeluoikeudenTyyppi,
@@ -39,14 +66,27 @@ const filterByOpiskeluoikeudenTyyppi = (
 
 const filterByJärjestämislupa = (tuvaJärjestämislupa, tilat, koodiarvo) => {
   switch (tuvaJärjestämislupa && tuvaJärjestämislupa.koodiarvo) {
-    case 'ammatillinen': return tilat.filter(t => tuvaAmmatillinenTilat.includes(koodiarvo(t)))
-    default: return tilat.filter(t => tuvaTilat.includes(koodiarvo(t)))
+    case 'ammatillinen':
+      return tilat.filter((t) => tuvaAmmatillinenTilat.includes(koodiarvo(t)))
+    default:
+      return tilat.filter((t) => tuvaTilat.includes(koodiarvo(t)))
   }
 }
 
 const filterBySuorituksenTyyppi = (suorituksenTyyppi, tilat, koodiarvo) => {
   switch (suorituksenTyyppi && suorituksenTyyppi.koodiarvo) {
-    case 'vstvapaatavoitteinenkoulutus': return tilat.filter(t => vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat.includes(koodiarvo(t)))
-    default: return tilat.filter(t => !vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat.includes(koodiarvo(t)))
+    case 'vstvapaatavoitteinenkoulutus':
+      return tilat.filter((t) =>
+        vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat.includes(
+          koodiarvo(t)
+        )
+      )
+    default:
+      return tilat.filter(
+        (t) =>
+          !vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat.includes(
+            koodiarvo(t)
+          )
+      )
   }
 }

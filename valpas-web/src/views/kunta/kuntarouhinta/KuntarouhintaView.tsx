@@ -71,7 +71,8 @@ export type KuntarouhintaViewProps = OrganisaatioOidRouteProps
 export const KuntarouhintaView = withRequiresKuntavalvonta(
   (props: KuntarouhintaViewProps) => {
     const organisaatioOid = props.match.params.organisaatioOid!
-    const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+    const organisaatiotJaKäyttöoikeusroolit =
+      useOrganisaatiotJaKäyttöoikeusroolit()
     const organisaatiot = useMemo(
       () =>
         getOrganisaatiot(

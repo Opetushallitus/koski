@@ -1,6 +1,11 @@
 export const VARHAISKASVATUKSEN_TOIMIPAIKKA = 'VARHAISKASVATUKSEN_TOIMIPAIKKA'
 
-export const makeSuoritus = (oppilaitos, organisaatiotyypit, peruste, suorituskieli) => {
+export const makeSuoritus = (
+  oppilaitos,
+  organisaatiotyypit,
+  peruste,
+  suorituskieli
+) => {
   if (oppilaitos) {
     return {
       koulutusmoduuli: {
@@ -11,11 +16,16 @@ export const makeSuoritus = (oppilaitos, organisaatiotyypit, peruste, suorituski
         perusteenDiaarinumero: peruste
       },
       toimipiste: oppilaitos,
-      tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'esiopetuksensuoritus'},
-      suorituskieli : suorituskieli
+      tyyppi: {
+        koodistoUri: 'suorituksentyyppi',
+        koodiarvo: 'esiopetuksensuoritus'
+      },
+      suorituskieli
     }
   }
 }
 
-const tunnisteenKoodiarvo = organisaatioTyypit =>
-  organisaatioTyypit.includes(VARHAISKASVATUKSEN_TOIMIPAIKKA) ? '001102' : '001101'
+const tunnisteenKoodiarvo = (organisaatioTyypit) =>
+  organisaatioTyypit.includes(VARHAISKASVATUKSEN_TOIMIPAIKKA)
+    ? '001102'
+    : '001101'

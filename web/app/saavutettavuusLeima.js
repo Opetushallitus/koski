@@ -1,15 +1,16 @@
-import {t, lang} from './i18n/i18n'
+import { t, lang } from './i18n/i18n'
 
 const saavutettavuusImages = {
-  'fi': '/koski/images/Saavutettavuus_leima_2016_FI.jpg',
-  'sv': '/koski/images/Saavutettavuus_leima_2016_SV.jpg',
-  'en': '/koski/images/Saavutettavuus_leima_2016_EN.jpg'
+  fi: '/koski/images/Saavutettavuus_leima_2016_FI.jpg',
+  sv: '/koski/images/Saavutettavuus_leima_2016_SV.jpg',
+  en: '/koski/images/Saavutettavuus_leima_2016_EN.jpg'
 }
 
 export const patchSaavutettavuusLeima = () =>
-  waitForFooter(footerLogos => {
+  waitForFooter((footerLogos) => {
     const alt = t('Saavutettavuus huomioitu')
-    const url = 'https://wiki.eduuni.fi/display/OPHPALV/Saavutettavuus+on+huomioitu'
+    const url =
+      'https://wiki.eduuni.fi/display/OPHPALV/Saavutettavuus+on+huomioitu'
     const imgSrc = saavutettavuusImages[lang]
 
     const img = document.createElement('img')
@@ -32,7 +33,7 @@ export const patchSaavutettavuusLeima = () =>
   })
 
 // Stop after 50 retries (5 seconds) to avoid infinite loop if running without oppija-raamit.
-const waitForFooter = (callback, retries=50) =>
+const waitForFooter = (callback, retries = 50) =>
   setTimeout(() => {
     const element = document.querySelector('footer#footer #footer-logos')
     if (element) {
@@ -41,8 +42,10 @@ const waitForFooter = (callback, retries=50) =>
     }
 
     if (retries > 0) {
-      waitForFooter(callback, retries=retries-1)
+      waitForFooter(callback, (retries = retries - 1))
     } else {
-      console.warn('Footer from oppija-raamit was not found. This is OK if really without oppija-raamit.')
+      console.warn(
+        'Footer from oppija-raamit was not found. This is OK if really without oppija-raamit.'
+      )
     }
   }, 100)

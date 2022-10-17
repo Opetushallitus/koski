@@ -36,10 +36,8 @@ export const Ilmoituslomake = (props: IlmoituslomakeProps) => {
     henkilö: props.pohjatiedot.tekijäHenkilö,
   }
 
-  const [
-    tekijä,
-    setTekijä,
-  ] = useState<KuntailmoituksenTekijäLaajatTiedot | null>(null)
+  const [tekijä, setTekijä] =
+    useState<KuntailmoituksenTekijäLaajatTiedot | null>(null)
 
   const onClose = props.onClose
   const close = useCallback(() => {

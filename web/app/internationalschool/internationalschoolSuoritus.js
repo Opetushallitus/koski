@@ -1,10 +1,15 @@
-import {formatISODate} from '../date/date.js'
+import { formatISODate } from '../date/date.js'
 
-export const makeSuoritus = (oppilaitos, grade, alkamispäivä, suorituskieli) => {
+export const makeSuoritus = (
+  oppilaitos,
+  grade,
+  alkamispäivä,
+  suorituskieli
+) => {
   if (!oppilaitos || !grade || !grade || !suorituskieli) return null
 
   return {
-    suorituskieli : suorituskieli,
+    suorituskieli,
     koulutusmoduuli: mkKoulutusmoduuli(grade),
     toimipiste: oppilaitos,
     alkamispäivä: formatISODate(alkamispäivä),
@@ -15,13 +20,19 @@ export const makeSuoritus = (oppilaitos, grade, alkamispäivä, suorituskieli) =
   }
 }
 
-const mkKoulutusmoduuli = grade => {
-  return (grade.koodiarvo === 'explorer' || grade.koodiarvo < 11)
+const mkKoulutusmoduuli = (grade) => {
+  return grade.koodiarvo === 'explorer' || grade.koodiarvo < 11
     ? { tunniste: grade }
-    : { tunniste: grade, diplomaType: { koodistoUri: 'internationalschooldiplomatype', koodiarvo: 'ib' }}
+    : {
+        tunniste: grade,
+        diplomaType: {
+          koodistoUri: 'internationalschooldiplomatype',
+          koodiarvo: 'ib'
+        }
+      }
 }
 
-export const suoritusTyyppi = grade => {
+export const suoritusTyyppi = (grade) => {
   if (grade.koodiarvo === 'explorer' || grade.koodiarvo < 6) {
     return 'internationalschoolpypvuosiluokka'
   } else if (grade.koodiarvo < 11) {
@@ -31,10 +42,13 @@ export const suoritusTyyppi = grade => {
   }
 }
 
-export const suoritusPrototypeKey = type => {
+export const suoritusPrototypeKey = (type) => {
   switch (type) {
-    case 'internationalschoolpypvuosiluokka': return 'pypvuosiluokansuoritus'
-    case 'internationalschoolmypvuosiluokka': return 'mypvuosiluokansuoritus'
-    case 'internationalschooldiplomavuosiluokka': return 'diplomavuosiluokansuoritus'
+    case 'internationalschoolpypvuosiluokka':
+      return 'pypvuosiluokansuoritus'
+    case 'internationalschoolmypvuosiluokka':
+      return 'mypvuosiluokansuoritus'
+    case 'internationalschooldiplomavuosiluokka':
+      return 'diplomavuosiluokansuoritus'
   }
 }

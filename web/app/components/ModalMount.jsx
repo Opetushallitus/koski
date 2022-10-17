@@ -22,9 +22,6 @@ export default class ModalMount extends React.Component {
   }
 
   render() {
-    return ReactDOM.createPortal(
-      this.props.children,
-      this.container
-    )
+    return ReactDOM.createPortal(this.props.children, this.container)
   }
 }

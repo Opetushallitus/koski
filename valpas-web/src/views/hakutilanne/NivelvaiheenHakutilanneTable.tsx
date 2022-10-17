@@ -134,38 +134,36 @@ const dataToRows = (
 ): Datum[] =>
   A.chain(oppijatiedotToTableRow(organisaatioOid, basePath, onSetMuuHaku))(data)
 
-const oppijatiedotToTableRow = (
-  organisaatioOid: Oid,
-  basePath: string,
-  onSetMuuHaku: SetMuuHakuCallback
-) => (tiedot: OppijaHakutilanteillaSuppeatTiedot): Datum[] =>
-  pipe(
-    tiedot.oppija.opiskeluoikeudet,
-    A.filter(isHakeutumisvalvottavaOpiskeluoikeus(organisaatioOid)),
-    A.map((oo) => ({
-      key: hakutilanneRowKey(tiedot, oo),
-      values: [
-        oppijanNimi(tiedot.oppija.henkilö, organisaatioOid, basePath),
-        nullableDateValue(tiedot.oppija.henkilö.syntymäaika),
-        nullableKoulutustyyppiValue(
-          oo.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi
-        ),
-        nullableDateValue(oo.perusopetuksenJälkeinenTiedot?.alkamispäivä),
-        nullableDateValue(oo.perusopetuksenJälkeinenTiedot?.päättymispäivä),
-        tiedot.isLoadingHakutilanteet
-          ? loadingValue(true)
-          : hakemuksenTilaValue(tiedot, basePath),
-        tiedot.isLoadingHakutilanteet
-          ? loadingValue(false)
-          : valintatilaValue(tiedot.hakutilanteet),
-        tiedot.isLoadingHakutilanteet
-          ? loadingValue(false)
-          : opiskelupaikanVastaanottotietoValue(tiedot.hakutilanteet),
-        toisenAsteenOpiskeluoikeudetValue(tiedot, oo),
-        muuHakuSwitchValue(tiedot, oo, onSetMuuHaku),
-      ],
-    }))
-  )
+const oppijatiedotToTableRow =
+  (organisaatioOid: Oid, basePath: string, onSetMuuHaku: SetMuuHakuCallback) =>
+  (tiedot: OppijaHakutilanteillaSuppeatTiedot): Datum[] =>
+    pipe(
+      tiedot.oppija.opiskeluoikeudet,
+      A.filter(isHakeutumisvalvottavaOpiskeluoikeus(organisaatioOid)),
+      A.map((oo) => ({
+        key: hakutilanneRowKey(tiedot, oo),
+        values: [
+          oppijanNimi(tiedot.oppija.henkilö, organisaatioOid, basePath),
+          nullableDateValue(tiedot.oppija.henkilö.syntymäaika),
+          nullableKoulutustyyppiValue(
+            oo.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi
+          ),
+          nullableDateValue(oo.perusopetuksenJälkeinenTiedot?.alkamispäivä),
+          nullableDateValue(oo.perusopetuksenJälkeinenTiedot?.päättymispäivä),
+          tiedot.isLoadingHakutilanteet
+            ? loadingValue(true)
+            : hakemuksenTilaValue(tiedot, basePath),
+          tiedot.isLoadingHakutilanteet
+            ? loadingValue(false)
+            : valintatilaValue(tiedot.hakutilanteet),
+          tiedot.isLoadingHakutilanteet
+            ? loadingValue(false)
+            : opiskelupaikanVastaanottotietoValue(tiedot.hakutilanteet),
+          toisenAsteenOpiskeluoikeudetValue(tiedot, oo),
+          muuHakuSwitchValue(tiedot, oo, onSetMuuHaku),
+        ],
+      }))
+    )
 
 const oppijanNimi = oppijanNimiValue("hakutilanneNivelvaiheRef")
 

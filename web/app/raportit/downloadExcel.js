@@ -1,5 +1,5 @@
 import Bacon from 'baconjs'
-import {appendQueryParams} from '../util/location'
+import { appendQueryParams } from '../util/location'
 
 export const downloadExcel = (params) => {
   let iframe = document.getElementById('raportti-iframe')
@@ -12,23 +12,28 @@ export const downloadExcel = (params) => {
   document.body.appendChild(iframe)
 
   const resultBus = Bacon.Bus()
-  let downloadTimer
+  let downloadTimer = null
 
   iframe.addEventListener('load', () => {
-    var response
+    let response
     try {
-      response = { text: iframe.contentDocument.body.textContent, httpStatus: 400 }
+      response = {
+        text: iframe.contentDocument.body.textContent,
+        httpStatus: 400
+      }
     } catch (err) {
       response = { text: 'Tuntematon virhe', httpStatus: 500 }
     }
-    window.clearInterval(downloadTimer)
+    if (downloadTimer !== null) {
+      window.clearInterval(downloadTimer)
+    }
     resultBus.error(response)
     resultBus.end()
   })
 
   const downloadToken = 'raportti' + new Date().getTime()
-  const {baseUrl, ...queryParams} = params
-  const url = appendQueryParams(baseUrl, {...queryParams, downloadToken})
+  const { baseUrl, ...queryParams } = params
+  const url = appendQueryParams(baseUrl, { ...queryParams, downloadToken })
   iframe.src = url
 
   // detect when download has started by polling a cookie set by the backend.
@@ -42,7 +47,7 @@ export const downloadExcel = (params) => {
     } else {
       if (--attempts < 0) {
         window.clearInterval(downloadTimer)
-        resultBus.error({text: 'Timeout', httpStatus: 400})
+        resultBus.error({ text: 'Timeout', httpStatus: 400 })
         resultBus.end()
       }
     }

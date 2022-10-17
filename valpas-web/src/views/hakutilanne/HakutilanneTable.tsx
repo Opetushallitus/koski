@@ -157,43 +157,45 @@ const hakutilanneKeysToOppijaOids = flow(
 
 const oppijaOidsEqual = (a: DatumKey) => (b: DatumKey) => a[0] === b[0]
 
-const oppijaToTableData = (
-  basePath: string,
-  organisaatioOid: string,
-  onSetMuuHaku: SetMuuHakuCallback
-) => (oppija: OppijaHakutilanteillaSuppeatTiedot): Array<Datum> => {
-  const henkilö = oppija.oppija.henkilö
+const oppijaToTableData =
+  (
+    basePath: string,
+    organisaatioOid: string,
+    onSetMuuHaku: SetMuuHakuCallback
+  ) =>
+  (oppija: OppijaHakutilanteillaSuppeatTiedot): Array<Datum> => {
+    const henkilö = oppija.oppija.henkilö
 
-  return hakeutumisvalvottavatOpiskeluoikeudet(
-    organisaatioOid,
-    oppija.oppija.opiskeluoikeudet
-  ).map((opiskeluoikeus) => {
-    return {
-      key: createHakutilanneKey(oppija.oppija, opiskeluoikeus),
-      values: [
-        oppijanNimi(henkilö, organisaatioOid, basePath),
-        nullableDateValue(henkilö.syntymäaika),
-        ryhmä(opiskeluoikeus),
-        perusopetusSuoritettu(opiskeluoikeus),
-        oppija.isLoadingHakutilanteet
-          ? loadingValue(true)
-          : hakemuksenTilaValue(oppija, basePath),
-        oppija.isLoadingHakutilanteet
-          ? loadingValue(false)
-          : valintatilaValue(oppija.hakutilanteet),
-        oppija.isLoadingHakutilanteet
-          ? loadingValue(false)
-          : opiskelupaikanVastaanottotietoValue(oppija.hakutilanteet),
-        fromNullableValue(
-          perusopetuksenJälkeisetOpiskeluoikeustiedot(
-            oppija.oppija.opiskeluoikeudet
-          )
-        ),
-        muuHakuSwitchValue(oppija, opiskeluoikeus, onSetMuuHaku),
-      ],
-    }
-  })
-}
+    return hakeutumisvalvottavatOpiskeluoikeudet(
+      organisaatioOid,
+      oppija.oppija.opiskeluoikeudet
+    ).map((opiskeluoikeus) => {
+      return {
+        key: createHakutilanneKey(oppija.oppija, opiskeluoikeus),
+        values: [
+          oppijanNimi(henkilö, organisaatioOid, basePath),
+          nullableDateValue(henkilö.syntymäaika),
+          ryhmä(opiskeluoikeus),
+          perusopetusSuoritettu(opiskeluoikeus),
+          oppija.isLoadingHakutilanteet
+            ? loadingValue(true)
+            : hakemuksenTilaValue(oppija, basePath),
+          oppija.isLoadingHakutilanteet
+            ? loadingValue(false)
+            : valintatilaValue(oppija.hakutilanteet),
+          oppija.isLoadingHakutilanteet
+            ? loadingValue(false)
+            : opiskelupaikanVastaanottotietoValue(oppija.hakutilanteet),
+          fromNullableValue(
+            perusopetuksenJälkeisetOpiskeluoikeustiedot(
+              oppija.oppija.opiskeluoikeudet
+            )
+          ),
+          muuHakuSwitchValue(oppija, opiskeluoikeus, onSetMuuHaku),
+        ],
+      }
+    })
+  }
 
 const oppijanNimi = oppijanNimiValue("hakutilanneRef")
 

@@ -38,22 +38,20 @@ export const nullableKoulutustyyppiValue = (
   tyyppi: Suorituksentyyppi | undefined
 ): Value => nullableValue(tyyppi && suorituksenTyyppiToKoulutustyyppi(tyyppi))
 
-export const oppijanNimiValue = (urlBackRef: keyof OppijaPathBackRefs) => (
-  henkilö: HenkilöTiedot,
-  organisaatioOid: Oid,
-  basePath: string
-): Value => {
-  const value = `${henkilö.sukunimi} ${henkilö.etunimet}`
-  const linkTo = oppijaPath.href(basePath, {
-    oppijaOid: henkilö.oid,
-    [urlBackRef]: organisaatioOid,
-  })
+export const oppijanNimiValue =
+  (urlBackRef: keyof OppijaPathBackRefs) =>
+  (henkilö: HenkilöTiedot, organisaatioOid: Oid, basePath: string): Value => {
+    const value = `${henkilö.sukunimi} ${henkilö.etunimet}`
+    const linkTo = oppijaPath.href(basePath, {
+      oppijaOid: henkilö.oid,
+      [urlBackRef]: organisaatioOid,
+    })
 
-  return {
-    value,
-    display: <Link to={linkTo}>{value}</Link>,
+    return {
+      value,
+      display: <Link to={linkTo}>{value}</Link>,
+    }
   }
-}
 
 export const loadingValue = (showSpinner: boolean): Value => ({
   value: t("Ladataan"),

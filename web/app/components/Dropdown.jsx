@@ -2,10 +2,15 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import * as R from 'ramda'
-import {flatMapArray, parseBool, scrollElementBottomVisible, toObservable} from '../util/util'
-import {elementWithLoadingIndicator} from './AjaxLoadingIndicator'
-import {t} from '../i18n/i18n'
-import {buildClassNames} from './classnames'
+import {
+  flatMapArray,
+  parseBool,
+  scrollElementBottomVisible,
+  toObservable
+} from '../util/util'
+import { elementWithLoadingIndicator } from './AjaxLoadingIndicator'
+import { t } from '../i18n/i18n'
+import { buildClassNames } from './classnames'
 
 /*
   options: [] or Observable []
@@ -21,46 +26,60 @@ import {buildClassNames} from './classnames'
   selectionText: shown when no option is selected
   inline: hide borders until hovered upon
  */
-export default ({ options,
-                  keyValue = o => o.key,
-                  displayValue = o => o.value,
-                  selected,
-                  onSelectionChanged,
-                  selectionText = t('Valitse...'),
-                  inline = false,
-                  enableFilter = false,
-                  newItem,
-                  isRemovable = () => false,
-                  onRemoval,
-                  removeText,
-                  isOptionEnabled = () => true,
-                  ...rest }) => {
+export default ({
+  options,
+  keyValue = (o) => o.key,
+  displayValue = (o) => o.value,
+  selected,
+  onSelectionChanged,
+  selectionText = t('Valitse...'),
+  inline = false,
+  enableFilter = false,
+  newItem,
+  isRemovable = () => false,
+  onRemoval,
+  removeText,
+  isOptionEnabled = () => true,
+  ...rest
+}) => {
   options = toObservable(options)
-  let selectedP = toObservable(selected)
+  const selectedP = toObservable(selected)
   inline = parseBool(inline)
   enableFilter = parseBool(enableFilter)
-  let selectionIndexAtom = Atom(0)
-  let removeIndexAtom = Atom(undefined)
-  let queryAtom = Atom(undefined)
-  let openAtom = Atom(false)
+  const selectionIndexAtom = Atom(0)
+  const removeIndexAtom = Atom(undefined)
+  const queryAtom = Atom(undefined)
+  const openAtom = Atom(false)
   selectedP.changes().onValue(() => openAtom.set(false))
-  let filteredOptionsP = Bacon.combineWith(options, queryAtom, Bacon.constant(displayValue), queryFilter)
-  let allOptionsP = filteredOptionsP.map(opts => opts.concat(newItem ? [newItem] : []))
-  var inputElem = null
-  var listElem = null
-  let handleOnBlur = () => openAtom.set(false)
-  openAtom.filter(R.identity).delay(0).onValue(() => scrollElementBottomVisible(listElem))
+  const filteredOptionsP = Bacon.combineWith(
+    options,
+    queryAtom,
+    Bacon.constant(displayValue),
+    queryFilter
+  )
+  const allOptionsP = filteredOptionsP.map((opts) =>
+    opts.concat(newItem ? [newItem] : [])
+  )
+  let inputElem = null
+  let listElem = null
+  const handleOnBlur = () => openAtom.set(false)
+  openAtom
+    .filter(R.identity)
+    .delay(0)
+    .onValue(() => scrollElementBottomVisible(listElem))
 
-  let onKeyDown = (allOptions) => (e) => {
-    let keyHandlers = {
+  const onKeyDown = (allOptions) => (e) => {
+    const keyHandlers = {
       ArrowUp: () => {
-        selectionIndexAtom.modify(i => i === 0 ? 0 : i - 1)
+        selectionIndexAtom.modify((i) => (i === 0 ? 0 : i - 1))
       },
       ArrowDown: () => {
         e.preventDefault()
         e.stopPropagation()
         if (openAtom.get()) {
-          selectionIndexAtom.modify(i => (i === allOptions.length - 1) ? i : i + 1)
+          selectionIndexAtom.modify((i) =>
+            i === allOptions.length - 1 ? i : i + 1
+          )
         } else {
           openAtom.set(true)
         }
@@ -71,34 +90,41 @@ export default ({ options,
       Enter: () => {
         e.preventDefault()
         if (openAtom.get()) {
-          var selectionIndex = selectionIndexAtom.get()
-          var selectedOption = allOptions[selectionIndex]
+          const selectionIndex = selectionIndexAtom.get()
+          const selectedOption = allOptions[selectionIndex]
           selectedOption && selectOption(e, selectedOption)
         }
       }
     }
-    let handler = keyHandlers[e.key]
+    const handler = keyHandlers[e.key]
     if (handler) handler()
   }
-  let toggleOpen = () => {
-    openAtom.modify(wasOpen => {
+  const toggleOpen = () => {
+    openAtom.modify((wasOpen) => {
       if (!wasOpen && inputElem) inputElem.select() // nasty side effect
       return !wasOpen
     })
   }
-  let handleInput = (e) => {
+  const handleInput = (e) => {
     queryAtom.set(e.target.value)
     openAtom.set(true)
   }
-  let handleInputBlur = (allOptions, s) => (e) => {
+  const handleInputBlur = (allOptions, s) => (e) => {
     if (!inputElem) return
-    let matchingOptions = allOptions.filter(o => inputElem.value && displayValue(o).toLowerCase() == inputElem.value.toLowerCase())
+    const matchingOptions = allOptions.filter(
+      (o) =>
+        inputElem.value &&
+        displayValue(o).toLowerCase() == inputElem.value.toLowerCase()
+    )
     if (!R.isEmpty(matchingOptions) && !R.includes(s, matchingOptions)) {
       // if multiple options have the same display value (e.g. arviointiasteikkoammatillinent1k3 and ...15),
       // try to use the selected (highlighted one) when parsing explicitly typed input.
       const selectionIndex = selectionIndexAtom.get()
       const selectedOption = allOptions[selectionIndex]
-      const option = (selectedOption && R.includes(selectedOption, matchingOptions)) ? selectedOption : matchingOptions[0]
+      const option =
+        selectedOption && R.includes(selectedOption, matchingOptions)
+          ? selectedOption
+          : matchingOptions[0]
       selectOption(e, option)
     } else {
       openAtom.set(false)
@@ -106,12 +132,14 @@ export default ({ options,
       queryAtom.set(undefined)
     }
   }
-  let handleMouseOver = (allOptions, o) => {
-    let index = allOptions.findIndex(option => keyValue(option) == keyValue(o))
+  const handleMouseOver = (allOptions, o) => {
+    const index = allOptions.findIndex(
+      (option) => keyValue(option) == keyValue(o)
+    )
     selectionIndexAtom.set(index)
   }
-  let isNewItem = (allOptions, o, i) => newItem && i == allOptions.length - 1
-  let selectOption = (e, option) => {
+  const isNewItem = (allOptions, o, i) => newItem && i == allOptions.length - 1
+  const selectOption = (e, option) => {
     e.preventDefault()
     e.stopPropagation()
     if (isOptionEnabled(option)) {
@@ -119,87 +147,157 @@ export default ({ options,
       openAtom.set(false)
     }
   }
-  let selectRemoval = (e, option) => {
+  const selectRemoval = (e, option) => {
     e.preventDefault()
     e.stopPropagation()
     onRemoval(option)
   }
 
-  return (<span>{
-    elementWithLoadingIndicator(allOptionsP.map(allOptions => {
-      let grouped = R.keys(R.groupBy((opt) => opt.groupName)(R.filter(o => o.groupName, allOptions))).length > 1
-      let className = buildClassNames(['dropdown', inline && 'inline', grouped && 'grouped'])
-      return (<div className={className} tabIndex={enableFilter ? '' : '0'} onBlur={handleOnBlur} onKeyDown={onKeyDown(allOptions)} {...rest}>
-          {
-            enableFilter ?
-              <div className="input-container" onClick={toggleOpen}>
-                <input
-                  type="text"
-                  ref={(input => inputElem = input)}
-                  onChange={handleInput}
-                  onBlur={selectedP.map(s => handleInputBlur(allOptions, s))}
-                  value={Bacon.combineWith(queryAtom, selectedP, (q, s) => {
-                    return q != undefined ? q : s ? displayValue(s) : ''
-                  })}
-                  placeholder={selectionText}
-                  className={selectedP.map(s => s ? 'select' : 'select no-selection')}
-                />
-              </div> :
-              <div className={selectedP.map(s => s ? 'select' : 'select no-selection')}
-                   onClick={toggleOpen}>{selectedP.map(s => s ? displayValue(s) : selectionText)}
-              </div>
-          }
-          {
-            (allOptions.length > 0) && <ul className={openAtom.map(open => open ? 'options open' : 'options')} ref={ref => listElem = ref}>
-              {
-                flatMapArray(allOptions, (o,i) => {
-                  let isNew = isNewItem(allOptions, o, i)
-                  let isZeroValue = keyValue(o) == 'eivalintaa'
-                  let itemClassName = Bacon.combineWith(
-                    (s, r, a) => s + r + a,
-                    selectionIndexAtom.map(selectionIndex => buildClassNames(['option', i === selectionIndex && isOptionEnabled(o) && 'selected', isNew && 'new-item', isZeroValue && 'zero-value'])),
-                    removeIndexAtom.map(removeIndex => removeIndex === i ? ' removing' : ''),
-                    isOptionEnabled(o) ? '' : ' option-disabled'
-                  )
-                  let itemElement = (<li key={keyValue(o) || displayValue(o)}
-                                         className={itemClassName}
-                                         onMouseDown={(e) => {selectOption(e, o)}}
-                                         onClick={(e) => {selectOption(e, o)}}
-                                         onMouseOver={() => handleMouseOver(allOptions, o)}>
-                    {
-                      isNew ?
-                        <span><span className="plus">{''}</span>{displayValue(newItem)}</span> :
-                        isRemovable(o) ?
-                          <span className="removable-option" title={removeText}>{displayValue(o)}
-                            <a className="remove-value"
-                               onMouseDown={(e) => {selectRemoval(e, o)}}
-                               onClick={(e) => {selectRemoval(e, o)}}
-                               onMouseOver={() => removeIndexAtom.set(i)}
-                               onMouseLeave={() => removeIndexAtom.set(undefined)}
+  return (
+    <span>
+      {elementWithLoadingIndicator(
+        allOptionsP.map((allOptions) => {
+          const grouped =
+            R.keys(
+              R.groupBy((opt) => opt.groupName)(
+                R.filter((o) => o.groupName, allOptions)
+              )
+            ).length > 1
+          const className = buildClassNames([
+            'dropdown',
+            inline && 'inline',
+            grouped && 'grouped'
+          ])
+          return (
+            <div
+              className={className}
+              tabIndex={enableFilter ? '' : '0'}
+              onBlur={handleOnBlur}
+              onKeyDown={onKeyDown(allOptions)}
+              {...rest}
+            >
+              {enableFilter ? (
+                <div className="input-container" onClick={toggleOpen}>
+                  <input
+                    type="text"
+                    ref={(input) => (inputElem = input)}
+                    onChange={handleInput}
+                    onBlur={selectedP.map((s) =>
+                      handleInputBlur(allOptions, s)
+                    )}
+                    value={Bacon.combineWith(queryAtom, selectedP, (q, s) => {
+                      return q != undefined ? q : s ? displayValue(s) : ''
+                    })}
+                    placeholder={selectionText}
+                    className={selectedP.map((s) =>
+                      s ? 'select' : 'select no-selection'
+                    )}
+                  />
+                </div>
+              ) : (
+                <div
+                  className={selectedP.map((s) =>
+                    s ? 'select' : 'select no-selection'
+                  )}
+                  onClick={toggleOpen}
+                >
+                  {selectedP.map((s) => (s ? displayValue(s) : selectionText))}
+                </div>
+              )}
+              {allOptions.length > 0 && (
+                <ul
+                  className={openAtom.map((open) =>
+                    open ? 'options open' : 'options'
+                  )}
+                  ref={(ref) => (listElem = ref)}
+                >
+                  {flatMapArray(allOptions, (o, i) => {
+                    const isNew = isNewItem(allOptions, o, i)
+                    const isZeroValue = keyValue(o) == 'eivalintaa'
+                    const itemClassName = Bacon.combineWith(
+                      (s, r, a) => s + r + a,
+                      selectionIndexAtom.map((selectionIndex) =>
+                        buildClassNames([
+                          'option',
+                          i === selectionIndex &&
+                            isOptionEnabled(o) &&
+                            'selected',
+                          isNew && 'new-item',
+                          isZeroValue && 'zero-value'
+                        ])
+                      ),
+                      removeIndexAtom.map((removeIndex) =>
+                        removeIndex === i ? ' removing' : ''
+                      ),
+                      isOptionEnabled(o) ? '' : ' option-disabled'
+                    )
+                    const itemElement = (
+                      <li
+                        key={keyValue(o) || displayValue(o)}
+                        className={itemClassName}
+                        onMouseDown={(e) => {
+                          selectOption(e, o)
+                        }}
+                        onClick={(e) => {
+                          selectOption(e, o)
+                        }}
+                        onMouseOver={() => handleMouseOver(allOptions, o)}
+                      >
+                        {isNew ? (
+                          <span>
+                            <span className="plus">{''}</span>
+                            {displayValue(newItem)}
+                          </span>
+                        ) : isRemovable(o) ? (
+                          <span className="removable-option" title={removeText}>
+                            {displayValue(o)}
+                            <a
+                              className="remove-value"
+                              onMouseDown={(e) => {
+                                selectRemoval(e, o)
+                              }}
+                              onClick={(e) => {
+                                selectRemoval(e, o)
+                              }}
+                              onMouseOver={() => removeIndexAtom.set(i)}
+                              onMouseLeave={() =>
+                                removeIndexAtom.set(undefined)
+                              }
                             />
-                          </span> :
+                          </span>
+                        ) : (
                           displayValue(o)
+                        )}
+                      </li>
+                    )
+                    const groupName =
+                      grouped &&
+                      (i == 0 || allOptions[i - 1].groupName != o.groupName)
+                        ? o.groupName
+                        : ''
+                    if (groupName) {
+                      return [
+                        <li key={groupName} className="group-header">
+                          {groupName}
+                        </li>,
+                        itemElement
+                      ]
+                    } else {
+                      return [itemElement]
                     }
-                  </li>)
-                  let groupName = grouped && (i == 0 || allOptions[i - 1].groupName != o.groupName) ? o.groupName : ''
-                  if (groupName) {
-                    return [<li key={groupName} className="group-header">{groupName}</li>, itemElement]
-                  } else {
-                    return [itemElement]
-                  }
-
-                })
-              }
-            </ul>
-          }
-        </div>
-      )
-    }))
-  }</span>)
+                  })}
+                </ul>
+              )}
+            </div>
+          )
+        })
+      )}
+    </span>
+  )
 }
 
-let queryFilter = (options, query, displayValue) => {
+const queryFilter = (options, query, displayValue) => {
   if (!query) return options
   query = query.toLowerCase()
-  return options.filter(o => displayValue(o).toLowerCase().includes(query))
+  return options.filter((o) => displayValue(o).toLowerCase().includes(query))
 }

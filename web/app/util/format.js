@@ -7,6 +7,4 @@ const numberToString = (s, scale) => {
   }
 }
 
-export {
-  numberToString
-}
+export { numberToString }

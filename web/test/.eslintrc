@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "no-unused-vars": "off", // Mochan takia
+    "no-undef": "off", // Mochan takia
+    "no-var": "off", // Mochan takia
+    "camelcase": "off",
+    "no-shadow": "warn", // Mochan takia
+    "no-extend-native": "off" // Mochan takia
+  }
+}

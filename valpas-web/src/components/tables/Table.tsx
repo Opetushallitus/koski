@@ -80,10 +80,11 @@ export const Data = ({
   </td>
 )
 
-export type HeaderCellProps = React.HTMLAttributes<HTMLTableHeaderCellElement> & {
-  size?: TableCellSize
-  indicatorSpace?: boolean
-}
+export type HeaderCellProps =
+  React.HTMLAttributes<HTMLTableHeaderCellElement> & {
+    size?: TableCellSize
+    indicatorSpace?: boolean
+  }
 
 export const HeaderCell = ({
   className,

@@ -35,7 +35,8 @@ export type KunnalleIlmoitetutViewProps = {
 
 export const KunnalleIlmoitetutView = (props: KunnalleIlmoitetutViewProps) => {
   const basePath = useBasePath()
-  const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+  const organisaatiotJaKäyttöoikeusroolit =
+    useOrganisaatiotJaKäyttöoikeusroolit()
   const organisaatiot = useMemo(
     () =>
       getOrganisaatiot(

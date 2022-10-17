@@ -1,7 +1,12 @@
 import React from 'react'
 import * as R from 'ramda'
-import {contextualizeModel, addContext, contextualizeSubModel, modelLookup} from './EditorModel'
-import {parseBool} from '../util/util'
+import {
+  contextualizeModel,
+  addContext,
+  contextualizeSubModel,
+  modelLookup
+} from './EditorModel'
+import { parseBool } from '../util/util'
 import PropTypes from 'prop-types'
 
 /*
@@ -23,25 +28,33 @@ export class Editor extends React.Component {
   }
 }
 
-Editor.setupContext = (model, {editorMapping, changeBus, editBus, saveChangesBus, edit, path}) => {
+Editor.setupContext = (
+  model,
+  { editorMapping, changeBus, editBus, saveChangesBus, edit, path }
+) => {
   if (!model.context) {
     if (!editorMapping) {
       console.error('editorMapping required for root editor', model)
       throw new Error('editorMapping required for root editor')
     }
-    R.toPairs(editorMapping).forEach(([key, value]) => { if (!value) throw new Error('Editor missing for ' + key) })
+    R.toPairs(editorMapping).forEach(([key, value]) => {
+      if (!value) throw new Error('Editor missing for ' + key)
+    })
     model = contextualizeModel(model, {
-      changeBus, saveChangesBus, editBus,
+      changeBus,
+      saveChangesBus,
+      editBus,
       path: '',
       prototypes: model.prototypes,
       editorMapping
     })
   } else {
-    if (!model.context.prototypes) model = addContext(model, { prototypes: model.prototypes })
-    if (editorMapping) model = addContext(model, {editorMapping})
-    if (changeBus) model = addContext(model, {changeBus})
-    if (saveChangesBus) model = addContext(model, {saveChangesBus})
-    if (editBus) model = addContext(model, {editBus})
+    if (!model.context.prototypes)
+      model = addContext(model, { prototypes: model.prototypes })
+    if (editorMapping) model = addContext(model, { editorMapping })
+    if (changeBus) model = addContext(model, { changeBus })
+    if (saveChangesBus) model = addContext(model, { saveChangesBus })
+    if (editBus) model = addContext(model, { editBus })
   }
   edit = !model.readOnly && parseBool(edit)
   if (edit !== model.context.edit) {
@@ -53,25 +66,25 @@ Editor.setupContext = (model, {editorMapping, changeBus, editBus, saveChangesBus
   return model
 }
 
-Editor.shouldComponentUpdate = function(nextProps) {
+Editor.shouldComponentUpdate = function (nextProps) {
   if (parseBool(nextProps.alwaysUpdate)) return true
-  var next = nextProps.model
-  var current = this.props.model
-  var result = next.modelId != current.modelId
+  const next = nextProps.model
+  const current = this.props.model
+  let result = next.modelId != current.modelId
   if (pathHash(next) !== pathHash(current)) {
     result = true
   }
   if (result) {
-    //console.log('update', next.path)
-  } else  {
-    //console.log('skip', next.path)
+    // console.log('update', next.path)
+  } else {
+    // console.log('skip', next.path)
   }
   return result
 }
-let pathHash = (m) => {
+const pathHash = (m) => {
   let hash = 0
-  for (var i in (m.path || [])) {
-    if (typeof m.path[i] == 'number') {
+  for (const i in m.path || []) {
+    if (typeof m.path[i] === 'number') {
       hash += m.path[i]
     }
   }
@@ -83,9 +96,12 @@ let pathHash = (m) => {
 Editor.propTypes = {
   model: PropTypes.object.isRequired
 }
-Editor.canShowInline = (model) => (getEditorFunction(model).canShowInline || (() => false))(model)
-Editor.handlesOptional = (model, modifier) => editorFunctionHandlesOptional(getEditorFunction(model), modifier)
-const editorFunctionHandlesOptional = (editor, modifier) => editor && editor.handlesOptional && editor.handlesOptional(modifier)
+Editor.canShowInline = (model) =>
+  (getEditorFunction(model).canShowInline || (() => false))(model)
+Editor.handlesOptional = (model, modifier) =>
+  editorFunctionHandlesOptional(getEditorFunction(model), modifier)
+const editorFunctionHandlesOptional = (editor, modifier) =>
+  editor && editor.handlesOptional && editor.handlesOptional(modifier)
 
 const NullEditor = () => null
 
@@ -93,11 +109,17 @@ const getEditorFunction = (model) => {
   if (!model) return NullEditor
 
   if (model.optional) {
-    let modelForFindingEditor = model.value ? model : contextualizeSubModel(model.optionalPrototype, model)
-    return editorForModel(modelForFindingEditor, e => editorFunctionHandlesOptional(e)) || model.context.editorMapping.optional
+    const modelForFindingEditor = model.value
+      ? model
+      : contextualizeSubModel(model.optionalPrototype, model)
+    return (
+      editorForModel(modelForFindingEditor, (e) =>
+        editorFunctionHandlesOptional(e)
+      ) || model.context.editorMapping.optional
+    )
   }
 
-  let editor = editorForModel(model)
+  const editor = editorForModel(model)
   if (!editor) {
     if (!model.type) {
       console.error('Typeless model', model)
@@ -112,18 +134,19 @@ const getEditorFunction = (model) => {
 const editorForModel = (mdl, editorFilter = () => true) => {
   if (!mdl) return null
   if (mdl.value) {
-    for (var i in mdl.value.classes) {
-      var editor = mdl.context.editorMapping[mdl.value.classes[i]]
-      if (editor
-        && (editorFilter(editor, mdl))
-        && (!mdl.context.edit || !editor.readOnly)
-        && (mdl.context.edit || !editor.writeOnly)
+    for (const i in mdl.value.classes) {
+      const editor = mdl.context.editorMapping[mdl.value.classes[i]]
+      if (
+        editor &&
+        editorFilter(editor, mdl) &&
+        (!mdl.context.edit || !editor.readOnly) &&
+        (mdl.context.edit || !editor.writeOnly)
       ) {
         return editor
       }
     }
   }
-  let typeEditor = mdl.context.editorMapping[mdl.type]
+  const typeEditor = mdl.context.editorMapping[mdl.type]
   if (editorFilter(typeEditor, mdl)) return typeEditor
 }
 
@@ -131,6 +154,6 @@ const getModelEditor = (model, props) => {
   if (model && !model.context) {
     console.error('Context missing from model', model)
   }
-  var ModelEditor = getEditorFunction(model)
+  const ModelEditor = getEditorFunction(model)
   return <ModelEditor model={model} {...props} />
 }

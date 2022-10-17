@@ -1,26 +1,25 @@
 function PulssiPage() {
-
   var api = {
-    openPage: function() {
+    openPage: function () {
       return openPage('/koski/pulssi', api.isVisible)().then(wait.forAjax)
     },
-    isVisible: function() {
+    isVisible: function () {
       return isElementVisible(S('#content h1'))
     },
-    metric: function(name, elemType) {
+    metric: function (name, elemType) {
       return Metric(findSingle((elemType || 'div') + '.' + name))
     }
   }
 
   function Metric(elem) {
     return {
-      value: function() {
+      value: function () {
         return parseFloat(elem().find('.metric-large, .metric-medium').text())
       },
-      sum: function() {
+      sum: function () {
         var sum = 0
         var metrics = elem().find('.metric-tiny, .metric-value').toArray()
-        metrics.forEach(function(metric) {
+        metrics.forEach(function (metric) {
           sum = sum + parseFloat(S(metric).text())
         })
         return sum

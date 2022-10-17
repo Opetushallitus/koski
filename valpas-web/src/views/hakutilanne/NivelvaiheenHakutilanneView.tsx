@@ -42,8 +42,8 @@ const organisaatioHakuRooli = "OPPILAITOS_HAKEUTUMINEN"
 
 export type NivelvaiheenHakutilanneViewProps = OrganisaatioOidRouteProps
 
-export const NivelvaiheenHakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
-  () => (
+export const NivelvaiheenHakutilanneViewWithoutOrgOid =
+  withRequiresHakeutumisenValvonta(() => (
     <OrganisaatioAutoRedirect
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
@@ -54,14 +54,14 @@ export const NivelvaiheenHakutilanneViewWithoutOrgOid = withRequiresHakeutumisen
       }
       renderError={() => <OrganisaatioMissingView />}
     />
-  )
-)
+  ))
 
 export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
   (props: NivelvaiheenHakutilanneViewProps) => {
     const basePath = useBasePath()
     const history = useHistory()
-    const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+    const organisaatiotJaKäyttöoikeusroolit =
+      useOrganisaatiotJaKäyttöoikeusroolit()
     const organisaatiot = useMemo(
       () =>
         getOrganisaatiot(
@@ -91,13 +91,8 @@ export const NivelvaiheenHakutilanneView = withRequiresHakeutumisenValvonta(
       [basePath, history]
     )
 
-    const {
-      data,
-      isLoading,
-      errors,
-      setMuuHaku,
-      reload,
-    } = useNivelvaiheenOppijatData(organisaatioOid)
+    const { data, isLoading, errors, setMuuHaku, reload } =
+      useNivelvaiheenOppijatData(organisaatioOid)
 
     const [counters, setCounters] = useState<DataTableCountChangeEvent>({
       filteredRowCount: 0,

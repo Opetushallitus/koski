@@ -1,18 +1,18 @@
 function LandingPage() {
   var api = {
-    openPage: function() {
+    openPage: function () {
       return openPage('/koski/', api.isVisible)()
     },
-    openMobilePage: function() {
+    openMobilePage: function () {
       return openPage('/koski/', api.isVisible, 375)()
     },
-    go: function() {
+    go: function () {
       return openPage('/koski/')()
     },
-    isVisible: function() {
+    isVisible: function () {
       return isElementVisible(S('.lander')) && !isLoading()
     },
-    login: function() {
+    login: function () {
       return click(findSingle('.lander button'))
     }
   }
@@ -20,18 +20,18 @@ function LandingPage() {
 }
 
 function KorhoPankki() {
-  var pageApi = Page(findSingle('.korhopankki-page .login'));
+  var pageApi = Page(findSingle('.korhopankki-page .login'))
   var api = {
-    isReady: function() {
+    isReady: function () {
       return isElementVisible('.korhopankki-page .login')
     },
-    login: function(hetu, surname, firstNames, givenName, lang) {
+    login: function (hetu, surname, firstNames, givenName, lang) {
       return seq(
-        pageApi.setInputValue('#hetu', hetu ? hetu : ''),
-        pageApi.setInputValue('#sn', surname ? surname : ''),
-        pageApi.setInputValue('#FirstName', firstNames ? firstNames : ''),
-        pageApi.setInputValue('#givenName', givenName ? givenName : ''),
-        pageApi.setInputValue('#lang', lang ? lang : ''),
+        pageApi.setInputValue('#hetu', hetu || ''),
+        pageApi.setInputValue('#sn', surname || ''),
+        pageApi.setInputValue('#FirstName', firstNames || ''),
+        pageApi.setInputValue('#givenName', givenName || ''),
+        pageApi.setInputValue('#lang', lang || ''),
         click(findSingle('button'))
       )
     }

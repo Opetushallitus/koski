@@ -2,8 +2,12 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import BaconComponent from './BaconComponent'
 import delays from '../util/delays'
-import {t} from '../i18n/i18n'
-import {parseBool, scrollElementBottomVisible, toObservable} from '../util/util'
+import { t } from '../i18n/i18n'
+import {
+  parseBool,
+  scrollElementBottomVisible,
+  toObservable
+} from '../util/util'
 
 /*
     disabled: true/false
@@ -20,47 +24,78 @@ export default class Autocomplete extends BaconComponent {
     super(props)
     this.keyHandlers = {
       ArrowUp() {
-        let {selectionIndex} = this.state
+        let { selectionIndex } = this.state
         selectionIndex = selectionIndex === 0 ? 0 : selectionIndex - 1
-        this.setState({selectionIndex: selectionIndex})
+        this.setState({ selectionIndex })
       },
       ArrowDown() {
-        let {selectionIndex, items} = this.state
-        selectionIndex = selectionIndex === items.length - 1 ? selectionIndex : selectionIndex + 1
-        this.setState({selectionIndex: selectionIndex})
+        let { selectionIndex, items } = this.state
+        selectionIndex =
+          selectionIndex === items.length - 1
+            ? selectionIndex
+            : selectionIndex + 1
+        this.setState({ selectionIndex })
       },
       Enter(e) {
         e.preventDefault()
-        let {selectionIndex, items} = this.state
+        const { selectionIndex, items } = this.state
         this.handleSelect(items[selectionIndex])
       },
       Escape() {
-        this.setState({query: undefined, items: []})
+        this.setState({ query: undefined, items: [] })
       }
     }
-    this.state = {query: undefined, items: [], selectionIndex: 0, inputBus: Bacon.Bus()}
+    this.state = {
+      query: undefined,
+      items: [],
+      selectionIndex: 0,
+      inputBus: Bacon.Bus()
+    }
   }
+
   render() {
-    let {disabled, selected, placeholder, autoFocus, displayValue = (item => t(item.nimi)), createNewItem = () => null} = this.props
-    let selectedP = toObservable(selected)
-    let {items, query, selectionIndex} = this.state
-    let createItemElement = (item, i) => (<li key={i} className={i === selectionIndex ? 'selected' : null} onClick={this.handleSelect.bind(this, item)}>
-      {i >= items.length && <span className="plus">{''}</span>}
-      {displayValue(item)}
-    </li>)
-    let newItem = createNewItem(query || '')
-    let itemElems = items.concat(newItem ? [newItem] : []).map(createItemElement)
-    let results = itemElems.length ? <ul ref="results" className='results' data-test-id='autocomplete-results'>{itemElems}</ul> : null
+    const {
+      disabled,
+      selected,
+      placeholder,
+      autoFocus,
+      displayValue = (item) => t(item.nimi),
+      createNewItem = () => null
+    } = this.props
+    const selectedP = toObservable(selected)
+    const { items, query, selectionIndex } = this.state
+    const createItemElement = (item, i) => (
+      <li
+        key={i}
+        className={i === selectionIndex ? 'selected' : null}
+        onClick={this.handleSelect.bind(this, item)}
+      >
+        {i >= items.length && <span className="plus">{''}</span>}
+        {displayValue(item)}
+      </li>
+    )
+    const newItem = createNewItem(query || '')
+    const itemElems = items
+      .concat(newItem ? [newItem] : [])
+      .map(createItemElement)
+    // TODO: Käytä Reactin reffejä
+    const results = itemElems.length ? (
+      <ul ref="results" className="results" data-test-id="autocomplete-results">
+        {itemElems}
+      </ul>
+    ) : null
+    // TODO: Käytä Reactin reffejä
     return (
-      <div ref='autocomplete' className='autocomplete'>
-        <input type="text"
-               className='autocomplete-input'
-               placeholder={placeholder}
-               onKeyDown={this.onKeyDown.bind(this)}
-               onChange={this.handleInput.bind(this)}
-               value={ selectedP.map(s => query || (s ? displayValue(s) : '')) }
-               disabled={disabled}
-               autoFocus={parseBool(autoFocus)}
+      <div ref="autocomplete" className="autocomplete">
+        <input
+          type="text"
+          className="autocomplete-input"
+          placeholder={placeholder}
+          onKeyDown={this.onKeyDown.bind(this)}
+          onChange={this.handleInput.bind(this)}
+          value={selectedP.map((s) => query || (s ? displayValue(s) : ''))}
+          disabled={disabled}
+          autoFocus={parseBool(autoFocus)}
         />
         {results}
       </div>
@@ -68,14 +103,14 @@ export default class Autocomplete extends BaconComponent {
   }
 
   handleInput(e) {
-    let query = e.target.value
+    const query = e.target.value
     this.setValue(undefined)
     this.state.inputBus.push(query)
-    this.setState({query: query})
+    this.setState({ query })
   }
 
   handleSelect(selected) {
-    this.setState({query: undefined, items: []})
+    this.setState({ query: undefined, items: [] })
     this.setValue(selected)
   }
 
@@ -87,13 +122,13 @@ export default class Autocomplete extends BaconComponent {
     } else if (this.props.resultCallback) {
       this.props.resultCallback(value)
     } else {
-      throw 'resultBus/resultAtom/resultCallback missing'
+      throw new Error('resultBus/resultAtom/resultCallback missing')
     }
   }
 
   onKeyDown(e) {
-    let handler = this.keyHandlers[e.key]
-    if(handler) {
+    const handler = this.keyHandlers[e.key]
+    if (handler) {
       handler.call(this, e)
     }
   }
@@ -101,13 +136,13 @@ export default class Autocomplete extends BaconComponent {
   componentDidMount() {
     this.state.inputBus
       .throttle(delays().delay(200))
-      .flatMapLatest(query => this.props.fetchItems(query).mapError([]))
+      .flatMapLatest((query) => this.props.fetchItems(query).mapError([]))
       .takeUntil(this.unmountE)
       .onValue((items) => {
-          this.setState({ items: items, selectionIndex: 0 })
-          Bacon.later(0).onValue(() => {
-            scrollElementBottomVisible(this.refs.results)
-          })
+        this.setState({ items, selectionIndex: 0 })
+        Bacon.later(0).onValue(() => {
+          scrollElementBottomVisible(this.refs.results)
+        })
       })
   }
 }

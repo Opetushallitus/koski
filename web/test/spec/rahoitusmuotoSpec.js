@@ -10,26 +10,43 @@ describe('Rahoitusmuoto', function () {
     describe('Kun lisätään läsnä-tilainen opiskeluoikeus ja ei valita rahoitusmuotoa', function () {
       before(
         prepareForNewOppija('kalle', '020782-5339'),
-        addOppija.enterValidDataDIAValmistavaVaihe({etunimet: 'Doris', kutsumanimi: 'Doris', sukunimi: 'Dia'}),
-        addOppija.submitAndExpectSuccess('Dia, Doris (020782-5339)', 'Valmistava DIA-vaihe')
+        addOppija.enterValidDataDIAValmistavaVaihe({
+          etunimet: 'Doris',
+          kutsumanimi: 'Doris',
+          sukunimi: 'Dia'
+        }),
+        addOppija.submitAndExpectSuccess(
+          'Dia, Doris (020782-5339)',
+          'Valmistava DIA-vaihe'
+        )
       )
 
       it('Rahoitusmuoto on täydennetty valmiiksi', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.include(
-          'Läsnä (valtionosuusrahoitteinen koulutus)')
+          'Läsnä (valtionosuusrahoitteinen koulutus)'
+        )
       })
     })
 
     describe('Kun lisätänää läsnä-tilainen opiskeluoikeus ja valitaan rahoitusmuoto', function () {
       before(
         prepareForNewOppija('kalle', '020782-5339'),
-        addOppija.enterValidDataDIAValmistavaVaihe({opintojenRahoitus: 'Muuta kautta rahoitettu', etunimet: 'Doris', kutsumanimi: 'Doris', sukunimi: 'Dia'}),
-        addOppija.submitAndExpectSuccess('Dia, Doris (020782-5339)', 'Valmistava DIA-vaihe')
+        addOppija.enterValidDataDIAValmistavaVaihe({
+          opintojenRahoitus: 'Muuta kautta rahoitettu',
+          etunimet: 'Doris',
+          kutsumanimi: 'Doris',
+          sukunimi: 'Dia'
+        }),
+        addOppija.submitAndExpectSuccess(
+          'Dia, Doris (020782-5339)',
+          'Valmistava DIA-vaihe'
+        )
       )
 
       it('Rahoitusmuoto on oikea', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.include(
-          'Läsnä (muuta kautta rahoitettu)')
+          'Läsnä (muuta kautta rahoitettu)'
+        )
       })
     })
   })
@@ -51,7 +68,9 @@ describe('Rahoitusmuoto', function () {
       )
 
       it('Loma tilalle ei ole valittu rahoitusmuotoa', function () {
-        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.contain('Väliaikaisesti keskeytynyt\n')
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.contain(
+          'Väliaikaisesti keskeytynyt\n'
+        )
       })
 
       describe('Valitaan valmistunut-tila', function () {
@@ -62,7 +81,9 @@ describe('Rahoitusmuoto', function () {
         )
 
         it('Valmistunut tilalle on valittu automaattisesti rahoitusmuoto', function () {
-          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.contain('Valmistunut (valtionosuusrahoitteinen koulutus)\n')
+          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.contain(
+            'Valmistunut (valtionosuusrahoitteinen koulutus)\n'
+          )
         })
       })
     })

@@ -1,5 +1,5 @@
-import {navigateTo} from './location'
-var currentHook = null
+import { navigateTo } from './location'
+let currentHook = null
 
 export const addExitHook = (msg) => {
   removeExitHook()
@@ -21,23 +21,26 @@ export const checkExitHook = () => {
   return true
 }
 
-export const withExitHook = (f, useExitHook = true) => (e) => {
-  if (useExitHook) {
-    if (currentHook) {
-      let result = confirm(currentHook({}))
-      if (!result) {
-        if (e) e.preventDefault()
-        return
+export const withExitHook =
+  (f, useExitHook = true) =>
+  (e) => {
+    if (useExitHook) {
+      if (currentHook) {
+        const result = confirm(currentHook({}))
+        if (!result) {
+          if (e) e.preventDefault()
+          return
+        }
       }
+      removeExitHook()
     }
-    removeExitHook()
+    return f(e)
   }
-  return f(e)
-}
 
-export const navigateWithExitHook = (href, useExitHook = true) => withExitHook(e => navigateTo(href, e), useExitHook)
+export const navigateWithExitHook = (href, useExitHook = true) =>
+  withExitHook((e) => navigateTo(href, e), useExitHook)
 
-let makeExitHook = (msg) => (e) => {
-  e.returnValue = msg     // Gecko and Trident
-  return msg              // Gecko and WebKit
+const makeExitHook = (msg) => (e) => {
+  e.returnValue = msg // Gecko and Trident
+  return msg // Gecko and WebKit
 }

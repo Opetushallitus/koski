@@ -8,5 +8,5 @@ export const renderOption = <T>(
   pipe(
     o,
     O.map(render),
-    O.getOrElse(() => (null as unknown) as JSX.Element)
+    O.getOrElse(() => null as unknown as JSX.Element)
   )

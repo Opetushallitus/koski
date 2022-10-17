@@ -67,12 +67,12 @@ export const useDataTableState = (
 const initialFilterState = (length: number): FilterState =>
   new Array(length).fill({ value: null, fn: null })
 
-export const setFilters = (filters: FilterState) => (
-  state: DataTableState
-): DataTableState => ({
-  ...state,
-  filters,
-})
+export const setFilters =
+  (filters: FilterState) =>
+  (state: DataTableState): DataTableState => ({
+    ...state,
+    filters,
+  })
 
 // Järjestys
 
@@ -81,12 +81,12 @@ const initialSortState = (): SortState => ({
   ascending: true,
 })
 
-export const sortByColumn = (columnIndex: number) => (
-  state: DataTableState
-): DataTableState => ({
-  ...state,
-  sort:
-    columnIndex === state.sort.columnIndex
-      ? { ...state.sort, ascending: !state.sort.ascending }
-      : { columnIndex: columnIndex, ascending: true },
-})
+export const sortByColumn =
+  (columnIndex: number) =>
+  (state: DataTableState): DataTableState => ({
+    ...state,
+    sort:
+      columnIndex === state.sort.columnIndex
+        ? { ...state.sort, ascending: !state.sort.ascending }
+        : { columnIndex: columnIndex, ascending: true },
+  })

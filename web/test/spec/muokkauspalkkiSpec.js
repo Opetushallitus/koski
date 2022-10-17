@@ -12,7 +12,11 @@ describe('Muokkauspalkki', function () {
   describe('Näkyvyys', function () {
     beforeEach(auth.login())
 
-    before(auth.login(), page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'))
+    before(
+      auth.login(),
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('020655-2479')
+    )
 
     describe('Näyttötilassa', function () {
       it('piilossa', function () {
@@ -34,12 +38,14 @@ describe('Muokkauspalkki', function () {
       })
     })
 
-
     describe('Oppijataulukosta näyttötilaan edellinen-painikkeella palattaessa', function () {
       before(
         click('a.back-link'),
         wait.until(function () {
-          return currentURL().endsWith('/koski/virkailija') && isElementVisible('.oppijataulukko')
+          return (
+            currentURL().endsWith('/koski/virkailija') &&
+            isElementVisible('.oppijataulukko')
+          )
         }),
         wait.prepareForNavigation,
         goBack,
@@ -57,7 +63,10 @@ describe('Muokkauspalkki', function () {
         click('button.toggle-edit'),
         click('a.back-link'),
         wait.until(function () {
-          return currentURL().endsWith('/koski/virkailija') && isElementVisible('.oppijataulukko')
+          return (
+            currentURL().endsWith('/koski/virkailija') &&
+            isElementVisible('.oppijataulukko')
+          )
         }),
         wait.prepareForNavigation,
         goBack,
@@ -69,6 +78,5 @@ describe('Muokkauspalkki', function () {
         expect(editBarVisible()).to.equal(true)
       })
     })
-
   })
 })

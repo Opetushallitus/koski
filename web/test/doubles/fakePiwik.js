@@ -1,9 +1,9 @@
 function FakePiwik() {
   return {
-    reset: function() {
+    reset: function () {
       testFrame().window._paq.length = 0
     },
-    getQueuedMethodCalls: function() {
+    getQueuedMethodCalls: function () {
       return testFrame().window._paq.slice()
     }
   }

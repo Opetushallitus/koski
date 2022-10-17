@@ -20,25 +20,25 @@ import { buildClassNames } from '../components/classnames'
 const isZeroValue = (option) => option.value === zeroValue.value
 const hasKoodiarvo = (data) => data !== undefined && 'koodiarvo' in data
 const formatOpintokokonaisuusDisplayValue = (option) => {
-  if(option === undefined) {
+  if (option === undefined) {
     return zeroValue.title
   }
-  if(isZeroValue(option)) {
+  if (isZeroValue(option)) {
     return option.title
   }
-  if(!hasKoodiarvo(option.data)) {
+  if (!hasKoodiarvo(option.data)) {
     return option.title
   }
   return `${option.data.koodiarvo} ${option.title}`
 }
 const formatOpintokokonaisuusTitle = (option) => {
-  if(option === undefined) {
+  if (option === undefined) {
     return zeroValue.title
   }
-  if(isZeroValue(option)) {
+  if (isZeroValue(option)) {
     return option.title
   }
-  if(!hasKoodiarvo(option.data)) {
+  if (!hasKoodiarvo(option.data)) {
     return option.title
   }
   return `${option.data.koodiarvo} ${option.title}`
@@ -46,14 +46,14 @@ const formatOpintokokonaisuusTitle = (option) => {
 
 const asHyperLink = (model) => {
   const data = modelData(model)
-  if(!hasKoodiarvo(data)) {
+  if (!hasKoodiarvo(data)) {
     return {
       url: '#',
       target: '_self'
     }
   }
   return {
-    url: `${window['ePerusteetBaseUrl']}${t(
+    url: `${window.ePerusteetBaseUrl}${t(
       'eperusteet_opintopolku_url_fragment'
     )}${data.koodiarvo}`,
     target: '_blank'
@@ -130,12 +130,11 @@ export const VstVapaaTavoitteinenKoulutusmoduuliEditor = ({ model }) => {
 }
 
 const TunnisteEditor = ({ model }) => {
-  const overrideEdit =
+  const overrideEdit = !!(
     model.context.editAll ||
     (model.context.edit &&
       isMuutaAmmatillistaPäätasonSuoritus(model.context.suoritus))
-      ? true
-      : false
+  )
   const päätasonsuoritus = model.context.suoritus
   const tyyppi = suorituksenTyyppi(päätasonsuoritus)
   const käytäPäätasonSuoritusta =
@@ -144,7 +143,7 @@ const TunnisteEditor = ({ model }) => {
       'aikuistenperusopetuksenoppimaaranalkuvaihe'
     ].includes(tyyppi) ||
     model.value.classes.includes('lukionoppiaineidenoppimaarat2019')
-  let tutkinnonNimiModel = tutkinnonNimi(model)
+  const tutkinnonNimiModel = tutkinnonNimi(model)
   const excludedProperties = ['koodistoUri']
 
   if (

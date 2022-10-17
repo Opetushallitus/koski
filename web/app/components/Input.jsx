@@ -1,14 +1,14 @@
 import React from 'baret'
 
-const Input = ({id, type, disabled, value, autofocus = false}) => (
+const Input = ({ id, type, disabled, value, autofocus = false }) => (
   <input
     type={type}
     disabled={disabled}
     value={value.or('')}
-    onChange={e => value.set(e.target.value)}
+    onChange={(e) => value.set(e.target.value)}
     id={id}
-    autoFocus={autofocus}>
-  </input>
+    autoFocus={autofocus}
+  ></input>
 )
 
 export default Input

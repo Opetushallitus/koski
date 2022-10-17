@@ -7,6 +7,7 @@ export default class BaconComponent extends React.Component {
     this.propsE = Bacon.Bus()
     this.propsE.push(this.props)
   }
+
   componentWillUnmount() {
     if (this.unmountE) this.unmountE.push()
   }

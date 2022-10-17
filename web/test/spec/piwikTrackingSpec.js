@@ -1,98 +1,121 @@
-describe('Piwik-seuranta', function() {
+describe('Piwik-seuranta', function () {
   var piwik = FakePiwik()
 
-  describe('Koski-palvelun login-sivu', function() {
+  describe('Koski-palvelun login-sivu', function () {
     var loginPage = LoginPage()
 
     before(loginPage.openPage)
 
-    it('Sivu luo yhden Piwik-kutsun', function() {
+    it('Sivu luo yhden Piwik-kutsun', function () {
       expect(piwik.getQueuedMethodCalls().length).to.equal(1)
     })
 
-    it('Sivu raportoi lataamisen', function() {
+    it('Sivu raportoi lataamisen', function () {
       expectPiwikTrackLoadPage(piwik.getQueuedMethodCalls()[0], '/koski/login')
     })
 
-    describe('Kirjautumisen jälkeen', function() {
+    describe('Kirjautumisen jälkeen', function () {
       var koskiPage = KoskiPage()
 
       before(
         Authentication().login(),
         resetFixtures,
         koskiPage.openPage,
-        wait.until(koskiPage.isReady))
+        wait.until(koskiPage.isReady)
+      )
 
-      it('Sivu luo yhden Piwik-kutsun', function() {
+      it('Sivu luo yhden Piwik-kutsun', function () {
         expect(piwik.getQueuedMethodCalls().length).to.equal(1)
       })
 
-      it('Sivu raportoi lataamisen', function() {
-        expectPiwikTrackLoadPage(piwik.getQueuedMethodCalls()[0], '/koski/virkailija')
+      it('Sivu raportoi lataamisen', function () {
+        expectPiwikTrackLoadPage(
+          piwik.getQueuedMethodCalls()[0],
+          '/koski/virkailija'
+        )
       })
 
-      describe('Siirryttäessä oppijan tietoihin', function() {
-        var oppijaPathRegexp = /^\/koski\/oppija\/\d.\d.\d{3}.\d{3}.\d{2}.\d+(\?.*)?$/
+      describe('Siirryttäessä oppijan tietoihin', function () {
+        var oppijaPathRegexp =
+          /^\/koski\/oppija\/\d.\d.\d{3}.\d{3}.\d{2}.\d+(\?.*)?$/
 
         before(
           piwik.reset,
           koskiPage.oppijataulukko.clickFirstOppija,
-          koskiPage.waitUntilAnyOppijaSelected())
+          koskiPage.waitUntilAnyOppijaSelected()
+        )
 
-        it('Sivu raportoi lataamisen', function() {
-          expectPiwikTrackAjaxPage(piwik.getQueuedMethodCalls(), oppijaPathRegexp)
+        it('Sivu raportoi lataamisen', function () {
+          expectPiwikTrackAjaxPage(
+            piwik.getQueuedMethodCalls(),
+            oppijaPathRegexp
+          )
         })
 
-        describe('Klikatessa paluulinkkiä', function() {
+        describe('Klikatessa paluulinkkiä', function () {
           var opinnotPage = OpinnotPage()
 
           before(piwik.reset, opinnotPage.backToList)
 
-          it('Sivu raportoi lataamisen', function() {
-            expectPiwikTrackAjaxPage(piwik.getQueuedMethodCalls(), '/koski/virkailija')
+          it('Sivu raportoi lataamisen', function () {
+            expectPiwikTrackAjaxPage(
+              piwik.getQueuedMethodCalls(),
+              '/koski/virkailija'
+            )
           })
         })
 
-        describe('Klikatessa selaimen back-nappia', function() {
+        describe('Klikatessa selaimen back-nappia', function () {
           before(
             piwik.reset,
             wait.prepareForNavigation,
             goBack,
             wait.forNavigation,
-            koskiPage.waitUntilAnyOppijaSelected())
+            koskiPage.waitUntilAnyOppijaSelected()
+          )
 
-          it('Sivu raportoi lataamisen', function() {
-            expectPiwikTrackAjaxPage(piwik.getQueuedMethodCalls(), oppijaPathRegexp)
+          it('Sivu raportoi lataamisen', function () {
+            expectPiwikTrackAjaxPage(
+              piwik.getQueuedMethodCalls(),
+              oppijaPathRegexp
+            )
           })
         })
 
-        describe('Klikatessa selaimen forward-nappia', function() {
+        describe('Klikatessa selaimen forward-nappia', function () {
           before(
             piwik.reset,
             wait.prepareForNavigation,
             goForward,
             wait.forNavigation,
             wait.until(koskiPage.isReady),
-            wait.forAjax)
+            wait.forAjax
+          )
 
-          it('Sivu raportoi lataamisen', function() {
-            expectPiwikTrackAjaxPage(piwik.getQueuedMethodCalls(), '/koski/virkailija')
+          it('Sivu raportoi lataamisen', function () {
+            expectPiwikTrackAjaxPage(
+              piwik.getQueuedMethodCalls(),
+              '/koski/virkailija'
+            )
           })
         })
       })
 
-      describe('Palvelimen palauttaessa 404-sivun', function() {
+      describe('Palvelimen palauttaessa 404-sivun', function () {
         before(openPage('/koski/nosuch', koskiPage.is404))
 
-        it('Sivu luo kaksi Piwik-kutsua', function() {
+        it('Sivu luo kaksi Piwik-kutsua', function () {
           expect(piwik.getQueuedMethodCalls()).to.have.lengthOf(2)
         })
 
-        it('Sivu raportoi lataamisen', function() {
-          expect(piwik.getQueuedMethodCalls()[0]).to.deep.equal(['trackPageView', '/koski/nosuch (404)'])
+        it('Sivu raportoi lataamisen', function () {
+          expect(piwik.getQueuedMethodCalls()[0]).to.deep.equal([
+            'trackPageView',
+            '/koski/nosuch (404)'
+          ])
         })
 
-        it('Sivu raportoi LoadError-tapahtuman', function() {
+        it('Sivu raportoi LoadError-tapahtuman', function () {
           expectPiwikTrackError(piwik.getQueuedMethodCalls()[1], 'LoadError', {
             location: /\/koski\/nosuch$/,
             httpStatus: 404,
@@ -101,39 +124,47 @@ describe('Piwik-seuranta', function() {
         })
       })
 
-      describe('Palvelimen vastatessa Ajax-kyselyyn virheellä', function() {
+      describe('Palvelimen vastatessa Ajax-kyselyyn virheellä', function () {
         before(
           koskiPage.openPage,
           piwik.reset,
-          koskiPage.oppijaHaku.search('#error#', koskiPage.isErrorShown))
+          koskiPage.oppijaHaku.search('#error#', koskiPage.isErrorShown)
+        )
 
-        it('Sivu luo yhden Piwik-kutsun', function() {
+        it('Sivu luo yhden Piwik-kutsun', function () {
           expect(piwik.getQueuedMethodCalls()).to.have.lengthOf(1)
         })
 
-        it('Sivu raportoi RuntimeError-tapahtuman', function() {
-          expectPiwikTrackError(piwik.getQueuedMethodCalls()[0], 'RuntimeError', {
-            location: /\/koski\/virkailija$/,
-            url: /\/koski\/api\/henkilo\/search$/,
-            httpStatus: 500,
-            message: 'http error 500'
-          })
+        it('Sivu raportoi RuntimeError-tapahtuman', function () {
+          expectPiwikTrackError(
+            piwik.getQueuedMethodCalls()[0],
+            'RuntimeError',
+            {
+              location: /\/koski\/virkailija$/,
+              url: /\/koski\/api\/henkilo\/search$/,
+              httpStatus: 500,
+              message: 'http error 500'
+            }
+          )
         })
       })
     })
 
-    describe('Palvelimen palauttaessa 404-sivun muualla kuin Koski-sovelluksessa', function() {
+    describe('Palvelimen palauttaessa 404-sivun muualla kuin Koski-sovelluksessa', function () {
       before(openPage('/koski/pulssi/nosuch'))
 
-      it('Sivu luo kaksi Piwik-kutsua', function() {
+      it('Sivu luo kaksi Piwik-kutsua', function () {
         expect(piwik.getQueuedMethodCalls().length).to.equal(2)
       })
 
-      it('Sivu raportoi lataamisen', function() {
-        expectPiwikTrackLoadPage(piwik.getQueuedMethodCalls()[0], '/koski/pulssi/nosuch (404)')
+      it('Sivu raportoi lataamisen', function () {
+        expectPiwikTrackLoadPage(
+          piwik.getQueuedMethodCalls()[0],
+          '/koski/pulssi/nosuch (404)'
+        )
       })
 
-      it('Sivu raportoi LoadError-tapahtuman', function() {
+      it('Sivu raportoi LoadError-tapahtuman', function () {
         expectPiwikTrackError(piwik.getQueuedMethodCalls()[1], 'LoadError', {
           location: /\/koski\/pulssi\/nosuch$/,
           httpStatus: 404,
@@ -154,13 +185,17 @@ describe('Piwik-seuranta', function() {
 
     expect(customUrlCall).to.have.lengthOf(2)
     expect(customUrlCall[0]).to.equal('setCustomUrl')
-    expect(customUrlCall[1]).to[urlPath instanceof RegExp ? 'match' : 'equal'](urlPath)
+    expect(customUrlCall[1]).to[urlPath instanceof RegExp ? 'match' : 'equal'](
+      urlPath
+    )
 
     var trackPageViewCall = piwikQueuedMethodCalls[1]
 
     expect(trackPageViewCall).to.have.lengthOf(2)
     expect(trackPageViewCall[0]).to.equal('trackPageView')
-    expect(trackPageViewCall[1]).to[urlPath instanceof RegExp ? 'match' : 'equal'](urlPath)
+    expect(trackPageViewCall[1]).to[
+      urlPath instanceof RegExp ? 'match' : 'equal'
+    ](urlPath)
   }
 
   function expectPiwikTrackError(piwikQueuedMethodCall, errorName, errorData) {

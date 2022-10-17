@@ -184,9 +184,7 @@ describe('TUVA', function () {
 
         describe('Suoritusten yhteislaajuus', function () {
           it('lasketaan oikein', function () {
-            expect(extractAsText(S('.yhteislaajuus'))).to.equal(
-              'Yhteensä 4 vk'
-            )
+            expect(extractAsText(S('.yhteislaajuus'))).to.equal('Yhteensä 4 vk')
           })
         })
       })

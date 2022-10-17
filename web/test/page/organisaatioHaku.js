@@ -1,16 +1,26 @@
 function OrganisaatioHaku(elem) {
   var api = {
     select: function (value) {
-      return function() {
+      return function () {
         if (value) {
           if (elem().find('.organisaatio-selection').hasClass('disabled')) {
             // Single organization allowed
-            if (!elem().find('.organisaatio-selection').text().startsWith(value)) {
+            if (
+              !elem().find('.organisaatio-selection').text().startsWith(value)
+            ) {
               throw new Error('Organisaatio ' + value + ' ei ole valittavissa')
             }
           } else {
-            return api.enter(value)()
-              .then(click(findFirst('.organisaatio-popup a:contains(' + value + ')', elem)))
+            return api
+              .enter(value)()
+              .then(
+                click(
+                  findFirst(
+                    '.organisaatio-popup a:contains(' + value + ')',
+                    elem
+                  )
+                )
+              )
               .then(wait.forAjax)
           }
         } else {
@@ -20,27 +30,29 @@ function OrganisaatioHaku(elem) {
       }
     },
     enter: function (value) {
-      return function() {
+      return function () {
         api.open()
-        return Page(elem()).setInputValue(".organisaatio-popup input", value || "")().then(wait.forAjax)
+        return Page(elem())
+          .setInputValue('.organisaatio-popup input', value || '')()
+          .then(wait.forAjax)
       }
     },
-    open: function() {
+    open: function () {
       click(elem().find('.organisaatio-selection'), 'click')()
-      if (!elem().find('.organisaatio-popup').is(':visible')) { // workaround for focus glitch, when running in browser
+      if (!elem().find('.organisaatio-popup').is(':visible')) {
+        // workaround for focus glitch, when running in browser
         click(elem().find('.organisaatio-selection'))()
       }
     },
-    oppilaitokset: function() {
+    oppilaitokset: function () {
       return textsOf(elem().find('.organisaatiot li'))
     },
-    toimipisteet: function() {
+    toimipisteet: function () {
       return textsOf(elem().find('.organisaatiot .aliorganisaatiot li'))
     },
-    oppilaitos: function() {
+    oppilaitos: function () {
       return elem().find('.organisaatio-selection').text()
     }
   }
   return api
 }
-

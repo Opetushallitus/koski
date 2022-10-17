@@ -153,9 +153,8 @@ const OpiskeluhistoriaOpinto = ({
 
   const alkamispäivä = aiempienOpintojenAlkamispäivä(opiskeluoikeus)
   const päättymispäivä = myöhempienOpintojenPäättymispäivä(opiskeluoikeus)
-  const tarkastelupäivänTila = myöhempienOpintojenTarkastelupäivänTila(
-    opiskeluoikeus
-  )
+  const tarkastelupäivänTila =
+    myöhempienOpintojenTarkastelupäivänTila(opiskeluoikeus)
 
   const range = yearRangeString(alkamispäivä, päättymispäivä)
 
@@ -400,9 +399,8 @@ const tyyppiNimiOrd = (lang: Language) =>
   )
 
 const alkamispäiväOrd = opiskeluoikeusAiempienOpintojenDateOrd("alkamispäivä")
-const päättymispäiväOrd = opiskeluoikeusMyöhempienOpintojenDateOrd(
-  "päättymispäivä"
-)
+const päättymispäiväOrd =
+  opiskeluoikeusMyöhempienOpintojenDateOrd("päättymispäivä")
 
 const sortOpiskeluoikeudet = (lang: Language) =>
   A.sortBy<MinimiOpiskeluoikeus>([
@@ -448,13 +446,12 @@ const myöhempienOpintojenKoskiTilanAlkamispäivä = (
 ): ISODate =>
   myöhempiOpinto(opiskeluoikeus).tarkastelupäivänKoskiTilanAlkamispäivä
 
-const isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa = (
-  oo: MinimiOpiskeluoikeus
-) =>
-  oo.tyyppi?.koodiarvo == "internationalschool" &&
-  oo.perusopetusTiedot !== undefined &&
-  oo.perusopetusTiedot.valmistunutAiemminTaiLähitulevaisuudessa &&
-  oo.perusopetusTiedot.päättymispäivä !== undefined
+const isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa =
+  (oo: MinimiOpiskeluoikeus) =>
+    oo.tyyppi?.koodiarvo == "internationalschool" &&
+    oo.perusopetusTiedot !== undefined &&
+    oo.perusopetusTiedot.valmistunutAiemminTaiLähitulevaisuudessa &&
+    oo.perusopetusTiedot.päättymispäivä !== undefined
 
 {
   /*TODO: TOR-1685 Eurooppalainen koulu*/

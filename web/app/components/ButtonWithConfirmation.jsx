@@ -8,27 +8,38 @@ class ButtonWithConfirmation extends React.Component {
   }
 
   render() {
-    const { text, confirmationText, cancelText, action, className, confirmationClassName } = this.props
+    const {
+      text,
+      confirmationText,
+      cancelText,
+      action,
+      className,
+      confirmationClassName
+    } = this.props
 
     const isActionRequested = this.state.isActionRequested
 
-    return isActionRequested
-      ? (
-        <div className={className}>
-          <button className={`koski-button ${(confirmationClassName ? confirmationClassName : '')}`} onClick={action}>
-            <Text name={confirmationText}/>
-          </button>
+    return isActionRequested ? (
+      <div className={className}>
+        <button
+          className={`koski-button ${confirmationClassName || ''}`}
+          onClick={action}
+        >
+          <Text name={confirmationText} />
+        </button>
 
-          <a onClick={() => this.setState({ isActionRequested: false })}>
-            <Text name={cancelText}/>
-          </a>
-        </div>
-      )
-      : (
-        <a className={className} onClick={() => this.setState({ isActionRequested: true })}>
-          <Text name={text} />
+        <a onClick={() => this.setState({ isActionRequested: false })}>
+          <Text name={cancelText} />
         </a>
-      )
+      </div>
+    ) : (
+      <a
+        className={className}
+        onClick={() => this.setState({ isActionRequested: true })}
+      >
+        <Text name={text} />
+      </a>
+    )
   }
 }
 

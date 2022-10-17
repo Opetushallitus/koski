@@ -3,7 +3,7 @@ import Atom from 'bacon.atom'
 import Bacon from 'baconjs'
 import Peruste from './Peruste'
 
-export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
+export default ({ suoritusAtom, oppilaitosAtom, suorituskieliAtom }) => {
   const perusteAtom = Atom()
   const makeSuoritus = (oppilaitos, peruste, suorituskieli) => {
     if (oppilaitos) {
@@ -16,12 +16,24 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
           perusteenDiaarinumero: peruste
         },
         toimipiste: oppilaitos,
-        tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'perusopetukseenvalmistavaopetus'},
-        suorituskieli : suorituskieli
+        tyyppi: {
+          koodistoUri: 'suorituksentyyppi',
+          koodiarvo: 'perusopetukseenvalmistavaopetus'
+        },
+        suorituskieli
       }
     }
   }
-  let suoritusP = Bacon.combineWith(oppilaitosAtom, perusteAtom, suorituskieliAtom, makeSuoritus)
-  suoritusP.filter('.koulutusmoduuli.perusteenDiaarinumero').onValue(suoritus => suoritusAtom.set(suoritus))
-  return <Peruste {...{suoritusTyyppiP: suoritusP.map('.tyyppi'), perusteAtom}} />
+  const suoritusP = Bacon.combineWith(
+    oppilaitosAtom,
+    perusteAtom,
+    suorituskieliAtom,
+    makeSuoritus
+  )
+  suoritusP
+    .filter('.koulutusmoduuli.perusteenDiaarinumero')
+    .onValue((suoritus) => suoritusAtom.set(suoritus))
+  return (
+    <Peruste {...{ suoritusTyyppiP: suoritusP.map('.tyyppi'), perusteAtom }} />
+  )
 }

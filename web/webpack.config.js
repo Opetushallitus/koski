@@ -1,5 +1,6 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
+const path = require('path')
 
 module.exports = {
   entry: {
@@ -15,7 +16,7 @@ module.exports = {
     kayttooikeudet: './app/Kayttooikeudet.jsx'
   },
   output: {
-    path: __dirname + '/../target/webapp/koski',
+    path: path.join(__dirname, '..', 'target/webapp/koski'),
     filename: 'js/koski-[name].js',
     publicPath: '/koski/'
   },
@@ -27,7 +28,7 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        include: [__dirname + '/app'],
+        include: [path.join(__dirname, 'app')],
         use: {
           loader: 'babel-loader',
           options: {
@@ -38,7 +39,7 @@ module.exports = {
       },
       {
         test: /\.(ts|tsx)$/,
-        include: [__dirname + '/app'],
+        include: [path.join(__dirname, 'app')],
         use: ['ts-loader']
       },
       {
@@ -54,9 +55,7 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
-                plugins: [
-                  ['postcss-preset-env', {}]
-                ]
+                plugins: [['postcss-preset-env', {}]]
               }
             }
           },
@@ -70,12 +69,18 @@ module.exports = {
   plugins: [
     new ESLintPlugin({
       extensions: ['js', 'jsx'],
-      failOnWarning: true
+      failOnWarning: false // Ei failata compilationia ESLint-varoituksille
     }),
     new CopyWebpackPlugin({
       patterns: [
         { from: 'static' },
-        { from: 'test', to: 'test' },
+        {
+          from: 'test',
+          to: 'test',
+          globOptions: {
+            ignore: ['.eslintrc']
+          }
+        },
         { from: 'node_modules/chai/chai.js', to: 'test/lib' },
         { from: 'node_modules/jquery/dist/jquery.js', to: 'test/lib' },
         { from: 'node_modules/mocha/mocha.js', to: 'test/lib' },

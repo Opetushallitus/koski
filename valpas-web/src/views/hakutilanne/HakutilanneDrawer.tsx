@@ -28,9 +28,10 @@ export const HakutilanneDrawer = React.forwardRef(
     const oppijat = props.selectedOppijat
 
     const [modalVisible, setModalVisible] = useState(false)
-    const oppijaOids = useMemo(() => oppijat.map((o) => o.oppija.henkilö.oid), [
-      oppijat,
-    ])
+    const oppijaOids = useMemo(
+      () => oppijat.map((o) => o.oppija.henkilö.oid),
+      [oppijat]
+    )
     const pohjatiedot = useApiWithParams(
       fetchKuntailmoituksenPohjatiedot,
       modalVisible ? [oppijaOids, props.tekijäorganisaatio.oid] : undefined

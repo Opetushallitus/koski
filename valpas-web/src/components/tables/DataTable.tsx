@@ -119,15 +119,15 @@ export const PaginatedDataTable = (props: PaginatedDataTableProps) => {
     () => setVisibleCount(visibleCount + props.paginationSize),
     [visibleCount, props.paginationSize]
   )
-  useEffect(() => setVisibleCount(props.paginationSize), [
-    sortedData,
-    props.paginationSize,
-  ])
+  useEffect(
+    () => setVisibleCount(props.paginationSize),
+    [sortedData, props.paginationSize]
+  )
 
-  const shownData = useMemo(() => sortedData.slice(0, visibleCount), [
-    sortedData,
-    visibleCount,
-  ])
+  const shownData = useMemo(
+    () => sortedData.slice(0, visibleCount),
+    [sortedData, visibleCount]
+  )
 
   return (
     <Table className={props.className}>

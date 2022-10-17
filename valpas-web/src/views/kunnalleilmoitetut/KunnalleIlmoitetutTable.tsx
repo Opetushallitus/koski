@@ -77,21 +77,23 @@ const toTableData = (
 ): Datum[] =>
   A.chain(oppijaToTableData(organisaatioOid, basePath, backRefName))(data)
 
-const oppijaToTableData = (
-  organisaatioOid: Oid,
-  basePath: string,
-  backRefName: keyof OppijaViewBackNavProps
-) => (oppija: OppijaHakutilanteillaSuppeatTiedot): Datum[] =>
-  oppija.kuntailmoitukset.map((kuntailmoitus) => ({
-    key: [oppija.oppija.henkilö.oid, kuntailmoitus.id || ""],
-    values: [
-      oppijanNimi(oppija, organisaatioOid, basePath, backRefName),
-      syntymäaika(oppija),
-      ilmoitettuKunnalle(kuntailmoitus),
-      ilmoituksenTekopäivä(kuntailmoitus),
-      muuHaku(kuntailmoitus),
-    ],
-  }))
+const oppijaToTableData =
+  (
+    organisaatioOid: Oid,
+    basePath: string,
+    backRefName: keyof OppijaViewBackNavProps
+  ) =>
+  (oppija: OppijaHakutilanteillaSuppeatTiedot): Datum[] =>
+    oppija.kuntailmoitukset.map((kuntailmoitus) => ({
+      key: [oppija.oppija.henkilö.oid, kuntailmoitus.id || ""],
+      values: [
+        oppijanNimi(oppija, organisaatioOid, basePath, backRefName),
+        syntymäaika(oppija),
+        ilmoitettuKunnalle(kuntailmoitus),
+        ilmoituksenTekopäivä(kuntailmoitus),
+        muuHaku(kuntailmoitus),
+      ],
+    }))
 
 const oppijanNimi = (
   oppija: OppijaHakutilanteillaSuppeatTiedot,

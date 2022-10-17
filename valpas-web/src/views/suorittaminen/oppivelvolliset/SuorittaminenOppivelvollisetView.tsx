@@ -38,10 +38,11 @@ import "./SuorittaminenOppivelvollisetView.less"
 const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_SUORITTAMINEN"
 
-export const SuorittaminenOppivelvollisetViewWithoutOrgOid = withRequiresSuorittamisenValvonta(
-  () => {
+export const SuorittaminenOppivelvollisetViewWithoutOrgOid =
+  withRequiresSuorittamisenValvonta(() => {
     const basePath = useBasePath()
-    const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+    const organisaatiotJaKäyttöoikeusroolit =
+      useOrganisaatiotJaKäyttöoikeusroolit()
     const organisaatiot = useMemo(
       () =>
         getOrganisaatiot(
@@ -62,89 +63,90 @@ export const SuorittaminenOppivelvollisetViewWithoutOrgOid = withRequiresSuoritt
     ) : (
       <OrganisaatioMissingView />
     )
-  }
-)
+  })
 
 export type SuorittaminenOppivelvollisetViewProps = RouteComponentProps<{
   organisaatioOid?: string
 }>
 
-export const SuorittaminenOppivelvollisetView = withRequiresSuorittamisenValvonta(
-  (props: SuorittaminenOppivelvollisetViewProps) => {
-    const history = useHistory()
+export const SuorittaminenOppivelvollisetView =
+  withRequiresSuorittamisenValvonta(
+    (props: SuorittaminenOppivelvollisetViewProps) => {
+      const history = useHistory()
 
-    const [counters, setCounters] = useState<DataTableCountChangeEvent>({
-      filteredRowCount: 0,
-      unfilteredRowCount: 0,
-    })
+      const [counters, setCounters] = useState<DataTableCountChangeEvent>({
+        filteredRowCount: 0,
+        unfilteredRowCount: 0,
+      })
 
-    const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
-    const organisaatiot = useMemo(
-      () =>
-        getOrganisaatiot(
-          organisaatiotJaKäyttöoikeusroolit,
-          organisaatioHakuRooli,
-          organisaatioTyyppi
-        ),
-      [organisaatiotJaKäyttöoikeusroolit]
-    )
+      const organisaatiotJaKäyttöoikeusroolit =
+        useOrganisaatiotJaKäyttöoikeusroolit()
+      const organisaatiot = useMemo(
+        () =>
+          getOrganisaatiot(
+            organisaatiotJaKäyttöoikeusroolit,
+            organisaatioHakuRooli,
+            organisaatioTyyppi
+          ),
+        [organisaatiotJaKäyttöoikeusroolit]
+      )
 
-    const changeOrganisaatio = (oid?: Oid) => {
-      if (oid) {
-        history.push(oid)
+      const changeOrganisaatio = (oid?: Oid) => {
+        if (oid) {
+          history.push(oid)
+        }
       }
+
+      const organisaatioOid = props.match.params.organisaatioOid!
+
+      const fetch = useApiWithParams(
+        fetchOppijatSuorittaminen,
+        [organisaatioOid],
+        fetchOppijatSuorittaminenCache
+      )
+
+      return (
+        <Page>
+          <OrganisaatioValitsin
+            organisaatioTyyppi={organisaatioTyyppi}
+            organisaatioHierarkia={organisaatiot}
+            valittuOrganisaatioOid={organisaatioOid}
+            label={t("Oppilaitos")}
+            onChange={changeOrganisaatio}
+          />
+          <SuorittaminenNavigation selectedOrganisaatio={organisaatioOid} />
+          <Card>
+            <CardHeader>
+              <T id="suorittaminennäkymä__oppivelvolliset__otsikko" />
+              {isSuccess(fetch) && (
+                <Counter>
+                  {counters.filteredRowCount === counters.unfilteredRowCount
+                    ? counters.filteredRowCount
+                    : `${counters.filteredRowCount} / ${counters.unfilteredRowCount}`}
+                </Counter>
+              )}
+            </CardHeader>
+            <ConstrainedCardBody>
+              {isLoading(fetch) && <Spinner />}
+              {isSuccess(fetch) && fetch.data.length == 0 && (
+                <NoDataMessage>
+                  <T id="suorittaminennäkymä__ei_oppivelvollisia" />
+                </NoDataMessage>
+              )}
+              {isSuccess(fetch) && fetch.data.length > 0 && (
+                <SuorittaminenOppivelvollisetTable
+                  data={fetch.data}
+                  organisaatioOid={organisaatioOid}
+                  onCountChange={setCounters}
+                />
+              )}
+              {isError(fetch) && <ApiErrors errors={fetch.errors} />}
+            </ConstrainedCardBody>
+          </Card>
+        </Page>
+      )
     }
-
-    const organisaatioOid = props.match.params.organisaatioOid!
-
-    const fetch = useApiWithParams(
-      fetchOppijatSuorittaminen,
-      [organisaatioOid],
-      fetchOppijatSuorittaminenCache
-    )
-
-    return (
-      <Page>
-        <OrganisaatioValitsin
-          organisaatioTyyppi={organisaatioTyyppi}
-          organisaatioHierarkia={organisaatiot}
-          valittuOrganisaatioOid={organisaatioOid}
-          label={t("Oppilaitos")}
-          onChange={changeOrganisaatio}
-        />
-        <SuorittaminenNavigation selectedOrganisaatio={organisaatioOid} />
-        <Card>
-          <CardHeader>
-            <T id="suorittaminennäkymä__oppivelvolliset__otsikko" />
-            {isSuccess(fetch) && (
-              <Counter>
-                {counters.filteredRowCount === counters.unfilteredRowCount
-                  ? counters.filteredRowCount
-                  : `${counters.filteredRowCount} / ${counters.unfilteredRowCount}`}
-              </Counter>
-            )}
-          </CardHeader>
-          <ConstrainedCardBody>
-            {isLoading(fetch) && <Spinner />}
-            {isSuccess(fetch) && fetch.data.length == 0 && (
-              <NoDataMessage>
-                <T id="suorittaminennäkymä__ei_oppivelvollisia" />
-              </NoDataMessage>
-            )}
-            {isSuccess(fetch) && fetch.data.length > 0 && (
-              <SuorittaminenOppivelvollisetTable
-                data={fetch.data}
-                organisaatioOid={organisaatioOid}
-                onCountChange={setCounters}
-              />
-            )}
-            {isError(fetch) && <ApiErrors errors={fetch.errors} />}
-          </ConstrainedCardBody>
-        </Card>
-      </Page>
-    )
-  }
-)
+  )
 
 const OrganisaatioMissingView = () => (
   <ErrorView

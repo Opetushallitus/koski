@@ -35,12 +35,15 @@ export const nonEmptyEvery = <T>(
 export const asArray = <T>(arrayOrSingular: T | T[]): T[] =>
   Array.isArray(arrayOrSingular) ? arrayOrSingular : [arrayOrSingular]
 
-export const nullableJoinToString = (delimiter: string) => (
-  arr: Array<string | null | undefined>
-): string | null => {
-  const definedStrings = arr.filter(nonNull)
-  return A.isNonEmpty(definedStrings) ? definedStrings.join(delimiter) : null
-}
+export const nullableJoinToString =
+  (delimiter: string) =>
+  (arr: Array<string | null | undefined>): string | null => {
+    const definedStrings = arr.filter(nonNull)
+    return A.isNonEmpty(definedStrings) ? definedStrings.join(delimiter) : null
+  }
 
-export const intersects = <T>(eq: Eq<T>) => (xs: T[]) => (ys: T[]): boolean =>
-  pipe(A.intersection(eq)(xs)(ys), A.isNonEmpty)
+export const intersects =
+  <T>(eq: Eq<T>) =>
+  (xs: T[]) =>
+  (ys: T[]): boolean =>
+    pipe(A.intersection(eq)(xs)(ys), A.isNonEmpty)
