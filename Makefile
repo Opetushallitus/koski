@@ -121,7 +121,7 @@ docker-dbs:
 
 .PHONY: eslint
 eslint:
-	cd web && npm run eslint
+	cd web && npm run lint
 
 .PHONY: scalastyle
 scalastyle:
