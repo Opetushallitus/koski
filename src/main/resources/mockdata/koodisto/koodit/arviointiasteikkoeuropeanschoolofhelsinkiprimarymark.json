@@ -1,0 +1,38 @@
+[
+  {
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_pass",
+    "koodiArvo": "pass",
+    "metadata": [
+      {
+        "nimi" : "Pass",
+        "lyhytNimi" : "Pass",
+        "kieli" : "FI"
+      },
+      {
+        "nimi" : "Pass",
+        "lyhytNimi" : "Pass",
+        "kieli" : "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_fail",
+    "koodiArvo": "fail",
+    "metadata": [
+      {
+        "nimi" : "Fail",
+        "lyhytNimi" : "Fail",
+        "kieli" : "FI"
+      },
+      {
+        "nimi" : "Fail",
+        "lyhytNimi" : "Fail",
+        "kieli" : "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

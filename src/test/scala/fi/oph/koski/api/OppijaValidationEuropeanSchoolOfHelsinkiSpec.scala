@@ -4,7 +4,11 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.{ExampleData, ExamplesEuropeanSchoolOfHelsinki}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
+import fi.oph.koski.schema.KoskiSchema.skipSyntheticProperties
 import fi.oph.koski.schema._
+import fi.oph.scalaschema.SerializationContext
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate

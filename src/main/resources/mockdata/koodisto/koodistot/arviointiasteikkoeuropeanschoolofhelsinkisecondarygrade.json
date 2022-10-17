@@ -1,10 +1,10 @@
 {
-  "koodistoUri" : "europeanschoolofhelsinkicurriculum",
+  "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade",
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "European School of Helsinki curriculum",
-    "kuvaus" : "European School of Helsinki curriculum"
+    "nimi" : "Arviointiasteikko European School of Helsinki Secondary grade",
+    "kuvaus" : "Arviointiasteikko European School of Helsinki Secondary grade"
   } ],
   "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2023-01-01",
