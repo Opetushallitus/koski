@@ -1,9 +1,9 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.documentation.ExampleData.helsinki
+import fi.oph.koski.documentation.ExampleData.{englanti, helsinki, laajuusVuosiviikkotunneissa}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{PrimaryOsasuoritus, _}
 
 import java.time.LocalDate
 
@@ -30,8 +30,89 @@ object EuropeanSchoolOfHelsinkiExampleData {
     toimipiste = europeanSchoolOfHelsinki,
     vahvistus = suoritusVahvistus(alkamispäivä.plusYears(1).withMonth(5).withDayOfMonth(31)),
     suorituskieli = ExampleData.englanti,
-    jääLuokalle = jääLuokalle
+    jääLuokalle = jääLuokalle,
+    osasuoritukset = Some(List(
+      primaryLapsiOppimisalueenOsasuoritus(
+        oppiainekoodi = "TCAAL",
+        arviointi = primaryArviointi(
+          päivä = alkamispäivä.plusDays(30),
+          kuvaus = Some(LocalizedString.finnish("hyvää työtä!"))
+        )
+      ),
+      primaryOppimisalueenOsasuoritusKieli(
+        oppiainekoodi = "L1",
+        kieli = ExampleData.sloveeni,
+        suorituskieli = ExampleData.englanti,
+        arviointi = primaryArviointi(
+          arvosana = "fail",
+          kuvaus = Some(LocalizedString.finnish("Parempi onni ensi kerralla")),
+          päivä = alkamispäivä.plusDays(60)
+        )
+      ),
+      primaryOppimisalueenOsasuoritus(oppiainekoodi = "MA",
+        arviointi = primaryArviointi(
+          arvosana = "pass",
+          päivä = alkamispäivä.plusDays(65)
+        )
+      )
+      // TODO: TOR-1685 Lisää esimerkkejä, kun oikeat oppiainekoodit selvillä, tee myös erilaiset eri luokka-asteille
+    ))
   )
+
+  def primaryLapsiOppimisalueenOsasuoritus(oppiainekoodi: String, arviointi: Option[List[PrimaryArviointi]] = None): PrimaryLapsiOppimisalueenOsasuoritus = {
+    PrimaryLapsiOppimisalueenOsasuoritus(
+      koulutusmoduuli = PrimaryLapsiOppimisalue(Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkilapsioppimisalue")),
+      arviointi = arviointi
+    )
+  }
+
+  def primaryOppimisalueenOsasuoritus(
+    oppiainekoodi: String,
+    laajuus: Int = 2,
+    suorituskieli: Koodistokoodiviite = ExampleData.englanti,
+    arviointi: Option[List[PrimaryArviointi]] = None
+  ): PrimaryOppimisalueenOsasuoritus = {
+    PrimaryOppimisalueenOsasuoritus(
+      koulutusmoduuli = PrimaryMuuOppimisalue(
+        Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
+        laajuus = LaajuusVuosiviikkotunneissa(laajuus)
+      ),
+      suorituskieli = suorituskieli,
+      arviointi = arviointi
+    )
+  }
+
+  def primaryOppimisalueenOsasuoritusKieli(
+    oppiainekoodi: String,
+    laajuus: Int = 2,
+    kieli: Koodistokoodiviite = ExampleData.englanti,
+    suorituskieli: Koodistokoodiviite = ExampleData.englanti,
+    arviointi: Option[List[PrimaryArviointi]] = None
+  ): PrimaryOppimisalueenOsasuoritus = {
+    PrimaryOppimisalueenOsasuoritus(
+      koulutusmoduuli = PrimaryKieliOppimisalue(
+        Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
+        laajuus = LaajuusVuosiviikkotunneissa(laajuus),
+        kieli = kieli
+      ),
+      suorituskieli = suorituskieli,
+      arviointi = arviointi
+    )
+  }
+
+  def primaryArviointi(
+    arvosana: String = "pass",
+    kuvaus: Option[LocalizedString] = None,
+    arvioitsijat: Option[List[Arvioitsija]] = Some(List(Arvioitsija("Pekka Paunanen"))),
+    päivä: LocalDate
+  ): Option[List[PrimaryArviointi]] = {
+    Some(List(PrimaryArviointi(
+      arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"),
+      kuvaus = kuvaus,
+      päivä = päivä,
+      arvioitsijat = arvioitsijat
+    )))
+  }
 
   def secondaryLowerSuoritus(luokkaaste: String, alkamispäivä: LocalDate, jääLuokalle: Boolean = false) = SecondaryLowerVuosiluokanSuoritus(
     koulutusmoduuli = SecondaryLowerLuokkaAste(luokkaaste),
@@ -40,8 +121,68 @@ object EuropeanSchoolOfHelsinkiExampleData {
     toimipiste = europeanSchoolOfHelsinki,
     vahvistus = suoritusVahvistus(alkamispäivä.plusYears(1).withMonth(5).withDayOfMonth(31)),
     suorituskieli = ExampleData.englanti,
-    jääLuokalle = jääLuokalle
+    jääLuokalle = jääLuokalle,
+    osasuoritukset = Some(List(
+      secondaryLowerMuunOppiaineenOsasuoritus(
+        oppiainekoodi = "MA",
+        arviointi = secondaryArviointi(luokkaaste, alkamispäivä, alkamispäivä.plusMonths(2))
+      ),
+      secondaryLowerKieliOppiaineenOsasuoritus(
+        oppiainekoodi = "L2",
+        arviointi = secondaryArviointi(luokkaaste, alkamispäivä, alkamispäivä.plusMonths(3))
+      )
+    ))
+    // TODO: TOR-1685 Lisää esimerkkejä, kun oikeat oppiainekoodit selvillä, tee myös erilaiset eri luokka-asteille
   )
+
+
+  def secondaryLowerMuunOppiaineenOsasuoritus(
+    oppiainekoodi: String,
+    laajuus: Int = 2,
+    suorituskieli: Koodistokoodiviite = ExampleData.englanti,
+    arviointi: Option[List[SecondaryArviointi]] = None
+  ): SecondaryLowerOppiaineenSuoritus = {
+    SecondaryLowerOppiaineenSuoritus(
+      koulutusmoduuli = SecondaryLowerMuuOppiaine(
+        Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
+        laajuus = LaajuusVuosiviikkotunneissa(laajuus)
+      ),
+      suorituskieli = suorituskieli,
+      arviointi = arviointi
+    )
+  }
+
+  def secondaryLowerKieliOppiaineenOsasuoritus(
+    oppiainekoodi: String,
+    laajuus: Int = 2,
+    kieli: Koodistokoodiviite = ExampleData.englanti,
+    suorituskieli: Koodistokoodiviite = ExampleData.englanti,
+    arviointi: Option[List[SecondaryArviointi]] = None
+  ): SecondaryLowerOppiaineenSuoritus = {
+    SecondaryLowerOppiaineenSuoritus(
+      koulutusmoduuli = SecondaryLowerKieliOppiaine(
+        Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
+        laajuus = LaajuusVuosiviikkotunneissa(laajuus),
+        kieli = kieli
+      ),
+      suorituskieli = suorituskieli,
+      arviointi = arviointi
+    )
+  }
+
+  def secondaryGradeArviointi(
+    arvosana: String = "B",
+    kuvaus: Option[LocalizedString] = None,
+    arvioitsijat: Option[List[Arvioitsija]] = Some(List(Arvioitsija("Pekka Paunanen"))),
+    päivä: LocalDate
+  ): Option[List[SecondaryGradeArviointi]] = {
+    Some(List(SecondaryGradeArviointi(
+      arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"),
+      kuvaus = kuvaus,
+      päivä = päivä,
+      arvioitsijat = arvioitsijat
+    )))
+  }
 
   def secondaryUpperSuoritus(luokkaaste: String, alkamispäivä: LocalDate, jääLuokalle: Boolean = false) = SecondaryUpperVuosiluokanSuoritus(
     koulutusmoduuli = SecondaryUpperLuokkaAste(luokkaaste),
@@ -50,8 +191,114 @@ object EuropeanSchoolOfHelsinkiExampleData {
     toimipiste = europeanSchoolOfHelsinki,
     vahvistus = suoritusVahvistus(alkamispäivä.plusYears(1).withMonth(5).withDayOfMonth(31)),
     suorituskieli = ExampleData.englanti,
-    jääLuokalle = jääLuokalle
+    jääLuokalle = jääLuokalle /*,
+    osasuoritukset = Some(List(
+      secondaryUpperMuunOppiaineenOsasuoritus(
+        oppiainekoodi = "PE",
+        arviointi = secondaryArviointi(luokkaaste, alkamispäivä, alkamispäivä.plusMonths(3))
+      ),
+      secondaryUpperKieliOppiaineenOsasuoritus(
+        oppiainekoodi = "L1",
+        arviointi = secondaryArviointi(luokkaaste, alkamispäivä, alkamispäivä.plusMonths(4))
+      ),
+      secondaryUpperMuunOppiaineenOsasuoritus(
+        oppiainekoodi = "MA",
+        arviointi = secondaryArviointi(luokkaaste, alkamispäivä, alkamispäivä.plusMonths(5))
+      )
+    )) */
+    // TODO: TOR-1685 Lisää esimerkkejä, kun oikeat oppiainekoodit selvillä, tee myös erilaiset eri luokka-asteille
   )
+
+  def secondaryArviointi(luokkaaste: String, alkamispäivä: LocalDate, päivä: LocalDate) = {
+    luokkaaste match {
+//      case "S7" => secondaryS7PreliminaryMarkArviointi(
+//        päivä = päivä
+//      )
+//      case "S4" | "S5" | "S6" => secondaryNumericalMarkArviointi(
+//        päivä = päivä
+//      )
+      case _ => secondaryGradeArviointi(
+        päivä = päivä
+      )
+    }
+  }
+
+  def secondaryUpperMuunOppiaineenOsasuoritus(
+    oppiainekoodi: String,
+    laajuus: Int = 2,
+    suorituskieli: Koodistokoodiviite = ExampleData.englanti,
+    arviointi: Option[List[SecondaryArviointi]] = None
+  ): SecondaryUpperOppiaineenSuoritus = {
+    SecondaryUpperOppiaineenSuoritus(
+      koulutusmoduuli = SecondaryUpperMuuOppiaine(
+        Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
+        laajuus = LaajuusVuosiviikkotunneissa(laajuus)
+      ),
+      suorituskieli = suorituskieli,
+      arviointi = arviointi
+    )
+  }
+
+  def secondaryUpperKieliOppiaineenOsasuoritus(
+    oppiainekoodi: String,
+    laajuus: Int = 2,
+    kieli: Koodistokoodiviite = ExampleData.englanti,
+    suorituskieli: Koodistokoodiviite = ExampleData.englanti,
+    arviointi: Option[List[SecondaryArviointi]] = None
+  ): SecondaryUpperOppiaineenSuoritus = {
+    SecondaryUpperOppiaineenSuoritus(
+      koulutusmoduuli = SecondaryUpperKieliOppiaine(
+        Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
+        laajuus = LaajuusVuosiviikkotunneissa(laajuus),
+        kieli = kieli
+      ),
+      suorituskieli = suorituskieli,
+      arviointi = arviointi
+    )
+  }
+
+//  def secondaryNumericalMarkArviointi(
+//    arvosana: String = "7.5",
+//    kuvaus: Option[LocalizedString] = None,
+//    arvioitsijat: Option[List[Arvioitsija]] = Some(List(Arvioitsija("Pekka Paunanen"))),
+//    päivä: LocalDate
+//  ): Option[List[SecondaryNumericalMarkArviointi]] = {
+//    Some(List(SecondaryNumericalMarkArviointi(
+//      arvosana = EuropeanSchoolOfHelsinkiNumericalMarkKoodiviite(arvosana),
+//      kuvaus = kuvaus,
+//      päivä = päivä,
+//      arvioitsijat = arvioitsijat
+//    )))
+//  }
+//
+//  def secondaryS7PreliminaryMarkArviointi(
+//    arvosana: String = "8.9",
+//    kuvaus: Option[LocalizedString] = None,
+//    arvioitsijat: Option[List[Arvioitsija]] = Some(List(Arvioitsija("Pekka Paunanen"))),
+//    päivä: LocalDate
+//  ): Option[List[SecondaryS7PreliminaryMarkArviointi]] = {
+//    Some(List(SecondaryS7PreliminaryMarkArviointi(
+//      arvosana = EuropeanSchoolOfHelsinkiS7PreliminaryMarkKoodiviite(arvosana),
+//      kuvaus = kuvaus,
+//      päivä = päivä,
+//      arvioitsijat = arvioitsijat
+//    )))
+//  }
+//
+//  def secondaryS7FinalMarkArviointi(
+//    arvosana: String = "6.48",
+//    kuvaus: Option[LocalizedString] = None,
+//    arvioitsijat: Option[List[Arvioitsija]] = Some(List(Arvioitsija("Pekka Paunanen"))),
+//    päivä: LocalDate
+//  ): Option[List[SecondaryS7FinalMarkArviointi]] = {
+//    Some(List(SecondaryS7FinalMarkArviointi(
+//      arvosana = EuropeanSchoolOfHelsinkiS7FinalMarkKoodiviite(arvosana),
+//      kuvaus = kuvaus,
+//      päivä = päivä,
+//      arvioitsijat = arvioitsijat
+//    )))
+//  }
+
 
   def suoritusVahvistus(päivä: LocalDate) = ExampleData.vahvistusPaikkakunnalla(päivä, europeanSchoolOfHelsinki, helsinki)
 }
