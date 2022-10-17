@@ -1,0 +1,38 @@
+[
+  {
+    "koodiUri": "europeanschoolofhelsinkimuuoppiaine_ma",
+    "koodiArvo": "MA",
+    "metadata": [
+      {
+        "nimi" : "Mathematics",
+        "lyhytNimi" : "Mathematics",
+        "kieli" : "FI"
+      },
+      {
+        "nimi" : "Mathematics",
+        "lyhytNimi" : "Mathematics",
+        "kieli" : "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkimuuoppiaine_pe",
+    "koodiArvo": "PE",
+    "metadata": [
+      {
+        "nimi" : "Physical education",
+        "lyhytNimi" : "Physical education",
+        "kieli" : "FI"
+      },
+      {
+        "nimi" : "Physical education",
+        "lyhytNimi" : "Physical education",
+        "kieli" : "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

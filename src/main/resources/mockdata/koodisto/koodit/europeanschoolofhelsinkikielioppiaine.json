@@ -1,0 +1,56 @@
+[
+  {
+    "koodiUri": "europeanschoolofhelsinkikielioppiaine_l1",
+    "koodiArvo": "L1",
+    "metadata": [
+      {
+        "nimi" : "First language (L1)",
+        "lyhytNimi" : "First language (L1)",
+        "kieli" : "FI"
+      },
+      {
+        "nimi" : "First language (L1)",
+        "lyhytNimi" : "First language (L1)",
+        "kieli" : "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkikielioppiaine_swals",
+    "koodiArvo": "SWALS",
+    "metadata": [
+      {
+        "nimi" : "L1 (S.W.A.L.S.)",
+        "lyhytNimi" : "L1 (S.W.A.L.S.)",
+        "kieli" : "FI"
+      },
+      {
+        "nimi" : "L1 (S.W.A.L.S.)",
+        "lyhytNimi" : "L1 (S.W.A.L.S.)",
+        "kieli" : "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkikielioppiaine_l2",
+    "koodiArvo": "L2",
+    "metadata": [
+      {
+        "nimi" : "Second language (L2)",
+        "lyhytNimi" : "Second language (L2)",
+        "kieli" : "FI"
+      },
+      {
+        "nimi" : "Second language (L2)",
+        "lyhytNimi" : "Second language (L2)",
+        "kieli" : "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

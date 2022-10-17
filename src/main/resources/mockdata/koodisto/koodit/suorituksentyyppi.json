@@ -1855,6 +1855,90 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritusprimary",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuoritusprimary",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki primary cycle subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritusprimarylapsi",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuoritusprimarylapsi",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki primary cycle child subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle child subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle child subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritussecondarylower",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuoritussecondarylower",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki secondary cycle lower year class subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle lower year class subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle lower year class subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritussecondaryupper",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki secondary cycle upper year class subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle upper year class subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle upper year class subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_vstjotpakoulutus",
   "koodiArvo" : "vstjotpakoulutus",
   "metadata" : [ {

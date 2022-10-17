@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation.{ReadOnly, Representative}
-import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, SyntheticProperty, Title}
 
 trait KoodiViite extends Localized {
   def koodiarvo: String
@@ -58,6 +58,38 @@ trait PaikallinenKoodiviite extends KoodiViite {
   def description: LocalizedString = nimi
   override def getNimi = Some(nimi)
   override def toString = s"$koodiarvo (${nimi.get("fi")})"
+}
+
+trait SynteettinenKoodiviite extends KoodiViite with Equals {
+  @Description("Koodin tunniste")
+  @Discriminator
+  def koodiarvo: String
+  @SyntheticProperty
+  @Description("Koodin selväkielinen, kielistetty nimi")
+  @ReadOnly("Tiedon syötössä kuvausta ei tarvita; täydennetään automaattisesti tähän")
+  def nimi: Option[LocalizedString]
+  @SyntheticProperty
+  @Description("Koodin selväkielinen, kielistetty lyhennetty nimi")
+  @ReadOnly("Tiedon syötössä kuvausta ei tarvita; täydennetään automaattisesti tähän")
+  def lyhytNimi: Option[LocalizedString]
+  @Description("Käytetyn koodiston tunniste.")
+  @Discriminator
+  @Title("Koodisto-URI")
+  def koodistoUri: Option[String]
+
+  override def canEqual(that: Any): Boolean = that.isInstanceOf[SynteettinenKoodiviite]
+  override def equals(that: Any): Boolean = that match {
+    case that: SynteettinenKoodiviite =>
+      that.canEqual(this) &&
+        (this.koodiarvo == that.koodiarvo) &&
+        (this.koodistoUri == that.koodistoUri)
+    case _ => false
+  }
+  override def hashCode(): Int = this.koodiarvo.hashCode
+
+  override def toString: String = koodistoUri + "/" + koodiarvo
+  def description: LocalizedString = nimi.getOrElse(unlocalized(koodiarvo))
+  override def getNimi: Option[LocalizedString] = nimi
 }
 
 @Description("Paikallinen, koulutustoimijan oma kooditus. Käytetään kansallisen koodiston puuttuessa")
