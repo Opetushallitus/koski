@@ -18,13 +18,15 @@ export type KuntailmoitusLaajatTiedot = {
   tietojaKarsittu?: boolean
 }
 
-export type KuntailmoitusLaajatTiedotOppijaOidilla = KuntailmoitusLaajatTiedot & {
-  oppijaOid: Oid
-}
+export type KuntailmoitusLaajatTiedotOppijaOidilla =
+  KuntailmoitusLaajatTiedot & {
+    oppijaOid: Oid
+  }
 
-export type KuntailmoitusLaajatTiedotLisätiedoilla = KuntailmoitusLaajatTiedot & {
-  aktiivinen: boolean
-}
+export type KuntailmoitusLaajatTiedotLisätiedoilla =
+  KuntailmoitusLaajatTiedot & {
+    aktiivinen: boolean
+  }
 
 export type KuntailmoituksenTekijäLaajatTiedot = {
   organisaatio: Organisaatio

@@ -60,7 +60,8 @@ export const HakutilanneViewWithoutOrgOid = withRequiresHakeutumisenValvonta(
 export const HakutilanneView = withRequiresHakeutumisenValvonta(
   (props: HakutilanneViewProps) => {
     const history = useHistory()
-    const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+    const organisaatiotJaKäyttöoikeusroolit =
+      useOrganisaatiotJaKäyttöoikeusroolit()
     const organisaatiot = useMemo(
       () =>
         getOrganisaatiot(
@@ -73,9 +74,8 @@ export const HakutilanneView = withRequiresHakeutumisenValvonta(
 
     const organisaatioOid = props.match.params.organisaatioOid!
 
-    const { data, isLoading, errors, setMuuHaku, reload } = useOppijatData(
-      organisaatioOid
-    )
+    const { data, isLoading, errors, setMuuHaku, reload } =
+      useOppijatData(organisaatioOid)
 
     const [counters, setCounters] = useState<DataTableCountChangeEvent>({
       filteredRowCount: 0,

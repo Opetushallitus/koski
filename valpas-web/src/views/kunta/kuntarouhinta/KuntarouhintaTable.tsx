@@ -121,32 +121,32 @@ const kuntarouhinnanTulosToTableData = (
     oppijaToTableData(organisaatioOid, basePath)
   )
 
-const oppijaToTableData = (organisaatioOid: Oid, basePath: string) => (
-  oppija: RouhintaOppivelvollinen
-): Datum => {
-  const oo =
-    oppija.viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus
-  return {
-    key: [oppija.oppijanumero],
-    values: [
-      // Oppija
-      nimiValue(oppija, organisaatioOid, basePath),
-      nullableDateValue(oppija.syntymäaika),
-      nonNullableValue(oppija.oppijanumero),
-      nullableValue(oppija.hetu),
-      // Viimeisin oppivelvollisuuden suorittamiseen kelpaava opiskeluoikeus
-      päättymispäiväValue(oo),
-      viimeisinTilaValue(oo),
-      nullableKoulutustyyppiValue(oo?.suorituksenTyyppi),
-      nullableValue(getLocalizedMaybe(oo?.toimipiste)),
-      // Oppivelvollisuuden keskeytys
-      oppivelvollisuudenKeskeytysValue(oppija.oppivelvollisuudenKeskeytys),
-      // Aktiivisen kuntailmoituksen kohde ja päivämäärä
-      ilmoitettuKunnalleKotipaikka(oppija.aktiivinenKuntailmoitus),
-      ilmoituksenTekopäivä(oppija.aktiivinenKuntailmoitus),
-    ],
+const oppijaToTableData =
+  (organisaatioOid: Oid, basePath: string) =>
+  (oppija: RouhintaOppivelvollinen): Datum => {
+    const oo =
+      oppija.viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus
+    return {
+      key: [oppija.oppijanumero],
+      values: [
+        // Oppija
+        nimiValue(oppija, organisaatioOid, basePath),
+        nullableDateValue(oppija.syntymäaika),
+        nonNullableValue(oppija.oppijanumero),
+        nullableValue(oppija.hetu),
+        // Viimeisin oppivelvollisuuden suorittamiseen kelpaava opiskeluoikeus
+        päättymispäiväValue(oo),
+        viimeisinTilaValue(oo),
+        nullableKoulutustyyppiValue(oo?.suorituksenTyyppi),
+        nullableValue(getLocalizedMaybe(oo?.toimipiste)),
+        // Oppivelvollisuuden keskeytys
+        oppivelvollisuudenKeskeytysValue(oppija.oppivelvollisuudenKeskeytys),
+        // Aktiivisen kuntailmoituksen kohde ja päivämäärä
+        ilmoitettuKunnalleKotipaikka(oppija.aktiivinenKuntailmoitus),
+        ilmoituksenTekopäivä(oppija.aktiivinenKuntailmoitus),
+      ],
+    }
   }
-}
 
 const nimiValue = (
   oppija: RouhintaOppivelvollinen,

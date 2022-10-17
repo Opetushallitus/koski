@@ -47,7 +47,8 @@ const organisaatioHakuRooli = "KUNTA"
 
 export const KuntailmoitusViewWithoutOrgOid = withRequiresKuntavalvonta(() => {
   const basePath = useBasePath()
-  const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+  const organisaatiotJaKäyttöoikeusroolit =
+    useOrganisaatiotJaKäyttöoikeusroolit()
   const organisaatiot = useMemo(
     () =>
       getOrganisaatiot(
@@ -84,7 +85,8 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
       unfilteredRowCount: 0,
     })
 
-    const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+    const organisaatiotJaKäyttöoikeusroolit =
+      useOrganisaatiotJaKäyttöoikeusroolit()
     const organisaatiot = useMemo(
       () =>
         getOrganisaatiot(
@@ -110,10 +112,8 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
       fetchKuntailmoituksetCache
     )
 
-    const [
-      näytäAiemminTehdytIlmoitukset,
-      setNäytäAiemminTehdytIlmoitukset,
-    ] = useState(false)
+    const [näytäAiemminTehdytIlmoitukset, setNäytäAiemminTehdytIlmoitukset] =
+      useState(false)
     const [data, aiemminTehdytIlmoituksetLkm] = useMemo(() => {
       const arr = isSuccess(fetch) ? fetch.data : []
       const arrIlmanVanhoja = arr.map(poistaAiemminTehdytIlmoitukset)

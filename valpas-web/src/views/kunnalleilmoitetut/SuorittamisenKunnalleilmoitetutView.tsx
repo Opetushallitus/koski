@@ -14,8 +14,8 @@ import { KunnalleIlmoitetutView } from "./KunnalleIlmoitetutView"
 const organisaatioTyyppi = "OPPILAITOS"
 const organisaatioHakuRooli = "OPPILAITOS_SUORITTAMINEN"
 
-export const SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid = withRequiresSuorittamisenValvonta(
-  () => (
+export const SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid =
+  withRequiresSuorittamisenValvonta(() => (
     <OrganisaatioAutoRedirect
       organisaatioHakuRooli={organisaatioHakuRooli}
       organisaatioTyyppi={organisaatioTyyppi}
@@ -26,29 +26,29 @@ export const SuorittamisenKunnalleIlmoitetutViewWithoutOrgOid = withRequiresSuor
       }
       renderError={() => <OrganisaatioMissingView />}
     />
-  )
-)
+  ))
 
 export type SuorittamisenKunnalleIlmoitetutViewProps = OrganisaatioOidRouteProps
 
-export const SuorittamisenKunnalleIlmoitetutView = withRequiresSuorittamisenValvonta(
-  (props: SuorittamisenKunnalleIlmoitetutViewProps) => (
-    <KunnalleIlmoitetutView
-      organisaatioOid={props.match.params.organisaatioOid!}
-      organisaatioHakuRooli={organisaatioHakuRooli}
-      organisaatioTyyppi={organisaatioTyyppi}
-      dataFetcher={useSuorittamisvalvonnanKunnalleTehdytIlmoitukset}
-      backRefName="suorittaminenIlmoitetutRef"
-      storageName="suorittaminenIlmoitetut"
-      navigation={
-        <SuorittaminenNavigation
-          selectedOrganisaatio={props.match.params.organisaatioOid!}
-        />
-      }
-      linkCreator={suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href}
-    />
+export const SuorittamisenKunnalleIlmoitetutView =
+  withRequiresSuorittamisenValvonta(
+    (props: SuorittamisenKunnalleIlmoitetutViewProps) => (
+      <KunnalleIlmoitetutView
+        organisaatioOid={props.match.params.organisaatioOid!}
+        organisaatioHakuRooli={organisaatioHakuRooli}
+        organisaatioTyyppi={organisaatioTyyppi}
+        dataFetcher={useSuorittamisvalvonnanKunnalleTehdytIlmoitukset}
+        backRefName="suorittaminenIlmoitetutRef"
+        storageName="suorittaminenIlmoitetut"
+        navigation={
+          <SuorittaminenNavigation
+            selectedOrganisaatio={props.match.params.organisaatioOid!}
+          />
+        }
+        linkCreator={suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href}
+      />
+    )
   )
-)
 
 const OrganisaatioMissingView = () => (
   <ErrorView

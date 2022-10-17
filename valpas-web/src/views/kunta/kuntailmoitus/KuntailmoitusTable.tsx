@@ -81,49 +81,49 @@ export const KuntailmoitusTable = (props: KuntailmoitusTableProps) => {
   )
 }
 
-const ilmoitusToTableData = (basePath: string, organisaatioOid: string) => (
-  tiedot: OppijaKuntailmoituksillaSuppeatTiedot
-): Array<Datum> => {
-  const henkilö = tiedot.oppija.henkilö
-  const ainaNäytetävätIlmoitukset = getNäytettävätIlmoitukset(tiedot).map(
-    (i) => i.id
-  )
+const ilmoitusToTableData =
+  (basePath: string, organisaatioOid: string) =>
+  (tiedot: OppijaKuntailmoituksillaSuppeatTiedot): Array<Datum> => {
+    const henkilö = tiedot.oppija.henkilö
+    const ainaNäytetävätIlmoitukset = getNäytettävätIlmoitukset(tiedot).map(
+      (i) => i.id
+    )
 
-  return tiedot.kuntailmoitukset.map((ilmoitus) => ({
-    key: [ilmoitus.id],
-    values: [
-      {
-        value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
-        display: (
-          <Link
-            to={oppijaPath.href(basePath, {
-              kuntailmoitusRef: organisaatioOid,
-              oppijaOid: henkilö.oid,
-            })}
-          >
-            {henkilö.sukunimi} {henkilö.etunimet}
-          </Link>
+    return tiedot.kuntailmoitukset.map((ilmoitus) => ({
+      key: [ilmoitus.id],
+      values: [
+        {
+          value: `${henkilö.sukunimi} ${henkilö.etunimet}`,
+          display: (
+            <Link
+              to={oppijaPath.href(basePath, {
+                kuntailmoitusRef: organisaatioOid,
+                oppijaOid: henkilö.oid,
+              })}
+            >
+              {henkilö.sukunimi} {henkilö.etunimet}
+            </Link>
+          ),
+          icon: !ainaNäytetävätIlmoitukset.includes(ilmoitus.id) ? (
+            <OpiskeluhistoriaTapahtumaIcon color="blue" />
+          ) : null,
+        },
+        {
+          value: ilmoitus.aikaleima,
+          display: formatNullableDate(ilmoitus.aikaleima),
+        },
+        {
+          value: organisaatioNimi(ilmoitus.tekijä.organisaatio),
+        },
+        {
+          value: henkilö.syntymäaika,
+          display: formatNullableDate(henkilö.syntymäaika),
+        },
+        fromNullableValue(
+          perusopetuksenJälkeisetOpiskeluoikeustiedot(
+            tiedot.oppija.opiskeluoikeudet
+          )
         ),
-        icon: !ainaNäytetävätIlmoitukset.includes(ilmoitus.id) ? (
-          <OpiskeluhistoriaTapahtumaIcon color="blue" />
-        ) : null,
-      },
-      {
-        value: ilmoitus.aikaleima,
-        display: formatNullableDate(ilmoitus.aikaleima),
-      },
-      {
-        value: organisaatioNimi(ilmoitus.tekijä.organisaatio),
-      },
-      {
-        value: henkilö.syntymäaika,
-        display: formatNullableDate(henkilö.syntymäaika),
-      },
-      fromNullableValue(
-        perusopetuksenJälkeisetOpiskeluoikeustiedot(
-          tiedot.oppija.opiskeluoikeudet
-        )
-      ),
-    ],
-  }))
-}
+      ],
+    }))
+  }

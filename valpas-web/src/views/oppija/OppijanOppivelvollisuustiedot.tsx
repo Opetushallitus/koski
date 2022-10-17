@@ -53,10 +53,8 @@ export const OppijanOppivelvollisuustiedot = (
   >(undefined)
 
   const [vapautusModalVisible, setVapautusModalVisible] = useState(false)
-  const [
-    vapautusMitätöintiModalVisible,
-    setVapautusMitätöintiModalVisible,
-  ] = useState(false)
+  const [vapautusMitätöintiModalVisible, setVapautusMitätöintiModalVisible] =
+    useState(false)
 
   const openKeskeytysModal = useCallback(
     (keskeytys?: OppivelvollisuudenKeskeytys) => {

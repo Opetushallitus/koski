@@ -47,11 +47,9 @@ export type FormFieldProps<T> = {
   error?: React.ReactNode
 }
 
-export type FormState<T extends object> = Required<
-  {
-    [K in keyof T]: FieldState<T[K]>
-  }
->
+export type FormState<T extends object> = Required<{
+  [K in keyof T]: FieldState<T[K]>
+}>
 
 export type FormErrors<T extends object> = Record<keyof T, FieldError[]>
 
@@ -74,9 +72,10 @@ export const useFormState = <T extends object>({
   initialValues,
   validators,
 }: UseFormStateOptions<T>): UseFormStateHook<T> => {
-  const initialState = useMemo(() => createInitialState(initialValues), [
-    initialValues,
-  ])
+  const initialState = useMemo(
+    () => createInitialState(initialValues),
+    [initialValues]
+  )
   const [currentState, setState] = useState(initialState)
 
   const set: FormSetFunction<T> = useCallback(

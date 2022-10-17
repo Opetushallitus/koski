@@ -19,7 +19,8 @@ export const OrganisaatioAutoRedirect = (
   props: OrganisatioAutoRedirectProps
 ) => {
   const basePath = useBasePath()
-  const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+  const organisaatiotJaKäyttöoikeusroolit =
+    useOrganisaatiotJaKäyttöoikeusroolit()
   const organisaatiot = useMemo(
     () =>
       getOrganisaatiot(

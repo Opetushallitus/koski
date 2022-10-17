@@ -23,26 +23,28 @@ export const suorittamisenValvontaAllowed: AccessGuard = (roles) =>
 export const kuntavalvontaAllowed: AccessGuard = (roles) =>
   roles.includes("KUNTA")
 
-export const someOf = (...accessGuards: AccessGuard[]): AccessGuard => (
-  roles
-) => accessGuards.some((guard) => guard(roles))
+export const someOf =
+  (...accessGuards: AccessGuard[]): AccessGuard =>
+  (roles) =>
+    accessGuards.some((guard) => guard(roles))
 
 export type WithRequiresAccessRightsProps = {
   redirectUserWithoutAccessTo: string
 }
 
-const accessRightGuardHoc = (hasAccess: AccessGuard) => <P extends object>(
-  Component: React.ComponentType<P>
-): React.FC<P & WithRequiresAccessRightsProps> => (
-  props: WithRequiresAccessRightsProps
-) => {
-  const roles = useKäyttöoikeusroolit()
-  return hasAccess(roles) ? (
-    <Component {...(props as P)} />
-  ) : (
-    <Redirect to={props.redirectUserWithoutAccessTo} />
-  )
-}
+const accessRightGuardHoc =
+  (hasAccess: AccessGuard) =>
+  <P extends object>(
+    Component: React.ComponentType<P>
+  ): React.FC<P & WithRequiresAccessRightsProps> =>
+  (props: WithRequiresAccessRightsProps) => {
+    const roles = useKäyttöoikeusroolit()
+    return hasAccess(roles) ? (
+      <Component {...(props as P)} />
+    ) : (
+      <Redirect to={props.redirectUserWithoutAccessTo} />
+    )
+  }
 
 export const withRequiresHakeutumisenValvonta = accessRightGuardHoc(
   hakeutumisenValvontaAllowed
@@ -65,9 +67,8 @@ export const withRequiresJokinOikeus = accessRightGuardHoc(
   )
 )
 
-export const withRequiresKuntavalvonta = accessRightGuardHoc(
-  kuntavalvontaAllowed
-)
+export const withRequiresKuntavalvonta =
+  accessRightGuardHoc(kuntavalvontaAllowed)
 
 const käyttöoikeusroolitContext = React.createContext<
   OrganisaatioJaKayttooikeusrooli[]
@@ -92,14 +93,17 @@ export const useKäyttöoikeusroolit = (): Kayttooikeusrooli[] => {
 }
 
 export const useOrganisaatiot = () => {
-  const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
-  return useMemo(() => getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit), [
-    organisaatiotJaKäyttöoikeusroolit,
-  ])
+  const organisaatiotJaKäyttöoikeusroolit =
+    useOrganisaatiotJaKäyttöoikeusroolit()
+  return useMemo(
+    () => getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit),
+    [organisaatiotJaKäyttöoikeusroolit]
+  )
 }
 
 export const useOrganisaatiotOfRole = (accessGuard: AccessGuard) => {
-  const organisaatiotJaKäyttöoikeusroolit = useOrganisaatiotJaKäyttöoikeusroolit()
+  const organisaatiotJaKäyttöoikeusroolit =
+    useOrganisaatiotJaKäyttöoikeusroolit()
   return useMemo(
     () => getOrganisaatiot(organisaatiotJaKäyttöoikeusroolit, accessGuard),
     [accessGuard, organisaatiotJaKäyttöoikeusroolit]

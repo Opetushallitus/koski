@@ -12,12 +12,14 @@ export type KoodistoKoodiviite<
 }
 
 // @ts-ignore
-const koodiarvoCondition = <K extends KoodistoKoodiviite, S extends string>(
-  uri: string,
-  truthyValues: S[]
-) => (koodiviite: K) =>
-  uri === koodiviite.koodistoUri &&
-  truthyValues.includes(koodiviite.koodiarvo as S)
+const koodiarvoCondition =
+  <K extends KoodistoKoodiviite, S extends string>(
+    uri: string,
+    truthyValues: S[]
+  ) =>
+  (koodiviite: K) =>
+    uri === koodiviite.koodistoUri &&
+    truthyValues.includes(koodiviite.koodiarvo as S)
 
 export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<
   "opiskeluoikeudentyyppi",
@@ -43,5 +45,6 @@ export type Maa = KoodistoKoodiviite<"maatjavaltiot2">
 export type Kunta = KoodistoKoodiviite<"kunta">
 
 // TODO: Omakeksittyjä koodistoja. Pitää tsekata mitä löytyy valmiina.
-export type OppilaitosnumeroKoodistoviite = KoodistoKoodiviite<"oppilaitosnumero">
+export type OppilaitosnumeroKoodistoviite =
+  KoodistoKoodiviite<"oppilaitosnumero">
 export type PaikkakuntaKoodistoviite = KoodistoKoodiviite<"paikkakunta">

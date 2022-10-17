@@ -25,17 +25,17 @@ export type LocalLogin = {
 
 export type Login = ExternalLogin | LocalLogin
 
-const getCurrentUser = (
-  fetchFn: () => Promise<ApiResponse<User>>
-) => async (): Promise<CurrentUser> =>
-  pipe(
-    await fetchFn(),
-    E.map((response) => response.data as CurrentUser),
-    E.getOrElse(
-      (fail) =>
-        (fail.status === 403 ? "forbidden" : "unauthorized") as CurrentUser
+const getCurrentUser =
+  (fetchFn: () => Promise<ApiResponse<User>>) =>
+  async (): Promise<CurrentUser> =>
+    pipe(
+      await fetchFn(),
+      E.map((response) => response.data as CurrentUser),
+      E.getOrElse(
+        (fail) =>
+          (fail.status === 403 ? "forbidden" : "unauthorized") as CurrentUser
+      )
     )
-  )
 
 export const getCurrentVirkailijaUser = getCurrentUser(
   fetchCurrentVirkailijaUser

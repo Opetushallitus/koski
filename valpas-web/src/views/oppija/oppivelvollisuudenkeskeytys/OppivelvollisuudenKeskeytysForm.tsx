@@ -199,9 +199,9 @@ type OppivelvollisuudenKeskeytysOptionProps = {
   testId?: string
 } & React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>
 
-const OppivelvollisuudenKeskeytysOption: React.FC<OppivelvollisuudenKeskeytysOptionProps> = (
-  props
-) => {
+const OppivelvollisuudenKeskeytysOption: React.FC<
+  OppivelvollisuudenKeskeytysOptionProps
+> = (props) => {
   return (
     <div className={b("option")}>
       <RadioButton

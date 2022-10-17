@@ -17,9 +17,10 @@ export const useOppijaSelect = (
     [data, selectedOppijaOids]
   )
 
-  const result = useMemo(() => ({ setSelectedOppijaOids, selectedOppijat }), [
-    selectedOppijat,
-  ])
+  const result = useMemo(
+    () => ({ setSelectedOppijaOids, selectedOppijat }),
+    [selectedOppijat]
+  )
 
   return result
 }

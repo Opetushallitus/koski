@@ -128,60 +128,60 @@ const createSuorittaminenKey = (
   opiskeluoikeus: OpiskeluoikeusSuppeatTiedot
 ): SuorittaminenKey => [oppija.henkilö.oid, opiskeluoikeus.oid]
 
-const oppijaToTableData = (basePath: string, organisaatioOid: string) => (
-  oppija: OppijaHakutilanteillaSuppeatTiedot
-): Array<Datum> => {
-  const henkilö = oppija.oppija.henkilö
+const oppijaToTableData =
+  (basePath: string, organisaatioOid: string) =>
+  (oppija: OppijaHakutilanteillaSuppeatTiedot): Array<Datum> => {
+    const henkilö = oppija.oppija.henkilö
 
-  return suorittamisvalvottavatOpiskeluoikeudet(
-    organisaatioOid,
-    oppija.oppija.opiskeluoikeudet
-  ).map((opiskeluoikeus) => {
-    const tiedot = opiskeluoikeus.perusopetuksenJälkeinenTiedot!
+    return suorittamisvalvottavatOpiskeluoikeudet(
+      organisaatioOid,
+      oppija.oppija.opiskeluoikeudet
+    ).map((opiskeluoikeus) => {
+      const tiedot = opiskeluoikeus.perusopetuksenJälkeinenTiedot!
 
-    return {
-      key: createSuorittaminenKey(oppija.oppija, opiskeluoikeus),
-      values: [
-        {
-          value: `${henkilö.sukunimi} ${henkilö.etunimet}${opiskeluoikeus.onTehtyIlmoitus}`,
-          display: (
-            <Link
-              to={oppijaPath.href(basePath, {
-                suorittaminenRef: organisaatioOid,
-                oppijaOid: henkilö.oid,
-              })}
-            >
-              {henkilö.sukunimi} {henkilö.etunimet}
-            </Link>
+      return {
+        key: createSuorittaminenKey(oppija.oppija, opiskeluoikeus),
+        values: [
+          {
+            value: `${henkilö.sukunimi} ${henkilö.etunimet}${opiskeluoikeus.onTehtyIlmoitus}`,
+            display: (
+              <Link
+                to={oppijaPath.href(basePath, {
+                  suorittaminenRef: organisaatioOid,
+                  oppijaOid: henkilö.oid,
+                })}
+              >
+                {henkilö.sukunimi} {henkilö.etunimet}
+              </Link>
+            ),
+            icon: opiskeluoikeus.onTehtyIlmoitus ? (
+              <OpiskeluhistoriaTapahtumaIcon color="blue" />
+            ) : null,
+          },
+          {
+            value: henkilö.syntymäaika,
+            display: formatNullableDate(henkilö.syntymäaika),
+          },
+          {
+            value: koulutustyyppi(
+              opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi
+            ),
+          },
+          tila(tiedot.tarkastelupäivänKoskiTila),
+          toimipiste(opiskeluoikeus),
+          fromNullableValue(päivä(tiedot.alkamispäivä)),
+          fromNullableValue(päivä(tiedot.päättymispäivä)),
+          fromNullableValue(
+            perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot(
+              oppija.oppija.opiskeluoikeudet,
+              opiskeluoikeus
+            )
           ),
-          icon: opiskeluoikeus.onTehtyIlmoitus ? (
-            <OpiskeluhistoriaTapahtumaIcon color="blue" />
-          ) : null,
-        },
-        {
-          value: henkilö.syntymäaika,
-          display: formatNullableDate(henkilö.syntymäaika),
-        },
-        {
-          value: koulutustyyppi(
-            opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi
-          ),
-        },
-        tila(tiedot.tarkastelupäivänKoskiTila),
-        toimipiste(opiskeluoikeus),
-        fromNullableValue(päivä(tiedot.alkamispäivä)),
-        fromNullableValue(päivä(tiedot.päättymispäivä)),
-        fromNullableValue(
-          perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot(
-            oppija.oppija.opiskeluoikeudet,
-            opiskeluoikeus
-          )
-        ),
-        fromNullableValue(oppivelvollisuus(oppija)),
-      ],
-    }
-  })
-}
+          fromNullableValue(oppivelvollisuus(oppija)),
+        ],
+      }
+    })
+  }
 
 const koulutustyyppi = (tyyppi?: Suorituksentyyppi): string =>
   tyyppi === undefined ? "" : suorituksenTyyppiToKoulutustyyppi(tyyppi)

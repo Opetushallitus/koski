@@ -5,14 +5,13 @@ import { FieldValidator } from "./useFormState"
 
 // Merkkijonojen validaattorit
 
-const stringValidator = (isValidValue: (input: string) => boolean) => <
-  T extends object
->(
-  errorStringId: string = ""
-): FieldValidator<string, T> => (input, _form) =>
-  input === undefined || !isValidValue(input)
-    ? E.left([t(errorStringId)])
-    : E.right(input)
+const stringValidator =
+  (isValidValue: (input: string) => boolean) =>
+  <T extends object>(errorStringId: string = ""): FieldValidator<string, T> =>
+  (input, _form) =>
+    input === undefined || !isValidValue(input)
+      ? E.left([t(errorStringId)])
+      : E.right(input)
 
 export const expectNonEmptyString = stringValidator((input) => input.length > 0)
 
@@ -36,10 +35,12 @@ export const expectValidOid = stringValidator((input) => {
 
 // Validaattorien koosteet
 
-export const expectAtLeastOne = <T extends object, S>(
-  errorStringId: string = "",
-  validators: FieldValidator<S, T>[]
-): FieldValidator<S, T> => (input, form) => {
-  const results = validators.map((validator) => validator(input, form))
-  return results.some(E.isRight) ? E.right(input) : E.left([t(errorStringId)])
-}
+export const expectAtLeastOne =
+  <T extends object, S>(
+    errorStringId: string = "",
+    validators: FieldValidator<S, T>[]
+  ): FieldValidator<S, T> =>
+  (input, form) => {
+    const results = validators.map((validator) => validator(input, form))
+    return results.some(E.isRight) ? E.right(input) : E.left([t(errorStringId)])
+  }
