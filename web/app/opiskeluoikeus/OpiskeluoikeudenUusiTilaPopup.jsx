@@ -8,7 +8,8 @@ import {
   modelLookup,
   modelLookupRequired,
   modelSetValue,
-  pushModel
+  pushModel,
+  optionalPrototypeModel
 } from '../editor/EditorModel'
 import { EnumEditor } from '../editor/EnumEditor'
 import { Editor } from '../editor/Editor'
@@ -53,11 +54,15 @@ export const OpiskeluoikeudenUusiTilaPopup = ({
     (tilaM, rahoitusM, defaultRahoitus) => ({
       vaatiiRahoituksen: opiskeluoikeudenTilaVaatiiRahoitusmuodon(
         modelData(tilaM.context.opiskeluoikeus, 'tyyppi.koodiarvo'),
-        modelData(tilaM, 'koodiarvo')
+        modelData(tilaM, 'koodiarvo'),
+        modelData(tilaM.context.opiskeluoikeus, 'suoritukset.0.tyyppi')
       ),
       rahoitusValittu: modelData(rahoitusM),
-      setDefaultRahoitus: () =>
-        pushModel(modelSetValue(rahoitusM, defaultRahoitus)),
+      setDefaultRahoitus: () => {
+        const proto = optionalPrototypeModel(rahoitusM)
+        const defaultValue = proto && proto.value
+        pushModel(modelSetValue(rahoitusM, defaultValue || defaultRahoitus))
+      },
       setRahoitusNone: () => pushModel(modelSetValue(rahoitusM, null))
     })
   )

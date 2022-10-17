@@ -29,9 +29,13 @@ export const autoFillRahoitusmuoto = ({
 
 export const opiskeluoikeudenTilaVaatiiRahoitusmuodon = (
   opiskeluoikeudenTyyppi,
-  tila
+  tila,
+  suoritus
 ) => {
   // TODO: TOR-1685 Eurooppalainen koulu
+  if (suoritus && suoritus.koodiarvo === 'vstjotpakoulutus') {
+    return ['lasna', 'hyvaksytystisuoritettu'].includes(tila)
+  }
   if (
     [
       'aikuistenperusopetus',
