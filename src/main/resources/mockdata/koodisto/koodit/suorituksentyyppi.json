@@ -1813,20 +1813,41 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkasecondary",
-  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkasecondary",
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkasecondarylower",
+  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
   "metadata" : [ {
-    "nimi" : "European School of Helsinki secondary cycle year class",
+    "nimi" : "European School of Helsinki secondary cycle lower year class",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "European School of Helsinki secondary cycle year class",
+    "nimi" : "European School of Helsinki secondary cycle lower year class",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "European School of Helsinki secondary cycle year class",
+    "nimi" : "European School of Helsinki secondary cycle lower year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkasecondaryupper",
+  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki secondary cycle upper year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle upper year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle upper year class",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"

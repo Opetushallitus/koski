@@ -143,18 +143,32 @@ case class PrimaryVuosiluokanSuoritus(
   //  override val osasuoritukset: Option[List[OppiaineenSuoritus]] = None
 ) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
 
-case class SecondaryVuosiluokanSuoritus(
-  koulutusmoduuli: SecondaryLuokkaAste,
+case class SecondaryLowerVuosiluokanSuoritus(
+  koulutusmoduuli: SecondaryLowerLuokkaAste,
   luokka: Option[String] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
   suorituskieli: Koodistokoodiviite,
-  @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondary")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkasecondary", koodistoUri = "suorituksentyyppi"),
+  @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondarylower")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkasecondarylower", koodistoUri = "suorituksentyyppi"),
   jääLuokalle: Boolean = false,
   //  override val osasuoritukset: Option[List[OppiaineenSuoritus]] = None
 ) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+
+case class SecondaryUpperVuosiluokanSuoritus(
+  koulutusmoduuli: SecondaryUpperLuokkaAste,
+  luokka: Option[String] = None,
+  override val alkamispäivä: Option[LocalDate] = None,
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
+  suorituskieli: Koodistokoodiviite,
+  @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkasecondaryupper", koodistoUri = "suorituksentyyppi"),
+  jääLuokalle: Boolean = false,
+  //  override val osasuoritukset: Option[List[OppiaineenSuoritus]] = None
+) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+
 
 trait EuropeanSchoolOfHelsinkiLuokkaAste extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
   @KoodistoUri("europeanschoolofhelsinkiluokkaaste")
@@ -193,12 +207,24 @@ object PrimaryLuokkaAste {
   }
 }
 
-case class SecondaryLuokkaAste(
+case class SecondaryLowerLuokkaAste(
   @KoodistoKoodiarvo("S1")
   @KoodistoKoodiarvo("S2")
   @KoodistoKoodiarvo("S3")
   @KoodistoKoodiarvo("S4")
   @KoodistoKoodiarvo("S5")
+  tunniste: Koodistokoodiviite,
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
+) extends EuropeanSchoolOfHelsinkiLuokkaAste
+
+
+object SecondaryLowerLuokkaAste {
+  def apply(koodistokoodiarvo: String): SecondaryLowerLuokkaAste = {
+    SecondaryLowerLuokkaAste(tunniste = Koodistokoodiviite(koodistokoodiarvo, "europeanschoolofhelsinkiluokkaaste"))
+  }
+}
+
+case class SecondaryUpperLuokkaAste(
   @KoodistoKoodiarvo("S6")
   @KoodistoKoodiarvo("S7")
   tunniste: Koodistokoodiviite,
@@ -206,8 +232,8 @@ case class SecondaryLuokkaAste(
 ) extends EuropeanSchoolOfHelsinkiLuokkaAste
 
 
-object SecondaryLuokkaAste {
-  def apply(koodistokoodiarvo: String): SecondaryLuokkaAste = {
-    SecondaryLuokkaAste(tunniste = Koodistokoodiviite(koodistokoodiarvo, "europeanschoolofhelsinkiluokkaaste"))
+object SecondaryUpperLuokkaAste {
+  def apply(koodistokoodiarvo: String): SecondaryUpperLuokkaAste = {
+    SecondaryUpperLuokkaAste(tunniste = Koodistokoodiviite(koodistokoodiarvo, "europeanschoolofhelsinkiluokkaaste"))
   }
 }
