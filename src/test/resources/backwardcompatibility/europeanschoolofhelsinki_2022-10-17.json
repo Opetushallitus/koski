@@ -26,6 +26,10 @@
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "6",
+          "koodistoUri" : "opintojenrahoitus"
         }
       } ]
     },
@@ -264,6 +268,42 @@
         "nimi" : {
           "fi" : "European School of Helsinki"
         }
+      },
+      "vahvistus" : {
+        "päivä" : "2026-05-31",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.13349113236",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03782",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "European School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.13349113236",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03782",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "European School of Helsinki"
+            }
+          }
+        } ]
       },
       "suorituskieli" : {
         "koodiarvo" : "EN",
@@ -628,7 +668,7 @@
         "koodistoUri" : "kieli"
       },
       "tyyppi" : {
-        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondary",
+        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
         "koodistoUri" : "suorituksentyyppi"
       },
       "jääLuokalle" : false
@@ -699,7 +739,7 @@
         "koodistoUri" : "kieli"
       },
       "tyyppi" : {
-        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondary",
+        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
         "koodistoUri" : "suorituksentyyppi"
       },
       "jääLuokalle" : false
@@ -770,7 +810,7 @@
         "koodistoUri" : "kieli"
       },
       "tyyppi" : {
-        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondary",
+        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
         "koodistoUri" : "suorituksentyyppi"
       },
       "jääLuokalle" : false
@@ -841,7 +881,7 @@
         "koodistoUri" : "kieli"
       },
       "tyyppi" : {
-        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondary",
+        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
         "koodistoUri" : "suorituksentyyppi"
       },
       "jääLuokalle" : false
@@ -912,7 +952,7 @@
         "koodistoUri" : "kieli"
       },
       "tyyppi" : {
-        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondary",
+        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
         "koodistoUri" : "suorituksentyyppi"
       },
       "jääLuokalle" : false
@@ -983,7 +1023,7 @@
         "koodistoUri" : "kieli"
       },
       "tyyppi" : {
-        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondary",
+        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
         "koodistoUri" : "suorituksentyyppi"
       },
       "jääLuokalle" : false
@@ -1054,7 +1094,7 @@
         "koodistoUri" : "kieli"
       },
       "tyyppi" : {
-        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondary",
+        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
         "koodistoUri" : "suorituksentyyppi"
       },
       "jääLuokalle" : false

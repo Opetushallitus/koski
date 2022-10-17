@@ -45,13 +45,13 @@ object ExamplesEuropeanSchoolOfHelsinki {
       primarySuoritus("P3", alkamispäivä.plusYears(5)),
       primarySuoritus("P4", alkamispäivä.plusYears(6)),
       primarySuoritus("P5", alkamispäivä.plusYears(7)),
-      secondarySuoritus("S1", alkamispäivä.plusYears(8)),
-      secondarySuoritus("S2", alkamispäivä.plusYears(9)),
-      secondarySuoritus("S3", alkamispäivä.plusYears(10)),
-      secondarySuoritus("S4", alkamispäivä.plusYears(11)),
-      secondarySuoritus("S5", alkamispäivä.plusYears(12)),
-      secondarySuoritus("S6", alkamispäivä.plusYears(13)),
-      secondarySuoritus("S7", alkamispäivä.plusYears(14)),
+      secondaryLowerSuoritus("S1", alkamispäivä.plusYears(8)),
+      secondaryLowerSuoritus("S2", alkamispäivä.plusYears(9)),
+      secondaryLowerSuoritus("S3", alkamispäivä.plusYears(10)),
+      secondaryLowerSuoritus("S4", alkamispäivä.plusYears(11)),
+      secondaryLowerSuoritus("S5", alkamispäivä.plusYears(12)),
+      secondaryUpperSuoritus("S6", alkamispäivä.plusYears(13)),
+      secondaryUpperSuoritus("S7", alkamispäivä.plusYears(14)),
     )
   )
 
