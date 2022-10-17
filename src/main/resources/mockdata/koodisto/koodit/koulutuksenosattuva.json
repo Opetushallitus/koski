@@ -4,39 +4,61 @@
   "metadata" : [ {
     "nimi" : "Opiskelu- ja urasuunnittelutaidot",
     "lyhytNimi" : "",
-    "kuvaus" : "",
+    "kuvaus" : "Käytetään TUVA perusteessa",
     "kieli" : "FI"
   }, {
-    "nimi" : "Opiskelu- ja urasuunnittelutaidot",
+    "nimi" : "Studiefärdigheter och karriärplaneringsfärdigheter",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Opiskelu- ja urasuunnittelutaidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koulutuksenosattuva_107",
-  "koodiArvo" : "107",
+  "koodiUri" : "koulutuksenosattuva_102",
+  "koodiArvo" : "102",
   "metadata" : [ {
-    "nimi" : "Perustaitojen vahvistaminen",
+    "nimi" : "Työelämätaidot ja työelämässä tapahtuva oppiminen",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Perustaitojen vahvistaminen",
+    "nimi" : "Arbetslivsfärdigheter och lärande i arbetslivet",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
-  }, {
-    "nimi" : "Perustaitojen vahvistaminen",
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutuksenosattuva_103",
+  "koodiArvo" : "103",
+  "metadata" : [ {
+    "nimi" : "Arjen taidot ja yhteiskunnallinen osallisuus",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagskompetens och delaktighet i samhället",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutuksenosattuva_104",
+  "koodiArvo" : "104",
+  "metadata" : [ {
+    "nimi" : "Valinnaiset opinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Valbara utbildningsdelar",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -49,7 +71,7 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Ammatillisen koulutuksen opinnot ja niihin valmentautuminen",
+    "nimi" : "Studier inom yrkesutbildning och studier som förbereder för dem",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -70,7 +92,7 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Lukiokoulutuksen opinnot ja niihin valmentautuminen",
+    "nimi" : "Studier inom gymnasieutbildning och studier som förbereder för dem",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -83,62 +105,20 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "koulutuksenosattuva_102",
-  "koodiArvo" : "102",
+  "koodiUri" : "koulutuksenosattuva_107",
+  "koodiArvo" : "107",
   "metadata" : [ {
-    "nimi" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
+    "nimi" : "Perustaitojen vahvistaminen",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
+    "nimi" : "Stärkande av grundläggande färdigheter",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Työelämätaidot ja työpaikalla tapahtuva oppiminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koulutuksenosattuva_103",
-  "koodiArvo" : "103",
-  "metadata" : [ {
-    "nimi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Arjen ja yhteiskunnallisen osallisuuden taidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koulutuksenosattuva_104",
-  "koodiArvo" : "104",
-  "metadata" : [ {
-    "nimi" : "Valinnaiset koulutuksen osat",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Valinnaiset koulutuksen osat",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Valinnaiset koulutuksen osat",
+    "nimi" : "Perustaitojen vahvistaminen",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"

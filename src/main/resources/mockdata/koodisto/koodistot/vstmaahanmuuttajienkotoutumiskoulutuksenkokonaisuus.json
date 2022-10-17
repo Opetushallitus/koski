@@ -1,24 +1,20 @@
 {
-  "koodistoUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "VST maahanmuuttajien kotoutumiskoulutuksen kokonaisuus"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "VST maahanmuuttajien kotoutumiskoulutuksen kokonaisuus"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "VST maahanmuuttajien kotoutumiskoulutuksen kokonaisuus"
-    }
-  ],
-  "codesGroupUri": "http://koski",
-  "voimassaAlkuPvm": "2020-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "koodistoUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "VST maahanmuuttajien kotoutumiskoulutuksen kokonaisuus"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "VST maahanmuuttajien kotoutumiskoulutuksen kokonaisuus"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "VST maahanmuuttajien kotoutumiskoulutuksen kokonaisuus"
+  } ],
+  "codesGroupUri" : "koski",
+  "voimassaAlkuPvm" : "2020-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
 }

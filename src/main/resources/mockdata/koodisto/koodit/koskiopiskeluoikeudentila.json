@@ -20,6 +20,27 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "koskiopiskeluoikeudentila_hyvaksytystisuoritettu",
+  "koodiArvo" : "hyvaksytystisuoritettu",
+  "metadata" : [ {
+    "nimi" : "Hyväksytysti suoritettu",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Avlagd med godkänt resultat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Passed",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "koskiopiskeluoikeudentila_katsotaaneronneeksi",
   "koodiArvo" : "katsotaaneronneeksi",
   "metadata" : [ {
@@ -37,6 +58,18 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskiopiskeluoikeudentila_keskeytynyt",
+  "koodiArvo" : "keskeytynyt",
+  "metadata" : [ {
+    "nimi" : "Keskeytynyt",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Avbruten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -160,48 +193,6 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Graduated",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_hyvaksytystisuoritettu",
-  "koodiArvo" : "hyvaksytystisuoritettu",
-  "metadata" : [ {
-    "nimi" : "Hyväksytysti suoritettu",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus suoritettu hyväksytysti",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Slutförd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Completed",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiopiskeluoikeudentila_keskeytynyt",
-  "koodiArvo" : "keskeytynyt",
-  "metadata" : [ {
-    "nimi" : "Keskeytynyt",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus on keskeytynyt",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Stoppat",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Halted",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"

@@ -9,6 +9,10 @@
     "nimi" : "Läroanstalt inom grundläggande konstundervisning (inte musik)",
     "lyhytNimi" : "Läroanstalt inom grundläggande konstundervisning (inte musik)",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Art schools (not music)",
+    "lyhytNimi" : "Art schools (not music)",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -158,6 +162,10 @@
     "nimi" : "Läroanstalter inom brand-, polis- och bevakningsväsendet",
     "lyhytNimi" : "Läroanstalter inom brand-, polis- och bevakningsväsendet",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Fire, police and security service institutes",
+    "lyhytNimi" : "Fire, police and security service institutesitokset",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -171,6 +179,10 @@
     "nimi" : "Militära yrkesläroanstalter",
     "lyhytNimi" : "Militära yrkesläroanstalter",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Military vocational institutes",
+    "lyhytNimi" : "Military vocational institutes",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -235,6 +247,10 @@
     "nimi" : "Barnträdgårdslärarinstitut",
     "lyhytNimi" : "Barnträdgårdslärarinstitut",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Kindergarten teachers' colleges",
+    "lyhytNimi" : "Kindergarten teachers' colleges",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -248,6 +264,10 @@
     "nimi" : "Temporära yrkeshögskolor",
     "lyhytNimi" : "Temporära yrkeshögskolor",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Temporary polytechnics",
+    "lyhytNimi" : "Temporary polytechnics",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -329,6 +349,10 @@
     "nimi" : "Studiecentraler",
     "lyhytNimi" : "Studiecentraler",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Study circle centres",
+    "lyhytNimi" : "Study circle centres",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -359,6 +383,10 @@
     "nimi" : "Brevinstitut",
     "lyhytNimi" : "Brevinstitut",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Correspondence schools",
+    "lyhytNimi" : "Correspondence schools",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -372,6 +400,10 @@
     "nimi" : "Rådgivningsorganisationer",
     "lyhytNimi" : "Rådgivningsorganisationer",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Advisory body",
+    "lyhytNimi" : "Advisory body",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -385,6 +417,10 @@
     "nimi" : "Övriga utbildningsanordnare",
     "lyhytNimi" : "Övriga utbildningsanordnare",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Muut koulutuksen järjestäjät",
+    "lyhytNimi" : "Muut koulutuksen järjestäjät",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -398,6 +434,10 @@
     "nimi" : "Övriga läroanstalter",
     "lyhytNimi" : "Övriga läroanstalter",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Other educational institutions",
+    "lyhytNimi" : "Other educational institutions",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -411,6 +451,10 @@
     "nimi" : "Okänd läroanstaltstyp",
     "lyhytNimi" : "Okänd läroanstaltstyp",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Not known (type of institution)",
+    "lyhytNimi" : "Not known (type of institution)",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 } ]

@@ -1,63 +1,85 @@
-[
-  {
-    "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
-    "koodiArvo" : "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
-    "metadata" : [ {
-      "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen kokonaisuuden suoritus",
-      "kieli" : "FI"
-    }, {
-      "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen kokonaisuuden suoritus",
-      "kieli" : "SV"
-    }, {
-      "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen vuorovaikutustilanteissa toimimisen kokonaisuuden suoritus",
-      "kieli" : "EN"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  }, {
-    "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
-    "koodiArvo" : "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
-    "metadata" : [ {
-      "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen suoritus",
-      "kieli" : "FI"
-    }, {
-      "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen suoritus",
-      "kieli" : "SV"
-    }, {
-      "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien lukemisen ja tulkitsemisen suoritus",
-      "kieli" : "EN"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  }, {
-    "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
-    "koodiArvo" : "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
-    "metadata" : [ {
-      "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen suoritus",
-      "kieli" : "FI"
-    }, {
-      "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen suoritus",
-      "kieli" : "SV"
-    }, {
-      "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen tekstien kirjoittamisen ja tuottamisen suoritus",
-      "kieli" : "EN"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  }, {
+[ {
   "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
   "koodiArvo" : "vstlukutaitokoulutuksennumeeristentaitojenkokonaisuudensuoritus",
   "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus",
+    "nimi" : "Numeeriset taidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus",
+    "nimi" : "Numeriska färdigheter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus",
+    "nimi" : "Numeeriset taidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}
-]
+}, {
+  "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
+  "koodiArvo" : "vstlukutaitokoulutuksentekstienkirjoittamisenkokonaisuudensuoritus",
+  "metadata" : [ {
+    "nimi" : "Tekstien kirjoittaminen ja tuottaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Förmåga att skriva och producera texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tekstien kirjoittaminen ja tuottaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
+  "koodiArvo" : "vstlukutaitokoulutuksentekstienlukemisenkokonaisuudensuoritus",
+  "metadata" : [ {
+    "nimi" : "Tekstien lukeminen ja tulkitseminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Förmåga att läsa och tolka texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tekstien lukeminen ja tulkitseminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstlukutaitokoulutuksenkokonaisuus_vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
+  "koodiArvo" : "vstlukutaitokoulutuksenvuorovaikutustilannekokonaisuudensuoritus",
+  "metadata" : [ {
+    "nimi" : "Vuorovaikutustilanteissa toimiminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Förmåga att kommunicera",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vuorovaikutustilanteissa toimiminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

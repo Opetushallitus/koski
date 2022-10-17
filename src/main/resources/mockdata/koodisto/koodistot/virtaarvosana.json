@@ -4,9 +4,9 @@
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "VIRTA Arvosana",
-    "kuvaus" : "Arvosana (ks. https://wiki.eduuni.fi/display/CSCVIRTA/Tietovarannon+koodistot)"
+    "kuvaus" : "Arvosana (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
   } ],
-  "codesGroupUri" : "http://virta",
+  "codesGroupUri" : "virta",
   "voimassaAlkuPvm" : "2014-11-01",
   "organisaatioOid" : "1.2.246.562.10.2013112012294919827487",
   "withinCodes" : [ ],

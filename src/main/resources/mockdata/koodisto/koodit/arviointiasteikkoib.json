@@ -69,6 +69,27 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "arviointiasteikkoib_fail",
+  "koodiArvo" : "F",
+  "metadata" : [ {
+    "nimi" : "fail",
+    "lyhytNimi" : "fail",
+    "kuvaus" : "fail",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "fail",
+    "lyhytNimi" : "fail",
+    "kuvaus" : "fail",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "fail",
+    "lyhytNimi" : "fail",
+    "kuvaus" : "fail",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "arviointiasteikkoib_o",
   "koodiArvo" : "O",
   "metadata" : [ {
@@ -83,22 +104,20 @@
   "koodiArvo" : "S",
   "metadata" : [ {
     "nimi" : "pass",
-    "lyhytNimi" : "S",
+    "lyhytNimi" : "pass",
+    "kuvaus" : "pass",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "pass",
+    "lyhytNimi" : "pass",
+    "kuvaus" : "pass",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "pass",
+    "lyhytNimi" : "pass",
+    "kuvaus" : "pass",
     "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-},
-{
-  "koodiUri": "arviointiasteikkoib_f",
-  "koodiArvo": "F",
-  "metadata": [
-    {
-      "nimi": "fail",
-      "lyhytNimi": "fail",
-      "kieli": "EN"
-    }
-  ],
-  "versio": 1
-}
-]
+} ]

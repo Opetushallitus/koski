@@ -4,9 +4,9 @@
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "VIRTA Lukukausi-ilmoittautumisen tila",
-    "kuvaus" : "Lukukausi-ilmoittautumisen tila (ks. https://wiki.eduuni.fi/display/CSCVIRTA/Tietovarannon+koodistot)"
+    "kuvaus" : "Lukukausi-ilmoittautumisen tila (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
   } ],
-  "codesGroupUri" : "http://virta",
+  "codesGroupUri" : "virta",
   "voimassaAlkuPvm" : "2013-01-01",
   "organisaatioOid" : "1.2.246.562.10.2013112012294919827487",
   "withinCodes" : [ ],

@@ -14,7 +14,7 @@
     "nimi" : "Oppiaineet ib",
     "kuvaus" : "Oppiaineet ib"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2016-09-13",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],

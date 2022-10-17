@@ -7,10 +7,10 @@
     "kuvaus" : "osaamisala"
   }, {
     "kieli" : "SV",
-    "nimi" : "kompetensområde",
+    "nimi" : "kompetensområde för",
     "kuvaus" : "kompetensområde"
   } ],
-  "codesGroupUri" : "http://koulutuskoodistot",
+  "codesGroupUri" : "koulutuskoodistot",
   "voimassaAlkuPvm" : "2015-09-30",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {
@@ -51,5 +51,5 @@
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 18
+  "version" : 19
 }

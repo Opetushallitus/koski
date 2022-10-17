@@ -62,7 +62,7 @@ describe('Suostumuksen peruutus', function () {
         wait.until(korhopankki.isReady),
         korhopankki.login('231158-467R'),
         wait.until(omattiedot.isVisible),
-        opinnot.valitseOmatTiedotOpiskeluoikeus('Kansanopistojen vapaan sivistystyön lukutaitokoulutus (2021—, läsnä)')
+        opinnot.valitseOmatTiedotOpiskeluoikeus('Lukutaitokoulutus oppivelvollisille (2021—, läsnä)')
       )
 
       it('Suostumuksen perumisen elementti puuttuu', function () {

@@ -35,6 +35,27 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetluva_lvhiyh",
+  "koodiArvo" : "LVHIYH",
+  "metadata" : [ {
+    "nimi" : "Historia ja yhteiskuntaoppi",
+    "lyhytNimi" : "Historia ja yhteiskuntaoppi",
+    "kuvaus" : "Historia ja yhteiskuntaoppi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Historia ja yhteiskuntaoppi",
+    "lyhytNimi" : "Historia ja yhteiskuntaoppi",
+    "kuvaus" : "Historia ja yhteiskuntaoppi",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Historia ja yhteiskuntaoppi",
+    "lyhytNimi" : "Historia ja yhteiskuntaoppi",
+    "kuvaus" : "Historia ja yhteiskuntaoppi",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetluva_lvmai",
   "koodiArvo" : "LVMAI",
   "metadata" : [ {
@@ -66,6 +87,27 @@
     "nimi" : "Mathematics and natural sciences",
     "lyhytNimi" : "",
     "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetluva_lvmfkbm",
+  "koodiArvo" : "LVMFKBM",
+  "metadata" : [ {
+    "nimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
+    "lyhytNimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
+    "kuvaus" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
+    "lyhytNimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
+    "kuvaus" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
+    "lyhytNimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
+    "kuvaus" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -148,25 +190,4 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetluva_lvhiyh",
-  "koodiArvo" : "LVHIYH",
-  "metadata" : [ {
-    "nimi" : "Historia ja yhteiskuntaoppi",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Historia ja yhteiskuntaoppi",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Historia ja yhteiskuntaoppi",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}  ]
+} ]

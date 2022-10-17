@@ -6,7 +6,7 @@
     "nimi" : "TUVA-järjestämislupa",
     "kuvaus" : "Tutkintokoulutukseen valmentavan koulutukseen (TUVA) järjestämislupa"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2020-01-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],

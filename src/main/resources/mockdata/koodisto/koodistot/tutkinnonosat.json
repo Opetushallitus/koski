@@ -14,7 +14,7 @@
     "nimi" : "tutkinnon osat",
     "kuvaus" : "tutkinnon osat"
   } ],
-  "codesGroupUri" : "http://koulutuskoodistot",
+  "codesGroupUri" : "koulutuskoodistot",
   "voimassaAlkuPvm" : "2018-03-02",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {

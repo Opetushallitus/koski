@@ -183,6 +183,17 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_20",
+  "koodiArvo" : "20",
+  "metadata" : [ {
+    "nimi" : "Opiskeluyhteistyö muun kuin korkeakoulun kanssa",
+    "lyhytNimi" : "",
+    "kuvaus" : "Opiskeluoikeus perustuu muun organisaation kuin korkeakoulun kanssa tehtyyn yhteistyösopimukseen.\n\nKotimainen korkeakoulu on tehnyt yhteistyösopimuksen kotimaisen tai ulkomaisen muun organisaation kuin korkeakoulun kanssa (esim. toisen asteen yhteistyö). Opinnot ovat maksutomia.",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "virtaopiskeluoikeudentyyppi_3",
   "koodiArvo" : "3",
   "metadata" : [ {

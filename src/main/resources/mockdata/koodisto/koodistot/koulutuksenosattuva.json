@@ -3,15 +3,11 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Koulutuksen osat TUVA",
-    "kuvaus" : "Tutkintokoulutukseen valmistavan koulutuksen osa"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Suoritusten osa TUVA",
-    "kuvaus" : ""
+    "nimi" : "Koulutuksen osat (TUVA)",
+    "kuvaus" : "Käytetään Tutkintoon valmentavan koulutuksen perusteessa"
   } ],
-  "codesGroupUri" : "http://koski",
-  "voimassaAlkuPvm" : "2022-01-01",
+  "codesGroupUri" : "koulutuskoodistot",
+  "voimassaAlkuPvm" : "2020-12-07",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",

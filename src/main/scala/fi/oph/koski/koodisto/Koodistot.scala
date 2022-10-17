@@ -52,7 +52,6 @@ object Koodistot {
     KoodistoAsetus("koskioppiaineetyleissivistava"),
     KoodistoAsetus("koskiyoarvosanat", vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("koskiyokokeet"),
-    KoodistoAsetus("koulutuksenosattuva"),
     KoodistoAsetus("lahdejarjestelma", vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("lasnaolotila"),
     KoodistoAsetus("lukioonvalmistavankoulutuksenkurssit2015"),
@@ -131,7 +130,8 @@ object Koodistot {
     KoodistoAsetus("moduulikoodistolops2021"),
     KoodistoAsetus("yhteystietojenalkupera"),
     KoodistoAsetus("yhteystietotyypit"),
-    KoodistoAsetus("opintokokonaisuudet")
+    KoodistoAsetus("opintokokonaisuudet"),
+    KoodistoAsetus("koulutuksenosattuva"),
   )
   val muutKoodistot = muutKoodistoAsetukset.map(_.toString)
 

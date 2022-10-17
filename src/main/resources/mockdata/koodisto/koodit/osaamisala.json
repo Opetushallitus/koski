@@ -113,18 +113,140 @@
   } ],
   "versio" : 3
 }, {
+  "koodiUri" : "osaamisala_1000",
+  "koodiArvo" : "1000",
+  "metadata" : [ {
+    "nimi" : "Sisälogistiikan osaamisala",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för servicelogistik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1001",
+  "koodiArvo" : "1001",
+  "metadata" : [ {
+    "nimi" : "Kuljetuspalveluiden osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1002",
+  "koodiArvo" : "1002",
+  "metadata" : [ {
+    "nimi" : "Kuljetuspalveluiden osaamisala, Sisälogistiikan ja Lentoasemapalveluiden osaamisala",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1003",
+  "koodiArvo" : "1003",
+  "metadata" : [ {
+    "nimi" : "Eläintenhoidon osaamisala",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för djurskötsel",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1004",
+  "koodiArvo" : "1004",
+  "metadata" : [ {
+    "nimi" : "Maatilatalouden osaamisala",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för lantbruk",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1005",
+  "koodiArvo" : "1005",
+  "metadata" : [ {
+    "nimi" : "Maatalousteknologian osaamisala",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för lantbruksteknologi",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1006",
+  "koodiArvo" : "1006",
+  "metadata" : [ {
+    "nimi" : "Turkistalouden osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1007",
+  "koodiArvo" : "1007",
+  "metadata" : [ {
+    "nimi" : "Myynnin osaamisala",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för försäljning",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "osaamisala_1008",
   "koodiArvo" : "1008",
   "metadata" : [ {
     "nimi" : "Ajoneuvotekniikan osaamisala",
-    "lyhytNimi" : "Ajoneuvotekniikan osaamisala",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kompetensområdet för fordonsteknik",
-    "lyhytNimi" : "Kompetensområdet för fordonsteknik",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 3
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_11",
+  "koodiArvo" : "11",
+  "metadata" : [ {
+    "nimi" : "Jalometallialan osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_12",
+  "koodiArvo" : "12",
+  "metadata" : [ {
+    "nimi" : "Kello- ja mikromekaniikanalan osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_13",
+  "koodiArvo" : "13",
+  "metadata" : [ {
+    "nimi" : "Käsityön ohjaustoiminnan osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_14",
+  "koodiArvo" : "14",
+  "metadata" : [ {
+    "nimi" : "Metalliseppäalan osaamisala",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "osaamisala_1501",
   "koodiArvo" : "1501",
@@ -2211,6 +2333,10 @@
     "nimi" : "Kompetensområdet för reparation av motordrivna småmaskiner",
     "lyhytNimi" : "Kompetensområdet för reparation av motordrivna småmaskiner",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Moottorikäyttöisten pienkoneiden korjauksen osaamisala",
+    "lyhytNimi" : "Moottorikäyttöisten pienkoneiden korjauksen osaamisala",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3397,6 +3523,49 @@
     "nimi" : "Rikastuksen osaamisala",
     "lyhytNimi" : "Rikastuksen oa",
     "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1802",
+  "koodiArvo" : "1802",
+  "metadata" : [ {
+    "nimi" : "Lentokonehuoltotyön osaamisala",
+    "lyhytNimi" : "Lentokonehuoltotyön osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för flygplansunderhåll",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Aircraft line maintenance",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1803",
+  "koodiArvo" : "1803",
+  "metadata" : [ {
+    "nimi" : "Teknisen eristyksen osaamisala",
+    "lyhytNimi" : "Teknisen eristyksen osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområde för teknisk isolering",
+    "lyhytNimi" : "Kompetensområde för teknisk isolering",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_1804",
+  "koodiArvo" : "1804",
+  "metadata" : [ {
+    "nimi" : "Rakennuspeltityön osaamisala",
+    "lyhytNimi" : "Rakennuspeltityön osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområde för byggnadsplåtarbeten",
+    "lyhytNimi" : "Kompetensområdet för byggnadsplåtarbeten",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -6816,6 +6985,10 @@
     "nimi" : "Kompetensområdet för fastighetsskötsel",
     "lyhytNimi" : "Kompetensområdet för fastighetsskötsel",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Competence area of Property Maintenance",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -6829,6 +7002,10 @@
     "nimi" : "Kompetensområdet för hemarbetsservice",
     "lyhytNimi" : "Kompetensområdet för hemarbetsservice",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Competence area of Domestic Services",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -6842,6 +7019,10 @@
     "nimi" : "Kompetensområdet för lokalvård",
     "lyhytNimi" : "Kompetensområdet för lokalvård",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Competence area of Site Facilities Services",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -6877,6 +7058,10 @@
     "nimi" : "Vaatetuksen osaamisala",
     "lyhytNimi" : "Vaatetuksen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för beklädnad",
+    "lyhytNimi" : "Kompetensområdet för beklädnad",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -6886,6 +7071,10 @@
     "nimi" : "Esinevalmistuksen osaamisala",
     "lyhytNimi" : "Esinevalmistuksen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för föremålstillverkning",
+    "lyhytNimi" : "Kompetensområdet för föremålstillverkning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -7123,11 +7312,11 @@
   "koodiArvo" : "2293",
   "metadata" : [ {
     "nimi" : "Metallien jalostusteollisuuden osaamisala",
-    "lyhytNimi" : "Metallien jalostusteollisuuden osaamisala",
+    "lyhytNimi" : "Metallien jalostusteollisuuden oa",
     "kieli" : "FI"
   }, {
     "nimi" : "Kompetensområdet för metallförädlingsindustrin",
-    "lyhytNimi" : "Kompetensområdet för metallförädlingsindustrin",
+    "lyhytNimi" : "KO för metallförädlingsindustrin",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -9127,6 +9316,79 @@
     "nimi" : "Viheralueiden kunnossapidon osaamisala",
     "lyhytNimi" : "Viheralueiden kunnossapidon osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för underhåll av grönområden",
+    "lyhytNimi" : "Kompetensområdet för underhåll av grönområden",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2428",
+  "koodiArvo" : "2428",
+  "metadata" : [ {
+    "nimi" : "Koneasennuksen osaamisala",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för maskinmontering",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2429",
+  "koodiArvo" : "2429",
+  "metadata" : [ {
+    "nimi" : "Kunnossapidon osaamisala",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för underhåll",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2430",
+  "koodiArvo" : "2430",
+  "metadata" : [ {
+    "nimi" : "Henkilökohtaisen avun osaamisala",
+    "lyhytNimi" : "Henkilökohtaisen avun osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för personlig assistans",
+    "lyhytNimi" : "Kompetensområdet för personlig assistans",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2431",
+  "koodiArvo" : "2431",
+  "metadata" : [ {
+    "nimi" : "Kehitysvamma-alan osaamisala",
+    "lyhytNimi" : "Kehitysvamma-alan osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för intellektuell funktionsnedsättning",
+    "lyhytNimi" : "Kompetensområdet för intellektuell funktionsnedsättning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "osaamisala_2432",
+  "koodiArvo" : "2432",
+  "metadata" : [ {
+    "nimi" : "Yritysneuvonnan osaamisala",
+    "lyhytNimi" : "Yritysneuvonnan osaamisala",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för företagsrådgivning",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Competence area of Business advisory services",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -10283,6 +10545,10 @@
     "nimi" : "Vaatetuksen osaamisala",
     "lyhytNimi" : "Vaatetuksen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för beklädnad",
+    "lyhytNimi" : "Kompetensområdet för beklädnad",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -10292,6 +10558,10 @@
     "nimi" : "Esinevalmistuksen osaamisala",
     "lyhytNimi" : "Esinevalmistuksen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för föremålstillverkning",
+    "lyhytNimi" : "Kompetensområdet för föremålstillverkning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -10947,8 +11217,8 @@
     "lyhytNimi" : "Rakennustyömaan työnjohdon oa",
     "kieli" : "FI"
   }, {
-    "nimi" : "Rakennustyömaan työnjohdon osaamisala",
-    "lyhytNimi" : "Rakennustyömaan työnjohdon oa",
+    "nimi" : "Kompetensområdet för arbetsledning på en byggarbetsplats",
+    "lyhytNimi" : "Kompetensområdet för arbetsledning på en byggarbetsplats",
     "kieli" : "SV"
   }, {
     "nimi" : "Rakennustyömaan työnjohdon osaamisala",
@@ -10964,8 +11234,8 @@
     "lyhytNimi" : "Työmaapäällikön oa",
     "kieli" : "FI"
   }, {
-    "nimi" : "Työmaapäällikön osaamisala",
-    "lyhytNimi" : "Työmaapäällikön oa",
+    "nimi" : "Kompetensområdet för byggarbetsplatschef",
+    "lyhytNimi" : "Kompetensområdet för byggarbetsplatschef",
     "kieli" : "SV"
   }, {
     "nimi" : "Työmaapäällikön osaamisala",
@@ -11031,6 +11301,10 @@
     "nimi" : "Elinkeinokalatalouden osaamisala",
     "lyhytNimi" : "Elinkeinokalatalouden osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för fiskerinäring",
+    "lyhytNimi" : "Kompetensområdet för fiskerinäring",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11040,6 +11314,10 @@
     "nimi" : "Kalavesien hoidon osaamisala",
     "lyhytNimi" : "Kalavesien hoidon osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för vård av fiskevatten",
+    "lyhytNimi" : "Kompetensområdet för vård av fiskevatten",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11049,6 +11327,10 @@
     "nimi" : "Eläintenkouluttamisen osaamisala",
     "lyhytNimi" : "Eläintenkouluttamisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för träning av djur",
+    "lyhytNimi" : "Kompetensområdet för träning av djur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11058,6 +11340,10 @@
     "nimi" : "Klinikkaeläinhoitamisen osaamisala",
     "lyhytNimi" : "Klinikkaeläinhoitamisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för djurskötsel på kliniker",
+    "lyhytNimi" : "Kompetensområdet för djurskötsel på kliniker",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11067,6 +11353,10 @@
     "nimi" : "Koe-eläinhoitamisen osaamisala",
     "lyhytNimi" : "Koe-eläinhoitamisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för skötsel av försöksdjur",
+    "lyhytNimi" : "Kompetensområdet för skötsel av försöksdjur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11178,6 +11468,10 @@
     "nimi" : "Toimitusketjun hallinnan osaamisala",
     "lyhytNimi" : "Toimitusketjun hallinnan osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för behärskande av en leveranskedja",
+    "lyhytNimi" : "Kompetensområdet för behärskande av en leveranskedja",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11187,6 +11481,10 @@
     "nimi" : "Varastologistiikan osaamisala",
     "lyhytNimi" : "Varastologistiikan osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för lagerlogistik",
+    "lyhytNimi" : "Kompetensområdet för lagerlogistik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11196,6 +11494,10 @@
     "nimi" : "Lastinkäsittelyn osaamisala",
     "lyhytNimi" : "Lastinkäsittelyn osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för lasthantering",
+    "lyhytNimi" : "Kompetensområdet för lasthantering",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11310,6 +11612,10 @@
     "lyhytNimi" : "Metsänkäsittelyn osaamisala",
     "kieli" : "FI"
   }, {
+    "nimi" : "Kompetensområdet för skogsbehandling",
+    "lyhytNimi" : "Kompetensområdet för skogsbehandling",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Competence area of Silvicultural Operations",
     "lyhytNimi" : "Competence area of Silvicultural Operations",
     "kieli" : "EN"
@@ -11322,6 +11628,10 @@
     "nimi" : "Puunkorjuun osaamisala",
     "lyhytNimi" : "Puunkorjuun osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för drivning",
+    "lyhytNimi" : "Kompetensområdet för drivning",
+    "kieli" : "SV"
   }, {
     "nimi" : "Competence area of Timber Harvesting",
     "lyhytNimi" : "Competence area of Timber Harvesting",
@@ -11336,6 +11646,10 @@
     "lyhytNimi" : "Ajoneuvoalan esimiestyön osaamisala",
     "kieli" : "FI"
   }, {
+    "nimi" : "Kompetensområdet för chefsarbete inom fordonsbranschen",
+    "lyhytNimi" : "Kompetensområdet för chefsarbete inom fordonsbranschen",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Competence area of First-Level Management in the Motor Vehicle Sector",
     "lyhytNimi" : "",
     "kieli" : "EN"
@@ -11348,6 +11662,10 @@
     "nimi" : "Korjaamopalvelun osaamisala",
     "lyhytNimi" : "Korjaamopalvelun osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för verkstadsservice",
+    "lyhytNimi" : "Kompetensområdet för verkstadsservice",
+    "kieli" : "SV"
   }, {
     "nimi" : "Competence area of Vehicle Repair Services",
     "lyhytNimi" : "",
@@ -11362,6 +11680,10 @@
     "lyhytNimi" : "Vauriokorjauksen osaamisala",
     "kieli" : "FI"
   }, {
+    "nimi" : "Kompetensområdet för skadereparation",
+    "lyhytNimi" : "Kompetensområdet för skadereparation",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Competence area of Damage Repairs",
     "lyhytNimi" : "",
     "kieli" : "EN"
@@ -11374,6 +11696,10 @@
     "nimi" : "Myynnin- ja asiakaspalvelun osaamisala",
     "lyhytNimi" : "Myynnin- ja asiakaspalvelun osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för försäljning och kundservice",
+    "lyhytNimi" : "Kompetensområdet för försäljning och kundservice",
+    "kieli" : "SV"
   }, {
     "nimi" : "Competence area of Customer Services and Sales Work",
     "lyhytNimi" : "",
@@ -11400,6 +11726,10 @@
     "nimi" : "Ikääntyneen ihmisen palveluohjauksen osaamisala",
     "lyhytNimi" : "Ikääntyneen ihmisen palveluohjauksen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för servicehandledning för äldre",
+    "lyhytNimi" : "Kompetensområdet för servicehandledning för äldre",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11409,6 +11739,10 @@
     "nimi" : "Muistioireisen ja muistisairaan ihmisen elämän tukemisen osaamisala",
     "lyhytNimi" : "Muistioireisen ja muistisairaan ihmisen elämän tukemisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för stöd till personer med minnesstörning eller minnessjukdom",
+    "lyhytNimi" : "Kompetensområdet för stöd till personer med minnesstörning eller minnessjukdom",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11418,6 +11752,10 @@
     "nimi" : "Ikävalmennuksen osaamisala",
     "lyhytNimi" : "Ikävalmennuksen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för handledning för äldre",
+    "lyhytNimi" : "Kompetensområdet för handledning för äldre",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -11427,6 +11765,10 @@
     "nimi" : "Elämän loppuvaiheen hoitotyön osaamisala",
     "lyhytNimi" : "Elämän loppuvaiheen hoitotyön osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för vård i livets slutskede",
+    "lyhytNimi" : "Kompetensområdet för vård i livets slutskede",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 } ]

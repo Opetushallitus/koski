@@ -664,6 +664,22 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_lukionoppiaineidenoppimaarat2019",
+  "koodiArvo" : "lukionaineopinnot",
+  "metadata" : [ {
+    "nimi" : "Lukion aineopinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Ämnesstudier i gymnasiet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_lukionkurssi",
   "koodiArvo" : "lukionkurssi",
   "metadata" : [ {
@@ -674,36 +690,6 @@
     "kieli" : "SV"
   }, {
     "nimi" : "General upper secondary school course",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_lukionvaltakunnallinenmoduuli",
-  "koodiArvo" : "lukionvaltakunnallinenmoduuli",
-  "metadata" : [ {
-    "nimi" : "Lukion valtakunnallinen moduuli 2019",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Lukion valtakunnallinen moduuli 2019",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Lukion valtakunnallinen moduuli 2019",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-},{
-  "koodiUri" : "suorituksentyyppi_lukionpaikallinenopintojakso",
-  "koodiArvo" : "lukionpaikallinenopintojakso",
-  "metadata" : [ {
-    "nimi" : "Lukion paikallinen opintojakso 2019",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Lukion paikallinen opintojakso 2019",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Lukion paikallinen opintojakso 2019",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -753,21 +739,6 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-},{
-  "koodiUri" : "suorituksentyyppi_lukionaineopinnot",
-  "koodiArvo" : "lukionaineopinnot",
-  "metadata" : [ {
-    "nimi" : "Lukion oppiaineet",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Lukion oppiaineet",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Lukion oppiaineet",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "suorituksentyyppi_lukionoppimaara",
   "koodiArvo" : "lukionoppimaara",
@@ -779,6 +750,48 @@
     "kieli" : "SV"
   }, {
     "nimi" : "General upper secondary education  syllabus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_lukionpaikallinenopintojakso2019",
+  "koodiArvo" : "lukionpaikallinenopintojakso",
+  "metadata" : [ {
+    "nimi" : "Lukion paikallinen opintojakso",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lukion paikallinen opintojakso",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukion paikallinen opintojakso",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_lukionvaltakunnallinenmoduuli2019",
+  "koodiArvo" : "lukionvaltakunnallinenmoduuli",
+  "metadata" : [ {
+    "nimi" : "Lukion valtakunnallinen moduuli",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lukion valtakunnallinen moduuli",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukion valtakunnallinen moduuli",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1272,6 +1285,105 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_tutkintokoulutukseenvalmentava",
+  "koodiArvo" : "tutkintokoulutukseenvalmentava",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava muu suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuvaammatillinenkoulutus",
+  "koodiArvo" : "tuvaammatillinenkoulutus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava ammatillisen koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava ammatillisen koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava ammatillisen koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuvakoulutuksensuoritus",
+  "koodiArvo" : "tuvakoulutuksensuoritus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuvalukiokoulutus",
+  "koodiArvo" : "tuvalukiokoulutus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava lukion suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava lukion suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava lukion suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tuvaperusopetus",
+  "koodiArvo" : "tuvaperusopetus",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava perusopetuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava perusopetuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tutkintokoulutukseen valmentava perusopetuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_valma",
   "koodiArvo" : "valma",
   "metadata" : [ {
@@ -1302,121 +1414,37 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_ylioppilastutkinnonkoe",
-  "koodiArvo" : "ylioppilastutkinnonkoe",
+  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutuksenkokonaisuudensuoritus",
+  "koodiArvo" : "vstlukutaitokoulutuksenkokonaisuudensuoritus",
   "metadata" : [ {
-    "nimi" : "Ylioppilastutkinnon koe",
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Prov i studentexamen",
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Matriculation examination test",
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_ylioppilastutkinto",
-  "koodiArvo" : "ylioppilastutkinto",
+  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutus",
+  "koodiArvo" : "vstlukutaitokoulutus",
   "metadata" : [ {
-    "nimi" : "Ylioppilastutkinto",
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Studentexamen",
+    "nimi" : "Utbildning i grundläggande litteracitet inom fritt bildningsarbete",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Matriculation examination",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstoppivelvollisillesuunnattukoulutus",
-  "koodiArvo" : "vstoppivelvollisillesuunnattukoulutus",
-  "metadata" : [ {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstosaamiskokonaisuus",
-  "koodiArvo" : "vstosaamiskokonaisuus",
-  "metadata" : [ {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön osaamiskokonaisuus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön osaamiskokonaisuus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön osaamiskokonaisuus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstopintokokonaisuus",
-  "koodiArvo" : "vstopintokokonaisuus",
-  "metadata" : [ {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön opintokokonaisuus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön opintokokonaisuus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön opintokokonaisuus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstmuuallasuoritetutopinnot",
-  "koodiArvo" : "vstmuuallasuoritetutopinnot",
-  "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstvalinnainensuuntautuminen",
-  "koodiArvo" : "vstvalinnainensuuntautuminen",
-  "metadata" : [ {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutus",
-  "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutus",
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1425,58 +1453,13 @@
   "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
   "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
   "metadata" : [ {
-    "nimi" : "Suomen kieli ja viestintätaidot",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Svenska och kommunikativa färdigheter",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Suomen kieli ja viestintätaidot",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenohjaus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjaus",
-  "metadata" : [ {
-    "nimi" : "Ohjaus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Handledning",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Ohjaus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
-  "metadata" : [ {
-    "nimi" : "Työelämä- ja yhteiskuntataidot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Färdigheter för arbetsliv och samhälle",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Työelämä- ja yhteiskuntataidot",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
-  "metadata" : [ {
-    "nimi" : "Valinnaiset opinnot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Valfria studier",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Valinnaiset opinnot",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen kieliopintojen suoritus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1512,16 +1495,46 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus",
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenohjaus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjaus",
   "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen osasuoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen osasuoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen osasuoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen ohjauksen suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen kokonaisuuden suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen kokonaisuuden suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen kokonaisuuden suoritus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen opintojen suoritus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1542,46 +1555,151 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus",
   "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen suoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen osasuoritus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen suoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen osasuoritus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen työelämä- ja yhteiskuntataitojen suoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen osasuoritus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutus",
-  "koodiArvo" : "vstlukutaitokoulutus",
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
   "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen suoritus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen suoritus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen valinnaisten opintojen suoritus",
     "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_vstlukutaitokoulutuksenkokonaisuudensuoritus",
-  "koodiArvo" : "vstlukutaitokoulutuksenkokonaisuudensuoritus",
+  "koodiUri" : "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutus",
+  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutus",
   "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+    "nimi" : "Integrationsutbildning för invandrare inom det fria bildningsarbetet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutuksen kokonaisuuden suoritus",
+    "nimi" : "Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstmuuallasuoritetutopinnot",
+  "koodiArvo" : "vstmuuallasuoritetutopinnot",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vapaan sivistystyön muissa oppilaitostyypeissä suoritetut vapaavalintaiset suuntautuvat opinnot",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstopintokokonaisuus",
+  "koodiArvo" : "vstopintokokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön opintokokonaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön opintokokonaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön opintokokonaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstoppivelvollisillesuunnattukoulutus",
+  "koodiArvo" : "vstoppivelvollisillesuunnattukoulutus",
+  "metadata" : [ {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning inom fritt bildningsarbete som riktar sig till läropliktiga",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstosaamiskokonaisuus",
+  "koodiArvo" : "vstosaamiskokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön osaamiskokonaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön osaamiskokonaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön osaamiskokonaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstvalinnainensuuntautuminen",
+  "koodiArvo" : "vstvalinnainensuuntautuminen",
+  "metadata" : [ {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Oppivelvollisille suunnattu vapaan sivistystyön valinnainen suuntautumisopinto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1591,12 +1709,18 @@
   "koodiArvo" : "vstvapaatavoitteinenkoulutus",
   "metadata" : [ {
     "nimi" : "Vapaan sivistystyön vapaatavoitteinen koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Vapaan sivistystyön vapaatavoitteinen koulutus",
+    "nimi" : "Utbildning inom fritt bildningsarbete med fri inriktning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Vapaan sivistystyön vapaatavoitteinen koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1617,103 +1741,33 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_tuvakoulutuksensuoritus",
-  "koodiArvo" : "tuvakoulutuksensuoritus",
+  "koodiUri" : "suorituksentyyppi_ylioppilastutkinnonkoe",
+  "koodiArvo" : "ylioppilastutkinnonkoe",
   "metadata" : [ {
-    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "nimi" : "Ylioppilastutkinnon koe",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "nimi" : "Prov i studentexamen",
     "kieli" : "SV"
   }, {
-    "nimi" : "Tutkintokoulutukseen valmentava koulutuksen suoritus",
+    "nimi" : "Matriculation examination test",
     "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_tutkintokoulutukseenvalmentava",
-  "koodiArvo" : "tutkintokoulutukseenvalmentava",
+  "koodiUri" : "suorituksentyyppi_ylioppilastutkinto",
+  "koodiArvo" : "ylioppilastutkinto",
   "metadata" : [ {
-    "nimi" : "Tutkintokoulutukseen valmentava suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
+    "nimi" : "Ylioppilastutkinto",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tutkintokoulutukseen valmentava suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
+    "nimi" : "Studentexamen",
     "kieli" : "SV"
   }, {
-    "nimi" : "Tutkintokoulutukseen valmentava muu suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
+    "nimi" : "Matriculation examination",
     "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_tuvaperusopetus",
-  "koodiArvo" : "tuvaperusopetus",
-  "metadata" : [ {
-    "nimi" : "Tutkintokoulutukseen valmentava perusopetuksen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tutkintokoulutukseen valmentava perusopetuksen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tutkintokoulutukseen valmentava perusopetuksen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_tuvalukiokoulutus",
-  "koodiArvo" : "tuvalukiokoulutus",
-  "metadata" : [ {
-    "nimi" : "Tutkintokoulutukseen valmentava lukion suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tutkintokoulutukseen valmentava lukion suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tutkintokoulutukseen valmentava lukion suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_tuvaammatillinenkoulutus",
-  "koodiArvo" : "tuvaammatillinenkoulutus",
-  "metadata" : [ {
-    "nimi" : "Tutkintokoulutukseen valmentava ammatillisen koulutuksen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tutkintokoulutukseen valmentava ammatillisen koulutuksen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tutkintokoulutukseen valmentava ammatillisen koulutuksen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}
-]
+} ]

@@ -6,10 +6,10 @@
     "nimi" : "Valpas-opiskeluoikeuden tila",
     "kuvaus" : "Valppaan käyttöliittymässä näytettävä Koski-opiskeluoikeuden tila"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2021-01-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 1
+  "version" : 0
 }

@@ -6,7 +6,7 @@
     "nimi" : "Osaamisen hankkimistapa",
     "kuvaus" : "Osaamisen hankkimistapa"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2017-11-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],

@@ -9,8 +9,12 @@
     "nimi" : "finska",
     "lyhytNimi" : "finska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Finnish",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "oppilaitoksenopetuskieli_2",
   "koodiArvo" : "2",
@@ -22,8 +26,12 @@
     "nimi" : "svenska",
     "lyhytNimi" : "svenska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Swedish",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "oppilaitoksenopetuskieli_3",
   "koodiArvo" : "3",
@@ -35,8 +43,12 @@
     "nimi" : "finska/svenska",
     "lyhytNimi" : "finska/svenska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Finnish/Swedish",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "oppilaitoksenopetuskieli_4",
   "koodiArvo" : "4",
@@ -48,8 +60,12 @@
     "nimi" : "engelska",
     "lyhytNimi" : "engelska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "English",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "oppilaitoksenopetuskieli_5",
   "koodiArvo" : "5",
@@ -61,8 +77,12 @@
     "nimi" : "samiska",
     "lyhytNimi" : "samiska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Sami",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "oppilaitoksenopetuskieli_9",
   "koodiArvo" : "9",
@@ -74,6 +94,10 @@
     "nimi" : "annat",
     "lyhytNimi" : "annat",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Other",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 } ]

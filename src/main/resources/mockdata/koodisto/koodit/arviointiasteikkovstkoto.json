@@ -1,25 +1,19 @@
-[
-    {
-        "koodiUri": "arviointiasteikkovstkoto_suoritettu",
-        "koodiArvo": "Suoritettu",
-        "metadata": [
-            {
-                "nimi": "Suoritettu",
-                "lyhytNimi": "Suoritettu",
-                "kieli": "FI"
-            },
-            {
-                "nimi": "Avslutad",
-                "lyhytNimi": "Avslutad",
-                "kieli": "SV"
-            },
-            {
-                "nimi": "Completed",
-                "lyhytNimi": "Completed",
-                "kieli": "EN"
-            }
-        ],
-        "versio": 1,
-        "withinCodeElements": []
-    }
-]
+[ {
+  "koodiUri" : "arviointiasteikkovstkoto_suoritettu",
+  "koodiArvo" : "Suoritettu",
+  "metadata" : [ {
+    "nimi" : "Suoritettu",
+    "lyhytNimi" : "Suoritettu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Avslutad",
+    "lyhytNimi" : "Avslutad",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Completed",
+    "lyhytNimi" : "Completed",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

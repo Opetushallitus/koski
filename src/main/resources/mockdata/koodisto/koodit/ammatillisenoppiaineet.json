@@ -64,11 +64,16 @@
   "koodiArvo" : "MLFK",
   "metadata" : [ {
     "nimi" : "Fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
-    "lyhytNimi" : "fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
+    "lyhytNimi" : "Fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
     "kieli" : "FI"
   }, {
     "nimi" : "Fysikaliska och kemiska fenomen och tillämpning av dem",
+    "lyhytNimi" : "Fysikaliska och kemiska fenomen och tillämpning av dem",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Physical and chemical phenomena and their application",
+    "lyhytNimi" : "Physical and chemical phenomena and their application",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -76,11 +81,16 @@
   "koodiArvo" : "MLMA",
   "metadata" : [ {
     "nimi" : "Matematiikka ja matematiikan soveltaminen",
-    "lyhytNimi" : "matematiikka ja matematiikan soveltaminen",
+    "lyhytNimi" : "Matematiikka ja matematiikan soveltaminen",
     "kieli" : "FI"
   }, {
     "nimi" : "Matematik och tillämpad matematik",
+    "lyhytNimi" : "Matematik och tillämpad matematik",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Mathematics and application of mathematics",
+    "lyhytNimi" : "Mathematics and application of mathematics",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -185,35 +195,19 @@
   "koodiUri" : "ammatillisenoppiaineet_vvai",
   "koodiArvo" : "VVAI",
   "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä",
-    "lyhytNimi" : "viestintä ja vuorovaikutus äidinkielellä",
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi",
     "kieli" : "FI"
   }, {
-    "nimi" : "Kommunikation och interaktion på modersmålet",
+    "nimi" : "Kommunikation och interaktion på modersmålet, svenska",
+    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, svenska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Communication and interaction in mother tongue, Finnish",
+    "lyhytNimi" : "Communication and interaction in mother tongue, Finnish",
+    "kieli" : "EN"
   } ],
   "versio" : 1
-},     {
-  "koodiUri": "ammatillisenoppiaineet_vvai22",
-  "koodiArvo": "VVAI22",
-  "metadata": [
-    {
-      "nimi": "Viestintä ja vuorovaikutus äidinkielellä",
-      "lyhytNimi": "Viestintä ja vuorovaikutus äidinkielellä",
-      "kieli": "FI"
-    },
-    {
-      "nimi": "Kommunikation och interaktion på modersmålet",
-      "lyhytNimi": "Kommunikation och interaktion på modersmålet",
-      "kieli": "SV"
-    },
-    {
-      "nimi": "Communication and interaction in mother tongue",
-      "lyhytNimi": "Communication and interaction in mother tongue",
-      "kieli": "EN"
-    }
-  ],
-  "versio": 1
 }, {
   "koodiUri" : "ammatillisenoppiaineet_vvai11",
   "koodiArvo" : "VVAI11",
@@ -222,20 +216,30 @@
     "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille",
     "kieli" : "FI"
   }, {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille",
+    "nimi" : "Kommunikation och interaktion på modersmålet, svenska för teckenspråkiga",
+    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, svenska för teckenspråkiga",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Communication and interaction in mother tongue, Finnish for sign language users",
+    "lyhytNimi" : "Communication and interaction in mother tongue, Finnish for sign language users",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "ammatillisenoppiaineet_vvai15",
   "koodiArvo" : "VVAI15",
   "metadata" : [ {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomalainen viittomakieli",
-    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomalainen viittomakieli",
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, viittomakieli",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, viittomakieli",
     "kieli" : "FI"
   }, {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomalainen viittomakieli",
+    "nimi" : "Kommunikation och interaktion på modersmålet, teckenspråk",
+    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, teckenspråk",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Communication and interaction in mother tongue, sign language",
+    "lyhytNimi" : "Communication and interaction in mother tongue, sign language",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -247,7 +251,37 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Kommunikation och interaktion på modersmålet, studerandens eget modersmål",
+    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, studerandens eget modersmål",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Communication and interaction in mother tongue, the student’s mother tongue",
+    "lyhytNimi" : "Communication and interaction in mother tongue, the student’s mother tongue",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_vvai17",
+  "koodiArvo" : "VVAI17",
+  "metadata" : [ {
+    "nimi" : "Kommunikation och interaktion på modersmålet, svenska som andraspråk",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_vvai22",
+  "koodiArvo" : "VVAI22",
+  "metadata" : [ {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och interaktion på modersmålet",
+    "lyhytNimi" : "Kommunikation och interaktion på modersmålet",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Communication and interaction in mother tongue",
+    "lyhytNimi" : "Communication and interaction in mother tongue",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -258,8 +292,13 @@
     "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, saame",
     "kieli" : "FI"
   }, {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, saame",
+    "nimi" : "Kommunikation och interaktion på modersmålet, samiska",
+    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, samiska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Communication and interaction in mother tongue, Sámi",
+    "lyhytNimi" : "Communication and interaction in mother tongue, Sámi",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -270,8 +309,13 @@
     "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, romani",
     "kieli" : "FI"
   }, {
-    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, romani",
+    "nimi" : "Kommunikation och interaktion på modersmålet, romani",
+    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, romani",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Communication and interaction in mother tongue, the Roma language",
+    "lyhytNimi" : "Communication and interaction in mother tongue, the Roma language",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -283,7 +327,12 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Kommunikation och interaktion på modersmålet, finska som andraspråk",
+    "lyhytNimi" : "Kommunikation och interaktion på modersmålet, finska som andraspråk",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Communication and interaction in mother tongue, Finnish as a second language",
+    "lyhytNimi" : "Communication and interaction in mother tongue, Finnish as a second language",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -307,7 +356,12 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Verksamhet i den digitala miljön",
+    "lyhytNimi" : "Verksamhet i den digitala miljön",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Operating in a digital environment",
+    "lyhytNimi" : "Operating in a digital environment",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -315,11 +369,16 @@
   "koodiArvo" : "VVTK",
   "metadata" : [ {
     "nimi" : "Viestintä ja vuorovaikutus toisella kotimaisella kielellä",
-    "lyhytNimi" : "viestintä ja vuorovaikutus toisella kotimaisella kielellä",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus toisella kotimaisella kielellä",
     "kieli" : "FI"
   }, {
     "nimi" : "Kommunikation och interaktion på det andra inhemska språket",
+    "lyhytNimi" : "Kommunikation och interaktion på det andra inhemska språket",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Communication and interaction in the second national language",
+    "lyhytNimi" : "Communication and interaction in the second national language",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -327,11 +386,16 @@
   "koodiArvo" : "VVTL",
   "metadata" : [ {
     "nimi" : "Taide ja luova ilmaisu",
-    "lyhytNimi" : "taide ja luova ilmaisu",
+    "lyhytNimi" : "Taide ja luova ilmaisu",
     "kieli" : "FI"
   }, {
     "nimi" : "Konst och kreativt uttryck",
+    "lyhytNimi" : "Konst och kreativt uttryck",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Art and creative expression",
+    "lyhytNimi" : "Art and creative expression",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -343,7 +407,12 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Kommunikation och interaktion på ett främmande språk",
+    "lyhytNimi" : "Kommunikation och interaktion på ett främmande språk",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Communication and interaction in a foreign language",
+    "lyhytNimi" : "Communication and interaction in a foreign language",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -375,11 +444,16 @@
   "koodiArvo" : "YTKK",
   "metadata" : [ {
     "nimi" : "Kestävän kehityksen edistäminen",
-    "lyhytNimi" : "kestävän kehityksen edistäminen",
+    "lyhytNimi" : "Kestävän kehityksen edistäminen",
     "kieli" : "FI"
   }, {
     "nimi" : "Främjande av hållbar utveckling",
+    "lyhytNimi" : "Främjande av hållbar utveckling",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Promoting sustainable development",
+    "lyhytNimi" : "Promoting sustainable development",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -387,11 +461,16 @@
   "koodiArvo" : "YTOU",
   "metadata" : [ {
     "nimi" : "Opiskelu- ja urasuunnitteluvalmiudet",
-    "lyhytNimi" : "opiskelu- ja urasuunnitteluvalmiudet",
+    "lyhytNimi" : "Opiskelu- ja urasuunnitteluvalmiudet",
     "kieli" : "FI"
   }, {
     "nimi" : "Färdigheter i studie- och karriärplanering",
+    "lyhytNimi" : "Färdigheter i studie- och karriärplanering",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Study and career planning capabilities",
+    "lyhytNimi" : "Study and career planning capabilities",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -403,7 +482,12 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Upprätthållande av arbetsförmågan och välbefinnandet",
+    "lyhytNimi" : "Upprätthållande av arbetsförmågan och välbefinnandet",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Maintaining ability to work and wellbeing at work",
+    "lyhytNimi" : "Maintaining ability to work and wellbeing at work",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -411,11 +495,16 @@
   "koodiArvo" : "YTTT",
   "metadata" : [ {
     "nimi" : "Työelämässä toimiminen",
-    "lyhytNimi" : "työelämässä toimiminen",
+    "lyhytNimi" : "Työelämässä toimiminen",
     "kieli" : "FI"
   }, {
     "nimi" : "Att verka i arbetslivet",
+    "lyhytNimi" : "Att verka i arbetslivet",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Operating in the world of work",
+    "lyhytNimi" : "Operating in the world of work",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -427,7 +516,12 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Att verka i samhället och som medborgare",
+    "lyhytNimi" : "Att verka i samhället och som medborgare",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Operating as a member of society and a citizen",
+    "lyhytNimi" : "Operating as a member of society and a citizen",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -435,11 +529,16 @@
   "koodiArvo" : "YTYY",
   "metadata" : [ {
     "nimi" : "Yrittäjyys ja yrittäjämäinen toiminta",
-    "lyhytNimi" : "yrittäjyys ja yrittäjämäinen toiminta",
+    "lyhytNimi" : "Yrittäjyys ja yrittäjämäinen toiminta",
     "kieli" : "FI"
   }, {
     "nimi" : "Företagsamhet och företagarinriktad verksamhet",
+    "lyhytNimi" : "Företagsamhet och företagarinriktad verksamhet",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Entrepreneurship and entrepreneurial activities",
+    "lyhytNimi" : "Entrepreneurship and entrepreneurial activities",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {

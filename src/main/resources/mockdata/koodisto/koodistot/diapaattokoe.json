@@ -5,7 +5,7 @@
     "kieli" : "FI",
     "nimi" : "dia paattokoe"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2019-01-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],

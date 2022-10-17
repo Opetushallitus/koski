@@ -1,24 +1,20 @@
 {
-  "koodistoUri": "vstlukutaitokoulutuksenkokonaisuus",
-  "versio": 1,
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "VST lukutaitokoulutuksen kokonaisuus"
-    },
-    {
-      "kieli": "SV",
-      "nimi": "VST lukutaitokoulutuksen kokonaisuus"
-    },
-    {
-      "kieli": "EN",
-      "nimi": "VST lukutaitokoulutuksen kokonaisuus"
-    }
-  ],
-  "codesGroupUri": "http://koski",
-  "voimassaAlkuPvm": "2020-01-01",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "withinCodes": [],
-  "tila": "LUONNOS",
-  "version": 0
+  "koodistoUri" : "vstlukutaitokoulutuksenkokonaisuus",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "VST lukutaitokoulutuksen kokonaisuus"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "VST lukutaitokoulutuksen kokonaisuus"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "VST lukutaitokoulutuksen kokonaisuus"
+  } ],
+  "codesGroupUri" : "koski",
+  "voimassaAlkuPvm" : "2020-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
 }

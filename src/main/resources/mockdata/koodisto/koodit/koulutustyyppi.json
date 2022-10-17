@@ -1267,10 +1267,6 @@
     "codeElementVersion" : 7,
     "passive" : false
   }, {
-    "codeElementUri" : "koulutus_451741",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
     "codeElementUri" : "koulutus_351805",
     "codeElementVersion" : 2,
     "passive" : true
@@ -2799,6 +2795,10 @@
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
+    "codeElementUri" : "haunkohdejoukko_11",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
     "codeElementUri" : "haunkohdejoukko_18",
     "codeElementVersion" : 1,
     "passive" : false
@@ -2847,6 +2847,10 @@
     "codeElementVersion" : 12,
     "passive" : false
   }, {
+    "codeElementUri" : "koulutus_999909",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
     "codeElementUri" : "koulutustyyppifasetti_et0205",
     "codeElementVersion" : 1,
     "passive" : false
@@ -2888,6 +2892,11 @@
     "lyhytNimi" : "Yrkesexamen",
     "kuvaus" : "Yrkesexamen",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Further vocational qualification",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -5001,6 +5010,10 @@
   }, {
     "codeElementUri" : "koulutus_334120",
     "codeElementVersion" : 12,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_334121",
+    "codeElementVersion" : 1,
     "passive" : false
   }, {
     "codeElementUri" : "koulutus_334145",
@@ -11511,6 +11524,10 @@
     "codeElementVersion" : 12,
     "passive" : false
   }, {
+    "codeElementUri" : "koulutus_374125",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
     "codeElementUri" : "koulutus_374147",
     "codeElementVersion" : 1,
     "passive" : true
@@ -12792,6 +12809,11 @@
     "lyhytNimi" : "Specialyrkesexamen",
     "kuvaus" : "Specialyrkesexamen",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Specialist vocational qualification",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -26883,8 +26905,8 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Handledande utbildning för grundläggande yrkesutbildning",
-    "lyhytNimi" : "Handledande utbildning för grundläggande yrkesutbildning",
+    "nimi" : "Utbildning som handleder för yrkesutbildning (VALMA)",
+    "lyhytNimi" : "VALMA",
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
@@ -27003,7 +27025,7 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
+    "nimi" : "Utbildning som handleder för yrkesutbildning (VALMA) som specialundervisning",
     "lyhytNimi" : "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -27119,9 +27141,9 @@
     "kuvaus" : "Lukiokoulutus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Gymnasiet",
-    "lyhytNimi" : "Gymnasiet",
-    "kuvaus" : "Gymnasiet",
+    "nimi" : "Gymnasieutbildning",
+    "lyhytNimi" : "Gymnasieutbildning",
+    "kuvaus" : "Gymnasieutbildning",
     "kieli" : "SV"
   } ],
   "versio" : 2,
@@ -27233,6 +27255,10 @@
     "codeElementUri" : "koulutus_301104",
     "codeElementVersion" : 3,
     "passive" : true
+  }, {
+    "codeElementUri" : "koulutus_309902",
+    "codeElementVersion" : 7,
+    "passive" : false
   }, {
     "codeElementUri" : "koulutustyyppifasetti_et0101",
     "codeElementVersion" : 1,
@@ -27563,15 +27589,20 @@
   "koodiUri" : "koulutustyyppi_26",
   "koodiArvo" : "26",
   "metadata" : [ {
-    "nimi" : "Ammatillinen perustutkinto (reformin mukainen)",
+    "nimi" : "Ammatillinen perustutkinto",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Yrkesinriktad grundexamen (enligt reformen)",
+    "nimi" : "Yrkesinriktad grundexamen",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Initial vocational qualification",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -29004,9 +29035,9 @@
     "kuvaus" : "Korkeakoulutus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Högskoleexamen",
-    "lyhytNimi" : "Högskoleexamen",
-    "kuvaus" : "Högskoleexamen",
+    "nimi" : "Högskoleutbildning",
+    "lyhytNimi" : "Högskoleutbildning",
+    "kuvaus" : "Högskoleutbildning",
     "kieli" : "SV"
   } ],
   "versio" : 2,
@@ -29147,6 +29178,10 @@
     "codeElementVersion" : 12,
     "passive" : false
   }, {
+    "codeElementUri" : "koulutus_651303",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
     "codeElementUri" : "koulutus_651399",
     "codeElementVersion" : 4,
     "passive" : true
@@ -29161,6 +29196,10 @@
   }, {
     "codeElementUri" : "koulutus_651399",
     "codeElementVersion" : 7,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_652901",
+    "codeElementVersion" : 1,
     "passive" : false
   }, {
     "codeElementUri" : "koulutus_750201",
@@ -29197,6 +29236,10 @@
   }, {
     "codeElementUri" : "koulutus_750201",
     "codeElementVersion" : 12,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_750204",
+    "codeElementVersion" : 1,
     "passive" : false
   }, {
     "codeElementUri" : "koulutus_750205",
@@ -29340,18 +29383,55 @@
     "passive" : false
   } ]
 }, {
+  "koodiUri" : "koulutustyyppi_30",
+  "koodiArvo" : "30",
+  "metadata" : [ {
+    "nimi" : "Aikuisten maahanmuuttajien kotoutumiskoulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Integrationsutbildning för vuxna invandrare",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koulutustyyppi_35",
+  "koodiArvo" : "35",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning i grundläggande litteracitet inom fritt bildningsarbete",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "koulutustyyppi_4",
   "koodiArvo" : "4",
   "metadata" : [ {
-    "nimi" : "Ammatillinen perustutkinto erityisopetuksena",
+    "nimi" : "Ammatillinen perustutkinto (vaativa erityinen tuki)",
     "lyhytNimi" : "Ammatillinen perustutkinto erityisopetuksena",
     "kuvaus" : "Ammatillinen perustutkinto erityisopetuksena",
     "kieli" : "FI"
   }, {
-    "nimi" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+    "nimi" : "Yrkesinriktad grundexamen (krävande särskilt stöd)",
     "lyhytNimi" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
     "kuvaus" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational upper secondary qualification as special needs education",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -32076,6 +32156,54 @@
     "passive" : false
   } ]
 }, {
+  "koodiUri" : "koulutustyyppi_40",
+  "koodiArvo" : "40",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutus TUVA)",
+    "lyhytNimi" : "TUVA",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning som handleder för examensutbildning (Hux)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "haunkohdejoukko_11",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_999908",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_41",
+  "koodiArvo" : "41",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutus (TUVA) vaativa erityinen tuki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning som handleder för examensutbildning (Hux) krävande särskilt stöd",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "haunkohdejoukko_11",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_999908",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
   "koodiUri" : "koulutustyyppi_5",
   "koodiArvo" : "5",
   "metadata" : [ {
@@ -32084,13 +32212,17 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Utbildning som förbereder för arbete och ett självständigt liv",
-    "lyhytNimi" : "Utbildning som förbereder för arbete och ett självständigt liv",
+    "nimi" : "Utbildning som förbereder för arbete och ett självständigt liv (TELMA)",
+    "lyhytNimi" : "TELMA",
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
+    "codeElementUri" : "haunkohdejoukko_11",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
     "codeElementUri" : "haunkohdejoukko_20",
     "codeElementVersion" : 1,
     "passive" : false
@@ -32507,194 +32639,4 @@
     "codeElementVersion" : 1,
     "passive" : false
   } ]
-}, {
-  "koodiUri" : "koulutustyyppi_30",
-  "koodiArvo" : "30",
-  "metadata" : [ {
-    "nimi" : "Aikuisten maahanmuuttajien kotoutumiskoulutus",
-    "lyhytNimi" : "Aikuisten maahanmuuttajien kotoutumiskoulutus",
-    "kuvaus" : "Aikuisten maahanmuuttajien kotoutumiskoulutus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Aikuisten maahanmuuttajien kotoutumiskoulutus",
-    "lyhytNimi" : "Aikuisten maahanmuuttajien kotoutumiskoulutus",
-    "kuvaus" : "Aikuisten maahanmuuttajien kotoutumiskoulutus",
-    "kieli" : "SV"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "haunkohdejoukko_18",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_999910",
-    "codeElementVersion" : 2,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_099999",
-    "codeElementVersion" : 3,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_099999",
-    "codeElementVersion" : 4,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_099999",
-    "codeElementVersion" : 5,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_099999",
-    "codeElementVersion" : 6,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_099999",
-    "codeElementVersion" : 7,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_099999",
-    "codeElementVersion" : 8,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_099999",
-    "codeElementVersion" : 9,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_099999",
-    "codeElementVersion" : 10,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_099999",
-    "codeElementVersion" : 11,
-    "passive" : true
-  }, {
-    "codeElementUri" : "koulutus_099999",
-    "codeElementVersion" : 12,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutustyyppifasetti_et0205",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_21",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_62",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_64",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_66",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_99",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},
-{
-  "koodiUri" : "koulutustyyppi_35",
-  "koodiArvo" : "35",
-  "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutust st",
-    "lyhytNimi" : "Vapaan sivistystyön lukutaitokoulutus",
-    "kuvaus" : "Vapaan sivistystyön lukutaitokoulutus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vapaan sivistystyön lukutaitokoulutus",
-    "lyhytNimi" : "Vapaan sivistystyön lukutaitokoulutus",
-    "kuvaus" : "Vapaan sivistystyön lukutaitokoulutus",
-    "kieli" : "SV"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "haunkohdejoukko_18",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_999911",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_21",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_62",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_64",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_66",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_99",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }]
-},
-{
-  "koodiUri" : "koulutustyyppi_40",
-  "koodiArvo" : "40",
-  "metadata" : [ {
-    "nimi" : "Tutkintokoulutukseen valmentava koulutus",
-    "lyhytNimi" : "Tutkintokoulutukseen valmentava koulutus",
-    "kuvaus" : "Tutkintokoulutukseen valmentava koulutus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utbildning som handleder för examensutbildning",
-    "lyhytNimi" : "Utbildning som handleder för examensutbildning",
-    "kuvaus" : "Utbildning som handleder för examensutbildning",
-    "kieli" : "SV"
-  } ],
-  "versio" : 2,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "haunkohdejoukko_18",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "koulutus_999911",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_21",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_62",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_63",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_64",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_66",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }, {
-    "codeElementUri" : "oppilaitostyyppi_99",
-    "codeElementVersion" : 1,
-    "passive" : false
-  }]
-}]
+} ]

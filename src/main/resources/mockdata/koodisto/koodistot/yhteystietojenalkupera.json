@@ -1,35 +1,15 @@
 {
-  "koodistoUri": "yhteystietojenalkupera",
-  "resourceUri": "http://virkailija.testiopintopolku.fi/koodisto-service/rest/codes/yhteystietojenalkupera",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "codesGroupUri": "http://alueet",
-  "version": 2,
-  "versio": 1,
-  "paivitysPvm": "2014-09-09",
-  "paivittajaOid": null,
-  "voimassaAlkuPvm": "2014-09-08",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "kieli": "FI",
-      "nimi": "Yhteystietojen alkuperä",
-      "kuvaus": "Yhteystietojen alkuperätiedot",
-      "kayttoohje": "",
-      "kasite": "",
-      "kohdealue": "",
-      "sitovuustaso": "",
-      "kohdealueenOsaAlue": "",
-      "toimintaymparisto": "",
-      "tarkentaaKoodistoa": "",
-      "huomioitavaKoodisto": "",
-      "koodistonLahde": ""
-    }
-  ],
-  "codesVersions": [],
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": []
+  "koodistoUri" : "yhteystietojenalkupera",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Yhteystietojen alkuperä",
+    "kuvaus" : "Yhteystietojen alkuperätiedot"
+  } ],
+  "codesGroupUri" : "alueet",
+  "voimassaAlkuPvm" : "2014-09-08",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 2
 }

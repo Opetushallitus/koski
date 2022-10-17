@@ -1,203 +1,146 @@
-[
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi4",
-    "metadata": [
-      {
-        "nimi": "BDS Stadigvarande adress i hemlandet",
-        "lyhytNimi": "BDS Stadigv. adress i hemland.t",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "VTJ Vakinainen kotimainen osoite",
-        "lyhytNimi": "VTJ Vak. kotim. os.",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi4"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi3",
-    "metadata": [
-      {
-        "nimi": "Fritidsadress",
-        "lyhytNimi": "Fritidsadress",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Vapaa-ajan osoite",
-        "lyhytNimi": "Vapaa-ajan osoite",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi3"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi6",
-    "metadata": [
-      {
-        "nimi": "Hakemukselta tuleva yhteystieto",
-        "lyhytNimi": "Hakemukselta tuleva yhteystieto",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Kontaktinformation som härstammar från ansökan",
-        "lyhytNimi": "Kontaktinformation som härstammar från ansökan",
-        "kieli": "SV"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi6"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi10",
-    "metadata": [
-      {
-        "nimi": "VTJ tilapäinen ulkomainen osoite",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi10"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi5",
-    "metadata": [
-      {
-        "nimi": "BDS Stadigvarande adress utomlands",
-        "lyhytNimi": "BDS Stadigv. adress utomlands",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "VTJ Vakinainen ulkomainen osoite",
-        "lyhytNimi": "VTJ Vak. ulkom. os.",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi5"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi9",
-    "metadata": [
-      {
-        "nimi": "VTJ tilapäinen kotimainen osoite",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi9"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi1",
-    "metadata": [
-      {
-        "nimi": "Kotiosoite",
-        "lyhytNimi": "Kotiosoite",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Hemadress",
-        "lyhytNimi": "Hemadress",
-        "kieli": "SV"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi1"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi12",
-    "metadata": [
-      {
-        "nimi": "VTJ ulkomainen postiosoite",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi12"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi8",
-    "metadata": [
-      {
-        "nimi": "VTJ Sähköinen osoite",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi8"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi11",
-    "metadata": [
-      {
-        "nimi": "VTJ kotimainen postiosoite",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi11"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi13",
-    "metadata": [
-      {
-        "nimi": "Oikeustulkkirekisterin yhteystiedot",
-        "lyhytNimi": null,
-        "kieli": "EN"
-      },
-      {
-        "nimi": "Oikeustulkkirekisterin yhteystiedot",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Oikeustulkkirekisterin yhteystiedot",
-        "lyhytNimi": null,
-        "kieli": "SV"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi13"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi7",
-    "metadata": [
-      {
-        "nimi": "Muu osoite",
-        "lyhytNimi": "Muu osoite",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Annan adress",
-        "lyhytNimi": "Annan adress",
-        "kieli": "SV"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi7"
-  },
-  {
-    "koodiUri": "yhteystietotyypit_yhteystietotyyppi2",
-    "metadata": [
-      {
-        "nimi": "Työosoite",
-        "lyhytNimi": "Työosoite",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Arbetsadress",
-        "lyhytNimi": "Arbetsadress",
-        "kieli": "SV"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "yhteystietotyyppi2"
-  }
-]
+[ {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi1",
+  "koodiArvo" : "yhteystietotyyppi1",
+  "metadata" : [ {
+    "nimi" : "Kotiosoite",
+    "lyhytNimi" : "Kotiosoite",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Hemadress",
+    "lyhytNimi" : "Hemadress",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi10",
+  "koodiArvo" : "yhteystietotyyppi10",
+  "metadata" : [ {
+    "nimi" : "VTJ tilapäinen ulkomainen osoite",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi11",
+  "koodiArvo" : "yhteystietotyyppi11",
+  "metadata" : [ {
+    "nimi" : "VTJ kotimainen postiosoite",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi12",
+  "koodiArvo" : "yhteystietotyyppi12",
+  "metadata" : [ {
+    "nimi" : "VTJ ulkomainen postiosoite",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi13",
+  "koodiArvo" : "yhteystietotyyppi13",
+  "metadata" : [ {
+    "nimi" : "Oikeustulkkirekisterin yhteystiedot",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Oikeustulkkirekisterin yhteystiedot",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Oikeustulkkirekisterin yhteystiedot",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi2",
+  "koodiArvo" : "yhteystietotyyppi2",
+  "metadata" : [ {
+    "nimi" : "Työosoite",
+    "lyhytNimi" : "Työosoite",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetsadress",
+    "lyhytNimi" : "Arbetsadress",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi3",
+  "koodiArvo" : "yhteystietotyyppi3",
+  "metadata" : [ {
+    "nimi" : "Vapaa-ajan osoite",
+    "lyhytNimi" : "Vapaa-ajan osoite",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Fritidsadress",
+    "lyhytNimi" : "Fritidsadress",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi4",
+  "koodiArvo" : "yhteystietotyyppi4",
+  "metadata" : [ {
+    "nimi" : "VTJ Vakinainen kotimainen osoite",
+    "lyhytNimi" : "VTJ Vak. kotim. os.",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "BDS Stadigvarande adress i hemlandet",
+    "lyhytNimi" : "BDS Stadigv. adress i hemland.t",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi5",
+  "koodiArvo" : "yhteystietotyyppi5",
+  "metadata" : [ {
+    "nimi" : "VTJ Vakinainen ulkomainen osoite",
+    "lyhytNimi" : "VTJ Vak. ulkom. os.",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "BDS Stadigvarande adress utomlands",
+    "lyhytNimi" : "BDS Stadigv. adress utomlands",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi6",
+  "koodiArvo" : "yhteystietotyyppi6",
+  "metadata" : [ {
+    "nimi" : "Hakemukselta tuleva yhteystieto",
+    "lyhytNimi" : "Hakemukselta tuleva yhteystieto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kontaktinformation som härstammar från ansökan",
+    "lyhytNimi" : "Kontaktinformation som härstammar från ansökan",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi7",
+  "koodiArvo" : "yhteystietotyyppi7",
+  "metadata" : [ {
+    "nimi" : "Muu osoite",
+    "lyhytNimi" : "Muu osoite",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Annan adress",
+    "lyhytNimi" : "Annan adress",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi8",
+  "koodiArvo" : "yhteystietotyyppi8",
+  "metadata" : [ {
+    "nimi" : "VTJ Sähköinen osoite",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "yhteystietotyypit_yhteystietotyyppi9",
+  "koodiArvo" : "yhteystietotyyppi9",
+  "metadata" : [ {
+    "nimi" : "VTJ tilapäinen kotimainen osoite",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

@@ -167,6 +167,21 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetib_cs",
+  "koodiArvo" : "CS",
+  "metadata" : [ {
+    "nimi" : "Computer science",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Computer science",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Computer science",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetib_dan",
   "koodiArvo" : "DAN",
   "metadata" : [ {

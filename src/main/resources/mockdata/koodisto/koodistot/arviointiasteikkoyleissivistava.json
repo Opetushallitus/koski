@@ -11,7 +11,7 @@
     "kieli" : "EN",
     "nimi" : "Arviointiasteikko yleissivistava"
   } ],
-  "codesGroupUri" : "http://koski",
+  "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2015-10-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],

@@ -131,11 +131,11 @@ describe('VST', function () {
     before(
       prepareForNewOppija('kalle', '230872-7258'),
       addOppija.enterValidDataVSTLukutaito(),
-      addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Kansanopistojen vapaan sivistystyön lukutaitokoulutus')
+      addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Lukutaitokoulutus oppivelvollisille')
     )
 
     it('toimii', function () {
-      expect(opinnot.getTutkinto()).to.equal('Kansanopistojen vapaan sivistystyön lukutaitokoulutus')
+      expect(opinnot.getTutkinto()).to.equal('Lukutaitokoulutus oppivelvollisille')
       expect(opinnot.getOppilaitos()).to.equal('Varsinais-Suomen kansanopisto')
       expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('OPH-2984-2017')
       expect(extractAsText(S('.tunniste-koodiarvo'))).to.equal('999911')
@@ -144,18 +144,18 @@ describe('VST', function () {
     describe('Osasuorituksen voi lisätä', function () {
       before(
         editor.edit,
-        vst.lisääLukutaitokoulutuksenKokonaisuus('Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus'),
+        vst.lisääLukutaitokoulutuksenKokonaisuus('Numeeriset taidot'),
         function () {
-          return vst.selectOsasuoritus('Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus')().property('laajuus').setValue(5)()
+          return vst.selectOsasuoritus('Numeeriset taidot')().property('laajuus').setValue(5)()
         },
         function () {
-          return vst.selectOsasuoritus('Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus')().propertyBySelector('.arvosana').selectValue('Hyväksytty')()
+          return vst.selectOsasuoritus('Numeeriset taidot')().propertyBySelector('.arvosana').selectValue('Hyväksytty')()
         },
         editor.saveChanges
       )
 
       it('toimii', function () {
-        expect(extractAsText(S('.vst-osasuoritus'))).to.include('Vapaan sivistystyön lukutaitokoulutuksen numeeristen taitojen suoritus 5 op Hyväksytty A1.1')
+        expect(extractAsText(S('.vst-osasuoritus'))).to.include('Numeeriset taidot 5 op Hyväksytty A1.1')
       })
 
       describe('Suorituksen merkkaaminen valmiiksi', function () {

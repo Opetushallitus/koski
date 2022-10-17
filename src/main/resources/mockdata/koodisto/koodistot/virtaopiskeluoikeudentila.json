@@ -4,9 +4,9 @@
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "VIRTA Opiskeluoikeuden tila",
-    "kuvaus" : "Opiskeluoikeuden tila (ks. https://wiki.eduuni.fi/display/CSCVIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Opiskeluoikeudentila,Studierättersstatus )"
+    "kuvaus" : "Opiskeluoikeuden tila (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Opiskeluoikeudentila,Studierättersstatus )"
   } ],
-  "codesGroupUri" : "http://virta",
+  "codesGroupUri" : "virta",
   "voimassaAlkuPvm" : "2013-01-01",
   "organisaatioOid" : "1.2.246.562.10.2013112012294919827487",
   "withinCodes" : [ ],

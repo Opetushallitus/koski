@@ -14,7 +14,7 @@
     "nimi" : "Valtiot ja maat 1",
     "kuvaus" : "maat ja valtiot 1"
   } ],
-  "codesGroupUri" : "http://alueet",
+  "codesGroupUri" : "alueet",
   "voimassaAlkuPvm" : "2019-01-18",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],

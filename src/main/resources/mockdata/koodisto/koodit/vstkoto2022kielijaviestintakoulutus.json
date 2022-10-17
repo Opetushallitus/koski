@@ -1,82 +1,61 @@
-[
-  {
-    "koodiUri": "vstkoto2022kielijaviestintakoulutus_kuullunymmartaminen",
-    "koodiArvo": "kuullunymmartaminen",
-    "metadata": [
-      {
-        "nimi": "Kuullun ymmärtäminen (suullinen vastaanottaminen)",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Kuullun ymmärtäminen (suullinen vastaanottaminen)",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Kuullun ymmärtäminen (suullinen vastaanottaminen)",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "vstkoto2022kielijaviestintakoulutus_luetunymmartaminen",
-    "koodiArvo": "luetunymmartaminen",
-    "metadata": [
-      {
-        "nimi": "Luetun ymmärtäminen (kirjallinen vastaanottaminen)",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Luetun ymmärtäminen (kirjallinen vastaanottaminen)",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Luetun ymmärtäminen (kirjallinen vastaanottaminen)",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "vstkoto2022kielijaviestintakoulutus_puhuminen",
-    "koodiArvo": "puhuminen",
-    "metadata": [
-      {
-        "nimi": "Puhuminen (suullinen tuottaminen)",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Puhuminen (suullinen tuottaminen)",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Puhuminen (suullinen tuottaminen)",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "vstkoto2022kielijaviestintakoulutus_kirjoittaminen",
-    "koodiArvo": "kirjoittaminen",
-    "metadata": [
-      {
-        "nimi": "Kirjoittaminen (kirjallinen tuottaminen)",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Kirjoittaminen (kirjallinen tuottaminen)",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Kirjoittaminen (kirjallinen tuottaminen)",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  }
-]
+[ {
+  "koodiUri" : "vstkoto2022kielijaviestintakoulutus_kirjoittaminen",
+  "koodiArvo" : "kirjoittaminen",
+  "metadata" : [ {
+    "nimi" : "Kirjoittaminen (kirjallinen tuottaminen)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kirjoittaminen (kirjallinen tuottaminen)",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kirjoittaminen (kirjallinen tuottaminen)",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstkoto2022kielijaviestintakoulutus_kuullunymmartaminen",
+  "koodiArvo" : "kuullunymmartaminen",
+  "metadata" : [ {
+    "nimi" : "Kuullun ymmärtäminen (suullinen vastaanottaminen)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kuullun ymmärtäminen (suullinen vastaanottaminen)",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kuullun ymmärtäminen (suullinen vastaanottaminen)",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstkoto2022kielijaviestintakoulutus_luetunymmartaminen",
+  "koodiArvo" : "luetunymmartaminen",
+  "metadata" : [ {
+    "nimi" : "Luetun ymmärtäminen (kirjallinen vastaanottaminen)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Luetun ymmärtäminen (kirjallinen vastaanottaminen)",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Luetun ymmärtäminen (kirjallinen vastaanottaminen)",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "vstkoto2022kielijaviestintakoulutus_puhuminen",
+  "koodiArvo" : "puhuminen",
+  "metadata" : [ {
+    "nimi" : "Puhuminen (suullinen tuottaminen)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Puhuminen (suullinen tuottaminen)",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Puhuminen (suullinen tuottaminen)",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

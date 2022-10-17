@@ -1,514 +1,568 @@
 [ {
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs1",
-  "koodiArvo" : "LVS1",
-  "metadata" : [ {
-    "nimi" : "Kielitietoisuus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kielitietoisuus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kielitietoisuus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs2",
-  "koodiArvo" : "LVS2",
-  "metadata" : [ {
-    "nimi" : "Tekstitietoisuus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tekstitietoisuus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tekstitietoisuus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs3",
-  "koodiArvo" : "LVS3",
-  "metadata" : [ {
-    "nimi" : "Eri tiedonalojen kieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Eri tiedonalojen kieli",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Eri tiedonalojen kieli",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs4",
-  "koodiArvo" : "LVS4",
-  "metadata" : [ {
-    "nimi" : "Tekstien kirjoittaminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tekstien kirjoittaminen",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tekstien kirjoittaminen",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs5",
-  "koodiArvo" : "LVS5",
-  "metadata" : [ {
-    "nimi" : "Eri tiedonalojen tekstien kirjoittaminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Eri tiedonalojen tekstien kirjoittaminen",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Eri tiedonalojen tekstien kirjoittaminen",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs6",
-  "koodiArvo" : "LVS6",
-  "metadata" : [ {
-    "nimi" : "Vuorovaikutus 1",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vuorovaikutus 1",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vuorovaikutus 1",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs7",
-  "koodiArvo" : "LVS7",
-  "metadata" : [ {
-    "nimi" : "Kirjallisuus 1",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kirjallisuus 1",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kirjallisuus 1",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs8",
-  "koodiArvo" : "LVS8",
-  "metadata" : [ {
-    "nimi" : "Kirjallisuus 2",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kirjallisuus 2",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kirjallisuus 2",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs9",
-  "koodiArvo" : "LVS9",
-  "metadata" : [ {
-    "nimi" : "Kulttuurinen moninaisuus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kulttuurinen moninaisuus",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kulttuurinen moninaisuus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs10",
-  "koodiArvo" : "LVS10",
-  "metadata" : [ {
-    "nimi" : "Vuorovaikutus 2",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vuorovaikutus 2",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Vuorovaikutus 2",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs11",
-  "koodiArvo" : "LVS11",
-  "metadata" : [ {
-    "nimi" : "Digitaaliset tekstitaidot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Digitaaliset tekstitaidot",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Digitaaliset tekstitaidot",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs12",
-  "koodiArvo" : "LVS12",
-  "metadata" : [ {
-    "nimi" : "Mediakulttuuri",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Mediakulttuuri",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Mediakulttuuri",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvka1",
-  "koodiArvo" : "LVKA1",
-  "metadata" : [ {
-    "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvpoak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvka2",
-  "koodiArvo" : "LVKA2",
-  "metadata" : [ {
-    "nimi" : "Arkipäivän vuorovaikutusta",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arkipäivän vuorovaikutusta",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Arkipäivän vuorovaikutusta",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvpoak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvka3",
-  "koodiArvo" : "LVKA3",
-  "metadata" : [ {
-    "nimi" : "Mediat",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Mediat",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Mediat",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvpoak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvkb1",
-  "koodiArvo" : "LVKB1",
-  "metadata" : [ {
-    "nimi" : "Kieleen tutustuminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kieleen tutustuminen",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kieleen tutustuminen",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvkb2",
-  "koodiArvo" : "LVKB2",
-  "metadata" : [ {
-    "nimi" : "Asioiminen ja harrastukset",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Asioiminen ja harrastukset",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Asioiminen ja harrastukset",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvkb3",
-  "koodiArvo" : "LVKB3",
-  "metadata" : [ {
-    "nimi" : "Elinympäristö ja sosiaaliset verkostot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Elinympäristö ja sosiaaliset verkostot",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Elinympäristö ja sosiaaliset verkostot",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvmai1",
-  "koodiArvo" : "LVMAI1",
-  "metadata" : [ {
-    "nimi" : "Kieli ja identiteetti",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kieli ja identiteetti",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kieli ja identiteetti",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmai",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvmai2",
-  "koodiArvo" : "LVMAI2",
-  "metadata" : [ {
-    "nimi" : "Kirjoittaminen ja nykykulttuuri",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kirjoittaminen ja nykykulttuuri",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kirjoittaminen ja nykykulttuuri",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmai",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvmai3",
-  "koodiArvo" : "LVMAI3",
-  "metadata" : [ {
-    "nimi" : "Puheviestinnän taitojen syventäminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Puheviestinnän taitojen syventäminen",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Puheviestinnän taitojen syventäminen",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmai",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvma",
-  "koodiArvo" : "LVMA",
-  "metadata" : [ {
-    "nimi" : "Matematiikka",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Matematiikka",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Matematiikka",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmaluo",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
-  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvfyke",
-  "koodiArvo" : "LVFYKE",
-  "metadata" : [ {
-    "nimi" : "Fysiikka ja kemia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Fysiikka ja kemia",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Fysiikka ja kemia",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmaluo",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
   "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvbg",
   "koodiArvo" : "LVBG",
   "metadata" : [ {
     "nimi" : "Biologia ja maantiede",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Biologia ja maantiede",
+    "nimi" : "Biologi och geografi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Biologia ja maantiede",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmaluo",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvfyke",
+  "koodiArvo" : "LVFYKE",
+  "metadata" : [ {
+    "nimi" : "Fysiikka ja kemia",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Fysik och kemi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Fysiikka ja kemia",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvhy1",
   "koodiArvo" : "LVHY1",
   "metadata" : [ {
     "nimi" : "Historian perusteita",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Historian perusteita",
+    "nimi" : "Grunderna i historia",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Historian perusteita",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvhiyh",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvhy2",
   "koodiArvo" : "LVHY2",
   "metadata" : [ {
     "nimi" : "Suomen yhteiskunta ja kulttuurit",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Suomen yhteiskunta ja kulttuurit",
+    "nimi" : "Samhället och kulturerna i Finland",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Suomen yhteiskunta ja kulttuurit",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvhiyh",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-},{
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvka1",
+  "koodiArvo" : "LVKA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Språkfärdighet som en del av studierna och andra livsområden",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvka2",
+  "koodiArvo" : "LVKA2",
+  "metadata" : [ {
+    "nimi" : "Arkipäivän vuorovaikutusta",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagssituationer",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Arkipäivän vuorovaikutusta",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvka3",
+  "koodiArvo" : "LVKA3",
+  "metadata" : [ {
+    "nimi" : "Mediat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Medier",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Mediat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvkb1",
+  "koodiArvo" : "LVKB1",
+  "metadata" : [ {
+    "nimi" : "Kieleen tutustuminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Introduktion i språket",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kieleen tutustuminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvkb2",
+  "koodiArvo" : "LVKB2",
+  "metadata" : [ {
+    "nimi" : "Asioiminen ja harrastukset",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagsärenden och fritid",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Asioiminen ja harrastukset",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvkb3",
+  "koodiArvo" : "LVKB3",
+  "metadata" : [ {
+    "nimi" : "Elinympäristö ja sosiaaliset verkostot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Livsmiljö och sociala nätverk",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Elinympäristö ja sosiaaliset verkostot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvma",
+  "koodiArvo" : "LVMA",
+  "metadata" : [ {
+    "nimi" : "Matematiikka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Matematik",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Matematiikka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvmai1",
+  "koodiArvo" : "LVMAI1",
+  "metadata" : [ {
+    "nimi" : "Kieli ja identiteetti",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och identitet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kieli ja identiteetti",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvmai2",
+  "koodiArvo" : "LVMAI2",
+  "metadata" : [ {
+    "nimi" : "Kirjoittaminen ja nykykulttuuri",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Skrivande och modern kultur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kirjoittaminen ja nykykulttuuri",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvmai3",
+  "koodiArvo" : "LVMAI3",
+  "metadata" : [ {
+    "nimi" : "Puheviestinnän taitojen syventäminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupade färdigheter i muntlig kommunikation",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Puheviestinnän taitojen syventäminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvop",
   "koodiArvo" : "LVOP",
   "metadata" : [ {
     "nimi" : "Opinto-ohjaus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Opinto-ohjaus",
+    "nimi" : "Studiehandledning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Opinto-ohjaus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvopo",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}]
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs1",
+  "koodiArvo" : "LVS1",
+  "metadata" : [ {
+    "nimi" : "Kielitietoisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Språklig medvetenhet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kielitietoisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs10",
+  "koodiArvo" : "LVS10",
+  "metadata" : [ {
+    "nimi" : "Vuorovaikutus 2",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 2",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vuorovaikutus 2",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs11",
+  "koodiArvo" : "LVS11",
+  "metadata" : [ {
+    "nimi" : "Digitaaliset tekstitaidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Digital textkompetens",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Digitaaliset tekstitaidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs12",
+  "koodiArvo" : "LVS12",
+  "metadata" : [ {
+    "nimi" : "Mediakulttuuri",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Mediekultur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Mediakulttuuri",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs2",
+  "koodiArvo" : "LVS2",
+  "metadata" : [ {
+    "nimi" : "Tekstitietoisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Textmedvetenhet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tekstitietoisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs3",
+  "koodiArvo" : "LVS3",
+  "metadata" : [ {
+    "nimi" : "Eri tiedonalojen kieli",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Språket inom olika ämnesområden",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Eri tiedonalojen kieli",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs4",
+  "koodiArvo" : "LVS4",
+  "metadata" : [ {
+    "nimi" : "Tekstien kirjoittaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Skriva texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tekstien kirjoittaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs5",
+  "koodiArvo" : "LVS5",
+  "metadata" : [ {
+    "nimi" : "Eri tiedonalojen tekstien kirjoittaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Att skriva texter inom olika ämnesområden",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Eri tiedonalojen tekstien kirjoittaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs6",
+  "koodiArvo" : "LVS6",
+  "metadata" : [ {
+    "nimi" : "Vuorovaikutus 1",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 1",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vuorovaikutus 1",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs7",
+  "koodiArvo" : "LVS7",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuus 1",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur 1",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kirjallisuus 1",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs8",
+  "koodiArvo" : "LVS8",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuus 2",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur 2",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kirjallisuus 2",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lukioonvalmistavankoulutuksenmoduulit2019_lvs9",
+  "koodiArvo" : "LVS9",
+  "metadata" : [ {
+    "nimi" : "Kulttuurinen moninaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturell mångfald",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kulttuurinen moninaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

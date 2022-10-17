@@ -54,11 +54,11 @@ describe('Omat tiedot - TUVA', function () {
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.10.2021\n\n' +
           // Työelämätaidot ja työpaikalla tapahtuva oppiminen
-          'Työelämätaidot ja työpaikalla tapahtuva oppiminen 1 vk Hyväksytty\n' +
+          'Työelämätaidot ja työelämässä tapahtuva oppiminen 1 vk Hyväksytty\n' +
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.10.2021\n\n' +
           // Arjen ja yhteiskunnallisen osallisuuden taidot
-          'Arjen ja yhteiskunnallisen osallisuuden taidot 1 vk Hyväksytty\n' +
+          'Arjen taidot ja yhteiskunnallinen osallisuus 1 vk Hyväksytty\n' +
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.11.2021\n\n' +
           // Lukiokoulutuksen opinnot ja niihin valmentautuminen
@@ -74,7 +74,7 @@ describe('Omat tiedot - TUVA', function () {
           'Rahoituksen piirissä ei\n' +
           'Arviointipäivä 1.11.2021\n\n' +
           // Valinnaiset koulutuksen osat
-          'Valinnaiset koulutuksen osat 5 vk Hyväksytty\n' +
+          'Valinnaiset opinnot 5 vk Hyväksytty\n' +
           'Suorituskieli suomi\n' +
           'Arviointipäivä 1.12.2021\n' +
           'Valinnaisen koulutuksen osan paikallinen osasuoritus Laajuus Arvosana\n' +

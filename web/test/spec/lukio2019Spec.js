@@ -430,7 +430,7 @@ describe('Lukiokoulutus2019', function( ){
 
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
-        expect(opinnot.getTutkinto()).to.equal("Lukion oppiaineet")
+        expect(opinnot.getTutkinto()).to.equal("Lukion aineopinnot")
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
       })
     })
@@ -444,12 +444,12 @@ describe('Lukiokoulutus2019', function( ){
       })
 
       it('näyttää suorituksen tyypin opiskeluoikeuden otsikossa', function () {
-        expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Lukion oppiaineet')
+        expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Lukion aineopinnot')
       })
 
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Lukion oppiaineet OPH-2263-2019\n' +
+          'Koulutus Lukion aineopinnot OPH-2263-2019\n' +
           'Opetussuunnitelma Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Opetuskieli suomi\n' +
@@ -557,19 +557,19 @@ describe('Lukiokoulutus2019', function( ){
       })
     })
 
-    describe('Lukion oppiaineen oppimäärä', function() {
+    describe('Lukion aineopinnot', function() {
       describe('Nuorten 2019 oppimäärä', function() {
         before(
           prepareForNewOppija('kalle', '260613-0652'),
-          addOppija.enterValidDataLukio({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppiaineet', peruste: 'OPH-2263-2019', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
-          addOppija.selectOppimäärä('Lukion oppiaineet'),
-          addOppija.submitAndExpectSuccess('Tyhjä, Tero (260613-0652)', 'Lukion oppiaineet')
+          addOppija.enterValidDataLukio({ oppilaitos: 'Ressun', oppimäärä: 'Lukion aineopinnot', peruste: 'OPH-2263-2019', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
+          addOppija.selectOppimäärä('Lukion aineopinnot'),
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (260613-0652)', 'Lukion aineopinnot')
         )
 
         describe('Lisäyksen jälkeen', function () {
           describe('Opiskeluoikeuden tiedot', function() {
             it('näytetään oikein', function () {
-              expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Lukion oppiaineet')
+              expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Lukion aineopinnot')
               expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('OPH-2263-2019')
               expect(editor.propertyBySelector('.toimipiste').getValue()).to.equal('Ressun lukio')
               expect(opinnot.getSuorituskieli()).to.equal('suomi')
@@ -581,16 +581,16 @@ describe('Lukiokoulutus2019', function( ){
       describe('Aikuisten 2019 oppimäärä', function() {
         before(
           prepareForNewOppija('kalle', '051009-409T'),
-          addOppija.enterValidDataLukio({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppiaineet', peruste: 'OPH-2267-2019', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
-          addOppija.selectOppimäärä('Lukion oppiaineet'),
+          addOppija.enterValidDataLukio({ oppilaitos: 'Ressun', oppimäärä: 'Lukion aineopinnot', peruste: 'OPH-2267-2019', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }),
+          addOppija.selectOppimäärä('Lukion aineopinnot'),
           addOppija.selectPeruste('OPH-2267-2019'),
-          addOppija.submitAndExpectSuccess('Tyhjä, Tero (051009-409T)', 'Lukion oppiaineet')
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (051009-409T)', 'Lukion aineopinnot')
         )
 
         describe('Lisäyksen jälkeen', function () {
           describe('Opiskeluoikeuden tiedot', function() {
             it('näytetään oikein', function () {
-              expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Lukion oppiaineet')
+              expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Lukion aineopinnot')
               expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('OPH-2267-2019')
               expect(editor.propertyBySelector('.toimipiste').getValue()).to.equal('Ressun lukio')
               expect(opinnot.getSuorituskieli()).to.equal('suomi')

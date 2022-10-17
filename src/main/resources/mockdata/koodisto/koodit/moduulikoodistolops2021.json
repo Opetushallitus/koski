@@ -3,7 +3,12 @@
   "koodiArvo" : "BI1",
   "metadata" : [ {
     "nimi" : "Elämä ja evoluutio ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Livet och evolutionen",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -13,6 +18,10 @@
     "nimi" : "Ekologian perusteet",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ekologins grunder",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -20,7 +29,12 @@
   "koodiArvo" : "BI3",
   "metadata" : [ {
     "nimi" : "Ihmisen vaikutukset ekosysteemeihin ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans inverkan på ekosystemen",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -28,7 +42,12 @@
   "koodiArvo" : "BI4",
   "metadata" : [ {
     "nimi" : "Solu ja perinnöllisyys ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Cellen och ärftligheten",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -36,7 +55,12 @@
   "koodiArvo" : "BI5",
   "metadata" : [ {
     "nimi" : "Ihmisen biologia ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans biologi",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -44,7 +68,12 @@
   "koodiArvo" : "BI6",
   "metadata" : [ {
     "nimi" : "Biotekniikka ja sen sovellukset",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Biotekniken och dess tillämpningar",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -52,7 +81,12 @@
   "koodiArvo" : "ENA1",
   "metadata" : [ {
     "nimi" : "Opiskelutaidot ja kieli-identiteetin rakentaminen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -60,7 +94,12 @@
   "koodiArvo" : "ENA2",
   "metadata" : [ {
     "nimi" : "Englanti globaalina kielenä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Engelskan som globalt språk",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -68,7 +107,12 @@
   "koodiArvo" : "ENA3",
   "metadata" : [ {
     "nimi" : "Englannin kieli ja kulttuuri luovan ilmaisun välineenä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Engelska språket och kulturen som kreativt uttryckssätt",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -76,7 +120,12 @@
   "koodiArvo" : "ENA4",
   "metadata" : [ {
     "nimi" : "Englannin kieli vaikuttamisen välineenä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Engelskan som ett verktyg för att påverka",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -84,7 +133,12 @@
   "koodiArvo" : "ENA5",
   "metadata" : [ {
     "nimi" : "Kestävä tulevaisuus ja tiede ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar framtid och vetenskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -92,7 +146,12 @@
   "koodiArvo" : "ENA6",
   "metadata" : [ {
     "nimi" : "Englannin kieli jatko-opinnoissa ja työelämässä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Engelska i fortsatta studier och arbetsliv",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -100,7 +159,12 @@
   "koodiArvo" : "ENA7",
   "metadata" : [ {
     "nimi" : "Ympäristö ja kestävä elämäntapa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Miljö och hållbar livsstil",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -108,7 +172,12 @@
   "koodiArvo" : "ENA8",
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunicera och påverka muntligt",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -116,7 +185,12 @@
   "koodiArvo" : "ET1",
   "metadata" : [ {
     "nimi" : "Minä ja hyvä elämä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Jag och det goda livet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -124,7 +198,12 @@
   "koodiArvo" : "ET2",
   "metadata" : [ {
     "nimi" : "Minä ja yhteiskunta",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Jag och samhället",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -132,7 +211,12 @@
   "koodiArvo" : "ET3",
   "metadata" : [ {
     "nimi" : "Kulttuurit ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturer",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -140,7 +224,12 @@
   "koodiArvo" : "ET4",
   "metadata" : [ {
     "nimi" : "Katsomukset ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Åskådningar",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -148,7 +237,12 @@
   "koodiArvo" : "ET5",
   "metadata" : [ {
     "nimi" : "Uskonnot ja uskonnottomuus ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och irreligiositet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -156,7 +250,12 @@
   "koodiArvo" : "ET6",
   "metadata" : [ {
     "nimi" : "Tulevaisuus ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Framtiden",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -164,7 +263,12 @@
   "koodiArvo" : "FI1",
   "metadata" : [ {
     "nimi" : "Johdatus filosofiseen ajatteluun",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Introduktion i filosofiskt tänkande",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -172,7 +276,12 @@
   "koodiArvo" : "FI2",
   "metadata" : [ {
     "nimi" : "Etiikka ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Etik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -180,7 +289,12 @@
   "koodiArvo" : "FI3",
   "metadata" : [ {
     "nimi" : "Yhteiskuntafilosofia ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhällsfilosofi",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -188,7 +302,12 @@
   "koodiArvo" : "FI4",
   "metadata" : [ {
     "nimi" : "Totuus ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sanningen",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -196,7 +315,12 @@
   "koodiArvo" : "FIM1",
   "metadata" : [ {
     "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -204,7 +328,12 @@
   "koodiArvo" : "FIM2",
   "metadata" : [ {
     "nimi" : "Miljö och kommunikation",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Miljö och kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -212,7 +341,12 @@
   "koodiArvo" : "FIM3",
   "metadata" : [ {
     "nimi" : "Hållbar framtid och vetenskap",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar framtid och vetenskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -220,7 +354,12 @@
   "koodiArvo" : "FIM4",
   "metadata" : [ {
     "nimi" : "Medier och samhälle",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Medier och samhälle",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -228,7 +367,12 @@
   "koodiArvo" : "FIM5",
   "metadata" : [ {
     "nimi" : "Utbildning och arbetsliv",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning och arbetsliv",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -236,7 +380,16 @@
   "koodiArvo" : "FIM6",
   "metadata" : [ {
     "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -244,7 +397,16 @@
   "koodiArvo" : "FIM7",
   "metadata" : [ {
     "nimi" : "Skriftlig kommunikation",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skriftlig kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Skriftlig kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -252,7 +414,16 @@
   "koodiArvo" : "FIM8",
   "metadata" : [ {
     "nimi" : "Kommunikation och delaktighet",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och delaktighet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kommunikation och delaktighet",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -260,7 +431,16 @@
   "koodiArvo" : "FINA1",
   "metadata" : [ {
     "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -268,7 +448,16 @@
   "koodiArvo" : "FINA2",
   "metadata" : [ {
     "nimi" : "Miljö och kommunikation",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Miljö och kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Miljö och kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -276,7 +465,16 @@
   "koodiArvo" : "FINA3",
   "metadata" : [ {
     "nimi" : "Hållbar framtid och vetenskap",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar framtid och vetenskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Hållbar framtid och vetenskap",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -284,7 +482,16 @@
   "koodiArvo" : "FINA4",
   "metadata" : [ {
     "nimi" : "Medier och samhälle",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Medier och samhälle",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Medier och samhälle",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -292,7 +499,16 @@
   "koodiArvo" : "FINA5",
   "metadata" : [ {
     "nimi" : "Utbildning och arbetsliv",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning och arbetsliv",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Utbildning och arbetsliv",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -300,7 +516,16 @@
   "koodiArvo" : "FINA6",
   "metadata" : [ {
     "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -308,7 +533,16 @@
   "koodiArvo" : "FINA7",
   "metadata" : [ {
     "nimi" : "Skriftlig kommunikation",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skriftlig kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Skriftlig kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -324,7 +558,16 @@
   "koodiArvo" : "FINB11",
   "metadata" : [ {
     "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -332,7 +575,16 @@
   "koodiArvo" : "FINB12",
   "metadata" : [ {
     "nimi" : "Miljö och kommunikation",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Miljö och kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Miljö och kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -340,7 +592,16 @@
   "koodiArvo" : "FINB13",
   "metadata" : [ {
     "nimi" : "Media, samhälle och hållbar framtid",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Media, samhälle och hållbar framtid",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Media, samhälle och hållbar framtid",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -348,7 +609,16 @@
   "koodiArvo" : "FINB14",
   "metadata" : [ {
     "nimi" : "Utbildning och arbetsliv",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning och arbetsliv",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Utbildning och arbetsliv",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -356,7 +626,16 @@
   "koodiArvo" : "FINB15",
   "metadata" : [ {
     "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -372,7 +651,16 @@
   "koodiArvo" : "FINB17",
   "metadata" : [ {
     "nimi" : "Skrifltlig kommunikation",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skrifltlig kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Skrifltlig kommunikation",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -380,7 +668,16 @@
   "koodiArvo" : "FINB31",
   "metadata" : [ {
     "nimi" : "Nybörjarnivå 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nybörjarnivå 1 ",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Nybörjarnivå 1 ",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -388,7 +685,16 @@
   "koodiArvo" : "FINB32",
   "metadata" : [ {
     "nimi" : "Nybörjarnivå 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nybörjarnivå 2 ",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Nybörjarnivå 2 ",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -396,7 +702,16 @@
   "koodiArvo" : "FINB33",
   "metadata" : [ {
     "nimi" : "Nybörjarnivå 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nybörjarnivå 3 ",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Nybörjarnivå 3 ",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -404,7 +719,16 @@
   "koodiArvo" : "FINB34",
   "metadata" : [ {
     "nimi" : "Grundnivå 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 1 ",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Grundnivå 1 ",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -412,7 +736,16 @@
   "koodiArvo" : "FINB35",
   "metadata" : [ {
     "nimi" : "Grundnivå 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 2 ",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Grundnivå 2 ",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -420,7 +753,16 @@
   "koodiArvo" : "FINB36",
   "metadata" : [ {
     "nimi" : "Grundnivå 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 3 ",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Grundnivå 3 ",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -428,7 +770,16 @@
   "koodiArvo" : "FINB37",
   "metadata" : [ {
     "nimi" : "Grundnivå 4 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 4 ",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Grundnivå 4 ",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -436,7 +787,16 @@
   "koodiArvo" : "FINB38",
   "metadata" : [ {
     "nimi" : "Grundnivå 5 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 5 ",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Grundnivå 5 ",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -444,7 +804,12 @@
   "koodiArvo" : "FY1",
   "metadata" : [ {
     "nimi" : "Fysiikka luonnontieteenä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fysiken som naturvetenskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -452,7 +817,12 @@
   "koodiArvo" : "FY2",
   "metadata" : [ {
     "nimi" : "Fysiikka, ympäristö ja yhteiskunta ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fysik, miljö och samhälle",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -460,7 +830,12 @@
   "koodiArvo" : "FY3",
   "metadata" : [ {
     "nimi" : "Energia ja lämpö",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Energi och värme",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -468,7 +843,12 @@
   "koodiArvo" : "FY4",
   "metadata" : [ {
     "nimi" : "Voima ja liike ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kraft och rörelse",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -476,7 +856,12 @@
   "koodiArvo" : "FY5",
   "metadata" : [ {
     "nimi" : "Jaksollinen liike ja aallot",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Periodisk rörelse och vågor",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -484,7 +869,12 @@
   "koodiArvo" : "FY6",
   "metadata" : [ {
     "nimi" : "Sähkö ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Elektricitet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -492,7 +882,12 @@
   "koodiArvo" : "FY7",
   "metadata" : [ {
     "nimi" : "Sähkömagnetismi ja valo ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Elektromagnetism och ljus",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -500,7 +895,12 @@
   "koodiArvo" : "FY8",
   "metadata" : [ {
     "nimi" : "Aine, säteily ja kvantittuminen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Materia, strålning och kvantisering",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -508,7 +908,12 @@
   "koodiArvo" : "GE1",
   "metadata" : [ {
     "nimi" : "Maailma muutoksessa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En värld i förändring",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -516,7 +921,12 @@
   "koodiArvo" : "GE2",
   "metadata" : [ {
     "nimi" : "Sininen planeetta ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Den blå planeten",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -524,7 +934,12 @@
   "koodiArvo" : "GE3",
   "metadata" : [ {
     "nimi" : "Yhteinen maailma ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En gemensam värld",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -532,7 +947,12 @@
   "koodiArvo" : "GE4",
   "metadata" : [ {
     "nimi" : "Geomedia – tutki, osallistu ja vaikuta ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geomedia – undersök, delta och påverka",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -540,7 +960,12 @@
   "koodiArvo" : "HI1",
   "metadata" : [ {
     "nimi" : "Ihminen, ympäristö ja historia ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människa, miljö och historia",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -548,7 +973,12 @@
   "koodiArvo" : "HI2",
   "metadata" : [ {
     "nimi" : "Kansainväliset suhteet ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Internationella relationer",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -556,6 +986,19 @@
   "koodiArvo" : "HI3",
   "metadata" : [ {
     "nimi" : "Itsenäisen Suomen historia ",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Det självständiga Finlands historia",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_hi3aikuiset",
+  "koodiArvo" : "HI3(aikuiset)",
+  "metadata" : [ {
+    "nimi" : "Kansainväliset suhteet",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -564,7 +1007,12 @@
   "koodiArvo" : "HI4",
   "metadata" : [ {
     "nimi" : "Eurooppalainen ihminen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Den europeiska människan",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -572,7 +1020,12 @@
   "koodiArvo" : "HI5",
   "metadata" : [ {
     "nimi" : "Ruotsin itämaasta Suomeksi ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sveriges östra rikshalva blir Finland",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -580,7 +1033,12 @@
   "koodiArvo" : "HI6",
   "metadata" : [ {
     "nimi" : "Maailman kulttuurit kohtaavat ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globala kulturmöten",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -588,7 +1046,12 @@
   "koodiArvo" : "KE1",
   "metadata" : [ {
     "nimi" : "Kemia ja minä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemi och jag",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -596,7 +1059,12 @@
   "koodiArvo" : "KE2",
   "metadata" : [ {
     "nimi" : "Kemia ja kestävä tulevaisuus ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemi och hållbar framtid",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -604,7 +1072,12 @@
   "koodiArvo" : "KE3",
   "metadata" : [ {
     "nimi" : "Molekyylit ja mallit ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Molekyler och modeller",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -612,7 +1085,12 @@
   "koodiArvo" : "KE4",
   "metadata" : [ {
     "nimi" : "Kemiallinen reaktio ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemisk reaktion",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -620,7 +1098,12 @@
   "koodiArvo" : "KE5",
   "metadata" : [ {
     "nimi" : "Kemiallinen energia ja kiertotalous ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemisk energi och cirkulär ekonomi",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -628,7 +1111,12 @@
   "koodiArvo" : "KE6",
   "metadata" : [ {
     "nimi" : "Kemiallinen tasapaino ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemisk jämvikt",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -636,7 +1124,12 @@
   "koodiArvo" : "KOLD1",
   "metadata" : [ {
     "nimi" : "Kotitalouden lukiodiplomi ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i huslig ekonomi",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -644,7 +1137,12 @@
   "koodiArvo" : "KU1",
   "metadata" : [ {
     "nimi" : "Omat kuvat, jaetut kulttuurit",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Egna bilder, delade kulturer",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -652,7 +1150,12 @@
   "koodiArvo" : "KU2",
   "metadata" : [ {
     "nimi" : "Ympäristön tilat, paikat ja ilmiöt",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rum, platser och fenomen i miljön",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -660,7 +1163,12 @@
   "koodiArvo" : "KU3",
   "metadata" : [ {
     "nimi" : "Kuva viestii ja vaikuttaa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Bilder kommunicerar och påverkar",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -668,7 +1176,12 @@
   "koodiArvo" : "KU4",
   "metadata" : [ {
     "nimi" : "Taiteen monet maailmat",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Konstens många världar",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -676,7 +1189,12 @@
   "koodiArvo" : "KULD2",
   "metadata" : [ {
     "nimi" : "Kuvataiteen lukiodiplomi ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i bildkonst",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -684,7 +1202,12 @@
   "koodiArvo" : "KÄLD3",
   "metadata" : [ {
     "nimi" : "Käsityön lukiodiplomi ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i slöjd",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -692,7 +1215,12 @@
   "koodiArvo" : "LAB21",
   "metadata" : [ {
     "nimi" : "Tietoa, taitoa ja taruperintöä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kunskap, färdigheter och det mytologiska arvet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -700,7 +1228,12 @@
   "koodiArvo" : "LAB22",
   "metadata" : [ {
     "nimi" : "Rooman historian vaiheita",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skeden i Roms historia",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -708,7 +1241,12 @@
   "koodiArvo" : "LAB23",
   "metadata" : [ {
     "nimi" : "Merkittäviä roomalaisia",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Framstående romare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -716,7 +1254,12 @@
   "koodiArvo" : "LAB24",
   "metadata" : [ {
     "nimi" : "Kulttuuriperintömme",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vårt kulturarv",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -724,7 +1267,12 @@
   "koodiArvo" : "LAB25",
   "metadata" : [ {
     "nimi" : "Viestejä menneisyydestä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Budskap från det förgångna",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -732,7 +1280,12 @@
   "koodiArvo" : "LAB26",
   "metadata" : [ {
     "nimi" : "Latinaa kautta vuosisatojen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Latinet genom seklerna",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -740,7 +1293,12 @@
   "koodiArvo" : "LAB27",
   "metadata" : [ {
     "nimi" : "Epiikkaa ja lyriikkaa",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Epik och lyrik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -748,7 +1306,12 @@
   "koodiArvo" : "LAB28",
   "metadata" : [ {
     "nimi" : "Retoriikkaa ja filosofiaa",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Retorik och filosofi",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -756,7 +1319,12 @@
   "koodiArvo" : "LAB31",
   "metadata" : [ {
     "nimi" : "Ikkunat auki antiikkiin",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Antiken i fokus",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -764,7 +1332,12 @@
   "koodiArvo" : "LAB32",
   "metadata" : [ {
     "nimi" : "Antiikin elämää ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Livet under antiken",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -772,7 +1345,12 @@
   "koodiArvo" : "LAB33",
   "metadata" : [ {
     "nimi" : "Tietoa, taitoa ja taruperintöä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kunskap, färdigheter och det mytologiska arvet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -780,7 +1358,12 @@
   "koodiArvo" : "LAB34",
   "metadata" : [ {
     "nimi" : "Rooman historian vaiheita ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skeden i Roms historia",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -788,7 +1371,12 @@
   "koodiArvo" : "LAB35",
   "metadata" : [ {
     "nimi" : "Merkittäviä roomalaisia ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Framstående romare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -796,7 +1384,12 @@
   "koodiArvo" : "LAB36",
   "metadata" : [ {
     "nimi" : "Kulttuuriperintömme",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vårt kulturarv",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -804,7 +1397,12 @@
   "koodiArvo" : "LAB37",
   "metadata" : [ {
     "nimi" : "Viestejä menneisyydestä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Budskap från det förgångna",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -812,7 +1410,12 @@
   "koodiArvo" : "LAB38",
   "metadata" : [ {
     "nimi" : "Latinaa kautta vuosisatojen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Latinet genom seklerna",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -820,7 +1423,12 @@
   "koodiArvo" : "LI1",
   "metadata" : [ {
     "nimi" : "Oppiva liikkuja ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En lärande och aktiv studerande",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -828,7 +1436,12 @@
   "koodiArvo" : "LI2",
   "metadata" : [ {
     "nimi" : "Aktiivinen elämä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En aktiv livsstil",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -836,7 +1449,12 @@
   "koodiArvo" : "LI3",
   "metadata" : [ {
     "nimi" : "Uudet mahdollisuudet",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nya möjligheter",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -844,7 +1462,12 @@
   "koodiArvo" : "LI4",
   "metadata" : [ {
     "nimi" : "Yhdessä liikkuen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gemensam aktivitet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -852,7 +1475,12 @@
   "koodiArvo" : "LI5",
   "metadata" : [ {
     "nimi" : "Virkistystä liikunnasta ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörelse ger energi",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -860,6 +1488,248 @@
   "koodiArvo" : "LILD4",
   "metadata" : [ {
     "nimi" : "Liikunnan lukiodiplomi ",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i gymnastik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvbg",
+  "koodiArvo" : "LVBG",
+  "metadata" : [ {
+    "nimi" : "Biologia ja maantiede",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvfy",
+  "koodiArvo" : "LVFY",
+  "metadata" : [ {
+    "nimi" : "Fysiikka",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvfyke",
+  "koodiArvo" : "LVFYKE",
+  "metadata" : [ {
+    "nimi" : "Fysiikka ja kemia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvhy1",
+  "koodiArvo" : "LVHY1",
+  "metadata" : [ {
+    "nimi" : "Historian perusteita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvhy2",
+  "koodiArvo" : "LVHY2",
+  "metadata" : [ {
+    "nimi" : "Suomen yhteiskunta ja kulttuurit",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvka1",
+  "koodiArvo" : "LVKA1",
+  "metadata" : [ {
+    "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Språkfärdighet som en del av studierna och andra livsområden",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvka2",
+  "koodiArvo" : "LVKA2",
+  "metadata" : [ {
+    "nimi" : "Arkipäivän vuorovaikutusta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvka3",
+  "koodiArvo" : "LVKA3",
+  "metadata" : [ {
+    "nimi" : "Mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvkb1",
+  "koodiArvo" : "LVKB1",
+  "metadata" : [ {
+    "nimi" : "Kieleen tutustuminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvkb2",
+  "koodiArvo" : "LVKB2",
+  "metadata" : [ {
+    "nimi" : "Asioiminen ja harrastukset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvkb3",
+  "koodiArvo" : "LVKB3",
+  "metadata" : [ {
+    "nimi" : "Elinympäristö ja sosiaaliset verkostot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvke",
+  "koodiArvo" : "LVKE",
+  "metadata" : [ {
+    "nimi" : "Kemia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvma",
+  "koodiArvo" : "LVMA",
+  "metadata" : [ {
+    "nimi" : "Matematiikka",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvmai1",
+  "koodiArvo" : "LVMAI1",
+  "metadata" : [ {
+    "nimi" : "Kieli ja identiteetti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvmai2",
+  "koodiArvo" : "LVMAI2",
+  "metadata" : [ {
+    "nimi" : "Kirjoittaminen ja nykykulttuuri",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvmai3",
+  "koodiArvo" : "LVMAI3",
+  "metadata" : [ {
+    "nimi" : "Puheviestinnän taitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvop",
+  "koodiArvo" : "LVOP",
+  "metadata" : [ {
+    "nimi" : "Opinto-ohjaus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs1",
+  "koodiArvo" : "LVS1",
+  "metadata" : [ {
+    "nimi" : "Kielitietoisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs10",
+  "koodiArvo" : "LVS10",
+  "metadata" : [ {
+    "nimi" : "Vuorovaikutus 2",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs11",
+  "koodiArvo" : "LVS11",
+  "metadata" : [ {
+    "nimi" : "Digitaaliset tekstitaidot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs12",
+  "koodiArvo" : "LVS12",
+  "metadata" : [ {
+    "nimi" : "Mediakulttuuri",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs2",
+  "koodiArvo" : "LVS2",
+  "metadata" : [ {
+    "nimi" : "Tekstitietoisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs3",
+  "koodiArvo" : "LVS3",
+  "metadata" : [ {
+    "nimi" : "Eri tiedonalojen kieli",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs4",
+  "koodiArvo" : "LVS4",
+  "metadata" : [ {
+    "nimi" : "Tekstien kirjoittaminen ja tuottaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs5",
+  "koodiArvo" : "LVS5",
+  "metadata" : [ {
+    "nimi" : "Eri tiedonalojen tekstien kirjoittaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs6",
+  "koodiArvo" : "LVS6",
+  "metadata" : [ {
+    "nimi" : "Vuorovaikutus 1",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs7",
+  "koodiArvo" : "LVS7",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuus 1",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs8",
+  "koodiArvo" : "LVS8",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuus 2",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_lvs9",
+  "koodiArvo" : "LVS9",
+  "metadata" : [ {
+    "nimi" : "Kulttuurinen moninaisuus",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -867,8 +1737,13 @@
   "koodiUri" : "moduulikoodistolops2021_maa10",
   "koodiArvo" : "MAA10",
   "metadata" : [ {
-    "nimi" : "10 3D-geometria ",
+    "nimi" : "3D-geometria",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "3D-geometri",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -876,7 +1751,12 @@
   "koodiArvo" : "MAA11",
   "metadata" : [ {
     "nimi" : "Algoritmit ja lukuteoria",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Algoritmer och talteori",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -884,7 +1764,12 @@
   "koodiArvo" : "MAA12",
   "metadata" : [ {
     "nimi" : "Analyysi ja jatkuva jakauma ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Analys och kontinuerlig fördelning",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -892,7 +1777,12 @@
   "koodiArvo" : "MAA2",
   "metadata" : [ {
     "nimi" : "Funktiot ja yhtälöt 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Funktioner och ekvationer 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -900,7 +1790,12 @@
   "koodiArvo" : "MAA3",
   "metadata" : [ {
     "nimi" : "Geometria ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -908,7 +1803,12 @@
   "koodiArvo" : "MAA4",
   "metadata" : [ {
     "nimi" : "Analyyttinen geometria ja vektorit ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Analytisk geometri och vektorer",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -916,7 +1816,12 @@
   "koodiArvo" : "MAA5",
   "metadata" : [ {
     "nimi" : "Funktiot ja yhtälöt 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Funktioner och ekvationer 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -924,7 +1829,12 @@
   "koodiArvo" : "MAA6",
   "metadata" : [ {
     "nimi" : "Derivaatta ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Derivata",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -932,7 +1842,12 @@
   "koodiArvo" : "MAA7",
   "metadata" : [ {
     "nimi" : "Integraalilaskenta ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Integralkalkyl",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -940,7 +1855,12 @@
   "koodiArvo" : "MAA8",
   "metadata" : [ {
     "nimi" : "Tilastot ja todennäköisyys ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Statistik och sannolikhet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -948,7 +1868,12 @@
   "koodiArvo" : "MAA9",
   "metadata" : [ {
     "nimi" : "Talousmatematiikka ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ekonomisk matematik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -956,7 +1881,12 @@
   "koodiArvo" : "MAB2",
   "metadata" : [ {
     "nimi" : "Lausekkeet ja yhtälöt ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Uttryck och ekvationer",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -964,7 +1894,12 @@
   "koodiArvo" : "MAB3",
   "metadata" : [ {
     "nimi" : "Geometria ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -972,7 +1907,12 @@
   "koodiArvo" : "MAB4",
   "metadata" : [ {
     "nimi" : "Matemaattisia malleja ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematiska modeller",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -980,7 +1920,12 @@
   "koodiArvo" : "MAB5",
   "metadata" : [ {
     "nimi" : "Tilastot ja todennäköisyys ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Statistik och sannolikhet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -988,7 +1933,12 @@
   "koodiArvo" : "MAB6",
   "metadata" : [ {
     "nimi" : "Talousmatematiikan alkeet ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunder i ekonomisk matematik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -996,7 +1946,12 @@
   "koodiArvo" : "MAB7",
   "metadata" : [ {
     "nimi" : "Talousmatematiikka ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ekonomisk matematik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1004,7 +1959,12 @@
   "koodiArvo" : "MAB8",
   "metadata" : [ {
     "nimi" : "Matemaattinen analyysi ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematisk analys",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1012,7 +1972,12 @@
   "koodiArvo" : "MAB9",
   "metadata" : [ {
     "nimi" : "Tilastolliset ja todennäköisyysjakaumat ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Statistik- och sannolikhetsfördelningar",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1020,7 +1985,12 @@
   "koodiArvo" : "MAY1",
   "metadata" : [ {
     "nimi" : "Luvut ja yhtälöt ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tal och ekvationer",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1028,7 +1998,12 @@
   "koodiArvo" : "MELD5",
   "metadata" : [ {
     "nimi" : "Median lukiodiplomi",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i mediekunskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1124,14 +2099,20 @@
   "koodiArvo" : "MU1",
   "metadata" : [ {
     "nimi" : "Intro – kaikki soimaan ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Intro – ljud och jubel",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "moduulikoodistolops2021_mu2",
   "koodiArvo" : "MU2",
   "metadata" : [ {
-    "nimi" : "Syke – soiva ilmaisu ",
+    "nimi" : "Puls – musikaliska uttryck",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -1140,7 +2121,12 @@
   "koodiArvo" : "MU3",
   "metadata" : [ {
     "nimi" : "Genre - globaali uteliaisuus ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Genre – global nyfikenhet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1148,7 +2134,12 @@
   "koodiArvo" : "MU4",
   "metadata" : [ {
     "nimi" : "Demo - luovasti yhdessä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Demo – kreativt tillsammans",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1156,7 +2147,12 @@
   "koodiArvo" : "MULD6",
   "metadata" : [ {
     "nimi" : "Musiikin lukiodiplomi ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i musik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1164,7 +2160,12 @@
   "koodiArvo" : "OP1",
   "metadata" : [ {
     "nimi" : "Minä opiskelijana ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Jag som studerande",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1172,7 +2173,12 @@
   "koodiArvo" : "OP2",
   "metadata" : [ {
     "nimi" : "Jatko-opinnot, työelämä ja tulevaisuus ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fortsatta studier, arbetsliv och framtid",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1244,7 +2250,12 @@
   "koodiArvo" : "PS1",
   "metadata" : [ {
     "nimi" : "Toimiva ja oppiva ihminen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Den aktiva och lärande människan",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1252,7 +2263,12 @@
   "koodiArvo" : "PS2",
   "metadata" : [ {
     "nimi" : "Kehittyvä ihminen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans utveckling",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1260,7 +2276,12 @@
   "koodiArvo" : "PS3",
   "metadata" : [ {
     "nimi" : "Tietoa käsittelevä ihminen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människan som informationsbearbetare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1268,7 +2289,12 @@
   "koodiArvo" : "PS4",
   "metadata" : [ {
     "nimi" : "Tunteet ja mielenterveys ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Känslor och mental hälsa",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1276,7 +2302,12 @@
   "koodiArvo" : "PS5",
   "metadata" : [ {
     "nimi" : "Yksilöllinen ja yhteisöllinen ihminen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människan som individ och social varelse",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1686,7 +2717,12 @@
   "koodiArvo" : "SMA1",
   "metadata" : [ {
     "nimi" : "Opiskelutaidot ja kieli-identiteetin rakentaminen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1694,7 +2730,12 @@
   "koodiArvo" : "SMA2",
   "metadata" : [ {
     "nimi" : "Saamen kieli maailmalla ja vuorovaikutusosaaminen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samiskan i världen och kommunikationsfärdigheter",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1702,7 +2743,12 @@
   "koodiArvo" : "SMA3",
   "metadata" : [ {
     "nimi" : "Saamen kieli ja kulttuuri luovan ilmaisun välineenä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samiska språket och kulturen som kreativt uttryckssätt",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1710,7 +2756,12 @@
   "koodiArvo" : "SMA4",
   "metadata" : [ {
     "nimi" : "Saamen kieli vaikuttamisen välineenä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samiska som ett verktyg för att påverka",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1718,7 +2769,12 @@
   "koodiArvo" : "SMA5",
   "metadata" : [ {
     "nimi" : "Kestävä tulevaisuus arktisella alueella ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar framtid i det arktiska område",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1726,7 +2782,12 @@
   "koodiArvo" : "SMA6",
   "metadata" : [ {
     "nimi" : "Saamen kieli jatko-opinnoissa ja työelämässä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samiska i fortsatta studier och arbetsliv",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1734,7 +2795,12 @@
   "koodiArvo" : "SMA7",
   "metadata" : [ {
     "nimi" : "Ympäristö ja kestävä elämäntapa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Miljö och hållbar livsstil",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1742,7 +2808,12 @@
   "koodiArvo" : "SMA8",
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunicera och påverka muntligt",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1750,7 +2821,12 @@
   "koodiArvo" : "SMB21",
   "metadata" : [ {
     "nimi" : "Kohtaamisia saamelaisalueella ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Möten i Sameland",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1758,7 +2834,12 @@
   "koodiArvo" : "SMB22",
   "metadata" : [ {
     "nimi" : "Sápmi – Saamenmaa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "SÁPMI – Sameland",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1766,7 +2847,12 @@
   "koodiArvo" : "SMB23",
   "metadata" : [ {
     "nimi" : "Arki ja hyvinvointi ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardag och välbefinnande",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1774,7 +2860,12 @@
   "koodiArvo" : "SMB24",
   "metadata" : [ {
     "nimi" : "Saamelainen kulttuuri ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk kultur",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1782,7 +2873,12 @@
   "koodiArvo" : "SMB25",
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och framtid",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1790,7 +2886,12 @@
   "koodiArvo" : "SMB26",
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1798,7 +2899,12 @@
   "koodiArvo" : "SMB27",
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar livsstil",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1806,7 +2912,12 @@
   "koodiArvo" : "SMB28",
   "metadata" : [ {
     "nimi" : "Kansainvälinen toiminta ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Internationell verksamhet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1814,7 +2925,12 @@
   "koodiArvo" : "SMB31",
   "metadata" : [ {
     "nimi" : "Tutustutaan toisiimme ja saamen kieleen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vi bekantar oss med varandra och med samiskan",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1822,7 +2938,12 @@
   "koodiArvo" : "SMB32",
   "metadata" : [ {
     "nimi" : "Arki ja asiointitilanteet ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardag och dagliga ärenden",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1830,7 +2951,12 @@
   "koodiArvo" : "SMB33",
   "metadata" : [ {
     "nimi" : "Kohtaamisia saamelaisalueella ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Möten i Sameland",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1838,7 +2964,12 @@
   "koodiArvo" : "SMB34",
   "metadata" : [ {
     "nimi" : "Sápmi – Saamenmaa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sápmi – Sameland",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1846,7 +2977,12 @@
   "koodiArvo" : "SMB35",
   "metadata" : [ {
     "nimi" : "Arki ja hyvinvointi ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardag och välbefinnande",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1854,7 +2990,12 @@
   "koodiArvo" : "SMB36",
   "metadata" : [ {
     "nimi" : "Saamelainen kulttuuri ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk kultur",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1862,7 +3003,12 @@
   "koodiArvo" : "SMB37",
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och framtid",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1870,7 +3016,12 @@
   "koodiArvo" : "SMB38",
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1878,7 +3029,16 @@
   "koodiArvo" : "SV21",
   "metadata" : [ {
     "nimi" : "Att tolka och producera text",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka och producera text",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Att tolka och producera text",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2030,7 +3190,12 @@
   "koodiArvo" : "TALD7",
   "metadata" : [ {
     "nimi" : "Tanssin lukiodiplomi ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplomet i dans",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2038,7 +3203,12 @@
   "koodiArvo" : "TE1",
   "metadata" : [ {
     "nimi" : "Terveys voimavarana ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hälsan som resurs",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2046,7 +3216,12 @@
   "koodiArvo" : "TE2",
   "metadata" : [ {
     "nimi" : "Terveys ja ympäristö",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hälsa och miljö",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2054,7 +3229,12 @@
   "koodiArvo" : "TE3",
   "metadata" : [ {
     "nimi" : "Terveys ja yhteiskunta",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hälsa och samhälle",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2062,6 +3242,107 @@
   "koodiArvo" : "TELD8",
   "metadata" : [ {
     "nimi" : "Teatterin lukiodiplomi ",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i teaterkonst",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_uba1",
+  "koodiArvo" : "UBA1",
+  "metadata" : [ {
+    "nimi" : "Uskonto ilmiönä ja sivistyksen evoluutio",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_uba2",
+  "koodiArvo" : "UBA2",
+  "metadata" : [ {
+    "nimi" : "Maailmanlaajuinen bahá’í-yhteisö",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_uba3",
+  "koodiArvo" : "UBA3",
+  "metadata" : [ {
+    "nimi" : "Maailmanuskontoja ja uskonnollisia liikkeitä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_uba4",
+  "koodiArvo" : "UBA4",
+  "metadata" : [ {
+    "nimi" : "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_uba5",
+  "koodiArvo" : "UBA5",
+  "metadata" : [ {
+    "nimi" : "Bahá’í-uskonnon suhde taiteisiin ja kulttuuriin",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_uba6",
+  "koodiArvo" : "UBA6",
+  "metadata" : [ {
+    "nimi" : "Bahá’í-usko, tiede ja media",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ubu1",
+  "koodiArvo" : "UBU1",
+  "metadata" : [ {
+    "nimi" : "Uskonto ilmiönä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ubu2",
+  "koodiArvo" : "UBU2",
+  "metadata" : [ {
+    "nimi" : "Maailmanlaajuinen buddhalaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ubu3",
+  "koodiArvo" : "UBU3",
+  "metadata" : [ {
+    "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ubu4",
+  "koodiArvo" : "UBU4",
+  "metadata" : [ {
+    "nimi" : "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ubu5",
+  "koodiArvo" : "UBU5",
+  "metadata" : [ {
+    "nimi" : "Uskonto taiteissa ja populaarikulttuurissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ubu6",
+  "koodiArvo" : "UBU6",
+  "metadata" : [ {
+    "nimi" : "Uskonto, tiede ja media",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2070,7 +3351,12 @@
   "koodiArvo" : "UE1",
   "metadata" : [ {
     "nimi" : "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religionen som fenomen – i judendomens, kristendomens och islams fotspår",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2078,7 +3364,12 @@
   "koodiArvo" : "UE2",
   "metadata" : [ {
     "nimi" : "Maailmanlaajuinen kristinusko ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kristendomen i världen",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2086,7 +3377,12 @@
   "koodiArvo" : "UE3",
   "metadata" : [ {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och religiösa rörelser i världen",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2094,7 +3390,12 @@
   "koodiArvo" : "UE4",
   "metadata" : [ {
     "nimi" : "Uskonto, kulttuuri ja yhteiskunta Suomessa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion, kultur och samhälle i Finland",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2102,7 +3403,12 @@
   "koodiArvo" : "UE5",
   "metadata" : [ {
     "nimi" : "Uskonto taiteissa ja populaarikulttuurissa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion inom konsten och populärkulturen",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2110,7 +3416,12 @@
   "koodiArvo" : "UE6",
   "metadata" : [ {
     "nimi" : "Uskonto, tiede ja media ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion, vetenskap och medier",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2258,11 +3569,66 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "moduulikoodistolops2021_ukr1",
+  "koodiArvo" : "UKR1",
+  "metadata" : [ {
+    "nimi" : "Uskonto ilmiönä",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ukr2",
+  "koodiArvo" : "UKR2",
+  "metadata" : [ {
+    "nimi" : "Krishna-tietoisuus ja hindulaisuus eri puolilla maailmaa",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ukr3",
+  "koodiArvo" : "UKR3",
+  "metadata" : [ {
+    "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ukr4",
+  "koodiArvo" : "UKR4",
+  "metadata" : [ {
+    "nimi" : "Uskonto, kulttuuri ja yhteiskunta Suomessa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ukr5",
+  "koodiArvo" : "UKR5",
+  "metadata" : [ {
+    "nimi" : "Hindulaisuus ja Krishna-tietoisuus taiteissa ja populaarikulttuurissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_ukr6",
+  "koodiArvo" : "UKR6",
+  "metadata" : [ {
+    "nimi" : "Krishna-tietoisuus, tiede ja media",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "moduulikoodistolops2021_uo1",
   "koodiArvo" : "UO1",
   "metadata" : [ {
     "nimi" : "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religionen som fenomen – i judendomens, kristendomens och islams fotspår",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2270,7 +3636,12 @@
   "koodiArvo" : "UO2",
   "metadata" : [ {
     "nimi" : "Ortodoksisuus maailmassa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Den ortodoxa kyrkan i världen",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2278,7 +3649,12 @@
   "koodiArvo" : "UO3",
   "metadata" : [ {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och religiösa rörelser i världen",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2286,7 +3662,12 @@
   "koodiArvo" : "UO4",
   "metadata" : [ {
     "nimi" : "Uskonto, kulttuuri ja yhteiskunta Suomessa ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion, kultur och samhälle i Finland",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2294,7 +3675,12 @@
   "koodiArvo" : "UO5",
   "metadata" : [ {
     "nimi" : "Ortodoksisuuden ja taiteen vuorovaikutus ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växelverkan mellan ortodoxin och konsten",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2302,7 +3688,12 @@
   "koodiArvo" : "UO6",
   "metadata" : [ {
     "nimi" : "Ortodoksisuus, tiede ja media ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ortodoxi, vetenskap och medier",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2310,7 +3701,12 @@
   "koodiArvo" : "VKA1",
   "metadata" : [ {
     "nimi" : "Opiskelutaidot ja kieli-identiteetin rakentaminen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studiefärdigheter och språklig identitet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2318,7 +3714,12 @@
   "koodiArvo" : "VKA2",
   "metadata" : [ {
     "nimi" : "Kieli globaalissa maailmassa ja vuorovaikutusosaaminen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i den globala världen och kommunikationsfärdigheter",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2326,7 +3727,12 @@
   "koodiArvo" : "VKA3",
   "metadata" : [ {
     "nimi" : "Kieli ja kulttuuri luovan ilmaisun välineenä",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket och kulturen som kreativt uttryckssätt",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2334,7 +3740,12 @@
   "koodiArvo" : "VKA4",
   "metadata" : [ {
     "nimi" : "Kieli vaikuttamisen välineenä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket som ett verktyg för att påverka",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2342,7 +3753,12 @@
   "koodiArvo" : "VKA5",
   "metadata" : [ {
     "nimi" : "Kestävä tulevaisuus ja tiede ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar framtid och vetenskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2350,7 +3766,12 @@
   "koodiArvo" : "VKA6",
   "metadata" : [ {
     "nimi" : "Kieli jatko-opinnoissa ja työelämässä ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i fortsatta studier och arbetsliv",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2358,7 +3779,12 @@
   "koodiArvo" : "VKA7",
   "metadata" : [ {
     "nimi" : "Ympäristö ja kestävä elämäntapa",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Miljö och hållbar livsstil",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2366,7 +3792,12 @@
   "koodiArvo" : "VKA8",
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunicera och påverka muntligt",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2374,7 +3805,12 @@
   "koodiArvo" : "VKAAB31",
   "metadata" : [ {
     "nimi" : "Perustason alkeet 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nybörjarnivå 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2382,7 +3818,12 @@
   "koodiArvo" : "VKAAB32",
   "metadata" : [ {
     "nimi" : "Perustason alkeet 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nybörjarnivå 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2390,7 +3831,12 @@
   "koodiArvo" : "VKAAB33",
   "metadata" : [ {
     "nimi" : "Perustason alkeet 3",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nybörjarnivå 3",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2398,7 +3844,12 @@
   "koodiArvo" : "VKAAB34",
   "metadata" : [ {
     "nimi" : "Perustaso 1",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2406,7 +3857,12 @@
   "koodiArvo" : "VKAAB35",
   "metadata" : [ {
     "nimi" : "Perustaso 2",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2414,7 +3870,12 @@
   "koodiArvo" : "VKAAB36",
   "metadata" : [ {
     "nimi" : "Perustaso 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 3",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2422,7 +3883,12 @@
   "koodiArvo" : "VKAAB37",
   "metadata" : [ {
     "nimi" : "Perustaso 4 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 4",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2430,6 +3896,82 @@
   "koodiArvo" : "VKAAB38",
   "metadata" : [ {
     "nimi" : "Perustaso 5 ",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 5",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_vkb11",
+  "koodiArvo" : "VKB11",
+  "metadata" : [ {
+    "nimi" : "Opiskelutaidot ja kieli-identiteetin rakentaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_vkb12",
+  "koodiArvo" : "VKB12",
+  "metadata" : [ {
+    "nimi" : "Kieli arjessamme",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Miljö och kommunikation",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_vkb13",
+  "koodiArvo" : "VKB13",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Media, samhälle och hållbar framtid",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_vkb14",
+  "koodiArvo" : "VKB14",
+  "metadata" : [ {
+    "nimi" : "Ympäristömme",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning och arbetsliv",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_vkb15",
+  "koodiArvo" : "VKB15",
+  "metadata" : [ {
+    "nimi" : "Opiskelu ja työelämä",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och kultur",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_vkb16",
+  "koodiArvo" : "VKB16",
+  "metadata" : [ {
+    "nimi" : "Viesti ja vaikuta puhuen",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunicera och påverka muntligt",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "moduulikoodistolops2021_vkb17",
+  "koodiArvo" : "VKB17",
+  "metadata" : [ {
+    "nimi" : "Kestävä elämäntapa",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -2438,7 +3980,12 @@
   "koodiArvo" : "VKB21",
   "metadata" : [ {
     "nimi" : "Perustason alkeet 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nybörjarnivå 3",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2446,7 +3993,12 @@
   "koodiArvo" : "VKB22",
   "metadata" : [ {
     "nimi" : "Perustaso 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2454,7 +4006,12 @@
   "koodiArvo" : "VKB23",
   "metadata" : [ {
     "nimi" : "Perustaso 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2462,7 +4019,12 @@
   "koodiArvo" : "VKB24",
   "metadata" : [ {
     "nimi" : "Perustaso 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 3",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2470,7 +4032,12 @@
   "koodiArvo" : "VKB25",
   "metadata" : [ {
     "nimi" : "Perustaso 4 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 4",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2478,7 +4045,12 @@
   "koodiArvo" : "VKB26",
   "metadata" : [ {
     "nimi" : "Perustaso 5 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 5",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2486,7 +4058,12 @@
   "koodiArvo" : "VKB27",
   "metadata" : [ {
     "nimi" : "Perustason jatko 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fortsättning på grundnivå 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2494,7 +4071,12 @@
   "koodiArvo" : "VKB28",
   "metadata" : [ {
     "nimi" : "Perustason jatko 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fortsättning på grundnivå 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2502,7 +4084,12 @@
   "koodiArvo" : "VKB31",
   "metadata" : [ {
     "nimi" : "Perustason alkeet 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nybörjarnivå 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2510,7 +4097,12 @@
   "koodiArvo" : "VKB32",
   "metadata" : [ {
     "nimi" : "Perustason alkeet 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nybörjarnivå 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2518,7 +4110,12 @@
   "koodiArvo" : "VKB33",
   "metadata" : [ {
     "nimi" : "Perustason alkeet 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nybörjarnivå 3",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2526,7 +4123,12 @@
   "koodiArvo" : "VKB34",
   "metadata" : [ {
     "nimi" : "Perustaso 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2534,7 +4136,12 @@
   "koodiArvo" : "VKB35",
   "metadata" : [ {
     "nimi" : "Perustaso 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2542,7 +4149,12 @@
   "koodiArvo" : "VKB36",
   "metadata" : [ {
     "nimi" : "Perustaso 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 3",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2550,7 +4162,12 @@
   "koodiArvo" : "VKB37",
   "metadata" : [ {
     "nimi" : "Perustaso 4 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 4",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2558,7 +4175,12 @@
   "koodiArvo" : "VKB38",
   "metadata" : [ {
     "nimi" : "Perustaso 5 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundnivå 5",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2566,7 +4188,12 @@
   "koodiArvo" : "YH1",
   "metadata" : [ {
     "nimi" : "Suomalainen yhteiskunta",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Det finländska samhället",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2574,7 +4201,12 @@
   "koodiArvo" : "YH2",
   "metadata" : [ {
     "nimi" : "Taloustieto ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ekonomikunskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2582,7 +4214,12 @@
   "koodiArvo" : "YH3",
   "metadata" : [ {
     "nimi" : "Suomi, Eurooppa ja muuttuva maailma",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Finland, Europa och en värld i förändring",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2590,7 +4227,12 @@
   "koodiArvo" : "YH4",
   "metadata" : [ {
     "nimi" : "Lakitieto ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Lagkunskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2598,7 +4240,12 @@
   "koodiArvo" : "ÄI1",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta ja kirjoittaminen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka och producera text",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2606,7 +4253,12 @@
   "koodiArvo" : "ÄI10",
   "metadata" : [ {
     "nimi" : "Kirjoittaminen 2",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera text 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2622,7 +4274,12 @@
   "koodiArvo" : "ÄI2",
   "metadata" : [ {
     "nimi" : "Kieli- ja tekstitietoisuus",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och språklig med",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2630,7 +4287,12 @@
   "koodiArvo" : "ÄI3",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 1",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2638,7 +4300,12 @@
   "koodiArvo" : "ÄI4",
   "metadata" : [ {
     "nimi" : "Kirjallisuus 1",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2646,7 +4313,12 @@
   "koodiArvo" : "ÄI5",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta 1",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka text 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2654,7 +4326,12 @@
   "koodiArvo" : "ÄI6",
   "metadata" : [ {
     "nimi" : "Kirjoittaminen 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera text 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2662,7 +4339,12 @@
   "koodiArvo" : "ÄI7",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 2",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2670,7 +4352,12 @@
   "koodiArvo" : "ÄI8",
   "metadata" : [ {
     "nimi" : "Kirjallisuus 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2678,7 +4365,12 @@
   "koodiArvo" : "ÄI9",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 3",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2686,7 +4378,12 @@
   "koodiArvo" : "ÄIR1",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta ja kirjoittaminen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka och producera text",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2694,7 +4391,12 @@
   "koodiArvo" : "ÄIR10",
   "metadata" : [ {
     "nimi" : "Kirjoittaminen 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera text 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2702,7 +4404,12 @@
   "koodiArvo" : "ÄIR11",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka text 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2710,7 +4417,12 @@
   "koodiArvo" : "ÄIR2",
   "metadata" : [ {
     "nimi" : "Kieli- ja tekstitietoisuus",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och språklig medvetenhet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2718,7 +4430,12 @@
   "koodiArvo" : "ÄIR3",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 1",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2726,7 +4443,12 @@
   "koodiArvo" : "ÄIR4",
   "metadata" : [ {
     "nimi" : "Kirjallisuus 1",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2734,7 +4456,12 @@
   "koodiArvo" : "ÄIR5",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka text 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2742,7 +4469,12 @@
   "koodiArvo" : "ÄIR6",
   "metadata" : [ {
     "nimi" : "Kirjoittaminen 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera text 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2750,7 +4482,12 @@
   "koodiArvo" : "ÄIR7",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2758,7 +4495,12 @@
   "koodiArvo" : "ÄIR8",
   "metadata" : [ {
     "nimi" : "Kirjallisuus 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2766,7 +4508,12 @@
   "koodiArvo" : "ÄIR9",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 3",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2774,7 +4521,12 @@
   "koodiArvo" : "ÄIS1",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta ja kirjoittaminen ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka och producera text",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2782,7 +4534,12 @@
   "koodiArvo" : "ÄIS10",
   "metadata" : [ {
     "nimi" : "Kirjoittaminen 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera text 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2790,7 +4547,12 @@
   "koodiArvo" : "ÄIS11",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka text 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2798,7 +4560,12 @@
   "koodiArvo" : "ÄIS2",
   "metadata" : [ {
     "nimi" : "Kieli- ja tekstitietoisuus",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och språklig medvetenhet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2806,7 +4573,12 @@
   "koodiArvo" : "ÄIS3",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 1",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2814,7 +4586,12 @@
   "koodiArvo" : "ÄIS4",
   "metadata" : [ {
     "nimi" : "Kirjallisuus 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2822,7 +4599,12 @@
   "koodiArvo" : "ÄIS5",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta 1",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka text 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2830,7 +4612,12 @@
   "koodiArvo" : "ÄIS6",
   "metadata" : [ {
     "nimi" : "Kirjoittaminen 1",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera text 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2838,7 +4625,12 @@
   "koodiArvo" : "ÄIS7",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 2",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2846,7 +4638,12 @@
   "koodiArvo" : "ÄIS8",
   "metadata" : [ {
     "nimi" : "Kirjallisuus 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2854,7 +4651,12 @@
   "koodiArvo" : "ÄIS9",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 3",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2862,7 +4664,12 @@
   "koodiArvo" : "ÄIV1",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta ja tekstien tuottaminen",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka och producera text",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2870,7 +4677,12 @@
   "koodiArvo" : "ÄIV10",
   "metadata" : [ {
     "nimi" : "Tekstien tuottaminen 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera text 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2878,7 +4690,12 @@
   "koodiArvo" : "ÄIV11",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka text 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2886,7 +4703,12 @@
   "koodiArvo" : "ÄIV2",
   "metadata" : [ {
     "nimi" : "Kieli- ja tekstitietoisuus",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och språklig medvetenhet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2902,7 +4724,12 @@
   "koodiArvo" : "ÄIV4",
   "metadata" : [ {
     "nimi" : "Kirjallisuus 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2910,7 +4737,12 @@
   "koodiArvo" : "ÄIV5",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka text 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2918,7 +4750,12 @@
   "koodiArvo" : "ÄIV6",
   "metadata" : [ {
     "nimi" : "Tekstien tuottaminen 1 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera text 1",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2926,7 +4763,12 @@
   "koodiArvo" : "ÄIV7",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2934,7 +4776,12 @@
   "koodiArvo" : "ÄIV8",
   "metadata" : [ {
     "nimi" : "Kirjallisuus 2 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur 2",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2942,7 +4789,12 @@
   "koodiArvo" : "ÄIV9",
   "metadata" : [ {
     "nimi" : "Vuorovaikutus 3 ",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation 3",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 } ]

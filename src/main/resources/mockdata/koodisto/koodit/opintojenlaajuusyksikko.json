@@ -126,11 +126,11 @@
     "kieli" : "FI"
   }, {
     "nimi" : "veckor",
-    "lyhytNimi" : "veckor",
+    "lyhytNimi" : "v",
     "kieli" : "SV"
   }, {
     "nimi" : "weeks",
-    "lyhytNimi" : "weeks",
+    "lyhytNimi" : "w",
     "kieli" : "EN"
   } ],
   "versio" : 1
