@@ -18,6 +18,7 @@ import {
   UusiValmistavanDIAVaiheenSuoritus
 } from './UusiDIATutkinnonSuoritus'
 import { UusiInternationalSchoolVuosiluokanSuoritus } from './UusiInternationalSchoolVuosiluokanSuoritus'
+import { UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus } from './UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus'
 
 export default ({ opiskeluoikeus, callback }) => {
   return (
@@ -61,7 +62,6 @@ export default ({ opiskeluoikeus, callback }) => {
   )
 }
 
-// TODO: TOR-1685 Eurooppalainen koulu
 const popups = [
   UusiPerusopetuksenOppiaineenOppimääränSuoritus,
   UusiPerusopetuksenVuosiluokanSuoritus,
@@ -73,7 +73,8 @@ const popups = [
   UusiPreIBSuoritus,
   UusiDIATutkinnonSuoritus,
   UusiValmistavanDIAVaiheenSuoritus,
-  UusiInternationalSchoolVuosiluokanSuoritus
+  UusiInternationalSchoolVuosiluokanSuoritus,
+  UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus
 ]
 
 const findPopUps = (opiskeluoikeus) =>

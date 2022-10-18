@@ -3,7 +3,6 @@ import * as L from 'partial.lenses'
 import Atom from 'bacon.atom'
 import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
-import UusiInternationalSchoolSuoritus from '../uusioppija/UusiInternationalSchoolSuoritus'
 import {
   modelData,
   modelItems,
@@ -16,14 +15,14 @@ import {
   copyToimipiste,
   newSuoritusProto
 } from '../suoritus/Suoritus'
-import { suoritusPrototypeKey } from '../internationalschool/internationalschoolSuoritus'
+import { suoritusPrototypeKey } from '../esh/europeanschoolofhelsinkiSuoritus'
+import UusiEuropeanSchoolOfHelsinkiSuoritus from '../uusioppija/UusiEuropeanSchoolOfHelsinkiSuoritus'
 
-export const UusiInternationalSchoolVuosiluokanSuoritus = ({
+export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
   opiskeluoikeus,
   resultCallback
 }) => {
   const suoritusAtom = Atom()
-  const suorituskieliAtom = Atom()
   const oppilaitosAtom = Atom(modelData(opiskeluoikeus, 'oppilaitos'))
 
   const grades = modelItems(opiskeluoikeus, 'suoritukset').map((s) =>
@@ -59,10 +58,9 @@ export const UusiInternationalSchoolVuosiluokanSuoritus = ({
         <h2>
           <Text name="Suorituksen lisäys" />
         </h2>
-        <UusiInternationalSchoolSuoritus
+        <UusiEuropeanSchoolOfHelsinkiSuoritus
           suoritusAtom={suoritusAtom}
           oppilaitosAtom={oppilaitosAtom}
-          suorituskieliAtom={suorituskieliAtom}
           without={grades}
         />
       </ModalDialog>
@@ -70,11 +68,14 @@ export const UusiInternationalSchoolVuosiluokanSuoritus = ({
   )
 }
 
-UusiInternationalSchoolVuosiluokanSuoritus.canAddSuoritus = (opiskeluoikeus) =>
-  modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'internationalschool' &&
-  modelItems(opiskeluoikeus, 'suoritukset').length < 13
+UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.canAddSuoritus = (
+  opiskeluoikeus
+) =>
+  modelData(opiskeluoikeus, 'tyyppi.koodiarvo') ===
+    'europeanschoolofhelsinki' &&
+  modelItems(opiskeluoikeus, 'suoritukset').length < 14
 
-UusiInternationalSchoolVuosiluokanSuoritus.addSuoritusTitle = () => (
+UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.addSuoritusTitle = () => (
   <Text name="lisää vuosiluokan suoritus" />
 )
 

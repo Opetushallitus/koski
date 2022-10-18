@@ -4,6 +4,13 @@ const internationalSchoolTilat = [
   'valmistunut',
   'valiaikaisestikeskeytynyt'
 ]
+const europeanSchoolOfHelsinkiTilat = [
+  'eronnut',
+  'lasna',
+  'valmistunut',
+  'valiaikaisestikeskeytynyt',
+  'mitatoity'
+]
 const vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat = [
   'hyvaksytystisuoritettu',
   'keskeytynyt'
@@ -52,10 +59,13 @@ const filterByOpiskeluoikeudenTyyppi = (
       return tilat
     case 'ammatillinenkoulutus':
       return tilat.filter((t) => koodiarvo(t) !== 'eronnut')
-    // TODO: TOR-1685 Eurooppalainen koulu
     case 'internationalschool':
       return tilat.filter((t) =>
         internationalSchoolTilat.includes(koodiarvo(t))
+      )
+    case 'europeanschoolofhelsinki':
+      return tilat.filter((t) =>
+        europeanSchoolOfHelsinkiTilat.includes(koodiarvo(t))
       )
     case 'tuva':
       return filterByJärjestämislupa(tuvaJärjestämislupa, tilat, koodiarvo)
