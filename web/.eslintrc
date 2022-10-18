@@ -21,6 +21,7 @@
   "rules": {
     "no-undef": "error",
     "no-unreachable": "error",
+    "no-console": "warn",
     "no-unused-vars": [
       "warn",
       { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
