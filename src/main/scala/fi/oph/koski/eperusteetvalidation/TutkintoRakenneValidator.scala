@@ -225,8 +225,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     suoritustapaJaRakenne match {
       case Some(suoritustapaJaRakenne) =>
         (suoritus.tutkinto, suoritus.tutkinnonOsanRyhmä) match {
-          case (Some(tutkinto), _) if suoritus.vahvistettu =>
-            // Vahvistettu tutkinnon osa toisesta tutkinnosta.
+          case (Some(tutkinto), _) if suoritus.tunnustettu.isDefined =>
+            // Tunnustettu tutkinnon osa toisesta tutkinnosta.
             // Perusteen voimassaolon ajankohtaa ei ole rajoitettu, mutta validoidaan että rakenne löytyy diaarinumerolla
             validateTutkinnonOsanTutkinto(suoritus, None)
           case (Some(tutkinto), _) =>
