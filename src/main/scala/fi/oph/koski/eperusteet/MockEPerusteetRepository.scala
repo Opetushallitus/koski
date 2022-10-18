@@ -2,20 +2,22 @@ package fi.oph.koski.eperusteet
 
 import fi.oph.koski.json.{JsonFiles, JsonResources, JsonSerializer}
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
+import scala.reflect.runtime.universe.TypeTag
 
 import java.time.LocalDate
 
 object MockEPerusteetRepository extends EPerusteetRepository {
-  lazy val rakenteet: List[EPerusteRakenne] = rakennenimet.map { id =>
-    JsonSerializer.extract[EPerusteOsaRakenne](JsonResources.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
-  }
+  lazy val rakenteet: List[EPerusteOsaRakenne] = haeRakenteetTiedostoista[EPerusteOsaRakenne]
 
-  lazy val kokoRakenteet: List[EPerusteKokoRakenne] = rakennenimet.map { id =>
-    JsonSerializer.extract[EPerusteKokoRakenne](JsonResources.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
+  lazy val kokoRakenteet: List[EPerusteKokoRakenne] = haeRakenteetTiedostoista[EPerusteKokoRakenne]
+
+  private def haeRakenteetTiedostoista[T: TypeTag]: List[T] = rakennenimet.map { id =>
+    JsonSerializer.extract[T](JsonResources.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
   }
 
   private val rakennenimet = List(
     "rakenne-autoalan-perustutkinto",
+    "rakenne-mock-empty-koulutukset",
     "rakenne-autoalan-perustutkinto2017",
     "rakenne-autoalan-perustutkinto2017-koulutusvientikokeilu",
     "rakenne-ajoneuvoalan-perustutkinto",
@@ -36,6 +38,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-liiketalouden-perustutkinto-2000-011-2014_2015-08-01_2017-07-31_null",
     "rakenne-liiketalouden-perustutkinto-2000-011-2014_2016-08-01_2018-07-31_null",
     "rakenne-liiketalouden-perustutkinto-3000-011-2014_2016-08-01_2018-07-31_2019-07-31",
+    "rakenne-liiketalouden-perustutkinto-4000-011-2014_2066-05-12_null_null",
     "rakenne-puuteollisuuden-perustutkinto",
     "rakenne-virheellinen-puuteollisuuden-perustutkinto",
     "rakenne-valma",
@@ -62,11 +65,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
   }
 
   def findTarkatRakenteet(diaariNumero: String, päivä: Option[LocalDate]): List[EPerusteTarkkaRakenne] = {
-    if (diaariNumero == "mock-empty-koulutukset") {
-      kokoRakenteet.find(_.diaarinumero == "39/011/2014").map(_.copy(koulutukset = Nil)).toList
-    } else {
-      findPerusteenYksilöintitiedot(diaariNumero, päivä).flatMap(p => kokoRakenteet.find(_.id == p.id))
-    }
+    findPerusteenYksilöintitiedot(diaariNumero, päivä).flatMap(p => kokoRakenteet.find(_.id == p.id))
   }
 
   def findKaikkiRakenteet(diaarinumero: String): List[EPerusteRakenne] = {

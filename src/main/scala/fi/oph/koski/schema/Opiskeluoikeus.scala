@@ -143,6 +143,12 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[OpiskeluoikeudenTila]("tila").set(this)(tila)
   final def withLisätiedot(lisätiedot: Option[OpiskeluoikeudenLisätiedot]): KoskeenTallennettavaOpiskeluoikeus =
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[OpiskeluoikeudenLisätiedot]]("lisätiedot").set(this)(lisätiedot)
+  def getVaadittuPerusteenVoimassaolopäivä: LocalDate = {
+    val today = LocalDate.now
+    päättymispäivä.getOrElse(
+      alkamispäivä.filter(_.isAfter(today)).getOrElse(today)
+    )
+  }
 }
 
 @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin https://wiki.eduuni.fi/display/OPHPALV/4.+Ammatillisten+opiskeluoikeuksien+linkitys")

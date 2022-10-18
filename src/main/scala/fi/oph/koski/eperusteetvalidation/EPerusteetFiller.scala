@@ -19,10 +19,9 @@ class EPerusteetFiller(
   def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     koulutustyyppiTraversal.modify(oo) { koulutus =>
       val koulutustyyppi = koulutus match {
-        case np: NuortenPerusopetus =>
-          np.perusteenDiaarinumero.flatMap(haeKoulutustyyppi)
+        case d: Diaarinumerollinen if !d.perusteenDiaarinumero.exists(onKoodistossa) =>
+          d.perusteenDiaarinumero.flatMap(haeKoulutustyyppi)
         case _ =>
-          // 30.9.2022: voisiko koulutustyypit hakea EPerusteista myös lopuille tapauksille?
           val koulutustyyppiKoodisto = koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")
           val koulutusTyypit = koodistoViitePalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
           koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
@@ -31,30 +30,22 @@ class EPerusteetFiller(
     }
   }
 
-  private def koulutustyyppiTraversal =
-    traversal[KoskeenTallennettavaOpiskeluoikeus]
-      .field[List[PäätasonSuoritus]]("suoritukset")
-      .items
-      .field[Koulutusmoduuli]("koulutusmoduuli")
-      .ifInstanceOf[Koulutus]
-
-
   def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
     case a: AmmatillinenOpiskeluoikeus => a.withSuoritukset(
       a.suoritukset.map {
         case s: AmmatillisenTutkinnonSuoritus =>
-          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
+          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(oo.getVaadittuPerusteenVoimassaolopäivä)))))
         case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
-          s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
+          s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(oo.getVaadittuPerusteenVoimassaolopäivä)))))
         case s: AmmatillisenTutkinnonOsittainenSuoritus =>
-          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, oo.päättymispäivä))))
+          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(oo.getVaadittuPerusteenVoimassaolopäivä)))))
         case o => o
       })
     case x => x
   }
 
   private def perusteenNimi(diaariNumero: String, päivä: Option[LocalDate]): Option[LocalizedString] = {
-    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero, päivä)
+    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero, Some(päivä.getOrElse(LocalDate.now)))
       .headOption
       .map(_.nimi)
       .flatMap(LocalizedString.sanitize)

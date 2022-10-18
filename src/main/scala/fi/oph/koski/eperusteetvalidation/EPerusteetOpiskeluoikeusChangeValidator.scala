@@ -62,21 +62,27 @@ class EPerusteetOpiskeluoikeusChangeValidator(
     if (vanhanTutkintokoodit.isEmpty || vanhanTutkintokoodit.exists(koodi => uudenTutkintokoodit.contains(koodi))) {
       true
     } else {
-      val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(vanhaOpiskeluoikeus, vanhaOpiskeluoikeus.päättymispäivä)
-      val uudenTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(uusiOpiskeluoikeus, uusiOpiskeluoikeus.päättymispäivä)
+      val vanhanTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(
+        vanhaOpiskeluoikeus,
+        vanhaOpiskeluoikeus.getVaadittuPerusteenVoimassaolopäivä
+      )
+      val uudenTutkintokooditEperusteettomat = tutkintokooditPoislukienPerusteestaLöytymättömät(
+        uusiOpiskeluoikeus,
+        uusiOpiskeluoikeus.getVaadittuPerusteenVoimassaolopäivä
+      )
 
       vanhanTutkintokooditEperusteettomat.count(koodi => uudenTutkintokooditEperusteettomat.contains(koodi)) == vanhanTutkintokooditEperusteettomat.length
     }
   }
 
-  private def tutkintokooditPoislukienPerusteestaLöytymättömät(oo: AmmatillinenOpiskeluoikeus, päivä: Option[LocalDate]): List[String] = {
+  private def tutkintokooditPoislukienPerusteestaLöytymättömät(oo: AmmatillinenOpiskeluoikeus, vaadittuPerusteenVoimassaolopäivä: LocalDate): List[String] = {
     oo.suoritukset.filter(suoritus =>
       suoritus.koulutusmoduuli match {
         case diaarillinen: DiaarinumerollinenKoulutus =>
           diaarillinen.perusteenDiaarinumero match {
             case Some(diaarinumero) if !onKoodistossa(diaarinumero) =>
               ePerusteet
-                .findTarkatRakenteet(diaarinumero, päivä)
+                .findTarkatRakenteet(diaarinumero, Some(vaadittuPerusteenVoimassaolopäivä))
                 .exists(_.koulutukset.exists(_.koulutuskoodiArvo == diaarillinen.tunniste.koodiarvo))
             case _ => true
           }

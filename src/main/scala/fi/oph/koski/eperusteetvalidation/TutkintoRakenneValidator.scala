@@ -9,19 +9,21 @@ import fi.oph.koski.tutkinto.{Koulutustyyppi, _}
 
 import java.time.LocalDate
 
-case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
-  def validate(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate], opiskeluoikeudenPäättymispäivä: Option[LocalDate]): HttpStatus = {
-    validateTutkintoRakenne(suoritus, alkamispäiväLäsnä, opiskeluoikeudenPäättymispäivä)
-      .onSuccess(validateDiaarinumerollinenAmmatillinen(suoritus, opiskeluoikeudenPäättymispäivä))
+case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu)
+  extends EPerusteetValidationUtils(tutkintoRepository, koodistoViitePalvelu) with Logging {
+
+  def validate(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate], vaadittuPerusteenVoimassaolopäivä: LocalDate): HttpStatus = {
+    validateTutkintoRakenne(suoritus, alkamispäiväLäsnä, vaadittuPerusteenVoimassaolopäivä)
+      .onSuccess(validateDiaarinumerollinenAmmatillinen(suoritus, vaadittuPerusteenVoimassaolopäivä))
   }
 
   private def validateTutkintoRakenne(
     suoritus: PäätasonSuoritus,
     alkamispäiväLäsnä: Option[LocalDate],
-    opiskeluoikeudenPäättymispäivä: Option[LocalDate]
+    vaadittuPerusteenVoimassaolopäivä: LocalDate
   ): HttpStatus = suoritus match {
     case tutkintoSuoritus: AmmatillisenTutkinnonSuoritus =>
-      validateKoulutustyypitJaHaeRakenteet(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), opiskeluoikeudenPäättymispäivä, Some(tutkintoSuoritus)) match {
+      validateKoulutustyypitJaHaeRakenteet(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä), Some(tutkintoSuoritus)) match {
         case Left(status) => status
         case Right(rakenteet) =>
           HttpStatus.fold {
@@ -45,7 +47,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                         rakenne,
                         tutkintoSuoritus.suoritustapa,
                         alkamispäiväLäsnä,
-                        opiskeluoikeudenPäättymispäivä
+                        vaadittuPerusteenVoimassaolopäivä
                       )
                     )
                     if(tulokset.exists(_.isOk)) {
@@ -64,48 +66,50 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           }))
       }
     case n: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
-      HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(n.tutkinto, Some(ammatillisetKoulutustyypit), opiskeluoikeudenPäättymispäivä))
+      HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(n.tutkinto, Some(ammatillisetKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä)))
     case suoritus: AikuistenPerusopetuksenOppimääränSuoritus =>
-      HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus)), opiskeluoikeudenPäättymispäivä, Some(suoritus)))
+      HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus)), Some(vaadittuPerusteenVoimassaolopäivä), Some(suoritus)))
     case suoritus: AmmatillisenTutkinnonOsittainenSuoritus =>
-      HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(suoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), opiskeluoikeudenPäättymispäivä, Some(suoritus)))
-        .onSuccess(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(suoritus => validateTutkinnonOsanTutkinto(suoritus, opiskeluoikeudenPäättymispäivä))))
+      HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(suoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä), Some(suoritus)))
+        .onSuccess(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(suoritus => validateTutkinnonOsanTutkinto(suoritus, Some(vaadittuPerusteenVoimassaolopäivä)))))
     case s: LukionPäätasonSuoritus2019 =>
-      HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(s.koulutusmoduuli, Some(lukionKoulutustyypit), opiskeluoikeudenPäättymispäivä)).onSuccess(validateLukio2019Diaarinumero(s))
+      HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(s.koulutusmoduuli, Some(lukionKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä))).onSuccess(validateLukio2019Diaarinumero(s))
     case _ =>
       suoritus.koulutusmoduuli match {
         case d: Esiopetus =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(esiopetus)), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(esiopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: AikuistenPerusopetus =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(aikuistenPerusopetus)), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(aikuistenPerusopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: AikuistenPerusopetuksenAlkuvaihe =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(aikuistenPerusopetus)), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(aikuistenPerusopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: PerusopetuksenDiaarinumerollinenKoulutus =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(perusopetus)), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(perusopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: PerusopetukseenValmistavaOpetus =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(perusopetukseenValmistava)), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(perusopetukseenValmistava)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: PerusopetuksenLisäopetus =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(perusopetuksenLisäopetus)), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(perusopetuksenLisäopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: AikuistenPerusopetuksenOppiaine =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(aikuistenPerusopetus)), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(aikuistenPerusopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: NuortenPerusopetuksenOppiaine =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(perusopetus)), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(perusopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: LukionOppimäärä =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(lukionKoulutustyypit), opiskeluoikeudenPäättymispäivä)).onSuccess(validateLukio2015Diaarinumero(d))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(lukionKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä))).onSuccess(validateLukio2015Diaarinumero(d))
         case d: LukioonValmistavaKoulutus =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(luvaKoulutustyypit), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(luvaKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä)))
         // Valmassa erikoistapauksena hyväksytään valmistuminen pidempään TUVA-siirtymän vuoksi
         // Katso myös EPerusteisiinPerustuvaValidation.validatePerusteVoimassa
-        case d: ValmaKoulutus if opiskeluoikeudenPäättymispäivä.exists(päivä => päivä.isBefore(LocalDate.of(2022, 10, 2))) =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(valmaKoulutustyypit), None))
+        case d: ValmaKoulutus if vaadittuPerusteenVoimassaolopäivä.isBefore(LocalDate.of(2022, 7, 31)) =>
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(valmaKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä)))
+        case d: ValmaKoulutus if vaadittuPerusteenVoimassaolopäivä.isBefore(LocalDate.of(2022, 10, 2)) =>
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(valmaKoulutustyypit), Some(LocalDate.of(2022, 7, 31))))
         case d: ValmaKoulutus =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(valmaKoulutustyypit), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(valmaKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: TelmaKoulutus =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(telma)), opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(telma)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: LukionOppiaine =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(lukionKoulutustyypit), opiskeluoikeudenPäättymispäivä)).onSuccess(validateLukio2015Diaarinumero(d))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(lukionKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä))).onSuccess(validateLukio2015Diaarinumero(d))
         case d: Diaarinumerollinen =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, None, opiskeluoikeudenPäättymispäivä))
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, None, Some(vaadittuPerusteenVoimassaolopäivä)))
         case _ => HttpStatus.ok
       }
   }
@@ -120,7 +124,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   private def validateKoulutustyypitJaHaeRakenteet(
     tutkinto: Diaarinumerollinen,
     koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]],
-    päivä: Option[LocalDate],
+    vaadittuPerusteenVoimassaolopäivä: Option[LocalDate],
     suoritusVirheilmoitukseen: Option[PäätasonSuoritus] = None
   ): Either[HttpStatus, List[TutkintoRakenne]] = {
     validateDiaarinumero(tutkinto.perusteenDiaarinumero)
@@ -128,12 +132,10 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         if (onKoodistossa(diaarinumero)) {
           Left(KoskiErrorCategory.ok())
         } else {
-          tutkintoRepository.findPerusteRakenteet(diaarinumero, päivä) match {
+          tutkintoRepository.findPerusteRakenteet(diaarinumero, vaadittuPerusteenVoimassaolopäivä) match {
             case Nil => {
-              val päiväInfo = päivä.map(p => s", joka on voimassa tai siirtymäajalla ${p.toString}, ").getOrElse("")
-
-              logger.warn(s"Tutkinnon perustetta ${päiväInfo}ei löydy diaarinumerolla " + diaarinumero + " eperusteista eikä koskikoulutustendiaarinumerot-koodistosta")
-              Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari(s"Tutkinnon perustetta ${päiväInfo}ei löydy diaarinumerolla " + diaarinumero))
+              logger.warn(s"Opiskeluoikeuden voimassaoloaikana voimassaolevaa tutkinnon perustetta ei löydy diaarinumerolla " + diaarinumero + " eperusteista eikä koskikoulutustendiaarinumerot-koodistosta")
+              Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari(s"Opiskeluoikeuden voimassaoloaikana voimassaolevaa tutkinnon perustetta ei löydy diaarinumerolla " + diaarinumero))
             }
             case rakenteet =>
               koulutustyypit match {
@@ -144,7 +146,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                   }
                   Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi(
                     rakenteet.map(rakenne =>
-                      s"Suoritukselle $tyyppiStr ei voi käyttää perustetta ${rakenne.diaarinumero} (${rakenne.id}), jonka koulutustyyppi on ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. "
+                      s"Suoritukselle $tyyppiStr ei voi käyttää opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta ${rakenne.diaarinumero} (${rakenne.id}), jonka koulutustyyppi on ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. "
                     ).mkString +
                       s"Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}."
                   ))
@@ -156,21 +158,21 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       }
   }
 
-  private def validateDiaarinumerollinenAmmatillinen(suoritus: PäätasonSuoritus, opiskeluoikeudenPäättymispäivä: Option[LocalDate]) = suoritus.koulutusmoduuli match {
+  private def validateDiaarinumerollinenAmmatillinen(suoritus: PäätasonSuoritus, vaadittuPerusteenVoimassaolopäivä: LocalDate) = suoritus.koulutusmoduuli match {
     case koulutusmoduuli: Diaarinumerollinen if suoritus.isInstanceOf[AmmatillinenPäätasonSuoritus] =>
-      validateKoulutusmoduulinTunniste(koulutusmoduuli.tunniste, koulutusmoduuli.perusteenDiaarinumero, opiskeluoikeudenPäättymispäivä)
+      validateKoulutusmoduulinTunniste(koulutusmoduuli.tunniste, koulutusmoduuli.perusteenDiaarinumero, vaadittuPerusteenVoimassaolopäivä)
     case _ => HttpStatus.ok
   }
 
-  private def validateKoulutusmoduulinTunniste(tunniste: KoodiViite, diaariNumero: Option[String], opiskeluoikeudenPäättymispäivä: Option[LocalDate]) = diaariNumero match {
+  private def validateKoulutusmoduulinTunniste(tunniste: KoodiViite, diaariNumero: Option[String], vaadittuPerusteenVoimassaolopäivä: LocalDate) = diaariNumero match {
     case None => KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu()
     case Some(diaari) if onKoodistossa(diaari) =>
       HttpStatus.ok
     case Some(diaari) =>
-      val koulutukset = tutkintoRepository.findPerusteRakenteet(diaari, opiskeluoikeudenPäättymispäivä).flatMap(_.koulutukset.map(_.koodiarvo))
+      val koulutukset = tutkintoRepository.findPerusteRakenteet(diaari, Some(vaadittuPerusteenVoimassaolopäivä)).flatMap(_.koulutukset.map(_.koodiarvo))
       HttpStatus.validate(koulutukset.isEmpty || koulutukset.contains(tunniste.koodiarvo))(
         KoskiErrorCategory.badRequest.validation.rakenne.tunnisteenKoodiarvoaEiLöydyRakenteesta(
-          s"Tunnisteen koodiarvoa ${tunniste.koodiarvo} ei löytynyt rakenteen ${diaariNumero.get} mahdollisista koulutuksista. Tarkista tutkintokoodit ePerusteista."
+          s"Tunnisteen koodiarvoa ${tunniste.koodiarvo} ei löytynyt opiskeluoikeuden voimassaoloaikana voimassaolleen rakenteen ${diaariNumero.get} mahdollisista koulutuksista. Tarkista tutkintokoodit ePerusteista."
         ))
   }
 
@@ -189,13 +191,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     val tuntemattomatOsaamisalat: List[Koodistokoodiviite] = osaamisalat.filter(osaamisala => findOsaamisala(rakenne, osaamisala.koodiarvo).isEmpty)
 
     HttpStatus.fold(tuntemattomatOsaamisalat.map {
-      osaamisala: Koodistokoodiviite => KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala(s"Osaamisala ${osaamisala.koodiarvo} ei löydy tutkintorakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
+      osaamisala: Koodistokoodiviite => KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala(s"Osaamisala ${osaamisala.koodiarvo} ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
     })
   }
 
-  private def validateTutkinnonOsanTutkinto(suoritus: TutkinnonOsanSuoritus, opiskeluoikeudenPäättymispäivä: Option[LocalDate]) = {
+  private def validateTutkinnonOsanTutkinto(suoritus: TutkinnonOsanSuoritus, vaadittuPerusteenVoimassaolopäivä: Option[LocalDate]) = {
     suoritus.tutkinto match {
-      case Some(tutkinto) => HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(tutkinto, Some(ammatillisetKoulutustyypit), opiskeluoikeudenPäättymispäivä))
+      case Some(tutkinto) => HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(tutkinto, Some(ammatillisetKoulutustyypit), vaadittuPerusteenVoimassaolopäivä))
       case None => HttpStatus.ok
     }
   }
@@ -206,7 +208,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     rakenne: TutkintoRakenne,
     suoritustapa: Koodistokoodiviite,
     alkamispäiväLäsnä: Option[LocalDate],
-    opiskeluoikeudenPäättymispäivä: Option[LocalDate]
+    vaadittuPerusteenVoimassaolopäivä: LocalDate
   ): HttpStatus = {
     val suoritustapaJaRakenne = rakenne.findSuoritustapaJaRakenne(suoritustapa)
       .orElse {
@@ -223,10 +225,14 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     suoritustapaJaRakenne match {
       case Some(suoritustapaJaRakenne) =>
         (suoritus.tutkinto, suoritus.tutkinnonOsanRyhmä) match {
+          case (Some(tutkinto), _) if suoritus.vahvistettu =>
+            // Vahvistettu tutkinnon osa toisesta tutkinnosta.
+            // Perusteen voimassaolon ajankohtaa ei ole rajoitettu, mutta validoidaan että rakenne löytyy diaarinumerolla
+            validateTutkinnonOsanTutkinto(suoritus, None)
           case (Some(tutkinto), _) =>
             // Tutkinnon osa toisesta tutkinnosta.
             // Ei validoida rakenteeseen kuuluvuutta, vain se, että rakenne löytyy diaarinumerolla
-            validateTutkinnonOsanTutkinto(suoritus, opiskeluoikeudenPäättymispäivä)
+            validateTutkinnonOsanTutkinto(suoritus, Some(vaadittuPerusteenVoimassaolopäivä))
           case (_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _))) if List("3", "4").contains(koodiarvo) =>
             // Vapaavalintainen tai yksilöllisesti tutkintoa laajentava osa
             // Ei validoida rakenteeseen kuuluvuutta
@@ -236,13 +242,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
             findTutkinnonOsa(suoritustapaJaRakenne, osa.tunniste) match {
               case None =>
                 KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(
-                  s"Tutkinnon osa ${osa.tunniste} ei löydy tutkintorakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id}) - suoritustapa ${suoritustapaJaRakenne.suoritustapa.koodiarvo}")
+                  s"Tutkinnon osa ${osa.tunniste} ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id}) - suoritustapa ${suoritustapaJaRakenne.suoritustapa.koodiarvo}")
               case Some(tutkinnonOsa) =>
                 HttpStatus.ok
             }
         }
       case None =>
-        KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta(s"Suoritustapaa ei löydy tutkinnon rakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
+        KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta(s"Suoritustapaa ei löydy tutkinnon rakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
     }
   }
 
@@ -291,6 +297,15 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     }
   }
 
-  private def onKoodistossa(diaarinumero: String): Boolean =
-    koodistoViitePalvelu.onKoodistossa("koskikoulutustendiaarinumerot", diaarinumero)
+  def validateKoulutustyypinLöytyminenAmmatillisissa(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+    // Ammatillisille tutkinnoille varmistetaan että koulutustyyppi löytyi (halutaan erottaa
+    // ammatilliset perustutkinnot, erityisammattitutkinnot, yms - muissa tapauksissa jo suorituksen tyyppi
+    // on riittävä tarkkuus)
+    koulutustyyppiTraversal.toIterable(oo).collectFirst { case k: AmmatillinenTutkintoKoulutus if k.koulutustyyppi.isEmpty => k } match {
+      case Some(koulutus) if koulutus.perusteenDiaarinumero.isEmpty => Left(KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu())
+      case Some(koulutus) if !koulutus.perusteenDiaarinumero.exists(onKoodistossa) => Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari(s"Tutkinnon perustetta ei löydy diaarinumerolla ${koulutus.perusteenDiaarinumero.getOrElse("")}"))
+      case Some(koulutus) => Left(KoskiErrorCategory.badRequest.validation.koodisto.koulutustyyppiPuuttuu(s"Koulutuksen ${koulutus.tunniste.koodiarvo} koulutustyyppiä ei löydy koulutustyyppi-koodistosta."))
+      case None => Right(oo)
+    }
+  }
 }

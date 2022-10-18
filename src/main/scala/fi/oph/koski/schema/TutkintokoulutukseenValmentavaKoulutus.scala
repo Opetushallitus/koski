@@ -79,7 +79,7 @@ case class TutkintokoulutukseenValmentavanKoulutus(
   @KoodistoKoodiarvo("999908")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999908", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String] = Some("OPH-1488-2021"),
-  koulutustyyppi: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("40", "koulutustyyppi")),
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
   @DefaultValue(None)
   @ReadOnly("Laajuus lasketaan automaattisesti osasuoritusten laajuuksista.")
   laajuus: Option[LaajuusViikoissa] = None

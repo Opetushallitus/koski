@@ -52568,14 +52568,86 @@
   "koodiArvo" : "999908",
   "metadata" : [ {
     "nimi" : "Tutkintokoulutukseen valmentava koulutus",
-    "lyhytNimi" : "TUVA",
+    "lyhytNimi" : "Tutkintokoulutukseen valmentava koulutus",
     "kieli" : "FI"
   }, {
     "nimi" : "Utbildning som handleder för examensutbildning",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Utbildning som handleder för examensutbildning",
     "kieli" : "SV"
   } ],
-  "versio" : 1
+  "includesCodeElements": [
+    {
+      "codeElementUri": "koulutustyyppi_41",
+      "codeElementVersion": 1,
+      "codeElementValue": "41",
+      "relationMetadata": [
+        {
+          "nimi": "Utbildning som handleder för examensutbildning (Hux) krävande särskilt stöd",
+          "kieli": "SV",
+          "kuvaus": ""
+        },
+        {
+          "nimi": "Tutkintokoulutukseen valmentava koulutus (TUVA) vaativa erityinen tuki",
+          "kieli": "FI",
+          "kuvaus": ""
+        }
+      ],
+      "parentMetadata": [
+        {
+          "nimi": "koulutustyyppi",
+          "kieli": "EN",
+          "kuvaus": "koulutustyyppi"
+        },
+        {
+          "nimi": "koulutustyyppi",
+          "kieli": "SV",
+          "kuvaus": "koulutustyyppi"
+        },
+        {
+          "nimi": "koulutustyyppi",
+          "kieli": "FI",
+          "kuvaus": "Koulutustarjontapalvelun käyttöliittymän käytössä oleva koodisto"
+        }
+      ],
+      "passive": false
+    },
+    {
+      "codeElementUri": "koulutustyyppi_40",
+      "codeElementVersion": 1,
+      "codeElementValue": "40",
+      "relationMetadata": [
+        {
+          "nimi": "Tutkintokoulutukseen valmentava koulutus TUVA)",
+          "kieli": "FI",
+          "kuvaus": ""
+        },
+        {
+          "nimi": "Utbildning som handleder för examensutbildning (Hux)",
+          "kieli": "SV",
+          "kuvaus": ""
+        }
+      ],
+      "parentMetadata": [
+        {
+          "nimi": "koulutustyyppi",
+          "kieli": "EN",
+          "kuvaus": "koulutustyyppi"
+        },
+        {
+          "nimi": "koulutustyyppi",
+          "kieli": "SV",
+          "kuvaus": "koulutustyyppi"
+        },
+        {
+          "nimi": "koulutustyyppi",
+          "kieli": "FI",
+          "kuvaus": "Koulutustarjontapalvelun käyttöliittymän käytössä oleva koodisto"
+        }
+      ],
+      "passive": false
+    }
+  ],
+  "versio" : 6
 }, {
   "koodiUri" : "koulutus_999909",
   "koodiArvo" : "999909",
