@@ -167,7 +167,7 @@ case class SecondaryUpperVuosiluokanSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkasecondaryupper", koodistoUri = "suorituksentyyppi"),
   jääLuokalle: Boolean = false,
   //  override val osasuoritukset: Option[List[OppiaineenSuoritus]] = None
-) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
 
 
 trait EuropeanSchoolOfHelsinkiLuokkaAste extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
