@@ -185,5 +185,6 @@
     },
     "alkamispäivä" : "2007-08-15",
     "päättymispäivä" : "2008-06-01"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

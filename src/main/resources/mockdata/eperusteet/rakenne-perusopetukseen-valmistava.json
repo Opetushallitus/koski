@@ -1,0 +1,643 @@
+{
+  "id": 1541511,
+  "globalVersion": {
+    "aikaleima": 1652717973836
+  },
+  "nimi": {
+    "_id": "1636536",
+    "fi": "Perusopetukseen valmistavan opetuksen opetussuunnitelman perusteet 2015",
+    "sv": "Grunderna för läroplanen för den undervisning som förbereder för den grundläggande utbildningen 2015"
+  },
+  "koulutustyyppi": "koulutustyyppi_22",
+  "toteutus": "yksinkertainen",
+  "koulutukset": [],
+  "kielet": [
+    "fi",
+    "sv"
+  ],
+  "kuvaus": null,
+  "maarayskirje": {
+    "id": 1543040,
+    "url": {},
+    "liitteet": {}
+  },
+  "muutosmaaraykset": [],
+  "diaarinumero": "57/011/2015",
+  "voimassaoloAlkaa": 1469998800000,
+  "siirtymaPaattyy": null,
+  "voimassaoloLoppuu": null,
+  "paatospvm": 1447365600000,
+  "viimeisinJulkaisuAika": null,
+  "luotu": 1462364454865,
+  "muokattu": 1652717973836,
+  "tila": "valmis",
+  "tyyppi": "normaali",
+  "koulutusvienti": false,
+  "korvattavatDiaarinumerot": [
+    "19/011/2014",
+    "14/011/2009"
+  ],
+  "osaamisalat": [],
+  "tyotehtavatJoissaVoiToimia": null,
+  "suorittaneenOsaaminen": null,
+  "perusteenAikataulut": [],
+  "esiopetus": {
+    "sisalto": {
+      "id": 1541482,
+      "lapset": [
+        {
+          "id": 1541483,
+          "perusteenOsa": {
+            "id": 1541521,
+            "luotu": 1462364487195,
+            "muokattu": 1652524730831,
+            "muokkaaja": "1.2.246.562.24.52232041128",
+            "nimi": {
+              "_id": "1633872",
+              "fi": "Perusopetukseen valmistavan opetuksen lähtökohdat",
+              "sv": "Utgångspunkterna för den undervisning som förbereder för den grundläggande utbildningen"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "8345443",
+              "_tunniste": "df17bfdb-e146-4550-9bcb-59b5804dd34b",
+              "fi": "<p><abbr data-viite=\"Viite11462365303781\">Perusopetuslaissa</abbr> säädetään maahanmuuttajille järjestettävästä perusopetukseen valmistavasta opetuksesta. Maahanmuuttajille järjestettävän perusopetukseen valmistavan opetuksen tavoitteena on antaa oppilaalle tarvittavat valmiudet suomen tai ruotsin kielessä ja tarpeelliset muut valmiudet esiopetukseen tai perusopetukseen siirtymistä varten sekä edistää oppilaiden tasapainoista kehitystä ja kotoutumista suomalaiseen yhteiskuntaan. Opetuksen tavoitteena on lisäksi tukea ja edistää oppilaiden oman äidinkielen hallintaa ja oman kulttuurin tuntemusta. <abbr data-viite=\"Viite21462367294411\">Opetuksen tavoitteet </abbr>on tarkemmin määriteltävä valmistavan opetuksen oppilaan omassa opinto-ohjelmassa. Tavoitteiden määrittelyn lähtökohtana ovat oppilaan suomen tai ruotsin kielen taito sekä oppilaan aikaisempi koulunkäyntihistoria.</p><p>Perusopetukseen valmistavaa opetusta annetaan 6–10-vuotiaille vähintään 900 tuntia ja tätä vanhemmille vähintään 1000 tuntia. <abbr data-viite=\"Viite31462367376687\">Opetukseen osallistuvalla on oikeus </abbr>siirtyä perusopetukseen tai esiopetukseen jo ennen edellä todettujen tuntimäärien täyttymistä, jos hän pystyy seuraamaan perusopetusta tai esiopetusta. <abbr data-viite=\"Viite41462367452397\">Perusopetuslain</abbr> mukaan opetukseen osallistuvalla on työpäivinä oikeus saada opetussuunnitelman mukaista opetusta, oppilaanohjausta sekä riittävää oppimisen ja koulunkäynnin tukea heti tuen tarpeen ilmetessä.</p><p>Perusopetukseen valmistavan opetuksen<abbr data-viite=\"Viite51462367516315\"> opetusryhmien muodostamisesta päättää </abbr>opetuksen järjestäjä. Valmistavaa opetusta voidaan järjestää myös yhdelle oppilaalle. Opetusryhmät muodostetaan oppilaiden ikäkauden ja edellytysten mukaisesti siten, että ryhmäjako edistää oppilaiden tervettä kasvua ja kehitystä sekä varmistaa opetussuunnitelman mukaisten ja oppilaiden omissa opinto-ohjelmissa asetettujen tavoitteiden saavuttamisen. Perusopetukseen valmistavaa opetusta suunniteltaessa, järjestettäessä ja siitä päätettäessä on ensisijaisesti huomioitava <abbr data-viite=\"Viite141647439528500\">lapsen etu</abbr>.</p><p>Valmistavan opetuksen aikana oppilaita integroidaan esi- tai perusopetukseen, oppilaan ikätasoa vastaaviin suomen- tai ruotsinkielisiin opetusryhmiin oman opinto-ohjelman mukaan oppilaan omassa opinto-ohjelmassa määritellyllä tavalla. Integroinnin tavoitteena on edistää kotoutumista, opiskeluvalmiuksien ja suomen tai ruotsin kielen taidon kehittymistä sekä laaja-alaisen osaamisen ja eri oppiaineiden sisältöjen omaksumista.</p>",
+              "sv": "<p>I <abbr data-viite=\"Viite11462365303781\">lagen om grundläggande utbildning</abbr> föreskrivs om förberedande undervisning som ordnas för invandrare före den grundläggande utbildningen. Den undervisning som förbereder för den grundläggande utbildningen som ordnas för invandrare, har som mål att ge eleven tillräckliga kunskaper i svenska eller finska och övriga färdigheter som behövs för att inleda förskoleundervisning eller den grundläggande utbildningen samt att främja elevens harmoniska utveckling och integrering i det finländska samhället. Målet är också att stödja och främja elevens kunskaper i sitt eget modersmål och kännedom om sin egen kultur. <abbr data-viite=\"Viite21462367294411\">Målen för undervisningen</abbr> bestäms närmare i elevens individuella studieprogram inom ramen för den förberedande undervisningen. Målen ställs upp utgående från elevens kunskaper i svenska eller finska och elevens tidigare skolgång.</p><p>Undervisning som förbereder för den grundläggande utbildningen ges 6–10-åringar under minst 900 timmar och äldre elever under minst 1000 timmar. <abbr data-viite=\"Viite31462367376687\">Den som deltar i undervisningen</abbr> har rätt att flytta över till den grundläggande utbildningen eller förskoleundervisning redan innan ovan nämnda timantal har uppnåtts, om hen klarar av att följa med den grundläggande utbildningen eller förskoleundervisningen<strong>.</strong> Den som deltar i undervisningen har enligt <abbr data-viite=\"Viite41462367452397\">lagen om grundläggande utbildning</abbr> rätt att under arbetsdagarna få undervisning enligt läroplanen, elevhandledning och tillräckligt stöd för lärande och skolgång genast när behov uppstår.</p><p>Utbildningsanordnaren <abbr data-viite=\"Viite51462367516315\">beslutar om undervisningsgrupperna</abbr> i den undervisning som förbereder för den grundläggande utbildningen. Förberedande undervisning kan också ordnas för en enda elev. Undervisningsgrupperna bildas enligt elevernas ålder och förutsättningar så att gruppindelningen främjar elevernas sunda växande och utveckling och säkerställer uppnåendet av målen enligt läroplanen och de mål som uppställs i elevernas individuella studieprogram. När man planerar och beslutar om undervisningen som förbereder för den grundläggande utbildningen ska man i första hand ta hänsyn till <abbr data-viite=\"Lagomgrundlggandeutbildning628199816320223a1652524675102\">barnets bästa</abbr>.</p><p>Under den förberedande undervisningen integreras eleverna i förskoleundervisningen eller den grundläggande utbildningen, i svensk- eller finskspråkiga undervisningsgrupper som motsvarar elevens ålder och elevens eget studieprogram, på det sätt som fastslagits i studieprogrammet. Syftet är att främja integreringen i det finländska samhället, utveckla elevernas studiefärdigheter och kunskaper i svenska eller finska samt mångsidig kompetens och förmåga att tillägna sig innehållet i de olika läroämnena.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "1541521"
+        },
+        {
+          "id": 1541484,
+          "perusteenOsa": {
+            "id": 1541522,
+            "luotu": 1462364500595,
+            "muokattu": 1474622244780,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1634333",
+              "fi": "Perusopetukseen valmistavan opetuksen opetussuunnitelma",
+              "sv": "Läroplanen för den undervisning som förbereder för den grundläggande utbildningen"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1635549",
+              "fi": "<p><abbr data-viite=\"Viite11462365303781\">Opetuksen järjestäjän tulee </abbr>hyväksyä perusopetukseen valmistavaa opetusta varten opetussuunnitelma. Lähtökohdan opetussuunnitelman laatimiselle muodostavat perusopetuslaki ja -asetus,<a href=\"http://www.finlex.fi/fi/laki/alkup/2012/20120422\" target=\"_blank\"> valtioneuvoston asetuksessa (422/2012)</a> määritellyt yleiset ja perusopetukseen valmistavaa opetusta koskevat valtakunnalliset tavoitteet, nämä Perusopetukseen valmistavan opetuksen opetussuunnitelman perusteet 2015 sekä soveltuvin osin <a href=\"https://eperusteet.opintopolku.fi/#/fi/perusopetus/419550/tiedot\" target=\"_blank\">Perusopetuksen opetussuunnitelman perusteet 2014</a>.</p>\n\n<p>Perusopetukseen valmistavan opetuksen opetussuunnitelmassa tulee olla kuvattuna:</p>\n\n<ul>\n\t<li>toimintakulttuuri ja sen periaatteet</li>\n\t<li>opetuksen tavoitteet ja keskeiset sisällöt</li>\n\t<li>periaatteet oppilaan oman opinto-ohjelman laatimiseksi</li>\n\t<li>oppilashuollon ja siihen liittyvän yhteistyön järjestäminen</li>\n\t<li>ohjaustoiminta oppimisen tukena</li>\n\t<li>oppimisen ja koulunkäynnin tuki</li>\n\t<li>suunnitelma kasvatuskeskustelujen ja kurinpidollisten keinojen käyttämisestä ja niihin liittyvistä menettelytavoista</li>\n\t<li>yhteistyö esi- ja perusopetuksen kanssa</li>\n\t<li>kodin ja koulun yhteistyö</li>\n\t<li>yhteistyö muiden tahojen kanssa</li>\n\t<li>oppilaan arviointi ja todistukset.</li>\n</ul>\n\n<p><abbr data-viite=\"Viite101463733348346\">Naisten ja miesten välisestä tasa-arvosta annetun lain </abbr>mukaan koulutuksen järjestäjä vastaa siitä, että vuosittain laaditaan oppilaitoskohtaisesti tasa-arvosuunnitelma yhteistyössä henkilöstön ja oppilaiden tai opiskelijoiden kanssa. Vuosittaisen tarkastelun sijaan suunnitelma voidaan laatia enintään kahdeksi tai kolmeksi vuodeksi kerrallaan. Tasa-arvosuunnitelma voidaan sisällyttää osaksi opetussuunnitelmaa tai muuta oppilaitoksen suunnitelmaa.</p>\n\n<p><abbr data-viite=\"Viite61462367608934\">Yhdenvertaisuuslain</abbr> mukaan koulutuksen järjestäjän on huolehdittava siitä, että oppilaitoksella on suunnitelma tarvittavista toimenpiteistä yhdenvertaisuuden edistämiseksi. Yhdenvertaisuussuunnitelma voi sisältyä opetussuunnitelmaan.</p>",
+              "sv": "<p><abbr data-viite=\"Viite11462365303781\">Utbildningsanordnaren ska godkänna</abbr> en läroplan för undervisning som förbereder för den grundläggande utbildningen. Utgångspunkt för uppgörandet av läroplanen är lagen och förordningen om grundläggande utbildning, de allmänna och för den förberedande undervisningen föreskrivna riksomfattande mål som fastställts i <a href=\"http://www.finlex.fi/sv/laki/alkup/2012/20120422\">statsrådets förordning (422/2012)</a>, föreliggande grunder för läroplanen för undervisning som förbereder för den grundläggande utbildningen 2015 samt i tillämpliga delar <a href=\"https://eperusteet.opintopolku.fi/#/sv/perusopetus/419550/tiedot\">Grunderna för läroplanen för den grundläggande utbildningen 2014.</a></p>\n\n<p>Läroplanen för den undervisning som förbereder för den grundläggande utbildningen ska beskriva:</p>\n\n<ul>\n\t<li>verksamhetskulturen och principerna för den</li>\n\t<li>undervisningens mål och centrala innehåll</li>\n\t<li>principerna för uppgörandet av ett eget studieprogram för eleven</li>\n\t<li>elevvården och samarbetet i anslutning till den</li>\n\t<li>handledningsverksamheten som stöd för lärandet</li>\n\t<li>stöd för lärande och skolgång</li>\n\t<li>en plan för användningen av fostrande samtal och disciplinära åtgärder och förfaringssätt</li>\n\t<li>samarbetet med förskoleundervisningen och den grundläggande utbildningen</li>\n\t<li>samarbetet mellan hem och skola</li>\n\t<li>samarbetet med övriga instanser</li>\n\t<li>elevbedömning och intyg.</li>\n</ul>\n\n<p>Enligt <abbr data-viite=\"Viite101463733348346\">lagen om jämställdhet mellan kvinnor och män</abbr><strong> </strong>ansvarar utbildningsanordnaren för att det årligen utarbetas en jämställdhetsplan för varje läroanstalt i samarbete med personalen och eleverna eller de studerande. I stället för en årlig genomgång kan planen utarbetas för högst två eller tre år i sänder. Jämställdhetsplanen kan inkluderas i läroplanen eller i någon annan av läroanstaltens planer.</p>\n\n<p>Enligt <abbr data-viite=\"Viite61462367608934\">diskrimineringslagen</abbr><strong> </strong>ska utbildningsanordnaren se till att varje läroanstalt har en plan för de åtgärder som behövs för att främja likabehandling. Likabehandlingsplanen kan ingå i läroplanen.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "1541522"
+        },
+        {
+          "id": 1541485,
+          "perusteenOsa": {
+            "id": 1541523,
+            "luotu": 1462364525976,
+            "muokattu": 1474622244782,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1634337",
+              "fi": "Perusopetukseen valmistavan opetuksen tavoitteet ja keskeiset sisällöt",
+              "sv": "Den förberedande undervisningens mål och centrala innehåll"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": null,
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 1541486,
+              "perusteenOsa": {
+                "id": 1541524,
+                "luotu": 1462364542532,
+                "muokattu": 1474622244796,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1634510",
+                  "fi": "Yleiset tavoitteet ja yhteistyö esi- ja perusopetuksen kanssa",
+                  "sv": "Allmänna mål och samarbete med förskoleundervisningen och den grundläggande utbildningen"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1636531",
+                  "fi": "<p>Perusopetukseen valmistavan opetuksen tavoitteena on edistää opetukseen osallistuvan oppilaan suomen tai ruotsin kielen taitoa, tasapainoista kehitystä ja kotoutumista suomalaiseen yhteiskuntaan sekä antaa tarvittavia valmiuksia perusopetusta varten. Valmistavassa opetuksessa kehitetään oppilaan laaja-alaista osaamista sekä annetaan opetusta perusopetuksen oppiaineissa ja mahdollisuuksien mukaan oppilaan omassa äidinkielessä oppilaan omassa opinto-ohjelmassa tarkemmin määritellyllä tavalla. Laaja-alaisen osaamisen ja eri oppiaineiden opetuksessa noudatetaan soveltuvin osin perusopetuksen opetussuunnitelman perusteita.</p>\n\n<p>Opetuksen tavoitteiden määrittelyssä, sisältöjen valinnassa ja opetusjärjestelyissä otetaan huomioon, että oppilaat ovat iältään, opiskeluvalmiuksiltaan ja taustaltaan erilaisia. Opetusta eriytetään oppilaiden ikä- ja kehitysvaiheiden mukaisesti. Oppilaiden kielelliset valmiudet sekä kulttuuritausta otetaan huomioon, ja jokaisen oppilaan kieli- ja kulttuuri-identiteettiä tuetaan monipuolisesti. Oppilaan omalla äidinkielellä tuettu opetus edistää sisältöjen omaksumista. Valmistava opetus edistää sukupuolten tasa-arvoa ja yhdenvertaisuutta.</p>\n\n<p>Jos perusopetukseen valmistavan opetuksen oppilaalla on heikko luku- ja/tai kirjoitustaito, tulee oppilaan oman opinto-ohjelman tavoitteet asettaa siten, että oppilas saa omalle taito- ja ikätasolleen soveltuvaa luku- ja kirjoitustaidon opetusta. Oppilaan oman äidinkielen opetuksella voidaan edistää oppilaan luku- ja kirjoitustaitoa.</p>\n\n<p>Luku- ja kirjoitustaidon omaksumiseen ja varmentamiseen varataan riittävästi aikaa. Mikäli oppilaan taidot eivät riitä perusopetuksessa opiskeluun, tulee oppilaan omassa opinto-ohjelmassa kiinnittää erityistä huomiota riittävään ja oikea-aikaiseen tukeen perusopetukseen siirryttäessä. Tarvittaessa oppilas voi jatkaa perusopetukseen valmistavassa opetuksessa, siirtyä opiskelemaan vuosiluokkiin sitomattoman opinto-ohjelman mukaisesti tai muulla tavoin hänelle parhaiten soveltuvin tukitoimin. Perusopetukseen siirtyvän luku- ja kirjoitustaidottoman oppilaan riittävästä tuesta huolehditaan.</p>",
+                  "sv": "<p>Undervisningen som förbereder för den grundläggande utbildningen har som mål att främja elevens kunskaper i svenska eller finska, hens harmoniska utveckling och integrering i det finländska samhället samt att ge nödvändiga förutsättningar för att flytta över till den grundläggande utbildningen. I den förberedande undervisningen utvecklas elevens mångsidiga kompetens och eleven ges undervisning i läroämnena i den grundläggande utbildningen och i mån av möjlighet i elevens eget modersmål på ett sätt som anges närmare i elevens studieprogram. I utvecklandet av mångsidig kompetens och i undervisningen av de olika läroämnena följs i tillämpliga delar grunderna för läroplanen för den grundläggande utbildningen.</p>\n\n<p>Då man definierar mål, väljer innehåll och planerar undervisningsarrangemang ska man beakta elevernas varierande ålder, studiefärdigheter och inlärningsbakgrund. Undervisningen ska differentieras enligt elevernas ålders- och utvecklingsstadium. Elevernas språkliga färdigheter och kulturella bakgrund ska beaktas och varje elevs språkliga och kulturella identitet ska stödjas på ett mångsidigt sätt. Då eleven i undervisningen får stöd på sitt eget modersmål främjas tillägnandet av innehållet i de olika läroämnena. Den förberedande undervisningen ska främja jämlikhet och jämställdhet mellan könen.</p>\n\n<p>Om en elev har svaga läs- och/eller skrivfärdigheter, ska målen i elevens individuella studieprogram ställas upp så att undervisningen i läsning och skrivning är lämplig för elevens kunskaps- och åldersnivå. Undervisning i elevens eget modersmål främjar också elevens läs- och skrivfärdigheter.</p>\n\n<p>Tillräckligt med tid ska reserveras för att eleven ska tillägna sig och befästa sina läs- och skrivfärdigheter. Om elevens färdigheter inte är tillräckliga för studier inom den grundläggande utbildningen, är det viktigt att i elevens studieprogram fästa särskild vikt vid att eleven får tillräckligt stöd i rätt tid vid övergången till den grundläggande utbildningen. Vid behov ska eleven ha möjlighet att fortsätta inom den förberedande undervisningen, övergå till att studera enligt ett årskurslöst studieprogram eller på annat sätt med de stödåtgärder som bäst passar eleven. En icke läs- och skrivkunnig elev som flyttar över till den grundläggande utbildningen ska få tillräckligt stöd.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1541524"
+            },
+            {
+              "id": 1541487,
+              "perusteenOsa": {
+                "id": 1541525,
+                "luotu": 1462364562953,
+                "muokattu": 1474622244794,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1634513",
+                  "fi": "Kielenopetuksen tavoitteet ja keskeiset sisällöt",
+                  "sv": "Mål och centralt innehåll för språkundervisningen"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": null,
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [
+                {
+                  "id": 1541488,
+                  "perusteenOsa": {
+                    "id": 1541526,
+                    "luotu": 1462364600641,
+                    "muokattu": 1474622244812,
+                    "muokkaaja": "1.2.246.562.24.77925329174",
+                    "nimi": {
+                      "_id": "1634516",
+                      "fi": "Suomi tai ruotsi toisena kielenä ja kirjallisuus",
+                      "sv": "Svenska eller finska som andraspråk och litteratur"
+                    },
+                    "tila": "valmis",
+                    "valmis": false,
+                    "kaannettava": false,
+                    "teksti": {
+                      "_id": "1635763",
+                      "fi": "<p>Perusopetukseen valmistavassa opetuksessa pääpaino on suomi tai ruotsi toisena kielenä ja kirjallisuus -opinnoissa, joiden osalta tavoitteena on kehittyvä alkeiskielitaito. Opetuksessa noudatetaan soveltuvin osin perusopetuksen suomi tai ruotsi toisena kielenä ja kirjallisuus -oppimäärän opetussuunnitelman perusteita. Suomi tai ruotsi toisena kielenä ja kirjallisuus -opinnot ovat pohjana kaikille muille opinnoille. Perusopetukseen valmistavassa opetuksessa suomi tai ruotsi toisena kielenä ja kirjallisuus -opintojen tavoitteena on antaa oppilaille tarvittavat valmiudet siirtyä perusopetukseen. Opetuksessa otetaan huomioon oppilaan koulu- ja opiskelutausta ja hänen jo mahdollisesti hallitsemansa suomen tai ruotsin kielen taito. Oppilaan omassa opinto-ohjelmassa määritellään taito- ja ikätason mukaiset suomen tai ruotsin kielen opetuksen tavoitteet ja sisällöt</p>",
+                      "sv": "<p>I den förberedande undervisningen är huvudvikten lagd på studier i svenska eller finska som andraspråk och litteratur, där målet är elementär språkfärdighet stadd i utveckling. Undervisningen följer i tillämpliga delar grunderna för läroplanen för svenska eller finska som andraspråk och litteratur i den grundläggande utbildningen. Studierna i svenska eller finska som andraspråk och litteratur utgör grunden för alla övriga studier. I den förberedande undervisningen är syftet med undervisningen i svenska eller finska som andraspråk och litteratur att ge eleverna tillräckliga färdigheter för att flytta över till den grundläggande utbildningen. Elevens skol- och studiebakgrund och eventuella tidigare kunskaper i svenska eller finska ska beaktas i undervisningen. I elevens individuella studieprogram definieras målen och innehållet för undervisningen i svenska eller finska enligt elevens kunskaps- och åldersnivå.</p>"
+                    },
+                    "koodit": [],
+                    "liite": false,
+                    "osanTyyppi": "tekstikappale"
+                  },
+                  "lapset": [],
+                  "_perusteenOsa": "1541526"
+                },
+                {
+                  "id": 1541489,
+                  "perusteenOsa": {
+                    "id": 1541527,
+                    "luotu": 1462364616484,
+                    "muokattu": 1474622244809,
+                    "muokkaaja": "1.2.246.562.24.77925329174",
+                    "nimi": {
+                      "_id": "1634518",
+                      "fi": "Oppilaan oma äidinkieli",
+                      "sv": "Elevens modersmål"
+                    },
+                    "tila": "valmis",
+                    "valmis": false,
+                    "kaannettava": false,
+                    "teksti": {
+                      "_id": "1635764",
+                      "fi": "<p>Oppilaan oman äidinkielen opetuksen tavoitteena on tukea ja edistää äidinkielen hallintaa, kulttuuritaustan tuntemusta ja kulttuuri-identiteetin kehittymistä. Oman äidinkielen hyvä hallinta luo edellytyksiä myös suomen/ruotsin kielen oppimiselle ja tällä kielellä tapahtuvalle muulle oppimisille. Oppilaille järjestetään opetusta mahdollisuuksien mukaan.</p>\n\n<p>Opetus noudattaa opetussuunnitelman perusteiden liitteessä kuvattuja oppilaan oman äidinkielen opetuksen tavoitteita, sisältöjä ja oppilaan oppimisen arviointia. Oppilaan oman äidinkielen hallintaa ja sen säilymistä tuetaan myös eri tavoin yhteistyössä perheen kanssa.</p>",
+                      "sv": "<p>Syftet med undervisningen i elevens eget modersmål är att stödja och främja elevens kunskaper i sitt modersmål, kunskapen om den egna kulturella bakgrunden och utvecklingen av den kulturella identiteten. Goda kunskaper i modersmålet skapar också förutsättningar för att lära sig svenska eller finska och för annat lärande som sker på detta språk. För eleverna ordnas undervisning i den mån det är möjligt.</p>\n\n<p>I undervisningen i elevens eget modersmål ska beskrivningarna av mål, innehåll och bedömning av elevens lärande iakttas i enlighet med bilagan till grunderna för läroplanen. Elevens kunskaper i modersmålet stöds och bevaras även på olika sätt i samarbete med familjen.</p>"
+                    },
+                    "koodit": [],
+                    "liite": false,
+                    "osanTyyppi": "tekstikappale"
+                  },
+                  "lapset": [],
+                  "_perusteenOsa": "1541527"
+                },
+                {
+                  "id": 1541860,
+                  "perusteenOsa": {
+                    "id": 1541528,
+                    "luotu": 1462364633237,
+                    "muokattu": 1474622244810,
+                    "muokkaaja": "1.2.246.562.24.77925329174",
+                    "nimi": {
+                      "_id": "1634597",
+                      "fi": "Muut kielet",
+                      "sv": "Övriga språk"
+                    },
+                    "tila": "valmis",
+                    "valmis": false,
+                    "kaannettava": false,
+                    "teksti": {
+                      "_id": "1634598",
+                      "fi": "<p>Perusopetuksen opetussuunnitelman perusteisiin sisältyy oppilaiden vieraan kielen opetuksen tavoitteet. Perusopetukseen valmistavassa opetuksessa noudatetaan näitä opetussuunnitelman perusteita soveltuvin osin. Oppilaan vieraan kielen opinnot järjestetään kunnan kieliohjelman mukaisesti. Oppilaan kielelliset valmiudet ratkaisevat, missä määrin hänen omaan opinto-ohjelmaansa voidaan sisällyttää vieraiden kielten opiskelua perusopetukseen valmistavan opetuksen aikana.</p>",
+                      "sv": "<p>I grunderna för läroplanen för den grundläggande utbildningen ingår mål för undervisningen i främmande språk. I den förberedande undervisningen följs dessa läroplansgrunder i tillämpliga delar. Elevens studier i främmande språk ordnas enligt kommunens språkprogram. De språkliga färdigheterna avgör i vilken mån studier i främmande språk kan ingå i elevens eget studieprogram under den förberedande undervisningen.</p>"
+                    },
+                    "koodit": [],
+                    "liite": false,
+                    "osanTyyppi": "tekstikappale"
+                  },
+                  "lapset": [],
+                  "_perusteenOsa": "1541528"
+                }
+              ],
+              "_perusteenOsa": "1541525"
+            },
+            {
+              "id": 1541861,
+              "perusteenOsa": {
+                "id": 1541529,
+                "luotu": 1462364656265,
+                "muokattu": 1474622244802,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1634599",
+                  "fi": "Muiden oppiaineiden opetuksen tavoitteet ja keskeiset sisällöt",
+                  "sv": "Mål och centralt innehåll för undervisningen i övriga läroämnen"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1635767",
+                  "fi": "<p>Valmistavan opetuksen muiden oppiaineiden opetuksen lähtökohtana ovat oppilaan aikaisemmat opinnot. Valmistavan opetuksen aikana muiden oppiaineiden opetuksen tavoitteet ja sisällöt noudattavat soveltuvin osin perusopetuksen opetussuunnitelman perusteiden tavoitteita ja keskeisiä sisältöjä. Sisältöjä suunniteltaessa otetaan huomioon kunkin oppiaineen keskeinen käsitteistö, työ- tavat ja välineet. Perusopetukseen valmistavan opetuksen aikana opiskeltavat oppiaineet valitaan siten, että oppilas pystyy valmistavan opetuksen jälkeen opiskelemaan hänelle osoitettavassa esitai perusopetuksen ryhmässä ja että valmistavan opetuksen opinnot mahdollistavat myöhemmin perusopetuksen suorittamisen Suomessa. Lähtökohtana suunnittelulle ovat perusopetuksen kyseisten vuosiluokkien opetuksen tehtävä ja siirtymävaiheen kuvaus sekä vuosiluokilla opiskeltavat <a href=\"https://eperusteet.opintopolku.fi/#/fi/perusopetus/419550/sisallot/466340\" target=\"_blank\">oppiaineet </a>.</p>\n\n<p>Omalla äidinkielellä annettu opetus ja tuki edistää oppilaan opiskelua ja kotoutumista. Omakielisen opetuksen ja tuen avulla saatu lisätieto oppilaan osaamisen tasosta auttaa muiden oppiaineiden tavoitteiden asettamisessa. Näin oppilas voi edistyä aineopinnoissaan, vaikka suomen/ruotsin kielen taidot kehittyisivätkin muita taitoja hitaammin. Omakielistä opetusta ja tukea annetaan oppilaan tarpeiden ja mahdollisuuksien mukaan. Opetuksessa voidaan hyödyntää myös oppilaiden tietämystä oman kieli- ja kulttuurialueensa luonnosta, elämäntavoista, historiasta ja yhteiskunnasta, kielistä ja kulttuureista.</p>",
+                  "sv": "<p>Utgångspunkten för undervisningen i övriga läroämnen är elevens tidigare studier. Under den förberedande undervisningen följer målen och innehållet för de övriga läroämnena i tillämpliga delar målen och innehållet i grunderna för läroplanen för den grundläggande utbildningen. Vid planeringen av innehållet ska centrala begrepp, arbetssätt och redskap för varje läroämne beaktas. I undervisningen som förbereder för den grundläggande utbildningen ska läroämnena väljas så att eleven efter den förberedande undervisningen kan studera i en grupp i förskoleundervisningen eller den grundläggande utbildningen som anvisas eleven. I förlängningen ska eleven ha möjlighet att slutföra den grundläggande utbildningen i Finland. Utgångspunkt för planeringen av studierna är beskrivningen av undervisningens uppdrag och av övergångarna i de aktuella årskurserna i den grundläggande utbildningen och de <a href=\"https://eperusteet.opintopolku.fi/#/sv/perusopetus/419550/sisallot/466340\">läroämnen som studeras enligt årskurs.</a></p>\n\n<p>Undervisning och stöd på det egna modersmålet främjar elevens studier och integrering. Den tilläggskunskap som man får om elevens kunskapsnivå med hjälp av undervisningen och stödet på det egna språket är till hjälp då man ställer upp mål för de övriga läroämnena. På det sättet kan eleven gå framåt i ämnesstudierna även om kunskaperna i svenska eller finska utvecklas långsammare än de övriga färdigheterna. Undervisning och stöd på det egna språket ges enligt elevens behov i den mån det är möjligt. I undervisningen kan man också utnyttja elevens kunskaper om det egna språk- och kulturområdets natur, levnadssätt, historia och samhälle, språk och kulturer.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1541529"
+            }
+          ],
+          "_perusteenOsa": "1541523"
+        },
+        {
+          "id": 1541862,
+          "perusteenOsa": {
+            "id": 1541910,
+            "luotu": 1462364674023,
+            "muokattu": 1474622244791,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1634646",
+              "fi": "Toimintakulttuuri",
+              "sv": "Verksamhetskulturen"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1635768",
+              "fi": "<p>Yhteisön toimintakulttuuri on sen historiallisesti ja kulttuurisesti muotoutunut tapa toimia. Koska perusopetukseen valmistavan opetuksen oppilaat tulevat hyvinkin erilaisista kulttuureista ja koulukulttuureista, on tärkeää luoda ja kehittää yhteistä toimintakulttuuria. Perusopetukseen valmistavan opetuksen toimintakulttuuri rakentuu oppivan yhteisön periaatteille. Se tukee kaikkien yhteisön jäsenten hyvinvointia ja oppimista. Se on jatkuvan kehittämisen kohde ja osa koko koulun toimintakulttuuria. Perusopetukseen valmistavan opetuksen toimintakulttuurin määrittelemisessä voidaan hyödyntää myös <a href=\"https://eperusteet.opintopolku.fi/#/fi/perusopetus/419550/tekstikappale/428613\" target=\"_blank\">Perusopetuksen opetussuunnitelman perusteita 2014.</a></p>",
+              "sv": "<p>En skolas verksamhetskultur är dess historiskt och kulturellt formade sätt att arbeta. Eftersom eleverna i undervisningen som förbereder för den grundläggande utbildningen kommer från olika kulturer och skolkulturer, är det viktigt att skapa och utveckla en gemensam verksamhetskultur. Verksamhetskulturen ska bygga på principen om en lärande organisation. Den ska stödja samtliga medlemmars välbefinnande och lärande. Verksamhetskulturen ska kontinuerligt utvecklas som en del av hela skolans verksamhetskultur. Vid definition av verksamhetskulturen i undervisning som förbereder för den grundläggande utbildningen kan man även utgå från <a href=\"https://eperusteet.opintopolku.fi/#/sv/perusopetus/419550/tekstikappale/428613\">Grunderna för läroplanen för den grundläggande utbildningen 2014<strong>.</strong></a></p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 1541864,
+              "perusteenOsa": {
+                "id": 1541912,
+                "luotu": 1462364693597,
+                "muokattu": 1474622244804,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1634680",
+                  "fi": "Oppimisympäristöt ja työtavat",
+                  "sv": "Lärmiljöer och arbetssätt"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1636078",
+                  "fi": "<p>Perusopetukseen valmistavassa opetuksessa hyödynnetään kokemuksellisia ja toiminnallisia oppimisympäristöjä ja monipuolisia opetusmenetelmiä ja työtapoja. Monipuoliset oppimisympäristöt tarjoavat oppilaalle mielekkäitä ja monipuolisia tilanteita käyttää kieltä eri kommunikaatioympäristöissä. Erilaiset tilanteet kehittävät oppilaan kykyä toimia sekä itsenäisenä yksilönä että yhteisön jäsenenä ja antavat valmiuksia elinikäiseen oppimiseen. Erilaiset oppimisympäristöt tutustuttavat oppilasta myös suomalaiseen kulttuuriin ja edistävät hänen kotoutumistaan lähiympäristöön sekä laajemmin suomalaiseen yhteiskuntaan.</p>\n\n<p>Perusopetukseen valmistava opetus niveltyy osaksi perusopetusta ja koulussa vallitsevaa toimintakulttuuria, mutta myös vaikuttaa muun koulun toimintakulttuurin ja käytänteiden kehittämiseen. Oppilaat harjaantuvat valmistavan opetuksen aikana perusopetuksen työtapoihin. Tavoitteena on, että oppilaat pystyvät vähitellen myös itse asettamaan itselleen oppimistavoitteita sekä harjaantuvat oppimaan oppimisen taidoissaan. Niinpä työtapojen on hyvä olla monipuolisia, oppilasta aktivoivia ja eriyttäviä.</p>\n\n<p>Perusopetukseen valmistavan opetuksen aikana on tarpeen oppia vähitellen myös itsenäistä työskentelyä, tiimityöskentelyä, tieto- ja viestintäteknisiä taitoja ja tiedonhakutaitoja. Oppiminen on sidoksissa oppilaan aiempiin tietoihin ja oppimisstrategioihin ja on siten jokaisella yksilöllistä. Koska eri oppiaineet ja niiden tavat käyttää kieltä ovat keskeisiä perusopetukseen valmistavassa opetuksessa, opetus edellyttää kielitietoisia työtapoja kaikissa oppiaineissa. Erilaisten tekstien lukemisen, ymmärtämisen, tulkitsemisen ja tuottamisen taidot ovat keskeisiä. Kielitietoiset työtavat edellyttävät opettajien yhteistyötä ja yhteistä ymmärrystä kielen merkityksestä oppimisessa.</p>",
+                  "sv": "<p>I undervisningen som förbereder för den grundläggande utbildningen ska man utnyttja lärmiljöer som ger möjlighet till upplevelser och aktiviteter samt använda mångsidiga pedagogiska metoder och arbetssätt. Mångsidiga lärmiljöer erbjuder eleverna meningsfulla och varierande möjligheter att använda språket i olika kommunikationssituationer. Olika situationer utvecklar elevens förmåga att fungera både som enskild individ och som medlem i gruppen och ger färdigheter för livslångt lärande. Olika lärmiljöer ger också eleven möjlighet att lära känna den finländska kulturen och främjar integreringen i närsamhället och i vidare bemärkelse i det finländska samhället.</p>\n\n<p>Undervisningen som förbereder för den grundläggande utbildningen är en del av den grundläggande utbildningen och verksamhetskulturen i skolan, men påverkar också utvecklandet av skolans övriga verksamhetskultur och förfaringssätt. Under den förberedande undervisningen tar eleverna till sig arbetssätten i den grundläggande utbildningen. Målet är att eleverna småningom också själva kan ställa upp egna mål för sitt lärande och utvecklar sin förmåga att lära sig. Därför är det viktigt att arbetssätten är mångsidiga, stimulerande och differentierade.</p>\n\n<p>Under undervisningen som förbereder för den grundläggande utbildningen ska eleverna också steg för steg lära sig att arbeta självständigt och i grupp samt utveckla sin digitala kompetens och sin förmåga att söka information. Lärandet är bundet till elevens tidigare kunskaper och lärstrategier och är således individuellt. Eftersom olika läroämnen och deras sätt att använda språket är centrala i den förberedande undervisningen, förutsätter undervisningen i alla läroämnen språkmedvetna arbetssätt. Det är viktigt att kunna läsa, förstå, tolka och producera olika texter. Språkmedvetna arbetssätt förutsätter samarbete mellan lärarna och en delad förståelse om språkets betydelse för lärandet.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1541912"
+            },
+            {
+              "id": 1541865,
+              "perusteenOsa": {
+                "id": 1541913,
+                "luotu": 1462364707587,
+                "muokattu": 1474622244799,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1634683",
+                  "fi": "Opetuksen eheyttäminen ja monialaiset oppimiskokonaisuudet",
+                  "sv": "Helhetsskapande undervisning och mångvetenskapliga lärområden"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1636079",
+                  "fi": "<p>Opetuksen eheyttäminen on tärkeä osa perusopetukseen valmistavan opetuksen toimintakulttuuria. Sen tavoitteena on auttaa oppilaita yhdistämään suomen tai ruotsin kielen sekä eri oppiaineiden tietoja ja taitoja sekä jäsentämään niitä mielekkäiksi kokonaisuuksiksi vuorovaikutuksessa toisten kanssa. Kokonaisuuksien tarkastelu ja tiedonaloja yhdistelevät, tutkivat työskentelyjaksot ohjaavat oppilaita soveltamaan tietojaan ja tuottavat kokemuksia osallistumisesta tiedon yhteisölliseen rakentamiseen. Oppilaat voivat näin hahmottaa koulussa opiskeltavien asioiden merkitystä oman elämän ja yhteisön sekä yhteiskunnan ja ihmiskunnan kannalta. Samalla he saavat aineksia maailmankuvansa laajentamiseen ja jäsentämiseen.</p>\n\n<p>Opetuksen eheyttäminen edellyttää sekä opetuksen sisältöä että työtapoja koskevaa pedagogista lähestymistapaa, jossa kunkin oppiaineen opetuksessa ja erityisesti oppiainerajat ylittäen tarkastellaan todellisen maailman ilmiöitä tai teemoja kokonaisuuksina. Eheyttämisen tapa ja kesto voi vaihdella oppilaiden tarpeista ja opetuksen tavoitteista riippuen.</p>\n\n<p>Suomen tai ruotsin kielen sekä muiden oppiaineiden muodostamat monialaiset oppimiskokonaisuudet edistävät perusopetukseen valmistavassa opetuksessa oppilaan laaja-alaisen osaamisen kehittymistä. Oppimiskokonaisuuksien aiheet suunnitellaan paikallisesti ilmentämään perusopetukseen valmistavan opetuksen toimintakulttuurin periaatteita.</p>\n\n<p>Monialaisten oppimiskokonaisuuksien suunnittelussa ja toteuttamisessa hyödynnetään paikallisia voimavaroja ja mahdollisuuksia. Oppimiskokonaisuudet tarjoavat hyvän tilaisuuden koulun ja muun yhteiskunnan väliselle yhteistyölle. Käsiteltävien asioiden paikallisuus, ajankohtaisuus ja yhteiskunnallinen merkittävyys luovat lisämotivaatiota sekä opettajille että oppilaille. Oppimiskokonaisuuksien sisällöiksi etsitään toimintakulttuurin periaatteiden mukaisia, oppilaita kiinnostavia sekä oppiaineiden ja opettajien väliseen yhteistyöhön soveltuvia teemoja. Niiden opiskelussa käytetään suomen tai ruotsin kielen taitoa kehittäviä sekä eri oppiaineille ominaisia tarkastelutapoja, käsitteitä ja menetelmiä.</p>\n\n<p>Opetussuunnitelmaan voidaan liittää monialaisten oppimiskokonaisuuksien toteuttamista tukevia yhteistyösuunnitelmia koulun ulkopuolisten toimijoiden kanssa.</p>",
+                  "sv": "<p>Helhetsskapande undervisning är en viktig del av verksamhetskulturen i undervisningen som förbereder för den grundläggande utbildningen. Målet med undervisningen är att hjälpa eleverna att kombinera kunskaper och färdigheter i svenska eller finska med kunskaper och färdigheter i olika läroämnen samt att i samverkan med andra strukturera dem till meningsfulla helheter. Arbetsperioder då eleverna studerar helheter och kombinerar och undersöker olika vetenskapsgrenar ger dem möjlighet att tillämpa sina kunskaper och får dem att känna sig delaktiga i att bygga upp gemensam kunskap. Detta stärker elevernas förmåga att förstå vilken betydelse det som de lär sig i skolan har för det egna livet och den egna gruppen och i ett vidare perspektiv för samhället och mänskligheten. Samtidigt får eleverna redskap för att vidga och strukturera sin världsbild.</p>\n\n<p>Helhetsskapande undervisning förutsätter ett pedagogiskt grepp, som gäller både undervisningens innehåll och arbetsmetoder, där man inom undervisningen i varje läroämne och i synnerhet över läroämnesgränserna studerar olika teman eller företeelser i den verkliga världen som helheter. Omfattningen och sättet på vilket man genomför helhetsskapande undervisning kan variera beroende på elevernas behov och målen för undervisningen.</p>\n\n<p>Mångvetenskapliga lärområden som omfattar det svenska eller finska språket samt andra läroämnen främjar utvecklingen av elevens mångsidiga kompetens i undervisningen som förbereder för den grundläggande utbildningen. Innehållet i lärområdena ska planeras lokalt så att det återspeglar principerna för verksamhetskulturen i den förberedande undervisningen.</p>\n\n<p>De mångvetenskapliga lärområdena ska planeras och genomföras utgående från de lokala resurserna och möjligheterna. Lärområdena erbjuder ett bra tillfälle för samarbete mellan skolan och det övriga samhället. Lärarnas och elevernas motivation ökar när de ämnen som behandlas har lokal anknytning, är aktuella och har samhällelig betydelse. Innehållet i lärområdena ska väljas enligt principerna för verksamhetskulturen och så att det intresserar eleverna och lämpar sig för samarbete mellan läroämnen och lärare. I studierna utnyttjas infallsvinklar, begrepp och metoder som utvecklar kunskaperna i svenska eller finska och som är kännetecknande för de olika läroämnena.</p>\n\n<p>Till läroplanen kan man bifoga planer för samarbete med utomstående aktörer, som stödjer genomförandet av de mångvetenskapliga lärområdena.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1541913"
+            }
+          ],
+          "_perusteenOsa": "1541910"
+        },
+        {
+          "id": 1541866,
+          "perusteenOsa": {
+            "id": 1541914,
+            "luotu": 1462364758629,
+            "muokattu": 1474622244787,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1634687",
+              "fi": "Oppilaan oman opinto-ohjelman laatiminen",
+              "sv": "Uppgörandet av ett individuellt studieprogram för eleven"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1634688",
+              "fi": "<p>Koska perusopetukseen valmistavan opetuksen oppilaiden kielitaito ja muut valmiudet vaihtelevat, perusopetukseen valmistavaa opetusta varten ei ole määritelty valtakunnallista tuntijakoa tai oppimäärää, vaan jokaiselle oppilaalle laaditaan oma opinto-ohjelma.</p>\n\n<p>Oppilaan omaan opinto-ohjelmaan kirjataan:</p>\n\n<ul>\n\t<li>oppilaan lähtötaso, kuten koulunkäyntihistoria, kielitaito ja oppilaan vahvuudet</li>\n\t<li>oppilaan henkilökohtaiset oppimistavoitteet, joita tarkistetaan säännöllisin väliajoin</li>\n\t<li>opiskeltavat oppiaineet, niiden tuntimäärät sekä opetuksen sisältö</li>\n\t<li>oppilaan opinnot valmistavan opetuksen opetusryhmässä ja integrointi perusopetukseen</li>\n\t<li>ohjauksen järjestäminen ja mahdollisesti tarvittavat tukitoimet.</li>\n</ul>\n\n<p>Oppilaan oma opinto-ohjelma voi olla osa kotouttamislain mukaista oppilaan kotoutumissuunnitelmaa.</p>",
+              "sv": "<p>Eftersom språkkunskaperna och de övriga färdigheterna varierar bland eleverna i undervisningen som förbereder för den grundläggande utbildningen, finns det ingen fastställd timfördelning eller lärokurs för den förberedande undervisningen, utan ett eget studieprogram görs upp för varje elev. I elevens eget studieprogram antecknas:</p>\n\n<ul>\n\t<li>elevens utgångsnivå, såsom t.ex. skolgångshistoria, språkkunskaper och styrkor</li>\n\t<li>de individuella målen för elevens lärande, som granskas med jämna mellanrum</li>\n\t<li>vilka läroämnen som studeras, timantalen och undervisningens innehåll</li>\n\t<li>elevens studier i undervisningsgruppen i den förberedande undervisningen och integrering i den grundläggande utbildningen</li>\n\t<li>handledningen av eleven och eventuella stödåtgärder.</li>\n</ul>\n\n<p>Elevens eget studieprogram kan vara en del av elevens integrationsplan i enlighet med integrationslagen.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "1541914"
+        },
+        {
+          "id": 1541867,
+          "perusteenOsa": {
+            "id": 1541915,
+            "luotu": 1462364775291,
+            "muokattu": 1474622244775,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1634689",
+              "fi": "Oppilaan hyvinvointi sekä oppimisen ja koulunkäynnin tuki",
+              "sv": "Elevens välbefinnande samt stöd för lärande och skolgång"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1636250",
+              "fi": "<p>Perusopetukseen valmistava opetus ohjaa tunnistamaan eri kulttuureja yhdistäviä hyvän elämän arvoja ja periaatteita. Opiskelu vahvistaa opiskelijan taitoja toimia kulttuurisesti monimuotoisessa yhteiskunnassa sekä kartuttaa oppilaan kulttuurienvälistä toimintakykyä. Opetus kannustaa vuorovaikutukseen eri kulttuuriryhmien välille ja kantaväestön kanssa. Perusopetukseen valmistavassa opetuksessa edistetään hyviä etnisiä suhteita. Syrjintää, rasismia, väkivaltaa tai kiusaamista ei sallita missään muodossa eikä keneltäkään.</p>\n\n<p>Perusopetukseen valmistavassa opetuksessa huolehditaan kokonaisvaltaisesti oppilaan hyvinvoinnista ja siihen liittyvistä seikoista, kuten kodin ja koulun yhteistyöstä, riittävästä oppilashuollollisesta tuesta sekä oppilaanohjauksesta. Näiden määrittelyssä voidaan soveltuvin osin hyödyntää perusopetuksen opetussuunnitelman perusteita. Jos perusopetukseen valmistavan opetuksen aikana selviää oppilaan tarve oppimisen ja koulunkäynnin tukeen, tuki annetaan oppilaalle parhaiten soveltuvalla tavalla.</p>",
+              "sv": "<p>Undervisningen som förbereder för den grundläggande utbildningen ska utveckla förmåga att identifiera värden och principer för ett gott liv som förenar olika kulturer. Studierna ska stärka elevernas förmåga att ta del av ett samhälle som präglas av kulturell mångfald och att agera i mångkulturella miljöer. Undervisningen ska uppmuntra samverkan mellan olika kulturgrupper och med den finländska befolkningen. Goda etniska relationer ska främjas i undervisningen som förbereder för den grundläggande utbildningen. Ingen form av diskriminering, rasism, våld eller mobbning ska accepteras.</p>\n\n<p>I undervisningen som förbereder för den grundläggande utbildningen ska man som helhet värna om elevens välbefinnande och därtill relaterade frågor, såsom samarbete mellan hem och skola, tillräcklig elevvård och elevhandledning. För beskrivningen av detta kan grunderna för läroplanen för den grundläggande utbildningen i tillämpliga delar utnyttjas. Om det under undervisningen som förbereder för den grundläggande utbildningen framgår att en elev behöver stöd för lärande och skolgång, ska stödet ges på det sätt som bäst passar eleven.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [
+            {
+              "id": 1541869,
+              "perusteenOsa": {
+                "id": 1541917,
+                "luotu": 1462364823293,
+                "muokattu": 1474622244806,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1634831",
+                  "fi": "Opetuksen eriyttäminen",
+                  "sv": "Differentiering av undervisningen"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1636251",
+                  "fi": "<p>Perusopetukseen valmistavan opetuksen oppilaat eroavat toisistaan kielitaidoltaan, oppimis- ja opiskeluvalmiuksiltaan, kiinnostuksen kohteiltaan ja motivaatioltaan sekä oppimistarpeiltaan. Valmistava opetus pyritään järjestämään niin, että nämä oppilaiden väliset erot otetaan huomioon. Esimerkiksi eri-ikäiset ja kielitaidoltaan eritasoiset oppilaat voidaan jakaa omiksi ryhmikseen. Lisäksi oppilaiden erilaiset oppimistarpeet voidaan ottaa huomioon eriyttämällä opetusta. Valmistavaa opetusta kehitetään tavoitteellisesti ja pitkäjänteisesti yhtenäisenä kokonaisuutena, jossa kielitaito ja muut valmiudet kehittyvät jatkuvasti. Oppilaat saavat myös mahdollisuuksia oppia toisiltaan, tukea toisiaan ja toimia kielenkäytön mallina toisilleen. Tärkeässä asemassa on opettajan antama vuorovaikutuksellinen tuki, jonka avulla oppija suoriutuu myös sellaisista tehtävistä, jotka voisivat itsenäisesti olla mahdottomia suorittaa. Jotta oppimistapahtuma olisi toimiva, sen suunnittelu edellyttää hyvää oppilaantuntemusta. Niinpä on tarpeen selvittää mm. oppilaiden opiskelutottumukset, asenteet suomen kieltä kohtaan sekä käsitykset suomen kielen taidon tärkeydestä ja vaikeudesta sekä oppilaiden lähtötaso eri kielitaidon osa-alueiden osalta. Tämän pohjatiedon varassa opettaja voi tarpeen mukaan eriyttää muun muassa eri oppiaineiden opetukseen käytettävää aikaa, oppiaineksen syvyyttä tai laajuutta, menetelmiä, työtapoja tai materiaaleja. Eriyttäminen tarkoittaa käytännössä ennen kaikkea sisältöjen valintaa sekä tarkoituksenmukaisia opetusjärjestelyitä. On tärkeää, että jokainen oppilas saa oman taitotasonsa mukaisia ja sopivan haastavia tehtäviä. Myös mahdolliset oppimisvaikeudet on tärkeä selvittää, jotta tuen tarve voidaan ottaa huomioon.</p>",
+                  "sv": "<p>I undervisningen som förbereder för den grundläggande utbildningen skiljer sig eleverna från varandra beträffande språkkunskaper, inlärnings- och studiefärdigheter, intressen, motivation och förutsättningar för lärande. Den förberedande undervisningen ska om möjligt ordnas med beaktande av dessa skillnader mellan eleverna. Elever i olika åldrar eller med språkkunskaper på olika nivåer kan till exempel delas in i egna grupper. Elevernas olika förutsättningar för lärande kan dessutom beaktas genom differentiering av undervisningen. Den förberedande undervisningen ska utvecklas målinriktat och långsiktigt som en sammanhängande helhet, där språkkunskaper och övriga färdigheter kontinuerligt utvecklas. Eleverna får också möjligheter att lära sig av varandra och att stödja och fungera som språkliga modeller för varandra. Lärarens kommunikativa stöd är centralt och hjälper eleven att klara av även sådana uppgifter, som kanske vore omöjliga att klara av på egen hand. En fungerande undervisningssituation förutsätter planering som i sin tur förutsätter god elevkännedom. Det betyder att det är bra om läraren känner till bl.a. elevernas studievanor, attityder gentemot svenska språket samt deras uppfattning om hur viktigt och hur svårt det är att lära sig svenska samt elevernas utgångsnivå inom de olika delområdena av språkkunskap. Utgående från denna bakgrundsinformation kan läraren vid behov differentiera undervisningen i olika läroämnen, bland annat med avseende på lärostoffets djup eller omfattning, metoder, arbetssätt eller material. I praktiken innebär differentiering först och främst val av innehåll och ändamålsenliga undervisningsarrangemang. Det är viktigt att varje elev får uppgifter av lämplig svårighetsgrad enligt sin färdighetsnivå. Det är också viktigt att ta reda på eventuella inlärningssvårigheter för att kunna beakta behovet av stöd.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1541917"
+            },
+            {
+              "id": 1542090,
+              "perusteenOsa": {
+                "id": 1541918,
+                "luotu": 1462364833874,
+                "muokattu": 1474622244807,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1634833",
+                  "fi": "Kodin ja koulun yhteistyö",
+                  "sv": "Samarbetet mellan hem och skola"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1634834",
+                  "fi": "<p>Opetuksen järjestäjä luo edellytykset kodin ja koulun yhteistyölle. Yhteistyön lähtökohtana on osapuolten yhdenvertainen ja tasa-arvoinen kunnioitus ja kohtelu. Tavoitteena on vuoropuhelun aikaansaaminen oppilaan kasvun ja oppimisen tukemiseksi.</p>\n\n<p>Kodin ja koulun yhteistyössä otetaan huomioon perheiden kieli- ja kulttuuritausta. Huoltajille annetaan tietoa suomalaisesta koulusta ja koulutusjärjestelmästä, opetussuunnitelmasta, oppilaan arvioinnista, opetusmenetelmistä ja perusopetukseen valmistavassa opetuksessa käytettävästä oppilaan omasta opinto-ohjelmasta. Perheille annetaan tietoa perusopetukseen siirtymisestä sekä jatko-opintomahdollisuuksista perusopetuksen jälkeen.</p>",
+                  "sv": "<p>Utbildningsanordnaren skapar förutsättningar för samarbetet mellan hem och skola. Utgångspunkten för samarbetet är att parterna behandlas och respekteras lika och jämställt. Målet är att få till stånd en dialog som stödjer elevens växande och lärande.</p>\n\n<p>I samarbetet mellan hem och skola beaktas familjernas språk- och kulturbakgrund. Vårdnadshavarna informeras om den finländska skolan och det finländska utbildningssystemet, läroplanen, elevbedömningen, undervisningsmetoderna och det individuella studieprogram som används i den förberedande undervisningen. Familjerna informeras om övergången till den grundläggande utbildningen och om möjligheterna till fortsatta studier efter den grundläggande utbildningen.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1541918"
+            },
+            {
+              "id": 1542091,
+              "perusteenOsa": {
+                "id": 1541919,
+                "luotu": 1462364850184,
+                "muokattu": 1474622244792,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1634835",
+                  "fi": "Oppilashuolto",
+                  "sv": "Elevvård"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1636532",
+                  "fi": "<p>Perusopetukseen valmistavan opetuksen oppilashuollon järjestämistä ja toteuttamista koskevat samat periaatteet ja oppilaita samat oikeudet kuin perusopetuksen oppilaille annettavassa oppilashuollossa. Opetuksen järjestäjällä tulee olla oppilas- ja opiskelijahuoltolain edellyttämä koulukohtainen oppilashuoltosuunnitelma, jonka laatimisesta on määrätty perusopetuksen opetussuunnitelman perusteissa (<a href=\"https://eperusteet.opintopolku.fi/#/fi/perusopetus/419550/tekstikappale/432939\" target=\"_blank\">määräys 4/011/2014</a>). Perusopetukseen valmistavan opetuksen koulukohtainen oppilashuoltosuunnitelma voidaan sisällyttää perusopetusta koskevaan koulukohtaiseen oppilashuoltosuunnitelmaan. Koulukohtaiseen oppilashuoltosuunnitelmaan tulee sisältyä myös suunnitelma oppilaiden suojaamiseksi väkivallalta, kiusaamiselta ja häirinnältä.</p>\n\n<p>Perusopetukseen valmistavassa opetuksessa oppilaalla on oikeus opetukseen osallistumisen edellyttämään maksuttomaan oppilashuoltoon. Yhteisön ja yksittäisten oppilaiden terveydestä, hyvinvoinnista ja turvallisuudesta huolehtiminen ulottuu kaikkeen koulutyöhön. Oppilashuolto on kaikkien kouluyhteisössä työskentelevien ja oppilashuoltopalveluista vastaavien työntekijöiden yhteinen tehtävä.</p>\n\n<p>Oppilashuoltoa toteutetaan sekä yhteisöllisenä että yksilökohtaisena. Yhteisöllinen oppilashuolto on osa perusopetukseen valmistavan opetuksen yhteisöllistä toimintakulttuuria ja ensisijainen tapa toteuttaa oppilashuoltoa. Yhteisöllinen oppilashuolto on ennalta ehkäisevää ja sen tehtävänä on vahvistaa osallisuuden, huolenpidon ja turvallisuuden ilmapiiriä perusopetukseen valmistavassa opetuksessa. Kouluyhteisössä arvostetaan jokaisen yksilöllisyyttä eikä syrjintää, väkivaltaa, kiusaamista tai rasismia hyväksytä. Oppilaita ohjataan arvostamaan sekä omaa että ympäristön kulttuurista, kielellistä ja katsomuksellista monimuotoisuutta.</p>\n\n<p>Oppilashuoltotyötä ohjaa oppilaan edun ensisijaisuus. Yksilökohtaista oppilashuoltoa toteutetaan oppilaan ja tarvittaessa huoltajan suostumuksella. Psykologi- ja kuraattoripalvelut sekä kouluterveydenhuollon palvelut ovat oppilaan saatavilla ja ne järjestetään lain edellyttämässä määräajassa. Oppilaan yksilölliset edellytykset, voimavarat ja tarpeet otetaan huomioon valmistavan opetuksen arjessa sekä tarvittavan tuen suunnittelussa ja toteutuksessa. Työssä turvataan oppilaan ja huoltajan osallisuus, työskentelyn luottamuksellisuus sekä kunnioittava vuorovaikutus. Osallisuuden varmistamiseksi huolehditaan tarvittavista tulkitsemispalveluista.</p>\n\n<p>Monialainen yhteistyö on perusopetukseen valmistavan opetuksen oppilashuollossa tärkeää. Oppilashuolto järjestetään opetus-, sosiaali- ja terveystoimen yhteistyönä siten, että siitä muodostuu toimiva kokonaisuus. Oppilashuoltoa toteutetaan yhteistyössä oppilaan, huoltajan sekä tarvittaessa muiden yhteistyökumppaneiden kuten perheen kotoutumissuunnitelmasta vastaavan tahon kanssa. Oppilashuollon toimintatavoista ja palveluista tiedotetaan suunnitelmallisesti. Huoltajille annetaan tietoa myös suomalaisen koulutusjärjestelmän sekä sosiaali- ja terveydenhuollon toimintatavoista ja saatavuudesta.</p>",
+                  "sv": "<p>I undervisning som förbereder för den grundläggande utbildningen ska elevvården ordnas och genomföras enligt samma principer, och eleverna ska ha samma rättigheter som i elevvården i den grundläggande utbildningen. Enligt lagen om elev- och studerandevård ska utbildningsanordnaren utarbeta en elevvårdsplan för varje skola. Föreskrifter om planen finns i grunderna för läroplanen för den grundläggande utbildningen (<a href=\"https://eperusteet.opintopolku.fi/#/sv/perusopetus/419550/tekstikappale/432939\">föreskrift 4/011/2014</a>). Den skolspecifika elevvårdsplanen för undervisningen som förbereder för den grundläggande utbildningen kan inkluderas i den skolspecifika elevvårdsplanen för den grundläggande utbildningen. Den skolspecifika elevvårdsplanen ska också innehålla en plan för att skydda eleverna mot våld, mobbning och trakasseri.</p>\n\n<p>I undervisning som förbereder för den grundläggande utbildningen har eleven rätt till sådan avgiftsfri elevvård som förutsätts för att eleven ska kunna delta i undervisningen. Skolgemenskapens och de enskilda elevernas hälsa, välbefinnande och trygghet ska beaktas i allt skolarbete. Elevvården är en gemensam uppgift för alla som arbetar i skolgemenskapen och för alla som ansvarar för elevvårdstjänsterna.</p>\n\n<p>Elevvården ska bestå av både gemensam och individuell elevvård. I undervisningen som förbereder för den grundläggande utbildningen ska den gemensamma elevvården vara en del av den gemensamma verksamhetskulturen och det primära sättet att genomföra elevvård. Den gemensamma elevvården ska vara förebyggande och stärka atmosfären av delaktighet, omsorg och trygghet. Var och en i skolgemenskapen ska respekteras som individ. Diskriminering, våld, mobbning eller rasism accepteras inte. Eleverna ska handledas att värdesätta såväl sin egen som omgivningens kulturella, språkliga och konfessionella mångfald.</p>\n\n<p>Elevvårdsarbetet ska utgå från elevens bästa. Den individuella elevvården ska genomföras med elevens och vid behov med vårdnadshavarens samtycke. Psykolog- och kuratorstjänster samt skolhälsovårdstjänster ska vara tillgängliga för eleven och ordnas inom lagstadgad tid. Elevens individuella förutsättningar, resurser och behov ska beaktas i vardagen i den förberedande undervisningen och vid planeringen och genomförandet av stöd. Arbetet ska bygga på elevens och vårdnadshavarens delaktighet, konfidentialitet och respektfull kommunikation. För att säkerställa delaktigheten ska det finnas tillgång till sådana tolkningstjänster som behövs.</p>\n\n<p>Yrkesövergripande samarbete är viktigt inom elevvården i undervisning som förbereder för den grundläggande utbildningen. Elevvården ska ordnas genom samarbete mellan undervisningsväsendet och social- och hälsovårdsväsendet så att den bildar en fungerande helhet. Elevvården ska genomföras i samverkan med eleven, vårdnadshavaren och vid behov med andra samarbetsparter, exempelvis den instans som ansvarar för familjens integrationsplan. De berörda parterna ska systematiskt informeras om förfaringssätten och tjänsterna inom elevvården. Vårdnadshavarna ska också informeras om det finländska utbildningssystemets och den finländska social- och hälsovårdens förfaringssätt och tillgänglighet.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1541919"
+            },
+            {
+              "id": 1542092,
+              "perusteenOsa": {
+                "id": 1542150,
+                "luotu": 1462364866288,
+                "muokattu": 1474622244801,
+                "muokkaaja": "1.2.246.562.24.77925329174",
+                "nimi": {
+                  "_id": "1635092",
+                  "fi": "Oppilaanohjaus",
+                  "sv": "Elevhandledning"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "1635093",
+                  "fi": "<p>Opetussuunnitelmassa määritellään, miten oppilaanohjaus perusopetukseen valmistavassa opetuksessa toteutetaan. Oppilaanohjauksen tarkoituksena on kehittää oppilaan oppimisvalmiuksia ja tukea hänen sosiaalista kasvuaan sekä ennaltaehkäistä oppimisvaikeuksia. Oppilaan opiskelua perusopetukseen valmistavassa opetuksessa tuetaan oppilaanohjauksella siten, että opiskelutaidot ja elämänsuunnittelun kannalta tarpeelliset tiedot ja taidot kehittyvät. Ohjausta voidaan toteuttaa perusopetuksen opetussuunnitelman perusteissa kuvattujen ohjaustoiminnalle asetettujen tavoitteiden mukaisesti.</p>\n\n<p>Perusopetukseen siirtymistä suunniteltaessa tulee huolehtia siitä, että tieto oppilaan valmiuksista ja edistymisestä valmistavassa opetuksessa siirtyy seuraavaan kouluun. Oppilaalle ja hänen huoltajalleen annetaan mahdollisuus tutustua ajoissa tulevaan kouluun. Valmistavan opetuksen oppilaanohjauksessa tulee kiinnittää huomiota myös siihen, että oppilaalla on käsitys omista mahdollisuuksistaan jatko-opinnoissa ja työelämässä.</p>",
+                  "sv": "<p>I läroplanen slås fast hur elevhandledningen ska genomföras i undervisning som förbereder för den grundläggande utbildningen. Syftet med elevhandledningen är att utveckla elevens förutsättningar för lärande och stödja hens sociala utveckling samt att förebygga inlärningssvårigheter. Genom elevhandledningen stöds utvecklingen av studiefärdigheterna och de kunskaper och färdigheter som eleven behöver för livsplaneringen. Handledningen kan genomföras enligt de mål för handledningsverksamheten som beskrivs i grunderna för läroplanen för den grundläggande utbildningen.</p>\n\n<p>Vid planeringen av en övergång till den grundläggande utbildningen ska man försäkra sig om att information om elevens färdigheter och framsteg i den förberedande undervisningen går vidare till följande skola. Eleven och vårdnadshavaren ska i god tid ges möjlighet att bekanta sig med den kommande skolan. Vid elevhandledningen i den förberedande undervisningen ska man också fästa vikt vid att eleven har en uppfattning om sina möjligheter i de fortsatta studierna och i arbetslivet.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1542150"
+            },
+            {
+              "id": 1542093,
+              "perusteenOsa": {
+                "id": 1542151,
+                "luotu": 1462364915023,
+                "muokattu": 1652691381368,
+                "muokkaaja": "1.2.246.562.24.23446071094",
+                "nimi": {
+                  "_id": "1635097",
+                  "fi": "Suunnitelma kasvatuskeskustelujen ja kurinpidollisten keinojen käyttämisestä ja niihin liittyvistä menettelytavoista",
+                  "sv": "Plan för användningen av fostrande samtal och disciplinära åtgärder och förfaringssätt"
+                },
+                "tila": "valmis",
+                "valmis": false,
+                "kaannettava": false,
+                "teksti": {
+                  "_id": "8345711",
+                  "_tunniste": "9e1fc4cd-ea1f-4bf2-a5c0-ce1ef84c0145",
+                  "fi": "<p>Opetukseen osallistuvalla on oikeus turvalliseen opiskeluympäristöön, jossa työrauha ja opiskelun esteetön sujuminen on varmistettu. Työrauhaan voidaan vaikuttaa monilla koulun keinoilla, joista keskeisiä ovat opettajan antama ohjaus ja palaute, yhteistyö sekä yhteinen vastuunotto ja huolenpito. Pedagogisia ratkaisuja kehittämällä sekä luottamuksen ja välittämisen ilmapiiriä vahvistamalla luodaan edellytykset hyvän työrauhan rakentumiselle. Opetuksen järjestäjällä on oikeus käyttää työrauhan turvaamiseksi ja epäasialliseen käyttäytymiseen puuttumiseksi myös kasvatuskeskustelua ja erilaisia kurinpitokeinoja. Kasvatuskeskustelussa ja kurinpitoasioissa noudatettavasta menettelystä säädetään<abbr data-viite=\"Viite71462367809573\"> perusopetuslaissa</abbr>. </p><p>Kasvatuskeskustelu on ensisijainen tapa puuttua oppilaan epäasialliseen käyttäytymiseen. Keskustelun tarkoituksena on yhdessä oppilaan kanssa yksilöidä toimenpiteeseen johtanut teko tai laiminlyönti, kuulla oppilasta, selvittää laajemmin käyttäytymisen syyt ja seuraukset sekä pohtia keinot tilanteen korjaamiseksi. Menettelyn tavoitteena on löytää myönteisiä keinoja koulussa käyttäytymisen ja oppilaan hyvinvoinnin parantamiseksi. Opetuksen järjestäjä päättää, millaisissa tapauksissa kasvatuskeskustelua käytetään. Kurinpidollisia keinoja ovat perusopetuslain mukaan jälki-istunto, kirjallinen varoitus ja määräaikainen erottaminen. Opetusta häiritsevä oppilas voidaan määrätä poistumaan luokkahuoneesta tai muusta tilasta, jossa opetusta annetaan, taikka koulun tilaisuudesta. Lisäksi työrauhan turvaamiseksi <abbr data-viite=\"Viite71462367809573\">oppilaan oikeus osallistua opetukseen</abbr> voidaan evätä enintään jäljellä olevan työpäivän ajaksi, jos on olemassa vaara, että toisen oppilaan tai muun henkilön turvallisuus kärsii oppilaan väkivaltaisen tai uhkaavan käyttäytymisen vuoksi taikka opetus tai siihen liittyvä toiminta vaikeutuu kohtuuttomasti oppilaan häiritsevän käyttäytymisen vuoksi. Oppilaan osallistuminen opetukseen voidaan edellä mainitulla perusteella <abbr data-viite=\"Viite131652597422682\">evätä myös seuraavaksi työpäiväksi</abbr>, mikäli opetuksen järjestäjä tarvitsee aikaa suunnitella oppilaan paluuta takaisin opetukseen ja tarjota oppilaalle oppilashuollon palveluita sekä tukea turvallista paluuta opetukseen.</p><p><abbr data-viite=\"Viite81462367906216\">Perusopetuslaki</abbr> velvoittaa opetuksen järjestäjän laatimaan ja ohjeistamaan opetussuunnitelman yhteydessä suunnitelman kasvatuskeskustelujen ja kurinpidollisten keinojen käyttämisestä ja niihin liittyvistä menettelytavoista. Suunnittelun tarkoituksena on varmistaa toimintatapojen laillisuus ja yhdenmukaisuus sekä oppilaiden yhdenvertainen kohtelu. Suunnittelu tukee myös koulun järjestyssääntöjen toteutumista. Suunnittelun tarkoituksena on varmistaa toimintatapojen laillisuus ja yhdenmukaisuus<br>sekä oppilaiden yhdenvertainen kohtelu. Suunnittelu tukee myös koulun järjestyssääntöjen toteutumista.</p><p>Opetuksen järjestäjä huolehtii siitä, että jokaisella sen alaisella koululla on käytössään kasvatuskeskustelujen ja kurinpitomenettelyjen toteuttamista koskeva suunnitelma. Suunnitelma voidaan laatia osana opetussuunnitelmaa tai erillisenä. Se voidaan laatia kokonaisuudessaan koulujen yhteisenä tai siten, että suunnitelman rakenne ja keskeiset toimintatapalinjaukset ovat yhteisiä ja suunnitelma täsmennetään koulukohtaisesti.</p><p>Suunnitelman laadinnassa on otettava huomioon, että kurinpidossa ja työrauhan turvaamisessa voidaan käyttää vain laissa mainittuja keinoja ja että näitä keinoja käytettäessä noudatetaan hallinnon yleisiä oikeusturvaperiaatteita. Keinojen käytön tulee perustua asiallisiin, yleisesti hyväksyttäviin ja objektiivisiin syihin. Samanlaisista teoista tulee tekijästä riippumatta määrätä samanlainen seuraamus, kuitenkin siten, että tekojen toistuminen voidaan ottaa huomioon raskauttavana tekijänä. Kurinpitoseuraamusten tulee olla suhteessa tekoon. Myös oppilaan ikä ja kehitysvaihe otetaan huomioon. Kurinpidollisia keinoja ei saa käyttää oppilaita häpäisevällä tai loukkaavalla tavalla.</p><p>Opetuksen järjestäjä päättää suunnitelman laatimisesta ja valmisteluun osallistuvista tahoista. Oppilaille tulee<abbr data-viite=\"Viite111463734174208\"> lain mukaan</abbr> järjestää mahdollisuus osallistua suunnitelman valmisteluun. Yhteistyö huoltajien ja muun muassa sosiaali- ja terveydenhuollon edustajien kanssa tukee suunnitelman toteutumista. Henkilöstöä ja oppilaskuntaa tulee kuulla ennen suunnitelman hyväksymistä tai päivittämistä</p><p><abbr data-viite=\"Viite131647439281550\">Koulun opettajan tai rehtorin tulee ilmoittaa tietoonsa tulleesta oppimisympäristössä tai koulumatkalla tapahtuneesta häirinnästä, kiusaamisesta, syrjinnästä tai väkivallasta niistä epäillyn ja niiden kohteena olevan oppilaan huoltajalle tai muulle lailliselle edustajalle.</abbr></p>",
+                  "sv": "<p>Den som deltar i utbildning har rätt till en trygg studiemiljö, arbetsro och ostörda studier. Skolan kan påverka arbetsron på många sätt, främst genom lärarens handledning och respons, samarbete, gemensamt ansvar och omsorg. Genom att utveckla pedagogiska lösningar och bygga upp en atmosfär som präglas av förtroende och omsorg skapas förutsättningar för en bra arbetsro. För att trygga arbetsron och ta itu med olämpligt uppförande har utbildningsanordnaren också rätt att använda fostrande samtal och olika disciplinära åtgärder.</p><p>Om förfaringssätten vid fostrande samtal och disciplinära åtgärder regleras i <abbr data-viite=\"Viite71462367809573\">lagen om grundläggande utbildning</abbr>.Fostrande samtal används som första åtgärd för att ta itu med en elevs olämpliga uppförande. Syftet med samtalet är att tillsammans med eleven specificera den gärning eller försummelse som föranlett åtgärden, höra eleven, utreda orsakerna till och konsekvenserna av uppförandet i mera omfattande utsträckning samt fundera över hur situationen kan förbättras. Avsikten med åtgärden är att komma fram till hur elevens uppförande i skolan och elevens välbefinnande kan förbättras. Utbildningsanordnaren beslutar i hurdana fall fostrande samtal används.</p><p>Disciplinära åtgärder är enligt lagen om grundläggande utbildning kvarsittning, skriftlig varning och avstängning för viss tid. En elev som stör undervisningen kan uppmanas att lämna klassrummet eller det rum där undervisningen ges, eller en skoltillställning. En elev kan dessutom förvägras <abbr data-viite=\"Hnvisning141464611162273\">rätt att delta i undervisningen</abbr> för högst den återstående arbetsdagen, om eleven uppför sig våldsamt eller hotfullt och hotar säkerheten för en annan elev eller person eller om undervisningen eller därtill hörande verksamhet försvåras orimligt mycket på grund av elevens störande beteende. Eleven kan förvägras rätt att delta i undervisningen även för följande arbetsdag, om utbildningsanordnaren behöver tid för att planera elevens återgång till undervisningen och erbjuda eleven elevvårdstjänster samt stödja en trygg återgång till undervisningen. Eleven kan förvägras rätt att delta i undervisningen <abbr data-viite=\"Hnvisning131652597671091\">även för följande arbetsdag</abbr>, om utbildningsanordnaren behöver tid för att planera elevens återgång till undervisningen och erbjuda eleven elevvårdstjänster samt stödja en trygg återgång till undervisningen.</p><p><abbr data-viite=\"Viite81462367906216\">Lagen om grundläggande utbildning</abbr> förpliktar utbildningsanordnaren att i samband med läroplanen utarbeta en plan och anvisningar om användningen av fostrande samtal och disciplinära åtgärder och förfaringssätt. Syftet med planen är att se till att förfaringssätten är lagenliga och enhetliga och att eleverna behandlas jämlikt. Planen bidrar också till att skolans ordningsregler följs.</p><p>Utbildningsanordnaren ska se till att varje skola har en plan för användningen av fostrande samtal och disciplinära åtgärder. Den skolvisa planen kan utarbetas separat eller inkluderas i den eventuella skolvisa läroplanen. Planen kan utarbetas gemensamt för alla utbildningsanordnarens skolor eller så att planens struktur och de centrala gemensamma riktlinjerna ingår i den lokala läroplanen och planen sedan preciseras skolvis.</p><p>Vid utarbetandet av planen är det viktigt att notera att endast disciplinära åtgärder som nämns i lagen får användas och att man vid användningen av disciplinära åtgärder ska iaktta de allmänna rättsskyddsprinciperna inom förvaltningen. Användningen av åtgärder ska grunda sig på sakliga, allmänt godtagbara och objektiva skäl. Konsekvenserna av likartade gärningar ska vara de samma, oberoende av gärningsman, dock så att upprepade gärningar kan anses som en försvårande omständighet. De disciplinära konsekvenserna ska stå i proportion till gärningen. Också elevens ålder och utvecklingsstadium ska beaktas. Disciplinära åtgärder får inte användas på ett sätt som kränker eller förolämpar eleven.</p><p>Utbildningsanordnaren beslutar om vilka parter som ska delta i utarbetandet och beredningen av planen. Eleverna ska <abbr data-viite=\"Viite111463734174208\">enligt lagen</abbr> ges möjlighet att delta i beredningen av planen.<strong> </strong>Samarbete med vårdnadshavarna och företrädare för bland annat social- och hälsovården stödjer genomförandet av planen. Personalen och elevkåren ska höras innan planen godkänns eller uppdateras.</p><p><abbr data-viite=\"Lagomgrundlggandeutbildning6281998291652525519031\">Skolans lärare eller rektor</abbr> ska meddela om trakasserier, mobbning, diskriminering eller våld som skett i lärmiljön eller under skolvägen och som kommit till hens kännedom till vårdnadshavaren eller någon annan laglig företrädare för den elev som misstänks för detta och för den elev som utsatts för detta.</p>"
+                },
+                "koodit": [],
+                "liite": false,
+                "osanTyyppi": "tekstikappale"
+              },
+              "lapset": [],
+              "_perusteenOsa": "1542151"
+            }
+          ],
+          "_perusteenOsa": "1541915"
+        },
+        {
+          "id": 1542094,
+          "perusteenOsa": {
+            "id": 1542152,
+            "luotu": 1462364945967,
+            "muokattu": 1474622244784,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1635161",
+              "fi": "Oppilaan arviointi",
+              "sv": "Elevbedömning"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1635162",
+              "fi": "<p>Opetussuunnitelmassa määrätään valmistavaan opetukseen osallistuvien arvioinnista sekä heille annettavasta todistuksesta. Arvioinnin tulee olla ohjaavaa, kannustavaa ja monipuolista. Oppilaan edellytyksiä itsearviointiin kehitetään. Arvioinnin avulla valmistavan opetuksen oppilaalle annetaan kuva myös perusopetuksen vaatimuksista.</p>\n\n<p>Arvioinnin suorittavat yhteistyössä kaikki oppilasta opettavat opettajat. Arviointi perustuu jatkuvaan ja monipuoliseen havainnointiin ja näyttöön. Perusopetukseen valmistavassa opetuksessa ei käytetä numeerista arviointia.</p>",
+              "sv": "<p>I läroplanen bestäms om bedömningen av elever som deltar i den förberedande undervisningen och om det intyg de får. Bedömningen ska vara vägledande, sporrande och mångsidig. Elevens förutsättningar för självvärdering ska utvecklas. Med hjälp av bedömningen ges eleven i den förberedande undervisningen också en bild av kraven i den grundläggande utbildningen.</p>\n\n<p>Bedömningen görs i samråd mellan alla lärare som undervisar eleven. Bedömningen bygger på fortgående och mångsidig observation av de kunskaper och färdigheter som eleven visar. I undervisningen som förbereder för den grundläggande utbildningen används inte sifferbedömning.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "1542152"
+        },
+        {
+          "id": 1542095,
+          "perusteenOsa": {
+            "id": 1542153,
+            "luotu": 1462364960717,
+            "muokattu": 1474622244789,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1635163",
+              "fi": "Todistukset",
+              "sv": "Intyg"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1635164",
+              "fi": "<p>Perusopetukseen valmistavan opetuksen päätteeksi oppilaalle annetaan todistus perusopetukseen valmistavaan opetukseen osallistumisesta. Todistukseen merkitään perusopetukseen valmistavan opetuksen laajuus, opiskellut oppiaineet, niiden laajuus ja opetuksen sisältö. Todistuksessa kuvataan oppilaan edistymistä valmistavan opetuksen aikana.</p>",
+              "sv": "<p>Som avslutning på den undervisning som förbereder för den grundläggande utbildningen får eleven ett intyg över deltagande i undervisning som förbereder för den grundläggande utbildningen. I intyget antecknas undervisningens omfattning, vilka läroämnen som studerats, deras omfattning och undervisningens innehåll. I intyget ges en beskrivning av elevens framsteg under den förberedande undervisningen.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "1542153"
+        },
+        {
+          "id": 1542096,
+          "perusteenOsa": {
+            "id": 1542154,
+            "luotu": 1462364978582,
+            "muokattu": 1474622244785,
+            "muokkaaja": "1.2.246.562.24.77925329174",
+            "nimi": {
+              "_id": "1635165",
+              "fi": "Perusopetuksen oppimäärään sisältyvien opintojen suorittaminen valmistavan opetuksen aikana",
+              "sv": "Avläggande av studier som hör till den grundläggande utbildningens lärokurs under den förberedande undervisningen"
+            },
+            "tila": "valmis",
+            "valmis": false,
+            "kaannettava": false,
+            "teksti": {
+              "_id": "1636438",
+              "fi": "<p>Perusopetukseen valmistavan opetuksen oppilaan omaan opinto-ohjelmaan voi kuulua perusopetuksen oppimäärän mukaisia eri oppiaineiden opintoja. Oppilas voi saada todistuksen edellä mainittujen opintojen hyväksytystä suorittamisesta osallistumalla <abbr data-viite=\"Viite11462365303781\">perusopetuslaissa</abbr> tarkoitettuun erityiseen tutkintoon. Jos oppilas siirtyy perusopetukseen valmistavan opetuksen jälkeen perusopetukseen, voidaan perusopetukseen valmistavassa opetuksessa saavutettu osaaminen hyväksilukea, jos oppilaalla on <abbr data-viite=\"Viite11462365303781\">perusopetuksen oppimäärää </abbr>vastaavat tiedot ja taidot.</p>\n\n<p>Erityiseen tutkintoon osallistuvan tulee osoittaa, että hänen tietonsa ja taitonsa vastaavat eri oppiaineissa <abbr data-viite=\"Viite91462367997565\">perusopetuksen oppimäärän </abbr>mukaisia tietoja ja taitoja . Tutkintoon osallistuvan oppilaan osaamista arvioidaan suhteessa perusopetuksen opetussuunnitelman perusteissa määriteltyihin ja paikallisessa opetussuunnitelmassa tarkennettuihin eri oppiaineiden tavoitteisiin. Oppilaan osaamisen tason määrittelyssä käytetään apuna perusopetuksen opetussuunnitelman perusteisiin sisältyviä hyvän osaamisen kuvauksia ja päättöarvioinnin kriteerejä. Erityisessä tutkinnossa voidaan suorittaa oppiaineen koko oppimäärä tai osia siitä, kuten jonkin vuosiluokan oppimäärä.</p>\n\n<p>Erityisen tutkinnon hyväksytysti suorittaneelle <abbr data-viite=\"Viite91462367997565\">annetaan todistus </abbr>perusopetuksen oppimäärän suorittamisesta kokonaan tai osittain . Erityisessä tutkinnossa käytettäviä todistuksia koskevat määräykset sisältyvät perusopetuksen opetussuunnitelman perusteisiin.</p>",
+              "sv": "<p>Studieprogrammet för en elev i undervisning som förbereder för den grundläggande utbildningen kan innehålla studier i olika läroämnen enligt lärokursen för den grundläggande utbildningen. Eleven kan få ett betyg över att ha slutfört ovan nämnda studier med godkänt vitsord genom att delta i en särskild examen enligt <abbr data-viite=\"Hnvisning131464610406674\">lagen om grundläggande utbildning</abbr>. Om en elev efter undervisning som förbereder för den grundläggande utbildningen flyttar över till den grundläggande utbildningen, kan studier från den förberedande undervisningen räknas till godo om eleven har kunskaper och färdigheter som motsvarar <abbr data-viite=\"Hnvisning121464610339435\">den grundläggande utbildningens lärokurs.</abbr></p>\n\n<p>Den som deltar i en särskild examen ska visa att hens kunskaper och färdigheter i de olika läroämnena motsvarar de kunskaper och färdigheter som ingår i den <abbr data-viite=\"Viite91462367997565\">grundläggande utbildningens lärokurs.</abbr>​ Elevens kunskaper bedöms i förhållande till de mål för de olika läroämnena som definieras i grunderna för läroplanen för den grundläggande utbildningen och som preciseras i den lokala läroplanen. Som hjälp vid fastställandet av elevens kunskapsnivå används profilen för goda kunskaper och kriterierna vid slutbedömningen i grunderna för läroplanen för den grundläggande utbildningen. I den särskilda examen kan avläggas läroämnets hela lärokurs eller delar av den, till exempel lärokursen för en bestämd årskurs.</p>\n\n<p>Till den som har avlagt en särskild examen med godkänt resultat <abbr data-viite=\"Viite91462367997565\">ges ett betyg</abbr> över att den grundläggande utbildningens lärokurs har fullgjorts helt eller delvis. Bestämmelserna om de betyg som används i särskild examen ingår i Grunderna för läroplanen för den grundläggande utbildningen.</p>"
+            },
+            "koodit": [],
+            "liite": false,
+            "osanTyyppi": "tekstikappale"
+          },
+          "lapset": [],
+          "_perusteenOsa": "1542154"
+        }
+      ]
+    }
+  }
+}

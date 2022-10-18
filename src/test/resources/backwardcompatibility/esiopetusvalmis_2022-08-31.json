@@ -242,5 +242,6 @@
     },
     "alkamispäivä" : "2006-08-13",
     "päättymispäivä" : "2007-06-03"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

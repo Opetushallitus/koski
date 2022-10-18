@@ -1,0 +1,1139 @@
+{
+  "id": 2910079,
+  "globalVersion": {
+    "aikaleima": 1549276346167
+  },
+  "nimi": {
+    "_id": "4640434",
+    "_tunniste": "6877d49d-38e6-482b-9d1b-e779af1efccc",
+    "fi": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+    "sv": "Utbildning som handleder för arbete och ett självständigt liv"
+  },
+  "koulutustyyppi": "koulutustyyppi_5",
+  "toteutus": "ammatillinen",
+  "koulutukset": [
+    {
+      "nimi": {
+        "fi": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+        "sv": "Utbildning som handleder för arbete och ett självständigt liv (TELMA)"
+      },
+      "koulutuskoodiArvo": "999903",
+      "koulutuskoodiUri": "koulutus_999903",
+      "koulutusalakoodi": "koulutusalaoph2002_9",
+      "opintoalakoodi": "opintoalaoph2002_998"
+    }
+  ],
+  "kielet": [
+    "fi",
+    "sv"
+  ],
+  "kuvaus": {
+    "_id": "4314846",
+    "_tunniste": "293675fb-bf61-4484-9122-ad686cd0e74d",
+    "fi": "<p>Ammatillista peruskoulutusta koskevan lain 531/2017 mukaan tutkintoon johtamattomana valmentavana koulutuksena voidaan järjestää ammatilliseen peruskoulutukseen valmentavaa koulutusta sekä työhön ja itsenäiseen elämään valmentavaa koulutusta.</p>\n\n<p>Työhön ja itsenäiseen elämään valmentavan koulutus (TELMA-koulutus) antaa sairauden tai vamman vuoksi erityistä tukea tarvitseville opiskelijoille henkilökohtaisten tavoitteiden ja valmiuksien mukaista opetusta ja ohjausta. Koulutuksen tavoitteena on pääsääntöisesti muu opiskelijan jatkosuunnitelma kuin ammatillisen tutkinnon suorittaminen. Tavoitteena on, että opiskelija löytää työn ja toimeentulon, asumisen, vapaa-ajan ja kuntoutumisen osalta ratkaisun hyvään ja ja toimintakyvyn mukaiseen itsenäiseen elämään.</p>\n\n<p>Lakiin perustuen Opetushallitus määrää koulutuksen perusteet valmentaville koulutuksille. Koulutuksen perusteissa määrätään koulutuksen muodostuminen valinnaisista koulutuksen osista, koulutuksen osien laajuus osaamispisteinä ja koulutuksen osien osaamistavoitteet ja osaamisen arviointi. Ammatillisesta koulutuksesta annetun valtioneuvoston asetuksen mukaan työhön ja itsenäiseen elämään valmentava koulutus muodostuu valinnaisista koulutuksen osista (VnA 673/2017, § 5).</p>\n\n<p>Työhön ja itsenäiseen elämään valmentava koulutus toteutetaan aina erityisopetuksena ja opiskelijalle laaditaan henkilökohtainen osaamisen kehittämissuunnitelma. Jos opiskelija tarvitsee koulutuksen osana kuntoutuspalveluja, koulutuksen tavoitteena on lisäksi yhteistyössä lähiverkoston ja kuntoutuspalveluiden tuottajien kanssa edistää moniammatillisesti ja monialaisesti opiskelijan kokonaiskuntoutusta.</p>\n\n<p>Koulutuksen tavoitteena on antaa sairauden tai vamman vuoksi erityistä tukea tarvitseville opiskelijoille henkilökohtaisten tavoitteiden ja valmiuksien mukaista opetusta ja ohjausta. Koulutuksen tavoitteena on, että opiskelija valmentautuu oman toimintakyvyn mukaiseen itsenäiseen elämään ja tutustuu työelämään sekä löytää itselleen sopivan muodon siihen osallistumiseksi. Hän selviytyy elämän eri osa-aluiella mahdollisimman itsenäisesti, kehittää omatoimisuuttaan ja toimintakykyään erilaisissa ympäristössä. Hän oppii itselleen sopivia keinoja selviytyä arjessa ja yhteiskunnan kokonaisvaltaisena jäsenenä osallistumalla lähiyhteisönsä toimintaan.</p>",
+    "sv": "<p>Enligt lag 531/2017 om yrkesutbildning kan utbildning som inte leder till examen ordnas som utbildning som handleder för yrkesutbildning och utbildning som handleder för arbete och självständigt liv.</p>\n\n<p>Utbildning som handleder för arbete och ett självständigt liv ger studerande som behöver särskilt stöd på grund av sjukdom eller funktionsnedsättning, undervisning och handledning enligt deras individuella mål och färdigheter.Målet är i regel att den studerande ska få en framtidsplan och inte att de ska avlägga en yrkesinriktad grundexamen. De studerande ska hitta en lösning när det gäller arbete och utkomst, boende och rehabilitering så att de får ett gott och självständigt liv.</p>\n\n<p>Enligt lagen bestämmer Utbildingsstyrelsen om grunderna för handledande utbildning. I grunderna för utbildningen bestäms att uppbyggnaden av utbildningen består av valbara utbildningsdelar, omfattningen av utbildningsdelarna i kompetenspoäng samt målen för kunnandet och bedömningen av kunnandet i utbildningsdelarna. Enligt statsrådets förordning om yrkesutbildning består utbildningen som handleder för arbete och ett självständigt av valbara utbildningsdelar ( statsrådets förordning 673/2017, §5).</p>\n\n<p>Utbildningen genomförs alltid som specialundervisning, och för studerande görs upp en personlig utvecklingsplan för kunnandet. Om en studerande behöver rehabiliteringstjänster i anslutning till utbildningen, är målsättningen dessutom att i samarbete med den närmaste kretsen och med producenter av rehabiliteringstjänster främja den studerandes helhetsrehabilitering yrkesövergripande och inom flera områden.</p>\n\n<p>Utbildningen har som mål att ge särskilt stöd för personer som på grund av sjukdom eller handikapp är i behov av sådan undervisning och handledning som stöder den studerandes personliga mål och färdigheter. Utbildningens mål är att studeranden blir självständiga inom livets olika områden och får arbetslivsberedskap. Hen klarar sig i det dagliga livet så självständigt som möjligt, utvecklar sin egen aktivitet och funktionsförmåga i olika miljöer. Hen får också medel för att klara sig i vardagen och fungera helhetsbetonat som en medlem i samhället. Dessutom är målet att studerande bekantar sig med arbetslivet och hittar en lämplig form för att delta i det.</p>\n\n<p> </p>"
+  },
+  "maarayskirje": {
+    "id": 2918447,
+    "url": {},
+    "liitteet": {}
+  },
+  "muutosmaaraykset": [],
+  "diaarinumero": "OPH-2659-2017",
+  "voimassaoloAlkaa": 1514757600000,
+  "siirtymaPaattyy": null,
+  "voimassaoloLoppuu": null,
+  "paatospvm": 1513548000000,
+  "viimeisinJulkaisuAika": null,
+  "luotu": 1505365340971,
+  "muokattu": 1549276346167,
+  "tila": "valmis",
+  "tyyppi": "normaali",
+  "koulutusvienti": false,
+  "korvattavatDiaarinumerot": [],
+  "osaamisalat": [],
+  "tyotehtavatJoissaVoiToimia": null,
+  "suorittaneenOsaaminen": null,
+  "perusteenAikataulut": [],
+  "suoritustavat": [
+    {
+      "suoritustapakoodi": "reformi",
+      "laajuusYksikko": "OSAAMISPISTE",
+      "rakenne": {
+        "kuvaus": {
+          "_id": "4520596",
+          "_tunniste": "1fb290c3-1b30-4799-b4bf-59c2a1e81c68",
+          "fi": "<p>Koulutuksen laajuus on 60 osaamispistettä ja koulutus muodostuu kokonaan valinnaisista koulutuksen osista.</p>\n\n<ul>\n\t<li>Ammatillinen toimintakyvyn vahvistaminen, 0-25 osaamispistettä</li>\n\t<li>Opiskeluvalmiuksien vahvistaminen, 0-15 osaamispistettä</li>\n\t<li>Työelämään valmentautuminen, 0-20 osaamispistettä</li>\n</ul>\n\n<p>Koulutus muodostuu määritellyistä valinnaisista koulutuksen osista (sekä muista valinnaisista koulutuksen osista, joista opiskelija voi suorittaa omien tavoitteidensa mukaisesti osaamistavoitteita 0–20 osaamispisteen verran.</p>\n\n<p>Koulutuksen osien osaamistavoitteet on laajuudeltaan määritelty koulutuksen osan suurimman osaamispistemäärän mukaan. Niistä voidaan laatia pienempiä kokonaisuuksia koulutuksen osan osaamistavoitteiden pohjalta.</p>",
+          "sv": "<p>Utbildningens omfattning är 60 kompetenspoäng och den innehåller enbart valbara utbildningsdelar.</p>\n\n<ul>\n\t<li>Stärkandet av den yrkesinriktade funktionsförmågan, 0-25 kompetenspoäng</li>\n\t<li>Stärkande av studiefärdigheter, 0-15 kompetenspoäng</li>\n\t<li>Förberedelse för arbetslivet, 0-20 kompetenspoäng</li>\n</ul>\n\n<p>Utbildningen innehåller definierade valbara utbildningsdelar ( och därutöver valbara utbildningsdelar av vilka de studerande enligt sina egna mål kan avlägga 0–20 kompetenspoäng.)</p>\n\n<p>Målen för kunnandet i varje utbildningsdel har till sin omfattning fastslagits enligt det högsta kompetenspoängtalet i utbildningsdelen. Utifrån dessa kan mindre helheter utformas på basis av målen för kunnandet i utbildningsdelen.</p>"
+        },
+        "vieras": null,
+        "tunniste": "bc9ccc96-847b-427c-b6d2-b24faf0aa4d3",
+        "pakollinen": false,
+        "nimi": null,
+        "rooli": "määritelty",
+        "muodostumisSaanto": {
+          "laajuus": {
+            "minimi": 60,
+            "maksimi": 60,
+            "yksikko": null
+          },
+          "koko": null
+        },
+        "osaamisala": null,
+        "tutkintonimike": null,
+        "osat": [
+          {
+            "kuvaus": null,
+            "vieras": null,
+            "tunniste": "9a3ad295-fec2-4e57-8c76-b6a7cd46c466",
+            "pakollinen": false,
+            "nimi": {
+              "_id": "4520598",
+              "_tunniste": "b12594c3-2715-4360-833c-5a178f3577c9",
+              "fi": "Koulutuksen osat",
+              "sv": "Utbildningsdelar"
+            },
+            "rooli": "määritelty",
+            "muodostumisSaanto": {
+              "laajuus": {
+                "minimi": 60,
+                "maksimi": 60,
+                "yksikko": null
+              },
+              "koko": null
+            },
+            "osaamisala": null,
+            "tutkintonimike": null,
+            "osat": [
+              {
+                "kuvaus": null,
+                "vieras": null,
+                "tunniste": "11072876-d0f7-4162-856c-c9fcd97f7ba5",
+                "pakollinen": false,
+                "erikoisuus": null,
+                "_tutkinnonOsaViite": "2983198"
+              },
+              {
+                "kuvaus": null,
+                "vieras": null,
+                "tunniste": "df3f713f-bfcc-4a7b-917c-4804f1bc8102",
+                "pakollinen": false,
+                "erikoisuus": null,
+                "_tutkinnonOsaViite": "2983199"
+              },
+              {
+                "kuvaus": null,
+                "vieras": null,
+                "tunniste": "e1b27d93-c615-434e-b081-8ba880f9caed",
+                "pakollinen": false,
+                "erikoisuus": null,
+                "_tutkinnonOsaViite": "2988470"
+              },
+              {
+                "kuvaus": {
+                  "_id": "3023190",
+                  "_tunniste": "d3fdd9f0-4802-43ee-ae1d-44b711268692",
+                  "fi": "Opiskelija voi sisällyttää koulutukseensa valinnaisia koulutuksen osia, joiden tavoitteet ja arviointi tulee sisällyttää opiskelijan henkilökohtaiseen osaamisen kehittämissuunnitelmaan. Valinnaiset koulutuksen osat tukevat opiskelijan ammatillista kasvua, hyvinvointia tai kuntoutumista, joten ne voivat sisältää työelämään valmentautumista, harrastuksia tai muita opintoja, jotka tukevat koulutuksen tavoitteita ja opiskelijan jatkosuunnitelmia.    Valinnaiset koulutuksen osat voivat olla myös opiskelijan kiinnostuksen ja tarpeiden mukaan ammatillisen perustutkinnon ammatillisia osia, yhteisten tutkinnon osien osa-alueita tai lukio-opintojen osia, jos opiskelijalla on valmiuksia ja edellytyksiä saavuttaa niiden ammattitaitovaatimuksia tai osaamistavoitteita.     Valinnaiset koulutuksen osat on nimettävä ja niille on määriteltävä osaamispisteet, osaamistavoitteet ja osaamisen arviointi.",
+                  "sv": "De studerande får i sin utbildning inkludera valbara utbildningsdelar vars mål och bedömning  ska anges i deras personliga studieplan. De valbara utbildningsdelarna stöder deras professionella utveckling, välbefinnande eller rehabilitering, så de kan innehålla förberedelse för arbetslivet, hobbyer eller andra studier som stöder utbildningsmålen och deras framtidsplaner.  De valbara utbildningsdelarna kan också enligt den studerandes intresse och behov bestå av yrkesinriktade delar från en yrkesinriktad grundexamen, delområden av gemensamma examensdelar eller delar av gymnasiestudier, om den studerande har färdigheter och förutsättningar att uppnå kraven på yrkesskicklighet eller målen för kunnandet i dem.   De valbara utbildningsdelarna ska namnges och kompetenspoäng, mål för kunnandet och bedömning av kunnandet ska fastställas för dem."
+                },
+                "vieras": null,
+                "tunniste": "31bcfec6-dc18-4a7b-8456-a71e74bb6bbb",
+                "pakollinen": false,
+                "nimi": {
+                  "_id": "3006152",
+                  "_tunniste": "9b5d8aec-f8da-44a0-8a3f-ec9fda2a6734",
+                  "fi": "Muut valinnaiset koulutuksen osat",
+                  "sv": "Valbara utbildningsdelar"
+                },
+                "rooli": "määrittelemätön",
+                "muodostumisSaanto": {
+                  "laajuus": {
+                    "minimi": 0,
+                    "maksimi": 20,
+                    "yksikko": null
+                  },
+                  "koko": null
+                },
+                "osaamisala": null,
+                "tutkintonimike": null,
+                "osat": [],
+                "versioId": null
+              }
+            ],
+            "versioId": null
+          }
+        ],
+        "versioId": null
+      },
+      "sisalto": {
+        "id": 2983153,
+        "lapset": [
+          {
+            "id": 2988484,
+            "perusteenOsa": {
+              "id": 2985215,
+              "luotu": 1505365340983,
+              "muokattu": 1519887988334,
+              "muokkaaja": "1.2.246.562.24.77925329174",
+              "nimi": {
+                "_id": "4520860",
+                "_tunniste": "d551b8fc-09f7-43ad-91c1-c625ac160af6",
+                "fi": "Koulutuksen muodostuminen",
+                "sv": "Uppbyggnad av utbildningen"
+              },
+              "tila": "valmis",
+              "tunniste": "rakenne",
+              "teksti": null,
+              "koodit": [],
+              "liite": false,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [],
+            "_perusteenOsa": "2985215"
+          },
+          {
+            "id": 2983155,
+            "perusteenOsa": {
+              "id": 2985217,
+              "luotu": 1505366848095,
+              "muokattu": 1519887988338,
+              "muokkaaja": "1.2.246.562.24.77925329174",
+              "nimi": {
+                "_id": "1458281",
+                "fi": "Työhön ja itsenäisen elämään valmentavan koulutuksen osaamistavoitteet ja osaamisen arviointi",
+                "sv": "Mål för kunnandet och bedömning av kunnandet i utbildningen som handleder för arbete och ett självständigt liv"
+              },
+              "tila": "valmis",
+              "valmis": false,
+              "kaannettava": false,
+              "teksti": {
+                "_id": "4521151",
+                "_tunniste": "d38abf10-2f33-4d24-bd99-69e97dbe4231",
+                "fi": "<p>Työhön ja itsenäiseen elämään valmentavan koulutuksen lähtökohtana ovat opiskelijan tarpeet. Koulutuksen osien osaamistavoitteet, tarkempi sisältö ja laajuus valitaan koulutuksen perusteista henkilökohtaisen osaamisen kehittämissuunnitelman mukaisesti. Koulutuksen osat arvioidaan suhteutettuna yksilöllisiin tavoitteisiin. Työhön ja itsenäiseen elämään valmentava koulutus mahdollistaa poikkeustapauksissa myös jatko-opintoihin hakeutumisen opiskelijan yksilöllisten valmiuksien mukaisesti.</p>\n\n<p> </p>\n\n<p>Koko koulutus on erityisopetusta, ja kaikille opiskelijoille laaditaan henkilökohtainen osaamisen kehittämissuunnitelma. Siinä määritellään opintojen ajallinen kesto sekä eri osaamistavoitteisiin käytettävä aika sekä niiden yksilöllinen laajuus. Opiskelun tavoitteet ja painopistealueet voivat muuttua opiskelun kuluessakin mm. opiskelijan elämäntilanteen tai terveydentilan muutoksien vuoksi.</p>",
+                "sv": "<p>De studerandes behov utgör utgångspunkt för utbildningen som handleder för arbete och ett självständigt liv. Utbildningsdelarnas mål för kunnandet samt delarnas innehåll på detaljnivå och omfattning väljs i utbildningsgrunderna enligt den studerandes personliga studieplan. Utbildningsdelarna bedöms med avseende på de individuella målen. Utbildningen som handleder för arbete och ett självständigt liv möjliggör i undantagsfall även ansökan till fortsatta studier i enlighet med den studerandes individuella förutsättningar.</p>\n\n<p> </p>\n\n<p>Hela utbildningen utgör specialundervisning och för alla som deltar i den utarbetas personliga utvecklingsplaner för kunnandet. I den anges studiernas längd, tid som ska användas för de olika målen för kunnande och studiernas individuella omfattning. Målen för studierna och tyngdpunktsområdena kan förändras under studiernas gång bl.a. om den studerandes livssituation eller hälsotillstånd förändras. Utbildningsanordnaren bestämmer studietiden enligt den studerandes individuella behov och mål.</p>"
+              },
+              "koodit": [],
+              "liite": false,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [
+              {
+                "id": 2983156,
+                "perusteenOsa": {
+                  "id": 1389917,
+                  "luotu": 1450693938139,
+                  "muokattu": 1459758983263,
+                  "muokkaaja": "1.2.246.562.24.77925329174",
+                  "nimi": {
+                    "_id": "1458283",
+                    "fi": "Toimintakyvyn kartoitus",
+                    "sv": "Kartläggning av funktionsförmågan"
+                  },
+                  "tila": "valmis",
+                  "valmis": false,
+                  "kaannettava": false,
+                  "teksti": {
+                    "_id": "1458284",
+                    "fi": "<p>Opiskelun alkuvaiheessa opiskelijan toimintakyky arvioidaan/kartoitetaan, jotta hänen vahvuuteensa ja tuen tarpeensa voidaan tunnistaa. Toimintakyvyn ja osaamisen selvittämiseksi tulee käyttää monipuolisia menetelmiä kuten aikaisempia tutkimuksia ja lausuntoja, havainnointia, kokeiluja, opiskelijan itsearviointia sekä tarvittaessa testauksia ja kartoituksia. Opiskelijan tilannetta ja toimintakykyä selvitetään fyysisestä, psyykkisestä, sosiaalisesta ja toiminnallisesta näkökulmasta. Näistä saatua tietoa käytetään yksilöllisten osaamistavoitteiden lähtökohtana. Toimintakyvyn kehittymistä ja vahvistumista arvioidaan koko opintojen ajan sekä niiden päättyessä.</p>",
+                    "sv": "<p>I början av studierna bedöms/kartläggs de studerandes funktionsförmåga för att man ska kunna identifiera vilka styrkor och behov av stöd de har. För att ta reda på deras funktionsförmåga och kunnande bör mångsidiga metoder användas, såsom tidigare undersökningar och utlåtanden, observationer, försök, självvärdering av den studerande och vid behov tester och kartläggningar. Den studerandes situation och funktionsförmåga utreds ur fysisk, psykisk, social och funktionell synvinkel. Den information som erhålls används som utgångspunkt för de individuella målen för kunnandet. Hur funktionsförmågan utvecklas och stärks bedöms under hela studietiden och i slutet av den.</p>"
+                  },
+                  "koodit": [],
+                  "liite": false,
+                  "osanTyyppi": "tekstikappale"
+                },
+                "lapset": [],
+                "_perusteenOsa": "1389917"
+              }
+            ],
+            "_perusteenOsa": "2985217"
+          },
+          {
+            "id": 2983157,
+            "perusteenOsa": {
+              "id": 2985218,
+              "luotu": 1505367057819,
+              "muokattu": 1519887988364,
+              "muokkaaja": "1.2.246.562.24.77925329174",
+              "nimi": {
+                "_id": "1458526",
+                "fi": "Osaamisen arviointi",
+                "sv": "Bedömning av kunnandet"
+              },
+              "tila": "valmis",
+              "valmis": false,
+              "kaannettava": false,
+              "teksti": {
+                "_id": "4521152",
+                "_tunniste": "b081c0b1-1e7b-4d57-837d-34c9f1c97b24",
+                "fi": "<p>Koulutuksessa voidaan poiketa arvioinnin yleisistä perusteista näiden koulutusten perusteiden määräämällä tavalla. Opiskelijan arvioinnissa opiskelijan osaamista verrataan koulutuksen perusteiden pohjalta laadittuihin opiskelijan henkilökohtaisiin osaamistavoitteisiin. Nämä osaamistavoitteet tulee kirjata opiskelijan henkilökohtaiseen osaamisen kehittämissuunnitelmaan. Työhön ja itsenäiseen elämään valmentavassa koulutuksessa osaaminen arvioidaan sanallisesti, jolloin kuvataan, miten opiskelija on saavuttanut osaamistavoitteensa. Tarvittaessa voidaan osaamisen arviointia täydentää myös kuvallisella arvioinnilla.</p>\n\n<p> </p>\n\n<p>Osaamisen arvioinnin perusteella tehdään tarvittavat muutokset opiskelijan opetukseen ja oppimisen tukemiseen. Muutokset kirjataan henkilökohtaiseen osaamisen kehittämissuunnitelmaan.</p>\n\n<p> </p>\n\n<p>Valinnaisissa koulutuksen osissa mahdollisesti suoritetut ammatillisen tutkinnon osat tai yhteisten tutkinnon osien osa-alueet arvioidaan siten, kuin niitä koskevissa tutkintojen perusteissa määrätään.</p>",
+                "sv": "<p>I utbildningen får man avvika från de allmänna grunderna för bedömningen på det sätt som bestäms i dessa utbildningsgrunder. Vid bedömningen jämförs den studerandes kunnande med de personliga målen för kunnandet som satts upp utifrån utbildningsgrunderna. Dessa mål för kunnandet ska antecknas i den personliga utvecklingsplanen för kunnandet. I utbildningen som förbereder för arbete och ett självständigt liv är bedömningen av kunnandet verbal, varvid beskrivs hur den studerande har uppnått sina mål för kunnandet Vid behov kan bedömningen av kunnandet kompletteras med en visuell bedömning.</p>\n\n<p> </p>\n\n<p>Utgående från bedömningen av kunnandet görs de ändringar som behövs i undervisningen och i stödet för inlärningen. Ändringarna antecknas i den personliga utvecklingsplanen för kunnandet.</p>\n\n<p> </p>\n\n<p>Om den studerande i de valbara utbildningsdelarna avlagt examensdelar eller delområden av gemensamma examensdelar från en yrkesinriktad grundexamen bedöms dessa enligt grunderna för den aktuella grundexamen.</p>"
+              },
+              "koodit": [],
+              "liite": false,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [],
+            "_perusteenOsa": "2985218"
+          },
+          {
+            "id": 2983158,
+            "perusteenOsa": {
+              "id": 1434819,
+              "luotu": 1453972097818,
+              "muokattu": 1459758983254,
+              "muokkaaja": "1.2.246.562.24.77925329174",
+              "nimi": {
+                "_id": "1458528",
+                "fi": "Työhön ja itsenäiseen elämään valmentavan koulutuksen kuvaus, arvoperusta ja koulutuksen tavoitteet",
+                "sv": "Beskrivning av den handledande utbildningen för arbete och självständigt liv, dess värdegrund och utbildningens mål"
+              },
+              "tila": "valmis",
+              "valmis": false,
+              "kaannettava": false,
+              "teksti": null,
+              "koodit": [],
+              "liite": false,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [
+              {
+                "id": 2983159,
+                "perusteenOsa": {
+                  "id": 2985219,
+                  "luotu": 1505367153380,
+                  "muokattu": 1519887988372,
+                  "muokkaaja": "1.2.246.562.24.77925329174",
+                  "nimi": {
+                    "_id": "1458529",
+                    "fi": "Koulutuksen kuvaus",
+                    "sv": "Beskrivning av utbildningen"
+                  },
+                  "tila": "valmis",
+                  "valmis": false,
+                  "kaannettava": false,
+                  "teksti": {
+                    "_id": "4521323",
+                    "_tunniste": "940344a3-2e72-481e-9b45-90daf5097a69",
+                    "fi": "<p>Työhön ja itsenäiseen elämään valmentava koulutus on tarkoitettu eniten erityistä ja laajaa tukea tarvitseville henkilöille, jotka näin voivat saada henkilökohtaisten tavoitteiden tai valmiuksien mukaista opetusta ja ohjausta, kuitenkin niin, että koulutuksen tavoitteena ei pääsääntöisesti ole ammatilliseen koulutukseen siirtyminen. Opiskelijan jatko-opintosuunnitelmaan voi kuitenkin sisältyä esimerkiksi ammatillisten perustutkintojen yksittäisten tutkinnon osien tai ammattitaitovaatimusten suorittaminen.</p>\n\n<p> </p>\n\n<p>Koulutus toteutetaan kokonaisuudessaan erityisopetuksena. Sen avulla turvataan henkilökohtaisiin edellytyksiin perustuva oppiminen, itsensä kehittäminen ja ihmisenä kasvaminen. Erityisopetukseen liitetään tarvittaessa muita tukitoimia ja kuntoutusta yhteistyössä opiskelijan lähiverkoston ja kuntoutuspalveluiden tuottajien kanssa. Koulutus on osa kokonaiskuntoutusta, jota toteutetaan yhteistyössä moniammatillisesti ja monialaisesti eri tahojen kanssa.</p>\n\n<p> </p>\n\n<p>Työhön ja itsenäiseen elämään valmentavan koulutuksen laajuus on 60 osaamispistettä ja suoritusaika on vähintään yksi vuosi. Suoritusaika määräytyy opiskelijan yksilöllisten tavoitteiden ja valmiuksien perusteella. Päätös suoritusajasta tehdään opintojen alussa, mutta päätöstä voidaan muuttaa koulutuksen aikana. Koulutuksen suoritusaika voi kuitenkin olla pitempi, enintään kolme vuotta.</p>\n\n<p> </p>\n\n<p>Koulutuksessa on liikkumavaraa koulutuksen osien osaamispisteissä, jotta opiskelija voi suunnitella opintonsa joustavasti henkilökohtaisen opiskelusuunnitelman mukaisesti.</p>\n\n<p> </p>\n\n<p>Jotta koulutuksellinen tasa-arvo toteutuu, jokaisen opiskelijan työhön ja itsenäiseen elämään valmentavaan koulutukseen tukena tulee olla henkilökohtainen osaamisen kehittämissuunnitelma, jota päivitetään aina tarvittaessa koulutuksen aikana. Se perustuu opiskelun alussa tehtävään alkukartoitukseen.</p>",
+                    "sv": "<p>Utbildningen som handleder för arbete och ett självständigt liv utgör en del av den reformerade helheten av handledande utbildningar. Utbildningen är avsedd för dem som har det största behovet av särskilt och omfattande stöd och som på detta sätt kan få undervisning och handledning som är anpassad efter deras personliga mål eller förutsättningar, dock så att målet för utbildningen i regel inte är att de ska kunna övergå till yrkesutbildning. I den fortsatta planeringen för den studerande kan dock ingå avläggandet av t.ex. enskilda examensdelar eller avläggandet av krav på yrkesskicklighet inom grundläggande yrkesutbildning.</p>\n\n<p> </p>\n\n<p>Utbildningen genomförs i sin helhet som specialundervisning. Med hjälp av specialundervisningen tryggar man en inlärning som utgår från de personliga förutsättningarna och bidrar till att den studerande utvecklas och växer som människa. I specialundervisningen ingår vid behov andra stödåtgärder och rehabilitering i samarbete med den studerandes närmaste krets och med producenter av rehabiliteringstjänster. Utbildningen är en del av helhetsrehabiliteringen, som genomförs yrkesövergripande och inom flera områden i samarbete med olika aktörer.</p>\n\n<p> </p>\n\n<p>Omfattningen av den handledande utbildningen för arbete och ett självständigt liv är 60 kompetenspoäng och tiden för genomförandet är minst ett år. Hur lång tid den tar beror på den studerandes individuella mål och förutsättningar. Beslutet om utbildningens längd fattas i början av studierna, men beslutet kan ändras under utbildningen. Utbildningen kan ta längre än ett år, men högst tre år.</p>\n\n<p> </p>\n\n<p>I utbildningen finns spelrum i fråga om utbildningsdelarnas kompetenspoäng, vilket betyder att de studerande kan planera sina studier flexibelt enligt sin personliga studieplan.</p>\n\n<p> </p>\n\n<p>För att jämlikheten i fråga om utbildning ska förverkligas ska alla studerande som deltar i den handledande utbildningen för arbete och ett självständigt liv ha en personlig plan för kunnande som uppdateras vid behov under utbildningen. Denna plan baserar sig på en inledande kartläggning som görs när studierna börjar.</p>"
+                  },
+                  "koodit": [],
+                  "liite": false,
+                  "osanTyyppi": "tekstikappale"
+                },
+                "lapset": [],
+                "_perusteenOsa": "2985219"
+              },
+              {
+                "id": 2988480,
+                "perusteenOsa": {
+                  "id": 1434815,
+                  "luotu": 1453971975754,
+                  "muokattu": 1459758983259,
+                  "muokkaaja": "1.2.246.562.24.77925329174",
+                  "nimi": {
+                    "_id": "1458581",
+                    "fi": "Koulutuksen arvoperusta",
+                    "sv": "Värdegrund för utbildningen"
+                  },
+                  "tila": "valmis",
+                  "valmis": false,
+                  "kaannettava": false,
+                  "teksti": {
+                    "_id": "1458582",
+                    "fi": "<p>Koulutuksen arvoperusta on ihmisyys, jokaiselle kuuluva ihmisarvo ja oikeus hyvään elämään. Keskeiset siihen liittyvät arvot kuten tasa-arvoisuus, suvaitsevaisuus, erityisyyden kunnioitus ja itsemääräämisoikeus ohjaavat koulutusta ja siihen liittyvää päätöksentekoa. Koulutus korostaa yksilöllisyyttä ja pyrkii samalla tukemaan yhteisöllisyyttä. Opiskelija kohdataan aktiivisena, tavoitteisiinsa pyrkivänä oman elämänsä asiantuntijana, jota tuetaan ja ohjataan ottamaan vastuuta opiskelustaan ja ihmisenä kasvamisestaan.</p>\n\n<p> </p>\n\n<p>Työhön ja itsenäiseen elämään valmentavaan koulutukseen osallistuvilla opiskelijoilla on yhdenvertainen oikeus opetukseen ja oppimiseen. Koulutus edistää erityistä tukea tarvitsevien nuorten mahdollisuuksia hyvään elämään ja elinikäisen oppimiseen. Opiskelijoiden täysivaltaisen osallistumisen edistämiseksi on fyysinen ja sosiaalinen ympäristö muokattava esteettömäksi sekä varmistettava teknologian ja palveluiden saavutettavuus.</p>",
+                    "sv": "<p>Utbildningen grundar sig på humanitet, allas människovärde och rätten till ett gott liv. De centrala värderingarna i anknytning till denna värdegrund, såsom jämlikhet, tolerans, respekt för olikhet och självbestämmanderätt, styr utbildningen och de beslut som fattas om den. Utbildningen betonar individualitet och strävar samtidigt till att stödja gemenskap. De studerande bemöts som aktiva människor som försöker nå sina mål och som är experter på sitt eget liv. De ges stöd och handledning så att de ska kunna ta ansvar för sina studier och sin utveckling som människa.</p>\n\n<p> </p>\n\n<p>De som deltar i handledande utbildning för arbete och ett självständigt liv har lika rätt till undervisning och lärande. Utbildningen främjar möjligheterna för unga som behöver särskilt stöd till ett gott liv och till livslångt lärande. För att främja de studerandes fulla delaktighet bör den fysiska och sociala miljön göras hinderfri och tillgången till teknisk utrustning och tjänster säkerställas.</p>"
+                  },
+                  "koodit": [],
+                  "liite": false,
+                  "osanTyyppi": "tekstikappale"
+                },
+                "lapset": [],
+                "_perusteenOsa": "1434815"
+              },
+              {
+                "id": 2988481,
+                "perusteenOsa": {
+                  "id": 2988610,
+                  "luotu": 1505367287536,
+                  "muokattu": 1519887988380,
+                  "muokkaaja": "1.2.246.562.24.77925329174",
+                  "nimi": {
+                    "_id": "1458583",
+                    "fi": "Koulutuksen tavoitteet",
+                    "sv": "Utbildningens mål"
+                  },
+                  "tila": "valmis",
+                  "valmis": false,
+                  "kaannettava": false,
+                  "teksti": {
+                    "_id": "3552044",
+                    "_tunniste": "7b8a6722-890f-48f8-9f79-a404dbb103ca",
+                    "fi": "<p>Työhön ja itsenäiseen elämään valmentavan koulutuksen tavoitteena on antaa sairauden tai vamman vuoksi erityistä tukea tarvitseville opiskelijoille henkilökohtaisten tavoitteiden ja valmiuksien mukaista opetusta ja ohjausta<em>. </em></p>\n\n<p> </p>\n\n<p>Koulutuksen tavoitteena on, että opiskelija itsenäistyy elämän eri osa-alueilla ja valmentautuu työhön<em>.</em> Hän selviytyy jokapäiväisessä elämässään mahdollisimman itsenäisesti, kehittää omatoimisuuttaan ja työhön ja ammattiin suuntautunutta toimintakykyään erilaisissa ympäristöissä. Hän saa itselleen sopivia keinoja selviytyä arjessa ja toimia yhteiskunnan kokonaisvaltaisena jäsenenä. Lisäksi tavoitteena on, että opiskelija tutustuu työelämään ja löytää itselleen sopivan muodon osallistua siihen. Koulutuksen aikana selvitetään itsenäisen elämän edellyttämät ohjaus- ja tukipalvelut sekä tarvittavat apuvälineet.</p>",
+                    "sv": "<p>Målet för utbildningen som handleder för arbete och ett självständigt liv är att studerande som behöver särskilt stöd på grund av sjukdom eller skada ges undervisning och handledning enligt deras individuella mål och förutsättningar.</p>\n\n<p> </p>\n\n<p>Målet är också att de studerande ska bli självständiga på livets olika delområden och förbereda sig för arbete<em>.</em> De klarar sig i det dagliga livet så självständigt som möjligt, utvecklar sin förmåga att klara sig på egen hand och sin funktionsförmåga i olika miljöer. De får lämpliga metoder som hjälper dem att klara sig i vardagen och agera som fullvärdiga samhällsmedlemmar. Dessutom är målsättningen att de studerande bekantar sig med arbetslivet och finner ett lämpligt sätt att delta i det. Under utbildningen utreds vilka handlednings- och stödtjänster samt hjälpmedel som behövs för ett självständigt liv.</p>"
+                  },
+                  "koodit": [],
+                  "liite": false,
+                  "osanTyyppi": "tekstikappale"
+                },
+                "lapset": [],
+                "_perusteenOsa": "2988610"
+              },
+              {
+                "id": 2988482,
+                "perusteenOsa": {
+                  "id": 1434817,
+                  "luotu": 1453972021674,
+                  "muokattu": 1459758983261,
+                  "muokkaaja": "1.2.246.562.24.77925329174",
+                  "nimi": {
+                    "_id": "1458585",
+                    "fi": "Pedagoginen kuntoutus osana koulutusta",
+                    "sv": "Pedagogisk rehabilitering som en del av utbildningen"
+                  },
+                  "tila": "valmis",
+                  "valmis": false,
+                  "kaannettava": false,
+                  "teksti": {
+                    "_id": "1458586",
+                    "fi": "<p>Työhön ja itsenäiseen elämään valmentavaan koulutukseen voi sisältyä kuntoutusta ja kuntouttavaa toimintatapaa. Tällöin pääpaino oppilaitoksessa on pedagogisella, oppimista tukevalla kuntoutuksella. Pedagogisella kuntoutuksella tarkoitetaan toimintaa ja toimenpiteitä, jotka edistävät ja vahvistavat opiskelijoiden hyvinvointia, yksilöllisiä oppimisvalmiuksia ja osallistumismahdollisuuksia. Pedagogisen kuntoutuksen lähtökohtana ovat opiskelijan yksilölliset oppimisedellytykset, tarpeet ja odotukset, toimintakyky ja voimavarat.</p>\n\n<p> </p>\n\n<p>Koulutuksen tavoitteena on tällöin, että opiskelija itsenäistyy elämän eri osa-alueilla ja valmentautuu työhön henkilökohtaisten tavoitteidensa ja valmiuksiensa mukaisesti. Opiskelija kehittää omatoimisuuttaan ja toimintakykyään, omaksuu itselleen sopivia keinoja selviytyä arjessa sekä kykenee ottamaan vastuuta elämästään omien edellytystensä mukaisesti</p>",
+                    "sv": "<p>I utbildningen som handleder för arbete och ett självständigt liv kan ingå rehabilitering och ett rehabiliterande arbetssätt. Då läggs huvudvikten på pedagogisk rehabilitering som stöder lärandet. Med pedagogisk rehabilitering avses verksamhet och åtgärder som främjar och stärker de studerandes välbefinnande, individuella studiefärdigheter och möjligheter till deltagande. Den pedagogiska rehabiliteringen utformas enligt de studerandes individuella studiefärdigheter, behov och förväntningar, funktionsförmåga och resurser.</p>\n\n<p> </p>\n\n<p>Målet för utbildningen är då att de studerande blir självständiga på livets olika delområden och förbereder sig för arbete enligt sina personliga mål och förutsättningar. De studerande utvecklar sin förmåga att klara sig på egen hand och sin funktionsförmåga, börjar använda lämpliga metoder för att klara sig i vardagen och kan ta ansvar för sitt liv i enlighet med sina förutsättningar.</p>"
+                  },
+                  "koodit": [],
+                  "liite": false,
+                  "osanTyyppi": "tekstikappale"
+                },
+                "lapset": [],
+                "_perusteenOsa": "1434817"
+              }
+            ],
+            "_perusteenOsa": "1434819"
+          }
+        ]
+      },
+      "tutkinnonOsaViitteet": [
+        {
+          "id": 2983199,
+          "laajuus": 0,
+          "laajuusMaksimi": 15,
+          "jarjestys": 2,
+          "_tutkinnonOsa": "3003004"
+        },
+        {
+          "id": 2983198,
+          "laajuus": 0,
+          "laajuusMaksimi": 25,
+          "jarjestys": 1,
+          "_tutkinnonOsa": "3003003"
+        },
+        {
+          "id": 2988470,
+          "laajuus": 0,
+          "laajuusMaksimi": 20,
+          "jarjestys": 3,
+          "_tutkinnonOsa": "3018112"
+        }
+      ]
+    }
+  ],
+  "tutkinnonOsat": [
+    {
+      "id": 3003003,
+      "luotu": 1505708959929,
+      "muokattu": 1519887988392,
+      "muokkaaja": "1.2.246.562.24.77925329174",
+      "nimi": {
+        "fi": "Ammatillisen toimintakyvyn vahvistaminen",
+        "sv": "Stärkande av den yrkesinriktade funktionsförmågan"
+      },
+      "tila": "valmis",
+      "valmis": false,
+      "kaannettava": false,
+      "osanTyyppi": "tutkinnonosa",
+      "kuvaus": {
+        "_id": "4314845",
+        "_tunniste": "39731826-3ad2-4024-944d-5419a6c0903c",
+        "sv": "Mål för kunnandet"
+      },
+      "opintoluokitus": null,
+      "koodi": {
+        "id": 4412786,
+        "nimi": {
+          "fi": "Ammatillisen toimintakyvyn vahvistaminen",
+          "sv": "Stärkande av den yrkesinriktade funktionsförmågan"
+        },
+        "arvo": "400005",
+        "uri": "tutkinnonosat_400005",
+        "koodisto": "tutkinnonosat",
+        "versio": null,
+        "temporary": false
+      },
+      "koodiUri": "tutkinnonosat_400005",
+      "koodiArvo": "400005",
+      "osaAlueet": [],
+      "tyyppi": "normaali",
+      "valmaTelmaSisalto": {
+        "id": 4411022,
+        "osaamisenarviointi": null,
+        "osaamisenarviointiTekstina": null,
+        "osaamistavoite": [
+          {
+            "id": 4413150,
+            "kohde": {
+              "_id": "4314046",
+              "_tunniste": "ff412a12-d44c-442b-bfa3-1f663203682d",
+              "fi": "Opiskelija",
+              "sv": "Den studerande"
+            },
+            "nimi": {
+              "_id": "4314047",
+              "_tunniste": "f95005dc-7ae9-4578-ad7d-23ec5fbb97de",
+              "fi": "Liikunta, liikkuminen ja motoriset taidot",
+              "sv": "Motion samt motoriska aktiviteter och färdigheter"
+            },
+            "selite": {
+              "_id": "4314048",
+              "_tunniste": "4312026f-d23b-4175-8d73-d9a338add17c",
+              "fi": "Tavoitteena on, että opiskelija edistää liikunnan avulla aktiivista ja terveellistä elämäntapaa sekä ymmärtää liikunnan merkityksen toiminta- ja työkyvylle. Opiskelija selviytyy jokapäiväisistä karkea- ja hienomotorisista toiminnoista itselle soveltuvalla tavalla, ja hyödyntää tarpeellisia liikkumisessaan erilaisia apuvälineitä ja avustajapalveluita henkilökohtaisen tarpeen mukaan.",
+              "sv": "Målet är att de studerande med hjälp av motion främjar ett aktivt och sunt levnadssätt och förstår motionens betydelse för funktions- och arbetsförmågan. De studerande klarar av de dagliga grov- och finmotoriska aktiviteterna på ett sätt som är lämpligt för dem själva, och för motoriska aktiviteter använder de olika hjälpmedel och assistenttjänster enligt sitt behov."
+            },
+            "tavoitteet": [
+              {
+                "_id": "4314049",
+                "_tunniste": "2bb01ded-a034-416f-b887-4ab9d775b76a",
+                "fi": "omaksuu liikunnan osaksi terveellisiä ja aktiivisia elämäntapojaan sekä ymmärtää liikunnan merkityksen toiminta- ja työkyvylle",
+                "sv": "börjar använda motion som ett av sina sunda och aktiva levnadssätt och förstår motionens betydelse för funktions- och arbetsförmågan"
+              },
+              {
+                "_id": "4314840",
+                "_tunniste": "76040c29-e557-4755-bcb8-c301aeb32d68",
+                "fi": "selviytyy jokapäiväisistä karkea- ja hienomotorisista toiminnoista",
+                "sv": "klarar av de dagliga grov- och finmotoriska aktiviteterna"
+              },
+              {
+                "_id": "4314841",
+                "_tunniste": "95b7c3f8-19bb-4eda-943f-1f74dcdd21f5",
+                "fi": "valitsee itselleen sopivia liikuntalajeja, joiden kautta saa elämyksiä ja myönteisiä onnistumisen kokemuksia",
+                "sv": "väljer lämpliga motionsformer som ger upplevelser och positiva erfarenheter av att lyckas"
+              },
+              {
+                "_id": "4314842",
+                "_tunniste": "8b6358e6-05bd-4aa4-a2ff-49e512e50185",
+                "fi": "hahmottaa kehonsa eri osat ja niiden toiminnan sekä hallitsee kehon osien toiminnot",
+                "sv": "uppfattar sina kroppsdelar och deras funktion samt behärskar deras funktion"
+              },
+              {
+                "_id": "4314843",
+                "_tunniste": "635bf467-34dd-4af4-8ff2-6a7ca511f654",
+                "fi": "ylläpitää tai kohottaa omaa fyysistä kuntoaan.",
+                "sv": "upprätthåller eller höjer sin fysiska kondition."
+              }
+            ]
+          },
+          {
+            "id": 4413151,
+            "kohde": {
+              "_id": "4411040",
+              "_tunniste": "83b26bc4-7def-4f0c-9331-1486cad02b89",
+              "fi": "Opiskelija",
+              "sv": "Den studerande"
+            },
+            "nimi": {
+              "_id": "4411041",
+              "_tunniste": "46a2e4d1-0bf5-4271-a852-1cca2d491492",
+              "fi": "Itsetuntemus ja sosiaaliset taidot",
+              "sv": "Självkännedom och sociala färdigheter"
+            },
+            "selite": {
+              "_id": "4411043",
+              "_tunniste": "bd7301a4-7387-4cb2-8a0e-77c7a45d4b48",
+              "fi": "Tavoitteena on, että opiskelija ottaa vastuuta omaa elämäänsä koskevista ratkaisuista ja vaikuttaa omaan elämäänsä ja tulevaisuuteensa.  Opiskelija arvioi omien edellytystensä mukaisesti toimintakykyään ja elämäntilannettaan. Hän rakentaa realistista ja myönteistä minäkuvaansa sekä vahvistaa itsetuntoaan ikävaihe ja toimintakyky huomioiden.  Opiskelija toimii omien edellytystensä mukaisesti sosiaalisissa tilanteissa.",
+              "sv": "Målet är att de studerande tar ansvar för beslut om sitt eget liv och påverkar sitt liv och sin framtid.  De studerande bedömer enligt sina egna förutsättningar sin funktionsförmåga och sin livssituation. De bygger upp en realistisk och positiv jagbild och stärker sin självkänsla på ett sätt som är lämpligt med tanke på sin ålder och funktionsförmåga.  De agerar enligt egna förutsättningar i sociala situationer."
+            },
+            "tavoitteet": [
+              {
+                "_id": "4411042",
+                "_tunniste": "ba7d20f0-847d-414b-a664-efef18d4aeea",
+                "fi": "arvioi omia kykyjään ja suorituksiaan itselleen sopivalla tavalla",
+                "sv": "bedömer sina förmågor och prestationer på ett sätt som är lämpligt för hen"
+              },
+              {
+                "_id": "4411044",
+                "_tunniste": "b8fd5f30-454c-4763-ad13-7360ab11bae4",
+                "fi": "tunnistaa omia vahvuuksiaan, voimavarojaan ja kehittämistarpeitaan",
+                "sv": "identifierar sina egna styrkor, resurser och utvecklingsbehov"
+              },
+              {
+                "_id": "4411045",
+                "_tunniste": "11a74dff-cfb4-4e71-a80d-31b0e9308c10",
+                "fi": "hahmottaa omaa erityisen tuen tarvettaan ja toimintakyvyn rajoituksiaan ja osaa hyödyntää tarvittaessa erilaisia palveluita ja tukea myös työelämän kannalta",
+                "sv": "uppfattar sitt eget behov av särskilt stöd och sina begränsningar i funktionsförmågan och kan dra nytta av olika tjänster och stöd om det behövs"
+              },
+              {
+                "_id": "4411046",
+                "_tunniste": "cd368479-4da8-47b9-9fa3-2ee892ece8ab",
+                "fi": "vahvistaa itsetuntoaan",
+                "sv": "stärker sin självkänsla"
+              },
+              {
+                "_id": "4411047",
+                "_tunniste": "4b3988ac-e4fa-4dd6-a290-5ae6e8afba5c",
+                "fi": "rakentaa realistista ja myönteistä minäkuvaansa ikävaihe ja toimintakyky huomioiden",
+                "sv": "bygger upp en realistisk och positiv jagbild på ett sätt som är lämpligt med tanke på sin ålder och funktionsförmåga"
+              },
+              {
+                "_id": "4411048",
+                "_tunniste": "f4b3160a-910d-4a26-8e65-303cfbc88366",
+                "fi": "toimii vuorovaikutteisesti erilaisissa sosiaalisissa tilanteissa",
+                "sv": "agerar interaktivt i olika sociala situationer"
+              },
+              {
+                "_id": "4411049",
+                "_tunniste": "45b1876c-95b2-4c48-b9d4-d6f019ae31cf",
+                "fi": "arvostaa itseään sekä muita tasavertaisina yhteiskunnan jäsenenä.",
+                "sv": "sätter värde på sig själv och andra som jämlika samhällsmedlemmar."
+              }
+            ]
+          },
+          {
+            "id": 4413152,
+            "kohde": {
+              "_id": "4411070",
+              "_tunniste": "59a74320-813d-40f9-971d-b439ce6c31c4",
+              "fi": "Opiskelija",
+              "sv": "Den studerande"
+            },
+            "nimi": {
+              "_id": "4411071",
+              "_tunniste": "cba1e1a3-9989-41f0-ba33-1a31e8e73458",
+              "fi": "Arjen käytännön taidot",
+              "sv": "Färdigheter som behövs i vardagen"
+            },
+            "selite": {
+              "_id": "4411072",
+              "_tunniste": "3e9b6cb7-47c9-4a7b-b235-7be172c0b373",
+              "fi": "Tavoitteena on että, opiskelija selviytyy arkielämään ja asumiseen liittyvistä jokapäiväisistä toimistaan mahdollisimman itsenäisesti. Hän hyödyntää jokapäiväiseen toimintaan liittyviä palveluita ja tukea, apuvälineitä ja avustajapalveluita sekä kykenee ottamaan vastuuta omasta elämästään omien edellytystensä mukaisesti.",
+              "sv": "Målet är att de studerande klarar av de dagliga aktiviteterna i anknytning till vardagen och boendet så självständigt som möjligt. De utnyttjar tjänster och stöd, hjälpmedel och assistenttjänster för de dagliga aktiviteterna och kan ta ansvar för sitt eget liv i enlighet med sina förutsättningar."
+            },
+            "tavoitteet": [
+              {
+                "_id": "4411073",
+                "_tunniste": "93f1c598-969c-4220-9cbd-217c07423b41",
+                "fi": "suunnittelee ja valmistaa kykyjensä mukaisesti terveellistä ruokaa sekä edistää omaa hyvinvointiaan oikeiden ruokailutottumusten avulla",
+                "sv": "planerar och tillreder hälsosam mat enligt sin förmåga och främjar sitt eget välbefinnande med hjälp av rätta matvanor"
+              },
+              {
+                "_id": "4411074",
+                "_tunniste": "5fa78d2d-00f5-4388-be8d-8abe55eab748",
+                "fi": "huolehtii \thenkilökohtaisesta \thygieniastaan, \tpukeutumisestaan \tja \tulkoisesta olemuksestaan",
+                "sv": "sköter sin personliga hygien, klär sig lämpligt och vårdar även på annat sätt sitt yttre"
+              },
+              {
+                "_id": "4411075",
+                "_tunniste": "ce6a4d98-57d1-48af-b46e-f9d1c949e881",
+                "fi": "pitää yllä vuorokausirytmiään, seuraa ajankäyttöään ja noudattaa aikatauluja",
+                "sv": "sörjer för sin dygnsrytm samt följer sin tidsanvändning och tidtabeller"
+              },
+              {
+                "_id": "4411076",
+                "_tunniste": "bf44b97d-0fac-4f6d-a4e6-33622e18fc1a",
+                "fi": "käyttää rahaa mahdollisimman itsenäisesti sekä tekee arkielämään ja itsenäiseen asumiseen liittyviä ostoksia",
+                "sv": "använder pengar så självständigt som möjligt och gör inköp som behövs i anknytning till det dagliga livet och självständigt boende"
+              },
+              {
+                "_id": "4411077",
+                "_tunniste": "b3c3959f-e020-4061-82b9-0e3acaf66659",
+                "fi": "tekee omaa arkielämää koskevia päätöksiä ja valintoja sekä pohtii ja suunnittelee omaa ammatillista tulevaisuutta",
+                "sv": "fattar beslut och gör val som gäller den egna vardagen"
+              },
+              {
+                "_id": "4411078",
+                "_tunniste": "948691b7-a2b7-4580-a41b-6cd73adc56df",
+                "fi": "hyödyntää jokapäiväisessä elämässään tarvitsemiaan palveluita ja tukea, apuvälineitä ja avustajapalveluita",
+                "sv": "utnyttjar de tjänster och stöd, hjälpmedel och assistenttjänster som behövs i det dagliga livet"
+              },
+              {
+                "_id": "4411079",
+                "_tunniste": "d241dc06-9641-468d-ac0c-4fae1a14ec58",
+                "fi": "löytää itselle soveltuvimman asumismuodon riittävine tuki- ja ohjauspalveluineen",
+                "sv": "hittar den boendeform som är lämpligast och där det finns tillräckligt med stöd- och handledningstjänster tillgängliga"
+              },
+              {
+                "_id": "4411080",
+                "_tunniste": "e894e9a1-2d3a-49fb-a7c9-2136b2dda1c4",
+                "fi": "luo itselleen viihtyisän ja turvallisen asuinympäristön ja pitää siitä huolta (siivous, tekstiilihuolto, pienet korjaustyöt)",
+                "sv": "skapar en trivsam och trygg boendemiljö åt sig själv och vårdar den (städning, textilvård, små reparationsarbeten)"
+              },
+              {
+                "_id": "4411081",
+                "_tunniste": "c4008762-8ef5-4454-b272-ee70ead6fdf6",
+                "fi": "käyttää liikennevälineitä ja liikkuu mahdollisimman itsenäisesti",
+                "sv": "använder kommunikationsmedel och rör sig så självständigt som möjligt"
+              },
+              {
+                "_id": "4411082",
+                "_tunniste": "506b905b-e570-4d01-ae05-db1723d0cae5",
+                "fi": "toimii aktiivisena ja sosiaalisena kansalaisena ja kuluttajana.",
+                "sv": "är en aktiv och social medborgare och konsument."
+              }
+            ]
+          },
+          {
+            "id": 4413153,
+            "kohde": {
+              "_id": "4411083",
+              "_tunniste": "e1b8f5ac-814d-4445-a5c6-9eca8b731fea",
+              "fi": "Opiskelija",
+              "sv": "Den studerande"
+            },
+            "nimi": {
+              "_id": "4411084",
+              "_tunniste": "da74b1ce-0501-4afe-a43f-5866abf5847e",
+              "fi": "Vapaa-ajan toiminta",
+              "sv": "Fritidsaktiviteter"
+            },
+            "selite": {
+              "_id": "4411085",
+              "_tunniste": "ad1c15bb-c10b-4721-a401-742afac17cac",
+              "fi": "Tavoitteena on, että opiskelija tutustuu erilaisiin vapaa-ajanviettomahdollisuuksiin ja osaa viettää vapaa-aikaansa omaa hyvinvointiaan ja sosiaalisia suhteitaan edistävällä tavalla.",
+              "sv": "Målet är att de studerande bekantar sig med olika möjligheter till fritidsaktiviteter och kan använda sin fritid på ett sätt som främjar det egna välbefinnandet och de sociala relationerna."
+            },
+            "tavoitteet": [
+              {
+                "_id": "4411086",
+                "_tunniste": "0e625e53-f469-40af-953b-f5a159e999de",
+                "fi": "hyödyntää harrastuksia ja vapaa-aikaansa oman hyvinvointinsa edistämiseksi ja sosiaalisten suhteiden luomiseksi",
+                "sv": "utnyttjar hobbyer och sin fritid för att främja sitt välbefinnande och skapa sociala relationer"
+              },
+              {
+                "_id": "4411087",
+                "_tunniste": "ec447a43-c2d2-4075-967e-c85db23b45d2",
+                "fi": "tutustuu erilaisiin vapaa-ajanviettomahdollisuuksiin",
+                "sv": "bekantar sig med olika möjligheter i fråga om fritidsaktiviteter"
+              },
+              {
+                "_id": "4411088",
+                "_tunniste": "d693f1b0-a436-45b4-b4b4-850196e0de0c",
+                "fi": "osaa valita itselleen sopivan harrastuksen",
+                "sv": "kan välja en hobby som är lämplig"
+              },
+              {
+                "_id": "4411089",
+                "_tunniste": "f835ce55-ad2d-455c-804b-26e621dae50b",
+                "fi": "ymmärtää vapaa-ajan merkityksen työn ja opiskelun vastapainona",
+                "sv": "förstår fritidens betydelse som motvikt till arbete och studier"
+              },
+              {
+                "_id": "4411090",
+                "_tunniste": "93b255ae-8480-4b1a-9528-5e5019356c89",
+                "fi": "tutustuu taide- ja kulttuuripalveluiden ja tapahtumien tarjontaan.",
+                "sv": "sätter sig in i utbudet av konst- och kulturtjänster och evenemang."
+              }
+            ]
+          },
+          {
+            "id": 4413154,
+            "kohde": {
+              "_id": "4413058",
+              "_tunniste": "db488678-00cc-4aaa-8b1a-76dd3d845cc9",
+              "fi": "Opiskelija",
+              "sv": "Den studerande"
+            },
+            "nimi": {
+              "_id": "4413059",
+              "_tunniste": "926798fb-2879-4348-85d6-8fa0eec77c64",
+              "fi": "Yhteiskunnassa ja kansalaisena toimiminen",
+              "sv": "Samhällskunskap och medborgarfärdigheter"
+            },
+            "selite": {
+              "_id": "4413160",
+              "_tunniste": "5890dbaa-66c5-4521-8e13-c696ba1444a0",
+              "fi": "Tavoitteena on, että opiskelija tietää keskeisiä yhteiskunnan palveluita ja osaa hyödyntää niitä omassa elämässään henkilökohtaisen elämäntilanteen mukaisesti. Hän tietää omia oikeuksiaan ja velvollisuuksiaan ja toimii yhteiskunnan jäsenenä sekä osallistuu oman lähiyhteisönsä toimintaan.",
+              "sv": "Målet är att de studerande känner till centrala tjänster som samhället tillhandahåller och kan utnyttja dem i sitt eget liv i enlighet med sin personliga livssituation. De känner till sina rättigheter och skyldigheter, agerar som samhällsmedlemmar och deltar i närsamhällets verksamhet."
+            },
+            "tavoitteet": [
+              {
+                "_id": "4413161",
+                "_tunniste": "d72bfc30-ec73-4814-a5c9-c346c805489a",
+                "fi": "käyttää yhteiskunnan palveluja oman elämäntilanteensa mukaisesti",
+                "sv": "använder samhällets tjänster i enlighet med sin livssituation"
+              },
+              {
+                "_id": "4413162",
+                "_tunniste": "bbf5d9c7-93c3-402e-96da-749ef317d6cf",
+                "fi": "asioi oman kotikuntansa viranomaisten ja muiden toimijoiden kanssa sekä suunnittelee omien tukipalvelujensa toteuttamista heidän kanssaan",
+                "sv": "sköter ärenden med den egna hemkommunens myndigheter och andra aktörer och planerar sina individuella stödtjänster tillsammans med dem"
+              },
+              {
+                "_id": "4413163",
+                "_tunniste": "f14954fc-0560-44ad-b06c-a53e00fd205d",
+                "fi": "toimii yhteiskunnan ja lähiyhteisönsä jäsenenä",
+                "sv": "agerar som samhällsmedlem och som medlem av närsamhället"
+              },
+              {
+                "_id": "4413164",
+                "_tunniste": "614c3d4f-1447-496e-9818-c1d78af5e4ea",
+                "fi": "toimii omien oikeuksiensa ja velvollisuuksiensa mukaisesti.",
+                "sv": "agerar i enlighet med sina rättigheter och skyldigheter."
+              }
+            ]
+          }
+        ]
+      },
+      "geneerinenArviointiasteikko": null,
+      "vapaatTekstit": []
+    },
+    {
+      "id": 3003004,
+      "luotu": 1505711949204,
+      "muokattu": 1519887988393,
+      "muokkaaja": "1.2.246.562.24.77925329174",
+      "nimi": {
+        "fi": "Opiskeluvalmiuksien vahvistaminen ",
+        "sv": "Stärkande av studiefärdigheter"
+      },
+      "tila": "valmis",
+      "valmis": false,
+      "kaannettava": false,
+      "osanTyyppi": "tutkinnonosa",
+      "kuvaus": null,
+      "opintoluokitus": null,
+      "koodi": {
+        "id": 4412788,
+        "nimi": {
+          "fi": "Opiskeluvalmiuksien vahvistaminen ",
+          "sv": "Stärkande av studiefärdigheter"
+        },
+        "arvo": "400006",
+        "uri": "tutkinnonosat_400006",
+        "koodisto": "tutkinnonosat",
+        "versio": null,
+        "temporary": false
+      },
+      "koodiUri": "tutkinnonosat_400006",
+      "koodiArvo": "400006",
+      "osaAlueet": [],
+      "tyyppi": "normaali",
+      "valmaTelmaSisalto": {
+        "id": 4411024,
+        "osaamisenarviointi": null,
+        "osaamisenarviointiTekstina": null,
+        "osaamistavoite": [
+          {
+            "id": 4413159,
+            "kohde": {
+              "_id": "4413165",
+              "_tunniste": "5e1a20ae-5cd2-41c9-860c-62bebb6c8e80",
+              "fi": "Opiskelija",
+              "sv": "Den studerande"
+            },
+            "nimi": {
+              "_id": "4413166",
+              "_tunniste": "58f6334b-1b35-40fd-b324-0a3a65e2f4c8",
+              "fi": "Oppimaan oppiminen",
+              "sv": "Att lära sig att lära"
+            },
+            "selite": {
+              "_id": "4413167",
+              "_tunniste": "86e2b638-c1f2-456c-9c2e-21b2707f25e5",
+              "fi": "Tavoitteena on, että opiskelija saavuttaa opiskeluvalmiudet, joiden avulla hän saa elämässään, työssään ja mahdollisissa jatko-opinnoissa tarvittavat valmiudet elinikäiseen oppimiseen. Opiskelija osaa omien edellytyksiensä mukaisesti tehdä havaintoja, hakea tietoa, vastaanottaa, käyttää, siirtää ja soveltaa tietoa päivittäisessä toiminnassa ja ongelmanratkaisussa. Hän sitoutuu ja löytää motivaation opiskeluunsa ja oppii asettamaan itselleen tavoitteita ja työskentelemään tavoitteellisesti.",
+              "sv": "Målet är att de studerande får studiefärdigheter med hjälp av vilka de får de färdigheter till livslångt lärande som behövs i sitt liv, i sitt arbete och i eventuella fortsatta studier. De kan i enlighet med egna förutsättningar söka, ta emot och tillämpa information i de dagliga aktiviteterna och vid problemlösning. De engagerar sig i och finner motivation för sina studier samt lär sig att sätta upp mål åt sig själv och att arbeta målinriktat."
+            },
+            "tavoitteet": [
+              {
+                "_id": "4413168",
+                "_tunniste": "260a086e-597c-47ee-8ffb-ecb543acc3d2",
+                "fi": "tunnistaa oman oppimisensa vahvuuksia sekä kehittämishaasteita",
+                "sv": "identifierar styrkorna och utvecklingsområdena i det egna lärandet"
+              },
+              {
+                "_id": "4413169",
+                "_tunniste": "f8a52d30-a55e-4300-9a0c-0ec9a5e6cd3e",
+                "fi": "löytää itselleen sopivia opiskelutekniikoita ja oppimis- ja työskentelytyylejä sekä oppii käyttämään itselleen soveltuvia oppimista tukevia apuvälineitä",
+                "sv": "hittar studietekniker samt inlärnings- och arbetsstilar som är lämpliga för hen"
+              },
+              {
+                "_id": "4413190",
+                "_tunniste": "7addee12-ced6-4cae-8dc4-e886da62f789",
+                "fi": "osaa opiskella ja työskennellä itsenäisesti, parin kanssa ja ryhmässä",
+                "sv": "kan studera och arbeta på egen hand, i par och i grupper"
+              },
+              {
+                "_id": "4413191",
+                "_tunniste": "78c1fe71-3458-475b-a1c6-abc9c272bb41",
+                "fi": "löytää ratkaisuja käytännön ongelmatilanteisiin.",
+                "sv": "finner lösningar i praktiska problemsituationer."
+              }
+            ]
+          },
+          {
+            "id": 4413230,
+            "kohde": {
+              "_id": "4413192",
+              "_tunniste": "4ad258af-6ed8-41e1-8ce8-de1eb5e9a0b1",
+              "fi": "Opiskelija",
+              "sv": "Den studerande"
+            },
+            "nimi": {
+              "_id": "4413193",
+              "_tunniste": "ecdac8e3-0153-4c5b-b354-0f7ec20c8342",
+              "fi": "Viestintä, vuorovaikutus ja kommunikaatio",
+              "sv": "Kommunikation och interaktion"
+            },
+            "selite": {
+              "_id": "4413194",
+              "_tunniste": "b32f57c8-8b27-414e-935f-ed00f8634ac9",
+              "fi": "Tavoitteena on, että opiskelija viestii ja toimii vuorovaikutustilanteissa itselleen soveltuvimpia kommunikointimenetelmiä käyttäen arkielämän ja työelämän edellyttämällä tavalla. Opiskelija osaa käyttää itselleen ominaisinta vuorovaikutustapaa päivittäisissä toiminnoissa. Vieraskielisillä opiskelijoilla tavoitteena on erityisesti heidän edellytyksiensä mukainen suomen tai ruotsin kielen käyttötaito.",
+              "sv": "Målet är att de studerande kommunicerar och interagerar med de kommunikationsmetoder som är lämpligast för dem och på det sätt som krävs i vardags- och arbetslivet. De kan i de dagliga aktiviteterna använda det interaktionssätt som passar dem bäst. För studerande med ett främmande språk som modersmål är målsättningen särskilt att de kan använda svenska eller finska i enlighet med sina förutsättningar."
+            },
+            "tavoitteet": [
+              {
+                "_id": "4413195",
+                "_tunniste": "29da4405-0ca7-4c3a-b349-feb87477e4f0",
+                "fi": "osaa toimia vastavuoroisesti erilaisissa vuorovaikutustilanteissa",
+                "sv": "kan agera interaktivt i olika slags interaktionssituationer"
+              },
+              {
+                "_id": "4413196",
+                "_tunniste": "1e761d1a-9b26-406d-95e7-47a8e415b3bc",
+                "fi": "ilmaisee itseään arkielämän ja työelämän edellyttämällä tavalla suullisesti, kirjallisesti, kuvallisesti tai yksilöllisten kommunikaatiomenetelmien avulla",
+                "sv": "uttrycker sig själv på det sätt som förutsätts i vardags- och arbetslivet muntligt, skriftligt eller med hjälp av individuella kommunikationsmetoder"
+              },
+              {
+                "_id": "4413197",
+                "_tunniste": "b7cd828b-a586-4aba-bdb3-92019a7a719f",
+                "fi": "käyttää viestintätilanteissa yksilöllisten tarpeiden mukaisia, puhetta tukevia tai korvaavia kommunikaatiomenetelmiä ja niihin liittyviä apuvälineitä",
+                "sv": "använder i kommunikationssituationer individuellt anpassade kommunikationsmetoder som stöder eller ersätter talet samt tillhörande hjälpmedel"
+              },
+              {
+                "_id": "4413198",
+                "_tunniste": "3b5bd41d-9111-4fa4-8fb0-fc6e2cd673c9",
+                "fi": "löytää oman ilmaisunsa vahvuudet ja uskaltautuu kokeilemaan uusia ilmaisumuotoja",
+                "sv": "hittar styrkorna i det egna uttryckssättet och vågar pröva nya uttrycksformer"
+              },
+              {
+                "_id": "4413199",
+                "_tunniste": "821dae77-415a-43ec-b7bd-7b6b25a43e57",
+                "fi": "ymmärtää suullista ja kirjallista viestintää arkielämän ja työelämän edellyttämällä \ntavalla",
+                "sv": "förstår muntlig och skriftlig kommunikation på det sätt som förutsätts i vardags- och arbetslivet"
+              },
+              {
+                "_id": "4413200",
+                "_tunniste": "ccbc9ade-209e-41d7-8f79-aa0604c95a98",
+                "fi": "osaa hyödyntää erilaisia viestintävälineitä, kuten kirjallisuutta, elokuvia, teatteria, radiota ja tietoverkkoja hankkiakseen tietoja, elämyksiä ja kokemuksia.",
+                "sv": "kan utnyttja olika medier, såsom litteratur, filmer, teater, radio och informationsnätverk för att skaffa information, upplevelser och erfarenheter."
+              }
+            ]
+          },
+          {
+            "id": 4413231,
+            "kohde": {
+              "_id": "4413201",
+              "_tunniste": "4897115b-7649-4e6c-92a1-9742e8b2d4ea",
+              "fi": "Opiskelija",
+              "sv": "Den studerande"
+            },
+            "nimi": {
+              "_id": "4413202",
+              "_tunniste": "ef51c546-8f93-4b96-b72d-b7292bc477a3",
+              "fi": "Tietotekniikka ja tiedonhankintataidot",
+              "sv": "Informationsteknik och färdigheter i informationssökning"
+            },
+            "selite": {
+              "_id": "4413203",
+              "_tunniste": "4d1b15f9-3218-442d-a6c8-38eb0d45eb8c",
+              "fi": "Tavoitteena on, että opiskelija hankkii edellytystensä mukaisia tieto- ja viestintäteknologian taitoja, joita hän tarvitsee arki- ja työelämässä sekä opinnoissaan.",
+              "sv": "Målet är att de studerande skaffar sig sådana färdigheter i informations- och kommunikationsteknik som de egna förutsättningarna tillåter och som de behöver i vardags- och arbetslivet samt i studierna."
+            },
+            "tavoitteet": [
+              {
+                "_id": "4413204",
+                "_tunniste": "8abb0ca1-83c3-451e-964c-723ffc8e5e4a",
+                "fi": "käyttää tieto- ja viestintäteknisiä välineitä oppimisensa tukena ja apuvälineenä",
+                "sv": "använder IT-verktyg som stöd och hjälpmedel vid lärande"
+              },
+              {
+                "_id": "4413205",
+                "_tunniste": "0b77e0db-4ec5-405b-80f6-8d85085a7f93",
+                "fi": "kehittää tietoteknisiä taitojaan niin, että hän voi hyödyntää niitä arkielämässä ja työelämässä",
+                "sv": "utvecklar sina IT-färdigheter så att hen kan dra nytta av dem i vardags- och arbetslivet"
+              },
+              {
+                "_id": "4413206",
+                "_tunniste": "79091d82-7d06-4637-a1c3-2c4f2950f219",
+                "fi": "hyödyntää keskeisiä tiedonhankintamenetelmiä elinikäisessä oppimisessa, arkielämässä ja työssä",
+                "sv": "utnyttjar centrala informationssökningsmetoder i livslångt lärande, i vardagen och i arbetet"
+              },
+              {
+                "_id": "4413207",
+                "_tunniste": "2643e38b-73be-4713-b050-a965069d7c09",
+                "fi": "ymmärtää monilukutaidon perusasiat sekä sosiaalisen median perussäännöt",
+                "sv": "förstår de grundläggande frågorna i multimodal läskunnighet och grundreglerna för sociala medier"
+              },
+              {
+                "_id": "4413208",
+                "_tunniste": "ac4f5af6-03c3-49b2-b291-9a0ece5a2d51",
+                "fi": "käyttää tietoverkkoa turvallisesti.",
+                "sv": "använder informationsnät på ett säkert sätt."
+              }
+            ]
+          },
+          {
+            "id": 4413232,
+            "kohde": {
+              "_id": "4413209",
+              "_tunniste": "8bd4a86a-6f5f-4b7e-a1a9-42747ab8479d",
+              "fi": "Opiskelija",
+              "sv": "Den studerande"
+            },
+            "nimi": {
+              "_id": "4413240",
+              "_tunniste": "022e163b-1bdc-4341-bf41-d5c9c0c4ae2a",
+              "fi": "Matematiikan taidot",
+              "sv": "Färdigheter i matematik"
+            },
+            "selite": {
+              "_id": "4413241",
+              "_tunniste": "8e7ff539-522f-457a-9cca-07afd43a23bc",
+              "fi": "Tavoitteena on, että opiskelija hankkii edellytystensä mukaiset matematiikan tiedot ja taidot, joita hän tarvitsee arkielämän ja työelämän edellyttämissä laskutoimituksissa ja ajankulun hahmottamisessa.",
+              "sv": "Målet är att de studerande skaffar sig sådana färdigheter i matematik som de egna förutsättningarna tillåter och som de behöver i räkneoperationer i vardags- och arbetslivet."
+            },
+            "tavoitteet": [
+              {
+                "_id": "4413242",
+                "_tunniste": "4f2d9fc0-9ba1-4d84-9ef0-6bcb02fd1315",
+                "fi": "osaa arkielämässä ja työelämässä tarvittavia käytännön matematiikan taitoja",
+                "sv": "har de färdigheter i praktisk matematik som behövs i vardags- och arbetslivet"
+              },
+              {
+                "_id": "4413243",
+                "_tunniste": "d86c2eba-0924-4363-a6fb-92b63efd6fca",
+                "fi": "käyttää laskinta ja muita apuvälineitä laskemisessa.",
+                "sv": "använder miniräknare och andra verktyg vid beräkningar."
+              }
+            ]
+          }
+        ]
+      },
+      "geneerinenArviointiasteikko": null,
+      "vapaatTekstit": []
+    },
+    {
+      "id": 3018112,
+      "luotu": 1505744150960,
+      "muokattu": 1519887988394,
+      "muokkaaja": "1.2.246.562.24.77925329174",
+      "nimi": {
+        "fi": "Työelämään valmentautuminen",
+        "sv": "Förberedelse för arbetslivet"
+      },
+      "tila": "valmis",
+      "valmis": false,
+      "kaannettava": false,
+      "osanTyyppi": "tutkinnonosa",
+      "kuvaus": null,
+      "opintoluokitus": null,
+      "koodi": {
+        "id": 4412789,
+        "nimi": {
+          "fi": "Työelämään valmentautuminen",
+          "sv": "Förberedelse för arbetslivet"
+        },
+        "arvo": "400007",
+        "uri": "tutkinnonosat_400007",
+        "koodisto": "tutkinnonosat",
+        "versio": null,
+        "temporary": false
+      },
+      "koodiUri": "tutkinnonosat_400007",
+      "koodiArvo": "400007",
+      "osaAlueet": [],
+      "tyyppi": "normaali",
+      "valmaTelmaSisalto": {
+        "id": 4411025,
+        "osaamisenarviointi": null,
+        "osaamisenarviointiTekstina": null,
+        "osaamistavoite": [
+          {
+            "id": 4413233,
+            "kohde": {
+              "_id": "4413244",
+              "_tunniste": "e8959b7f-f41d-465c-9b69-39d5cee415e7",
+              "fi": "Opiskelija",
+              "sv": "Den studerande"
+            },
+            "nimi": {
+              "_id": "4413245",
+              "_tunniste": "eb16db1e-13ac-4a6f-864f-9e9b0e318ee4",
+              "sv": "Mål för kunnandet"
+            },
+            "selite": {
+              "_id": "4413246",
+              "_tunniste": "5be80e61-e7ae-4e3e-b757-058b0ecdc57f",
+              "fi": "Tavoitteena on, että opiskelija hankkii työelämävalmiuksia tutustumalla erilaisiin työtehtäviin ja löytää omien edellytystensä mukaisia tapoja tehdä työtä sekä soveltuvan työpaikan. Opiskelija työskentelee mahdollisimman aidossa työympäristössä valmentautuen työtehtävien suorittamiseen ja työelämään. Opiskelija osaa toimia työyhteisön toimintaohjeiden mukaisesti. Opiskelija hyödyntää tarpeidensa mukaisia tukimuotoja työllistymisessään.",
+              "sv": "Målet är att de studerande skaffar sig arbetslivsfärdigheter genom att bekanta sig med olika arbetsuppgifter och att de hittar arbetssätt som är lämpliga med tanke på de egna förutsättningarna och en lämplig arbetsplats. De arbetar i en så autentisk arbetsmiljö som möjligt och förbereder sig för arbetsuppgifterna och arbetslivet. De kan följa instruktionerna på arbetsplatsen. De använder sig av stödformer som är lämpliga med tanke på de egna behoven för att kunna få ett arbete."
+            },
+            "tavoitteet": [
+              {
+                "_id": "4413247",
+                "_tunniste": "cca360fa-dab5-48bd-9e0c-93d910b45e60",
+                "fi": "harjoittaa ammatillisia taitojaan ja tutustuu erilaisiin töihin ja tehtäviin (luokittelu, lajittelu, työn organisointi, työn järjestys – oppimisvalmiudet suhteessa työhön)",
+                "sv": "övar upp sin yrkesskicklighet och bekantar sig med olika arbeten och uppgifter (klassificering, sortering, organisering av arbete, arbetsmomentens ordningsföljd – förmåga att lära sig i relation till arbetet)"
+              },
+              {
+                "_id": "4413248",
+                "_tunniste": "1b6aa3e6-1975-48db-927d-36000136bf4f",
+                "fi": "hankkii käytännön työkokemuksia erilaisissa toiminta- ja työympäristössä ja löytää oman tapansa tehdä työtä",
+                "sv": "skaffar praktiska arbetserfarenheter på en arbetsplats och hittar sitt eget sätt att arbeta"
+              },
+              {
+                "_id": "4413249",
+                "_tunniste": "24d5a456-f66a-4864-98b5-6b491108f647",
+                "fi": "muodostaa käsityksen itsestään työntekijänä sekä tunnistaa vahvuutensa ja tuen tarpeensa työntekijänä",
+                "sv": "skapar sig en uppfattning om sig själv som arbetstagare samt identifierar sina styrkor och behov av stöd som arbetstagare"
+              },
+              {
+                "_id": "4413270",
+                "_tunniste": "72fd40df-cca1-495d-918e-f9f4283eee2f",
+                "fi": "osaa arvioida omaa työsuoritustaan",
+                "sv": "kan bedöma sin egen arbetsprestation"
+              },
+              {
+                "_id": "4413271",
+                "_tunniste": "65501f06-4072-4bd8-8c4e-897fc44133a2",
+                "fi": "toimii työyhteisön ja ryhmän jäsenenä",
+                "sv": "agerar som medlem i en arbetsgemenskap och en grupp"
+              },
+              {
+                "_id": "4413272",
+                "_tunniste": "6ea0d008-b052-4824-8eef-65f45da10e16",
+                "fi": "tietää työyhteisön keskeisiä toimintaohjeita ja sääntöjä, kuten työnantajien ja työntekijöiden oikeudet ja velvollisuudet",
+                "sv": "känner till de viktigaste instruktionerna och reglerna på arbetsplatsen, såsom arbetsgivarnas och arbetstagarnas rättigheter och skyldigheter"
+              },
+              {
+                "_id": "4413273",
+                "_tunniste": "73826abd-efad-4695-a841-cd3875fbfc95",
+                "fi": "löytää edellytystensä mukaiset työtehtävät ja työympäristön yhteistyössä tukiverkostonsa kanssa",
+                "sv": "hittar i samarbete med sitt stödnätverk arbetsuppgifter och en arbetsmiljö som är lämplig med tanke på de egna förutsättningarna"
+              },
+              {
+                "_id": "4413274",
+                "_tunniste": "d2e3f339-00b4-4788-83a9-1d9015d3b15e",
+                "fi": "hallitsee edellytystensä mukaisesti käytännön työtehtävissä tarvittavat työmenetelmät, tuntee työtehtäviensä työturvallisuuteen liittyvät ohjeet ja osaa noudattaa niitä",
+                "sv": "behärskar de arbetsmetoder som behövs i praktiska arbetsuppgifter i enlighet med sina förutsättningar, känner till arbetarskyddsinstruktionerna som rör de egna arbetsuppgifterna och kan följa dem"
+              },
+              {
+                "_id": "4413275",
+                "_tunniste": "55c9bfbe-d0bf-4f06-88a0-96ad014e2a73",
+                "fi": "hyödyntää tarpeidensa mukaisia työllistymiseen ja työn tekemiseen liittyviä tukitoimia ja -palveluita.",
+                "sv": "utnyttjar behövliga stödåtgärder och stödtjänster som behövs vid arbetssökning och i arbete."
+              }
+            ]
+          }
+        ]
+      },
+      "geneerinenArviointiasteikko": null,
+      "vapaatTekstit": []
+    }
+  ]
+}

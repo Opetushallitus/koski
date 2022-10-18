@@ -583,8 +583,9 @@ object ValpasOpiskeluoikeusExampleData {
   )
 
   def ammattikouluTelmaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
+    arvioituPäättymispäivä = None,
     tila = AmmatillinenOpiskeluoikeudenTila(List(
-      AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
     )),
     suoritukset = List(
       ExamplesTelma.telmaKoulutuksenSuoritus.copy(
@@ -1476,7 +1477,7 @@ object ValpasOpiskeluoikeusExampleData {
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2010, 8, 13), opiskeluoikeusLäsnä),
-        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2011, 6, 3), opiskeluoikeusValmistunut)
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2015, 1, 1), opiskeluoikeusValmistunut)
       )
     ),
     suoritukset = ExamplesEsiopetus.opiskeluoikeus.suoritukset.map(s => s.copy(vahvistus = vahvistusPaikkakunnalla(date(2007, 6, 3))))

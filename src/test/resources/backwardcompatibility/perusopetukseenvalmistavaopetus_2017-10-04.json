@@ -148,5 +148,6 @@
       "koodiarvo" : "perusopetukseenvalmistavaopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

@@ -14,7 +14,7 @@ object ExamplesTelma {
   val telmaKoulutuksenSuoritus = TelmaKoulutuksenSuoritus(
     vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto, Some(helsinki)),
     toimipiste = stadinAmmattiopisto,
-    koulutusmoduuli = TelmaKoulutus(perusteenDiaarinumero = Some("6/011/2015")),
+    koulutusmoduuli = TelmaKoulutus(perusteenDiaarinumero = Some("OPH-2659-2017")),
     suorituskieli = suomenKieli,
     osasuoritukset = Some(List(
       telmaKurssinSuoritus("TV", "Toimintakyvyn vahvistaminen", 18f, pakollinen = true,
@@ -43,7 +43,7 @@ Kurssilla käytäviä asioita:
   val telmaOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2009, 9, 14), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
-      AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 6, 4), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(telmaKoulutuksenSuoritus)
