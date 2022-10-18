@@ -280,4 +280,44 @@
   ],
   "versio": 1,
   "koodiArvo": "25/1986"
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_50112015",
+  "koodiArvo" : "5/011/2015",
+  "metadata" : [ {
+    "nimi" : "Ammatilliseen peruskoulutukseen valmentava koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Handledande utbildning för grundläggande yrkesutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutustyyppi_18",
+    "codeElementVersion" : 2,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_60112015",
+  "koodiArvo" : "6/011/2015",
+  "metadata" : [ {
+    "nimi" : "Työhön ja itsenäiseen elämään valmentava koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning som handleder fö arbete och ett självständigt liv",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutustyyppi_5",
+    "codeElementVersion" : 2,
+    "passive" : false
+  } ]
 } ]

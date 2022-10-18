@@ -24,6 +24,7 @@ describe('VALMA koulutus', function () {
       expect(opinnot.getTutkinto()).to.equal(
         'Ammatilliseen koulutukseen valmentava koulutus (VALMA)'
       )
+      expect(extractAsText(S('.tunniste-koodiarvo'))).to.equal('999901') // Huom. Koski tallentaa nyt uuden opsin mukaisen koulutuskoodin vanhan opsin mukaisen diaarin 5/011/2015 kanssa
       expect(opinnot.getOppilaitos()).to.equal(
         'Stadin ammatti- ja aikuisopisto'
       )
