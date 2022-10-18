@@ -4,14 +4,12 @@ import Atom from 'bacon.atom'
 
 export const VirtaVirheetPopup = ({ virheet, onDismiss }) => {
   const checkboxAtom = Atom(false)
-  console.log(virheet)
 
   const virheetTyypeittäin = {}
   for (const virhe of virheet) {
     if (!virheetTyypeittäin[virhe.tyyppi]) virheetTyypeittäin[virhe.tyyppi] = []
     virheetTyypeittäin[virhe.tyyppi].push(virhe.arvo)
   }
-  console.log(virheetTyypeittäin)
 
   return (
     <ModalDialog

@@ -38,7 +38,7 @@ export default ({
       {property && <PropertyInfo property={property} />}
       {elementWithLoadingIndicator(
         Bacon.combineWith(options, selected, (opts, sel) => {
-          if (sel && opts.length == 1)
+          if (sel && opts.length === 1)
             return (
               <input
                 type="text"
