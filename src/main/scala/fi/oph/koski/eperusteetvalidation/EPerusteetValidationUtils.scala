@@ -6,24 +6,6 @@ import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 import fi.oph.koski.tutkinto.TutkintoRepository
 import mojave._
 
-import java.time.LocalDate
-
-object EPerusteetValidationUtils {
-
-  def getVaadittuPerusteenVoimassaolopäivä(
-    ooAlkamispäivä: Option[LocalDate],
-    ooPäättymispäivä: Option[LocalDate]
-  ): LocalDate = {
-    val today = LocalDate.now
-    ooPäättymispäivä.getOrElse(
-      ooAlkamispäivä
-        .filter(_.isAfter(today))
-        .getOrElse(today)
-    )
-  }
-
-}
-
 class EPerusteetValidationUtils(
   tutkintoRepository: TutkintoRepository,
   koodistoViitePalvelu: KoodistoViitePalvelu
