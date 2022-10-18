@@ -67,6 +67,31 @@ function AddOppijaPage() {
           .then(wait.forAjax)
       }
     },
+    enterValidDataEsh: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: 'Helsingin eurooppalainen koulu',
+          luokkaaste: 'Class N1',
+          alkamispäivä: '1.1.2022'
+        },
+        {},
+        params
+      )
+      return function () {
+        return api
+          .enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('European School of Helsinki'))
+          .then(
+            api.selectFromDropdown(
+              '.european-school-of-helsinki-luokkaaste .dropdown',
+              params.luokkaaste
+            )
+          )
+          .then(api.selectAloituspäivä(params.alkamispäivä))
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
+          .then(wait.forAjax)
+      }
+    },
     enterValidDataPerusopetus: function (params) {
       params = _.merge(
         { oppilaitos: 'Jyväskylän normaalikoulu', alkamispäivä: '1.1.2018' },
