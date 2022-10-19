@@ -134,6 +134,14 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               johtaminenJaHenkilöstönKehittäminen))(
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari(s"Opiskeluoikeuden voimassaoloaikana voimassaolevaa tutkinnon perustetta ei löydy diaarinumerolla Boom boom kah"))))
           }
+
+          "Kun tunnustettu osa ei kuulu annetun osittaisen tutkinnon rakenteeseen eikä sen peruste ole voimassa" - {
+            val suoritus = osanSuoritusToisestaTutkinnosta(autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = Some("1000/011/2014")), johtaminenJaHenkilöstönKehittäminen) match {
+              case m: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => m.copy(tunnustettu = Some(tunnustettu))
+            }
+            "palautetaan HTTP 200 (ei validoida rakennetta tässä)" in (putTutkinnonOsaSuoritus(suoritus)(
+              verifyResponseStatusOk()))
+          }
         }
 
         "Suorituksen tila" - {

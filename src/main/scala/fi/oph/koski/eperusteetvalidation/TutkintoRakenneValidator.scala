@@ -69,9 +69,19 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(n.tutkinto, Some(ammatillisetKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä)))
     case suoritus: AikuistenPerusopetuksenOppimääränSuoritus =>
       HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus)), Some(vaadittuPerusteenVoimassaolopäivä), Some(suoritus)))
-    case suoritus: AmmatillisenTutkinnonOsittainenSuoritus =>
-      HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(suoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä), Some(suoritus)))
-        .onSuccess(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(suoritus => validateTutkinnonOsanTutkinto(suoritus, Some(vaadittuPerusteenVoimassaolopäivä)))))
+    case suoritus: AmmatillisenTutkinnonOsittainenSuoritus => HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(
+      suoritus.koulutusmoduuli,
+      Some(ammatillisetKoulutustyypit),
+      Some(vaadittuPerusteenVoimassaolopäivä),
+      Some(suoritus)
+    )).onSuccess(
+      HttpStatus.fold(
+        suoritus.osasuoritukset.toList.flatten.map {
+          case suoritus if suoritus.tunnustettu.isDefined => validateTutkinnonOsanTutkinto(suoritus, None)
+          case suoritus => validateTutkinnonOsanTutkinto(suoritus, Some(vaadittuPerusteenVoimassaolopäivä))
+        }
+      )
+    )
     case s: LukionPäätasonSuoritus2019 =>
       HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(s.koulutusmoduuli, Some(lukionKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä))).onSuccess(validateLukio2019Diaarinumero(s))
     case _ =>
