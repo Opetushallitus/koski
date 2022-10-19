@@ -11,7 +11,9 @@ import UusiAmmatillisenKoulutuksenSuoritus from './UusiAmmatillisenKoulutuksenSu
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
 import UusiPerusopetukseenValmistavanOpetuksenSuoritus from './UusiPerusopetukseenValmistavanOpetuksenSuoritus'
 import UusiPerusopetuksenLisaopetuksenSuoritus from './UusiPerusopetuksenLisaopetuksenSuoritus'
-import UusiVapaanSivistystyonSuoritus from './UusiVapaanSivistystyonSuoritus'
+import UusiVapaanSivistystyonSuoritus, {
+  opintokokonaisuudellisetVstSuoritustyypit
+} from './UusiVapaanSivistystyonSuoritus'
 import UusiLukioonValmistavanKoulutuksenSuoritus from './UusiLukioonValmistavanKoulutuksenSuoritus'
 import { koodiarvoMatch, koodistoValues } from './koodisto'
 import { t } from '../i18n/i18n'
@@ -606,7 +608,12 @@ const makeOpiskeluoikeus = (
     (!varhaiskasvatusOrganisaationUlkopuolelta ||
       varhaiskasvatusJärjestämismuoto) &&
     (!maksuttomuusTiedonVoiValita || maksuttomuus !== undefined) &&
-    (!onTuvaOpiskeluoikeus || tuvaJärjestämislupa)
+    (!onTuvaOpiskeluoikeus || tuvaJärjestämislupa) &&
+    (!suoritustyyppi ||
+      !opintokokonaisuudellisetVstSuoritustyypit.includes(
+        suoritustyyppi.koodiarvo
+      ) ||
+      opintokokonaisuus)
   ) {
     const järjestämismuoto =
       tyyppi.koodiarvo === 'esiopetus'

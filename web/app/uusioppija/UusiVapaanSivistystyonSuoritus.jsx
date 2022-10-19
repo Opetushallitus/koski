@@ -62,7 +62,7 @@ const Opintokokonaisuus = ({ opintokokonaisuusAtom, opintokokonaisuudetP }) => {
   )
 }
 
-const opintokokonaisuudellisetSuoritustyypit = [
+export const opintokokonaisuudellisetVstSuoritustyypit = [
   'vstvapaatavoitteinenkoulutus',
   'vstjotpakoulutus'
 ]
@@ -85,7 +85,7 @@ export default ({
   suoritustyyppiAtom.onValue((tyyppi) => {
     näytäPerustekenttä.set(
       tyyppi &&
-        !opintokokonaisuudellisetSuoritustyypit.includes(tyyppi.koodiarvo)
+        !opintokokonaisuudellisetVstSuoritustyypit.includes(tyyppi.koodiarvo)
     )
   })
 
@@ -106,7 +106,7 @@ export default ({
         title="Suoritustyyppi"
       />
       {suoritustyyppiAtom.map('.koodiarvo').map((tyyppi) => {
-        if (opintokokonaisuudellisetSuoritustyypit.includes(tyyppi))
+        if (opintokokonaisuudellisetVstSuoritustyypit.includes(tyyppi))
           return (
             <Opintokokonaisuus
               opintokokonaisuusAtom={opintokokonaisuusAtom}
