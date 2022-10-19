@@ -7,13 +7,13 @@ object JotpaValidation {
   def JOTPARAHOITUS_KOODIARVOT = List("14", "15")
 
   def validateOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
-    HttpStatus.fold(oo.tila.opiskeluoikeusjaksot.map(validateOpiskeluoikeusjaksonRahoitusmuoto))
+    HttpStatus.fold(
+      oo.tila.opiskeluoikeusjaksot.map(validateOpiskeluoikeusjaksonRahoitusmuoto)
+      :+ validateJaksojenRahoituksenYhtenäisyys(oo.tila.opiskeluoikeusjaksot)
+    )
 
   def validateOpiskeluoikeusjaksonRahoitusmuoto(jakso: Opiskeluoikeusjakso): HttpStatus = {
-    val jotpaRahoitteinen = Option(jakso)
-      .collect { case j: KoskiOpiskeluoikeusjakso => j }
-      .flatMap(_.opintojenRahoitus.map(_.koodiarvo))
-      .exists(JOTPARAHOITUS_KOODIARVOT.contains)
+    val jotpaRahoitteinen = rahoitusmuoto(jakso).exists(JOTPARAHOITUS_KOODIARVOT.contains)
 
     // Huom! Tähän lisätään myöhemmin VST-JOTPA ja MUKS-JOTPA, kunhan niiden tietomallit valmistuvat.
     jakso match {
@@ -22,4 +22,24 @@ object JotpaValidation {
       case _ => KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuotoEiSaaOllaJotpa()
     }
   }
+
+  def validateJaksojenRahoituksenYhtenäisyys(jaksot: Seq[Opiskeluoikeusjakso]): HttpStatus = {
+    val (jotpaRahoitusmuodot, muutRahoitusmuodot) = jaksot
+      .flatMap(rahoitusmuoto)
+      .toSet
+      .partition(JOTPARAHOITUS_KOODIARVOT.contains)
+
+    if (jotpaRahoitusmuodot.nonEmpty && muutRahoitusmuodot.nonEmpty) {
+      KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys("Opiskeluoikeudella, jolla on jatkuvan oppimisen rahoitusta, ei voi olla muita rahoitusmuotoja")
+    } else if (jotpaRahoitusmuodot.size > 1) {
+      KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys()
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def rahoitusmuoto(jakso: Opiskeluoikeusjakso): Option[String] =
+    Option(jakso)
+      .collect { case j: KoskiOpiskeluoikeusjakso => j }
+      .flatMap(_.opintojenRahoitus.map(_.koodiarvo))
 }
