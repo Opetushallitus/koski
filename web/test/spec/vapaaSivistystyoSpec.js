@@ -405,6 +405,168 @@ describe('VST', function () {
       })
     })
   })
+
+  describe('Jatkuvaan oppimiseen suunnattu VST-koulutus (JOTPA)', function () {
+    describe('Opiskeluoikeuden tilat', function () {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.selectOppilaitos('Varsinais-Suomen'),
+        addOppija.selectOpiskeluoikeudenTyyppi('Vapaan'),
+        addOppija.selectOppimäärä('Jatkuvaan oppimiseen suunnattu'),
+        addOppija.selectOpintokokonaisuus(
+          '1138 Kuvallisen ilmaisun perusteet ja välineet'
+        )
+      )
+
+      it('Näytetään tilavaihtoehtoina Läsnä, Hyväksytysti suoritettu ja Keskeytynyt', function () {
+        expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+          'Hyväksytysti suoritettu',
+          'Keskeytynyt',
+          'Läsnä'
+        ])
+      })
+    })
+
+    describe('Opintokokonaisuus', function () {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataVSTJOTPA(),
+        addOppija.submitAndExpectSuccess(
+          'Tyhjä, Tero (230872-7258)',
+          'Vapaan sivistystyön koulutus'
+        )
+      )
+
+      it('Näytetään opintokokonaisuuden nimi oikein', function () {
+        expect(
+          extractAsText(
+            S("[data-test-id='hyperlink-for-opintokokonaisuudet-enum-editor']")
+          )
+        ).to.deep.equal('1138 Kuvallisen ilmaisun perusteet ja välineet')
+      })
+      it('Näytetään opintokokonaisuuden linkki ePerusteisiin oikein', function () {
+        expect(
+          hrefOf(
+            S("[data-test-id='hyperlink-for-opintokokonaisuudet-enum-editor']")
+          )
+        ).to.deep.equal(
+          'https://eperusteet.opintopolku.fi/#/fi/opintokokonaisuus/1138'
+        )
+      })
+    })
+
+    describe('Opiskeluoikeuden lisääminen', function () {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataVSTJOTPA(),
+        addOppija.submitAndExpectSuccess(
+          'Tyhjä, Tero (230872-7258)',
+          'Vapaan sivistystyön koulutus'
+        )
+      )
+
+      it('toimii', function () {
+        expect(opinnot.getTutkinto()).to.equal('Vapaan sivistystyön koulutus')
+        expect(opinnot.getOppilaitos()).to.equal(
+          'Varsinais-Suomen kansanopisto'
+        )
+      })
+
+      describe('Osasuorituksen voi lisätä', function () {
+        before(
+          editor.edit,
+          vst.lisääPaikallinen(
+            'Paikallinen vapaan sivistystyön koulutuksen osasuoritus'
+          ),
+          function () {
+            return vst
+              .selectOsasuoritus(
+                'Paikallinen vapaan sivistystyön koulutuksen osasuoritus'
+              )()
+              .property('laajuus')
+              .setValue(5)()
+          },
+          function () {
+            return vst
+              .selectOsasuoritus(
+                'Paikallinen vapaan sivistystyön koulutuksen osasuoritus'
+              )()
+              .propertyBySelector('tr td.arvosana')
+              .selectValue('Hyväksytty')()
+          },
+          tilaJaVahvistus.merkitseValmiiksi,
+          tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät
+            .itemEditor(0)
+            .setValue('Lisää henkilö'),
+          tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät
+            .itemEditor(0)
+            .propertyBySelector('.nimi')
+            .setValue('Reijo Reksi'),
+          tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät
+            .itemEditor(0)
+            .propertyBySelector('.titteli')
+            .setValue('rehtori'),
+          tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
+          editor.saveChanges
+        )
+
+        it('toimii', function () {
+          expect(extractAsText(S('.vst-osasuoritus'))).to.include(
+            'Paikallinen vapaan sivistystyön koulutuksen osasuoritus 5 op'
+          )
+        })
+
+        describe('Osasuoritukselle voi lisätä osasuorituksen', function () {
+          before(
+            editor.edit,
+            opinnot.avaaKaikki,
+            function () {
+              return vst
+                .selectOsasuoritus(
+                  'Paikallinen vapaan sivistystyön koulutuksen osasuoritus'
+                )()
+                .lisääPaikallinen('Osasuorituksen osasuoritus')()
+            },
+            function () {
+              return vst
+                .selectOsasuoritus('Osasuorituksen osasuoritus')()
+                .property('laajuus')
+                .setValue(5)()
+            },
+            function () {
+              return vst
+                .selectOsasuoritus('Osasuorituksen osasuoritus')()
+                .propertyBySelector('tr td.arvosana')
+                .selectValue('Hyväksytty')()
+            },
+            editor.saveChanges,
+            opinnot.avaaKaikki
+          )
+
+          it('toimii', function () {
+            expect(extractAsText(S('.suoritus-taulukko'))).to.include(
+              'Osasuorituksen osasuoritus 5 op'
+            )
+          })
+        })
+
+        describe('Osasuoritus on tallennettu ja tallenetun osasuorituksen voi lisätä', function () {
+          before(
+            editor.edit,
+            opinnot.avaaKaikki,
+            vst.lisääTallennettuPaikallinen(),
+            opinnot.avaaKaikki
+          )
+
+          it('toimii', function () {
+            var osasuoritukset = S('.vst-osasuoritus')
+            expect(osasuoritukset.length).to.equal(2)
+          })
+        })
+      })
+    })
+  })
+
   describe('VST-KOTO 2022', () => {
     describe('Opiskeluoikeuden luonti', function () {
       before(

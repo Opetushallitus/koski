@@ -199,6 +199,35 @@ function AddOppijaPage() {
           .then(api.selectOpintokokonaisuus(params.opintokokonaisuus))
       }
     },
+    enterValidDataVSTJOTPA: function (params) {
+      params = _.merge(
+        {
+          oppilaitos: 'Varsinais-Suomen kansanopisto',
+          oppimäärä: 'Jatkuvaan oppimiseen suunnattu',
+          suorituskieli: 'suomi',
+          tila: 'Läsnä',
+          alkamispäivä:
+            new Date().getDate() +
+            '.' +
+            (1 + new Date().getMonth()) +
+            '.' +
+            new Date().getFullYear(),
+          opintokokonaisuus: '1138 Kuvallisen ilmaisun perusteet ja välineet'
+        },
+        params
+      )
+      return function () {
+        return api
+          .enterData(params)()
+          .then(
+            api.selectOpiskeluoikeudenTyyppi('Vapaan sivistystyön koulutus')
+          )
+          .then(api.selectOppimäärä(params.oppimäärä))
+          .then(api.selectOpiskeluoikeudenTila(params.tila))
+          .then(api.selectAloituspäivä(params.alkamispäivä))
+          .then(api.selectOpintokokonaisuus(params.opintokokonaisuus))
+      }
+    },
     enterValidDataAmmatillinen: function (params) {
       params = _.merge(
         {
