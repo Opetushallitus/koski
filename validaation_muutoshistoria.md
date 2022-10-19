@@ -3,6 +3,7 @@
 
 ## 19.10.2022
 - Sallitaan uudet JOTPA-rahoitusmuodot ainoastaan ammatillisen koulutuksen opiskeluoikeuksille.
+- Tunnustetun ammatillisen tutkinnon tai osittaisen ammatillisen tutkinnon osan tutkinnon perusteen voimassaoloa ei enää validoida.
 
 ## 18.10.2022
 - Lisätty validaatio siitä, että diaarinumeron määrittelemä peruste on voimassa, vaikka opiskeluoikeus ei
