@@ -1,6 +1,9 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 19.10.2022
+- Sallitaan uudet JOTPA-rahoitusmuodot ainoastaan ammatillisen koulutuksen opiskeluoikeuksille.
+
 ## 18.10.2022
 - Lisätty validaatio siitä, että diaarinumeron määrittelemä peruste on voimassa, vaikka opiskeluoikeus ei
   olisikaan vielä päättynyt. Tässä tapauksessa perusteen pitää olla parhaillaan voimassa.

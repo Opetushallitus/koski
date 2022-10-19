@@ -69,7 +69,8 @@ describe('Ammatillinen koulutus', function () {
             'Ammatillisen osaamisen pilotit 2019',
             'Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)',
             'Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)',
-            'Jatkuvan oppimisen rahoitus (JOTPA)'
+            'Jatkuvan oppimisen rahoitus (JOTPA)',
+            'Jatkuvan oppimisen uudistuksen rahoitus (RRF)'
           ])
         })
 

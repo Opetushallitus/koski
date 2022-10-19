@@ -440,6 +440,12 @@ object AmmatillinenReforminMukainenPerustutkinto2022Example {
     )
   )
 
+  lazy val opiskeluoikeusJotpa = opiskeluoikeus.copy(
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2022, 1, 8), opiskeluoikeusLäsnä, Some(ExampleData.jatkuvanOppimisenRahoitus))
+    ))
+  )
+
   lazy val example: Oppija = Oppija(
     exampleHenkilö.copy(hetu = "060600A8482"),
     List(opiskeluoikeus)

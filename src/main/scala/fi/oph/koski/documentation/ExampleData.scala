@@ -41,6 +41,7 @@ object ExampleData {
 
   lazy val valtionosuusRahoitteinen: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "opintojenrahoitus")
   lazy val muutaKauttaRahoitettu: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenrahoitus")
+  lazy val jatkuvanOppimisenRahoitus: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "14", koodistoUri = "opintojenrahoitus")
 
   def vahvistusValinnaisellaTittelillä(päivä: LocalDate = date(2016, 6, 4), org: Organisaatio = jyväskylänNormaalikoulu, titteli: Option[LocalizedString] = Some("rehtori")) =
     Some(
