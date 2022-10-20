@@ -304,7 +304,7 @@ class KoskiOppijaFacade(
               | _: AikuistenPerusopetuksenOpiskeluoikeus
               | _: AmmatillinenOpiskeluoikeus
               | _: InternationalSchoolOpiskeluoikeus
-              // TODO: TOR-1685 Eurooppalainen koulu
+              | _: EuropeanSchoolOfHelsinkiOpiskeluoikeus
               | _: IBOpiskeluoikeus
               | _: EsiopetuksenOpiskeluoikeus, _) => delete(päätasonSuoritus, oo)
         case (_, _: LukionOppiaineenOppimääränSuoritus2015) => delete(päätasonSuoritus, oo)

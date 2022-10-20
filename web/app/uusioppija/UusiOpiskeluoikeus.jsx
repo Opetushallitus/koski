@@ -45,6 +45,8 @@ import {
   UusiTutkintokoulutukseenValmentavanKoulutuksenSuoritus,
   getTuvaLisätiedot
 } from './UusiTutkintokoulutukseenValmentavanKoulutuksenSuoritus'
+import UusiEuropeanSchoolOfHelsinkiSuoritus from './UusiEuropeanSchoolOfHelsinkiSuoritus'
+import { eshSallitutRahoituskoodiarvot } from '../esh/esh'
 
 export default ({ opiskeluoikeusAtom }) => {
   const dateAtom = Atom(new Date())
@@ -166,10 +168,12 @@ export default ({ opiskeluoikeusAtom }) => {
           opiskeluoikeustyypitP={opiskeluoikeustyypitP}
         />
       )}
-      {/* TODO: TOR-1685 Eurooppalainen koulu? */}
       {ift(
         tyyppiAtom.map(
-          (tyyppi) => tyyppi && tyyppi.koodiarvo !== 'internationalschool'
+          (tyyppi) =>
+            tyyppi &&
+            tyyppi.koodiarvo !== 'internationalschool' &&
+            tyyppi.koodiarvo !== 'europeanschoolofhelsinki'
         ),
         <Suorituskieli
           suorituskieliAtom={suorituskieliAtom}
@@ -257,7 +261,6 @@ export default ({ opiskeluoikeusAtom }) => {
               suorituskieliAtom={suorituskieliAtom}
             />
           )
-        // TODO: TOR-1685 Eurooppalainen koulu?
         if (tyyppi === 'internationalschool')
           return (
             <UusiInternationalSchoolSuoritus
@@ -265,6 +268,16 @@ export default ({ opiskeluoikeusAtom }) => {
               dateAtom={dateAtom}
               oppilaitosAtom={oppilaitosAtom}
               suorituskieliAtom={suorituskieliAtom}
+            />
+          )
+        if (tyyppi === 'europeanschoolofhelsinki')
+          return (
+            <UusiEuropeanSchoolOfHelsinkiSuoritus
+              suoritusAtom={suoritusAtom}
+              dateAtom={dateAtom}
+              oppilaitosAtom={oppilaitosAtom}
+              suorituskieliAtom={suorituskieliAtom}
+              suorituskieliP={suorituskieletP}
             />
           )
         if (tyyppi === 'vapaansivistystyonkoulutus')
@@ -492,7 +505,6 @@ const OpintojenRahoitus = ({
   rahoitusAtom,
   opintojenRahoituksetP
 }) => {
-  // TODO: TOR-1685 Eurooppalainen koulu
   const options = Bacon.combineWith(
     tyyppiAtom,
     opintojenRahoituksetP,
@@ -511,6 +523,10 @@ const OpintojenRahoitus = ({
       } else if (koodiarvoMatch('tuva')(tyyppi)) {
         return rahoitukset.filter((v) =>
           tuvaSallitutRahoituskoodiarvot.includes(v.koodiarvo)
+        )
+      } else if (koodiarvoMatch('europeanschoolofhelsinki')(tyyppi)) {
+        return rahoitukset.filter((v) =>
+          eshSallitutRahoituskoodiarvot.includes(v.koodiarvo)
         )
       } else {
         return rahoitukset

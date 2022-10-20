@@ -35,12 +35,10 @@ import { VapaanSivistystyonSuoritustaulukko } from "../vapaasivistystyo/VapaanSi
 import { TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko } from "../tuva/TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko";
 import { OsasuoritusEditorModel } from "../types/OsasuoritusEditorModel";
 import {
-  EditorModel,
   ObjectModel,
   ObjectModelProperty,
 } from "../types/EditorModels";
 import { VstVapaaTavoitteinenKoulutusmoduuliEditor } from "./VstVapaaTavoitteinenKoulutusmoduuliEditor";
-import { Contextualized } from "../types/EditorModelContext";
 
 export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
   const oneOf = (...classes: string[]) =>

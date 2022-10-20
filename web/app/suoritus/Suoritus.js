@@ -98,11 +98,22 @@ export const suoritusTitle = (suoritus) => {
 export const newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
   const suoritukset = modelLookup(opiskeluoikeus, 'suoritukset')
   const indexForNewItem = modelItems(suoritukset).length
-  const selectedProto = contextualizeSubModel(
+  const prototypes = contextualizeSubModel(
     suoritukset.arrayPrototype,
     suoritukset,
     indexForNewItem
-  ).oneOfPrototypes.find((p) => p.key === prototypeKey)
+  ).oneOfPrototypes
+  const selectedProto = prototypes.find((p) => p.key === prototypeKey)
+  if (selectedProto === undefined) {
+    // eslint-disable-next-line no-console
+    console.error(
+      `newSuoritusProto(): Selected prototype "${prototypeKey}" not found, possible values: ${
+        Array.isArray(prototypes)
+          ? prototypes.map((p) => p.key).join(', ')
+          : 'N/A'
+      }`
+    )
+  }
   return contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
 }
 

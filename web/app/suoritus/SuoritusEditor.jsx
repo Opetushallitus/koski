@@ -43,7 +43,7 @@ export class SuoritusEditor extends React.Component {
     const editingAny = !!currentLocation().params.edit
     const showEditLink = model.context.opiskeluoikeus.editable && !editingAny
     const isSingleSuoritus =
-      modelItems(model.context.opiskeluoikeus, 'suoritukset').length == 1
+      modelItems(model.context.opiskeluoikeus, 'suoritukset').length === 1
     const showDeleteLink =
       model.invalidatable && !showEditLink && !isSingleSuoritus
 
