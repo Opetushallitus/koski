@@ -1979,8 +1979,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "B",
-            "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
+            "koodiarvo" : "7.5",
+            "koodistoUri" : "esh/numericalmark"
           },
           "päivä" : "2033-10-01",
           "arvioitsijat" : [ {
@@ -2032,8 +2032,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "B",
-            "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
+            "koodiarvo" : "7.5",
+            "koodistoUri" : "esh/numericalmark"
           },
           "päivä" : "2033-11-01",
           "arvioitsijat" : [ {
@@ -2150,8 +2150,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "B",
-            "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
+            "koodiarvo" : "7.5",
+            "koodistoUri" : "esh/numericalmark"
           },
           "päivä" : "2034-10-01",
           "arvioitsijat" : [ {
@@ -2203,8 +2203,8 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "B",
-            "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
+            "koodiarvo" : "7.5",
+            "koodistoUri" : "esh/numericalmark"
           },
           "päivä" : "2034-11-01",
           "arvioitsijat" : [ {
@@ -2294,7 +2294,153 @@
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
         "koodistoUri" : "suorituksentyyppi"
       },
-      "jääLuokalle" : false
+      "jääLuokalle" : false,
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PE",
+            "koodistoUri" : "europeanschoolofhelsinkimuuoppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7.5",
+            "koodistoUri" : "esh/numericalmark"
+          },
+          "päivä" : "2035-11-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "L1",
+            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "nimi" : {
+              "fi" : "englanti"
+            },
+            "koodistoUri" : "kieli"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7.5",
+            "koodistoUri" : "esh/numericalmark"
+          },
+          "päivä" : "2035-12-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "europeanschoolofhelsinkimuuoppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7.5",
+            "koodistoUri" : "esh/numericalmark"
+          },
+          "päivä" : "2036-01-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      } ]
     }, {
       "koulutusmoduuli" : {
         "tunniste" : {
@@ -2365,7 +2511,370 @@
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
         "koodistoUri" : "suorituksentyyppi"
       },
-      "jääLuokalle" : false
+      "jääLuokalle" : true,
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PE",
+            "koodistoUri" : "europeanschoolofhelsinkimuuoppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8.9",
+            "koodistoUri" : "esh/s7preliminarymark"
+          },
+          "päivä" : "2036-11-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "L1",
+            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "nimi" : {
+              "fi" : "englanti"
+            },
+            "koodistoUri" : "kieli"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8.9",
+            "koodistoUri" : "esh/s7preliminarymark"
+          },
+          "päivä" : "2036-12-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "europeanschoolofhelsinkimuuoppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8.9",
+            "koodistoUri" : "esh/s7preliminarymark"
+          },
+          "päivä" : "2037-01-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      } ]
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "S7",
+          "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
+        }
+      },
+      "luokka" : "S7A",
+      "alkamispäivä" : "2037-08-01",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.13349113236",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03782",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "European School of Helsinki"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2038-05-31",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.13349113236",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "03782",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "European School of Helsinki"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.13349113236",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "03782",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "European School of Helsinki"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "jääLuokalle" : false,
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PE",
+            "koodistoUri" : "europeanschoolofhelsinkimuuoppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6.48",
+            "koodistoUri" : "esh/s7finalmark"
+          },
+          "päivä" : "2037-11-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "L1",
+            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "nimi" : {
+              "fi" : "englanti"
+            },
+            "koodistoUri" : "kieli"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6.48",
+            "koodistoUri" : "esh/s7finalmark"
+          },
+          "päivä" : "2037-12-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "europeanschoolofhelsinkimuuoppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "6.48",
+            "koodistoUri" : "esh/s7finalmark"
+          },
+          "päivä" : "2038-01-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      } ]
     } ],
     "tyyppi" : {
       "koodiarvo" : "europeanschoolofhelsinki",

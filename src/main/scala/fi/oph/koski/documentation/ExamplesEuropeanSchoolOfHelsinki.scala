@@ -10,7 +10,7 @@ import java.time.LocalDate.{of => date}
 
 object ExamplesEuropeanSchoolOfHelsinki {
   val alkamispäivä = date(2022, 8, 1)
-  val päättymispäivä = alkamispäivä.plusYears(15).withMonth(5).withDayOfMonth(31)
+  val päättymispäivä = alkamispäivä.plusYears(16).withMonth(5).withDayOfMonth(31)
   val lisätiedot = EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
     ulkomaanjaksot = Some(List(ExamplesLukio.ulkomaanjakso)),
     /*maksuttomuus = Some(
@@ -51,7 +51,8 @@ object ExamplesEuropeanSchoolOfHelsinki {
       secondaryLowerSuoritus("S4", alkamispäivä.plusYears(11)),
       secondaryLowerSuoritus("S5", alkamispäivä.plusYears(12)),
       secondaryUpperSuoritus("S6", alkamispäivä.plusYears(13)),
-      secondaryUpperSuoritus("S7", alkamispäivä.plusYears(14)),
+      secondaryUpperSuoritus("S7", alkamispäivä.plusYears(14), jääLuokalle = true),
+      secondaryUpperSuoritusFinal("S7", alkamispäivä.plusYears(15)),
     )
   )
 

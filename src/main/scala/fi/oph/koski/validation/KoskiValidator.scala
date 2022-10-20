@@ -165,7 +165,6 @@ class KoskiValidator(
       .map(fillLukionOppimääräSuoritettu)
       .map(PerusopetuksenOpiskeluoikeusValidation.filterDeprekoidutKentät)
       .map(EuropeanSchoolOfHelsinkiValidation.fillRahoitusmuodot)
-      .map(EuropeanSchoolOfHelsinkiValidation.fillSynteettisetArvosanat)
       .map(RedundantinDatanPoisto.dropRedundantData)
   }
 

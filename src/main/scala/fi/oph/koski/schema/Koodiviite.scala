@@ -51,31 +51,20 @@ case class Koodistokoodiviite(
   override def getNimi: Option[LocalizedString] = nimi
 }
 
-trait PaikallinenKoodiviite extends KoodiViite {
-  @Representative
+case class SynteettinenKoodiviite(
   @Discriminator
-  def nimi: LocalizedString
-  def description: LocalizedString = nimi
-  override def getNimi = Some(nimi)
-  override def toString = s"$koodiarvo (${nimi.get("fi")})"
-}
-
-trait SynteettinenKoodiviite extends KoodiViite with Equals {
-  @Description("Koodin tunniste")
-  @Discriminator
-  def koodiarvo: String
-  @SyntheticProperty
+  koodiarvo: String,
   @Description("Koodin selväkielinen, kielistetty nimi")
-  @ReadOnly("Tiedon syötössä kuvausta ei tarvita; täydennetään automaattisesti tähän")
-  def nimi: Option[LocalizedString]
-  @SyntheticProperty
+  @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus luodaan koodiarvon perusteella")
+  nimi: Option[LocalizedString] = None,
   @Description("Koodin selväkielinen, kielistetty lyhennetty nimi")
-  @ReadOnly("Tiedon syötössä kuvausta ei tarvita; täydennetään automaattisesti tähän")
-  def lyhytNimi: Option[LocalizedString]
-  @Description("Käytetyn koodiston tunniste.")
+  @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus luodaan koodiarvon perusteella")
+  lyhytNimi: Option[LocalizedString] = None,
+  @Description("Käytetyn synteettisen koodiston tunniste")
   @Discriminator
   @Title("Koodisto-URI")
-  def koodistoUri: Option[String]
+  koodistoUri: String
+) extends KoodiViite with Equals {
 
   override def canEqual(that: Any): Boolean = that.isInstanceOf[SynteettinenKoodiviite]
   override def equals(that: Any): Boolean = that match {
@@ -88,8 +77,19 @@ trait SynteettinenKoodiviite extends KoodiViite with Equals {
   override def hashCode(): Int = this.koodiarvo.hashCode
 
   override def toString: String = koodistoUri + "/" + koodiarvo
-  def description: LocalizedString = nimi.getOrElse(unlocalized(koodiarvo))
+  def description: LocalizedString = koodistoUri match {
+    case _ => nimi.getOrElse(unlocalized(koodiarvo))
+  }
   override def getNimi: Option[LocalizedString] = nimi
+}
+
+trait PaikallinenKoodiviite extends KoodiViite {
+  @Representative
+  @Discriminator
+  def nimi: LocalizedString
+  def description: LocalizedString = nimi
+  override def getNimi = Some(nimi)
+  override def toString = s"$koodiarvo (${nimi.get("fi")})"
 }
 
 @Description("Paikallinen, koulutustoimijan oma kooditus. Käytetään kansallisen koodiston puuttuessa")
