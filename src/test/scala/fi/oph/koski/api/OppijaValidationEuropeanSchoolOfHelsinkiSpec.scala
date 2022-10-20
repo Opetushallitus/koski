@@ -1,14 +1,11 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.{secondaryNumericalMarkArviointi, secondaryS7FinalMarkArviointi, secondaryS7PreliminaryMarkArviointi, secondaryUpperMuunOppiaineenOsasuoritus, secondaryUpperSuoritus}
 import fi.oph.koski.documentation.{ExampleData, ExamplesEuropeanSchoolOfHelsinki}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
-import fi.oph.koski.schema.KoskiSchema.skipSyntheticProperties
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
-import fi.oph.scalaschema.SerializationContext
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -26,6 +23,168 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
   "Example-opiskeluoikeus voidaan kirjoittaa tietokantaan" in {
     putOpiskeluoikeus(defaultOpiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
       verifyResponseStatusOk()
+    }
+  }
+
+  "Synteettisiä arvosanoja käyttävissä arvioinneissa" - {
+    val alkamispäivä = ExamplesEuropeanSchoolOfHelsinki.alkamispäivä
+    val arviointipäivä = alkamispäivä.plusMonths(1)
+    "yli 10 arvosanoja" - {
+      "ei hyväksytä NumericalMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S6", "10.5", secondaryNumericalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+      "ei hyväksytä S7PreliminaryMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S7", "10.1", secondaryS7PreliminaryMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+      "ei hyväksytä S7FinalMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S7", "10.10", secondaryS7FinalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+    }
+
+    "10 desimaaleilla" - {
+      "ei hyväksytä NumericalMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S6", "10.0", secondaryNumericalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+      "ei hyväksytä S7PreliminaryMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S7", "10.0", secondaryS7PreliminaryMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+      "ei hyväksytä S7FinalMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S7", "10.00", secondaryS7FinalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+    }
+
+    "0 desimaaleilla" - {
+      "ei hyväksytä NumericalMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S6", "0.0", secondaryNumericalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+      "ei hyväksytä S7PreliminaryMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S7", "0.0", secondaryS7PreliminaryMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+      "Hyväksytään S7FinalMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S7", "0.00", secondaryS7FinalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "alle 0 arvosanoja ei hyväksytä" - {
+      "ei hyväksytä NumericalMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S6", "-0.5", secondaryNumericalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+      "ei hyväksytä S7PreliminaryMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S7", "-0.1", secondaryS7PreliminaryMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+      "ei hyväksytä S7FinalMark:ssa" in {
+        putOpiskeluoikeus(teeOpiskeluoikeus("S7", "-0.01", secondaryS7FinalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+        }
+      }
+    }
+
+    "desimaalien määrä" - {
+      "NumericalMark:ssa" - {
+        "hyväksytään .0" in {
+          putOpiskeluoikeus(teeOpiskeluoikeus("S6", "4.0", secondaryNumericalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatusOk()
+          }
+        }
+        "hyväksytään .5" in {
+          putOpiskeluoikeus(teeOpiskeluoikeus("S6", "4.5", secondaryNumericalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatusOk()
+          }
+
+        }
+        "ei hyväksytä muita" in {
+          putOpiskeluoikeus(teeOpiskeluoikeus("S6", "4.4", secondaryNumericalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+          }
+        }
+      }
+
+      "S7PreliminaryMark:ssa" - {
+        "hyväksytään .0" in {
+          putOpiskeluoikeus(teeOpiskeluoikeus("S7", "6.0", secondaryS7PreliminaryMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatusOk()
+          }
+        }
+        "hyväksytään 1 desimaali" in {
+          putOpiskeluoikeus(teeOpiskeluoikeus("S7", "6.3", secondaryS7PreliminaryMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatusOk()
+          }
+        }
+        "ei hyväksytä yli 1 desimaalia" in {
+          putOpiskeluoikeus(teeOpiskeluoikeus("S7", "6.38", secondaryS7PreliminaryMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+          }
+        }
+      }
+
+      "S7FinalMark:ssa" - {
+        "hyväksytään .00" in {
+          putOpiskeluoikeus(teeOpiskeluoikeus("S7", "9.00", secondaryS7FinalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "hyväksytään 2 desimaalia" in {
+          putOpiskeluoikeus(teeOpiskeluoikeus("S7", "9.78", secondaryS7FinalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "ei hyväksytä vain 1 desimaalia" in {
+          putOpiskeluoikeus(teeOpiskeluoikeus("S7", "8.9", secondaryS7FinalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+          }
+        }
+
+        "ei hyväksytä yli 2 desimaalia" in {
+          putOpiskeluoikeus(teeOpiskeluoikeus("S7", "8.988", secondaryS7FinalMarkArviointi), henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
+            verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
+          }
+        }
+
+      }
+    }
+
+    def teeOpiskeluoikeus(luokkaAste: String, arvosana: String, teeArviointi: (String, Option[LocalizedString], Option[List[Arvioitsija]], LocalDate) => Option[List[SecondaryArviointi]]) = {
+      defaultOpiskeluoikeus.copy(
+        suoritukset = List(
+          secondaryUpperSuoritus(luokkaAste, alkamispäivä.plusYears(1)).copy(
+            osasuoritukset = Some(List(
+              secondaryUpperMuunOppiaineenOsasuoritus(
+                oppiainekoodi = "PE",
+                arviointi = teeArviointi(
+                  arvosana,
+                  None,
+                  Some(List(Arvioitsija("Pekka Paunanen"))),
+                  arviointipäivä
+                )
+              ),
+            ))
+          )
+        )
+      )
     }
   }
 
