@@ -10,6 +10,7 @@ import Http from '../util/http'
 import { currentLocation, parseQuery } from '../util/location'
 import { Error as ErrorDisplay, logError } from '../util/Error'
 import { t } from '../i18n/i18n'
+__webpack_nonce__ = window.nonce
 
 const memberCodeRegex = /\/koski\/omadata\/valtuutus\/(.*)/
 
