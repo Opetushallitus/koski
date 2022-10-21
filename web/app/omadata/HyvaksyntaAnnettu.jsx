@@ -1,6 +1,6 @@
 import React from 'react'
 import Text from '../i18n/Text'
-import '../style/main.less'
+import(/* webpackChunkName: "styles" */ '../style/main.less')
 
 export default class HyvaksyntaAnnettu extends React.Component {
   constructor(props) {
