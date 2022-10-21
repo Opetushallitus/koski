@@ -128,6 +128,7 @@ object SuorituksenTyyppi {
   val vstvapaatavoitteinenkoulutus = apply("vstvapaatavoitteinenkoulutus")
   val luva = apply("luva")
   val tuva = apply("tuvakoulutuksensuoritus")
+  // TODO: TOR-1685: Pitäisikö tähän lisätä ESH:n pts:t, ja ottaa käyttöön siellä, missä ylläolevatkin suorituksentyypit ovat?
 
   private def apply(koodiarvo: String): SuorituksenTyyppi =
     kaikkiTyypit.find(_.koodiarvo == koodiarvo)

@@ -420,7 +420,7 @@ object OpiskeluoikeusLoader extends Logging {
       koulutusmoduuliKoodisto = convertKoodisto(ps.koulutusmoduuli.tunniste),
       koulutusmoduuliKoodiarvo = ps.koulutusmoduuli.tunniste.koodiarvo,
       koulutusmoduuliKoulutustyyppi = ps.koulutusmoduuli match {
-        case k: Koulutus => k.koulutustyyppi.map(_.koodiarvo)
+        case k: KoulutustyypinSisältäväKoulutusmoduuli => k.koulutustyyppi.map(_.koodiarvo)
         case _ => None
       },
       koulutusmoduuliLaajuusArvo = ps.koulutusmoduuli.getLaajuus.map(_.arvo),
