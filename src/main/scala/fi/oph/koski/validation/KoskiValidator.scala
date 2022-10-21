@@ -929,7 +929,7 @@ class KoskiValidator(
       case s: PerusopetuksenVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
       case s: DiplomaVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
       case s: MYPVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "10" => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
-      // TODO: TOR-1685 Eurooppalainen koulu , jos tämä halutaan validoitavan, luultavasti halutaan?
+      case s: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(virhe)
       case _ => HttpStatus.ok
     }
   }
