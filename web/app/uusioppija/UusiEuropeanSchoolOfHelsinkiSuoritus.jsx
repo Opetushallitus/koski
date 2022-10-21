@@ -18,13 +18,16 @@ export default ({ suoritusAtom, dateAtom, oppilaitosAtom, without = [] }) => {
 
   // ESH-opiskeluoikeuden suorituksen luokka-aste
   const luokkaasteAtom = Atom()
-  const luokkaasteP = koodistoValues('europeanschoolofhelsinkiluokkaaste')
-    .map((luokkaasteet) => luokkaasteet.sort(byAste))
+  const luokkaasteP = koodistoValues('europeanschoolofhelsinkiluokkaaste').map(
+    (luokkaasteet) => luokkaasteet.sort(byAste)
+  )
+  /*
     .map((luokkaasteet) =>
       luokkaasteet.filter(
         (luokkaaste) => !without.includes(luokkaaste.koodiarvo)
       )
     )
+    */
   luokkaasteP.onValue((luokkaasteet) => {
     luokkaasteAtom.set(luokkaasteet[0])
   })
