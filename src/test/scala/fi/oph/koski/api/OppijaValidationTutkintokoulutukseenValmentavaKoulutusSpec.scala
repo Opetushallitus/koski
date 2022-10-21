@@ -556,6 +556,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           KoskiApplicationForTests.ePerusteetFiller,
           KoskiApplicationForTests.validatingAndResolvingExtractor,
           KoskiApplicationForTests.suostumuksenPeruutusService,
+          KoskiApplicationForTests.koodistoViitePalvelu,
           config
         )
       }

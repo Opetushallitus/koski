@@ -9,6 +9,7 @@ import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteisiinPerustu
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -36,6 +37,7 @@ class KoskiValidator(
   ePerusteetFiller: EPerusteetFiller,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
+  koodistoPalvelu: KoodistoViitePalvelu,
   config: Config
 ) extends Timing {
 
@@ -164,7 +166,7 @@ class KoskiValidator(
       .map(KoodistopoikkeustenKonversiot.konvertoiKoodit)
       .map(fillLukionOppimääräSuoritettu)
       .map(PerusopetuksenOpiskeluoikeusValidation.filterDeprekoidutKentät)
-      .map(EuropeanSchoolOfHelsinkiValidation.fillRahoitusmuodot)
+      .map(EuropeanSchoolOfHelsinkiValidation.fillRahoitusmuodot(koodistoPalvelu))
       .map(RedundantinDatanPoisto.dropRedundantData)
   }
 
