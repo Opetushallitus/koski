@@ -118,6 +118,16 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(telma)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: LukionOppiaine =>
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(lukionKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä))).onSuccess(validateLukio2015Diaarinumero(d))
+        case d: TutkintokoulutukseenValmentavanKoulutus =>
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(tuva)), Some(vaadittuPerusteenVoimassaolopäivä)))
+        case d: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus =>
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(vapaanSivistystyönVapaatavoitteinenKoulutus)), Some(vaadittuPerusteenVoimassaolopäivä)))
+        case d: VapaanSivistystyönLukutaitokoulutus =>
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(vstlukutaitokoulutus)), Some(vaadittuPerusteenVoimassaolopäivä)))
+        case d: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus =>
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumisKoulutus)), Some(vaadittuPerusteenVoimassaolopäivä)))
+        case d: VSTKotoutumiskoulutus2022 =>
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumisKoulutus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: Diaarinumerollinen =>
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, None, Some(vaadittuPerusteenVoimassaolopäivä)))
         case _ => HttpStatus.ok
