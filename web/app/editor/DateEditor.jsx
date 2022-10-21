@@ -49,10 +49,23 @@ DateEditor.validateModel = (model) => {
 }
 
 const isOptional = (model) =>
-  model.optional && !isPerusopetuksenVuosiluokanSuorituksenAlkamispäivä(model)
+  model.optional &&
+  !(
+    isPerusopetuksenVuosiluokanSuorituksenAlkamispäivä(model) ||
+    isEuropeanSchoolOfHelsinkiSuorituksenAlkamispäivä(model)
+  )
 
 const isPerusopetuksenVuosiluokanSuorituksenAlkamispäivä = (model) =>
   R.and(
     R.includes('perusopetuksenvuosiluokansuoritus', model.parent.value.classes),
+    R.last(model.path) === 'alkamispäivä'
+  )
+
+const isEuropeanSchoolOfHelsinkiSuorituksenAlkamispäivä = (model) =>
+  R.and(
+    R.includes(
+      'europeanschoolofhelsinkivuosiluokansuoritus',
+      model.parent.value.classes
+    ),
     R.last(model.path) === 'alkamispäivä'
   )

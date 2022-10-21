@@ -7,7 +7,7 @@ export const makeSuoritus = (
   alkamispäivä,
   suorituskieli
 ) => {
-  if (!oppilaitos || !luokkaaste || !luokkaaste || !suorituskieli) return null
+  if (!oppilaitos || !luokkaaste || !curriculum || !suorituskieli) return null
 
   return {
     suorituskieli,
