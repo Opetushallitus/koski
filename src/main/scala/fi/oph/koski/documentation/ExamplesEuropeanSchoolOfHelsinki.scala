@@ -33,7 +33,8 @@ object ExamplesEuropeanSchoolOfHelsinki {
     lisätiedot = Some(lisätiedot),
     tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
       List(
-        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen)
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(päättymispäivä, LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
     suoritukset = List(
