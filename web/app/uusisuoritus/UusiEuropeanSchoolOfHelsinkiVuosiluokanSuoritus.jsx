@@ -71,9 +71,7 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
 UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.canAddSuoritus = (
   opiskeluoikeus
 ) =>
-  modelData(opiskeluoikeus, 'tyyppi.koodiarvo') ===
-    'europeanschoolofhelsinki' &&
-  modelItems(opiskeluoikeus, 'suoritukset').length < 14
+  modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'europeanschoolofhelsinki'
 
 UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.addSuoritusTitle = () => (
   <Text name="lisää vuosiluokan suoritus" />
