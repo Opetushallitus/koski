@@ -20,11 +20,14 @@ import { filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi } from './opiskeluoike
 import {
   autoFillRahoitusmuoto,
   opiskeluoikeudenTilaVaatiiRahoitusmuodon,
-  defaultRahoitusmuotoP
+  defaultRahoitusmuotoP,
+  opiskeluoikeudenRahoitusmuotoEiVoiVaihdella,
+  getRahoitusmuoto
 } from './opintojenRahoitus'
 
 export const OpiskeluoikeudenUusiTilaPopup = ({
   edellisenTilanAlkupäivä,
+  edellisenTilanRahoitus,
   disabloiValmistunut,
   tilaListModel,
   resultCallback
@@ -56,12 +59,30 @@ export const OpiskeluoikeudenUusiTilaPopup = ({
         modelData(tilaM.context.opiskeluoikeus, 'tyyppi.koodiarvo'),
         modelData(tilaM, 'koodiarvo'),
         modelData(tilaM.context.opiskeluoikeus, 'suoritukset.0.tyyppi')
+          ?.koodiarvo
       ),
+      opiskeluoikeudenRahoitusmuotoEiVoiVaihdella:
+        opiskeluoikeudenRahoitusmuotoEiVoiVaihdella(
+          modelData(tilaM.context.opiskeluoikeus, 'tyyppi.koodiarvo'),
+          modelData(tilaM.context.opiskeluoikeus, 'suoritukset.0.tyyppi')
+            ?.koodiarvo
+        ),
       rahoitusValittu: modelData(rahoitusM),
       setDefaultRahoitus: () => {
         const proto = optionalPrototypeModel(rahoitusM)
         const defaultValue = proto && proto.value
-        pushModel(modelSetValue(rahoitusM, defaultValue || defaultRahoitus))
+        if (edellisenTilanRahoitus) {
+          getRahoitusmuoto(edellisenTilanRahoitus).onValue((rahoitus) =>
+            pushModel(
+              modelSetValue(
+                rahoitusM,
+                rahoitus || defaultValue || defaultRahoitus
+              )
+            )
+          )
+        } else {
+          pushModel(modelSetValue(rahoitusM, defaultValue || defaultRahoitus))
+        }
       },
       setRahoitusNone: () => pushModel(modelSetValue(rahoitusM, null))
     })
@@ -109,7 +130,14 @@ export const OpiskeluoikeudenUusiTilaPopup = ({
         />
       </div>
       {ift(
-        rahoitusmuotoChanges.map((x) => x.vaatiiRahoituksen),
+        rahoitusmuotoChanges.map(
+          (x) =>
+            x.vaatiiRahoituksen &&
+            !(
+              x.opiskeluoikeudenRahoitusmuotoEiVoiVaihdella &&
+              edellisenTilanRahoitus
+            )
+        ),
         <div className="property rahoitus" key="rahoitus">
           <label>
             <Text name="Rahoitus" />

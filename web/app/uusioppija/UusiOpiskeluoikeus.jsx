@@ -35,7 +35,8 @@ import Checkbox from '../components/Checkbox'
 import {
   autoFillRahoitusmuoto,
   opiskeluoikeudenTilaVaatiiRahoitusmuodon,
-  defaultRahoitusmuotoP
+  getRahoitusmuoto,
+  defaultRahoituskoodi
 } from '../opiskeluoikeus/opintojenRahoitus'
 import RadioButtons from '../components/RadioButtons'
 import {
@@ -49,6 +50,7 @@ import {
 } from './UusiTutkintokoulutukseenValmentavanKoulutuksenSuoritus'
 import UusiEuropeanSchoolOfHelsinkiSuoritus from './UusiEuropeanSchoolOfHelsinkiSuoritus'
 import { eshSallitutRahoituskoodiarvot } from '../esh/esh'
+import { jotpaSallitutRahoituskoodiarvot } from '../jotpa/jotpa'
 
 export default ({ opiskeluoikeusAtom }) => {
   const dateAtom = Atom(new Date())
@@ -69,7 +71,6 @@ export default ({ opiskeluoikeusAtom }) => {
     rahoitusAtom.set(undefined)
     onTuvaOpiskeluoikeus.set(tyyppi ? tyyppi.koodiarvo === 'tuva' : false)
   })
-
   const opintokokonaisuusAtom = Atom()
   const suoritustyyppiAtom = Atom()
 
@@ -114,14 +115,19 @@ export default ({ opiskeluoikeusAtom }) => {
     tyyppiAtom,
     rahoitusAtom,
     tilaAtom,
-    defaultRahoitusmuotoP,
-    (ooTyyppi, rahoitus, tila, defaultRahoitus) => ({
+    suoritustyyppiAtom,
+    (ooTyyppi, rahoitus, tila, suoritustyyppi) => ({
       vaatiiRahoituksen: opiskeluoikeudenTilaVaatiiRahoitusmuodon(
         ooTyyppi?.koodiarvo,
-        tila?.koodiarvo
+        tila?.koodiarvo,
+        suoritustyyppi?.koodiarvo
       ),
       rahoitusValittu: rahoitus,
-      setDefaultRahoitus: () => rahoitusAtom.set(defaultRahoitus.data),
+      setDefaultRahoitus: () => {
+        getRahoitusmuoto(defaultRahoituskoodi(suoritustyyppi)).onValue(
+          (defaultRahoitus) => rahoitusAtom.set(defaultRahoitus.data)
+        )
+      },
       setRahoitusNone: () => rahoitusAtom.set(undefined)
     })
   )
@@ -320,6 +326,7 @@ export default ({ opiskeluoikeusAtom }) => {
           tyyppiAtom={tyyppiAtom}
           rahoitusAtom={rahoitusAtom}
           opintojenRahoituksetP={rahoituksetP}
+          suoritystyyppiP={suoritustyyppiAtom}
         />
       )}
       {ift(
@@ -505,30 +512,40 @@ const OpiskeluoikeudenTila = ({ tilaAtom, opiskeluoikeudenTilatP }) => {
 const OpintojenRahoitus = ({
   tyyppiAtom,
   rahoitusAtom,
-  opintojenRahoituksetP
+  opintojenRahoituksetP,
+  suoritystyyppiP
 }) => {
   const options = Bacon.combineWith(
     tyyppiAtom,
     opintojenRahoituksetP,
-    (tyyppi, rahoitukset) => {
+    suoritystyyppiP,
+    (opiskeluoikeudenTyyppi, rahoitukset, päätasonSuorituksenTyyppi) => {
       if (
         koodiarvoMatch(
           'aikuistenperusopetus',
           'lukiokoulutus',
           'internationalschool',
           'ibtutkinto'
-        )(tyyppi)
+        )(opiskeluoikeudenTyyppi)
       ) {
         return rahoitukset.filter((v) =>
           sallitutRahoituskoodiarvot.includes(v.koodiarvo)
         )
-      } else if (koodiarvoMatch('tuva')(tyyppi)) {
+      } else if (koodiarvoMatch('tuva')(opiskeluoikeudenTyyppi)) {
         return rahoitukset.filter((v) =>
           tuvaSallitutRahoituskoodiarvot.includes(v.koodiarvo)
         )
-      } else if (koodiarvoMatch('europeanschoolofhelsinki')(tyyppi)) {
+      } else if (
+        koodiarvoMatch('europeanschoolofhelsinki')(opiskeluoikeudenTyyppi)
+      ) {
         return rahoitukset.filter((v) =>
           eshSallitutRahoituskoodiarvot.includes(v.koodiarvo)
+        )
+      } else if (
+        koodiarvoMatch('vstjotpakoulutus')(päätasonSuorituksenTyyppi)
+      ) {
+        return rahoitukset.filter((v) =>
+          jotpaSallitutRahoituskoodiarvot.includes(v.koodiarvo)
         )
       } else {
         return rahoitukset

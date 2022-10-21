@@ -73,6 +73,10 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
       wrappedModel.context.edit && !onLopputilassa(wrappedModel)
     const edellisenTilanAlkupäivä =
       modelData(items[0], 'alku') && parseISODate(modelData(items[0], 'alku'))
+    const edellisenTilanRahoitus = modelData(
+      items[0],
+      'opintojenRahoitus'
+    )?.koodiarvo
 
     return (
       <div>
@@ -125,6 +129,7 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
                 tilaListModel={jaksotModel}
                 disabloiValmistunut={disabloiValmistunut}
                 edellisenTilanAlkupäivä={edellisenTilanAlkupäivä}
+                edellisenTilanRahoitus={edellisenTilanRahoitus}
                 resultCallback={(uusiJakso) => lisääJakso(uusiJakso)}
               />
             )
