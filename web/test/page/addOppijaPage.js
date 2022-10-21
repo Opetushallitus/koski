@@ -80,7 +80,6 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(api.selectOpiskeluoikeudenTyyppi('European School of Helsinki'))
           .then(
             api.selectFromDropdown(
               '.european-school-of-helsinki-luokkaaste .dropdown',
