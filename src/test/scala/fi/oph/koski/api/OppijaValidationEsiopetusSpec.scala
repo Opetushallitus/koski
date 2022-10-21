@@ -760,6 +760,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
         KoskiApplicationForTests.ePerusteetFiller,
         KoskiApplicationForTests.validatingAndResolvingExtractor,
         KoskiApplicationForTests.suostumuksenPeruutusService,
+        KoskiApplicationForTests.koodistoViitePalvelu,
         config
       )
     }
