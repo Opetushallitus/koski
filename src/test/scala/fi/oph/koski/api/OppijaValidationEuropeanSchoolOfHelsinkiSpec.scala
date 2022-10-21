@@ -1,7 +1,8 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.{secondaryNumericalMarkArviointi, secondaryS7FinalMarkArviointi, secondaryS7PreliminaryMarkArviointi, secondaryUpperMuunOppiaineenOsasuoritus, secondaryUpperSuoritus}
+import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.{primarySuoritus, secondaryLowerSuoritus, secondaryNumericalMarkArviointi, secondaryS7FinalMarkArviointi, secondaryS7PreliminaryMarkArviointi, secondaryUpperMuunOppiaineenOsasuoritus, secondaryUpperSuoritus}
+import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.alkamispäivä
 import fi.oph.koski.documentation.{ExampleData, ExamplesEuropeanSchoolOfHelsinki}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
@@ -185,6 +186,38 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
           )
         )
       )
+    }
+  }
+
+  "Koulutustyyppi" - {
+    "Täydennetään" in {
+      val putOo = defaultOpiskeluoikeus.copy(
+        suoritukset = List(
+          primarySuoritus("P1", alkamispäivä.plusYears(2)).copy(
+            koulutusmoduuli = PrimaryLuokkaAste("P1").copy(koulutustyyppi = None)
+          ),
+          secondaryLowerSuoritus("S1", alkamispäivä.plusYears(8)).copy(
+            koulutusmoduuli = SecondaryLowerLuokkaAste("S1").copy(koulutustyyppi = None)
+          ),
+          secondaryUpperSuoritus("S6", alkamispäivä.plusYears(13)).copy(
+            koulutusmoduuli = SecondaryUpperLuokkaAste("S6").copy(koulutustyyppi = None)
+          ),
+        )
+      )
+
+      koulutustyypit(putOo) should be(List.empty)
+
+      val oo = putAndGetOpiskeluoikeus(putOo)
+
+      koulutustyypit(oo) should be(List("21", "21", "21"))
+    }
+
+    def koulutustyypit(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): List[String] = {
+      oo.suoritukset.flatMap(_.koulutusmoduuli match {
+        case k: KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiLuokkaAste =>
+          k.koulutustyyppi
+        case _ => None
+      }).map(_.koodiarvo)
     }
   }
 

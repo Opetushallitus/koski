@@ -204,6 +204,11 @@ trait EuropeanSchoolOfHelsinkiLuokkaAste extends KoodistostaLöytyväKoulutusmod
   def curriculum: Koodistokoodiviite
 }
 
+trait KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiLuokkaAste extends EuropeanSchoolOfHelsinkiLuokkaAste with KoulutustyypinSisältäväKoulutusmoduuli {
+  @KoodistoKoodiarvo("21")
+  def koulutustyyppi: Option[Koodistokoodiviite]
+}
+
 case class NurseryLuokkaAste(
   @KoodistoKoodiarvo("N1")
   @KoodistoKoodiarvo("N2")
@@ -224,8 +229,9 @@ case class PrimaryLuokkaAste(
   @KoodistoKoodiarvo("P4")
   @KoodistoKoodiarvo("P5")
   tunniste: Koodistokoodiviite,
-  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
-) extends EuropeanSchoolOfHelsinkiLuokkaAste
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None
+) extends KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiLuokkaAste
 
 
 object PrimaryLuokkaAste {
@@ -241,8 +247,9 @@ case class SecondaryLowerLuokkaAste(
   @KoodistoKoodiarvo("S4")
   @KoodistoKoodiarvo("S5")
   tunniste: Koodistokoodiviite,
-  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
-) extends EuropeanSchoolOfHelsinkiLuokkaAste
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None
+) extends KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiLuokkaAste
 
 
 object SecondaryLowerLuokkaAste {
@@ -255,8 +262,9 @@ case class SecondaryUpperLuokkaAste(
   @KoodistoKoodiarvo("S6")
   @KoodistoKoodiarvo("S7")
   tunniste: Koodistokoodiviite,
-  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
-) extends EuropeanSchoolOfHelsinkiLuokkaAste
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None
+) extends KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiLuokkaAste
 
 
 object SecondaryUpperLuokkaAste {
