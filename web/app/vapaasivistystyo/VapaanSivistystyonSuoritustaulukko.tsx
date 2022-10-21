@@ -1,97 +1,108 @@
-import React, { ReactNode } from "baret";
-import * as R from "ramda";
-import { modelData, modelItems } from "../editor/EditorModel";
-import { accumulateExpandedState } from "../editor/ExpandableItems";
-import Text from "../i18n/Text";
-import { t } from "../i18n/i18n";
-import { tutkinnonOsaPrototypes } from "../ammatillinen/TutkinnonOsa";
-import { UusiVapaanSivistystyonOsasuoritus } from "./UusiVapaanSivistystyonOsasuoritus";
-import { VapaanSivistystyonOsasuoritusEditor } from "./VapaanSivistystyonOsasuoritusEditor";
+import React, { ReactNode } from 'baret'
+import * as R from 'ramda'
+import { modelData, modelItems } from '../editor/EditorModel'
+import { accumulateExpandedState } from '../editor/ExpandableItems'
+import Text from '../i18n/Text'
+import { t } from '../i18n/i18n'
+import { tutkinnonOsaPrototypes } from '../ammatillinen/TutkinnonOsa'
+import { UusiVapaanSivistystyonOsasuoritus } from './UusiVapaanSivistystyonOsasuoritus'
+import { VapaanSivistystyonOsasuoritusEditor } from './VapaanSivistystyonOsasuoritusEditor'
 import {
   ArvosanaColumn,
   ExpandAllRows,
   getLaajuusYksikkö,
   LaajuusColumn,
   SuoritusColumn,
-  TaitotasoColumn,
-} from "../suoritus/SuoritustaulukkoCommon";
-import { numberToString } from "../util/format";
-import { EditorModel, ObjectModel } from "../types/EditorModels";
-import { Contextualized } from "../types/EditorModelContext";
-import { OsasuoritusEditorModel } from "../types/OsasuoritusEditorModel";
+  TaitotasoColumn
+} from '../suoritus/SuoritustaulukkoCommon'
+import { numberToString } from '../util/format'
+import { EditorModel, ObjectModel } from '../types/EditorModels'
+import { Contextualized } from '../types/EditorModelContext'
+import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
 
-const MAX_NESTED_LEVEL_VAPAATAVOITTEINEN = 3;
-const MAX_NESTED_LEVEL_MUUT = 2;
+const MAX_NESTED_LEVEL_VAPAATAVOITTEINEN = 3
+const MAX_NESTED_LEVEL_MUUT = 2
 
 export type VapaanSivistystyonSuoritustaulukkoProps = {
-  parentSuoritus: OsasuoritusEditorModel;
-  suorituksetModel?: OsasuoritusEditorModel;
-  nestedLevel?: number;
-};
+  parentSuoritus: OsasuoritusEditorModel
+  suorituksetModel?: OsasuoritusEditorModel
+  nestedLevel?: number
+}
 
 type VSTColumn =
   | SuoritusColumn
   | LaajuusColumn
   | ArvosanaColumn
-  | TaitotasoColumn;
+  | TaitotasoColumn
 
 export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSivistystyonSuoritustaulukkoProps> {
   render() {
-    const { parentSuoritus, suorituksetModel, nestedLevel = 0 } = this.props;
-    const context = parentSuoritus.context;
-    const suoritukset = modelItems(suorituksetModel) || [];
+    const { parentSuoritus, suorituksetModel, nestedLevel = 0 } = this.props
+    const context = parentSuoritus.context
+    const suoritukset = modelItems(suorituksetModel) || []
     const parentOneOf = (...classes: string[]) =>
-      classes.some((c) => parentSuoritus.value.classes.includes(c));
+      classes.some((c) => parentSuoritus.value.classes.includes(c))
     const maxNestedLevel = parentOneOf(
-      "vapaansivistystyonvapaatavoitteisenkoulutuksenosasuorituksensuoritus"
+      'vapaansivistystyonvapaatavoitteisenkoulutuksenosasuorituksensuoritus'
     )
       ? MAX_NESTED_LEVEL_VAPAATAVOITTEINEN
-      : MAX_NESTED_LEVEL_MUUT;
+      : MAX_NESTED_LEVEL_MUUT
 
     if (
       (suoritukset.length === 0 && !context.edit) ||
       nestedLevel >= maxNestedLevel ||
       suorituksetModel === undefined
     ) {
-      return null;
+      return null
     }
 
     const { isExpandedP, allExpandedP, toggleExpandAll, setExpanded } =
-      accumulateExpandedState({ suoritukset, component: this });
+      accumulateExpandedState({ suoritukset, component: this })
 
-    const suoritusProtos = tutkinnonOsaPrototypes(suorituksetModel);
-    const laajuusYksikkö = getLaajuusYksikkö(suoritusProtos[0]);
-    const osaAlueTitle = () => {
+    const suoritusProtos = tutkinnonOsaPrototypes(suorituksetModel)
+    const laajuusYksikkö = getLaajuusYksikkö(suoritusProtos[0])
+
+    const osasuoritusTitle = () => {
       if (
         parentOneOf(
-          "oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus"
+          'oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus'
         )
       ) {
-        return t("Osaamiskokonaisuus");
+        return t('Osaamiskokonaisuus')
       } else if (
-        parentOneOf("vapaansivistystyonvapaatavoitteisenkoulutuksensuoritus")
+        parentOneOf('vapaansivistystyonvapaatavoitteisenkoulutuksensuoritus') ||
+        parentOneOf('vapaansivistystyonjotpakoulutuksensuoritus')
       ) {
-        return t("Koulutus");
+        return t('Koulutus')
       } else {
-        return t("Osa-alue");
+        return t('Osa-alue')
       }
-    };
+    }
+
+    const alaosasuoritusTitle = () => {
+      return parentOneOf(
+        'vapaansivistystyonjotpakoulutuksenosasuorituksensuoritus'
+      )
+        ? t('Osasuoritus')
+        : t('Opintokokonaisuus')
+    }
+
     const suoritusTitle =
-      nestedLevel === 0 ? osaAlueTitle() : t("Opintokokonaisuus");
+      nestedLevel === 0 ? osasuoritusTitle() : alaosasuoritusTitle()
 
     const columns = [
       SuoritusColumn,
       LaajuusColumn,
       ArvosanaColumn,
-      TaitotasoColumn,
+      TaitotasoColumn
     ].filter((column) =>
       column.shouldShow({
         parentSuoritus,
         suoritukset,
         suorituksetModel,
-        context,
+        context
       })
-    );
+    )
 
     return (
       <div className="suoritus-taulukko">
@@ -136,7 +147,7 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
             </SingleColumnRowTable>
           )}
           {nestedLevel === 0 && (
-            <SingleColumnRowTable className={"yhteislaajuus"}>
+            <SingleColumnRowTable className={'yhteislaajuus'}>
               <YhteensäSuoritettu
                 suoritukset={suoritukset}
                 // @ts-expect-error YhteensäSuoritettu
@@ -146,51 +157,51 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
           )}
         </table>
       </div>
-    );
+    )
   }
 }
 
 type YhteensäSuoritettuProps = {
-  suoritukset: EditorModel[];
-  laajuusYksikkö: string;
-};
+  suoritukset: EditorModel[]
+  laajuusYksikkö: string
+}
 
 const YhteensäSuoritettu = ({
   suoritukset,
-  laajuusYksikkö,
+  laajuusYksikkö
 }: YhteensäSuoritettuProps) => {
   const laajuudetYhteensä = R.sum(
     R.map(
-      (item) => modelData(item, "koulutusmoduuli.laajuus.arvo") || 0,
+      (item) => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0,
       suoritukset
     )
-  );
+  )
   return (
     <div>
       {/* @ts-expect-error TODO: Tyypitä Text */}
-      <Text name="Yhteensä" />{" "}
+      <Text name="Yhteensä" />{' '}
       <span className="laajuudet-yhteensä">
         {numberToString(laajuudetYhteensä)}
-      </span>{" "}
+      </span>{' '}
       {laajuusYksikkö}
     </div>
-  );
-};
+  )
+}
 
 type SingleColumnRowTableProps = {
-  children?: ReactNode;
-  className?: string;
-  colSpan?: number;
-};
+  children?: ReactNode
+  className?: string
+  colSpan?: number
+}
 
 const SingleColumnRowTable = ({
   children,
-  className = "",
-  colSpan = 1,
+  className = '',
+  colSpan = 1
 }: SingleColumnRowTableProps) => (
   <tbody className={className}>
     <tr>
       <td colSpan={colSpan}>{children}</td>
     </tr>
   </tbody>
-);
+)
