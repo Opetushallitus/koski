@@ -1,24 +1,25 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.documentation.ExampleData.muutaKauttaRahoitettu
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, KoskeenTallennettavaOpiskeluoikeus}
 
 object EuropeanSchoolOfHelsinkiValidation {
-  def fillRahoitusmuodot(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+  def fillRahoitusmuodot(koodistoPalvelu: KoodistoViitePalvelu)(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     oo match {
       case e: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>
         e.copy(tila = e.tila.copy(
           opiskeluoikeusjaksot =
-            fillRahoitusmuodot(e.tila.opiskeluoikeusjaksot)
+            fillRahoitusmuodot(e.tila.opiskeluoikeusjaksot, koodistoPalvelu)
         ))
       case _ => oo
     }
   }
 
-  private def fillRahoitusmuodot(opiskeluoikeusjaksot: List[EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso]): List[EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso] = {
+  private def fillRahoitusmuodot(opiskeluoikeusjaksot: List[EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso], koodistoPalvelu: KoodistoViitePalvelu): List[EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso] = {
     opiskeluoikeusjaksot.map {
       case j if rahoitusmuotoTäydennetään(j) =>
-        j.copy(opintojenRahoitus = Some(muutaKauttaRahoitettu))
+        j.copy(opintojenRahoitus = koodistoPalvelu.validate(muutaKauttaRahoitettu))
       case j => j
     }
   }
