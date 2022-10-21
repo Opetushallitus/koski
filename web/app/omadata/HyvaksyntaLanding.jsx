@@ -11,6 +11,7 @@ import { currentLocation, parseQuery } from '../util/location'
 import { Error as ErrorDisplay, logError } from '../util/Error'
 import { t } from '../i18n/i18n'
 __webpack_nonce__ = window.nonce
+import(/* webpackChunkName: "styles" */ '../style/main.less')
 
 const memberCodeRegex = /\/koski\/omadata\/valtuutus\/(.*)/
 
