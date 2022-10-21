@@ -22,10 +22,18 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
   val tuvaTyypit = List(OpiskeluoikeudenTyyppi.tuva)
   val eshTyypit = List(OpiskeluoikeudenTyyppi.europeanschoolofhelsinki)
 
+  // Organisaatiopoikkeukset, jotka käydään ensin läpi. Esimerkiksi, jos on tarve näyttää vain yhdentyypinen opiskeluoikeus organisaatiolle, laita OID:t tähän listaan.
+  val organisaatioPoikkeukset = Map(
+    // European School of Helsinki
+    List("1.2.246.562.10.962346066210", "1.2.246.562.10.13349113236", "1.2.246.562.10.12798841685") -> eshTyypit
+  )
+
   get("/opiskeluoikeustyypit/:oid") {
     val organisaatiot = application.organisaatioRepository.getOrganisaatioHierarkia(params("oid")).toList
-    (byOppilaitosTyyppi(organisaatiot) ++ byOrganisaatioTyyppi(organisaatiot))
-      .distinct
+    (byOrganisaatioPoikkeus(organisaatiot) match {
+      case List(loytyneetPoikkeustyypit) => List(loytyneetPoikkeustyypit)
+      case Nil => (byOppilaitosTyyppi(organisaatiot) ++ byOrganisaatioTyyppi(organisaatiot))
+    }).distinct
       .flatMap(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t.koodiarvo))
       .filter(t => session.allowedOpiskeluoikeusTyypit.contains(t.koodiarvo))
   }
@@ -35,8 +43,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
       case tyyppi if List(peruskoulut, peruskouluasteenErityiskoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ tuvaTyypit
       case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => perusopetuksenTyypit ++ ammatillisenTyypit ++ tuvaTyypit
       case tyyppi if List(lukio).contains(tyyppi) => perusopetuksenTyypit ++ lukionTyypit ++ tuvaTyypit
-      // TODO: TOR-1685 - Näytä ESH ainoastaan Helsingin Eurooppalaiselle koululle, tämä vain väliaikaisesti tässä.
-      case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ lukionTyypit ++ saksalaisenKoulunTyypit ++ internationalSchoolTyypit ++ tuvaTyypit ++ eshTyypit
+      case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ lukionTyypit ++ saksalaisenKoulunTyypit ++ internationalSchoolTyypit ++ tuvaTyypit
       case _ => perusopetuksenTyypit ++ ammatillisenTyypit ++ vapaanSivistysTyönTyypit ++ tuvaTyypit
     }
 
@@ -46,5 +53,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
     } else {
       Nil
     }
+
+  private def byOrganisaatioPoikkeus(organisaatiot: List[OrganisaatioHierarkia]) = organisaatioPoikkeukset.filter(_._1.exists(poikkeusOid => organisaatiot.map(_.oid).contains(poikkeusOid))).flatMap(_._2).toList
 
 }
