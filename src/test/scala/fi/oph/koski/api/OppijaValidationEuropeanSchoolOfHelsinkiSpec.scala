@@ -262,7 +262,25 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
     }
   }
 
-  // TODO: TOR-1685 Lisää tarvittavat testit validaatioita toteutettaessa
+  "Päätason suorituksen alkamispäivä" - {
+    "Vaaditaan" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        tila =
+          EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+            List(
+              EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.muutaKauttaRahoitettu))
+            )
+          ),
+        suoritukset =
+          List(
+            defaultOpiskeluoikeus.suoritukset.headOption.get.ilmanAlkamispäivää()
+          )
+      )
+      ) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle europeanschoolofhelsinkiluokkaaste/N1 ei ole merkitty alkamispäivää"))
+      }
+    }
+  }
 
   private def putAndGetOpiskeluoikeus(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): EuropeanSchoolOfHelsinkiOpiskeluoikeus = putOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
