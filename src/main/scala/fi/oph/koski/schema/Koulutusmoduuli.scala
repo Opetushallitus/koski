@@ -47,7 +47,7 @@ trait KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus extends KoodistostaL�
 trait KoulutustyypinSisältäväKoulutusmoduuli extends KoodistostaLöytyväKoulutusmoduuli {
   @KoodistoUri("koulutustyyppi")
   @Hidden
-  @ReadOnly("Koulutustyypin koodia ei tarvita syöttövaiheessa; Koski päättelee sen automaattisesti.")
+  @ReadOnly("Koulutustyypin koodia ei tarvita syöttövaiheessa; Koski päättelee sen automaattisesti koulutuskoodin perusteella.")
   def koulutustyyppi: Option[Koodistokoodiviite]
 }
 
@@ -56,7 +56,6 @@ trait Koulutus extends KoulutustyypinSisältäväKoulutusmoduuli {
   @KoodistoUri("koulutus")
   @OksaUri("tmpOKSAID560", "tutkinto")
   def tunniste: Koodistokoodiviite
-  @ReadOnly("Koski päättelee koulutustyypin automaattisesti koulutuskoodin perusteella.")
   def koulutustyyppi: Option[Koodistokoodiviite]
 }
 
