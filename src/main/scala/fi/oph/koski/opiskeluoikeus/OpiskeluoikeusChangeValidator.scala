@@ -38,7 +38,8 @@ class OpiskeluoikeusChangeValidator(organisaatioRepository: OrganisaatioReposito
     // Tässä listassa on väliaikaisesti sallittujen oppilaitosvaihdosten lähde- ja kohde -OID:t. Tuplena.
     // Lähde-OID --> kohde-OID
     val sallitutOppilaitosVaihdokset = List(
-      (Some("1.2.246.562.10.63813695861"), Some("1.2.246.562.10.42923230215"))
+      (Some("1.2.246.562.10.63813695861"), Some("1.2.246.562.10.42923230215")),
+      (Some("1.2.246.562.10.93428463247"), Some("1.2.246.562.10.77609835432"))
     )
 
     val uusiOppilaitos = uusiOpiskeluoikeus.oppilaitos.map(_.oid)
