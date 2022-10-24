@@ -2398,5 +2398,6 @@
   "description:TUVA-opiskeluoikeuden erityisen tuen päätöstiedot" : "TUVA-opiskeluoikeuden erityisen tuen päätöstiedot",
   "Curriculum" : "Curriculum",
   "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus" : "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus",
-  "description:Käytetyn synteettisen koodiston tunniste" : "Käytetyn synteettisen koodiston tunniste"
+  "description:Käytetyn synteettisen koodiston tunniste" : "Käytetyn synteettisen koodiston tunniste",
+  "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan..." : "Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi."
 }
