@@ -35,9 +35,11 @@ export const ArvosanaEditor = ({ model, notFoundText }) => {
     oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))),
     'arvosana'
   ).startWith([])
+
   const arvosanatP = alternativesP.map((alternatives) =>
     alternatives.map((m) => modelLookup(m, 'arvosana').value)
   )
+
   return (
     <span>
       {alternativesP.map((alternatives) => {

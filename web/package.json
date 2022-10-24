@@ -16,6 +16,7 @@
     "bacon.atom": "^5.0.5",
     "baconjs": "^1.0.1",
     "baret": "^1.2.0",
+    "classnames": "^2.3.2",
     "codemirror": "^5.65.9",
     "core-js": "^1.2.7",
     "element-closest": "^2.0.2",
