@@ -459,9 +459,6 @@
         "koodistoUri" : "suorituksentyyppi"
       },
       "jääLuokalle" : true,
-      "todistuksellaNäkyvätLisätiedot" : {
-        "fi" : "Vähän liikaa poissaoloja, muista tulla kouluun paremmin ensi vuonna!"
-      },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
