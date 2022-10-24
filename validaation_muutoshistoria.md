@@ -1,6 +1,9 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 24.10.2022
+- Sallittu väliaikaisesti oppilaitoksen vaihto tilanteessa, jossa vaihdetaan oppilaitoksesta 1.2.246.562.10.93428463247 oppilaitokseen 1.2.246.562.10.77609835432
+
 ## 19.10.2022
 - Sallitaan uudet JOTPA-rahoitusmuodot ainoastaan ammatillisen koulutuksen opiskeluoikeuksille.
 - Tunnustetun ammatillisen tutkinnon tai osittaisen ammatillisen tutkinnon osan tutkinnon perusteen voimassaoloa ei enää validoida.
