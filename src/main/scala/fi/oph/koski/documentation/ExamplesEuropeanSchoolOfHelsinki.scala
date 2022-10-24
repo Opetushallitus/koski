@@ -13,20 +13,30 @@ object ExamplesEuropeanSchoolOfHelsinki {
   val päättymispäivä = alkamispäivä.plusYears(16).withMonth(5).withDayOfMonth(31)
   val lisätiedot = EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
     ulkomaanjaksot = Some(List(ExamplesLukio.ulkomaanjakso)),
-    /*maksuttomuus = Some(
-      List(
-        Maksuttomuus(
-          alku = alkamispaiva,
-          loppu = None,
-          maksuton = true
-        )
-      )
-    ),
-    oikeuttaMaksuttomuuteenPidennetty = Some(List(
-      OikeuttaMaksuttomuuteenPidennetty(alkamispaiva, alkamispaiva.plusDays(9)),
-      OikeuttaMaksuttomuuteenPidennetty(alkamispaiva.plusDays(19), alkamispaiva.plusDays(30))
-    ))*/
   )
+
+  val n1 = nurserySuoritus("N1", alkamispäivä.plusYears(0))
+  val n2 = nurserySuoritus("N2", alkamispäivä.plusYears(1))
+
+  val p1 = primarySuoritus("P1", alkamispäivä.plusYears(2))
+  val p2JääLuokalle = primarySuoritus(
+    luokkaaste = "P2",
+    alkamispäivä = alkamispäivä.plusYears(3),
+    jääLuokalle = true,
+    todistuksellaNäkyvätLisätiedot = Some(LocalizedString.finnish("Vähän liikaa poissaoloja, muista tulla kouluun paremmin ensi vuonna!"))
+  )
+  val p2 = primarySuoritus("P2", alkamispäivä.plusYears(4))
+  val p3 = primarySuoritus("P3", alkamispäivä.plusYears(5))
+  val p4 = primarySuoritus("P4", alkamispäivä.plusYears(6))
+  val p5 = primarySuoritus("P5", alkamispäivä.plusYears(7))
+
+  val s1 = secondaryLowerSuoritus("S1", alkamispäivä.plusYears(8))
+  val s2 = secondaryLowerSuoritus("S2", alkamispäivä.plusYears(9))
+  val s3 = secondaryLowerSuoritus("S3", alkamispäivä.plusYears(10))
+  val s4 = secondaryLowerSuoritus("S4", alkamispäivä.plusYears(11))
+  val s5 = secondaryLowerSuoritus("S5", alkamispäivä.plusYears(12))
+  val s6 = secondaryUpperSuoritus("S6", alkamispäivä.plusYears(13))
+  val s7 = secondaryUpperSuoritus("S7", alkamispäivä.plusYears(14), jääLuokalle = true)
 
   val opiskeluoikeus = EuropeanSchoolOfHelsinkiOpiskeluoikeus(
     oppilaitos = Some(europeanSchoolOfHelsinki),
@@ -38,26 +48,21 @@ object ExamplesEuropeanSchoolOfHelsinki {
       )
     ),
     suoritukset = List(
-      nurserySuoritus("N1", alkamispäivä.plusYears(0)),
-      nurserySuoritus("N2", alkamispäivä.plusYears(1)),
-      primarySuoritus("P1", alkamispäivä.plusYears(2)),
-      primarySuoritus(
-        luokkaaste = "P2",
-        alkamispäivä = alkamispäivä.plusYears(3),
-        jääLuokalle = true,
-        todistuksellaNäkyvätLisätiedot = Some(LocalizedString.finnish("Vähän liikaa poissaoloja, muista tulla kouluun paremmin ensi vuonna!"))
-      ),
-      primarySuoritus("P2", alkamispäivä.plusYears(4)),
-      primarySuoritus("P3", alkamispäivä.plusYears(5)),
-      primarySuoritus("P4", alkamispäivä.plusYears(6)),
-      primarySuoritus("P5", alkamispäivä.plusYears(7)),
-      secondaryLowerSuoritus("S1", alkamispäivä.plusYears(8)),
-      secondaryLowerSuoritus("S2", alkamispäivä.plusYears(9)),
-      secondaryLowerSuoritus("S3", alkamispäivä.plusYears(10)),
-      secondaryLowerSuoritus("S4", alkamispäivä.plusYears(11)),
-      secondaryLowerSuoritus("S5", alkamispäivä.plusYears(12)),
-      secondaryUpperSuoritus("S6", alkamispäivä.plusYears(13)),
-      secondaryUpperSuoritus("S7", alkamispäivä.plusYears(14), jääLuokalle = true),
+      n1,
+      n2,
+      p1,
+      p2JääLuokalle,
+      p2,
+      p3,
+      p4,
+      p5,
+      s1,
+      s2,
+      s3,
+      s4,
+      s5,
+      s6,
+      s7,
       secondaryUpperSuoritusFinal("S7", alkamispäivä.plusYears(15)),
     )
   )

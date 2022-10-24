@@ -223,7 +223,26 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
 
           resetFixtures()
         }
-        // TODO: TOR-1685 Eurooppalainen koulu
+        "European School of Helsinki -koulun ysiluokkaa vastaava luokka S5" in {
+          val opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+            suoritukset = Nil,
+          )
+          val s5Luokka: SecondaryLowerVuosiluokanSuoritus = ExamplesEuropeanSchoolOfHelsinki.s5.copy(alkamispäivä = Some(ExamplesEuropeanSchoolOfHelsinki.alkamispäivä))
+
+          putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s5Luokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+            verifyResponseStatusOk()
+          }
+
+          putMaksuttomuus(
+            List(Maksuttomuus(date(2021, 8, 1), None, true)),
+            KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa,
+            alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+          ) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
+          }
+
+          resetFixtures()
+        }
         "International Schoolin vahvistettu ysiluokka ilman opiskeluoikeuden päättymistä" in {
           val opiskeluoikeus = ExamplesInternationalSchool.opiskeluoikeus.copy(
             tila = InternationalSchoolOpiskeluoikeudenTila(
@@ -236,6 +255,31 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           val ysiLuokka: MYPVuosiluokanSuoritus = ExamplesInternationalSchool.grade9.copy(alkamispäivä = Some(date(2015, 6, 30)))
 
           putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(ysiLuokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+            verifyResponseStatusOk()
+          }
+
+          putMaksuttomuus(
+            List(Maksuttomuus(date(2021, 8, 1), None, true)),
+            KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa,
+            alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+          ) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
+          }
+
+          resetFixtures()
+        }
+        "European School of Helsinki -koulun ysiluokkaa vastaava S5 ilman opiskeluoikeuden päättymistä" in {
+          val opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+            tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+              List(
+                EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(date(2000, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen),
+              )
+            ),
+            suoritukset = Nil,
+          )
+          val s5Luokka: SecondaryLowerVuosiluokanSuoritus = ExamplesEuropeanSchoolOfHelsinki.s5.copy(alkamispäivä = Some(date(2015, 6, 30)))
+
+          putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s5Luokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
           }
 
@@ -401,8 +445,28 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
     }
   }
 
-  // TODO: TOR-1685 Eurooppalainen koulu
+  "European School of Helsinki secondary upper vuosiluokan suoritus" - {
+    val lisätiedot = EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(date(2021, 8, 1), None, true))))
+    val opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+      suoritukset = Nil,
+      tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(List(EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(date(2021, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen))),
+      lisätiedot = Some(lisätiedot)
+    )
+    val s5Luokka = ExamplesEuropeanSchoolOfHelsinki.s5.copy(alkamispäivä = Some(date(2021, 8, 1)), vahvistus = None)
+    val s6luokka = ExamplesEuropeanSchoolOfHelsinki.s6.copy(alkamispäivä = Some(date(2021, 8, 1)), vahvistus = None)
 
+    "Maksuttomuus-tiedon voi siirtää jos opiskeluoikeudella on s6-vuosiluokan suoritus, koska se tulkitaan 'lukiotason suoritukseksi'" in {
+      putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s6luokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
+        verifyResponseStatusOk()
+      }
+    }
+    "Maksuttomuus-tietoa ei voi siirtää jos on pelkästään muun vuosiluokan suorituksia" in {
+      putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s5Luokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)."))
+      }
+    }
+  }
+  
   "International school MYPVuosiluokanSuoritus" - {
     val lisätiedot = InternationalSchoolOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(date(2021, 8, 1), None, true))))
     val opiskeluoikeus = ExamplesInternationalSchool.opiskeluoikeus.copy(
@@ -424,7 +488,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
   }
-
 
   "Maksuttomuus-jaksot" - {
     val opiskeluoikeusAlkamispäivällä = alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
