@@ -43,7 +43,6 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
-  @KoodistoUri("opintojenrahoitus")
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
   @KoodistoKoodiarvo("10")

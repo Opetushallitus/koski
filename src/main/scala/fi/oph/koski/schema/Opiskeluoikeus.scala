@@ -183,6 +183,7 @@ trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   @KoodistoUri("koskiopiskeluoikeudentila")
   def tila: Koodistokoodiviite
   override def opiskeluoikeusPäättynyt = KoskiOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
+  @KoodistoUri("opintojenrahoitus")
   def opintojenRahoitus: Option[Koodistokoodiviite] = None
 }
 

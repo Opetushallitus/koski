@@ -276,7 +276,6 @@ case class AikuistenPerusopetuksenOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
-  @KoodistoUri("opintojenrahoitus")
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
