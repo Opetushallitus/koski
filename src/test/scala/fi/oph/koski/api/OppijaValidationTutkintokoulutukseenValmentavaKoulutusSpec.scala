@@ -304,6 +304,28 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
     }
 
     "Opiskeluoikeuden tila" - {
+      """Opiskeluoikeuden tilaa "eronnut" ei saa käyttää""" in {
+        // Tämä tilan tarkistus on tehty validaationa eikä tietomalliin siksi, että tuotantoon ehti livahtaa väärää dataa.
+        putOpiskeluoikeus(
+          tuvaOpiskeluOikeusValmistunut.copy(tila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
+            opiskeluoikeusjaksot = List(
+              tuvaOpiskeluOikeusjakso(date(2021, 8, 1), "lasna"),
+              tuvaOpiskeluOikeusjakso(date(2022, 8, 1), "eronnut")
+            )
+          )),
+          henkilö = tuvaHenkilöValmis,
+          headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+        ) {
+          verifyResponseStatus(
+            400,
+            KoskiErrorCategory
+              .badRequest.validation.tila.tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo(
+              """Opiskeluoikeuden tila eronnut ei ole sallittu tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeudessa. Käytä tilaa katsotaaneronneeksi."""
+            )
+          )
+        }
+      }
+
       """Opiskeluoikeuden tila "loma" sallitaan, kun opiskeluoikeuden järjestämislupa on ammatillisen koulutuksen järjestämisluvan piirissä""" in {
         putOpiskeluoikeus(
           tuvaOpiskeluOikeusLoma.copy(

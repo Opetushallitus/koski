@@ -41,6 +41,9 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
 
 case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   alku: LocalDate,
+  // Eronnut-tila on sallittu siksi, että tuotantoon ehti livahtaa väärää dataa. Tilan jatkokäyttö on
+  // estetty validaatiolla.
+  @KoodistoKoodiarvo("eronnut")
   @KoodistoKoodiarvo("katsotaaneronneeksi")
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("mitatoity")
