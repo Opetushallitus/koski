@@ -1,97 +1,92 @@
-import React from "react";
-import {
-  hasModelProperty,
-  modelData,
-  modelLookup,
-} from "../editor/EditorModel";
+import React from 'react'
+import { hasModelProperty, modelData, modelLookup } from '../editor/EditorModel'
 
-import { PerusopetuksenOppiaineetEditor } from "../perusopetus/PerusopetuksenOppiaineetEditor";
-import { PropertiesEditor } from "../editor/PropertiesEditor";
-import { LukionOppiaineetEditor } from "../lukio/LukionOppiaineetEditor";
-import { LuvaEditor } from "../lukio/LuvaEditor";
-import { PropertyEditor } from "../editor/PropertyEditor";
-import { Editor } from "../editor/Editor";
-import { sortLanguages } from "../util/sorting";
-import { ArvosanaEditor } from "./ArvosanaEditor";
+import { PerusopetuksenOppiaineetEditor } from '../perusopetus/PerusopetuksenOppiaineetEditor'
+import { PropertiesEditor } from '../editor/PropertiesEditor'
+import { LukionOppiaineetEditor } from '../lukio/LukionOppiaineetEditor'
+import { LuvaEditor } from '../lukio/LuvaEditor'
+import { PropertyEditor } from '../editor/PropertyEditor'
+import { Editor } from '../editor/Editor'
+import { sortLanguages } from '../util/sorting'
+import { ArvosanaEditor } from './ArvosanaEditor'
 import {
   LukionOppiaineenOppimaaranSuoritus,
-  OmatTiedotLukionOppiaineenOppimaaranSuoritus,
-} from "../lukio/LukionOppiaineenOppimaaranSuoritus";
+  OmatTiedotLukionOppiaineenOppimaaranSuoritus
+} from '../lukio/LukionOppiaineenOppimaaranSuoritus'
 import {
   CreativityActionService,
   ExtendedEssay,
-  TheoryOfKnowledge,
-} from "../ib/IBYhteinenSuoritus";
-import RyhmiteltyOppiaineetEditor from "./RyhmiteltyOppiaineetEditor";
-import OmatTiedotSuoritustaulukko from "./OmatTiedotSuoritustaulukko";
-import OmatTiedotLukionOppiaineet from "../lukio/OmatTiedotLukionOppiaineet";
-import OmatTiedotPerusopetuksenOppiaineet from "../perusopetus/OmatTiedotPerusopetuksenOppiaineet";
-import OmatTiedotRyhmiteltyOppiaineet from "./OmatTiedotRyhmiteltyOppiaineet";
-import TäydentääTutkintoaEditor from "../ammatillinen/TaydentaaTutkintoaEditor";
-import InternationalSchoolOppiaineetEditor from "../internationalschool/InternationalSchoolOppiaineetEditor";
-import { AikuistenPerusopetuksenKurssitEditor } from "../aikuistenperusopetus/AikuistenPerusopetuksenKurssitEditor";
-import { Suoritustaulukko } from "./Suoritustaulukko";
-import { VapaanSivistystyonSuoritustaulukko } from "../vapaasivistystyo/VapaanSivistystyonSuoritustaulukko";
-import { TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko } from "../tuva/TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko";
-import { OsasuoritusEditorModel } from "../types/OsasuoritusEditorModel";
-import {
-  ObjectModel,
-  ObjectModelProperty,
-} from "../types/EditorModels";
-import { VstVapaaTavoitteinenKoulutusmoduuliEditor } from "./VstVapaaTavoitteinenKoulutusmoduuliEditor";
+  TheoryOfKnowledge
+} from '../ib/IBYhteinenSuoritus'
+import RyhmiteltyOppiaineetEditor from './RyhmiteltyOppiaineetEditor'
+import OmatTiedotSuoritustaulukko from './OmatTiedotSuoritustaulukko'
+import OmatTiedotLukionOppiaineet from '../lukio/OmatTiedotLukionOppiaineet'
+import OmatTiedotPerusopetuksenOppiaineet from '../perusopetus/OmatTiedotPerusopetuksenOppiaineet'
+import OmatTiedotRyhmiteltyOppiaineet from './OmatTiedotRyhmiteltyOppiaineet'
+import TäydentääTutkintoaEditor from '../ammatillinen/TaydentaaTutkintoaEditor'
+import InternationalSchoolOppiaineetEditor from '../internationalschool/InternationalSchoolOppiaineetEditor'
+import { AikuistenPerusopetuksenKurssitEditor } from '../aikuistenperusopetus/AikuistenPerusopetuksenKurssitEditor'
+import { Suoritustaulukko } from './Suoritustaulukko'
+import { VapaanSivistystyonSuoritustaulukko } from '../vapaasivistystyo/VapaanSivistystyonSuoritustaulukko'
+import { TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko } from '../tuva/TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko'
+import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
+import { ObjectModel, ObjectModelProperty } from '../types/EditorModels'
+import { VstVapaaTavoitteinenKoulutusmoduuliEditor } from './VstVapaaTavoitteinenKoulutusmoduuliEditor'
+import { EuropeanSchoolOfHelsinkiOppiaineetEditor } from '../esh/EuropeanSchoolOfHelsinkiOppiaineetEditor'
+import { eshSuoritus } from '../esh/europeanschoolofhelsinkiSuoritus'
 
 export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
   const oneOf = (...classes: string[]) =>
-    classes.some((c) => mdl.value.classes.includes(c));
+    classes.some((c) => mdl.value.classes.includes(c))
   const firstClassOneOf = (...classes: string[]) =>
-    classes.includes(mdl.value.classes[0]);
-  const { kansalainen } = mdl.context;
+    classes.includes(mdl.value.classes[0])
+  const { kansalainen } = mdl.context
   const LukionOppiaineetComponent = kansalainen
     ? OmatTiedotLukionOppiaineet
-    : LukionOppiaineetEditor;
+    : LukionOppiaineetEditor
 
   if (
     firstClassOneOf(
-      "perusopetuksenvuosiluokansuoritus",
-      "nuortenperusopetuksenoppimaaransuoritus",
-      "aikuistenperusopetuksenoppimaaransuoritus",
-      "aikuistenperusopetuksenalkuvaiheensuoritus",
-      "perusopetuksenlisaopetuksensuoritus",
-      "perusopetukseenvalmistavanopetuksensuoritus"
+      'perusopetuksenvuosiluokansuoritus',
+      'nuortenperusopetuksenoppimaaransuoritus',
+      'aikuistenperusopetuksenoppimaaransuoritus',
+      'aikuistenperusopetuksenalkuvaiheensuoritus',
+      'perusopetuksenlisaopetuksensuoritus',
+      'perusopetukseenvalmistavanopetuksensuoritus'
     )
   ) {
     const PerusopetuksenOppiaineetComponent = kansalainen
       ? OmatTiedotPerusopetuksenOppiaineet
-      : PerusopetuksenOppiaineetEditor;
-    return <PerusopetuksenOppiaineetComponent model={mdl} />;
+      : PerusopetuksenOppiaineetEditor
+    return <PerusopetuksenOppiaineetComponent model={mdl} />
   }
-  if (firstClassOneOf("aikuistenperusopetuksenoppiaineenoppimaaransuoritus")) {
-    return <AikuistenPerusopetuksenKurssitEditor model={mdl} />;
+  if (firstClassOneOf('aikuistenperusopetuksenoppiaineenoppimaaransuoritus')) {
+    return <AikuistenPerusopetuksenKurssitEditor model={mdl} />
   }
-  if (firstClassOneOf("esiopetuksensuoritus")) {
+  if (firstClassOneOf('esiopetuksensuoritus')) {
     return (
       <PropertiesEditor
-        model={modelLookup(mdl, "koulutusmoduuli")}
+        model={modelLookup(mdl, 'koulutusmoduuli')}
         // @ts-expect-error PropertiesEditor
-        propertyFilter={(p) => p.key === "kuvaus"}
+        propertyFilter={(p) => p.key === 'kuvaus'}
       />
-    );
+    )
   }
   if (
     oneOf(
-      "ammatillinenpaatasonsuoritus",
-      "ylioppilastutkinnonsuoritus",
-      "korkeakoulusuoritus"
+      'ammatillinenpaatasonsuoritus',
+      'ylioppilastutkinnonsuoritus',
+      'korkeakoulusuoritus'
     )
   ) {
     const SuoritustaulukkoComponent = kansalainen
       ? OmatTiedotSuoritustaulukko
-      : Suoritustaulukko;
+      : Suoritustaulukko
     return (
       <SuoritustaulukkoComponent
-        suorituksetModel={modelLookup(mdl, "osasuoritukset")}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
       />
-    );
+    )
   }
   if (
     oneOf(
@@ -106,192 +101,201 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
     return (
       <VapaanSivistystyonSuoritustaulukko
         parentSuoritus={mdl}
-        suorituksetModel={modelLookup(mdl, "osasuoritukset")}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
       />
-    );
+    )
   }
-  if (oneOf("lukionoppimaaransuoritus2015")) {
+  if (oneOf('lukionoppimaaransuoritus2015')) {
     return (
       // @ts-expect-error LukionOppiaineetComponent
       <LukionOppiaineetComponent
-        suorituksetModel={modelLookup(mdl, "osasuoritukset")}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         classesForUusiOppiaineenSuoritus={[
-          "lukionoppiaineensuoritus2015",
-          "muidenlukioopintojensuoritus2015",
+          'lukionoppiaineensuoritus2015',
+          'muidenlukioopintojensuoritus2015'
         ]}
       />
-    );
+    )
   }
   if (
     oneOf(
-      "lukionoppimaaransuoritus2019",
-      "lukionoppiaineidenoppimaariensuoritus2019"
+      'lukionoppimaaransuoritus2019',
+      'lukionoppiaineidenoppimaariensuoritus2019'
     )
   ) {
     return (
       // @ts-expect-error LukionOppiaineetComponent
       <LukionOppiaineetComponent
-        suorituksetModel={modelLookup(mdl, "osasuoritukset")}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         classesForUusiOppiaineenSuoritus={[
-          "lukionoppiaineensuoritus2019",
-          "muidenlukioopintojensuoritus2019",
+          'lukionoppiaineensuoritus2019',
+          'muidenlukioopintojensuoritus2019'
         ]}
         useOppiaineLaajuus={true}
         showKeskiarvo={false}
         additionalOnlyEditableProperties={[
-          "suorituskieli",
-          "suoritettuErityisenäTutkintona",
+          'suorituskieli',
+          'suoritettuErityisenäTutkintona'
         ]}
         additionalEditableKoulutusmoduuliProperties={[
-          "pakollinen",
-          "oppimäärä",
+          'pakollinen',
+          'oppimäärä'
         ]}
-        laajuusHeaderText={"Arvioitu"}
+        laajuusHeaderText={'Arvioitu'}
         showHyväksytystiArvioitujenLaajuus={true}
         useHylkäämättömätLaajuus={false}
       />
-    );
+    )
   }
-  if (oneOf("preibsuoritus2015")) {
+  if (oneOf('preibsuoritus2015')) {
     return (
       // @ts-expect-error LukionOppiaineetComponent
       <LukionOppiaineetComponent
-        suorituksetModel={modelLookup(mdl, "osasuoritukset")}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         classesForUusiOppiaineenSuoritus={[
-          "preiboppiaineensuoritus2015",
-          "muidenlukioopintojensuoritus",
+          'preiboppiaineensuoritus2015',
+          'muidenlukioopintojensuoritus'
         ]}
-        additionalEditableKoulutusmoduuliProperties={["ryhmä"]}
+        additionalEditableKoulutusmoduuliProperties={['ryhmä']}
       />
-    );
+    )
   }
-  if (oneOf("preibsuoritus2019")) {
+  if (oneOf('preibsuoritus2019')) {
     return (
       // @ts-expect-error LukionOppiaineetComponent
       <LukionOppiaineetComponent
-        suorituksetModel={modelLookup(mdl, "osasuoritukset")}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         classesForUusiOppiaineenSuoritus={[
-          "iboppiaineenpreibsuoritus2019",
-          "lukionoppiaineenpreibsuoritus2019",
-          "muidenlukioopintojenpreibsuoritus2019",
+          'iboppiaineenpreibsuoritus2019',
+          'lukionoppiaineenpreibsuoritus2019',
+          'muidenlukioopintojenpreibsuoritus2019'
         ]}
         useOppiaineLaajuus={true}
         showKeskiarvo={false}
         additionalOnlyEditableProperties={[
-          "suorituskieli",
-          "suoritettuErityisenäTutkintona",
+          'suorituskieli',
+          'suoritettuErityisenäTutkintona'
         ]}
-        additionalEditableKoulutusmoduuliProperties={["pakollinen", "ryhmä"]}
-        laajuusHeaderText={"Arvioitu"}
+        additionalEditableKoulutusmoduuliProperties={['pakollinen', 'ryhmä']}
+        laajuusHeaderText={'Arvioitu'}
         showHyväksytystiArvioitujenLaajuus={true}
         useHylkäämättömätLaajuus={false}
       />
-    );
+    )
   }
-  if (oneOf("lukionoppiaineenoppimaaransuoritus2015")) {
+  if (oneOf('lukionoppiaineenoppimaaransuoritus2015')) {
     const LukionOppiaineenOppimaaranSuoritusComponent = kansalainen
       ? OmatTiedotLukionOppiaineenOppimaaranSuoritus
-      : LukionOppiaineenOppimaaranSuoritus;
-    return <LukionOppiaineenOppimaaranSuoritusComponent model={mdl} />;
+      : LukionOppiaineenOppimaaranSuoritus
+    return <LukionOppiaineenOppimaaranSuoritusComponent model={mdl} />
   }
-  if (oneOf("lukioonvalmistavankoulutuksensuoritus")) {
-    return <LuvaEditor suorituksetModel={modelLookup(mdl, "osasuoritukset")} />;
+  if (oneOf('lukioonvalmistavankoulutuksensuoritus')) {
+    return <LuvaEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
   }
-  if (oneOf("ibtutkinnonsuoritus")) {
+  if (oneOf('ibtutkinnonsuoritus')) {
     const TutkinnonOppiaineetComponent = kansalainen
       ? OmatTiedotRyhmiteltyOppiaineet
-      : RyhmiteltyOppiaineetEditor;
+      : RyhmiteltyOppiaineetEditor
     return (
       <TutkinnonOppiaineetComponent
-        suorituksetModel={modelLookup(mdl, "osasuoritukset")}
-        päätasonSuorituksenTyyppi={modelData(mdl, "tyyppi").koodiarvo}
-        additionalEditableKoulutusmoduuliProperties={["taso"]}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        päätasonSuorituksenTyyppi={modelData(mdl, 'tyyppi').koodiarvo}
+        additionalEditableKoulutusmoduuliProperties={['taso']}
       />
-    );
+    )
   }
   if (
     oneOf(
-      "diplomavuosiluokansuoritus",
-      "mypvuosiluokansuoritus",
-      "pypvuosiluokansuoritus"
+      'diplomavuosiluokansuoritus',
+      'mypvuosiluokansuoritus',
+      'pypvuosiluokansuoritus'
     )
   ) {
     return (
       <InternationalSchoolOppiaineetEditor
-        suorituksetModel={modelLookup(mdl, "osasuoritukset")}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
       />
-    );
+    )
   }
-  {/* TODO: TOR-1685 Eurooppalainen koulu */}
-  if (oneOf("diavalmistavanvaiheensuoritus", "diatutkinnonsuoritus")) {
+  if (
+    firstClassOneOf(
+      eshSuoritus.nursery,
+      eshSuoritus.primary,
+      eshSuoritus.secondaryLower,
+      eshSuoritus.secondaryUpper
+    )
+  ) {
+    return <EuropeanSchoolOfHelsinkiOppiaineetEditor model={mdl} />
+  }
+  if (oneOf('diavalmistavanvaiheensuoritus', 'diatutkinnonsuoritus')) {
     const TutkinnonOppiaineetComponent = kansalainen
       ? OmatTiedotRyhmiteltyOppiaineet
-      : RyhmiteltyOppiaineetEditor;
+      : RyhmiteltyOppiaineetEditor
     return (
       <TutkinnonOppiaineetComponent
-        suorituksetModel={modelLookup(mdl, "osasuoritukset")}
-        päätasonSuorituksenTyyppi={modelData(mdl, "tyyppi").koodiarvo}
-        additionalEditableKoulutusmoduuliProperties={["laajuus"]}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        päätasonSuorituksenTyyppi={modelData(mdl, 'tyyppi').koodiarvo}
+        additionalEditableKoulutusmoduuliProperties={['laajuus']}
       />
-    );
+    )
   }
   if (
     oneOf(
-      "tutkintokoulutukseenvalmentavankoulutuksensuoritus",
-      "tutkintokoulutukseenvalmentavankoulutuksenosasuoritus",
-      "tutkintokoulutukseenvalmentavankoulutuksenvalinnaisenosansuoritus"
+      'tutkintokoulutukseenvalmentavankoulutuksensuoritus',
+      'tutkintokoulutukseenvalmentavankoulutuksenosasuoritus',
+      'tutkintokoulutukseenvalmentavankoulutuksenvalinnaisenosansuoritus'
     )
   ) {
     return (
       <TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko
         parentSuoritus={mdl}
-        suorituksetModel={modelLookup(mdl, "osasuoritukset")}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
       />
-    );
+    )
   }
-  return <PropertyEditor model={mdl} propertyName="osasuoritukset" />;
-};
+  return <PropertyEditor model={mdl} propertyName="osasuoritukset" />
+}
 
 export const resolvePropertyEditor = (
   property: ObjectModelProperty,
   model: ObjectModel
 ) => {
   const oneOf = (...classes: string[]) =>
-    classes.some((c) => model.value.classes.includes(c));
+    classes.some((c) => model.value.classes.includes(c))
   switch (property.key) {
-    case "suorituskieli":
+    case 'suorituskieli':
       return (
         <Editor
-          model={modelLookup(model, "suorituskieli")}
+          model={modelLookup(model, 'suorituskieli')}
           sortBy={sortLanguages}
         />
-      );
-    case "arviointi":
+      )
+    case 'arviointi':
       // @ts-expect-error ArvosanaEditor
-      return <ArvosanaEditor model={model} />;
-    case "koulutusmoduuli":
+      return <ArvosanaEditor model={model} />
+    case 'koulutusmoduuli':
       if (
-        oneOf("vapaansivistystyonpaatasonsuoritus") &&
-        hasModelProperty(property.model, "opintokokonaisuus")
+        oneOf('vapaansivistystyonpaatasonsuoritus') &&
+        hasModelProperty(property.model, 'opintokokonaisuus')
       ) {
         return (
           <VstVapaaTavoitteinenKoulutusmoduuliEditor model={property.model} />
-        );
+        )
       } else {
-        return null;
+        return null
       }
 
     // IB
-    case "theoryOfKnowledge":
-      return <TheoryOfKnowledge model={property.model} />;
-    case "creativityActionService":
-      return <CreativityActionService model={property.model} />;
-    case "extendedEssay":
-      return <ExtendedEssay model={property.model} />;
-    case "täydentääTutkintoa":
-      return <TäydentääTutkintoaEditor model={property.model} />;
+    case 'theoryOfKnowledge':
+      return <TheoryOfKnowledge model={property.model} />
+    case 'creativityActionService':
+      return <CreativityActionService model={property.model} />
+    case 'extendedEssay':
+      return <ExtendedEssay model={property.model} />
+    case 'täydentääTutkintoa':
+      return <TäydentääTutkintoaEditor model={property.model} />
 
     default:
-      return null;
+      return null
   }
-};
+}
