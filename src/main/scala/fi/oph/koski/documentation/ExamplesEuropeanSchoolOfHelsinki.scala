@@ -41,7 +41,12 @@ object ExamplesEuropeanSchoolOfHelsinki {
       nurserySuoritus("N1", alkamispäivä.plusYears(0)),
       nurserySuoritus("N2", alkamispäivä.plusYears(1)),
       primarySuoritus("P1", alkamispäivä.plusYears(2)),
-      primarySuoritus("P2", alkamispäivä.plusYears(3), jääLuokalle = true),
+      primarySuoritus(
+        luokkaaste = "P2",
+        alkamispäivä = alkamispäivä.plusYears(3),
+        jääLuokalle = true,
+        todistuksellaNäkyvätLisätiedot = Some(LocalizedString.finnish("Vähän liikaa poissaoloja, muista tulla kouluun paremmin ensi vuonna!"))
+      ),
       primarySuoritus("P2", alkamispäivä.plusYears(4)),
       primarySuoritus("P3", alkamispäivä.plusYears(5)),
       primarySuoritus("P4", alkamispäivä.plusYears(6)),

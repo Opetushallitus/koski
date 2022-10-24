@@ -23,7 +23,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     jääLuokalle = jääLuokalle
   )
 
-  def primarySuoritus(luokkaaste: String, alkamispäivä: LocalDate, jääLuokalle: Boolean = false) = PrimaryVuosiluokanSuoritus(
+  def primarySuoritus(luokkaaste: String, alkamispäivä: LocalDate, jääLuokalle: Boolean = false, todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None) = PrimaryVuosiluokanSuoritus(
     koulutusmoduuli = PrimaryLuokkaAste(luokkaaste),
     luokka = Some(s"${luokkaaste}A"),
     alkamispäivä = Some(alkamispäivä),
@@ -31,6 +31,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     vahvistus = suoritusVahvistus(alkamispäivä.plusYears(1).withMonth(5).withDayOfMonth(31)),
     suorituskieli = ExampleData.englanti,
     jääLuokalle = jääLuokalle,
+    todistuksellaNäkyvätLisätiedot = todistuksellaNäkyvätLisätiedot,
     osasuoritukset = Some(List(
       primaryLapsiOppimisalueenOsasuoritus(
         oppiainekoodi = "TCAAL",

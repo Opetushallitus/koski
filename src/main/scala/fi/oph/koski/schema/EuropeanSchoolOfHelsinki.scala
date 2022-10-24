@@ -131,7 +131,9 @@ trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
     with Toimipisteellinen
     with Arvioinniton
     with Suorituskielellinen
-    with LuokalleJääntiTiedonSisältäväSuoritus {
+    with LuokalleJääntiTiedonSisältäväSuoritus
+    with Todistus
+    {
   @Title("Koulutus")
   def tyyppi: Koodistokoodiviite
   @Description("Luokan tunniste, esimerkiksi 9C.")
@@ -141,6 +143,8 @@ trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
   @Tooltip("Vuosiluokan alkamispäivä")
   def alkamispäivä: Option[LocalDate]
   def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+  @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi.")
+  def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
 }
 
 case class NurseryVuosiluokanSuoritus(
@@ -152,7 +156,8 @@ case class NurseryVuosiluokanSuoritus(
   suorituskieli: Koodistokoodiviite,
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkanursery")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkanursery", koodistoUri = "suorituksentyyppi"),
-  jääLuokalle: Boolean = false
+  jääLuokalle: Boolean = false,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
 ) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
 }
@@ -167,6 +172,7 @@ case class PrimaryVuosiluokanSuoritus(
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkaprimary")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkaprimary", koodistoUri = "suorituksentyyppi"),
   jääLuokalle: Boolean = false,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   override val osasuoritukset: Option[List[PrimaryOsasuoritus]] = None
 ) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
@@ -182,6 +188,7 @@ case class SecondaryLowerVuosiluokanSuoritus(
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondarylower")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkasecondarylower", koodistoUri = "suorituksentyyppi"),
   jääLuokalle: Boolean = false,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   override val osasuoritukset: Option[List[SecondaryLowerOppiaineenSuoritus]] = None
 ) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
@@ -197,6 +204,7 @@ case class SecondaryUpperVuosiluokanSuoritus(
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkasecondaryupper", koodistoUri = "suorituksentyyppi"),
   jääLuokalle: Boolean = false,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   override val osasuoritukset: Option[List[SecondaryUpperOppiaineenSuoritus]] = None
 ) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)

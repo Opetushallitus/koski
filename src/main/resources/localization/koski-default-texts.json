@@ -2399,5 +2399,6 @@
   "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus" : "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus",
   "deprecated:Ei käytössä." : "Ei käytössä.",
   "description:Suorituksen tila, ei käytössä." : "Suorituksen tila, ei käytössä.",
-  "description:Käytetyn synteettisen koodiston tunniste" : "Käytetyn synteettisen koodiston tunniste"
+  "description:Käytetyn synteettisen koodiston tunniste" : "Käytetyn synteettisen koodiston tunniste",
+  "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan..." : "Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi."
 }
