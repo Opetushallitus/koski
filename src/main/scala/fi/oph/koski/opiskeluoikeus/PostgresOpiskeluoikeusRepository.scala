@@ -223,7 +223,6 @@ class PostgresOpiskeluoikeusRepository(
     // HUOMIOI, JOS TÄTÄ MUUTAT: Pitää olla synkassa Oppivelvollisuustiedot.scala:n createMaterializedView-metodissa
     // raportointikantaan tehtävän tarkistuksen kanssa. Muuten Valppaan maksuttomuushaku menee rikki.
     runDbSync(
-      // TODO: TOR-1685 Eurooppalainen koulu
       sql"""
         with master as (
           select case when master_oid is not null then master_oid else oid end as oid
@@ -243,8 +242,11 @@ class PostgresOpiskeluoikeusRepository(
         where not opiskeluoikeus.mitatoity
           and (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'perusopetuksenoppimaara'
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'aikuistenperusopetuksenoppimaara'
-            or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'internationalschoolmypvuosiluokka'
+            or (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'internationalschoolmypvuosiluokka'
               and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = '9')
+            or (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'europeanschoolofhelsinkivuosiluokkasecondarylower'
+              and suoritukset -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' = 'S5')
+          )
           and oppija_oid = any(select oids from linkitetyt)
       """.as[Päivämääräväli])
   }

@@ -13,20 +13,10 @@ object ExamplesEuropeanSchoolOfHelsinki {
   val päättymispäivä = alkamispäivä.plusYears(16).withMonth(5).withDayOfMonth(31)
   val lisätiedot = EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
     ulkomaanjaksot = Some(List(ExamplesLukio.ulkomaanjakso)),
-    /*maksuttomuus = Some(
-      List(
-        Maksuttomuus(
-          alku = alkamispaiva,
-          loppu = None,
-          maksuton = true
-        )
-      )
-    ),
-    oikeuttaMaksuttomuuteenPidennetty = Some(List(
-      OikeuttaMaksuttomuuteenPidennetty(alkamispaiva, alkamispaiva.plusDays(9)),
-      OikeuttaMaksuttomuuteenPidennetty(alkamispaiva.plusDays(19), alkamispaiva.plusDays(30))
-    ))*/
   )
+
+  val s5 = secondaryLowerSuoritus("S5", alkamispäivä.plusYears(12))
+  val s6 = secondaryUpperSuoritus("S6", alkamispäivä.plusYears(13))
 
   val opiskeluoikeus = EuropeanSchoolOfHelsinkiOpiskeluoikeus(
     oppilaitos = Some(europeanSchoolOfHelsinki),
@@ -55,8 +45,8 @@ object ExamplesEuropeanSchoolOfHelsinki {
       secondaryLowerSuoritus("S2", alkamispäivä.plusYears(9)),
       secondaryLowerSuoritus("S3", alkamispäivä.plusYears(10)),
       secondaryLowerSuoritus("S4", alkamispäivä.plusYears(11)),
-      secondaryLowerSuoritus("S5", alkamispäivä.plusYears(12)),
-      secondaryUpperSuoritus("S6", alkamispäivä.plusYears(13)),
+      s5,
+      s6,
       secondaryUpperSuoritus("S7", alkamispäivä.plusYears(14), jääLuokalle = true),
       secondaryUpperSuoritusFinal("S7", alkamispäivä.plusYears(15)),
     )
