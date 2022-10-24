@@ -177,6 +177,53 @@ class OppivelvollisuustietoSpec
         }
       }
 
+      "European School of Helsinki" - {
+
+        "Jos suorittaa vain European school of Helsinkiä, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
+          "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+            resetFixtures
+            insert(master, europeanSchoolOfHelsinkiToinenAsteS7(vahvistusGradeS7 = Some(date(2021, 1, 1))))
+            insert(slave1, europeanSchoolOfHelsinkiToinenAsteS7(vahvistusGradeS7 = Some(date(2025, 1, 1))))
+            insert(slave2, europeanSchoolOfHelsinkiToinenAsteS7(vahvistusGradeS7 = None))
+            updateRaportointikanta
+            verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          }
+        }
+
+        "Jos suorittaa European school of Helsinkiä ja lukiota, käytetään päättymispäivän ESH:n vahvistuspäivää" - {
+          "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+            resetFixtures
+            insert(master, europeanSchoolOfHelsinkiToinenAsteS7(vahvistusGradeS7 = Some(date(2021, 1, 1))))
+            insert(slave1, europeanSchoolOfHelsinkiToinenAsteS7(vahvistusGradeS7 = Some(date(2025, 1, 1))))
+            insert(slave2, lukionOppimäärä(vahvistus = None))
+            updateRaportointikanta
+            verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          }
+        }
+
+        "Jos suorittaa European school of Helsinkiä, lukiota ja ammattikoulua, käytetään päättymispäivän ESH:n vahvistuspäivää" - {
+          "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+            resetFixtures
+            insert(master, europeanSchoolOfHelsinkiToinenAsteS7(vahvistusGradeS7 = Some(date(2021, 1, 1))))
+            insert(slave1, ammatillinenTutkinto(vahvistus = None))
+            insert(slave2, lukionOppimäärä(vahvistus = None))
+            updateRaportointikanta
+            verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          }
+        }
+
+        "Jos on suorittanut IB-tutkinnon ja European school of Helsingin, käytetään päättymispäivänä aiempaa vahvistuspäivää" - {
+          "Vahvistuspäivä päättää molemmat aikaisemmin" in {
+            resetFixtures
+            insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 3, 3))))
+            insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
+            insert(slave2, europeanSchoolOfHelsinkiToinenAsteS7(vahvistusGradeS7 = Some(date(2021, 1, 1))))
+            updateRaportointikanta
+            verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          }
+        }
+      }
+
       "Jos suorittaa vain IB-tutkintoa, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           resetFixtures
@@ -295,7 +342,40 @@ class OppivelvollisuustietoSpec
     )
   }
 
-  // TODO: TOR-1685 Eurooppalainen koulu, lisää myös tähän testiin
+  private def europeanSchoolOfHelsinkiToinenAsteS7(vahvistusGradeS7: Option[LocalDate], lisääMaksuttomuus: Boolean = true): Opiskeluoikeus = {
+    val alkamispäivä = date(2004, 8, 15)
+    ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+      lisätiedot = if (lisääMaksuttomuus) {
+        Some(EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
+          maksuttomuus = maksuttomuustietoAlkamispäivästä(ExamplesInternationalSchool.opiskeluoikeus.alkamispäivä)
+        ))
+      } else {
+        None
+      },
+      tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+        List(
+          EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+        )
+      ),
+      suoritukset = List(
+        ExamplesEuropeanSchoolOfHelsinki.n1.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.n2.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.p1.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.p2.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.p3.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.p4.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.p5.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.s1.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.s2.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.s3.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.s4.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.s5.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.s6.copy(vahvistus = None, alkamispäivä = Some(alkamispäivä)),
+        ExamplesEuropeanSchoolOfHelsinki.s7.copy(vahvistus = vahvistusGradeS7.flatMap(InternationalSchoolExampleData.vahvistus), alkamispäivä = Some(alkamispäivä))
+      )
+    )
+  }
+
 
   private def internationalSchoolToinenAste(vahvistusGrade12: Option[LocalDate], lisääMaksuttomuus: Boolean = true): Opiskeluoikeus = {
     ExamplesInternationalSchool.opiskeluoikeus.copy(
