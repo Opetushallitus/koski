@@ -16,13 +16,13 @@ describe('Helsingin eurooppalainen koulu', function () {
     describe('Opiskeluoikeuden tiedot', function () {
       it('näytetään', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Opiskeluoikeuden voimassaoloaika : 1.8.2022 —\nTila 1.8.2022 Läsnä (muuta kautta rahoitettu)\nLisätiedot'
+          'Opiskeluoikeuden voimassaoloaika : 1.8.2004 — 31.5.2020\nTila 31.5.2020 Valmistunut (muuta kautta rahoitettu)\n1.8.2004 Läsnä (muuta kautta rahoitettu)\nLisätiedot'
         )
 
         expect(
           opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()
         ).to.deep.equal([
-          'European School of Helsinki nursery cycle year class 2022—, Läsnä'
+          'European School of Helsinki secondary cycle upper year class 2004—2020, Valmistunut'
         ])
       })
     })

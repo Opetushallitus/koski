@@ -253,6 +253,7 @@ describe('Oppijataulukko', function () {
           'Erkki, Eitiedossa',
           'Esimerkki, Eero',
           'Eskari, Essi',
+          "Eurooppalainen, Emilia",
           'Hetuton, Heikki',
           'Historoitsija, Hiisi',
           'IB-final, Iina',
@@ -328,7 +329,7 @@ describe('Oppijataulukko', function () {
           'Ylioppilaslukiolainen, Ynjevi',
           'Ysiluokkalainen, Ylermi'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('99')
+        expect(page.opiskeluoikeudeTotal()).to.equal('100')
       })
     })
 
