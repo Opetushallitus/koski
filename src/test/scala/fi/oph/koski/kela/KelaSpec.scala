@@ -184,6 +184,23 @@ class KelaSpec
         opiskeluoikeus.suoritukset.head.osasuoritukset.get.head.lisätiedot.get.head.tunniste.koodiarvo shouldBe "mukautettu"
       }
     }
+    "Palauttaa vst-jotpa-opiskeluoikeuden" in {
+      postHetut(List(KoskiSpecificMockOppijat.vstJotpaKeskenOppija.hetu.get), user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[List[KelaOppija]](body).head
+        oppija.opiskeluoikeudet.length should be(1)
+
+        val oo = oppija.opiskeluoikeudet.last match {
+          case x: KelaVapaanSivistystyönOpiskeluoikeus => x
+        }
+        oo.oppilaitos.get.oid shouldBe "1.2.246.562.10.31915273374"
+        oo.koulutustoimija.get.oid shouldBe "1.2.246.562.10.44330177021"
+        oo.tila.opiskeluoikeusjaksot.last.tila.koodiarvo shouldBe "lasna"
+        oo.tila.opiskeluoikeusjaksot.last.opintojenRahoitus.map(_.koodiarvo) shouldBe Some("14")
+        oo.suoritukset.length shouldBe 1
+        oo.suoritukset.head.osasuoritukset.get.length shouldBe 3
+      }
+    }
   }
 
   "Kelan käyttöoikeudet" - {
