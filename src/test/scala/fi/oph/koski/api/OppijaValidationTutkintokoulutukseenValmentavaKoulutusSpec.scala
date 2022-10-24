@@ -4,7 +4,9 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus._
-import fi.oph.koski.documentation.LukioExampleData
+import fi.oph.koski.documentation.{ExampleData, LukioExampleData}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
@@ -13,13 +15,14 @@ import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.KoskiValidator
-import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFreeSpec with PutOpiskeluoikeusTestMethods[TutkintokoulutukseenValmentavanOpiskeluoikeus] with KoskiHttpSpec {
+class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends TutkinnonPerusteetTest[TutkintokoulutukseenValmentavanOpiskeluoikeus] with KoskiHttpSpec {
   def tag = implicitly[reflect.runtime.universe.TypeTag[TutkintokoulutukseenValmentavanOpiskeluoikeus]]
+
+  override val defaultHenkilö: UusiHenkilö = asUusiOppija(KoskiSpecificMockOppijat.tuva)
 
   "Tutkintokoulutukseen valmentava koulutus" - {
     resetFixtures()
@@ -495,6 +498,22 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
         validate(oo).left.get should equal(KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuusjaksot sisältävät päiviä, joina ei ole voimassaolevaa erityisen tuen jaksoa"))
       }
 
+      "Ei voi tallentaa väärällä perusteen diaarinumerolla" in {
+        val oo = opiskeluoikeus.copy(
+          suoritukset = List(TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
+            toimipiste = stadinAmmattiopisto,
+            koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutus(
+              perusteenDiaarinumero = Some("OPH-5410-2021"), // ajoneuvoalan perustutkinto
+              laajuus = None
+            ),
+            vahvistus = None,
+            suorituskieli = ExampleData.suomenKieli,
+            osasuoritukset = None
+          ))
+        )
+        validate(oo).left.get should equal(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Suoritukselle TutkintokoulutukseenValmentavanKoulutus ei voi käyttää opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta OPH-5410-2021 (7614470), jonka koulutustyyppi on 1(Ammatillinen perustutkinto). Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat 40(Tutkintokoulutukseen valmentava koulutus TUVA))."))
+      }
+
       def validate(oo: Opiskeluoikeus, voimaanastumispäivänOffsetTästäPäivästä: Long = 0): Either[HttpStatus, Oppija] = {
         val oppija = Oppija(defaultHenkilö, List(oo))
 
@@ -532,4 +551,17 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends AnyFree
   }.asInstanceOf[TutkintokoulutukseenValmentavanOpiskeluoikeus]
 
   override def defaultOpiskeluoikeus: TutkintokoulutukseenValmentavanOpiskeluoikeus = tuvaOpiskeluOikeusValmistunut
+
+  override def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]): TutkintokoulutukseenValmentavanOpiskeluoikeus = {
+    tuvaOpiskeluOikeusValmistunut.withSuoritukset(
+      tuvaOpiskeluOikeusValmistunut.suoritukset.map {
+        case s: TutkintokoulutukseenValmentavanKoulutuksenSuoritus =>
+          s.withKoulutusmoduuli(s.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))
+      }
+    ) match {
+      case t: TutkintokoulutukseenValmentavanOpiskeluoikeus => t
+    }
+  }
+
+  override def eperusteistaLöytymätönValidiDiaarinumero: String = "6/011/2015"
 }
