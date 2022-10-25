@@ -1,7 +1,10 @@
 package fi.oph.koski.raportit
 
+import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
+import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures
+
 import java.time.LocalDate
-import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures.{ensimmaisenAlkamispaiva, ensimmaisenPaattymispaiva, keskimmaisenAlkamispaiva}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
@@ -9,18 +12,30 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeus
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
-class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
+import scala.reflect.runtime.universe
+
+class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll
+  with DirtiesFixtures with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] {
 
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
-  override protected def beforeAll(): Unit = {
-    super.beforeAll()
-    reloadRaportointikanta
+  override def tag: universe.TypeTag[VapaanSivistystyönOpiskeluoikeus] = implicitly[reflect.runtime.universe.TypeTag[VapaanSivistystyönOpiskeluoikeus]]
+
+  override def defaultOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = PaallekkaisetOpiskeluoikeudetFixtures.vstVapaatavoitteinenOpiskeluoikeus
+
+  override protected def alterFixture(): Unit = {
+    createOrUpdate(
+      oppija = KoskiSpecificMockOppijat.paallekkaisiOpiskeluoikeuksia,
+      opiskeluoikeus = defaultOpiskeluoikeus,
+      user = MockUsers.paakayttaja
+    )
+    reloadRaportointikanta()
   }
 
   lazy val helsinginRaportti = loadRaportti(MockOrganisaatiot.helsinginKaupunki)

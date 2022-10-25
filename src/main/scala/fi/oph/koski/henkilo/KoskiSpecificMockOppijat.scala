@@ -121,7 +121,7 @@ object KoskiSpecificMockOppijat {
   val lukioKurssikertymaRaportti_aineopiskelija_valmistunut = koskiSpecificOppijat.oppija("Kurssikertyma", "Valmistunut Aineopiskelija", "140802A010A")
   val luvaOpiskelijamaaratRaportti_nuortenOppimaara = koskiSpecificOppijat.oppija("Luva", "Nuorten", "300900A9818", kotikunta = Some("035"))
   val luvaOpiskelijamaaratRaportti_aikuistenOppimaara = koskiSpecificOppijat.oppija("Luva", "Aikuisten", "300900A9774")
-  val paallekkaisiOpiskeluoikeuksia = koskiSpecificOppijat.oppija("Paallekkaisia", "Pekka", "171100A9438")
+  val paallekkaisiOpiskeluoikeuksia = koskiSpecificOppijat.oppija("Paallekkaisia", "Pekka", "210400A021E")
   val vapaaSivistystyöOppivelvollinen = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Oppivelvollinen", "080177-870W")
   val vapaaSivistystyöMaahanmuuttajienKotoutus = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Kotoutuja", "260769-598H")
   val vapaaSivistystyöLukutaitoKotoutus = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Lukutaitokouluttautuja", "231158-467R")

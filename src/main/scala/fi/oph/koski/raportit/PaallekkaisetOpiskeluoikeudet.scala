@@ -33,7 +33,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   def createMaterializedView(s: Schema) =
     sqlu"""
       create materialized view #${s.name}.paallekkaiset_opiskeluoikeudet as
-        select
+        select distinct
           opiskeluoikeus.oppija_oid,
           opiskeluoikeus.opiskeluoikeus_oid,
           opiskeluoikeus.oppilaitos_nimi,
@@ -59,7 +59,19 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
                and coalesce(paallekkainen.paattymispaiva, '9999-12-31'::date) >= opiskeluoikeus.alkamispaiva
                and paallekkainen.alkamispaiva <= coalesce(opiskeluoikeus.paattymispaiva, '9999-12-31'::date)
         ) paallekkainen on paallekkainen.oppija_oid = opiskeluoikeus.oppija_oid
+        join lateral (
+          select suorituksen_tyyppi, opiskeluoikeus_oid
+          from #${s.name}.r_paatason_suoritus suoritus
+          where suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+        ) suoritus on suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+        join lateral (
+          select suorituksen_tyyppi, opiskeluoikeus_oid
+          from #${s.name}.r_paatason_suoritus paallekkainensuoritus
+          where paallekkainensuoritus.opiskeluoikeus_oid = paallekkainen.opiskeluoikeus_oid
+        ) paallekkainensuoritus on paallekkainensuoritus.opiskeluoikeus_oid = paallekkainen.opiskeluoikeus_oid
         where opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
+          and not suoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
+          and not paallekkainensuoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
     """
 
   def createIndex(s: Schema) =
