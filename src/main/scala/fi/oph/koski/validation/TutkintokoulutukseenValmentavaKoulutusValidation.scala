@@ -12,6 +12,7 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
       case suoritus: TutkintokoulutukseenValmentavanKoulutuksenSuoritus =>
         HttpStatus.fold(
           validateTuvaSuorituksenLaajuusJaRakenne(suoritus, opiskeluoikeus),
+          validateTuvaSallitutOpiskeluoikeudenTilat(opiskeluoikeus),
           validateTuvaSuorituksenOpiskeluoikeudenTila(opiskeluoikeus)
         )
       case _ =>
@@ -47,12 +48,24 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
     }
   }
 
+  private def validateTuvaSallitutOpiskeluoikeudenTilat(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = opiskeluoikeus match {
+    // Tämä tilan tarkistus on tehty validaationa eikä tietomalliin siksi, että tuotantoon ehti livahtaa väärää dataa.
+    case a: TutkintokoulutukseenValmentavanOpiskeluoikeus =>
+      HttpStatus.validate(!a.tila.opiskeluoikeusjaksot.exists(j => j.tila.koodiarvo == "eronnut"))(
+        KoskiErrorCategory.badRequest.validation.tila.tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo(
+          s"Opiskeluoikeuden tila eronnut ei ole sallittu tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeudessa. Käytä tilaa katsotaaneronneeksi."
+        )
+      )
+    case _ => HttpStatus.ok
+  }
+
   private def validateTuvaSuorituksenOpiskeluoikeudenTila(
                                                        opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus
                                                      ): HttpStatus = opiskeluoikeus match {
     case a: TutkintokoulutukseenValmentavanOpiskeluoikeus if a.järjestämislupa.koodiarvo != "ammatillinen" && a.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == "loma") => tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo()
     case _ => HttpStatus.ok
   }
+
 
   private def validateOsasuoritustenLaajuus(
     suoritus: TutkintokoulutukseenValmentavanKoulutuksenSuoritus

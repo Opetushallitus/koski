@@ -41,14 +41,22 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
 
 case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   alku: LocalDate,
+  // Eronnut-tila on sallittu siksi, että tuotantoon ehti livahtaa väärää dataa. Tilan jatkokäyttö on
+  // estetty validaatiolla.
+  @KoodistoKoodiarvo("eronnut")
+  @KoodistoKoodiarvo("katsotaaneronneeksi")
+  @KoodistoKoodiarvo("lasna")
+  @KoodistoKoodiarvo("mitatoity")
+  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
+  @KoodistoKoodiarvo("valmistunut")
+  @KoodistoKoodiarvo("loma")
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
-  @KoodistoUri("opintojenrahoitus")
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("6")
   @KoodistoKoodiarvo("10")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
-) extends KoskiLomanSallivaLaajaOpiskeluoikeusjakso
+) extends KoskiOpiskeluoikeusjakso
 
 trait TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus
   extends KoskeenTallennettavaPäätasonSuoritus

@@ -1,6 +1,9 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 25.10.2022
+- TUVA-opiskeluoikeuksissa ei enää sallita tiloja eronnut ja peruutettu.
+
 ## 24.10.2022
 - Sallittu väliaikaisesti oppilaitoksen vaihto tilanteessa, jossa vaihdetaan oppilaitoksesta 1.2.246.562.10.93428463247 oppilaitokseen 1.2.246.562.10.77609835432
 - Lisätty TUVA- ja VST-suorituksille perusteiden koulutustyypin validaatio. Estetään näin koulutuksien syöttäminen väärällä diaarinumerolla.

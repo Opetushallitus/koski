@@ -159,7 +159,6 @@ case class AmmatillinenOpiskeluoikeusjakso(
   alku: LocalDate,
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
-  @KoodistoUri("opintojenrahoitus")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiLomanSallivaLaajaOpiskeluoikeusjakso
 
