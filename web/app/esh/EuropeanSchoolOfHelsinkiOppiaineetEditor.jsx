@@ -5,7 +5,7 @@ import {
   addContext,
   contextualizeSubModel,
   ensureArrayKey,
-  findModelProperty,
+  // findModelProperty,
   modelData,
   modelItems,
   modelLookup,
@@ -23,7 +23,7 @@ import Text from '../i18n/Text'
 import {
   footnoteDescriptions,
   footnotesForSuoritus,
-  groupTitleForSuoritus,
+  // groupTitleForSuoritus,
   isPäättötodistus,
   isToimintaAlueittain,
   isVuosiluokkaTaiPerusopetuksenOppimäärä,
@@ -32,8 +32,8 @@ import {
   luokkaAste,
   luokkaAsteenOsasuoritukset,
   oppimääränOsasuoritukset,
-  pakollisetTitle,
-  valinnaisetTitle,
+  // pakollisetTitle,
+  // valinnaisetTitle,
   valmiitaSuorituksia
 } from './esh'
 import {
@@ -133,6 +133,7 @@ const fetchOsasuorituksetTemplate = (model, toimintaAlueittain) =>
 const modelDataIlmanTyyppiä = (suoritus) =>
   R.dissoc('tyyppi', modelData(suoritus))
 
+/*
 const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
   const oppiaineHasPakollisuus = (oppiaine) =>
     findModelProperty(oppiaine, (p) => p.key === 'pakollinen')
@@ -147,6 +148,7 @@ const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
         .some(oppiaineHasPakollisuus))
   )
 }
+
 
 const GroupedOppiaineetEditor = ({ model, uusiOppiaineenSuoritus }) => {
   const groups = [pakollisetTitle, valinnaisetTitle]
@@ -179,22 +181,16 @@ const GroupedOppiaineetEditor = ({ model, uusiOppiaineenSuoritus }) => {
     </span>
   )
 }
+*/
 
-const SimpleOppiaineetEditor = ({
-  model,
-  uusiOppiaineenSuoritus,
-  uusiPerusopetukseenValmistavanOppiaineenSuoritus
-}) => {
+const SimpleOppiaineetEditor = ({ model, uusiOppiaineenSuoritus }) => {
   const suoritukset = modelItems(model, 'osasuoritukset')
   return (
     <span>
-      <Oppiainetaulukko
+      <EshOppiainetaulukko
         model={model}
         suoritukset={suoritukset}
         uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
-        uusiPerusopetukseenValmistavanOppiaineenSuoritus={
-          uusiPerusopetukseenValmistavanOppiaineenSuoritus
-        }
       />
       <KäyttäytymisenArvioEditor model={model} />
     </span>
@@ -215,44 +211,39 @@ const KäyttäytymisenArvioEditor = ({ model }) => {
   ) : null
 }
 
+// TODO: TOR-1685
+const resolveSynteettinenArvosanaEditor = () => {}
+
 const createOppiaineenSuoritus = (
   suoritukset,
-  preferredClassF = (proto) =>
-    isToimintaAlueittain(proto)
-      ? 'toiminta_alueensuoritus'
-      : 'oppiaineensuoritus'
+  preferredClassFn = (proto) => {
+    console.log(proto)
+    console.log(proto.value.classes)
+    console.log(proto.value.classes[0])
+    return proto.value.classes[0]
+  }
 ) => {
-  suoritukset = wrapOptional(suoritukset)
-  const newItemIndex = modelItems(suoritukset).length
+  const s = wrapOptional(suoritukset)
+  const newItemIndex = modelItems(s).length
   let oppiaineenSuoritusProto = contextualizeSubModel(
-    suoritukset.arrayPrototype,
-    suoritukset,
+    s.arrayPrototype,
+    s,
     newItemIndex
   )
-  const preferredClass = preferredClassF(oppiaineenSuoritusProto)
+  const preferredClass = preferredClassFn(oppiaineenSuoritusProto)
   const sortValue = (suoritusProto) =>
     suoritusProto.value.classes.includes(preferredClass) ? 0 : 1
   const options = oneOfPrototypes(oppiaineenSuoritusProto).sort(
     (a, b) => sortValue(a) - sortValue(b)
   )
   oppiaineenSuoritusProto = options[0]
-  return contextualizeSubModel(
-    oppiaineenSuoritusProto,
-    suoritukset,
-    newItemIndex
-  )
+  return contextualizeSubModel(oppiaineenSuoritusProto, s, newItemIndex)
 }
 
-class Oppiainetaulukko extends React.Component {
+class EshOppiainetaulukko extends React.Component {
   render() {
-    const {
-      model,
-      suoritukset,
-      title,
-      pakolliset,
-      uusiOppiaineenSuoritus,
-      uusiEshSuoritus
-    } = this.props
+    const { model, suoritukset, title, pakolliset, uusiOppiaineenSuoritus } =
+      this.props
     const { isExpandedP, setExpanded } = accumulateExpandedState({
       suoritukset,
       filter: (s) => expandableProperties(s).length > 0,
@@ -298,7 +289,11 @@ class Oppiainetaulukko extends React.Component {
       setExpanded(suoritusUudellaOppiaineella)(true)
     }
 
-    if (suoritukset.length === 0 && !model.context.edit) return null
+    if (suoritukset.length === 0 && !model.context.edit) {
+      return null
+    }
+
+    /*
     const placeholder = t(
       isToimintaAlueittain(model)
         ? 'Lisää toiminta-alue'
@@ -308,6 +303,7 @@ class Oppiainetaulukko extends React.Component {
         ? 'Lisää pakollinen oppiaine'
         : 'Lisää valinnainen oppiaine'
     )
+    */
 
     const suoritusListaus = (listattavatSuoritukset, listausTitle) => (
       <React.Fragment>
@@ -354,7 +350,7 @@ class Oppiainetaulukko extends React.Component {
               baret-lift
               key={suoritus.arrayKey}
               model={suoritus}
-              uusiOppiaineenSuoritus={uusiEshSuoritus}
+              uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
               expanded={isExpandedP(suoritus)}
               onExpand={setExpanded(suoritus)}
               showArvosana={showArvosana}
@@ -375,26 +371,18 @@ class Oppiainetaulukko extends React.Component {
         {suoritukset.length > 0 && (
           <table>{suoritusListaus(suoritukset)}</table>
         )}
-        {uusiEshSuoritus && (
+        {uusiOppiaineenSuoritus && (
           <span className="uusi-esh-oppiaine">
             <UusiEuropeanSchoolOfHelsinkiOppiaineDropdown
               suoritukset={suoritukset}
-              oppiaineenSuoritus={uusiEshSuoritus}
+              oppiaineenSuoritus={uusiOppiaineenSuoritus}
               pakollinen={pakolliset}
-              resultCallback={addOppiaine(uusiEshSuoritus)}
+              resultCallback={addOppiaine(uusiOppiaineenSuoritus)}
               organisaatioOid={modelData(model.context.toimipiste).oid}
               placeholder={t('Lisää European School of Helsinki -oppiaine')}
             />
           </span>
         )}
-        <UusiEuropeanSchoolOfHelsinkiOppiaineDropdown
-          suoritukset={suoritukset}
-          oppiaineenSuoritus={uusiOppiaineenSuoritus}
-          pakollinen={pakolliset}
-          resultCallback={addOppiaine(uusiOppiaineenSuoritus)}
-          organisaatioOid={modelData(model.context.toimipiste).oid}
-          placeholder={placeholder}
-        />
       </section>
     )
   }
