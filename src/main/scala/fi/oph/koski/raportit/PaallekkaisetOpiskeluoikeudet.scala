@@ -35,6 +35,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       create materialized view #${s.name}.paallekkaiset_opiskeluoikeudet as
         select distinct
           opiskeluoikeus.oppija_oid,
+          henkilo.sukunimi,
+          henkilo.etunimet,
           opiskeluoikeus.opiskeluoikeus_oid,
           opiskeluoikeus.oppilaitos_nimi,
           opiskeluoikeus.oppilaitos_nimi_sv,
@@ -43,7 +45,6 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           opiskeluoikeus.viimeisin_tila,
           opiskeluoikeus.paattymispaiva,
           opiskeluoikeus_diaarit.diaarit_agg opiskeluoikeus_diaarit,
-          -- opiskeluoikeus.opiskelijan nimi
           paallekkainen.opiskeluoikeus_oid  paallekkainen_opiskeluoikeus_oid,
           -- paallekkainen.koulutustoimijan nimi
           -- paallekkainen.oppilaitos_oid
@@ -58,10 +59,10 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           select *
           from #${s.name}.r_opiskeluoikeus paallekkainen
           where paallekkainen.oppija_oid = opiskeluoikeus.oppija_oid
-               and not paallekkainen.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
-               and paallekkainen.sisaltyy_opiskeluoikeuteen_oid is null
-               and coalesce(paallekkainen.paattymispaiva, '9999-12-31'::date) >= opiskeluoikeus.alkamispaiva
-               and paallekkainen.alkamispaiva <= coalesce(opiskeluoikeus.paattymispaiva, '9999-12-31'::date)
+            and not paallekkainen.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+            and paallekkainen.sisaltyy_opiskeluoikeuteen_oid is null
+            and coalesce(paallekkainen.paattymispaiva, '9999-12-31'::date) >= opiskeluoikeus.alkamispaiva
+            and paallekkainen.alkamispaiva <= coalesce(opiskeluoikeus.paattymispaiva, '9999-12-31'::date)
         ) paallekkainen on paallekkainen.oppija_oid = opiskeluoikeus.oppija_oid
         join lateral (
           select suorituksen_tyyppi, opiskeluoikeus_oid
@@ -73,7 +74,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           from #${s.name}.r_paatason_suoritus paallekkainensuoritus
           where paallekkainensuoritus.opiskeluoikeus_oid = paallekkainen.opiskeluoikeus_oid
         ) paallekkainensuoritus on paallekkainensuoritus.opiskeluoikeus_oid = paallekkainen.opiskeluoikeus_oid
-        join lateral(
+        join lateral (
           select opiskeluoikeus_oid, string_agg(perusteen_diaarinumero, ',') diaarit_agg
           from (
             select distinct
@@ -90,6 +91,11 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           ) as diaarilista
           group by opiskeluoikeus_oid
         ) opiskeluoikeus_diaarit on opiskeluoikeus_diaarit.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+        join lateral (
+          select henkilo.oppija_oid, henkilo.sukunimi, henkilo.etunimet
+          from #${s.name}.r_henkilo henkilo
+          where henkilo.oppija_oid = opiskeluoikeus.oppija_oid
+        ) henkilo on henkilo.oppija_oid = opiskeluoikeus.oppija_oid
         where opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
           and not suoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
           and not paallekkainensuoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
@@ -224,6 +230,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       val rs: ResultSet = r.rs
       PaallekkaisetOpiskeluoikeudetRow(
         oppijaOid = rs.getString("oppija_oid"),
+        oppijaSukunimi = Option(rs.getString("sukunimi")),
+        oppijaEtunimet = Option(rs.getString("etunimet")),
         opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
         oppilaitosNimi = rs.getString(if(t.language == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"),
         perusteenDiaarinumero = Option(rs.getString("opiskeluoikeus_diaarit")),
@@ -313,6 +321,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   def columnSettings(t: LocalizationReader) = Columns.flattenGroupingColumns(Seq(
     t.get("raportti-excel-kolumni-koulutuksenJärjestäjänOpiskeluoikeus") -> GroupColumnsWithTitle(List(
       "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      "oppijaSukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
+      "oppijaEtunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
       "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
       "oppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
       "perusteenDiaarinumero" -> Column(t.get("raportti-excel-kolumni-perusteenDiaarinumero")),
@@ -343,6 +353,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
 
 case class PaallekkaisetOpiskeluoikeudetRow(
   oppijaOid: String,
+  oppijaSukunimi: Option[String],
+  oppijaEtunimet: Option[String],
   opiskeluoikeusOid: String,
   oppilaitosNimi: String,
   perusteenDiaarinumero: Option[String],
