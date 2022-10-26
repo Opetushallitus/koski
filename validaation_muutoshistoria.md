@@ -3,6 +3,7 @@
 
 ## 26.10.2022
 - JOTPA-rahoitusmuoto (14, 15) ei voi vaihtua kesken opiskeluoikeuden, eikä sitä voi käyttää opiskeluoikeuksissa, joissa on käytössä muita rahoitusmuotoja.
+- JOTPA-rahoitusmuodon voi lisätä ammatillisen koulutuksen lisäksi myös jatkuvaan oppimiseen suunnatulle vapaan sivistyön koulutuksen opiskeluoikeudelle.
 
 ## 25.10.2022
 - TUVA-opiskeluoikeuksissa ei enää sallita tiloja eronnut ja peruutettu.

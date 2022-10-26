@@ -1,3 +1,7 @@
+## 26.10.2022
+- Tietomalliin lisätty katselmoitava toteutus jatkuvaan oppimiseen suunnatulle vapaan sivistyön koulutuksen opiskeluoikeudelle. Tämän tietomallin mukaisia opiskeluoikeuksia
+ei pysty vielä tallentamaan.
+
 ## 17.10.2022
 
 - Tietomalliin lisätty osittainen toteutus Helsingin eurooppalaista koulua varten. Tämän tietomallin mukaisia opiskeluoikeuksia
