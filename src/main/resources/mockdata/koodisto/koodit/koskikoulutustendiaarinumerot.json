@@ -320,4 +320,34 @@
     "codeElementVersion" : 2,
     "passive" : false
   } ]
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_oph25242017",
+  "koodiArvo" : "OPH-2524-2017",
+  "metadata" : [ {
+    "nimi" : "Pintakäsittelyalan perustutkinto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grundexamen inom ytbehandlingsbranschen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_310112013",
+  "koodiArvo" : "31/011/2013",
+  "metadata" : [ {
+    "nimi" : "Kiinteistöpalvelujen ammattitutkinto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkesexamen för fastighetsservice",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
 } ]

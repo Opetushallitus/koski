@@ -1,7 +1,7 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## 27.10.2022
+## 28.10.2022
 - Palauta aiemmin välikaikaisesti käytöstä poistettu ammatillisen tutkinnon osan ryhmän validaatio.
   Jos koulutuksen tyyppi on ammatillinen perustutkinto, jonka suoritustapa on ops tai reformi, rakenteessa tulee olla tutkinnon osan ryhmä määriteltynä.
 
