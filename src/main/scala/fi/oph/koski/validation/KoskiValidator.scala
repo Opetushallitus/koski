@@ -353,6 +353,7 @@ class KoskiValidator(
         vaadiRahoitusmuotoTiloilta(j, "lasna", "valmistunut"),
         rahoitusmuotoKiellettyTiloilta(j, "eronnut", "katsotaaneronneeksi", "mitatoity", "peruutettu", "valiaikaisestikeskeytynyt")
       )
+      case j: MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso => vaadiRahoitusmuotoTiloilta(j, "lasna", "hyvaksytystisuoritettu")
       case _ => HttpStatus.ok
     })
   }

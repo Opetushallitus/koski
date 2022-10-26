@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.documentation.ExampleData.{jatkuvanOppimisenRahoitus, jatkuvanOppimisenUudistuksenRahoitus, muutaKauttaRahoitettu, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
-import fi.oph.koski.documentation.{AmmattitutkintoExample, ExampleData, ExamplesAmmatillinen, ExamplesVapaaSivistystyö}
+import fi.oph.koski.documentation.AmmattitutkintoExample
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus}
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat

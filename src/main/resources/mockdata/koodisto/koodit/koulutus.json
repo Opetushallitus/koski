@@ -52704,4 +52704,21 @@
     "kieli" : "EN"
   } ],
   "versio" : 12
+}, {
+  "koodiUri" : "koulutus_999951",
+  "koodiArvo" : "999951",
+  "metadata" : [ {
+    "nimi" : "Muu kuin säännelty koulutus",
+    "lyhytNimi" : "Muu kuin säännelty koulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Annan än reglerad utbildning",
+    "lyhytNimi" : "Annan än reglerad utbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Unregulated education",
+    "lyhytNimi" : "Unregulated education",
+    "kieli" : "EN"
+  } ],
+  "versio" : 12
 } ]

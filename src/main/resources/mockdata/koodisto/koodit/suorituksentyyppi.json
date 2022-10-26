@@ -2064,5 +2064,55 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri": "suorituksentyyppi_muukuinsaanneltykoulutus",
+  "koodiArvo": "muukuinsaanneltykoulutus",
+  "metadata": [
+    {
+      "nimi": "Muu kuin säännelty koulutus",
+      "lyhytNimi": "",
+      "kuvaus": "",
+      "kieli": "FI"
+    },
+    {
+      "nimi": "",
+      "lyhytNimi": "",
+      "kuvaus": "",
+      "kieli": "SV"
+    },
+    {
+      "nimi": "",
+      "lyhytNimi": "",
+      "kuvaus": "",
+      "kieli": "EN"
+    }
+  ],
+  "versio": 1,
+  "withinCodeElements": []
+}, {
+  "koodiUri": "suorituksentyyppi_muunkuinsaannellynkoulutuksenosasuoritus",
+  "koodiArvo": "muunkuinsaannellynkoulutuksenosasuoritus",
+  "metadata": [
+    {
+      "nimi": "Muun kuin säännellyn koulutuksen osasuoritus",
+      "lyhytNimi": "",
+      "kuvaus": "",
+      "kieli": "FI"
+    },
+    {
+      "nimi": "",
+      "lyhytNimi": "",
+      "kuvaus": "",
+      "kieli": "SV"
+    },
+    {
+      "nimi": "",
+      "lyhytNimi": "",
+      "kuvaus": "",
+      "kieli": "EN"
+    }
+  ],
+  "versio": 1,
+  "withinCodeElements": []
 }
 ]

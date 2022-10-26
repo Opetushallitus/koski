@@ -31,6 +31,10 @@ trait KoulutusmoduuliPakollinenLaajuusVuosiviikkotunneissa extends Koulutusmoduu
   def laajuus: LaajuusVuosiviikkotunneissa
 }
 
+trait KoulutusmoduuliPakollinenLaajuusTunneissa extends KoulutusmoduuliPakollinenLaajuus {
+  def laajuus: LaajuusTunneissa
+}
+
 trait KoulutusmoduuliValinnainenLaajuus extends Koulutusmoduuli {
   def laajuus: Option[Laajuus]
   override def getLaajuus: Option[Laajuus] = laajuus

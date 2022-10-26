@@ -24,13 +24,13 @@ object JotpaValidation {
     val jotpaRahoitteinen = rahoitusmuoto(jakso).exists(JOTPARAHOITUS_KOODIARVOT.contains)
     val vstJotpanRahoitustiedonVaativatTilat = List("lasna", "hyvaksytystisuoritettu")
 
-    // Huom! Tähän lisätään myöhemmin MUKS-JOTPA, kunhan sen tietomalli valmistuu.
     jakso match {
       case j: VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso if j.opintojenRahoitus.isEmpty && vstJotpanRahoitustiedonVaativatTilat.contains(j.tila.koodiarvo) =>
         KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto()
       case _: Opiskeluoikeusjakso if !jotpaRahoitteinen => HttpStatus.ok
       case _: AmmatillinenOpiskeluoikeusjakso => HttpStatus.ok
       case _: VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso => HttpStatus.ok
+      case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso => HttpStatus.ok
       case _ => KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuotoEiSaaOllaJotpa()
     }
   }
