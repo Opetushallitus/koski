@@ -122,7 +122,10 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
     }
     "Näytetään opiskeluoikeuden päättymispäivä jos sellainen on" in {
       pekanRivit(stadinRaportti).map(_.paattymispaiva) shouldBe(Seq(Some(ensimmaisenPaattymispaiva)))
-
+    }
+    "Näytetään opiskeluoikeuden suoritusten diaarinumerot jos sellaisia on" in {
+      pekanRivit(stadinRaportti).map(_.perusteenDiaarinumero) shouldBe(Seq(Some("40/011/2001")))
+      pekanRivit(keskuksenRaportti).map(_.perusteenDiaarinumero) shouldBe(Seq(Some("40/011/2001,79/011/2014"), Some("40/011/2001,79/011/2014")))
     }
     "Puuttuva opiskeluoikeuden päättymispäivä näytetään tyhjänä" in {
       pekanRivit(keskuksenRaportti).map(_.paattymispaiva) shouldBe(Seq(None, None))

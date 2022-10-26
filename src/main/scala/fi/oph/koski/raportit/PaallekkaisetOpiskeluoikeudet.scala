@@ -42,7 +42,11 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           opiskeluoikeus.alkamispaiva,
           opiskeluoikeus.viimeisin_tila,
           opiskeluoikeus.paattymispaiva,
+          opiskeluoikeus_diaarit.diaarit_agg opiskeluoikeus_diaarit,
+          -- opiskeluoikeus.opiskelijan nimi
           paallekkainen.opiskeluoikeus_oid  paallekkainen_opiskeluoikeus_oid,
+          -- paallekkainen.koulutustoimijan nimi
+          -- paallekkainen.oppilaitos_oid
           paallekkainen.oppilaitos_nimi     paallekkainen_oppilaitos_nimi,
           paallekkainen.oppilaitos_nimi_sv  paallekkainen_oppilaitos_nimi_sv,
           paallekkainen.koulutusmuoto       paallekkainen_koulutusmuoto,
@@ -69,6 +73,23 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           from #${s.name}.r_paatason_suoritus paallekkainensuoritus
           where paallekkainensuoritus.opiskeluoikeus_oid = paallekkainen.opiskeluoikeus_oid
         ) paallekkainensuoritus on paallekkainensuoritus.opiskeluoikeus_oid = paallekkainen.opiskeluoikeus_oid
+        join lateral(
+          select opiskeluoikeus_oid, string_agg(perusteen_diaarinumero, ',') diaarit_agg
+          from (
+            select distinct
+              opiskeluoikeus_oid,
+              coalesce(
+                data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero',
+                data -> 'tutkinto' ->> 'perusteenDiaarinumero',
+                data -> 'täydentääTutkintoa' ->> 'perusteenDiaarinumero',
+                '-'
+              ) as perusteen_diaarinumero
+            from #${s.name}.r_paatason_suoritus
+            where opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+            order by perusteen_diaarinumero asc
+          ) as diaarilista
+          group by opiskeluoikeus_oid
+        ) opiskeluoikeus_diaarit on opiskeluoikeus_diaarit.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
         where opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
           and not suoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
           and not paallekkainensuoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
@@ -205,6 +226,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         oppijaOid = rs.getString("oppija_oid"),
         opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
         oppilaitosNimi = rs.getString(if(t.language == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"),
+        perusteenDiaarinumero = Option(rs.getString("opiskeluoikeus_diaarit")),
         koulutusmuoto = rs.getString("koulutusmuoto"),
         alkamispaiva = r.getLocalDate("alkamispaiva"),
         tilatParametrienSisalla = removeConsecutiveDuplicates(rs.getString("tilat_parametrien_sisalla")),
@@ -293,6 +315,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
       "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
       "oppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
+      "perusteenDiaarinumero" -> Column(t.get("raportti-excel-kolumni-perusteenDiaarinumero")),
       "koulutusmuoto" -> Column(t.get("raportti-excel-kolumni-koulutusmuoto")),
       "alkamispaiva" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
       "paattymispaiva" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
@@ -322,6 +345,7 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   oppijaOid: String,
   opiskeluoikeusOid: String,
   oppilaitosNimi: String,
+  perusteenDiaarinumero: Option[String],
   koulutusmuoto: String,
   alkamispaiva: LocalDate,
   paattymispaiva: Option[LocalDate],
