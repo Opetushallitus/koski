@@ -30,7 +30,7 @@ object ExamplesVapaaSivistystyöKotoutuskoulutus2022 {
       VapaanSivistystyönOpiskeluoikeus(
         oppilaitos = Some(varsinaisSuomenKansanopisto),
         tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-          VapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2022, 8, 1), opiskeluoikeusLäsnä)
+          YleinenVapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2022, 8, 1), opiskeluoikeusLäsnä)
         )),
         suoritukset = List(PäätasonSuoritus.juuriAloittanut)
       )
@@ -41,8 +41,8 @@ object ExamplesVapaaSivistystyöKotoutuskoulutus2022 {
     lazy val suoritettu: VapaanSivistystyönOpiskeluoikeus =
       juuriAloittanut.copy(
         tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-          VapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2022, 8, 1), opiskeluoikeusLäsnä),
-          VapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2023, 5, 1), opiskeluoikeusValmistunut)
+          YleinenVapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2022, 8, 1), opiskeluoikeusLäsnä),
+          YleinenVapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2023, 5, 1), opiskeluoikeusValmistunut)
         )),
         suoritukset = List(PäätasonSuoritus.suoritettu),
       )

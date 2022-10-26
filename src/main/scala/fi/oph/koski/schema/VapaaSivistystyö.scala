@@ -1,6 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, NotWhen, OnlyWhen, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, MultiLineString, OksaUri, Representative, Tooltip}
@@ -37,7 +37,16 @@ object VapaanSivistystyönOpiskeluoikeusjakso {
   def päätöstilat = List("valmistunut", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt")
 }
 
-case class VapaanSivistystyönOpiskeluoikeusjakso(
+trait VapaanSivistystyönOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
+  def alku: LocalDate
+
+  @KoodistoUri("koskiopiskeluoikeudentila")
+  def tila: Koodistokoodiviite
+}
+
+@Title("Vapaan sivistystyön opiskeluoikeusjakso")
+@NotWhen("../../../suoritukset/0/tyyppi/koodiarvo", "vstjotpakoulutus")
+case class YleinenVapaanSivistystyönOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoUri("koskiopiskeluoikeudentila")
   @KoodistoKoodiarvo("katsotaaneronneeksi")
@@ -47,9 +56,9 @@ case class VapaanSivistystyönOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("valmistunut")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
   @KoodistoKoodiarvo("keskeytynyt")
-  tila: Koodistokoodiviite
-) extends Opiskeluoikeusjakso {
-  def opiskeluoikeusPäättynyt = VapaanSivistystyönOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
+  tila: Koodistokoodiviite,
+) extends VapaanSivistystyönOpiskeluoikeusjakso {
+  def opiskeluoikeusPäättynyt: Boolean = VapaanSivistystyönOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
 }
 
 case class VapaanSivistystyönOpiskeluoikeudenLisätiedot(

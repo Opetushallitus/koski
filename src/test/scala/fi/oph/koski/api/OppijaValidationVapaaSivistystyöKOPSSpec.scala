@@ -104,8 +104,8 @@ class OppijaValidationVapaaSivistystyöKOPSSpec extends TutkinnonPerusteetTest[V
     "Katsotaan eronneeksi tilaan päättyneellä opiskeluoikeudella ei saa olla arvioimattomia osasuorituksia" in {
       val oo = defaultOpiskeluoikeus.copy(
         tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-          VapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä),
-          VapaanSivistystyönOpiskeluoikeusjakso(date(2022, 6, 1), opiskeluoikeusKatsotaanEronneeksi)
+          YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä),
+          YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 6, 1), opiskeluoikeusKatsotaanEronneeksi)
         )),
         suoritukset = List(suoritusKOPS.copy(
         osasuoritukset = Some(List(

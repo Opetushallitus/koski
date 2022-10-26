@@ -99,7 +99,8 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
       "oppivelvollisillesuunnattumaahanmuuttajienkotoutumiskoulutuksensuoritus",
       "vapaansivistystyonlukutaitokoulutuksensuoritus",
       "vapaansivistystyonvapaatavoitteisenkoulutuksensuoritus",
-      "oppivelvollisillesuunnattumaahanmuuttajienkotoutumiskoulutuksensuoritus2022"
+      "oppivelvollisillesuunnattumaahanmuuttajienkotoutumiskoulutuksensuoritus2022",
+      "vapaansivistystyonjotpakoulutuksensuoritus"
     )
   ) {
     return (

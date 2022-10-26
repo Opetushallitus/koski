@@ -1,17 +1,18 @@
 import Http from '../util/http'
 import Bacon from 'baconjs'
+import { jotpaSallitutRahoituskoodiarvot } from '../jotpa/jotpa'
 
 const valtionosuusrahoitteinen = '1'
 
+export const getRahoitusmuoto = (rahoituskoodi) =>
+  Http.cachedGet(
+    `/koski/api/editor/koodit/opintojenrahoitus/${rahoituskoodi}`
+  ).map((rahoitukset) =>
+    rahoitukset.find((rahoitus) => rahoitus.data.koodiarvo === rahoituskoodi)
+  )
+
 export const defaultRahoitusmuotoP = Bacon.constant(valtionosuusrahoitteinen)
-  .flatMap((vos) =>
-    Http.cachedGet(`/koski/api/editor/koodit/opintojenrahoitus/${vos}`)
-  )
-  .map((rahoitukset) =>
-    rahoitukset.find(
-      (rahoitus) => rahoitus.data.koodiarvo === valtionosuusrahoitteinen
-    )
-  )
+  .flatMap(getRahoitusmuoto)
   .toProperty()
 
 export const autoFillRahoitusmuoto = ({
@@ -29,9 +30,16 @@ export const autoFillRahoitusmuoto = ({
 
 export const opiskeluoikeudenTilaVaatiiRahoitusmuodon = (
   opiskeluoikeudenTyyppi,
-  tila
+  tila,
+  suoritustyyppi
 ) => {
   // TODO: TOR-1685 Eurooppalainen koulu
+  if (
+    opiskeluoikeudenTyyppi === 'vapaansivistystyonkoulutus' &&
+    suoritustyyppi === 'vstjotpakoulutus'
+  ) {
+    return ['lasna', 'hyvaksytystisuoritettu'].includes(tila)
+  }
   if (
     [
       'aikuistenperusopetus',
@@ -49,4 +57,18 @@ export const opiskeluoikeudenTilaVaatiiRahoitusmuodon = (
     return ['lasna', 'valmistunut', 'loma'].includes(tila)
   }
   return false
+}
+
+export const opiskeluoikeudenRahoitusmuotoEiVoiVaihdella = (
+  opiskeluoikeudenTyyppi,
+  suoritustyyppi
+) =>
+  opiskeluoikeudenTyyppi === 'vapaansivistystyonkoulutus' &&
+  suoritustyyppi === 'vstjotpakoulutus'
+
+export const defaultRahoituskoodi = (suoritustyyppi) => {
+  if (suoritustyyppi?.koodiarvo === 'vstjotpakoulutus') {
+    return jotpaSallitutRahoituskoodiarvot[0]
+  }
+  return valtionosuusrahoitteinen
 }

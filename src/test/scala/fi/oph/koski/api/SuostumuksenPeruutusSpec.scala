@@ -11,7 +11,7 @@ import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, MockUse
 import fi.oph.koski.koskiuser.MockUsers.{paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet, varsinaisSuomiPalvelukäyttäjä}
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation, RootLogTester}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{VapaanSivistystyönOpiskeluoikeus, VapaanSivistystyönOpiskeluoikeusjakso}
+import fi.oph.koski.schema.{VapaanSivistystyönOpiskeluoikeus, YleinenVapaanSivistystyönOpiskeluoikeusjakso}
 import org.json4s.{JObject, JString}
 import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.BeforeAndAfterAll
@@ -29,7 +29,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
   val vapaatavoitteinenOpiskeluoikeus = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid).head
   val vapaatavoitteinenOpiskeluoikeusMitätöity = vapaatavoitteinenOpiskeluoikeus match {
     case oo: VapaanSivistystyönOpiskeluoikeus =>
-      val opiskeluoikeusjaksotMitätöity = oo.tila.opiskeluoikeusjaksot ++ Seq(VapaanSivistystyönOpiskeluoikeusjakso(alku = oo.tila.opiskeluoikeusjaksot.head.alku, tila = opiskeluoikeusMitätöity))
+      val opiskeluoikeusjaksotMitätöity = oo.tila.opiskeluoikeusjaksot ++ Seq(YleinenVapaanSivistystyönOpiskeluoikeusjakso(alku = oo.tila.opiskeluoikeusjaksot.head.alku, tila = opiskeluoikeusMitätöity))
       oo.copy(tila = oo.tila.copy(opiskeluoikeusjaksot = opiskeluoikeusjaksotMitätöity))
   }
   val vapaatavoitteinenOpiskeluoikeusOid = vapaatavoitteinenOpiskeluoikeus.oid.get
@@ -527,7 +527,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
 
       val ooMitätöity = oo match {
         case oo: VapaanSivistystyönOpiskeluoikeus =>
-          val opiskeluoikeusjaksotMitätöity = oo.tila.opiskeluoikeusjaksot ++ Seq(VapaanSivistystyönOpiskeluoikeusjakso(alku = oo.tila.opiskeluoikeusjaksot.head.alku, tila = opiskeluoikeusMitätöity))
+          val opiskeluoikeusjaksotMitätöity = oo.tila.opiskeluoikeusjaksot ++ Seq(YleinenVapaanSivistystyönOpiskeluoikeusjakso(alku = oo.tila.opiskeluoikeusjaksot.head.alku, tila = opiskeluoikeusMitätöity))
           oo.copy(
             oid = Some(oid),
             tila = oo.tila.copy(opiskeluoikeusjaksot = opiskeluoikeusjaksotMitätöity)

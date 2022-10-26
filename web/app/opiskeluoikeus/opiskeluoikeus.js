@@ -15,6 +15,11 @@ const vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat = [
   'hyvaksytystisuoritettu',
   'keskeytynyt'
 ]
+const jatkuvanOppimisenVapaanSivistystyönKoulutuksenTilat = [
+  'hyvaksytystisuoritettu',
+  'keskeytynyt',
+  'lasna'
+]
 const tuvaTilat = [
   'katsotaaneronneeksi',
   'lasna',
@@ -88,6 +93,12 @@ const filterBySuorituksenTyyppi = (suorituksenTyyppi, tilat, koodiarvo) => {
     case 'vstvapaatavoitteinenkoulutus':
       return tilat.filter((t) =>
         vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat.includes(
+          koodiarvo(t)
+        )
+      )
+    case 'vstjotpakoulutus':
+      return tilat.filter((t) =>
+        jatkuvanOppimisenVapaanSivistystyönKoulutuksenTilat.includes(
           koodiarvo(t)
         )
       )

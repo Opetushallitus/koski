@@ -62,6 +62,11 @@ const Opintokokonaisuus = ({ opintokokonaisuusAtom, opintokokonaisuudetP }) => {
   )
 }
 
+export const opintokokonaisuudellisetVstSuoritustyypit = [
+  'vstvapaatavoitteinenkoulutus',
+  'vstjotpakoulutus'
+]
+
 export default ({
   suoritusAtom,
   suoritustyyppiAtom,
@@ -70,11 +75,19 @@ export default ({
   opintokokonaisuusAtom
 }) => {
   const perusteAtom = Atom()
+  const näytäPerustekenttä = Atom(false)
 
   const suoritustyypitP = koodistoValues(
-    'suorituksentyyppi/vstoppivelvollisillesuunnattukoulutus,vstmaahanmuuttajienkotoutumiskoulutus,vstlukutaitokoulutus,vstvapaatavoitteinenkoulutus'
+    'suorituksentyyppi/vstoppivelvollisillesuunnattukoulutus,vstmaahanmuuttajienkotoutumiskoulutus,vstlukutaitokoulutus,vstvapaatavoitteinenkoulutus,vstjotpakoulutus'
   )
   const opintokokonaisuudetP = koodistoValues('opintokokonaisuudet')
+
+  suoritustyyppiAtom.onValue((tyyppi) => {
+    näytäPerustekenttä.set(
+      tyyppi &&
+        !opintokokonaisuudellisetVstSuoritustyypit.includes(tyyppi.koodiarvo)
+    )
+  })
 
   Bacon.combineWith(
     oppilaitosAtom,
@@ -93,7 +106,7 @@ export default ({
         title="Suoritustyyppi"
       />
       {suoritustyyppiAtom.map('.koodiarvo').map((tyyppi) => {
-        if (tyyppi === 'vstvapaatavoitteinenkoulutus')
+        if (opintokokonaisuudellisetVstSuoritustyypit.includes(tyyppi))
           return (
             <Opintokokonaisuus
               opintokokonaisuusAtom={opintokokonaisuusAtom}
@@ -103,7 +116,7 @@ export default ({
         return null
       })}
       {ift(
-        suoritustyyppiAtom,
+        näytäPerustekenttä,
         <Peruste {...{ suoritusTyyppiP: suoritustyyppiAtom, perusteAtom }} />
       )}
     </div>
@@ -158,6 +171,7 @@ const makeSuoritus = (
         tyyppi: suoritustyyppi
       }
     case 'vstvapaatavoitteinenkoulutus':
+    case 'vstjotpakoulutus':
       return {
         suorituskieli,
         koulutusmoduuli: {

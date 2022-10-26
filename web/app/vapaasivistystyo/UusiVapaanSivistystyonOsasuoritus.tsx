@@ -131,6 +131,9 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
   const koto2022ValinnaistenOpintojenAlaosasuoritus = findSuoritusPrototyyppi(
     "vstkotoutumiskoulutusvalinnaistenopintojenalaosasuoritus"
   );
+  const jotpaOpintojenOsasuoritus = findSuoritusPrototyyppi(
+    "vapaansivistystyonjotpakoulutuksenosasuorituksensuoritus"
+  );
 
   return (
     <>
@@ -281,6 +284,14 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
           setExpanded={setExpanded}
           lisääText={"Lisää osasuoritus"}
           lisääTitle={"Lisää valinnainen alaosasuoritus"}
+        />
+      )}
+      {jotpaOpintojenOsasuoritus && (
+        <LisääPaikallinen
+          suoritusPrototype={jotpaOpintojenOsasuoritus}
+          setExpanded={setExpanded}
+          lisääText={"Lisää osasuoritus"}
+          lisääTitle={"Osasuorituksen lisäys"}
         />
       )}
     </>

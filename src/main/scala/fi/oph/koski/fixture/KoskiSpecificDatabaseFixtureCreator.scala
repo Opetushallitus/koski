@@ -277,6 +277,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.vstKoto2022Suorittanut, ExamplesVapaaSivistystyöKotoutuskoulutus2022.Opiskeluoikeus.suoritettu),
       (KoskiSpecificMockOppijat.ajoneuvoalanOpiskelija, AmmatillinenReforminMukainenPerustutkinto2022Example.opiskeluoikeus),
       (KoskiSpecificMockOppijat.jotpaAmmattikoululainen, AmmatillinenReforminMukainenPerustutkinto2022Example.opiskeluoikeusJotpa),
+      (KoskiSpecificMockOppijat.vstJotpaKeskenOppija, ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen),
     )
   }
 

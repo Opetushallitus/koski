@@ -60,6 +60,12 @@ object VapaaSivistystyöValidation {
 
   private def validateTilanKoodiarvot(suoritus: VapaanSivistystyönPäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     suoritus match {
+      case _: VapaanSivistystyönJotpaKoulutuksenSuoritus =>
+        if (opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(jakso => !List("lasna", "hyvaksytystisuoritettu", "keskeytynyt", "mitatoity").contains(jakso.tila.koodiarvo))) {
+          KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila()
+        } else {
+          HttpStatus.ok
+        }
       case _: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus => {
         if (opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(jakso => !List("hyvaksytystisuoritettu", "keskeytynyt", "mitatoity").contains(jakso.tila.koodiarvo))) {
           KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila()
