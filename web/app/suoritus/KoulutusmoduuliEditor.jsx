@@ -8,6 +8,7 @@ import { tutkinnonNimi } from './Koulutusmoduuli'
 import { InternationalSchoolLevel } from '../internationalschool/InternationalSchoolLevel'
 import { TunnisteenKoodiarvoEditor } from './TunnisteenKoodiarvoEditor'
 import { isMuutaAmmatillistaPäätasonSuoritus } from '../muuammatillinen/MuuAmmatillinen'
+import { CurriculumEditor } from './CurriculumEditor'
 
 export const KoulutusmoduuliEditor = ({ model }) => {
   const propertyFilter = (p) => {
@@ -16,13 +17,17 @@ export const KoulutusmoduuliEditor = ({ model }) => {
       'perusteenDiaarinumero',
       'perusteenNimi',
       'pakollinen',
-      'diplomaType'
+      'diplomaType',
+      'curriculum'
     ]
     const esiopetusKuvaus =
       suorituksenTyyppi(model.context.suoritus) === 'esiopetuksensuoritus' &&
       p.key === 'kuvaus'
     return !excludedProperties.includes(p.key) && !esiopetusKuvaus
   }
+  const hideEshCurriculum = (mdl) =>
+    !mdl.value.classes.includes('europeanschoolofhelsinkiluokkaaste')
+
   return (
     <span className="koulutusmoduuli">
       <span className="tunniste">
@@ -31,6 +36,11 @@ export const KoulutusmoduuliEditor = ({ model }) => {
       <span className="tunniste-koodiarvo">
         <TunnisteenKoodiarvoEditor model={model} />
       </span>
+      {!hideEshCurriculum(model) && (
+        <span className="curriculum">
+          <CurriculumEditor model={model} />
+        </span>
+      )}
       <span className="diaarinumero">
         <span
           className={buildClassNames(['value', !model.context.edit && 'label'])}
