@@ -364,13 +364,14 @@ class YtlSpec
         KoskiSpecificMockOppijat.internationalschool,
         KoskiSpecificMockOppijat.dia,
         KoskiSpecificMockOppijat.eskari,
-        KoskiSpecificMockOppijat.eiKoskessa
+        KoskiSpecificMockOppijat.eiKoskessa,
+        KoskiSpecificMockOppijat.jotpaAmmattikoululainen,
       ).map(_.hetu.get)
 
       postHetut(hetut) {
         verifyResponseStatusOk()
         val response = JsonSerializer.parse[List[YtlOppija]](body)
-        response.length should equal(7)
+        response.length should equal(8)
       }
     }
 

@@ -1,6 +1,9 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 26.10.2022
+- JOTPA-rahoitusmuoto (14, 15) ei voi vaihtua kesken opiskeluoikeuden, eikä sitä voi käyttää opiskeluoikeuksissa, joissa on käytössä muita rahoitusmuotoja.
+
 ## 25.10.2022
 - TUVA-opiskeluoikeuksissa ei enää sallita tiloja eronnut ja peruutettu.
 
