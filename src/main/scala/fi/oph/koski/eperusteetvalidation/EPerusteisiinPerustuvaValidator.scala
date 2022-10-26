@@ -42,11 +42,9 @@ class EPerusteisiinPerustuvaValidator(
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
         if (tutkinnonSuoritus.suoritustapa.koodiarvo == "ops" || tutkinnonSuoritus.suoritustapa.koodiarvo == "reformi") {
           // OPS- tai reformi -suoritustapa => vaaditaan ryhmittely
-          //suoritus.tutkinnonOsanRyhmä
-          //  .map(_ => HttpStatus.ok)
-          //  .getOrElse(KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta " + suoritus.koulutusmoduuli.tunniste + " puuttuu tutkinnonosan ryhmä, joka on pakollinen ammatillisen perustutkinnon tutkinnonosille." ))
-          // !Väliaikainen! Solenovo ei osannut ajoissa korjata datojaan. Poistetaan mahd pian. Muistutus kalenterissa 28.5.
-          HttpStatus.ok
+          suoritus.tutkinnonOsanRyhmä
+            .map(_ => HttpStatus.ok)
+            .getOrElse(KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta " + suoritus.koulutusmoduuli.tunniste + " puuttuu tutkinnonosan ryhmä, joka on pakollinen ammatillisen perustutkinnon tutkinnonosille." ))
         } else {
           // Näyttö-suoritustapa => ei vaadita ryhmittelyä
           HttpStatus.ok

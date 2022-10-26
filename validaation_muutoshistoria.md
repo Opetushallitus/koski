@@ -1,6 +1,10 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 27.10.2022
+- Palauta aiemmin välikaikaisesti käytöstä poistettu ammatillisen tutkinnon osan ryhmän validaatio.
+  Jos koulutuksen tyyppi on ammatillinen perustutkinto, jonka suoritustapa on ops tai reformi, rakenteessa tulee olla tutkinnon osan ryhmä määriteltynä.
+
 ## 26.10.2022
 - JOTPA-rahoitusmuoto (14, 15) ei voi vaihtua kesken opiskeluoikeuden, eikä sitä voi käyttää opiskeluoikeuksissa, joissa on käytössä muita rahoitusmuotoja.
 - JOTPA-rahoitusmuodon voi lisätä ammatillisen koulutuksen lisäksi myös jatkuvaan oppimiseen suunnatulle vapaan sivistyön koulutuksen opiskeluoikeudelle.
