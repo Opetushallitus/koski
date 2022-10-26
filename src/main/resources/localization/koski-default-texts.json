@@ -634,7 +634,6 @@
   "description:Näyttötutkintoon valmistavan koulutuksen osan tunnistetiedot": "Näyttötutkintoon valmistavan koulutuksen osan tunnistetiedot",
   "description:Perusopetuksen koko oppimäärän suoritus. Nämä...": "Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella",
   "description:Perusopetukseen valmistavan opetuksen tunnistetiedot": "Perusopetukseen valmistavan opetuksen tunnistetiedot",
-  "description:Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)": "Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)",
   "description:Suorituksen alkamispäivä. Muoto YYYY-MM-DD": "Suorituksen alkamispäivä. Muoto YYYY-MM-DD",
   "description:Tutkinnon lisäpisteet. Max 3 pistettä...": "Tutkinnon lisäpisteet. Max 3 pistettä yhteensä",
   "description:Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä": "Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä",
@@ -2397,5 +2396,7 @@
   "Poista osasuoritus. Poistaminen ei vaikuta olemassa oleviin suorituksiin.": "Poista osasuoritus. Poistaminen ei vaikuta olemassa oleviin suorituksiin.",
   "description:TUVA-opiskeluoikeuden erityisen tuen päätöstiedot" : "TUVA-opiskeluoikeuden erityisen tuen päätöstiedot",
   "Curriculum" : "Curriculum",
-  "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus" : "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus"
+  "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus" : "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus",
+  "deprecated:Ei käytössä." : "Ei käytössä.",
+  "description:Suorituksen tila, ei käytössä." : "Suorituksen tila, ei käytössä."
 }

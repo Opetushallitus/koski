@@ -21,11 +21,12 @@ trait Suoritus {
   @Description("Suorituksen alkamispäivä. Muoto YYYY-MM-DD")
   @Tooltip("Suorituksen alkamispäivä.")
   def alkamispäivä: Option[LocalDate] = None
-  @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
+  @Description("Suorituksen tila, ei käytössä.")
   @KoodistoUri("suorituksentila")
   @SyntheticProperty
-  @ReadOnly("Suorituksen tila päätellään automaattisesti. Päättelylogiikka kuvattu alla. Koski ei enää käsittele tila-kentän arvoa. Kenttä poistetaan tulevaisuudessa tarpeettomana.\nPäättelylogiikka: Suoritus on valmis, kun sillä on vahvistus. Siihen asti suoritus on kesken. Suoritus on keskeytynyt, jos vahvistusta ei ole ja opiskeluoikeuden tila on ERONNUT tai KATSOTAAN ERONNEEKSI.")
+  @ReadOnly("Ei käytössä.")
   @Hidden
+  @Deprecated("Ei käytössä.")
   def tila: Option[Koodistokoodiviite] = None
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   def arviointi: Option[List[Arviointi]]
