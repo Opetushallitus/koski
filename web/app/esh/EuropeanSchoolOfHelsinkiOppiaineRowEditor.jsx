@@ -7,8 +7,8 @@ import {
 } from '../editor/PropertiesEditor'
 import {
   addContext,
+  findModelProperty,
   modelData,
-  modelEmpty,
   modelErrorMessages,
   modelLookup,
   modelProperties,
@@ -36,35 +36,25 @@ export class EuropeanSchoolOfHelsinkiOppiaineRowEditor extends React.Component {
 
     const { edit } = model.context
 
-    const oppiaine = modelLookup(model, 'koulutusmoduuli')
+    const koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
 
     const bodyClassName = cx(
       className,
       'oppiaine',
       'oppiaine-rivi',
-      modelData(oppiaine, 'tunniste').koodiarvo,
+      modelData(koulutusmoduuli, 'tunniste').koodiarvo,
       tilaKoodi(model),
       {
-        pakollinen: isPakollinen(model),
-        valinnainen: !isPakollinen(model),
+        pakollinen: true,
+        valinnainen: false,
         expanded: expanded,
-        paikallinen: isPaikallinen(oppiaine)
+        paikallinen: isPaikallinen(koulutusmoduuli)
       }
     )
 
     const extraProperties = expandableProperties(model)
 
     const showExpand = extraProperties.length > 0
-
-    const sanallinenArvioProperties = modelProperties(
-      modelLookup(model, 'arviointi.-1'),
-      (p) => p.key === 'kuvaus'
-    )
-    const showSanallinenArvio =
-      (model.context.edit && sanallinenArvioProperties.length > 0) ||
-      (showArvosana &&
-        sanallinenArvioProperties.filter((p) => !modelEmpty(p.model)).length >
-          0)
 
     const modelWithToimipiste = addContext(model, {
       toimipiste: modelLookup(model, 'toimipiste')
@@ -87,7 +77,7 @@ export class EuropeanSchoolOfHelsinkiOppiaineRowEditor extends React.Component {
             }
             <EuropeanSchoolOfHelsinkiOppiaineEditor
               {...{
-                oppiaine,
+                oppiaine: koulutusmoduuli,
                 showExpand,
                 expanded,
                 onExpand,
@@ -95,15 +85,13 @@ export class EuropeanSchoolOfHelsinkiOppiaineRowEditor extends React.Component {
               }}
             />
           </td>
-          {showArvosana && (
-            <td className="arvosana">
-              <span className="value">
-                <EuropeanSchoolOfHelsinkiArvosanaEditor
-                  model={modelWithToimipiste}
-                />
-              </span>
-            </td>
-          )}
+          <td className="arvosana">
+            <span className="value">
+              <EuropeanSchoolOfHelsinkiArvosanaEditor
+                model={modelWithToimipiste}
+              />
+            </span>
+          </td>
           {showLaajuus && (
             <td className="laajuus">
               <Editor
@@ -135,16 +123,6 @@ export class EuropeanSchoolOfHelsinkiOppiaineRowEditor extends React.Component {
             </td>
           )}
         </tr>
-        {showSanallinenArvio && (
-          <tr key="sanallinenArviointi" className="sanallinen-arviointi">
-            <td colSpan="4" className="details">
-              <PropertiesEditor
-                properties={sanallinenArvioProperties}
-                context={modelWithToimipiste.context}
-              />
-            </td>
-          </tr>
-        )}
         {expanded && (
           <tr key="details">
             <td colSpan="4" className="details">
@@ -172,44 +150,20 @@ export class EuropeanSchoolOfHelsinkiOppiaineRowEditor extends React.Component {
   }
 }
 
+// TODO: TOR-1685: Arvioinnista ei tarvitse näyttää arvosanaa
+const hiddenExtraProperties = ['tunniste', 'laajuus', 'koulutusmoduuli']
+
 export const expandableProperties = (model) => {
-  const edit = model.context.edit
-  const oppiaine = modelLookup(model, 'koulutusmoduuli')
+  const koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
 
   const extraPropertiesFilter = (p) => {
-    if (
-      !edit &&
-      ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'korotus'].includes(
-        p.key
-      )
-    )
-      return false // these are only shown when editing
-    if (
-      [
-        'koulutusmoduuli',
-        'arviointi',
-        'tunniste',
-        'kieli',
-        'laajuus',
-        'pakollinen',
-        'arvosana',
-        'päivä',
-        'perusteenDiaarinumero',
-        'osasuoritukset'
-      ].includes(p.key)
-    ) {
-      return false // these are never shown
+    if (hiddenExtraProperties.includes(p.key)) {
+      return false
     }
     return shouldShowProperty(model.context)(p)
   }
 
-  return modelProperties(
-    oppiaine,
-    (p) =>
-      !(p.key === 'kuvaus' && isPakollinen(model) && !isPaikallinen(oppiaine))
-  )
+  return modelProperties(koulutusmoduuli)
     .concat(modelProperties(model))
     .filter(extraPropertiesFilter)
 }
-
-const isPakollinen = (model) => modelData(model, 'koulutusmoduuli.pakollinen')
