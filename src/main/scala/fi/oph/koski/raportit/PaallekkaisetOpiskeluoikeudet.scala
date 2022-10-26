@@ -44,16 +44,17 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           opiskeluoikeus.alkamispaiva,
           opiskeluoikeus.viimeisin_tila,
           opiskeluoikeus.paattymispaiva,
-          opiskeluoikeus_diaarit.diaarit_agg opiskeluoikeus_diaarit,
-          paallekkainen.opiskeluoikeus_oid  paallekkainen_opiskeluoikeus_oid,
-          -- paallekkainen.koulutustoimijan nimi
-          -- paallekkainen.oppilaitos_oid
-          paallekkainen.oppilaitos_nimi     paallekkainen_oppilaitos_nimi,
-          paallekkainen.oppilaitos_nimi_sv  paallekkainen_oppilaitos_nimi_sv,
-          paallekkainen.koulutusmuoto       paallekkainen_koulutusmuoto,
-          paallekkainen.viimeisin_tila      paallekkainen_viimeisin_tila,
-          paallekkainen.alkamispaiva        paallekkainen_alkamispaiva,
-          paallekkainen.paattymispaiva      paallekkainen_paattymispaiva
+          opiskeluoikeus_diaarit.diaarit_agg    opiskeluoikeus_diaarit,
+          paallekkainen.opiskeluoikeus_oid      paallekkainen_opiskeluoikeus_oid,
+          paallekkainen.koulutustoimija_nimi    paallekkainen_koulutustoimija_nimi,
+          paallekkainen.koulutustoimija_nimi_sv paallekkainen_koulutustoimija_nimi_sv,
+          paallekkainen.oppilaitos_oid          paallekkainen_oppilaitos_oid,
+          paallekkainen.oppilaitos_nimi         paallekkainen_oppilaitos_nimi,
+          paallekkainen.oppilaitos_nimi_sv      paallekkainen_oppilaitos_nimi_sv,
+          paallekkainen.koulutusmuoto           paallekkainen_koulutusmuoto,
+          paallekkainen.viimeisin_tila          paallekkainen_viimeisin_tila,
+          paallekkainen.alkamispaiva            paallekkainen_alkamispaiva,
+          paallekkainen.paattymispaiva          paallekkainen_paattymispaiva
       from #${s.name}.r_opiskeluoikeus opiskeluoikeus
         join lateral (
           select *
@@ -244,6 +245,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         rahoitusmuodotParametrienSisalla = Option(rs.getString("rahoitusmuodot_osuu_parametreille"))
           .map(removeConsecutiveDuplicates),
         paallekkainenOpiskeluoikeusOid = rs.getString("paallekkainen_opiskeluoikeus_oid"),
+        paallekkainenKoulutustoimijaNimi = rs.getString(if(t.language == "sv") "paallekkainen_koulutustoimija_nimi_sv" else "paallekkainen_koulutustoimija_nimi"),
+        paallekkainenOppilaitosOid = rs.getString("paallekkainen_oppilaitos_oid"),
         paallekkainenOppilaitosNimi = rs.getString(if(t.language == "sv") "paallekkainen_oppilaitos_nimi_sv" else "paallekkainen_oppilaitos_nimi"),
         paallekkainenKoulutusmuoto = rs.getString("paallekkainen_koulutusmuoto"),
         paallekkainenSuoritusTyyppi = suorituksistaKaytettavaNimi(rs.getString("paallekkainen_paatason_suoritukset"), t),
@@ -325,8 +328,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       "oppijaEtunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
       "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
       "oppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
-      "perusteenDiaarinumero" -> Column(t.get("raportti-excel-kolumni-perusteenDiaarinumero")),
       "koulutusmuoto" -> Column(t.get("raportti-excel-kolumni-koulutusmuoto")),
+      "perusteenDiaarinumero" -> Column(t.get("raportti-excel-kolumni-perusteenDiaarinumero")),
       "alkamispaiva" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
       "paattymispaiva" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
       "tilatParametrienSisalla" -> Column(t.get("raportti-excel-kolumni-tilatParametrienSisalla"), comment = Some(t.get("raportti-excel-kolumni-tilatParametrienSisalla-comment"))),
@@ -336,6 +339,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
     )),
     t.get("raportti-excel-kolumni-päällekkäinenOpiskeluoikeus") -> GroupColumnsWithTitle(List(
       "paallekkainenOpiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-paallekkainenOpiskeluoikeusOid")),
+      "paallekkainenKoulutustoimijaNimi" -> Column(t.get("raportti-excel-kolumni-paallekkainenKoulutustoimijaNimi")),
+      "paallekkainenOppilaitosOid" -> Column(t.get("raportti-excel-kolumni-paallekkainenOppilaitosOid")),
       "paallekkainenOppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-paallekkainenOppilaitosNimi")),
       "paallekkainenKoulutusmuoto" -> Column(t.get("raportti-excel-kolumni-paallekkainenKoulutusmuoto")),
       "paallekkainenSuoritusTyyppi" -> Column(t.get("raportti-excel-kolumni-paallekkainenSuoritusTyyppi"), comment = Some(t.get("raportti-excel-kolumni-paallekkainenSuoritusTyyppi-comment"))),
@@ -357,8 +362,8 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   oppijaEtunimet: Option[String],
   opiskeluoikeusOid: String,
   oppilaitosNimi: String,
-  perusteenDiaarinumero: Option[String],
   koulutusmuoto: String,
+  perusteenDiaarinumero: Option[String],
   alkamispaiva: LocalDate,
   paattymispaiva: Option[LocalDate],
   tilatParametrienSisalla: String,
@@ -366,6 +371,8 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   rahoitusmuodot: Option[String],
   rahoitusmuodotParametrienSisalla: Option[String],
   paallekkainenOpiskeluoikeusOid: String,
+  paallekkainenKoulutustoimijaNimi: String,
+  paallekkainenOppilaitosOid: String,
   paallekkainenOppilaitosNimi: String,
   paallekkainenKoulutusmuoto: String,
   paallekkainenSuoritusTyyppi: String,

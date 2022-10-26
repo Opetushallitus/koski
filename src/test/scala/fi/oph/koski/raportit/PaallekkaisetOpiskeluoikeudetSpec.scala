@@ -103,6 +103,19 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
         ("Omnia","Ammatillisen tutkinnon suoritus")
       ))
     }
+    "Päällekkäisen opiskeluoikeuden koulutustoimijan ja oppilaitoksen tiedot" in {
+      pekanRivit(stadinRaportti).map(_.paallekkainenKoulutustoimijaNimi) shouldBe(Seq("Helsingin kaupunki"))
+      pekanRivit(keskuksenRaportti).map(_.paallekkainenKoulutustoimijaNimi) should contain theSameElementsAs(Seq(
+        "Helsingin kaupunki",
+        "Espoon seudun koulutuskuntayhtymä Omnia"
+      ))
+
+      pekanRivit(stadinRaportti).map(_.paallekkainenOppilaitosOid) shouldBe(Seq(MockOrganisaatiot.stadinOppisopimuskeskus))
+      pekanRivit(keskuksenRaportti).map(_.paallekkainenOppilaitosOid) should contain theSameElementsAs(Seq(
+        MockOrganisaatiot.stadinAmmattiopisto,
+        MockOrganisaatiot.omnia
+      ))
+    }
     "Oman organisaation opiskeluoikeuden rahoitusmuodot, luetellaan ilman peräkkäisiä duplikaatteja" in {
       pekanRivit(stadinRaportti).map(_.rahoitusmuodot) shouldBe(Seq(Some("1")))
       pekanRivit(stadinRaportti).map(_.rahoitusmuodotParametrienSisalla) shouldBe(Seq(Some("1")))
