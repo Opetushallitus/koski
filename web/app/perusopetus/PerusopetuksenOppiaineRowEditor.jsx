@@ -70,7 +70,7 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
                   className="toggle-expand"
                   onClick={() => onExpand(!expanded)}
                 >
-                  {expanded ? '' : ''}
+                  {expanded ? <>&#61766;</> : <>&#61694;</>}
                 </a>
               )
             }
