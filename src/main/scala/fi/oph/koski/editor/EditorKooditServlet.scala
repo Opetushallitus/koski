@@ -54,8 +54,8 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
       case ("perusopetuksenluokkaaste", luokkaAstePattern(luokkaAste)) =>
         toListModel(NuortenPerusopetusPakollisetOppiaineet(application.koodistoViitePalvelu).pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(luokkaAste.toInt, toimintaAlueittain))
       // TODO: TOR-1681 ESH
-      case ("europeanschoolofhelsinkiluokkaaste", eshLuokkaAstePattern(luokkaAste)) =>
-        toListModel(EuropeanSchoolOfHelsinkiOppiaineet(application.koodistoViitePalvelu).eshSuoritukset(luokkaAste))
+      //case ("europeanschoolofhelsinkiluokkaaste", eshLuokkaAstePattern(luokkaAste)) =>
+      //  toListModel(EuropeanSchoolOfHelsinkiOppiaineet(application.koodistoViitePalvelu).eshSuoritukset(luokkaAste))
       case ("koulutus", "201101") =>
         toListModel(NuortenPerusopetusPakollisetOppiaineet(application.koodistoViitePalvelu).päättötodistuksenSuoritukset(params("tyyppi"), toimintaAlueittain))
       case _ =>
