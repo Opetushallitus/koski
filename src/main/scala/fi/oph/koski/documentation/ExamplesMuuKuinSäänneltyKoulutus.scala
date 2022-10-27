@@ -10,13 +10,6 @@ import fi.oph.koski.schema.LocalizedString.finnish
 import java.time.LocalDate
 
 object ExamplesMuuKuinSäänneltyKoulutus {
-  lazy val jatkuvaKoulutusOyKoulutustoimija: Koulutustoimija = Koulutustoimija(
-    oid = MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.koulutustoimija,
-    nimi = Some(finnish("Jatkuva Koulutus Oy")),
-    yTunnus = Some("3199960-3"),
-    kotipaikka = Some(Koodistokoodiviite("091", "kunta")),
-  )
-
   lazy val jatkuvaKoulutusOyOppilaitos: Oppilaitos = Oppilaitos(
     oid = MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.oppilaitos,
     nimi = Some(finnish("Jatkuva Koulutus Oy")),
@@ -30,7 +23,6 @@ object ExamplesMuuKuinSäänneltyKoulutus {
     lazy val kesken: MuunKuinSäännellynKoulutuksenOpiskeluoikeus = MuunKuinSäännellynKoulutuksenOpiskeluoikeus(
       aikaleima = None,
       oppilaitos = Some(jatkuvaKoulutusOyOppilaitos),
-      koulutustoimija = Some(jatkuvaKoulutusOyKoulutustoimija),
       tila = MuunKuinSäännellynKoulutuksenTila(List(
         OpiskeluoikeudenJakso.läsnä(LocalDate.of(2023, 1, 1)),
       )),

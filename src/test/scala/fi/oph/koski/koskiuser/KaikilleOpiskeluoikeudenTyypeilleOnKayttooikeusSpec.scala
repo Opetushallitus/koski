@@ -17,6 +17,7 @@ class KaikilleOpiskeluoikeudenTyypeilleOnKayttooikeusSpec extends AnyFreeSpec wi
       Rooli.KORKEAKOULUTUS,
       Rooli.LUKIOKOULUTUS,
       Rooli.LUVA,
+      Rooli.MUUKUINSAANNELTYKOULUTUS,
       Rooli.PERUSOPETUKSEENVALMISTAVAOPETUS,
       Rooli.PERUSOPETUKSENLISAOPETUS,
       Rooli.PERUSOPETUS,

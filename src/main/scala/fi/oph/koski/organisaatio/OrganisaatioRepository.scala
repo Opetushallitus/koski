@@ -148,8 +148,8 @@ object Organisaatiotyyppi {
     "organisaatiotyyppi_02" -> OPPILAITOS,
     "organisaatiotyyppi_03" -> TOIMIPISTE,
     "organisaatiotyyppi_04" -> OPPISOPIMUSTOIMIPISTE,
-    "organisaatiotyyppi_08" -> VARHAISKASVATUKSEN_TOIMIPAIKKA,
     "organisaatiotyyppi_07" -> VARHAISKASVATUKSEN_JARJESTAJA,
+    "organisaatiotyyppi_08" -> VARHAISKASVATUKSEN_TOIMIPAIKKA,
     "organisaatiotyyppi_09" -> KUNTA
   )
 

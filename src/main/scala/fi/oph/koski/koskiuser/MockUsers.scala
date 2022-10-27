@@ -257,7 +257,8 @@ object MockUsers {
     Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.evira, List(
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU)
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
     )))
   )
 
@@ -269,6 +270,7 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
       PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA)
     )))
   )
@@ -281,6 +283,7 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
       PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA)
     )))
   )
@@ -333,7 +336,8 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU)
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
     )))
   )
 
@@ -346,7 +350,8 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU)
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
     )))
   )
 
@@ -365,7 +370,8 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU)
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
     )))
   )
 
@@ -424,6 +430,13 @@ object MockUsers {
     (lehtikuusentienToimipiste :: oppilaitokset).map(oppilaitosTallentaja)
   )
 
+  val muuKuinSäänneltyKoulutusYritys = KoskiMockUser(
+    "Jatkuva Koulutus Oy",
+    "muks",
+    "1.2.246.562.10.53455746569",
+    List(MuuKuinSäänneltyKoulutusToimija.oppilaitos).map(oppilaitosTallentaja)
+  )
+
   val users = List(
     kalle,
     pärre,
@@ -473,6 +486,7 @@ object MockUsers {
     varsinaisSuomiPalvelukäyttäjä,
     ytlKäyttäjä,
     xssHyökkääjä,
+    muuKuinSäänneltyKoulutusYritys,
   )
 }
 

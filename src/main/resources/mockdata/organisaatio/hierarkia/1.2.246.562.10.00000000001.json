@@ -23395,6 +23395,78 @@
       ],
       "virastoTunnus": "0660032-2",
       "status": "AKTIIVINEN"
+    },
+    {
+      "oid": "1.2.246.562.10.53455746569",
+      "alkuPvm": 1666731600000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.00000000001",
+      "ytunnus": "7011260-6",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Jatkuva Koulutus Oy"
+      },
+      "lyhytNimi": {},
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_005",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.24407356278",
+          "alkuPvm": 1666731600000,
+          "parentOid": "1.2.246.562.10.53455746569",
+          "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.53455746569",
+          "oppilaitostyyppi": "oppilaitostyyppi_xx#1",
+          "match": true,
+          "nimi": {
+            "fi": "Jatkuva Koulutus Oy"
+          },
+          "lyhytNimi": {},
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
+          "kotipaikkaUri": "kunta_005",
+          "children": [],
+          "subRows": [],
+          "aliOrganisaatioMaara": 0,
+          "status": "AKTIIVINEN",
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ]
+        }
+      ],
+      "subRows": [
+        {
+          "oid": "1.2.246.562.10.24407356278",
+          "alkuPvm": 1666731600000,
+          "parentOid": "1.2.246.562.10.53455746569",
+          "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.53455746569",
+          "oppilaitostyyppi": "oppilaitostyyppi_xx#1",
+          "match": true,
+          "nimi": {
+            "fi": "Jatkuva Koulutus Oy"
+          },
+          "lyhytNimi": {},
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
+          "kotipaikkaUri": "kunta_005",
+          "children": [],
+          "subRows": [],
+          "aliOrganisaatioMaara": 0,
+          "status": "AKTIIVINEN",
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ]
+        }
+      ],
+      "aliOrganisaatioMaara": 1,
+      "status": "AKTIIVINEN",
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_01"
+      ]
     }
   ]
 }

@@ -422,7 +422,8 @@ const Oppilaitos = ({
   const selectableOrgTypes = [
     'OPPILAITOS',
     'OPPISOPIMUSTOIMIPISTE',
-    VARHAISKASVATUKSEN_TOIMIPAIKKA
+    VARHAISKASVATUKSEN_TOIMIPAIKKA,
+    'MUU_ORGANISAATIO'
   ]
   return (
     <label className="oppilaitos">
