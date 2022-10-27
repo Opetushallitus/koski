@@ -21,7 +21,6 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def nurseryOppiaineet(luokkaAste: String) = List()
-  )
 
   private def primaryOppiaineet(luokkaAste: String) = List()
 
