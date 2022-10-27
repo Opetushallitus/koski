@@ -51,7 +51,7 @@ export const isKorotus = (suoritus) => modelData(suoritus, 'korotus')
 
 export const luokkaAsteenOsasuoritukset = (luokkaAste_, toimintaAlueittain) =>
   Http.cachedGet(
-    `/koski/api/editor/koodit/perusopetuksenluokkaaste/${luokkaAste_}/suoritukset/prefill?toimintaAlueittain=${toimintaAlueittain}`
+    `/koski/api/editor/koodit/europeanschoolofhelsinkiluokkaaste/${luokkaAste_}/suoritukset/prefill`
   )
 
 export const oppimääränOsasuoritukset = (
