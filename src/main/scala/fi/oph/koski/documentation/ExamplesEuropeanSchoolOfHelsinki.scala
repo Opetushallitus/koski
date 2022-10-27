@@ -35,8 +35,8 @@ object ExamplesEuropeanSchoolOfHelsinki {
   val s3 = secondaryLowerSuoritus("S3", alkamispäivä.plusYears(10))
   val s4 = secondaryLowerSuoritus("S4", alkamispäivä.plusYears(11))
   val s5 = secondaryLowerSuoritus("S5", alkamispäivä.plusYears(12))
-  val s6 = secondaryUpperSuoritus("S6", alkamispäivä.plusYears(13))
-  val s7 = secondaryUpperSuoritus("S7", alkamispäivä.plusYears(14), jääLuokalle = true)
+  val s6 = secondaryUpperSuoritusS6("S6", alkamispäivä.plusYears(13))
+  val s7 = secondaryUpperSuoritusS7("S7", alkamispäivä.plusYears(14))
 
   val opiskeluoikeus = EuropeanSchoolOfHelsinkiOpiskeluoikeus(
     oppilaitos = Some(europeanSchoolOfHelsinki),
@@ -63,7 +63,6 @@ object ExamplesEuropeanSchoolOfHelsinki {
       s5,
       s6,
       s7,
-      secondaryUpperSuoritusFinal("S7", alkamispäivä.plusYears(15)),
     )
   )
 
