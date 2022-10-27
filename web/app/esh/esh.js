@@ -18,31 +18,9 @@ export const isToimintaAlueittain = (suoritus) =>
       ).some((etp) => modelData(etp, 'opiskeleeToimintaAlueittain'))
     : false
 
-export const isYsiluokka = (suoritus) => luokkaAste(suoritus) == '9'
-
-export const isPäättötodistus = (suoritus) => {
-  const tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
-  return tunniste.koodistoUri === 'koulutus' && tunniste.koodiarvo === '201101'
-}
-
-export const isPerusopetuksenOppimäärä = (suoritus) => {
-  return [
-    'perusopetuksenoppimaara',
-    'aikuistenperusopetuksenoppimaara'
-  ].includes(suorituksenTyyppi(suoritus))
-}
 export const jääLuokalle = (suoritus) => modelData(suoritus, 'jääLuokalle')
-export const luokkaAste = (suoritus) => {
-  const tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
-  return tunniste.koodistoUri == 'perusopetuksenluokkaaste'
-    ? tunniste.koodiarvo
-    : undefined
-}
 
-export const isVuosiluokkaTaiPerusopetuksenOppimäärä = (suoritus) =>
-  ['perusopetuksenoppimaara', 'perusopetuksenvuosiluokka'].includes(
-    suorituksenTyyppi(suoritus)
-  )
+
 export const isYksilöllistetty = (suoritus) =>
   modelData(suoritus, 'yksilöllistettyOppimäärä')
 export const isPainotettu = (suoritus) =>
