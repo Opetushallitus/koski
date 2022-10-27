@@ -9,7 +9,7 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
   private val http = Http(virkailijaUrl, "koodisto")
 
   def getKoodistoKoodit(koodisto: KoodistoViite): List[KoodistoKoodi] = {
-    getKoodistoKooditOptional(koodisto).getOrElse(throw new RuntimeException(s"Koodistoa ei löydy: $koodisto"))
+    getKoodistoKooditLisätietoineenOptional(koodisto).getOrElse(throw new RuntimeException(s"Koodistoa ei löydy: $koodisto"))
   }
 
   private def getKoodistoKooditOptional(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
@@ -24,6 +24,15 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
           case _ =>
             koodit
         })
+      case (status, text, uri) => throw HttpStatusException(status, text, uri)
+    })
+  }
+
+  private def getKoodistoKooditLisätietoineenOptional(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
+    runIO(http.get(uri"/koodisto-service/rest/codeelement/codes/withrelations/${koodisto.koodistoUri}/${koodisto.versio}${noCache}") {
+      case (404, _, _) => None
+      case (500, "error.codes.not.found", _) => None // If codes are not found, the service actually returns 500 with this error text.
+      case (200, text, _) => Some(JsonSerializer.parse[List[KoodistoKoodi]](text, ignoreExtras = true))
       case (status, text, uri) => throw HttpStatusException(status, text, uri)
     })
   }
