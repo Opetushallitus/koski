@@ -23,17 +23,9 @@ import Text from '../i18n/Text'
 import {
   footnoteDescriptions,
   footnotesForSuoritus,
-  // groupTitleForSuoritus,
-  isPäättötodistus,
   isToimintaAlueittain,
   isVuosiluokkaTaiPerusopetuksenOppimäärä,
-  isYsiluokka,
   jääLuokalle,
-  luokkaAste,
-  luokkaAsteenOsasuoritukset,
-  oppimääränOsasuoritukset,
-  // pakollisetTitle,
-  // valinnaisetTitle,
   valmiitaSuorituksia
 } from './esh'
 import {
@@ -43,6 +35,8 @@ import {
 import { UusiEuropeanSchoolOfHelsinkiOppiaineDropdown } from './EuropeanSchoolOfHelsinkiOppiaineDropdown'
 import { FootnoteDescriptions } from '../components/footnote'
 import { parseISODate } from '../date/date'
+import { useBaconProperty } from '../util/hooks'
+import { editorPrototypeP } from '../util/properties'
 
 export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
   model = addContext(model, { suoritus: model })
@@ -54,7 +48,7 @@ export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
     ? createOppiaineenSuoritus(osasuorituksetModel)
     : null
   const showOppiaineet =
-    !(isYsiluokka(model) && !jääLuokalle(model)) &&
+    !!jääLuokalle(model) &&
     (model.context.edit ||
       valmiitaSuorituksia(oppiaineSuoritukset) ||
       isVuosiluokkaTaiPerusopetuksenOppimäärä(model))
@@ -62,10 +56,20 @@ export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
   if (model.context.edit) {
     if (!valmiitaSuorituksia(oppiaineSuoritukset)) {
       prefillOsasuorituksetIfNeeded(model, oppiaineSuoritukset)
-    } else if (isYsiluokka(model) && !jääLuokalle(model)) {
+    } else if (!jääLuokalle(model)) {
       emptyOsasuoritukset(model)
     }
   }
+
+  const editorPrototypeValue = useBaconProperty(
+    editorPrototypeP('EuropeanSchoolOfHelsinkiOpiskeluoikeus')
+  )
+
+  if (!editorPrototypeValue) {
+    return null
+  }
+
+  console.log(editorPrototypeValue)
 
   return (
     <div className="oppiaineet">
@@ -109,7 +113,7 @@ const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
       )
   )
   const changeTemplateP = hasWrongPrefillP.or(
-    Bacon.constant(isYsiluokka(model) && jääLuokalle(model))
+    Bacon.constant(jääLuokalle(model))
   )
   fetchOsasuorituksetTemplate(model, isToimintaAlueittain(model))
     .filter(changeTemplateP)
@@ -123,12 +127,9 @@ const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
 const emptyOsasuoritukset = (model) =>
   pushModel(modelSetValue(model, [], 'osasuoritukset'))
 
+// TODO: TOR-1685 Osasuoritusten template
 const fetchOsasuorituksetTemplate = (model, toimintaAlueittain) =>
-  isPäättötodistus(model)
-    ? oppimääränOsasuoritukset(modelData(model, 'tyyppi'), toimintaAlueittain)
-    : luokkaAste(model)
-    ? luokkaAsteenOsasuoritukset(luokkaAste(model), toimintaAlueittain)
-    : Bacon.constant({ value: [] })
+  Bacon.constant({ value: [] })
 
 const modelDataIlmanTyyppiä = (suoritus) =>
   R.dissoc('tyyppi', modelData(suoritus))
@@ -217,9 +218,6 @@ const resolveSynteettinenArvosanaEditor = () => {}
 const createOppiaineenSuoritus = (
   suoritukset,
   preferredClassFn = (proto) => {
-    console.log(proto)
-    console.log(proto.value.classes)
-    console.log(proto.value.classes[0])
     return proto.value.classes[0]
   }
 ) => {
