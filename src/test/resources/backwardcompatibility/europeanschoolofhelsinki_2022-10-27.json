@@ -18,7 +18,7 @@
     },
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2022-08-01",
+        "alku" : "2004-08-01",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -32,7 +32,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2038-05-31",
+        "alku" : "2020-05-31",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -59,7 +59,7 @@
         }
       },
       "luokka" : "N1A",
-      "alkamispäivä" : "2022-08-01",
+      "alkamispäivä" : "2004-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -71,7 +71,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2023-05-31",
+        "päivä" : "2005-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -130,7 +130,7 @@
         }
       },
       "luokka" : "N2A",
-      "alkamispäivä" : "2023-08-01",
+      "alkamispäivä" : "2005-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -142,7 +142,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2024-05-31",
+        "päivä" : "2006-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -201,7 +201,7 @@
         }
       },
       "luokka" : "P1A",
-      "alkamispäivä" : "2024-08-01",
+      "alkamispäivä" : "2006-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -213,7 +213,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2025-05-31",
+        "päivä" : "2007-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -275,7 +275,7 @@
           "kuvaus" : {
             "fi" : "hyvää työtä!"
           },
-          "päivä" : "2024-08-31",
+          "päivä" : "2006-08-31",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -324,7 +324,7 @@
           "kuvaus" : {
             "fi" : "Parempi onni ensi kerralla"
           },
-          "päivä" : "2024-09-30",
+          "päivä" : "2006-09-30",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -370,7 +370,7 @@
             "koodiarvo" : "pass",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
           },
-          "päivä" : "2024-10-05",
+          "päivä" : "2006-10-05",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -400,7 +400,7 @@
         }
       },
       "luokka" : "P2A",
-      "alkamispäivä" : "2025-08-01",
+      "alkamispäivä" : "2007-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -412,7 +412,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2026-05-31",
+        "päivä" : "2008-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -459,6 +459,9 @@
         "koodistoUri" : "suorituksentyyppi"
       },
       "jääLuokalle" : true,
+      "todistuksellaNäkyvätLisätiedot" : {
+        "fi" : "Vähän liikaa poissaoloja, muista tulla kouluun paremmin ensi vuonna!"
+      },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -474,7 +477,7 @@
           "kuvaus" : {
             "fi" : "hyvää työtä!"
           },
-          "päivä" : "2025-08-31",
+          "päivä" : "2007-08-31",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -523,7 +526,7 @@
           "kuvaus" : {
             "fi" : "Parempi onni ensi kerralla"
           },
-          "päivä" : "2025-09-30",
+          "päivä" : "2007-09-30",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -569,7 +572,7 @@
             "koodiarvo" : "pass",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
           },
-          "päivä" : "2025-10-05",
+          "päivä" : "2007-10-05",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -599,7 +602,7 @@
         }
       },
       "luokka" : "P2A",
-      "alkamispäivä" : "2026-08-01",
+      "alkamispäivä" : "2008-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -611,7 +614,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2027-05-31",
+        "päivä" : "2009-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -673,7 +676,7 @@
           "kuvaus" : {
             "fi" : "hyvää työtä!"
           },
-          "päivä" : "2026-08-31",
+          "päivä" : "2008-08-31",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -722,7 +725,7 @@
           "kuvaus" : {
             "fi" : "Parempi onni ensi kerralla"
           },
-          "päivä" : "2026-09-30",
+          "päivä" : "2008-09-30",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -768,7 +771,7 @@
             "koodiarvo" : "pass",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
           },
-          "päivä" : "2026-10-05",
+          "päivä" : "2008-10-05",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -798,7 +801,7 @@
         }
       },
       "luokka" : "P3A",
-      "alkamispäivä" : "2027-08-01",
+      "alkamispäivä" : "2009-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -810,7 +813,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2028-05-31",
+        "päivä" : "2010-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -872,7 +875,7 @@
           "kuvaus" : {
             "fi" : "hyvää työtä!"
           },
-          "päivä" : "2027-08-31",
+          "päivä" : "2009-08-31",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -921,7 +924,7 @@
           "kuvaus" : {
             "fi" : "Parempi onni ensi kerralla"
           },
-          "päivä" : "2027-09-30",
+          "päivä" : "2009-09-30",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -967,7 +970,7 @@
             "koodiarvo" : "pass",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
           },
-          "päivä" : "2027-10-05",
+          "päivä" : "2009-10-05",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -997,7 +1000,7 @@
         }
       },
       "luokka" : "P4A",
-      "alkamispäivä" : "2028-08-01",
+      "alkamispäivä" : "2010-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -1009,7 +1012,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2029-05-31",
+        "päivä" : "2011-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -1071,7 +1074,7 @@
           "kuvaus" : {
             "fi" : "hyvää työtä!"
           },
-          "päivä" : "2028-08-31",
+          "päivä" : "2010-08-31",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1120,7 +1123,7 @@
           "kuvaus" : {
             "fi" : "Parempi onni ensi kerralla"
           },
-          "päivä" : "2028-09-30",
+          "päivä" : "2010-09-30",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1166,7 +1169,7 @@
             "koodiarvo" : "pass",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
           },
-          "päivä" : "2028-10-05",
+          "päivä" : "2010-10-05",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1196,7 +1199,7 @@
         }
       },
       "luokka" : "P5A",
-      "alkamispäivä" : "2029-08-01",
+      "alkamispäivä" : "2011-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -1208,7 +1211,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2030-05-31",
+        "päivä" : "2012-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -1270,7 +1273,7 @@
           "kuvaus" : {
             "fi" : "hyvää työtä!"
           },
-          "päivä" : "2029-08-31",
+          "päivä" : "2011-08-31",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1319,7 +1322,7 @@
           "kuvaus" : {
             "fi" : "Parempi onni ensi kerralla"
           },
-          "päivä" : "2029-09-30",
+          "päivä" : "2011-09-30",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1365,7 +1368,7 @@
             "koodiarvo" : "pass",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
           },
-          "päivä" : "2029-10-05",
+          "päivä" : "2011-10-05",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1395,7 +1398,7 @@
         }
       },
       "luokka" : "S1A",
-      "alkamispäivä" : "2030-08-01",
+      "alkamispäivä" : "2012-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -1407,7 +1410,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2031-05-31",
+        "päivä" : "2013-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -1483,7 +1486,7 @@
             "koodiarvo" : "B",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
           },
-          "päivä" : "2030-10-01",
+          "päivä" : "2012-10-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1536,7 +1539,7 @@
             "koodiarvo" : "B",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
           },
-          "päivä" : "2030-11-01",
+          "päivä" : "2012-11-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1566,7 +1569,7 @@
         }
       },
       "luokka" : "S2A",
-      "alkamispäivä" : "2031-08-01",
+      "alkamispäivä" : "2013-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -1578,7 +1581,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2032-05-31",
+        "päivä" : "2014-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -1654,7 +1657,7 @@
             "koodiarvo" : "B",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
           },
-          "päivä" : "2031-10-01",
+          "päivä" : "2013-10-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1707,7 +1710,7 @@
             "koodiarvo" : "B",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
           },
-          "päivä" : "2031-11-01",
+          "päivä" : "2013-11-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1737,7 +1740,7 @@
         }
       },
       "luokka" : "S3A",
-      "alkamispäivä" : "2032-08-01",
+      "alkamispäivä" : "2014-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -1749,7 +1752,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2033-05-31",
+        "päivä" : "2015-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -1825,7 +1828,7 @@
             "koodiarvo" : "B",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
           },
-          "päivä" : "2032-10-01",
+          "päivä" : "2014-10-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1878,7 +1881,7 @@
             "koodiarvo" : "B",
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
           },
-          "päivä" : "2032-11-01",
+          "päivä" : "2014-11-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -1908,7 +1911,7 @@
         }
       },
       "luokka" : "S4A",
-      "alkamispäivä" : "2033-08-01",
+      "alkamispäivä" : "2015-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -1920,7 +1923,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2034-05-31",
+        "päivä" : "2016-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -1996,7 +1999,7 @@
             "koodiarvo" : "7.5",
             "koodistoUri" : "esh/numericalmark"
           },
-          "päivä" : "2033-10-01",
+          "päivä" : "2015-10-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -2049,7 +2052,7 @@
             "koodiarvo" : "7.5",
             "koodistoUri" : "esh/numericalmark"
           },
-          "päivä" : "2033-11-01",
+          "päivä" : "2015-11-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -2079,7 +2082,7 @@
         }
       },
       "luokka" : "S5A",
-      "alkamispäivä" : "2034-08-01",
+      "alkamispäivä" : "2016-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -2091,7 +2094,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2035-05-31",
+        "päivä" : "2017-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -2167,7 +2170,7 @@
             "koodiarvo" : "7.5",
             "koodistoUri" : "esh/numericalmark"
           },
-          "päivä" : "2034-10-01",
+          "päivä" : "2016-10-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -2220,7 +2223,7 @@
             "koodiarvo" : "7.5",
             "koodistoUri" : "esh/numericalmark"
           },
-          "päivä" : "2034-11-01",
+          "päivä" : "2016-11-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -2250,7 +2253,7 @@
         }
       },
       "luokka" : "S6A",
-      "alkamispäivä" : "2035-08-01",
+      "alkamispäivä" : "2017-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -2262,7 +2265,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2036-05-31",
+        "päivä" : "2018-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -2338,14 +2341,14 @@
             "koodiarvo" : "7.5",
             "koodistoUri" : "esh/numericalmark"
           },
-          "päivä" : "2035-11-01",
+          "päivä" : "2017-11-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodiarvo" : "europeanschoolofhelsinkiosasuorituss6",
           "koodistoUri" : "suorituksentyyppi"
         },
         "suorituskieli" : {
@@ -2379,9 +2382,9 @@
             }
           },
           "kieli" : {
-            "koodiarvo" : "EN",
+            "koodiarvo" : "SL",
             "nimi" : {
-              "fi" : "englanti"
+              "fi" : "sloveeni"
             },
             "koodistoUri" : "kieli"
           }
@@ -2391,14 +2394,14 @@
             "koodiarvo" : "7.5",
             "koodistoUri" : "esh/numericalmark"
           },
-          "päivä" : "2035-12-01",
+          "päivä" : "2017-12-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodiarvo" : "europeanschoolofhelsinkiosasuorituss6",
           "koodistoUri" : "suorituksentyyppi"
         },
         "suorituskieli" : {
@@ -2437,14 +2440,14 @@
             "koodiarvo" : "7.5",
             "koodistoUri" : "esh/numericalmark"
           },
-          "päivä" : "2036-01-01",
+          "päivä" : "2018-01-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodiarvo" : "europeanschoolofhelsinkiosasuorituss6",
           "koodistoUri" : "suorituksentyyppi"
         },
         "suorituskieli" : {
@@ -2467,7 +2470,7 @@
         }
       },
       "luokka" : "S7A",
-      "alkamispäivä" : "2036-08-01",
+      "alkamispäivä" : "2018-08-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.13349113236",
         "oppilaitosnumero" : {
@@ -2479,7 +2482,7 @@
         }
       },
       "vahvistus" : {
-        "päivä" : "2037-05-31",
+        "päivä" : "2019-05-31",
         "paikkakunta" : {
           "koodiarvo" : "091",
           "nimi" : {
@@ -2550,19 +2553,8 @@
             }
           }
         },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "8.9",
-            "koodistoUri" : "esh/s7preliminarymark"
-          },
-          "päivä" : "2036-11-01",
-          "arvioitsijat" : [ {
-            "nimi" : "Pekka Paunanen"
-          } ],
-          "hyväksytty" : true
-        } ],
         "tyyppi" : {
-          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodiarvo" : "europeanschoolofhelsinkiosasuorituss7",
           "koodistoUri" : "suorituksentyyppi"
         },
         "suorituskieli" : {
@@ -2571,224 +2563,74 @@
             "fi" : "englanti"
           },
           "koodistoUri" : "kieli"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "L1",
-            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
-          },
-          "laajuus" : {
-            "arvo" : 2.0,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "vuosiviikkotuntia",
-                "sv" : "årsveckotimmar",
-                "en" : "weekly lessons per year"
-              },
-              "lyhytNimi" : {
-                "fi" : "vuosiviikkotuntia",
-                "sv" : "årsveckotimmar",
-                "en" : "weekly lessons per year"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti"
             }
           },
-          "kieli" : {
-            "koodiarvo" : "EN",
-            "nimi" : {
-              "fi" : "englanti"
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.9",
+              "koodistoUri" : "esh/s7preliminarymark"
             },
-            "koodistoUri" : "kieli"
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "8.9",
-            "koodistoUri" : "esh/s7preliminarymark"
-          },
-          "päivä" : "2036-12-01",
-          "arvioitsijat" : [ {
-            "nimi" : "Pekka Paunanen"
+            "päivä" : "2018-11-01",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
           } ],
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "suorituskieli" : {
-          "koodiarvo" : "EN",
-          "nimi" : {
-            "fi" : "englanti"
-          },
-          "koodistoUri" : "kieli"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "MA",
-            "koodistoUri" : "europeanschoolofhelsinkimuuoppiaine"
-          },
-          "laajuus" : {
-            "arvo" : 2.0,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "vuosiviikkotuntia",
-                "sv" : "årsveckotimmar",
-                "en" : "weekly lessons per year"
-              },
-              "lyhytNimi" : {
-                "fi" : "vuosiviikkotuntia",
-                "sv" : "årsveckotimmar",
-                "en" : "weekly lessons per year"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuorituss7",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti"
             }
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "8.9",
-            "koodistoUri" : "esh/s7preliminarymark"
           },
-          "päivä" : "2037-01-01",
-          "arvioitsijat" : [ {
-            "nimi" : "Pekka Paunanen"
-          } ],
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "suorituskieli" : {
-          "koodiarvo" : "EN",
-          "nimi" : {
-            "fi" : "englanti"
-          },
-          "koodistoUri" : "kieli"
-        }
-      } ]
-    }, {
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "S7",
-          "koodistoUri" : "europeanschoolofhelsinkiluokkaaste"
-        },
-        "curriculum" : {
-          "koodiarvo" : "2023",
-          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
-        }
-      },
-      "luokka" : "S7A",
-      "alkamispäivä" : "2037-08-01",
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.13349113236",
-        "oppilaitosnumero" : {
-          "koodiarvo" : "03782",
-          "koodistoUri" : "oppilaitosnumero"
-        },
-        "nimi" : {
-          "fi" : "European School of Helsinki"
-        }
-      },
-      "vahvistus" : {
-        "päivä" : "2038-05-31",
-        "paikkakunta" : {
-          "koodiarvo" : "091",
-          "nimi" : {
-            "fi" : "Helsinki"
-          },
-          "koodistoUri" : "kunta"
-        },
-        "myöntäjäOrganisaatio" : {
-          "oid" : "1.2.246.562.10.13349113236",
-          "oppilaitosnumero" : {
-            "koodiarvo" : "03782",
-            "koodistoUri" : "oppilaitosnumero"
-          },
-          "nimi" : {
-            "fi" : "European School of Helsinki"
-          }
-        },
-        "myöntäjäHenkilöt" : [ {
-          "nimi" : "Reijo Reksi",
-          "titteli" : {
-            "fi" : "rehtori"
-          },
-          "organisaatio" : {
-            "oid" : "1.2.246.562.10.13349113236",
-            "oppilaitosnumero" : {
-              "koodiarvo" : "03782",
-              "koodistoUri" : "oppilaitosnumero"
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.9",
+              "koodistoUri" : "esh/s7preliminarymark"
             },
-            "nimi" : {
-              "fi" : "European School of Helsinki"
+            "päivä" : "2018-11-01",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuorituss7",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "yearmark",
+              "koodistoUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti"
             }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.9",
+              "koodistoUri" : "esh/s7preliminarymark"
+            },
+            "päivä" : "2018-11-01",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuorituss7",
+            "koodistoUri" : "suorituksentyyppi"
           }
         } ]
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
-      },
-      "tyyppi" : {
-        "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
-        "koodistoUri" : "suorituksentyyppi"
-      },
-      "jääLuokalle" : false,
-      "osasuoritukset" : [ {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "PE",
-            "koodistoUri" : "europeanschoolofhelsinkimuuoppiaine"
-          },
-          "laajuus" : {
-            "arvo" : 2.0,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "vuosiviikkotuntia",
-                "sv" : "årsveckotimmar",
-                "en" : "weekly lessons per year"
-              },
-              "lyhytNimi" : {
-                "fi" : "vuosiviikkotuntia",
-                "sv" : "årsveckotimmar",
-                "en" : "weekly lessons per year"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "6.48",
-            "koodistoUri" : "esh/s7finalmark"
-          },
-          "päivä" : "2037-11-01",
-          "arvioitsijat" : [ {
-            "nimi" : "Pekka Paunanen"
-          } ],
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "suorituskieli" : {
-          "koodiarvo" : "EN",
-          "nimi" : {
-            "fi" : "englanti"
-          },
-          "koodistoUri" : "kieli"
-        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -2813,26 +2655,15 @@
             }
           },
           "kieli" : {
-            "koodiarvo" : "EN",
+            "koodiarvo" : "SL",
             "nimi" : {
-              "fi" : "englanti"
+              "fi" : "sloveeni"
             },
             "koodistoUri" : "kieli"
           }
         },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "6.48",
-            "koodistoUri" : "esh/s7finalmark"
-          },
-          "päivä" : "2037-12-01",
-          "arvioitsijat" : [ {
-            "nimi" : "Pekka Paunanen"
-          } ],
-          "hyväksytty" : true
-        } ],
         "tyyppi" : {
-          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodiarvo" : "europeanschoolofhelsinkiosasuorituss7",
           "koodistoUri" : "suorituksentyyppi"
         },
         "suorituskieli" : {
@@ -2841,7 +2672,74 @@
             "fi" : "englanti"
           },
           "koodistoUri" : "kieli"
-        }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.9",
+              "koodistoUri" : "esh/s7preliminarymark"
+            },
+            "päivä" : "2018-12-01",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuorituss7",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.9",
+              "koodistoUri" : "esh/s7preliminarymark"
+            },
+            "päivä" : "2018-12-01",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuorituss7",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "yearmark",
+              "koodistoUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.9",
+              "koodistoUri" : "esh/s7preliminarymark"
+            },
+            "päivä" : "2018-12-01",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuorituss7",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ]
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -2866,19 +2764,8 @@
             }
           }
         },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "6.48",
-            "koodistoUri" : "esh/s7finalmark"
-          },
-          "päivä" : "2038-01-01",
-          "arvioitsijat" : [ {
-            "nimi" : "Pekka Paunanen"
-          } ],
-          "hyväksytty" : true
-        } ],
         "tyyppi" : {
-          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+          "koodiarvo" : "europeanschoolofhelsinkiosasuorituss7",
           "koodistoUri" : "suorituksentyyppi"
         },
         "suorituskieli" : {
@@ -2887,7 +2774,74 @@
             "fi" : "englanti"
           },
           "koodistoUri" : "kieli"
-        }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.9",
+              "koodistoUri" : "esh/s7preliminarymark"
+            },
+            "päivä" : "2019-01-01",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuorituss7",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.9",
+              "koodistoUri" : "esh/s7preliminarymark"
+            },
+            "päivä" : "2019-01-01",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuorituss7",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "yearmark",
+              "koodistoUri" : "europeanschoolofhelsinkis7oppiaineenkomponentti"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8.9",
+              "koodistoUri" : "esh/s7preliminarymark"
+            },
+            "päivä" : "2019-01-01",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuorituss7",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ]
       } ]
     } ],
     "tyyppi" : {
@@ -2910,7 +2864,7 @@
         }
       } ]
     },
-    "alkamispäivä" : "2022-08-01",
-    "päättymispäivä" : "2038-05-31"
+    "alkamispäivä" : "2004-08-01",
+    "päättymispäivä" : "2020-05-31"
   } ]
 }

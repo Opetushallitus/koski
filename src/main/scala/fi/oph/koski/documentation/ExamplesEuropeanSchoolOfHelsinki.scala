@@ -16,7 +16,7 @@ object ExamplesEuropeanSchoolOfHelsinki {
   )
 
   val s5 = secondaryLowerSuoritus("S5", alkamispäivä.plusYears(12))
-  val s6 = secondaryUpperSuoritus("S6", alkamispäivä.plusYears(13))
+  val s6 = secondaryUpperSuoritusS6("S6", alkamispäivä.plusYears(13))
 
   val opiskeluoikeus = EuropeanSchoolOfHelsinkiOpiskeluoikeus(
     oppilaitos = Some(europeanSchoolOfHelsinki),
@@ -47,8 +47,9 @@ object ExamplesEuropeanSchoolOfHelsinki {
       secondaryLowerSuoritus("S4", alkamispäivä.plusYears(11)),
       s5,
       s6,
-      secondaryUpperSuoritus("S7", alkamispäivä.plusYears(14), jääLuokalle = true),
-      secondaryUpperSuoritusFinal("S7", alkamispäivä.plusYears(15)),
+      secondaryUpperSuoritusS7("S7", alkamispäivä.plusYears(14), jääLuokalle = true),
+      // TODO: TOR-1685 Kunhan EB-tutkinto on selvinnyt, mieti ja toteuta final markkeja sisältävät suoritukset.
+      //secondaryUpperSuoritusFinal("S7", alkamispäivä.plusYears(15)),
     )
   )
 

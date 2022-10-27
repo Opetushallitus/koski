@@ -1918,20 +1918,62 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritussecondaryupper",
-  "koodiArvo" : "europeanschoolofhelsinkiosasuoritussecondaryupper",
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuorituss6",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuorituss6",
   "metadata" : [ {
-    "nimi" : "European School of Helsinki secondary cycle upper year class subject",
+    "nimi" : "European School of Helsinki secondary cycle S6 year class subject",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "European School of Helsinki secondary cycle upper year class subject",
+    "nimi" : "European School of Helsinki secondary cycle S6 year class subject",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "European School of Helsinki secondary cycle upper year class subject",
+    "nimi" : "European School of Helsinki secondary cycle S6 year class subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuorituss7",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuorituss7",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki secondary cycle S7 year class subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle S7 year class subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle S7 year class subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuorituss7",
+  "koodiArvo" : "europeanschoolofhelsinkialaosasuorituss7",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki secondary cycle S7 year class subject's component",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle S7 year class subject's component",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle S7 year class subject's component",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"
