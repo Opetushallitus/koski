@@ -143,13 +143,15 @@ const createState = (oppijaOid) => {
 
   let changeBuffer = null
 
-  const setupModelContext = (oppijaModel) =>
-    Editor.setupContext(oppijaModel, {
+  const setupModelContext = (oppijaModel) => {
+    console.log(oppijaModel, editorMapping)
+    return Editor.setupContext(oppijaModel, {
       saveChangesBus,
       editBus,
       changeBus,
       editorMapping
     })
+  }
 
   const shouldThrottle = (batch) => {
     const model = getModelFromChange(batch[0])

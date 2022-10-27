@@ -38,7 +38,9 @@ export const eshSuoritus = {
   nursery: 'nurseryvuosiluokansuoritus',
   primary: 'primaryvuosiluokansuoritus',
   secondaryLower: 'secondarylowervuosiluokansuoritus',
-  secondaryUpper: 'secondaryuppervuosiluokansuoritus'
+  secondaryUpper: 'secondaryuppervuosiluokansuoritus',
+  secondaryUppers6: 'secondaryupperoppiaineensuorituss6',
+  secondaryUppers7: 'secondaryupperoppiaineensuorituss7'
 }
 
 export const eshSynteettisetKoodistot = {
@@ -122,7 +124,8 @@ export const suoritusTyyppi = (luokkaaste) => {
   if (secondaryUpper.includes(luokkaaste.koodiarvo)) {
     return eshVuosiluokka.secondaryUpper
   }
-  return ''
+
+  throw new Error(`suoritusTyyppi not found for ${luokkaaste}`)
 }
 
 export const suoritusPrototypeKey = (luokkaAste) => {
@@ -135,5 +138,7 @@ export const suoritusPrototypeKey = (luokkaAste) => {
       return eshSuoritus.secondaryLower
     case eshVuosiluokka.secondaryUpper:
       return eshSuoritus.secondaryUpper
+    default:
+      throw new Error(`suoritusProtypeKey not found for ${luokkaAste}`)
   }
 }

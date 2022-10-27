@@ -22,6 +22,14 @@ export const EuropeanSchoolOfHelsinkiArvosanaEditor = ({
     modelLookup(model, 'arviointi'),
     '-1.arvosana'
   )
+  const eshArvosanaOsasuoritukset = modelLookup(model, 'osasuoritukset')
+
+  if (
+    eshArvosanaModel === undefined &&
+    eshArvosanaOsasuoritukset !== undefined
+  ) {
+    return null
+  }
 
   return <Editor model={eshArvosanaModel} showEmptyOption="true" />
 }

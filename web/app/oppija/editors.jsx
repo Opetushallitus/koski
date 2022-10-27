@@ -52,11 +52,13 @@ const oppijaEditors = {
   // Korkeakoulu
   lukukausi_ilmoittautuminen: LukukausiIlmoittautuminenEditor,
   // ESH
+  primaryoppimisalueenosasuoritus: EuropeanSchoolOfHelsinkiOppiaineRowEditor,
   primarylapsioppimisalueenosasuoritus:
     EuropeanSchoolOfHelsinkiOppiaineRowEditor,
-  primaryoppimisalueenosasuoritus: EuropeanSchoolOfHelsinkiOppiaineRowEditor,
   secondaryloweroppiaineensuoritus: EuropeanSchoolOfHelsinkiOppiaineRowEditor,
-  secondaryupperoppiaineensuoritus: EuropeanSchoolOfHelsinkiOppiaineRowEditor,
+  secondaryupperoppiaineensuorituss6: EuropeanSchoolOfHelsinkiOppiaineRowEditor,
+  secondaryupperoppiaineensuorituss7: EuropeanSchoolOfHelsinkiOppiaineRowEditor,
+  nurseryvuosiluokansuoritus: SuoritusEditor,
   synteettinenkoodiviite: SynteettinenKoodiviiteEditor
 }
 

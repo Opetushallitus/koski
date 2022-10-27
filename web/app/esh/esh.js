@@ -18,8 +18,8 @@ export const isToimintaAlueittain = (suoritus) =>
       ).some((etp) => modelData(etp, 'opiskeleeToimintaAlueittain'))
     : false
 
-export const jääLuokalle = (suoritus) => modelData(suoritus, 'jääLuokalle')
-
+export const jääLuokalle = (suoritus) =>
+  modelData(suoritus, 'jääLuokalle') === true
 
 export const isYksilöllistetty = (suoritus) =>
   modelData(suoritus, 'yksilöllistettyOppimäärä')
