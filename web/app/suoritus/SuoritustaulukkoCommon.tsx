@@ -364,7 +364,7 @@ export const SuoritusColumn: SuoritusColumn = {
           className={hasProperties ? "toggle-expand" : "toggle-expand disabled"}
           onClick={() => onExpand(!expanded)}
         >
-          {expanded ? "" : ""}
+          {expanded ? <>&#61766;</> : <>&#61694;</>}
         </a>
         {showTila && (
           <span className="tila" title={tilaText(model)}>

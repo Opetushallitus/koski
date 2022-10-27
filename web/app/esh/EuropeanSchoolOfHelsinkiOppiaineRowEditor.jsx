@@ -7,7 +7,6 @@ import {
 } from '../editor/PropertiesEditor'
 import {
   addContext,
-  findModelProperty,
   modelData,
   modelErrorMessages,
   modelLookup,
@@ -25,7 +24,6 @@ export class EuropeanSchoolOfHelsinkiOppiaineRowEditor extends React.Component {
   render() {
     const {
       model,
-      showArvosana,
       showLaajuus,
       footnotes,
       uusiOppiaineenSuoritus,
@@ -71,7 +69,7 @@ export class EuropeanSchoolOfHelsinkiOppiaineRowEditor extends React.Component {
                   className="toggle-expand"
                   onClick={() => onExpand(!expanded)}
                 >
-                  {expanded ? '' : ''}
+                  {expanded ? <>&#61766;</> : <>&#61694;</>}
                 </a>
               )
             }
@@ -150,7 +148,7 @@ export class EuropeanSchoolOfHelsinkiOppiaineRowEditor extends React.Component {
   }
 }
 
-// TODO: TOR-1685: Arvioinnista ei tarvitse näyttää arvosanaa
+// TODO: TOR-1685: Arviointi-lisätiedoissa ei tarvitse näyttää arvosanaa
 const hiddenExtraProperties = ['tunniste', 'laajuus', 'koulutusmoduuli']
 
 export const expandableProperties = (model) => {
