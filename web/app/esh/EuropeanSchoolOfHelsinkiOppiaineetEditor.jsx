@@ -35,8 +35,6 @@ import {
 import { UusiEuropeanSchoolOfHelsinkiOppiaineDropdown } from './EuropeanSchoolOfHelsinkiOppiaineDropdown'
 import { FootnoteDescriptions } from '../components/footnote'
 import { parseISODate } from '../date/date'
-import { useBaconProperty } from '../util/hooks'
-import { editorPrototypeP } from '../util/properties'
 
 export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
   model = addContext(model, { suoritus: model })
@@ -44,11 +42,17 @@ export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
 
   const footnotes = footnoteDescriptions(oppiaineSuoritukset)
   const osasuorituksetModel = modelLookup(model, 'osasuoritukset')
-  const uusiOppiaineenSuoritus = model.context.edit
-    ? createOppiaineenSuoritus(osasuorituksetModel)
-    : null
+
+  // Nurseryn tapauksessa ei ole osasuorituksia, jolloin on syytä piilottaa oppiaine-editori kokonaan
+  const isNursery = osasuorituksetModel === undefined
+
+  const uusiOppiaineenSuoritus =
+    model.context.edit && !isNursery
+      ? createOppiaineenSuoritus(osasuorituksetModel)
+      : null
   const showOppiaineet =
-    !!jääLuokalle(model) &&
+    !isNursery &&
+    jääLuokalle(model) &&
     (model.context.edit ||
       valmiitaSuorituksia(oppiaineSuoritukset) ||
       isVuosiluokkaTaiPerusopetuksenOppimäärä(model))
@@ -60,16 +64,6 @@ export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
       emptyOsasuoritukset(model)
     }
   }
-
-  const editorPrototypeValue = useBaconProperty(
-    editorPrototypeP('EuropeanSchoolOfHelsinkiOpiskeluoikeus')
-  )
-
-  if (!editorPrototypeValue) {
-    return null
-  }
-
-  console.log(editorPrototypeValue)
 
   return (
     <div className="oppiaineet">
@@ -87,10 +81,12 @@ export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
           <p>
             <Text name="(ESH arvosteluteksti TODO)" />
           </p>
-          <SimpleOppiaineetEditor
-            model={model}
-            uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
-          />
+          {!isNursery && (
+            <SimpleOppiaineetEditor
+              model={model}
+              uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
+            />
+          )}
           {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes} />}
         </div>
       )}
