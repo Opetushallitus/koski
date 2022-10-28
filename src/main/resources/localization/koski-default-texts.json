@@ -2400,5 +2400,7 @@
   "deprecated:Ei käytössä." : "Ei käytössä.",
   "description:Suorituksen tila, ei käytössä." : "Suorituksen tila, ei käytössä.",
   "description:Käytetyn synteettisen koodiston tunniste" : "Käytetyn synteettisen koodiston tunniste",
-  "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan..." : "Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi."
+  "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan..." : "Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi.",
+  "tooltip:Onko oppilas opiskellut yksilöllisen oppimäärän." : "Onko oppilas opiskellut yksilöllisen oppimäärän.",
+  "description:Tieto siitä, onko oppimäärä yksilöllistetty..." : "Tieto siitä, onko oppimäärä yksilöllistetty (true/false)."
 }

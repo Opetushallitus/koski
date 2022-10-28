@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koodisto.SynteettinenKoodisto
+import fi.oph.koski.koskiuser.Rooli
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.annotation._
@@ -294,9 +295,14 @@ object SecondaryUpperLuokkaAste {
  * OSASUORITUKSET
  *****************************************************************************/
 
-trait EuropeanSchoolOfHelsinkiOsasuoritus extends Suoritus with Vahvistukseton {
+trait EuropeanSchoolOfHelsinkiOsasuoritus extends Suoritus with Vahvistukseton with Yksilöllistettävä {
   @KoodistoUri("suorituksentyyppi")
   def tyyppi: Koodistokoodiviite
+  @DefaultValue(false)
+  @Description("Tieto siitä, onko oppimäärä yksilöllistetty (true/false).")
+  @Tooltip("Onko oppilas opiskellut yksilöllisen oppimäärän.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  def yksilöllistettyOppimäärä: Boolean
 }
 
 trait EuropeanSchoolOfHelsinkiOsasuorituksenAlaosasuoritus extends Suoritus with Vahvistukseton {
@@ -313,6 +319,7 @@ trait PrimaryOsasuoritus extends EuropeanSchoolOfHelsinkiOsasuoritus
 
 case class PrimaryLapsiOppimisalueenSuoritus(
   koulutusmoduuli: PrimaryLapsiOppimisalue,
+  yksilöllistettyOppimäärä: Boolean = false,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritusprimarylapsi")
   @KoodistoUri("suorituksentyyppi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuoritusprimarylapsi", koodistoUri = "suorituksentyyppi"),
@@ -322,6 +329,7 @@ case class PrimaryLapsiOppimisalueenSuoritus(
 
 case class PrimaryOppimisalueenSuoritus(
   koulutusmoduuli: PrimarySuorituskielenVaativaOppimisalue,
+  yksilöllistettyOppimäärä: Boolean = false,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritusprimary")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuoritusprimary", koodistoUri = "suorituksentyyppi"),
   arviointi: Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = None,
@@ -331,6 +339,7 @@ case class PrimaryOppimisalueenSuoritus(
 
 case class SecondaryLowerOppiaineenSuoritus(
   koulutusmoduuli: SecondaryOppiaine,
+  yksilöllistettyOppimäärä: Boolean = false,
   arviointi: Option[List[SecondaryLowerArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritussecondarylower")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuoritussecondarylower", koodistoUri = "suorituksentyyppi"),
@@ -342,6 +351,7 @@ trait SecondaryUpperOppiaineenSuoritus extends EuropeanSchoolOfHelsinkiSuoritusk
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S6")
 case class SecondaryUpperOppiaineenSuoritusS6(
   koulutusmoduuli: SecondaryOppiaine,
+  yksilöllistettyOppimäärä: Boolean = false,
   arviointi: Option[List[SecondaryNumericalMarkArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss6")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuorituss6", koodistoUri = "suorituksentyyppi"),
@@ -351,6 +361,7 @@ case class SecondaryUpperOppiaineenSuoritusS6(
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S7")
 case class SecondaryUpperOppiaineenSuoritusS7(
   koulutusmoduuli: SecondaryOppiaine,
+  yksilöllistettyOppimäärä: Boolean = false,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss7")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuorituss7", koodistoUri = "suorituksentyyppi"),
   suorituskieli: Koodistokoodiviite,
