@@ -51,6 +51,7 @@ import {
 import UusiEuropeanSchoolOfHelsinkiSuoritus from './UusiEuropeanSchoolOfHelsinkiSuoritus'
 import { eshSallitutRahoituskoodiarvot } from '../esh/esh'
 import { jotpaSallitutRahoituskoodiarvot } from '../jotpa/jotpa'
+import UusiMuunKuinSäännellynKoulutuksenSuoritus from './UusiMuunKuinSäännellynKoulutuksenSuoritus'
 
 export default ({ opiskeluoikeusAtom }) => {
   const dateAtom = Atom(new Date())
@@ -124,9 +125,9 @@ export default ({ opiskeluoikeusAtom }) => {
       ),
       rahoitusValittu: rahoitus,
       setDefaultRahoitus: () => {
-        getRahoitusmuoto(defaultRahoituskoodi(suoritustyyppi)).onValue(
-          (defaultRahoitus) => rahoitusAtom.set(defaultRahoitus.data)
-        )
+        getRahoitusmuoto(
+          defaultRahoituskoodi(ooTyyppi, suoritustyyppi) // TODO tuonne menee nyt objekti eikä string
+        ).onValue((defaultRahoitus) => rahoitusAtom.set(defaultRahoitus.data))
       },
       setRahoitusNone: () => rahoitusAtom.set(undefined)
     })
@@ -314,6 +315,15 @@ export default ({ opiskeluoikeusAtom }) => {
               suorituskieliAtom={suorituskieliAtom}
             />
           )
+        if (tyyppi === 'muukuinsaanneltykoulutus')
+          return (
+            <UusiMuunKuinSäännellynKoulutuksenSuoritus
+              suoritusAtom={suoritusAtom}
+              oppilaitosAtom={oppilaitosAtom}
+              suorituskieliAtom={suorituskieliAtom}
+              opintokokonaisuusAtom={opintokokonaisuusAtom}
+            />
+          )
       })}
       <Aloituspäivä dateAtom={dateAtom} />
       <OpiskeluoikeudenTila
@@ -422,8 +432,7 @@ const Oppilaitos = ({
   const selectableOrgTypes = [
     'OPPILAITOS',
     'OPPISOPIMUSTOIMIPISTE',
-    VARHAISKASVATUKSEN_TOIMIPAIKKA,
-    'MUU_ORGANISAATIO'
+    VARHAISKASVATUKSEN_TOIMIPAIKKA
   ]
   return (
     <label className="oppilaitos">
@@ -543,7 +552,8 @@ const OpintojenRahoitus = ({
           eshSallitutRahoituskoodiarvot.includes(v.koodiarvo)
         )
       } else if (
-        koodiarvoMatch('vstjotpakoulutus')(päätasonSuorituksenTyyppi)
+        koodiarvoMatch('vstjotpakoulutus')(päätasonSuorituksenTyyppi) ||
+        koodiarvoMatch('muukuinsaanneltykoulutus')(opiskeluoikeudenTyyppi)
       ) {
         return rahoitukset.filter((v) =>
           jotpaSallitutRahoituskoodiarvot.includes(v.koodiarvo)
@@ -617,6 +627,19 @@ const makeOpiskeluoikeus = (
     return opiskeluoikeusjakso
   }
 
+  const vstOpintokokonaisuusOk =
+    !suoritustyyppi ||
+    !opintokokonaisuudellisetVstSuoritustyypit.includes(
+      suoritustyyppi.koodiarvo
+    ) ||
+    opintokokonaisuus
+
+  const muksOpintokokonaisuusOk =
+    tyyppi &&
+    (tyyppi.koodiarvo === 'muukuinsaanneltykoulutus'
+      ? !!opintokokonaisuus
+      : true)
+
   if (
     alkamispäivä &&
     oppilaitos &&
@@ -627,11 +650,8 @@ const makeOpiskeluoikeus = (
       varhaiskasvatusJärjestämismuoto) &&
     (!maksuttomuusTiedonVoiValita || maksuttomuus !== undefined) &&
     (!onTuvaOpiskeluoikeus || tuvaJärjestämislupa) &&
-    (!suoritustyyppi ||
-      !opintokokonaisuudellisetVstSuoritustyypit.includes(
-        suoritustyyppi.koodiarvo
-      ) ||
-      opintokokonaisuus)
+    vstOpintokokonaisuusOk &&
+    muksOpintokokonaisuusOk
   ) {
     const järjestämismuoto =
       tyyppi.koodiarvo === 'esiopetus'
