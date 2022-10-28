@@ -1,12 +1,10 @@
 import Bacon from 'baconjs'
 import React from 'baret'
-import { modelProperty } from '../editor/EditorModel'
+import { modelProperty, wrapOptional } from '../editor/EditorModel'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
 import { useBaconProperty } from '../util/hooks'
 import Http from '../util/http'
 import { koodistoValues } from './koodisto'
-
-// TODO: Tää on kopypasta tuosta vst:n vastaavasta, siivoa tämä ja tee tästä kaunis
 
 const editorPrototypeP = (modelName) => {
   const url = `/koski/api/editor/prototype/fi.oph.koski.schema.${encodeURIComponent(
@@ -26,15 +24,10 @@ const editorPrototypeP = (modelName) => {
   }).toProperty()
 }
 
-const toInfoProperty = (optionalPrototype) => ({
-  model: {
-    ...optionalPrototype
-  }
-})
-
 const Opintokokonaisuus = ({ opintokokonaisuusAtom, opintokokonaisuudetP }) => {
   const editorPrototypeValue = useBaconProperty(
-    editorPrototypeP('MuuKuinSäänneltyKoulutus')
+    // Uudelleenkäytetään opintokokonaisuustoiminnallisuus vapaan sivistystyön puolelta
+    editorPrototypeP('VapaanSivistystyönVapaatavoitteinenKoulutus')
   )
   if (!editorPrototypeValue) {
     return null
@@ -52,7 +45,7 @@ const Opintokokonaisuus = ({ opintokokonaisuusAtom, opintokokonaisuudetP }) => {
         title="Opintokokonaisuus"
         options={opintokokonaisuudetP}
         selected={opintokokonaisuusAtom}
-        property={toInfoProperty(
+        property={wrapOptional(
           opintokokonaisuusProperty.model.optionalPrototype
         )}
       />

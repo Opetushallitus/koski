@@ -34,6 +34,7 @@ import { ObjectModel, ObjectModelProperty } from '../types/EditorModels'
 import { VstVapaaTavoitteinenKoulutusmoduuliEditor } from './VstVapaaTavoitteinenKoulutusmoduuliEditor'
 import { EuropeanSchoolOfHelsinkiOsasuorituksetEditor } from '../esh/EuropeanSchoolOfHelsinkiOsasuorituksetEditor'
 import { eshSuoritus } from '../esh/europeanschoolofhelsinkiSuoritus'
+import { MuuKuinSäänneltySuoritustaulukko } from '../jotpa/MuuKuinSäänneltySuoritustaulukko'
 
 export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
   const oneOf = (...classes: string[]) =>
@@ -251,6 +252,14 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
   ) {
     return (
       <TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko
+        parentSuoritus={mdl}
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+      />
+    )
+  }
+  if (oneOf('muunkuinsaannellynkoulutuksenpaatasonsuoritus')) {
+    return (
+      <MuuKuinSäänneltySuoritustaulukko
         parentSuoritus={mdl}
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
       />
