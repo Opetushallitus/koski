@@ -36,6 +36,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
       primaryOppimisalueenOsasuoritusKieli(
         oppiainekoodi = "ONL",
         kieli = ExampleData.ruotsinKieli,
+        yksilöllistettyOppimäärä = true,
         suorituskieli = ExampleData.suomenKieli,
         alaosasuorituskoodit = Some(List(
           "Swedish as other national language"
@@ -79,6 +80,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
         ),
       ),
       primaryOppimisalueenOsasuoritus(oppiainekoodi = "MA",
+        yksilöllistettyOppimäärä = true,
         alaosasuorituskoodit = Some(List(
           "Numbers & Number system", "Calculation", "Measurement", "Shape and Space", "Data handling", "Problem solving"
         )),
@@ -116,6 +118,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
   def primaryOppimisalueenOsasuoritus(
     oppiainekoodi: String,
     laajuus: Int = 2,
+    yksilöllistettyOppimäärä: Boolean = false,
     suorituskieli: Koodistokoodiviite = ExampleData.englanti,
     arviointi: Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = None,
     alaosasuorituskoodit: Option[List[String]] = None,
@@ -126,6 +129,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus)
       ),
+      yksilöllistettyOppimäärä = yksilöllistettyOppimäärä,
       suorituskieli = suorituskieli,
       arviointi = arviointi,
       osasuoritukset = alaosasuorituskoodit.map(_.map(koodi => PrimaryOppimisalueenAlaosasuoritus(
@@ -140,6 +144,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
   def primaryOppimisalueenOsasuoritusKieli(
     oppiainekoodi: String,
     laajuus: Int = 2,
+    yksilöllistettyOppimäärä: Boolean = false,
     kieli: Koodistokoodiviite = ExampleData.englanti,
     suorituskieli: Koodistokoodiviite = ExampleData.englanti,
     arviointi: Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = None,
@@ -153,6 +158,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
         laajuus = LaajuusVuosiviikkotunneissa(laajuus),
         kieli = kieli
       ),
+      yksilöllistettyOppimäärä = yksilöllistettyOppimäärä,
       suorituskieli = suorituskieli,
       osasuoritukset = alaosasuorituskoodit.map(_.map(koodi => PrimaryOppimisalueenAlaosasuoritus(
         koulutusmoduuli = PrimaryAlaoppimisalue(

@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.koodisto.SynteettinenKoodisto
+import fi.oph.koski.koskiuser.Rooli
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.annotation._
@@ -322,12 +323,17 @@ case class PrimaryLapsiOppimisalueenSuoritus(
 
 case class PrimaryOppimisalueenSuoritus(
   koulutusmoduuli: PrimarySuorituskielenVaativaOppimisalue,
+  @DefaultValue(false)
+  @Description("Tieto siitä, onko oppimisalueen oppimäärä yksilöllistetty (true/false).")
+  @Tooltip("Onko oppilas opiskellut oppimisalueella yksilöllisen oppimäärän.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  yksilöllistettyOppimäärä: Boolean = false,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritusprimary")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuoritusprimary", koodistoUri = "suorituksentyyppi"),
   arviointi: Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = None,
   suorituskieli: Koodistokoodiviite,
   override val osasuoritukset: Option[List[PrimaryOppimisalueenAlaosasuoritus]] = None
-) extends PrimaryOsasuoritus with EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus
+) extends PrimaryOsasuoritus with EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus with Yksilöllistettävä
 
 case class SecondaryLowerOppiaineenSuoritus(
   koulutusmoduuli: SecondaryOppiaine,

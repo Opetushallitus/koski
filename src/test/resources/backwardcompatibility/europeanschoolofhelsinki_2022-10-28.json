@@ -291,6 +291,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -572,6 +573,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -732,6 +734,7 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -996,6 +999,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -1277,6 +1281,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -1437,6 +1442,7 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -1698,6 +1704,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -1979,6 +1986,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -2139,6 +2147,7 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -2400,6 +2409,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -2681,6 +2691,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -2841,6 +2852,7 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -3102,6 +3114,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -3383,6 +3396,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -3543,6 +3557,7 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -3804,6 +3819,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -4085,6 +4101,7 @@
             "koodistoUri" : "kieli"
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"
@@ -4245,6 +4262,7 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : true,
         "tyyppi" : {
           "koodiarvo" : "europeanschoolofhelsinkiosasuoritusprimary",
           "koodistoUri" : "suorituksentyyppi"

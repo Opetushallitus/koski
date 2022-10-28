@@ -2399,5 +2399,7 @@
   "Curriculum" : "Curriculum",
   "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus" : "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus",
   "description:Käytetyn synteettisen koodiston tunniste" : "Käytetyn synteettisen koodiston tunniste",
-  "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan..." : "Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi."
+  "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan..." : "Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi.",
+  "description:Tieto siitä, onko oppimisalueen oppimäärä..." : "Tieto siitä, onko oppimisalueen oppimäärä yksilöllistetty (true/false).",
+  "tooltip:Onko oppilas opiskellut oppimisalueella yksilöllisen..." : "Onko oppilas opiskellut oppimisalueella yksilöllisen oppimäärän."
 }
