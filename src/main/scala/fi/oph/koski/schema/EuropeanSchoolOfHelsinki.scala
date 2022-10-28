@@ -330,7 +330,7 @@ case class PrimaryOppimisalueenSuoritus(
 ) extends PrimaryOsasuoritus with EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus
 
 case class SecondaryLowerOppiaineenSuoritus(
-  koulutusmoduuli: SecondaryLowerOppiaine,
+  koulutusmoduuli: SecondaryOppiaine,
   arviointi: Option[List[SecondaryLowerArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritussecondarylower")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuoritussecondarylower", koodistoUri = "suorituksentyyppi"),
@@ -341,7 +341,7 @@ trait SecondaryUpperOppiaineenSuoritus extends EuropeanSchoolOfHelsinkiSuoritusk
 
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S6")
 case class SecondaryUpperOppiaineenSuoritusS6(
-  koulutusmoduuli: SecondaryUpperOppiaine,
+  koulutusmoduuli: SecondaryOppiaine,
   arviointi: Option[List[SecondaryNumericalMarkArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss6")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuorituss6", koodistoUri = "suorituksentyyppi"),
@@ -350,7 +350,7 @@ case class SecondaryUpperOppiaineenSuoritusS6(
 
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S7")
 case class SecondaryUpperOppiaineenSuoritusS7(
-  koulutusmoduuli: SecondaryUpperOppiaine,
+  koulutusmoduuli: SecondaryOppiaine,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss7")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuorituss7", koodistoUri = "suorituksentyyppi"),
   suorituskieli: Koodistokoodiviite,
@@ -398,35 +398,20 @@ case class PrimaryKieliOppimisalue(
   kieli: Koodistokoodiviite
 ) extends PrimarySuorituskielenVaativaOppimisalue with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliOppiaine
 
-trait SecondaryLowerOppiaine extends EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli
+trait SecondaryOppiaine extends EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli
 
-case class SecondaryLowerMuuOppiaine(
+case class SecondaryMuuOppiaine(
   @KoodistoUri("europeanschoolofhelsinkimuuoppiaine")
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusVuosiviikkotunneissa,
-) extends SecondaryLowerOppiaine
+) extends SecondaryOppiaine
 
-case class SecondaryLowerKieliOppiaine(
+case class SecondaryKieliOppiaine(
   @KoodistoUri("europeanschoolofhelsinkikielioppiaine")
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusVuosiviikkotunneissa,
   kieli: Koodistokoodiviite
-) extends SecondaryLowerOppiaine with EuropeanSchoolOfHelsinkiKieliOppiaine
-
-trait SecondaryUpperOppiaine extends EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli
-
-case class SecondaryUpperMuuOppiaine(
-  @KoodistoUri("europeanschoolofhelsinkimuuoppiaine")
-  tunniste: Koodistokoodiviite,
-  laajuus: LaajuusVuosiviikkotunneissa,
-) extends SecondaryUpperOppiaine
-
-case class SecondaryUpperKieliOppiaine(
-  @KoodistoUri("europeanschoolofhelsinkikielioppiaine")
-  tunniste: Koodistokoodiviite,
-  laajuus: LaajuusVuosiviikkotunneissa,
-  kieli: Koodistokoodiviite
-) extends SecondaryUpperOppiaine with EuropeanSchoolOfHelsinkiKieliOppiaine
+) extends SecondaryOppiaine with EuropeanSchoolOfHelsinkiKieliOppiaine
 
 /******************************************************************************
  * OSASUORITUKSET - ALAOSASUORITUKSET
