@@ -33,26 +33,61 @@ object EuropeanSchoolOfHelsinkiExampleData {
     jääLuokalle = jääLuokalle,
     todistuksellaNäkyvätLisätiedot = todistuksellaNäkyvätLisätiedot,
     osasuoritukset = Some(List(
+      primaryOppimisalueenOsasuoritusKieli(
+        oppiainekoodi = "ONL",
+        kieli = ExampleData.ruotsinKieli,
+        suorituskieli = ExampleData.suomenKieli,
+        alaosasuorituskoodit = Some(List(
+          "Swedish as other national language"
+        )),
+        arviointi = osasuoritusArviointi(
+          päivä = alkamispäivä.plusDays(30),
+          kuvaus = Some(LocalizedString.finnish("Du talar svenska bra")),
+        ),
+        alaosasuoritusArviointi = primaryAlaoppimisalueArviointi(
+          arvosana = "1",
+          päivä = alkamispäivä.plusDays(60)
+        ),
+      ),
       primaryLapsiOppimisalueenOsasuoritus(
         oppiainekoodi = "TCAAL",
-        arviointi = primaryArviointi(
+        alaosasuorituskoodit = Some(List(
+          "Engages in learning", "Listens attentively", "Develops working habits", "Works independently", "Perseveres with difficult tasks", "Uses ICT", "Presents work carefully", "Produces quality homework"
+        )),
+        arviointi = osasuoritusArviointi(
           päivä = alkamispäivä.plusDays(30),
           kuvaus = Some(LocalizedString.finnish("hyvää työtä!"))
+        ),
+        alaosasuoritusArviointi = primaryAlaoppimisalueArviointi(
+          päivä = alkamispäivä.plusDays(30)
         )
       ),
       primaryOppimisalueenOsasuoritusKieli(
         oppiainekoodi = "L1",
         kieli = ExampleData.sloveeni,
         suorituskieli = ExampleData.englanti,
-        arviointi = primaryArviointi(
-          arvosana = "fail",
+        alaosasuorituskoodit = Some(List(
+          "Listening and understanding", "Speaking", "Reading and understanding", "Writing", "Linguistic development"
+        )),
+        arviointi = osasuoritusArviointi(
+          päivä = alkamispäivä.plusDays(30),
           kuvaus = Some(LocalizedString.finnish("Parempi onni ensi kerralla")),
+        ),
+        alaosasuoritusArviointi = primaryAlaoppimisalueArviointi(
+          arvosana = "1",
           päivä = alkamispäivä.plusDays(60)
-        )
+        ),
       ),
       primaryOppimisalueenOsasuoritus(oppiainekoodi = "MA",
-        arviointi = primaryArviointi(
-          arvosana = "pass",
+        alaosasuorituskoodit = Some(List(
+          "Numbers & Number system", "Calculation", "Measurement", "Shape and Space", "Data handling", "Problem solving"
+        )),
+        arviointi = osasuoritusArviointi(
+          päivä = alkamispäivä.plusDays(30),
+          kuvaus = Some(LocalizedString.finnish("Parempi onni ensi kerralla")),
+        ),
+        alaosasuoritusArviointi = primaryAlaoppimisalueArviointi(
+          arvosana = "2",
           päivä = alkamispäivä.plusDays(65)
         )
       )
@@ -60,10 +95,21 @@ object EuropeanSchoolOfHelsinkiExampleData {
     ))
   )
 
-  def primaryLapsiOppimisalueenOsasuoritus(oppiainekoodi: String, arviointi: Option[List[PrimaryArviointi]] = None): PrimaryLapsiOppimisalueenOsasuoritus = {
-    PrimaryLapsiOppimisalueenOsasuoritus(
+  def primaryLapsiOppimisalueenOsasuoritus(
+    oppiainekoodi: String,
+    arviointi: Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = None,
+    alaosasuorituskoodit: Option[List[String]] = None,
+    alaosasuoritusArviointi: Option[List[PrimaryAlaoppimisalueArviointi]] = None
+  ): PrimaryLapsiOppimisalueenSuoritus = {
+    PrimaryLapsiOppimisalueenSuoritus(
+      arviointi = arviointi,
       koulutusmoduuli = PrimaryLapsiOppimisalue(Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkilapsioppimisalue")),
-      arviointi = arviointi
+      osasuoritukset = alaosasuorituskoodit.map(_.map(koodi => PrimaryLapsiOppimisalueenAlaosasuoritus(
+        koulutusmoduuli = PrimaryLapsiAlaoppimisalue(
+          tunniste = Koodistokoodiviite(koodi, "europeanschoolofhelsinkiprimarylapsialaoppimisalue")
+        ),
+        arviointi = alaosasuoritusArviointi
+      )))
     )
   }
 
@@ -71,15 +117,23 @@ object EuropeanSchoolOfHelsinkiExampleData {
     oppiainekoodi: String,
     laajuus: Int = 2,
     suorituskieli: Koodistokoodiviite = ExampleData.englanti,
-    arviointi: Option[List[PrimaryArviointi]] = None
-  ): PrimaryOppimisalueenOsasuoritus = {
-    PrimaryOppimisalueenOsasuoritus(
+    arviointi: Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = None,
+    alaosasuorituskoodit: Option[List[String]] = None,
+    alaosasuoritusArviointi: Option[List[PrimaryAlaoppimisalueArviointi]] = None
+  ): PrimaryOppimisalueenSuoritus = {
+    PrimaryOppimisalueenSuoritus(
       koulutusmoduuli = PrimaryMuuOppimisalue(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus)
       ),
       suorituskieli = suorituskieli,
-      arviointi = arviointi
+      arviointi = arviointi,
+      osasuoritukset = alaosasuorituskoodit.map(_.map(koodi => PrimaryOppimisalueenAlaosasuoritus(
+        koulutusmoduuli = PrimaryAlaoppimisalue(
+          tunniste = Koodistokoodiviite(koodi, "europeanschoolofhelsinkiprimaryalaoppimisalue"),
+        ),
+        arviointi = alaosasuoritusArviointi
+      )))
     )
   }
 
@@ -88,28 +142,48 @@ object EuropeanSchoolOfHelsinkiExampleData {
     laajuus: Int = 2,
     kieli: Koodistokoodiviite = ExampleData.englanti,
     suorituskieli: Koodistokoodiviite = ExampleData.englanti,
-    arviointi: Option[List[PrimaryArviointi]] = None
-  ): PrimaryOppimisalueenOsasuoritus = {
-    PrimaryOppimisalueenOsasuoritus(
+    arviointi: Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = None,
+    alaosasuoritusArviointi: Option[List[PrimaryAlaoppimisalueArviointi]] = None,
+    alaosasuorituskoodit: Option[List[String]] = None
+  ): PrimaryOppimisalueenSuoritus = {
+    PrimaryOppimisalueenSuoritus(
+      arviointi = arviointi,
       koulutusmoduuli = PrimaryKieliOppimisalue(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus),
         kieli = kieli
       ),
       suorituskieli = suorituskieli,
-      arviointi = arviointi
+      osasuoritukset = alaosasuorituskoodit.map(_.map(koodi => PrimaryOppimisalueenAlaosasuoritus(
+        koulutusmoduuli = PrimaryAlaoppimisalue(
+          tunniste = Koodistokoodiviite(koodi, "europeanschoolofhelsinkiprimaryalaoppimisalue")
+        ),
+        arviointi = alaosasuoritusArviointi
+      )))
     )
   }
 
-  def primaryArviointi(
+  def osasuoritusArviointi(
     arvosana: String = "pass",
     kuvaus: Option[LocalizedString] = None,
     arvioitsijat: Option[List[Arvioitsija]] = Some(List(Arvioitsija("Pekka Paunanen"))),
     päivä: LocalDate
-  ): Option[List[PrimaryArviointi]] = {
-    Some(List(PrimaryArviointi(
-      arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"),
+  ): Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = {
+    Some(List(EuropeanSchoolOfHelsinkiOsasuoritusArviointi(
+      arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus"),
       kuvaus = kuvaus,
+      päivä = päivä,
+      arvioitsijat = arvioitsijat
+    )))
+  }
+
+  def primaryAlaoppimisalueArviointi(
+    arvosana: String = "3",
+    arvioitsijat: Option[List[Arvioitsija]] = Some(List(Arvioitsija("Pekka Paunanen"))),
+    päivä: LocalDate
+  ): Option[List[PrimaryAlaoppimisalueArviointi]] = {
+    Some(List(PrimaryAlaoppimisalueArviointi(
+      arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"),
       päivä = päivä,
       arvioitsijat = arvioitsijat
     )))

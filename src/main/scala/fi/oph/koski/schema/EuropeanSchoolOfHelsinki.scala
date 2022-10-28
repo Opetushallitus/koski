@@ -311,20 +311,22 @@ trait EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus extends EuropeanSch
 
 trait PrimaryOsasuoritus extends EuropeanSchoolOfHelsinkiOsasuoritus
 
-case class PrimaryLapsiOppimisalueenOsasuoritus(
+case class PrimaryLapsiOppimisalueenSuoritus(
   koulutusmoduuli: PrimaryLapsiOppimisalue,
-  arviointi: Option[List[PrimaryArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritusprimarylapsi")
   @KoodistoUri("suorituksentyyppi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuoritusprimarylapsi", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuoritusprimarylapsi", koodistoUri = "suorituksentyyppi"),
+  arviointi: Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = None,
+  override val osasuoritukset: Option[List[PrimaryLapsiOppimisalueenAlaosasuoritus]] = None
 ) extends PrimaryOsasuoritus
 
-case class PrimaryOppimisalueenOsasuoritus(
+case class PrimaryOppimisalueenSuoritus(
   koulutusmoduuli: PrimarySuorituskielenVaativaOppimisalue,
-  arviointi: Option[List[PrimaryArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritusprimary")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuoritusprimary", koodistoUri = "suorituksentyyppi"),
-  suorituskieli: Koodistokoodiviite
+  arviointi: Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = None,
+  suorituskieli: Koodistokoodiviite,
+  override val osasuoritukset: Option[List[PrimaryOppimisalueenAlaosasuoritus]] = None
 ) extends PrimaryOsasuoritus with EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus
 
 case class SecondaryLowerOppiaineenSuoritus(
@@ -363,6 +365,7 @@ case class SecondaryUpperOppiaineenSuoritusS7(
 
 trait EuropeanSchoolOfHelsinkiOsasuorituksenKoulutusmoduuli extends KoodistostaLöytyväKoulutusmoduuli
 
+// TODO: uudeelleennimeä EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
 trait EuropeanSchoolOfHelsinkiOsasuorituksenOsasuorituksenKoulutusmoduuli extends KoodistostaLöytyväKoulutusmoduuli
 
 trait EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli extends EuropeanSchoolOfHelsinkiOsasuorituksenKoulutusmoduuli with KoulutusmoduuliPakollinenLaajuusVuosiviikkotunneissa
@@ -429,6 +432,20 @@ case class SecondaryUpperKieliOppiaine(
  * OSASUORITUKSET - ALAOSASUORITUKSET
  *****************************************************************************/
 
+case class PrimaryLapsiOppimisalueenAlaosasuoritus(
+  koulutusmoduuli: PrimaryLapsiAlaoppimisalue,
+  arviointi: Option[List[PrimaryAlaoppimisalueArviointi]] = None,
+  @KoodistoKoodiarvo("europeanschoolofhelsinkialaosasuoritusprimarylapsi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkialaosasuoritusprimarylapsi", koodistoUri = "suorituksentyyppi")
+) extends EuropeanSchoolOfHelsinkiOsasuorituksenAlaosasuoritus
+
+case class PrimaryOppimisalueenAlaosasuoritus(
+  koulutusmoduuli: PrimaryAlaoppimisalue,
+  arviointi: Option[List[PrimaryAlaoppimisalueArviointi]] = None,
+  @KoodistoKoodiarvo("europeanschoolofhelsinkialaosasuoritusprimary")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkialaosasuoritusprimary", koodistoUri = "suorituksentyyppi")
+) extends EuropeanSchoolOfHelsinkiOsasuorituksenAlaosasuoritus
+
 case class S7OppiaineenAlaosasuoritus(
   koulutusmoduuli: S7OppiaineKomponentti,
   arviointi: Option[List[SecondaryS7PreliminaryMarkArviointi]] = None,
@@ -439,6 +456,16 @@ case class S7OppiaineenAlaosasuoritus(
 /******************************************************************************
  * OSASUORITUKSET - ALAOSASUORITUSTEN KOULUTUSMODUULIT
  *****************************************************************************/
+
+case class PrimaryLapsiAlaoppimisalue(
+  @KoodistoUri("europeanschoolofhelsinkiprimarylapsialaoppimisalue")
+  tunniste: Koodistokoodiviite
+) extends EuropeanSchoolOfHelsinkiOsasuorituksenOsasuorituksenKoulutusmoduuli
+
+case class PrimaryAlaoppimisalue(
+  @KoodistoUri("europeanschoolofhelsinkiprimaryalaoppimisalue")
+  tunniste: Koodistokoodiviite
+) extends EuropeanSchoolOfHelsinkiOsasuorituksenOsasuorituksenKoulutusmoduuli
 
 trait S7OppiaineKomponentti extends EuropeanSchoolOfHelsinkiOsasuorituksenOsasuorituksenKoulutusmoduuli {
   @KoodistoUri("europeanschoolofhelsinkis7oppiaineenkomponentti")
@@ -464,14 +491,23 @@ case class S7OppiaineKomponenttiYearMark(
  * OSASUORITUKSET - KOODISTOON PERUSTUVAT ARVIOINNIT
  *****************************************************************************/
 
-trait EuropeanSchoolOfHelsinkiArviointi extends SanallinenArviointi with ArviointiPäivämäärällä {
+trait EuropeanSchoolOfHelsinkiArviointi extends ArviointiPäivämäärällä {
   def arvosana: KoodiViite
   def päivä: LocalDate
-  def kuvaus: Option[LocalizedString]
   override def hyväksytty: Boolean = EuropeanSchoolOfHelsinkiArviointi.hyväksytty(arvosana)
 }
 
+trait EuropeanSchoolOfHelsinkiSanallinenArviointi extends EuropeanSchoolOfHelsinkiArviointi with SanallinenArviointi {
+  def kuvaus: Option[LocalizedString]
+}
+
 trait EuropeanSchoolOfHelsinkiKoodistostaLöytyväArviointi extends EuropeanSchoolOfHelsinkiArviointi with KoodistostaLöytyväArviointi {
+  def arvosana: Koodistokoodiviite
+  def päivä: LocalDate
+  override def hyväksytty: Boolean = EuropeanSchoolOfHelsinkiArviointi.hyväksytty(arvosana)
+}
+
+trait EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi extends EuropeanSchoolOfHelsinkiSanallinenArviointi with KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
   def päivä: LocalDate
   def kuvaus: Option[LocalizedString]
@@ -494,10 +530,18 @@ object EuropeanSchoolOfHelsinkiArviointi {
   }
 }
 
-case class PrimaryArviointi(
-  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkiprimarymark")
+// pass/fail arviointi sitä varten, että oppiainetasolle voidaan tallentaa sanallinen kuvaus, vaikka numeeriset arvosanat ovat alaosasuorituksissa
+case class EuropeanSchoolOfHelsinkiOsasuoritusArviointi(
+  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus")
   arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
+  päivä: LocalDate,
+  arvioitsijat: Option[List[Arvioitsija]] = None
+) extends EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
+
+case class PrimaryAlaoppimisalueArviointi(
+  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkiprimarymark")
+  arvosana: Koodistokoodiviite,
   päivä: LocalDate,
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends EuropeanSchoolOfHelsinkiKoodistostaLöytyväArviointi
@@ -513,7 +557,7 @@ case class SecondaryGradeArviointi(
   kuvaus: Option[LocalizedString],
   päivä: LocalDate,
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiKoodistostaLöytyväArviointi
+) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
 
 /******************************************************************************
  * OSASUORITUKSET - SYNTEETTISET ARVIOINNIT
@@ -566,4 +610,4 @@ case class SecondaryS7PreliminaryMarkArviointi(
   kuvaus: Option[LocalizedString],
   päivä: LocalDate,
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends EuropeanSchoolOfHelsinkiArviointi with EuropeanSchoolOfHelsinkiSynteettinenArviointi
+) extends EuropeanSchoolOfHelsinkiSanallinenArviointi with EuropeanSchoolOfHelsinkiSynteettinenArviointi

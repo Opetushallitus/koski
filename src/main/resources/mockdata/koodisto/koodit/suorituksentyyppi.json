@@ -1939,6 +1939,48 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuoritusprimarylapsi",
+  "koodiArvo" : "europeanschoolofhelsinkialaosasuoritusprimarylapsi",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki primary cycle child subject's component",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle child subject's component",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle child subject's component",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuoritusprimary",
+  "koodiArvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki primary cycle subject's component",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle subject's component",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle subject's component",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritussecondarylower",
   "koodiArvo" : "europeanschoolofhelsinkiosasuoritussecondarylower",
   "metadata" : [ {

@@ -52,5 +52,23 @@
     ],
     "versio": 1,
     "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkikielioppiaine_onl",
+    "koodiArvo": "ONL",
+    "metadata": [
+      {
+        "nimi" : "Other National Language",
+        "lyhytNimi" : "Other National Language",
+        "kieli" : "FI"
+      },
+      {
+        "nimi" : "Other National Language",
+        "lyhytNimi" : "Other National Language",
+        "kieli" : "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
   }
 ]
