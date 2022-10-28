@@ -101,6 +101,9 @@ object Koodistot {
     KoodistoAsetus("europeanschoolofhelsinkikielioppiaine"),
     KoodistoAsetus("europeanschoolofhelsinkimuuoppiaine"),
     KoodistoAsetus("europeanschoolofhelsinkis7oppiaineenkomponentti"),
+    KoodistoAsetus("europeanschoolofhelsinkiprimarylapsialaoppimisalue"),
+    KoodistoAsetus("europeanschoolofhelsinkiprimaryalaoppimisalue"),
+    KoodistoAsetus("arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus"),
     KoodistoAsetus("arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"),
     KoodistoAsetus("arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"),
   )
