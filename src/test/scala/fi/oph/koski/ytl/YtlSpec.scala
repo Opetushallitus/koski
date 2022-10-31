@@ -619,6 +619,7 @@ class YtlSpec
         KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_dia,
         KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_ib,
         KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_international,
+        KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_esh,
         KoskiSpecificMockOppijat.perusopetusOppijaMaaratRaportti_tavallinen,
         KoskiSpecificMockOppijat.perusopetusOppijaMaaratRaportti_erikois,
         KoskiSpecificMockOppijat.perusopetusOppijaMaaratRaportti_virheellisestiSiirretty,

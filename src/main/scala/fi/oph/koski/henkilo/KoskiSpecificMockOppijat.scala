@@ -110,6 +110,7 @@ object KoskiSpecificMockOppijat {
   val lukioDiaIbInternationalESHOpiskelijamaaratRaportti_dia = koskiSpecificOppijat.oppija("dia", "opiskelija", "180900A985M")
   val lukioDiaIbInternationalESHOpiskelijamaaratRaportti_ib = koskiSpecificOppijat.oppija("ib", "opiskelija", "180900A919H")
   val lukioDiaIbInternationalESHOpiskelijamaaratRaportti_international = koskiSpecificOppijat.oppija("international", "opiskelija", "180900A9074")
+  val lukioDiaIbInternationalESHOpiskelijamaaratRaportti_esh = koskiSpecificOppijat.oppija("esh", "opiskelija", "081100A1241")
   val perusopetusOppijaMaaratRaportti_tavallinen = koskiSpecificOppijat.oppija("t", "tavallinen", "241001A8751")
   val perusopetusOppijaMaaratRaportti_erikois = koskiSpecificOppijat.oppija("e", "erikois", "180900A2298")
   val perusopetusOppijaMaaratRaportti_virheellisestiSiirretty = koskiSpecificOppijat.oppija("v", "virheellisestiSiirretty", "050501A093H")

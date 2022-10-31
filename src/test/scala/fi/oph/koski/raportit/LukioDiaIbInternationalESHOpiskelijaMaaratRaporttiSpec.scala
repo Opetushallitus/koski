@@ -62,9 +62,9 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
       helsinki.aikuistenOppimaaranSuorittajia shouldBe(1)
       helsinki.aineopiskelija shouldBe(0)
 
-      ressu.opiskelijoidenMaara shouldBe(4)
-      ressu.oppimaaranSuorittajia shouldBe(3)
-      ressu.nuortenOppimaaranSuorittajia shouldBe(3)
+      ressu.opiskelijoidenMaara shouldBe(5)
+      ressu.oppimaaranSuorittajia shouldBe(4)
+      ressu.nuortenOppimaaranSuorittajia shouldBe(4)
       ressu.aikuistenOppimaaranSuorittajia shouldBe(0)
       ressu.aineopiskelija shouldBe(1)
     }
@@ -88,9 +88,9 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
       helsinki.aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(1)
       helsinki.aineopiskelija_MuutaKauttaRahoitettu shouldBe(0)
 
-      ressu.opiskelijoidenMaara_MuutaKauttaRahoitettu should equal(2)
-      ressu.oppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(2)
-      ressu.nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(2)
+      ressu.opiskelijoidenMaara_MuutaKauttaRahoitettu should equal(3)
+      ressu.oppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(3)
+      ressu.nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(3)
       ressu.aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(0)
       ressu.aineopiskelija_MuutaKauttaRahoitettu shouldBe(0)
     }
@@ -135,8 +135,8 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
       helsinki.nuortenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
       helsinki.aikuistenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
 
-      ressu.oppimaaranSuorittajia_OpetuskieliMuu shouldBe(3)
-      ressu.nuortenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(3)
+      ressu.oppimaaranSuorittajia_OpetuskieliMuu shouldBe(4)
+      ressu.nuortenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(4)
       ressu.aikuistenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
     }
     "Sisäoppilaitosmainen majoitus" in {

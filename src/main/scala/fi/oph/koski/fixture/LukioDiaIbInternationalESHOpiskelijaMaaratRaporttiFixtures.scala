@@ -1,7 +1,6 @@
 package fi.oph.koski.fixture
 
 import java.time.LocalDate
-
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
@@ -90,7 +89,6 @@ object LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures {
       )
     )
 
-  // TODO: TOR-1685 Eurooppalainen koulu, lisää myös tällä raportille tämän fikstuurin lisäksi
   val international = InternationalSchoolOpiskeluoikeus(
     oppilaitos = Some(ressunLukio),
     lisätiedot = Some(InternationalSchoolOpiskeluoikeudenLisätiedot(
@@ -119,6 +117,20 @@ object LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures {
     suoritukset = List(
       ExamplesDIA.diaValmistavanVaiheenSuoritus.copy(vahvistus = None, toimipiste = ressunLukio),
       ExamplesDIA.diaTutkintovaiheenSuoritus().copy(vahvistus = None, toimipiste = ressunLukio)
+    )
+  )
+
+  val esh = EuropeanSchoolOfHelsinkiOpiskeluoikeus(
+    oppilaitos = Some(ressunLukio),
+    tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+      List(
+        EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(date, opiskeluoikeusAktiivinen)
+      )
+    ),
+    suoritukset = List(
+      ExamplesEuropeanSchoolOfHelsinki.s5.copy(alkamispäivä = Some(date), vahvistus = None),
+      ExamplesEuropeanSchoolOfHelsinki.s6.copy(alkamispäivä = Some(date), vahvistus = None),
+      ExamplesEuropeanSchoolOfHelsinki.s7.copy(alkamispäivä = Some(date), vahvistus = None),
     )
   )
 
