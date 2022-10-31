@@ -33,7 +33,7 @@ import {
 } from './EuropeanSchoolOfHelsinkiOppiaineRowEditor'
 import { UusiEuropeanSchoolOfHelsinkiOppiaineDropdown } from './EuropeanSchoolOfHelsinkiOppiaineDropdown'
 import { parseISODate } from '../date/date'
-import { Suoritustaulukko } from '../suoritus/Suoritustaulukko'
+import { EuropeanSchoolOfHelsinkiSuoritustaulukko } from '../suoritus/EuropeanSchoolOfHelsinkiSuoritustaulukko'
 
 export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
   model = addContext(model, { suoritus: model })
@@ -63,7 +63,7 @@ export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
         <p>
           <Text name="(ESH arvosteluteksti TODO)" />
         </p>
-        <Suoritustaulukko
+        <EuropeanSchoolOfHelsinkiSuoritustaulukko
           parentSuoritus={model}
           suorituksetModel={osasuorituksetModel}
           nestedLevel={2}
