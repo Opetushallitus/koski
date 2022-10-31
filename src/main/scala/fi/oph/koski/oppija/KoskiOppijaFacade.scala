@@ -280,7 +280,6 @@ class KoskiOppijaFacade(
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ DIAOpiskeluoikeusjakso(now, mitätöity)))
       case t: InternationalSchoolOpiskeluoikeudenTila =>
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ InternationalSchoolOpiskeluoikeusjakso(now, mitätöity)))
-      // TODO: TOR-1685 Eurooppalainen koulu
       case t: VapaanSivistystyönOpiskeluoikeudenTila =>
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ YleinenVapaanSivistystyönOpiskeluoikeusjakso(now, mitätöity)))
       case t: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila =>
