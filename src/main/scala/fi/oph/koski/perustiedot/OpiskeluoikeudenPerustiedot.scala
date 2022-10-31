@@ -123,7 +123,10 @@ object OpiskeluoikeudenPerustiedot {
   }
 
   private def getLuokka(oo: Opiskeluoikeus): Option[String] = oo match {
-    // TODO: TOR-1685 Eurooppalainen koulu ?
+    case esh: EuropeanSchoolOfHelsinkiOpiskeluoikeus => esh.suoritukset.filter(_.alkamispäivä.isDefined).sortBy(_.alkamispäivä).lastOption match {
+      case Some(suoritus) => suoritus.luokka.orElse(suoritus.koulutusmoduuli.tunniste.getNimi.getOrElse(Finnish("")).getOptional("en"))
+      case _ => None
+    }
     case is: InternationalSchoolOpiskeluoikeus => is.suoritukset.filter(_.alkamispäivä.isDefined).sortBy(_.alkamispäivä).lastOption match {
       case Some(suoritus) => suoritus.luokka.orElse(suoritus.koulutusmoduuli.tunniste.getNimi.getOrElse(Finnish("")).getOptional("en"))
       case _ => None
