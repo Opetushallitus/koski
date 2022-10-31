@@ -34,7 +34,7 @@ import { ObjectModel, ObjectModelProperty } from '../types/EditorModels'
 import { VstVapaaTavoitteinenKoulutusmoduuliEditor } from './VstVapaaTavoitteinenKoulutusmoduuliEditor'
 import { EuropeanSchoolOfHelsinkiOppiaineetEditor } from '../esh/EuropeanSchoolOfHelsinkiOppiaineetEditor'
 import { eshSuoritus } from '../esh/europeanschoolofhelsinkiSuoritus'
-import { SuoritusEditor } from './SuoritusEditor'
+import { EuropeanSchoolOfHelsinkiNurseryOppiaineetEditor } from '../esh/EuropeanSchoolOfHelsinkiNurseryOppiaineetEditor'
 
 export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
   const oneOf = (...classes: string[]) =>
@@ -219,10 +219,16 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
     )
   }
   // Ei osasuorituksia: nursery
+  if (
+    firstClassOneOf(
+      eshSuoritus.nursery
+    )
+  ) {
+    return <EuropeanSchoolOfHelsinkiNurseryOppiaineetEditor model={mdl} />
+  }
   // Osasuorituksellisia: primary, secondaryLower, secondaryUpper, secondaryUpperS6, secondaryUppserS7
   if (
     firstClassOneOf(
-      eshSuoritus.nursery,
       eshSuoritus.primary,
       eshSuoritus.secondaryLower,
       eshSuoritus.secondaryUpper,

@@ -23,7 +23,6 @@ import {
   footnoteDescriptions,
   footnotesForSuoritus,
   isToimintaAlueittain,
-  isVuosiluokkaTaiPerusopetuksenOppimäärä,
   jääLuokalle,
   valmiitaSuorituksia
 } from './esh'
@@ -33,12 +32,10 @@ import {
 } from './EuropeanSchoolOfHelsinkiOppiaineRowEditor'
 import { UusiEuropeanSchoolOfHelsinkiOppiaineDropdown } from './EuropeanSchoolOfHelsinkiOppiaineDropdown'
 import { parseISODate } from '../date/date'
-import { Suoritustaulukko } from '../suoritus/Suoritustaulukko'
 
-export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
+export const EuropeanSchoolOfHelsinkiNurseryOppiaineetEditor = ({ model }) => {
   model = addContext(model, { suoritus: model })
   const oppiaineSuoritukset = modelItems(model, 'osasuoritukset')
-  const osasuorituksetModel = modelLookup(model, 'osasuoritukset')
 
   if (model.context.edit) {
     if (!valmiitaSuorituksia(oppiaineSuoritukset)) {
@@ -63,11 +60,7 @@ export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
         <p>
           <Text name="(ESH arvosteluteksti TODO)" />
         </p>
-        <Suoritustaulukko
-          parentSuoritus={model}
-          suorituksetModel={osasuorituksetModel}
-          nestedLevel={2}
-        />
+        {'Nursery TODO'}
       </div>
     </div>
   )
@@ -312,11 +305,7 @@ class EshOppiainetaulukko extends React.Component {
         <hr />
         {listattavatSuoritukset
           .filter(
-            (s) =>
-              edit ||
-              arvioituTaiVahvistettu(s) ||
-              osasuoritukset(s).length ||
-              isVuosiluokkaTaiPerusopetuksenOppimäärä(model)
+            (s) => edit || arvioituTaiVahvistettu(s) || osasuoritukset(s).length
           )
           .map((suoritus) => (
             <EuropeanSchoolOfHelsinkiOppiaineRowEditor
