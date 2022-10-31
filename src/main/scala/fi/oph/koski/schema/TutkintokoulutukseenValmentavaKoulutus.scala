@@ -241,11 +241,9 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa(
     koodistoUri = "koulutuksenosattuva",
     nimi = Some(LocalizedString.unlocalized("Valinnaiset koulutuksen osat"))
   ),
-  @DefaultValue(None)
-  @ReadOnly("Laajuus lasketaan automaattisesti osasuoritusten laajuuksista.")
   laajuus: Option[LaajuusViikoissa] = None
 ) extends KoulutusmoduuliValinnainenLaajuus
-    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusViikoissa] {
+    with OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli[LaajuusViikoissa] {
   def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
   override def makeLaajuus(laajuusArvo: Double): LaajuusViikoissa = LaajuusViikoissa(laajuusArvo)
 }
@@ -267,16 +265,12 @@ case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsas
 ) extends KurssinSuoritus
     with MahdollisestiSuorituskielellinen
     with MahdollisestiTunnustettu
-    with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusViikoissa]
 
 case class TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus(
   nimi: LocalizedString,
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusViikoissa]
 ) extends KoulutusmoduuliValinnainenLaajuus
-    with OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusViikoissa] {
-  override def makeLaajuus(laajuusArvo: Double): LaajuusViikoissa = LaajuusViikoissa(laajuusArvo)
-}
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen sanallinen arviointi")
 @Description("Tutkintokoulutukseen valmentavan koulutuksen osasuorituksen hyväksytty/hylätty arviointi")
