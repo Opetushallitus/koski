@@ -40,7 +40,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         }
       }
 
-      "suoritusten laajuudet lasketaan automaattisesti oikein" in {
+      "suoritusten laajuus sallitaan kun se vastaa osasuoritusten summaa" in {
         val oo = tuvaOpiskeluOikeusValmistunut.copy(
           suoritukset = List(tuvaPäätasonSuoritus(laajuus = None).copy( // laajuus lasketaan ja täytetään automaattisesti
             osasuoritukset = Some(
@@ -57,7 +57,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
                 ),
                 tuvaKoulutuksenValinnaisenOsanSuoritus(
                   arviointiPäivä = Some(date(2021, 9, 1)),
-                  laajuus = None // laajuus lasketaan ja täytetään automaattisesti
+                  laajuus = Some(8)
                 ).copy(
                   osasuoritukset = Some(
                     List(
@@ -78,12 +78,77 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
                 )
               )
             )
-          ))
-        )
+          )))
+
 
         val tuva = putAndGetOpiskeluoikeus(oo, tuvaHenkilöValmis)
         tuva.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe 12.0
         tuva.suoritukset.head.osasuoritusLista.last.koulutusmoduuli.laajuusArvo(0.0) shouldBe 8.0
+      }
+
+        "suoritusten laajuus sallitaan ilman osasuorituksia" in {
+          val oo = tuvaOpiskeluOikeusValmistunut.copy(
+            suoritukset = List(tuvaPäätasonSuoritus(laajuus = None).copy( // laajuus lasketaan ja täytetään automaattisesti
+              osasuoritukset = Some(
+                List(
+                  tuvaKoulutuksenMuunOsanSuoritus(
+                    koulutusmoduuli = tuvaOpiskeluJaUrasuunnittelutaidot(laajuus = Some(2)),
+                    koodistoviite = "tutkintokoulutukseenvalmentava",
+                    arviointiPäivä = Some(date(2021, 9, 1))
+                  ),
+                  tuvaKoulutuksenMuunOsanSuoritus(
+                    koulutusmoduuli = tuvaTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen(laajuus = Some(2)),
+                    koodistoviite = "tutkintokoulutukseenvalmentava",
+                    arviointiPäivä = Some(date(2021, 9, 1))
+                  ),
+                  tuvaKoulutuksenValinnaisenOsanSuoritus(
+                    arviointiPäivä = Some(date(2021, 9, 1)),
+                    laajuus = Some(6)
+                  )
+                )
+              )
+            ))
+          )
+
+        val tuva = putAndGetOpiskeluoikeus(oo, tuvaHenkilöValmis)
+        tuva.suoritukset.head.koulutusmoduuli.laajuusArvo(0) shouldBe 10.0
+        tuva.suoritukset.head.osasuoritusLista.last.koulutusmoduuli.laajuusArvo(0.0) shouldBe 6.0
+      }
+
+      "suoritusten laajuus validoidaan jos osasuorituksia" in {
+        val oo = tuvaOpiskeluOikeusValmistunut.copy(
+          suoritukset = List(tuvaPäätasonSuoritus(laajuus = None).copy( // laajuus validoidaan jos syötetty myös osasuorituksille
+            osasuoritukset = Some(
+              List(
+                tuvaKoulutuksenValinnaisenOsanSuoritus(
+                  arviointiPäivä = Some(date(2021, 9, 1)),
+                  laajuus = Some(1) // should throw
+                ).copy(
+                  osasuoritukset = Some(List(
+                    tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                      kurssinNimi = "Ohjelmointi 1",
+                      paikallinenKoodi = "ohj1",
+                      paikallisenKoodinNimi = "Paikallinen ohjelmointikurssi",
+                      laajuusViikoissa = 1
+                    ),
+                    tuvaKoulutuksenValinnaisenOsanOsasuoritus(
+                      kurssinNimi = "Ohjelmointi 2",
+                      paikallinenKoodi = "ohj2",
+                      paikallisenKoodinNimi = "Paikallinen ohjelmointikurssi",
+                      laajuusViikoissa = 1
+                    ),
+                  )))
+            )
+          ))
+        ))
+
+        putOpiskeluoikeus(
+          oo,
+          henkilö = tuvaHenkilöValmis,
+          headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent
+        ) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.tuvaPäätasonSuoritusVääräLaajuus(), KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen koulutuksenosattuva/104 osasuoritusten laajuuksien summa 2.0 ei vastaa suorituksen laajuutta 1.0"))
+        }
       }
 
       "valmistuneen päätason suorituksen laajuus liian pieni (ja osasuorituksia puuttuu)" in {

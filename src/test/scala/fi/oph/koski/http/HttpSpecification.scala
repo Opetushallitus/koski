@@ -30,7 +30,7 @@ trait HttpSpecification extends HttpTester with TestEnvironment with Assertions 
     verifyResponseStatus(expectedStatus, List(details))
   }
 
-  def verifyResponseStatusFoo(expectedStatus: Int, details: HttpStatus*): Unit = {
+  def verifyResponseStatus(expectedStatus: Int, details: HttpStatus*): Unit = {
     verifyResponseStatus(expectedStatus, details.flatMap { _.errors }.map { case ErrorDetail(key, message) => FixedErrorMatcher(key, message) }.toList)
   }
 
