@@ -214,6 +214,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_dia, LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.dia),
       (KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_ib, LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.ib),
       (KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_international, LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.international),
+      (KoskiSpecificMockOppijat.lukioDiaIbInternationalESHOpiskelijamaaratRaportti_esh, LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.esh),
       (KoskiSpecificMockOppijat.perusopetusOppijaMaaratRaportti_tavallinen, PerusopetusOppijaMaaratRaporttiFixtures.tavallinen),
       (KoskiSpecificMockOppijat.perusopetusOppijaMaaratRaportti_erikois, PerusopetusOppijaMaaratRaporttiFixtures.erikois),
       (KoskiSpecificMockOppijat.perusopetusOppijaMaaratRaportti_virheellisestiSiirretty, PerusopetusOppijaMaaratRaporttiFixtures.virheellisestiSiirrettyVaikeastiVammainen),
