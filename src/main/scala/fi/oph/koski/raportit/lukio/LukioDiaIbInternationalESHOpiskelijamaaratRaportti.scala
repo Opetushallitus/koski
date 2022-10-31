@@ -13,12 +13,12 @@ import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
 
-case class LukioDiaIbInternationalOpiskelijamaaratRaportti(db: DB) extends QueryMethods {
+case class LukioDiaIbInternationalESHOpiskelijamaaratRaportti(db: DB) extends QueryMethods {
   def build(oppilaitosOids: List[String], päivä: LocalDate, t: LocalizationReader): DataSheet = {
     DataSheet(
       title = t.get("raportti-excel-opiskelijamäärä-sheet-name"),
       rows = runDbSync(
-        query(oppilaitosOids, päivä, t.language).as[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow],
+        query(oppilaitosOids, päivä, t.language).as[LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow],
         timeout = 5.minutes
       ),
       columnSettings = columnSettings(t)
@@ -255,9 +255,9 @@ with oppija as (select
     """
  }
 
-  implicit private val getResult: GetResult[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow] = GetResult(r => {
+  implicit private val getResult: GetResult[LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow] = GetResult(r => {
     val rs: ResultSet = r.rs
-    LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow(
+    LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow(
       oppilaitosOid = rs.getString("oppilaitos_oid"),
       oppilaitosNimi = rs.getString("oppilaitos_nimi"),
       opiskelijoidenMaara = rs.getInt("kaikki_yhteensa"),
@@ -378,7 +378,7 @@ with oppija as (select
   ))
 }
 
-case class LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow(
+case class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow(
   oppilaitosOid: String,
   oppilaitosNimi: String,
   opiskelijoidenMaara: Int,
