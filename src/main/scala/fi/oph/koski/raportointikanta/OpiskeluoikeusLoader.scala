@@ -371,7 +371,11 @@ object OpiskeluoikeusLoader extends Logging {
     o.tyyppi.koodiarvo match {
       case "perusopetus" => true
       case "internationalschool" => true
-      // TODO: TOR-1685 Eurooppalainen koulu
+      case "europeanschoolofhelsinki"
+        if o.asInstanceOf[EuropeanSchoolOfHelsinkiOpiskeluoikeus].suoritukset.exists {
+          case _: OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus => true
+          case _ => false
+        } => true
       case "esiopetus" => true
       case "perusopetukseenvalmistavaopetus" => true
       case _ => MaksuttomuusValidation.oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(o)

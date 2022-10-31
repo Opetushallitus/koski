@@ -163,6 +163,8 @@ case class NurseryVuosiluokanSuoritus(
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
 }
 
+trait OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+
 case class PrimaryVuosiluokanSuoritus(
   koulutusmoduuli: PrimaryLuokkaAste,
   luokka: Option[String] = None,
@@ -175,7 +177,7 @@ case class PrimaryVuosiluokanSuoritus(
   jääLuokalle: Boolean = false,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   override val osasuoritukset: Option[List[PrimaryOsasuoritus]] = None
-) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus {
+) extends OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
 }
 
@@ -191,7 +193,7 @@ case class SecondaryLowerVuosiluokanSuoritus(
   jääLuokalle: Boolean = false,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   override val osasuoritukset: Option[List[SecondaryLowerOppiaineenSuoritus]] = None
-) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus {
+) extends OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
 }
 
@@ -207,7 +209,7 @@ case class SecondaryUpperVuosiluokanSuoritus(
   jääLuokalle: Boolean = false,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   override val osasuoritukset: Option[List[SecondaryUpperOppiaineenSuoritus]] = None
-) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta {
+) extends OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
 }
 
