@@ -48,7 +48,7 @@ object ExamplesEuropeanSchoolOfHelsinki {
       )
     ),
     suoritukset = List(
-      n1,
+      n1,PP
       n2,
       p1,
       p2JääLuokalle,
