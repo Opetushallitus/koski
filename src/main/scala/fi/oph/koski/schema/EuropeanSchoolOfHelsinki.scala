@@ -145,6 +145,7 @@ trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
   def alkamispäivä: Option[LocalDate]
   def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
 }
 
@@ -496,6 +497,7 @@ trait EuropeanSchoolOfHelsinkiArviointi extends ArviointiPäivämäärällä {
 }
 
 trait EuropeanSchoolOfHelsinkiSanallinenArviointi extends EuropeanSchoolOfHelsinkiArviointi with SanallinenArviointi {
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def kuvaus: Option[LocalizedString]
 }
 
