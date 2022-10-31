@@ -35,6 +35,7 @@ case class MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
   @KoodistoKoodiarvo("keskeytynyt")
+  @KoodistoKoodiarvo("mitatoity")
   tila: Koodistokoodiviite,
   alku: LocalDate,
   @KoodistoKoodiarvo("14")
