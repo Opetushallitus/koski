@@ -96,8 +96,14 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
       }
     }
 
-    "Päällekkäisen opiskeluoikeuden suorituksesta käytetään selkokielistä nimeä" in {
+    "Oman ja päällekkäisen opiskeluoikeuden suorituksesta käytetään selkokielistä nimeä" in {
+      pekanRivit(stadinRaportti).map(_.suoritusTyyppi) shouldBe(Seq("Näyttötutkintoon valmistavan koulutuksen suoritus"))
       pekanRivit(stadinRaportti).map(_.paallekkainenSuoritusTyyppi) shouldBe(Seq("Ammatillisen tutkinnon suoritus"))
+
+      pekanRivit(keskuksenRaportti).map(withOppilaitos(_.suoritusTyyppi)) should contain theSameElementsAs (Seq(
+        ("Stadin ammatti- ja aikuisopisto", "Ammatillisen tutkinnon suoritus"),
+        ("Omnia", "Ammatillisen tutkinnon suoritus")
+      ))
       pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenSuoritusTyyppi)) should contain theSameElementsAs(Seq(
         ("Stadin ammatti- ja aikuisopisto","Näyttötutkintoon valmistavan koulutuksen suoritus"),
         ("Omnia","Ammatillisen tutkinnon suoritus")
