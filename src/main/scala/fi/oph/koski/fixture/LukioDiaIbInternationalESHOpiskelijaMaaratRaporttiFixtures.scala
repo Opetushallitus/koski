@@ -8,7 +8,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.documentation._
 import fi.oph.koski.schema._
 
-object LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures {
+object LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures {
 
   val date = LocalDate.now().minusYears(1)
 

@@ -161,9 +161,9 @@ const kaikkiRaportitKategorioittain = [
         component: LukioKurssikertyma
       },
       {
-        id: 'lukiodiaibinternationalopiskelijamaarat',
+        id: 'lukiodiaibinternationaleshopiskelijamaarat',
         name: 'raportti-tab-lukiodiaibinternationalopiskelijamaarat',
-        component: LukioDiaIBInternationalOpiskelijamaarat
+        component: LukioDiaIBInternationalESHOpiskelijamaarat
       },
       {
         id: 'luvaopiskelijamaarat',
@@ -188,9 +188,9 @@ const kaikkiRaportitKategorioittain = [
         component: Lukio2019Opintopistekertyma
       },
       {
-        id: 'lukiodiaibinternationalopiskelijamaarat',
+        id: 'lukiodiaibinternationaleshopiskelijamaarat',
         name: 'raportti-tab-lukiodiaibinternationalopiskelijamaarat',
-        component: LukioDiaIBInternationalOpiskelijamaarat
+        component: LukioDiaIBInternationalESHOpiskelijamaarat
       },
       {
         id: 'luvaopiskelijamaarat',
@@ -744,7 +744,7 @@ function Lukio2019Opintopistekertyma({ stateP }) {
   )
 }
 
-function LukioDiaIBInternationalOpiskelijamaarat({ stateP }) {
+function LukioDiaIBInternationalESHOpiskelijamaarat({ stateP }) {
   const titleText = <Text name="lukiokoulutuksen-opiskelijamaarat-title" />
   const shortDescriptionText = (
     <Text name="lukiokoulutuksen-opiskelijamaarat-short-description" />
@@ -759,7 +759,7 @@ function LukioDiaIBInternationalOpiskelijamaarat({ stateP }) {
   return (
     <RaporttiPaivalta
       stateP={stateP}
-      apiEndpoint={'/lukiodiaibinternationalopiskelijamaarat'}
+      apiEndpoint={'/lukiodiaibinternationaleshopiskelijamaarat'}
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}

@@ -1,7 +1,7 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.fixture.LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures
+import fi.oph.koski.fixture.LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
@@ -86,7 +86,7 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeS
       oppilaitosOid,
       downloadToken = None,
       password = "bassword",
-      paiva = LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.fixedDate,
+      paiva = LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.fixedDate,
       lang = "fi"
     )
     new RaportitService(KoskiApplicationForTests)
