@@ -53,7 +53,7 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
     case a: TutkintokoulutukseenValmentavanOpiskeluoikeus =>
       HttpStatus.validate(!a.tila.opiskeluoikeusjaksot.exists(j => j.tila.koodiarvo == "eronnut"))(
         KoskiErrorCategory.badRequest.validation.tila.tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo(
-          s"Opiskeluoikeuden tila eronnut ei ole sallittu tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeudessa. Käytä tilaa katsotaaneronneeksi."
+          s"""Opiskeluoikeuden tila "Eronnut" ei ole sallittu tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeudessa. Käytä tilaa "Katsotaan eronneeksi"."""
         )
       )
     case _ => HttpStatus.ok
