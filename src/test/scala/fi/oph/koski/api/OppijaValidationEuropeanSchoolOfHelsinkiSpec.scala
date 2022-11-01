@@ -1,9 +1,9 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.{primarySuoritus, secondaryLowerSuoritus, secondaryNumericalMarkArviointi, secondaryS7PreliminaryMarkArviointi, secondaryUpperMuunOppiaineenOsasuoritusS6, secondaryUpperMuunOppiaineenOsasuoritusS7, secondaryUpperSuoritusS6, secondaryUpperSuoritusS7}
-import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.alkamispäivä
-import fi.oph.koski.documentation.{ExampleData, ExamplesEuropeanSchoolOfHelsinki}
+import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.{osasuoritusArviointi, primaryAlaoppimisalueArviointi, primaryLapsiOppimisalueenOsasuoritus, primaryOppimisalueenOsasuoritusKieli, primarySuoritus, secondaryLowerSuoritus, secondaryNumericalMarkArviointi, secondaryS7PreliminaryMarkArviointi, secondaryUpperMuunOppiaineenOsasuoritusS6, secondaryUpperMuunOppiaineenOsasuoritusS7, secondaryUpperSuoritusS6, secondaryUpperSuoritusS7}
+import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.{alkamispäivä, päättymispäivä}
+import fi.oph.koski.documentation.{ExampleData, ExamplesEuropeanSchoolOfHelsinki, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
@@ -258,6 +258,241 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
       )
       ) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle europeanschoolofhelsinkiluokkaaste/N1 ei ole merkitty alkamispäivää"))
+      }
+    }
+  }
+
+  "Osasuorituksen arvostelua ei voi tehdä primaryssä, jos on arvioimattomia alaosasuorituksia" in {
+    val oo = defaultOpiskeluoikeus.copy(
+      tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+        List(
+          EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+        )
+      ),
+      suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.p3.copy(
+        vahvistus = None,
+        osasuoritukset = Some(List(
+          primaryOppimisalueenOsasuoritusKieli(
+            oppiainekoodi = "ONL",
+            kieli = ExampleData.ruotsinKieli,
+            alaosasuorituskoodit = Some(List(
+              "Swedish as other national language"
+            )),
+            arviointi = osasuoritusArviointi(
+              arvosana = "fail",
+              päivä = alkamispäivä.plusDays(30)
+            ),
+            alaosasuoritusArviointi = None
+          )
+        ))
+      ))
+    )
+
+    putOpiskeluoikeus(oo) {
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella europeanschoolofhelsinkikielioppiaine/ONL on keskeneräinen osasuoritus europeanschoolofhelsinkiprimaryalaoppimisalue/Swedish as other national language"))
+    }
+  }
+
+  "Päätason suorituksen vahvistus S7:ssa" - {
+    "ei voi tehdä, jos ei ole alaosasuorituksia lainkaan" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
+          osasuoritukset = Some(List(
+            SecondaryUpperOppiaineenSuoritusS7(
+              koulutusmoduuli = SecondaryMuuOppiaine(
+                Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
+                laajuus = LaajuusVuosiviikkotunneissa(2)
+              ),
+              suorituskieli = ExampleData.englanti,
+              osasuoritukset = Some(List(
+              ))
+            )
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus europeanschoolofhelsinkiluokkaaste/S7 on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai joltain sen osasuoritukselta puuttuu vaadittavat arvioidut osasuoritukset (joko A ja B, tai yearmark), tai opiskeluoikeudelta puuttuu linkitys"))
+      }
+    }
+    "ei voi tehdä, jos on vain toinen A tai B arvioinneista" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
+          osasuoritukset = Some(List(
+            SecondaryUpperOppiaineenSuoritusS7(
+              koulutusmoduuli = SecondaryMuuOppiaine(
+                Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
+                laajuus = LaajuusVuosiviikkotunneissa(2)
+              ),
+              suorituskieli = ExampleData.englanti,
+              osasuoritukset = Some(List(
+                S7OppiaineenAlaosasuoritus(
+                  koulutusmoduuli = S7OppiaineKomponenttiB(
+                    Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
+                  ),
+                  arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
+                )
+              ))
+            )
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus europeanschoolofhelsinkiluokkaaste/S7 on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai joltain sen osasuoritukselta puuttuu vaadittavat arvioidut osasuoritukset (joko A ja B, tai yearmark), tai opiskeluoikeudelta puuttuu linkitys"))
+      }
+    }
+    "ei voi tehdä, jos on A ja B mutta toinen arvioimatta" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
+          osasuoritukset = Some(List(
+            SecondaryUpperOppiaineenSuoritusS7(
+              koulutusmoduuli = SecondaryMuuOppiaine(
+                Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
+                laajuus = LaajuusVuosiviikkotunneissa(2)
+              ),
+              suorituskieli = ExampleData.englanti,
+              osasuoritukset = Some(List(
+                S7OppiaineenAlaosasuoritus(
+                  koulutusmoduuli = S7OppiaineKomponenttiA(
+                    Koodistokoodiviite("A", "europeanschoolofhelsinkis7oppiaineenkomponentti")
+                  ),
+                  arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
+                ),
+                S7OppiaineenAlaosasuoritus(
+                  koulutusmoduuli = S7OppiaineKomponenttiB(
+                    Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
+                  ),
+                  arviointi = None
+                )
+              ))
+            )
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella europeanschoolofhelsinkiluokkaaste/S7 on keskeneräinen osasuoritus europeanschoolofhelsinkis7oppiaineenkomponentti/B"))
+      }
+    }
+
+    "Voi tehdä, jos on vain toinen A tai B arvioinneista ja myös year mark" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
+          osasuoritukset = Some(List(
+            SecondaryUpperOppiaineenSuoritusS7(
+              koulutusmoduuli = SecondaryMuuOppiaine(
+                Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
+                laajuus = LaajuusVuosiviikkotunneissa(2)
+              ),
+              suorituskieli = ExampleData.englanti,
+              osasuoritukset = Some(List(
+                S7OppiaineenAlaosasuoritus(
+                  koulutusmoduuli = S7OppiaineKomponenttiB(
+                    Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
+                  ),
+                  arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
+                ),
+                S7OppiaineenAlaosasuoritus(
+                  koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+                    Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
+                  ),
+                  arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
+                )
+              ))
+            )
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Ei voi tehdä, jos on pelkkä year mark ilman arviointia" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
+          osasuoritukset = Some(List(
+            SecondaryUpperOppiaineenSuoritusS7(
+              koulutusmoduuli = SecondaryMuuOppiaine(
+                Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
+                laajuus = LaajuusVuosiviikkotunneissa(2)
+              ),
+              suorituskieli = ExampleData.englanti,
+              osasuoritukset = Some(List(
+                S7OppiaineenAlaosasuoritus(
+                  koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+                    Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
+                  ),
+                  arviointi = None
+                )
+              ))
+            )
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella europeanschoolofhelsinkiluokkaaste/S7 on keskeneräinen osasuoritus europeanschoolofhelsinkis7oppiaineenkomponentti/yearmark"))
+      }
+    }
+
+    "voi tehdä, jos on pelkkä year mark" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
+          osasuoritukset = Some(List(
+            SecondaryUpperOppiaineenSuoritusS7(
+              koulutusmoduuli = SecondaryMuuOppiaine(
+                Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
+                laajuus = LaajuusVuosiviikkotunneissa(2)
+              ),
+              suorituskieli = ExampleData.englanti,
+              osasuoritukset = Some(List(
+                S7OppiaineenAlaosasuoritus(
+                  koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+                    Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
+                  ),
+                  arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
+                )
+              ))
+            )
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
       }
     }
   }

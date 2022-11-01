@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.documentation.ExampleData.muutaKauttaRahoitettu
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperVuosiluokanSuoritus}
+import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus}
 
 object EuropeanSchoolOfHelsinkiValidation {
   def fillRahoitusmuodot(koodistoPalvelu: KoodistoViitePalvelu)(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
@@ -66,5 +66,16 @@ object EuropeanSchoolOfHelsinkiValidation {
 
   private def eshKoulutustyyppi(koodistoPalvelu: KoodistoViitePalvelu): Option[Koodistokoodiviite] = {
     koodistoPalvelu.validate(Koodistokoodiviite(koodiarvo = "21", koodistoUri = "koulutustyyppi"))
+  }
+
+  def osasuorituksetKunnossa(s: SecondaryUpperVuosiluokanSuoritus): Boolean = {
+    s.osasuoritukset.exists(os => !os.isEmpty && os.forall(osasuorituksetKunnossa))
+  }
+
+  private def osasuorituksetKunnossa(s: SecondaryUpperOppiaineenSuoritus): Boolean = {
+    def sisältää(koodiarvo: String) =
+      s.osasuoritukset.exists(_.exists(_.koulutusmoduuli.tunniste.koodiarvo == koodiarvo))
+
+    (sisältää("A") && sisältää("B")) || sisältää("yearmark")
   }
 }
