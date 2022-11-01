@@ -1,6 +1,6 @@
 import React from 'baret'
 import { Editor } from '../editor/Editor'
-import * as R from 'ramda'
+import { equals } from 'ramda'
 import * as L from 'partial.lenses'
 import {
   hasModelProperty,
@@ -91,7 +91,7 @@ export class EuropeanSchoolOfHelsinkiOppiaineEditor extends React.Component {
   UNSAFE_componentWillReceiveProps(newProps) {
     const currentData = modelData(this.props.oppiaine)
     const newData = modelData(newProps.oppiaine)
-    if (!R.equals(currentData, newData)) {
+    if (!equals(currentData, newData)) {
       this.setState({ changed: true })
     }
   }

@@ -1,6 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
-import * as R from 'ramda'
+import { identity } from 'ramda'
 import { modelSetTitle, modelSetValues } from '../editor/EditorModel'
 import LisaaOsasuoritusDropdown from './LisaaOsasuoritusDropdown'
 import { t } from '../i18n/i18n'
@@ -14,7 +14,7 @@ export const LisaaOsasuoritus = ({
     : t('Lisää osasuoritus')
 }) => {
   const selectedAtom = Atom(undefined)
-  selectedAtom.filter(R.identity).onValue((newItem) => {
+  selectedAtom.filter(identity).onValue((newItem) => {
     const osasuoritus = modelSetValues(koulutusmoduuliProto(newItem), {
       tunniste: newItem
     })

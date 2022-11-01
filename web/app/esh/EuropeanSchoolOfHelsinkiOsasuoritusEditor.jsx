@@ -1,4 +1,5 @@
 import React from 'baret'
+import classNames from 'classnames'
 import {
   modelLookup,
   modelErrorMessages,
@@ -7,15 +8,13 @@ import {
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { suoritusProperties } from '../suoritus/SuoritustaulukkoCommon'
 import { EuropeanSchoolOfHelsinkiSuoritustaulukko } from '../suoritus/EuropeanSchoolOfHelsinkiSuoritustaulukko'
-import classNames from 'classnames'
 
 export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
   render() {
     const {
       model,
-      showScope,
-      showTila,
       onExpand,
+      showTila,
       expanded,
       groupId,
       columns,
@@ -37,7 +36,6 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
           {columns.map((column) =>
             column.renderData({
               model,
-              showScope,
               showTila,
               onExpand,
               hasProperties: properties.length > 0 || showOsasuoritukset,
@@ -51,7 +49,7 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
           )}
         </tr>
         {modelErrorMessages(model).map((error, i) => (
-          <tr key={'error-' + i} className="error">
+          <tr key={`error-${i}`} className="error">
             <td colSpan="42" className="error">
               {error}
             </td>

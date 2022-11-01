@@ -1,4 +1,5 @@
 import React from 'baret'
+import classNames from 'classnames'
 import { modelItems } from '../editor/EditorModel'
 import { accumulateExpandedState } from '../editor/ExpandableItems'
 import { suoritusValmis } from './Suoritus'
@@ -27,7 +28,7 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
     parentSuoritus = parentSuoritus || context.suoritus
 
     console.log('suorituksetModel', suorituksetModel)
-    console.log('ModelItems', modelItems(suorituksetModel))
+    console.log('modelItems', modelItems(suorituksetModel))
 
     if (suoritukset.length === 0 && !context.edit) {
       return null
@@ -89,10 +90,10 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
                 )
                 const groupTitles = groups.groupTitles
                 return (
-                  <React.Fragment key={'group-fragment-' + i}>
+                  <React.Fragment key={`group-fragment-${i}`}>
                     <tbody
-                      key={'group-' + i}
-                      className={`group-header ${groupId}`}
+                      key={`group-${i}`}
+                      className={classNames('group-header', groupId)}
                     >
                       <tr>
                         {showColumns &&
@@ -113,14 +114,15 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
                         expanded={isExpandedP(suoritus)}
                         onExpand={setExpanded(suoritus)}
                         groupId={groupId}
+                        showTila={true}
                         columns={columns}
                         nestedLevel={nestedLevel + 1}
                       />
                     ))}
                     {canAddNewOsasuoritus && (
                       <SingleColumnRowTable
-                        key={'group-' + i + '-new'}
-                        className={'uusi-tutkinnon-osa ' + groupId}
+                        key={`group-${i}-new`}
+                        className={classNames('uusi-tutkinnon-osa', groupId)}
                         colSpan={4}
                       >
                         <UusiOsasuoritus
@@ -135,7 +137,7 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
                     )}
                     {showLaajuusYhteensä && (
                       <SingleColumnRowTable
-                        key={'group- ' + i + '-footer'}
+                        key={`group-${i}-footer`}
                         className="yhteensä"
                       >
                         <YhteensäSuoritettu

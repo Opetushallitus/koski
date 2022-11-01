@@ -4,7 +4,7 @@ import {
   oneOfPrototypes,
   wrapOptional
 } from '../editor/EditorModel'
-import * as R from 'ramda'
+import dissoc from 'ramda/src/dissoc'
 
 export const createOsasuoritusPrototype = (osasuoritukset, groupId) =>
   selectOsasuoritusPrototype(osasuoritusPrototypes(osasuoritukset), groupId)
@@ -23,7 +23,7 @@ export const osasuoritusPrototypes = (osasuorituksetModel) => {
     osasuoritukset,
     newItemIndex
   )
-  const alts = oneOfPrototypes(R.dissoc('onlyWhen', suoritusProto))
+  const alts = oneOfPrototypes(dissoc('onlyWhen', suoritusProto))
   return alts.map((alt) =>
     contextualizeSubModel(alt, osasuoritukset, newItemIndex)
   )

@@ -7,7 +7,7 @@ import {
   modelSetValue,
   pushModel
 } from '../editor/EditorModel'
-import * as R from 'ramda'
+import { equals, dissoc } from 'ramda'
 import Text from '../i18n/Text'
 import { isToimintaAlueittain, jääLuokalle, valmiitaSuorituksia } from './esh'
 
@@ -53,7 +53,7 @@ const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
     (wrongOsasuorituksetTemplate) =>
       // esitäyttödatan tyyppi ei sisällä nimi ja versiotietoja, poistetaan tyyppi koska se ei ole relevanttia vertailussa
       currentSuoritukset.length > 0 &&
-      R.equals(
+      equals(
         wrongOsasuorituksetTemplate.value.map(modelDataIlmanTyyppiä),
         currentSuoritukset.map(modelDataIlmanTyyppiä)
       )
@@ -78,7 +78,7 @@ const fetchOsasuorituksetTemplate = (_model, _toimintaAlueittain) =>
   Bacon.constant({ value: [] })
 
 const modelDataIlmanTyyppiä = (suoritus) =>
-  R.dissoc('tyyppi', modelData(suoritus))
+  dissoc('tyyppi', modelData(suoritus))
 
 // TODO: TOR-1685
 // eslint-disable-next-line no-unused-vars

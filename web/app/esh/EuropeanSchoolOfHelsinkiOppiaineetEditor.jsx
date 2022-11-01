@@ -13,7 +13,6 @@ import {
   pushModel,
   wrapOptional
 } from '../editor/EditorModel'
-import * as R from 'ramda'
 import { arvioituTaiVahvistettu, osasuoritukset } from '../suoritus/Suoritus'
 import { accumulateExpandedState } from '../editor/ExpandableItems'
 import { t } from '../i18n/i18n'
@@ -26,6 +25,7 @@ import {
 import { UusiEuropeanSchoolOfHelsinkiOppiaineDropdown } from './EuropeanSchoolOfHelsinkiOppiaineDropdown'
 import { parseISODate } from '../date/date'
 import { EuropeanSchoolOfHelsinkiSuoritustaulukko } from '../suoritus/EuropeanSchoolOfHelsinkiSuoritustaulukko'
+import { equals, dissoc } from 'ramda'
 
 export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
   model = addContext(model, { suoritus: model })
@@ -71,7 +71,7 @@ const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
     (wrongOsasuorituksetTemplate) =>
       // esitäyttödatan tyyppi ei sisällä nimi ja versiotietoja, poistetaan tyyppi koska se ei ole relevanttia vertailussa
       currentSuoritukset.length > 0 &&
-      R.equals(
+      equals(
         wrongOsasuorituksetTemplate.value.map(modelDataIlmanTyyppiä),
         currentSuoritukset.map(modelDataIlmanTyyppiä)
       )
@@ -93,7 +93,7 @@ const fetchOsasuorituksetTemplate = (_model, _toimintaAlueittain) =>
   Bacon.constant({ value: [] })
 
 const modelDataIlmanTyyppiä = (suoritus) =>
-  R.dissoc('tyyppi', modelData(suoritus))
+  dissoc('tyyppi', modelData(suoritus))
 
 /*
 const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
