@@ -5,11 +5,11 @@ import {
   pushRemoval
 } from '../editor/EditorModel'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
-import { buildClassNames } from '../components/classnames'
 import { suoritusProperties } from '../suoritus/SuoritustaulukkoCommon'
 import { EuropeanSchoolOfHelsinkiSuoritustaulukko } from '../suoritus/EuropeanSchoolOfHelsinkiSuoritustaulukko'
+import classNames from 'classnames'
 
-export class EuropeanSchoolOfHelsinkiTutkinnonOsanSuoritusEditor extends React.Component {
+export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
   render() {
     const {
       model,
@@ -32,13 +32,7 @@ export class EuropeanSchoolOfHelsinkiTutkinnonOsanSuoritusEditor extends React.C
     console.log('showOsasuoritukset', showOsasuoritukset)
     console.log('groupId', groupId)
     return (
-      <tbody
-        className={buildClassNames([
-          'tutkinnon-osa',
-          expanded && 'expanded',
-          groupId
-        ])}
-      >
+      <tbody className={classNames('tutkinnon-osa', groupId, { expanded })}>
         <tr>
           {columns.map((column) =>
             column.renderData({

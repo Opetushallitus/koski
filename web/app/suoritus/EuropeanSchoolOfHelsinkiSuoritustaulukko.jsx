@@ -1,31 +1,23 @@
 import React from 'baret'
-import { modelData, modelItems } from '../editor/EditorModel'
+import { modelItems } from '../editor/EditorModel'
 import { accumulateExpandedState } from '../editor/ExpandableItems'
 import { suoritusValmis } from './Suoritus'
-import Text from '../i18n/Text'
 import { fetchLaajuudet, YhteensäSuoritettu } from './YhteensaSuoritettu'
 import {
   ArvosanaColumn,
   getLaajuusYksikkö,
   groupSuoritukset,
-  isAmmatillinentutkinto,
-  isNäyttötutkintoonValmistava,
-  isYlioppilastutkinto,
   SuoritusColumn,
-  KoepisteetColumn,
   LaajuusColumn,
   suoritusProperties,
-  TutkintokertaColumn,
   ExpandAllRows
 } from './SuoritustaulukkoCommon'
-import UusiEuropeanSchoolOfHelsinkiSuoritus from '../uusioppija/UusiEuropeanSchoolOfHelsinkiSuoritus'
 import {
-  selectTutkinnonOsanSuoritusPrototype,
-  tutkinnonOsaPrototypes
-} from '../esh/TutkinnonOsa'
-import { EuropeanSchoolOfHelsinkiTutkinnonOsanSuoritusEditor } from '../esh/EuropeanSchoolOfHelsinkiTutkinnonOsanSuoritusEditor'
-
-const MAX_NESTED_LEVEL = 2
+  selectOsasuoritusPrototype,
+  osasuoritusPrototypes
+} from '../esh/Osasuoritus'
+import { EuropeanSchoolOfHelsinkiOsasuoritusEditor } from '../esh/EuropeanSchoolOfHelsinkiOsasuoritusEditor'
+import UusiOsasuoritus from '../esh/UusiOsasuoritus'
 
 export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
   render() {
@@ -48,13 +40,9 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
         component: this
       })
 
-    const vaatiiSuoritustavan =
-      !modelData(parentSuoritus, 'suoritustapa') &&
-      context.edit &&
-      isAmmatillinentutkinto(parentSuoritus)
-    const suoritusProtos = tutkinnonOsaPrototypes(suorituksetModel)
+    const suoritusProtos = osasuoritusPrototypes(suorituksetModel)
     const suoritusProto = context.edit
-      ? selectTutkinnonOsanSuoritusPrototype(suoritusProtos)
+      ? selectOsasuoritusPrototype(suoritusProtos)
       : suoritukset[0]
 
     const groupsP = groupSuoritukset(
@@ -64,43 +52,25 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
       suoritusProto
     )
 
-    const samaLaajuusYksikkö = suoritukset.every(
-      (s, i, xs) =>
-        modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') ===
-        modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo')
-    )
     const laajuusYksikkö = getLaajuusYksikkö(suoritusProto)
-    const showTila = !isNäyttötutkintoonValmistava(parentSuoritus)
     const showExpandAll = suoritukset.some(
       (s) => suoritusProperties(s).length > 0
     )
     const showColumns = !(nestedLevel > 0 && suoritukset.length === 0)
-    const canAddNewOsasuoritus = context.edit && nestedLevel < MAX_NESTED_LEVEL
-    const showLaajuusYhteensä =
-      nestedLevel === 0 &&
-      !isNäyttötutkintoonValmistava(parentSuoritus) &&
-      !isYlioppilastutkinto(parentSuoritus)
+    const canAddNewOsasuoritus = context.edit
+    const showLaajuusYhteensä = nestedLevel === 0
 
-    const columns = [
-      TutkintokertaColumn,
-      SuoritusColumn,
-      LaajuusColumn,
-      KoepisteetColumn,
-      ArvosanaColumn
-    ].filter((column) =>
-      column.shouldShow({
-        parentSuoritus,
-        suorituksetModel,
-        suoritukset,
-        context
-      })
+    const columns = [SuoritusColumn, LaajuusColumn, ArvosanaColumn].filter(
+      (column) =>
+        column.shouldShow({
+          parentSuoritus,
+          suorituksetModel,
+          suoritukset,
+          context
+        })
     )
 
-    const UusiTutkinnonOsaComponent = UusiEuropeanSchoolOfHelsinkiSuoritus
-
-    return vaatiiSuoritustavan ? (
-      <Text name="Valitse ensin tutkinnon suoritustapa" />
-    ) : (
+    return (
       (suoritukset.length > 0 || context.edit) && (
         <div className="suoritus-taulukko">
           <table>
@@ -136,12 +106,10 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
                       </tr>
                     </tbody>
                     {suorituksetForThisGroup.map((suoritus, j) => (
-                      <EuropeanSchoolOfHelsinkiTutkinnonOsanSuoritusEditor
+                      <EuropeanSchoolOfHelsinkiOsasuoritusEditor
                         baret-lift
                         key={i * 100 + j}
                         model={suoritus}
-                        showScope={!samaLaajuusYksikkö}
-                        showTila={showTila}
                         expanded={isExpandedP(suoritus)}
                         onExpand={setExpanded(suoritus)}
                         groupId={groupId}
@@ -155,7 +123,7 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
                         className={'uusi-tutkinnon-osa ' + groupId}
                         colSpan={4}
                       >
-                        <UusiTutkinnonOsaComponent
+                        <UusiOsasuoritus
                           suoritus={parentSuoritus}
                           suoritusPrototypes={suoritusProtos}
                           suorituksetModel={suorituksetModel}
