@@ -6,22 +6,16 @@ import {
 } from '../editor/EditorModel'
 import * as R from 'ramda'
 
-export const createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) =>
-  selectTutkinnonOsanSuoritusPrototype(
-    tutkinnonOsaPrototypes(osasuoritukset),
-    groupId
-  )
+export const createOsasuoritusPrototype = (osasuoritukset, groupId) =>
+  selectOsasuoritusPrototype(osasuoritusPrototypes(osasuoritukset), groupId)
 
-export const selectTutkinnonOsanSuoritusPrototype = (
-  prototypes,
-  preferredClass
-) => {
+export const selectOsasuoritusPrototype = (prototypes, preferredClass) => {
   const sortValue = (oneOfProto) =>
     oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
   return prototypes.sort((a, b) => sortValue(a) - sortValue(b))[0]
 }
 
-export const tutkinnonOsaPrototypes = (osasuorituksetModel) => {
+export const osasuoritusPrototypes = (osasuorituksetModel) => {
   const osasuoritukset = wrapOptional(osasuorituksetModel)
   const newItemIndex = modelItems(osasuoritukset).length
   const suoritusProto = contextualizeSubModel(
@@ -33,4 +27,9 @@ export const tutkinnonOsaPrototypes = (osasuorituksetModel) => {
   return alts.map((alt) =>
     contextualizeSubModel(alt, osasuoritukset, newItemIndex)
   )
+}
+
+export const osasuorituksenKoulutusmoduuli = (koulutusmoduulit, _oppiaine) => {
+  console.log(koulutusmoduulit)
+  return koulutusmoduulit[0]
 }

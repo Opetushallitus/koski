@@ -74,6 +74,12 @@ export const isVapaanSivistystyönOppivelvollistenSuoritus = (
   suoritus.value.classes.includes(
     "oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus"
   );
+  export const isEshS7 = (
+    suoritus: SuoritusModel
+  ) => suoritus.value.classes.includes(
+    "secondaryuppervuosiluokansuoritus"
+    // @ts-expect-error TODO: Korjaa
+  ) && modelData(suoritus, "koulutusmoduuli.tunniste.koodiarvo") === "S7";
 export const isMaahanmuuttajienKotoutumiskoulutuksenSuoritus = (
   suoritus: SuoritusModel
 ) =>
@@ -558,6 +564,7 @@ export const ArvosanaColumn: ColumnIface<
   shouldShow: ({ parentSuoritus, suoritukset, context }) =>
     !isNäyttötutkintoonValmistava(parentSuoritus) &&
     !isVapaanSivistystyönOppivelvollistenSuoritus(parentSuoritus) &&
+    !isEshS7(parentSuoritus) &&
     (context.edit || suoritukset.find(hasArvosana) !== undefined),
   renderHeader: () => (
     <th key="arvosana" className="arvosana" scope="col">
