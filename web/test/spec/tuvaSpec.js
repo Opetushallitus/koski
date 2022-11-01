@@ -143,7 +143,7 @@ describe('TUVA', function () {
             )
             it('voidaan lisätä', function () {
               expect(extractAsText(S('.suoritus-taulukko'))).to.include(
-                'Valinnaiset opinnot 2 vk'
+                'Valinnaiset opinnot'
               )
             })
           })
@@ -159,6 +159,11 @@ describe('TUVA', function () {
                     'Hyväksytty',
                     '.tuva-osasuoritusrivi-1 .dropdown-wrapper'
                   )()
+              },
+              function () {
+                return tuva
+                  .selectOsasuoritus('Valinnaiset opinnot')()
+                  .lisääLaajuus(2, '.tuva-osasuoritusrivi-1 .property.laajuus.arvo')()
               },
               editor.saveChanges,
               opinnot.avaaKaikki
