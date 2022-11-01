@@ -34,6 +34,9 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
     const suoritukset = modelItems(suorituksetModel) || []
     parentSuoritus = parentSuoritus || context.suoritus
 
+    console.log('suorituksetModel', suorituksetModel)
+    console.log('ModelItems', modelItems(suorituksetModel))
+
     if (suoritukset.length === 0 && !context.edit) {
       return null
     }
@@ -110,6 +113,10 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
             {groupsP.map((groups) =>
               groups.groupIds.map((groupId, i) => {
                 const suorituksetForThisGroup = groups.grouped[groupId] || []
+                console.log(
+                  `suorituksetForThisGroup_${groupId}`,
+                  suorituksetForThisGroup
+                )
                 const groupTitles = groups.groupTitles
                 return (
                   <React.Fragment key={'group-fragment-' + i}>

@@ -35,10 +35,12 @@ import { VstVapaaTavoitteinenKoulutusmoduuliEditor } from './VstVapaaTavoitteine
 import { EuropeanSchoolOfHelsinkiOppiaineetEditor } from '../esh/EuropeanSchoolOfHelsinkiOppiaineetEditor'
 import { eshSuoritus } from '../esh/europeanschoolofhelsinkiSuoritus'
 import { EuropeanSchoolOfHelsinkiNurseryOppiaineetEditor } from '../esh/EuropeanSchoolOfHelsinkiNurseryOppiaineetEditor'
+import { SynteettinenArvosanaEditor } from './SynteettinenArvosanaEditor'
 
 export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
   const oneOf = (...classes: string[]) =>
     classes.some((c) => mdl.value.classes.includes(c))
+  console.log(mdl.value.classes)
   const firstClassOneOf = (...classes: string[]) =>
     classes.includes(mdl.value.classes[0])
   const { kansalainen } = mdl.context
@@ -282,6 +284,10 @@ export const resolvePropertyEditor = (
         />
       )
     case 'arviointi':
+      if(oneOf(eshSuoritus.secondaryUpper)) {
+        // @ts-expect-error SynteettinenArvosanaEditor
+        return <SynteettinenArvosanaEditor model={model} />
+      }
       // @ts-expect-error ArvosanaEditor
       return <ArvosanaEditor model={model} />
     case 'koulutusmoduuli':

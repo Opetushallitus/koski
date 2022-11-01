@@ -26,7 +26,11 @@ export class EuropeanSchoolOfHelsinkiTutkinnonOsanSuoritusEditor extends React.C
       (p) => p.key !== 'osasuoritukset'
     )
     const osasuoritukset = modelLookup(model, 'osasuoritukset')
-    const showOsasuoritukset = osasuoritukset && osasuoritukset.value
+    const showOsasuoritukset = osasuoritukset
+      ? osasuoritukset.value !== undefined
+      : false
+    console.log('showOsasuoritukset', showOsasuoritukset)
+    console.log('groupId', groupId)
     return (
       <tbody
         className={buildClassNames([

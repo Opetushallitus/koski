@@ -1,37 +1,63 @@
 package fi.oph.koski.editor
 
+import fi.oph.koski.documentation.ExampleData.{englanti, sloveeni}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
+import fi.oph.koski.schema.{Koodistokoodiviite, LaajuusVuosiviikkotunneissa, PrimaryAlaoppimisalue, PrimaryLapsiOppimisalue, PrimaryLapsiOppimisalueenSuoritus, PrimaryOppimisalueenAlaosasuoritus, SecondaryKieliOppiaine, SecondaryLowerLuokkaAste, SecondaryLowerOppiaineenSuoritus, SecondaryMuuOppiaine, SecondaryOppiaine, SecondaryUpperOppiaineenSuoritusS6, SecondaryUpperOppiaineenSuoritusS7}
 
-// TODO: TOR-1685
+
+// TODO: TOR-1685 Helsingin Eurooppalainen Koulu
 case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
 
   private def koodi(koodisto: String, arvo: String) = koodistoViitePalvelu.validateRequired(koodisto, arvo)
-  private def muuOppiaine(koodiarvo: String) = koodi("europeanschoolofhelsinkimuuoppiaine", koodiarvo)
-  private def kieliOppiaine(koodiarvo: String) = koodi("europeanschoolofhelsinkikielioppiaine", koodiarvo)
-  // TODO: fiksaa
-  //private def nurserySuoritus(luokkaAste: String)(x: Any) = NurseryVuosiluokanSuoritus(koulutusmoduuli = NurseryLuokkaAste(tunniste = Koodistokoodiviite(koodiarvo = luokkaAste, koodistoUri = "nurseryluokkaaste")))
-  //private def primarySuoritus(luokkaAste: String)(x: Any) = PrimaryOppimisalueenOsasuoritus(koulutusmoduuli = PrimaryLuokkaAste(tunniste = Koodistokoodiviite(koodiarvo = luokkaAste, koodistoUri = "nurseryluokkaaste")))
-  //private def secondaryLowerSuoritus(luokkaAste: String)(x: Any) = NurseryVuosiluokanSuoritus(koulutusmoduuli = NurseryLuokkaAste(tunniste = Koodistokoodiviite(koodiarvo = luokkaAste, koodistoUri = "nurseryluokkaaste")))
-  //private def secondaryUpperSuoritus(luokkaAste: String)(x: Any) = NurseryVuosiluokanSuoritus(koulutusmoduuli = NurseryLuokkaAste(tunniste = Koodistokoodiviite(koodiarvo = luokkaAste, koodistoUri = "nurseryluokkaaste")))
 
-  /*
-  def eshSuoritukset(luokkaAste: String) = {
+  private def muuOppiaine(koodiarvo: String) = koodi("europeanschoolofhelsinkimuuoppiaine", koodiarvo)
+
+  private def kieliOppiaine(koodiarvo: String) = koodi("europeanschoolofhelsinkikielioppiaine", koodiarvo)
+
+  private def secondaryUpperSuoritusS7(luokkaAste: String)(k: SecondaryOppiaine) = SecondaryUpperOppiaineenSuoritusS7(
+    koulutusmoduuli = k,
+    suorituskieli = englanti, osasuoritukset = None
+  )
+
+  private def secondaryUpperSuoritusS6(luokkaAste: String)(k: SecondaryOppiaine) = SecondaryUpperOppiaineenSuoritusS6(
+    koulutusmoduuli = k,
+    suorituskieli = englanti
+  )
+
+  def eshOsaSuoritukset(luokkaAste: String) = {
     luokkaAste match {
-      case "N1" | "N2" => nurseryOppiaineet(luokkaAste).map(nurserySuoritus(luokkaAste))
-      case "P1" | "P2" | "P3" | "P4" | "P5" => primaryOppiaineet(luokkaAste).map(primarySuoritus(luokkaAste))
-      case "S1" | "S2" | "S3" | "S4" | "S5" => secondaryLowerOppiaineet(luokkaAste).map(secondaryLowerSuoritus(luokkaAste))
-      case "S6" | "S7" => secondaryUpperOppiaineet(luokkaAste).map(secondaryUpperSuoritus(luokkaAste))
+      case "S7" => secondaryUpperOppiaineetS7(luokkaAste).map(secondaryUpperSuoritusS7(luokkaAste))
+      case "S6" => secondaryUpperOppiaineetS6(luokkaAste).map(secondaryUpperSuoritusS6(luokkaAste))
+      case _ => List()
     }
   }
-  */
 
-  private def nurseryOppiaineet(luokkaAste: String) = List()
+  private def secondaryUpperOppiaineetS6(luokkaAste: String) = List(
+    SecondaryKieliOppiaine(
+      kieliOppiaine("L1"),
+      laajuus = LaajuusVuosiviikkotunneissa(2),
+      kieli = englanti
+    ),
+    SecondaryMuuOppiaine(
+      kieliOppiaine("L1"),
+      laajuus = LaajuusVuosiviikkotunneissa(2),
+    )
+  )
 
-  private def primaryOppiaineet(luokkaAste: String) = List()
-
-  private def secondaryLowerOppiaineet(luokkaAste: String) = List()
-
-  private def secondaryUpperOppiaineet(luokkaAste: String) = List(
-    // SecondaryUpperKieliOppiaine(tunniste = kieliOppiaine("L1"), laajuus = LaajuusVuosiviikkotunneissa(2), kieli = ExampleData.englanti)
+  private def secondaryUpperOppiaineetS7(luokkaAste: String) = List(
+    SecondaryKieliOppiaine(
+      kieliOppiaine("L1"),
+      laajuus = LaajuusVuosiviikkotunneissa(2),
+      kieli = englanti
+    ),
+    SecondaryKieliOppiaine(
+      kieliOppiaine("PE"),
+      laajuus = LaajuusVuosiviikkotunneissa(2),
+      kieli = englanti
+    ),
+    SecondaryMuuOppiaine(
+      muuOppiaine("MA"),
+      laajuus = LaajuusVuosiviikkotunneissa(2),
+    )
   )
 }

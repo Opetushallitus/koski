@@ -47,15 +47,19 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
       ListModel(models, None, Nil)
     }
     val luokkaAstePattern = """(\d)""".r
-    val eshLuokkaAstePattern = """^((N[1-2])|(P[1-5])|(S[1-7]))$""".r
+    val eshLuokkaAstePattern = """^((?:N[1-2])|(?:P[1-5])|(?:S[1-7]))$$""".r
     val toimintaAlueittain = params.get("toimintaAlueittain").map(_.toBoolean).getOrElse(false)
+
+    val koodiarvo = params("koodiarvo")
+    val koodiarvoMatch = eshLuokkaAstePattern(koodiarvo)
+    println(koodiarvoMatch)
 
     (params("koodistoUri"), params("koodiarvo")) match {
       case ("perusopetuksenluokkaaste", luokkaAstePattern(luokkaAste)) =>
         toListModel(NuortenPerusopetusPakollisetOppiaineet(application.koodistoViitePalvelu).pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(luokkaAste.toInt, toimintaAlueittain))
       // TODO: TOR-1681 ESH
-      //case ("europeanschoolofhelsinkiluokkaaste", eshLuokkaAstePattern(luokkaAste)) =>
-      //  toListModel(EuropeanSchoolOfHelsinkiOppiaineet(application.koodistoViitePalvelu).eshSuoritukset(luokkaAste))
+      case ("europeanschoolofhelsinkiluokkaaste", eshLuokkaAstePattern(luokkaAste)) =>
+        toListModel(EuropeanSchoolOfHelsinkiOppiaineet(application.koodistoViitePalvelu).eshOsaSuoritukset(luokkaAste))
       case ("koulutus", "201101") =>
         toListModel(NuortenPerusopetusPakollisetOppiaineet(application.koodistoViitePalvelu).päättötodistuksenSuoritukset(params("tyyppi"), toimintaAlueittain))
       case _ =>
