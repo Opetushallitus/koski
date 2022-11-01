@@ -80,6 +80,7 @@ const ExpandableOsasuoritus = ({
           >
             <td>
               <span className="expand-button">
+                {/* eslint-disable-next-line react/jsx-no-literals */}
                 {isExpandable ? expanded ? <>&#61766;</> : <>&#61694;</> : ''}
               </span>{' '}
               <span className="suorituksen-nimi">
