@@ -7,7 +7,7 @@ import KoodistoDropdown from '../koodisto/KoodistoDropdown'
 import http from '../util/http'
 import { sortLanguages } from '../util/sorting'
 
-export default ({ suoritusAtom, dateAtom, oppilaitosAtom, without = [] }) => {
+export default ({ suoritusAtom, dateAtom, oppilaitosAtom }) => {
   // ESH-opiskeluoikeuden suorituskieli
   const suorituskieliAtom = Atom()
   const suorituskieletP = http

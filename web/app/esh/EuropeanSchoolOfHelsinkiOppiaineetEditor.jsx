@@ -1,6 +1,5 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import { Editor } from '../editor/Editor'
 import {
   addContext,
   contextualizeSubModel,
@@ -19,14 +18,7 @@ import { arvioituTaiVahvistettu, osasuoritukset } from '../suoritus/Suoritus'
 import { accumulateExpandedState } from '../editor/ExpandableItems'
 import { t } from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {
-  footnoteDescriptions,
-  footnotesForSuoritus,
-  isToimintaAlueittain,
-  isVuosiluokkaTaiPerusopetuksenOppimäärä,
-  jääLuokalle,
-  valmiitaSuorituksia
-} from './esh'
+import { isToimintaAlueittain, jääLuokalle, valmiitaSuorituksia } from './esh'
 import {
   expandableProperties,
   EuropeanSchoolOfHelsinkiOppiaineRowEditor
@@ -96,11 +88,8 @@ const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
     )
 }
 
-const emptyOsasuoritukset = (model) =>
-  pushModel(modelSetValue(model, [], 'osasuoritukset'))
-
 // TODO: TOR-1685 Osasuoritusten template
-const fetchOsasuorituksetTemplate = (model, toimintaAlueittain) =>
+const fetchOsasuorituksetTemplate = (_model, _toimintaAlueittain) =>
   Bacon.constant({ value: [] })
 
 const modelDataIlmanTyyppiä = (suoritus) =>
@@ -156,37 +145,6 @@ const GroupedOppiaineetEditor = ({ model, uusiOppiaineenSuoritus }) => {
 }
 */
 
-const SimpleOppiaineetEditor = ({ model, uusiOppiaineenSuoritus }) => {
-  const suoritukset = modelItems(model, 'osasuoritukset')
-  return (
-    <span>
-      <EshOppiainetaulukko
-        model={model}
-        suoritukset={suoritukset}
-        uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
-      />
-      <KäyttäytymisenArvioEditor model={model} />
-    </span>
-  )
-}
-
-const KäyttäytymisenArvioEditor = ({ model }) => {
-  const edit = model.context.edit
-  const käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
-  return käyttäytymisenArvioModel &&
-    (edit || modelData(käyttäytymisenArvioModel)) ? (
-    <div className="kayttaytyminen">
-      <h5>
-        <Text name="Käyttäytymisen arviointi" />
-      </h5>
-      {<Editor model={model} path="käyttäytymisenArvio" />}
-    </div>
-  ) : null
-}
-
-// TODO: TOR-1685
-const resolveSynteettinenArvosanaEditor = () => {}
-
 const createOppiaineenSuoritus = (
   suoritukset,
   preferredClassFn = (proto) => {
@@ -210,6 +168,7 @@ const createOppiaineenSuoritus = (
   return contextualizeSubModel(oppiaineenSuoritusProto, s, newItemIndex)
 }
 
+// eslint-disable-next-line no-unused-vars
 class EshOppiainetaulukko extends React.Component {
   render() {
     const { model, suoritukset, title, pakolliset, uusiOppiaineenSuoritus } =
@@ -245,8 +204,6 @@ class EshOppiainetaulukko extends React.Component {
       : pakolliset || isToimintaAlueittain(model)
       ? vahvistusSalliiLaajuudenNäyttämisen && sisältääLajuudellisiaSuorituksia
       : sisältääLajuudellisiaSuorituksia
-
-    const showFootnotes = !edit && !R.isEmpty(footnoteDescriptions(suoritukset))
 
     const addOppiaine = (oppiaineenSuoritus) => (oppiaine) => {
       const suoritusUudellaOppiaineella = modelSet(
@@ -292,15 +249,12 @@ class EshOppiainetaulukko extends React.Component {
               />
             </th>
             {showArvosana && (
-              <th
-                className="arvosana"
-                colSpan={showFootnotes && !showLaajuus ? '2' : '1'}
-              >
+              <th className="arvosana" colSpan={'1'}>
                 <Text name="Arvosana" />
               </th>
             )}
             {showLaajuus && (
-              <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}>
+              <th className="laajuus" colSpan={'1'}>
                 <Text name="Laajuus" />
               </th>
             )}
@@ -309,11 +263,7 @@ class EshOppiainetaulukko extends React.Component {
         <hr />
         {listattavatSuoritukset
           .filter(
-            (s) =>
-              edit ||
-              arvioituTaiVahvistettu(s) ||
-              osasuoritukset(s).length ||
-              isVuosiluokkaTaiPerusopetuksenOppimäärä(model)
+            (s) => edit || arvioituTaiVahvistettu(s) || osasuoritukset(s).length
           )
           .map((suoritus) => (
             <EuropeanSchoolOfHelsinkiOppiaineRowEditor
@@ -325,7 +275,6 @@ class EshOppiainetaulukko extends React.Component {
               onExpand={setExpanded(suoritus)}
               showArvosana={showArvosana}
               showLaajuus={showLaajuus}
-              footnotes={footnotesForSuoritus(suoritus)}
             />
           ))}
       </React.Fragment>
