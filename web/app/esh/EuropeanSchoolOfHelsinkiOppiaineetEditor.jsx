@@ -44,7 +44,7 @@ export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
     if (!valmiitaSuorituksia(oppiaineSuoritukset)) {
       prefillOsasuorituksetIfNeeded(model, oppiaineSuoritukset)
     } else if (!jääLuokalle(model)) {
-      emptyOsasuoritukset(model)
+      // emptyOsasuoritukset(model)
     }
   }
 
@@ -74,10 +74,7 @@ export const EuropeanSchoolOfHelsinkiOppiaineetEditor = ({ model }) => {
 }
 
 const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
-  const wrongOsasuorituksetTemplateP = fetchOsasuorituksetTemplate(
-    model,
-    !isToimintaAlueittain(model)
-  )
+  const wrongOsasuorituksetTemplateP = fetchOsasuorituksetTemplate(model, false)
   const hasWrongPrefillP = wrongOsasuorituksetTemplateP.map(
     (wrongOsasuorituksetTemplate) =>
       // esitäyttödatan tyyppi ei sisällä nimi ja versiotietoja, poistetaan tyyppi koska se ei ole relevanttia vertailussa
@@ -90,7 +87,7 @@ const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
   const changeTemplateP = hasWrongPrefillP.or(
     Bacon.constant(jääLuokalle(model))
   )
-  fetchOsasuorituksetTemplate(model, isToimintaAlueittain(model))
+  fetchOsasuorituksetTemplate(model, false)
     .filter(changeTemplateP)
     .onValue((osasuorituksetTemplate) =>
       pushModel(

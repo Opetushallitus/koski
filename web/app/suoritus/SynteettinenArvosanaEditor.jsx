@@ -16,7 +16,7 @@ import { sortGrades } from '../util/sorting'
 import { fetchAlternativesBasedOnPrototypes } from '../editor/EnumEditor'
 import { fixArviointi } from './Suoritus'
 
-export const ArvosanaEditor = ({ model, notFoundText }) => {
+export const SynteettinenArvosanaEditor = ({ model, notFoundText }) => {
   if (!model.context.edit) {
     const arvosanaModel = resolveArvosanaModel(model)
     return arvosanaModel ? (
