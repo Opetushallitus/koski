@@ -78,7 +78,6 @@ export const isVapaanSivistystyönOppivelvollistenSuoritus = (
     suoritus: SuoritusModel
   ) => suoritus.value.classes.includes(
     "secondaryuppervuosiluokansuoritus"
-    // @ts-expect-error TODO: Korjaa
   ) && modelData(suoritus, "koulutusmoduuli.tunniste.koodiarvo") === "S7";
 export const isMaahanmuuttajienKotoutumiskoulutuksenSuoritus = (
   suoritus: SuoritusModel
