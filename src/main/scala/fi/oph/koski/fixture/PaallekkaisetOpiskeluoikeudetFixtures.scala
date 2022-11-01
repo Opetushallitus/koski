@@ -1,12 +1,12 @@
 package fi.oph.koski.fixture
 
-import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillisetTutkinnonOsat, hyväksytty, järjestämismuotoOppilaitos, järjestämismuotoOppisopimus, sosiaaliJaTerveysalanPerustutkinto, stadinAmmattiopisto, stadinToimipiste, suoritustapaNäyttö, tutkinnonOsanSuoritus}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillisetTutkinnonOsat, hyväksytty, sosiaaliJaTerveysalanPerustutkinto, stadinAmmattiopisto, stadinToimipiste, suoritustapaNäyttö, tutkinnonOsanSuoritus}
 import fi.oph.koski.documentation.ExampleData.{helsinki, suomenKieli, vahvistus}
 
 import java.time.LocalDate.{of => date}
-import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, VapaaSivistystyöExample}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, AmmatillisenTutkinnonSuoritus, Järjestämismuotojakso, Oppilaitos}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, AmmatillisenTutkinnonSuoritus, Oppilaitos, VapaanSivistystyönOpiskeluoikeudenTila, YleinenVapaanSivistystyönOpiskeluoikeusjakso}
 
 object PaallekkaisetOpiskeluoikeudetFixtures {
 
@@ -65,5 +65,17 @@ object PaallekkaisetOpiskeluoikeudetFixtures {
       )
     ),
     arvioituPäättymispäivä = None
+  )
+
+  val vstVapaatavoitteinenOpiskeluoikeus = VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen.copy(
+    arvioituPäättymispäivä = Some(keskimmaisenAlkamispaiva),
+    tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+      YleinenVapaanSivistystyönOpiskeluoikeusjakso(keskimmaisenAlkamispaiva, VapaaSivistystyöExample.opiskeluoikeusHyväksytystiSuoritettu)
+    )),
+    suoritukset = List(
+      VapaaSivistystyöExample.suoritusVapaatavoitteinenKoulutus.copy(
+        vahvistus = vahvistus(päivä = keskimmaisenAlkamispaiva),
+      )
+    )
   )
 }

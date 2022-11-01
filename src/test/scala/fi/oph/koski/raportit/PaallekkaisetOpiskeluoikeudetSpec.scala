@@ -1,7 +1,10 @@
 package fi.oph.koski.raportit
 
+import fi.oph.koski.api.PutOpiskeluoikeusTestMethods
+import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures
+
 import java.time.LocalDate
-import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests}
 import fi.oph.koski.fixture.PaallekkaisetOpiskeluoikeudetFixtures.{ensimmaisenAlkamispaiva, ensimmaisenPaattymispaiva, keskimmaisenAlkamispaiva}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.koskiuser.MockUsers
@@ -9,18 +12,30 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeus
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
-class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
+import scala.reflect.runtime.universe
+
+class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll
+  with DirtiesFixtures with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] {
 
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
-  override protected def beforeAll(): Unit = {
-    super.beforeAll()
-    reloadRaportointikanta
+  override def tag: universe.TypeTag[VapaanSivistystyönOpiskeluoikeus] = implicitly[reflect.runtime.universe.TypeTag[VapaanSivistystyönOpiskeluoikeus]]
+
+  override def defaultOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = PaallekkaisetOpiskeluoikeudetFixtures.vstVapaatavoitteinenOpiskeluoikeus
+
+  override protected def alterFixture(): Unit = {
+    createOrUpdate(
+      oppija = KoskiSpecificMockOppijat.paallekkaisiOpiskeluoikeuksia,
+      opiskeluoikeus = defaultOpiskeluoikeus,
+      user = MockUsers.paakayttaja
+    )
+    reloadRaportointikanta()
   }
 
   lazy val helsinginRaportti = loadRaportti(MockOrganisaatiot.helsinginKaupunki)
@@ -81,11 +96,30 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
       }
     }
 
-    "Päällekkäisen opiskeluoikeuden suorituksesta käytetään selkokielistä nimeä" in {
+    "Oman ja päällekkäisen opiskeluoikeuden suorituksesta käytetään selkokielistä nimeä" in {
+      pekanRivit(stadinRaportti).map(_.suoritusTyyppi) shouldBe(Seq("Näyttötutkintoon valmistavan koulutuksen suoritus"))
       pekanRivit(stadinRaportti).map(_.paallekkainenSuoritusTyyppi) shouldBe(Seq("Ammatillisen tutkinnon suoritus"))
+
+      pekanRivit(keskuksenRaportti).map(withOppilaitos(_.suoritusTyyppi)) should contain theSameElementsAs (Seq(
+        ("Stadin ammatti- ja aikuisopisto", "Ammatillisen tutkinnon suoritus"),
+        ("Omnia", "Ammatillisen tutkinnon suoritus")
+      ))
       pekanRivit(keskuksenRaportti).map(withOppilaitos(_.paallekkainenSuoritusTyyppi)) should contain theSameElementsAs(Seq(
         ("Stadin ammatti- ja aikuisopisto","Näyttötutkintoon valmistavan koulutuksen suoritus"),
         ("Omnia","Ammatillisen tutkinnon suoritus")
+      ))
+    }
+    "Päällekkäisen opiskeluoikeuden koulutustoimijan ja oppilaitoksen tiedot" in {
+      pekanRivit(stadinRaportti).map(_.paallekkainenKoulutustoimijaNimi) shouldBe(Seq("Helsingin kaupunki"))
+      pekanRivit(keskuksenRaportti).map(_.paallekkainenKoulutustoimijaNimi) should contain theSameElementsAs(Seq(
+        "Helsingin kaupunki",
+        "Espoon seudun koulutuskuntayhtymä Omnia"
+      ))
+
+      pekanRivit(stadinRaportti).map(_.paallekkainenOppilaitosOid) shouldBe(Seq(MockOrganisaatiot.stadinOppisopimuskeskus))
+      pekanRivit(keskuksenRaportti).map(_.paallekkainenOppilaitosOid) should contain theSameElementsAs(Seq(
+        MockOrganisaatiot.stadinAmmattiopisto,
+        MockOrganisaatiot.omnia
       ))
     }
     "Oman organisaation opiskeluoikeuden rahoitusmuodot, luetellaan ilman peräkkäisiä duplikaatteja" in {
@@ -107,10 +141,17 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
     }
     "Näytetään opiskeluoikeuden päättymispäivä jos sellainen on" in {
       pekanRivit(stadinRaportti).map(_.paattymispaiva) shouldBe(Seq(Some(ensimmaisenPaattymispaiva)))
-
     }
     "Puuttuva opiskeluoikeuden päättymispäivä näytetään tyhjänä" in {
       pekanRivit(keskuksenRaportti).map(_.paattymispaiva) shouldBe(Seq(None, None))
+    }
+    "Näytetään opiskeluoikeuden suoritusten diaarinumerot jos sellaisia on" in {
+      pekanRivit(stadinRaportti).map(_.perusteenDiaarinumero) shouldBe(Seq(Some("40/011/2001")))
+      pekanRivit(keskuksenRaportti).map(_.perusteenDiaarinumero) shouldBe(Seq(Some("40/011/2001,79/011/2014"), Some("40/011/2001,79/011/2014")))
+    }
+    "Näytetään opiskeluoikeuden oppijan sukunimi ja etunimet" in {
+      pekanRivit(stadinRaportti).map(_.oppijaSukunimi) shouldBe(Seq(Some("Paallekkaisia")))
+      pekanRivit(stadinRaportti).map(_.oppijaEtunimet) shouldBe(Seq(Some("Pekka")))
     }
     "Päällekkäisen opiskeluoikeuden rahoitusmuodot, luetellaan ilman peräkkäisiä duplikaatteja" in {
       pekanRivit(stadinRaportti).map(_.paallekkainenRahoitusmuodot) shouldBe(Seq(Some("6,1")))

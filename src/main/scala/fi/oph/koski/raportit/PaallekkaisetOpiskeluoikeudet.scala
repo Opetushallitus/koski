@@ -33,8 +33,10 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   def createMaterializedView(s: Schema) =
     sqlu"""
       create materialized view #${s.name}.paallekkaiset_opiskeluoikeudet as
-        select
+        select distinct
           opiskeluoikeus.oppija_oid,
+          henkilo.sukunimi,
+          henkilo.etunimet,
           opiskeluoikeus.opiskeluoikeus_oid,
           opiskeluoikeus.oppilaitos_nimi,
           opiskeluoikeus.oppilaitos_nimi_sv,
@@ -42,24 +44,62 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
           opiskeluoikeus.alkamispaiva,
           opiskeluoikeus.viimeisin_tila,
           opiskeluoikeus.paattymispaiva,
-          paallekkainen.opiskeluoikeus_oid  paallekkainen_opiskeluoikeus_oid,
-          paallekkainen.oppilaitos_nimi     paallekkainen_oppilaitos_nimi,
-          paallekkainen.oppilaitos_nimi_sv  paallekkainen_oppilaitos_nimi_sv,
-          paallekkainen.koulutusmuoto       paallekkainen_koulutusmuoto,
-          paallekkainen.viimeisin_tila      paallekkainen_viimeisin_tila,
-          paallekkainen.alkamispaiva        paallekkainen_alkamispaiva,
-          paallekkainen.paattymispaiva      paallekkainen_paattymispaiva
+          opiskeluoikeus_diaarit.diaarit_agg    opiskeluoikeus_diaarit,
+          paallekkainen.opiskeluoikeus_oid      paallekkainen_opiskeluoikeus_oid,
+          paallekkainen.koulutustoimija_nimi    paallekkainen_koulutustoimija_nimi,
+          paallekkainen.koulutustoimija_nimi_sv paallekkainen_koulutustoimija_nimi_sv,
+          paallekkainen.oppilaitos_oid          paallekkainen_oppilaitos_oid,
+          paallekkainen.oppilaitos_nimi         paallekkainen_oppilaitos_nimi,
+          paallekkainen.oppilaitos_nimi_sv      paallekkainen_oppilaitos_nimi_sv,
+          paallekkainen.koulutusmuoto           paallekkainen_koulutusmuoto,
+          paallekkainen.viimeisin_tila          paallekkainen_viimeisin_tila,
+          paallekkainen.alkamispaiva            paallekkainen_alkamispaiva,
+          paallekkainen.paattymispaiva          paallekkainen_paattymispaiva
       from #${s.name}.r_opiskeluoikeus opiskeluoikeus
         join lateral (
           select *
           from #${s.name}.r_opiskeluoikeus paallekkainen
           where paallekkainen.oppija_oid = opiskeluoikeus.oppija_oid
-               and not paallekkainen.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
-               and paallekkainen.sisaltyy_opiskeluoikeuteen_oid is null
-               and coalesce(paallekkainen.paattymispaiva, '9999-12-31'::date) >= opiskeluoikeus.alkamispaiva
-               and paallekkainen.alkamispaiva <= coalesce(opiskeluoikeus.paattymispaiva, '9999-12-31'::date)
+            and not paallekkainen.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+            and paallekkainen.sisaltyy_opiskeluoikeuteen_oid is null
+            and coalesce(paallekkainen.paattymispaiva, '9999-12-31'::date) >= opiskeluoikeus.alkamispaiva
+            and paallekkainen.alkamispaiva <= coalesce(opiskeluoikeus.paattymispaiva, '9999-12-31'::date)
         ) paallekkainen on paallekkainen.oppija_oid = opiskeluoikeus.oppija_oid
+        join lateral (
+          select suorituksen_tyyppi, opiskeluoikeus_oid
+          from #${s.name}.r_paatason_suoritus suoritus
+          where suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+        ) suoritus on suoritus.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+        join lateral (
+          select suorituksen_tyyppi, opiskeluoikeus_oid
+          from #${s.name}.r_paatason_suoritus paallekkainensuoritus
+          where paallekkainensuoritus.opiskeluoikeus_oid = paallekkainen.opiskeluoikeus_oid
+        ) paallekkainensuoritus on paallekkainensuoritus.opiskeluoikeus_oid = paallekkainen.opiskeluoikeus_oid
+        join lateral (
+          select opiskeluoikeus_oid, string_agg(perusteen_diaarinumero, ',') diaarit_agg
+          from (
+            select distinct
+              opiskeluoikeus_oid,
+              coalesce(
+                data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero',
+                data -> 'tutkinto' ->> 'perusteenDiaarinumero',
+                data -> 'täydentääTutkintoa' ->> 'perusteenDiaarinumero',
+                '-'
+              ) as perusteen_diaarinumero
+            from #${s.name}.r_paatason_suoritus
+            where opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+            order by perusteen_diaarinumero asc
+          ) as diaarilista
+          group by opiskeluoikeus_oid
+        ) opiskeluoikeus_diaarit on opiskeluoikeus_diaarit.opiskeluoikeus_oid = opiskeluoikeus.opiskeluoikeus_oid
+        join lateral (
+          select henkilo.oppija_oid, henkilo.sukunimi, henkilo.etunimet
+          from #${s.name}.r_henkilo henkilo
+          where henkilo.oppija_oid = opiskeluoikeus.oppija_oid
+        ) henkilo on henkilo.oppija_oid = opiskeluoikeus.oppija_oid
         where opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
+          and not suoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
+          and not paallekkainensuoritus.suorituksen_tyyppi = 'vstvapaatavoitteinenkoulutus'
     """
 
   def createIndex(s: Schema) =
@@ -77,7 +117,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         coalesce(paallekkainen_rahoitusmuodot_osuu_parametreille.koodiarvot, '-') paallekkainen_rahoitusmuodot_parametrien_sisalla,
         coalesce(paallekkaisen_opiskeluoikeuden_tilat_parametrien_sisalla.tilat, '-') paallekkainen_tilat_parametrien_sisalla,
         haetun_opiskeluoikeuden_tilat_parametrien_sisalla.tilat tilat_parametrien_sisalla,
-        paatason_suoritukset.tyyppi_ja_koodiarvo paallekkainen_paatason_suoritukset,
+        paatason_suoritukset.tyyppi_ja_koodiarvo paatason_suoritukset,
+        paallekkainen_paatason_suoritukset.tyyppi_ja_koodiarvo paallekkainen_paatason_suoritukset,
         paallekkainen_alkamispaiva <= $viimeistaan and coalesce(paallekkainen_paattymispaiva, '9999-12-31'::date) >= $aikaisintaan paallekkainen_voimassa_aikajaksolla
       from (
         select
@@ -180,9 +221,17 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
             opiskeluoikeus_oid,
             array_to_json(array_agg(array[suorituksen_tyyppi, koulutusmoduuli_koodiarvo])) tyyppi_ja_koodiarvo
           from r_paatason_suoritus
+            where opiskeluoikeus_oid = paallekkaiset_opiskeluoikeudet.opiskeluoikeus_oid
+            group by opiskeluoikeus_oid
+        ) paatason_suoritukset on paallekkaiset_opiskeluoikeudet.opiskeluoikeus_oid = paatason_suoritukset.opiskeluoikeus_oid
+        join lateral (
+          select
+            opiskeluoikeus_oid,
+            array_to_json(array_agg(array[suorituksen_tyyppi, koulutusmoduuli_koodiarvo])) tyyppi_ja_koodiarvo
+          from r_paatason_suoritus
             where opiskeluoikeus_oid = paallekkainen_opiskeluoikeus_oid
             group by opiskeluoikeus_oid
-        ) paatason_suoritukset on paallekkainen_opiskeluoikeus_oid = paatason_suoritukset.opiskeluoikeus_oid
+        ) paallekkainen_paatason_suoritukset on paallekkainen_opiskeluoikeus_oid = paallekkainen_paatason_suoritukset.opiskeluoikeus_oid
       order by paallekkaiset_opiskeluoikeudet.oppilaitos_nimi
     """
 
@@ -191,9 +240,13 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       val rs: ResultSet = r.rs
       PaallekkaisetOpiskeluoikeudetRow(
         oppijaOid = rs.getString("oppija_oid"),
+        oppijaSukunimi = Option(rs.getString("sukunimi")),
+        oppijaEtunimet = Option(rs.getString("etunimet")),
         opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
         oppilaitosNimi = rs.getString(if(t.language == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"),
         koulutusmuoto = rs.getString("koulutusmuoto"),
+        suoritusTyyppi = suorituksistaKaytettavaNimi(rs.getString("paatason_suoritukset"), t),
+        perusteenDiaarinumero = Option(rs.getString("opiskeluoikeus_diaarit")),
         alkamispaiva = r.getLocalDate("alkamispaiva"),
         tilatParametrienSisalla = removeConsecutiveDuplicates(rs.getString("tilat_parametrien_sisalla")),
         paattymispaiva = Option(r.getLocalDate("paattymispaiva")),
@@ -202,6 +255,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
         rahoitusmuodotParametrienSisalla = Option(rs.getString("rahoitusmuodot_osuu_parametreille"))
           .map(removeConsecutiveDuplicates),
         paallekkainenOpiskeluoikeusOid = rs.getString("paallekkainen_opiskeluoikeus_oid"),
+        paallekkainenKoulutustoimijaNimi = rs.getString(if(t.language == "sv") "paallekkainen_koulutustoimija_nimi_sv" else "paallekkainen_koulutustoimija_nimi"),
+        paallekkainenOppilaitosOid = rs.getString("paallekkainen_oppilaitos_oid"),
         paallekkainenOppilaitosNimi = rs.getString(if(t.language == "sv") "paallekkainen_oppilaitos_nimi_sv" else "paallekkainen_oppilaitos_nimi"),
         paallekkainenKoulutusmuoto = rs.getString("paallekkainen_koulutusmuoto"),
         paallekkainenSuoritusTyyppi = suorituksistaKaytettavaNimi(rs.getString("paallekkainen_paatason_suoritukset"), t),
@@ -279,9 +334,13 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   def columnSettings(t: LocalizationReader) = Columns.flattenGroupingColumns(Seq(
     t.get("raportti-excel-kolumni-koulutuksenJärjestäjänOpiskeluoikeus") -> GroupColumnsWithTitle(List(
       "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      "oppijaSukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
+      "oppijaEtunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
       "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
       "oppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
       "koulutusmuoto" -> Column(t.get("raportti-excel-kolumni-koulutusmuoto")),
+      "suoritusTyyppi" -> Column(t.get("raportti-excel-kolumni-suorituksenTyyppi")),
+      "perusteenDiaarinumero" -> Column(t.get("raportti-excel-kolumni-perusteenDiaarinumero")),
       "alkamispaiva" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
       "paattymispaiva" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
       "tilatParametrienSisalla" -> Column(t.get("raportti-excel-kolumni-tilatParametrienSisalla"), comment = Some(t.get("raportti-excel-kolumni-tilatParametrienSisalla-comment"))),
@@ -291,6 +350,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
     )),
     t.get("raportti-excel-kolumni-päällekkäinenOpiskeluoikeus") -> GroupColumnsWithTitle(List(
       "paallekkainenOpiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-paallekkainenOpiskeluoikeusOid")),
+      "paallekkainenKoulutustoimijaNimi" -> Column(t.get("raportti-excel-kolumni-paallekkainenKoulutustoimijaNimi")),
+      "paallekkainenOppilaitosOid" -> Column(t.get("raportti-excel-kolumni-paallekkainenOppilaitosOid")),
       "paallekkainenOppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-paallekkainenOppilaitosNimi")),
       "paallekkainenKoulutusmuoto" -> Column(t.get("raportti-excel-kolumni-paallekkainenKoulutusmuoto")),
       "paallekkainenSuoritusTyyppi" -> Column(t.get("raportti-excel-kolumni-paallekkainenSuoritusTyyppi"), comment = Some(t.get("raportti-excel-kolumni-paallekkainenSuoritusTyyppi-comment"))),
@@ -308,9 +369,13 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
 
 case class PaallekkaisetOpiskeluoikeudetRow(
   oppijaOid: String,
+  oppijaSukunimi: Option[String],
+  oppijaEtunimet: Option[String],
   opiskeluoikeusOid: String,
   oppilaitosNimi: String,
   koulutusmuoto: String,
+  suoritusTyyppi: String,
+  perusteenDiaarinumero: Option[String],
   alkamispaiva: LocalDate,
   paattymispaiva: Option[LocalDate],
   tilatParametrienSisalla: String,
@@ -318,6 +383,8 @@ case class PaallekkaisetOpiskeluoikeudetRow(
   rahoitusmuodot: Option[String],
   rahoitusmuodotParametrienSisalla: Option[String],
   paallekkainenOpiskeluoikeusOid: String,
+  paallekkainenKoulutustoimijaNimi: String,
+  paallekkainenOppilaitosOid: String,
   paallekkainenOppilaitosNimi: String,
   paallekkainenKoulutusmuoto: String,
   paallekkainenSuoritusTyyppi: String,

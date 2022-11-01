@@ -2160,6 +2160,8 @@
   "raportti-excel-kolumni-rahoitusmuodotParametrienSisalla-comment": "Sarakkeessa näytetään opiskeluoikeudella raporttiin valitulla aikajaksolla käytetyt rahoitusmuodot, jos opiskeluoikeudelle on merkitty rahoitusmuotoja. Rahoitusmuotoja käytetään aikuisten perusopetuksen, lukiokoulutuksen ja ammatillisen koulutuksen opiskeluoikeuksissa. Rahoitusmuotojen koodiarvojen selitteet koodistossa: https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest",
   "raportti-excel-kolumni-päällekkäinenOpiskeluoikeus": "Päällekkäinen opiskeluoikeus",
   "raportti-excel-kolumni-paallekkainenOpiskeluoikeusOid": "Päällekkäisen opiskeluoikeuden oid",
+  "raportti-excel-kolumni-paallekkainenKoulutustoimijaNimi": "Päällekkäisen opiskeluoikeuden koulutustoimijan nimi",
+  "raportti-excel-kolumni-paallekkainenOppilaitosOid": "Päällekkäisen opiskeluoikeuden oppilaitoksen oid",
   "raportti-excel-kolumni-paallekkainenOppilaitosNimi": "Päällekkäisen opiskeluoikeuden oppilaitoksen nimi",
   "raportti-excel-kolumni-paallekkainenKoulutusmuoto": "Päällekkäisen opiskeluoikeuden koulutusmuoto",
   "raportti-excel-kolumni-paallekkainenSuoritusTyyppi": "Päällekkäisen opiskeluoikeuden suorituksen tyyppi",
