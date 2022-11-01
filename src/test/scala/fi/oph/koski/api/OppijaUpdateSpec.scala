@@ -2,11 +2,11 @@ package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
-import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste, suoritus}
+import fi.oph.koski.documentation.ExamplesEsiopetus.{päiväkodinEsiopetuksenTunniste, suoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, yhdeksännenLuokanSuoritus}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koululainen
@@ -367,6 +367,26 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         val uusiSuoritus = PerusopetusExampleData.nuortenPerusOpetuksenOppiaineenOppimääränSuoritus("FI")
         val oo = PerusopetusExampleData.opiskeluoikeus(suoritukset = List(vanhaValmisSuoritus, vanhaKeskeneräinenSuoritus), päättymispäivä = None)
         def poistaSuoritukset(oo: PerusopetuksenOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
+        verifyChange(original = oo, change = poistaSuoritukset) {
+          verifyResponseStatusOk()
+          val result = lastOpiskeluoikeusByHetu(oppija)
+          result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
+        }
+      }
+      "European School of Helsingin suorituksia ei säilytetä" in {
+        resetFixtures
+        val vanhaValmisSuoritus = ExamplesEuropeanSchoolOfHelsinki.p2
+        val vanhaKeskeneräinenSuoritus = ExamplesEuropeanSchoolOfHelsinki.s3.copy(vahvistus = None)
+        val uusiSuoritus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.suoritukset.head
+        val oo = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
+          tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+            List(
+              EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(ExamplesEuropeanSchoolOfHelsinki.alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen)
+            )
+          ),
+          suoritukset = List(vanhaValmisSuoritus, vanhaKeskeneräinenSuoritus)
+        )
+        def poistaSuoritukset(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
         verifyChange(original = oo, change = poistaSuoritukset) {
           verifyResponseStatusOk()
           val result = lastOpiskeluoikeusByHetu(oppija)
