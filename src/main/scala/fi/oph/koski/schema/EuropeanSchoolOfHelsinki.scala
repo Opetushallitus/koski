@@ -368,10 +368,8 @@ case class SecondaryUpperOppiaineenSuoritusS7(
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss7")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuorituss7", koodistoUri = "suorituksentyyppi"),
   suorituskieli: Koodistokoodiviite,
-  // TODO: TOR-1685: osasuoritusten osasuoritusten pakollisuus mukaan validaatioon ennenkuin voi merkitä päätason suoritusta vahvistetuksi. Luultavasti niin, että pitää olla
-  // joko A + B, tai year mark.
   override val osasuoritukset: Option[List[S7OppiaineenAlaosasuoritus]] = None
-) extends SecondaryUpperOppiaineenSuoritus with Arvioinniton
+) extends SecondaryUpperOppiaineenSuoritus with Arvioinniton with Välisuoritus
 
 /******************************************************************************
  * OSASUORITUKSET - KOULUTUSMODUULIT
