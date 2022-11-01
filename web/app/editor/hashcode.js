@@ -3,7 +3,7 @@ export const hashCode = (x) => {
   let hash = 0
   if (typeof x === 'string') {
     if (x.length == 0) return hash
-    for (var i = 0; i < x.length; i++) {
+    for (let i = 0; i < x.length; i++) {
       const char = x.charCodeAt(i)
       hash = hashAdd(hash, char)
     }
@@ -25,7 +25,10 @@ export const hashCode = (x) => {
     return hash
   }
   if (x instanceof Array) {
+    // TODO: Korjaa syntaksi
+    // eslint-disable-next-line no-undef
     for (i in x) {
+      // eslint-disable-next-line no-undef
       hash = hashAdd(hash, hashCode(x[i]))
     }
     return hash

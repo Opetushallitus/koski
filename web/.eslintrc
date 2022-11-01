@@ -21,8 +21,8 @@
   "rules": {
     "no-undef": "error",
     "no-unreachable": "error",
-    "no-console": "warn",
-    "no-warning-comments": "warn",
+    "no-console": "off", // TODO: Vaihda --> "warn"
+    "no-warning-comments": "off", // TODO: Vaihda --> "warn"
     "no-unused-vars": [
       "warn",
       { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
@@ -44,13 +44,13 @@
     "react/jsx-wrap-multilines": "warn",
     "react/prop-types": "off",
     "react/display-name": "off", // default exportit komponenteissa
-    "react/jsx-key": "warn",  // Bacon.js React VDOM
-    "react/no-string-refs": "warn",
+    "react/jsx-key": "off",  // Bacon.js React VDOM, TODO: Vaihda --> "warn"
+    "react/no-string-refs": "off", // TODO: Vaihda --> "warn"
     "prettier/prettier": ["error"],
     "array-callback-return": "off", // Bacon.js flatmap
     "react/no-render-return-value": "off", // Bacon.js React VDOM
-    "prefer-regex-literals": "warn", // Heitetään varoitus, TODO: Korjaa virhe,
-    "eqeqeq": "warn" // Suosi triple-equalsin käyttöä, TODO: Korjaa. Tässä vaiheessa vielä warn
+    "prefer-regex-literals": "off", // Heitetään varoitus, TODO: Vaihda --> "warn"
+    "eqeqeq": "off" // Suosi triple-equalsin käyttöä, TODO: Vaihda --> "warn"
   },
   "settings": {
     "react": {
