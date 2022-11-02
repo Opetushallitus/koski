@@ -25,6 +25,8 @@ export const suorituksenTyyppiToKoulutustyyppi = (
     return t("koulutustyyppi_perusopetus")
   } else if (tyyppi.koodiarvo.startsWith("aikuistenperusopetuksen")) {
     return t("koulutustyyppi_aikuistenperusopetus")
+  } else if (tyyppi.koodiarvo === "tuvakoulutuksensuoritus") {
+    return t("koulutustyyppi_tuva")
   } else {
     return getLocalizedMaybe(tyyppi.nimi) || tyyppi.koodiarvo
   }

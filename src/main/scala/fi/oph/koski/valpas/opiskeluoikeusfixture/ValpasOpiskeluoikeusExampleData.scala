@@ -581,6 +581,15 @@ object ValpasOpiskeluoikeusExampleData {
       )
     )
   )
+  def valmaRessussaValmistunut = ammattikouluValmistunutOpiskeluoikeus.copy(
+    oppilaitos = Some(ressunLukio),
+    suoritukset = List(
+      ExamplesValma.valmaKoulutuksenSuoritus.copy(
+        toimipiste = ressunLukio,
+        vahvistus = vahvistus(date(2021, 9, 2), AmmatillinenExampleData.stadinAmmattiopisto, Some(helsinki))
+      )
+    )
+  )
 
   def ammattikouluTelmaOpiskeluoikeus = ammattikouluValmistunutOpiskeluoikeus.copy(
     arvioituPäättymispäivä = None,
@@ -1563,4 +1572,6 @@ object ValpasOpiskeluoikeusExampleData {
       )
     )
   )
+
+  def tuvaOpiskeluoikeusKesken = ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusEiValmistunut
 }
