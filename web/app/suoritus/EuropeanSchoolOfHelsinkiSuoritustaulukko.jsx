@@ -1,8 +1,7 @@
 import React from 'baret'
 import classNames from 'classnames'
-import { modelItems } from '../editor/EditorModel'
+import { modelItems, modelProperty } from '../editor/EditorModel'
 import { accumulateExpandedState } from '../editor/ExpandableItems'
-import { suoritusValmis } from './Suoritus'
 import { fetchLaajuudet, YhteensäSuoritettu } from './YhteensaSuoritettu'
 import {
   ArvosanaColumn,
@@ -19,6 +18,19 @@ import {
 } from '../esh/Osasuoritus'
 import { EuropeanSchoolOfHelsinkiOsasuoritusEditor } from '../esh/EuropeanSchoolOfHelsinkiOsasuoritusEditor'
 import UusiOsasuoritus from '../esh/UusiOsasuoritus'
+
+function resolveOsasuorituksenOppiaineKoodistot(suoritukset = []) {
+  const koulutusmoduulit = suoritukset
+    .map(
+      (
+        suoritus // TODO: Voiko model.value.data hakea jotenkin siistimmin? Koitettu: modelData ja modelLookup
+      ) =>
+        modelProperty(suoritus, 'koulutusmoduuli.tunniste')?.model?.value?.data
+          ?.koodistoUri
+    )
+    .filter((m) => m !== null && m !== undefined)
+  return [...new Set(koulutusmoduulit)]
+}
 
 export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
   render() {
@@ -84,10 +96,6 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
             {groupsP.map((groups) =>
               groups.groupIds.map((groupId, i) => {
                 const suorituksetForThisGroup = groups.grouped[groupId] || []
-                console.log(
-                  `suorituksetForThisGroup_${groupId}`,
-                  suorituksetForThisGroup
-                )
                 const groupTitles = groups.groupTitles
                 return (
                   <React.Fragment key={`group-fragment-${i}`}>
@@ -129,6 +137,9 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
                           suoritus={parentSuoritus}
                           suoritusPrototypes={suoritusProtos}
                           suorituksetModel={suorituksetModel}
+                          osasuorituksenOppiaineKoodistot={resolveOsasuorituksenOppiaineKoodistot(
+                            suorituksetForThisGroup
+                          )}
                           groupId={groupId}
                           setExpanded={setExpanded}
                           groupTitles={groupTitles}
@@ -168,7 +179,3 @@ const SingleColumnRowTable = ({ className, children, colSpan = 1 }) => (
     </tr>
   </tbody>
 )
-
-export const suorituksenTilaSymbol = (suoritus) =>
-  // TODO: HTML Unicode käyttöön
-  suoritusValmis(suoritus) ? '' : ''

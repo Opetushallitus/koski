@@ -144,7 +144,6 @@ const createState = (oppijaOid) => {
   let changeBuffer = null
 
   const setupModelContext = (oppijaModel) => {
-    console.log(oppijaModel, editorMapping)
     return Editor.setupContext(oppijaModel, {
       saveChangesBus,
       editBus,
