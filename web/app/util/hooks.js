@@ -16,7 +16,7 @@ export function useBaconProperty(property) {
       dispose()
       errorDispose()
     }
-  })
+  }, [property])
 
   return value
 }

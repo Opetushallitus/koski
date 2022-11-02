@@ -1,19 +1,24 @@
 import React from 'baret'
-import Bacon from 'baconjs'
-import { ensureArrayKey, modelSet, pushModel } from '../editor/EditorModel'
+import {
+  ensureArrayKey,
+  modelLookup,
+  modelProperty,
+  modelSet,
+  pushModel
+} from '../editor/EditorModel'
 import { koulutusModuuliprototypes } from '../suoritus/Koulutusmoduuli'
 import {
   selectOsasuoritusPrototype,
   osasuorituksenKoulutusmoduuli
 } from './Osasuoritus'
-import { elementWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
-import { koodistoValues } from '../uusioppija/koodisto'
+import { useKoodistovalues } from '../uusioppija/koodisto'
 import { LisaaOsasuoritus } from './LisaaOsasuoritus'
 
 export default ({
   suoritus,
   groupId,
   suoritusPrototypes,
+  osasuorituksenOppiaineKoodistot,
   setExpanded,
   groupTitles
 }) => {
@@ -32,14 +37,13 @@ export default ({
         )
       : osasuoritusKoulutusmoduulit[0]
 
-  const osasuorituksetP = Bacon.combineWith(
-    (a, b) => [...a, ...b],
-    koodistoValues('europeanschoolofhelsinkimuuoppiaine'),
-    koodistoValues('europeanschoolofhelsinkikielioppiaine')
-  ).map((oppiaineet) => {
-    console.log('oppiaineet', oppiaineet)
-    return { osat: oppiaineet, osanOsa: false }
-  })
+  console.log('model', modelProperty(suoritus, 'koulutusmoduuli'))
+
+  const oppiaineet = useKoodistovalues(osasuorituksenOppiaineKoodistot)
+
+  console.log('oppiaineet', oppiaineet)
+
+  const lisättävätOsasuoritukset = { osat: oppiaineet, osanOsa: false }
 
   const addOsasuoritus = (
     koulutusmoduuli,
@@ -59,21 +63,15 @@ export default ({
 
   return (
     <span>
-      {elementWithLoadingIndicator(
-        osasuorituksetP.map((lisättävätOsasuoritukset) => {
-          return (
-            <div>
-              <LisaaOsasuoritus
-                {...{
-                  addOsasuoritus,
-                  lisättävätOsasuoritukset,
-                  koulutusmoduuliProto
-                }}
-              />
-            </div>
-          )
-        })
-      )}
+      <div>
+        <LisaaOsasuoritus
+          {...{
+            addOsasuoritus,
+            lisättävätOsasuoritukset,
+            koulutusmoduuliProto
+          }}
+        />
+      </div>
     </span>
   )
 }
