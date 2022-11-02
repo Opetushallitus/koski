@@ -1,5 +1,5 @@
-import React from "baret";
-import Atom from "bacon.atom";
+import React from 'baret'
+import Atom from 'bacon.atom'
 import {
   modelSet,
   modelSetTitle,
@@ -7,160 +7,161 @@ import {
   pushModel,
   modelLookup,
   modelData,
-  contextualizeSubModel,
-} from "../editor/EditorModel";
-import { koodistoValues } from "../uusioppija/koodisto";
-import KoodistoDropdown from "../koodisto/KoodistoDropdown";
-import { t } from "../i18n/i18n";
-import { koulutusModuuliprototypes } from "../suoritus/Koulutusmoduuli";
-import { enumValueToKoodiviiteLens } from "../koodisto/koodistot";
-import ModalDialog from "../editor/ModalDialog";
-import Text from "../i18n/Text";
-import { ift, notUndefined } from "../util/util";
-import DropDown from "../components/Dropdown";
-import { elementWithLoadingIndicator } from "../components/AjaxLoadingIndicator";
+  contextualizeSubModel
+} from '../editor/EditorModel'
+import { koodistoValues } from '../uusioppija/koodisto'
+import KoodistoDropdown from '../koodisto/KoodistoDropdown'
+import { t } from '../i18n/i18n'
+import { koulutusModuuliprototypes } from '../suoritus/Koulutusmoduuli'
+import { enumValueToKoodiviiteLens } from '../koodisto/koodistot'
+import ModalDialog from '../editor/ModalDialog'
+import Text from '../i18n/Text'
+import { ift, notUndefined } from '../util/util'
+import DropDown from '../components/Dropdown'
+import { elementWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 
 import {
   getOrganizationalPreferences,
-  deleteOrganizationalPreference,
-} from "../virkailija/organizationalPreferences";
+  deleteOrganizationalPreference
+} from '../virkailija/organizationalPreferences'
 import {
   EditorModel,
   EnumValue,
   isOneOfModel,
   ObjectModel,
-  StringModel,
-} from "../types/EditorModels";
-import { ChangeBusContext, Contextualized } from "../types/EditorModelContext";
-import { OsasuoritusEditorModel } from "../types/OsasuoritusEditorModel";
+  StringModel
+} from '../types/EditorModels'
+import { ChangeBusContext, Contextualized } from '../types/EditorModelContext'
+import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
 import {
   OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
-  VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus,
-} from "../types/VapaaSivistystyo";
-import { Koodistokoodiviite } from "../types/common";
+  VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
+} from '../types/VapaaSivistystyo'
+import { Koodistokoodiviite } from '../types/common'
+import { withoutNullValues } from '../util/objects'
 
 export type UusiVapaanSivistystyonOsasuoritusProps = {
-  suoritusPrototypes: OsasuoritusEditorModel[];
-  setExpanded: any;
-  suoritukset: ObjectModel[];
-};
+  suoritusPrototypes: OsasuoritusEditorModel[]
+  setExpanded: any
+  suoritukset: ObjectModel[]
+}
 
 export const UusiVapaanSivistystyonOsasuoritus = ({
   suoritusPrototypes,
   setExpanded,
-  suoritukset,
+  suoritukset
 }: UusiVapaanSivistystyonOsasuoritusProps) => {
   const findSuoritus = (tyyppi: string) =>
-    suoritukset.find((s) => s.value.classes.includes(tyyppi));
+    suoritukset.find((s) => s.value.classes.includes(tyyppi))
   const findSuoritusPrototyyppi = (tyyppi: string) =>
-    suoritusPrototypes.find((s) => s.value.classes.includes(tyyppi));
+    suoritusPrototypes.find((s) => s.value.classes.includes(tyyppi))
   const findSuoritusPrototyypit = (tyyppi: string) =>
-    suoritusPrototypes.filter((s) => s.value.classes.includes(tyyppi));
+    suoritusPrototypes.filter((s) => s.value.classes.includes(tyyppi))
 
   const osaamiskokonaisuus = findSuoritusPrototyyppi(
-    "oppivelvollisillesuunnatunvapaansivistystyonosaamiskokonaisuudensuoritus"
-  );
+    'oppivelvollisillesuunnatunvapaansivistystyonosaamiskokonaisuudensuoritus'
+  )
   const suuntautumisopinnot = findSuoritusPrototyyppi(
-    "oppivelvollisillesuunnatunvapaansivistystyonvalinnaistensuuntautumisopintojensuoritus"
-  );
+    'oppivelvollisillesuunnatunvapaansivistystyonvalinnaistensuuntautumisopintojensuoritus'
+  )
   const muuallaSuoritettuOpinto = findSuoritusPrototyyppi(
-    "muuallasuoritettuoppivelvollisillesuunnatunvapaansivistystyonopintojensuoritus"
-  );
+    'muuallasuoritettuoppivelvollisillesuunnatunvapaansivistystyonopintojensuoritus'
+  )
   const opintokokonaisuus = findSuoritusPrototyyppi(
-    "oppivelvollisillesuunnatunvapaansivistystyonopintokokonaisuudensuoritus"
-  );
+    'oppivelvollisillesuunnatunvapaansivistystyonopintokokonaisuudensuoritus'
+  )
 
   const kotoOsaAlueKieliOpinnot =
     !findSuoritus(
-      "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus"
+      'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus'
     ) &&
     findSuoritusPrototyyppi(
-      "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus"
-    );
+      'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus'
+    )
   const kotoOsaAlueTyöelämäJaYhteiskuntataidot =
     !findSuoritus(
-      "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopintojensuoritus"
+      'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopintojensuoritus'
     ) &&
     findSuoritusPrototyyppi(
-      "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopintojensuoritus"
-    );
+      'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenopintojensuoritus'
+    )
   const kotoOsaAlueOhjaus =
     !findSuoritus(
-      "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus"
+      'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus'
     ) &&
     findSuoritusPrototyyppi(
-      "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus"
-    );
+      'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus'
+    )
   const kotoOsaAlueVapaavalintaiset =
     !findSuoritus(
-      "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojensuoritus"
+      'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojensuoritus'
     ) &&
     findSuoritusPrototyyppi(
-      "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojensuoritus"
-    );
+      'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojensuoritus'
+    )
 
   const kotoTyöelämäJaYhteiskuntataidot = findSuoritusPrototyyppi(
-    "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataidot"
-  );
+    'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataidot'
+  )
   const kotoTyöelämäJaYhteiskuntataidotTyöelämäjakso = findSuoritusPrototyyppi(
-    "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajakso"
-  );
+    'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajakso'
+  )
   const kotoValinnaisetOpinnot = findSuoritusPrototyyppi(
-    "vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus"
-  );
+    'vapaansivistystyonmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus'
+  )
 
   const lukutaitokoulutuksenKokonaisuus = findSuoritusPrototyyppi(
-    "vapaansivistystyonlukutaitokoulutuksenkokonaisuudensuoritus"
-  );
+    'vapaansivistystyonlukutaitokoulutuksenkokonaisuudensuoritus'
+  )
 
   const vapaatavoitteisenOsasuoritus = findSuoritusPrototyyppi(
-    "vapaansivistystyonvapaatavoitteisenkoulutuksenosasuorituksensuoritus"
-  );
+    'vapaansivistystyonvapaatavoitteisenkoulutuksenosasuorituksensuoritus'
+  )
 
   const koto2022Osasuoritukset = findSuoritusPrototyypit(
-    "vstkotoutumiskoulutuksenkokonaisuudenosasuoritus2022"
-  );
+    'vstkotoutumiskoulutuksenkokonaisuudenosasuoritus2022'
+  )
   const koto2022KieliJaViestintaOsaamisenAlaosasuoritus =
     findSuoritusPrototyyppi(
-      "vstkotoutumiskoulutuksenkielijaviestintaosaamisenosasuoritus"
-    );
+      'vstkotoutumiskoulutuksenkielijaviestintaosaamisenosasuoritus'
+    )
   const koto2022YhteiskuntaJaTyöelämäosaamisenAlaosasuoritus =
     findSuoritusPrototyyppi(
-      "vstkotoutumiskoulutuksenyhteiskuntajatyoelamaosaaminenalaosasuoritus"
-    );
+      'vstkotoutumiskoulutuksenyhteiskuntajatyoelamaosaaminenalaosasuoritus'
+    )
   const koto2022ValinnaistenOpintojenAlaosasuoritus = findSuoritusPrototyyppi(
-    "vstkotoutumiskoulutusvalinnaistenopintojenalaosasuoritus"
-  );
+    'vstkotoutumiskoulutusvalinnaistenopintojenalaosasuoritus'
+  )
   const jotpaOpintojenOsasuoritus = findSuoritusPrototyyppi(
-    "vapaansivistystyonjotpakoulutuksenosasuorituksensuoritus"
-  );
+    'vapaansivistystyonjotpakoulutuksenosasuorituksensuoritus'
+  )
 
   return (
     <>
       {osaamiskokonaisuus && (
         <LisääKoodistosta
-          koodistoUri={"vstosaamiskokonaisuus"}
+          koodistoUri={'vstosaamiskokonaisuus'}
           suoritusPrototype={osaamiskokonaisuus}
-          className={"vst-osaamiskokonaisuus"}
-          selectionText={"Lisää osaamiskokonaisuus"}
+          className={'vst-osaamiskokonaisuus'}
+          selectionText={'Lisää osaamiskokonaisuus'}
           setExpanded={setExpanded}
         />
       )}
       {suuntautumisopinnot && (
         <LisääKoodistosta
-          koodistoUri={"vstmuutopinnot"}
+          koodistoUri={'vstmuutopinnot'}
           suoritusPrototype={suuntautumisopinnot}
-          className={"vst-suuntautumisopinnot"}
-          selectionText={"Lisää suuntautumisopinto"}
+          className={'vst-suuntautumisopinnot'}
+          selectionText={'Lisää suuntautumisopinto'}
           setExpanded={setExpanded}
         />
       )}
       {muuallaSuoritettuOpinto && (
         <LisääKoodistosta
-          koodistoUri={"vstmuuallasuoritetutopinnot"}
+          koodistoUri={'vstmuuallasuoritetutopinnot'}
           suoritusPrototype={muuallaSuoritettuOpinto}
-          className={"vst-muutopinnot"}
-          selectionText={"Lisää muualla suoritettu opinto"}
+          className={'vst-muutopinnot'}
+          selectionText={'Lisää muualla suoritettu opinto'}
           setExpanded={setExpanded}
         />
       )}
@@ -168,25 +169,25 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
         <LisääPaikallinen
           suoritusPrototype={opintokokonaisuus}
           setExpanded={setExpanded}
-          lisääText={"Lisää paikallinen opintokokonaisuus"}
-          lisääTitle={"Paikallisen opintokokonaisuuden lisäys"}
+          lisääText={'Lisää paikallinen opintokokonaisuus'}
+          lisääTitle={'Paikallisen opintokokonaisuuden lisäys'}
         />
       )}
       {kotoTyöelämäJaYhteiskuntataidotTyöelämäjakso && (
         <LisääPaikallinen
           suoritusPrototype={kotoTyöelämäJaYhteiskuntataidotTyöelämäjakso}
           setExpanded={setExpanded}
-          lisääText={"Lisää työelämäjakso"}
-          lisääTitle={"Työelämäjakson lisäys"}
+          lisääText={'Lisää työelämäjakso'}
+          lisääTitle={'Työelämäjakson lisäys'}
         />
       )}
       {kotoTyöelämäJaYhteiskuntataidot && (
         <LisääPaikallinen
           suoritusPrototype={kotoTyöelämäJaYhteiskuntataidot}
           setExpanded={setExpanded}
-          lisääText={"Lisää työelämä- ja yhteiskuntataidon opintokokonaisuus"}
+          lisääText={'Lisää työelämä- ja yhteiskuntataidon opintokokonaisuus'}
           lisääTitle={
-            "Työelämä- ja yhteiskuntataidon opintokokonaisuuden lisäys"
+            'Työelämä- ja yhteiskuntataidon opintokokonaisuuden lisäys'
           }
         />
       )}
@@ -194,15 +195,15 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
         <LisääPaikallinen
           suoritusPrototype={kotoValinnaisetOpinnot}
           setExpanded={setExpanded}
-          lisääText={"Lisää valinnaiset"}
-          lisääTitle={"Valinnaisen opintosuorituksen lisäys"}
+          lisääText={'Lisää valinnaiset'}
+          lisääTitle={'Valinnaisen opintosuorituksen lisäys'}
         />
       )}
       {kotoOsaAlueKieliOpinnot && (
         <LisääOsaAlue
           suoritusPrototype={kotoOsaAlueKieliOpinnot}
           selectionText={
-            "Lisää suomen/ruotsin kielen ja viestintätaitojen osa-alue"
+            'Lisää suomen/ruotsin kielen ja viestintätaitojen osa-alue'
           }
           setExpanded={setExpanded}
         />
@@ -211,7 +212,7 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
         <LisääOsaAlue
           suoritusPrototype={kotoOsaAlueTyöelämäJaYhteiskuntataidot}
           selectionText={
-            "Lisää työelämän ja yhteiskuntataitojen opintojen osa-alue"
+            'Lisää työelämän ja yhteiskuntataitojen opintojen osa-alue'
           }
           setExpanded={setExpanded}
         />
@@ -219,23 +220,23 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
       {kotoOsaAlueOhjaus && (
         <LisääOsaAlue
           suoritusPrototype={kotoOsaAlueOhjaus}
-          selectionText={"Lisää kotoutumiskoulutuksen ohjauksen osa-alue"}
+          selectionText={'Lisää kotoutumiskoulutuksen ohjauksen osa-alue'}
           setExpanded={setExpanded}
         />
       )}
       {kotoOsaAlueVapaavalintaiset && (
         <LisääOsaAlue
           suoritusPrototype={kotoOsaAlueVapaavalintaiset}
-          selectionText={"Lisää valinnaisten opintojen osa-alue"}
+          selectionText={'Lisää valinnaisten opintojen osa-alue'}
           setExpanded={setExpanded}
         />
       )}
       {lukutaitokoulutuksenKokonaisuus && (
         <LisääKoodistosta
-          koodistoUri={"vstlukutaitokoulutuksenkokonaisuus"}
+          koodistoUri={'vstlukutaitokoulutuksenkokonaisuus'}
           suoritusPrototype={lukutaitokoulutuksenKokonaisuus}
-          className={"vst-lukutaitokoulutuksenkokonaisuudensuoritus"}
-          selectionText={"Lisää kokonaisuus"}
+          className={'vst-lukutaitokoulutuksenkokonaisuudensuoritus'}
+          selectionText={'Lisää kokonaisuus'}
           setExpanded={setExpanded}
         />
       )}
@@ -243,8 +244,8 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
         <LisääPaikallinen
           suoritusPrototype={vapaatavoitteisenOsasuoritus}
           setExpanded={setExpanded}
-          lisääText={"Lisää osasuoritus"}
-          lisääTitle={"Osasuorituksen lisäys"}
+          lisääText={'Lisää osasuoritus'}
+          lisääTitle={'Osasuorituksen lisäys'}
         />
       )}
       {koto2022Osasuoritukset.length > 0 && (
@@ -252,28 +253,28 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
           className="vst-osaamiskokonaisuus"
           koodistoUri="vstkoto2022kokonaisuus"
           suoritusPrototypes={koto2022Osasuoritukset}
-          selectionText={"Lisää osasuoritus"}
+          selectionText={'Lisää osasuoritus'}
           setExpanded={setExpanded}
         />
       )}
       {koto2022KieliJaViestintaOsaamisenAlaosasuoritus && (
         <LisääKoodistosta
-          koodistoUri={"vstkoto2022kielijaviestintakoulutus"}
+          koodistoUri={'vstkoto2022kielijaviestintakoulutus'}
           suoritusPrototype={koto2022KieliJaViestintaOsaamisenAlaosasuoritus}
           className="vstkoto2022-kielijaviestinta"
-          selectionText={"Lisää kieli- ja viestintäkoulutuksen alaosasuoritus"}
+          selectionText={'Lisää kieli- ja viestintäkoulutuksen alaosasuoritus'}
           setExpanded={setExpanded}
         />
       )}
       {koto2022YhteiskuntaJaTyöelämäosaamisenAlaosasuoritus && (
         <LisääKoodistosta
-          koodistoUri={"vstkoto2022yhteiskuntajatyoosaamiskoulutus"}
+          koodistoUri={'vstkoto2022yhteiskuntajatyoosaamiskoulutus'}
           suoritusPrototype={
             koto2022YhteiskuntaJaTyöelämäosaamisenAlaosasuoritus
           }
           className="vstkoto2022-yhteiskuntajatyoosaamis"
           selectionText={
-            "Lisää yhteiskunta- ja työosaamiskoulutuksen alaosasuoritus"
+            'Lisää yhteiskunta- ja työosaamiskoulutuksen alaosasuoritus'
           }
           setExpanded={setExpanded}
         />
@@ -282,58 +283,59 @@ export const UusiVapaanSivistystyonOsasuoritus = ({
         <LisääPaikallinen
           suoritusPrototype={koto2022ValinnaistenOpintojenAlaosasuoritus}
           setExpanded={setExpanded}
-          lisääText={"Lisää osasuoritus"}
-          lisääTitle={"Lisää valinnainen alaosasuoritus"}
+          lisääText={'Lisää osasuoritus'}
+          lisääTitle={'Lisää valinnainen alaosasuoritus'}
         />
       )}
       {jotpaOpintojenOsasuoritus && (
         <LisääPaikallinen
           suoritusPrototype={jotpaOpintojenOsasuoritus}
           setExpanded={setExpanded}
-          lisääText={"Lisää osasuoritus"}
-          lisääTitle={"Osasuorituksen lisäys"}
+          lisääText={'Lisää osasuoritus'}
+          lisääTitle={'Osasuorituksen lisäys'}
+          disableKuvaus
         />
       )}
     </>
-  );
-};
+  )
+}
 
 type LisääKoodistostaProps = {
-  suoritusPrototype: ObjectModel & Contextualized<ChangeBusContext>;
-  koodistoUri: string;
-  className: string;
-  selectionText: string;
-  setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void;
-};
+  suoritusPrototype: ObjectModel & Contextualized<ChangeBusContext>
+  koodistoUri: string
+  className: string
+  selectionText: string
+  setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void
+}
 
 const LisääKoodistosta = ({
   suoritusPrototype,
   koodistoUri,
   className,
   selectionText,
-  setExpanded,
+  setExpanded
 }: LisääKoodistostaProps) => {
-  const selectedAtom = Atom<EnumValue<string> | undefined>();
+  const selectedAtom = Atom<EnumValue<string> | undefined>()
   const koulutusmoduuliPrototype =
-    koulutusModuuliprototypes(suoritusPrototype)[0];
+    koulutusModuuliprototypes(suoritusPrototype)[0]
 
   selectedAtom.filter(notUndefined).onValue((newItem) => {
     const koulutusmoduuli = modelSetTitle(
       modelSetValues(koulutusmoduuliPrototype, { tunniste: newItem }),
       newItem.title
-    );
+    )
     const suoritus = modelSet(
       suoritusPrototype,
       koulutusmoduuli,
-      "koulutusmoduuli"
-    );
-    pushModel(suoritus);
-    setExpanded(suoritus)(true);
-    selectedAtom.set(undefined);
-  });
+      'koulutusmoduuli'
+    )
+    pushModel(suoritus)
+    setExpanded(suoritus)(true)
+    selectedAtom.set(undefined)
+  })
 
   return (
-    <div className={"lisaa-uusi-suoritus " + className}>
+    <div className={'lisaa-uusi-suoritus ' + className}>
       {/* @ts-expect-error KoodistoDropdown */}
       <KoodistoDropdown
         className={className}
@@ -342,42 +344,42 @@ const LisääKoodistosta = ({
         selectionText={t(selectionText)}
       />
     </div>
-  );
-};
+  )
+}
 
 type LisääOsaAlueProps = {
-  suoritusPrototype: EditorModel & Contextualized<ChangeBusContext>;
-  selectionText: string;
-  setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void;
-};
+  suoritusPrototype: EditorModel & Contextualized<ChangeBusContext>
+  selectionText: string
+  setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void
+}
 
 const LisääOsaAlue = ({
   suoritusPrototype,
   selectionText,
-  setExpanded,
+  setExpanded
 }: LisääOsaAlueProps) => {
   const koulutusmoduuliPrototype =
-    koulutusModuuliprototypes(suoritusPrototype)[0];
+    koulutusModuuliprototypes(suoritusPrototype)[0]
 
   const addNewOsaAlue = () => {
     const tunniste = (
-      modelLookup(koulutusmoduuliPrototype, "tunniste") as StringModel
-    ).value;
+      modelLookup(koulutusmoduuliPrototype, 'tunniste') as StringModel
+    ).value
     const koulutusmoduuli = modelSetTitle(
       modelSetValues(koulutusmoduuliPrototype, { tunniste }),
-      tunniste.title || ""
-    );
+      tunniste.title || ''
+    )
     const suoritus = modelSet(
       suoritusPrototype,
       koulutusmoduuli,
-      "koulutusmoduuli"
-    );
-    pushModel(suoritus);
-    setExpanded(suoritus)(true);
-  };
+      'koulutusmoduuli'
+    )
+    pushModel(suoritus)
+    setExpanded(suoritus)(true)
+  }
 
   return (
-    <div className={"lisaa-uusi-suoritus"}>
+    <div className={'lisaa-uusi-suoritus'}>
       <span className="lisaa-osa-alueen-suoritus">
         <a className="add-link" onClick={() => addNewOsaAlue()}>
           {/* @ts-expect-error Text */}
@@ -385,194 +387,198 @@ const LisääOsaAlue = ({
         </a>
       </span>
     </div>
-  );
-};
+  )
+}
 
 type LisääOsasuoritusProps = {
-  suoritusPrototypes: OsasuoritusEditorModel[];
-  selectionText: string;
-  setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void;
-  className?: string;
-  koodistoUri: string;
-};
+  suoritusPrototypes: OsasuoritusEditorModel[]
+  selectionText: string
+  setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void
+  className?: string
+  koodistoUri: string
+}
 
 const LisääVSTKOTO2022Osasuoritus = ({
   suoritusPrototypes,
   selectionText,
   setExpanded,
-  className,
+  className
 }: LisääOsasuoritusProps) => {
-  const selectedAtom = Atom<EnumValue<Koodistokoodiviite> | undefined>();
+  const selectedAtom = Atom<EnumValue<Koodistokoodiviite> | undefined>()
 
   const koulutusmoduuliPrototypes = suoritusPrototypes.flatMap(
     (suoritusPrototype) =>
       isOneOfModel(suoritusPrototype) ? suoritusPrototype.oneOfPrototypes : []
-  );
+  )
 
   selectedAtom.filter(notUndefined).onValue((newItem) => {
     const prototypeMapping: Record<string, string> = {
       kielijaviestintaosaaminen:
-        "vstkotoutumiskoulutuksenkielijaviestintaosaamisensuoritus2022",
-      ohjaus: "vstkotoutumiskoulutuksenohjauksensuoritus2022",
+        'vstkotoutumiskoulutuksenkielijaviestintaosaamisensuoritus2022',
+      ohjaus: 'vstkotoutumiskoulutuksenohjauksensuoritus2022',
       valinnaisetopinnot:
-        "vstkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus2022",
+        'vstkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus2022',
       yhteiskuntajatyoelamaosaaminen:
-        "vstkotoutumiskoulutuksenyhteiskuntajatyoelamaosaaminensuoritus2022",
-    };
+        'vstkotoutumiskoulutuksenyhteiskuntajatyoelamaosaaminensuoritus2022'
+    }
 
-    const prototypeKey = prototypeMapping[newItem.data.koodiarvo];
-    const proto = koulutusmoduuliPrototypes.find((p) => p.key === prototypeKey);
+    const prototypeKey = prototypeMapping[newItem.data.koodiarvo]
+    const proto = koulutusmoduuliPrototypes.find((p) => p.key === prototypeKey)
 
     if (proto) {
       const suoritusPrototype = suoritusPrototypes.find((m) =>
         m.value.classes.includes(prototypeKey)
-      );
+      )
       const koulutusmoduuliPrototype =
-        koulutusModuuliprototypes(suoritusPrototype)[0];
+        koulutusModuuliprototypes(suoritusPrototype)[0]
 
       const koulutusmoduuli = modelSetTitle(
         modelSetValues(koulutusmoduuliPrototype, { tunniste: newItem }),
         newItem.title
-      );
+      )
 
       const suoritus = modelSet(
         contextualizeSubModel(proto, suoritusPrototype)!,
         koulutusmoduuli,
-        "koulutusmoduuli"
-      );
+        'koulutusmoduuli'
+      )
 
-      pushModel(suoritus);
-      setExpanded(suoritus)(true);
-      selectedAtom.set(undefined);
+      pushModel(suoritus)
+      setExpanded(suoritus)(true)
+      selectedAtom.set(undefined)
     }
-  });
+  })
 
   return (
-    <div className={"lisaa-uusi-suoritus " + className}>
+    <div className={'lisaa-uusi-suoritus ' + className}>
       {/* @ts-expect-error KoodistoDropdown */}
       <KoodistoDropdown
         className={className}
-        options={koodistoValues("vstkoto2022kokonaisuus")}
+        options={koodistoValues('vstkoto2022kokonaisuus')}
         selected={selectedAtom.view(enumValueToKoodiviiteLens)}
         selectionText={t(selectionText)}
       />
     </div>
-  );
-};
+  )
+}
 
 type LisääPaikallinenProps = {
-  suoritusPrototype: OsasuoritusEditorModel;
-  setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void;
-  lisääText: string;
-  lisääTitle: string;
-};
+  suoritusPrototype: OsasuoritusEditorModel
+  setExpanded: (suoritus: EditorModel) => (expanded: boolean) => void
+  lisääText: string
+  lisääTitle: string
+  disableKuvaus?: boolean
+}
 
 const LisääPaikallinen = ({
   suoritusPrototype,
   setExpanded,
   lisääText,
   lisääTitle,
+  disableKuvaus
 }: LisääPaikallinenProps) => {
   type TallennettuSuoritus =
     | OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus
-    | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus;
+    | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
 
-  const showModal = Atom(false);
-  const inputState = Atom("");
-  const validP = inputState.map(Boolean);
+  const showModal = Atom(false)
+  const inputState = Atom('')
+  const validP = inputState.map(Boolean)
 
-  const closeModal = () => showModal.set(false);
+  const closeModal = () => showModal.set(false)
   const updateInputState = (event: React.ChangeEvent<HTMLInputElement>) =>
-    inputState.set(event.target.value);
+    inputState.set(event.target.value)
 
   const koulutusmoduuliPrototype = koulutusModuuliprototypes(
     suoritusPrototype
-  )[0] as OsasuoritusEditorModel;
+  )[0] as OsasuoritusEditorModel
 
   const addNewSuoritus = (storedSuoritus: TallennettuSuoritus) => {
-    const input = inputState.get();
-    const updateValues = {
-      "kuvaus.fi": { data: storedSuoritus ? storedSuoritus.kuvaus.fi : input },
-      "tunniste.nimi.fi": {
-        data: storedSuoritus ? storedSuoritus.tunniste.nimi.fi : input,
+    const input = inputState.get()
+    const updateValues = withoutNullValues({
+      'kuvaus.fi': disableKuvaus
+        ? null
+        : { data: storedSuoritus ? storedSuoritus.kuvaus.fi : input },
+      'tunniste.nimi.fi': {
+        data: storedSuoritus ? storedSuoritus.tunniste.nimi.fi : input
       },
-      "tunniste.koodiarvo": {
-        data: storedSuoritus ? storedSuoritus.tunniste.koodiarvo : input,
-      },
-    };
+      'tunniste.koodiarvo': {
+        data: storedSuoritus ? storedSuoritus.tunniste.koodiarvo : input
+      }
+    })
     const koulutusmoduuli = modelSetTitle(
       modelSetValues(koulutusmoduuliPrototype, updateValues),
       storedSuoritus ? storedSuoritus.tunniste.nimi.fi : input
-    );
+    )
     const suoritus = modelSet(
       suoritusPrototype,
       koulutusmoduuli,
-      "koulutusmoduuli"
-    );
-    pushModel(suoritus);
-    setExpanded(suoritus)(true);
-    showModal.set(false);
-  };
+      'koulutusmoduuli'
+    )
+    pushModel(suoritus)
+    setExpanded(suoritus)(true)
+    showModal.set(false)
+  }
 
   const päätasonSuoritus = modelData(
     suoritusPrototype.context.opiskeluoikeus,
-    "suoritukset"
-  )[0];
+    'suoritukset'
+  )[0]
 
-  const organisaatioOid = päätasonSuoritus.toimipiste.oid;
-  const key = modelLookup(suoritusPrototype, "koulutusmoduuli")?.value
-    .classes[0];
+  const organisaatioOid = päätasonSuoritus.toimipiste.oid
+  const key = modelLookup(suoritusPrototype, 'koulutusmoduuli')?.value
+    .classes[0]
 
   const setOptions = (suoritukset: EditorModel[]) => {
     const tallennetutSuoritukset = suoritukset.map((suoritus) => {
       return {
-        kuvaus: modelData(suoritus, "kuvaus"),
-        tunniste: modelData(suoritus, "tunniste"),
-      };
-    });
-    options.set(tallennetutSuoritukset);
-  };
+        kuvaus: modelData(suoritus, 'kuvaus'),
+        tunniste: modelData(suoritus, 'tunniste')
+      }
+    })
+    options.set(tallennetutSuoritukset)
+  }
 
-  const options = Atom<TallennettuSuoritus[]>([]);
+  const options = Atom<TallennettuSuoritus[]>([])
   getOrganizationalPreferences(organisaatioOid, key).onValue(
     (value: EditorModel[]) => {
-      setOptions(value);
+      setOptions(value)
     }
-  );
+  )
 
   const newOsasuoritus = {
-    kuvaus: { fi: "" },
-    tunniste: { nimi: { fi: "" }, koodiarvo: "" },
-    uusi: true,
-  };
+    kuvaus: { fi: '' },
+    tunniste: { nimi: { fi: '' }, koodiarvo: '' },
+    uusi: true
+  }
 
   const poistaPaikallinenOsasuoritus = (osasuoritus: TallennettuSuoritus) => {
-    const avain = osasuoritus.tunniste.koodiarvo;
-    const tyyppi = koulutusmoduuliPrototype.value.classes[0];
+    const avain = osasuoritus.tunniste.koodiarvo
+    const tyyppi = koulutusmoduuliPrototype.value.classes[0]
     deleteOrganizationalPreference(organisaatioOid, tyyppi, avain).onValue(
       setOptions
-    );
-  };
+    )
+  }
 
   return (
-    <div className={"lisaa-uusi-suoritus paikallinen"}>
+    <div className={'lisaa-uusi-suoritus paikallinen'}>
       <span className="lisaa-paikallinen-suoritus">
         {elementWithLoadingIndicator(
-          options.map(".length").map(
+          options.map('.length').map(
             // @ts-expect-error DropDown
             <DropDown
               options={options}
               keyValue={(option) =>
-                option.uusi ? "uusi" : "lisää " + option.tunniste.koodiarvo
+                option.uusi ? 'uusi' : 'lisää ' + option.tunniste.koodiarvo
               }
               displayValue={(option) =>
-                option.uusi ? "Lisää uusi" : option.tunniste.nimi.fi
+                option.uusi ? 'Lisää uusi' : option.tunniste.nimi.fi
               }
               selectionText={lisääText}
               isRemovable={() => true}
               newItem={newOsasuoritus}
               removeText={t(
-                "Poista osasuoritus. Poistaminen ei vaikuta olemassa oleviin suorituksiin."
+                'Poista osasuoritus. Poistaminen ei vaikuta olemassa oleviin suorituksiin.'
               )}
               // @ts-expect-error DropDown
               onSelectionChanged={(option) =>
@@ -597,7 +603,7 @@ const LisääPaikallinen = ({
             </h2>
             <label>
               {/* @ts-expect-error Text */}
-              <Text name={"Opintokokonaisuuden nimi"} />
+              <Text name={'Opintokokonaisuuden nimi'} />
               <input
                 className="paikallinen-koulutusmoduuli-nimi"
                 type="text"
@@ -609,5 +615,5 @@ const LisääPaikallinen = ({
         )}
       </span>
     </div>
-  );
-};
+  )
+}

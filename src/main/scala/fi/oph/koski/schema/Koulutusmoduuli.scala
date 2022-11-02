@@ -85,9 +85,12 @@ trait Tutkinto extends KoulutusmoduuliValinnainenLaajuus {
 
 trait DiaarinumerollinenKoulutus extends Koulutus with Diaarinumerollinen
 
-trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
+trait PaikallinenKoulutusmoduuliIlmanKuvausta extends Koulutusmoduuli {
   def tunniste: PaikallinenKoodi
   def nimi = tunniste.nimi
+}
+
+trait PaikallinenKoulutusmoduuli extends PaikallinenKoulutusmoduuliIlmanKuvausta {
   @MultiLineString(5)
   def kuvaus: LocalizedString
 }
