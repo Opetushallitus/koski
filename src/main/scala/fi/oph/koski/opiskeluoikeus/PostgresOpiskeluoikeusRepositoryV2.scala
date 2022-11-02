@@ -8,7 +8,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.PerustiedotSyncRepository
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, MuunAmmatillisenKoulutuksenSuoritus}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, MuunAmmatillisenKoulutuksenSuoritus, MuunKuinSäännellynKoulutuksenOpiskeluoikeus}
 import slick.dbio
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
@@ -38,16 +38,23 @@ class PostgresOpiskeluoikeusRepositoryV2(
                                                              allowUpdate: Boolean, allowDeleteCompleted:
                                Boolean, rows: Either[HttpStatus, List[OpiskeluoikeusRow]])(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     (allowUpdate, rows) match {
-      case (false, Right(r)) if r.length > 0 && isMuuAmmatillinenOpiskeluoikeus(opiskeluoikeus) => createAction(oppijaOid, opiskeluoikeus)
+      case (false, Right(r)) if r.nonEmpty && vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus) => createAction(oppijaOid, opiskeluoikeus)
       case _ => super.createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows)
     }
   }
 
-  def isMuuAmmatillinenOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = opiskeluoikeus match {
-    case _: AmmatillinenOpiskeluoikeus => opiskeluoikeus.suoritukset.forall { _ match {
-      case _: MuunAmmatillisenKoulutuksenSuoritus => true
-      case _ =>false
-    }}
-    case _ => false
-  }
+  def vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean =
+    isMuuAmmatillinenOpiskeluoikeus(opiskeluoikeus) || isMuuKuinSäänneltyKoulutus(opiskeluoikeus)
+
+  def isMuuAmmatillinenOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean =
+    opiskeluoikeus match {
+      case _: AmmatillinenOpiskeluoikeus => opiskeluoikeus.suoritukset.forall {
+        case _: MuunAmmatillisenKoulutuksenSuoritus => true
+        case _ => false
+      }
+      case _ => false
+    }
+
+  def isMuuKuinSäänneltyKoulutus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean =
+    opiskeluoikeus.isInstanceOf[MuunKuinSäännellynKoulutuksenOpiskeluoikeus]
 }
