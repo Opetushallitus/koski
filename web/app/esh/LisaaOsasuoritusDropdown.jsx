@@ -16,7 +16,7 @@ const LisaaOsasuoritusDropdown = ({
       selected={selectedAtom.view(enumValueToKoodiviiteLens)}
       enableFilter="true"
       selectionText={placeholder}
-      showKoodiarvo="true"
+      showKoodiarvo={false}
     />
   )
 }

@@ -80,10 +80,14 @@ const useKoulutusmoduuliKoodistovalues = (
             (...alts) => alts.flatMap((alt) => alt),
             alternativesPaths
           ).map((oppiaineet) => {
-            setData(done(oppiaineet))
+            if (Array.isArray(oppiaineet)) {
+              setData(done(oppiaineet))
+            } else {
+              setData(done([]))
+            }
           })
           const _dispose = prop.onValue((val) => {
-            if (val !== undefined) {
+            if (val !== undefined && Array.isArray(val)) {
               setData(done(val))
             }
           })
@@ -130,6 +134,7 @@ export default ({
     tutkinto,
     liittyyOsasuoritukseen
   ) => {
+    console.log('koulutusmoduuli', koulutusmoduuli)
     const osasuoritus = createOsasuoritus(
       suoritusPrototype,
       koulutusmoduuli,
@@ -148,8 +153,10 @@ export default ({
     return <div className="ajax-loading-placeholder">{'Ladataan...'}</div>
   }
 
+  const osat = oppiaineet.data.map((oa) => oa.data)
+
   const lisättävätOsasuoritukset = {
-    osat: oppiaineet.data.map((oa) => oa.data),
+    osat,
     osanOsa: false
   }
 
