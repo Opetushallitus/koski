@@ -15,6 +15,7 @@ export const LisaaOsasuoritus = ({
 }) => {
   const selectedAtom = Atom(undefined)
   selectedAtom.filter(identity).onValue((newItem) => {
+    console.log('newItem', newItem)
     const osasuoritus = modelSetValues(koulutusmoduuliProto(newItem), {
       tunniste: newItem
     })
