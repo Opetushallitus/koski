@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.hakeutumisvalvonta
 
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{HakeutumisvalvontaTieto, MockValpasRajapäivätService}
 import fi.oph.koski.valpas.oppija.ValpasOppijaTestData.{hakeutumisvelvolliset, hakeutumisvelvollisetRajapäivänJälkeen}
 import fi.oph.koski.valpas.oppija.ValpasOppijaTestBase
@@ -57,6 +58,16 @@ class ValpasHakeutumisvalvontaServiceSpec extends ValpasOppijaTestBase {
           expectedOppija,
           expectedData)
       }
+    }
+
+    "palauttaa yhden oppilaitoksen nivelvaiheen TUVA-oppijan oikein tarkasteltaessa ennen syksyn rajapäivää" in {
+      val oppijat = hakeutumisvalvontaService
+        .getOppijatSuppeatTiedot(oppilaitos, HakeutumisvalvontaTieto.Nivelvaihe)(defaultSession).toOption.get
+        .map(_.oppija)
+        .sortBy(o => (o.henkilö.sukunimi, o.henkilö.etunimet))
+
+      oppijat.map(_.henkilö.oid) should contain(ValpasMockOppijat.valmistunutTuvalainen.oid)
+
     }
   }
 }

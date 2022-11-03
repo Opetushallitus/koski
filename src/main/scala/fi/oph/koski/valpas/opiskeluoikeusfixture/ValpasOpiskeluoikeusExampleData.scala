@@ -1574,4 +1574,25 @@ object ValpasOpiskeluoikeusExampleData {
   )
 
   def tuvaOpiskeluoikeusKesken = ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusEiValmistunut
+  def tuvaOpiskeluoikeusValmis = ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusValmistunut.copy(
+    tila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
+      opiskeluoikeusjaksot = List(
+        ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusjakso(date(2020, 1, 1), "lasna"),
+        ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusjakso(date(2022, 8, 1), "valmistunut")
+      )
+    ),
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija =  None,
+    lisätiedot = None,
+    suoritukset = List(
+      ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaPäätasonSuoritus(Some(12.0), jyväskylänNormaalikoulu).copy(
+        osasuoritukset = ExamplesTutkintokoulutukseenValmentavaKoulutus
+          .tuvaOpiskeluOikeusValmistunut
+          .suoritukset.headOption
+          .map(t => t.osasuoritusLista.map {
+            case t: TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus => t
+          })
+      )
+    )
+  )
 }

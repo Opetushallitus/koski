@@ -13,7 +13,7 @@ import {
   jyväskylänNormaalikouluOid,
 } from "../integrationtests/oids"
 
-export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (22)"
+export const jklNormaalikouluSuorittaminenTableHead = "Oppivelvolliset (23)"
 export const jklNormaalikouluSuorittaminenTableContent = `
   Alkukesästä-eronneeksi-katsottu-nivelvaiheen-opiskelija Valpas  | 18.1.2005  | Perusopetuksen lisäopetus | warningKatsotaan eronneeksi  | Jyväskylän normaalikoulu | 15.8.2020  | 31.5.2021 | –                                                       | 17.1.2023 asti
   Alkukesästä-eronnut-nivelvaiheen-opiskelija Valpas              | 16.10.2005 | Perusopetuksen lisäopetus | warningEronnut               | Jyväskylän normaalikoulu | 15.8.2020  | 31.5.2021 | –                                                       | 15.10.2023 asti
@@ -35,6 +35,7 @@ export const jklNormaalikouluSuorittaminenTableContent = `
   LukionAloittanut-ilmo Valpas                                    | 11.4.2005  | Lukion oppimäärä          | Läsnä                        | Jyväskylän normaalikoulu | 15.8.2021  | –         | –                                                       | 10.4.2023 asti
   LukionAloittanutJaLopettanut-ilmo Valpas                        |  5.4.2005  | Lukion oppimäärä          | warningEronnut               | Jyväskylän normaalikoulu | 15.8.2021  | 19.9.2021 | –                                                       |  4.4.2023 asti
   LukionLokakuussaAloittanut Valpas                               | 18.4.2005  | Lukion oppimäärä          | Läsnä                        | Jyväskylän normaalikoulu |  3.10.2021 | –         | –                                                       | 17.4.2023 asti
+  Nivelvaiheesta-valmistunut-tuva Valpas	                        | 16.5.2005	 | TUVA	                     | Läsnä	                      | Jyväskylän normaalikoulu | 1.1.2020	  | 1.8.2022	| –	                                                      | 15.5.2023 asti
   SuorittaaPreIB Valpas                                           | 19.7.2004  | IB                        | Läsnä                        | Jyväskylän normaalikoulu |  1.6.2021  | –         | –                                                       | 18.7.2022 asti
   Valmistunut-nivelvaiheet-opiskelija-2022 Valpas                 | 19.3.2005  | Perusopetuksen lisäopetus | Läsnä                        | Jyväskylän normaalikoulu | 15.8.2021  | 31.5.2022 | –                                                       | 18.3.2023 asti
   `

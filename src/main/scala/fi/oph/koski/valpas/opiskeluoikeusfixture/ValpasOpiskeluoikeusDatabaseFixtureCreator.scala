@@ -210,5 +210,6 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.amisEronnutTuvalainen, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKouluVäliaikaisestiKeskeytynytToukokuussa),
     (ValpasMockOppijat.amisEronnutTuvalainen, ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus),
     (ValpasMockOppijat.amisEronnutTuvalainen, ValpasOpiskeluoikeusExampleData.tuvaOpiskeluoikeusKesken),
+    (ValpasMockOppijat.valmistunutTuvalainen, ValpasOpiskeluoikeusExampleData.tuvaOpiskeluoikeusValmis),
   )
 }
