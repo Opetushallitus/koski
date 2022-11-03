@@ -1,7 +1,6 @@
 import React from 'baret'
 import {
   ensureArrayKey,
-  modelLookup,
   modelProperty,
   modelSet,
   pushModel

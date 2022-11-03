@@ -192,6 +192,10 @@ export const suoritusProperties = (
         !["arvosana", "arvioitsijat", "pisteet", "kuvaus"].includes(p.key)
     );
 
+    const arvioitsijat = modelProperties(
+      modelLookup(suoritus, "arviointi.-1")!,
+      (p: ObjectModelProperty) => p.key === "arvioitsijat"
+    );
     const arvioinninKuvaus = modelProperties(
       modelLookup(suoritus, "arviointi.-1")!,
       (p: ObjectModelProperty) => p.key === "kuvaus"
@@ -259,7 +263,15 @@ export const suoritusProperties = (
               .concat(arvioinninKuvaus)
               .concat(simplifiedArviointi)
           : defaultsForView;
-
+      case "europeanschoolofhelsinkivuosiluokkasecondaryupper":
+      case "europeanschoolofhelsinkivuosiluokkasecondarylower":
+      case "europeanschoolofhelsinkivuosiluokkaprimary":
+      case "europeanschoolofhelsinkivuosiluokkanursery":
+        return (isEdit
+          ? defaultsForEdit
+          : defaultsForView)
+          .concat(arvioitsijat)
+          .concat(arvioinninKuvaus);
       default:
         return isEdit ? defaultsForEdit : defaultsForView;
     }
