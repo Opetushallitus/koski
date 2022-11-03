@@ -3,6 +3,7 @@
 
 ## 9.11.2022
 - TUVAn valinnaisen suorituksen laajuus voidaan syöttää ilman osasuorituksia, mutta jos osasuorituksia on, niiden laajuksien summan pitää vastata suorituksen laajuutta.
+- Vapaan sivistystyön koulutuksen opiskeluoikeuksien sallitut jakson tilat on määritelty tietomallitasolla erillisen validaation sijaan, minkä johdosta virhekoodit ei-sallitusta tiloista ovat muuttuneet.
 
 ## 28.10.2022
 - Palauta aiemmin välikaikaisesti käytöstä poistettu ammatillisen tutkinnon osan ryhmän validaatio.

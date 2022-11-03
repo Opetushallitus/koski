@@ -207,7 +207,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
       "Uuden opsin mukaista opiskeluoikeutta, joka alkaa ennen 1.8.2022, ei voi siirtää" in {
         val opiskeluoikeus = Koto2022.Opiskeluoikeus.keskeneräinen.copy(
           tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-            YleinenVapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2022, 7, 31), opiskeluoikeusLäsnä)
+            OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2022, 7, 31), opiskeluoikeusLäsnä)
           )),
         )
 
@@ -219,7 +219,7 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
       "Vanhan opsin mukaista opiskeluoikeutta, joka alkaa 1.8.2022 tai myöhemmin, ei voi siirtää" in {
         val opiskeluoikeus = opiskeluoikeusKOTO.copy(
           tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-            YleinenVapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2022, 8, 1), opiskeluoikeusLäsnä)
+            OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2022, 8, 1), opiskeluoikeusLäsnä)
           )),
           arvioituPäättymispäivä = Some(LocalDate.of(2022, 9, 1)),
         )

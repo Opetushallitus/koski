@@ -6,7 +6,7 @@ import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusKatsotaanEronneeksi
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.varsinaisSuomiPalvelukäyttäjä
 import fi.oph.koski.schema._
@@ -25,13 +25,13 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
           VapaanSivistystyönOpiskeluoikeudenTila(
             List(
-              YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKatsotaanEronneeksi)
+              OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKatsotaanEronneeksi)
             )
           )
         )
 
         putOpiskeluoikeus(oo) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
         }
       }
 
@@ -39,13 +39,13 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
           VapaanSivistystyönOpiskeluoikeudenTila(
             List(
-              YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusValmistunut)
+              OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusValmistunut)
             )
           )
         )
 
         putOpiskeluoikeus(oo) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
         }
       }
 
@@ -53,13 +53,13 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         val oo = VapaatavoitteinenOpiskeluoikeus.withTila(
           VapaanSivistystyönOpiskeluoikeudenTila(
             List(
-              YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusLäsnä)
+              OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusLäsnä)
             )
           )
         )
 
         putOpiskeluoikeus(oo) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
         }
       }
     }
@@ -183,7 +183,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
       tila = VapaanSivistystyönOpiskeluoikeudenTila(
         oo.tila.opiskeluoikeusjaksot ++
           List(
-            YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusMitätöity)
+            OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusMitätöity)
           )
       )
     )
@@ -192,7 +192,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
   private def vahvistettuPäätasonSuoritusKeskeytynytOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus) = {
     oo.copy(
       tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-        YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
+        OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
       ))
     )
   }
