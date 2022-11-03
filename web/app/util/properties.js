@@ -20,3 +20,19 @@ export const editorPrototypeP = (modelName) => {
     })
     .toProperty()
 }
+
+export const alternativesP = (alternativePath) =>
+  http
+    .cachedGet(alternativePath, {
+      errorMapper: (e) => {
+        switch (e.errorStatus) {
+          case 404:
+            return null
+          case 500:
+            return null
+          default:
+            return new Bacon.Error(e)
+        }
+      }
+    })
+    .toProperty()

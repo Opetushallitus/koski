@@ -27,8 +27,6 @@ export const SynteettinenKoodiviiteEditor = ({ model, autoFocus }) => {
 
   const onChange = useCallback(
     (event) => {
-      console.log('synteettinenKoodiviiteEditor onChange', event.target.value)
-      console.log('koodiarvoProperty.model', koodiarvoProperty.model)
       pushModelValue(koodiarvoProperty.model, { data: event.target.value })
     },
     [koodiarvoProperty.model]

@@ -29,7 +29,6 @@ export const osasuoritusPrototypes = (osasuorituksetModel) => {
   )
 }
 
-export const osasuorituksenKoulutusmoduuli = (koulutusmoduulit, _oppiaine) => {
-  console.log(koulutusmoduulit)
+export const osasuorituksenKoulutusmoduuli = (koulutusmoduulit, oppiaine) => {
   return koulutusmoduulit[0]
 }

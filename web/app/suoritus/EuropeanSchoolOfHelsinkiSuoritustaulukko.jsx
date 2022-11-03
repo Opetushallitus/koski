@@ -1,6 +1,6 @@
 import React from 'baret'
 import classNames from 'classnames'
-import { modelItems, modelProperty } from '../editor/EditorModel'
+import { modelItems } from '../editor/EditorModel'
 import { accumulateExpandedState } from '../editor/ExpandableItems'
 import { fetchLaajuudet, YhteensäSuoritettu } from './YhteensaSuoritettu'
 import {
@@ -19,28 +19,18 @@ import {
 import { EuropeanSchoolOfHelsinkiOsasuoritusEditor } from '../esh/EuropeanSchoolOfHelsinkiOsasuoritusEditor'
 import UusiOsasuoritus from '../esh/UusiOsasuoritus'
 
-function resolveOsasuorituksenOppiaineKoodistot(suoritukset = []) {
-  const koulutusmoduulit = suoritukset
-    .map(
-      (
-        suoritus // TODO: Voiko model.value.data hakea jotenkin siistimmin? Koitettu: modelData ja modelLookup
-      ) =>
-        modelProperty(suoritus, 'koulutusmoduuli.tunniste')?.model?.value?.data
-          ?.koodistoUri
-    )
-    .filter((m) => m !== null && m !== undefined)
-  return [...new Set(koulutusmoduulit)]
-}
-
 export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
   render() {
-    let { parentSuoritus, suorituksetModel, nestedLevel = 0 } = this.props
+    const {
+      parentSuoritus: _parentSuoritus,
+      suorituksetModel,
+      nestedLevel = 0
+    } = this.props
+
     const context = suorituksetModel.context
     const suoritukset = modelItems(suorituksetModel) || []
-    parentSuoritus = parentSuoritus || context.suoritus
 
-    console.log('suorituksetModel', suorituksetModel)
-    console.log('modelItems', modelItems(suorituksetModel))
+    const parentSuoritus = _parentSuoritus || context.suoritus
 
     if (suoritukset.length === 0 && !context.edit) {
       return null
@@ -137,9 +127,6 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
                           suoritus={parentSuoritus}
                           suoritusPrototypes={suoritusProtos}
                           suorituksetModel={suorituksetModel}
-                          osasuorituksenOppiaineKoodistot={resolveOsasuorituksenOppiaineKoodistot(
-                            suorituksetForThisGroup
-                          )}
                           groupId={groupId}
                           setExpanded={setExpanded}
                           groupTitles={groupTitles}
