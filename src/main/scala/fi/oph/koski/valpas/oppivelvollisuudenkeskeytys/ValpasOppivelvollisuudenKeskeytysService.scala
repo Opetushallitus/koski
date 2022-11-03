@@ -11,6 +11,7 @@ import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytyksenMuuto
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 import fi.oph.koski.valpas.oppija.{ValpasAccessResolver, ValpasErrorCategory}
 
+import java.time.LocalDate
 import java.util.UUID
 
 class ValpasOppivelvollisuudenKeskeytysService(
@@ -45,12 +46,16 @@ class ValpasOppivelvollisuudenKeskeytysService(
       .toRight(ValpasErrorCategory.badRequest.validation.epävalidiUuid())
       .flatMap(uuid => ovKeskeytysRepositoryService.getLaajatTiedot(uuid).toRight(ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()))
       .flatMap(keskeytys => {
-        accessResolver
-          .assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
-          .flatMap(_ => oppijaLaajatTiedotService.getOppijaLaajatTiedot(keskeytys.oppijaOid, haeMyösVainOppijanumerorekisterissäOleva))
-          .flatMap(accessResolver.withOppijaAccess(_))
-          .flatMap(_ => ovKeskeytysRepositoryService.update(muutos))
-          .map(_ => (keskeytys, ovKeskeytysRepositoryService.getSuppeatTiedot(UUID.fromString(muutos.id)).get))
+        if (keskeytys.loppu.exists(_.isBefore(LocalDate.now()))) {
+          Left(ValpasErrorCategory.badRequest.validation.muokattavaOppivelvollisuudenKeskeytysPäättynyt())
+        } else {
+          accessResolver
+            .assertAccessToOrg(ValpasRooli.KUNTA, keskeytys.tekijäOrganisaatioOid)
+            .flatMap(_ => oppijaLaajatTiedotService.getOppijaLaajatTiedot(keskeytys.oppijaOid, haeMyösVainOppijanumerorekisterissäOleva))
+            .flatMap(accessResolver.withOppijaAccess(_))
+            .flatMap(_ => ovKeskeytysRepositoryService.update(muutos))
+            .map(_ => (keskeytys, ovKeskeytysRepositoryService.getSuppeatTiedot(UUID.fromString(muutos.id)).get))
+        }
       })
   }
 

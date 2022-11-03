@@ -15,6 +15,7 @@ object ValpasErrorCategory {
       val epävalidiUuid = subcategory("epävalidiUuid", "UUID ei ollut validi")
       val virheellinenPäivämäärä = subcategory("virheellinenPäivämäärä", "Virheellinen päivämäärä")
       val oppivelvollisuudenKeskeytyksenKohde = subcategory("oppivelvollisuudenKeskeytyksenKohde", "Oppivelvollisuuden keskeytyksen kohteen validointi epäonnistui.")
+      val muokattavaOppivelvollisuudenKeskeytysPäättynyt = subcategory("oppivelvollisuudenKeskeytysPäättynyt", "Oppivelvollisuuden keskeytys on päättynyt eikä sitä voi enää muokata.")
     }
 
     val validation = new Validation
