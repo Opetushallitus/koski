@@ -94,10 +94,11 @@ class ValpasSuorittamisenValvontaService(
         if !onNivelvaiheenOpiskeluoikeus(oo) => true
       case "diatutkinto" => true
       case "ibtutkinto"  => true
-      // International school on toista astetta, jos siinä on luokka-asteen 10+ suoritus. Tämä on tarkistettu jo SQL:ssä,
+      // International school on toista astetta, jos siinä on luokka-asteen 10+ suoritus.
+      // European school of Helsinki on toista astetta, jos siinä on S6 tai S7 suoritus. Nämä on tarkistettu jo SQL:ssä.
       // joten tässä riittää tutkia, onko perusopetuksen jälkeisiä tietoja määritelty.
-      case "internationalschool" if oo.perusopetuksenJälkeinenTiedot.isDefined => true
-      // TODO: TOR-1685 Eurooppalainen koulu
+      case "internationalschool" |
+           "europeanschoolofhelsinki" if oo.perusopetuksenJälkeinenTiedot.isDefined => true
       // Lukiokoulutus on toista astetta, jos siinä ei ole pelkkiä aineopintoja:
       case "lukiokoulutus"
         if oo.päätasonSuoritukset.exists(pts => pts.suorituksenTyyppi.koodiarvo == "lukionoppimaara") => true

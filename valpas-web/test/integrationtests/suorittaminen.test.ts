@@ -32,6 +32,7 @@ import {
 } from "./kuntailmoitus.shared"
 import {
   aapajoenKouluOid,
+  europeanSchoolOfHelsinkiOid,
   internationalSchoolOid,
   jyväskylänNormaalikouluOid,
   stadinAmmattiopistoOid,
@@ -42,6 +43,8 @@ import {
   valitsimenOrganisaatiot,
 } from "./organisaatiovalitsin-helpers"
 import {
+  europeanSchoolOfHelsinkiSuorittaminenTableContent,
+  europeanSchoolOfHelsinkiSuorittaminenTableHead,
   internationalSchoolSuorittaminenTableContent,
   internationalSchoolSuorittaminenTableHead,
   jklNormaalikouluSuorittaminenTableContent,
@@ -73,6 +76,11 @@ const stadinAmmattiopistoSuorittaminenPath = suorittaminenPathWithOrg.href(
 const internationalSchoolSuorittaminenPath = suorittaminenPathWithOrg.href(
   "/virkailija",
   internationalSchoolOid
+)
+
+const europeanSchoolOfHelsinkiSuorittaminenPath = suorittaminenPathWithOrg.href(
+  "/virkailija",
+  europeanSchoolOfHelsinkiOid
 )
 
 const viikinNormaalikouluId = "1.2.246.562.10.81927839589"
@@ -137,6 +145,23 @@ describe("Suorittamisen valvonta -näkymä", () => {
     )
   })
 
+  it("Näyttää listan oppijoista European School of Helsingin käyttäjälle", async () => {
+    await loginAs(suorittaminenListaPath, "valpas-esh")
+    await urlIsEventually(pathToUrl(europeanSchoolOfHelsinkiSuorittaminenPath))
+
+    await goToLocation(europeanSchoolOfHelsinkiSuorittaminenPath)
+
+    await textEventuallyEquals(
+      ".card__header",
+      europeanSchoolOfHelsinkiSuorittaminenTableHead
+    )
+    await dataTableEventuallyEquals(
+      ".suorittaminen",
+      europeanSchoolOfHelsinkiSuorittaminenTableContent,
+      "|"
+    )
+  })
+
   it("Näyttää tyhjän listan virheittä, jos ei oppijoita", async () => {
     await loginAs(suorittaminenListaPath, "valpas-viikin-normaalikoulu-2-aste")
     await urlIsEventually(pathToUrl(viikinNormaalikouluSuorittaminenPath))
@@ -153,7 +178,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
 
     await selectOrganisaatio(1)
     await urlIsEventually(pathToUrl(suorittaminenListaJklPath))
-    await textEventuallyEquals(".card__header", "Oppivelvolliset (21)")
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (22)")
     await waitTableLoadingHasFinished(".suorittaminen")
   })
 

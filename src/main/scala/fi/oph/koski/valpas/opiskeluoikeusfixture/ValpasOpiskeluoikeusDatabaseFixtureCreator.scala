@@ -20,12 +20,14 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021, ValpasOpiskeluoikeusExampleData.esiopetusValmistunutOpiskeluoikeus),
     (ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.oppivelvollinenIntSchoolYsiluokkaKeskenKeväällä2021, ValpasOpiskeluoikeusExampleData.oppivelvollinenIntSchoolYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
+    (ValpasMockOppijat.oppivelvollinenESHS5KeskenKeväällä2021, ValpasOpiskeluoikeusExampleData.oppivelvollinenESHS5KeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia, ValpasOpiskeluoikeusExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein1),
     (ValpasMockOppijat.päällekkäisiäOpiskeluoikeuksia, ValpasOpiskeluoikeusExampleData.oppivelvollinenVaihtanutKouluaMuttaOpiskeluoikeusMerkkaamattaOikein2),
     (ValpasMockOppijat.lukioOpiskelija, ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus),
     (ValpasMockOppijat.kasiluokkaKeskenKeväällä2021, ValpasOpiskeluoikeusExampleData.kasiluokkaKeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.intSchoolKasiluokkaKeskenKeväällä2021, ValpasOpiskeluoikeusExampleData.intSchoolKasiluokkaKeskenKeväällä2021Opiskeluoikeus),
+    (ValpasMockOppijat.eshS4KeskenKeväällä2021, ValpasOpiskeluoikeusExampleData.eshKasiluokkaKeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.kotiopetusMeneilläänOppija, ValpasOpiskeluoikeusExampleData.kotiopetusMeneilläänOpiskeluoikeus),
     (ValpasMockOppijat.kotiopetusMeneilläänVanhallaRakenteellaOppija, ValpasOpiskeluoikeusExampleData.kotiopetusMeneilläänVanhallaRakenteellaOpiskeluoikeus),
     (ValpasMockOppijat.kotiopetusMenneisyydessäOppija, ValpasOpiskeluoikeusExampleData.kotiopetusMenneisyydessäOpiskeluoikeus),
@@ -55,6 +57,9 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.intSchool9LuokanJälkeenLukionAloittanut, ValpasOpiskeluoikeusExampleData.internationalSchool9LuokaltaValmistunut2021),
     (ValpasMockOppijat.intSchool9LuokanJälkeenLukionAloittanut, ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä()),
     (ValpasMockOppijat.intSchool9LuokanJälkeenIntSchoolin10LuokallaAloittanut, ValpasOpiskeluoikeusExampleData.intSchool9LuokaltaValmistunut2021ja10LuokallaAloittanut),
+    (ValpasMockOppijat.eshS5JälkeenS6Aloittanut, ValpasOpiskeluoikeusExampleData.eshS5S6Opiskeluoikeus),
+    (ValpasMockOppijat.eshS5JälkeenLukiossaAloittanut, ValpasOpiskeluoikeusExampleData.oppivelvollinenESHS5ValmisKeväällä2021Opiskeluoikeus),
+    (ValpasMockOppijat.eshS5JälkeenLukiossaAloittanut, ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Syksyllä()),
     (ValpasMockOppijat.intSchoolLokakuussaPerusopetuksenSuorittanut, ValpasOpiskeluoikeusExampleData.intSchool9LuokaltaValmistunutLokakuussa2021ja10LuokallaAloittanut),
     (ValpasMockOppijat.lukionLokakuussaAloittanut, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen),
     (ValpasMockOppijat.lukionLokakuussaAloittanut, ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaa2021Lokakuussa()),
@@ -241,6 +246,7 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.amisValmistunutEronnutValmasta, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainen),
     (ValpasMockOppijat.amisValmistunutEronnutValmasta, ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusAlkaaJaLoppuu2021Syksyllä()),
     (ValpasMockOppijat.amisValmistunutEronnutValmasta, ValpasOpiskeluoikeusExampleData.ammattikouluValmaOpiskeluoikeusEronnut),
-    (ValpasMockOppijat.amisValmistunutEronnutValmasta, ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOpiskeluoikeus(LocalDate.of(2022, 1, 10), LocalDate.of(2023, 4, 28)))
+    (ValpasMockOppijat.amisValmistunutEronnutValmasta, ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOpiskeluoikeus(LocalDate.of(2022, 1, 10), LocalDate.of(2023, 4, 28))),
+    (ValpasMockOppijat.eshNurseryssä, ValpasOpiskeluoikeusExampleData.eshNurseryssä),
   )
 }

@@ -200,7 +200,16 @@ const OpiskeluhistoriaOpinto = ({
           label={t("oppija__opiskeluoikeuden_alkamispäivä")}
           value={formatDate(aiempienOpintojenAlkamispäivä(opiskeluoikeus))}
         />
-        {/* TODO: TOR-1685 Eurooppalainen koulu */}
+        {isValmistunutEuropeanSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa(
+          opiskeluoikeus
+        ) && (
+          <InfoTableRow
+            label={t("oppija__european_school_perusopetuksen_vahvistuspäivä")}
+            value={formatDate(
+              opiskeluoikeus.perusopetusTiedot!.päättymispäivä!
+            )}
+          />
+        )}
         {isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa(
           opiskeluoikeus
         ) && (
@@ -453,9 +462,12 @@ const isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisu
     oo.perusopetusTiedot.valmistunutAiemminTaiLähitulevaisuudessa &&
     oo.perusopetusTiedot.päättymispäivä !== undefined
 
-{
-  /*TODO: TOR-1685 Eurooppalainen koulu*/
-}
+const isValmistunutEuropeanSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa =
+  (oo: MinimiOpiskeluoikeus) =>
+    oo.tyyppi?.koodiarvo === "europeanschoolofhelsinki" &&
+    oo.perusopetusTiedot !== undefined &&
+    oo.perusopetusTiedot.valmistunutAiemminTaiLähitulevaisuudessa &&
+    oo.perusopetusTiedot.päättymispäivä !== undefined
 
 const isPerusopetuksenJälkeinenOpiskeluoikeus = (
   opiskeluoikeus: MinimiOpiskeluoikeus

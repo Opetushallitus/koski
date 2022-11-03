@@ -74,6 +74,14 @@ export const internationalSchoolTableContent = `
   Oppivelvollinen-int-school-kesken-keväällä-2021 Valpas                            | 18.2.2005  | 9B  | –                   | Ei hakemusta | – | – | –                                                                                        |
 `
 
+export const europeanSchoolOfHelsinkiTableHead =
+  "Hakeutumisvelvollisia oppijoita (3)"
+export const europeanSchoolOfHelsinkiTableContent = `
+  ESH-s5-jälkeen-lukiossa-aloittanut Valpas              | 27.11.2005  | S5A | 31.5.2021 | Ei hakemusta | – | – | doneJyväskylän normaalikoulu, Lukiokoulutus                     |
+  ESH-s5-jälkeen-s6-aloittanut Valpas                    | 1.11.2005   | S6A | 31.5.2021 | Ei hakemusta | – | – | doneHelsingin eurooppalainen koulu, European School of Helsinki |
+  Oppivelvollinen-esh-s5-kesken-keväällä-2021 Valpas     | 3.1.2005    | S5A | –         | Ei hakemusta | – | – | –                                                               |
+`
+
 export const hakutilannePath = hakutilannePathWithoutOrg.href("/virkailija")
 
 export const oppijaRowSelector = (oppijaOid: Oid) =>
