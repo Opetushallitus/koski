@@ -24,6 +24,7 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
     const displayProperties = properties.filter(
       (p) => p.key !== 'osasuoritukset'
     )
+    console.log(displayProperties)
     const osasuoritukset = modelLookup(model, 'osasuoritukset')
     const showOsasuoritukset = osasuoritukset
       ? osasuoritukset.value !== undefined
