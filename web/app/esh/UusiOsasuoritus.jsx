@@ -1,23 +1,107 @@
 import React from 'baret'
-import {
-  ensureArrayKey,
-  modelProperty,
-  modelSet,
-  pushModel
-} from '../editor/EditorModel'
+import Bacon from 'baconjs'
+import { useState, useEffect } from 'react'
+import { ensureArrayKey, modelSet, pushModel } from '../editor/EditorModel'
 import { koulutusModuuliprototypes } from '../suoritus/Koulutusmoduuli'
 import {
   selectOsasuoritusPrototype,
   osasuorituksenKoulutusmoduuli
 } from './Osasuoritus'
-import { useKoodistovalues } from '../uusioppija/koodisto'
 import { LisaaOsasuoritus } from './LisaaOsasuoritus'
+import { alternativesP, editorPrototypeP } from '../util/properties'
+import { useBaconProperty } from '../util/hooks'
+
+const isLoading = (val) => val.type === 'loading'
+const isError = (val) => val.type === 'error'
+const isDone = (val) => val.type === 'done'
+
+const loading = () => ({
+  type: 'loading'
+})
+const error = (
+  message = 'Virhe ladattaessa osasuorituksen koodistoarvoja'
+) => ({
+  type: 'error',
+  message
+})
+const done = (data) => ({
+  type: 'done',
+  data
+})
+
+const getProto = (prototype, name) => prototype.prototypes[`${name}`]
+
+const useKoulutusmoduuliKoodistovalues = (
+  editorPrototypeName,
+  modelValueClass
+) => {
+  const [data, setData] = useState(loading())
+  const editorPrototype = useBaconProperty(
+    editorPrototypeP(editorPrototypeName)
+  )
+  useEffect(() => {
+    if (editorPrototype !== null) {
+      const modelPrototype = getProto(editorPrototype, modelValueClass)
+      if (modelPrototype === undefined) {
+        setData(error(`Prototyyppiä "${modelValueClass}" ei löydy `))
+      } else {
+        // Koulutusmoduuli haetaan prototyypistä ilman EditorModelin kontekstia
+        const koulutusmoduuli = modelPrototype.value.properties.find(
+          (property) => property.key === 'koulutusmoduuli'
+        )
+        if (koulutusmoduuli === undefined) {
+          setData(
+            error(
+              `Koulutusmoduulia ei löydy prototyypille "${modelValueClass}"`
+            )
+          )
+        } else {
+          const alternativesPaths = getProto(
+            editorPrototype,
+            koulutusmoduuli.model.key
+          )
+            ?.oneOfPrototypes.filter(
+              (prototype) => prototype.type === 'prototype'
+            )
+            .map((prototype) => getProto(editorPrototype, prototype.key))
+            .flatMap((prototype) =>
+              prototype.value.properties.find(
+                (property) => property.key === 'tunniste'
+              )
+            )
+            .filter((property) => property !== null)
+            .map((property) => property.model)
+            .map((model) => getProto(editorPrototype, model.key))
+            .filter((proto) => proto !== null)
+            .map((proto) => proto.alternativesPath)
+            .map((alternativesPath) => alternativesP(alternativesPath))
+
+          const prop = Bacon.combineWith(
+            (...alts) => alts.flatMap((alt) => alt),
+            alternativesPaths
+          ).map((oppiaineet) => {
+            setData(done(oppiaineet))
+          })
+          const _dispose = prop.onValue((val) => {
+            if (val !== undefined) {
+              setData(done(val))
+            }
+          })
+          const _errorDispose = prop.onError(() => console.error('Error'))
+        }
+      }
+    }
+    return () => {
+      console.log('Unmount')
+    }
+  }, [editorPrototype, modelValueClass])
+  return data
+}
 
 export default ({
   suoritus,
   groupId,
   suoritusPrototypes,
-  osasuorituksenOppiaineKoodistot,
   setExpanded,
   groupTitles
 }) => {
@@ -25,6 +109,11 @@ export default ({
     suoritusPrototypes,
     groupId
   )
+  const oppiaineet = useKoulutusmoduuliKoodistovalues(
+    'EuropeanSchoolOfHelsinkiOpiskeluoikeus',
+    suoritusPrototype.value.classes[0]
+  )
+
   const osasuoritusKoulutusmoduulit =
     koulutusModuuliprototypes(suoritusPrototype)
 
@@ -35,14 +124,6 @@ export default ({
           selectedItem.data
         )
       : osasuoritusKoulutusmoduulit[0]
-
-  console.log('model', modelProperty(suoritus, 'koulutusmoduuli'))
-
-  const oppiaineet = useKoodistovalues(osasuorituksenOppiaineKoodistot)
-
-  console.log('oppiaineet', oppiaineet)
-
-  const lisättävätOsasuoritukset = { osat: oppiaineet, osanOsa: false }
 
   const addOsasuoritus = (
     koulutusmoduuli,
@@ -60,18 +141,28 @@ export default ({
     pushSuoritus(setExpanded)(osasuoritus)
   }
 
+  if (isError(oppiaineet)) {
+    return <div>{oppiaineet.message}</div>
+  }
+  if (isLoading(oppiaineet)) {
+    return <div className="ajax-loading-placeholder">{'Ladataan...'}</div>
+  }
+
+  const lisättävätOsasuoritukset = {
+    osat: oppiaineet.data.map((oa) => oa.data),
+    osanOsa: false
+  }
+
   return (
-    <span>
-      <div>
-        <LisaaOsasuoritus
-          {...{
-            addOsasuoritus,
-            lisättävätOsasuoritukset,
-            koulutusmoduuliProto
-          }}
-        />
-      </div>
-    </span>
+    <div>
+      <LisaaOsasuoritus
+        {...{
+          addOsasuoritus,
+          lisättävätOsasuoritukset,
+          koulutusmoduuliProto
+        }}
+      />
+    </div>
   )
 }
 

@@ -50,7 +50,6 @@ export const SynteettinenArvosanaEditor = ({ model, notFoundText }) => {
           (v, m) => {
             const valittu = modelData(v)
             if (valittu) {
-              console.log('valittu', valittu)
               // Arvosana valittu -> valitaan vastaava prototyyppi (eri prototyypit eri arvosanoille)
               const found = alternatives.find((alt) => {
                 const altData = modelData(alt, 'arvosana')

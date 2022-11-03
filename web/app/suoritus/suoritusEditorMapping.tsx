@@ -40,7 +40,6 @@ import { SynteettinenArvosanaEditor } from './SynteettinenArvosanaEditor'
 export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
   const oneOf = (...classes: string[]) =>
     classes.some((c) => mdl.value.classes.includes(c))
-  console.log(mdl.value.classes)
   const firstClassOneOf = (...classes: string[]) =>
     classes.includes(mdl.value.classes[0])
   const { kansalainen } = mdl.context

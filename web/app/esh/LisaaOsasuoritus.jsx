@@ -18,8 +18,6 @@ export const LisaaOsasuoritus = ({
     const osasuoritus = modelSetValues(koulutusmoduuliProto(newItem), {
       tunniste: newItem
     })
-    console.log('koulutusmoduuliProto', koulutusmoduuliProto(newItem))
-    console.log('osasuoritus', osasuoritus)
     addOsasuoritus(modelSetTitle(osasuoritus, newItem.title))
   })
   return (
