@@ -196,6 +196,13 @@ export const suoritusProperties = (
       modelLookup(suoritus, "arviointi.-1")!,
       (p: ObjectModelProperty) => p.key === "arvioitsijat"
     );
+
+    const suorituskieli = modelProperties(
+      suoritus
+    ).filter(
+      (p) => p.key === "suorituskieli"
+    );
+
     const arvioinninKuvaus = modelProperties(
       modelLookup(suoritus, "arviointi.-1")!,
       (p: ObjectModelProperty) => p.key === "kuvaus"
@@ -271,6 +278,7 @@ export const suoritusProperties = (
           ? defaultsForEdit
           : defaultsForView)
           .concat(arvioitsijat)
+          .concat(suorituskieli)
           .concat(arvioinninKuvaus);
       default:
         return isEdit ? defaultsForEdit : defaultsForView;
