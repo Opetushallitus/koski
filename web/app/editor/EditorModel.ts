@@ -133,7 +133,7 @@ const findParent = <T extends object>(
   model: Contextualized<T>
 ): Contextualized<T> | undefined => {
   if (!model.parent) return undefined
-  if (typeof R.last(model.path) == 'function') {
+  if (typeof R.last(model.path || []) == 'function') {
     // Skip lenses in path, only consider actual path elements
     return findParent(model.parent)
   }
@@ -990,6 +990,20 @@ export function resolvePrototypeReference<T extends object>(
     return R.mergeRight(foundProto, cleanedModel) as EditorModel
   }
   return model
+}
+
+export const resolveActualModel = <T extends object>(
+  oneOfModel: EditorModel & OneOfModel & Contextualized,
+  parentModel: EditorModel & Contextualized<T>
+) => {
+  const actualModel = oneOfModel.oneOfPrototypes
+    .map((protos) => resolvePrototypeReference(protos, parentModel.context))
+    .map((model) => ({ ...model, parent: parentModel }))
+    .filter((p) => !p.onlyWhen || checkOnlyWhen(p, p.onlyWhen))[0]
+
+  return actualModel
+    ? contextualizeModel(actualModel, parentModel.context)
+    : oneOfModel
 }
 
 const removeUndefinedValues = <T extends object>(obj: T): T =>
