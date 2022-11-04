@@ -1,3 +1,6 @@
+## 4.11.2022
+- Suorituksen tilan deprekointi dokumentoitu selkeämmin.
+
 ## 26.10.2022
 - Tietomalliin lisätty katselmoitava toteutus jatkuvaan oppimiseen suunnatulle vapaan sivistyön koulutuksen opiskeluoikeudelle. Tämän tietomallin mukaisia opiskeluoikeuksia
 ei pysty vielä tallentamaan.
