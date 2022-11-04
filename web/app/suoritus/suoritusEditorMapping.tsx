@@ -219,13 +219,13 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
       />
     )
   }
-  // Ei osasuorituksia: nursery
+  // Nursery-suoritustyypillä ei ole osasuorituksia, joten editoria ei tarvitse näyttää
   if (
     firstClassOneOf(
       eshSuoritus.nursery
     )
   ) {
-    return <EuropeanSchoolOfHelsinkiNurseryOppiaineetEditor model={mdl} />
+    return null
   }
   // Osasuorituksellisia: primary, secondaryLower, secondaryUpper, secondaryUpperS6, secondaryUppserS7
   if (
