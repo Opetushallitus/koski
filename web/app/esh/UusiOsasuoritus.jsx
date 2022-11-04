@@ -31,9 +31,10 @@ const done = (data) => ({
 
 const getProto = (prototype, name) => prototype.prototypes[`${name}`]
 
-const useKoulutusmoduuliKoodistovalues = (
+const useKoodistoValues = (
   editorPrototypeName,
-  modelValueClass
+  modelValueClass,
+  propertyName
 ) => {
   const [data, setData] = useState(loading())
   const editorPrototype = useBaconProperty(
@@ -43,22 +44,23 @@ const useKoulutusmoduuliKoodistovalues = (
     if (editorPrototype !== null) {
       const modelPrototype = getProto(editorPrototype, modelValueClass)
       if (modelPrototype === undefined) {
-        setData(error(`Prototyyppiä "${modelValueClass}" ei löydy `))
+        setData(error(`Prototype "${modelValueClass}" not found`))
       } else {
         // Koulutusmoduuli haetaan prototyypistä ilman EditorModelin kontekstia
-        const koulutusmoduuli = modelPrototype.value.properties.find(
-          (property) => property.key === 'koulutusmoduuli'
+        const modelProperty = modelPrototype.value.properties.find(
+          (property) => property.key === propertyName
         )
-        if (koulutusmoduuli === undefined) {
+        if (modelProperty === undefined) {
           setData(
             error(
-              `Koulutusmoduulia ei löydy prototyypille "${modelValueClass}"`
+              `Property "${propertyName}" not found for prototype "${modelValueClass}"`
             )
           )
         } else {
+          const prototypePropertyKey = 'tunniste'
           const alternativesPaths = getProto(
             editorPrototype,
-            koulutusmoduuli.model.key
+            modelProperty.model.key
           )
             ?.oneOfPrototypes.filter(
               (prototype) => prototype.type === 'prototype'
@@ -66,15 +68,13 @@ const useKoulutusmoduuliKoodistovalues = (
             .map((prototype) => getProto(editorPrototype, prototype.key))
             .flatMap((prototype) =>
               prototype.value.properties.find(
-                (property) => property.key === 'tunniste'
+                (property) => property.key === prototypePropertyKey
               )
             )
             .filter((property) => property !== null)
-            .map((property) => property.model)
-            .map((model) => getProto(editorPrototype, model.key))
+            .map((property) => getProto(editorPrototype, property.model.key))
             .filter((proto) => proto !== null)
-            .map((proto) => proto.alternativesPath)
-            .map((alternativesPath) => alternativesP(alternativesPath))
+            .map((proto) => alternativesP(proto.alternativesPath))
 
           const prop = Bacon.combineWith(
             (...alts) => alts.flatMap((alt) => alt),
@@ -98,7 +98,7 @@ const useKoulutusmoduuliKoodistovalues = (
     return () => {
       console.log('Unmount')
     }
-  }, [editorPrototype, modelValueClass])
+  }, [editorPrototype, modelValueClass, propertyName])
   return data
 }
 
@@ -113,9 +113,12 @@ export default ({
     suoritusPrototypes,
     groupId
   )
-  const oppiaineet = useKoulutusmoduuliKoodistovalues(
-    'EuropeanSchoolOfHelsinkiOpiskeluoikeus',
-    suoritusPrototype.value.classes[0]
+  const firstPrototype = suoritusPrototype.value.classes[0]
+  // Haetaan EuropeanSchoolOfHelsinkiOpiskeluoikeus-prototypestä suoritusprototypeä vastaava osasuoritus, jonka koulutusmoduulit halutaan hakea.
+  const oppiaineet = useKoodistoValues(
+    'EuropeanSchoolOfHelsinkiOpiskeluoikeus', // fi.oph.koski.schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus
+    firstPrototype, // Suorituspyorotypeä vastaava osasuoritus löytyy ekana classes-listasta
+    'koulutusmoduuli' // Osasuorituksesta halutaan koulutusmoduuli(t) ulos
   )
 
   const osasuoritusKoulutusmoduulit =

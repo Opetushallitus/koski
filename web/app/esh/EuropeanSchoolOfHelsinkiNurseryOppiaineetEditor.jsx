@@ -35,10 +35,6 @@ export const EuropeanSchoolOfHelsinkiNurseryOppiaineetEditor = ({ model }) => {
             }
           />
         </h5>
-        <p>
-          <Text name="(ESH arvosteluteksti TODO)" />
-        </p>
-        {'Nursery TODO'}
       </div>
     </div>
   )
