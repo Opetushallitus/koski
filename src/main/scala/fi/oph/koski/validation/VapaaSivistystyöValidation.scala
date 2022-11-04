@@ -12,23 +12,19 @@ object VapaaSivistystyöValidation {
     suoritus match {
       case suoritus:VapaanSivistystyönPäätasonSuoritus => {
         HttpStatus.fold(List(
-          validateTilanKoodiarvot(suoritus, opiskeluoikeus),
           suoritus match {
-            case kops: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus if suoritus.vahvistettu => {
+            case kops: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus if suoritus.vahvistettu =>
               HttpStatus.fold(List(
                 validateVapaanSivistystyönPäätasonKOPSSuorituksenLaajuus(kops),
                 validateVapaanSivistystyönPäätasonKOPSSuorituksenOsaamiskokonaisuuksienLaajuudet(kops)
               ))
-            }
-            case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus if vapaatavoitteinenKoulutusTuleeValidoida(opiskeluoikeus) => {
+            case vapaa: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus if vapaatavoitteinenKoulutusTuleeValidoida(opiskeluoikeus) =>
               HttpStatus.fold(List(
                 validateVapaanSivistystyönVahvistus(vapaa, opiskeluoikeus),
                 validateVapaanSivistystyönVapaatavoitteisenPäätasonOsaSuoritukset(vapaa)
               ))
-            }
-            case _ => {
+            case _ =>
               HttpStatus.ok
-            }
           }
         ))
       }
@@ -55,31 +51,6 @@ object VapaaSivistystyöValidation {
         case Some(_) => HttpStatus.ok
       }
       case _ => HttpStatus.ok
-    }
-  }
-
-  private def validateTilanKoodiarvot(suoritus: VapaanSivistystyönPäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    suoritus match {
-      case _: VapaanSivistystyönJotpaKoulutuksenSuoritus =>
-        if (opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(jakso => !List("lasna", "hyvaksytystisuoritettu", "keskeytynyt", "mitatoity").contains(jakso.tila.koodiarvo))) {
-          KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila()
-        } else {
-          HttpStatus.ok
-        }
-      case _: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus => {
-        if (opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(jakso => !List("hyvaksytystisuoritettu", "keskeytynyt", "mitatoity").contains(jakso.tila.koodiarvo))) {
-          KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila()
-        } else {
-          HttpStatus.ok
-        }
-      }
-      case _ => {
-        if (opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(jakso => List("hyvaksytystisuoritettu", "keskeytynyt").contains(jakso.tila.koodiarvo))) {
-          KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila()
-        } else {
-          HttpStatus.ok
-        }
-      }
     }
   }
 
