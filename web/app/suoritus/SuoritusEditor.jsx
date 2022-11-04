@@ -58,15 +58,16 @@ export class SuoritusEditor extends React.Component {
   }
 
   render() {
+    let { model } = this.props
     const excludedProperties = [
       'osasuoritukset',
       'käyttäytymisenArvio',
       'vahvistus',
-      'jääLuokalle',
+      !model.value.classes.includes('nurseryvuosiluokansuoritus') &&
+        'jääLuokalle',
       'pakollinen'
-    ]
+    ].filter(Boolean)
 
-    let { model } = this.props
     model = addContext(model, {
       suoritus: model,
       toimipiste: modelLookup(model, 'toimipiste')
