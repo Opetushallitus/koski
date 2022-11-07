@@ -119,7 +119,7 @@ object KoskiApiOperations extends ApiGroup {
           Lisättävä/muokattava opiskeluoikeus tunnistetaan seuraavasti:
           <ol>
             <li>Jos opiskeluoikeudessa on oid-kenttä, päivitetään tällä oid:llä löytyvää opiskeluoikeutta</li>
-            <li>Jos opiskeluoikeudessa on lähdejärjestelmänId-kenttä, päivitetään tällä id:llä löytyvää opiskeluoikeutta, tai tehdään uusi, jollei sellaista löydy.</li>
+            <li>Jos opiskeluoikeudessa on lähdejärjestelmänId-kenttä, päivitetään tällä id:llä ja lisättävän/muokattavan opiskeluoikeuden oppilaitos-oidilla löytyvää opiskeluoikeutta, tai tehdään uusi, jollei sellaista löydy.</li>
             <li>Jos opiskeluoikeudessa ei ole kumpaakaan em. kentistä, päivitetään samalla oppilaitos-oidilla ja tyypillä löytyvää opiskeluoikeutta, tai tehdään uusi, jollei sellaista löydy.</li>
           </ol>
           Olemassa olevan opiskeluoikeuden tyyppiä ei koskaan voi vaihtaa.

@@ -1,6 +1,10 @@
 ## 9.11.2022
 - TUVA-koulutuksen valinnaisten opintojen kokonaislaajuus voidaan syöttää ilman osasuorituksia
 - Jatkuvaan oppimiseen suunnatun vapaan sivistystyön koulutuksen opiskeluoikeuden koulutusmoduulista poistettu `kuvaus`-kenttä.
+- Opiskeluoikeuden siirto lähdejärjestelmän id:llä päivittää samalla id:llä ja oppilaitos-oid:lla löytyvää opiskeluoikeutta.
+  - Jos siirrossa on mukana myös opiskeluoikeuden oid, päivitetään kyseisellä oid:lla löytyvää opiskeluoikeutta.
+  - Jatkossa siirrot lähdejärjestelmän id:n perusteella eivät epäonnistu, vaikka oppijalla olisi sama lähdejärjestelmän id useammalla kuin yhdellä opiskeluoikeudella, jos opiskeluoikeudet ovat eri oppilaitoksissa.
+  - Jos samalla lähdejärjestelmän id:n ja oppilaitos-oid:n yhdistelmällä ei löydy opiskeluoikeutta, luodaan uusi opiskeluoikeus.
 
 ## 4.11.2022
 - Suorituksen tilan deprekointi dokumentoitu selkeämmin.

@@ -1,23 +1,35 @@
 package fi.oph.koski.opiskeluoikeus
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LähdejärjestelmäId}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LähdejärjestelmäId, Organisaatio}
 
 object OpiskeluoikeusIdentifier {
-  def apply(oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): OpiskeluoikeusIdentifier = (opiskeluoikeus.oid, opiskeluoikeus.lähdejärjestelmänId) match {
-    case (Some(oid), _) => OpiskeluoikeusByOid(oid)
-    case (_, Some(lähdejärjestelmäId)) => OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId)
-    case _ => OppijaOidOrganisaatioJaTyyppi(oppijaOid,
+
+  def apply(
+    oppijaOid: String,
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus
+  ): OpiskeluoikeusIdentifier = {
+    (opiskeluoikeus.oid, opiskeluoikeus.lähdejärjestelmänId, opiskeluoikeus.oppilaitos) match {
+      case (Some(oid), _, _) => OpiskeluoikeusByOid(oid)
+      case (_, Some(lähdejärjestelmäId), oppilaitos) => OppijaOidJaLähdejärjestelmänId(
+        oppijaOid,
+        lähdejärjestelmäId,
+        oppilaitos.map(_.oid)
+      )
+      case _ => OppijaOidOrganisaatioJaTyyppi(
+        oppijaOid,
         opiskeluoikeus.getOppilaitos.oid,
         opiskeluoikeus.koulutustoimija.map(_.oid),
         opiskeluoikeus.tyyppi.koodiarvo,
         opiskeluoikeus.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo),
         opiskeluoikeus.suoritukset.headOption.map(_.tyyppi.koodiarvo),
-        None)
+        None
+      )
+    }
   }
 }
 
 sealed trait OpiskeluoikeusIdentifier
 
-case class OppijaOidJaLähdejärjestelmänId(oppijaOid: String, lähdejärjestelmäId: LähdejärjestelmäId) extends OpiskeluoikeusIdentifier
+case class OppijaOidJaLähdejärjestelmänId(oppijaOid: String, lähdejärjestelmäId: LähdejärjestelmäId, oppilaitosOid: Option[Organisaatio.Oid]) extends OpiskeluoikeusIdentifier
 case class OppijaOidOrganisaatioJaTyyppi(oppijaOid: String,
                                          oppilaitosOrganisaatio: String,
                                          koulutustoimija: Option[String],

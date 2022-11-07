@@ -200,9 +200,9 @@ class PostgresOpiskeluoikeusRepository(
         }
       }
 
-      case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId) =>
+      case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId, oppilaitosOid) =>
         findOpiskeluoikeudetWithSlaves(oppijaOid).map(_.filter { row =>
-          row.toOpiskeluoikeusUnsafe.lähdejärjestelmänId == Some(lähdejärjestelmäId)
+          row.toOpiskeluoikeusUnsafe.lähdejärjestelmänId.contains(lähdejärjestelmäId) && (oppilaitosOid.isEmpty || oppilaitosOid.contains(row.oppilaitosOid))
         }).map(_.toList).map(Right(_))
 
       case i:OppijaOidOrganisaatioJaTyyppi =>
