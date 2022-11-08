@@ -40,7 +40,7 @@ object JotpaValidation {
       .partition(JOTPARAHOITUS_KOODIARVOT.contains)
 
     if (jotpaRahoitusmuodot.nonEmpty && muutRahoitusmuodot.nonEmpty) {
-      KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys("Opiskeluoikeudella, jolla on jatkuvan oppimisen rahoitusta, ei voi olla muita rahoitusmuotoja")
+      KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys()
     } else if (jotpaRahoitusmuodot.size > 1) {
       KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys()
     } else {
