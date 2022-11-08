@@ -3,8 +3,8 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "European School of Helsinki S7 oppiaineen komponentti",
-    "kuvaus" : "European School of Helsinki S7 oppiaineen komponentti"
+    "nimi" : "European School of Helsinki S7-oppiaineen komponentti",
+    "kuvaus" : "European School of Helsinki S7-oppiaineen komponentti"
   } ],
   "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2023-01-01",
