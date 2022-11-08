@@ -85,7 +85,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine(
   tunniste: PaikallinenKoodi,
   @Tooltip("Paikallisen oppiaineen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString
-) extends AikuistenPerusopetuksenAlkuvaiheenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference
+) extends AikuistenPerusopetuksenAlkuvaiheenOppiaine with PaikallinenKoulutusmoduuliKuvauksella with StorablePreference
 
 @Title("Muu oppiaine")
 case class MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine(
@@ -126,7 +126,7 @@ case class PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi(
   @FlattenInUI
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None
-) extends AikuistenPerusopetuksenAlkuvaiheenKurssi with PaikallinenKoulutusmoduuli with StorablePreference {
+) extends AikuistenPerusopetuksenAlkuvaiheenKurssi with PaikallinenKoulutusmoduuliKuvauksella with StorablePreference {
   def kuvaus: LocalizedString = LocalizedString.empty
 }
 

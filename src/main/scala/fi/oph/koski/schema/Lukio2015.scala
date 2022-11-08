@@ -162,7 +162,7 @@ case class PaikallinenLukionKurssi2015(
   override val laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString,
   kurssinTyyppi: Koodistokoodiviite
-) extends LukionKurssi2015 with PaikallinenKoulutusmoduuli with StorablePreference
+) extends LukionKurssi2015 with PaikallinenKoulutusmoduuliKuvauksella with StorablePreference
 
 trait LukionOppiaineTaiEiTiedossaOppiaine2015 extends Koulutusmoduuli
 
@@ -181,7 +181,7 @@ case class PaikallinenLukionOppiaine2015(
   pakollinen: Boolean = true,
   laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionOppiaine2015 with PaikallinenKoulutusmoduuli with StorablePreference with Diaarinumerollinen
+) extends LukionOppiaine2015 with PaikallinenKoulutusmoduuliKuvauksella with StorablePreference with Diaarinumerollinen
 
 trait LukionValtakunnallinenOppiaine2015 extends LukionOppiaine2015 with YleissivistavaOppiaine
 

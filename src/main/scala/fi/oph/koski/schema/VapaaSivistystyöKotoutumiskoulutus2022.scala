@@ -251,5 +251,5 @@ case class VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmo
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusOpintopisteissä] = None,
 ) extends VSTKotoutumiskoulutuksenAlasuorituksenKoulutusmoduuli2022
-  with PaikallinenKoulutusmoduuli
+  with PaikallinenKoulutusmoduuliKuvauksella
   with StorablePreference
