@@ -304,7 +304,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
           osasuoritukset = Some(List(
             SecondaryUpperOppiaineenSuoritusS7(
-              koulutusmoduuli = SecondaryMuuOppiaine(
+              koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(2)
               ),
@@ -330,7 +330,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
           osasuoritukset = Some(List(
             SecondaryUpperOppiaineenSuoritusS7(
-              koulutusmoduuli = SecondaryMuuOppiaine(
+              koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(2)
               ),
@@ -362,7 +362,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
           osasuoritukset = Some(List(
             SecondaryUpperOppiaineenSuoritusS7(
-              koulutusmoduuli = SecondaryMuuOppiaine(
+              koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(2)
               ),
@@ -401,7 +401,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
           osasuoritukset = Some(List(
             SecondaryUpperOppiaineenSuoritusS7(
-              koulutusmoduuli = SecondaryMuuOppiaine(
+              koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(2)
               ),
@@ -440,7 +440,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
           osasuoritukset = Some(List(
             SecondaryUpperOppiaineenSuoritusS7(
-              koulutusmoduuli = SecondaryMuuOppiaine(
+              koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(2)
               ),
@@ -473,7 +473,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.s7.copy(
           osasuoritukset = Some(List(
             SecondaryUpperOppiaineenSuoritusS7(
-              koulutusmoduuli = SecondaryMuuOppiaine(
+              koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
                 Koodistokoodiviite("PE", "europeanschoolofhelsinkimuuoppiaine"),
                 laajuus = LaajuusVuosiviikkotunneissa(2)
               ),

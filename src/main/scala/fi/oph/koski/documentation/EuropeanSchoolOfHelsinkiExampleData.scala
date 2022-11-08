@@ -123,7 +123,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     alaosasuoritusArviointi: Option[List[PrimaryAlaoppimisalueArviointi]] = None
   ): PrimaryOppimisalueenSuoritus = {
     PrimaryOppimisalueenSuoritus(
-      koulutusmoduuli = PrimaryMuuOppimisalue(
+      koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus)
       ),
@@ -151,7 +151,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
   ): PrimaryOppimisalueenSuoritus = {
     PrimaryOppimisalueenSuoritus(
       arviointi = arviointi,
-      koulutusmoduuli = PrimaryKieliOppimisalue(
+      koulutusmoduuli = EuropeanSchoolOfHelsinkiKieliOppiaine(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus),
         kieli = kieli
@@ -179,7 +179,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     val kieli = Koodistokoodiviite("EL", "kieli")
     PrimaryOppimisalueenSuoritus(
       arviointi = arviointi,
-      koulutusmoduuli = PrimaryKieliOppimisalueAncientGreek(
+      koulutusmoduuli = EuropeanSchoolOfHelsinkiKielioppiaineAncientGreek(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus),
         kieli = kieli
@@ -253,7 +253,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     arviointi: Option[List[SecondaryLowerArviointi]] = None
   ): SecondaryLowerOppiaineenSuoritus = {
     SecondaryLowerOppiaineenSuoritus(
-      koulutusmoduuli = SecondaryMuuOppiaine(
+      koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus)
       ),
@@ -270,7 +270,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     arviointi: Option[List[SecondaryLowerArviointi]] = None
   ): SecondaryLowerOppiaineenSuoritus = {
     SecondaryLowerOppiaineenSuoritus(
-      koulutusmoduuli = SecondaryKieliOppiaine(
+      koulutusmoduuli = EuropeanSchoolOfHelsinkiKieliOppiaine(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus),
         kieli = kieli
@@ -288,7 +288,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     val oppiainekoodi = "LA"
     val kieli = "LA"
     SecondaryLowerOppiaineenSuoritus(
-      koulutusmoduuli = SecondaryKieliOppiaineLatin(
+      koulutusmoduuli = EuropeanSchoolOfHelsinkiKieliOppiaineLatin(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus),
         kieli = Koodistokoodiviite(kieli, "kieli")
@@ -386,7 +386,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     arviointi: Option[List[SecondaryNumericalMarkArviointi]] = None
   ): SecondaryUpperOppiaineenSuoritus = {
     SecondaryUpperOppiaineenSuoritusS6(
-      koulutusmoduuli = SecondaryMuuOppiaine(
+      koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus)
       ),
@@ -403,7 +403,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     arviointi: Option[List[SecondaryNumericalMarkArviointi]] = None
   ): SecondaryUpperOppiaineenSuoritus = {
     SecondaryUpperOppiaineenSuoritusS6(
-      koulutusmoduuli = SecondaryKieliOppiaine(
+      koulutusmoduuli = EuropeanSchoolOfHelsinkiKieliOppiaine(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus),
         kieli = kieli
@@ -420,7 +420,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     arviointi: Option[List[SecondaryS7PreliminaryMarkArviointi]] = None
   ): SecondaryUpperOppiaineenSuoritus = {
     SecondaryUpperOppiaineenSuoritusS7(
-      koulutusmoduuli = SecondaryMuuOppiaine(
+      koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus)
       ),
@@ -456,7 +456,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     arviointi: Option[List[SecondaryS7PreliminaryMarkArviointi]] = None
   ): SecondaryUpperOppiaineenSuoritus = {
     SecondaryUpperOppiaineenSuoritusS7(
-      koulutusmoduuli = SecondaryKieliOppiaine(
+      koulutusmoduuli = EuropeanSchoolOfHelsinkiKieliOppiaine(
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus),
         kieli = kieli

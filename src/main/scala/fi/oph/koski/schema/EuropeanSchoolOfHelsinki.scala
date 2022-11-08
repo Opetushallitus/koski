@@ -390,13 +390,15 @@ case class PrimaryLapsiOppimisalue(
 
 trait PrimarySuorituskielenVaativaOppimisalue extends PrimaryOppimisalue with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli
 
-case class PrimaryMuuOppimisalue(
+trait SecondaryOppiaine extends EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli
+
+case class EuropeanSchoolOfHelsinkiMuuOppiaine(
   @KoodistoUri("europeanschoolofhelsinkimuuoppiaine")
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusVuosiviikkotunneissa
-) extends PrimarySuorituskielenVaativaOppimisalue with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli
+) extends PrimarySuorituskielenVaativaOppimisalue with SecondaryOppiaine with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli
 
-trait EuropeanSchoolOfHelsinkiKieliOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Kieliaine {
+trait EuropeanSchoolOfHelsinkiKieliaine extends Kieliaine with KoodistostaLöytyväKoulutusmoduuli {
   @KoodistoUri("europeanschoolofhelsinkikielioppiaine")
   override def tunniste: Koodistokoodiviite
   @KoodistoUri("kieli")
@@ -405,58 +407,27 @@ trait EuropeanSchoolOfHelsinkiKieliOppiaine extends KoodistostaLöytyväKoulutus
 }
 
 @NotWhen("tunniste/koodiarvo", List("LA", "GRC"))
-case class PrimaryKieliOppimisalue(
+case class EuropeanSchoolOfHelsinkiKieliOppiaine(
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusVuosiviikkotunneissa,
   kieli: Koodistokoodiviite
-) extends PrimarySuorituskielenVaativaOppimisalue with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliOppiaine
+) extends PrimarySuorituskielenVaativaOppimisalue with SecondaryOppiaine with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliaine
 
-case class PrimaryKieliOppimisalueLatin(
+case class EuropeanSchoolOfHelsinkiKieliOppiaineLatin(
   @KoodistoKoodiarvo("LA")
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusVuosiviikkotunneissa,
   @KoodistoKoodiarvo("LA")
   kieli: Koodistokoodiviite
-) extends PrimarySuorituskielenVaativaOppimisalue with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliOppiaine
+) extends PrimarySuorituskielenVaativaOppimisalue with SecondaryOppiaine with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliaine
 
-case class PrimaryKieliOppimisalueAncientGreek(
+case class EuropeanSchoolOfHelsinkiKielioppiaineAncientGreek(
   @KoodistoKoodiarvo("GRC")
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusVuosiviikkotunneissa,
   @KoodistoKoodiarvo("EL")
   kieli: Koodistokoodiviite
-) extends PrimarySuorituskielenVaativaOppimisalue with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliOppiaine
-
-trait SecondaryOppiaine extends EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli
-
-case class SecondaryMuuOppiaine(
-  @KoodistoUri("europeanschoolofhelsinkimuuoppiaine")
-  tunniste: Koodistokoodiviite,
-  laajuus: LaajuusVuosiviikkotunneissa,
-) extends SecondaryOppiaine
-
-@NotWhen("tunniste/koodiarvo", List("LA", "GRC"))
-case class SecondaryKieliOppiaine(
-  tunniste: Koodistokoodiviite,
-  laajuus: LaajuusVuosiviikkotunneissa,
-  kieli: Koodistokoodiviite
-) extends SecondaryOppiaine with EuropeanSchoolOfHelsinkiKieliOppiaine
-
-case class SecondaryKieliOppiaineLatin(
-  @KoodistoKoodiarvo("LA")
-  tunniste: Koodistokoodiviite,
-  laajuus: LaajuusVuosiviikkotunneissa,
-  @KoodistoKoodiarvo("LA")
-  kieli: Koodistokoodiviite
-) extends SecondaryOppiaine with EuropeanSchoolOfHelsinkiKieliOppiaine
-
-case class SecondaryKieliOppiaineAncientGreek(
-  @KoodistoKoodiarvo("GRC")
-  tunniste: Koodistokoodiviite,
-  laajuus: LaajuusVuosiviikkotunneissa,
-  @KoodistoKoodiarvo("EL")
-  kieli: Koodistokoodiviite
-) extends SecondaryOppiaine with EuropeanSchoolOfHelsinkiKieliOppiaine
+) extends PrimarySuorituskielenVaativaOppimisalue with SecondaryOppiaine with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliaine
 
 /******************************************************************************
  * OSASUORITUKSET - ALAOSASUORITUKSET
