@@ -4,8 +4,10 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.oppija.ValpasOppijaTestBase
-import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasOppivelvollisuudenKeskeytys}
+import fi.oph.koski.valpas.valpasrepository.{OppivelvollisuudenKeskeytyksenMuutos, UusiOppivelvollisuudenKeskeytys, ValpasOppivelvollisuudenKeskeytys}
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUsers, ValpasRooli}
+
+import java.time.LocalDate
 
 class ValpasOppivelvollisuudenKeskeytysServiceSpec extends ValpasOppijaTestBase {
 
@@ -110,6 +112,32 @@ class ValpasOppivelvollisuudenKeskeytysServiceSpec extends ValpasOppijaTestBase 
         .map(_.oppivelvollisuudenKeskeytykset)
 
       keskeytykset shouldBe Right(List(expectedKeskeytys))
+    }
+
+    "Päättynyttä keskeytystä ei voi enää muokata" in {
+      val oppija = ValpasMockOppijat.valmistunutYsiluokkalainen
+      val tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki
+      val kuntaSession = session(ValpasMockUsers.valpasUseitaKuntia)
+      val alku = rajapäivätService.tarkastelupäivä.minusDays(2)
+      val loppu = alku.plusDays(1)
+
+      assert(loppu.isBefore(LocalDate.now()))
+
+      val result = oppivelvollisuudenKeskeytysService.addOppivelvollisuudenKeskeytys(UusiOppivelvollisuudenKeskeytys(
+        oppijaOid = oppija.oid,
+        alku = alku,
+        loppu = Some(loppu),
+        tekijäOrganisaatioOid = tekijäOrganisaatioOid,
+      ))(kuntaSession)
+
+      val result2 = oppivelvollisuudenKeskeytysService.updateOppivelvollisuudenKeskeytys(
+        OppivelvollisuudenKeskeytyksenMuutos(
+          id = result.toOption.get.id,
+          alku = alku,
+          loppu = None
+      ))(kuntaSession)
+
+      result2.left.map(_.statusCode) shouldBe Left(400)
     }
 
     "Oppivelvollisuuden pystyy keskeyttämään Koskesta puuttuvalle oppijalle kunnan valvontaoikeuksilla" in {
