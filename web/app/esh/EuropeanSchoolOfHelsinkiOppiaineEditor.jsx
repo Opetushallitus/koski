@@ -25,7 +25,6 @@ export class EuropeanSchoolOfHelsinkiOppiaineEditor extends React.Component {
   render() {
     const { oppiaine, showExpand, onExpand, expanded, uusiOppiaineenSuoritus } =
       this.props
-    const äidinkieli = oppiaine.value.classes.includes('aidinkieli')
 
     return (
       <span>
@@ -64,7 +63,7 @@ export class EuropeanSchoolOfHelsinkiOppiaineEditor extends React.Component {
                 model={oppiaine}
                 inline={true}
                 path="kieli"
-                sortBy={!äidinkieli && sortLanguages}
+                sortBy={sortLanguages}
               />
             </span>
           )
