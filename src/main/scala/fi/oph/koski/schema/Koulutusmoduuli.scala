@@ -133,8 +133,3 @@ trait OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuliLaajuusOpintopist
 }
 
 trait OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli[A <: Laajuus] extends OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[A]
-
-trait OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuliLaajuusOpintopisteissä
-  extends OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[LaajuusOpintopisteissä] {
-  override def makeLaajuus(laajuusArvo: Double): LaajuusOpintopisteissä = LaajuusOpintopisteissä(laajuusArvo)
-}

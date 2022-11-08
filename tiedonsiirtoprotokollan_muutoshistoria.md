@@ -1,3 +1,6 @@
+## 9.11.2022
+- TUVA-koulutuksen valinnaisten opintojen kokonaislaajuus voidaan syöttää ilman osasuorituksia
+
 ## 4.11.2022
 - Suorituksen tilan deprekointi dokumentoitu selkeämmin.
 

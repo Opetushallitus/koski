@@ -30,20 +30,23 @@ trait HttpSpecification extends HttpTester with TestEnvironment with Assertions 
     verifyResponseStatus(expectedStatus, List(details))
   }
 
+  def verifyResponseStatus(expectedStatus: Int, details: HttpStatus*): Unit = {
+    verifyResponseStatus(expectedStatus, details.flatMap { _.errors }.map { case ErrorDetail(key, message) => FixedErrorMatcher(key, message) }.toList)
+  }
+
   def verifyResponseStatus(expectedStatus: Int, details: List[ErrorMatcher]): Unit = {
-    val dets: List[ErrorMatcher] = details.toList
     if (response.status != expectedStatus) {
       fail("Expected status " + expectedStatus + ", got " + response.status + ", " + response.body)
     }
     if (details.length > 0) {
       val errors: List[ErrorDetail] = JsonSerializer.parse[List[ErrorDetail]](body)
-      errors.zip(dets) foreach { case (errorDetail, expectedErrorDetail) =>
+      errors.zip(details) foreach { case (errorDetail, expectedErrorDetail) =>
         if (errorDetail.key != expectedErrorDetail.errorKey) {
           fail("Unexpected error key " + errorDetail.key + "(expected " + expectedErrorDetail.errorKey + "), message=" + JsonMethods.pretty(errorDetail.message))
         }
         expectedErrorDetail.matchMessage(errorDetail.message)
       }
-      errors.length should equal(dets.length)
+      errors.length should equal(details.length)
     }
   }
 

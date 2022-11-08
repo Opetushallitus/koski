@@ -1138,6 +1138,14 @@ function TUVASuoritukset(prev) {
           .then(wait.forAjax)
       }
     },
+    lisääLaajuus: function (laajuus, selector) {
+      var _selector = selector || '.property.laajuus.arvo'
+      return function () {
+        return Page(findFirst(_selector, selectedOsasuoritus))
+          .setInputValue('.editor-input', laajuus)()
+          .then(wait.forAjax)
+      }
+    },
     lisääValinnainenPaikallinenSuoritus: function (nimi) {
       return function () {
         var modalElement = findSingle(
