@@ -599,6 +599,54 @@ object ValpasOppijaTestData {
         )
       )
     ),
+    (
+      ValpasMockOppijat.keväänUlkopuolellaValmistunut17v,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.keväänUlkopuolellaValmistunutYsiluokkalainen,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.keväänUlkopuolellaEronnut17v,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.keväänUlkopuolellaEronnutYsiluokkalainen,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("eronnut", "eronnut")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.läsnä17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.kasiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (
+      ValpasMockOppijat.keskeyttänyt17VuottaTäyttäväKasiluokkalainen,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.kasiluokkaKeskeytetty2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "valiaikaisestikeskeytynyt")),
+        )
+      )
+    ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
