@@ -231,7 +231,7 @@ object ValpasMockUsers {
     "käyttäjä",
     "valpas-nivelvaihe",
     "1.2.246.562.24.12315318397",
-    nivelvaiheenKäyttäjä(jyväskylänNormaalikoulu) ++ nivelvaiheenKäyttäjä(helsinginMedialukio)
+    nivelvaiheenKäyttäjä(jyväskylänNormaalikoulu) ++ nivelvaiheenKäyttäjä(helsinginMedialukio) ++ nivelvaiheenKäyttäjä(varsinaisSuomenKansanopisto)
   )
 
   val valpasIntSchool = ValpasMockUser(

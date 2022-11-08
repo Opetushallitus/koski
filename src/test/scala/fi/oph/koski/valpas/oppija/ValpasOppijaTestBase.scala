@@ -91,6 +91,7 @@ trait ValpasOppijaTestBase extends ValpasTestBase with BeforeAndAfterEach {
   protected val rajapäivätService = KoskiApplicationForTests.valpasRajapäivätService
   protected val oppilaitos = MockOrganisaatiot.jyväskylänNormaalikoulu
   protected val amisOppilaitos = MockOrganisaatiot.stadinAmmattiopisto
+  protected val varsinaisSuomenKansanopisto = MockOrganisaatiot.varsinaisSuomenKansanopisto
   protected val organisaatioRepository = KoskiApplicationForTests.organisaatioRepository
   protected val kuntailmoitusRepository = KoskiApplicationForTests.valpasKuntailmoitusRepository
 

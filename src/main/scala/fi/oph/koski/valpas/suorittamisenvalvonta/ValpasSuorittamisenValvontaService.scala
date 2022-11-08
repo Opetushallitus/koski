@@ -66,15 +66,9 @@ class ValpasSuorittamisenValvontaService(
         opiskeluoikeus.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo)
           .exists(Seq("eronnut", "katsotaaneronneeksi", "peruutettu", "keskeytynyt").contains)
 
-    val onValmistunutNivelvaiheesta =
-      muutOppijanOpiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) &&
-        oo.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo)
-          .exists(Seq("valmistunut", "hyvaksytystisuoritettu").contains)
-      )
-
     val onLasnaUudessaOpiskeluoikeudessa =
       sisältääVoimassaolevanToisenAsteenOpiskeluoikeuden(muutOppijanOpiskeluoikeudet) ||
-        (!onValmistunutNivelvaiheesta && sisältääVoimassaolevanNivelvaiheenOpiskeluoikeuden(muutOppijanOpiskeluoikeudet))
+        sisältääVoimassaolevanNivelvaiheenOpiskeluoikeuden(muutOppijanOpiskeluoikeudet)
 
     onEronnut && onLasnaUudessaOpiskeluoikeudessa
   }
