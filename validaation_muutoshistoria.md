@@ -1,54 +1,66 @@
-
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
 ## 9.11.2022
 - TUVAn valinnaisen suorituksen laajuus voidaan syöttää ilman osasuorituksia, mutta jos osasuorituksia on, niiden laajuksien summan pitää vastata suorituksen laajuutta.
 - Vapaan sivistystyön koulutuksen opiskeluoikeuksien sallitut jakson tilat on määritelty tietomallitasolla erillisen validaation sijaan, minkä johdosta virhekoodit ei-sallitusta tiloista ovat muuttuneet.
+- Jatkuvaan oppimiseen suunnatun koulutuksen rahoitusmuotoa ei voi käyttää ennen ympäristöön määriteltyä rajapäivää.
 
 ## 28.10.2022
+
 - Palauta aiemmin välikaikaisesti käytöstä poistettu ammatillisen tutkinnon osan ryhmän validaatio.
   Jos koulutuksen tyyppi on ammatillinen perustutkinto, jonka suoritustapa on ops tai reformi, rakenteessa tulee olla tutkinnon osan ryhmä määriteltynä.
 
 ## 26.10.2022
+
 - JOTPA-rahoitusmuoto (14, 15) ei voi vaihtua kesken opiskeluoikeuden, eikä sitä voi käyttää opiskeluoikeuksissa, joissa on käytössä muita rahoitusmuotoja.
 - JOTPA-rahoitusmuodon voi lisätä ammatillisen koulutuksen lisäksi myös jatkuvaan oppimiseen suunnatulle vapaan sivistyön koulutuksen opiskeluoikeudelle.
 
 ## 25.10.2022
+
 - TUVA-opiskeluoikeuksissa ei enää sallita tiloja eronnut ja peruutettu.
 
 ## 24.10.2022
+
 - Sallittu väliaikaisesti oppilaitoksen vaihto tilanteessa, jossa vaihdetaan oppilaitoksesta 1.2.246.562.10.93428463247 oppilaitokseen 1.2.246.562.10.77609835432
 - Lisätty TUVA- ja VST-suorituksille perusteiden koulutustyypin validaatio. Estetään näin koulutuksien syöttäminen väärällä diaarinumerolla.
 
 ## 19.10.2022
+
 - Sallitaan uudet JOTPA-rahoitusmuodot ainoastaan ammatillisen koulutuksen opiskeluoikeuksille.
 - Tunnustetun ammatillisen tutkinnon tai osittaisen ammatillisen tutkinnon osan tutkinnon perusteen voimassaoloa ei enää validoida.
 
 ## 18.10.2022
+
 - Lisätty validaatio siitä, että diaarinumeron määrittelemä peruste on voimassa, vaikka opiskeluoikeus ei
   olisikaan vielä päättynyt. Tässä tapauksessa perusteen pitää olla parhaillaan voimassa.
 - Jos keskeneräinen opiskeluoikeus on asetettu alkamaan tulevaisuudessa,
   diaarinumeron määrittelemän perusteen tulee olla voimassa opiskeluoikeuden alkamispäivänä.
 
 ## 12.10.2022
+
 - Ammatillisen suorituksen voi tallentaa valmis-tilaisena ilman keskiarvoa mikäli kyseessä on linkitetyn opiskeluoikeuden suoritus.
 
 ## 5.10.2022
+
 - Validaatioissa tarkastetaan, että opiskeluoikeuden päättymispäivä osuu perusteen voimassaoloaikaan,
   tai viimeistään perusteen siirtymäaikaan. Tämä validaatio oli aiemmin toteutettu vain ammatillisen
   koulutuksen opiskeluoikeuksille, ja se oli väliaikaisesti 15.8.2022 alkaen pois päältä.
 
 ## 4.10.2022
+
 - Poistettu laajuuden validointi VST-KOTO-opintojen kieli- ja viestintäosaamisen osasuoritukselta.
 
 ## 30.9.2022
+
 - Korjaus ammatillisen validaatioon: keskiarvo vaaditaan vain perustutkinnolta, joka on päättynyt 15.1.2018 tai myöhemmin ja suoritustapana on reformi/ops.
 
 ## 29.9.2022
+
 - Ammatillisen suoritukselle pitää lisätä keskiarvo kun suoritus on valmis
 - Ammatillisen suoritukselle sallitaan keskiarvo, kun opiskeluoikeuden on tilassa "katsotaan eronneeksi" ja suorituksissa on vähintään yksi tutkinnon osa
 
 ## 19.9.2022
+
 - Ammatillisen tutkinnolle tai osatutkinnolle ei voi lisätä keskiarvoa ellei suoritus ole valmis.
 - 15.9. käyttöönotetut oppivelvollisuuden pidennyksen, vammaisuuden, vaikeasti vammaisuuden ja erityisen tuen jaksojen
   validaatiot on poistettu käytöstä 1.10.2022 asti
@@ -56,6 +68,7 @@
   olleet versiot 1.10. asti. Testiopintopolussa käytössä ovat uudet validaatiot samantien.
 
 ## 15.9.2022
+
 - 19.8. testiopintopolussa jo käytetyt oppivelvollisuuden pidennyksen, vammaisuuden, vaikeasti vammaisuuden ja erityisen
   tuen jaksojen validaatiomuutokset on otettu käyttöön. Poikkeuksena tutkintokoulutukseen valmentavan koulutuksen
   perusopetuksen järjestämisluvalla järjestettävä opiskeluoikeus, josta on poistettu pidennetyn oppivelvollisuuden
@@ -81,15 +94,19 @@
   - Sallittu väliaikaisesti oppilaitoksen vaihto tilanteessa, jossa vaihdetaan oppilaitoksesta 1.2.246.562.10.63813695861 oppilaitokseen 1.2.246.562.10.42923230215
 
 ## 17.8.2022
+
 - International school -opiskeluoikeuden MYP-suorituksissa sallitaan nyt pass/fail -arviointi
 
 ## 15.8.2022
+
 - Muutettu ammatillisen koulutuksen validaatiota väliaikaisesti siten, että perusteen voimassaolopäiväystä ei tarkasteta lisättäessä ammatillisen koulutuksen opiskeluoikeuksia järjestelmään.
 
 ## 8.8.2022
+
 - Tietoja koulutuksen maksuttomuudesta ei enää vaadita pakollisena millekään opiskeluoikeudelle.
 
 ## 5.8.2022
+
 - Korjattu ammatillisen koulutuksen validaatio, jossa tarkistetaan onko opiskeluoikeuden alkamisaika ja päättymisaika perusteen voimassaoloajan mukainen.
 
 ## 2.8.2022
@@ -101,29 +118,36 @@
 - Lisätty ammatillisen koulutuksen järjestämisluvan piirissä oleville TUVA-opiskeluoikeuksille sallituksi tilaksi 'loma'
 
 ## 7.7.2022
+
 - Korjattu vapaan sivistystyön kotoutumiskoulutuksen (ops 2022) ohjauksen osasuorituksen validoinnit vastaamaan perustetta
 
 ## 5.7.2022
+
 - Ammatillisen yhteisen tutkinnon osan osa-alueen koodi VVAI22 sallitaan vain suoritukselle, jonka perusteen voimaantulon päivä on 1.8.2022 tai sen jälkeen.
 
 ## 4.7.2022
+
 - Sallitaan muuttuneet ammatillisen koulutuksen yhteisten tutkinnon osien koodit:
   - 106727: Viestintä- ja vuorovaikutusosaaminen
   - 106728: Matemaattis-luonnontieteellinen osaaminen
   - 106729: Yhteiskunta- ja työelämäosaaminen
 
 ## 16.6.2022
+
 - Aikuisten lukiokoulutuksen uudessa opintosuunnitelmassa (2019) Historian kurssien HI2 ja HI3 nimet on korjattu vastaamaan Opetushallituksen laatimaa opetussuunnitelmaa.
 
 ## 14.6.2022
+
 - Sallitaan peruskoulut esiopetuksen opiskeluoikeuden oppilaitoksina, kun järjestämismuotona on ostopalvelu tai palveluseteli.
 
 ## 8.6.2022
+
 - Mitätöitäessä opiskeluoikeuksia ei ole n. 1.4.2022 alkaen täydennetty puuttuvia tietoja, kuten oppilaitosta,
   yhteenlaskettuja laajuuksia, perusteen nimeä jne. automaattisesti opiskeluoikeuteen ennen sen tallentamista.
   Tämä on nyt korjattu ja tiedot täydennetään myös mitätöinnin yhteydessä.
 
 ## 1.6.2022
+
 - Tutkintokoulutukseen valmentavan koulutuksen ja vapaan sivistystyön oppivelvollisille suunnatun koulutuksen
   opiskeluoikeuksissa ei sallita arvioimattomia osasuorituksia, jos opiskeluoikeus on päättynyt katsotaan
   eronneeksi -tilaan.
@@ -133,71 +157,88 @@
 - Vapaan sivistystyön opiskeluoikeuksissa, joissa päätason suoritus on vapaatavoitteisen koulutuksen suoritus, on nyt pakollisena tietona opetussuunnitelma. Opintohallintojärjestelmistä siirrettäessä pakotus astuu voimaan 1.8.2022 alkaen.
 
 ## 9.5.2022
+
 - Perusopetuksen aineilta ei vaadita enää laajuutta toiminta-alueittain opiskelevilla, vaikka suoritus olisi
   vahvistettu 1.8.2020 jälkeen.
 
 ## 12.4.2022
+
 - Opiskeluoikeuden pidennetyn oppivelvollisuuden aikajakson täytyy sisältyä vammaisuusjaksojen aikajaksoihin.
   - Vammaisuuden ja vaikeasti vammaisuuden toisiinsa lomittuvat aikajaksot käsitellään yhtenäisenä aikajaksona validointia varten.
   - Jos opiskeluoikeuden pidennetyn oppivelvollisuuden aikajakso alkaa ennen opiskeluoikeuden alkamispäivää,
     käytetään opiskeluoikeuden alkamispäivää pidennetyn oppivelvollisuusjakson alkamispäivänä vammaisuusjaksojen validointia varten.
 
 ## 7.4.2022
+
 - Nuorten perusopetuksen oppimäärän suorituksessa luokka-astetta voi käyttää vain erityisen tutkinnon kanssa.
 
 ## 4.4.2022
+
 - Perusopetuksen aineilta vaaditaan laajuus myös toiminta-alueittain opiskelevien tapauksessa, kun suoritus on vahvistettu 1.8.2020 jälkeen.
 
 ## 1.4.2022
+
 - Mitätöity opiskeluoikeus jättää väliin opiskeluoikeuden validoinnin.
 
 # 22.3.2022
+
 - Muuta 16.3.2022 tehty validaatio estämään perusopetuksen oppimäärän vahvistaminen opiskeluoikeuden valmistuneeksi
   merkitsemisen sijasta
 
 # 16.3.2022
+
 - Estä perusopetuksessa opiskeluoikeuden valmistuneeksi merkitseminen, jos mukana ei ole 9. luokan
   suoritusta, paitsi jos lisätiedoissa on merkitty vuosiluokkiin sitomaton opetus tai jos lisätiedon kotiopetus aikajakso
   on voimassa päättötodistuksen vahvistuspäivänä tai päättötodistuksessa on suoritustapana erityinen tutkinto
 
 ## 14.3.2022
+
 - TUVA-opiskeluoikeuden järjestämislupa ei saa muuttua.
 
 # 8.3.2022
+
 - Perusopetuksen opiskeluoikeuden päättymispäivä ei voi olla vuosiluokan suorituksen alkamispäivää ennen
 
 ## 22.3.2022
+
 - VST:n vapaatavoitteiselle opiskeluoikeudelle sallitaan tila mitatoity, jotta opiskeluoikeus voidaan mitätöidä.
 
 ## 14.2.2022
+
 - Valmistuneen TUVA opiskeluoikeuden pääsuorituksen laajuus oltava välillä 4-38 viikkoa.
 - Valmistuneen TUVA opiskeluoikeuden osasuoritusten laajuudet on oltava sallitulla välillä.
 - Valmistuneen TUVA opiskeluoikeuden osasuoritusten rakenne oltava sallittu.
   - Opiskeluoikeudella on olemassa pakollinen osasuoritus Opiskelu- ja urasuunnittelutaidot sekä suoritukset kahdesta muusta koulutuksen osasta.
 
 ## 28.1.2022
+
 - Sallitaan 1.8.2021 tai myöhemmin alkaneet lukio-opinnot aiemmalla kuin 2019 opetussuunnitelmalla, jos opiskelee
   aikuisten opetussuunnitelman mukaan.
 
 ## 27.1.2022
+
 - Pre-IB 2015 opintojen maksuttomuusvalidointi laajennettu sallimaan kaikki vuonna 2021 aloitetut suoritukset.
 - Pre-IB 2015 suoritukset lasketaan oppivelvollisuuden suorittamiseen kelpaavaksi.
 
 ## 25.1.2022
+
 - Lukion vanhan opsin mukaisen aikuisten oppimäärällisen lukio-opiskeluoikeuden luonti sallitaan
 - Ammatillinen näyttötutkintoon valmistava koulutus voi olla merkittynä vahvistetuksi, vaikka opiskeluoikeus päättyisi tilaan "katsotaan eronneeksi"
 
 ## 18.1.2022
+
 - Varhaiskasvatuksen opiskeluoikeuksilla oppilaitosta ei voi vaihtaa, paitsi jos oppilaitos on epäaktiivinen tai se löytyy jo organisaatiohistoriasta.
 - Ammatillisen suorituksen suoritustyyppiä ei voi vaihtaa.s
 
 ## 18.1.2022
+
 - Ammatillisen opiskeluoikeuden tutkintokoodin ja suoritustavan muuttamiseen liittyvä, 13.12.2021 luotu validaatio ollut virheellinen; Validaatio korjattu. Ammatillisen opiskeluoikeuden tutkintokoodia (suorituksen koulutusmoduulin koodiarvo) ja suoritustapaa ei voi vaihtaa ammatillisen opiskeluoikeuden luonnin jälkeen.
 - Validaatio liittyen oppilaitoksen vaihtoon ollut virheellinen. Oppilaitosta, joka on aktiivinen, ei voi vaihtaa jos koulutustoimija pysyy samana.
 
 ## 20.12.2021
+
 - Perusopetuksen (aikuiset, nuoret ja lukio) ja perusopetuksen lisäopetuksen kenttää "tehostetunTuenPäätökset" ei enää oteta siirroissa vastaan; tieto tiputetaan pois ilman virhettä/varoitusta
-- Perusopetuksen (nuoret) ja perusopetuksen lisäopetuksen kenttää "perusopetuksenAloittamistaLykätty"  ei enää oteta siirroissa vastaan; tieto tiputetaan pois ilman virhettä/varoitusta
+- Perusopetuksen (nuoret) ja perusopetuksen lisäopetuksen kenttää "perusopetuksenAloittamistaLykätty" ei enää oteta siirroissa vastaan; tieto tiputetaan pois ilman virhettä/varoitusta
 
 ## 1.1.2022
 
@@ -213,11 +254,13 @@
 - Pääsuoritustasoinen `lukionOppimääräSuoritettu`-kenttä deprekoitu eikä sitä saa enää siirtää. Kentän korvannut opiskeluoikeustason kenttä `oppimääräSuoritettu`
 
 ## 16.12.2021
+
 - Lukion 2019 opetussuunnitelman mukaisessa opiskeluoikeudessa, jossa aineopintoja ja oppimäärä on merkitty
   suoritetuksi: Validoi, että opintopisteitä on tarpeeksi. Aikuisten oppimäärässä pitää olla vähintään 88 op,
   nuorilla vähintään 150 op, joista vähintään 20 op valinnaisia.
 
 ## 30.11.2021
+
 - Lukion opiskeluoikeuden uusi oppimääräSuoritettu-kenttä ei voi olla true:
   - jos ei ole vahvistettuja päätason suorituksia
   - jos 2019-opetussuunnitelman mukaisissa oppimärän opinnoissa ei ole tarpeeksi opintopisteitä
@@ -226,9 +269,11 @@
   lukionOppimääräSuoritettu-kenttä on deprekoitu, eikä sitä saa enää siirtää
 
 ## 22.11.2021
+
 - Salli maksuttomuustieto 2015 opetussuunnitelman mukaisissa Pre IB-opinnoissa, jos ne on aloitettu 1.8.2021 tai myöhemmin
 
 ## 15.11.2021
+
 - Salli maksuttomuustieto 2019-opetussuunnitelman mukaisissa Pre-IB-opinnoissa
 
 ## 14.10.2021
@@ -236,14 +281,17 @@
 - Ammatillisen koulutuksen Yhteisille tutkinnon osille (YhteinenTutkinnonOsa-rakenne) sallitaan tunnisteen koodiarvoiksi myös '600001' ja '600002'
 
 ## 12.10.2021
+
 - Vapaatavoitteisella vapaan sivistystyön opiskeluoikeudella ei voi olla päättävänä tilana "hyväksytysti suoritettu"
   kun suoritus on vahvistamaton; eikä "keskeytynyt" kun suoritus on vahvistettu.
 
 ## 12.10.2021
+
 - Lukion 2019 opetussuunnitelman mukaisessa opiskeluoikeudessa salli paikallisen oppiaineen arviointina 'S' myös
   silloin, kun sen laajuus on yli 2 op.
 
 ## 11.10.2021
+
 - Maksuttomuusvalidointi velvoitti maksuttomuustiedon siirtämiseen aina, jos perusopetus oli
   päättynyt ennen vuotta 2021 johonkin muuhun syyhyn kuin valmistumiseen, kuten eroamiseen. Tämä on korjattu.
 
@@ -299,9 +347,11 @@
   peruskoulusta valmistumisesta siten, että hänen oppivelvollisuutensa on tullut valmiiksi vanhan lain mukaan.
 
 ## 19.7.2021
+
 - Estä 'eronnut'/'katsotaan eronneeksi' tilan käyttö, jos suoritus on vahvistettu
 
 ## 24.6.2021
+
 - Estetään oppilaitoksen muutos opiskeluoikeudessa, poislukien jotkut poikkeustapaukset.
   - Jos koulutustoimija muuttuu, voi samalla vaihtaa myös aktiivista oppilaitosta
   - Muuto sallitaan myös, jos vanha oppilaitos on passiivinen
@@ -309,18 +359,22 @@
     opiskeluoikeus on joskus ollut osana oppilaitosta, johon opiskeluoikeutta ollaan nyt siirtämässä.
 
 ## 22.6.2021
+
 - Vahvistetulla vapaan sivistystyön vapaatavoitteisella koulutuksella tulee olla arvioituja osasuoritukssia
 
 ## 16.6.2021
+
 - Perusopetuksessa ja lukion 2015-opetussuunnitelman mukaisessa opetuksessa äidinkielen
   omaisen oppiaineen kieli tulee olla suomi tai ruotsi. Lukion 2019 opetussuunnitelman mukaisissa
   opinnoissa tämä validointi oli jo.
 
 ## 19.5.2021
+
 - Nuorten perusopetuksen opiskeluoikeutta ei voida päättää tilaan 'valmistunut', jos opiskeluoikeudelta
   puuttuu vahvistettu päättötodistus
 
 ## 18.5.2021
+
 - Lukion valmistavan koulutuksen suorituksella ei voi 1.8.2021 jälkeen olla
   luva2015-opetussuunnitelman mukaisia suorituksia
 - Lukioon valmistavassa koulutuksessa 1.8.2021 tai myöhemmin alkaneiden kurssien tulee käyttää vuoden 2021
@@ -334,18 +388,22 @@
 - Yksittäiseltä oppiaineelta ei vaadita laajuutta mikäli sen suoritustapa on erityinen tutkinto.
 
 ## 20.4.2021
+
 - Lukion 2019 -opetussuunnitelman mukaisissa opinnoissa äidinkielenomaisen kielen opinnoissa sallitaan vain suomi
   tai ruotsi.
 
 ## 13.4.2021
+
 - Lukioon valmistavan koulutuksen suorituksella ei voi olla sekä lukion 2015 että lukion 2019
   opetussuunnitelmien mukaisia osasuorituksia
 
 ## 13.4.2021
+
 - 1.8.2020 tai myöhemmin vahvistetuissa perusopetuksen vuosiluokkien tai koko oppimäärän suorituksissa
   on laajuus pakollinen
 
 ## 24.3.2021
+
 - Lukion 2019-opetussuunnitelman liikunnan oppiaineessa sallitaan arvosana S riippumatta
   sen moduulien laajuudesta.
 - Lukion 2019-opetussuunnitelman muissa oppiaineissa sallitaan arvosana S, jos oppiaineen laajuus on 2 op
@@ -359,6 +417,7 @@
   osaamiskokonaisuuksia, joiden yhteenlaskettu laajuus on vähintään 4.
 
 ## 26.1.2021
+
 - Perusopetuksen kahden eri vuosiluokan samat alkamispäivät estävässä validaatiossa otetaan huomioon oikein myös
   KOSKI-palveluun jo tallennetut suoritukset, joita ei ole mukana tiedonsiirrossa.
 
