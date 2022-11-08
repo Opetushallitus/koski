@@ -7,11 +7,11 @@ import {
   ArvosanaColumn,
   getLaajuusYksikkö,
   groupSuoritukset,
-  SuoritusColumn,
   LaajuusColumn,
   suoritusProperties,
   ExpandAllRows
 } from './SuoritustaulukkoCommon'
+import { EshSuoritusColumn } from './EshSuoritustaulukkoCommon'
 import {
   selectOsasuoritusPrototype,
   osasuoritusPrototypes
@@ -62,8 +62,19 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
     const showColumns = !(nestedLevel > 0 && suoritukset.length === 0)
     const canAddNewOsasuoritus = context.edit
     const showLaajuusYhteensä = nestedLevel === 0
+    /*
+          <EuropeanSchoolOfHelsinkiOppiaineEditor
+            {...{
+              oppiaine: koulutusmoduuli,
+              showExpand,
+              expanded,
+              onExpand,
+              uusiOppiaineenSuoritus
+            }}
+          />
+          */
 
-    const columns = [SuoritusColumn, LaajuusColumn, ArvosanaColumn].filter(
+    const columns = [EshSuoritusColumn, LaajuusColumn, ArvosanaColumn].filter(
       (column) =>
         column.shouldShow({
           parentSuoritus,
