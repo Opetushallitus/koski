@@ -377,8 +377,7 @@ case class SecondaryUpperOppiaineenSuoritusS7(
 
 trait EuropeanSchoolOfHelsinkiOsasuorituksenKoulutusmoduuli extends KoodistostaLöytyväKoulutusmoduuli
 
-// TODO: uudeelleennimeä EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
-trait EuropeanSchoolOfHelsinkiOsasuorituksenOsasuorituksenKoulutusmoduuli extends KoodistostaLöytyväKoulutusmoduuli
+trait EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli extends KoodistostaLöytyväKoulutusmoduuli
 
 trait EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli extends EuropeanSchoolOfHelsinkiOsasuorituksenKoulutusmoduuli with KoulutusmoduuliPakollinenLaajuusVuosiviikkotunneissa
 
@@ -457,14 +456,14 @@ case class S7OppiaineenAlaosasuoritus(
 case class PrimaryLapsiAlaoppimisalue(
   @KoodistoUri("europeanschoolofhelsinkiprimarylapsialaoppimisalue")
   tunniste: Koodistokoodiviite
-) extends EuropeanSchoolOfHelsinkiOsasuorituksenOsasuorituksenKoulutusmoduuli
+) extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
 
 case class PrimaryAlaoppimisalue(
   @KoodistoUri("europeanschoolofhelsinkiprimaryalaoppimisalue")
   tunniste: Koodistokoodiviite
-) extends EuropeanSchoolOfHelsinkiOsasuorituksenOsasuorituksenKoulutusmoduuli
+) extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
 
-trait S7OppiaineKomponentti extends EuropeanSchoolOfHelsinkiOsasuorituksenOsasuorituksenKoulutusmoduuli {
+trait S7OppiaineKomponentti extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli {
   @KoodistoUri("europeanschoolofhelsinkis7oppiaineenkomponentti")
   def tunniste: Koodistokoodiviite
 }
