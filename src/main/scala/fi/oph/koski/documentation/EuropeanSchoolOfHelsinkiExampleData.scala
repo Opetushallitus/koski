@@ -63,9 +63,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
           päivä = alkamispäivä.plusDays(30)
         )
       ),
-      primaryOppimisalueenOsasuoritusKieli(
-        oppiainekoodi = "L1",
-        kieli = ExampleData.sloveeni,
+      primaryOppimisalueenOsasuoritusKieliAncientGreek(
         suorituskieli = ExampleData.englanti,
         alaosasuorituskoodit = Some(List(
           "Listening and understanding", "Speaking", "Reading and understanding", "Writing", "Linguistic development"
@@ -169,6 +167,34 @@ object EuropeanSchoolOfHelsinkiExampleData {
     )
   }
 
+  def primaryOppimisalueenOsasuoritusKieliAncientGreek(
+    laajuus: Int = 2,
+    yksilöllistettyOppimäärä: Boolean = false,
+    suorituskieli: Koodistokoodiviite = ExampleData.englanti,
+    arviointi: Option[List[EuropeanSchoolOfHelsinkiOsasuoritusArviointi]] = None,
+    alaosasuoritusArviointi: Option[List[PrimaryAlaoppimisalueArviointi]] = None,
+    alaosasuorituskoodit: Option[List[String]] = None
+  ): PrimaryOppimisalueenSuoritus = {
+    val oppiainekoodi = "GRC"
+    val kieli = Koodistokoodiviite("EL", "kieli")
+    PrimaryOppimisalueenSuoritus(
+      arviointi = arviointi,
+      koulutusmoduuli = PrimaryKieliOppimisalueAncientGreek(
+        Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
+        laajuus = LaajuusVuosiviikkotunneissa(laajuus),
+        kieli = kieli
+      ),
+      yksilöllistettyOppimäärä = yksilöllistettyOppimäärä,
+      suorituskieli = suorituskieli,
+      osasuoritukset = alaosasuorituskoodit.map(_.map(koodi => PrimaryOppimisalueenAlaosasuoritus(
+        koulutusmoduuli = PrimaryAlaoppimisalue(
+          tunniste = Koodistokoodiviite(koodi, "europeanschoolofhelsinkiprimaryalaoppimisalue")
+        ),
+        arviointi = alaosasuoritusArviointi
+      )))
+    )
+  }
+
   def osasuoritusArviointi(
     arvosana: String = "pass",
     kuvaus: Option[LocalizedString] = None,
@@ -211,6 +237,9 @@ object EuropeanSchoolOfHelsinkiExampleData {
       secondaryLowerKieliOppiaineenOsasuoritus(
         oppiainekoodi = "L2",
         arviointi = secondaryLowerArviointi(luokkaaste, alkamispäivä.plusMonths(3))
+      ),
+      secondaryLowerKieliOppiaineenOsasuoritusLatin(
+        arviointi = secondaryLowerArviointi(luokkaaste, alkamispäivä.plusMonths(4))
       )
     ))
     // TODO: TOR-1685 Lisää esimerkkejä, kun oikeat oppiainekoodit selvillä, tee myös erilaiset eri luokka-asteille
@@ -245,6 +274,24 @@ object EuropeanSchoolOfHelsinkiExampleData {
         Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
         laajuus = LaajuusVuosiviikkotunneissa(laajuus),
         kieli = kieli
+      ),
+      suorituskieli = suorituskieli,
+      arviointi = arviointi
+    )
+  }
+
+  def secondaryLowerKieliOppiaineenOsasuoritusLatin(
+    laajuus: Int = 2,
+    suorituskieli: Koodistokoodiviite = ExampleData.englanti,
+    arviointi: Option[List[SecondaryLowerArviointi]] = None
+  ): SecondaryLowerOppiaineenSuoritus = {
+    val oppiainekoodi = "LA"
+    val kieli = "LA"
+    SecondaryLowerOppiaineenSuoritus(
+      koulutusmoduuli = SecondaryKieliOppiaineLatin(
+        Koodistokoodiviite(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
+        laajuus = LaajuusVuosiviikkotunneissa(laajuus),
+        kieli = Koodistokoodiviite(kieli, "kieli")
       ),
       suorituskieli = suorituskieli,
       arviointi = arviointi

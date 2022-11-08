@@ -396,16 +396,34 @@ case class PrimaryMuuOppimisalue(
   laajuus: LaajuusVuosiviikkotunneissa
 ) extends PrimarySuorituskielenVaativaOppimisalue with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli
 
-trait EuropeanSchoolOfHelsinkiKieliOppiaine extends Kieliaine {
+trait EuropeanSchoolOfHelsinkiKieliOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Kieliaine {
+  @KoodistoUri("europeanschoolofhelsinkikielioppiaine")
+  override def tunniste: Koodistokoodiviite
   @KoodistoUri("kieli")
   override def kieli: Koodistokoodiviite
   override def description: LocalizedString = kieliaineDescription
 }
 
+@NotWhen("tunniste/koodiarvo", List("LA", "GRC"))
 case class PrimaryKieliOppimisalue(
-  @KoodistoUri("europeanschoolofhelsinkikielioppiaine")
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusVuosiviikkotunneissa,
+  kieli: Koodistokoodiviite
+) extends PrimarySuorituskielenVaativaOppimisalue with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliOppiaine
+
+case class PrimaryKieliOppimisalueLatin(
+  @KoodistoKoodiarvo("LA")
+  tunniste: Koodistokoodiviite,
+  laajuus: LaajuusVuosiviikkotunneissa,
+  @KoodistoKoodiarvo("LA")
+  kieli: Koodistokoodiviite
+) extends PrimarySuorituskielenVaativaOppimisalue with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliOppiaine
+
+case class PrimaryKieliOppimisalueAncientGreek(
+  @KoodistoKoodiarvo("GRC")
+  tunniste: Koodistokoodiviite,
+  laajuus: LaajuusVuosiviikkotunneissa,
+  @KoodistoKoodiarvo("EL")
   kieli: Koodistokoodiviite
 ) extends PrimarySuorituskielenVaativaOppimisalue with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliOppiaine
 
@@ -417,10 +435,26 @@ case class SecondaryMuuOppiaine(
   laajuus: LaajuusVuosiviikkotunneissa,
 ) extends SecondaryOppiaine
 
+@NotWhen("tunniste/koodiarvo", List("LA", "GRC"))
 case class SecondaryKieliOppiaine(
-  @KoodistoUri("europeanschoolofhelsinkikielioppiaine")
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusVuosiviikkotunneissa,
+  kieli: Koodistokoodiviite
+) extends SecondaryOppiaine with EuropeanSchoolOfHelsinkiKieliOppiaine
+
+case class SecondaryKieliOppiaineLatin(
+  @KoodistoKoodiarvo("LA")
+  tunniste: Koodistokoodiviite,
+  laajuus: LaajuusVuosiviikkotunneissa,
+  @KoodistoKoodiarvo("LA")
+  kieli: Koodistokoodiviite
+) extends SecondaryOppiaine with EuropeanSchoolOfHelsinkiKieliOppiaine
+
+case class SecondaryKieliOppiaineAncientGreek(
+  @KoodistoKoodiarvo("GRC")
+  tunniste: Koodistokoodiviite,
+  laajuus: LaajuusVuosiviikkotunneissa,
+  @KoodistoKoodiarvo("EL")
   kieli: Koodistokoodiviite
 ) extends SecondaryOppiaine with EuropeanSchoolOfHelsinkiKieliOppiaine
 

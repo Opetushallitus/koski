@@ -634,7 +634,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "L1",
+            "koodiarvo" : "GRC",
             "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
           },
           "laajuus" : {
@@ -655,10 +655,7 @@
             }
           },
           "kieli" : {
-            "koodiarvo" : "SL",
-            "nimi" : {
-              "fi" : "sloveeni"
-            },
+            "koodiarvo" : "EL",
             "koodistoUri" : "kieli"
           }
         },
@@ -1431,7 +1428,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "L1",
+            "koodiarvo" : "GRC",
             "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
           },
           "laajuus" : {
@@ -1452,10 +1449,7 @@
             }
           },
           "kieli" : {
-            "koodiarvo" : "SL",
-            "nimi" : {
-              "fi" : "sloveeni"
-            },
+            "koodiarvo" : "EL",
             "koodistoUri" : "kieli"
           }
         },
@@ -2225,7 +2219,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "L1",
+            "koodiarvo" : "GRC",
             "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
           },
           "laajuus" : {
@@ -2246,10 +2240,7 @@
             }
           },
           "kieli" : {
-            "koodiarvo" : "SL",
-            "nimi" : {
-              "fi" : "sloveeni"
-            },
+            "koodiarvo" : "EL",
             "koodistoUri" : "kieli"
           }
         },
@@ -3019,7 +3010,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "L1",
+            "koodiarvo" : "GRC",
             "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
           },
           "laajuus" : {
@@ -3040,10 +3031,7 @@
             }
           },
           "kieli" : {
-            "koodiarvo" : "SL",
-            "nimi" : {
-              "fi" : "sloveeni"
-            },
+            "koodiarvo" : "EL",
             "koodistoUri" : "kieli"
           }
         },
@@ -3813,7 +3801,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "L1",
+            "koodiarvo" : "GRC",
             "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
           },
           "laajuus" : {
@@ -3834,10 +3822,7 @@
             }
           },
           "kieli" : {
-            "koodiarvo" : "SL",
-            "nimi" : {
-              "fi" : "sloveeni"
-            },
+            "koodiarvo" : "EL",
             "koodistoUri" : "kieli"
           }
         },
@@ -4607,7 +4592,7 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "L1",
+            "koodiarvo" : "GRC",
             "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
           },
           "laajuus" : {
@@ -4628,10 +4613,7 @@
             }
           },
           "kieli" : {
-            "koodiarvo" : "SL",
-            "nimi" : {
-              "fi" : "sloveeni"
-            },
+            "koodiarvo" : "EL",
             "koodistoUri" : "kieli"
           }
         },
@@ -5128,6 +5110,57 @@
           },
           "koodistoUri" : "kieli"
         }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "kieli"
+          }
+        },
+        "yksilöllistettyOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "B",
+            "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
+          },
+          "päivä" : "2012-12-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondarylower",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
       } ]
     }, {
       "koulutusmoduuli" : {
@@ -5285,6 +5318,57 @@
             "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
           },
           "päivä" : "2013-11-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondarylower",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "kieli"
+          }
+        },
+        "yksilöllistettyOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "B",
+            "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
+          },
+          "päivä" : "2013-12-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
@@ -5474,6 +5558,57 @@
           },
           "koodistoUri" : "kieli"
         }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "kieli"
+          }
+        },
+        "yksilöllistettyOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "B",
+            "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"
+          },
+          "päivä" : "2014-12-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondarylower",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
       } ]
     }, {
       "koulutusmoduuli" : {
@@ -5647,6 +5782,57 @@
           },
           "koodistoUri" : "kieli"
         }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "kieli"
+          }
+        },
+        "yksilöllistettyOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7.5",
+            "koodistoUri" : "esh/numericalmark"
+          },
+          "päivä" : "2015-12-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondarylower",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
       } ]
     }, {
       "koulutusmoduuli" : {
@@ -5804,6 +5990,57 @@
             "koodistoUri" : "esh/numericalmark"
           },
           "päivä" : "2016-11-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Pekka Paunanen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "europeanschoolofhelsinkiosasuoritussecondarylower",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "EN",
+          "nimi" : {
+            "fi" : "englanti"
+          },
+          "koodistoUri" : "kieli"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "europeanschoolofhelsinkikielioppiaine"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "lyhytNimi" : {
+                "fi" : "vuosiviikkotuntia",
+                "sv" : "årsveckotimmar",
+                "en" : "weekly lessons per year"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "kieli"
+          }
+        },
+        "yksilöllistettyOppimäärä" : false,
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7.5",
+            "koodistoUri" : "esh/numericalmark"
+          },
+          "päivä" : "2016-12-01",
           "arvioitsijat" : [ {
             "nimi" : "Pekka Paunanen"
           } ],
