@@ -1,6 +1,9 @@
 
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 9.11.2022
+- TUVAn valinnaisen suorituksen laajuus voidaan syöttää ilman osasuorituksia, mutta jos osasuorituksia on, niiden laajuksien summan pitää vastata suorituksen laajuutta.
+
 ## 28.10.2022
 - Palauta aiemmin välikaikaisesti käytöstä poistettu ammatillisen tutkinnon osan ryhmän validaatio.
   Jos koulutuksen tyyppi on ammatillinen perustutkinto, jonka suoritustapa on ops tai reformi, rakenteessa tulee olla tutkinnon osan ryhmä määriteltynä.
