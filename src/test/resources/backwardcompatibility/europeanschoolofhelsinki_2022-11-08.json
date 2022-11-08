@@ -320,7 +320,95 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "Swedish as other national language",
+              "koodiarvo" : "Listening and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2006-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Speaking",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2006-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Reading and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2006-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Writing",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2006-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Linguistic development",
               "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
             }
           },
@@ -1029,7 +1117,95 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "Swedish as other national language",
+              "koodiarvo" : "Listening and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2007-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Speaking",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2007-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Reading and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2007-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Writing",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2007-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Linguistic development",
               "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
             }
           },
@@ -1735,7 +1911,95 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "Swedish as other national language",
+              "koodiarvo" : "Listening and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2008-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Speaking",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2008-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Reading and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2008-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Writing",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2008-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Linguistic development",
               "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
             }
           },
@@ -2441,7 +2705,95 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "Swedish as other national language",
+              "koodiarvo" : "Listening and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2009-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Speaking",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2009-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Reading and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2009-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Writing",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2009-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Linguistic development",
               "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
             }
           },
@@ -3147,7 +3499,95 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "Swedish as other national language",
+              "koodiarvo" : "Listening and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2010-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Speaking",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2010-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Reading and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2010-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Writing",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2010-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Linguistic development",
               "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
             }
           },
@@ -3853,7 +4293,95 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "Swedish as other national language",
+              "koodiarvo" : "Listening and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2011-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Speaking",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2011-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Reading and understanding",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2011-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Writing",
+              "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"
+            },
+            "päivä" : "2011-09-30",
+            "arvioitsijat" : [ {
+              "nimi" : "Pekka Paunanen"
+            } ],
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "Linguistic development",
               "koodistoUri" : "europeanschoolofhelsinkiprimaryalaoppimisalue"
             }
           },
