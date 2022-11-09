@@ -773,7 +773,7 @@ case class PaikallinenTutkinnonOsa(
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsa
-  with PaikallinenKoulutusmoduuli
+  with PaikallinenKoulutusmoduuliKuvauksella
   with Valinnaisuus
   with MuuKuinYhteinenTutkinnonOsa
 
@@ -951,7 +951,7 @@ case class KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus(
   @Description("Opintokokonaisuuden kuvaus")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä] = None
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuliKuvauksella
   with LaajuuttaEiValidoida
 
 @Description("Ammatillisen tutkinnon osaa pienemmän kokonaisuuden tunnistetiedot")
@@ -960,7 +960,7 @@ case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
   @Description("Opintokokonaisuuden kuvaus")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä] = None
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuliKuvauksella
   with LaajuuttaEiValidoida
 
 trait AmmatillisenTutkinnonOsanOsaAlue extends KoulutusmoduuliValinnainenLaajuus
@@ -977,7 +977,7 @@ case class PaikallinenAmmatillisenTutkinnonOsanOsaAlue(
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends AmmatillisenTutkinnonOsanOsaAlue
-  with PaikallinenKoulutusmoduuli
+  with PaikallinenKoulutusmoduuliKuvauksella
 
 @Description("Valtakunnallisen tutkinnon osan osa-alueen tunnistetiedot")
 @Title("Valtakunnallinen tutkinnon osan osa-alue")
@@ -1239,7 +1239,7 @@ case class PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
   kuvaus: LocalizedString
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuliKuvauksella
   with NäyttötutkintoonValmistavanKoulutuksenOsa
   with Laajuudeton
 
@@ -1337,7 +1337,7 @@ case class PaikallinenValmaKoulutuksenOsa(
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuliKuvauksella
   with Valinnaisuus
   with ValmaKoulutuksenOsa
 
@@ -1424,7 +1424,7 @@ case class PaikallinenTelmaKoulutuksenOsa(
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuliKuvauksella
   with Valinnaisuus
   with TelmaKoulutuksenOsa
 

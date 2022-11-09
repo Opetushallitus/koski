@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.documentation.VapaaSivistystyöExample._
 import fi.oph.koski.documentation.VapaaSivistystyöExampleData._
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
 
 import java.time.LocalDate.{of => date}
@@ -32,13 +32,13 @@ class OppijaValidationVapaaSivistystyöLukutaitoSpec extends TutkinnonPerusteetT
       )).withTila(
         VapaanSivistystyönOpiskeluoikeudenTila(
           List(
-            YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
+            OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusHyväksytystiSuoritettu)
           )
         )
       )
 
       putOpiskeluoikeus(opiskeluoikeus) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
       }
     }
 
@@ -51,13 +51,13 @@ class OppijaValidationVapaaSivistystyöLukutaitoSpec extends TutkinnonPerusteetT
       )).withTila(
         VapaanSivistystyönOpiskeluoikeudenTila(
           List(
-            YleinenVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
+            OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(date(2022, 5, 31), opiskeluoikeusKeskeytynyt)
           )
         )
       )
 
       putOpiskeluoikeus(opiskeluoikeus) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönOpiskeluoikeudellaVääräTila())
+        verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
       }
     }
 

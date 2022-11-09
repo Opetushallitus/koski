@@ -2,15 +2,17 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import {
   accumulateModelStateAndValidity,
-  contextualizeSubModel,
   modelData,
-  modelItems,
   modelLookup,
   modelLookupRequired,
   modelSetValue,
   pushModel,
-  optionalPrototypeModel
+  optionalPrototypeModel,
+  contextualizeSubModel,
+  modelItems,
+  resolveActualModel
 } from '../editor/EditorModel'
+import { isOneOfModel } from '../types/EditorModels'
 import { EnumEditor } from '../editor/EnumEditor'
 import { Editor } from '../editor/Editor'
 import ModalDialog from '../editor/ModalDialog'
@@ -33,11 +35,16 @@ export const OpiskeluoikeudenUusiTilaPopup = ({
   resultCallback
 }) => {
   const submitBus = Bacon.Bus()
-  const initialModel = contextualizeSubModel(
+
+  const initialBaseModel = contextualizeSubModel(
     tilaListModel.arrayPrototype,
     tilaListModel,
     modelItems(tilaListModel).length
   )
+
+  const initialModel = isOneOfModel(initialBaseModel)
+    ? resolveActualModel(initialBaseModel, tilaListModel)
+    : initialBaseModel
 
   const { modelP, errorP } = accumulateModelStateAndValidity(initialModel)
 

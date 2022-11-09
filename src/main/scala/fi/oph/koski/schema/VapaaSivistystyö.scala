@@ -42,22 +42,7 @@ trait VapaanSivistystyönOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
 
   @KoodistoUri("koskiopiskeluoikeudentila")
   def tila: Koodistokoodiviite
-}
 
-@Title("Vapaan sivistystyön opiskeluoikeusjakso")
-@NotWhen("../../../suoritukset/0/tyyppi/koodiarvo", "vstjotpakoulutus")
-case class YleinenVapaanSivistystyönOpiskeluoikeusjakso(
-  alku: LocalDate,
-  @KoodistoUri("koskiopiskeluoikeudentila")
-  @KoodistoKoodiarvo("katsotaaneronneeksi")
-  @KoodistoKoodiarvo("lasna")
-  @KoodistoKoodiarvo("mitatoity")
-  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
-  @KoodistoKoodiarvo("valmistunut")
-  @KoodistoKoodiarvo("hyvaksytystisuoritettu")
-  @KoodistoKoodiarvo("keskeytynyt")
-  tila: Koodistokoodiviite,
-) extends VapaanSivistystyönOpiskeluoikeusjakso {
   def opiskeluoikeusPäättynyt: Boolean = VapaanSivistystyönOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
 }
 
@@ -67,6 +52,20 @@ case class VapaanSivistystyönOpiskeluoikeudenLisätiedot(
 ) extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
 
 trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton
+
+@Title("Oppivelvollisille suunnatun vapaan sivistystyön opiskeluoikeusjakso")
+@OnlyWhen("../../../suoritukset/0/tyyppi/koodiarvo", "vstoppivelvollisillesuunnattukoulutus")
+@OnlyWhen("../../../suoritukset/0/tyyppi/koodiarvo", "vstmaahanmuuttajienkotoutumiskoulutus")
+@OnlyWhen("../../../suoritukset/0/tyyppi/koodiarvo", "vstlukutaitokoulutus")
+case class OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(
+  alku: LocalDate,
+  @KoodistoKoodiarvo("lasna")
+  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
+  @KoodistoKoodiarvo("katsotaaneronneeksi")
+  @KoodistoKoodiarvo("valmistunut")
+  @KoodistoKoodiarvo("mitatoity")
+  tila: Koodistokoodiviite,
+) extends VapaanSivistystyönOpiskeluoikeusjakso
 
 case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,

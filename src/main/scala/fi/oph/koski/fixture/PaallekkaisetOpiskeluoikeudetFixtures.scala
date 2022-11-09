@@ -6,7 +6,7 @@ import fi.oph.koski.documentation.ExampleData.{helsinki, suomenKieli, vahvistus}
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExample, ExampleData, VapaaSivistystyöExample}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, AmmatillisenTutkinnonSuoritus, Oppilaitos, VapaanSivistystyönOpiskeluoikeudenTila, YleinenVapaanSivistystyönOpiskeluoikeusjakso}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeudenTila, AmmatillinenOpiskeluoikeusjakso, AmmatillisenTutkinnonSuoritus, Oppilaitos, VapaanSivistystyönOpiskeluoikeudenTila, OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso}
 
 object PaallekkaisetOpiskeluoikeudetFixtures {
 
@@ -70,7 +70,7 @@ object PaallekkaisetOpiskeluoikeudetFixtures {
   val vstVapaatavoitteinenOpiskeluoikeus = VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen.copy(
     arvioituPäättymispäivä = Some(keskimmaisenAlkamispaiva),
     tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
-      YleinenVapaanSivistystyönOpiskeluoikeusjakso(keskimmaisenAlkamispaiva, VapaaSivistystyöExample.opiskeluoikeusHyväksytystiSuoritettu)
+      OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(keskimmaisenAlkamispaiva, VapaaSivistystyöExample.opiskeluoikeusHyväksytystiSuoritettu)
     )),
     suoritukset = List(
       VapaaSivistystyöExample.suoritusVapaatavoitteinenKoulutus.copy(

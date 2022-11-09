@@ -1,9 +1,19 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 import fi.oph.koski.schema.annotation.{InfoDescription, InfoLinkTitle, InfoLinkUrl, KoodistoKoodiarvo, KoodistoUri, Tooltip}
 
 import java.time.LocalDate
+
+@Title("Vapaan sivistystyön vapaatavoitteisen koulutuksen opiskeluoikeusjakso")
+@OnlyWhen("../../../suoritukset/0/tyyppi/koodiarvo", "vstvapaatavoitteinenkoulutus")
+case class VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso(
+  alku: LocalDate,
+  @KoodistoKoodiarvo("hyvaksytystisuoritettu")
+  @KoodistoKoodiarvo("keskeytynyt")
+  @KoodistoKoodiarvo("mitatoity")
+  tila: Koodistokoodiviite,
+) extends VapaanSivistystyönOpiskeluoikeusjakso
 
 @Title("Vapaatavoitteisen vapaan sivistystyön koulutuksen suoritus")
 case class VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
@@ -51,7 +61,7 @@ case class VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus(
   kuvaus: LocalizedString,
   tunniste: PaikallinenKoodi,
   laajuus: LaajuusOpintopisteissä
-) extends KoulutusmoduuliPakollinenLaajuusOpintopisteissä with PaikallinenKoulutusmoduuli with StorablePreference
+) extends KoulutusmoduuliPakollinenLaajuusOpintopisteissä with PaikallinenKoulutusmoduuliKuvauksella with StorablePreference
 
 @Title("Arviointi")
 case class VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(

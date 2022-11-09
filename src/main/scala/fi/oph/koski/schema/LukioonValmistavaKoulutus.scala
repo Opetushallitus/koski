@@ -169,7 +169,7 @@ case class PaikallinenLukioonValmistavanKoulutuksenOppiaine(
   kuvaus: LocalizedString,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
-) extends LukioonValmistavanKoulutuksenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference
+) extends LukioonValmistavanKoulutuksenOppiaine with PaikallinenKoulutusmoduuliKuvauksella with StorablePreference
 
 @Title("Lukioon valmistavan kurssin tai moduulin suoritus")
 case class LukioonValmistavanKurssinSuoritus(
@@ -206,7 +206,7 @@ case class PaikallinenLukioonValmistavanKoulutuksenKurssi(
   tunniste: PaikallinenKoodi,
   override val laajuus: Option[LaajuusOpintopisteissäTaiKursseissa],
   kuvaus: LocalizedString
-) extends LukioonValmistavanKoulutuksenKurssi with PaikallinenKoulutusmoduuli with StorablePreference
+) extends LukioonValmistavanKoulutuksenKurssi with PaikallinenKoulutusmoduuliKuvauksella with StorablePreference
 
 case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukiokoulutukseen valmistavan koulutuksen oppimäärä tulee suorittaa yhdessä vuodessa, jollei sairauden tai muun erityisen syyn vuoksi myönnetä suoritusaikaan pidennystä. (lukiolaki 21.8.1998/629 24 §)")

@@ -68,17 +68,14 @@ object ExamplesVapaaSivistystyöJotpa {
     object Koulutusmoduuli {
       lazy val kurssi1: VapaanSivistystyönJotpaKoulutuksenOsasuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuoritus(
         tunniste = PaikallinenKoodi(nimi = finnish("Kuvantekemisen perusvälineistö"), koodiarvo = "1138-1"),
-        kuvaus = finnish("Kuvantekemisen perusvälineistö"),
         laajuus = LaajuusOpintopisteissä(1),
       )
       lazy val kurssi2: VapaanSivistystyönJotpaKoulutuksenOsasuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuoritus(
         tunniste = PaikallinenKoodi(nimi = finnish("Kuvallisen viestinnän perusteet"), koodiarvo = "1138-2"),
-        kuvaus = finnish("Kuvallisen viestinnän perusteet: viiva, väri, sommittelu, rytmi"),
         laajuus = LaajuusOpintopisteissä(1),
       )
       lazy val kurssi3: VapaanSivistystyönJotpaKoulutuksenOsasuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuoritus(
         tunniste = PaikallinenKoodi(nimi = finnish("Tussitekniikat I ja II"), koodiarvo = "1138-3"),
-        kuvaus = finnish("Takuyo Kawachin kurssi Tussitekniikat I ja II"),
         laajuus = LaajuusOpintopisteissä(1),
       )
     }

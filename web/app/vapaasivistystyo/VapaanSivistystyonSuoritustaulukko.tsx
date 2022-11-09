@@ -29,12 +29,6 @@ export type VapaanSivistystyonSuoritustaulukkoProps = {
   nestedLevel?: number
 }
 
-type VSTColumn =
-  | SuoritusColumn
-  | LaajuusColumn
-  | ArvosanaColumn
-  | TaitotasoColumn
-
 export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSivistystyonSuoritustaulukkoProps> {
   render() {
     const { parentSuoritus, suorituksetModel, nestedLevel = 0 } = this.props

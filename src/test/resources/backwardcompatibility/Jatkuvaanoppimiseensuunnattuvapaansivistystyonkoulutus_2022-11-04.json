@@ -61,9 +61,6 @@
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
-          "kuvaus" : {
-            "fi" : "Kuvantekemisen perusvälineistö"
-          },
           "tunniste" : {
             "koodiarvo" : "1138-1",
             "nimi" : {
@@ -102,9 +99,6 @@
         } ]
       }, {
         "koulutusmoduuli" : {
-          "kuvaus" : {
-            "fi" : "Kuvallisen viestinnän perusteet: viiva, väri, sommittelu, rytmi"
-          },
           "tunniste" : {
             "koodiarvo" : "1138-2",
             "nimi" : {
@@ -143,9 +137,6 @@
         } ]
       }, {
         "koulutusmoduuli" : {
-          "kuvaus" : {
-            "fi" : "Takuyo Kawachin kurssi Tussitekniikat I ja II"
-          },
           "tunniste" : {
             "koodiarvo" : "1138-3",
             "nimi" : {

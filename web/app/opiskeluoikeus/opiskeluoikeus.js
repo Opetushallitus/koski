@@ -11,6 +11,12 @@ const europeanSchoolOfHelsinkiTilat = [
   'valiaikaisestikeskeytynyt',
   'mitatoity'
 ]
+const oppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenTilat = [
+  'lasna',
+  'valiaikaisestikeskeytynyt',
+  'katsotaaneronneeksi',
+  'valmistunut'
+]
 const vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat = [
   'hyvaksytystisuoritettu',
   'keskeytynyt'
@@ -26,6 +32,11 @@ const tuvaTilat = [
   'valiaikaisestikeskeytynyt',
   'valmistunut'
 ]
+const vainVapaanSivistystyönKoulutuksissaKäytettävätTilat = [
+  'hyvaksytystisuoritettu',
+  'keskeytynyt'
+]
+
 const tuvaAmmatillinenTilat = [...tuvaTilat, 'loma']
 const alwaysExclude = ['mitatoity']
 
@@ -42,6 +53,7 @@ export const filterTilatByOpiskeluoikeudenJaSuorituksenTyyppi =
       (t) => !alwaysExclude.includes(koodiarvo(t))
     )
     return filterBySuorituksenTyyppi(
+      opiskeluoikeudenTyyppi,
       suorituksenTyyppi,
       filterByOpiskeluoikeudenTyyppi(
         opiskeluoikeudenTyyppi,
@@ -88,26 +100,37 @@ const filterByJärjestämislupa = (tuvaJärjestämislupa, tilat, koodiarvo) => {
   }
 }
 
-const filterBySuorituksenTyyppi = (suorituksenTyyppi, tilat, koodiarvo) => {
-  switch (suorituksenTyyppi && suorituksenTyyppi.koodiarvo) {
-    case 'vstvapaatavoitteinenkoulutus':
-      return tilat.filter((t) =>
-        vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat.includes(
-          koodiarvo(t)
-        )
-      )
-    case 'vstjotpakoulutus':
-      return tilat.filter((t) =>
-        jatkuvanOppimisenVapaanSivistystyönKoulutuksenTilat.includes(
-          koodiarvo(t)
-        )
-      )
-    default:
-      return tilat.filter(
-        (t) =>
-          !vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat.includes(
-            koodiarvo(t)
-          )
-      )
+const filterBySuorituksenTyyppi = (
+  opiskeluoikeudenTyyppi,
+  suorituksenTyyppi,
+  tilat,
+  koodiarvo
+) => {
+  const includedIn = (koodiarvot) => (tila) =>
+    koodiarvot.includes(koodiarvo(tila))
+  const notIncludedIn = (koodiarvot) => (tila) =>
+    !koodiarvot.includes(koodiarvo(tila))
+
+  if (opiskeluoikeudenTyyppi?.koodiarvo === 'vapaansivistystyonkoulutus') {
+    const sallitutTilatSuoritustyypeittäin = {
+      vstoppivelvollisillesuunnattukoulutus:
+        oppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenTilat,
+      vstmaahanmuuttajienkotoutumiskoulutus:
+        oppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenTilat,
+      vstlukutaitokoulutus:
+        oppivelvollisilleSuunnatunVapaanSivistystyönKoulutuksenTilat,
+      vstvapaatavoitteinenkoulutus:
+        vapaatavoitteisenVapaanSivistystyönKoulutuksenTilat,
+      vstjotpakoulutus: jatkuvanOppimisenVapaanSivistystyönKoulutuksenTilat
+    }
+
+    const sallitutTilat =
+      sallitutTilatSuoritustyypeittäin[suorituksenTyyppi?.koodiarvo]
+
+    return sallitutTilat ? tilat.filter(includedIn(sallitutTilat)) : []
   }
+
+  return tilat.filter(
+    notIncludedIn(vainVapaanSivistystyönKoulutuksissaKäytettävätTilat)
+  )
 }

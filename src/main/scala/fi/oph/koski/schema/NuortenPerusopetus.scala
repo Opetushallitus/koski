@@ -583,7 +583,7 @@ trait PerusopetuksenVierasTaiToinenKotimainenKieli extends PerusopetuksenOppiain
 }
 
 @Title("Paikallinen oppiaine")
-trait PerusopetuksenPaikallinenOppiaine extends PerusopetuksenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference {
+trait PerusopetuksenPaikallinenOppiaine extends PerusopetuksenOppiaine with PaikallinenKoulutusmoduuliKuvauksella with StorablePreference {
   @Tooltip("Paikallisen oppiaineen vapaamuotoinen kuvaus.")
   def kuvaus: LocalizedString
 }

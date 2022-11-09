@@ -77,7 +77,7 @@ case class PaikallinenMuuAmmatillinenKoulutus(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKaikkiYksiköt],
   kuvaus: LocalizedString
-) extends PaikallinenKoulutusmoduuli with MuuAmmatillinenKoulutus with Kuvaus
+) extends PaikallinenKoulutusmoduuliKuvauksella with MuuAmmatillinenKoulutus with Kuvaus
 
 case class TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
   tunniste: PaikallinenKoodi,

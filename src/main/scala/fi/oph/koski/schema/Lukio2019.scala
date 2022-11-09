@@ -325,7 +325,7 @@ case class LukionPaikallinenOpintojakso2019(
   laajuus: LaajuusOpintopisteissä,
   kuvaus: LocalizedString,
   pakollinen: Boolean
-) extends LukionModuuliTaiPaikallinenOpintojakso2019 with PaikallinenKoulutusmoduuli with StorablePreference  with PreIBPaikallinenOpintojakso2019
+) extends LukionModuuliTaiPaikallinenOpintojakso2019 with PaikallinenKoulutusmoduuliKuvauksella with StorablePreference  with PreIBPaikallinenOpintojakso2019
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot 2019")
 trait LukionOppiaine2019
@@ -347,7 +347,7 @@ case class PaikallinenLukionOppiaine2019(
   pakollinen: Boolean = false,
   @DefaultValue(None)
   laajuus: Option[LaajuusOpintopisteissä] = None
-) extends LukionOppiaine2019 with PaikallinenKoulutusmoduuli with StorablePreference
+) extends LukionOppiaine2019 with PaikallinenKoulutusmoduuliKuvauksella with StorablePreference
 
 trait LukionValtakunnallinenOppiaine2019 extends LukionOppiaine2019 with YleissivistavaOppiaine
 
