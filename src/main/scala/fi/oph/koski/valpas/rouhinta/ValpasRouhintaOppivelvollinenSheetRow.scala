@@ -84,6 +84,7 @@ object ValpasRouhintaOppivelvollinenSheetRow {
       case s: String if s.startsWith("dia") => t.get("koulutustyyppi_dia")
       case "perusopetuksenvuosiluokka" => t.get("koulutustyyppi_perusopetus")
       case s: String if s.startsWith("aikuistenperusopetuksen") => t.get("koulutustyyppi_aikuistenperusopetus")
+      case "tuvakoulutuksensuoritus" => t.get("koulutustyyppi_tuva")
       case _ => tyyppi.nimi.map(t.from).getOrElse(tyyppi.koodiarvo)
     }
   }

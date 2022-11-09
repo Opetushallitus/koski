@@ -126,6 +126,8 @@ class ValpasSuorittamisenValvontaService(
       case "luva" => true
       // Perusopetuksen lisäopetus: aina nivelvaihetta
       case "perusopetuksenlisaopetus" => true
+      // TUVA: aina nivelvaihetta
+      case "tuva" => true
       // Esim. lukio, DIA, IB tai international school ei ole ikinä nivelvaihetta:
       case _ => false
     }

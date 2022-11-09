@@ -32,5 +32,6 @@ export const jyväskylänNormaalikouluNivelvaiheTableContent = `
   Amis-eronnut-perusopetukseen-valmistava-ei-kelpaa Valpas        | 24.2.2005   | Perusopetuksen lisäopetus | 15.8.2008 | 31.5.2021 | Ei hakemusta  | – | – | –                             |
   Jkl-Nivel-Kulosaarelainen Valpas                                | 1.1.2004    | Perusopetuksen lisäopetus | 15.8.2012 | –         | Ei hakemusta  | – | – | –                             |
   Nivelvaiheesta-valmistunut Valpas                               | 20.10.2005  | Perusopetuksen lisäopetus | 15.8.2008 | 31.5.2021 | Ei hakemusta  | – | – | –                             |
+  Nivelvaiheesta-valmistunut-tuva Valpas	                        | 16.5.2005	  | TUVA	                    | 1.1.2020  |	1.8.2022  |	Ei hakemusta  |	– |	– |	–                             |
 `
 

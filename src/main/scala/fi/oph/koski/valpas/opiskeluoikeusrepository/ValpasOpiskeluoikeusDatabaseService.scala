@@ -563,6 +563,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           )
           AND muita_suorituksia_kuin_telma_ja_valma.loytyi IS NOT TRUE
         )
+        OR ov_kelvollinen_opiskeluoikeus.koulutusmuoto = 'tuva'
       )
       AND (
         -- opiskeluoikeus ei ole peruutettu tai keskeytynyt tällä hetkellä

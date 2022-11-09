@@ -34,8 +34,8 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
     opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)
   )
 
-  def tuvaPäätasonSuoritus(laajuus: Option[Double]) = TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
-    toimipiste = stadinAmmattiopisto,
+  def tuvaPäätasonSuoritus(laajuus: Option[Double], toimipiste: Oppilaitos = stadinAmmattiopisto) = TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
+    toimipiste = toimipiste,
     koulutusmoduuli = TutkintokoulutukseenValmentavanKoulutus(
       laajuus = laajuus.map(l => LaajuusViikoissa(l))
     ),
@@ -45,9 +45,9 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
         paikkakunta = Some(
           ExampleData.helsinki
         ),
-        myöntäjäOrganisaatio = stadinAmmattiopisto,
+        myöntäjäOrganisaatio = toimipiste,
         myöntäjäHenkilöt = List(
-          Organisaatiohenkilö("Reijo Reksi", "rehtori", stadinAmmattiopisto)
+          Organisaatiohenkilö("Reijo Reksi", "rehtori", toimipiste)
         )
       )
     ),

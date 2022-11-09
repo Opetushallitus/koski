@@ -36,6 +36,7 @@ export type Opiskeluoikeudentyyppi = KoodistoKoodiviite<
   | "perusopetukseenvalmistavaopetus"
   | "perusopetuksenlisaopetus"
   | "perusopetus"
+  | "tuva"
   | "vapaansivistystyonkoulutus"
   | "ylioppilastutkinto"
 >
