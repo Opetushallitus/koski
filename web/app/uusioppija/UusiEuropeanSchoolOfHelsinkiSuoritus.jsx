@@ -7,7 +7,7 @@ import KoodistoDropdown from '../koodisto/KoodistoDropdown'
 import http from '../util/http'
 import { sortLanguages } from '../util/sorting'
 
-export default ({ suoritusAtom, dateAtom, oppilaitosAtom, without = [] }) => {
+export default ({ suoritusAtom, dateAtom, oppilaitosAtom }) => {
   // ESH-opiskeluoikeuden suorituskieli
   const suorituskieliAtom = Atom()
   const suorituskieletP = http
@@ -21,13 +21,6 @@ export default ({ suoritusAtom, dateAtom, oppilaitosAtom, without = [] }) => {
   const luokkaasteP = koodistoValues('europeanschoolofhelsinkiluokkaaste').map(
     (luokkaasteet) => luokkaasteet.sort(byAste)
   )
-  /*
-    .map((luokkaasteet) =>
-      luokkaasteet.filter(
-        (luokkaaste) => !without.includes(luokkaaste.koodiarvo)
-      )
-    )
-    */
   luokkaasteP.onValue((luokkaasteet) => {
     luokkaasteAtom.set(luokkaasteet[0])
   })
