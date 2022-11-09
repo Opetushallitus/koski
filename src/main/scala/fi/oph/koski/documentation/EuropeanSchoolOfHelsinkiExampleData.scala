@@ -19,7 +19,6 @@ object EuropeanSchoolOfHelsinkiExampleData {
     alkamispäivä = Some(alkamispäivä),
     toimipiste = europeanSchoolOfHelsinki,
     vahvistus = suoritusVahvistus(alkamispäivä.plusYears(1).withMonth(5).withDayOfMonth(31)),
-    suorituskieli = ExampleData.englanti,
     jääLuokalle = jääLuokalle
   )
 
@@ -29,7 +28,6 @@ object EuropeanSchoolOfHelsinkiExampleData {
     alkamispäivä = Some(alkamispäivä),
     toimipiste = europeanSchoolOfHelsinki,
     vahvistus = suoritusVahvistus(alkamispäivä.plusYears(1).withMonth(5).withDayOfMonth(31)),
-    suorituskieli = ExampleData.englanti,
     jääLuokalle = jääLuokalle,
     todistuksellaNäkyvätLisätiedot = todistuksellaNäkyvätLisätiedot,
     osasuoritukset = Some(List(
@@ -227,7 +225,6 @@ object EuropeanSchoolOfHelsinkiExampleData {
     alkamispäivä = Some(alkamispäivä),
     toimipiste = europeanSchoolOfHelsinki,
     vahvistus = suoritusVahvistus(alkamispäivä.plusYears(1).withMonth(5).withDayOfMonth(31)),
-    suorituskieli = ExampleData.englanti,
     jääLuokalle = jääLuokalle,
     osasuoritukset = Some(List(
       secondaryLowerMuunOppiaineenOsasuoritus(
@@ -319,7 +316,6 @@ object EuropeanSchoolOfHelsinkiExampleData {
       alkamispäivä = Some(alkamispäivä),
       toimipiste = europeanSchoolOfHelsinki,
       vahvistus = suoritusVahvistus(alkamispäivä.plusYears(1).withMonth(5).withDayOfMonth(31)),
-      suorituskieli = ExampleData.englanti,
       jääLuokalle = jääLuokalle,
       osasuoritukset = Some(List(
         secondaryUpperMuunOppiaineenOsasuoritusS6(
@@ -347,7 +343,6 @@ object EuropeanSchoolOfHelsinkiExampleData {
       alkamispäivä = Some(alkamispäivä),
       toimipiste = europeanSchoolOfHelsinki,
       vahvistus = suoritusVahvistus(alkamispäivä.plusYears(1).withMonth(5).withDayOfMonth(31)),
-      suorituskieli = ExampleData.englanti,
       jääLuokalle = jääLuokalle,
       osasuoritukset = Some(List(
         secondaryUpperMuunOppiaineenOsasuoritusS7(

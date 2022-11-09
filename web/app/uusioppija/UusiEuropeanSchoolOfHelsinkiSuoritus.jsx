@@ -1,21 +1,11 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import { koodiarvoMatch, koodistoValues } from './koodisto'
+import { koodistoValues } from './koodisto'
 import { makeSuoritus } from '../esh/europeanschoolofhelsinkiSuoritus'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
-import http from '../util/http'
-import { sortLanguages } from '../util/sorting'
 
 export default ({ suoritusAtom, dateAtom, oppilaitosAtom }) => {
-  // ESH-opiskeluoikeuden suorituskieli
-  const suorituskieliAtom = Atom()
-  const suorituskieletP = http
-    .cachedGet('/koski/api/editor/koodit/kieli')
-    .map(sortLanguages)
-    .map((values) => values.map((v) => v.data))
-  suorituskieletP.onValue((kielet) => suorituskieliAtom.set(kielet[0]))
-
   // ESH-opiskeluoikeuden suorituksen luokka-aste
   const luokkaasteAtom = Atom()
   const luokkaasteP = koodistoValues('europeanschoolofhelsinkiluokkaaste').map(
@@ -34,16 +24,11 @@ export default ({ suoritusAtom, dateAtom, oppilaitosAtom }) => {
     curriculumAtom.set(curriculums[0])
   })
 
-  koodistoValues('kieli/EN').onValue((kielet) =>
-    suorituskieliAtom.set(kielet.find(koodiarvoMatch('EN')))
-  )
-
   Bacon.combineWith(
     oppilaitosAtom,
     luokkaasteAtom,
     curriculumAtom,
     dateAtom,
-    suorituskieliAtom,
     makeSuoritus
   ).onValue((suoritus) => {
     suoritusAtom.set(suoritus)
@@ -63,13 +48,6 @@ export default ({ suoritusAtom, dateAtom, oppilaitosAtom }) => {
         title="Curriculum"
         options={curriculumP}
         selected={curriculumAtom}
-        enableFilter={false}
-      />
-      <KoodistoDropdown
-        className="property suorituskieli"
-        title="Suorituskieli"
-        options={suorituskieletP}
-        selected={suorituskieliAtom}
         enableFilter={false}
       />
     </>

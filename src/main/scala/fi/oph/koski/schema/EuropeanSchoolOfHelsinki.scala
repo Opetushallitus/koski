@@ -131,9 +131,8 @@ trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
   extends KoskeenTallennettavaPäätasonSuoritus
     with Toimipisteellinen
     with Arvioinniton
-    with Suorituskielellinen
     with LuokalleJääntiTiedonSisältäväSuoritus
-    with Todistus
+    with SisältääTodistuksellaNäkyvätLisätiedot
     {
   @Title("Koulutus")
   def tyyppi: Koodistokoodiviite
@@ -155,7 +154,6 @@ case class NurseryVuosiluokanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
-  suorituskieli: Koodistokoodiviite,
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkanursery")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkanursery", koodistoUri = "suorituksentyyppi"),
   jääLuokalle: Boolean = false,
@@ -172,7 +170,6 @@ case class PrimaryVuosiluokanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
-  suorituskieli: Koodistokoodiviite,
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkaprimary")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkaprimary", koodistoUri = "suorituksentyyppi"),
   jääLuokalle: Boolean = false,
@@ -188,7 +185,6 @@ case class SecondaryLowerVuosiluokanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
-  suorituskieli: Koodistokoodiviite,
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondarylower")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkasecondarylower", koodistoUri = "suorituksentyyppi"),
   jääLuokalle: Boolean = false,
@@ -204,7 +200,6 @@ case class SecondaryUpperVuosiluokanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
-  suorituskieli: Koodistokoodiviite,
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("europeanschoolofhelsinkivuosiluokkasecondaryupper", koodistoUri = "suorituksentyyppi"),
   jääLuokalle: Boolean = false,

@@ -106,13 +106,6 @@
           }
         } ]
       },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
-      },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkanursery",
         "koodistoUri" : "suorituksentyyppi"
@@ -177,13 +170,6 @@
           }
         } ]
       },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
-      },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkanursery",
         "koodistoUri" : "suorituksentyyppi"
@@ -247,13 +233,6 @@
             }
           }
         } ]
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
       },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkaprimary",
@@ -1038,13 +1017,6 @@
             }
           }
         } ]
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
       },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkaprimary",
@@ -1833,13 +1805,6 @@
           }
         } ]
       },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
-      },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkaprimary",
         "koodistoUri" : "suorituksentyyppi"
@@ -2623,13 +2588,6 @@
             }
           }
         } ]
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
       },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkaprimary",
@@ -3415,13 +3373,6 @@
           }
         } ]
       },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
-      },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkaprimary",
         "koodistoUri" : "suorituksentyyppi"
@@ -4205,13 +4156,6 @@
             }
           }
         } ]
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
       },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkaprimary",
@@ -4997,13 +4941,6 @@
           }
         } ]
       },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
-      },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
         "koodistoUri" : "suorituksentyyppi"
@@ -5220,13 +5157,6 @@
             }
           }
         } ]
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
       },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
@@ -5445,13 +5375,6 @@
           }
         } ]
       },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
-      },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
         "koodistoUri" : "suorituksentyyppi"
@@ -5668,13 +5591,6 @@
             }
           }
         } ]
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
       },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
@@ -5893,13 +5809,6 @@
           }
         } ]
       },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
-      },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
         "koodistoUri" : "suorituksentyyppi"
@@ -6117,13 +6026,6 @@
           }
         } ]
       },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
-      },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
         "koodistoUri" : "suorituksentyyppi"
@@ -6336,13 +6238,6 @@
             }
           }
         } ]
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "EN",
-        "nimi" : {
-          "fi" : "englanti"
-        },
-        "koodistoUri" : "kieli"
       },
       "tyyppi" : {
         "koodiarvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
