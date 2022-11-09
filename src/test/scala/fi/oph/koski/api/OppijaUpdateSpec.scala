@@ -5,6 +5,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{päiväkodinEsiopetuksenTunniste, suoritus}
+import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusEiValmistunut
 import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.documentation._
@@ -252,12 +253,84 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         }
       }
 
-      "Sallii oppilaitoksen vaihtamisen" in {
+      "Salli siirtää kaksi saman oppijan opiskeluoikeutta samalla lähdejärjestelmän id:llä kun kyseessä on eri oppilaitos" in {
+        resetFixtures
+
+        // Tallenna ensimmäinen opiskeluoikeus, sisältää lähdejärjestelmän id:n
+        putOppija(Oppija(oppija, List(original)), headers = authHeaders(paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+        val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[AmmatillinenOpiskeluoikeus]
+
+        // Tallenna toinen opiskeluoikeus, sisältää saman lähdejärjestelmän id:n kuin ensimmäinen opiskeluoikeus
+        putOppija(Oppija(oppija, List(original.copy(
+          oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)),
+          suoritukset = original.suoritukset.map(s =>
+            s.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(toimipiste = Toimipiste(MockOrganisaatiot.omnia))
+          )
+        ))), headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+        val toinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[AmmatillinenOpiskeluoikeus]
+
+        ensimmäinenOpiskeluoikeus.oid should not be toinenOpiskeluoikeus.oid
+        ensimmäinenOpiskeluoikeus.lähdejärjestelmänId.isDefined should be (true)
+        ensimmäinenOpiskeluoikeus.lähdejärjestelmänId should be (toinenOpiskeluoikeus.lähdejärjestelmänId)
+      }
+
+      "Opiskeluoikeuden päivittäminen pelkän lähdejärjestelmän id:n perusteella ei onnistu, kun kaksi saman oppijan opiskeluoikeutta on tallennettu samalla lähdejärjestelmän id:llä samaan oppilaitokseen" in {
+        resetFixtures
+
+        // Tallenna ensimmäinen opiskeluoikeus, sisältää lähdejärjestelmän id:n
+        putOppija(Oppija(oppija, List(original)), headers = authHeaders(paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+        val ensimmäinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[AmmatillinenOpiskeluoikeus]
+
+        // Tallenna toinen opiskeluoikeus ilman lähdejärjestelmän id:tä
+        putOppija(Oppija(oppija, List(tuvaOpiskeluOikeusEiValmistunut.copy(
+          lähdejärjestelmänId = None,
+          lisätiedot = None
+        ))), headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+        val toinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[TutkintokoulutukseenValmentavanOpiskeluoikeus]
+
+        ensimmäinenOpiskeluoikeus.oid.isDefined should be (true)
+        ensimmäinenOpiskeluoikeus.oid should not be toinenOpiskeluoikeus.oid
+        ensimmäinenOpiskeluoikeus.lähdejärjestelmänId.isDefined should be (true)
+        toinenOpiskeluoikeus.lähdejärjestelmänId.isDefined should be (false)
+
+        // Päivitä sama lähdejärjestelmän id toiselle opiskeluoikeudelle
+        putOppija(Oppija(oppija, List(tuvaOpiskeluOikeusEiValmistunut.copy(
+          oid = toinenOpiskeluoikeus.oid,
+          lähdejärjestelmänId = original.lähdejärjestelmänId,
+          lisätiedot = None
+        ))), headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+
+        val toinenOpiskeluoikeusPäivitetty = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[TutkintokoulutukseenValmentavanOpiskeluoikeus]
+        ensimmäinenOpiskeluoikeus.oid should not be (toinenOpiskeluoikeusPäivitetty.oid)
+        ensimmäinenOpiskeluoikeus.lähdejärjestelmänId should be (toinenOpiskeluoikeusPäivitetty.lähdejärjestelmänId)
+        ensimmäinenOpiskeluoikeus.oppilaitos should be (toinenOpiskeluoikeusPäivitetty.oppilaitos)
+
+        // Seuraavat päivitykset pelkän lähdejärjestelmän id:n perusteella epäonnistuvat, koska samalla lähdejärjestelmän id:llä ja oppilaitoksella on jo olemassa kaksi opiskeluoikeutta
+        putOppija(Oppija(oppija, List(tuvaOpiskeluOikeusEiValmistunut.copy(
+          lähdejärjestelmänId = original.lähdejärjestelmänId,
+          lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot(pidennettyPäättymispäivä = Some(true)))
+        ))), headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatus(500, ErrorMatcher.regex(KoskiErrorCategory.internalError, "Löytyi enemmän kuin yksi rivi päivitettäväksi.*".r))
+        }
+      }
+
+      "Jos oppilaitos vaihtuu, tekee uuden opiskeluoikeuden" in {
         resetFixtures
         verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
           verifyResponseStatusOk()
-          val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
-          result.versionumero should equal(Some(2))
+          val results = oppijaByHetu(oppija.hetu, paakayttaja).tallennettavatOpiskeluoikeudet
+          results.size shouldBe 2
+          results.count(_.lähdejärjestelmänId == original.lähdejärjestelmänId) shouldBe 2
         }
       }
 
@@ -550,7 +623,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
           verifyResponseStatusOk()
         }
       }
-      "Siirron esto koskee myös lähdejärjestelmällistä siirtoa" in {
+      "Oppilaitoksen vaihto pelkän lähdejärjestelmän id:hen perustuvassa siirrossa luo uuden opiskeluoikeuden, koska päivitys kohdistuu lähdejärjestelmän id:n ja oppilaitoksen oid:n perusteella" in {
         resetFixtures
 
         val opiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus.copy(
@@ -578,8 +651,10 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         )
 
         putOppija(Oppija(oppija, List(muutos)), headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitoksenVaihto())
+          verifyResponseStatusOk()
         }
+        val toinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[EsiopetuksenOpiskeluoikeus]
+        ensimmäinenOpiskeluoikeus.oid should not be toinenOpiskeluoikeus.oid
       }
     }
     "Jos koulutustoimija muuttuu, voi aktiivisesta oppilaitosta muuttaa" in {
