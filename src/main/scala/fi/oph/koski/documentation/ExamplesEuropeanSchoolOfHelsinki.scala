@@ -67,7 +67,7 @@ object ExamplesEuropeanSchoolOfHelsinki {
   )
 
   val examples = List(
-    Example("europeanschoolofhelsinki", "European School of Helsinki", Oppija(asUusiOppija(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki), List(opiskeluoikeus)))
+    Example("European School of Helsinki", "European School of Helsinki", Oppija(asUusiOppija(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki), List(opiskeluoikeus)))
   )
 
 }
