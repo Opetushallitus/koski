@@ -32,7 +32,7 @@ class JotpaValidationSpec extends AnyFreeSpec with Matchers {
 
     "Ei hyväksy jotpa- ja ei-jotpa-rahoitusta sekaisin" in {
       val opiskeluoikeus = getOpiskeluoikeus(List(valtionosuusRahoitteinen, jatkuvanOppimisenRahoitus))
-      val error = KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys("Opiskeluoikeudella, jolla on jatkuvan oppimisen rahoitusta, ei voi olla muita rahoitusmuotoja")
+      val error = KoskiErrorCategory.badRequest.validation.tila.tilanRahoitusmuodonYhtenäisyys()
       JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, rajapäivä) should equal(error)
     }
 
