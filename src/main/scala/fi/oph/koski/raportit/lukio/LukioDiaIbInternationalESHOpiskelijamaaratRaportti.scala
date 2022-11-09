@@ -13,12 +13,12 @@ import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
 
-case class LukioDiaIbInternationalOpiskelijamaaratRaportti(db: DB) extends QueryMethods {
+case class LukioDiaIbInternationalESHOpiskelijamaaratRaportti(db: DB) extends QueryMethods {
   def build(oppilaitosOids: List[String], päivä: LocalDate, t: LocalizationReader): DataSheet = {
     DataSheet(
       title = t.get("raportti-excel-opiskelijamäärä-sheet-name"),
       rows = runDbSync(
-        query(oppilaitosOids, päivä, t.language).as[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow],
+        query(oppilaitosOids, päivä, t.language).as[LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow],
         timeout = 5.minutes
       ),
       columnSettings = columnSettings(t)
@@ -27,7 +27,6 @@ case class LukioDiaIbInternationalOpiskelijamaaratRaportti(db: DB) extends Query
 
   private def query(oppilaitosOids: Seq[String], päivä: LocalDate, lang: String)  = {
     val organisaatioNimiSarake = if(lang == "sv") "nimi_sv" else "nimi"
-    // TODO: TOR-1685 Eurooppalainen koulu
    sql"""
 with oppija as (select
                   r_opiskeluoikeus.opiskeluoikeus_oid,
@@ -66,8 +65,10 @@ with oppija as (select
                                           when suorituksen_tyyppi = 'diavalmistavavaihe' then  5
                                           when suorituksen_tyyppi = 'ibtutkinto' then 6
                                           when suorituksen_tyyppi = 'preiboppimaara' then 7
-                                          when suorituskieli_koodiarvo != null then 8
-                                          else 9
+                                          when suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper' and koulutusmoduuli_koodiarvo = 'S7' then 8
+                                          when suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper' and koulutusmoduuli_koodiarvo = 'S6' then 9
+                                          when suorituskieli_koodiarvo != null then 10
+                                          else 11
                                      end
                            )) [1] paatason_suoritus_id
                          from r_paatason_suoritus
@@ -78,7 +79,8 @@ with oppija as (select
                            'ibtutkinto',
                            'preiboppimaara',
                            'diatutkintovaihe',
-                           'diavalmistavavaihe'
+                           'diavalmistavavaihe',
+                           'europeanschoolofhelsinkivuosiluokkasecondaryupper'
                          ) or (
                                  r_paatason_suoritus.suorituksen_tyyppi in (
                                    'internationalschooldiplomavuosiluokka',
@@ -92,7 +94,8 @@ with oppija as (select
                   'lukiokoulutus',
                   'ibtutkinto',
                   'diatutkinto',
-                  'internationalschool'
+                  'internationalschool',
+                  'europeanschoolofhelsinki'
                 )
                 and r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOids)
                 and r_opiskeluoikeus_aikajakso.tila = 'lasna'
@@ -138,7 +141,8 @@ with oppija as (select
     'ibtutkinto',
     'preiboppimaara',
     'diatutkintovaihe',
-    'diavalmistavavaihe'
+    'diavalmistavavaihe',
+    'europeanschoolofhelsinkivuosiluokkasecondaryupper'
   )
   group by oppilaitos_oid
 ), nuorten_oppimaara as (
@@ -161,7 +165,8 @@ with oppija as (select
     'ibtutkinto',
     'preiboppimaara',
     'diatutkintovaihe',
-    'diavalmistavavaihe'
+    'diavalmistavavaihe',
+    'europeanschoolofhelsinkivuosiluokkasecondaryupper'
   )
   group by oppilaitos_oid
 ), aikuisten_oppimaara as (
@@ -255,9 +260,9 @@ with oppija as (select
     """
  }
 
-  implicit private val getResult: GetResult[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow] = GetResult(r => {
+  implicit private val getResult: GetResult[LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow] = GetResult(r => {
     val rs: ResultSet = r.rs
-    LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow(
+    LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow(
       oppilaitosOid = rs.getString("oppilaitos_oid"),
       oppilaitosNimi = rs.getString("oppilaitos_nimi"),
       opiskelijoidenMaara = rs.getInt("kaikki_yhteensa"),
@@ -378,7 +383,7 @@ with oppija as (select
   ))
 }
 
-case class LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow(
+case class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow(
   oppilaitosOid: String,
   oppilaitosNimi: String,
   opiskelijoidenMaara: Int,

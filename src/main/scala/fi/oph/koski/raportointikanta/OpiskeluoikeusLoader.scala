@@ -371,7 +371,11 @@ object OpiskeluoikeusLoader extends Logging {
     o.tyyppi.koodiarvo match {
       case "perusopetus" => true
       case "internationalschool" => true
-      // TODO: TOR-1685 Eurooppalainen koulu
+      case "europeanschoolofhelsinki"
+        if o.asInstanceOf[EuropeanSchoolOfHelsinkiOpiskeluoikeus].suoritukset.exists {
+          case _: OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus => true
+          case _ => false
+        } => true
       case "esiopetus" => true
       case "perusopetukseenvalmistavaopetus" => true
       case _ => MaksuttomuusValidation.oppivelvollisuudenSuorittamiseenKelpaavaMuuKuinPeruskoulunOpiskeluoikeus(o)
@@ -420,7 +424,7 @@ object OpiskeluoikeusLoader extends Logging {
       koulutusmoduuliKoodisto = convertKoodisto(ps.koulutusmoduuli.tunniste),
       koulutusmoduuliKoodiarvo = ps.koulutusmoduuli.tunniste.koodiarvo,
       koulutusmoduuliKoulutustyyppi = ps.koulutusmoduuli match {
-        case k: Koulutus => k.koulutustyyppi.map(_.koodiarvo)
+        case k: KoulutustyypinSisältäväKoulutusmoduuli => k.koulutustyyppi.map(_.koodiarvo)
         case _ => None
       },
       koulutusmoduuliLaajuusArvo = ps.koulutusmoduuli.getLaajuus.map(_.arvo),

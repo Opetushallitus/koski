@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation.{ReadOnly, Representative}
-import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, SyntheticProperty, Title}
 
 trait KoodiViite extends Localized {
   def koodiarvo: String
@@ -46,6 +46,38 @@ case class Koodistokoodiviite(
   override def toString: String = koodistoUri + "/" + koodiarvo
   def description: LocalizedString = koodistoUri match {
     case "arviointiasteikkoyleissivistava" | "arviointiasteikkoib" | "arviointiasteikkocorerequirementsib" => unlocalized(koodiarvo)
+    case _ => nimi.getOrElse(unlocalized(koodiarvo))
+  }
+  override def getNimi: Option[LocalizedString] = nimi
+}
+
+case class SynteettinenKoodiviite(
+  @Discriminator
+  koodiarvo: String,
+  @Description("Koodin selväkielinen, kielistetty nimi")
+  @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus luodaan koodiarvon perusteella")
+  nimi: Option[LocalizedString] = None,
+  @Description("Koodin selväkielinen, kielistetty lyhennetty nimi")
+  @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus luodaan koodiarvon perusteella")
+  lyhytNimi: Option[LocalizedString] = None,
+  @Description("Käytetyn synteettisen koodiston tunniste")
+  @Discriminator
+  @Title("Koodisto-URI")
+  koodistoUri: String
+) extends KoodiViite with Equals {
+
+  override def canEqual(that: Any): Boolean = that.isInstanceOf[SynteettinenKoodiviite]
+  override def equals(that: Any): Boolean = that match {
+    case that: SynteettinenKoodiviite =>
+      that.canEqual(this) &&
+        (this.koodiarvo == that.koodiarvo) &&
+        (this.koodistoUri == that.koodistoUri)
+    case _ => false
+  }
+  override def hashCode(): Int = this.koodiarvo.hashCode
+
+  override def toString: String = koodistoUri + "/" + koodiarvo
+  def description: LocalizedString = koodistoUri match {
     case _ => nimi.getOrElse(unlocalized(koodiarvo))
   }
   override def getNimi: Option[LocalizedString] = nimi

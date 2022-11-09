@@ -108,7 +108,7 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
              PerusopetuksenOppijaMääräRaportti.toString,
              TuvaPerusopetuksenOppijaMääräRaportti.toString,
              PerusopetuksenLisäopetuksenOppijaMääräRaportti.toString,
-             LukioDiaIbInternationalOpiskelijamaarat.toString,
+             LukioDiaIbInternationalESHOpiskelijamaarat.toString,
              LukioKurssikertyma.toString,
              LuvaOpiskelijamaarat.toString,
              LukioOpintopistekertyma.toString,

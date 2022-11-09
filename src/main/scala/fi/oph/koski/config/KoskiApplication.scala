@@ -126,6 +126,7 @@ class KoskiApplication(
     ePerusteetFiller,
     validatingAndResolvingExtractor,
     suostumuksenPeruutusService,
+    koodistoViitePalvelu,
     config
   )
   lazy val openSearch = OpenSearch(config)

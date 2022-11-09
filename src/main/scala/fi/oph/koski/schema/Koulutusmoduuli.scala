@@ -27,6 +27,10 @@ trait KoulutusmoduuliPakollinenLaajuusOpintopisteissä extends KoulutusmoduuliPa
   def laajuus: LaajuusOpintopisteissä
 }
 
+trait KoulutusmoduuliPakollinenLaajuusVuosiviikkotunneissa extends KoulutusmoduuliPakollinenLaajuus {
+  def laajuus: LaajuusVuosiviikkotunneissa
+}
+
 trait KoulutusmoduuliValinnainenLaajuus extends Koulutusmoduuli {
   def laajuus: Option[Laajuus]
   override def getLaajuus: Option[Laajuus] = laajuus
@@ -40,14 +44,19 @@ trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
 trait KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus extends KoodistostaLöytyväKoulutusmoduuli with KoulutusmoduuliValinnainenLaajuus
 trait KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus extends KoodistostaLöytyväKoulutusmoduuli with KoulutusmoduuliPakollinenLaajuus
 
-trait Koulutus extends KoodistostaLöytyväKoulutusmoduuli {
+trait KoulutustyypinSisältäväKoulutusmoduuli extends KoodistostaLöytyväKoulutusmoduuli {
+  @KoodistoUri("koulutustyyppi")
+  @Hidden
+  @ReadOnly("Koulutustyypin koodia ei tarvita syöttövaiheessa; Koski päättelee sen automaattisesti.")
+  def koulutustyyppi: Option[Koodistokoodiviite]
+}
+
+trait Koulutus extends KoulutustyypinSisältäväKoulutusmoduuli {
   @Description("Tutkinnon 6-numeroinen tutkintokoodi. Sama kuin tilastokeskuksen koulutuskoodi")
   @KoodistoUri("koulutus")
   @OksaUri("tmpOKSAID560", "tutkinto")
   def tunniste: Koodistokoodiviite
-  @KoodistoUri("koulutustyyppi")
-  @Hidden
-  @ReadOnly("Koulutustyypin koodia ei tarvita syöttövaiheessa; Koski päättelee sen automaattisesti koulutuskoodin perusteella.")
+  @ReadOnly("Koski päättelee koulutustyypin automaattisesti koulutuskoodin perusteella.")
   def koulutustyyppi: Option[Koodistokoodiviite]
 }
 

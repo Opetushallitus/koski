@@ -33,7 +33,6 @@ export const opiskeluoikeudenTilaVaatiiRahoitusmuodon = (
   tila,
   suoritustyyppi
 ) => {
-  // TODO: TOR-1685 Eurooppalainen koulu
   if (
     opiskeluoikeudenTyyppi === 'vapaansivistystyonkoulutus' &&
     suoritustyyppi === 'vstjotpakoulutus'

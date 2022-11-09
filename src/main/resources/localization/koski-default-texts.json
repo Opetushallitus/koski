@@ -2230,6 +2230,9 @@
   "raportti-excel-default-value-vst": "Oppivelvollisille suunnattu vapaan sivistystyön koulutus",
   "raportti-excel-default-value-vst-vapaatavoitteinen": "Vapaan sivistystyön vapaatavoitteinen koulutus",
   "raportti-excel-default-value-tuva": "Tutkintokoulutukseen valmentavan koulutuksen suoritus",
+  "raportti-excel-default-value-eshesiopetus": "European School of Helsinki esiopetus",
+  "raportti-excel-default-value-eshperusopetus": "European School of Helsinki perusopetus",
+  "raportti-excel-default-value-eshlukio": "European School of Helsinki lukio",
   "raportti-excel-default-value-pakollinen": "Pakollinen",
   "raportti-excel-default-value-vapaavalintainen": "Vapaavalintainen",
   "excel-export-default-value-kyllä": "kyllä",
@@ -2398,5 +2401,9 @@
   "Curriculum" : "Curriculum",
   "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus" : "Jatkuvaan oppimiseen suunnattu vapaan sivistyön koulutuksen osasuoritus",
   "deprecated:Ei käytössä." : "Ei käytössä.",
-  "description:Suorituksen tila, ei käytössä." : "Suorituksen tila, ei käytössä."
+  "description:Suorituksen tila, ei käytössä." : "Suorituksen tila, ei käytössä.",
+  "description:Käytetyn synteettisen koodiston tunniste" : "Käytetyn synteettisen koodiston tunniste",
+  "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan..." : "Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi.",
+  "tooltip:Onko oppilas opiskellut yksilöllisen oppimäärän." : "Onko oppilas opiskellut yksilöllisen oppimäärän.",
+  "description:Tieto siitä, onko oppimäärä yksilöllistetty..." : "Tieto siitä, onko oppimäärä yksilöllistetty (true/false)."
 }

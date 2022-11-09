@@ -24,7 +24,7 @@ class RaportitService(application: KoskiApplication) {
   private lazy val organisaatioService = application.organisaatioService
   private val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
   private val lukio2019Repository = Lukio2019RaportitRepository(raportointiDatabase.db)
-  private val lukioDiaIbInternationalOpiskelijaMaaratRaportti = LukioDiaIbInternationalOpiskelijamaaratRaportti(raportointiDatabase.db)
+  private val lukioDiaIbInternationalESHOpiskelijaMaaratRaportti = LukioDiaIbInternationalESHOpiskelijamaaratRaportti(raportointiDatabase.db)
   private val ammatillisenRaportitRepository = AmmatillisenRaportitRepository(raportointiDatabase.db)
   private val aikuistenPerusopetusRepository = AikuistenPerusopetusRaporttiRepository(raportointiDatabase.db)
   private val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
@@ -157,12 +157,12 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def lukioDiaIbInternationalOpiskelijaMaaratRaportti(
+  def lukioDiaIbInternationalESHOpiskelijaMaaratRaportti(
     request: RaporttiPäivältäRequest,
     t: LocalizationReader
   ): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
-      sheets = Seq(lukioDiaIbInternationalOpiskelijaMaaratRaportti
+      sheets = Seq(lukioDiaIbInternationalESHOpiskelijaMaaratRaportti
         .build(accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid).toList, request.paiva, t)
       ),
       workbookSettings = WorkbookSettings("", Some(request.password)),

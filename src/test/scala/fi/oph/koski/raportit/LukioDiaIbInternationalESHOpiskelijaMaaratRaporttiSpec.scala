@@ -2,18 +2,18 @@ package fi.oph.koski.raportit
 
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.fixture.LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures
+import fi.oph.koski.fixture.LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.raportit.lukio.LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow
+import fi.oph.koski.raportit.lukio.LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
-class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
-  //Note: Raportin latauspäivä ja raportin fixtuurit käyttävät dynaamista päivämäärää, kts. LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.scala
+class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec with RaportointikantaTestMethods with BeforeAndAfterAll {
+  //Note: Raportin latauspäivä ja raportin fixtuurit käyttävät dynaamista päivämäärää, kts. LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.scala
 
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
@@ -30,25 +30,25 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec wi
   "Lukion opiskelijamäärät raportti" - {
     "Raportin lataaminen onnistuu ja tuottaa auditlogin" in {
       AuditLogTester.clearMessages
-      authGet(s"api/raportit/lukiodiaibinternationalopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=fi") {
+      authGet(s"api/raportit/lukiodiaibinternationaleshopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=fi") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukiokoulutus_opiskelijamaarat_20180101.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiodiaibinternationalopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=fi")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiodiaibinternationaleshopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=fi")))
       }
     }
 
     "Raportin lataaminen onnistuu eri lokalisaatiolla ja tuottaa auditlogin" in {
       AuditLogTester.clearMessages
-      authGet(s"api/raportit/lukiodiaibinternationalopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=sv") {
+      authGet(s"api/raportit/lukiodiaibinternationaleshopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=sv") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukiokoulutus_opiskelijamaarat_20180101.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiodiaibinternationalopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=sv")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=lukiodiaibinternationaleshopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=sv")))
       }
     }
 
-    lazy val rivit: Seq[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow] = loadRaportti
+    lazy val rivit: Seq[LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow] = loadRaportti
     lazy val helsinki = rivit.find(_.oppilaitosNimi == hese).get
     lazy val ressu = rivit.find(_.oppilaitosNimi == resu).get
 
@@ -62,9 +62,9 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec wi
       helsinki.aikuistenOppimaaranSuorittajia shouldBe(1)
       helsinki.aineopiskelija shouldBe(0)
 
-      ressu.opiskelijoidenMaara shouldBe(4)
-      ressu.oppimaaranSuorittajia shouldBe(3)
-      ressu.nuortenOppimaaranSuorittajia shouldBe(3)
+      ressu.opiskelijoidenMaara shouldBe(5)
+      ressu.oppimaaranSuorittajia shouldBe(4)
+      ressu.nuortenOppimaaranSuorittajia shouldBe(4)
       ressu.aikuistenOppimaaranSuorittajia shouldBe(0)
       ressu.aineopiskelija shouldBe(1)
     }
@@ -88,9 +88,9 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec wi
       helsinki.aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(1)
       helsinki.aineopiskelija_MuutaKauttaRahoitettu shouldBe(0)
 
-      ressu.opiskelijoidenMaara_MuutaKauttaRahoitettu should equal(2)
-      ressu.oppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(2)
-      ressu.nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(2)
+      ressu.opiskelijoidenMaara_MuutaKauttaRahoitettu should equal(3)
+      ressu.oppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(3)
+      ressu.nuortenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(3)
       ressu.aikuistenOppimaaranSuorittajia_MuutaKauttaRahoitettu shouldBe(0)
       ressu.aineopiskelija_MuutaKauttaRahoitettu shouldBe(0)
     }
@@ -135,8 +135,8 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec wi
       helsinki.nuortenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
       helsinki.aikuistenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
 
-      ressu.oppimaaranSuorittajia_OpetuskieliMuu shouldBe(3)
-      ressu.nuortenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(3)
+      ressu.oppimaaranSuorittajia_OpetuskieliMuu shouldBe(4)
+      ressu.nuortenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(4)
       ressu.aikuistenOppimaaranSuorittajia_OpetuskieliMuu shouldBe(0)
     }
     "Sisäoppilaitosmainen majoitus" in {
@@ -175,12 +175,12 @@ class LukioDiaIbInternationalOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec wi
       oppilaitosOid = MockOrganisaatiot.helsinginKaupunki,
       downloadToken = None,
       password = "foobar",
-      paiva = LukioDiaIbInternationalOpiskelijaMaaratRaporttiFixtures.date,
+      paiva = LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures.date,
       lang = "fi"
     )
     new RaportitService(KoskiApplicationForTests)
-      .lukioDiaIbInternationalOpiskelijaMaaratRaportti(request, t)
+      .lukioDiaIbInternationalESHOpiskelijaMaaratRaportti(request, t)
       .sheets.head.asInstanceOf[DataSheet]
-      .rows.asInstanceOf[Seq[LukioDiaIbInternationalOpiskelijaMaaratRaporttiRow]]
+      .rows.asInstanceOf[Seq[LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiRow]]
   }
 }

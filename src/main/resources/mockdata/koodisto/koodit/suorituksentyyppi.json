@@ -1896,5 +1896,173 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritusprimary",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuoritusprimary",
+  "metadata" : [ {
+    "nimi" : "Primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritusprimarylapsi",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuoritusprimarylapsi",
+  "metadata" : [ {
+    "nimi" : "Primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuoritusprimarylapsi",
+  "koodiArvo" : "europeanschoolofhelsinkialaosasuoritusprimarylapsi",
+  "metadata" : [ {
+    "nimi" : "Component of primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Component of primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Component of primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuoritusprimary",
+  "koodiArvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+  "metadata" : [ {
+    "nimi" : "Component of primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Component of primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Component of primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritussecondarylower",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuoritussecondarylower",
+  "metadata" : [ {
+    "nimi" : "Lower year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lower year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lower year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuorituss6",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuorituss6",
+  "metadata" : [ {
+    "nimi" : "S6 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "S6 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "S6 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuorituss7",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuorituss7",
+  "metadata" : [ {
+    "nimi" : "S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuorituss7",
+  "koodiArvo" : "europeanschoolofhelsinkialaosasuorituss7",
+  "metadata" : [ {
+    "nimi" : "Component of S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Component of S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Component of S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }
 ]

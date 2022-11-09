@@ -1,0 +1,276 @@
+[
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_engagesinlearning",
+    "koodiArvo": "Engages in learning",
+    "metadata": [
+      {
+        "nimi": "Engages in learning",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Engages in learning",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_listensattentively",
+    "koodiArvo": "Listens attentively",
+    "metadata": [
+      {
+        "nimi": "Listens attentively",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Listens attentively",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_developsworkinghabits",
+    "koodiArvo": "Develops working habits",
+    "metadata": [
+      {
+        "nimi": "Develops working habits",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Develops working habits",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_worksindependently",
+    "koodiArvo": "Works independently",
+    "metadata": [
+      {
+        "nimi": "Works independently",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Works independently",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_persevereswithdifficulttasks",
+    "koodiArvo": "Perseveres with difficult tasks",
+    "metadata": [
+      {
+        "nimi": "Perseveres with difficult tasks",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Perseveres with difficult tasks",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_usesict",
+    "koodiArvo": "Uses ICT",
+    "metadata": [
+      {
+        "nimi": "Uses ICT",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Uses ICT",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_presentsworkcarefully",
+    "koodiArvo": "Presents work carefully",
+    "metadata": [
+      {
+        "nimi": "Presents work carefully",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Presents work carefully",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_producesqualityhomework",
+    "koodiArvo": "Produces quality homework",
+    "metadata": [
+      {
+        "nimi": "Produces quality homework",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Produces quality homework",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_seemshappyatschool",
+    "koodiArvo": "Seems happy at school",
+    "metadata": [
+      {
+        "nimi": "Seems happy at school",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Seems happy at school",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_isselfconfident",
+    "koodiArvo": "Is self-confident",
+    "metadata": [
+      {
+        "nimi": "Is self-confident",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Is self-confident",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_managesandexpressesownfeelings",
+    "koodiArvo": "Manages and expresses own feelings",
+    "metadata": [
+      {
+        "nimi": "Manages and expresses own feelings",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Manages and expresses own feelings",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_evaluatesownprogress",
+    "koodiArvo": "Evaluates own progress",
+    "metadata": [
+      {
+        "nimi": "Evaluates own progress",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Evaluates own progress",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_respectclassrules",
+    "koodiArvo": "Respect class rules",
+    "metadata": [
+      {
+        "nimi": "Respect class rules",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Respect class rules",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_respectschoolrules",
+    "koodiArvo": "Respect school rules",
+    "metadata": [
+      {
+        "nimi": "Respect school rules",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Respect school rules",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_cooperateswithothers",
+    "koodiArvo": "Cooperates with others",
+    "metadata": [
+      {
+        "nimi": "Cooperates with others",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Cooperates with others",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_respectsothers",
+    "koodiArvo": "Respects others",
+    "metadata": [
+      {
+        "nimi": "Respects others",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Respects others",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_showsempathy",
+    "koodiArvo": "Shows empathy",
+    "metadata": [
+      {
+        "nimi": "Shows empathy",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Shows empathy",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]
+
+

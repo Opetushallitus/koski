@@ -1,0 +1,434 @@
+[
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_listeningandunderstanding",
+    "koodiArvo": "Listening and understanding",
+    "metadata": [
+      {
+        "nimi": "Listening and understanding",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Listening and understanding",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_speaking",
+    "koodiArvo": "Speaking",
+    "metadata": [
+      {
+        "nimi": "Speaking",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Speaking",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_readingandunderstanding",
+    "koodiArvo": "Reading and understanding",
+    "metadata": [
+      {
+        "nimi": "Reading and understanding",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Reading and understanding",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_writing",
+    "koodiArvo": "Writing",
+    "metadata": [
+      {
+        "nimi": "Writing",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Writing",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_linguisticdevelopment",
+    "koodiArvo": "Linguistic development",
+    "metadata": [
+      {
+        "nimi": "Linguistic development",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Linguistic development",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_spokenproduction",
+    "koodiArvo": "Spoken production",
+    "metadata": [
+      {
+        "nimi": "Spoken production",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Spoken production",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_spokeninteraction",
+    "koodiArvo": "Spoken interaction",
+    "metadata": [
+      {
+        "nimi": "Spoken interaction",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Spoken interaction",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_reading",
+    "koodiArvo": "Reading",
+    "metadata": [
+      {
+        "nimi": "Reading",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Reading",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_numbersnumbersystem",
+    "koodiArvo": "Numbers & Number system",
+    "metadata": [
+      {
+        "nimi": "Numbers & Number system",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Numbers & Number system",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_calculation",
+    "koodiArvo": "Calculation",
+    "metadata": [
+      {
+        "nimi": "Calculation",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Calculation",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_measurement",
+    "koodiArvo": "Measurement",
+    "metadata": [
+      {
+        "nimi": "Measurement",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Measurement",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_shapeandspace",
+    "koodiArvo": "Shape and Space",
+    "metadata": [
+      {
+        "nimi": "Shape and Space",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Shape and Space",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_datahandling",
+    "koodiArvo": "Data handling",
+    "metadata": [
+      {
+        "nimi": "Data handling",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Data handling",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_problemsolving",
+    "koodiArvo": "Problem solving",
+    "metadata": [
+      {
+        "nimi": "Problem solving",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Problem solving",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_biological",
+    "koodiArvo": "Biological",
+    "metadata": [
+      {
+        "nimi": "Biological",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Biological",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_technological",
+    "koodiArvo": "Technological",
+    "metadata": [
+      {
+        "nimi": "Technological",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Technological",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_geographical",
+    "koodiArvo": "Geographical",
+    "metadata": [
+      {
+        "nimi": "Geographical",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Geographical",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_historical",
+    "koodiArvo": "Historical",
+    "metadata": [
+      {
+        "nimi": "Historical",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Historical",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_plasticandstaticvisualarts",
+    "koodiArvo": "Plastic and static visual arts",
+    "metadata": [
+      {
+        "nimi": "Plastic and static visual arts",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Plastic and static visual arts",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_theartsandentertainment",
+    "koodiArvo": "The arts and entertainment",
+    "metadata": [
+      {
+        "nimi": "The arts and entertainment",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "The arts and entertainment",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_musicmakingperforming",
+    "koodiArvo": "Music making & performing",
+    "metadata": [
+      {
+        "nimi": "Music making & performing",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Music making & performing",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_listeningandresponding",
+    "koodiArvo": "Listening and responding",
+    "metadata": [
+      {
+        "nimi": "Listening and responding",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Listening and responding",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_composing",
+    "koodiArvo": "Composing",
+    "metadata": [
+      {
+        "nimi": "Composing",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Composing",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_individualactivities",
+    "koodiArvo": "Individual activities",
+    "metadata": [
+      {
+        "nimi": "Individual activities",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Individual activities",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_teamactivities",
+    "koodiArvo": "Team activities",
+    "metadata": [
+      {
+        "nimi": "Team activities",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Team activities",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_swimming",
+    "koodiArvo": "Swimming",
+    "metadata": [
+      {
+        "nimi": "Swimming",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Swimming",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_communicatingandworkingwithothers",
+    "koodiArvo": "Communicating and working with others",
+    "metadata": [
+      {
+        "nimi": "Communicating and working with others",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Communicating and working with others",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

@@ -5,7 +5,6 @@ import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
 import {
   modelData,
-  modelItems,
   modelLookup,
   modelSet,
   modelSetData
@@ -24,11 +23,6 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
 }) => {
   const suoritusAtom = Atom()
   const oppilaitosAtom = Atom(modelData(opiskeluoikeus, 'oppilaitos'))
-
-  const grades = modelItems(opiskeluoikeus, 'suoritukset').map((s) =>
-    modelData(s, 'koulutusmoduuli.tunniste.koodiarvo')
-  )
-
   const lisääSuoritus = () => {
     const suoritus = suoritusAtom.get()
     let proto = newSuoritusProto(
@@ -61,7 +55,6 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
         <UusiEuropeanSchoolOfHelsinkiSuoritus
           suoritusAtom={suoritusAtom}
           oppilaitosAtom={oppilaitosAtom}
-          without={grades}
         />
       </ModalDialog>
     </div>
@@ -71,9 +64,7 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
 UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.canAddSuoritus = (
   opiskeluoikeus
 ) =>
-  modelData(opiskeluoikeus, 'tyyppi.koodiarvo') ===
-    'europeanschoolofhelsinki' &&
-  modelItems(opiskeluoikeus, 'suoritukset').length < 14
+  modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'europeanschoolofhelsinki'
 
 UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.addSuoritusTitle = () => (
   <Text name="lisää vuosiluokan suoritus" />

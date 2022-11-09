@@ -1,0 +1,74 @@
+[
+  {
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "++++",
+        "lyhytNimi": "++++",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "++++",
+        "lyhytNimi": "++++",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "+++",
+        "lyhytNimi": "+++",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "+++",
+        "lyhytNimi": "+++",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "++",
+        "lyhytNimi": "++",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "++",
+        "lyhytNimi": "++",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "+",
+        "lyhytNimi": "+",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "+",
+        "lyhytNimi": "+",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]
