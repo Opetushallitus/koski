@@ -40,12 +40,10 @@ export const jklNormaalikouluSuorittaminenTableContent = `
   Valmistunut-nivelvaiheet-opiskelija-2022 Valpas                 | 19.3.2005  | Perusopetuksen lisäopetus | Läsnä                        | Jyväskylän normaalikoulu | 15.8.2021  | 31.5.2022 | –                                                       | 18.3.2023 asti
   `
 
-export const stadinAmmattiopistoSuorittaminenTableHead = "Oppivelvolliset (16)"
+export const stadinAmmattiopistoSuorittaminenTableHead = "Oppivelvolliset (14)"
 
 export const stadinAmmattiopistoSuorittaminenTableContent = `
   Amis-eronnut Valpas                                                  | 1.8.2005   | Ammatillinen tutkinto | warningEronnut | Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka | 1.8.2021 | 2.9.2021 | –                                                             | 31.7.2023 asti
-  Amis-eronnut-nivelvaihe-ei-kelpaa Valpas                             | 10.11.2005 | Ammatillinen tutkinto | warningEronnut | Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka | 1.8.2021 | 2.9.2021 | Helsingin Saksalainen koulu, Perusopetuksen lisäopetus        | 9.11.2023 asti
-  Amis-eronnut-nivelvaihe-vstssa-ei-kelpaa Valpas                      | 9.6.2004   | Ammatillinen tutkinto | warningEronnut | Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka | 1.8.2021 | 2.9.2021 | Varsinais-Suomen kansanopisto, Vapaan sivistystyön koulutus   | 8.6.2022 asti
   Amis-eronnut-perusopetukseen-valmistava-ei-kelpaa Valpas             | 24.2.2005  | Ammatillinen tutkinto | warningEronnut | Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka | 1.8.2021 | 2.9.2021 | –                                                             | 23.2.2023 asti
   Amis-eronnut-tuva Valpas                                             | 10.9.2005	| TUVA                  |  Läsnä         | Stadin ammatti- ja aikuisopisto	                            | 1.8.2021 |	–       |	–	                                                            | 9.9.2023 asti
   Amis-eronnut-uusi-oo-tulevaisuudessa-keskeyttänyt Valpas             | 24.9.2005  | Ammatillinen tutkinto | warningEronnut | Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka | 1.8.2021 | 2.9.2021 | hourglass_empty1.10.2021 alkaen: Omnia, Ammatillinen koulutus | 23.9.2023 asti*
