@@ -7,6 +7,8 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
+import scala.util.Try
+
 /******************************************************************************
  * OPISKELUOIKEUS
  *****************************************************************************/
@@ -29,6 +31,9 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeus(
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
+
+  def vuosiluokkasuorituksetJärjestyksessä: List[EuropeanSchoolOfHelsinkiVuosiluokanSuoritus] =
+    suoritukset.sortBy(_.suorituksenJärjestysKriteeriAlustaLoppuun)
 }
 
 object EuropeanSchoolOfHelsinkiOpiskeluoikeus {
@@ -146,6 +151,14 @@ trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
+
+  def suorituksenJärjestysKriteeriAlustaLoppuun: (Int, Boolean) =
+    (
+      tyypinMukainenJärjestysKriteeri + Try(koulutusmoduuli.tunniste.koodiarvo.slice(1, 2).toInt).getOrElse(20),
+      valmis
+    )
+
+  protected def tyypinMukainenJärjestysKriteeri: Int
 }
 
 case class NurseryVuosiluokanSuoritus(
@@ -160,6 +173,8 @@ case class NurseryVuosiluokanSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
 ) extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
+
+  override protected def tyypinMukainenJärjestysKriteeri: Int = 100
 }
 
 trait OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus extends EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
@@ -177,6 +192,8 @@ case class PrimaryVuosiluokanSuoritus(
   override val osasuoritukset: Option[List[PrimaryOsasuoritus]] = None
 ) extends OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
+
+  override protected def tyypinMukainenJärjestysKriteeri: Int = 200
 }
 
 case class SecondaryLowerVuosiluokanSuoritus(
@@ -192,6 +209,8 @@ case class SecondaryLowerVuosiluokanSuoritus(
   override val osasuoritukset: Option[List[SecondaryLowerOppiaineenSuoritus]] = None
 ) extends OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
+
+  override protected def tyypinMukainenJärjestysKriteeri: Int = 300
 }
 
 case class SecondaryUpperVuosiluokanSuoritus(
@@ -207,6 +226,8 @@ case class SecondaryUpperVuosiluokanSuoritus(
   override val osasuoritukset: Option[List[SecondaryUpperOppiaineenSuoritus]] = None
 ) extends OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
+
+  override protected def tyypinMukainenJärjestysKriteeri: Int = 400
 }
 
 /******************************************************************************
