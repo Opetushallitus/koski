@@ -64,7 +64,7 @@ object OppijaEditorModel extends Timing {
       case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(perusopetuksenSuoritustenJärjestysKriteeri))
       case oo: AmmatillinenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ammatillisenSuoritustenJärjestysKriteeri))
       case oo: IBOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ibSuoritustenJärjestysKriteeri))
-      case oo: DIAOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(diaSuoritustenJärjestysKritteri))
+      case oo: DIAOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(diaSuoritustenJärjestysKriteeri))
       case oo: InternationalSchoolOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(internationalSchoolJärjestysKriteeri))
       case oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(eshSuoritustenJärjestysKriteeri))
       case oo: KorkeakoulunOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.vahvistus.map(_.päivä))(localDateOptionOrdering).reverse)
@@ -115,7 +115,7 @@ object OppijaEditorModel extends Timing {
     }
   }
 
-  def diaSuoritustenJärjestysKritteri(s : DIAPäätasonSuoritus): Int = {
+  def diaSuoritustenJärjestysKriteeri(s : DIAPäätasonSuoritus): Int = {
     s match {
       case _: DIATutkinnonSuoritus => -1
       case _: DIAValmistavanVaiheenSuoritus => 0
