@@ -1,10 +1,48 @@
 package fi.oph.koski.validation
 
+import com.typesafe.config.Config
 import fi.oph.koski.documentation.ExampleData.muutaKauttaRahoitettu
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus}
+import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
+
+import java.time.LocalDate
 
 object EuropeanSchoolOfHelsinkiValidation {
+
+  def validateOpiskeluoikeus(config: Config)(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    oo match {
+      case eshOo: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>
+        HttpStatus.fold(
+          validateTallennuspäivä(
+            LocalDate.parse(config.getString("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuTallennuspaiva"))
+          ),
+          validatePäättymispäivä(
+            eshOo,
+            LocalDate.parse(config.getString("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuPaattymispaiva")),
+          )
+        )
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateTallennuspäivä(aikaisinTallennuspäivä: LocalDate): HttpStatus = {
+    if (LocalDate.now.isBefore(aikaisinTallennuspäivä)) {
+      KoskiErrorCategory.badRequest.validation.esh.tallennuspäivä(s"Helsingin eurooppalaisen koulun opiskeluoikeuksia voi alkaa tallentaa vasta ${finnishDateFormat.format(aikaisinTallennuspäivä)} alkaen")
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validatePäättymispäivä(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus, aikaisinPäättymispäivä: LocalDate): HttpStatus = {
+    oo.päättymispäivä.filter(_.isBefore(aikaisinPäättymispäivä)) match {
+      case Some(_) =>
+        KoskiErrorCategory.badRequest.validation.esh.päättymispäivä(s"Helsingin eurooppalaisen koulun tallennettavat opiskeluoikeudet eivät voi olla päättyneet ennen lain voimaantuloa ${finnishDateFormat.format(aikaisinPäättymispäivä)}")
+      case _ => HttpStatus.ok
+    }
+  }
+
   def fillRahoitusmuodot(koodistoPalvelu: KoodistoViitePalvelu)(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     oo match {
       case e: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>

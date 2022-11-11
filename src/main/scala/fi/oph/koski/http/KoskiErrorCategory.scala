@@ -225,6 +225,16 @@ object KoskiErrorCategory {
         val opintokokonaisuusVainVapaaTavoitteisessaKoulutuksessa = subcategory("opintokokonaisuusVainVapaaTavoitteisessaKoulutuksessa", "Opiskeluoikeuden opintokokonaisuus saa olla määritelty vain vapaan sivistystyön vapaatavoitteisissa koulutuksissa")
       }
       val vapaaSivistystyö = new VapaaSivistystyö
+
+      class ESH extends ErrorCategory(
+        Validation.this,
+        "esh",
+        "Helsingin eurooppalaisen koulun kirjauksiin liittyvä validointivirhe"
+      ) {
+        val tallennuspäivä = subcategory("tallennuspäivä", "Helsingin eurooppalaisen koulun opiskeluoikeuksia ei saa vielä tallentaa")
+        val päättymispäivä = subcategory("päättymispäivä", "Helsingin eurooppalaisen koulun tallennettavat opiskeluoikeudet eivät voi päättyä ennen lain voimaantuloa")
+      }
+      val esh = new ESH
     }
     val validation = new Validation
   }
