@@ -81,7 +81,6 @@ describe('Helsingin eurooppalainen koulu', function () {
               expect(opinnot.getOppilaitos()).to.equal(
                 'Helsingin eurooppalainen koulu'
               )
-              expect(opinnot.getSuorituskieli()).to.equal('englanti')
             })
           })
         })

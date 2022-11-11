@@ -226,10 +226,12 @@ trait OpintopistelaajuuksienYhteislaskennallinenSuoritus[A <: Laajuus] extends S
   def koulutusmoduuli: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[A]
 }
 
-trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
+trait SisältääTodistuksellaNäkyvätLisätiedot extends PäätasonSuoritus {
   @MultiLineString(3)
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
 }
+
+trait Todistus extends SisältääTodistuksellaNäkyvätLisätiedot with Suorituskielellinen
 
 trait Vahvistukseton extends Suoritus {
   override def vahvistus: Option[Vahvistus] = None

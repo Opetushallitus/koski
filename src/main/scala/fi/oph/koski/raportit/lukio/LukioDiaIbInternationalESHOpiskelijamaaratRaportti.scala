@@ -120,7 +120,13 @@ with oppija as (select
     count(case when ulkomainen_vaihto_opiskelija then 1 end) ulkomainen_vaihto_opiskelija,
     count(case when suorituskieli_koodiarvo = 'FI' then 1 end) opetuskieli_suomi,
     count(case when suorituskieli_koodiarvo = 'SV' then 1 end) opetuskieli_ruotsi,
-    count(case when suorituskieli_koodiarvo not in ('FI', 'SV') then 1 end) opetuskieli_muu,
+    count(
+      case
+        when (suorituskieli_koodiarvo not in ('FI', 'SV'))
+             or (suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper' and suorituskieli_koodiarvo is null)
+      then 1
+      end
+    ) opetuskieli_muu,
     count(case when sisaoppilaitosmainen_majoitus and opintojen_rahoitus = '1' then 1 end) sisaoppilaitosmainen_majoitus_valtionosuus_rahoitteinen,
     count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '101' then 1 end) erityinen_koulutustehtava_101,
     count(case when erityisen_koulutus_tehtävän_jakso_tehtävä_koodiarvo = '102' then 1 end) erityinen_koulutustehtava_102,
@@ -154,7 +160,13 @@ with oppija as (select
     count(case when opintojen_rahoitus = '6' then 1 end) muuta_kautta_rahoitettu,
     count(case when suorituskieli_koodiarvo = 'FI' then 1 end) opetuskieli_suomi,
     count(case when suorituskieli_koodiarvo = 'SV' then 1 end) opetuskieli_ruotsi,
-    count(case when suorituskieli_koodiarvo not in ('FI', 'SV') then 1 end) opetuskieli_muu,
+    count(
+      case
+        when (suorituskieli_koodiarvo not in ('FI', 'SV'))
+             or (suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper' and suorituskieli_koodiarvo is null)
+      then 1
+      end
+    ) opetuskieli_muu,
     count(case when kotikunta isnull then 1 end) ei_kotikuntaa,
     count(case when kotikunta = any($ahvenanmaanKunnat) then 1 end) kotikunta_ahvenanmaa
   from oppija

@@ -65,8 +65,14 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   @Tooltip("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista. Tilojen kuvaukset löytyvät opiskeluoikeustyypeittäin [täältä]( https://wiki.eduuni.fi/pages/viewpage.action?pageId=190613208).")
   def tila: OpiskeluoikeudenTila
   def luokka: Option[String] = {
-    val vuosiluokkasuoritukset = suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
-    vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
+    this match {
+      case _: PerusopetuksenOpiskeluoikeus =>
+        val vuosiluokkasuorituksetPerusopetus = suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
+        vuosiluokkasuorituksetPerusopetus.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
+      case oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>
+        oo.vuosiluokkasuorituksetJärjestyksessä.reverse.headOption.flatMap(_.luokka)
+      case _ => None
+    }
   }
   def ryhmä: Option[String] = suoritukset.collectFirst { case s: Ryhmällinen => s }.flatMap(_.ryhmä)
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot]

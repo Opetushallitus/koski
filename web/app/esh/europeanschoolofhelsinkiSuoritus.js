@@ -4,13 +4,11 @@ export const makeSuoritus = (
   oppilaitos,
   luokkaaste,
   curriculum,
-  alkamispäivä,
-  suorituskieli
+  alkamispäivä
 ) => {
-  if (!oppilaitos || !luokkaaste || !curriculum || !suorituskieli) return null
+  if (!oppilaitos || !luokkaaste || !curriculum) return null
 
   return {
-    suorituskieli,
     koulutusmoduuli: { tunniste: luokkaaste, curriculum },
     toimipiste: oppilaitos,
     alkamispäivä: formatISODate(alkamispäivä),
