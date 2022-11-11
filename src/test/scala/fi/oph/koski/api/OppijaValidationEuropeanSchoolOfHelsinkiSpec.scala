@@ -1,8 +1,8 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.{osasuoritusArviointi, primaryAlaoppimisalueArviointi, primaryLapsiOppimisalueenOsasuoritus, primaryOppimisalueenOsasuoritusKieli, primarySuoritus, secondaryLowerSuoritus, secondaryNumericalMarkArviointi, secondaryS7PreliminaryMarkArviointi, secondaryUpperMuunOppiaineenOsasuoritusS6, secondaryUpperMuunOppiaineenOsasuoritusS7, secondaryUpperSuoritusS6, secondaryUpperSuoritusS7}
-import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.{alkamispäivä, päättymispäivä}
+import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.{osasuoritusArviointi, primaryOppimisalueenOsasuoritusKieli, primarySuoritus12, secondaryLowerSuoritus1, secondaryLowerSuoritus45, secondaryNumericalMarkArviointi, secondaryS7PreliminaryMarkArviointi, secondaryUpperMuunOppiaineenOsasuoritusS6, secondaryUpperMuunOppiaineenOsasuoritusS7, secondaryUpperSuoritusS6, secondaryUpperSuoritusS7}
+import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.alkamispäivä
 import fi.oph.koski.documentation.{ExampleData, ExamplesEuropeanSchoolOfHelsinki, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
@@ -173,10 +173,10 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
     "Täydennetään" in {
       val putOo = defaultOpiskeluoikeus.copy(
         suoritukset = List(
-          primarySuoritus("P1", alkamispäivä.plusYears(2)).copy(
+          primarySuoritus12("P1", alkamispäivä.plusYears(2)).copy(
             koulutusmoduuli = PrimaryLuokkaAste("P1").copy(koulutustyyppi = None)
           ),
-          secondaryLowerSuoritus("S1", alkamispäivä.plusYears(8)).copy(
+          secondaryLowerSuoritus1("S1", alkamispäivä.plusYears(8)).copy(
             koulutusmoduuli = SecondaryLowerLuokkaAste("S1").copy(koulutustyyppi = None)
           ),
           secondaryUpperSuoritusS6("S6", alkamispäivä.plusYears(13)).copy(
