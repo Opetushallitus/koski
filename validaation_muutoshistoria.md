@@ -1,6 +1,15 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 11.11.2022
+
+- Jatkuvaan oppimiseen suunnatulle vapaan sivistystyön koulutukselle lisätty seuraavat validaatiot:
+  - Opiskeluoikeuksien tallentaminen testiympäristöihin sallittu.
+  - Ko. opiskeluoikeutta ei voi merkitä alkavaksi kuin aikaisintaan 1.1.2023.
+  - Rahoitusmuoto valitaan opiskeluoikeusjaksoille, joiden tila on läsnä tai hyväksytysti suoritettu.
+  - Jos päätason suoritus on vahvistettu, opiskeluoikeuden päättävänä tilana ei voi olla keskeytynyt.
+
 ## 9.11.2022
+
 - TUVAn valinnaisen suorituksen laajuus voidaan syöttää ilman osasuorituksia, mutta jos osasuorituksia on, niiden laajuksien summan pitää vastata suorituksen laajuutta.
 - Vapaan sivistystyön koulutuksen opiskeluoikeuksien sallitut jakson tilat on määritelty tietomallitasolla erillisen validaation sijaan, minkä johdosta virhekoodit ei-sallitusta tiloista ovat muuttuneet.
 - Jatkuvaan oppimiseen suunnatun koulutuksen rahoitusmuotoa ei voi käyttää ennen ympäristöön määriteltyä rajapäivää.
