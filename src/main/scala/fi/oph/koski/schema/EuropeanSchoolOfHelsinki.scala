@@ -423,13 +423,13 @@ trait EuropeanSchoolOfHelsinkiKieliaine extends Kieliaine with KoodistostaLöyty
 }
 
 @NotWhen("tunniste/koodiarvo", List("LA", "GRC"))
-case class EuropeanSchoolOfHelsinkiKieliOppiaine(
+case class EuropeanSchoolOfHelsinkiKielioppiaine(
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusVuosiviikkotunneissa,
   kieli: Koodistokoodiviite
 ) extends PrimarySuorituskielenVaativaOppimisalue with SecondaryOppiaine with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliaine
 
-case class EuropeanSchoolOfHelsinkiKieliOppiaineLatin(
+case class EuropeanSchoolOfHelsinkiKielioppiaineLatin(
   @KoodistoKoodiarvo("LA")
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusVuosiviikkotunneissa,
