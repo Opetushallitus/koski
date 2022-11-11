@@ -40,17 +40,17 @@ object AmmatillinenValidation {
     lazy val kuoriopiskeluoikeus = koskiOpiskeluoikeudet.isKuoriOpiskeluoikeus(ammatillinen)
 
     val isValid = ammatillinen.suoritukset.forall {
-      case a: AmmatillisenTutkinnonSuoritus if (valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(a)) => a.keskiarvo.isDefined || kuoriopiskeluoikeus
-      case b: AmmatillisenTutkinnonOsittainenSuoritus if (valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(b)) => b.keskiarvo.isDefined || kuoriopiskeluoikeus
+      case a: AmmatillisenTutkinnonSuoritus if (valmistunutReforminTaiOpsinMukaan(a, LocalDate.of(2018, 1, 15))) => a.keskiarvo.isDefined || kuoriopiskeluoikeus
+      case b: AmmatillisenTutkinnonOsittainenSuoritus if (valmistunutReforminTaiOpsinMukaan(b, LocalDate.of(2022, 1, 1))) => b.keskiarvo.isDefined || kuoriopiskeluoikeus
       case _ => true
     }
     if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo()
   }
 
-  private def valmistunutAikaisintaan2018ReforminTaiOpsinMukaan(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = {
+  private def valmistunutReforminTaiOpsinMukaan(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, earliestDate: LocalDate) = {
     a.koulutusmoduuli.koulutustyyppi.contains(Koulutustyyppi.ammatillinenPerustutkinto) &&
       a.valmis &&
-      a.vahvistus.exists(it => it.päivä.isAfter(LocalDate.of(2018, 1, 15))) &&
+      a.vahvistus.exists(it => it.päivä.isAfter(earliestDate)) &&
       List("ops", "reformi").contains(a.suoritustapa.koodiarvo)
   }
 
