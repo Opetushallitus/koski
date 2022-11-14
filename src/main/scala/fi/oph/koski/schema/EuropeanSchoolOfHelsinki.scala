@@ -139,6 +139,8 @@ trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
     with LuokalleJääntiTiedonSisältäväSuoritus
     with SisältääTodistuksellaNäkyvätLisätiedot
     {
+  @Title("Luokka-aste")
+  def koulutusmoduuli: EuropeanSchoolOfHelsinkiLuokkaAste
   @Title("Koulutus")
   def tyyppi: Koodistokoodiviite
   @Description("Luokan tunniste, esimerkiksi 9C.")
@@ -337,6 +339,7 @@ trait EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus extends EuropeanSch
 trait PrimaryOsasuoritus extends EuropeanSchoolOfHelsinkiOsasuoritus
 
 case class PrimaryLapsiOppimisalueenSuoritus(
+  @Title("Oppimisalue")
   koulutusmoduuli: PrimaryLapsiOppimisalue,
   yksilöllistettyOppimäärä: Boolean = false,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritusprimarylapsi")
@@ -347,6 +350,7 @@ case class PrimaryLapsiOppimisalueenSuoritus(
 ) extends PrimaryOsasuoritus
 
 case class PrimaryOppimisalueenSuoritus(
+  @Title("Oppimisalue")
   koulutusmoduuli: PrimarySuorituskielenVaativaOppimisalue,
   yksilöllistettyOppimäärä: Boolean = false,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritusprimary")
@@ -357,6 +361,7 @@ case class PrimaryOppimisalueenSuoritus(
 ) extends PrimaryOsasuoritus with EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus
 
 case class SecondaryLowerOppiaineenSuoritus(
+  @Title("Oppiaine")
   koulutusmoduuli: SecondaryOppiaine,
   yksilöllistettyOppimäärä: Boolean = false,
   arviointi: Option[List[SecondaryLowerArviointi]] = None,
@@ -369,6 +374,7 @@ trait SecondaryUpperOppiaineenSuoritus extends EuropeanSchoolOfHelsinkiSuoritusk
 
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S6")
 case class SecondaryUpperOppiaineenSuoritusS6(
+  @Title("Oppiaine")
   koulutusmoduuli: SecondaryOppiaine,
   yksilöllistettyOppimäärä: Boolean = false,
   arviointi: Option[List[SecondaryNumericalMarkArviointi]] = None,
@@ -379,6 +385,7 @@ case class SecondaryUpperOppiaineenSuoritusS6(
 
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S7")
 case class SecondaryUpperOppiaineenSuoritusS7(
+  @Title("Oppiaine")
   koulutusmoduuli: SecondaryOppiaine,
   yksilöllistettyOppimäärä: Boolean = false,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss7")
@@ -450,6 +457,7 @@ case class EuropeanSchoolOfHelsinkiKielioppiaineAncientGreek(
  *****************************************************************************/
 
 case class PrimaryLapsiOppimisalueenAlaosasuoritus(
+  @Title("Alaosasuoritus")
   koulutusmoduuli: PrimaryLapsiAlaoppimisalue,
   arviointi: Option[List[PrimaryAlaoppimisalueArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkialaosasuoritusprimarylapsi")
@@ -457,6 +465,7 @@ case class PrimaryLapsiOppimisalueenAlaosasuoritus(
 ) extends EuropeanSchoolOfHelsinkiOsasuorituksenAlaosasuoritus
 
 case class PrimaryOppimisalueenAlaosasuoritus(
+  @Title("Alaosasuoritus")
   koulutusmoduuli: PrimaryAlaoppimisalue,
   arviointi: Option[List[PrimaryAlaoppimisalueArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkialaosasuoritusprimary")
@@ -464,6 +473,7 @@ case class PrimaryOppimisalueenAlaosasuoritus(
 ) extends EuropeanSchoolOfHelsinkiOsasuorituksenAlaosasuoritus
 
 case class S7OppiaineenAlaosasuoritus(
+  @Title("Arviointikomponentti")
   koulutusmoduuli: S7OppiaineKomponentti,
   arviointi: Option[List[SecondaryS7PreliminaryMarkArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkialaosasuorituss7")
@@ -516,6 +526,7 @@ trait EuropeanSchoolOfHelsinkiArviointi extends ArviointiPäivämäärällä {
 
 trait EuropeanSchoolOfHelsinkiSanallinenArviointi extends EuropeanSchoolOfHelsinkiArviointi with SanallinenArviointi {
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Title("Oppilaan vahvuudet ja kehittymisalueet jatkossa")
   def kuvaus: Option[LocalizedString]
 }
 
@@ -619,7 +630,7 @@ case class SecondaryNumericalMarkArviointi(
   kuvaus: Option[LocalizedString],
   päivä: LocalDate,
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiSynteettinenArviointi
+) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiSanallinenArviointi with EuropeanSchoolOfHelsinkiSynteettinenArviointi
 
 
 case class SecondaryS7PreliminaryMarkArviointi(

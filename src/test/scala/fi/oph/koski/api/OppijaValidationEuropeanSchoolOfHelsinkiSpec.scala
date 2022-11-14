@@ -1,12 +1,17 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.KoskiHttpSpec
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigValueFactory.fromAnyRef
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.{osasuoritusArviointi, primaryOppimisalueenOsasuoritusKieli, primarySuoritus12, secondaryLowerSuoritus1, secondaryLowerSuoritus45, secondaryNumericalMarkArviointi, secondaryS7PreliminaryMarkArviointi, secondaryUpperMuunOppiaineenOsasuoritusS6, secondaryUpperMuunOppiaineenOsasuoritusS7, secondaryUpperSuoritusS6, secondaryUpperSuoritusS7}
 import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.alkamispäivä
 import fi.oph.koski.documentation.{ExampleData, ExamplesEuropeanSchoolOfHelsinki, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.schema._
+import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
+import fi.oph.koski.validation.KoskiValidator
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -495,6 +500,43 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
         verifyResponseStatusOk()
       }
     }
+  }
+
+  "Ei voi tallentaa ennen rajapäivää" in {
+    val oppija = Oppija(defaultHenkilö, List(defaultOpiskeluoikeus))
+    val huominenPäivä = LocalDate.now().plusDays(1)
+
+    val config = KoskiApplicationForTests.config.withValue("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuTallennuspaiva", fromAnyRef(huominenPäivä.toString))
+    implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+    implicit val accessType = AccessType.write
+    mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija)
+      .left.get should equal(KoskiErrorCategory.badRequest.validation.esh.tallennuspäivä(s"Helsingin eurooppalaisen koulun opiskeluoikeuksia voi alkaa tallentaa vasta ${finnishDateFormat.format(huominenPäivä)} alkaen"))
+  }
+
+  "Ei voi tallentaa, jos päättynyt ennen rajapäivää" in {
+    defaultOpiskeluoikeus.päättymispäivä.isDefined should be(true)
+    val oppija = Oppija(defaultHenkilö, List(defaultOpiskeluoikeus))
+    val päättymispäivänjälkeinenPäivä = defaultOpiskeluoikeus.päättymispäivä.get.plusDays(1)
+
+    val config = KoskiApplicationForTests.config.withValue("validaatiot.europeanSchoolOfHelsinkiAikaisinSallittuPaattymispaiva", fromAnyRef(päättymispäivänjälkeinenPäivä.toString))
+    implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
+    implicit val accessType = AccessType.write
+    mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija)
+      .left.get should equal(KoskiErrorCategory.badRequest.validation.esh.päättymispäivä(s"Helsingin eurooppalaisen koulun tallennettavat opiskeluoikeudet eivät voi olla päättyneet ennen lain voimaantuloa ${finnishDateFormat.format(päättymispäivänjälkeinenPäivä)}"))
+  }
+
+  def mockKoskiValidator(config: Config) = {
+    new KoskiValidator(
+      KoskiApplicationForTests.organisaatioRepository,
+      KoskiApplicationForTests.possu,
+      KoskiApplicationForTests.henkilöRepository,
+      KoskiApplicationForTests.ePerusteetValidator,
+      KoskiApplicationForTests.ePerusteetFiller,
+      KoskiApplicationForTests.validatingAndResolvingExtractor,
+      KoskiApplicationForTests.suostumuksenPeruutusService,
+      KoskiApplicationForTests.koodistoViitePalvelu,
+      config
+    )
   }
 
   private def putAndGetOpiskeluoikeus(oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus): EuropeanSchoolOfHelsinkiOpiskeluoikeus = putOpiskeluoikeus(oo) {

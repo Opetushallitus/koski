@@ -10,7 +10,7 @@ import java.time.LocalDate.{of => date}
 
 object ExamplesEuropeanSchoolOfHelsinki {
   val alkamispäivä = date(2004, 8, 1)
-  val päättymispäivä = alkamispäivä.plusYears(16).withMonth(5).withDayOfMonth(31)
+  val päättymispäivä = alkamispäivä.plusYears(20).withMonth(5).withDayOfMonth(31)
   val lisätiedot = EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
     ulkomaanjaksot = Some(List(ExamplesLukio.ulkomaanjakso)),
   )

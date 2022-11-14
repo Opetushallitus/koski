@@ -32,7 +32,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2020-05-31",
+        "alku" : "2024-05-31",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {
@@ -18698,6 +18698,6 @@
       } ]
     },
     "alkamispäivä" : "2004-08-01",
-    "päättymispäivä" : "2020-05-31"
+    "päättymispäivä" : "2024-05-31"
   } ]
 }
