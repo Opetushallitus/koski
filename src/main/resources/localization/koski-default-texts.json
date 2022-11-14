@@ -2405,5 +2405,9 @@
   "description:Käytetyn synteettisen koodiston tunniste" : "Käytetyn synteettisen koodiston tunniste",
   "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan..." : "Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi.",
   "tooltip:Onko oppilas opiskellut yksilöllisen oppimäärän." : "Onko oppilas opiskellut yksilöllisen oppimäärän.",
-  "description:Tieto siitä, onko oppimäärä yksilöllistetty..." : "Tieto siitä, onko oppimäärä yksilöllistetty (true/false)."
+  "description:Tieto siitä, onko oppimäärä yksilöllistetty..." : "Tieto siitä, onko oppimäärä yksilöllistetty (true/false).",
+  "Alaosasuoritus" : "Alaosasuoritus",
+  "Arviointikomponentti" : "Arviointikomponentti",
+  "Oppimisalue" : "Oppimisalue",
+  "Oppilaan vahvuudet ja kehittymisalueet jatkossa" : "Oppilaan vahvuudet ja kehittymisalueet jatkossa"
 }

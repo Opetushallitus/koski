@@ -526,6 +526,7 @@ trait EuropeanSchoolOfHelsinkiArviointi extends ArviointiPäivämäärällä {
 
 trait EuropeanSchoolOfHelsinkiSanallinenArviointi extends EuropeanSchoolOfHelsinkiArviointi with SanallinenArviointi {
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Title("Oppilaan vahvuudet ja kehittymisalueet jatkossa")
   def kuvaus: Option[LocalizedString]
 }
 
@@ -629,7 +630,7 @@ case class SecondaryNumericalMarkArviointi(
   kuvaus: Option[LocalizedString],
   päivä: LocalDate,
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiSynteettinenArviointi
+) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiSanallinenArviointi with EuropeanSchoolOfHelsinkiSynteettinenArviointi
 
 
 case class SecondaryS7PreliminaryMarkArviointi(
