@@ -2,6 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
+import fi.oph.koski.schema
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.Koulutustyyppi
 
@@ -14,44 +15,55 @@ object AmmatillinenValidation {
   ): HttpStatus = {
     opiskeluoikeus match {
       case ammatillinen: AmmatillinenOpiskeluoikeus =>
+        lazy val isKuoriopiskeluoikeus = koskiOpiskeluoikeudet.isKuoriOpiskeluoikeus(ammatillinen)
         HttpStatus.fold(
           validateUseaPäätasonSuoritus(ammatillinen),
           validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen),
-          validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen, koskiOpiskeluoikeudet)
+          validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen, isKuoriopiskeluoikeus)
         )
       case _ => HttpStatus.ok
     }
   }
 
   private def validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen: AmmatillinenOpiskeluoikeus) = {
-    val isValid = ammatillinen.suoritukset.forall {
-      case a: AmmatillisenTutkinnonSuoritus if (a.keskiarvo.isDefined) => a.valmis || (katsotaanEronneeksi(ammatillinen) & tutkinnonOsaOlemassa(a))
-      case b: AmmatillisenTutkinnonOsittainenSuoritus if (b.keskiarvo.isDefined) => b.valmis || (katsotaanEronneeksi(ammatillinen) & tutkinnonOsaOlemassa(b))
+    def katsotaanEronneeksi(a: AmmatillinenOpiskeluoikeus) = a.tila.opiskeluoikeusjaksot.last.tila.koodiarvo == "katsotaaneronneeksi"
+    def tutkinnonOsaOlemassa(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = if (a.osasuoritukset.isDefined) a.osasuoritukset.get.exists(os => os.valmis) else false
+
+    val keskiarvotVainKunSallittu = ammatillinen.suoritukset.forall {
+      case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
+        if (s.keskiarvo.isDefined) s.valmis || (katsotaanEronneeksi(ammatillinen) && tutkinnonOsaOlemassa(s)) else true
       case _ => true
     }
-    if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle()
+
+    if (keskiarvotVainKunSallittu) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle()
   }
 
-  private def katsotaanEronneeksi(a: AmmatillinenOpiskeluoikeus) = a.tila.opiskeluoikeusjaksot.last.tila.koodiarvo == "katsotaaneronneeksi"
-
-  private def tutkinnonOsaOlemassa(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = if (a.osasuoritukset.isDefined) a.osasuoritukset.get.exists(os => os.valmis) else false
-
-  private def validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen: AmmatillinenOpiskeluoikeus, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository) = {
-    lazy val kuoriopiskeluoikeus = koskiOpiskeluoikeudet.isKuoriOpiskeluoikeus(ammatillinen)
-
-    val isValid = ammatillinen.suoritukset.forall {
-      case a: AmmatillisenTutkinnonSuoritus if (valmistunutReforminTaiOpsinMukaan(a, LocalDate.of(2018, 1, 15))) => a.keskiarvo.isDefined || kuoriopiskeluoikeus
-      case b: AmmatillisenTutkinnonOsittainenSuoritus if (valmistunutReforminTaiOpsinMukaan(b, LocalDate.of(2022, 1, 1))) => b.keskiarvo.isDefined || kuoriopiskeluoikeus
+  private def validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen: AmmatillinenOpiskeluoikeus, isKuoriopiskeluoikeus: Boolean) = {
+    val keskiarvotOlemassa = ammatillinen.suoritukset.forall {
+      case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
+        if (keskiarvoPakollinenVahvistuspäivänä(s, isKuoriopiskeluoikeus)) s.keskiarvo.isDefined else true
       case _ => true
     }
-    if (isValid) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo()
+    if (keskiarvotOlemassa) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo()
   }
 
-  private def valmistunutReforminTaiOpsinMukaan(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, earliestDate: LocalDate) = {
-    a.koulutusmoduuli.koulutustyyppi.contains(Koulutustyyppi.ammatillinenPerustutkinto) &&
-      a.valmis &&
-      a.vahvistus.exists(it => it.päivä.isAfter(earliestDate)) &&
-      List("ops", "reformi").contains(a.suoritustapa.koodiarvo)
+  private def keskiarvoPakollinenVahvistuspäivänä(s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, isKuoriopiskeluoikeus: Boolean) = {
+    def valmistunutReforminTaiOpsinMukaan(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = {
+      a.koulutusmoduuli.koulutustyyppi.contains(Koulutustyyppi.ammatillinenPerustutkinto) &&
+        List("ops", "reformi").contains(a.suoritustapa.koodiarvo)
+    }
+
+    def valmisJaVahvistettuAikaisintaan(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, earliestDate: LocalDate): Boolean =
+      a.valmis && a.vahvistus.exists(it => it.päivä.isAfter(earliestDate))
+
+    val keskiarvoPakollinenAlkaen = s match {
+      case _: AmmatillisenTutkinnonSuoritus => LocalDate.of(2018, 1, 15)
+      case _: AmmatillisenTutkinnonOsittainenSuoritus => LocalDate.of(2022, 1, 1)
+    }
+
+    valmistunutReforminTaiOpsinMukaan(s) &&
+      valmisJaVahvistettuAikaisintaan(s, keskiarvoPakollinenAlkaen) &&
+      !isKuoriopiskeluoikeus
   }
 
   private def validateUseaPäätasonSuoritus(opiskeluoikeus: AmmatillinenOpiskeluoikeus): HttpStatus = {
