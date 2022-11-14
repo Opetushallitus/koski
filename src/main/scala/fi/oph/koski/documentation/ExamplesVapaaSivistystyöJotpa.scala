@@ -1,6 +1,7 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
+import fi.oph.koski.documentation.VapaaSivistystyöExample.opiskeluoikeusHyväksytystiSuoritettu
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOppijat}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -34,6 +35,16 @@ object ExamplesVapaaSivistystyöJotpa {
         )),
         suoritukset = List(PäätasonSuoritus.juuriAloittanut)
       )
+
+    lazy val suoritettu: VapaanSivistystyönOpiskeluoikeus =
+      VapaanSivistystyönOpiskeluoikeus(
+        oppilaitos = Some(varsinaisSuomenKansanopisto),
+        tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+          VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(LocalDate.of(2023, 1, 1), opiskeluoikeusLäsnä, Some(rahoitusJotpa)),
+          VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(LocalDate.of(2023, 2, 1), opiskeluoikeusHyväksytystiSuoritettu, Some(rahoitusJotpa)),
+        )),
+        suoritukset = List(PäätasonSuoritus.suoritettu),
+      )
   }
 
   object PäätasonSuoritus {
@@ -46,10 +57,28 @@ object ExamplesVapaaSivistystyöJotpa {
         ),
         osasuoritukset = Some(Osasuoritus.osasuoritukset),
       )
+
+    lazy val suoritettu: VapaanSivistystyönJotpaKoulutuksenSuoritus =
+      VapaanSivistystyönJotpaKoulutuksenSuoritus(
+        toimipiste = varsinaisSuomenKansanopistoToimipiste,
+        suorituskieli = suomenKieli,
+        koulutusmoduuli = VapaanSivistystyönJotpaKoulutus(
+          opintokokonaisuus = VapaaSivistystyöExample.exampleOpintokokonaisuus,
+        ),
+        osasuoritukset = Some(Osasuoritus.arvioidutOsasuoritukset),
+        vahvistus = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(
+          päivä = LocalDate.of(2023, 2, 1),
+          myöntäjäOrganisaatio = varsinaisSuomenKansanopisto,
+          myöntäjäHenkilöt = List(
+            Organisaatiohenkilö("Reijo Reksi", finnish("Rehtori"), varsinaisSuomenKansanopisto),
+          )
+        ))
+      )
   }
 
   object Osasuoritus {
-    lazy val osasuoritukset = List(osasuoritus1, osasuoritus2, osasuoritus3)
+    lazy val osasuoritukset = List(osasuoritus1, osasuoritus2, osasuoritus3Arvioimaton)
+    lazy val arvioidutOsasuoritukset = List(osasuoritus1, osasuoritus2, osasuoritus3Arvioitu)
 
     lazy val osasuoritus1: VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.kurssi1,
@@ -61,8 +90,13 @@ object ExamplesVapaaSivistystyöJotpa {
       arviointi = Some(List(VapaanSivistystyöJotpaKoulutuksenArviointi(päivä = LocalDate.of(2023, 3, 1))))
     )
 
-    lazy val osasuoritus3: VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
+    lazy val osasuoritus3Arvioimaton: VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.kurssi3,
+    )
+
+    lazy val osasuoritus3Arvioitu: VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
+      koulutusmoduuli = Koulutusmoduuli.kurssi3,
+      arviointi = Some(List(VapaanSivistystyöJotpaKoulutuksenArviointi(päivä = LocalDate.of(2023, 3, 1))))
     )
 
     object Koulutusmoduuli {

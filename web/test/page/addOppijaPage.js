@@ -205,12 +205,7 @@ function AddOppijaPage() {
           oppimäärä: 'Jatkuvaan oppimiseen suunnattu',
           suorituskieli: 'suomi',
           tila: 'Läsnä',
-          alkamispäivä:
-            new Date().getDate() +
-            '.' +
-            (1 + new Date().getMonth()) +
-            '.' +
-            new Date().getFullYear(),
+          alkamispäivä: '1.1.2023',
           opintokokonaisuus: '1138 Kuvallisen ilmaisun perusteet ja välineet'
         },
         params

@@ -1,14 +1,20 @@
 package fi.oph.koski.validation
 
+import com.typesafe.config.Config
 import fi.oph.koski.documentation.VapaaSivistystyöExample.{opiskeluoikeusHyväksytystiSuoritettu, opiskeluoikeusKeskeytynyt}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema._
+import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 
 import java.time.LocalDate
 
 object VapaaSivistystyöValidation {
-  def validateVapaanSivistystyönPäätasonSuoritus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+  def validateVapaanSivistystyönPäätasonSuoritus(
+    suoritus: Suoritus,
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    vstJotpaAikaisinSallittuAlkamispäivä: LocalDate,
+  ): HttpStatus = {
     suoritus match {
       case suoritus:VapaanSivistystyönPäätasonSuoritus => {
         HttpStatus.fold(List(
@@ -22,6 +28,11 @@ object VapaaSivistystyöValidation {
               HttpStatus.fold(List(
                 validateVapaanSivistystyönVahvistus(vapaa, opiskeluoikeus),
                 validateVapaanSivistystyönVapaatavoitteisenPäätasonOsaSuoritukset(vapaa)
+              ))
+            case jotpa: VapaanSivistystyönJotpaKoulutuksenSuoritus =>
+              HttpStatus.fold(List(
+                validateVapaanSivistystyönJotpaKoulutuksenVahvistus(jotpa, opiskeluoikeus),
+                validateVapaanSivistystyönJotpaKoulutuksenAlkamispäivä(opiskeluoikeus, vstJotpaAikaisinSallittuAlkamispäivä)
               ))
             case _ =>
               HttpStatus.ok
@@ -53,6 +64,9 @@ object VapaaSivistystyöValidation {
       case _ => HttpStatus.ok
     }
   }
+
+  def vstJotpaAikaisinSallittuAlkamispäivä(config: Config): LocalDate =
+    LocalDate.parse(config.getString("validaatiot.vstJotpaAikaisinSallittuAlkamispäivä"))
 
   private def validateVapaanSivistystyönPäätasonKOPSSuorituksenLaajuus(suoritus: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus): HttpStatus = {
     if (suoritus.osasuoritusLista.map(_.osasuoritusLista).flatten.map(_.koulutusmoduuli.laajuusArvo(0)).sum < 53.0) {
@@ -89,6 +103,27 @@ object VapaaSivistystyöValidation {
       KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistetulla vapaan sivistystyön vapaatavoitteisella koulutuksella ei voi olla päättävänä tilana 'Keskeytynyt'")
     } else if (!suoritus.vahvistettu && opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == opiskeluoikeusHyväksytystiSuoritettu.koodiarvo)) {
       KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla vapaan sivistystyön vapaatavoitteisella koulutuksella ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'")
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateVapaanSivistystyönJotpaKoulutuksenVahvistus(suoritus: VapaanSivistystyönJotpaKoulutuksenSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    if (suoritus.vahvistettu && opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == opiskeluoikeusKeskeytynyt.koodiarvo)) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistetulla jatkuvaan oppimiseen suunnatulla vapaan sivistystyön koulutuksella ei voi olla päättävänä tilana 'Keskeytynyt'")
+    } else if (!suoritus.vahvistettu && opiskeluoikeus.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == opiskeluoikeusHyväksytystiSuoritettu.koodiarvo)) {
+      KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVapaatavoitteeisenKoulutuksenVahvistus("Vahvistamattomalla jatkuvaan oppimiseen suunnatulla vapaan sivistystyön koulutuksella ei voi olla päättävänä tilana 'Hyväksytysti suoritettu'")
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateVapaanSivistystyönJotpaKoulutuksenAlkamispäivä(
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    vstJotpaAikaisinSallittuAlkamispäivä: LocalDate,
+  ): HttpStatus = {
+    if (opiskeluoikeus.alkamispäivä.exists(_.isBefore(vstJotpaAikaisinSallittuAlkamispäivä))) {      
+      KoskiErrorCategory.badRequest.validation.date.alkamispäivä(s"Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen opiskeluoikeus ei voi alkaa ennen ${finnishDateFormat.format(vstJotpaAikaisinSallittuAlkamispäivä)}")
     } else {
       HttpStatus.ok
     }
