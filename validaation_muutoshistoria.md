@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 15.11.2022
+- Ammatillisen perustutkinnon osatutkinnosta valmistuneilta vaaditaan keskiarvo, kun valmistumispäivä on 1.1.2022 tai sen jälkeen.
+
 ## 11.11.2022
 
 - Jatkuvaan oppimiseen suunnatulle vapaan sivistystyön koulutukselle lisätty seuraavat validaatiot:
