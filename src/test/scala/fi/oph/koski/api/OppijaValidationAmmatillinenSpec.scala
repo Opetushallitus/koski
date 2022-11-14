@@ -844,6 +844,16 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             verifyResponseStatusOk()
           ))
         }
+
+        "vaaditaan jos osittainen tutkinto valmis 2022 tai jälkeen" - {
+          "palautetaan HTTP 400" in putAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenAutoalanSuoritus.copy(keskiarvo = None, vahvistus = vahvistus(date(2022, 1, 2))))(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis")))
+        }
+
+        "ei vaadita jos osittainen tutkinto valmis ennen 2022" - {
+          "palautetaan HTTP 200" in putAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenAutoalanSuoritus.copy(keskiarvo = None))(
+            verifyResponseStatus(200))
+        }
       }
     }
 
