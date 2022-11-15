@@ -1,3 +1,6 @@
+## 15.11.2022
+- Ammatillisen perustutkinnon osatutkinnosta valmistuneilta vaaditaan keskiarvo, kun valmistumispäivä on 1.1.2022 tai sen jälkeen.
+
 ## 9.11.2022
 - TUVA-koulutuksen valinnaisten opintojen kokonaislaajuus voidaan syöttää ilman osasuorituksia
 - Jatkuvaan oppimiseen suunnatun vapaan sivistystyön koulutuksen opiskeluoikeuden koulutusmoduulista poistettu `kuvaus`-kenttä.
