@@ -843,21 +843,21 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
 
         "vaaditaan jos osittainen tutkinto valmis 1.1.2022 tai jälkeen" - {
-          "palautetaan HTTP 400" in putAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenAutoalanSuoritus.copy(keskiarvo = None, vahvistus = vahvistus(date(2022, 1, 2))))(
+          "palautetaan HTTP 400" in putAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenAutoalanSuoritus.copy(keskiarvo = None, vahvistus = vahvistus(date(2022, 1, 1))))(
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis")))
         }
 
-        "ei vaadita jos osittainen tutkinto valmis 1.1.2022 mennessä" - {
+        "ei vaadita jos osittainen tutkinto valmis ennen 1.1.2022" - {
           "palautetaan HTTP 200" in putAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenAutoalanSuoritus.copy(keskiarvo = None, vahvistus = vahvistus(date(2021, 12, 31))))(
             verifyResponseStatus(200))
         }
 
-        "vaaditaan jos koko tutkinto valmis 15.1.2018 jälkeen" - {
-          "palautetaan HTTP 400" in putAmmatillinenPäätasonSuoritus(valmisSuoritusKeskiarvolla.copy(keskiarvo = None, vahvistus = vahvistus(date(2018, 1, 16))))(
+        "vaaditaan jos koko tutkinto valmis 15.1.2018 tai jälkeen" - {
+          "palautetaan HTTP 400" in putAmmatillinenPäätasonSuoritus(valmisSuoritusKeskiarvolla.copy(keskiarvo = None, vahvistus = vahvistus(date(2018, 1, 15))))(
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis")))
         }
 
-        "ei vaadita jos koko tutkinto valmis 15.1.2018 mennessä" - {
+        "ei vaadita jos koko tutkinto valmis ennen 15.1.2018" - {
           "palautetaan HTTP 200" in putAmmatillinenPäätasonSuoritus(valmisSuoritusKeskiarvolla.copy(keskiarvo = None, vahvistus = vahvistus(date(2018, 1, 14))))(
             verifyResponseStatus(200)
           )

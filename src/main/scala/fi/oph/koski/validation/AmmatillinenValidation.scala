@@ -54,7 +54,7 @@ object AmmatillinenValidation {
     }
 
     def valmisJaVahvistettuAikaisintaan(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, earliestDate: LocalDate): Boolean =
-      a.valmis && a.vahvistus.exists(it => it.päivä.isAfter(earliestDate))
+      a.valmis && a.vahvistus.exists(it => it.päivä.isAfter(earliestDate) || it.päivä.isEqual(earliestDate))
 
     val keskiarvoPakollinenAlkaen = s match {
       case _: AmmatillisenTutkinnonSuoritus => LocalDate.of(2018, 1, 15)
