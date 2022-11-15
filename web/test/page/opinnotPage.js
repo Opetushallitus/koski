@@ -1585,14 +1585,21 @@ function Editor(elem) {
   var enabledSaveButton = findSingle('#edit-bar button:not(:disabled)')
   var api = {
     isVisible: function () {
+      console.log('Editor.isVisible: isElementVisible', elem)
       return isElementVisible(elem)
     },
     edit: function () {
+      console.log('Editor.edit begin')
       return wait
         .until(api.isVisible)()
         .then(function () {
+          console.log('Editor.edit then: isElementVisible', editButton)
           if (isElementVisible(editButton)) {
-            return click(editButton)()
+            console.log('Editor.edit button is visible: click', editButton)
+            return click(editButton)().then((x) => {
+              console.log('Editor.edit click triggered')
+              return x
+            })
           }
         })
         .then(KoskiPage().verifyNoError)
