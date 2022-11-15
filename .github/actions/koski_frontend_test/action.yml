@@ -15,7 +15,7 @@ runs:
 
     - name: Archive test screenshots
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: screenshots
-        path: web/target/screenshots/
+        path: web/target/screenshots
