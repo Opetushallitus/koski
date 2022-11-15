@@ -288,6 +288,7 @@ object KoskiErrorCategory {
     val samanaikainenPäivitys = subcategory("samanaikainenPäivitys", "Toinen käyttäjä on päivittänyt saman opiskeluoikeuden tietoja samanaikaisesti. Yritä myöhemmin uudelleen.")
     val exists = subcategory("exists", "Vastaava opiskeluoikeus on jo olemassa.")
     val hetu = subcategory("hetu", "Henkilö on jo lisätty annetulla hetulla.")
+    val löytyiEnemmänKuinYksiRivi = subcategory("löytyiEnemmänKuinYksiRivi", "Löytyi enemmän kuin yksi rivi päivitettäväksi.")
   }
 
   object unsupportedMediaType extends ErrorCategory("unsupportedMediaType", 415, "Unsupported media type") {

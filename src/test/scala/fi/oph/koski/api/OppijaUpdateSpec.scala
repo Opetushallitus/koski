@@ -320,7 +320,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
           lähdejärjestelmänId = original.lähdejärjestelmänId,
           lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot(pidennettyPäättymispäivä = Some(true)))
         ))), headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
-          verifyResponseStatus(500, ErrorMatcher.regex(KoskiErrorCategory.internalError, "Löytyi enemmän kuin yksi rivi päivitettäväksi.*".r))
+          verifyResponseStatus(409, ErrorMatcher.regex(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi, "Löytyi enemmän kuin yksi rivi päivitettäväksi.*".r))
         }
       }
 
