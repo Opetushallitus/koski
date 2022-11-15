@@ -203,8 +203,9 @@ const opiskeluoikeusPropertyFilter = (opiskeluoikeus, property) =>
   !excludedProperties.includes(property.key) &&
   (opiskeluoikeus.context.edit || modelData(property.model) !== false)
 
-const OpiskeluoikeudenId = ({ opiskeluoikeus }) => {
+export const OpiskeluoikeudenId = ({ opiskeluoikeus }) => {
   const selectAllText = (e) => {
+    e.stopPropagation()
     const el = e.target
     const range = document.createRange()
     range.selectNodeContents(el)

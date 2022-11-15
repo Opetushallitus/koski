@@ -5,7 +5,10 @@ import {
   modelItems,
   modelTitle
 } from '../editor/EditorModel'
-import { näytettäväPäätasonSuoritusTitle } from '../opiskeluoikeus/OpiskeluoikeusEditor'
+import {
+  näytettäväPäätasonSuoritusTitle,
+  OpiskeluoikeudenId
+} from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import { OpiskeluoikeudenTila } from './fragments/OpiskeluoikeudenTila'
 import ChevronUpIcon from '../icons/ChevronUpIcon'
 import ChevronDownIcon from '../icons/ChevronDownIcon'
@@ -84,6 +87,11 @@ class Opiskeluoikeus extends React.Component {
                   <OpiskeluoikeudenTila opiskeluoikeus={opiskeluoikeus} />
                 )}
               </h3>
+              {
+                <span>
+                  <OpiskeluoikeudenId opiskeluoikeus={opiskeluoikeus} />
+                </span>
+              }
             </div>
             <div className="opiskeluoikeus-expand-icon">
               {expanded ? <ChevronUpIcon /> : <ChevronDownIcon />}

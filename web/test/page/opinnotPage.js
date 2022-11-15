@@ -1259,6 +1259,13 @@ function Opiskeluoikeudet() {
         )
       )
     },
+    omatTiedotOpiskeluoikeuksienOtsikotJaOpiskeluoikeusOid: function () {
+      return textsOf(
+        S(
+          '.oppilaitos-list .oppilaitos-container .opiskeluoikeudet-list .opiskeluoikeus-title'
+        )
+      )
+    },
     valitunVälilehdenAlaotsikot: function () {
       return textsOf(
         S(
