@@ -16,6 +16,7 @@
     "bacon.atom": "^5.0.5",
     "baconjs": "^1.0.1",
     "baret": "^1.2.0",
+    "classnames": "^2.3.2",
     "codemirror": "^5.65.9",
     "core-js": "^1.2.7",
     "element-closest": "^2.0.2",
@@ -46,6 +47,7 @@
     "@babel/preset-react": "^7.12.7",
     "@babel/preset-typescript": "^7.17.12",
     "@babel/register": "^7.12.1",
+    "@playwright/test": "^1.27.1",
     "@types/baconjs": "^3.0.0",
     "@types/ramda": "^0.28.14",
     "@types/react": "^18.0.12",
@@ -104,6 +106,10 @@
     "unit-test": "mocha --require @babel/register --reporter spec ./test/unit-test",
     "unit-test-watch": "mocha -w --require @babel/register --reporter spec ./test/unit-test",
     "test": "node/node test/mocha-chrome-wrapper.js ${MOCHA_URL:=http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'",
+    "playwright:test": "npx playwright test",
+    "playwright:test:debug": "npx playwright test --headed",
+    "playwright:test:trace": "npx playwright test --trace on && npx playwright show-report",
+    "playwright:codegen": "npx playwright codegen",
     "preinstall": "npx npm-force-resolutions"
   },
   "resolutions": {

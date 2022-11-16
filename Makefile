@@ -101,6 +101,10 @@ backtestnonmock:
 fronttest:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pfronttest
 
+.PHONY: integrationtest
+integrationtest:
+		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
+
 .PHONY: screenshot
 screenshot:
 	ls -t web/target/screenshots|head -1|xargs -I{} open web/target/screenshots/{}
