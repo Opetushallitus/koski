@@ -2,6 +2,8 @@ name: Run tests 1 per hour
 on:
   schedule:
     - cron: "0 * * * *"
+  workflow_dispatch:
+
 env:
   DOCKER_BUILDKIT: 1
   TZ: Europe/Helsinki
