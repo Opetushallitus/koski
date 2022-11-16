@@ -84,7 +84,12 @@ export const OppijaHaku = () => {
           return {
             href,
             element: (
-              <li className={i == selectedIndex ? 'selected' : ''} key={i}>
+              <li
+                className={i == selectedIndex ? 'selected' : ''}
+                role="listitem"
+                aria-label={`${o.sukunimi}, ${o.etunimet}`}
+                key={i}
+              >
                 <Link href={href}>
                   <Highlight
                     ignoreDiacritics={true}
@@ -152,6 +157,7 @@ export const OppijaHaku = () => {
           </h3>
           <input
             type="text"
+            role="search"
             value={searchStringAtom}
             id="search-query"
             placeholder={t('henkilötunnus, nimi tai oppijanumero')}
@@ -167,11 +173,19 @@ export const OppijaHaku = () => {
           optionsP,
           ({ response, query }, options) => {
             if (response.henkilöt.length > 0) {
-              return <ul>{options.map((option) => option.element)}</ul>
+              return (
+                <ul role="list" aria-label="Hakutulokset">
+                  {options.map((option) => option.element)}
+                </ul>
+              )
             }
             if (query.length > 2) {
               return (
-                <div className="no-results">
+                <div
+                  className="no-results"
+                  role="status"
+                  aria-label="Ei hakutuloksia"
+                >
                   <Text name="Ei hakutuloksia" />
                   {options.map((option) => option.element)}
                   {response.error && (

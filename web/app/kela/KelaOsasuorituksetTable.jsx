@@ -80,7 +80,8 @@ const ExpandableOsasuoritus = ({
           >
             <td>
               <span className="expand-button">
-                {isExpandable ? (expanded ? '' : '') : ''}
+                {/* eslint-disable-next-line react/jsx-no-literals */}
+                {isExpandable ? expanded ? <>&#61766;</> : <>&#61694;</> : ''}
               </span>{' '}
               <span className="suorituksen-nimi">
                 {suorituksenNimi(osasuoritus.koulutusmoduuli)}

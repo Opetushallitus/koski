@@ -206,4 +206,12 @@ const SingleColumnRowTable = ({ className, children, colSpan = 1 }) => (
 )
 
 export const suorituksenTilaSymbol = (suoritus) =>
-  isValinnanMahdollisuus(suoritus) ? '' : suoritusValmis(suoritus) ? '' : ''
+  isValinnanMahdollisuus(suoritus) ? (
+    <></>
+  ) : suoritusValmis(suoritus) ? (
+    // eslint-disable-next-line react/jsx-no-literals
+    <>&#61452;</>
+  ) : (
+    // eslint-disable-next-line react/jsx-no-literals
+    <>&#62034;</>
+  )

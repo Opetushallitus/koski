@@ -268,14 +268,23 @@ const SuoritusTabs = ({ selectedTabIndex, suoritukset, onChange }) => {
       suoritusTitle(suoritusModel)
     )
   return (
-    <div className="suoritus-tabs">
+    <div className="suoritus-tabs" role="tablist" aria-label="Suoritukset">
       <ul>
         {suoritukset.map((suoritus, i) => {
           const selected = selectedTabIndex === i
           const titleEditor = tabTitle(suoritus)
           const onClick = () => onChange(i)
           return (
-            <li className={selected ? 'tab selected' : 'tab'} key={i}>
+            <li
+              className={selected ? 'tab selected' : 'tab'}
+              key={i}
+              role="tab"
+              aria-label={`${selected ? 'Valittu ' : ''}${
+                typeof titleEditor === 'string'
+                  ? titleEditor
+                  : `Suoritus ${i + 1}`
+              }`}
+            >
               {selected ? (
                 titleEditor
               ) : (

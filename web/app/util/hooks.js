@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 /**
  * Funktio, jolla Bacon.js property wrapataan Reactin useState:n avulla toteutettuun custom React hookkiin.
  * @param {*} property
- * @returns null | Property
+ * @returns {null | baconjs.Property}
  */
 export function useBaconProperty(property) {
   const [value, setValue] = useState(null)
@@ -16,7 +16,7 @@ export function useBaconProperty(property) {
       dispose()
       errorDispose()
     }
-  })
+  }, [property])
 
   return value
 }

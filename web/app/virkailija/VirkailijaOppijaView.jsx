@@ -143,13 +143,14 @@ const createState = (oppijaOid) => {
 
   let changeBuffer = null
 
-  const setupModelContext = (oppijaModel) =>
-    Editor.setupContext(oppijaModel, {
+  const setupModelContext = (oppijaModel) => {
+    return Editor.setupContext(oppijaModel, {
       saveChangesBus,
       editBus,
       changeBus,
       editorMapping
     })
+  }
 
   const shouldThrottle = (batch) => {
     const model = getModelFromChange(batch[0])
@@ -355,17 +356,19 @@ export class Oppija extends React.Component {
       <div>
         <div className={stateP.map((state) => 'oppija-content ' + state)}>
           <Varoitukset varoitukset={varoitukset} />
-          <h2 className="oppija-heading">
+          <h2 className="oppija-heading" data-testid="oppija-heading">
             {`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(
               henkilö,
               'etunimet'
             )} `}
-            <span className="hetu">
+            <span className="hetu" data-testid="oppija-henkilotunnus">
               {(hetu && '(' + hetu + ')') ||
                 (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}
             </span>
             {modelData(henkilö, 'turvakielto') && (
               <span
+                role="status"
+                aria-label={t('Henkilöllä on turvakielto')}
                 title={t('Henkilöllä on turvakielto')}
                 className="turvakielto"
               />

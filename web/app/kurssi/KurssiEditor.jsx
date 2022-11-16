@@ -1,4 +1,5 @@
 import React from 'react'
+import cx from 'classnames'
 import {
   modelData,
   modelLookup,
@@ -6,7 +7,6 @@ import {
   pushRemoval
 } from '../editor/EditorModel'
 import { ArvosanaEditor } from '../suoritus/ArvosanaEditor'
-import { buildClassNames } from '../components/classnames'
 import { KurssiPopup } from './KurssiPopup'
 import {
   isLukio2019ModuuliTaiOpintojakso,
@@ -49,16 +49,14 @@ export class KurssiEditor extends React.Component {
     const paikallinenLukionOpintojakso =
       isLukio2019ModuuliTaiOpintojakso(koulutusmoduuliModel) &&
       isPaikallinen(koulutusmoduuliModel)
-    const className = buildClassNames([
-      'tunniste',
-      kurssinTyyppi,
-      !edit && 'hoverable',
-      eiLasketaKokonaispistemäärään(kurssi) &&
-        'ei-lasketa-kokonaispistemäärään',
-      isPaikallinen(koulutusmoduuliModel) &&
-        !paikallinenLukionKurssimainen &&
-        'paikallinen'
-    ])
+
+    const className = cx('text-button-small', 'tunniste', kurssinTyyppi, {
+      hoverabe: !edit,
+      'ei-lasketa-kokonaispistemäärään': eiLasketaKokonaispistemäärään(kurssi),
+      paikallinen:
+        isPaikallinen(koulutusmoduuliModel) && !paikallinenLukionKurssimainen
+    })
+
     const title = kurssi.value.classes.includes('diasuoritus')
       ? modelTitle(kurssi, 'koulutusmoduuli')
       : koulutusmoduuli.tunniste.koodiarvo
@@ -68,7 +66,7 @@ export class KurssiEditor extends React.Component {
           onClick={showDetails}
           onMouseEnter={!edit ? showDetails : undefined}
           onMouseLeave={!edit ? hideDetails : undefined}
-          className={`text-button-small ${className}`}
+          className={className}
           title={modelTitle(kurssi, 'koulutusmoduuli')}
         >
           {title}
@@ -128,6 +126,6 @@ export class KurssiEditor extends React.Component {
   }
 
   handleEsc(e) {
-    e.keyCode == 27 && this.setState({ open: false })
+    e.keyCode === 27 && this.setState({ open: false })
   }
 }

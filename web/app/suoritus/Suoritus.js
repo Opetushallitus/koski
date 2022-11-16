@@ -130,6 +130,21 @@ const osasuorituksetProtoOptionsAndNewItemIndex = (suoritus) => {
   return [_osasuoritukset, options, newItemIndex]
 }
 
+const arviointiProtoOptionsAndNewItemIndex = (suoritus) => {
+  const _arvioinnit = wrapOptional(modelLookup(suoritus, 'arviointi'))
+  console.log('_arvioinnit', _arvioinnit)
+  const newItemIndex = modelItems(_arvioinnit).length
+  console.log('newItemIndex', newItemIndex)
+  const arvioinninProto = contextualizeSubModel(
+    _arvioinnit.arrayPrototype,
+    _arvioinnit,
+    newItemIndex
+  )
+  const options = oneOfPrototypes(arvioinninProto)
+  console.log('options', options)
+  return [_arvioinnit, options, newItemIndex]
+}
+
 export const newOsasuoritusProto = (suoritus, osasuoritusClass) => {
   const [_osasuoritukset, options, newItemIndex] =
     osasuorituksetProtoOptionsAndNewItemIndex(suoritus)
@@ -138,6 +153,15 @@ export const newOsasuoritusProto = (suoritus, osasuoritusClass) => {
       options.find((p) => p.value.classes.includes(osasuoritusClass))) ||
     options[0]
   return contextualizeSubModel(proto, _osasuoritukset, newItemIndex)
+}
+
+export const arviointiProtos = (osasuoritus) => {
+  const [_arvioinnit, options, newItemIndex] =
+    arviointiProtoOptionsAndNewItemIndex(osasuoritus)
+  const protos = options.map((proto) =>
+    contextualizeSubModel(proto, _arvioinnit, newItemIndex)
+  )
+  return protos
 }
 
 export const newOsasuoritusProtos = (suoritus) => {
