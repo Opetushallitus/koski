@@ -16,21 +16,22 @@ jobs:
     name: Lint Koski
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Java 8
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: "8"
-          architecture: x64
+          java-version: '8'
+          architecture: 'x64'
+          distribution: 'zulu'
 
       - name: Setup Node 14
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "14"
 
       - name: Cache Maven packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -38,7 +39,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Cache Node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -56,7 +57,7 @@ jobs:
     name: validaation_muutoshistoria.md check
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with: { fetch-depth: 0 }
 
       - name: Check validation and documentation changes
@@ -67,7 +68,7 @@ jobs:
     name: tiedonsiirtoprotokollan_muutoshistoria.md check
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with: { fetch-depth: 0 }
 
       - name: Check schema and documentation changes
@@ -78,7 +79,7 @@ jobs:
     name: Backend (api)
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -90,7 +91,7 @@ jobs:
     name: Backend (non-mock)
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -100,7 +101,7 @@ jobs:
     name: Backend (other 1/2)
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -133,7 +134,7 @@ jobs:
     name: Backend (other 2/2)
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_backend_test
         with:
           suites: |
@@ -162,7 +163,7 @@ jobs:
     name: Frontend 1/5
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_frontend_test
         with:
           index: 0
@@ -171,7 +172,7 @@ jobs:
     name: Frontend 2/5
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_frontend_test
         with:
           index: 1
@@ -180,7 +181,7 @@ jobs:
     name: Frontend 3/5
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_frontend_test
         with:
           index: 2
@@ -189,7 +190,7 @@ jobs:
     name: Frontend 4/5
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_frontend_test
         with:
           index: 3
@@ -198,7 +199,7 @@ jobs:
     name: Frontend 5/5
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_frontend_test
         with:
           index: 4
@@ -207,7 +208,7 @@ jobs:
     name: Valpas 1/4
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/valpas_integration_test
         with:
           index: 1
@@ -216,7 +217,7 @@ jobs:
     name: Valpas 2/4
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/valpas_integration_test
         with:
           index: 2
@@ -225,7 +226,7 @@ jobs:
     name: Valpas 3/4
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/valpas_integration_test
         with:
           index: 3
@@ -234,7 +235,7 @@ jobs:
     name: Valpas 4/4
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/valpas_integration_test
         with:
           index: 4
@@ -243,15 +244,15 @@ jobs:
     name: Valpas lint & unit
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Node 14
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "14"
 
       - name: Cache Node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
