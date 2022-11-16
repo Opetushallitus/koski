@@ -152,9 +152,14 @@ export const fixOpiskeluoikeudenPäättymispäivä = (model) =>
 
 export const onLopputila = (tila) => {
   const koodi = modelData(tila).koodiarvo
-  return (
-    koodi === 'eronnut' || koodi === 'valmistunut' || koodi === 'peruutettu'
-  )
+  const terminaalitilat = [
+    'eronnut',
+    'valmistunut',
+    'peruutettu',
+    'keskeytynyt',
+    'hyvaksytystisuoritettu'
+  ]
+  return terminaalitilat.includes(koodi)
 }
 
 export const onLopputilassa = (opiskeluoikeus) => {
