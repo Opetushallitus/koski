@@ -348,10 +348,10 @@ describe('Omat tiedot', function () {
         describe('Monta oppiaineen oppimäärää samassa opiskeluoikeudessa', function () {
           it('Näytetään suorituksen tyyppi', function () {
             expect(
-              opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()
-            ).to.deep.equal([
-              'Perusopetuksen oppiaineen oppimäärä (2008—2018, valmistunut)'
-            ])
+              opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikotJaOpiskeluoikeusOid()
+            ).to.match(
+              /Perusopetuksen oppiaineen oppimäärä \(2008—2018, valmistunut\)Opiskeluoikeuden oid:.*/
+            )
           })
         })
       })
@@ -539,9 +539,9 @@ describe('Omat tiedot', function () {
               expect(suoritusjako.oppilaitosTitleText()).to.deep.equal([
                 'Jyväskylän normaalikoulu'
               ])
-              expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal([
-                'Perusopetus (2008—, läsnä)'
-              ])
+              expect(suoritusjako.opiskeluoikeusTitleText()).to.match(
+              /Perusopetus \(2008—, läsnä\)Opiskeluoikeuden oid:.*/
+            )
             })
 
             it('Ei näytetä virheraportointi-painiketta', function () {
@@ -960,9 +960,9 @@ describe('Omat tiedot', function () {
                 expect(suoritusjako.oppilaitosTitleText()).to.deep.equal([
                   'Jyväskylän normaalikoulu'
                 ])
-                expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal([
-                  'Perusopetus (2008—2016, valmistunut)'
-                ])
+                expect(suoritusjako.opiskeluoikeusTitleText()).to.match(
+                  /Perusopetus \(2008—2016, valmistunut\)Opiskeluoikeuden oid:.*/
+                )
               })
 
               describe('Kun avataan oppilaitos', function () {

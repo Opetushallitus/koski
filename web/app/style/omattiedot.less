@@ -251,17 +251,32 @@
           display: flex;
 
           .opiskeluoikeus-title {
+            display: flex;
+            align-items: center;
             padding: 24px;
             flex: 1;
             text-align: left;
             color: black;
+            flex-flow: wrap;
 
             @media @media-phone {
               padding: 18px 10px;
+              justify-content: flex-start;
             }
 
             h3 {
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
               margin: 0;
+              white-space: pre;
+            }
+
+            .id {
+              display: flex;
+              align-items: center;
+              margin-right: 20px;
+              white-space: pre;
             }
           }
 
