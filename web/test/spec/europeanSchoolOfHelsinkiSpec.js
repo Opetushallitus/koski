@@ -60,17 +60,14 @@ describe('Helsingin eurooppalainen koulu', function () {
 
         describe('Kun painetaan Lisää-nappia', function () {
           before(
-            addOppija.submitAndExpectSuccess(
-              'Tyhjä, Tero (070998-798T)',
-              'Class N1'
-            )
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (070998-798T)', 'N1')
           )
 
           it('lisätty oppija näytetään', function () {})
 
           describe('Käyttöliittymän tila', function () {
             it('Lisätty opiskeluoikeus näytetään', function () {
-              expect(opinnot.getTutkinto()).to.equal('Class N1')
+              expect(opinnot.getTutkinto()).to.equal('N1')
               expect(
                 extractAsText(
                   S(
