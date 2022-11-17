@@ -996,11 +996,19 @@ export const resolveActualModel = <T extends object>(
   oneOfModel: EditorModel & OneOfModel & Contextualized,
   parentModel: EditorModel & Contextualized<T>
 ) => {
-  const actualModel = oneOfModel.oneOfPrototypes
+  const actualModels = oneOfModel.oneOfPrototypes
     .map((protos) => resolvePrototypeReference(protos, parentModel.context))
-    .map((model) => ({ ...model, parent: parentModel }))
-    .filter((p) => !p.onlyWhen || checkOnlyWhen(p, p.onlyWhen))[0]
+    .map((model) => ({ ...model, path: oneOfModel.path, parent: parentModel }))
+    .filter((p) => !p.onlyWhen || checkOnlyWhen(p, p.onlyWhen))
 
+  if (actualModels.length > 1) {
+    console.warn(
+      `Could not resolve actual editor model reliably as there are ${actualModels.length} candidates:`,
+      actualModels
+    )
+  }
+
+  const actualModel = actualModels[0]
   return actualModel
     ? contextualizeModel(actualModel, parentModel.context)
     : oneOfModel
