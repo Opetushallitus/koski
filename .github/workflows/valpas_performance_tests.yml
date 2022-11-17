@@ -104,7 +104,7 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppijaGetter"
 
       - name: Report failure
-        uses: ravsamhq/notify-slack-action@v1
+        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
