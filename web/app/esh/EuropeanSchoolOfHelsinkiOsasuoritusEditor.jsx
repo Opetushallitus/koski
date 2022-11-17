@@ -31,7 +31,7 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
 
     const showOsasuoritukset =
       model.value.classes.includes(eshSuoritus.secondaryUppers7) ||
-      model.value.classes.includes('primaryoppimisalueensuoritus')
+      model.value.classes.includes('primaryosasuoritus')
 
     return (
       <tbody
