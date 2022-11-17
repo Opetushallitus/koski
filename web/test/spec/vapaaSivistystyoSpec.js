@@ -466,7 +466,7 @@ describe('VST', function () {
       )
 
       it('toimii', function () {
-        expect(opinnot.getTutkinto()).to.equal('Vapaan sivistystyön koulutus')
+        expect(opinnot.getTutkinto()).to.equal('Vapaan sivistystyön koulutus testi feilaa')
         expect(opinnot.getOppilaitos()).to.equal(
           'Varsinais-Suomen kansanopisto'
         )

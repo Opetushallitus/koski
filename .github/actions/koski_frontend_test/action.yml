@@ -19,3 +19,18 @@ runs:
       with:
         name: screenshots
         path: web/target/screenshots
+    - name: show working directory
+      run: pwd
+      shell: bash
+    - name: list current dir content
+      run: ls -la
+      shell: bash
+    - name: list web directory
+      run: ls -la web
+      shell: bash
+    - name: list target directory
+      run: ls -la web/target
+      shell: bash
+    - name: list screenshot directory
+      run: ls -la web/target/screenshots
+      shell: bash
