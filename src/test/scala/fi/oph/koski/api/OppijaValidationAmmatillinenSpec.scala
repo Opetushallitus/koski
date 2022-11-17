@@ -811,38 +811,56 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Keskiarvon asettaminen" - {
-        val keskeneräinenSuoritusKeskiarvolla = autoalanPerustutkinnonSuoritus().copy(keskiarvo = Some(4.0))
+        val keskeneräinenSuoritusKeskiarvolla = autoalanPerustutkinnonSuoritus().copy(
+          osasuoritukset = Some(List(tutkinnonOsaSuoritus)),
+          keskiarvo = Some(4.0))
+
         "estetään jos suoritus on kesken" - {
           "palautetaan HTTP 400" in (putTutkintoSuoritus(keskeneräinenSuoritusKeskiarvolla)(
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.keskiarvoaEiSallitaKeskeneräiselleSuoritukselle("Suoritukselle ei voi asettaa keskiarvoa ellei suoritus ole päättynyt"))))
         }
+
         val valmisSuoritusKeskiarvolla = keskeneräinenSuoritusKeskiarvolla.copy(
           vahvistus = vahvistus(date(2017, 5, 31)),
-          osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
+          keskiarvo = Some(4.0))
+
         "sallitaan jos suoritus on valmis" - {
           "palautetaan HTTP 200" in (putTutkintoSuoritus(valmisSuoritusKeskiarvolla)(
             verifyResponseStatusOk()))
         }
-        val valmisSuoritusIlmanKeskiarvoa = autoalanPerustutkinnonSuoritus().copy(
-          vahvistus = vahvistus(date(2019, 5, 31)),
-          keskiarvo = None,
-          osasuoritukset = Some(List(tutkinnonOsaSuoritus)),
-          koulutusmoduuli = autoalanPerustutkinto.copy(koulutustyyppi = Some(Koulutustyyppi.ammatillinenPerustutkinto))
-        )
-        "vaaditaan jos suoritus on valmis" - {
-          "palautetaan HTTP 400" in (putTutkintoSuoritus(valmisSuoritusIlmanKeskiarvoa)(
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis"))))
-        }
 
-        val osasuoritusJaKeskiarvo = autoalanPerustutkinnonSuoritus().copy(
+        val osasuoritusJaKeskiarvo = valmisSuoritusKeskiarvolla.copy(
           vahvistus = None,
-          keskiarvo = Some(4.0),
-          osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
+          osasuoritukset = Some(List(tutkinnonOsaSuoritus))
+        )
+
         val opiskeluoikeus = lisääTila(defaultOpiskeluoikeus.copy(suoritukset = List(osasuoritusJaKeskiarvo)), LocalDate.now().minusYears(1), opiskeluoikeusKatsotaanEronneeksi)
+
         "sallitaan jos tila on katsotaan eronneeksi mutta tutkinnon osa löytyy" - {
           "palautetaan HTTP 200" in (putOpiskeluoikeus(opiskeluoikeus)(
             verifyResponseStatusOk()
           ))
+        }
+
+        "vaaditaan jos osittainen tutkinto valmis 1.1.2022 tai jälkeen" - {
+          "palautetaan HTTP 400" in putAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenAutoalanSuoritus.copy(keskiarvo = None, vahvistus = vahvistus(date(2022, 1, 1))))(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis")))
+        }
+
+        "ei vaadita jos osittainen tutkinto valmis ennen 1.1.2022" - {
+          "palautetaan HTTP 200" in putAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenAutoalanSuoritus.copy(keskiarvo = None, vahvistus = vahvistus(date(2021, 12, 31))))(
+            verifyResponseStatus(200))
+        }
+
+        "vaaditaan jos koko tutkinto valmis 15.1.2018 tai jälkeen" - {
+          "palautetaan HTTP 400" in putAmmatillinenPäätasonSuoritus(valmisSuoritusKeskiarvolla.copy(keskiarvo = None, vahvistus = vahvistus(date(2018, 1, 15))))(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis")))
+        }
+
+        "ei vaadita jos koko tutkinto valmis ennen 15.1.2018" - {
+          "palautetaan HTTP 200" in putAmmatillinenPäätasonSuoritus(valmisSuoritusKeskiarvolla.copy(keskiarvo = None, vahvistus = vahvistus(date(2018, 1, 14))))(
+            verifyResponseStatus(200)
+          )
         }
       }
     }

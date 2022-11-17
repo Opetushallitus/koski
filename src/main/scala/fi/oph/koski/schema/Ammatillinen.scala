@@ -336,6 +336,10 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   with Järjestämismuodollinen
   with OsaamisenHankkimistavallinen
 
+trait MahdollisestiKeskiarvollinen {
+  def keskiarvo: Option[Double]
+}
+
 trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends AmmatillinenPäätasonSuoritus
   with Toimipisteellinen
   with Arvioinniton
@@ -343,6 +347,7 @@ trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends AmmatillinenPääta
   with Tutkintonimikkeellinen
   with Osaamisalallinen
   with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with MahdollisestiKeskiarvollinen
 {
   def koulutusmoduuli: AmmatillinenTutkintoKoulutus
   @Description("Tutkinnon suoritustapa (näyttö / ops / reformi). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammatillisen reformin (531/2017) mukaiset suoritukset välitetään suoritustavalla reformi. ")
