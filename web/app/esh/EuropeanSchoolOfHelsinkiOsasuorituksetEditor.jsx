@@ -12,6 +12,8 @@ import Text from '../i18n/Text'
 import { isToimintaAlueittain, jääLuokalle, valmiitaSuorituksia } from './esh'
 import { EuropeanSchoolOfHelsinkiSuoritustaulukko } from './EuropeanSchoolOfHelsinkiSuoritustaulukko'
 import { equals, dissoc } from 'ramda'
+import { PropertyEditor } from '../editor/PropertyEditor'
+import { isEshS7 } from '../suoritus/SuoritustaulukkoCommon'
 
 export const EuropeanSchoolOfHelsinkiOsasuorituksetEditor = ({ model }) => {
   model = addContext(model, { suoritus: model })
@@ -28,6 +30,11 @@ export const EuropeanSchoolOfHelsinkiOsasuorituksetEditor = ({ model }) => {
 
   return (
     <div className="oppiaineet osasuoritukset">
+      {isEshS7(model) && (
+        <div className="esh-s7-jaa-luokalle">
+          <PropertyEditor model={model} propertyName="jääLuokalle" />
+        </div>
+      )}
       <div>
         <h5>
           <Text

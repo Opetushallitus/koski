@@ -64,7 +64,7 @@ export class SuoritusEditor extends React.Component {
       'osasuoritukset',
       'käyttäytymisenArvio',
       'vahvistus',
-      !model.value.classes.includes(eshSuoritus.nursery) && 'jääLuokalle',
+      'jääLuokalle',
       'pakollinen'
     ].filter(Boolean)
 
