@@ -69,12 +69,8 @@ describe('Helsingin eurooppalainen koulu', function () {
             it('Lisätty opiskeluoikeus näytetään', function () {
               expect(opinnot.getTutkinto()).to.equal('N1')
               expect(
-                extractAsText(
-                  S(
-                    "[data-test-id='span-for-europeanschoolofhelsinkicurriculum-enum-editor']"
-                  )
-                )
-              ).to.deep.equal('Curriculum 2023')
+                extractAsText(S("[data-testid='koulutusmoduuli-value']"))
+              ).to.deep.equal('N1 2023')
               expect(opinnot.getOppilaitos()).to.equal(
                 'Helsingin eurooppalainen koulu'
               )
