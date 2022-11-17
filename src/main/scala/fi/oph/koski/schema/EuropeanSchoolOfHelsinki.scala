@@ -157,7 +157,7 @@ trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
   def suorituksenJärjestysKriteeriAlustaLoppuun: (Int, Boolean) =
     (
       tyypinMukainenJärjestysKriteeri + Try(koulutusmoduuli.tunniste.koodiarvo.slice(1, 2).toInt).getOrElse(20),
-      valmis
+      !valmis
     )
 
   protected def tyypinMukainenJärjestysKriteeri: Int
