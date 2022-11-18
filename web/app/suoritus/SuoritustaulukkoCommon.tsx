@@ -383,12 +383,20 @@ export const SuoritusColumn: SuoritusColumn = {
     let titleAsExpandLink =
       hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)
     let kieliaine = isKieliaine(koulutusmoduuli)
+    const koulutusmoduuliTunniste = modelData(koulutusmoduuli, 'tunniste.nimi')
 
     return (
       <td key="suoritus" className="suoritus">
         <a
           className={hasProperties ? 'toggle-expand' : 'toggle-expand disabled'}
           onClick={() => onExpand(!expanded)}
+          role="button"
+          aria-expanded={expanded}
+          aria-label={
+            expanded
+              ? `Pienennä suoritus ${t(koulutusmoduuliTunniste)}`
+              : `Laajenna suoritus ${t(koulutusmoduuliTunniste)}`
+          }
         >
           {expanded ? <>&#61766;</> : <>&#61694;</>}
         </a>

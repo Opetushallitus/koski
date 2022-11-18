@@ -50,7 +50,12 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
           )}
           {model.context.edit && (
             <td className="remove">
-              <a className="remove-value" onClick={() => pushRemoval(model)} />
+              <a
+                className="remove-value"
+                role="button"
+                aria-label="Poista osasuoritus"
+                onClick={() => pushRemoval(model)}
+              />
             </td>
           )}
         </tr>

@@ -174,12 +174,15 @@ export default ({
               tabIndex={enableFilter ? '' : '0'}
               onBlur={handleOnBlur}
               onKeyDown={onKeyDown(allOptions)}
+              role="combobox"
               {...rest}
             >
               {enableFilter ? (
                 <div className="input-container" onClick={toggleOpen}>
                   <input
                     type="text"
+                    role="combobox"
+                    aria-owns="options-list"
                     ref={(input) => (inputElem = input)}
                     onChange={handleInput}
                     onBlur={selectedP.map((s) =>
@@ -188,6 +191,13 @@ export default ({
                     value={Bacon.combineWith(queryAtom, selectedP, (q, s) => {
                       return q != undefined ? q : s ? displayValue(s) : ''
                     })}
+                    aria-label={Bacon.combineWith(
+                      queryAtom,
+                      selectedP,
+                      (q, s) => {
+                        return q != undefined ? q : s ? displayValue(s) : ''
+                      }
+                    )}
                     placeholder={selectionText}
                     className={selectedP.map((s) =>
                       s ? 'select' : 'select no-selection'
@@ -199,6 +209,11 @@ export default ({
                   className={selectedP.map((s) =>
                     s ? 'select' : 'select no-selection'
                   )}
+                  role="combobox"
+                  aria-label={selectedP.map((s) =>
+                    s ? displayValue(s) : selectionText
+                  )}
+                  aria-owns="options-list"
                   onClick={toggleOpen}
                 >
                   {selectedP.map((s) => (s ? displayValue(s) : selectionText))}
@@ -210,6 +225,8 @@ export default ({
                     open ? 'options open' : 'options'
                   )}
                   ref={(ref) => (listElem = ref)}
+                  id="options-list"
+                  role="listbox"
                 >
                   {flatMapArray(allOptions, (o, i) => {
                     const isNew = isNewItem(allOptions, o, i)
@@ -233,7 +250,9 @@ export default ({
                     )
                     const itemElement = (
                       <li
+                        role="listitem"
                         key={keyValue(o) || displayValue(o)}
+                        aria-label={displayValue(o)}
                         className={itemClassName}
                         onMouseDown={(e) => {
                           selectOption(e, o)

@@ -56,17 +56,30 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
     const koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
     const titleAsExpandLink = false
     const kieliaine = isEshKieliaine(koulutusmoduuli)
+    const koulutusmoduuliTunniste = modelData(koulutusmoduuli, 'tunniste.nimi')
 
     return (
-      <td key="suoritus" className="suoritus">
+      <td key="suoritus" className="suoritus" role="listitem">
         <a
           className={hasProperties ? 'toggle-expand' : 'toggle-expand disabled'}
           onClick={() => onExpand(!expanded)}
+          role="button"
+          aria-expanded={expanded}
+          aria-label={
+            expanded
+              ? `Pienennä suoritus ${t(koulutusmoduuliTunniste)}`
+              : `Laajenna suoritus ${t(koulutusmoduuliTunniste)}`
+          }
         >
           {expanded ? <>&#61766;</> : <>&#61694;</>}
         </a>
         {showTila && (
-          <span className="tila" title={tilaText(model)}>
+          <span
+            className="tila"
+            role="status"
+            aria-label={tilaText(model)}
+            title={tilaText(model)}
+          >
             {suorituksenTilaSymbol(model)}
           </span>
         )}
@@ -78,9 +91,13 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
             {modelTitle(model, 'koulutusmoduuli')}
           </button>
         ) : (
-          <span className="nimi">
-            {t(modelData(koulutusmoduuli, 'tunniste.nimi')) +
-              (kieliaine ? ', ' : '')}
+          <span
+            className="nimi"
+            aria-label={
+              t(koulutusmoduuliTunniste) + (kieliaine ? ', kieliaine' : '')
+            }
+          >
+            {t(koulutusmoduuliTunniste) + (kieliaine ? ', ' : '')}
             {kieliaine && (
               <span className="value kieli">
                 <Editor
