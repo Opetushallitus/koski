@@ -18,7 +18,7 @@ runs:
       uses: actions/upload-artifact@v3
       with:
         name: screenshots
-        path: web/target/screenshots
+        path: target/screenshots
     - name: show working directory
       run: pwd
       shell: bash
