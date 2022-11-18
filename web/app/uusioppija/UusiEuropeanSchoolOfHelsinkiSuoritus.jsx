@@ -4,16 +4,31 @@ import Atom from 'bacon.atom'
 import { koodistoValues } from './koodisto'
 import { makeSuoritus } from '../esh/europeanschoolofhelsinkiSuoritus'
 import KoodistoDropdown from '../koodisto/KoodistoDropdown'
+import Text from '../i18n/Text'
+import DateInput from '../date/DateInput'
+import { ift } from '../util/util'
 
-export default ({ suoritusAtom, dateAtom, oppilaitosAtom }) => {
-  // ESH-opiskeluoikeuden suorituksen luokka-aste
-  const luokkaasteAtom = Atom()
-  const luokkaasteP = koodistoValues('europeanschoolofhelsinkiluokkaaste').map(
-    (luokkaasteet) => luokkaasteet.sort(byAste)
+export default ({
+  suoritusAtom,
+  oppilaitosAtom,
+  näytäKoulutusValitsin,
+  näytäAlkamispäiväValitsin
+}) => {
+  const dateAtom = näytäAlkamispäiväValitsin ? Atom(new Date()) : undefined
+
+  // ESH-opiskeluoikeuden suorituksen koulutusmoduuli
+  const koulutusmoduuliAtom = Atom()
+
+  const koulutusmoduulitP = Bacon.combineWith(
+    (p1, p2) => p1.concat(p2),
+    koodistoValues('koulutus', ['301104']),
+    koodistoValues('europeanschoolofhelsinkiluokkaaste').map(
+      (koulutusmoduulit) => koulutusmoduulit.sort(byAste)
+    )
   )
 
-  luokkaasteP.onValue((luokkaasteet) => {
-    luokkaasteAtom.set(luokkaasteet[0])
+  koulutusmoduulitP.onValue((koulutusmoduulit) => {
+    koulutusmoduuliAtom.set(koulutusmoduulit[0])
   })
 
   // ESH-opiskeluoikeuden suorituksen Curriculum
@@ -27,7 +42,7 @@ export default ({ suoritusAtom, dateAtom, oppilaitosAtom }) => {
 
   Bacon.combineWith(
     oppilaitosAtom,
-    luokkaasteAtom,
+    koulutusmoduuliAtom,
     curriculumAtom,
     dateAtom,
     makeSuoritus
@@ -37,13 +52,15 @@ export default ({ suoritusAtom, dateAtom, oppilaitosAtom }) => {
 
   return (
     <>
-      <KoodistoDropdown
-        className="property european-school-of-helsinki-luokkaaste"
-        title="Luokka-aste"
-        options={luokkaasteP}
-        selected={luokkaasteAtom}
-        enableFilter={false}
-      />
+      {näytäKoulutusValitsin ? (
+        <KoodistoDropdown
+          className="property european-school-of-helsinki-luokkaaste"
+          title="Suoritus"
+          options={koulutusmoduulitP}
+          selected={koulutusmoduuliAtom}
+          enableFilter={false}
+        />
+      ) : null}
       <KoodistoDropdown
         className="property european-school-of-helsinki-curriculum"
         title="Curriculum"
@@ -51,7 +68,33 @@ export default ({ suoritusAtom, dateAtom, oppilaitosAtom }) => {
         selected={curriculumAtom}
         enableFilter={false}
       />
+      <div>
+        {ift(
+          koulutusmoduuliAtom.map((koulutusmoduuli) => {
+            return (
+              koulutusmoduuli?.koodistoUri ===
+              'europeanschoolofhelsinkiluokkaaste'
+            )
+          }),
+          <Aloituspäivä dateAtom={dateAtom} />
+        )}
+      </div>
     </>
+  )
+}
+
+const Aloituspäivä = ({ dateAtom }) => {
+  return (
+    <label className="property aloituspaiva european-school-of-helsinki-aloituspaiva">
+      <Text name="Aloituspäivä" />
+      <span>
+        <DateInput
+          value={dateAtom.get()}
+          valueCallback={(value) => dateAtom.set(value)}
+          validityCallback={(valid) => !valid && dateAtom.set(undefined)}
+        />
+      </span>
+    </label>
   )
 }
 

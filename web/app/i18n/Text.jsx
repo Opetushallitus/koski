@@ -19,7 +19,11 @@ export default ({ name, ignoreMissing, lang, edit, className, ...rest }) => {
   }
 
   return (
-    <span className={buildClassNames([className, 'localized'])} {...rest}>
+    <span
+      aria-label={t(name, ignoreMissing, lang)}
+      className={buildClassNames([className, 'localized'])}
+      {...rest}
+    >
       {editP.map((e) =>
         e ? <TextEditor {...{ name, lang }} /> : t(name, ignoreMissing, lang)
       )}
@@ -57,6 +61,7 @@ const TextEditor = ({ name, lang }) => {
       onKeyUp={onInput}
       onInput={onInput}
       onClick={onClick}
+      aria-label={currentValue}
     >
       {currentValue}
     </span>

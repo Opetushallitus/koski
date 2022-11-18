@@ -31,5 +31,8 @@ export default {
       !aikuistenPerusopetuksenOppimääränSuoritus(opiskeluoikeus)
     )
   },
-  addSuoritusTitle: () => <Text name="lisää opintojen päättövaiheen suoritus" />
+  addSuoritusTitle: () => (
+    <Text name="lisää opintojen päättövaiheen suoritus" />
+  ),
+  addSuoritusTitleKey: 'lisää opintojen päättövaiheen suoritus'
 }

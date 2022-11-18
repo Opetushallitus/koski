@@ -28,7 +28,8 @@ export const UusiDIATutkinnonSuoritus = {
   },
   canAddSuoritus: (opiskeluoikeus) =>
     isDIATutkinto(opiskeluoikeus) && !diaTutkinnonSuoritus(opiskeluoikeus),
-  addSuoritusTitle: () => <Text name="lisää DIA-tutkinnon suoritus" />
+  addSuoritusTitle: () => <Text name="lisää DIA-tutkinnon suoritus" />,
+  addSuoritusTitleKey: 'lisää DIA-tutkinnon suoritus'
 }
 
 export const UusiValmistavanDIAVaiheenSuoritus = {
@@ -50,5 +51,8 @@ export const UusiValmistavanDIAVaiheenSuoritus = {
   canAddSuoritus: (opiskeluoikeus) =>
     isDIATutkinto(opiskeluoikeus) &&
     !valmistavanDIAVaiheenSuoritus(opiskeluoikeus),
-  addSuoritusTitle: () => <Text name="lisää valmistavan DIA-vaiheen suoritus" />
+  addSuoritusTitle: () => (
+    <Text name="lisää valmistavan DIA-vaiheen suoritus" />
+  ),
+  addSuoritusTitleKey: 'lisää valmistavan DIA-vaiheen suoritus'
 }

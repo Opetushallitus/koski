@@ -19,10 +19,19 @@ export const isToimintaAlueittain = (suoritus) =>
 export const jääLuokalle = (suoritus) =>
   modelData(suoritus, 'jääLuokalle') === true
 
-// TODO: TOR-1685: osasuoritusten prefill
+export const eiOsasuorituksiaEshLuokkaAsteet = ['N1', 'N2']
+
 export const luokkaAsteenOsasuoritukset = (luokkaAste) =>
   Http.cachedGet(
     `/koski/api/editor/koodit/europeanschoolofhelsinkiluokkaaste/${luokkaAste}/suoritukset/prefill`
+  )
+
+export const luokkaAsteenOsasuorituksenAlaosasuoritukset = (
+  luokkaAste,
+  oppiainekoodi
+) =>
+  Http.cachedGet(
+    `/koski/api/editor/koodit/europeanschoolofhelsinkiluokkaaste/${luokkaAste}/alaosasuoritukset/${oppiainekoodi}/prefill`
   )
 
 export const valmiitaSuorituksia = (oppiaineSuoritukset) =>

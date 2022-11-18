@@ -33,7 +33,7 @@ import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
 import { ObjectModel, ObjectModelProperty } from '../types/EditorModels'
 import { VstVapaaTavoitteinenKoulutusmoduuliEditor } from './VstVapaaTavoitteinenKoulutusmoduuliEditor'
 import { EuropeanSchoolOfHelsinkiOsasuorituksetEditor } from '../esh/EuropeanSchoolOfHelsinkiOsasuorituksetEditor'
-import { eshSuoritus } from '../esh/europeanschoolofhelsinkiSuoritus'
+import { eshSuorituksenClass } from '../esh/europeanschoolofhelsinkiSuoritus'
 import { MuuKuinSäänneltySuoritustaulukko } from '../jotpa/MuuKuinSäänneltySuoritustaulukko'
 
 export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
@@ -219,14 +219,15 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
     )
   }
   // Nursery-suoritustyypillä ei ole osasuorituksia, joten editoria ei tarvitse näyttää
-  if (firstClassOneOf(eshSuoritus.nursery)) {
+  if (firstClassOneOf(eshSuorituksenClass.nursery)) {
     return null
   }
   if (
     firstClassOneOf(
-      eshSuoritus.primary,
-      eshSuoritus.secondaryLowerVuosiluokka,
-      eshSuoritus.secondaryUpperVuosiluokka
+      eshSuorituksenClass.primary,
+      eshSuorituksenClass.secondaryLowerVuosiluokka,
+      eshSuorituksenClass.secondaryUpperVuosiluokka,
+      eshSuorituksenClass.ebtutkinto
     )
   ) {
     return <EuropeanSchoolOfHelsinkiOsasuorituksetEditor model={mdl} />

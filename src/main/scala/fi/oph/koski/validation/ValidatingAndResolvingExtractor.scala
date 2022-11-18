@@ -1,7 +1,7 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
-import fi.oph.koski.koodisto.{KoodistoResolvingCustomDeserializer, KoodistoViitePalvelu, SynteettinenKoodiResolvingCustomDeserializer}
+import fi.oph.koski.koodisto.{KoodistoResolvingCustomDeserializer, KoodistoViitePalvelu}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{OrganisaatioRepository, OrganisaatioResolvingCustomDeserializer}
 import fi.oph.koski.schema.JaksoCustomDeserializer
@@ -24,7 +24,6 @@ class ValidatingAndResolvingExtractor(
     val customDeserializers = if (deserializationContext.validate) {
       List(
         OrganisaatioResolvingCustomDeserializer(organisaatioRepository),
-        SynteettinenKoodiResolvingCustomDeserializer(),
         KoodistoResolvingCustomDeserializer(koodistoPalvelu),
       )
     } else {

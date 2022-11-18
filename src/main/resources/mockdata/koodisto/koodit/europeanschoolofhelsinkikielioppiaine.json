@@ -196,23 +196,5 @@
     ],
     "versio": 1,
     "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_swals",
-    "koodiArvo": "SWALS",
-    "metadata": [
-      {
-        "nimi" : "L1 (S.W.A.L.S.)",
-        "lyhytNimi" : "L1 (S.W.A.L.S.)",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "L1 (S.W.A.L.S.)",
-        "lyhytNimi" : "L1 (S.W.A.L.S.)",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
   }
 ]

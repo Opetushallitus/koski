@@ -8,7 +8,6 @@ import { tutkinnonNimi } from './Koulutusmoduuli'
 import { InternationalSchoolLevel } from '../internationalschool/InternationalSchoolLevel'
 import { TunnisteenKoodiarvoEditor } from './TunnisteenKoodiarvoEditor'
 import { isMuutaAmmatillistaPäätasonSuoritus } from '../muuammatillinen/MuuAmmatillinen'
-import { CurriculumEditor } from './CurriculumEditor'
 
 export const KoulutusmoduuliEditor = ({ model }) => {
   const propertyFilter = (p) => {
@@ -26,7 +25,9 @@ export const KoulutusmoduuliEditor = ({ model }) => {
     return !excludedProperties.includes(p.key) && !esiopetusKuvaus
   }
   const hideEshCurriculum = (mdl) =>
-    !mdl.value.classes.includes('europeanschoolofhelsinkiluokkaaste')
+    !mdl.value.classes.includes(
+      'europeanschoolofhelsinkipaatasonkoulutusmoduuli'
+    )
 
   return (
     <span className="koulutusmoduuli">
@@ -37,9 +38,16 @@ export const KoulutusmoduuliEditor = ({ model }) => {
         <TunnisteenKoodiarvoEditor model={model} />
       </span>
       {!hideEshCurriculum(model) && (
-        <span className="curriculum">
-          <CurriculumEditor model={model} />
-        </span>
+        <>
+          <span className="curriculum">
+            <Editor
+              titleFormatter={(mdl) => mdl?.value?.data?.koodiarvo}
+              model={model}
+              path="curriculum"
+              placeholder={t('Curriculum')}
+            />
+          </span>
+        </>
       )}
       <span className="diaarinumero">
         <span
@@ -68,7 +76,8 @@ const TunnisteEditor = ({ model }) => {
   const käytäPäätasonSuoritusta =
     [
       'aikuistenperusopetuksenoppimaara',
-      'aikuistenperusopetuksenoppimaaranalkuvaihe'
+      'aikuistenperusopetuksenoppimaaranalkuvaihe',
+      'ebtutkinto'
     ].includes(tyyppi) ||
     model.value.classes.includes('lukionoppiaineidenoppimaarat2019')
   const tutkinnonNimiModel = tutkinnonNimi(model)

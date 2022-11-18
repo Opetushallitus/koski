@@ -12,14 +12,14 @@ import {
 import * as R from 'ramda'
 import {
   createTutkinnonOsanSuoritusPrototype,
-  NON_GROUPED
+  NON_GROUPED,
+  osanOsa
 } from '../ammatillinen/TutkinnonOsa'
 import { hasArvosana, suorituksenTyyppi, tilaText } from './Suoritus'
 import Text from '../i18n/Text'
 import { ArvosanaEditor } from './ArvosanaEditor'
 import { Editor } from '../editor/Editor'
 import { shouldShowProperty } from '../editor/PropertiesEditor'
-import { osanOsa } from '../ammatillinen/TutkinnonOsa'
 import { sortLanguages } from '../util/sorting'
 import { suorituksenTilaSymbol } from './Suoritustaulukko'
 import { isKieliaine } from './Koulutusmoduuli'
@@ -34,7 +34,7 @@ import {
 import { BaseContext, Contextualized } from '../types/EditorModelContext'
 import { Bus, Observable } from 'baconjs'
 import classNames from 'classnames'
-import { eshVuosiluokka } from '../esh/europeanschoolofhelsinkiSuoritus'
+import { eshSuorituksenTyyppi } from '../esh/europeanschoolofhelsinkiSuoritus'
 
 export type SuoritusModel<T extends object = {}> = ObjectModel &
   OptionalModel &
@@ -75,8 +75,10 @@ export const isVapaanSivistystyönOppivelvollistenSuoritus = (
   suoritus.value.classes.includes(
     'oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus'
   )
-export const isEshVuosiluokanSuoritus = (suoritus: SuoritusModel) =>
-  suoritus.value.classes.includes('europeanschoolofhelsinkivuosiluokansuoritus')
+export const isEshPäätasonSuoritus = (suoritus: SuoritusModel) =>
+  suoritus.value.classes.includes('europeanschoolofhelsinkipäätasonsuoritus')
+export const isEB = (suoritus: SuoritusModel) =>
+  suoritus.value.classes.includes('ebtutkinnonsuoritus')
 export const isEshS7 = (suoritus: SuoritusModel) =>
   suoritus.value.classes.includes('secondaryuppervuosiluokansuoritus') &&
   modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo') === 'S7'
@@ -273,11 +275,15 @@ export const suoritusProperties = (
               .concat(arvioinninKuvaus)
               .concat(simplifiedArviointi)
           : defaultsForView
-      case eshVuosiluokka.secondaryUpper:
-      case eshVuosiluokka.secondaryLower:
-      case eshVuosiluokka.nursery:
-      case eshVuosiluokka.primary:
-        return defaultsForView.concat(arvioitsijat).concat(arvioinninKuvaus)
+      case eshSuorituksenTyyppi.secondaryUpper:
+      case eshSuorituksenTyyppi.secondaryLower:
+      case eshSuorituksenTyyppi.nursery:
+      case eshSuorituksenTyyppi.primary:
+      case eshSuorituksenTyyppi.ebtutkinto:
+        return defaultsForView
+          .concat(arvioitsijat)
+          .concat(arvioinninKuvaus)
+          .filter((p) => p.key !== 'suorituskieli')
       default:
         return isEdit ? defaultsForEdit : defaultsForView
     }
@@ -377,16 +383,24 @@ export const SuoritusColumn: SuoritusColumn = {
     </td>
   ),
   renderData: ({ model, showTila, onExpand, hasProperties, expanded }) => {
-    let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
-    let titleAsExpandLink =
+    const koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
+    const titleAsExpandLink =
       hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)
-    let kieliaine = isKieliaine(koulutusmoduuli)
+    const kieliaine = isKieliaine(koulutusmoduuli)
+    const koulutusmoduuliTunniste = modelData(koulutusmoduuli, 'tunniste.nimi')
 
     return (
       <td key="suoritus" className="suoritus">
         <a
           className={hasProperties ? 'toggle-expand' : 'toggle-expand disabled'}
           onClick={() => onExpand(!expanded)}
+          role="button"
+          aria-expanded={expanded}
+          aria-label={
+            expanded
+              ? `Pienennä suoritus ${t(koulutusmoduuliTunniste)}`
+              : `Laajenna suoritus ${t(koulutusmoduuliTunniste)}`
+          }
         >
           {expanded ? <>&#61766;</> : <>&#61694;</>}
         </a>
@@ -525,7 +539,7 @@ export const LaajuusColumn: LaajuusColumn = {
       context.edit
     ) {
       return false
-    } else if (isEshVuosiluokanSuoritus(parentSuoritus)) {
+    } else if (isEshPäätasonSuoritus(parentSuoritus)) {
       return true
     } else if (isEshOsasuoritus(parentSuoritus)) {
       return false
@@ -550,7 +564,7 @@ export const LaajuusColumn: LaajuusColumn = {
     )
   },
   renderData: ({ model, showScope }) => (
-    <td key="laajuus" className="laajuus">
+    <td key="laajuus" className="laajuus" data-testid="laajuus-cell">
       <Editor
         model={model}
         path="koulutusmoduuli.laajuus"

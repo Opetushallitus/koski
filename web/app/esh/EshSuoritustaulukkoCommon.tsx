@@ -1,12 +1,20 @@
 import React from 'baret'
+import * as L from 'partial.lenses'
 import { t } from '../i18n/i18n'
 import {
+  contextualizeSubModel,
+  lensedModel,
   modelData,
   modelLookup,
-  modelProperties,
-  modelTitle
+  modelProperty,
+  modelSetData,
+  modelSetValue,
+  modelTitle,
+  oneOfPrototypes,
+  resolveActualModel,
+  wrapOptional
 } from '../editor/EditorModel'
-import { hasArvosana, tilaText } from '../suoritus/Suoritus'
+import { hasArvosana, hasSuorituskieli, tilaText } from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
 import { Editor } from '../editor/Editor'
 import { sortLanguages } from '../util/sorting'
@@ -18,11 +26,10 @@ import {
   OnExpandFn,
   SuoritusModel
 } from '../suoritus/SuoritustaulukkoCommon'
-import classNames from 'classnames'
-import { eshSuoritus } from './europeanschoolofhelsinkiSuoritus'
 import { BaseContext } from '../types/EditorModelContext'
-import { SynteettinenArvosanaEditor } from '../suoritus/SynteettinenArvosanaEditor'
-import { ArvosanaEditor } from '../suoritus/ArvosanaEditor'
+import { EshArvosanaEditor } from '../suoritus/EshArvosanaEditor'
+import { fetchAlternativesBasedOnPrototypes, zeroValue } from '../editor/EnumEditor'
+import { isOneOfModel } from '../types/EditorModels'
 
 // ESHSuoritusColumn
 
@@ -44,6 +51,73 @@ export type ESHSuoritusColumnDataProps = {
   expanded: boolean
 }
 
+const EshKieliEditor: React.FC<any> = ({ model }) => {
+  // model: koulutusmoduuli
+  if (!modelProperty(model, 'kieli')) {
+    return null
+  }
+  const resolvedKoulutusmoduuli = isOneOfModel(model)
+    ? resolveActualModel(model, model.parent)
+    : model
+
+  const alternativesP = fetchAlternativesBasedOnPrototypes(
+    [resolvedKoulutusmoduuli],
+    'kieli'
+  ).startWith([])
+
+  const kieletP = alternativesP.map((alternatives: any) =>
+    alternatives.map((m: any) => modelLookup(m, 'kieli').value)
+  )
+
+  return (
+    <span className="value kieli">
+      {alternativesP.map((alternatives: any) => {
+        const kieliLens = L.lens<any, any>(
+          (model) => {
+            return modelLookup(model, 'kieli')
+          },
+          (value, model) => {
+            const valittu = modelData(value) as any
+            if (valittu) {
+              const found = alternatives.find((alt: any) => {
+                const altData = modelData(alt, 'kieli') as any
+                return (
+                  altData.koodiarvo === valittu.koodiarvo &&
+                  altData.koodistoUri === valittu.koodistoUri
+                )
+              })
+              if (found) {
+                return modelSetValue(
+                  model,
+                  { data: valittu, value: valittu.value, title: t(valittu.nimi) },
+                  'kieli'
+                )
+              }
+            } else {
+              return modelSetValue(
+                model,
+                zeroValue,
+                'kieli'
+              )
+            }
+          }
+        )
+        const kieliModel = lensedModel(model, kieliLens)
+        return (
+          <Editor
+            key={alternatives.length}
+            model={kieliModel}
+            fetchAlternatives={() => kieletP}
+            showEmptyOption="true"
+            inline={true}
+            sortBy={sortLanguages}
+          />
+        )
+      })}
+    </span>
+  )
+}
+
 export const EshSuoritusColumn: ESHSuoritusColumn = {
   shouldShow: () => true,
   renderHeader: ({ suoritusTitle }) => (
@@ -53,20 +127,38 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
     </td>
   ),
   renderData: ({ model, showTila, onExpand, hasProperties, expanded }) => {
-    const koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
+    const koulutusmoduuli = wrapOptional(modelLookup(model, 'koulutusmoduuli'))
     const titleAsExpandLink = false
     const kieliaine = isEshKieliaine(koulutusmoduuli)
+    const koulutusmoduuliTunniste = modelData(koulutusmoduuli, 'tunniste.nimi')
 
     return (
-      <td key="suoritus" className="suoritus">
+      <td
+        key="suoritus"
+        className="suoritus"
+        role="listitem"
+        data-testid="suoritus-cell"
+      >
         <a
           className={hasProperties ? 'toggle-expand' : 'toggle-expand disabled'}
           onClick={() => onExpand(!expanded)}
+          role="button"
+          aria-expanded={expanded}
+          aria-label={
+            expanded
+              ? `Pienennä suoritus ${t(koulutusmoduuliTunniste)}`
+              : `Laajenna suoritus ${t(koulutusmoduuliTunniste)}`
+          }
         >
           {expanded ? <>&#61766;</> : <>&#61694;</>}
         </a>
         {showTila && (
-          <span className="tila" title={tilaText(model)}>
+          <span
+            className="tila"
+            role="status"
+            aria-label={tilaText(model)}
+            title={tilaText(model)}
+          >
             {suorituksenTilaSymbol(model)}
           </span>
         )}
@@ -78,25 +170,23 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
             {modelTitle(model, 'koulutusmoduuli')}
           </button>
         ) : (
-          <span className="nimi">
-            {t(modelData(koulutusmoduuli, 'tunniste.nimi')) +
-              (kieliaine ? ', ' : '')}
-            {kieliaine && (
-              <span className="value kieli">
-                <Editor
-                  model={koulutusmoduuli}
-                  inline={true}
-                  path="kieli"
-                  sortBy={sortLanguages}
-                />
-              </span>
-            )}
+          <span
+            className="nimi"
+            aria-label={
+              t(koulutusmoduuliTunniste) + (kieliaine ? ', kieliaine' : '')
+            }
+          >
+            {t(koulutusmoduuliTunniste) + (kieliaine ? ', ' : '')}
+            {kieliaine && <EshKieliEditor model={koulutusmoduuli} />}
           </span>
         )}
       </td>
     )
   }
 }
+
+const isEBOsasuoritus = (model: any) =>
+  model.value.classes.includes('ebtutkinnonsuoritus')
 
 // EshArvosanaColumn
 export type EshArvosanaColumnShowProps = {
@@ -120,6 +210,7 @@ export const EshArvosanaColumn: ColumnIface<
 > = {
   shouldShow: ({ parentSuoritus, suoritukset, context }) =>
     !isEshS7(parentSuoritus) &&
+    !isEBOsasuoritus(parentSuoritus) &&
     (context.edit || suoritukset.find(hasArvosana) !== undefined),
   renderHeader: () => (
     <th key="arvosana" className="arvosana" scope="col">
@@ -128,23 +219,60 @@ export const EshArvosanaColumn: ColumnIface<
     </th>
   ),
   renderData: ({ model }) => {
-    const arviointi = modelLookup(model, 'arviointi.-1')
-    const arvosana = arviointi ? modelLookup(arviointi, 'arvosana') : null
-    const isSynthetic = (arvosana?.value?.classes || []).includes(
-      'synteettinenkoodiviite'
+    return (
+      <td key="arvosana" className="arvosana" data-testid="arvosana-cell">
+        <EshArvosanaEditor model={model} notFoundText={''} />
+      </td>
     )
+  }
+}
+
+// EshSuorituskieliColumn
+export type EshSuorituskieliColumnShowProps = {
+  parentSuoritus: SuoritusModel
+  suoritukset: SuoritusModel[]
+  context: BaseContext
+  isAlaosasuoritus: boolean
+}
+
+export type EshSuorituskieliColumnDataProps = {
+  model: SuoritusModel
+}
+
+export type EshSuorituskieliColumn = ColumnIface<
+  EshSuorituskieliColumnDataProps,
+  EshSuorituskieliColumnShowProps
+>
+
+export const EshSuorituskieliColumn: ColumnIface<
+  EshSuorituskieliColumnDataProps,
+  EshSuorituskieliColumnShowProps
+> = {
+  shouldShow: ({ parentSuoritus, suoritukset, context, isAlaosasuoritus }) => {
+    const suoritusWithSuorituskieli =
+      suoritukset.find(hasSuorituskieli) !== undefined
+    // Alaosasuorituksilla ei ole suorituskieltä
+    return (context.edit && !isAlaosasuoritus) || suoritusWithSuorituskieli
+  },
+  renderHeader: () => (
+    <th key="suorituskieli" className="suorituskieli" scope="col">
+      {/* @ts-expect-error */}
+      <Text name="Suorituskieli" />
+    </th>
+  ),
+  renderData: ({ model }) => {
     return (
       <td
-        key="arvosana"
-        className={classNames('arvosana', {
-          synthetic: isSynthetic
-        })}
+        key="suorituskieli"
+        className="suorituskieli"
+        data-testid="suorituskieli-cell"
       >
-        {isSynthetic ? (
-          <SynteettinenArvosanaEditor model={model} notFoundText={''} />
-        ) : (
-          <ArvosanaEditor model={model} notFoundText={''} />
-        )}
+        <Editor
+          model={model}
+          path="suorituskieli"
+          aria-label="ESH suorituskieli"
+          showEmptyOption={true}
+        />
       </td>
     )
   }

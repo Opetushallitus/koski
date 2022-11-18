@@ -8,7 +8,7 @@ import InvalidateOpiskeluoikeusButton from '../opiskeluoikeus/InvalidateOpiskelu
 
 export class TogglableEditor extends React.Component {
   render() {
-    const { model, renderChild } = this.props
+    const { model, renderChild, ...rest } = this.props
     const context = model.context
     const opiskeluoikeusOid = modelData(model.context.opiskeluoikeus, 'oid')
     const edit =
@@ -21,6 +21,7 @@ export class TogglableEditor extends React.Component {
       <button
         className="koski-button toggle-edit"
         onClick={() => context.editBus.push(opiskeluoikeusOid)}
+        {...rest}
       >
         <Text name="muokkaa" />
       </button>

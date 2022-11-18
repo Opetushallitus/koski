@@ -1,6 +1,6 @@
-import { BrowserContext, expect, Locator, Page } from '@playwright/test'
+import { expect, Locator, Page } from '@playwright/test'
 
-export class KoskiLoginPage {
+export class VirkailijaLoginPage {
   readonly usernameInput: Locator
   readonly passwordInput: Locator
   readonly loginButton: Locator

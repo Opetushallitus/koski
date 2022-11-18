@@ -1,0 +1,15 @@
+{
+  "koodistoUri" : "ebtutkinnonoppiaineenkomponentti",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "EB-tutkinnon oppiaineen komponentti",
+    "kuvaus" : "EB-tutkinnon oppiaineen komponentti"
+  } ],
+  "codesGroupUri" : "koski",
+  "voimassaAlkuPvm" : "2023-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
+}

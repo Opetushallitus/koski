@@ -1,4 +1,4 @@
-import { BrowserContext, expect, Page } from '@playwright/test'
+import { expect, Page } from '@playwright/test'
 
 export class KoskiFixtures {
   constructor(private readonly page: Page) {}
@@ -11,5 +11,6 @@ export class KoskiFixtures {
       `/koski/fixtures/reset?${params.toString()}`
     )
     expect(request.ok()).toBeTruthy()
+    await this.page.context().clearCookies()
   }
 }
