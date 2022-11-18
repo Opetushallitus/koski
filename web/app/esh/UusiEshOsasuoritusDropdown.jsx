@@ -23,8 +23,7 @@ export const UusiEshOsasuoritusDropdown = ({
   pakollinen,
   selected = Bacon.constant(undefined),
   resultCallback,
-  isAlaosasuoritus,
-  oppiainePrototypes = undefined
+  isAlaosasuoritus
 }) => {
   if (!osasuoritukset || R.any((s) => !s.context.edit, osasuoritukset))
     return null
@@ -34,9 +33,7 @@ export const UusiEshOsasuoritusDropdown = ({
       ? modelSetData(oppiaineModel, pakollinen, 'pakollinen')
       : oppiaineModel
 
-  const prototypes =
-    oppiainePrototypes ||
-    R.flatten(osasuoritukset.map(koulutusModuuliprototypes))
+  const prototypes = R.flatten(osasuoritukset.map(koulutusModuuliprototypes))
 
   const oppiaineModels = prototypes.map(setPakollisuus)
 
@@ -70,6 +67,7 @@ export const UusiEshOsasuoritusDropdown = ({
                 onSelectionChanged={resultCallback}
                 selectionText={dropdownPlaceholder}
                 selected={selected}
+                enableFilter={true}
               />
             ) : (
               <></>

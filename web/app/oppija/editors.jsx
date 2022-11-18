@@ -19,7 +19,6 @@ import { OsaaminenTunnustettuEditor } from '../suoritus/OsaaminenTunnustettuEdit
 import genericEditors from '../editor/genericEditors'
 import { LukukausiIlmoittautuminenEditor } from '../opiskeluoikeus/LukukausiIlmoittautuminenEditor'
 import { MaksuttomuusEditor } from '../opiskeluoikeus/MaksuttomuusEditor'
-import { SynteettinenKoodiviiteEditor } from '../editor/SynteettinenKoodiviiteEditor'
 
 // Note: this maps name of the type to editor, not name of the property
 
@@ -49,8 +48,7 @@ const oppijaEditors = {
   perusopetuksenlisaopetuksenoppiaineensuoritus:
     PerusopetuksenOppiaineRowEditor,
   // Korkeakoulu
-  lukukausi_ilmoittautuminen: LukukausiIlmoittautuminenEditor,
-  synteettinenkoodiviite: SynteettinenKoodiviiteEditor
+  lukukausi_ilmoittautuminen: LukukausiIlmoittautuminenEditor
 }
 
 // Combine all editor mappings into one object

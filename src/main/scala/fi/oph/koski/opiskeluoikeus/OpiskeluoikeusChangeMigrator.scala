@@ -41,7 +41,7 @@ object OpiskeluoikeusChangeMigrator {
          _: EsiopetuksenSuoritus |
          _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus |
          _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus |
-         _: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus => false
+         _: EuropeanSchoolOfHelsinkiPäätasonSuoritus => false
     case _ => true
   }
 

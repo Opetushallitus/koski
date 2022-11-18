@@ -280,14 +280,14 @@ describe('VST', function () {
       it('Näytetään opintokokonaisuuden nimi oikein', function () {
         expect(
           extractAsText(
-            S("[data-test-id='hyperlink-for-opintokokonaisuudet-enum-editor']")
+            S("[data-testid='hyperlink-for-opintokokonaisuudet-enum-editor']")
           )
         ).to.deep.equal('1138 Kuvallisen ilmaisun perusteet ja välineet')
       })
       it('Näytetään opintokokonaisuuden linkki ePerusteisiin oikein', function () {
         expect(
           hrefOf(
-            S("[data-test-id='hyperlink-for-opintokokonaisuudet-enum-editor']")
+            S("[data-testid='hyperlink-for-opintokokonaisuudet-enum-editor']")
           )
         ).to.deep.equal(
           'https://eperusteet.opintopolku.fi/#/fi/opintokokonaisuus/1138'
@@ -441,14 +441,14 @@ describe('VST', function () {
       it('Näytetään opintokokonaisuuden nimi oikein', function () {
         expect(
           extractAsText(
-            S("[data-test-id='hyperlink-for-opintokokonaisuudet-enum-editor']")
+            S("[data-testid='hyperlink-for-opintokokonaisuudet-enum-editor']")
           )
         ).to.deep.equal('1138 Kuvallisen ilmaisun perusteet ja välineet')
       })
       it('Näytetään opintokokonaisuuden linkki ePerusteisiin oikein', function () {
         expect(
           hrefOf(
-            S("[data-test-id='hyperlink-for-opintokokonaisuudet-enum-editor']")
+            S("[data-testid='hyperlink-for-opintokokonaisuudet-enum-editor']")
           )
         ).to.deep.equal(
           'https://eperusteet.opintopolku.fi/#/fi/opintokokonaisuus/1138'

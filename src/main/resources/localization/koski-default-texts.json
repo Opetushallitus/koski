@@ -2416,5 +2416,9 @@
   "description:invalid_esh_numerical_grade_example":  "Esimerkkejä: 9.5 tai 8.0",
   "description:invalid_esh_preliminary_grade":  "Arvosanan tulee olla 0, 10 tai luku siltä väliltä yhden desimaalin tarkkuudella.",
   "description:invalid_esh_preliminary_grade_example":  "Esimerkkejä: 9.2 tai 8.6",
-  "description:lisaa_alaosasuoritus":  "Lisää alaosasuoritus"
+  "description:lisaa_alaosasuoritus":  "Lisää alaosasuoritus",
+  "Yleisarvosana" : "Yleisarvosana",
+  "description:esh_kielioppiaine_kieli_vaadittu": "Kielioppiaineella on oltava valittuna kieli.",
+  "description:esh_suorituskieli_vaadittu": "Suorituksella on oltava valittuna suorituskieli.",
+  "lisää suoritus": "lisää suoritus"
 }

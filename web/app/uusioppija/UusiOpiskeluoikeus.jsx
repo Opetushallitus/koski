@@ -49,9 +49,14 @@ import {
   getTuvaLisätiedot
 } from './UusiTutkintokoulutukseenValmentavanKoulutuksenSuoritus'
 import UusiEuropeanSchoolOfHelsinkiSuoritus from './UusiEuropeanSchoolOfHelsinkiSuoritus'
-import { eshSallitutRahoituskoodiarvot } from '../esh/esh'
+import {
+  eiOsasuorituksiaEshLuokkaAsteet,
+  eshSallitutRahoituskoodiarvot,
+  luokkaAsteenOsasuoritukset
+} from '../esh/esh'
 import { jotpaSallitutRahoituskoodiarvot } from '../jotpa/jotpa'
 import UusiMuunKuinSäännellynKoulutuksenSuoritus from './UusiMuunKuinSäännellynKoulutuksenSuoritus'
+import { modelData } from '../editor/EditorModel'
 
 export default ({ opiskeluoikeusAtom }) => {
   const dateAtom = Atom(new Date())
@@ -137,11 +142,31 @@ export default ({ opiskeluoikeusAtom }) => {
 
   const tuvaJärjestämislupaP = koodistoValues('tuvajarjestamislupa')
 
+  const suoritusP = suoritusAtom.flatMap((s) => {
+    if (
+      s?.koulutusmoduuli?.tunniste?.koodistoUri ===
+        'europeanschoolofhelsinkiluokkaaste' &&
+      !eiOsasuorituksiaEshLuokkaAsteet.includes(
+        s.koulutusmoduuli.tunniste.koodiarvo
+      )
+    ) {
+      return luokkaAsteenOsasuoritukset(
+        s.koulutusmoduuli.tunniste.koodiarvo
+      ).map((osasuorituksetPrefillattuEditorModel) => {
+        return {
+          ...s,
+          osasuoritukset: modelData(osasuorituksetPrefillattuEditorModel)
+        }
+      })
+    }
+    return s
+  })
+
   const opiskeluoikeusP = Bacon.combineWith(
     dateAtom,
     oppilaitosAtom,
     tyyppiAtom,
-    suoritusAtom,
+    suoritusP,
     tilaAtom,
     rahoitusAtom,
     varhaiskasvatusOrganisaationUlkopuoleltaAtom,
@@ -283,10 +308,9 @@ export default ({ opiskeluoikeusAtom }) => {
           return (
             <UusiEuropeanSchoolOfHelsinkiSuoritus
               suoritusAtom={suoritusAtom}
-              dateAtom={dateAtom}
               oppilaitosAtom={oppilaitosAtom}
-              suorituskieliAtom={suorituskieliAtom}
-              suorituskieliP={suorituskieletP}
+              näytäKoulutusValitsin={false}
+              näytäAlkamispäiväValitsin={false}
             />
           )
         if (tyyppi === 'vapaansivistystyonkoulutus')
@@ -580,7 +604,7 @@ const MaksuttomuusRadioButtons = ({ maksuttomuusAtom }) => {
       options={maksuttomuusOptions}
       selected={maksuttomuusAtom}
       onSelectionChanged={(selected) => maksuttomuusAtom.set(selected.key)}
-      data-test-id="maksuttomuus-radio-buttons"
+      data-testid="maksuttomuus-radio-buttons"
     />
   )
 }

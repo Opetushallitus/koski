@@ -80,7 +80,7 @@ export default class Autocomplete extends BaconComponent {
       .map(createItemElement)
     // TODO: Käytä Reactin reffejä
     const results = itemElems.length ? (
-      <ul ref="results" className="results" data-test-id="autocomplete-results">
+      <ul ref="results" className="results" data-testid="autocomplete-results">
         {itemElems}
       </ul>
     ) : null

@@ -24,7 +24,8 @@ export default ({
   enableFilter,
   selectionText,
   showKoodiarvo = false,
-  property = undefined
+  property = undefined,
+  ...rest
 }) => {
   showKoodiarvo = parseBool(showKoodiarvo)
   options = toObservable(options)
@@ -45,6 +46,8 @@ export default ({
                 className={className}
                 disabled
                 value={t(sel.nimi) || ''}
+                {...rest}
+                data-testid="koodisto-dropdown-single-selection-input"
               ></input>
             )
           return (
@@ -58,6 +61,8 @@ export default ({
               selected={selected}
               enableFilter={enableFilter}
               selectionText={selectionText}
+              data-testid={`${title}-koodisto-dropdown`}
+              {...rest}
             />
           )
         })

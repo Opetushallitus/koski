@@ -172,7 +172,7 @@ const LisääPaikallinen = ({
                 option.uusi ? showModal.set(true) : addNewSuoritus(option)
               }
               onRemoval={poistaPaikallinenOsasuoritus}
-              dropdownTestId="dropdown-osasuoritus"
+              data-testid="dropdown-osasuoritus"
               itemTestId={(option) =>
                 option.uusi
                   ? 'new-osasuoritus'

@@ -1,6 +1,5 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.koodisto.SynteettinenKoodisto
 import fi.oph.koski.koskiuser.Rooli
 
 import java.time.{LocalDate, LocalDateTime}
@@ -22,7 +21,7 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   tila: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila,
-  suoritukset: List[EuropeanSchoolOfHelsinkiVuosiluokanSuoritus],
+  suoritukset: List[EuropeanSchoolOfHelsinkiPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.europeanschoolofhelsinki,
   override val lisätiedot: Option[EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot] = None,
@@ -32,17 +31,11 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 
-  def vuosiluokkasuorituksetJärjestyksessä: List[EuropeanSchoolOfHelsinkiVuosiluokanSuoritus] =
+  def vuosiluokkasuorituksetJärjestyksessä: List[EuropeanSchoolOfHelsinkiPäätasonSuoritus] =
     suoritukset.sortBy(_.suorituksenJärjestysKriteeriAlustaLoppuun)
 }
 
 object EuropeanSchoolOfHelsinkiOpiskeluoikeus {
-
-  lazy val synteettisetKoodistot: List[SynteettinenKoodisto] = List(
-    new NumericalMarkSynteettinenKoodisto,
-    new S7PreliminaryMarkSynteettinenKoodisto,
-    new S7FinalMarkSynteettinenKoodisto
-  )
 
   // TODO: TOR-1685 Saatetaan tarvita
   /*
@@ -132,24 +125,19 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot(
  * PÄÄTASON SUORITUKSET
  *****************************************************************************/
 
-trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+
+trait EuropeanSchoolOfHelsinkiPäätasonSuoritus
   extends KoskeenTallennettavaPäätasonSuoritus
     with Toimipisteellinen
     with Arvioinniton
-    with LuokalleJääntiTiedonSisältäväSuoritus
     with SisältääTodistuksellaNäkyvätLisätiedot
-    {
-  @Title("Luokka-aste")
-  def koulutusmoduuli: EuropeanSchoolOfHelsinkiLuokkaAste
+{
+  def koulutusmoduuli: EuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli
   @Title("Koulutus")
   def tyyppi: Koodistokoodiviite
   @Description("Luokan tunniste, esimerkiksi 9C.")
   @Tooltip("Luokan tunniste, esimerkiksi 9C.")
   def luokka: Option[String]
-  def jääLuokalle: Boolean
-  @Tooltip("Vuosiluokan alkamispäivä")
-  def alkamispäivä: Option[LocalDate]
-  def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi vuosiluokan sanallinen yleisarviointi.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
@@ -161,6 +149,45 @@ trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
     )
 
   protected def tyypinMukainenJärjestysKriteeri: Int
+}
+
+@Title("EB-tutkinnon suoritus")
+case class EBTutkinnonSuoritus(
+  @Title("Koulutus")
+  koulutusmoduuli: EBTutkinto,
+  luokka: Option[String] = None,
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla],
+  @KoodistoKoodiarvo("ebtutkinto")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ebtutkinto", "suorituksentyyppi"),
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @MinValue(0)
+  @MaxValue(100)
+  @Scale(2)
+  yleisarvosana: Option[Double] = None,
+  override val osasuoritukset: Option[List[EBTutkinnonOsasuoritus]] = None
+) extends EuropeanSchoolOfHelsinkiPäätasonSuoritus {
+
+  override def suorituksenJärjestysKriteeriAlustaLoppuun: (Int, Boolean) =
+    (
+      tyypinMukainenJärjestysKriteeri,
+      !valmis
+    )
+
+  override protected def tyypinMukainenJärjestysKriteeri: Int = 500
+}
+
+trait EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
+  extends EuropeanSchoolOfHelsinkiPäätasonSuoritus
+  with LuokalleJääntiTiedonSisältäväSuoritus
+  with SisältääTodistuksellaNäkyvätLisätiedot
+{
+  @Title("Luokka-aste")
+  def koulutusmoduuli: EuropeanSchoolOfHelsinkiLuokkaAste
+  def jääLuokalle: Boolean
+  @Tooltip("Vuosiluokan alkamispäivä")
+  def alkamispäivä: Option[LocalDate]
+  def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
 }
 
 case class NurseryVuosiluokanSuoritus(
@@ -236,17 +263,32 @@ case class SecondaryUpperVuosiluokanSuoritus(
  * PÄÄTASON SUORITUKSET - KOULUTUSMODUULIT
  *****************************************************************************/
 
-trait EuropeanSchoolOfHelsinkiLuokkaAste extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
-  @KoodistoUri("europeanschoolofhelsinkiluokkaaste")
-  def tunniste: Koodistokoodiviite
+trait EuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
   @KoodistoUri("europeanschoolofhelsinkicurriculum")
   def curriculum: Koodistokoodiviite
 }
 
-trait KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiLuokkaAste extends EuropeanSchoolOfHelsinkiLuokkaAste with KoulutustyypinSisältäväKoulutusmoduuli {
+trait KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli extends EuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli with KoulutustyypinSisältäväKoulutusmoduuli {
   @KoodistoKoodiarvo("21")
   def koulutustyyppi: Option[Koodistokoodiviite]
 }
+
+@Title("EB-tutkinto")
+case class EBTutkinto(
+  @KoodistoUri("koulutus")
+  @KoodistoKoodiarvo("301104")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("301104", "koulutus"),
+  @KoodistoKoodiarvo("21")
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
+) extends KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli
+
+trait EuropeanSchoolOfHelsinkiLuokkaAste extends EuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli {
+  @KoodistoUri("europeanschoolofhelsinkiluokkaaste")
+  def tunniste: Koodistokoodiviite
+}
+
+trait KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiLuokkaAste extends EuropeanSchoolOfHelsinkiLuokkaAste with KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli
 
 case class NurseryLuokkaAste(
   @KoodistoKoodiarvo("N1")
@@ -316,9 +358,12 @@ object SecondaryUpperLuokkaAste {
  * OSASUORITUKSET
  *****************************************************************************/
 
-trait EuropeanSchoolOfHelsinkiOsasuoritus extends Suoritus with Vahvistukseton with Yksilöllistettävä {
+trait EuropeanSchoolOfHelsinkiOsasuoritus extends Suoritus with Vahvistukseton {
   @KoodistoUri("suorituksentyyppi")
   def tyyppi: Koodistokoodiviite
+}
+
+trait YksilöllistettyEuropeanSchoolOfHelsinkiOsasuoritus extends EuropeanSchoolOfHelsinkiOsasuoritus with Yksilöllistettävä {
   @DefaultValue(false)
   @Description("Tieto siitä, onko oppimäärä yksilöllistetty (true/false).")
   @Tooltip("Onko oppilas opiskellut yksilöllisen oppimäärän.")
@@ -336,7 +381,7 @@ trait EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus extends EuropeanSch
   def suorituskieli: Koodistokoodiviite
 }
 
-trait PrimaryOsasuoritus extends EuropeanSchoolOfHelsinkiOsasuoritus
+trait PrimaryOsasuoritus extends YksilöllistettyEuropeanSchoolOfHelsinkiOsasuoritus
 
 case class PrimaryLapsiOppimisalueenSuoritus(
   @Title("Oppimisalue")
@@ -368,9 +413,9 @@ case class SecondaryLowerOppiaineenSuoritus(
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritussecondarylower")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuoritussecondarylower", koodistoUri = "suorituksentyyppi"),
   suorituskieli: Koodistokoodiviite
-) extends EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus
+) extends EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus with YksilöllistettyEuropeanSchoolOfHelsinkiOsasuoritus
 
-trait SecondaryUpperOppiaineenSuoritus extends EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus
+trait SecondaryUpperOppiaineenSuoritus extends EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus with YksilöllistettyEuropeanSchoolOfHelsinkiOsasuoritus
 
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S6")
 case class SecondaryUpperOppiaineenSuoritusS6(
@@ -393,6 +438,18 @@ case class SecondaryUpperOppiaineenSuoritusS7(
   suorituskieli: Koodistokoodiviite,
   override val osasuoritukset: Option[List[S7OppiaineenAlaosasuoritus]] = None
 ) extends SecondaryUpperOppiaineenSuoritus with Arvioinniton with Välisuoritus
+
+@Title("EB-tutkinnon osasuoritus")
+case class EBTutkinnonOsasuoritus(
+  @Title("Oppiaine")
+  koulutusmoduuli: SecondaryOppiaine,
+  // TODO: TOR-1685: Voiko tämä olla EB-tutkinnossa?
+  // yksilöllistettyOppimäärä: Boolean = false,
+  @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ebtutkinnonosasuoritus", koodistoUri = "suorituksentyyppi"),
+  suorituskieli: Koodistokoodiviite,
+  override val osasuoritukset: Option[List[EBOppiaineenAlaosasuoritus]] = None
+) extends EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus with Arvioinniton with Välisuoritus
 
 /******************************************************************************
  * OSASUORITUKSET - KOULUTUSMODUULIT
@@ -435,7 +492,8 @@ case class EuropeanSchoolOfHelsinkiKielioppiaine(
   laajuus: LaajuusVuosiviikkotunneissa,
   kieli: Koodistokoodiviite
 ) extends PrimarySuorituskielenVaativaOppimisalue with SecondaryOppiaine with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliaine
-
+// Frontend tarvitsee tämän, jotta oneOfPrototype resolvaa oikein
+@OnlyWhen("tunniste/koodiarvo", "LA")
 case class EuropeanSchoolOfHelsinkiKielioppiaineLatin(
   @KoodistoKoodiarvo("LA")
   tunniste: Koodistokoodiviite,
@@ -443,7 +501,8 @@ case class EuropeanSchoolOfHelsinkiKielioppiaineLatin(
   @KoodistoKoodiarvo("LA")
   kieli: Koodistokoodiviite
 ) extends PrimarySuorituskielenVaativaOppimisalue with SecondaryOppiaine with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliaine
-
+// Frontend tarvitsee tämän, jotta oneOfPrototype resolvaa oikein
+@OnlyWhen("tunniste/koodiarvo", "GRC")
 case class EuropeanSchoolOfHelsinkiKielioppiaineAncientGreek(
   @KoodistoKoodiarvo("GRC")
   tunniste: Koodistokoodiviite,
@@ -480,6 +539,15 @@ case class S7OppiaineenAlaosasuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkialaosasuorituss7", koodistoUri = "suorituksentyyppi")
 ) extends EuropeanSchoolOfHelsinkiOsasuorituksenAlaosasuoritus
 
+@Title("EB-oppiaineen alaosasuoritus")
+case class EBOppiaineenAlaosasuoritus(
+  @Title("Arviointikomponentti")
+  koulutusmoduuli: EBOppiaineKomponentti,
+  arviointi: Option[List[EBArviointi]] = None,
+  @KoodistoKoodiarvo("ebtutkinnonalaosasuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ebtutkinnonalaosasuoritus", koodistoUri = "suorituksentyyppi")
+) extends EuropeanSchoolOfHelsinkiOsasuorituksenAlaosasuoritus
+
 /******************************************************************************
  * OSASUORITUKSET - ALAOSASUORITUSTEN KOULUTUSMODUULIT
  *****************************************************************************/
@@ -494,34 +562,27 @@ case class PrimaryAlaoppimisalue(
   tunniste: Koodistokoodiviite
 ) extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
 
-trait S7OppiaineKomponentti extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli {
+case class S7OppiaineKomponentti(
   @KoodistoUri("europeanschoolofhelsinkis7oppiaineenkomponentti")
-  def tunniste: Koodistokoodiviite
-}
-
-case class S7OppiaineKomponenttiA(
-  @KoodistoKoodiarvo("A")
   tunniste: Koodistokoodiviite
-) extends S7OppiaineKomponentti
+) extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
 
-case class S7OppiaineKomponenttiB(
-  @KoodistoKoodiarvo("B")
+@Title("EB-oppiainekomponentti")
+case class EBOppiaineKomponentti(
+  @KoodistoUri("ebtutkinnonoppiaineenkomponentti")
   tunniste: Koodistokoodiviite
-) extends S7OppiaineKomponentti
-
-case class S7OppiaineKomponenttiYearMark(
-  @KoodistoKoodiarvo("yearmark")
-  tunniste: Koodistokoodiviite
-) extends S7OppiaineKomponentti
+) extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
 
 /******************************************************************************
  * OSASUORITUKSET - KOODISTOON PERUSTUVAT ARVIOINNIT
  *****************************************************************************/
 
-trait EuropeanSchoolOfHelsinkiArviointi extends ArviointiPäivämäärällä {
+trait EuropeanSchoolOfHelsinkiArviointi extends Arviointi {
   def arvosana: KoodiViite
-  def päivä: LocalDate
+  def päivä: Option[LocalDate]
   override def hyväksytty: Boolean = EuropeanSchoolOfHelsinkiArviointi.hyväksytty(arvosana)
+
+  def arviointipäivä: Option[LocalDate] = päivä
 }
 
 trait EuropeanSchoolOfHelsinkiSanallinenArviointi extends EuropeanSchoolOfHelsinkiArviointi with SanallinenArviointi {
@@ -532,13 +593,13 @@ trait EuropeanSchoolOfHelsinkiSanallinenArviointi extends EuropeanSchoolOfHelsin
 
 trait EuropeanSchoolOfHelsinkiKoodistostaLöytyväArviointi extends EuropeanSchoolOfHelsinkiArviointi with KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
-  def päivä: LocalDate
+  def päivä: Option[LocalDate]
   override def hyväksytty: Boolean = EuropeanSchoolOfHelsinkiArviointi.hyväksytty(arvosana)
 }
 
 trait EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi extends EuropeanSchoolOfHelsinkiSanallinenArviointi with KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
-  def päivä: LocalDate
+  def päivä: Option[LocalDate]
   def kuvaus: Option[LocalizedString]
   override def hyväksytty: Boolean = EuropeanSchoolOfHelsinkiArviointi.hyväksytty(arvosana)
 }
@@ -564,14 +625,14 @@ case class EuropeanSchoolOfHelsinkiOsasuoritusArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus")
   arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
 
 case class PrimaryAlaoppimisalueArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkiprimarymark")
   arvosana: Koodistokoodiviite,
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends EuropeanSchoolOfHelsinkiKoodistostaLöytyväArviointi
 
@@ -584,59 +645,43 @@ case class SecondaryGradeArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade")
   arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
-
-/******************************************************************************
- * OSASUORITUKSET - SYNTEETTISET ARVIOINNIT
- *****************************************************************************/
-
-class NumericalMarkSynteettinenKoodisto extends SynteettinenKoodisto {
-  val koodistoUri: String = "esh/numericalmark"
-  val dokumentaatio: String = "0, 10, tai luku siltä väliltä tasan 1 desimaalilla, joka on 0 tai 5"
-  def validoi(koodiarvo: String): Boolean = {
-    koodiarvo == "0" || koodiarvo == "0.5" || koodiarvo == "10" || koodiarvo.matches("^[1-9]\\.[05]$")
-  }
-}
-
-class S7PreliminaryMarkSynteettinenKoodisto extends SynteettinenKoodisto {
-  val koodistoUri: String = "esh/s7preliminarymark"
-  val dokumentaatio: String = "0, 10, tai luku siltä väliltä tasan 1 desimaalilla"
-  def validoi(koodiarvo: String): Boolean = {
-    koodiarvo == "0" || koodiarvo == "10" || koodiarvo.matches("^0\\.[1-9]$") || koodiarvo.matches("^[1-9]\\.\\d$")
-  }
-}
-
-class S7FinalMarkSynteettinenKoodisto extends SynteettinenKoodisto {
-  val koodistoUri: String = "esh/s7finalmark"
-  val dokumentaatio: String = "10, tai luku 0.00-9.99 tasan 2 desimaalilla"
-  def validoi(koodiarvo: String): Boolean = {
-    koodiarvo == "10" || koodiarvo.matches("^\\d\\.\\d\\d$")
-  }
-}
-
-trait EuropeanSchoolOfHelsinkiSynteettinenArviointi {
-  def arvosana: SynteettinenKoodiviite
-  def arvosanaKirjaimin: LocalizedString = arvosana.nimi.getOrElse(LocalizedString.unlocalized(arvosana.koodiarvo))
-}
 
 @OnlyWhen("../../../../koulutusmoduuli/tunniste/koodiarvo", "S4")
 @OnlyWhen("../../../../koulutusmoduuli/tunniste/koodiarvo", "S5")
 @OnlyWhen("../../../../koulutusmoduuli/tunniste/koodiarvo", "S6")
 case class SecondaryNumericalMarkArviointi(
-  @SynteettinenKoodistoUri("esh/numericalmark")
-  arvosana: SynteettinenKoodiviite,
+  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkinumericalmark")
+  arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiSanallinenArviointi with EuropeanSchoolOfHelsinkiSynteettinenArviointi
-
+) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
 
 case class SecondaryS7PreliminaryMarkArviointi(
-  @SynteettinenKoodistoUri("esh/s7preliminarymark")
-  arvosana: SynteettinenKoodiviite,
+  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark")
+  arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends EuropeanSchoolOfHelsinkiSanallinenArviointi with EuropeanSchoolOfHelsinkiSynteettinenArviointi
+) extends EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
+
+trait EBArviointi extends EuropeanSchoolOfHelsinkiArviointi with KoodistostaLöytyväArviointi
+
+@OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "Preliminary")
+case class EBTutkintoPreliminaryMarkArviointi(
+  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate],
+  arvioitsijat: Option[List[Arvioitsija]] = None
+) extends EBArviointi
+
+@NotWhen("../../koulutusmoduuli/tunniste/koodiarvo", List("Preliminary"))
+case class EBTutkintoFinalMarkArviointi(
+  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkifinalmark")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate],
+  arvioitsijat: Option[List[Arvioitsija]] = None
+) extends EBArviointi

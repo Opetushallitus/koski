@@ -46,6 +46,7 @@ export const excludedProperties = [
 export const OpiskeluoikeusEditor = ({ model }) => {
   return (
     <TogglableEditor
+      aria-label="Muokkaa opiskeluoikeutta"
       model={addContext(model, { opiskeluoikeus: model })}
       renderChild={(mdl, editLink) => {
         const katsomassaVirtaVirheitä = Atom(false)

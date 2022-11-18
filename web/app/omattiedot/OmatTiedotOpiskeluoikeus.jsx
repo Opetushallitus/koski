@@ -279,11 +279,11 @@ const SuoritusTabs = ({ selectedTabIndex, suoritukset, onChange }) => {
               className={selected ? 'tab selected' : 'tab'}
               key={i}
               role="tab"
-              aria-label={`${selected ? 'Valittu ' : ''}${
+              aria-label={
                 typeof titleEditor === 'string'
                   ? titleEditor
                   : `Suoritus ${i + 1}`
-              }`}
+              }
             >
               {selected ? (
                 titleEditor

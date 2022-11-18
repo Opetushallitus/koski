@@ -55,6 +55,8 @@ export const tilaKoodi = (suoritus) =>
 export const hasArviointi = (suoritus) => !!modelData(suoritus, 'arviointi.-1')
 export const hasArvosana = (suoritus) =>
   !!modelData(suoritus, 'arviointi.-1.arvosana')
+export const hasSuorituskieli = (suoritus) =>
+  !!modelData(suoritus, 'suorituskieli')
 export const arviointiPuuttuu = (m) =>
   !intersects(m.value.classes, ilmanArviointiaSuoritettavatClasses) &&
   !hasArvosana(m)
@@ -92,6 +94,7 @@ export const suoritusTitle = (suoritus) => {
       return title + t(', osittainen')
     case 'lukionaineopinnot':
     case 'aikuistenperusopetuksenoppimaara':
+    case 'ebtutkinto':
       return modelTitle(suoritus, 'tyyppi')
     default:
       return title
@@ -135,16 +138,14 @@ const osasuorituksetProtoOptionsAndNewItemIndex = (suoritus) => {
 
 const arviointiProtoOptionsAndNewItemIndex = (suoritus) => {
   const _arvioinnit = wrapOptional(modelLookup(suoritus, 'arviointi'))
-  console.log('_arvioinnit', _arvioinnit)
   const newItemIndex = modelItems(_arvioinnit).length
-  console.log('newItemIndex', newItemIndex)
   const arvioinninProto = contextualizeSubModel(
     _arvioinnit.arrayPrototype,
     _arvioinnit,
     newItemIndex
   )
   const options = oneOfPrototypes(arvioinninProto)
-  console.log('options', options)
+
   return [_arvioinnit, options, newItemIndex]
 }
 

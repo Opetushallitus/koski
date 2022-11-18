@@ -1,12 +1,12 @@
 import { test, expect } from './base'
 
 test.describe('Muu kuin säännelty koulutus', () => {
-  test.beforeEach(async ({ fixtures, loginPage, customPage }) => {
+  test.beforeEach(async ({ fixtures, virkailijaLoginPage, customPage }) => {
     customPage.once('dialog', (dialog) => {
       dialog.accept()
     })
     await fixtures.reset()
-    await loginPage.apiLoginAsUser('muks', 'muks')
+    await virkailijaLoginPage.apiLoginAsUser('muks', 'muks')
   })
 
   test.afterEach(async ({ customPage }) => {
@@ -88,7 +88,7 @@ test.describe('Muu kuin säännelty koulutus', () => {
       const osasuoritus = 'Laajuus puuttuu'
       await muksOppijaPage.lisääUusiOsasuoritus(0, osasuoritus)
 
-      expect(await muksOppijaPage.tallennusBtn.isDisabled()).toEqual(true)
+      await expect(muksOppijaPage.tallennusBtn).toBeDisabled()
       await muksOppijaPage.peruuta()
     })
 

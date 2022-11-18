@@ -18,5 +18,8 @@ export default {
     )
   },
   canAddSuoritus: () => true,
-  addSuoritusTitle: () => <Text name="lisää opintojen päättövaiheen suoritus" />
+  addSuoritusTitle: () => (
+    <Text name="lisää opintojen päättövaiheen suoritus" />
+  ),
+  addSuoritusTitleKey: 'lisää opintojen päättövaiheen suoritus'
 }

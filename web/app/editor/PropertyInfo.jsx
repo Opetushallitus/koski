@@ -19,7 +19,7 @@ export const PropertyInfo = ({ property }) => {
         <>
           <Text
             name={`infoDescription:${property.model.infoDescription}`}
-            data-test-id={`${property?.key || 'unknown-property'}-info-box`}
+            data-testid={`${property?.key || 'unknown-property'}-info-box`}
             className={`${property?.key || 'unknown-property'}-info-box`}
           />
           <br />
@@ -30,7 +30,7 @@ export const PropertyInfo = ({ property }) => {
           href={t(`infoLinkUrl:${property.model.infoLinkUrl}`)}
           target="_blank"
           rel="noopener noreferrer"
-          data-test-id={`${property?.key || 'unknown-property'}-info-link`}
+          data-testid={`${property?.key || 'unknown-property'}-info-link`}
           className={`${property?.key || 'unknown-property'}-info-link`}
         >
           {t(`infoLinkTitle:${property.model.infoLinkTitle}`)}

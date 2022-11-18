@@ -125,4 +125,7 @@ UusiPerusopetuksenOppiaineenSuoritusPopup.addSuoritusTitle = () => (
   <Text name="lisää oppiaineen suoritus" />
 )
 
+UusiPerusopetuksenOppiaineenSuoritusPopup.addSuoritusTitleKey =
+  'lisää oppiaineen suoritus'
+
 export default UusiPerusopetuksenOppiaineenSuoritusPopup

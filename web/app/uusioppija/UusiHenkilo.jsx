@@ -59,11 +59,17 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
               </label>
               <label className="etunimet">
                 <Text name="Etunimet" />
-                <NameInputOrValue existing={existing} atom={etunimetAtom} />
+                <NameInputOrValue
+                  aria-label="Etunimet"
+                  role="textbox"
+                  existing={existing}
+                  atom={etunimetAtom}
+                />
               </label>
               <label className="kutsumanimi">
                 <Text name="Kutsumanimi" />
                 <ValueSelect
+                  aria-label="Kutsumanimi"
                   existing={existing}
                   atom={kutsumanimiAtom}
                   items={kutsumanimiChoices}
@@ -72,7 +78,12 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
               </label>
               <label className="sukunimi">
                 <Text name="Sukunimi" />
-                <NameInputOrValue existing={existing} atom={sukunimiAtom} />
+                <NameInputOrValue
+                  aria-label="Sukunimi"
+                  role="textbox"
+                  existing={existing}
+                  atom={sukunimiAtom}
+                />
               </label>
             </div>
           )
@@ -83,16 +94,17 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
   )
 }
 
-const NameInputOrValue = ({ existing, atom }) =>
+const NameInputOrValue = ({ existing, atom, ...rest }) =>
   existing ? (
-    <input type="text" disabled value={atom.or('')}></input>
+    <input type="text" disabled value={atom.or('')} {...rest}></input>
   ) : (
     <input
       type="text"
       value={atom.or('')}
       onChange={(e) => atom.set(e.target.value)}
       onBlur={(e) => atom.set(sanitizeFirstnames(e.target.value))}
-    ></input>
+      {...rest}
+    />
   )
 
 const ValueSelect = ({ existing, atom, items, manuallySetAtom }) =>

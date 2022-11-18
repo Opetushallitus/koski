@@ -29,5 +29,6 @@ export default {
       !aikuistenPerusopetuksenAlkuvaiheenSuoritus(opiskeluoikeus)
     )
   },
-  addSuoritusTitle: () => <Text name="lisää opintojen alkuvaiheen suoritus" />
+  addSuoritusTitle: () => <Text name="lisää opintojen alkuvaiheen suoritus" />,
+  addSuoritusTitleKey: 'lisää opintojen alkuvaiheen suoritus'
 }

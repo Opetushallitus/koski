@@ -139,6 +139,8 @@ UusiPerusopetuksenVuosiluokanSuoritusPopup.canAddSuoritus = (
 UusiPerusopetuksenVuosiluokanSuoritusPopup.addSuoritusTitle = () => (
   <Text name="lisää vuosiluokan suoritus" />
 )
+UusiPerusopetuksenVuosiluokanSuoritusPopup.addSuoritusTitleKey =
+  'lisää vuosiluokan suoritus'
 
 export default UusiPerusopetuksenVuosiluokanSuoritusPopup
 

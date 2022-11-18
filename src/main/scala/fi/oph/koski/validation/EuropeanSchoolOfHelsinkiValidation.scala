@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.documentation.ExampleData.muutaKauttaRahoitettu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus}
+import fi.oph.koski.schema.{EBTutkinnonOsasuoritus, EBTutkinnonSuoritus, EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiPäätasonSuoritus, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus}
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 
 import java.time.LocalDate
@@ -40,6 +40,14 @@ object EuropeanSchoolOfHelsinkiValidation {
       case Some(_) =>
         KoskiErrorCategory.badRequest.validation.esh.päättymispäivä(s"Helsingin eurooppalaisen koulun tallennettavat opiskeluoikeudet eivät voi olla päättyneet ennen lain voimaantuloa ${finnishDateFormat.format(aikaisinPäättymispäivä)}")
       case _ => HttpStatus.ok
+    }
+  }
+
+  def validateEBTutkinnonArvioinnit(suoritus: EBTutkinnonSuoritus): HttpStatus = {
+    if (suoritus.vahvistettu && suoritus.yleisarvosana.isEmpty) {
+      KoskiErrorCategory.badRequest.validation.esh.yleisarvosana()
+    } else {
+      HttpStatus.ok
     }
   }
 
@@ -81,7 +89,7 @@ object EuropeanSchoolOfHelsinkiValidation {
     result
   }
 
-  private def fillSuorituksenKoulutustyyppi(koodistoPalvelu: KoodistoViitePalvelu)(suoritus: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = {
+  private def fillSuorituksenKoulutustyyppi(koodistoPalvelu: KoodistoViitePalvelu)(suoritus: EuropeanSchoolOfHelsinkiPäätasonSuoritus): EuropeanSchoolOfHelsinkiPäätasonSuoritus = {
     suoritus match {
       case s: NurseryVuosiluokanSuoritus => s
       case s: PrimaryVuosiluokanSuoritus => s.copy(
@@ -95,6 +103,11 @@ object EuropeanSchoolOfHelsinkiValidation {
         )
       )
       case s: SecondaryUpperVuosiluokanSuoritus => s.copy(
+        koulutusmoduuli = s.koulutusmoduuli.copy(
+          koulutustyyppi = eshKoulutustyyppi(koodistoPalvelu)
+        )
+      )
+      case s: EBTutkinnonSuoritus => s.copy(
         koulutusmoduuli = s.koulutusmoduuli.copy(
           koulutustyyppi = eshKoulutustyyppi(koodistoPalvelu)
         )
@@ -115,5 +128,13 @@ object EuropeanSchoolOfHelsinkiValidation {
       s.osasuoritukset.exists(_.exists(_.koulutusmoduuli.tunniste.koodiarvo == koodiarvo))
 
     (sisältää("A") && sisältää("B")) || sisältää("yearmark")
+  }
+
+  def osasuorituksetKunnossa(s: EBTutkinnonSuoritus): Boolean = {
+    s.osasuoritukset.exists(os => !os.isEmpty && os.forall(osasuorituksetKunnossa))
+  }
+
+  private def osasuorituksetKunnossa(s: EBTutkinnonOsasuoritus): Boolean = {
+    s.osasuoritukset.exists(_.length >= 1)
   }
 }

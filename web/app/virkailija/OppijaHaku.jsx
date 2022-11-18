@@ -190,7 +190,9 @@ export const OppijaHaku = () => {
                   <Text name="Ei hakutuloksia" />
                   {options.map((option) => option.element)}
                   {response.error && (
-                    <div className="error">{response.error}</div>
+                    <div className="error" role="error" aria-live="polite">
+                      {response.error}
+                    </div>
                   )}
                 </div>
               )
