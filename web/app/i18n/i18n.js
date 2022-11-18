@@ -11,6 +11,7 @@ export const setLang = (newLang) => {
 }
 
 export const t = (s, ignoreMissing, languageOverride) => {
+  console.debug(`_localize: ${s}`)
   const usedLanguage = languageOverride || lang
   if (!s) return ''
   if (typeof s === 'object') {

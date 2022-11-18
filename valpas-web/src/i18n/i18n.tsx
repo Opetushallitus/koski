@@ -34,6 +34,7 @@ export const t = (id: TranslationId, params?: ParamsMap): Translation => {
   if (!id) {
     return ""
   }
+  console.debug(`_vlocalize: ${id}`)
 
   const tRecursive = (
     usedLanguage: Language,
