@@ -35,7 +35,6 @@ import {
   isOstettu
 } from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 import { AmmatillinenArviointiasteikko } from '../ammatillinen/AmmatillinenArviointiasteikko'
-import { eshSuoritus } from '../esh/europeanschoolofhelsinkiSuoritus'
 
 export class SuoritusEditor extends React.Component {
   showDeleteButtonIfAllowed() {
