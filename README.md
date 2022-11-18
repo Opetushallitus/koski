@@ -271,6 +271,13 @@ Mocha-testit voi ajaa myös nopeasti komentoriviltä:
 make fronttest
 ```
 
+### Integraatiotestit
+
+Integraatiotestejä varten pitää Koski-backendin olla pystyssä (oletuksena `localhost:7021`) tai testit pitää käynnistää ajamalla `KoskiFrontSpec.scala`.
+Jos backend on valmiiksi ajossa, voi testit ajaa komennolla `npm run playwright:test`.
+
+Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run playwright:test:debug`
+
 ## CI-palvelin
 
 Koskessa on käytössä [Gitbub Actions](https://github.com/Opetushallitus/koski/actions), joka on konfiguroitu [.github hakemistossa](.github).

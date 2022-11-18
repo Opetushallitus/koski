@@ -47,11 +47,14 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
       ListModel(models, None, Nil)
     }
     val luokkaAstePattern = """(\d)""".r
+    val eshLuokkaAstePattern = """^((?:N[1-2])|(?:P[1-5])|(?:S[1-7]))$$""".r
     val toimintaAlueittain = params.get("toimintaAlueittain").map(_.toBoolean).getOrElse(false)
 
     (params("koodistoUri"), params("koodiarvo")) match {
       case ("perusopetuksenluokkaaste", luokkaAstePattern(luokkaAste)) =>
         toListModel(NuortenPerusopetusPakollisetOppiaineet(application.koodistoViitePalvelu).pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(luokkaAste.toInt, toimintaAlueittain))
+      case ("europeanschoolofhelsinkiluokkaaste", eshLuokkaAstePattern(luokkaAste)) =>
+        toListModel(EuropeanSchoolOfHelsinkiOppiaineet(application.koodistoViitePalvelu).eshOsaSuoritukset(luokkaAste))
       case ("koulutus", "201101") =>
         toListModel(NuortenPerusopetusPakollisetOppiaineet(application.koodistoViitePalvelu).päättötodistuksenSuoritukset(params("tyyppi"), toimintaAlueittain))
       case _ =>

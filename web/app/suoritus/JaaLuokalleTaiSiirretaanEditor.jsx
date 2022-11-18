@@ -9,6 +9,7 @@ import React from 'baret'
 import { suoritusValmis } from './Suoritus'
 import { Editor } from '../editor/Editor'
 import Text from '../i18n/Text'
+import { isEshS7 } from './SuoritustaulukkoCommon'
 
 export const JääLuokalleTaiSiirretäänEditor = ({ model }) => {
   const jääLuokalleModel = modelLookup(model, 'jääLuokalle')
@@ -16,7 +17,7 @@ export const JääLuokalleTaiSiirretäänEditor = ({ model }) => {
   const jääLuokalle = modelData(jääLuokalleModel)
   const luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
   if (luokka && suoritusValmis(model)) {
-    if (luokka == '9') {
+    if (luokka == '9' || isEshS7(model)) {
       if (!model.context.edit && jääLuokalle) {
         return (
           <div className="jaa-tai-siirretaan">

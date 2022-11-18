@@ -48,7 +48,7 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
 
   return (
     <div className="suoritus-tabs">
-      <ul>
+      <ul role="tablist" aria-label="Suoritukset">
         {suoritukset.map((suoritusModel, i) => {
           const selected = i === suoritusTabIndex(suoritukset)
           const titleEditor = tabTitle(suoritusModel)
@@ -68,7 +68,16 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
             !hasLuokkaAste ||
             (hasLuokkaAste && luokkaAsteLookup.koodiarvo === '9')
           return (
-            <li className={classNames} key={i}>
+            <li
+              className={classNames}
+              key={i}
+              role="tab"
+              aria-label={`${selected ? 'Valittu ' : ''}${
+                typeof titleEditor === 'string'
+                  ? titleEditor
+                  : `Suoritus ${i + 1}`
+              }`}
+            >
               {selected ? (
                 titleEditor
               ) : (

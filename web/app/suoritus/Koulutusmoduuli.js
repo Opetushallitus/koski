@@ -3,9 +3,11 @@ import { modelData, modelLookup, oneOfPrototypes } from '../editor/EditorModel'
 export const isPaikallinen = (m) =>
   m && m.value.classes.includes('paikallinenkoulutusmoduuli')
 export const isKieliaine = (m) => m && m.value.classes.includes('kieliaine')
+export const isEshKieliaine = (m) =>
+  m && m.value.classes.includes('europeanschoolofhelsinkikieliaine')
 export const isÄidinkieli = (m) => m && m.value.classes.includes('aidinkieli')
 export const isUusi = (oppiaine) => {
-  return !modelData(oppiaine, 'tunniste').koodiarvo
+  return !modelData(oppiaine, 'tunniste')?.koodiarvo
 }
 export const isIBOppiaine = (m) => m && m.value.classes.includes('iboppiaine')
 export const isLukionKurssi = (m) =>

@@ -2409,5 +2409,12 @@
   "Alaosasuoritus" : "Alaosasuoritus",
   "Arviointikomponentti" : "Arviointikomponentti",
   "Oppimisalue" : "Oppimisalue",
-  "Oppilaan vahvuudet ja kehittymisalueet jatkossa" : "Oppilaan vahvuudet ja kehittymisalueet jatkossa"
+  "Oppilaan vahvuudet ja kehittymisalueet jatkossa" : "Oppilaan vahvuudet ja kehittymisalueet jatkossa",
+  "description:invalid_esh_final_grade":  "Arvosanan tulee olla 10, tai luku väliltä 0.00 - 9.99 tasan kahden desimaalin tarkkuudella.",
+  "description:invalid_esh_final_grade_example":  "Esimerkkejä: 9.58 tai 8.19",
+  "description:invalid_esh_numerical_grade":  "Arvosanan tulee olla 0, 10, tai luku siltä väliltä yhden desimaalin tarkkuudella.",
+  "description:invalid_esh_numerical_grade_example":  "Esimerkkejä: 9.5 tai 8.0",
+  "description:invalid_esh_preliminary_grade":  "Arvosanan tulee olla 0, 10 tai luku siltä väliltä yhden desimaalin tarkkuudella.",
+  "description:invalid_esh_preliminary_grade_example":  "Esimerkkejä: 9.2 tai 8.6",
+  "description:lisaa_alaosasuoritus":  "Lisää alaosasuoritus"
 }

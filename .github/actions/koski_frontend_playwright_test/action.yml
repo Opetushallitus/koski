@@ -1,0 +1,18 @@
+name: Koski Playwright E2E tests
+
+runs:
+  using: "composite"
+  steps:
+    - name: "🔨 Setup backend and databases"
+      uses: ./.github/actions/setup_backend
+    - name: "🌍 Setup Playwright"
+      uses: ./.github/actions/setup_playwright
+    - name: Run Playwright tests
+      run: mvn test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
+      shell: bash
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report
+        path: web/playwright-report/
+        retention-days: 7

@@ -11,6 +11,7 @@ export default ({ suoritusAtom, dateAtom, oppilaitosAtom }) => {
   const luokkaasteP = koodistoValues('europeanschoolofhelsinkiluokkaaste').map(
     (luokkaasteet) => luokkaasteet.sort(byAste)
   )
+
   luokkaasteP.onValue((luokkaasteet) => {
     luokkaasteAtom.set(luokkaasteet[0])
   })

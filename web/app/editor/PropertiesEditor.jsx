@@ -14,6 +14,7 @@ import { KoulusivistyskieliPropertyTitle } from '../suoritus/Koulusivistyskieli'
 import { PuhviKoePropertyTitle } from '../suoritus/PuhviKoePropertyTitle'
 import { SuullisenKielitaidonKoePropertyTitle } from '../suoritus/SuullisenKielitaidonKoePropertyTitle'
 import { PropertyInfo } from './PropertyInfo'
+import classNames from 'classnames'
 
 export class PropertiesEditor extends React.Component {
   render() {
@@ -65,8 +66,10 @@ export class PropertiesEditor extends React.Component {
         })
       } else {
         const key = prefix + property.key + i
-        const propertyClassName = 'property ' + property.key
-        const valueClass = modelEmpty(property.model) ? 'value empty' : 'value'
+        const propertyClassName = classNames('property', property.key)
+        const valueClass = classNames('value', {
+          empty: modelEmpty(property.model)
+        })
         const valueEditor = (
           <ErrorDecorator
             model={property.model}
@@ -97,15 +100,28 @@ export class PropertiesEditor extends React.Component {
                   <PropertyTitle property={property} />
                   <PropertyInfo property={property} />
                 </div>
-                <div className={valueClass}>{valueEditor}</div>
+                <div
+                  className={valueClass}
+                  data-testid={`${property.key}-complex-value`}
+                >
+                  {valueEditor}
+                </div>
               </td>
             ) : (
               [
-                <td className="label" key="label">
+                <td
+                  className="label"
+                  key="label"
+                  data-testid={`${property.key}-label`}
+                >
                   <PropertyTitle property={property} />
                   <PropertyInfo property={property} />
                 </td>,
-                <td className={valueClass} key="value">
+                <td
+                  className={valueClass}
+                  key="value"
+                  data-testid={`${property.key}-value`}
+                >
                   {valueEditor}
                 </td>
               ]

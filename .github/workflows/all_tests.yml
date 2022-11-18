@@ -160,7 +160,7 @@ jobs:
             fi.oph.koski.tiedonsiirto
 
   run_frontend_tests_0:
-    name: Frontend 1/5
+    name: Frontend 1/6
     runs-on: ${{ inputs.runs-on }}
     steps:
       - uses: actions/checkout@v3
@@ -169,7 +169,7 @@ jobs:
           index: 0
 
   run_frontend_tests_1:
-    name: Frontend 2/5
+    name: Frontend 2/6
     runs-on: ${{ inputs.runs-on }}
     steps:
       - uses: actions/checkout@v3
@@ -178,7 +178,7 @@ jobs:
           index: 1
 
   run_frontend_tests_2:
-    name: Frontend 3/5
+    name: Frontend 3/6
     runs-on: ${{ inputs.runs-on }}
     steps:
       - uses: actions/checkout@v3
@@ -187,7 +187,7 @@ jobs:
           index: 2
 
   run_frontend_tests_3:
-    name: Frontend 4/5
+    name: Frontend 4/6
     runs-on: ${{ inputs.runs-on }}
     steps:
       - uses: actions/checkout@v3
@@ -196,13 +196,20 @@ jobs:
           index: 3
 
   run_frontend_tests_4:
-    name: Frontend 5/5
+    name: Frontend 5/6
     runs-on: ${{ inputs.runs-on }}
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_frontend_test
         with:
           index: 4
+
+  run_frontend_tests_5:
+    name: Frontend 6/6
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/koski_frontend_playwright_test
 
   valpas_integration_tests_1:
     name: Valpas 1/4

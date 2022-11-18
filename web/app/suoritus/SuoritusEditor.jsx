@@ -35,6 +35,7 @@ import {
   isOstettu
 } from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 import { AmmatillinenArviointiasteikko } from '../ammatillinen/AmmatillinenArviointiasteikko'
+import { eshSuoritus } from '../esh/europeanschoolofhelsinkiSuoritus'
 
 export class SuoritusEditor extends React.Component {
   showDeleteButtonIfAllowed() {
@@ -58,15 +59,15 @@ export class SuoritusEditor extends React.Component {
   }
 
   render() {
+    let { model } = this.props
     const excludedProperties = [
       'osasuoritukset',
       'käyttäytymisenArvio',
       'vahvistus',
       'jääLuokalle',
       'pakollinen'
-    ]
+    ].filter(Boolean)
 
-    let { model } = this.props
     model = addContext(model, {
       suoritus: model,
       toimipiste: modelLookup(model, 'toimipiste')
