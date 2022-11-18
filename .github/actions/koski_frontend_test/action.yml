@@ -29,6 +29,9 @@ runs:
       run: ls -la web
       shell: bash
     - name: list target directory
+      run: ls -la target
+      shell: bash
+    - name: list web/target directory
       run: ls -la web/target
       shell: bash
     - name: list screenshot directory
