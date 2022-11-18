@@ -163,6 +163,8 @@ export const groupSuoritukset = (
           groupTitles = { [NON_GROUPED]: t('Osasuoritus') }
           groupIds = [NON_GROUPED]
         } else {
+          console.log("suoritukset[0]", suoritukset[0])
+          console.log("suoritusProto", suoritusProto)
           grouped = { [NON_GROUPED]: suoritukset }
           groupTitles = {
             [NON_GROUPED]: t(

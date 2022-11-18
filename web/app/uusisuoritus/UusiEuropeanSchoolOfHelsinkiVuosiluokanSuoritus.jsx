@@ -7,15 +7,23 @@ import {
   modelData,
   modelLookup,
   modelSet,
-  modelSetData
+  modelSetData,
+  modelSetValue
 } from '../editor/EditorModel'
-import {
-  copySuorituskieli,
-  copyToimipiste,
-  newSuoritusProto
-} from '../suoritus/Suoritus'
+import { copyToimipiste, newSuoritusProto } from '../suoritus/Suoritus'
 import { suoritusPrototypeKey } from '../esh/europeanschoolofhelsinkiSuoritus'
 import UusiEuropeanSchoolOfHelsinkiSuoritus from '../uusioppija/UusiEuropeanSchoolOfHelsinkiSuoritus'
+import http from '../util/http'
+
+const luokkaAsteenOsasuoritukset = (model) =>
+  http.cachedGet(
+    `/koski/api/editor/koodit/europeanschoolofhelsinkiluokkaaste/${modelData(
+      model,
+      'koulutusmoduuli.tunniste.koodiarvo'
+    )}/suoritukset/prefill`
+  )
+
+const fetchOsasuorituksetTemplate = (model) => luokkaAsteenOsasuoritukset(model)
 
 export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
   opiskeluoikeus,
@@ -34,11 +42,11 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
       suoritus.koulutusmoduuli.tunniste
     )
     proto = copyToimipiste(modelLookup(opiskeluoikeus, 'suoritukset.0'), proto)
-    proto = copySuorituskieli(
-      modelLookup(opiskeluoikeus, 'suoritukset.0'),
-      proto
-    )
-    resultCallback(proto)
+
+    fetchOsasuorituksetTemplate(proto).onValue((osasuorituksetTemplate) => {
+      proto = copyOsasuoritukset(osasuorituksetTemplate.value, proto)
+      resultCallback(proto)
+    })
   }
 
   return (
@@ -69,6 +77,9 @@ UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.canAddSuoritus = (
 UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.addSuoritusTitle = () => (
   <Text name="lisää vuosiluokan suoritus" />
 )
+
+const copyOsasuoritukset = (osasuoritukset, proto) =>
+  modelSetValue(proto, osasuoritukset, 'osasuoritukset')
 
 const withKoulutusmoduulinTunniste = (suoritusProto, tunniste) => {
   let kmt = modelLookup(suoritusProto, 'koulutusmoduuli.tunniste')

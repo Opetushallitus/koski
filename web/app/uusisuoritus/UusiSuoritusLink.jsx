@@ -29,6 +29,7 @@ export default ({ opiskeluoikeus, callback }) => {
           const addingAtom = Atom(false)
           const resultCallback = (suoritus) => {
             if (suoritus) {
+              console.log('UusiSuoritusLink suoritus', suoritus)
               callback(suoritus)
             } else {
               addingAtom.set(false)
