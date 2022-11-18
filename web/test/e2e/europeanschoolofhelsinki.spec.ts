@@ -1,15 +1,28 @@
 import { test, expect } from './base'
 
+const ESH_OID = '1.2.246.562.24.00000000065'
+const eshVuosiluokat = [
+  'P1',
+  // 'P2',
+  'P3',
+  'P4',
+  'P5',
+  'S1',
+  'S2',
+  'S3',
+  'S4',
+  'S5',
+  'S6',
+  'S7'
+]
 test.describe('European School of Helsinki', () => {
   test.beforeAll(async ({ fixtures }) => {
-    await fixtures.reset()
+    await fixtures.reset(false)
   })
 
-  test.beforeEach(async ({ loginPage, virkailijaPage, oppijaHaku }) => {
+  test.beforeEach(async ({ loginPage, oppijaPage }) => {
     await loginPage.apiLoginAsUser('kalle', 'kalle')
-    await virkailijaPage.goto()
-    const hakutulokset = await oppijaHaku.search('050707A130V')
-    await hakutulokset.clickOnFirst()
+    await oppijaPage.goto(ESH_OID)
   })
 
   test('Näyttää oppijan tiedot oikein', async ({ page, oppijaPage }) => {
@@ -17,47 +30,47 @@ test.describe('European School of Helsinki', () => {
       'Eurooppalainen, Emilia (050707A130V)'
     )
     await expect(oppijaPage.hetu).toContainText('050707A130V')
-    await expect(page.getByTestId('koulutusmoduuli-value')).toContainText(
-      'S72023'
-    )
-    await expect(page.getByTestId('luokka-value')).toContainText('S7A')
-    await expect(page.getByTestId('alkamispäivä-value')).toContainText(
-      '1.8.2018'
-    )
-    await expect(page.getByTestId('toimipiste-value')).toContainText(
+    await expect(oppijaPage.koulutusmoduuli).toContainText('S72023')
+    await expect(oppijaPage.luokka).toContainText('S7A')
+    await expect(oppijaPage.alkamispäivä).toContainText('1.8.2018')
+    await expect(oppijaPage.toimipiste).toContainText(
       'Helsingin eurooppalainen koulu'
     )
   })
-  test.skip('Näyttää S7-luokan osasuoritukset oikein', async ({
+
+  test(`Lisää S7-vuosiluokan osasuoritukseen uuden alaosasuorituksen`, async ({
     page,
     oppijaPage
   }) => {
-    await oppijaPage.clickSuoritusTab(0)
-    await expect(page.getByText('Physical Education')).toBeVisible()
-    await expect(page.getByText('First language, sloveeni')).toBeVisible()
-    await expect(page.getByText('Mathematics')).toBeVisible()
-    await oppijaPage.avaaKaikkiOsasuoritukset()
-    await expect(page.getByTestId('Physical Education - A')).toBeVisible()
-    await expect(page.getByTestId('Physical Education - B')).toBeVisible()
-    await expect(
-      page.getByTestId('Physical Education - Year mark')
-    ).toBeVisible()
-    await expect(page.getByTestId('First language, sloveeni - A')).toBeVisible()
-    await expect(page.getByTestId('First language, sloveeni - B')).toBeVisible()
-    await expect(
-      page.getByTestId('First language, sloveeni - Year mark')
-    ).toBeVisible()
-    await expect(page.getByTestId('Mathematics - A')).toBeVisible()
-    await expect(page.getByTestId('Mathematics - B')).toBeVisible()
-    await expect(page.getByTestId('Mathematics - Year mark')).toBeVisible()
-  })
-  test.skip('Lisää A- alaosasasuorituksen oikein', async ({ oppijaPage }) => {
+    await oppijaPage.clickSuoritusTabByLabel('S1')
+    await oppijaPage.clickSuoritusTabByLabel('S7')
     await oppijaPage.avaaMuokkausnäkymä()
-    // Physical Education - A
-    const osasuoritus = oppijaPage.getTutkinnonOsa('tutkinnon-osa-PE')
-    await osasuoritus.avaa()
-    // await oppijaPage.osasuoritus(0).sulje();
-    const dropdown = osasuoritus.osasuoritusDropdown()
-    // await dropdown.valitse('A')
+
+    await page
+      .getByRole('button', {
+        name: 'Laajenna suoritus Information and Communication Technology',
+        expanded: false
+      })
+      .click()
+    await page.getByRole('combobox', { name: 'Lisää alaosasuoritus' }).click()
+    await page.getByRole('listitem', { name: 'Year mark' }).click()
+  })
+
+  test.describe('Vuosiluokan suoritukset', () => {
+    for (const luokka of eshVuosiluokat) {
+      test(`Lisää ${luokka}-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
+        page,
+        oppijaPage
+      }) => {
+        await oppijaPage.clickSuoritusTabByLabel(luokka)
+        await oppijaPage.avaaMuokkausnäkymä()
+        await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
+        await page
+          .getByRole('listitem', {
+            name: 'Advanced studies of the second language'
+          })
+          .click()
+      })
+    }
   })
 })
