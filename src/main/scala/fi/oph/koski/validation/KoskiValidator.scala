@@ -1037,6 +1037,8 @@ class KoskiValidator(
            _: NäyttötutkintoonValmistavanKoulutuksenSuoritus
       => true
       case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || s.jääLuokalle => true
+      case _: PerusopetuksenVuosiluokanSuoritus
+        if PerusopetuksenOpiskeluoikeusValidation.onVuosiluokkiinSitoutumatonOpetus(opiskeluoikeus) => true
       case s: LukionOppimääränSuoritus2019
       => osasuorituksetKunnossaLukio2019(s)
       case s: LukionOppiaineidenOppimäärienSuoritus2019 if opiskeluoikeus.asInstanceOf[LukionOpiskeluoikeus].oppimääräSuoritettu.getOrElse(false)
@@ -1087,6 +1089,8 @@ class KoskiValidator(
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys")
     case s: PerusopetuksenOppimääränSuoritus =>
       KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus")
+    case s: PerusopetuksenVuosiluokanSuoritus =>
+      KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus, eikä oppija ole vuosiluokkiin sitomattomassa opetuksessa.")
     case s: LukionOppimääränSuoritus2019 if s.oppimäärä.koodiarvo == "nuortenops" =>
       KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 150 op osasuorituksia, joista vähintään 20 op valinnaisia, tai opiskeluoikeudelta puuttuu linkitys")
     case s: LukionOppimääränSuoritus2019 if s.oppimäärä.koodiarvo == "aikuistenops" =>

@@ -43,4 +43,26 @@ class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTe
       verifyResponseStatusOk()
     }
   }
+
+  "Jos oppilaalle on merkitty vuosiluokkiin sitomaton opetus, vahvistetulta vuosiluokan suoritukselta ei vaadita osasuorituksia" in {
+    putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      suoritukset = List(PerusopetusExampleData.seitsemännenLuokanSuoritus.copy(osasuoritukset = None)),
+      lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+        vuosiluokkiinSitoutumatonOpetus = true
+      ))
+    )) {
+      verifyResponseStatusOk()
+    }
+  }
+
+  "Jos oppilaalle ei ole merkitty vuosiluokkiin sitomatonta opetusta, vahvistetulta vuosiluokan suoritukselta vaaditaan osasuorituksia" in {
+    putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      suoritukset = List(PerusopetusExampleData.seitsemännenLuokanSuoritus.copy(osasuoritukset = None)),
+      lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+        vuosiluokkiinSitoutumatonOpetus = false
+      ))
+    )) {
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus, eikä oppija ole vuosiluokkiin sitomattomassa opetuksessa."))
+    }
+  }
 }

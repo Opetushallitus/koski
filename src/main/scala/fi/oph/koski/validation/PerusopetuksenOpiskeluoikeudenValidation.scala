@@ -67,7 +67,7 @@ object PerusopetuksenOpiskeluoikeusValidation {
       case _: Any => false
     }
 
-    val vuosiluokkiinSitoutumatonOpetus = oo.lisätiedot.exists(_.vuosiluokkiinSitoutumatonOpetus)
+    val vuosiluokkiinSitoutumatonOpetus = onVuosiluokkiinSitoutumatonOpetus(oo)
 
     val kotiopetusVoimassaPäättötodistuksenVahvistuspäivänä = oo.suoritukset.exists {
       case päättö: NuortenPerusopetuksenOppimääränSuoritus => päättö.vahvistus.exists(vahvistus => {
@@ -86,6 +86,10 @@ object PerusopetuksenOpiskeluoikeusValidation {
     } else {
       KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenValmistunutTilaIlmanYsiluokanSuoritusta()
     }
+  }
+
+  def onVuosiluokkiinSitoutumatonOpetus(oo: KoskeenTallennettavaOpiskeluoikeus): Boolean = oo match {
+    case p: PerusopetuksenOpiskeluoikeus => p.lisätiedot.exists(_.vuosiluokkiinSitoutumatonOpetus)
   }
 
   def filterDeprekoidutKentät(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
