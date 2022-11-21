@@ -109,6 +109,7 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
                 <Editor
                   model={koulutusmoduuli}
                   inline={true}
+                  showEmptyOption={true}
                   path="kieli"
                   sortBy={sortLanguages}
                 />
