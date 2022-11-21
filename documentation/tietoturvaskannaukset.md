@@ -16,6 +16,11 @@ Voit ajaa OWASP:in seuraavasti:
 
 `make owasp`
 
+Raportoidut riippuvuudet voivat toisinaan olla aliriippuvuuksissa. Jos riippuvuutte ei löydy pom.xml:stä, saat
+riippuvuushierarkian komennolla:
+
+`mvn dependency:tree`
+
 Virheet on helpoin hiljentää avaamalla target/dependency-check-report.html. Klikkaa suppress nappulaa, josta saat
 valmiin XML elementin, jonka voit lisätä tiedostoon
 [owasp-dependency-check-suppressions.xml](../owasp-dependency-check-suppressions.xml).
