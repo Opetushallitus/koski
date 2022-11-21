@@ -1471,7 +1471,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     päivä: LocalDate
   ): Option[List[SecondaryNumericalMarkArviointi]] = {
     Some(List(SecondaryNumericalMarkArviointi(
-      arvosana = SynteettinenKoodiviite(koodiarvo = arvosana, koodistoUri = "esh/numericalmark"),
+      arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoeuropeanschoolofhelsinkinumericalmark"),
       kuvaus = kuvaus,
       päivä = päivä,
       arvioitsijat = arvioitsijat
@@ -1485,7 +1485,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     päivä: LocalDate
   ): Option[List[SecondaryS7PreliminaryMarkArviointi]] = {
     Some(List(SecondaryS7PreliminaryMarkArviointi(
-      arvosana = SynteettinenKoodiviite(koodiarvo = arvosana, koodistoUri = "esh/s7preliminarymark"),
+      arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark"),
       kuvaus = kuvaus,
       päivä = päivä,
       arvioitsijat = arvioitsijat

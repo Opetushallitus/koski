@@ -1,6 +1,5 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.koodisto.SynteettinenKoodisto
 import fi.oph.koski.koskiuser.Rooli
 
 import java.time.{LocalDate, LocalDateTime}
@@ -37,12 +36,6 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeus(
 }
 
 object EuropeanSchoolOfHelsinkiOpiskeluoikeus {
-
-  lazy val synteettisetKoodistot: List[SynteettinenKoodisto] = List(
-    new NumericalMarkSynteettinenKoodisto,
-    new S7PreliminaryMarkSynteettinenKoodisto,
-    new S7FinalMarkSynteettinenKoodisto
-  )
 
   // TODO: TOR-1685 Saatetaan tarvita
   /*
@@ -588,55 +581,21 @@ case class SecondaryGradeArviointi(
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
 
-/******************************************************************************
- * OSASUORITUKSET - SYNTEETTISET ARVIOINNIT
- *****************************************************************************/
-
-class NumericalMarkSynteettinenKoodisto extends SynteettinenKoodisto {
-  val koodistoUri: String = "esh/numericalmark"
-  val dokumentaatio: String = "0, 10, tai luku siltä väliltä tasan 1 desimaalilla, joka on 0 tai 5"
-  def validoi(koodiarvo: String): Boolean = {
-    koodiarvo == "0" || koodiarvo == "0.5" || koodiarvo == "10" || koodiarvo.matches("^[1-9]\\.[05]$")
-  }
-}
-
-class S7PreliminaryMarkSynteettinenKoodisto extends SynteettinenKoodisto {
-  val koodistoUri: String = "esh/s7preliminarymark"
-  val dokumentaatio: String = "0, 10, tai luku siltä väliltä tasan 1 desimaalilla"
-  def validoi(koodiarvo: String): Boolean = {
-    koodiarvo == "0" || koodiarvo == "10" || koodiarvo.matches("^0\\.[1-9]$") || koodiarvo.matches("^[1-9]\\.\\d$")
-  }
-}
-
-class S7FinalMarkSynteettinenKoodisto extends SynteettinenKoodisto {
-  val koodistoUri: String = "esh/s7finalmark"
-  val dokumentaatio: String = "10, tai luku 0.00-9.99 tasan 2 desimaalilla"
-  def validoi(koodiarvo: String): Boolean = {
-    koodiarvo == "10" || koodiarvo.matches("^\\d\\.\\d\\d$")
-  }
-}
-
-trait EuropeanSchoolOfHelsinkiSynteettinenArviointi {
-  def arvosana: SynteettinenKoodiviite
-  def arvosanaKirjaimin: LocalizedString = arvosana.nimi.getOrElse(LocalizedString.unlocalized(arvosana.koodiarvo))
-}
-
 @OnlyWhen("../../../../koulutusmoduuli/tunniste/koodiarvo", "S4")
 @OnlyWhen("../../../../koulutusmoduuli/tunniste/koodiarvo", "S5")
 @OnlyWhen("../../../../koulutusmoduuli/tunniste/koodiarvo", "S6")
 case class SecondaryNumericalMarkArviointi(
-  @SynteettinenKoodistoUri("esh/numericalmark")
-  arvosana: SynteettinenKoodiviite,
+  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkinumericalmark")
+  arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
   päivä: LocalDate,
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiSanallinenArviointi with EuropeanSchoolOfHelsinkiSynteettinenArviointi
-
+) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
 
 case class SecondaryS7PreliminaryMarkArviointi(
-  @SynteettinenKoodistoUri("esh/s7preliminarymark")
-  arvosana: SynteettinenKoodiviite,
+  @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark")
+  arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
   päivä: LocalDate,
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends EuropeanSchoolOfHelsinkiSanallinenArviointi with EuropeanSchoolOfHelsinkiSynteettinenArviointi
+) extends EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
