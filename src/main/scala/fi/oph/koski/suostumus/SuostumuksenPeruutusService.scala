@@ -78,7 +78,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     henkilöRepository.findByOid(user.oid) match {
       case Some(henkilö) =>
         opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get.exists(oo =>
-          oo.oid.get == oid && !suoritusjakoTehty(oo)) match {
+          oo.oid.contains(oid) && !suoritusjakoTehty(oo)) match {
           case true => HttpStatus.ok
           case false => KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Suorituksesta on tehty suoritusjako.")
         }
