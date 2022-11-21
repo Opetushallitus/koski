@@ -1,10 +1,15 @@
 import React from 'baret'
 import { t } from '../i18n/i18n'
 import {
+  contextualizeSubModel,
   modelData,
+  modelItems,
   modelLookup,
   modelProperties,
-  modelTitle
+  modelSet,
+  modelTitle,
+  resolveActualModel,
+  wrapOptional
 } from '../editor/EditorModel'
 import { hasArvosana, tilaText } from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
@@ -23,6 +28,7 @@ import { eshSuoritus } from './europeanschoolofhelsinkiSuoritus'
 import { BaseContext } from '../types/EditorModelContext'
 import { SynteettinenArvosanaEditor } from '../suoritus/SynteettinenArvosanaEditor'
 import { ArvosanaEditor } from '../suoritus/ArvosanaEditor'
+import { isOneOfModel } from '../types/EditorModels'
 
 // ESHSuoritusColumn
 
@@ -131,6 +137,19 @@ export type EshArvosanaColumn = ColumnIface<
   EshArvosanaColumnShowProps
 >
 
+// @ts-expect-error
+function resolveArrayPrototype(model) {
+  if (model.arrayPrototype !== undefined) {
+    return model.arrayPrototype
+  }
+  if (
+    model.optionalPrototype !== undefined &&
+    model.optionalPrototype.arrayPrototype !== undefined
+  ) {
+    return model.optionalPrototype.arrayPrototype
+  }
+}
+
 export const EshArvosanaColumn: ColumnIface<
   EshArvosanaColumnDataProps,
   EshArvosanaColumnShowProps
@@ -146,6 +165,24 @@ export const EshArvosanaColumn: ColumnIface<
   ),
   renderData: ({ model }) => {
     const arviointi = modelLookup(model, 'arviointi.-1')
+    const arviointiModel = modelLookup(model, 'arviointi')
+    const arviointiContextualizedModel = contextualizeSubModel(
+      resolveArrayPrototype(arviointiModel),
+      arviointiModel,
+      modelItems(arviointiModel).length
+    )
+
+    const actualModel =
+      modelData(arviointi, 'arvosana') === undefined &&
+      arviointiContextualizedModel !== undefined &&
+      isOneOfModel(arviointiContextualizedModel)
+        ? modelSet(
+            model,
+            resolveActualModel(arviointiContextualizedModel, model),
+            'arviointi.-1'
+          )
+        : model
+
     const arvosana = arviointi ? modelLookup(arviointi, 'arvosana') : null
     const isSynthetic = (arvosana?.value?.classes || []).includes(
       'synteettinenkoodiviite'
@@ -158,9 +195,9 @@ export const EshArvosanaColumn: ColumnIface<
         })}
       >
         {isSynthetic ? (
-          <SynteettinenArvosanaEditor model={model} notFoundText={''} />
+          <SynteettinenArvosanaEditor model={actualModel} notFoundText={''} />
         ) : (
-          <ArvosanaEditor model={model} notFoundText={''} />
+          <ArvosanaEditor model={actualModel} notFoundText={''} />
         )}
       </td>
     )
