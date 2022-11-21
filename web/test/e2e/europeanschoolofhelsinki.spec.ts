@@ -25,7 +25,7 @@ test.describe('European School of Helsinki', () => {
     await oppijaPage.goto(ESH_OID)
   })
 
-  test('Näyttää oppijan tiedot oikein', async ({ page, oppijaPage }) => {
+  test('Näyttää oppijan tiedot oikein', async ({ oppijaPage }) => {
     await expect(oppijaPage.oppijaHeading).toContainText(
       'Eurooppalainen, Emilia (050707A130V)'
     )
@@ -72,5 +72,27 @@ test.describe('European School of Helsinki', () => {
           .click()
       })
     }
+  })
+
+  test.describe('Luodessa opiskeluoikeutta', async () => {
+    test(`Autofillaa S1-vuosiluokan osasuoritukset oikein`, async ({
+      page,
+      uusiOppijaPage,
+      oppijaPage
+    }) => {
+      // Satunnaisesti generoitu hetu
+      await uusiOppijaPage.lisaaOppija({
+        hetu: "110363-155S",
+        aloituspäivä: new Date(),
+        curriculum: "2023",
+        etunimet: "",
+        luokkaAste: "",
+        opiskeluoikeudenTila: "",
+        opiskeluoikeus: "European School of Helsinki",
+        oppilaitos: "",
+        sukunimi: "",
+        suorituskieli: ""
+      })
+    })
   })
 })

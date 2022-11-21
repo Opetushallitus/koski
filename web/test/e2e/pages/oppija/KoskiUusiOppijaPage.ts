@@ -11,21 +11,28 @@ interface BaseOppija {
   opiskeluoikeudenTila: string
 }
 
-type ESHOppija = BaseOppija & {
-  opiskeluoikeus: 'European School of Helsinki'
-  curriculum: string
-  luokkaAste: string
-}
+type ESHOppija =
+  | BaseOppija
+  | (BaseOppija & {
+      opiskeluoikeus: 'European School of Helsinki'
+      curriculum: string
+      luokkaAste: string
+    })
 
 type Oppija = ESHOppija
 
 export class KoskiUusiOppijaPage {
   readonly page: Page
+  readonly etunimet: Locator
+  // readonly kutsumanimi: Locator
+  readonly sukunimi: Locator
   readonly lisaaOppijaButton: Locator
 
   constructor(page: Page) {
     this.page = page
     this.lisaaOppijaButton = page.getByLabel('Tunnus')
+    this.etunimet = page.getByRole('textbox', { name: 'Etunimi' })
+    this.sukunimi = page.getByRole('textbox', { name: 'Sukunimet' })
   }
 
   async goTo(hetu: Oppija['hetu']) {
@@ -38,12 +45,9 @@ export class KoskiUusiOppijaPage {
 
   async lisaaOppija(oppija: Oppija) {
     await this.goTo(oppija.hetu)
-    await expect(
-      this.page.getByPlaceholder('henkilötunnus, nimi tai oppijanumero')
-    ).toHaveText(oppija.hetu)
-
-    return {
-      submitAndExceptSuccess: async () => {}
-    }
+    await this.etunimet.type(oppija.etunimet)
+    await expect(this.etunimet).toHaveValue(oppija.etunimet)
+    await this.sukunimi.type(oppija.sukunimi)
+    await expect(this.sukunimi).toHaveValue(oppija.sukunimi)
   }
 }
