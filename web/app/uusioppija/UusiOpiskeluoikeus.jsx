@@ -50,6 +50,7 @@ import {
 } from './UusiTutkintokoulutukseenValmentavanKoulutuksenSuoritus'
 import UusiEuropeanSchoolOfHelsinkiSuoritus from './UusiEuropeanSchoolOfHelsinkiSuoritus'
 import {
+  eiOsasuorituksiaEshLuokkaAsteet,
   eshSallitutRahoituskoodiarvot,
   luokkaAsteenOsasuoritukset
 } from '../esh/esh'
@@ -143,7 +144,10 @@ export default ({ opiskeluoikeusAtom }) => {
   const suoritusP = suoritusAtom.flatMap((s) => {
     if (
       s?.koulutusmoduuli?.tunniste?.koodistoUri ===
-      'europeanschoolofhelsinkiluokkaaste'
+        'europeanschoolofhelsinkiluokkaaste' &&
+      !eiOsasuorituksiaEshLuokkaAsteet.includes(
+        s.koulutusmoduuli.tunniste.koodiarvo
+      )
     ) {
       return luokkaAsteenOsasuoritukset(
         s.koulutusmoduuli.tunniste.koodiarvo
@@ -153,9 +157,8 @@ export default ({ opiskeluoikeusAtom }) => {
           osasuoritukset: modelData(osasuorituksetPrefillattuEditorModel)
         }
       })
-    } else {
-      return s
     }
+    return s
   })
 
   const opiskeluoikeusP = Bacon.combineWith(

@@ -13,7 +13,10 @@ import {
 import { copyToimipiste, newSuoritusProto } from '../suoritus/Suoritus'
 import { suoritusPrototypeKey } from '../esh/europeanschoolofhelsinkiSuoritus'
 import UusiEuropeanSchoolOfHelsinkiSuoritus from '../uusioppija/UusiEuropeanSchoolOfHelsinkiSuoritus'
-import { luokkaAsteenOsasuoritukset } from '../esh/esh'
+import {
+  eiOsasuorituksiaEshLuokkaAsteet,
+  luokkaAsteenOsasuoritukset
+} from '../esh/esh'
 
 const fetchOsasuorituksetTemplate = (model) =>
   luokkaAsteenOsasuoritukset(
@@ -36,12 +39,21 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
       proto,
       suoritus.koulutusmoduuli.tunniste
     )
+
     proto = copyToimipiste(modelLookup(opiskeluoikeus, 'suoritukset.0'), proto)
 
-    fetchOsasuorituksetTemplate(proto).onValue((osasuorituksetTemplate) => {
-      proto = copyOsasuoritukset(osasuorituksetTemplate.value, proto)
+    if (
+      !eiOsasuorituksiaEshLuokkaAsteet.includes(
+        suoritus.koulutusmoduuli.tunniste.koodiarvo
+      )
+    ) {
+      fetchOsasuorituksetTemplate(proto).onValue((osasuorituksetTemplate) => {
+        proto = copyOsasuoritukset(osasuorituksetTemplate.value, proto)
+        resultCallback(proto)
+      })
+    } else {
       resultCallback(proto)
-    })
+    }
   }
 
   return (

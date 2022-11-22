@@ -19,6 +19,8 @@ export const isToimintaAlueittain = (suoritus) =>
 export const jääLuokalle = (suoritus) =>
   modelData(suoritus, 'jääLuokalle') === true
 
+export const eiOsasuorituksiaEshLuokkaAsteet = ['N1', 'N2']
+
 export const luokkaAsteenOsasuoritukset = (luokkaAste) =>
   Http.cachedGet(
     `/koski/api/editor/koodit/europeanschoolofhelsinkiluokkaaste/${luokkaAste}/suoritukset/prefill`
