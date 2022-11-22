@@ -27,8 +27,6 @@ const isValidSynteettinenKoodiarvo = (koodistoUri, koodiarvo) => {
 export const SynteettinenKoodiviiteEditor = ({ model, autoFocus }) => {
   const wrappedModel = wrapOptional(model)
 
-  console.log(wrappedModel)
-
   const koodiarvoProperty = findModelProperty(
     wrappedModel,
     (p) => p.key === 'koodiarvo'

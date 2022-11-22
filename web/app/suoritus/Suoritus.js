@@ -132,16 +132,16 @@ const osasuorituksetProtoOptionsAndNewItemIndex = (suoritus) => {
 
 const arviointiProtoOptionsAndNewItemIndex = (suoritus) => {
   const _arvioinnit = wrapOptional(modelLookup(suoritus, 'arviointi'))
-  console.log('_arvioinnit', _arvioinnit)
+  // console.log('_arvioinnit', _arvioinnit)
   const newItemIndex = modelItems(_arvioinnit).length
-  console.log('newItemIndex', newItemIndex)
+  // console.log('newItemIndex', newItemIndex)
   const arvioinninProto = contextualizeSubModel(
     _arvioinnit.arrayPrototype,
     _arvioinnit,
     newItemIndex
   )
   const options = oneOfPrototypes(arvioinninProto)
-  console.log('options', options)
+  // console.log('options', options)
   return [_arvioinnit, options, newItemIndex]
 }
 
