@@ -50,6 +50,12 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
     }()
   }
 
+  post("/valinta/hetu") {
+    withJsonBody { json =>
+      renderEither(extractAndValidateHetus(json).flatMap(valintaTiedotHetuilla))
+    }()
+  }
+
   private def extractAndValidateHetu(json: JValue): Either[HttpStatus, String] =
     JsonSerializer.validateAndExtract[MigriHetuRequest](json)
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
@@ -64,6 +70,11 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
     JsonSerializer.validateAndExtract[MigriOidsRequest](json)
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .map(req => req.oids)
+
+  private def extractAndValidateHetus(json: JValue): Either[HttpStatus, List[String]] =
+    JsonSerializer.validateAndExtract[MigriHetusRequest](json)
+      .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
+      .map(req => req.hetus) // tarkista hetut tässä?
 
   private def haeHetulla(hetu: String): Either[HttpStatus, MigriOppija] =
     application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu, useVirta = true, useYtr = true)(koskiSession)
@@ -80,6 +91,16 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
     migriService.get(oids, basicAuthRequest)
   }
 
+  private def valintaTiedotHetuilla(hetus: List[String]): Either[HttpStatus, RawJsonResponse] = {
+    val oids = application.opintopolkuHenkilöFacade
+      .findOppijatByHetusNoSlaveOids(hetus)
+      .map(_.oid)
+      .toList
+
+    val basicAuthRequest = new BasicAuthRequest(request)
+    migriService.get(oids, basicAuthRequest)
+  }
+
   private def convertToMigriSchema(oppija: Oppija): Either[HttpStatus, MigriOppija] =
     ConvertMigriSchema.convert(oppija).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
 }
@@ -89,4 +110,6 @@ case class MigriHetuRequest(hetu: String)
 case class MigriOidRequest(oid: String)
 
 case class MigriOidsRequest(oids: List[String])
+
+case class MigriHetusRequest(hetus: List[String])
 
