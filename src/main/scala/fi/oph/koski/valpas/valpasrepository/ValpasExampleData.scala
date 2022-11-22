@@ -145,11 +145,11 @@ object ValpasExampleData {
   def oppivelvollisuudenKeskeytykset: Seq[OppivelvollisuudenKeskeytysRow] = Seq(
     OppivelvollisuudenKeskeytysRow(
       oppijaOid = ValpasMockOppijat.oppivelvollisuusKeskeytetty.oid,
-      alku = date(2021, 3, 1),
+      alku = date(2021, 9, 1),
       loppu = Some(date(2021, 9, 30)),
       luotu = LocalDateTime.of(2021, 2, 28, 8, 0),
       tekijäOid = ValpasMockUsers.valpasJklNormaalikoulu.oid,
-      tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu,
+      tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki,
     ),
     OppivelvollisuudenKeskeytysRow(
       oppijaOid = ValpasMockOppijat.oppivelvollisuusKeskeytetty.oid,
@@ -157,7 +157,7 @@ object ValpasExampleData {
       loppu = Some(date(2020, 1, 30)),
       luotu = LocalDateTime.of(2021, 1, 1, 10, 15),
       tekijäOid = ValpasMockUsers.valpasJklNormaalikoulu.oid,
-      tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu,
+      tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki,
     ),
     OppivelvollisuudenKeskeytysRow(
       oppijaOid = ValpasMockOppijat.oppivelvollisuusKeskeytettyToistaiseksi.oid,
@@ -165,7 +165,7 @@ object ValpasExampleData {
       loppu = None,
       luotu = LocalDateTime.of(2021, 1, 1, 12, 30),
       tekijäOid = ValpasMockUsers.valpasJklNormaalikoulu.oid,
-      tekijäOrganisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu,
+      tekijäOrganisaatioOid = MockOrganisaatiot.helsinginKaupunki,
     ),
     OppivelvollisuudenKeskeytysRow(
       oppijaOid = ValpasMockOppijat.amisEronnutUusiOpiskeluoikeusTulevaisuudessaKeskeyttänyt.oid,
