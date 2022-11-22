@@ -26,6 +26,8 @@ npm install
   - `npm run test:unit` ajaa vain
   - `npm run test:integration` ajaa vain integraatiotestit (polun `test/integrationtests` alla olevat testit, jotka vaativan backendin)
   - `npm run test:integration:browserstack` ajaa integraatiotestit Browserstackia vasten
+  - `npm run test:integration:debug -- -t "Näyttää listan oppijoista European School of Helsingille"` ajaa vain hakuehtoon sopivat testit
+  - `env SHOW_BROWSER=true npx jest --config jest.integrationtests.config.js test/integrationtests/kansalainen.test.ts` ajaa yhden testitiedoston avoimessa selaimessa
 - `npm run build:local` kääntää lähdekoodit kansioon `./dist-nonce` asetuksilla, joissa backend löytyy localhostista, ja kopioi
   sisällön tarpeellisin muutoksin Koskessa hostaamista varten ../target/webapp/ -hakemistoon.
 - `npm run build:prod` kääntää tuotantoversion
