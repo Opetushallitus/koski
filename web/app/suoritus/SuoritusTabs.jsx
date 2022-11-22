@@ -21,7 +21,6 @@ import { buildClassNames } from '../components/classnames'
 
 export const SuoritusTabs = ({ model, suoritukset }) => {
   const uusiSuoritusCallback = (suoritus) => {
-    console.log('UusiSuoritusLink callback suoritus', suoritus)
     pushModel(suoritus, model.context.changeBus)
     const suoritukset2 = [suoritus].concat(suoritukset)
     assignTabNames(suoritukset2) // to get the correct tab name for the new suoritus
