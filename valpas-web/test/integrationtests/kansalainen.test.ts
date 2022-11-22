@@ -252,6 +252,7 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot = as
     oppivelvollisuustiedot({
       opiskelutilanne: "Ei opiskelupaikkaa",
       oppivelvollisuus: "Keskeytetty toistaiseksi 1.9.2021 alkaen",
+      oppivelvollisuudenKeskeytykset: ["1.1.2019 – 1.12.2019"],
       maksuttomuusoikeus: "31.12.2025 asti",
     })
   )
