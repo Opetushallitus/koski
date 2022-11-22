@@ -49,8 +49,12 @@ import {
   getTuvaLisätiedot
 } from './UusiTutkintokoulutukseenValmentavanKoulutuksenSuoritus'
 import UusiEuropeanSchoolOfHelsinkiSuoritus from './UusiEuropeanSchoolOfHelsinkiSuoritus'
-import { eshSallitutRahoituskoodiarvot } from '../esh/esh'
+import {
+  eshSallitutRahoituskoodiarvot,
+  luokkaAsteenOsasuoritukset
+} from '../esh/esh'
 import { jotpaSallitutRahoituskoodiarvot } from '../jotpa/jotpa'
+import { modelData } from '../editor/EditorModel'
 
 export default ({ opiskeluoikeusAtom }) => {
   const dateAtom = Atom(new Date())
@@ -136,11 +140,29 @@ export default ({ opiskeluoikeusAtom }) => {
 
   const tuvaJärjestämislupaP = koodistoValues('tuvajarjestamislupa')
 
+  const suoritusP = suoritusAtom.flatMap((s) => {
+    if (
+      s?.koulutusmoduuli?.tunniste?.koodistoUri ===
+      'europeanschoolofhelsinkiluokkaaste'
+    ) {
+      return luokkaAsteenOsasuoritukset(
+        s.koulutusmoduuli.tunniste.koodiarvo
+      ).map((osasuorituksetPrefillattuEditorModel) => {
+        return {
+          ...s,
+          osasuoritukset: modelData(osasuorituksetPrefillattuEditorModel)
+        }
+      })
+    } else {
+      return s
+    }
+  })
+
   const opiskeluoikeusP = Bacon.combineWith(
     dateAtom,
     oppilaitosAtom,
     tyyppiAtom,
-    suoritusAtom,
+    suoritusP,
     tilaAtom,
     rahoitusAtom,
     varhaiskasvatusOrganisaationUlkopuoleltaAtom,

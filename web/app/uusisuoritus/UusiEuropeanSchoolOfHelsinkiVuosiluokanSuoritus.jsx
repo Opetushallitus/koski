@@ -13,17 +13,12 @@ import {
 import { copyToimipiste, newSuoritusProto } from '../suoritus/Suoritus'
 import { suoritusPrototypeKey } from '../esh/europeanschoolofhelsinkiSuoritus'
 import UusiEuropeanSchoolOfHelsinkiSuoritus from '../uusioppija/UusiEuropeanSchoolOfHelsinkiSuoritus'
-import http from '../util/http'
+import { luokkaAsteenOsasuoritukset } from '../esh/esh'
 
-const luokkaAsteenOsasuoritukset = (model) =>
-  http.cachedGet(
-    `/koski/api/editor/koodit/europeanschoolofhelsinkiluokkaaste/${modelData(
-      model,
-      'koulutusmoduuli.tunniste.koodiarvo'
-    )}/suoritukset/prefill`
+const fetchOsasuorituksetTemplate = (model) =>
+  luokkaAsteenOsasuoritukset(
+    modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
   )
-
-const fetchOsasuorituksetTemplate = (model) => luokkaAsteenOsasuoritukset(model)
 
 export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
   opiskeluoikeus,
