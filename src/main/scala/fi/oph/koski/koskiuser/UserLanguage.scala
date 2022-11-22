@@ -30,6 +30,5 @@ object UserLanguage extends Logging {
     possibleLanguage
       .map(_.toLowerCase)
       .filter(LocalizedString.languages.contains)
-      .filterNot(_ == "en") // can be removed when our UI actually supports English
   }
 }

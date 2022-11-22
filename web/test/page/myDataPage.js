@@ -52,19 +52,34 @@ function MyDataPage() {
     clickCancel: function () {
       return click('.decline-link > a')()
     },
-    clickChangeLang: function () {
-      return click('.lang > .change-lang')()
+    clickChangeLangSwedish: function () {
+      return click('#change-lang-sv')()
+    },
+    clickChangeLangEnglish: function () {
+      return click('#change-lang-en')()
     },
     isInFinnish: function () {
       return (
-        isElementVisible(S('.change-lang')) &&
-        extractAsText(S('.change-lang')) === 'På svenska'
+        isElementVisible(S('#change-lang-sv')) &&
+        isElementVisible(S('#change-lang-en')) &&
+        extractAsText(S('#change-lang-sv')) === 'Svenska' &&
+        extractAsText(S('#change-lang-en')) === 'English'
       )
     },
     isInSwedish: function () {
       return (
-        isElementVisible(S('.change-lang')) &&
-        extractAsText(S('.change-lang')) === 'Suomeksi'
+        isElementVisible(S('#change-lang-fi')) &&
+        isElementVisible(S('#change-lang-en')) &&
+        extractAsText(S('#change-lang-fi')) === 'Suomi' &&
+        extractAsText(S('#change-lang-en')) === 'English'
+      )
+    },
+    isInEnglish: function () {
+      return (
+        isElementVisible(S('#change-lang-fi')) &&
+        isElementVisible(S('#change-lang-sv')) &&
+        extractAsText(S('#change-lang-fi')) === 'Suomi' &&
+        extractAsText(S('#change-lang-sv')) === 'Svenska'
       )
     },
     accepted: {

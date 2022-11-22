@@ -11,7 +11,7 @@ import {
   isTopLevel,
   TopLevelError
 } from './util/Error'
-import { lang, setLang, t } from './i18n/i18n'
+import { t } from './i18n/i18n'
 import Http from './util/http'
 import { Editor } from './editor/Editor'
 import Text from './i18n/Text'
@@ -19,6 +19,7 @@ import editorMapping from './oppija/editors'
 import { addContext } from './editor/EditorModel'
 import { locationP } from './util/location'
 import { SuoritusjakoHeader } from './suoritusjako/SuoritusjakoHeader'
+import { ChangeLang } from './components/ChangeLang'
 __webpack_nonce__ = window.nonce
 import(/* webpackChunkName: "styles" */ './style/main.less')
 
@@ -56,15 +57,6 @@ const SuoritusjakoTopBar = () => {
     </header>
   )
 }
-
-const ChangeLang = () => (
-  <span
-    className="change-lang"
-    onClick={() => (lang === 'sv' ? setLang('fi') : setLang('sv'))}
-  >
-    {lang === 'sv' ? 'Suomeksi' : 'På svenska'}
-  </span>
-)
 
 const contentP = locationP
   .flatMapLatest(() =>
