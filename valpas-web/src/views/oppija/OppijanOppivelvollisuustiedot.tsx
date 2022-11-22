@@ -267,27 +267,25 @@ const oppivelvollisuusValue = (
     )
   }
 
-  const keskeytykset = oppivelvollisuudenKeskeytykset
-    .filter((ovk) => ovk.voimassa || ovk.tulevaisuudessa)
-    .map((ovk) => (
-      <>
-        {ovk.loppu !== undefined
-          ? t("oppija__oppivelvollisuus_keskeytetty_value", {
-              alkuPvm: formatDate(ovk.alku),
-              loppuPvm: formatDate(ovk.loppu),
-            })
-          : t("oppija__oppivelvollisuus_keskeytetty_toistaiseksi_value", {
-              alkuPvm: formatDate(ovk.alku),
-            })}
+  const keskeytykset = oppivelvollisuudenKeskeytykset.map((ovk) => (
+    <>
+      {ovk.loppu !== undefined
+        ? t("oppija__oppivelvollisuus_keskeytetty_value", {
+            alkuPvm: formatDate(ovk.alku),
+            loppuPvm: formatDate(ovk.loppu),
+          })
+        : t("oppija__oppivelvollisuus_keskeytetty_toistaiseksi_value", {
+            alkuPvm: formatDate(ovk.alku),
+          })}
 
-        <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
-          <EditButton
-            onClick={() => openKeskeytysModal(ovk)}
-            title={t("oppija__muokkaa_oppivelvollisuuden_keskeytystä_btn")}
-          />
-        </VisibleForKäyttöoikeusrooli>
-      </>
-    ))
+      <VisibleForKäyttöoikeusrooli rooli={kuntavalvontaAllowed}>
+        <EditButton
+          onClick={() => openKeskeytysModal(ovk)}
+          title={t("oppija__muokkaa_oppivelvollisuuden_keskeytystä_btn")}
+        />
+      </VisibleForKäyttöoikeusrooli>
+    </>
+  ))
 
   const keskeytysToistaiseksi = oppivelvollisuudenKeskeytykset.some(
     isKeskeytysToistaiseksi
