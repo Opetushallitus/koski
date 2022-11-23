@@ -70,8 +70,7 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
       ListModel(models, None, Nil)
     }
 
-    val luokkaAstePattern = """(\d)""".r
-    val eshLuokkaAstePattern = """^((?:N[1-2])|(?:P[1-5])|(?:S[1-7]))$$""".r
+    val eshLuokkaAstePattern = """^((?:N[1-2])|(?:P[1-5])|(?:S[1-7])|(?:301104))$$""".r
 
     (params("koodistoUri"), params("koodiarvo"), params("oppiainekoodi")) match {
       case ("europeanschoolofhelsinkiluokkaaste", eshLuokkaAstePattern(luokkaAste), tunniste) =>

@@ -14,6 +14,7 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
       case "S4" | "S5" => osasuorituksetSecondary45
       case "S6" => osasuorituksetSecondary6
       case "S7" => osasuorituksetSecondary7
+      case "301104" => List() // TODO: TOR-1685
       case _ => List()
     }
   }
@@ -32,7 +33,8 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
     luokkaAste match {
       case "P1" | "P2" => makePrimaryOsasuoritusLista(osasuorituksetPrimary12, oppiainekoodi)
       case "P3" | "P4" | "P5" => makePrimaryOsasuoritusLista(osasuorituksetPrimary345, oppiainekoodi)
-      case "S7" => osasurituksetAB()getOrElse(List())
+      case "S7" => osasurituksetAB().getOrElse(List())
+      case "301104" => List() // TODO: TOR-1685
       case _ => List()
     }
   }
