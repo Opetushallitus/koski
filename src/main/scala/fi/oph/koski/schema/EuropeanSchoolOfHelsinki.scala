@@ -262,7 +262,10 @@ case class SecondaryUpperVuosiluokanSuoritus(
  * PÄÄTASON SUORITUKSET - KOULUTUSMODUULIT
  *****************************************************************************/
 
-trait EuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
+trait EuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
+  @KoodistoUri("europeanschoolofhelsinkicurriculum")
+  def curriculum: Koodistokoodiviite
+}
 
 trait KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli extends EuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli with KoulutustyypinSisältäväKoulutusmoduuli {
   @KoodistoKoodiarvo("21")
@@ -275,15 +278,13 @@ case class EBTutkinto(
   @KoodistoKoodiarvo("301104")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("301104", "koulutus"),
   @KoodistoKoodiarvo("21")
-  koulutustyyppi: Option[Koodistokoodiviite] = None
-  // TODO: TOR-1685: tarvitaanko joku curriculumia vastaava?
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  curriculum: Koodistokoodiviite = Koodistokoodiviite("2023", "europeanschoolofhelsinkicurriculum")
 ) extends KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli
 
 trait EuropeanSchoolOfHelsinkiLuokkaAste extends EuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli {
   @KoodistoUri("europeanschoolofhelsinkiluokkaaste")
   def tunniste: Koodistokoodiviite
-  @KoodistoUri("europeanschoolofhelsinkicurriculum")
-  def curriculum: Koodistokoodiviite
 }
 
 trait KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiLuokkaAste extends EuropeanSchoolOfHelsinkiLuokkaAste with KoulutustyypinSisältäväEuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli

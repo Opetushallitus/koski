@@ -18681,11 +18681,22 @@
         "tunniste" : {
           "koodiarvo" : "301104",
           "koodistoUri" : "koulutus"
+        },
+        "curriculum" : {
+          "koodiarvo" : "2023",
+          "koodistoUri" : "europeanschoolofhelsinkicurriculum"
         }
       },
       "luokka" : "S7 EN",
       "toimipiste" : {
-        "oid" : "1.2.246.562.10.12798841685"
+        "oid" : "1.2.246.562.10.13349113236",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "03782",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "European School of Helsinki"
+        }
       },
       "vahvistus" : {
         "päivä" : "2019-06-25",
