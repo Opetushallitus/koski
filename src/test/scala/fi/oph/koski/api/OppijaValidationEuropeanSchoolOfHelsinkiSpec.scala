@@ -118,7 +118,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
           ),
         suoritukset =
           List(
-            defaultOpiskeluoikeus.suoritukset.headOption.get.ilmanAlkamispäivää()
+            defaultOpiskeluoikeus.suoritukset.collectFirst { case s: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus => s }.map(_.ilmanAlkamispäivää).get
           )
       )
       ) {

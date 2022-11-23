@@ -1855,6 +1855,69 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_ebtutkinto",
+  "koodiArvo" : "ebtutkinto",
+  "metadata" : [ {
+    "nimi" : "European Baccalaureate",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European Baccalaureate",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European Baccalaureate",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ebtutkinnonosasuoritus",
+  "koodiArvo" : "ebtutkinnonosasuoritus",
+  "metadata" : [ {
+    "nimi" : "European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ebtutkinnonalaosasuoritus",
+  "koodiArvo" : "ebtutkinnonalaosasuoritus",
+  "metadata" : [ {
+    "nimi" : "Component of European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Component of European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Component of European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_vstjotpakoulutus",
   "koodiArvo" : "vstjotpakoulutus",
   "metadata" : [ {

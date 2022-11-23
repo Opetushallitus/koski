@@ -21,9 +21,7 @@ describe('Helsingin eurooppalainen koulu', function () {
 
         expect(
           opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()
-        ).to.deep.equal([
-          'European School of Helsinki secondary cycle upper year class 2004—2024, Valmistunut'
-        ])
+        ).to.deep.equal(['European Baccalaureate 2004—2024, Valmistunut'])
       })
     })
 

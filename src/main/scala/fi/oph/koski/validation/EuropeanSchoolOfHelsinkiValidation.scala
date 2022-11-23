@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.documentation.ExampleData.muutaKauttaRahoitettu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.schema.{EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus}
+import fi.oph.koski.schema.{EBTutkinnonSuoritus, EuropeanSchoolOfHelsinkiOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso, EuropeanSchoolOfHelsinkiPäätasonSuoritus, EuropeanSchoolOfHelsinkiVuosiluokanSuoritus, Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, NurseryVuosiluokanSuoritus, PrimaryVuosiluokanSuoritus, SecondaryLowerVuosiluokanSuoritus, SecondaryUpperOppiaineenSuoritus, SecondaryUpperVuosiluokanSuoritus}
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 
 import java.time.LocalDate
@@ -81,7 +81,7 @@ object EuropeanSchoolOfHelsinkiValidation {
     result
   }
 
-  private def fillSuorituksenKoulutustyyppi(koodistoPalvelu: KoodistoViitePalvelu)(suoritus: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = {
+  private def fillSuorituksenKoulutustyyppi(koodistoPalvelu: KoodistoViitePalvelu)(suoritus: EuropeanSchoolOfHelsinkiPäätasonSuoritus): EuropeanSchoolOfHelsinkiPäätasonSuoritus = {
     suoritus match {
       case s: NurseryVuosiluokanSuoritus => s
       case s: PrimaryVuosiluokanSuoritus => s.copy(
@@ -95,6 +95,11 @@ object EuropeanSchoolOfHelsinkiValidation {
         )
       )
       case s: SecondaryUpperVuosiluokanSuoritus => s.copy(
+        koulutusmoduuli = s.koulutusmoduuli.copy(
+          koulutustyyppi = eshKoulutustyyppi(koodistoPalvelu)
+        )
+      )
+      case s: EBTutkinnonSuoritus => s.copy(
         koulutusmoduuli = s.koulutusmoduuli.copy(
           koulutustyyppi = eshKoulutustyyppi(koodistoPalvelu)
         )
