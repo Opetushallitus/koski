@@ -1,19 +1,6 @@
 import React from 'baret'
 import { t } from '../i18n/i18n'
-import {
-  contextualizeModel,
-  contextualizeSubModel,
-  modelData,
-  modelItems,
-  modelLookup,
-  modelProperties,
-  modelSet,
-  modelTitle,
-  pushModel,
-  resolveActualModel,
-  resolvePrototypeReference,
-  wrapOptional
-} from '../editor/EditorModel'
+import { modelData, modelLookup, modelTitle } from '../editor/EditorModel'
 import { hasArvosana, tilaText } from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
 import { Editor } from '../editor/Editor'
@@ -22,13 +9,11 @@ import { suorituksenTilaSymbol } from '../suoritus/Suoritustaulukko'
 import { isEshKieliaine } from '../suoritus/Koulutusmoduuli'
 import {
   ColumnIface,
-  isEB,
   isEshS7,
   OnExpandFn,
   SuoritusModel
 } from '../suoritus/SuoritustaulukkoCommon'
 import classNames from 'classnames'
-import { eshSuoritus } from './europeanschoolofhelsinkiSuoritus'
 import { BaseContext } from '../types/EditorModelContext'
 import { SynteettinenArvosanaEditor } from '../suoritus/SynteettinenArvosanaEditor'
 import { ArvosanaEditor } from '../suoritus/ArvosanaEditor'
@@ -142,30 +127,55 @@ export type EshArvosanaColumn = ColumnIface<
   EshArvosanaColumnShowProps
 >
 
-// @ts-expect-error
-function resolveArrayPrototype(model) {
-  if (model.arrayPrototype !== undefined) {
-    return model.arrayPrototype
-  }
-  if (
-    model.optionalPrototype !== undefined &&
-    model.optionalPrototype.arrayPrototype !== undefined
-  ) {
-    return model.optionalPrototype.arrayPrototype
-  }
-}
+const isEBOsasuoritus = (model: any) =>
+  model.value.classes.includes('ebtutkinnonsuoritus')
 
-const isEB = (model) => model.value.classes.includes('ebtutkinnonosasuoritus')
-const isS7 = (model) =>
+/*
+const isEBAlaosasuoritus = (model: any) =>
+  model.value.classes.includes('ebtutkinnonosasuoritus')
+const isS7 = (model: any): boolean =>
   model.value.classes.includes('secondaryupperoppiaineensuorituss7')
-const isS6 = (tunniste, model) =>
+const isS6 = (tunniste: any, model: any): boolean =>
   tunniste === 'S6' &&
   model.value.classes.includes('secondaryuppervuosiluokansuoritus')
-const isS5OrS4 = (tunniste, model) =>
+const isS5OrS4 = (tunniste: any, model: any): boolean =>
   (tunniste === 'S5' || tunniste === 'S4') &&
   model.value.classes.includes('secondarylowervuosiluokansuoritus')
-const isS1OrS2OrS3 = (tunniste, _model) =>
+const isS1OrS2OrS3 = (tunniste: any, _model: any): boolean =>
   tunniste === 'S1' || tunniste === 'S2' || tunniste === 'S3'
+
+
+function resolveKoodisto(model: any, isAlaosasuoritus: boolean): string {
+  // Päätason suorituksen koulutusmoduuli
+  const koulutusmoduuli = modelLookup(model.context.suoritus, 'koulutusmoduuli')
+  // Luokka-aste
+  const luokkaAste = modelData(koulutusmoduuli, 'tunniste.koodiarvo')
+  const koodistot = {
+    secondaryS7preliminarymarkarviointi: isAlaosasuoritus && isS7(model), // S7 alaosasuorituksissa käytössä secondaryS7preliminarymarkarviointi
+    ebtutkintopreliminarymarkarviointi:
+      isEBAlaosasuoritus(model) &&
+      koulutusmoduuli?.value.classes.includes(
+        'eboppiainekomponenttipreliminary'
+      ),
+    secondarynumericalmarkarviointi:
+      isS5OrS4(luokkaAste, model) || isS6(luokkaAste, model),
+    secondarygradearviointi: isS1OrS2OrS3(luokkaAste, model),
+    ebtutkintofinalmarkarviointi:
+      isAlaosasuoritus &&
+      isEBAlaosasuoritus(model) &&
+      !koulutusmoduuli?.value.classes.includes(
+        'eboppiainekomponenttipreliminary'
+      )
+  }
+  const resolvedArviointiArray = Object.entries(koodistot)
+    .filter(([_key, val]) => val)
+    .map(([key, _val]) => key)
+  if (resolvedArviointiArray.length !== 1) {
+    throw new Error('Could not resolve correct koodisto')
+  }
+  return resolvedArviointiArray[0]
+}
+*/
 
 export const EshArvosanaColumn: ColumnIface<
   EshArvosanaColumnDataProps,
@@ -173,7 +183,7 @@ export const EshArvosanaColumn: ColumnIface<
 > = {
   shouldShow: ({ parentSuoritus, suoritukset, context }) =>
     !isEshS7(parentSuoritus) &&
-    !isEB(parentSuoritus) &&
+    !isEBOsasuoritus(parentSuoritus) &&
     (context.edit || suoritukset.find(hasArvosana) !== undefined),
   renderHeader: () => (
     <th key="arvosana" className="arvosana" scope="col">
@@ -182,83 +192,9 @@ export const EshArvosanaColumn: ColumnIface<
     </th>
   ),
   renderData: ({ model }) => {
-    const arviointi = modelLookup(model, 'arviointi.-1')
-    const arviointiModel = modelLookup(model, 'arviointi')
-    const arviointiContextualizedModel = contextualizeSubModel(
-      resolveArrayPrototype(arviointiModel),
-      arviointiModel,
-      modelItems(arviointiModel).length
-    )
-
-    const isAlaosasuoritus = model.value.classes.includes('foo') // TODO
-    const luokkaAste = modelData(
-      model.parent,
-      'koulutusmoduuli.tunniste.koodiarvo'
-    )
-
-    const protoKey =
-      isAlaosasuoritus && isS7(model)
-        ? 'secondarys7preliminarymarkarviointi'
-        : isAlaosasuoritus &&
-          isEB(model) &&
-          // @ts-expect-error
-          modelLookup(model, 'koulutusmoduuli').value.classes.includes(
-            'eboppiainekomponenttipreliminary'
-          )
-        ? 'secondarys7preliminarymarkarviointi'
-        : isAlaosasuoritus &&
-          isEB(model) &&
-          // @ts-expect-error
-          !modelLookup(model, 'koulutusmoduuli').value.classes.includes(
-            'eboppiainekomponenttipreliminary'
-          )
-        ? 'ebtutkintofinalmarkarviointi'
-        : isS5OrS4(luokkaAste, model) || isS6(luokkaAste, model)
-        ? 'secondarynumericalmarkarviointi'
-        : isS1OrS2OrS3(luokkaAste, model)
-        ? 'secondarygradearviointi'
-        : undefined
-
-    const proto = {
-      type: 'prototype',
-      key: protoKey
-    }
-
-    const resolvedArviointiModel = contextualizeSubModel(
-      resolvePrototypeReference(proto, arviointiContextualizedModel.context),
-      arviointiContextualizedModel
-    )
-
-    const actualModel =
-      modelData(arviointi, 'arvosana') === undefined &&
-      arviointiContextualizedModel !== undefined &&
-      isOneOfModel(arviointiContextualizedModel)
-        ? modelSet(
-            model,
-            resolveActualModel(arviointiContextualizedModel, model),
-            'arviointi.-1'
-          )
-        : model
-
-    console.log('model', model)
-    console.log('actualModel', actualModel)
-
-    const arvosana = arviointi ? modelLookup(arviointi, 'arvosana') : null
-    const isSynthetic = (arvosana?.value?.classes || []).includes(
-      'synteettinenkoodiviite'
-    )
     return (
-      <td
-        key="arvosana"
-        className={classNames('arvosana', {
-          synthetic: isSynthetic
-        })}
-      >
-        {isSynthetic ? (
-          <SynteettinenArvosanaEditor model={actualModel} notFoundText={''} />
-        ) : (
-          <ArvosanaEditor model={actualModel} notFoundText={''} />
-        )}
+      <td key="arvosana" className={'arvosana'}>
+        <ArvosanaEditor model={model} notFoundText={''} />
       </td>
     )
   }
