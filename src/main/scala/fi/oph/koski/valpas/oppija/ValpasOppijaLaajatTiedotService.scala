@@ -9,7 +9,6 @@ import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.util.Monoids.rightSeqMonoid
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
-import fi.oph.koski.valpas.hakukooste.Hakukooste
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKunnat
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository._
@@ -148,6 +147,7 @@ class ValpasOppijaLaajatTiedotService(
             syntymäaika = dbRow.syntymäaika,
             etunimet = dbRow.etunimet,
             sukunimi = dbRow.sukunimi,
+            kotikunta = dbRow.kotikunta.flatMap(k => application.koodistoViitePalvelu.validate("kunta", k)),
             turvakielto = dbRow.turvakielto,
             äidinkieli = dbRow.äidinkieli
           ),

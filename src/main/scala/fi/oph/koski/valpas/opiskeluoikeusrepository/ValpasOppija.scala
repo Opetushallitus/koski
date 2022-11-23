@@ -62,9 +62,14 @@ trait ValpasOppijaLaajatTiedot extends ValpasOppija {
 }
 
 object ValpasOppivelvollinenOppijaLaajatTiedot {
-  def apply(henkilö: LaajatOppijaHenkilöTiedot, rajapäivätService: ValpasRajapäivätService, onTallennettuKoskeen: Boolean): ValpasOppivelvollinenOppijaLaajatTiedot = {
+  def apply(
+    henkilö: LaajatOppijaHenkilöTiedot,
+    rajapäivätService: ValpasRajapäivätService,
+    koodistoViitePalvelu: KoodistoViitePalvelu,
+    onTallennettuKoskeen: Boolean
+  ): ValpasOppivelvollinenOppijaLaajatTiedot = {
     ValpasOppivelvollinenOppijaLaajatTiedot(
-      henkilö = ValpasHenkilöLaajatTiedot(henkilö, onTallennettuKoskeen),
+      henkilö = ValpasHenkilöLaajatTiedot(henkilö, koodistoViitePalvelu, onTallennettuKoskeen),
       hakeutumisvalvovatOppilaitokset = Set.empty,
       suorittamisvalvovatOppilaitokset = Set.empty,
       opiskeluoikeudet = Seq.empty,
@@ -126,7 +131,11 @@ trait ValpasHenkilö {
 }
 
 object ValpasHenkilöLaajatTiedot {
-  def apply(henkilö: LaajatOppijaHenkilöTiedot, onTallennettuKoskeen: Boolean): ValpasHenkilöLaajatTiedot =
+  def apply(
+    henkilö: LaajatOppijaHenkilöTiedot,
+    koodistoViitePalvelu: KoodistoViitePalvelu,
+    onTallennettuKoskeen: Boolean
+  ): ValpasHenkilöLaajatTiedot =
     ValpasHenkilöLaajatTiedot(
       oid = henkilö.oid,
       kaikkiOidit = henkilö.kaikkiOidit.toSet,
@@ -134,6 +143,7 @@ object ValpasHenkilöLaajatTiedot {
       syntymäaika = henkilö.syntymäaika,
       etunimet = henkilö.etunimet,
       sukunimi = henkilö.sukunimi,
+      kotikunta = henkilö.kotikunta.flatMap(k => koodistoViitePalvelu.validate("kunta", k)),
       turvakielto = henkilö.turvakielto,
       äidinkieli = henkilö.äidinkieli,
       onTallennettuKoskeen = onTallennettuKoskeen
@@ -147,6 +157,7 @@ case class ValpasHenkilöLaajatTiedot(
   syntymäaika: Option[LocalDate],
   etunimet: String,
   sukunimi: String,
+  kotikunta: Option[Koodistokoodiviite],
   turvakielto: Boolean,
   äidinkieli: Option[String],
   onTallennettuKoskeen: Boolean = true
