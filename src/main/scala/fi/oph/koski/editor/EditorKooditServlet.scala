@@ -9,8 +9,8 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.NoCache
 
 /**
-  *  Endpoints for the Koski UI, related to koodistot/koodit, returns editor models
-  */
+ * Endpoints for the Koski UI, related to koodistot/koodit, returns editor models
+ */
 class EditorKooditServlet(implicit val application: KoskiApplication) extends EditorApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
 
   private def localization = LocalizedHtml.get(session, application.koskiLocalizationRepository)
@@ -43,9 +43,10 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
 
   get[ListModel]("/:koodistoUri/:koodiarvo/suoritukset/prefill") {
     def toListModel(suoritukset: List[Suoritus]) = {
-      val models = suoritukset.map { suoritus => OppijaEditorModel.buildModel(suoritus, true)}
+      val models = suoritukset.map { suoritus => OppijaEditorModel.buildModel(suoritus, true) }
       ListModel(models, None, Nil)
     }
+
     val luokkaAstePattern = """(\d)""".r
     val eshLuokkaAstePattern = """^((?:N[1-2])|(?:P[1-5])|(?:S[1-7]))$$""".r
     val toimintaAlueittain = params.get("toimintaAlueittain").map(_.toBoolean).getOrElse(false)
@@ -63,10 +64,28 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
     }
   }
 
+  get[ListModel]("/:koodistoUri/:koodiarvo/alaosasuoritukset/:oppiainekoodi/prefill") {
+    def toListModel(suoritukset: List[Suoritus]) = {
+      val models = suoritukset.map { suoritus => OppijaEditorModel.buildModel(suoritus, true) }
+      ListModel(models, None, Nil)
+    }
+
+    val luokkaAstePattern = """(\d)""".r
+    val eshLuokkaAstePattern = """^((?:N[1-2])|(?:P[1-5])|(?:S[1-7]))$$""".r
+
+    (params("koodistoUri"), params("koodiarvo"), params("oppiainekoodi")) match {
+      case ("europeanschoolofhelsinkiluokkaaste", eshLuokkaAstePattern(luokkaAste), tunniste) =>
+        toListModel(EuropeanSchoolOfHelsinkiOppiaineet(application.koodistoViitePalvelu).eshAlaOsasuoritukset(luokkaAste, tunniste))
+      case _ =>
+        logger.error(s"Prefill failed for unexpected code ${params("koodistoUri")}/${params("koodiarvo")}")
+        haltWithStatus(KoskiErrorCategory.notFound())
+    }
+  }
 
 
   get[List[EnumValue]]("/:oppiaineKoodistoUri/:oppiaineKoodiarvo/kurssit/:kurssiKoodistot") {
     val kurssiKoodistot: List[KoodistoViite] = koodistotByString(params("kurssiKoodistot"))
+
     def sisältyvätKurssit(parentKoodistoUri: String, parentKoodiarvo: String) = {
       val parent = application.koodistoViitePalvelu.validate(parentKoodistoUri, parentKoodiarvo).getOrElse(haltWithStatus(tuntematonKoodi(s"Koodistosta ${parentKoodistoUri} ei löydy koodia ${parentKoodiarvo}")))
       for {
@@ -133,7 +152,7 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
   private def koodistotByString(str: String): List[KoodistoViite] = {
     // note: silently omits non-existing koodistot from result
     val koodistoUriParts = str.split(",").toList
-    koodistoUriParts flatMap {part: String =>
+    koodistoUriParts flatMap { part: String =>
       application.koodistoViitePalvelu.getLatestVersionOptional(part)
     }
   }

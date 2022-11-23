@@ -9,10 +9,12 @@ import {
   modelSet,
   modelSetTitle,
   pushModel,
+  pushModelValue,
   resolvePrototypeReference
 } from '../editor/EditorModel'
 import { t } from '../i18n/i18n'
 import { newOsasuoritusProto, newOsasuoritusProtos } from '../suoritus/Suoritus'
+import { luokkaAsteenOsasuorituksenAlaosasuoritukset } from './esh'
 import { UusiEshOsasuoritusDropdown } from './UusiEshOsasuoritusDropdown'
 
 function resolveArrayPrototype(model) {
@@ -44,7 +46,7 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
 }) => {
   if (!model || !model.context.edit) return null
   const isAlaosasuoritus = nestedLevel > 0
-  const tunniste = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
+  const luokkaAste = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
 
   // TODO: TOR-1685: Refaktoroi tämä siistimmäksi, jotta copypastea on vähemmän. Prototyyppien valinta olisi myös hyvä saada hieman siistimmäksi.
   const addOsasuoritus = (koulutusmoduuli) => {
@@ -61,12 +63,30 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
     pushModel(baseOsasuorituksetModel)
     ensureArrayKey(baseOsasuorituksetModel)
 
+    // Jos osasuoritukselle löytyy alaosasuorituksia, prefillataan ne.
+    luokkaAsteenOsasuorituksenAlaosasuoritukset(
+      luokkaAste,
+      modelData(koulutusmoduuli, 'tunniste.koodiarvo') || 'NULL'
+    ).onValue((alaosasuorituksetPrefillattuEditorModel) => {
+      if (
+        Array.isArray(alaosasuorituksetPrefillattuEditorModel.value) &&
+        alaosasuorituksetPrefillattuEditorModel.value.length > 0
+      ) {
+        const osasuoritusModel = contextualizeSubModel(
+          alaosasuorituksetPrefillattuEditorModel,
+          baseOsasuorituksetModel,
+          'osasuoritukset'
+        )
+        pushModel(osasuoritusModel)
+      }
+    })
+
     const protoKey =
       isAlaosasuoritus && isS7(model)
         ? 'secondarys7preliminarymarkarviointi'
-        : isS5OrS4(tunniste, model) || isS6(tunniste, model)
+        : isS5OrS4(luokkaAste, model) || isS6(luokkaAste, model)
         ? 'secondarynumericalmarkarviointi'
-        : isS1OrS2OrS3(tunniste, model)
+        : isS1OrS2OrS3(luokkaAste, model)
         ? 'secondarygradearviointi'
         : undefined
 

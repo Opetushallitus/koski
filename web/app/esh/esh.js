@@ -26,6 +26,14 @@ export const luokkaAsteenOsasuoritukset = (luokkaAste) =>
     `/koski/api/editor/koodit/europeanschoolofhelsinkiluokkaaste/${luokkaAste}/suoritukset/prefill`
   )
 
+export const luokkaAsteenOsasuorituksenAlaosasuoritukset = (
+  luokkaAste,
+  oppiainekoodi
+) =>
+  Http.cachedGet(
+    `/koski/api/editor/koodit/europeanschoolofhelsinkiluokkaaste/${luokkaAste}/alaosasuoritukset/${oppiainekoodi}/prefill`
+  )
+
 export const valmiitaSuorituksia = (oppiaineSuoritukset) =>
   oppiaineSuoritukset.some(
     (oppiaine) =>

@@ -18,6 +18,24 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
     }
   }
 
+  def makePrimaryOsasuoritusLista(osasuoritukset: List[PrimaryOsasuoritus], oppiainekoodi: String) = osasuoritukset.find(_.koulutusmoduuli.tunniste.koodiarvo == oppiainekoodi) match {
+    case Some(primaryOsasuoritus: PrimaryOsasuoritus) => primaryOsasuoritus.osasuoritukset.getOrElse(List())
+    case _ => List()
+  }
+
+  def makeSecondaryLowerOsasuoritusLista(osasuoritukset: List[SecondaryLowerOppiaineenSuoritus], oppiainekoodi: String) = osasuoritukset.find(_.koulutusmoduuli.tunniste.koodiarvo == oppiainekoodi) match {
+    case Some(osasuoritus) => osasuoritus.osasuoritukset.getOrElse(List())
+    case _ => List()
+  }
+
+  def eshAlaOsasuoritukset(luokkaAste: String, oppiainekoodi: String) = {
+    luokkaAste match {
+      case "P1" | "P2" => makePrimaryOsasuoritusLista(osasuorituksetPrimary12, oppiainekoodi)
+      case "P3" | "P4" | "P5" => makePrimaryOsasuoritusLista(osasuorituksetPrimary345, oppiainekoodi)
+      case _ => List()
+    }
+  }
+
   private lazy val osasuorituksetPrimary12: List[PrimaryOsasuoritus] = List(
     primaryLapsiOppimisalueenOsasuoritus(
       oppiainekoodi = "TCAAL",
@@ -30,6 +48,7 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
       alaosasuorituskoodit = Some(List(
         "Seems happy at school", "Is self-confident", "Manages and expresses own feelings", "Evaluates own progress"
       ))
+
     ),
     primaryLapsiOppimisalueenOsasuoritus(
       oppiainekoodi = "TCAO",
@@ -57,22 +76,22 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
     primaryOppimisalueenOsasuoritus(oppiainekoodi = "DOW",
       alaosasuorituskoodit = Some(List(
         "Biological", "Technological", "Geographical", "Historical"
-      )),
+      ))
     ),
     primaryOppimisalueenOsasuoritus(oppiainekoodi = "ART",
       alaosasuorituskoodit = Some(List(
         "Plastic and static visual arts", "The arts and entertainment"
-      )),
+      ))
     ),
     primaryOppimisalueenOsasuoritus(oppiainekoodi = "MU",
       alaosasuorituskoodit = Some(List(
         "Music making & performing", "Listening and responding", "Composing"
-      )),
+      ))
     ),
     primaryOppimisalueenOsasuoritus(oppiainekoodi = "PE",
       alaosasuorituskoodit = Some(List(
         "Individual activities", "Team activities", "Swimming"
-      )),
+      ))
     ),
     primaryOppimisalueenOsasuoritus(oppiainekoodi = "RE",
       alaosasuorituskoodit = None,
@@ -499,9 +518,9 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   )
 
   private def primaryLapsiOppimisalueenOsasuoritus(
-    oppiainekoodi: String,
-    alaosasuorituskoodit: Option[List[String]] = None,
-  ): PrimaryLapsiOppimisalueenSuoritus = {
+                                                    oppiainekoodi: String,
+                                                    alaosasuorituskoodit: Option[List[String]] = None,
+                                                  ): PrimaryLapsiOppimisalueenSuoritus = {
     PrimaryLapsiOppimisalueenSuoritus(
       arviointi = None,
       koulutusmoduuli = PrimaryLapsiOppimisalue(lokalisoituKoodi(oppiainekoodi, "europeanschoolofhelsinkilapsioppimisalue")),
@@ -515,9 +534,9 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def primaryOppimisalueenOsasuoritus(
-    oppiainekoodi: String,
-    alaosasuorituskoodit: Option[List[String]] = None,
-  ): PrimaryOppimisalueenSuoritus = {
+                                               oppiainekoodi: String,
+                                               alaosasuorituskoodit: Option[List[String]] = None,
+                                             ): PrimaryOppimisalueenSuoritus = {
     PrimaryOppimisalueenSuoritus(
       koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
         lokalisoituKoodi(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
@@ -536,9 +555,9 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def primaryOppimisalueenOsasuoritusKieli(
-    oppiainekoodi: String,
-    alaosasuorituskoodit: Option[List[String]] = None
-  ): PrimaryOppimisalueenSuoritus = {
+                                                    oppiainekoodi: String,
+                                                    alaosasuorituskoodit: Option[List[String]] = None
+                                                  ): PrimaryOppimisalueenSuoritus = {
     PrimaryOppimisalueenSuoritus(
       arviointi = None,
       koulutusmoduuli = EuropeanSchoolOfHelsinkiKielioppiaine(
@@ -560,8 +579,8 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
     lokalisoituKoodi("99", "kieli")
 
   private def secondaryLowerMuunOppiaineenOsasuoritus(
-    oppiainekoodi: String,
-  ): SecondaryLowerOppiaineenSuoritus = {
+                                                       oppiainekoodi: String,
+                                                     ): SecondaryLowerOppiaineenSuoritus = {
     SecondaryLowerOppiaineenSuoritus(
       koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
         lokalisoituKoodi(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
@@ -573,8 +592,8 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def secondaryLowerKielioppiaineenOsasuoritus(
-    oppiainekoodi: String,
-  ): SecondaryLowerOppiaineenSuoritus = {
+                                                        oppiainekoodi: String,
+                                                      ): SecondaryLowerOppiaineenSuoritus = {
     SecondaryLowerOppiaineenSuoritus(
       koulutusmoduuli = EuropeanSchoolOfHelsinkiKielioppiaine(
         lokalisoituKoodi(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
@@ -587,7 +606,7 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def secondaryLowerKielioppiaineenOsasuoritusLatin(
-  ): SecondaryLowerOppiaineenSuoritus = {
+                                                           ): SecondaryLowerOppiaineenSuoritus = {
     val oppiainekoodi = "LA"
     val kieli = "LA"
     SecondaryLowerOppiaineenSuoritus(
@@ -602,7 +621,7 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def secondaryLowerKielioppiaineenOsasuoritusAncientGreek(
-  ): SecondaryLowerOppiaineenSuoritus = {
+                                                                  ): SecondaryLowerOppiaineenSuoritus = {
     val oppiainekoodi = "GRC"
     val kieli = "EL"
     SecondaryLowerOppiaineenSuoritus(
@@ -617,8 +636,8 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def secondaryUpperMuunOppiaineenOsasuoritusS6(
-    oppiainekoodi: String,
-  ): SecondaryUpperOppiaineenSuoritus = {
+                                                         oppiainekoodi: String,
+                                                       ): SecondaryUpperOppiaineenSuoritus = {
     SecondaryUpperOppiaineenSuoritusS6(
       koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
         lokalisoituKoodi(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
@@ -630,8 +649,8 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def secondaryUpperKielioppiaineenOsasuoritusS6(
-    oppiainekoodi: String,
-  ): SecondaryUpperOppiaineenSuoritus = {
+                                                          oppiainekoodi: String,
+                                                        ): SecondaryUpperOppiaineenSuoritus = {
     SecondaryUpperOppiaineenSuoritusS6(
       koulutusmoduuli = EuropeanSchoolOfHelsinkiKielioppiaine(
         lokalisoituKoodi(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
@@ -644,7 +663,7 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def secondaryUpperKielioppiaineenOsasuoritusS6Latin(
-  ): SecondaryUpperOppiaineenSuoritus = {
+                                                             ): SecondaryUpperOppiaineenSuoritus = {
     val oppiainekoodi = "LA"
     val kieli = lokalisoituKoodi("LA", "kieli")
     SecondaryUpperOppiaineenSuoritusS6(
@@ -659,7 +678,7 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def secondaryUpperKielioppiaineenOsasuoritusS6AncientGreek(
-  ): SecondaryUpperOppiaineenSuoritus = {
+                                                                    ): SecondaryUpperOppiaineenSuoritus = {
     val oppiainekoodi = "GRC"
     val kieli = lokalisoituKoodi("EL", "kieli")
     SecondaryUpperOppiaineenSuoritusS6(
@@ -674,8 +693,8 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def secondaryUpperMuunOppiaineenOsasuoritusS7(
-    oppiainekoodi: String,
-  ): SecondaryUpperOppiaineenSuoritus = {
+                                                         oppiainekoodi: String,
+                                                       ): SecondaryUpperOppiaineenSuoritus = {
     SecondaryUpperOppiaineenSuoritusS7(
       koulutusmoduuli = EuropeanSchoolOfHelsinkiMuuOppiaine(
         lokalisoituKoodi(oppiainekoodi, "europeanschoolofhelsinkimuuoppiaine"),
@@ -687,8 +706,8 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def secondaryUpperKielioppiaineenOsasuoritusS7(
-    oppiainekoodi: String,
-  ): SecondaryUpperOppiaineenSuoritus = {
+                                                          oppiainekoodi: String,
+                                                        ): SecondaryUpperOppiaineenSuoritus = {
     SecondaryUpperOppiaineenSuoritusS7(
       koulutusmoduuli = EuropeanSchoolOfHelsinkiKielioppiaine(
         lokalisoituKoodi(oppiainekoodi, "europeanschoolofhelsinkikielioppiaine"),
@@ -701,7 +720,7 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
   }
 
   private def secondaryUpperKielioppiaineenOsasuoritusS7Latin(
-  ): SecondaryUpperOppiaineenSuoritus = {
+                                                             ): SecondaryUpperOppiaineenSuoritus = {
     val oppiainekoodi = "LA"
     val kieli = lokalisoituKoodi("LA", "kieli")
     SecondaryUpperOppiaineenSuoritusS7(
@@ -738,7 +757,7 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
     lokalisoituKoodi("99", "kieli")
 
   private def secondaryUpperKielioppiaineenOsasuoritusS7AncientGreek(
-  ): SecondaryUpperOppiaineenSuoritus = {
+                                                                    ): SecondaryUpperOppiaineenSuoritus = {
     val oppiainekoodi = "GRC"
     val kieli = lokalisoituKoodi("EL", "kieli")
     SecondaryUpperOppiaineenSuoritusS7(
