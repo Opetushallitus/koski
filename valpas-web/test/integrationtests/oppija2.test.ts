@@ -188,14 +188,14 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",
         oppivelvollisuus: "17.10.2023 asti",
-        oppivelvollisuudenKeskeytykset: ["1.3.2021 – 30.9.2021"],
+        oppivelvollisuudenKeskeytykset: ["1.9.2021 – 30.9.2021", "1.1.2020 – 30.1.2020"],
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
       })
     )
     await opiskeluhistoriaEquals(
       merge(
-        historiaOppivelvollisuudenKeskeytys("1.3.2021 – 30.9.2021"),
+        historiaOppivelvollisuudenKeskeytys("1.9.2021 – 30.9.2021"),
         historiaOppivelvollisuudenKeskeytys("1.1.2020 – 30.1.2020"),
         historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 –",
@@ -254,13 +254,14 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",
         oppivelvollisuus: "17.10.2023 asti",
+        oppivelvollisuudenKeskeytykset: ["1.9.2021 – 30.9.2021", "1.1.2020 – 30.1.2020"],
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
       })
     )
     await opiskeluhistoriaEquals(
       merge(
-        historiaOppivelvollisuudenKeskeytys("1.3.2021 – 30.9.2021"),
+        historiaOppivelvollisuudenKeskeytys("1.9.2021 – 30.9.2021"),
         historiaOppivelvollisuudenKeskeytys("1.1.2020 – 30.1.2020"),
         historiaOpintoOikeus({
           otsikko: "Perusopetus 2012 –",
@@ -303,7 +304,37 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",
-        oppivelvollisuudenKeskeytykset: [`toistaiseksi 11.11.2022 alkaen`],
+        oppivelvollisuudenKeskeytykset: [`toistaiseksi 11.11.2022 alkaen`, `1.9.2021 – 30.9.2021`, `1.1.2020 – 30.1.2020`],
+        maksuttomuusoikeus: "31.12.2025 asti",
+        oppivelvollisuudenKeskeytysBtn: true,
+        kuntailmoitusBtn: true,
+        merkitseVapautusBtn: true,
+      })
+    )
+  })
+
+  it("Oppivelvollisuuden keskeytystä voi muokata vaikka se olisi päättynyt", async () => {
+    await loginAs(oppivelvollisuusKeskeytettyMääräajaksiPath, "valpas-helsinki")
+
+    await resetMockData("2022-11-11")
+    await goToLocation(oppivelvollisuusKeskeytettyMääräajaksiPath)
+    await mainHeadingEquals(
+      "Oppivelvollisuus-keskeytetty-määräajaksi Valpas (181005A1560)"
+    )
+
+    await clickElement(".oppijaview__editkeskeytysbtn")
+    await textEventuallyEquals(
+      ".modal__title",
+      "Oppivelvollisuuden keskeytyksen muokkaus"
+    )
+
+    await clickElement("#ovkeskeytys-submit-edit")
+
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Opiskelemassa",
+        oppivelvollisuus: "17.10.2023 asti",
+        oppivelvollisuudenKeskeytykset: [`1.9.2021 – 30.9.2021`, `1.1.2020 – 30.1.2020`],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
@@ -620,7 +651,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Ei opiskelupaikkaa",
-        oppivelvollisuudenKeskeytykset: ["toistaiseksi 1.9.2021 alkaen"],
+        oppivelvollisuudenKeskeytykset: ["toistaiseksi 1.9.2021 alkaen", "1.1.2019 – 1.12.2019"],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
         merkitseVapautusBtn: true,
@@ -666,6 +697,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         oppivelvollisuudenKeskeytykset: [
           "toistaiseksi 5.9.2021 alkaen",
           "toistaiseksi 1.9.2021 alkaen",
+          "1.1.2019 – 1.12.2019"
         ],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
