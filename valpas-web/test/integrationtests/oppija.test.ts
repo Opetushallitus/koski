@@ -22,6 +22,7 @@ import {
   virallisetYhteystiedot,
   virallisetYhteystiedotEquals,
 } from "./oppija.shared"
+import {contentEventuallyEquals, testId} from "../integrationtests-env/browser/content";
 
 const ysiluokkaKeskenKeväälläPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000001",
@@ -376,6 +377,9 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     await loginAs(ysiluokkaKeskenKeväälläPath, "valpas-jkl-normaali")
 
     const pvm = "9.4.2020"
+
+    await contentEventuallyEquals(testId("kotikunta-yhteystiedot"), "Helsinki")
+
     await ilmoitetutYhteystiedotEquals(
       ilmoitetutYhteystiedot({
         pvm,
@@ -448,6 +452,8 @@ describe("Oppijakohtainen näkymä 1/2", () => {
       warning
       Oppijalla on turvakielto. Yhteystietoja saa käyttää ainoastaan oppivelvollisuuden valvontaan.
     `)
+
+    await contentEventuallyEquals(testId("kotikunta-yhteystiedot"), "Ei tiedossa (kunta)")
 
     await virallisetYhteystiedotEquals(`
       Viralliset yhteystiedot

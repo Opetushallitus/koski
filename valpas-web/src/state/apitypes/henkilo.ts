@@ -1,4 +1,5 @@
 import { ISODate, Oid } from "../common"
+import { Kunta } from "./koodistot"
 
 export interface HenkilöTiedot {
   oid: Oid
@@ -10,6 +11,7 @@ export interface HenkilöTiedot {
 export type HenkilöLaajatTiedot = HenkilöTiedot & {
   hetu?: string
   turvakielto: boolean
+  kotikunta?: Kunta
 }
 
 export type HenkilöSuppeatTiedot = HenkilöTiedot
