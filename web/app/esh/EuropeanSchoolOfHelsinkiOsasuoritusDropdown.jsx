@@ -9,7 +9,6 @@ import {
   modelSet,
   modelSetTitle,
   pushModel,
-  pushModelValue,
   resolvePrototypeReference
 } from '../editor/EditorModel'
 import { t } from '../i18n/i18n'

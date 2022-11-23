@@ -180,6 +180,45 @@ SuoritusEditor.validateModel = (model) => {
     return []
   }
 
+  const validateEshKieliaineidenValinta = (suoritus) => {
+    if (
+      suoritus.value.classes.includes(
+        'europeanschoolofhelsinkivuosiluokansuoritus'
+      )
+    ) {
+      const suorituskielellisetOsasuoritukset = osasuoritukset(suoritus).filter(
+        (osasuoritus) => {
+          const koulutusmoduuli = modelLookup(osasuoritus, 'koulutusmoduuli')
+          return koulutusmoduuli.value.classes.includes(
+            'europeanschoolofhelsinkikielioppiaine'
+          )
+        }
+      )
+      return suorituskielellisetOsasuoritukset.flatMap((osasuoritus) => {
+        const koulutusmoduuli = modelLookup(osasuoritus, 'koulutusmoduuli')
+        if (
+          koulutusmoduuli.value.classes.includes(
+            'europeanschoolofhelsinkikielioppiaine'
+          )
+        ) {
+          if (modelData(koulutusmoduuli, 'kieli') === undefined) {
+            return [
+              {
+                path: koulutusmoduuli.path.concat('kieli'),
+                key: 'eshKieliaineenKieli',
+                message: (
+                  <Text name={'Kielioppiaineella on oltava valittuna kieli.'} />
+                )
+              }
+            ]
+          }
+          return []
+        }
+      })
+    }
+    return []
+  }
+
   const validationError = (suoritus, virheviesti) => {
     const subPath = removeCommonPath(suoritus.path, model.path)
     return [
@@ -194,4 +233,5 @@ SuoritusEditor.validateModel = (model) => {
   return validateSuoritus(model)
     .concat(validateValmisOsittaisenAmmatillisenTutkinnonSuoritus(model))
     .concat(validateLuokkaAsteSallittuVainErityiselleTutkinnolle(model))
+    .concat(validateEshKieliaineidenValinta(model))
 }
