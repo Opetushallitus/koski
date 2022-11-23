@@ -32,7 +32,8 @@ import {
   isValueModel,
   PrototypeModel,
   Maybe,
-  MaybeOneOfModel
+  MaybeOneOfModel,
+  NotWhen
 } from '../types/EditorModels'
 import {
   EditorMappingContext,
@@ -599,6 +600,7 @@ export const oneOfPrototypes = <
     return (model.oneOfPrototypes = model.oneOfPrototypes
       .map((proto) => preparePrototypeModel(proto, model))
       .filter(notUndefined)
+      .filter(m => checkNotWhen(m, m.notWhen))
       .filter((m) => checkOnlyWhen(m, m.onlyWhen)))
   }
   return [model]
@@ -999,6 +1001,7 @@ export const resolveActualModel = <T extends object>(
   const actualModels = oneOfModel.oneOfPrototypes
     .map((protos) => resolvePrototypeReference(protos, parentModel.context))
     .map((model) => ({ ...model, path: oneOfModel.path, parent: parentModel }))
+    .filter((p) => !p.notWhen || checkNotWhen(p, p.notWhen))
     .filter((p) => !p.onlyWhen || checkOnlyWhen(p, p.onlyWhen))
 
   if (actualModels.length > 1) {
@@ -1118,3 +1121,16 @@ export const checkOnlyWhen = (model: EditorModel, conditions?: OnlyWhen[]) => {
     return match
   })
 }
+
+export const checkNotWhen = (model: EditorModel, conditions?: NotWhen[]) => {
+  // console.log("notWhen model", model)
+  if (!conditions) return true
+  return conditions.some((notWhen) => {
+    let data = modelData(model, notWhen.path.split('/'))
+    let match = Array.isArray(notWhen.values) ? !notWhen.values.includes(data) : notWhen.values != data
+    // console.log("notWhen data: ", data)
+    // console.log("notWhen match: ", !match)
+    return match
+  })
+}
+
