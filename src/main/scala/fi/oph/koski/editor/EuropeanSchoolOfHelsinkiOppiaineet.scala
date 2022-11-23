@@ -28,10 +28,11 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
     case _ => List()
   }
 
-  def eshAlaOsasuoritukset(luokkaAste: String, oppiainekoodi: String) = {
+  def eshAlaOsasuoritukset(luokkaAste: String, oppiainekoodi: String): List[Suoritus] = {
     luokkaAste match {
       case "P1" | "P2" => makePrimaryOsasuoritusLista(osasuorituksetPrimary12, oppiainekoodi)
       case "P3" | "P4" | "P5" => makePrimaryOsasuoritusLista(osasuorituksetPrimary345, oppiainekoodi)
+      case "S7" => osasurituksetAB()getOrElse(List())
       case _ => List()
     }
   }
