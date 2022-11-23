@@ -5,10 +5,12 @@ import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
 import {
   modelData,
+  modelItems,
   modelLookup,
   modelSet,
   modelSetData,
-  modelSetValue
+  modelSetValue,
+  modelSetValues
 } from '../editor/EditorModel'
 import { copyToimipiste, newSuoritusProto } from '../suoritus/Suoritus'
 import { suoritusPrototypeKey } from '../esh/europeanschoolofhelsinkiSuoritus'
@@ -22,6 +24,14 @@ const fetchOsasuorituksetTemplate = (model) =>
   luokkaAsteenOsasuoritukset(
     modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
   )
+
+const tyhjääOsasuoritustenLaajuudet = (proto) => {
+  const keyValues = {}
+  for (let i = 0; i < modelItems(proto, 'osasuoritukset').length; i++) {
+    keyValues[`osasuoritukset.${i}.koulutusmoduuli.laajuus.arvo`] = null
+  }
+  return modelSetValues(proto, keyValues)
+}
 
 export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
   opiskeluoikeus,
@@ -49,6 +59,7 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
     ) {
       fetchOsasuorituksetTemplate(proto).onValue((osasuorituksetTemplate) => {
         proto = copyOsasuoritukset(osasuorituksetTemplate.value, proto)
+        proto = tyhjääOsasuoritustenLaajuudet(proto)
         resultCallback(proto)
       })
     } else {
