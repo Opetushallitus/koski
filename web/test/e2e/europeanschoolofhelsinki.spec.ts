@@ -1,20 +1,7 @@
 import { test, expect } from './base'
 
 const ESH_OID = '1.2.246.562.24.00000000065'
-const eshVuosiluokat = [
-  'P1',
-  // 'P2',
-  'P3',
-  'P4',
-  'P5',
-  'S1',
-  'S2',
-  'S3',
-  'S4',
-  'S5',
-  'S6',
-  'S7'
-]
+
 test.describe('European School of Helsinki', () => {
   test.beforeAll(async ({ fixtures }) => {
     await fixtures.reset(false)
@@ -56,22 +43,77 @@ test.describe('European School of Helsinki', () => {
     await page.getByRole('listitem', { name: 'Year mark' }).click()
   })
 
-  test.describe('Vuosiluokan suoritukset', () => {
-    for (const luokka of eshVuosiluokat) {
-      test(`Lisää ${luokka}-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-        page,
-        oppijaPage
-      }) => {
-        await oppijaPage.clickSuoritusTabByLabel(luokka)
-        await oppijaPage.avaaMuokkausnäkymä()
-        await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
-        await page
-          .getByRole('listitem', {
-            name: 'Advanced studies of the second language'
-          })
-          .click()
-      })
-    }
+  test.describe('Primary-vuosiluokan suoritukset', () => {
+    test(`Lisää P1-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.clickSuoritusTabByLabel('P1')
+      await oppijaPage.avaaMuokkausnäkymä()
+      await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
+      await page
+        .getByRole('listitem', {
+          name: 'Advanced studies of the second language'
+        })
+        .click()
+      await oppijaPage.tallenna()
+    })
+    test(`Lisää P2-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.clickSuoritusTabByLabel('P2')
+      await oppijaPage.avaaMuokkausnäkymä()
+      await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
+      await page
+        .getByRole('listitem', {
+          name: 'Advanced studies of the second language'
+        })
+        .click()
+      await oppijaPage.tallenna()
+    })
+    test(`Lisää P3-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.clickSuoritusTabByLabel('P3')
+      await oppijaPage.avaaMuokkausnäkymä()
+      await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
+      await page
+        .getByRole('listitem', {
+          name: 'Advanced studies of the second language'
+        })
+        .click()
+      await oppijaPage.tallenna()
+    })
+    test(`Lisää P1-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.clickSuoritusTabByLabel('P4')
+      await oppijaPage.avaaMuokkausnäkymä()
+      await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
+      await page
+        .getByRole('listitem', {
+          name: 'Advanced studies of the second language'
+        })
+        .click()
+      await oppijaPage.tallenna()
+    })
+    test(`Lisää P5-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
+      page,
+      oppijaPage
+    }) => {
+      await oppijaPage.clickSuoritusTabByLabel('P1')
+      await oppijaPage.avaaMuokkausnäkymä()
+      await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
+      await page
+        .getByRole('listitem', {
+          name: 'Advanced studies of the second language'
+        })
+        .click()
+      await oppijaPage.tallenna()
+    })
   })
 
   test.describe('Luodessa opiskeluoikeutta', async () => {
@@ -82,16 +124,16 @@ test.describe('European School of Helsinki', () => {
     }) => {
       // Satunnaisesti generoitu hetu
       await uusiOppijaPage.lisaaOppija({
-        hetu: "110363-155S",
+        hetu: '110363-155S',
         aloituspäivä: new Date(),
-        curriculum: "2023",
-        etunimet: "",
-        luokkaAste: "",
-        opiskeluoikeudenTila: "",
-        opiskeluoikeus: "European School of Helsinki",
-        oppilaitos: "",
-        sukunimi: "",
-        suorituskieli: ""
+        curriculum: '2023',
+        etunimet: '',
+        luokkaAste: '',
+        opiskeluoikeudenTila: '',
+        opiskeluoikeus: 'European School of Helsinki',
+        oppilaitos: '',
+        sukunimi: '',
+        suorituskieli: ''
       })
     })
   })
