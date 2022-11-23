@@ -12,14 +12,14 @@ import {
 import * as R from 'ramda'
 import {
   createTutkinnonOsanSuoritusPrototype,
-  NON_GROUPED
+  NON_GROUPED,
+  osanOsa
 } from '../ammatillinen/TutkinnonOsa'
 import { hasArvosana, suorituksenTyyppi, tilaText } from './Suoritus'
 import Text from '../i18n/Text'
 import { ArvosanaEditor } from './ArvosanaEditor'
 import { Editor } from '../editor/Editor'
 import { shouldShowProperty } from '../editor/PropertiesEditor'
-import { osanOsa } from '../ammatillinen/TutkinnonOsa'
 import { sortLanguages } from '../util/sorting'
 import { suorituksenTilaSymbol } from './Suoritustaulukko'
 import { isKieliaine } from './Koulutusmoduuli'
@@ -75,8 +75,10 @@ export const isVapaanSivistystyönOppivelvollistenSuoritus = (
   suoritus.value.classes.includes(
     'oppivelvollisillesuunnattuvapaansivistystyonkoulutuksensuoritus'
   )
-export const isEshVuosiluokanSuoritus = (suoritus: SuoritusModel) =>
-  suoritus.value.classes.includes('europeanschoolofhelsinkivuosiluokansuoritus')
+export const isEshPäätasonSuoritus = (suoritus: SuoritusModel) =>
+  suoritus.value.classes.includes('europeanschoolofhelsinkipäätasonsuoritus')
+export const isEB = (suoritus: SuoritusModel) =>
+  suoritus.value.classes.includes('ebtutkinnonsuoritus')
 export const isEshS7 = (suoritus: SuoritusModel) =>
   suoritus.value.classes.includes('secondaryuppervuosiluokansuoritus') &&
   modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo') === 'S7'
@@ -379,10 +381,10 @@ export const SuoritusColumn: SuoritusColumn = {
     </td>
   ),
   renderData: ({ model, showTila, onExpand, hasProperties, expanded }) => {
-    let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
-    let titleAsExpandLink =
+    const koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
+    const titleAsExpandLink =
       hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)
-    let kieliaine = isKieliaine(koulutusmoduuli)
+    const kieliaine = isKieliaine(koulutusmoduuli)
     const koulutusmoduuliTunniste = modelData(koulutusmoduuli, 'tunniste.nimi')
 
     return (
@@ -535,7 +537,7 @@ export const LaajuusColumn: LaajuusColumn = {
       context.edit
     ) {
       return false
-    } else if (isEshVuosiluokanSuoritus(parentSuoritus)) {
+    } else if (isEshPäätasonSuoritus(parentSuoritus)) {
       return true
     } else if (isEshOsasuoritus(parentSuoritus)) {
       return false

@@ -20,7 +20,7 @@ export const makeSuoritus = (
 }
 
 /**
- * European School of Helsinki -opiskeluoikeudessa käytetyt luokka-asteet
+ * European School of Helsinki -opiskeluoikeudessa käytettyjen luokka-asteiden suorituksen tyypit
  */
 export const eshVuosiluokka = {
   nursery: 'europeanschoolofhelsinkivuosiluokkanursery',
@@ -30,11 +30,13 @@ export const eshVuosiluokka = {
 }
 
 /**
- * European School of Helsinki -opiskeluoikeudessa käytetyt suoritustyypit
+ * European School of Helsinki -opiskeluoikeudessa käytettyjen suoritusten class:t
  */
 export const eshSuoritus = {
   nursery: 'nurseryvuosiluokansuoritus',
   primary: 'primaryvuosiluokansuoritus',
+  ebtutkinto: 'ebtutkinnonsuoritus',
+  ebtutkintoOsasuoritus: 'ebtutkinnonosasuoritus',
   secondaryLowerVuosiluokka: 'secondarylowervuosiluokansuoritus',
   secondaryLowerOppiaine: 'secondaryloweroppiaineensuoritus',
   secondaryUpperOppiaine: 'secondaryupperoppiaineensuoritus',

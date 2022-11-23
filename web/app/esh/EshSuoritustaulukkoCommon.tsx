@@ -1,6 +1,7 @@
 import React from 'baret'
 import { t } from '../i18n/i18n'
 import {
+  contextualizeModel,
   contextualizeSubModel,
   modelData,
   modelItems,
@@ -8,7 +9,9 @@ import {
   modelProperties,
   modelSet,
   modelTitle,
+  pushModel,
   resolveActualModel,
+  resolvePrototypeReference,
   wrapOptional
 } from '../editor/EditorModel'
 import { hasArvosana, tilaText } from '../suoritus/Suoritus'
@@ -19,6 +22,7 @@ import { suorituksenTilaSymbol } from '../suoritus/Suoritustaulukko'
 import { isEshKieliaine } from '../suoritus/Koulutusmoduuli'
 import {
   ColumnIface,
+  isEB,
   isEshS7,
   OnExpandFn,
   SuoritusModel
@@ -151,12 +155,25 @@ function resolveArrayPrototype(model) {
   }
 }
 
+const isEB = (model) => model.value.classes.includes('ebtutkinnonosasuoritus')
+const isS7 = (model) =>
+  model.value.classes.includes('secondaryupperoppiaineensuorituss7')
+const isS6 = (tunniste, model) =>
+  tunniste === 'S6' &&
+  model.value.classes.includes('secondaryuppervuosiluokansuoritus')
+const isS5OrS4 = (tunniste, model) =>
+  (tunniste === 'S5' || tunniste === 'S4') &&
+  model.value.classes.includes('secondarylowervuosiluokansuoritus')
+const isS1OrS2OrS3 = (tunniste, _model) =>
+  tunniste === 'S1' || tunniste === 'S2' || tunniste === 'S3'
+
 export const EshArvosanaColumn: ColumnIface<
   EshArvosanaColumnDataProps,
   EshArvosanaColumnShowProps
 > = {
   shouldShow: ({ parentSuoritus, suoritukset, context }) =>
     !isEshS7(parentSuoritus) &&
+    !isEB(parentSuoritus) &&
     (context.edit || suoritukset.find(hasArvosana) !== undefined),
   renderHeader: () => (
     <th key="arvosana" className="arvosana" scope="col">
@@ -173,6 +190,45 @@ export const EshArvosanaColumn: ColumnIface<
       modelItems(arviointiModel).length
     )
 
+    const isAlaosasuoritus = model.value.classes.includes('foo') // TODO
+    const luokkaAste = modelData(
+      model.parent,
+      'koulutusmoduuli.tunniste.koodiarvo'
+    )
+
+    const protoKey =
+      isAlaosasuoritus && isS7(model)
+        ? 'secondarys7preliminarymarkarviointi'
+        : isAlaosasuoritus &&
+          isEB(model) &&
+          // @ts-expect-error
+          modelLookup(model, 'koulutusmoduuli').value.classes.includes(
+            'eboppiainekomponenttipreliminary'
+          )
+        ? 'secondarys7preliminarymarkarviointi'
+        : isAlaosasuoritus &&
+          isEB(model) &&
+          // @ts-expect-error
+          !modelLookup(model, 'koulutusmoduuli').value.classes.includes(
+            'eboppiainekomponenttipreliminary'
+          )
+        ? 'ebtutkintofinalmarkarviointi'
+        : isS5OrS4(luokkaAste, model) || isS6(luokkaAste, model)
+        ? 'secondarynumericalmarkarviointi'
+        : isS1OrS2OrS3(luokkaAste, model)
+        ? 'secondarygradearviointi'
+        : undefined
+
+    const proto = {
+      type: 'prototype',
+      key: protoKey
+    }
+
+    const resolvedArviointiModel = contextualizeSubModel(
+      resolvePrototypeReference(proto, arviointiContextualizedModel.context),
+      arviointiContextualizedModel
+    )
+
     const actualModel =
       modelData(arviointi, 'arvosana') === undefined &&
       arviointiContextualizedModel !== undefined &&
@@ -183,6 +239,9 @@ export const EshArvosanaColumn: ColumnIface<
             'arviointi.-1'
           )
         : model
+
+    console.log('model', model)
+    console.log('actualModel', actualModel)
 
     const arvosana = arviointi ? modelLookup(arviointi, 'arvosana') : null
     const isSynthetic = (arvosana?.value?.classes || []).includes(

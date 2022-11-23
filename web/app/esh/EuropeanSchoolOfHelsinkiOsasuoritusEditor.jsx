@@ -30,6 +30,7 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
     const osasuoritukset = modelLookup(model, 'osasuoritukset')
 
     const showOsasuoritukset =
+      model.value.classes.includes(eshSuoritus.ebtutkintoOsasuoritus) ||
       model.value.classes.includes(eshSuoritus.secondaryUppers7) ||
       model.value.classes.includes('primaryosasuoritus')
 

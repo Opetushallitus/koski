@@ -28,6 +28,7 @@ function resolveArrayPrototype(model) {
   }
 }
 
+const isEB = (model) => model.value.classes.includes('ebtutkinnonosasuoritus')
 const isS7 = (model) =>
   model.value.classes.includes('secondaryupperoppiaineensuorituss7')
 const isS6 = (tunniste, model) =>
@@ -58,6 +59,8 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
       'koulutusmoduuli'
     )
 
+    console.log('koulutusmoduuli', koulutusmoduuli)
+
     // Pusketaan ensin base-osasuoritus changeBus:iin
     pushModel(baseOsasuorituksetModel)
     ensureArrayKey(baseOsasuorituksetModel)
@@ -83,6 +86,18 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
     const protoKey =
       isAlaosasuoritus && isS7(model)
         ? 'secondarys7preliminarymarkarviointi'
+        : isAlaosasuoritus &&
+          isEB(model) &&
+          koulutusmoduuli.value.classes.includes(
+            'eboppiainekomponenttipreliminary'
+          )
+        ? 'secondarys7preliminarymarkarviointi'
+        : isAlaosasuoritus &&
+          isEB(model) &&
+          !koulutusmoduuli.value.classes.includes(
+            'eboppiainekomponenttipreliminary'
+          )
+        ? 'ebtutkintofinalmarkarviointi'
         : isS5OrS4(luokkaAste, model) || isS6(luokkaAste, model)
         ? 'secondarynumericalmarkarviointi'
         : isS1OrS2OrS3(luokkaAste, model)

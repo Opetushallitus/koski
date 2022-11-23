@@ -1047,6 +1047,8 @@ class KoskiValidator(
         => true
       case s: SecondaryUpperVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S7"
         => EuropeanSchoolOfHelsinkiValidation.osasuorituksetKunnossa(s)
+      case s: EBTutkinnonSuoritus
+      => EuropeanSchoolOfHelsinkiValidation.osasuorituksetKunnossa(s)
       case s => s.osasuoritusLista.nonEmpty
     }
 

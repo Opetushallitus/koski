@@ -225,7 +225,8 @@ export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
     firstClassOneOf(
       eshSuoritus.primary,
       eshSuoritus.secondaryLowerVuosiluokka,
-      eshSuoritus.secondaryUpperVuosiluokka
+      eshSuoritus.secondaryUpperVuosiluokka,
+      eshSuoritus.ebtutkinto
     )
   ) {
     return <EuropeanSchoolOfHelsinkiOsasuorituksetEditor model={mdl} />
