@@ -204,7 +204,9 @@ SuoritusEditor.validateModel = (model) => {
           if (modelData(koulutusmoduuli, 'kieli') === undefined) {
             return [
               {
-                path: koulutusmoduuli.path.concat('kieli'),
+                path: removeCommonPath(koulutusmoduuli.path, model.path).concat(
+                  'kieli'
+                ),
                 key: 'eshKieliaineenKieli',
                 message: (
                   <Text name={'Kielioppiaineella on oltava valittuna kieli.'} />

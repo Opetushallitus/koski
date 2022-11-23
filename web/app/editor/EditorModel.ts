@@ -689,7 +689,6 @@ const modelErrors = <T extends ValidationContext>(
       ? pathString === key || R.startsWith(pathString + '.', key)
       : pathString === key
   let validationResult = (context && context.validationResult) || {}
-
   return pathString.length
     ? R.fromPairs(R.toPairs(validationResult).filter(keyMatch))
     : validationResult
@@ -756,6 +755,7 @@ export const validateModel = <
   const validationResult = isEditableModel(mainModel)
     ? validateInner(mainModel, {})
     : {}
+  // TODO: Onko tämä typo?
   const x = addContext(mainModel, { validationResult })
   return addContext(mainModel, { validationResult })
 }
