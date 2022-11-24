@@ -80,12 +80,6 @@ function AddOppijaPage() {
       return function () {
         return api
           .enterData(params)()
-          .then(
-            api.selectFromDropdown(
-              '.european-school-of-helsinki-luokkaaste .dropdown',
-              params.luokkaaste
-            )
-          )
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
           .then(wait.forAjax)

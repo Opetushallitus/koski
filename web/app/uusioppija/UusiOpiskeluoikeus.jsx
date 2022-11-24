@@ -307,10 +307,9 @@ export default ({ opiskeluoikeusAtom }) => {
           return (
             <UusiEuropeanSchoolOfHelsinkiSuoritus
               suoritusAtom={suoritusAtom}
-              dateAtom={dateAtom}
               oppilaitosAtom={oppilaitosAtom}
-              suorituskieliAtom={suorituskieliAtom}
-              suorituskieliP={suorituskieletP}
+              näytäKoulutusValitsin={false}
+              näytäAlkamispäiväValitsin={false}
             />
           )
         if (tyyppi === 'vapaansivistystyonkoulutus')

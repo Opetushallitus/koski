@@ -17,9 +17,10 @@ test.describe('European School of Helsinki', () => {
       'Eurooppalainen, Emilia (050707A130V)'
     )
     await expect(oppijaPage.hetu).toContainText('050707A130V')
-    await expect(oppijaPage.koulutusmoduuli).toContainText('S72023')
-    await expect(oppijaPage.luokka).toContainText('S7A')
-    await expect(oppijaPage.alkamispäivä).toContainText('1.8.2018')
+    await expect(oppijaPage.koulutusmoduuli).toContainText(
+      'European Baccalaureate2023'
+    )
+    await expect(oppijaPage.luokka).toContainText('S7 EN')
     await expect(oppijaPage.toimipiste).toContainText(
       'Helsingin eurooppalainen koulu'
     )

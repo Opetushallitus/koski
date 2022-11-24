@@ -7,7 +7,7 @@ import {
 } from '../editor/EditorModel'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { suoritusProperties } from '../suoritus/SuoritustaulukkoCommon'
-import { eshSuoritus } from './europeanschoolofhelsinkiSuoritus'
+import { eshSuorituksenClass } from './europeanschoolofhelsinkiSuoritus'
 import { EuropeanSchoolOfHelsinkiSuoritustaulukko } from './EuropeanSchoolOfHelsinkiSuoritustaulukko'
 
 export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
@@ -30,9 +30,9 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
     const osasuoritukset = modelLookup(model, 'osasuoritukset')
 
     const showOsasuoritukset =
-      model.value.classes.includes(eshSuoritus.ebtutkintoOsasuoritus) ||
-      model.value.classes.includes(eshSuoritus.secondaryUppers7) ||
-      model.value.classes.includes('primaryosasuoritus')
+      model.value.classes.includes(eshSuorituksenClass.ebtutkintoOsasuoritus) ||
+      model.value.classes.includes(eshSuorituksenClass.secondaryUppers7) ||
+      model.value.classes.includes(eshSuorituksenClass.primaryOsasuoritus)
 
     return (
       <tbody

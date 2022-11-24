@@ -2,27 +2,27 @@ import { formatISODate } from '../date/date.js'
 
 export const makeSuoritus = (
   oppilaitos,
-  luokkaaste,
+  koulutusmoduulinTunniste,
   curriculum,
   alkamispäivä
 ) => {
-  if (!oppilaitos || !luokkaaste || !curriculum) return null
+  if (!oppilaitos || !koulutusmoduulinTunniste || !curriculum) return null
 
   return {
-    koulutusmoduuli: { tunniste: luokkaaste, curriculum },
+    koulutusmoduuli: { tunniste: koulutusmoduulinTunniste, curriculum },
     toimipiste: oppilaitos,
-    alkamispäivä: formatISODate(alkamispäivä),
+    alkamispäivä: alkamispäivä ? formatISODate(alkamispäivä) : undefined,
     tyyppi: {
-      koodiarvo: suoritusTyyppi(luokkaaste),
+      koodiarvo: suoritusTyyppi(koulutusmoduulinTunniste),
       koodistoUri: 'suorituksentyyppi'
     }
   }
 }
 
 /**
- * European School of Helsinki -opiskeluoikeudessa käytettyjen luokka-asteiden suorituksen tyypit
+ * European School of Helsinki -opiskeluoikeudessa käytettyjen koulutusmoduulin tunnisteiden suorituksen tyypit
  */
-export const eshVuosiluokka = {
+export const eshSuorituksenTyyppi = {
   nursery: 'europeanschoolofhelsinkivuosiluokkanursery',
   primary: 'europeanschoolofhelsinkivuosiluokkaprimary',
   secondaryLower: 'europeanschoolofhelsinkivuosiluokkasecondarylower',
@@ -33,7 +33,7 @@ export const eshVuosiluokka = {
 /**
  * European School of Helsinki -opiskeluoikeudessa käytettyjen suoritusten class:t
  */
-export const eshSuoritus = {
+export const eshSuorituksenClass = {
   nursery: 'nurseryvuosiluokansuoritus',
   primary: 'primaryvuosiluokansuoritus',
   ebtutkinto: 'ebtutkinnonsuoritus',
@@ -44,7 +44,8 @@ export const eshSuoritus = {
   secondaryUpperVuosiluokka: 'secondaryuppervuosiluokansuoritus',
   secondaryUppers6: 'secondaryupperoppiaineensuorituss6',
   secondaryUppers7: 'secondaryupperoppiaineensuorituss7',
-  secondaryUppers7alaosasuoritus: 's7oppiaineenalaosasuoritus'
+  secondaryUppers7alaosasuoritus: 's7oppiaineenalaosasuoritus',
+  primaryOsasuoritus: 'primaryosasuoritus'
 }
 
 export const eshSynteettisetKoodistot = {
@@ -98,42 +99,50 @@ export const isValidEshSynteettinenKoodiarvo = (koodistoUri, koodiarvo) => {
 }
 
 /**
- * Palauttaa ESH-opiskeluoikeuden suoritustyypin sen luokka-asteen koodiarvon perusteella
- * @param {string} luokkaaste Luokka-asteen koodiarvo
+ * Palauttaa ESH-opiskeluoikeuden suoritustyypin sen koulutusmoduulin tunnisteen koodiarvon perusteella
+ * @param {string} koulutusmoduulinTunniste Luokka-asteen koodiarvo
  * @returns {string} Suoritustyyppi
  */
-export const suoritusTyyppi = (luokkaaste) => {
+export const suoritusTyyppi = (koulutusmoduulinTunniste) => {
   const nursery = ['N1', 'N2']
   const primary = ['P1', 'P2', 'P3', 'P4', 'P5']
   const secondaryLower = ['S1', 'S2', 'S3', 'S4', 'S5']
   const secondaryUpper = ['S6', 'S7']
-  if (nursery.includes(luokkaaste.koodiarvo)) {
-    return eshVuosiluokka.nursery
+  if (nursery.includes(koulutusmoduulinTunniste.koodiarvo)) {
+    return eshSuorituksenTyyppi.nursery
   }
-  if (primary.includes(luokkaaste.koodiarvo)) {
-    return eshVuosiluokka.primary
+  if (primary.includes(koulutusmoduulinTunniste.koodiarvo)) {
+    return eshSuorituksenTyyppi.primary
   }
-  if (secondaryLower.includes(luokkaaste.koodiarvo)) {
-    return eshVuosiluokka.secondaryLower
+  if (secondaryLower.includes(koulutusmoduulinTunniste.koodiarvo)) {
+    return eshSuorituksenTyyppi.secondaryLower
   }
-  if (secondaryUpper.includes(luokkaaste.koodiarvo)) {
-    return eshVuosiluokka.secondaryUpper
+  if (secondaryUpper.includes(koulutusmoduulinTunniste.koodiarvo)) {
+    return eshSuorituksenTyyppi.secondaryUpper
+  }
+  if (
+    koulutusmoduulinTunniste.koodistoUri === 'koulutus' &&
+    koulutusmoduulinTunniste.koodiarvo == '301104'
+  ) {
+    return eshSuorituksenTyyppi.ebtutkinto
   }
 
-  throw new Error(`suoritusTyyppi not found for ${luokkaaste}`)
+  throw new Error(`suoritusTyyppi not found for ${koulutusmoduulinTunniste}`)
 }
 
-export const suoritusPrototypeKey = (luokkaAste) => {
-  switch (luokkaAste) {
-    case eshVuosiluokka.nursery:
-      return eshSuoritus.nursery
-    case eshVuosiluokka.primary:
-      return eshSuoritus.primary
-    case eshVuosiluokka.secondaryLower:
-      return eshSuoritus.secondaryLowerVuosiluokka
-    case eshVuosiluokka.secondaryUpper:
-      return eshSuoritus.secondaryUpperVuosiluokka
+export const suoritusPrototypeKey = (suorituksenTyyppi) => {
+  switch (suorituksenTyyppi) {
+    case eshSuorituksenTyyppi.nursery:
+      return eshSuorituksenClass.nursery
+    case eshSuorituksenTyyppi.primary:
+      return eshSuorituksenClass.primary
+    case eshSuorituksenTyyppi.secondaryLower:
+      return eshSuorituksenClass.secondaryLowerVuosiluokka
+    case eshSuorituksenTyyppi.secondaryUpper:
+      return eshSuorituksenClass.secondaryUpperVuosiluokka
+    case eshSuorituksenTyyppi.ebtutkinto:
+      return eshSuorituksenClass.ebtutkinto
     default:
-      throw new Error(`suoritusProtypeKey not found for ${luokkaAste}`)
+      throw new Error(`suoritusProtypeKey not found for ${suorituksenTyyppi}`)
   }
 }

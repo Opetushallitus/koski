@@ -81,10 +81,18 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
       proto,
       suoritus.koulutusmoduuli.tunniste
     )
+    if (
+      suoritus.koulutusmoduuli.tunniste.koodistoUri ===
+      'europeanschoolofhelsinkiluokkaaste'
+    ) {
+      proto = withAlkamispäivä(proto, suoritus.alkamispäivä)
+    }
 
     proto = copyToimipiste(modelLookup(opiskeluoikeus, 'suoritukset.0'), proto)
 
     if (
+      suoritus.koulutusmoduuli.tunniste.koodistoUri ===
+        'europeanschoolofhelsinkiluokkaaste' &&
       !eiOsasuorituksiaEshLuokkaAsteet.includes(
         suoritus.koulutusmoduuli.tunniste.koodiarvo
       )
@@ -114,6 +122,8 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
         <UusiEuropeanSchoolOfHelsinkiSuoritus
           suoritusAtom={suoritusAtom}
           oppilaitosAtom={oppilaitosAtom}
+          näytäKoulutusValitsin={true}
+          näytäAlkamispäiväValitsin={true}
         />
       </ModalDialog>
     </div>
@@ -126,7 +136,7 @@ UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.canAddSuoritus = (
   modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'europeanschoolofhelsinki'
 
 UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.addSuoritusTitle = () => (
-  <Text name="lisää vuosiluokan suoritus" />
+  <Text name="lisää suoritus" />
 )
 
 const copyOsasuoritukset = (osasuoritukset, proto) =>
@@ -137,4 +147,10 @@ const withKoulutusmoduulinTunniste = (suoritusProto, tunniste) => {
   kmt = modelSetData(kmt, tunniste)
   kmt = L.set(['title'], tunniste.nimi.fi, kmt)
   return modelSet(suoritusProto, kmt, 'koulutusmoduuli.tunniste')
+}
+
+const withAlkamispäivä = (suoritusProto, alkamispäivä) => {
+  let a = modelLookup(suoritusProto, 'alkamispäivä')
+  a = modelSetData(a, alkamispäivä)
+  return modelSet(suoritusProto, a, 'alkamispäivä')
 }
