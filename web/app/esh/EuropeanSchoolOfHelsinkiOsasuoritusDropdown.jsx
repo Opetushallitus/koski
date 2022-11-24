@@ -6,14 +6,19 @@ import {
   modelData,
   modelItems,
   modelLookup,
+  modelProperty,
   modelSet,
   modelSetTitle,
+  modelSetValues,
   pushModel,
+  pushModelValue,
   resolveActualModel,
   wrapOptional
 } from '../editor/EditorModel'
+import { zeroValue } from '../editor/EnumEditor'
 import { t } from '../i18n/i18n'
 import { newOsasuoritusProto, newOsasuoritusProtos } from '../suoritus/Suoritus'
+import { isOneOfModel } from '../types/EditorModels'
 import { luokkaAsteenOsasuorituksenAlaosasuoritukset } from './esh'
 import { UusiEshOsasuoritusDropdown } from './UusiEshOsasuoritusDropdown'
 
@@ -40,6 +45,27 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
     // Pusketaan ensin base-osasuoritus changeBus:iin
     pushModel(baseOsasuorituksetModel)
     ensureArrayKey(baseOsasuorituksetModel)
+
+    // Suorituskielen ja kielioppiaineen kielivalinnan nollaus
+    if (isOsasuoritus) {
+      if (
+        modelProperty(baseOsasuorituksetModel, 'koulutusmoduuli.kieli') !==
+        undefined
+      ) {
+        pushModel(
+          modelSetValues(baseOsasuorituksetModel, {
+            suorituskieli: zeroValue,
+            'koulutusmoduuli.kieli': zeroValue
+          })
+        )
+      } else {
+        pushModel(
+          modelSetValues(baseOsasuorituksetModel, {
+            suorituskieli: zeroValue
+          })
+        )
+      }
+    }
 
     if (isOsasuoritus) {
       // Jos osasuoritukselle löytyy alaosasuorituksia, prefillataan ne.
@@ -80,10 +106,9 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
 
       // console.log('uusiArviointiModel', uusiArviointiModel)
 
-      const resolvedArviointimodel = resolveActualModel(
-        uusiArviointiModel,
-        uusiArviointiModel.parent
-      )
+      const resolvedArviointimodel = isOneOfModel(uusiArviointiModel)
+        ? resolveActualModel(uusiArviointiModel, uusiArviointiModel.parent)
+        : uusiArviointiModel
 
       // console.log('resolved', resolvedArviointimodel)
       /* console.log(
