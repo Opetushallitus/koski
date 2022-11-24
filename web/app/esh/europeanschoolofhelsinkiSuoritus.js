@@ -27,7 +27,7 @@ export const eshVuosiluokka = {
   primary: 'europeanschoolofhelsinkivuosiluokkaprimary',
   secondaryLower: 'europeanschoolofhelsinkivuosiluokkasecondarylower',
   secondaryUpper: 'europeanschoolofhelsinkivuosiluokkasecondaryupper',
-  ebtutkinto: 'ebtutkinnonsuoritus'
+  ebtutkinto: 'ebtutkinto'
 }
 
 /**

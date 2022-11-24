@@ -183,7 +183,7 @@ SuoritusEditor.validateModel = (model) => {
   const validateEshKieliaineidenValinta = (suoritus) => {
     if (
       suoritus.value.classes.includes(
-        'europeanschoolofhelsinkivuosiluokansuoritus'
+        'europeanschoolofhelsinkipaatasonsuoritus'
       )
     ) {
       const suorituskielellisetOsasuoritukset = osasuoritukset(suoritus).filter(
@@ -224,7 +224,7 @@ SuoritusEditor.validateModel = (model) => {
   const validateEshSuorituskielenValinta = (suoritus) => {
     if (
       suoritus.value.classes.includes(
-        'europeanschoolofhelsinkivuosiluokansuoritus'
+        'europeanschoolofhelsinkipaatasonsuoritus'
       )
     ) {
       const kaikkiOsasuoritukset = osasuoritukset(suoritus)
