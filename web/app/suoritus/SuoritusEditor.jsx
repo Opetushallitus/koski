@@ -209,7 +209,7 @@ SuoritusEditor.validateModel = (model) => {
                 ),
                 key: 'eshKieliaineenKieli',
                 message: (
-                  <Text name={'Kielioppiaineella on oltava valittuna kieli.'} />
+                  <Text name="description:esh_kielioppiaine_kieli_vaadittu" />
                 )
               }
             ]
