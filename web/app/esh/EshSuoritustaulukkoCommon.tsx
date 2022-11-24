@@ -1,7 +1,7 @@
 import React from 'baret'
 import { t } from '../i18n/i18n'
 import { modelData, modelLookup, modelTitle } from '../editor/EditorModel'
-import { hasArvosana, tilaText } from '../suoritus/Suoritus'
+import { hasArvosana, hasSuorituskieli, tilaText } from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
 import { Editor } from '../editor/Editor'
 import { sortLanguages } from '../util/sorting'
@@ -13,11 +13,8 @@ import {
   OnExpandFn,
   SuoritusModel
 } from '../suoritus/SuoritustaulukkoCommon'
-import classNames from 'classnames'
 import { BaseContext } from '../types/EditorModelContext'
-import { SynteettinenArvosanaEditor } from '../suoritus/SynteettinenArvosanaEditor'
 import { ArvosanaEditor } from '../suoritus/ArvosanaEditor'
-import { isOneOfModel } from '../types/EditorModels'
 
 // ESHSuoritusColumn
 
@@ -111,6 +108,9 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
   }
 }
 
+const isEBOsasuoritus = (model: any) =>
+  model.value.classes.includes('ebtutkinnonsuoritus')
+
 // EshArvosanaColumn
 export type EshArvosanaColumnShowProps = {
   parentSuoritus: SuoritusModel
@@ -126,56 +126,6 @@ export type EshArvosanaColumn = ColumnIface<
   EshArvosanaColumnDataProps,
   EshArvosanaColumnShowProps
 >
-
-const isEBOsasuoritus = (model: any) =>
-  model.value.classes.includes('ebtutkinnonsuoritus')
-
-/*
-const isEBAlaosasuoritus = (model: any) =>
-  model.value.classes.includes('ebtutkinnonosasuoritus')
-const isS7 = (model: any): boolean =>
-  model.value.classes.includes('secondaryupperoppiaineensuorituss7')
-const isS6 = (tunniste: any, model: any): boolean =>
-  tunniste === 'S6' &&
-  model.value.classes.includes('secondaryuppervuosiluokansuoritus')
-const isS5OrS4 = (tunniste: any, model: any): boolean =>
-  (tunniste === 'S5' || tunniste === 'S4') &&
-  model.value.classes.includes('secondarylowervuosiluokansuoritus')
-const isS1OrS2OrS3 = (tunniste: any, _model: any): boolean =>
-  tunniste === 'S1' || tunniste === 'S2' || tunniste === 'S3'
-
-
-function resolveKoodisto(model: any, isAlaosasuoritus: boolean): string {
-  // Päätason suorituksen koulutusmoduuli
-  const koulutusmoduuli = modelLookup(model.context.suoritus, 'koulutusmoduuli')
-  // Luokka-aste
-  const luokkaAste = modelData(koulutusmoduuli, 'tunniste.koodiarvo')
-  const koodistot = {
-    secondaryS7preliminarymarkarviointi: isAlaosasuoritus && isS7(model), // S7 alaosasuorituksissa käytössä secondaryS7preliminarymarkarviointi
-    ebtutkintopreliminarymarkarviointi:
-      isEBAlaosasuoritus(model) &&
-      koulutusmoduuli?.value.classes.includes(
-        'eboppiainekomponenttipreliminary'
-      ),
-    secondarynumericalmarkarviointi:
-      isS5OrS4(luokkaAste, model) || isS6(luokkaAste, model),
-    secondarygradearviointi: isS1OrS2OrS3(luokkaAste, model),
-    ebtutkintofinalmarkarviointi:
-      isAlaosasuoritus &&
-      isEBAlaosasuoritus(model) &&
-      !koulutusmoduuli?.value.classes.includes(
-        'eboppiainekomponenttipreliminary'
-      )
-  }
-  const resolvedArviointiArray = Object.entries(koodistot)
-    .filter(([_key, val]) => val)
-    .map(([key, _val]) => key)
-  if (resolvedArviointiArray.length !== 1) {
-    throw new Error('Could not resolve correct koodisto')
-  }
-  return resolvedArviointiArray[0]
-}
-*/
 
 export const EshArvosanaColumn: ColumnIface<
   EshArvosanaColumnDataProps,
@@ -193,8 +143,56 @@ export const EshArvosanaColumn: ColumnIface<
   ),
   renderData: ({ model }) => {
     return (
-      <td key="arvosana" className={'arvosana'}>
-        <ArvosanaEditor model={model} notFoundText={''} />
+      <td key="arvosana" className="arvosana">
+        <ArvosanaEditor
+          model={model}
+          notFoundText={''}
+          aria-label="ESH arvosanaeditor"
+        />
+      </td>
+    )
+  }
+}
+
+// EshSuorituskieliColumn
+export type EshSuorituskieliColumnShowProps = {
+  parentSuoritus: SuoritusModel
+  suoritukset: SuoritusModel[]
+  context: BaseContext
+}
+
+export type EshSuorituskieliColumnDataProps = {
+  model: SuoritusModel
+}
+
+export type EshSuorituskieliColumn = ColumnIface<
+  EshSuorituskieliColumnDataProps,
+  EshSuorituskieliColumnShowProps
+>
+
+export const EshSuorituskieliColumn: ColumnIface<
+  EshSuorituskieliColumnDataProps,
+  EshSuorituskieliColumnShowProps
+> = {
+  shouldShow: ({ parentSuoritus, suoritukset, context }) => {
+    const suoritusWithSuorituskieli = suoritukset.find(hasSuorituskieli) !== undefined
+    return suoritusWithSuorituskieli && context.edit || suoritusWithSuorituskieli
+  },
+  renderHeader: () => (
+    <th key="suorituskieli" className="suorituskieli" scope="col">
+      {/* @ts-expect-error */}
+      <Text name="Suorituskieli" />
+    </th>
+  ),
+  renderData: ({ model }) => {
+    return (
+      <td key="suorituskieli" className="suorituskieli">
+        <Editor
+          model={model}
+          path="suorituskieli"
+          aria-label="ESH suorituskieli"
+          showEmptyOption={true}
+        />
       </td>
     )
   }

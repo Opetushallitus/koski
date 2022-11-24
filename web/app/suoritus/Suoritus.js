@@ -53,6 +53,8 @@ export const tilaKoodi = (suoritus) =>
 export const hasArviointi = (suoritus) => !!modelData(suoritus, 'arviointi.-1')
 export const hasArvosana = (suoritus) =>
   !!modelData(suoritus, 'arviointi.-1.arvosana')
+export const hasSuorituskieli = (suoritus) =>
+  !!modelData(suoritus, 'suorituskieli')
 export const arviointiPuuttuu = (m) =>
   !m.value.classes.includes('arvioinniton') && !hasArvosana(m)
 export const onKeskeneräisiäOsasuorituksia = (suoritus) => {

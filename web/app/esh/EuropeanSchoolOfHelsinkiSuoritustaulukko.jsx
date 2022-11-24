@@ -4,7 +4,8 @@ import { modelItems } from '../editor/EditorModel'
 import { accumulateExpandedState } from '../editor/ExpandableItems'
 import {
   EshArvosanaColumn,
-  EshSuoritusColumn
+  EshSuoritusColumn,
+  EshSuorituskieliColumn
 } from './EshSuoritustaulukkoCommon'
 import {
   selectOsasuoritusPrototype,
@@ -66,6 +67,7 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
 
     const columns = [
       EshSuoritusColumn,
+      EshSuorituskieliColumn,
       LaajuusColumn,
       EshArvosanaColumn
     ].filter((column) =>

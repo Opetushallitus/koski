@@ -281,7 +281,11 @@ export const suoritusProperties = (
       case eshVuosiluokka.secondaryLower:
       case eshVuosiluokka.nursery:
       case eshVuosiluokka.primary:
-        return defaultsForView.concat(arvioitsijat).concat(arvioinninKuvaus)
+      case eshVuosiluokka.ebtutkinto:
+        return defaultsForView
+          .concat(arvioitsijat)
+          .concat(arvioinninKuvaus)
+          .filter((p) => p.key !== 'suorituskieli')
       default:
         return isEdit ? defaultsForEdit : defaultsForView
     }
