@@ -26,7 +26,9 @@ export const KoulutusmoduuliEditor = ({ model }) => {
     return !excludedProperties.includes(p.key) && !esiopetusKuvaus
   }
   const hideEshCurriculum = (mdl) =>
-    !mdl.value.classes.includes('europeanschoolofhelsinkiluokkaaste')
+    !mdl.value.classes.includes(
+      'europeanschoolofhelsinkipaatasonkoulutusmoduuli'
+    )
 
   return (
     <span className="koulutusmoduuli">
@@ -68,7 +70,8 @@ const TunnisteEditor = ({ model }) => {
   const käytäPäätasonSuoritusta =
     [
       'aikuistenperusopetuksenoppimaara',
-      'aikuistenperusopetuksenoppimaaranalkuvaihe'
+      'aikuistenperusopetuksenoppimaaranalkuvaihe',
+      'ebtutkinto'
     ].includes(tyyppi) ||
     model.value.classes.includes('lukionoppiaineidenoppimaarat2019')
   const tutkinnonNimiModel = tutkinnonNimi(model)

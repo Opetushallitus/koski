@@ -153,6 +153,7 @@ trait EuropeanSchoolOfHelsinkiPäätasonSuoritus
 
 @Title("EB-tutkinnon suoritus")
 case class EBTutkinnonSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: EBTutkinto,
   luokka: Option[String] = None,
   toimipiste: OrganisaatioWithOid,

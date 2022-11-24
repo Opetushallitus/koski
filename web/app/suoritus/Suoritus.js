@@ -91,6 +91,7 @@ export const suoritusTitle = (suoritus) => {
       return title + t(', osittainen')
     case 'lukionaineopinnot':
     case 'aikuistenperusopetuksenoppimaara':
+    case 'ebtutkinto':
       return modelTitle(suoritus, 'tyyppi')
     default:
       return title
