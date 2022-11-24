@@ -4,6 +4,7 @@ import { modelData, modelLookup, pushModelValue } from '../editor/EditorModel'
 import Dropdown from '../components/Dropdown'
 
 export const CurriculumEditor = ({ model }) => {
+  // TODO: TOR-1685 Kansalaisen käli
   const curriculumP = fetchCurriculum().map((obs) => obs.map((k) => k.data))
   const curriculumModel = modelLookup(model, 'curriculum')
   const updateCurriculum = (curriculum) =>
