@@ -2419,5 +2419,5 @@
   "description:lisaa_alaosasuoritus":  "Lisää alaosasuoritus",
   "Yleisarvosana" : "Yleisarvosana",
   "description:esh_kielioppiaine_kieli_vaadittu": "Kielioppiaineella on oltava valittuna kieli.",
-  "description:esh_suorituskieli_vaadittu": "Suoritukselta on oltava valittuna suorituskieli."
+  "description:esh_suorituskieli_vaadittu": "Suorituksella on oltava valittuna suorituskieli."
 }
