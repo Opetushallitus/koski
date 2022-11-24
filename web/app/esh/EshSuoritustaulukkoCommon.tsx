@@ -1,6 +1,12 @@
 import React from 'baret'
 import { t } from '../i18n/i18n'
-import { modelData, modelLookup, modelTitle } from '../editor/EditorModel'
+import {
+  modelData,
+  modelLookup,
+  modelTitle,
+  resolveActualModel,
+  wrapOptional
+} from '../editor/EditorModel'
 import { hasArvosana, hasSuorituskieli, tilaText } from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
 import { Editor } from '../editor/Editor'
@@ -15,6 +21,7 @@ import {
 } from '../suoritus/SuoritustaulukkoCommon'
 import { BaseContext } from '../types/EditorModelContext'
 import { ArvosanaEditor } from '../suoritus/ArvosanaEditor'
+import { isOneOfModel } from '../types/EditorModels'
 
 // ESHSuoritusColumn
 
@@ -45,10 +52,17 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
     </td>
   ),
   renderData: ({ model, showTila, onExpand, hasProperties, expanded }) => {
-    const koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
+    const koulutusmoduuli = wrapOptional(modelLookup(model, 'koulutusmoduuli'))
     const titleAsExpandLink = false
     const kieliaine = isEshKieliaine(koulutusmoduuli)
     const koulutusmoduuliTunniste = modelData(koulutusmoduuli, 'tunniste.nimi')
+
+    // Koulutusmoduulin prototyyppi pitää ESH:ssa resolvata etukäteen, koska Editor ei sitä tee
+    const koulutusmoduuliModel =
+      // @ts-expect-error
+      kieliaine && isOneOfModel(koulutusmoduuli)
+        ? resolveActualModel(koulutusmoduuli, model)
+        : koulutusmoduuli
 
     return (
       <td key="suoritus" className="suoritus" role="listitem">
@@ -93,7 +107,7 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
             {kieliaine && (
               <span className="value kieli">
                 <Editor
-                  model={koulutusmoduuli}
+                  model={koulutusmoduuliModel}
                   inline={true}
                   showEmptyOption={true}
                   path="kieli"
@@ -159,6 +173,7 @@ export type EshSuorituskieliColumnShowProps = {
   parentSuoritus: SuoritusModel
   suoritukset: SuoritusModel[]
   context: BaseContext
+  isAlaosasuoritus: boolean
 }
 
 export type EshSuorituskieliColumnDataProps = {
@@ -174,9 +189,11 @@ export const EshSuorituskieliColumn: ColumnIface<
   EshSuorituskieliColumnDataProps,
   EshSuorituskieliColumnShowProps
 > = {
-  shouldShow: ({ parentSuoritus, suoritukset, context }) => {
-    const suoritusWithSuorituskieli = suoritukset.find(hasSuorituskieli) !== undefined
-    return context.edit || suoritusWithSuorituskieli
+  shouldShow: ({ parentSuoritus, suoritukset, context, isAlaosasuoritus }) => {
+    const suoritusWithSuorituskieli =
+      suoritukset.find(hasSuorituskieli) !== undefined
+    // Alaosasuorituksilla ei ole suorituskieltä
+    return (context.edit && !isAlaosasuoritus) || suoritusWithSuorituskieli
   },
   renderHeader: () => (
     <th key="suorituskieli" className="suorituskieli" scope="col">
