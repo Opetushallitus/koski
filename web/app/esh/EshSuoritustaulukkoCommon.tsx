@@ -58,11 +58,11 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
     const koulutusmoduuliTunniste = modelData(koulutusmoduuli, 'tunniste.nimi')
 
     // Koulutusmoduulin prototyyppi pitää ESH:ssa resolvata etukäteen, koska Editor ei sitä tee
-    const koulutusmoduuliModel =
-      // @ts-expect-error
+    // TODO: FIX
+    /*const koulutusmoduuliModel =
       kieliaine && isOneOfModel(koulutusmoduuli)
         ? resolveActualModel(koulutusmoduuli, model)
-        : koulutusmoduuli
+        : koulutusmoduuli*/
 
     return (
       <td key="suoritus" className="suoritus" role="listitem">
@@ -107,7 +107,7 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
             {kieliaine && (
               <span className="value kieli">
                 <Editor
-                  model={koulutusmoduuliModel}
+                  model={koulutusmoduuli}
                   inline={true}
                   showEmptyOption={true}
                   path="kieli"
