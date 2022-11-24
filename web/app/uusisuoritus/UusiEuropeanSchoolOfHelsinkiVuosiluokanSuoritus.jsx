@@ -7,6 +7,7 @@ import {
   modelData,
   modelItems,
   modelLookup,
+  modelProperty,
   modelSet,
   modelSetData,
   modelSetValue,
@@ -51,6 +52,14 @@ const tyhjääOsasuoritustenSuorituskielet = (proto) => {
         osasuoritus.path[osasuoritus.path.length - 1]
       }.suorituskieli`
     ] = zeroValue
+    // Kielioppiaine
+    if (modelProperty(osasuoritus, 'koulutusmoduuli.kieli') !== undefined) {
+      keyValues[
+        `osasuoritukset.${
+          osasuoritus.path[osasuoritus.path.length - 1]
+        }.koulutusmoduuli.kieli`
+      ] = zeroValue
+    }
   })
 
   return modelSetValues(proto, keyValues)
