@@ -11,7 +11,6 @@ import {
   modelSetTitle,
   modelSetValues,
   pushModel,
-  pushModelValue,
   resolveActualModel,
   wrapOptional
 } from '../editor/EditorModel'
@@ -31,7 +30,6 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
   const isAlaosasuoritus = nestedLevel === 1
   const luokkaAste = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
 
-  // TODO: TOR-1685: Refaktoroi tämä siistimmäksi, jotta copypastea on vähemmän. Prototyyppien valinta olisi myös hyvä saada hieman siistimmäksi.
   const addOsasuoritus = (koulutusmoduuli) => {
     const baseOsasuorituksetModel = modelSet(
       newOsasuoritusProto(model, koulutusmoduuli.parent.value.classes[0]),

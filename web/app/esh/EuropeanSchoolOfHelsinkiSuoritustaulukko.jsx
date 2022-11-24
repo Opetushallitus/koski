@@ -37,6 +37,7 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
     const suoritukset = modelItems(suorituksetModel) || []
 
     const parentSuoritus = _parentSuoritus || context.suoritus
+    const isAlaosasuoritus = nestedLevel === 1
 
     const { isExpandedP, allExpandedP, toggleExpandAll, setExpanded } =
       accumulateExpandedState({
@@ -75,7 +76,8 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
         parentSuoritus,
         suorituksetModel,
         suoritukset,
-        context
+        context,
+        isAlaosasuoritus
       })
     )
 
