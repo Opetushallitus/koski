@@ -489,7 +489,8 @@ case class EuropeanSchoolOfHelsinkiKielioppiaine(
   laajuus: LaajuusVuosiviikkotunneissa,
   kieli: Koodistokoodiviite
 ) extends PrimarySuorituskielenVaativaOppimisalue with SecondaryOppiaine with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliaine
-
+// Frontend tarvitsee tämän, jotta oneOfPrototype resolvaa oikein
+@OnlyWhen("tunniste/koodiarvo", "LA")
 case class EuropeanSchoolOfHelsinkiKielioppiaineLatin(
   @KoodistoKoodiarvo("LA")
   tunniste: Koodistokoodiviite,
@@ -497,7 +498,8 @@ case class EuropeanSchoolOfHelsinkiKielioppiaineLatin(
   @KoodistoKoodiarvo("LA")
   kieli: Koodistokoodiviite
 ) extends PrimarySuorituskielenVaativaOppimisalue with SecondaryOppiaine with EuropeanSchoolOfHelsinkiOsasuorituksenOppiainemainenKoulutusmoduuli with EuropeanSchoolOfHelsinkiKieliaine
-
+// Frontend tarvitsee tämän, jotta oneOfPrototype resolvaa oikein
+@OnlyWhen("tunniste/koodiarvo", "GRC")
 case class EuropeanSchoolOfHelsinkiKielioppiaineAncientGreek(
   @KoodistoKoodiarvo("GRC")
   tunniste: Koodistokoodiviite,
