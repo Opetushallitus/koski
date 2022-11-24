@@ -5,16 +5,16 @@ import "./InfoTable.less"
 
 const b = bem("infotable")
 
-export type InfoTableProps = {
+export type InfoTableProps = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode
   size?: InfoTableSize
 }
 
 export type InfoTableSize = "normal" | "tighter"
 
-export const InfoTable = (props: InfoTableProps) => (
-  <section className={b([props.size])}>
-    <ul className={b("body")}>{props.children}</ul>
+export const InfoTable = ({ children, size, ...props }: InfoTableProps) => (
+  <section className={b([size])} {...props}>
+    <ul className={b("body")}>{children}</ul>
   </section>
 )
 

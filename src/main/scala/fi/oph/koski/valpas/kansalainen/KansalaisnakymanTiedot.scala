@@ -59,6 +59,7 @@ case class KansalainenOppija(
 ) {
   def poistaTurvakiellonAlaisetTiedot: KansalainenOppija =
     this.copy(
+      henkilö = henkilö.copy(kotikunta = None),
       opiskeluoikeudet = opiskeluoikeudet.map(_.poistaTurvakiellonAlaisetTiedot),
     )
 }

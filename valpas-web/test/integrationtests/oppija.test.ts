@@ -453,7 +453,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
       Oppijalla on turvakielto. Yhteystietoja saa käyttää ainoastaan oppivelvollisuuden valvontaan.
     `)
 
-    await contentEventuallyEquals(testId("kotikunta-yhteystiedot"), "Ei tiedossa (kunta)")
+    await contentEventuallyEquals(testId("kotikunta-yhteystiedot"), "Henkilöllä on turvakielto")
 
     await virallisetYhteystiedotEquals(`
       Viralliset yhteystiedot

@@ -54,15 +54,31 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
           />
         </IconSection>
       )}
-      {props.henkilö.kotikunta ? (
-        <InfoTable>
+      <InfoTable id={"kotikunta-yhteystiedot-table"}>
+        {props.henkilö.turvakielto ? (
           <InfoTableRow
             label={t("oppija__virallinen_kotikunta")}
-            value={koodiviiteToShortString(props.henkilö.kotikunta)}
+            value={
+              <NoDataMessage>
+                {t("oppija__henkilöllä_turvakielto")}
+              </NoDataMessage>
+            }
             testId={"kotikunta-yhteystiedot"}
           />
-        </InfoTable>
-      ) : null}
+        ) : (
+          <InfoTableRow
+            label={t("oppija__virallinen_kotikunta")}
+            value={
+              props.henkilö.kotikunta ? (
+                koodiviiteToShortString(props.henkilö.kotikunta)
+              ) : (
+                <NoDataMessage>{t("tieto_puuttuu")}</NoDataMessage>
+              )
+            }
+            testId={"kotikunta-yhteystiedot"}
+          />
+        )}
+      </InfoTable>
       <ColumnsContainer>
         {viewIlmoitetut && (
           <Column size={6} id="ilmoitetut-yhteystiedot">
