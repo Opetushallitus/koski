@@ -87,7 +87,7 @@ test.describe('European School of Helsinki', () => {
         .click()
       await oppijaPage.tallenna()
     })
-    test(`Lisää P1-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
+    test(`Lisää P4-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
       page,
       oppijaPage
     }) => {
