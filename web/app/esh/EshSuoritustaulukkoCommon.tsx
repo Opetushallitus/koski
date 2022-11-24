@@ -176,7 +176,7 @@ export const EshSuorituskieliColumn: ColumnIface<
 > = {
   shouldShow: ({ parentSuoritus, suoritukset, context }) => {
     const suoritusWithSuorituskieli = suoritukset.find(hasSuorituskieli) !== undefined
-    return suoritusWithSuorituskieli && context.edit || suoritusWithSuorituskieli
+    return context.edit || suoritusWithSuorituskieli
   },
   renderHeader: () => (
     <th key="suorituskieli" className="suorituskieli" scope="col">

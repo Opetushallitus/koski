@@ -12,13 +12,18 @@ import {
   modelSetValue,
   modelSetValues
 } from '../editor/EditorModel'
-import { copyToimipiste, newSuoritusProto } from '../suoritus/Suoritus'
+import {
+  copyToimipiste,
+  hasSuorituskieli,
+  newSuoritusProto
+} from '../suoritus/Suoritus'
 import { suoritusPrototypeKey } from '../esh/europeanschoolofhelsinkiSuoritus'
 import UusiEuropeanSchoolOfHelsinkiSuoritus from '../uusioppija/UusiEuropeanSchoolOfHelsinkiSuoritus'
 import {
   eiOsasuorituksiaEshLuokkaAsteet,
   luokkaAsteenOsasuoritukset
 } from '../esh/esh'
+import { zeroValue } from '../editor/EnumEditor'
 
 const fetchOsasuorituksetTemplate = (model) =>
   luokkaAsteenOsasuoritukset(
@@ -30,6 +35,24 @@ const tyhjääOsasuoritustenLaajuudet = (proto) => {
   for (let i = 0; i < modelItems(proto, 'osasuoritukset').length; i++) {
     keyValues[`osasuoritukset.${i}.koulutusmoduuli.laajuus.arvo`] = null
   }
+  return modelSetValues(proto, keyValues)
+}
+
+const tyhjääOsasuoritustenSuorituskielet = (proto) => {
+  const suorituskielellisetOsasuoritukset = modelItems(
+    proto,
+    'osasuoritukset'
+  ).filter((suoritus) => hasSuorituskieli(suoritus))
+
+  const keyValues = {}
+  suorituskielellisetOsasuoritukset.forEach((osasuoritus) => {
+    keyValues[
+      `osasuoritukset.${
+        osasuoritus.path[osasuoritus.path.length - 1]
+      }.suorituskieli`
+    ] = zeroValue
+  })
+
   return modelSetValues(proto, keyValues)
 }
 
@@ -60,6 +83,7 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
       fetchOsasuorituksetTemplate(proto).onValue((osasuorituksetTemplate) => {
         proto = copyOsasuoritukset(osasuorituksetTemplate.value, proto)
         proto = tyhjääOsasuoritustenLaajuudet(proto)
+        proto = tyhjääOsasuoritustenSuorituskielet(proto)
         resultCallback(proto)
       })
     } else {
