@@ -164,7 +164,7 @@ case class EBTutkinnonSuoritus(
   @MinValue(0)
   @MaxValue(100)
   @Scale(2)
-  yleisarvosana: Double,
+  yleisarvosana: Option[Double] = None,
   override val osasuoritukset: Option[List[EBTutkinnonOsasuoritus]] = None
 ) extends EuropeanSchoolOfHelsinkiPäätasonSuoritus {
 

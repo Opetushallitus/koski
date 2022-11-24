@@ -1500,7 +1500,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
       toimipiste = europeanSchoolOfHelsinki,
       vahvistus = suoritusVahvistus(vahvistusPäivä),
       todistuksellaNäkyvätLisätiedot = Some(LocalizedString.finnish("The marks of Ethics/Religion are not considered for the calculation of the European Baccalaureate preliminary and final marks.")),
-      yleisarvosana = 89.68,
+      yleisarvosana = Some(89.68),
       osasuoritukset = Some(List(
         EBTutkinnonOsasuoritus(
           koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
