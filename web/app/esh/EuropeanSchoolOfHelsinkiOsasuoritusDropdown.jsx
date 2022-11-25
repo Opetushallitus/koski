@@ -32,21 +32,14 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
 
   const addOsasuoritus = (koulutusmoduuli) => {
     // TODO: Nämä pitäisi oikeasti resolvaa vielä ylempänä, lisäysdropdowniin menevässä datassa.
-    const resolvedKoulutusmoduuli = isOneOfModel(koulutusmoduuli)
+    /* const resolvedKoulutusmoduuli = isOneOfModel(koulutusmoduuli)
       ? resolveActualModel(koulutusmoduuli, koulutusmoduuli.parent)
       : koulutusmoduuli
-
+*/
     const baseOsasuoritusModel = modelSet(
-      newOsasuoritusProto(
-        model,
-        resolvedKoulutusmoduuli.parent.value.classes[0]
-      ),
+      newOsasuoritusProto(model, koulutusmoduuli.parent.value.classes[0]),
       modelSetTitle(
-        modelSet(
-          resolvedKoulutusmoduuli,
-          modelLookup(koulutusmoduuli, 'tunniste'),
-          'tunniste'
-        ),
+        koulutusmoduuli,
         t(modelData(koulutusmoduuli, 'tunniste.nimi'))
       ),
       'koulutusmoduuli'
@@ -57,6 +50,7 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
     ensureArrayKey(baseOsasuoritusModel)
 
     // Suorituskielen ja kielioppiaineen kielivalinnan nollaus
+
     if (isOsasuoritus) {
       if (
         modelProperty(baseOsasuoritusModel, 'koulutusmoduuli.kieli') !==

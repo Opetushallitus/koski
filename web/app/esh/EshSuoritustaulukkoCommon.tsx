@@ -1,8 +1,10 @@
 import React from 'baret'
 import { t } from '../i18n/i18n'
 import {
+  contextualizeSubModel,
   modelData,
   modelLookup,
+  modelSet,
   modelTitle,
   resolveActualModel,
   wrapOptional
@@ -22,6 +24,8 @@ import {
 import { BaseContext } from '../types/EditorModelContext'
 import { ArvosanaEditor } from '../suoritus/ArvosanaEditor'
 import { isOneOfModel } from '../types/EditorModels'
+import { EnumEditor } from '../editor/EnumEditor'
+import { EshArvosanaEditor } from '../suoritus/EshArvosanaEditor'
 
 // ESHSuoritusColumn
 
@@ -156,9 +160,9 @@ export const EshArvosanaColumn: ColumnIface<
     </th>
   ),
   renderData: ({ model }) => {
-    return (
+  return (
       <td key="arvosana" className="arvosana">
-        <ArvosanaEditor
+        <EshArvosanaEditor
           model={model}
           notFoundText={''}
           aria-label="ESH arvosanaeditor"

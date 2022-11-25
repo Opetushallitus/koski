@@ -6,12 +6,16 @@ import {
   hasModelProperty,
   modelData,
   modelLookup,
-  modelSetData
+  modelProperties,
+  modelSet,
+  modelSetData,
+  resolveActualModel
 } from '../editor/EditorModel'
 import { koulutusModuuliprototypes } from '../suoritus/Koulutusmoduuli'
 import { fetchAlternativesBasedOnPrototypes } from '../editor/EnumEditor'
 import { elementWithLoadingIndicator } from '../components/AjaxLoadingIndicator'
 import { t } from '../i18n/i18n'
+import { isOneOfModel } from '../types/EditorModels'
 
 const dropdownKey = (oppiaine) => {
   const tunniste = modelData(oppiaine, 'tunniste')
@@ -46,12 +50,40 @@ export const UusiEshOsasuoritusDropdown = ({
   ).map((aineet) =>
     R.uniqBy((aine) => modelData(aine, 'tunniste.koodiarvo'), aineet)
   )
-  // TODO: Selvitä, miksi actual modelin resolvaus prototyypeistä ei syötä oikeita arvoja prototypeen..
-  /* .map((aineet) =>
-  aineet.map((aine) =>
-    isOneOfModel(aine) ? resolveActualModel(aine, aine.parent, true) : aine
+
+  const dropdownOppiaineet2 = fetchAlternativesBasedOnPrototypes(
+    oppiaineModels,
+    'tunniste'
   )
-) */
+    .map((aineet) =>
+      R.uniqBy((aine) => modelData(aine, 'tunniste.koodiarvo'), aineet)
+    )
+    // TODO: Selvitä, miksi actual modelin resolvaus prototyypeistä ei syötä oikeita arvoja prototypeen..
+    .map((aineet) => {
+      return aineet.map((aine) => {
+        const resolvedModel = isOneOfModel(aine)
+          ? resolveActualModel(aine, aine.parent)
+          : aine
+        const properties = modelProperties(aine)
+        // console.log('properties', properties) // Alkuperäisen oppiaineen propertyt
+        // console.log('resolvedModel', resolvedModel)
+        return properties.reduce((prev, curr) => {
+          const propertySet = modelSet(prev, curr.model, curr.key)
+          if (
+            propertySet.alternativesPath !== undefined &&
+            curr.model.alternativesPath !== undefined
+          ) {
+            return {
+              ...propertySet,
+              alternativesPath: curr.model.alternativesPath
+            }
+          }
+          return propertySet
+        }, resolvedModel)
+      })
+    })
+
+  // dropdownOppiaineet2.onValue(console.log)
 
   const getDropdownDisplayValue = (oppiaine) => {
     const tunniste = modelLookup(oppiaine, 'tunniste')

@@ -998,8 +998,11 @@ export const resolveActualModel = <T extends object>(
   oneOfModel: EditorModel & OneOfModel & Contextualized,
   parentModel: EditorModel & Contextualized<T>
 ) => {
-  const actualModels = oneOfModel.oneOfPrototypes
-    .map((protos) => resolvePrototypeReference(protos, parentModel.context))
+  const protoModels = oneOfModel.oneOfPrototypes
+  const resolvedPrototypeReferences = protoModels.map((protos) =>
+    resolvePrototypeReference(protos, parentModel.context)
+  )
+  const actualModels = resolvedPrototypeReferences
     .map((model) => ({ ...model, path: oneOfModel.path, parent: parentModel }))
     .filter((p) => {
       if (p.notWhen !== undefined) {
