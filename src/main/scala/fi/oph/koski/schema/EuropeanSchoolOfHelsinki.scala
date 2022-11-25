@@ -613,10 +613,12 @@ case class EBOppiaineKomponenttiFinal(
  * OSASUORITUKSET - KOODISTOON PERUSTUVAT ARVIOINNIT
  *****************************************************************************/
 
-trait EuropeanSchoolOfHelsinkiArviointi extends ArviointiPäivämäärällä {
+trait EuropeanSchoolOfHelsinkiArviointi extends Arviointi {
   def arvosana: KoodiViite
-  def päivä: LocalDate
+  def päivä: Option[LocalDate]
   override def hyväksytty: Boolean = EuropeanSchoolOfHelsinkiArviointi.hyväksytty(arvosana)
+
+  def arviointipäivä: Option[LocalDate] = päivä
 }
 
 trait EuropeanSchoolOfHelsinkiSanallinenArviointi extends EuropeanSchoolOfHelsinkiArviointi with SanallinenArviointi {
@@ -627,13 +629,13 @@ trait EuropeanSchoolOfHelsinkiSanallinenArviointi extends EuropeanSchoolOfHelsin
 
 trait EuropeanSchoolOfHelsinkiKoodistostaLöytyväArviointi extends EuropeanSchoolOfHelsinkiArviointi with KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
-  def päivä: LocalDate
+  def päivä: Option[LocalDate]
   override def hyväksytty: Boolean = EuropeanSchoolOfHelsinkiArviointi.hyväksytty(arvosana)
 }
 
 trait EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi extends EuropeanSchoolOfHelsinkiSanallinenArviointi with KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
-  def päivä: LocalDate
+  def päivä: Option[LocalDate]
   def kuvaus: Option[LocalizedString]
   override def hyväksytty: Boolean = EuropeanSchoolOfHelsinkiArviointi.hyväksytty(arvosana)
 }
@@ -659,14 +661,14 @@ case class EuropeanSchoolOfHelsinkiOsasuoritusArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus")
   arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
 
 case class PrimaryAlaoppimisalueArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkiprimarymark")
   arvosana: Koodistokoodiviite,
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends EuropeanSchoolOfHelsinkiKoodistostaLöytyväArviointi
 
@@ -679,7 +681,7 @@ case class SecondaryGradeArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade")
   arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
 
@@ -690,7 +692,7 @@ case class SecondaryNumericalMarkArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkinumericalmark")
   arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends SecondaryLowerArviointi with EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
 
@@ -698,7 +700,7 @@ case class SecondaryS7PreliminaryMarkArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark")
   arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends EuropeanSchoolOfHelsinkiKoodistostaLöytyväSanallinenArviointi
 
@@ -708,7 +710,7 @@ trait EBArviointi extends EuropeanSchoolOfHelsinkiArviointi with KoodistostaLöy
 case class EBTutkintoPreliminaryMarkArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark")
   arvosana: Koodistokoodiviite,
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends EBArviointi
 
@@ -716,6 +718,6 @@ case class EBTutkintoPreliminaryMarkArviointi(
 case class EBTutkintoFinalMarkArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkifinalmark")
   arvosana: Koodistokoodiviite,
-  päivä: LocalDate,
+  päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends EBArviointi

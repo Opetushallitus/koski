@@ -450,7 +450,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     Some(List(EuropeanSchoolOfHelsinkiOsasuoritusArviointi(
       arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus"),
       kuvaus = kuvaus,
-      päivä = päivä,
+      päivä = Some(päivä),
       arvioitsijat = arvioitsijat
     )))
   }
@@ -462,7 +462,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
   ): Option[List[PrimaryAlaoppimisalueArviointi]] = {
     Some(List(PrimaryAlaoppimisalueArviointi(
       arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoeuropeanschoolofhelsinkiprimarymark"),
-      päivä = päivä,
+      päivä = Some(päivä),
       arvioitsijat = arvioitsijat
     )))
   }
@@ -942,7 +942,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     Some(List(SecondaryGradeArviointi(
       arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade"),
       kuvaus = kuvaus,
-      päivä = päivä,
+      päivä = Some(päivä),
       arvioitsijat = arvioitsijat
     )))
   }
@@ -1473,7 +1473,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     Some(List(SecondaryNumericalMarkArviointi(
       arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoeuropeanschoolofhelsinkinumericalmark"),
       kuvaus = kuvaus,
-      päivä = päivä,
+      päivä = Some(päivä),
       arvioitsijat = arvioitsijat
     )))
   }
@@ -1487,7 +1487,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
     Some(List(SecondaryS7PreliminaryMarkArviointi(
       arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark"),
       kuvaus = kuvaus,
-      päivä = päivä,
+      päivä = Some(päivä),
       arvioitsijat = arvioitsijat
     )))
   }
@@ -1586,20 +1586,19 @@ object EuropeanSchoolOfHelsinkiExampleData {
   ): Option[List[EBTutkintoPreliminaryMarkArviointi]] = {
     Some(List(EBTutkintoPreliminaryMarkArviointi(
       arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark"),
-      päivä = päivä,
+      päivä = Some(päivä),
       arvioitsijat = arvioitsijat
     )))
   }
 
   def ebTutkintoFinalMarkArviointi(
     arvosana: String = "8.67",
-    kuvaus: Option[LocalizedString] = None,
     arvioitsijat: Option[List[Arvioitsija]] = Some(List(Arvioitsija("Pekka Paunanen"))),
     päivä: LocalDate
   ): Option[List[EBTutkintoFinalMarkArviointi]] = {
     Some(List(EBTutkintoFinalMarkArviointi(
       arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoeuropeanschoolofhelsinkifinalmark"),
-      päivä = päivä,
+      päivä = Some(päivä),
       arvioitsijat = arvioitsijat
     )))
   }
