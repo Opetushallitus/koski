@@ -70,6 +70,7 @@ export const UusiEshOsasuoritusDropdown = ({
                 onSelectionChanged={resultCallback}
                 selectionText={dropdownPlaceholder}
                 selected={selected}
+                enableFilter={true}
               />
             ) : (
               <></>
