@@ -1162,15 +1162,12 @@ export const checkOnlyWhen = (model: EditorModel, conditions?: OnlyWhen[]) => {
 }
 
 export const checkNotWhen = (model: EditorModel, conditions?: NotWhen[]) => {
-  // console.log("notWhen model", model)
   if (!conditions) return true
   return conditions.some((notWhen) => {
     let data = modelData(model, notWhen.path.split('/'))
     let match = Array.isArray(notWhen.values)
       ? !notWhen.values.includes(data)
       : notWhen.values != data
-    // console.log("notWhen data: ", data)
-    // console.log("notWhen match: ", !match)
     return match
   })
 }

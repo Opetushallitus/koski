@@ -31,34 +31,46 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
   const luokkaAste = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
 
   const addOsasuoritus = (koulutusmoduuli) => {
-    const baseOsasuorituksetModel = modelSet(
-      newOsasuoritusProto(model, koulutusmoduuli.parent.value.classes[0]),
+    // TODO: Nämä pitäisi oikeasti resolvaa vielä ylempänä, lisäysdropdowniin menevässä datassa.
+    const resolvedKoulutusmoduuli = isOneOfModel(koulutusmoduuli)
+      ? resolveActualModel(koulutusmoduuli, koulutusmoduuli.parent)
+      : koulutusmoduuli
+
+    const baseOsasuoritusModel = modelSet(
+      newOsasuoritusProto(
+        model,
+        resolvedKoulutusmoduuli.parent.value.classes[0]
+      ),
       modelSetTitle(
-        koulutusmoduuli,
+        modelSet(
+          resolvedKoulutusmoduuli,
+          modelLookup(koulutusmoduuli, 'tunniste'),
+          'tunniste'
+        ),
         t(modelData(koulutusmoduuli, 'tunniste.nimi'))
       ),
       'koulutusmoduuli'
     )
 
     // Pusketaan ensin base-osasuoritus changeBus:iin
-    pushModel(baseOsasuorituksetModel)
-    ensureArrayKey(baseOsasuorituksetModel)
+    pushModel(baseOsasuoritusModel)
+    ensureArrayKey(baseOsasuoritusModel)
 
     // Suorituskielen ja kielioppiaineen kielivalinnan nollaus
     if (isOsasuoritus) {
       if (
-        modelProperty(baseOsasuorituksetModel, 'koulutusmoduuli.kieli') !==
+        modelProperty(baseOsasuoritusModel, 'koulutusmoduuli.kieli') !==
         undefined
       ) {
         pushModel(
-          modelSetValues(baseOsasuorituksetModel, {
+          modelSetValues(baseOsasuoritusModel, {
             suorituskieli: zeroValue,
             'koulutusmoduuli.kieli': zeroValue
           })
         )
       } else {
         pushModel(
-          modelSetValues(baseOsasuorituksetModel, {
+          modelSetValues(baseOsasuoritusModel, {
             suorituskieli: zeroValue
           })
         )
@@ -77,7 +89,7 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
         ) {
           const osasuoritusModel = contextualizeSubModel(
             alaosasuorituksetPrefillattuEditorModel,
-            baseOsasuorituksetModel,
+            baseOsasuoritusModel,
             'osasuoritukset'
           )
           pushModel(osasuoritusModel)
@@ -89,12 +101,10 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
       // wrapOptional poistaa valinnaisuuden modelista, jotta seuraavassa vaiheessa voidaan resolvaa uuden arvioinnin model käyttämällä sen arrayPrototypeä
       const arviointiArrayModel = wrapOptional(
         contextualizeModel(
-          modelLookup(wrapOptional(baseOsasuorituksetModel), 'arviointi'),
+          modelLookup(wrapOptional(baseOsasuoritusModel), 'arviointi'),
           model.context
         )
       )
-
-      // console.log('arviointiArray', arviointiArrayModel)
 
       const uusiArviointiModel = contextualizeSubModel(
         arviointiArrayModel.arrayPrototype,
@@ -102,17 +112,10 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
         modelItems(arviointiArrayModel).length
       )
 
-      // console.log('uusiArviointiModel', uusiArviointiModel)
-
       const resolvedArviointimodel = isOneOfModel(uusiArviointiModel)
         ? resolveActualModel(uusiArviointiModel, uusiArviointiModel.parent)
         : uusiArviointiModel
 
-      // console.log('resolved', resolvedArviointimodel)
-      /* console.log(
-        'Path of resolved arviointi model',
-        resolvedArviointimodel.path
-      ) */
       pushModel(resolvedArviointimodel)
     }
   }

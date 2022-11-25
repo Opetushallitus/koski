@@ -46,6 +46,12 @@ export const UusiEshOsasuoritusDropdown = ({
   ).map((aineet) =>
     R.uniqBy((aine) => modelData(aine, 'tunniste.koodiarvo'), aineet)
   )
+  // TODO: Selvitä, miksi actual modelin resolvaus prototyypeistä ei syötä oikeita arvoja prototypeen..
+  /* .map((aineet) =>
+  aineet.map((aine) =>
+    isOneOfModel(aine) ? resolveActualModel(aine, aine.parent, true) : aine
+  )
+) */
 
   const getDropdownDisplayValue = (oppiaine) => {
     const tunniste = modelLookup(oppiaine, 'tunniste')
