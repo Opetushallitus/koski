@@ -233,6 +233,7 @@ object KoskiErrorCategory {
       ) {
         val tallennuspäivä = subcategory("tallennuspäivä", "Helsingin eurooppalaisen koulun opiskeluoikeuksia ei saa vielä tallentaa")
         val päättymispäivä = subcategory("päättymispäivä", "Helsingin eurooppalaisen koulun tallennettavat opiskeluoikeudet eivät voi päättyä ennen lain voimaantuloa")
+        val yleisarvosana = subcategory("yleisarvosana", "EB-tutkintoa ei voi vahvistaa ilman yleisarvosanaa")
       }
       val esh = new ESH
     }

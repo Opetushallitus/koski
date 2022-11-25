@@ -43,6 +43,14 @@ object EuropeanSchoolOfHelsinkiValidation {
     }
   }
 
+  def validateEBTutkinnonArvioinnit(suoritus: EBTutkinnonSuoritus): HttpStatus = {
+    if (suoritus.vahvistettu && suoritus.yleisarvosana.isEmpty) {
+      KoskiErrorCategory.badRequest.validation.esh.yleisarvosana()
+    } else {
+      HttpStatus.ok
+    }
+  }
+
   def fillRahoitusmuodot(koodistoPalvelu: KoodistoViitePalvelu)(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     oo match {
       case e: EuropeanSchoolOfHelsinkiOpiskeluoikeus =>

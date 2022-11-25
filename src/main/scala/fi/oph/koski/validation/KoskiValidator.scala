@@ -1152,6 +1152,8 @@ class KoskiValidator(
       validatePäättötodistuksenSanallinenArviointi(n)
     case _: LukionPäätasonSuoritus2019 | _: PreIBSuoritus2019 =>
       Lukio2019ArvosanaValidation.validatePäätasonSuoritus(suoritus)
+    case s: EBTutkinnonSuoritus =>
+      EuropeanSchoolOfHelsinkiValidation.validateEBTutkinnonArvioinnit(s)
     case _ => HttpStatus.ok
   }
 

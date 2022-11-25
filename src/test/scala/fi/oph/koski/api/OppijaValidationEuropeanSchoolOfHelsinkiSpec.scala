@@ -362,6 +362,25 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
     }
   }
 
+  "Päätason suorituksen vahvistus EB-tutkinnossa" - {
+    "Ei voi tehdä, jos yleisarvosanaa ei ole annettu" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
+          yleisarvosana = None
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.esh.yleisarvosana())
+      }
+    }
+  }
+
   "Ei voi tallentaa ennen rajapäivää" in {
     val oppija = Oppija(defaultHenkilö, List(defaultOpiskeluoikeus))
     val huominenPäivä = LocalDate.now().plusDays(1)
