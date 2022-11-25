@@ -559,55 +559,16 @@ case class PrimaryAlaoppimisalue(
   tunniste: Koodistokoodiviite
 ) extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
 
-trait S7OppiaineKomponentti extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli {
+case class S7OppiaineKomponentti(
   @KoodistoUri("europeanschoolofhelsinkis7oppiaineenkomponentti")
-  def tunniste: Koodistokoodiviite
-}
-
-case class S7OppiaineKomponenttiA(
-  @KoodistoKoodiarvo("A")
   tunniste: Koodistokoodiviite
-) extends S7OppiaineKomponentti
-
-case class S7OppiaineKomponenttiB(
-  @KoodistoKoodiarvo("B")
-  tunniste: Koodistokoodiviite
-) extends S7OppiaineKomponentti
-
-case class S7OppiaineKomponenttiYearMark(
-  @KoodistoKoodiarvo("yearmark")
-  tunniste: Koodistokoodiviite
-) extends S7OppiaineKomponentti
+) extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
 
 @Title("EB-oppiainekomponentti")
-trait EBOppiaineKomponentti extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli {
+case class EBOppiaineKomponentti(
   @KoodistoUri("ebtutkinnonoppiaineenkomponentti")
-  def tunniste: Koodistokoodiviite
-}
-
-@Title("EB-oppiainekomponentti Preliminary")
-case class EBOppiaineKomponenttiPreliminary(
-  @KoodistoKoodiarvo("Preliminary")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("Preliminary", "ebtutkinnonoppiaineenkomponentti")
-) extends EBOppiaineKomponentti
-
-@Title("EB-oppiainekomponentti Written")
-case class EBOppiaineKomponenttiWritten(
-  @KoodistoKoodiarvo("Written")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("Written", "ebtutkinnonoppiaineenkomponentti")
-) extends EBOppiaineKomponentti
-
-@Title("EB-oppiainekomponentti Oral")
-case class EBOppiaineKomponenttiOral(
-  @KoodistoKoodiarvo("Oral")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("Oral", "ebtutkinnonoppiaineenkomponentti")
-) extends EBOppiaineKomponentti
-
-@Title("EB-oppiainekomponentti Final")
-case class EBOppiaineKomponenttiFinal(
-  @KoodistoKoodiarvo("Final")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
-) extends EBOppiaineKomponentti
+  tunniste: Koodistokoodiviite
+) extends EuropeanSchoolOfHelsinkiAlaosasuorituksenKoulutusmoduuli
 
 /******************************************************************************
  * OSASUORITUKSET - KOODISTOON PERUSTUVAT ARVIOINNIT

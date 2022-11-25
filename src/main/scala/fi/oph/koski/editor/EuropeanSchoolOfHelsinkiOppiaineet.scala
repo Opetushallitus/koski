@@ -739,13 +739,13 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
 
   private def osasurituksetAB(): Option[List[S7OppiaineenAlaosasuoritus]] = Some(List(
     S7OppiaineenAlaosasuoritus(
-      koulutusmoduuli = S7OppiaineKomponenttiA(
+      koulutusmoduuli = S7OppiaineKomponentti(
         lokalisoituKoodi("A", "europeanschoolofhelsinkis7oppiaineenkomponentti")
       ),
       arviointi = None
     ),
     S7OppiaineenAlaosasuoritus(
-      koulutusmoduuli = S7OppiaineKomponenttiB(
+      koulutusmoduuli = S7OppiaineKomponentti(
         lokalisoituKoodi("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
       ),
       arviointi = None

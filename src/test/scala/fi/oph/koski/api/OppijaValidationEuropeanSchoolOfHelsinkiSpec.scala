@@ -202,7 +202,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiB(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
@@ -234,13 +234,13 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiA(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("A", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
                 ),
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiB(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = None
@@ -273,13 +273,13 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiB(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
                 ),
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
@@ -312,7 +312,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = None
@@ -345,7 +345,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))

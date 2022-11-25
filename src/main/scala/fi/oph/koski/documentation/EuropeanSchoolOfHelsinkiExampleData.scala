@@ -1362,19 +1362,19 @@ object EuropeanSchoolOfHelsinkiExampleData {
       suorituskieli = suorituskieli,
       osasuoritukset = Some(List(
         S7OppiaineenAlaosasuoritus(
-          koulutusmoduuli = S7OppiaineKomponenttiA(
+          koulutusmoduuli = S7OppiaineKomponentti(
             Koodistokoodiviite("A", "europeanschoolofhelsinkis7oppiaineenkomponentti")
           ),
           arviointi = arviointi
         ),
         S7OppiaineenAlaosasuoritus(
-          koulutusmoduuli = S7OppiaineKomponenttiB(
+          koulutusmoduuli = S7OppiaineKomponentti(
             Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
           ),
           arviointi = arviointi
         ),
         S7OppiaineenAlaosasuoritus(
-          koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+          koulutusmoduuli = S7OppiaineKomponentti(
             Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
           ),
           arviointi = arviointi
@@ -1399,13 +1399,13 @@ object EuropeanSchoolOfHelsinkiExampleData {
       suorituskieli = suorituskieli,
       osasuoritukset = Some(List(
         S7OppiaineenAlaosasuoritus(
-          koulutusmoduuli = S7OppiaineKomponenttiA(
+          koulutusmoduuli = S7OppiaineKomponentti(
             Koodistokoodiviite("A", "europeanschoolofhelsinkis7oppiaineenkomponentti")
           ),
           arviointi = arviointi
         ),
         S7OppiaineenAlaosasuoritus(
-          koulutusmoduuli = S7OppiaineKomponenttiB(
+          koulutusmoduuli = S7OppiaineKomponentti(
             Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
           ),
           arviointi = arviointi
@@ -1430,7 +1430,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
       suorituskieli = suorituskieli,
       osasuoritukset = Some(List(
         S7OppiaineenAlaosasuoritus(
-          koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+          koulutusmoduuli = S7OppiaineKomponentti(
             Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
           ),
           arviointi = arviointi
@@ -1455,7 +1455,7 @@ object EuropeanSchoolOfHelsinkiExampleData {
       suorituskieli = suorituskieli,
       osasuoritukset = Some(List(
         S7OppiaineenAlaosasuoritus(
-          koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+          koulutusmoduuli = S7OppiaineKomponentti(
             Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
           ),
           arviointi = arviointi
@@ -1510,15 +1510,21 @@ object EuropeanSchoolOfHelsinkiExampleData {
           suorituskieli = ExampleData.englanti,
           osasuoritukset = Some(List(
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiPreliminary(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Preliminary", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = vahvistusPäivä)
             ),
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiWritten(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Written", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
             ),
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiFinal(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
             )
           ))
@@ -1532,19 +1538,27 @@ object EuropeanSchoolOfHelsinkiExampleData {
           suorituskieli = ExampleData.englanti,
           osasuoritukset = Some(List(
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiPreliminary(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Preliminary", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = vahvistusPäivä)
             ),
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiWritten(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Written", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
             ),
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiOral(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Oral", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
             ),
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiFinal(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
             )
           ))
@@ -1558,19 +1572,27 @@ object EuropeanSchoolOfHelsinkiExampleData {
           suorituskieli = ExampleData.englanti,
           osasuoritukset = Some(List(
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiPreliminary(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Preliminary", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = vahvistusPäivä)
             ),
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiWritten(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Written", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
             ),
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiOral(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Oral", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
             ),
             EBOppiaineenAlaosasuoritus(
-              koulutusmoduuli = EBOppiaineKomponenttiFinal(),
+              koulutusmoduuli = EBOppiaineKomponentti(
+                tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
+              ),
               arviointi = ebTutkintoFinalMarkArviointi(päivä = vahvistusPäivä)
             )
           ))
