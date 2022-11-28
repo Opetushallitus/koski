@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 30.11.2022
+- Tarkistetaan tietyissä palvelukäyttäjän siirroissa, että suoritukset eivät ala ennen opiskeluoikeuden alkua
+
 ## 21.11.2022
 
 - Nuorten perusopetuksen vuosiluokan päätason suoritus sallitaan vahvistaa ilman osasuorituksia,
