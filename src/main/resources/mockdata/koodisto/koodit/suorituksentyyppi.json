@@ -2177,5 +2177,110 @@
   ],
   "versio": 1,
   "withinCodeElements": []
+}, {
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenyleisenoppimääränyhteisetopinnot",
+  "koodiArvo" : "taiteenperusopetuksenyleisenoppimääränyhteisetopinnot",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenyleisenoppimääränteemaopinnot",
+  "koodiArvo" : "taiteenperusopetuksenyleisenoppimääränteemaopinnot",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenlaajanoppimääränperusopinnot",
+  "koodiArvo" : "taiteenperusopetuksenlaajanoppimääränperusopinnot",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenlaajanoppimääränsyventävätopinnot",
+  "koodiArvo" : "taiteenperusopetuksenlaajanoppimääränsyventävätopinnot",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenpaikallinenopintokokonaisuus",
+  "koodiArvo" : "taiteenperusopetuksenpaikallinenopintokokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }
 ]
