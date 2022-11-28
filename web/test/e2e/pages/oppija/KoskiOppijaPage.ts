@@ -75,8 +75,11 @@ export class KoskiOppijaPage {
     await expect(tab).toHaveClass(/selected/)
   }
 
-  async clickSuoritusTabByLabel(label: string) {
-    const tab = this.suoritusTabs.getByRole('tab', { name: label })
+  async clickSuoritusTabByLabel(label: string, nthOrFirst: 'first' | number) {
+    const tab =
+      nthOrFirst === 'first'
+        ? this.suoritusTabs.getByRole('tab', { name: label }).first()
+        : this.suoritusTabs.getByRole('tab', { name: label }).nth(nthOrFirst)
     await tab.click()
     await expect(tab).toHaveClass(/selected/)
   }

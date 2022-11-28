@@ -27,32 +27,37 @@ test.describe('European School of Helsinki', () => {
   })
 
   test(`Lisää S7-vuosiluokan osasuoritukseen uuden alaosasuorituksen`, async ({
-    page,
+    customPage,
     oppijaPage
   }) => {
-    await oppijaPage.clickSuoritusTabByLabel('S1')
-    await oppijaPage.clickSuoritusTabByLabel('S7')
+    await oppijaPage.clickSuoritusTabByLabel('S1', 'first')
+    await oppijaPage.clickSuoritusTabByLabel('S7', 'first')
     await oppijaPage.avaaMuokkausnäkymä()
 
-    await page
+    await customPage
       .getByRole('button', {
         name: 'Laajenna suoritus Information and Communication Technology',
         expanded: false
       })
       .click()
-    await page.getByRole('combobox', { name: 'Lisää alaosasuoritus' }).click()
-    await page.getByRole('listitem', { name: 'Year mark' }).click()
+
+    await customPage
+      .getByRole('combobox', { name: 'Lisää alaosasuoritus' })
+      .click()
+    await customPage.getByRole('listitem', { name: 'Year mark' }).click()
   })
 
   test.describe('Primary-vuosiluokan suoritukset', () => {
     test(`Lisää P1-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-      page,
+      customPage,
       oppijaPage
     }) => {
-      await oppijaPage.clickSuoritusTabByLabel('P1')
+      await oppijaPage.clickSuoritusTabByLabel('P1', 'first')
       await oppijaPage.avaaMuokkausnäkymä()
-      await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
-      await page
+      await customPage
+        .getByRole('combobox', { name: 'Lisää osasuoritus' })
+        .click()
+      await customPage
         .getByRole('listitem', {
           name: 'Advanced studies of the second language'
         })
@@ -60,13 +65,15 @@ test.describe('European School of Helsinki', () => {
       await oppijaPage.tallenna()
     })
     test(`Lisää P2-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-      page,
+      customPage,
       oppijaPage
     }) => {
-      await oppijaPage.clickSuoritusTabByLabel('P2')
+      await oppijaPage.clickSuoritusTabByLabel('P2', 'first')
       await oppijaPage.avaaMuokkausnäkymä()
-      await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
-      await page
+      await customPage
+        .getByRole('combobox', { name: 'Lisää osasuoritus' })
+        .click()
+      await customPage
         .getByRole('listitem', {
           name: 'Advanced studies of the second language'
         })
@@ -74,13 +81,15 @@ test.describe('European School of Helsinki', () => {
       await oppijaPage.tallenna()
     })
     test(`Lisää P3-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-      page,
+      customPage,
       oppijaPage
     }) => {
-      await oppijaPage.clickSuoritusTabByLabel('P3')
+      await oppijaPage.clickSuoritusTabByLabel('P3', 'first')
       await oppijaPage.avaaMuokkausnäkymä()
-      await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
-      await page
+      await customPage
+        .getByRole('combobox', { name: 'Lisää osasuoritus' })
+        .click()
+      await customPage
         .getByRole('listitem', {
           name: 'Advanced studies of the second language'
         })
@@ -88,13 +97,15 @@ test.describe('European School of Helsinki', () => {
       await oppijaPage.tallenna()
     })
     test(`Lisää P4-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-      page,
+      customPage,
       oppijaPage
     }) => {
-      await oppijaPage.clickSuoritusTabByLabel('P4')
+      await oppijaPage.clickSuoritusTabByLabel('P4', 'first')
       await oppijaPage.avaaMuokkausnäkymä()
-      await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
-      await page
+      await customPage
+        .getByRole('combobox', { name: 'Lisää osasuoritus' })
+        .click()
+      await customPage
         .getByRole('listitem', {
           name: 'Advanced studies of the second language'
         })
@@ -102,26 +113,31 @@ test.describe('European School of Helsinki', () => {
       await oppijaPage.tallenna()
     })
     test(`Lisää P5-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-      page,
+      customPage,
       oppijaPage
     }) => {
-      await oppijaPage.clickSuoritusTabByLabel('P1')
+      await oppijaPage.clickSuoritusTabByLabel('P1', 'first')
       await oppijaPage.avaaMuokkausnäkymä()
-      await page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
-      await page
+      await customPage
+        .getByRole('combobox', { name: 'Lisää osasuoritus' })
+        .click()
+      await customPage
         .getByRole('listitem', {
           name: 'Advanced studies of the second language'
         })
         .click()
       await oppijaPage.tallenna()
     })
+
+    test.afterEach(async ({ customPage }) => {
+      // Tämä pitää muistaa kutsua jokaisen testin päätteeksi, jotta saman kontekstin jakava sivuobjekti sulkeutuu oikein. Muuten selainikkunat jäävät päälle.
+      await customPage.close()
+    })
   })
 
   test.describe('Luodessa opiskeluoikeutta', async () => {
     test(`Autofillaa S1-vuosiluokan osasuoritukset oikein`, async ({
-      page,
-      uusiOppijaPage,
-      oppijaPage
+      uusiOppijaPage
     }) => {
       // Satunnaisesti generoitu hetu
       await uusiOppijaPage.lisaaOppija({
