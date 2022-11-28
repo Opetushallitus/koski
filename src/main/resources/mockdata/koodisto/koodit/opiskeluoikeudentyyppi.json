@@ -270,4 +270,20 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_taiteenperusopetus",
+  "koodiArvo" : "taiteenperusopetus",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetus",
+    "lyhytNimi" : "Taiteen perusopetus",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grundläggande konstundervisning",
+    "lyhytNimi" : "Grundläggande konstundervisning",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

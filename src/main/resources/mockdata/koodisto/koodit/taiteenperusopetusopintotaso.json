@@ -1,0 +1,85 @@
+[ {
+  "koodiUri" : "taiteenperusopetusopintotaso_yleisenoppimaaranyhteisetopinnot",
+  "koodiArvo" : "yleisenoppimaaranyhteisetopinnot",
+  "metadata" : [ {
+    "nimi" : "Yleisen oppimäärän yhteiset opinnot",
+    "lyhytNimi" : "Yhteiset opinnot",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Yleisen oppimäärän yhteiset opinnot",
+    "lyhytNimi" : "Yhteiset opinnot",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Yleisen oppimäärän yhteiset opinnot",
+    "lyhytNimi" : "Yhteiset opinnot",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "taiteenperusopetusopintotaso_yleisenoppimaaranteemaopinnot",
+  "koodiArvo" : "yleisenoppimaaranteemaopinnot",
+  "metadata" : [ {
+    "nimi" : "Yleisen oppimäärän teemaopinnot",
+    "lyhytNimi" : "Teemaopinnot",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Yleisen oppimäärän teemaopinnot",
+    "lyhytNimi" : "Teemaopinnot",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Yleisen oppimäärän teemaopinnot",
+    "lyhytNimi" : "Teemaopinnot",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "taiteenperusopetusopintotaso_laajanoppimaaranperusopinnot",
+  "koodiArvo" : "laajanoppimaaranperusopinnot",
+  "metadata" : [ {
+    "nimi" : "Laajan oppimäärän perusopinnot",
+    "lyhytNimi" : "Perusopinnot",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Laajan oppimäärän perusopinnot",
+    "lyhytNimi" : "Perusopinnot",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Laajan oppimäärän perusopinnot",
+    "lyhytNimi" : "Perusopinnot",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "taiteenperusopetusopintotaso_laajanoppimaaransyventavatopinnot",
+  "koodiArvo" : "laajanoppimaaransyventavatopinnot",
+  "metadata" : [ {
+    "nimi" : "Laajan oppimäärän syventävät opinnot",
+    "lyhytNimi" : "Syventävät opinnot",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Laajan oppimäärän syventävät opinnot",
+    "lyhytNimi" : "Syventävät opinnot",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Laajan oppimäärän syventävät opinnot",
+    "lyhytNimi" : "Syventävät opinnot",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

@@ -1,0 +1,37 @@
+[ {
+  "koodiUri" : "arviointiasteikkotaiteenperusopetus_hylatty",
+  "koodiArvo" : "hylatty",
+  "metadata" : [ {
+    "nimi" : "Hylätty",
+    "lyhytNimi" : "Hylätty",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Underkänd",
+    "lyhytNimi" : "Underkänd",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Hylätty",
+    "lyhytNimi" : "Hylätty",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkotaiteenperusopetus_hyvaksytty",
+  "koodiArvo" : "hyvaksytty",
+  "metadata" : [ {
+    "nimi" : "Hyväksytty",
+    "lyhytNimi" : "Hyväksytty",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Godkänd",
+    "lyhytNimi" : "Godkänd",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Hyväksytty",
+    "lyhytNimi" : "Hyväksytty",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]
