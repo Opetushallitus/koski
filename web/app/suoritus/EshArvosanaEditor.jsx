@@ -33,7 +33,6 @@ export const EshArvosanaEditor = ({ model, notFoundText, ...rest }) => {
 
   model = fixArviointi(model)
   const arviointi = wrapOptional(modelLookup(model, 'arviointi'))
-  console.log('arviointi', arviointi)
   const protoArviointi = arviointi.oneOfPrototypes
     ? arviointi
     : contextualizeSubModel(

@@ -31,11 +31,8 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
   const luokkaAste = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
 
   const addOsasuoritus = (koulutusmoduuli) => {
-    // TODO: Nämä pitäisi oikeasti resolvaa vielä ylempänä, lisäysdropdowniin menevässä datassa.
-    /* const resolvedKoulutusmoduuli = isOneOfModel(koulutusmoduuli)
-      ? resolveActualModel(koulutusmoduuli, koulutusmoduuli.parent)
-      : koulutusmoduuli
-*/
+    console.log('valittu koulutusmoduuli', koulutusmoduuli)
+
     const baseOsasuoritusModel = modelSet(
       newOsasuoritusProto(model, koulutusmoduuli.parent.value.classes[0]),
       modelSetTitle(
@@ -50,7 +47,6 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
     ensureArrayKey(baseOsasuoritusModel)
 
     // Suorituskielen ja kielioppiaineen kielivalinnan nollaus
-
     if (isOsasuoritus) {
       if (
         modelProperty(baseOsasuoritusModel, 'koulutusmoduuli.kieli') !==
@@ -120,6 +116,7 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
 
   return (
     <UusiEshOsasuoritusDropdown
+      model={model}
       osasuoritukset={suoritusProtos}
       resultCallback={addOsasuoritus}
       isAlaosasuoritus={isAlaosasuoritus}

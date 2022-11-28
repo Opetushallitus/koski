@@ -3,13 +3,14 @@ import Bacon from 'baconjs'
 import DropDown from '../components/Dropdown'
 import * as R from 'ramda'
 import {
+  contextualizeSubModel,
   hasModelProperty,
   modelData,
   modelLookup,
-  modelProperties,
-  modelSet,
   modelSetData,
-  resolveActualModel
+  modelSetValue,
+  resolveActualModel,
+  resolvePrototypeReference
 } from '../editor/EditorModel'
 import { koulutusModuuliprototypes } from '../suoritus/Koulutusmoduuli'
 import { fetchAlternativesBasedOnPrototypes } from '../editor/EnumEditor'
@@ -22,13 +23,17 @@ const dropdownKey = (oppiaine) => {
   return `${tunniste.koodistoUri}-${tunniste.koodiarvo}`
 }
 
+const muuOppiainePrototype = {
+  type: 'prototype',
+  key: 'europeanschoolofhelsinkimuuoppiaine'
+}
+
 export const UusiEshOsasuoritusDropdown = ({
   osasuoritukset,
   pakollinen,
   selected = Bacon.constant(undefined),
   resultCallback,
-  isAlaosasuoritus,
-  oppiainePrototypes = undefined
+  isAlaosasuoritus
 }) => {
   if (!osasuoritukset || R.any((s) => !s.context.edit, osasuoritukset))
     return null
@@ -38,9 +43,7 @@ export const UusiEshOsasuoritusDropdown = ({
       ? modelSetData(oppiaineModel, pakollinen, 'pakollinen')
       : oppiaineModel
 
-  const prototypes =
-    oppiainePrototypes ||
-    R.flatten(osasuoritukset.map(koulutusModuuliprototypes))
+  const prototypes = R.flatten(osasuoritukset.map(koulutusModuuliprototypes))
 
   const oppiaineModels = prototypes.map(setPakollisuus)
 
@@ -48,42 +51,38 @@ export const UusiEshOsasuoritusDropdown = ({
     oppiaineModels,
     'tunniste'
   ).map((aineet) =>
-    R.uniqBy((aine) => modelData(aine, 'tunniste.koodiarvo'), aineet)
-  )
-
-  const dropdownOppiaineet2 = fetchAlternativesBasedOnPrototypes(
-    oppiaineModels,
-    'tunniste'
-  )
-    .map((aineet) =>
-      R.uniqBy((aine) => modelData(aine, 'tunniste.koodiarvo'), aineet)
-    )
-    // TODO: Selvitä, miksi actual modelin resolvaus prototyypeistä ei syötä oikeita arvoja prototypeen..
-    .map((aineet) => {
-      return aineet.map((aine) => {
-        const resolvedModel = isOneOfModel(aine)
-          ? resolveActualModel(aine, aine.parent)
+    R.uniqBy((aine) => modelData(aine, 'tunniste.koodiarvo'), aineet).map(
+      (aine) => {
+        const isMuuOppiaine = aine.value.classes.includes(
+          'europeanschoolofhelsinkimuuoppiaine'
+        )
+        /*
+        Tämä saattanee vaikuttaa hieman häkiltä, mutta tietomallista johtuen muu oppiaine -prototyyppi
+        resolvataan manuaalisesti.
+        OnlyWhen ja NotWhen -annotaatiot onnistuvat kuitenkin valitsemaan kielioppiaineen / latin / ancient greek oikein.
+        */
+        return isOneOfModel(aine)
+          ? modelSetValue(
+              isMuuOppiaine
+                ? contextualizeSubModel(
+                    resolvePrototypeReference(
+                      muuOppiainePrototype,
+                      aine.context
+                    ),
+                    aine
+                  )
+                : resolveActualModel(aine, aine.parent),
+              {
+                // Jostain syystä resolveActualModel hävittää kaiken datan tunnisteesta, niin ne pitää syöttää manuaalisesti takaisin.
+                data: modelData(aine, 'tunniste'),
+                title: t(modelData(aine, 'tunniste.nimi'))
+              },
+              'tunniste'
+            )
           : aine
-        const properties = modelProperties(aine)
-        // console.log('properties', properties) // Alkuperäisen oppiaineen propertyt
-        // console.log('resolvedModel', resolvedModel)
-        return properties.reduce((prev, curr) => {
-          const propertySet = modelSet(prev, curr.model, curr.key)
-          if (
-            propertySet.alternativesPath !== undefined &&
-            curr.model.alternativesPath !== undefined
-          ) {
-            return {
-              ...propertySet,
-              alternativesPath: curr.model.alternativesPath
-            }
-          }
-          return propertySet
-        }, resolvedModel)
-      })
-    })
-
-  // dropdownOppiaineet2.onValue(console.log)
+      }
+    )
+  )
 
   const getDropdownDisplayValue = (oppiaine) => {
     const tunniste = modelLookup(oppiaine, 'tunniste')

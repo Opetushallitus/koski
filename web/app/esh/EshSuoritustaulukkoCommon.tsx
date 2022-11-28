@@ -1,12 +1,9 @@
 import React from 'baret'
 import { t } from '../i18n/i18n'
 import {
-  contextualizeSubModel,
   modelData,
   modelLookup,
-  modelSet,
   modelTitle,
-  resolveActualModel,
   wrapOptional
 } from '../editor/EditorModel'
 import { hasArvosana, hasSuorituskieli, tilaText } from '../suoritus/Suoritus'
@@ -22,9 +19,6 @@ import {
   SuoritusModel
 } from '../suoritus/SuoritustaulukkoCommon'
 import { BaseContext } from '../types/EditorModelContext'
-import { ArvosanaEditor } from '../suoritus/ArvosanaEditor'
-import { isOneOfModel } from '../types/EditorModels'
-import { EnumEditor } from '../editor/EnumEditor'
 import { EshArvosanaEditor } from '../suoritus/EshArvosanaEditor'
 
 // ESHSuoritusColumn
@@ -60,13 +54,6 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
     const titleAsExpandLink = false
     const kieliaine = isEshKieliaine(koulutusmoduuli)
     const koulutusmoduuliTunniste = modelData(koulutusmoduuli, 'tunniste.nimi')
-
-    // Koulutusmoduulin prototyyppi pitää ESH:ssa resolvata etukäteen, koska Editor ei sitä tee
-    // TODO: FIX
-    /*const koulutusmoduuliModel =
-      kieliaine && isOneOfModel(koulutusmoduuli)
-        ? resolveActualModel(koulutusmoduuli, model)
-        : koulutusmoduuli*/
 
     return (
       <td key="suoritus" className="suoritus" role="listitem">
