@@ -31,8 +31,6 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
   const luokkaAste = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
 
   const addOsasuoritus = (koulutusmoduuli) => {
-    console.log('valittu koulutusmoduuli', koulutusmoduuli)
-
     const baseOsasuoritusModel = modelSet(
       newOsasuoritusProto(model, koulutusmoduuli.parent.value.classes[0]),
       modelSetTitle(
@@ -50,7 +48,14 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
     if (isOsasuoritus) {
       if (
         modelProperty(baseOsasuoritusModel, 'koulutusmoduuli.kieli') !==
-        undefined
+          undefined &&
+        // Ei tyhjätä koulutusmoduulin kieltä Ancient Greek ja Latin -kielioppiaineille
+        !koulutusmoduuli.value.classes.includes(
+          'europeanschoolofhelsinkikielioppiaineancientgreek'
+        ) &&
+        !koulutusmoduuli.value.classes.includes(
+          'europeanschoolofhelsinkikielioppiainelatin'
+        )
       ) {
         pushModel(
           modelSetValues(baseOsasuoritusModel, {
