@@ -293,6 +293,8 @@ class KoskiOppijaFacade(
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: MuunKuinSäännellynKoulutuksenTila =>
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(mitätöity, mitatointiPvm, None)))
+      case t: TaiteenPerusopetuksenOpiskeluoikeudenTila =>
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TaiteenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
     }).map(oo.withTila)
   }
 

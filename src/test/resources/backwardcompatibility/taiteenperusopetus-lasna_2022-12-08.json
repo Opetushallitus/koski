@@ -1,0 +1,69 @@
+{
+  "henkilö" : {
+    "hetu" : "260905A0520",
+    "etunimet" : "Petra",
+    "kutsumanimi" : "Petra",
+    "sukunimi" : "Taiteilija"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.31915273374",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "01694",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Varsinais-Suomen kansanopisto"
+      }
+    },
+    "koulutustoimija" : {
+      "oid" : "1.2.246.562.10.44330177021",
+      "nimi" : {
+        "fi" : "Varsinais-Suomen Aikuiskoulutussäätiö sr"
+      },
+      "yTunnus" : "0136193-2",
+      "kotipaikka" : {
+        "koodiarvo" : "577",
+        "koodistoUri" : "kunta"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2021-01-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "koodistoUri" : "koskiopiskeluoikeudentila"
+        }
+      } ]
+    },
+    "oppimäärä" : {
+      "koodiarvo" : "yleinenoppimaara",
+      "koodistoUri" : "taiteenperusopetusoppimaara"
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999907",
+          "koodistoUri" : "koulutus"
+        },
+        "taiteenala" : {
+          "koodiarvo" : "musiikki",
+          "koodistoUri" : "taiteenperusopetustaiteenala"
+        },
+        "perusteenDiaarinumero" : "OPH-2069-2017"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.78513447389"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "taiteenperusopetus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2021-01-01"
+  } ]
+}
