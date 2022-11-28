@@ -1,5 +1,4 @@
 import React from 'baret'
-import * as L from 'partial.lenses'
 import Atom from 'bacon.atom'
 import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
@@ -9,7 +8,6 @@ import {
   modelLookup,
   modelProperty,
   modelSet,
-  modelSetData,
   modelSetValue,
   modelSetValues
 } from '../editor/EditorModel'
@@ -25,6 +23,7 @@ import {
   luokkaAsteenOsasuoritukset
 } from '../esh/esh'
 import { zeroValue } from '../editor/EnumEditor'
+import { t } from '../i18n/i18n'
 
 const fetchOsasuorituksetTemplate = (model) =>
   luokkaAsteenOsasuoritukset(
@@ -80,6 +79,10 @@ export const UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus = ({
     proto = withKoulutusmoduulinTunniste(
       proto,
       suoritus.koulutusmoduuli.tunniste
+    )
+    proto = withKoulutusmoduulinCurriculum(
+      proto,
+      suoritus.koulutusmoduuli.curriculum
     )
     if (
       suoritus.koulutusmoduuli.tunniste.koodistoUri ===
@@ -144,13 +147,29 @@ const copyOsasuoritukset = (osasuoritukset, proto) =>
 
 const withKoulutusmoduulinTunniste = (suoritusProto, tunniste) => {
   let kmt = modelLookup(suoritusProto, 'koulutusmoduuli.tunniste')
-  kmt = modelSetData(kmt, tunniste)
-  kmt = L.set(['title'], tunniste.nimi.fi, kmt)
+  kmt = modelSetValue(kmt, {
+    data: tunniste,
+    value: tunniste,
+    title: t(tunniste.nimi)
+  })
   return modelSet(suoritusProto, kmt, 'koulutusmoduuli.tunniste')
+}
+
+const withKoulutusmoduulinCurriculum = (suoritusProto, curriculum) => {
+  let a = modelLookup(suoritusProto, 'koulutusmoduuli.curriculum')
+  a = modelSetValue(a, {
+    data: curriculum,
+    value: curriculum,
+    title: t(curriculum.nimi)
+  })
+  return modelSet(suoritusProto, a, 'koulutusmoduuli.curriculum')
 }
 
 const withAlkamispäivä = (suoritusProto, alkamispäivä) => {
   let a = modelLookup(suoritusProto, 'alkamispäivä')
-  a = modelSetData(a, alkamispäivä)
+  a = modelSetValue(a, {
+    data: alkamispäivä,
+    value: alkamispäivä
+  })
   return modelSet(suoritusProto, a, 'alkamispäivä')
 }

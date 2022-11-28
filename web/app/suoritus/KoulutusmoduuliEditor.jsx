@@ -8,7 +8,6 @@ import { tutkinnonNimi } from './Koulutusmoduuli'
 import { InternationalSchoolLevel } from '../internationalschool/InternationalSchoolLevel'
 import { TunnisteenKoodiarvoEditor } from './TunnisteenKoodiarvoEditor'
 import { isMuutaAmmatillistaPäätasonSuoritus } from '../muuammatillinen/MuuAmmatillinen'
-import { CurriculumEditor } from './CurriculumEditor'
 
 export const KoulutusmoduuliEditor = ({ model }) => {
   const propertyFilter = (p) => {
@@ -39,9 +38,16 @@ export const KoulutusmoduuliEditor = ({ model }) => {
         <TunnisteenKoodiarvoEditor model={model} />
       </span>
       {!hideEshCurriculum(model) && (
-        <span className="curriculum">
-          <CurriculumEditor model={model} />
-        </span>
+        <>
+          <span className="curriculum">
+            <Editor
+              titleFormatter={(mdl) => mdl?.value?.data?.koodiarvo}
+              model={model}
+              path="curriculum"
+              placeholder={t('Curriculum')}
+            />
+          </span>
+        </>
       )}
       <span className="diaarinumero">
         <span
