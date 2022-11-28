@@ -59,7 +59,7 @@ object DateValidation {
         KoskiErrorCategory.badRequest.validation.date.suorituksenAlkamispäiväEnnenOpiskeluoikeudenAlkamispäivää
       ),
       validateJaksotPäättyminen(opiskeluoikeus.tila.opiskeluoikeusjaksot),
-      DateValidation.validateJaksotDateOrder(
+      validateJaksotDateOrder(
         "tila.opiskeluoikeusjaksot",
         opiskeluoikeus.tila.opiskeluoikeusjaksot,
         KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät

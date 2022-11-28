@@ -361,7 +361,7 @@ class PostgresOpiskeluoikeusRepository(
       case _ =>
         val vanhaOpiskeluoikeus = oldRow.toOpiskeluoikeusUnsafe
 
-        val tallennettavaOpiskeluoikeus =  OpiskeluoikeusChangeMigrator.migrate(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset)
+        val tallennettavaOpiskeluoikeus = OpiskeluoikeusChangeMigrator.migrate(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset)
 
         validator.validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok =>

@@ -4,6 +4,7 @@ import fi.oph.koski.eperusteetvalidation.EPerusteetOpiskeluoikeusChangeValidator
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
+import fi.oph.koski.validation.DateValidation.validateOpiskeluoikeudenPäivämäärät
 import fi.oph.koski.validation.TutkintokoulutukseenValmentavaKoulutusValidation
 
 class OpiskeluoikeusChangeValidator(organisaatioRepository: OrganisaatioRepository, ePerusteetChangeValidator: EPerusteetOpiskeluoikeusChangeValidator) {
@@ -12,6 +13,7 @@ class OpiskeluoikeusChangeValidator(organisaatioRepository: OrganisaatioReposito
       validateOpiskeluoikeudenTyypinMuutos(oldState, newState),
       validateLähdejärjestelmäIdnPoisto(oldState, newState),
       validateOppilaitoksenMuutos(oldState, newState),
+      validateOpiskeluoikeudenPäivämäärät(newState),
       ePerusteetChangeValidator.validateVanhanOpiskeluoikeudenTapaukset(oldState, newState),
       TutkintokoulutukseenValmentavaKoulutusValidation.validateJärjestämislupaEiMuuttunut(oldState, newState)
     )
