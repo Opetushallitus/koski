@@ -13,7 +13,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.{Timing, WithWarnings}
 import fi.oph.koski.validation.KoskiGlobaaliValidator
 
-import java.time.LocalDate.now
+import java.time.LocalDate
 
 class KoskiOppijaFacade(
   henkilöRepository: HenkilöRepository,
@@ -265,31 +265,34 @@ class KoskiOppijaFacade(
   }
 
   private def invalidated(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
+    val localDateOrdering: Ordering[LocalDate] = Ordering.by(_.toEpochDay)
+    val viimeisinTila = oo.tila.opiskeluoikeusjaksot.maxBy(f => f.alku)(localDateOrdering).alku
+    val mitatointiPvm = List(viimeisinTila, LocalDate.now()).max(localDateOrdering)
     (oo.tila match {
       case t: AmmatillinenOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(now, mitätöity)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: NuortenPerusopetuksenOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(now, mitätöity)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(now, mitätöity)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(mitatointiPvm, mitätöity)))
       case t: AikuistenPerusopetuksenOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AikuistenPerusopetuksenOpiskeluoikeusjakso(now, mitätöity)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AikuistenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: LukionOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ LukionOpiskeluoikeusjakso(now, mitätöity)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ LukionOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: DIAOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ DIAOpiskeluoikeusjakso(now, mitätöity)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ DIAOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: InternationalSchoolOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ InternationalSchoolOpiskeluoikeusjakso(now, mitätöity)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ InternationalSchoolOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: VapaanSivistystyönOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(now, mitätöity)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(now, mitätöity)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: KorkeakoulunOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
       case t: YlioppilastutkinnonOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
       case t: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(now, mitätöity)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(mitatointiPvm, mitätöity)))
       case t: MuunKuinSäännellynKoulutuksenTila =>
-        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(mitätöity, now, None)))
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(mitätöity, mitatointiPvm, None)))
     }).map(oo.withTila)
   }
 
