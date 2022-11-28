@@ -48,56 +48,6 @@ export const eshSuorituksenClass = {
   primaryOsasuoritus: 'primaryosasuoritus'
 }
 
-export const eshSynteettisetKoodistot = {
-  preliminary: 'esh/s7preliminarymark',
-  final: 'esh/s7finalmark',
-  numerical: 'esh/numericalmark'
-}
-
-const eshSynteettisetKoodistoUris = Object.values(eshSynteettisetKoodistot)
-
-export const eshSynteettinenKoodiValidators = {
-  preliminary: (
-    val // 0, 10, tai luku siltä väliltä yhden desimaalin tarkkuudella
-  ) =>
-    val === '0' ||
-    val === '10' ||
-    /^0\.[1-9]$/.exec(val) !== null ||
-    /^[1-9]\.\d$/.exec(val) !== null,
-  // 10, tai luku 0.00 - 9.99 tasan kahden desimaalin tarkkuudella
-  final: (val) => val === '10' || /^\d\.\d\d$/.exec(val) !== null,
-  // 0, 10, tai luku siltä väliltä yhden desimaalin tarkkuudella, joka on 0 tai 5
-  numerical: (val) =>
-    val === '0' ||
-    val === '0.5' ||
-    val === '10' ||
-    /^[1-9]\.[05]$/.exec(val) !== null
-}
-
-export const isEshSynteettinenKoodisto = (koodistoUriKoodiarvo) =>
-  eshSynteettisetKoodistoUris.includes(koodistoUriKoodiarvo)
-
-export const isEshPreliminaryArvosana = (koodistoUriKoodiarvo) =>
-  koodistoUriKoodiarvo === eshSynteettisetKoodistot.preliminary
-export const isEshFinalArvosana = (koodistoUriKoodiarvo) =>
-  koodistoUriKoodiarvo === eshSynteettisetKoodistot.final
-export const isEshNumericalArvosana = (koodistoUriKoodiarvo) =>
-  koodistoUriKoodiarvo === eshSynteettisetKoodistot.numerical
-
-export const isValidEshSynteettinenKoodiarvo = (koodistoUri, koodiarvo) => {
-  if (!isEshSynteettinenKoodisto(koodistoUri)) {
-    return false
-  }
-  switch (koodistoUri) {
-    case eshSynteettisetKoodistot.preliminary:
-      return eshSynteettinenKoodiValidators.preliminary(koodiarvo)
-    case eshSynteettisetKoodistot.numerical:
-      return eshSynteettinenKoodiValidators.numerical(koodiarvo)
-    case eshSynteettisetKoodistot.final:
-      return eshSynteettinenKoodiValidators.final(koodiarvo)
-  }
-}
-
 /**
  * Palauttaa ESH-opiskeluoikeuden suoritustyypin sen koulutusmoduulin tunnisteen koodiarvon perusteella
  * @param {string} koulutusmoduulinTunniste Luokka-asteen koodiarvo
