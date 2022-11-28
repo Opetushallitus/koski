@@ -62,7 +62,9 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
             'koulutusmoduuli.kieli': zeroValue
           })
         )
-      } else {
+      } else if (
+        modelProperty(baseOsasuoritusModel, 'suorituskieli') !== undefined
+      ) {
         pushModel(
           modelSetValues(baseOsasuoritusModel, {
             suorituskieli: zeroValue
