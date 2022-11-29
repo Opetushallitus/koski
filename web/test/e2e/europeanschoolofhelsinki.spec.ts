@@ -8,8 +8,8 @@ test.describe('European School of Helsinki', () => {
       await fixtures.reset(false)
     })
 
-    test.beforeEach(async ({ loginPage, oppijaPage }) => {
-      await loginPage.apiLoginAsUser('kalle', 'kalle')
+    test.beforeEach(async ({ virkailijaLoginPage, oppijaPage }) => {
+      await virkailijaLoginPage.apiLoginAsUser('kalle', 'kalle')
       await oppijaPage.goto(ESH_OID)
     })
 
