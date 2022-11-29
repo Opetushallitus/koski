@@ -37,7 +37,16 @@ export class KoskiOppijaPage {
   async clickSuoritusTab(selector: number) {
     const tab = this.suoritusTabs.getByRole('tab').nth(selector)
     await tab.click()
-    expect(await tab.getAttribute('class')).toContain('selected')
+    await expect(tab).toHaveClass(/selected/)
+  }
+
+  async clickSuoritusTabByLabel(label: string, nthOrFirst: 'first' | number) {
+    const tab =
+      nthOrFirst === 'first'
+        ? this.suoritusTabs.getByRole('tab', { name: label }).first()
+        : this.suoritusTabs.getByRole('tab', { name: label }).nth(nthOrFirst)
+    await tab.click()
+    await expect(tab).toHaveClass(/selected/)
   }
 
   async avaaKaikkiOsasuoritukset() {
@@ -49,6 +58,8 @@ export class KoskiOppijaPage {
   }
 
   async avaaMuokkausnäkymä() {
+    // @ts-expect-error
+    await this.page.evaluate(() => (window.DISABLE_EXIT_HOOKS = true))
     await this.muokkausNäkymäBtn.click()
   }
 
