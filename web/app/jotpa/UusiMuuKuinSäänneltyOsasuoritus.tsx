@@ -116,7 +116,8 @@ const LisääPaikallinen = ({
     const tallennetutSuoritukset = suoritukset.map((suoritus) => {
       return {
         kuvaus: modelData(suoritus, 'kuvaus'),
-        tunniste: modelData(suoritus, 'tunniste')
+        tunniste: modelData(suoritus, 'tunniste'),
+        testId: modelData(suoritus, 'tunniste')
       }
     })
     options.set(tallennetutSuoritukset)
@@ -171,6 +172,12 @@ const LisääPaikallinen = ({
                 option.uusi ? showModal.set(true) : addNewSuoritus(option)
               }
               onRemoval={poistaPaikallinenOsasuoritus}
+              dropdownTestId="dropdown-osasuoritus"
+              itemTestId={(option) =>
+                option.uusi
+                  ? 'new-osasuoritus'
+                  : `stored-osasuoritus-${option.tunniste.koodiarvo}`
+              }
             />
           )
         )}

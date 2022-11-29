@@ -1,5 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test'
 import { KoskiOsasuoritus } from '../../fragments/KoskiOsasuoritus'
+import { OpiskeluoikeudenTilaDialog } from './dialogs/OpiskeluoikeudentilaDialog'
 
 export class KoskiOppijaPage {
   readonly page: Page
@@ -9,6 +10,11 @@ export class KoskiOppijaPage {
   readonly avaaKaikkiOsasuorituksetBtn: Locator
   readonly suljeKaikkiOsasuorituksetBtn: Locator
   readonly muokkausNäkymäBtn: Locator
+  readonly tallennusBtn: Locator
+  readonly peruutaMuokkausBtn: Locator
+  readonly koulutusmoduuli: Locator
+
+  readonly opiskeluoikeudenTila: OpiskeluoikeudenTilaDialog
 
   // TODO
   readonly opiskeluoikeudet?: Locator
@@ -16,6 +22,7 @@ export class KoskiOppijaPage {
 
   constructor(page: Page) {
     this.page = page
+
     this.oppijaHeading = page.getByTestId('oppija-heading')
     this.hetu = this.oppijaHeading.getByTestId('oppija-henkilotunnus')
     this.suoritusTabs = page.getByRole('tablist', { name: 'Suoritukset' })
@@ -26,7 +33,12 @@ export class KoskiOppijaPage {
       name: 'Sulje kaikki'
     })
     this.muokkausNäkymäBtn = page.getByRole('button', { name: 'muokkaa' })
+    this.tallennusBtn = page.getByRole('button', { name: 'Tallenna' })
+    this.peruutaMuokkausBtn = page.locator('a:has-text("Peruuta")') // TODO: testid
+    this.koulutusmoduuli = page.getByTestId('span-for-koulutus-enum-editor')
     this.osasuoritukset = page.getByTestId('tutkinnonOsat')
+
+    this.opiskeluoikeudenTila = new OpiskeluoikeudenTilaDialog(page)
   }
 
   async goto(oid: string) {
@@ -61,6 +73,16 @@ export class KoskiOppijaPage {
     // @ts-expect-error
     await this.page.evaluate(() => (window.DISABLE_EXIT_HOOKS = true))
     await this.muokkausNäkymäBtn.click()
+    await this.peruutaMuokkausBtn.waitFor()
+    await expect(this.page).toHaveURL(/.*\?.*\&edit=.*/)
+  }
+
+  async tallenna() {
+    await this.tallennusBtn.click()
+  }
+
+  async peruuta() {
+    await this.peruutaMuokkausBtn.click()
   }
 
   getTutkinnonOsa(testId: string) {

@@ -23,7 +23,7 @@ export class LaajuusEditor extends React.Component {
     const wrappedModel = wrapOptional(model)
     return (
       <span>
-        <span className="property laajuus arvo">
+        <span className="property laajuus arvo" data-testid="laajuus-editor">
           <span className={modelValid(wrappedModel) ? 'value' : 'value error'}>
             <Editor model={wrappedModel} path="arvo" disabled={disabled} />
           </span>

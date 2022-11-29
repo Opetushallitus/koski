@@ -40,6 +40,8 @@ export default ({
   onRemoval,
   removeText,
   isOptionEnabled = () => true,
+  dropdownTestId,
+  itemTestId = (o) => o.testId,
   ...rest
 }) => {
   options = toObservable(options)
@@ -174,6 +176,7 @@ export default ({
               tabIndex={enableFilter ? '' : '0'}
               onBlur={handleOnBlur}
               onKeyDown={onKeyDown(allOptions)}
+              data-testid={dropdownTestId}
               {...rest}
             >
               {enableFilter ? (
@@ -242,6 +245,7 @@ export default ({
                           selectOption(e, o)
                         }}
                         onMouseOver={() => handleMouseOver(allOptions, o)}
+                        data-testid={itemTestId(o)}
                       >
                         {isNew ? (
                           <span>

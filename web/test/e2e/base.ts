@@ -1,6 +1,7 @@
 import { test as base, Page } from '@playwright/test'
 import { KoskiFixtures } from './fixtures/KoskiFixtures'
 import { KoskiLoginPage } from './pages/login/KoskiLoginPage'
+import { KoskiMuksOppijaPage } from './pages/oppija/KoskiMuksOppijaPage'
 import { KoskiOppijaHaku } from './pages/oppija/KoskiOppijaHaku'
 import { KoskiOppijaPage } from './pages/oppija/KoskiOppijaPage'
 import { KoskiUusiOppijaPage } from './pages/oppija/KoskiUusiOppijaPage'
@@ -10,6 +11,7 @@ type Fixtures = {
   customPage: Page
   loginPage: KoskiLoginPage
   oppijaPage: KoskiOppijaPage
+  muksOppijaPage: KoskiMuksOppijaPage
   oppijaHaku: KoskiOppijaHaku
   uusiOppijaPage: KoskiUusiOppijaPage
   virkailijaPage: KoskiVirkailijaPage
@@ -33,6 +35,9 @@ export const test = base.extend<Fixtures>({
   },
   oppijaHaku: async ({ customPage }, use) => {
     await use(new KoskiOppijaHaku(customPage))
+  },
+  muksOppijaPage: async ({ customPage }, use) => {
+    await use(new KoskiMuksOppijaPage(customPage))
   },
   uusiOppijaPage: async ({ customPage }, use) => {
     await use(new KoskiUusiOppijaPage(customPage))

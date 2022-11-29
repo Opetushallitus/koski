@@ -164,6 +164,7 @@ export const OppijaHaku = () => {
             onChange={(e) => searchStringAtom.set(e.target.value)}
             onKeyDown={optionsP.map(onKeyDown)}
             autoFocus
+            data-testid="oppijahaku"
           ></input>
         </label>
       </div>

@@ -116,7 +116,10 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
           ))}
           {showLisaaTila && (
             <li className="add-item">
-              <a onClick={showAddDialog}>
+              <a
+                onClick={showAddDialog}
+                data-testid="lisää-opiskeluoikeuden-tila-btn"
+              >
                 <Text name="Lisää opiskeluoikeuden tila" />
               </a>
             </li>
