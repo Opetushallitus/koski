@@ -66,7 +66,12 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
           )}
         </tr>
         {modelErrorMessages(model, nestedLevel !== 0).map((error, i) => (
-          <tr key={`error-${i}`} className="error">
+          <tr
+            key={`error-${i}`}
+            className="error"
+            role="error"
+            aria-live="polite"
+          >
             <td colSpan="42" className="error">
               {error}
             </td>
