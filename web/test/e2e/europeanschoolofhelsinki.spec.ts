@@ -42,9 +42,7 @@ test.describe('European School of Helsinki', () => {
         })
         .click()
 
-      await customPage
-        .getByRole('combobox', { name: 'Lisää alaosasuoritus' })
-        .click()
+      await customPage.getByRole('combobox', { name: 'Lisää alaosasuoritus' }).click()
       await customPage.getByRole('listitem', { name: 'Year mark' }).click()
     })
 
@@ -55,9 +53,7 @@ test.describe('European School of Helsinki', () => {
       }) => {
         await oppijaPage.clickSuoritusTabByLabel('P1', 'first')
         await oppijaPage.avaaMuokkausnäkymä()
-        await customPage
-          .getByRole('combobox', { name: 'Lisää osasuoritus' })
-          .click()
+        await customPage.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
         await customPage
           .getByRole('listitem', {
             name: 'Advanced studies of the second language'
@@ -71,9 +67,7 @@ test.describe('European School of Helsinki', () => {
       }) => {
         await oppijaPage.clickSuoritusTabByLabel('P2', 'first')
         await oppijaPage.avaaMuokkausnäkymä()
-        await customPage
-          .getByRole('combobox', { name: 'Lisää osasuoritus' })
-          .click()
+        await customPage.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
         await customPage
           .getByRole('listitem', {
             name: 'Advanced studies of the second language'
@@ -87,9 +81,7 @@ test.describe('European School of Helsinki', () => {
       }) => {
         await oppijaPage.clickSuoritusTabByLabel('P3', 'first')
         await oppijaPage.avaaMuokkausnäkymä()
-        await customPage
-          .getByRole('combobox', { name: 'Lisää osasuoritus' })
-          .click()
+        await customPage.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
         await customPage
           .getByRole('listitem', {
             name: 'Advanced studies of the second language'
@@ -103,9 +95,7 @@ test.describe('European School of Helsinki', () => {
       }) => {
         await oppijaPage.clickSuoritusTabByLabel('P4', 'first')
         await oppijaPage.avaaMuokkausnäkymä()
-        await customPage
-          .getByRole('combobox', { name: 'Lisää osasuoritus' })
-          .click()
+        await customPage.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
         await customPage
           .getByRole('listitem', {
             name: 'Advanced studies of the second language'
@@ -119,9 +109,7 @@ test.describe('European School of Helsinki', () => {
       }) => {
         await oppijaPage.clickSuoritusTabByLabel('P1', 'first')
         await oppijaPage.avaaMuokkausnäkymä()
-        await customPage
-          .getByRole('combobox', { name: 'Lisää osasuoritus' })
-          .click()
+        await customPage.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
         await customPage
           .getByRole('listitem', {
             name: 'Advanced studies of the second language'
