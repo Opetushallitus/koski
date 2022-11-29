@@ -25,7 +25,8 @@ export const UusiIBTutkinnonSuoritus = {
   },
   canAddSuoritus: (opiskeluoikeus) =>
     isIBTutkinto(opiskeluoikeus) && !ibTutkinnonSuoritus(opiskeluoikeus),
-  addSuoritusTitle: () => <Text name="lisää IB-tutkinnon suoritus" />
+  addSuoritusTitle: () => <Text name="lisää IB-tutkinnon suoritus" />,
+  addSuoritusTitleKey: 'lisää IB-tutkinnon suoritus'
 }
 
 export const UusiPreIBSuoritus = {
@@ -39,5 +40,6 @@ export const UusiPreIBSuoritus = {
   },
   canAddSuoritus: (opiskeluoikeus) =>
     isIBTutkinto(opiskeluoikeus) && !preIBSuoritus(opiskeluoikeus),
-  addSuoritusTitle: () => <Text name="lisää pre-IB-suoritus" />
+  addSuoritusTitle: () => <Text name="lisää pre-IB-suoritus" />,
+  addSuoritusTitleKey: 'lisää pre-IB-suoritus'
 }

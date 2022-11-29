@@ -141,6 +141,8 @@ UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.canAddSuoritus = (
 UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.addSuoritusTitle = () => (
   <Text name="lisää suoritus" />
 )
+UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus.addSuoritusTitleKey =
+  'lisää suoritus'
 
 const copyOsasuoritukset = (osasuoritukset, proto) =>
   modelSetValue(proto, osasuoritukset, 'osasuoritukset')

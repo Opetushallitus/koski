@@ -19,6 +19,7 @@ import {
 } from './UusiDIATutkinnonSuoritus'
 import { UusiInternationalSchoolVuosiluokanSuoritus } from './UusiInternationalSchoolVuosiluokanSuoritus'
 import { UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus } from './UusiEuropeanSchoolOfHelsinkiVuosiluokanSuoritus'
+import { t } from '../i18n/i18n'
 
 export default ({ opiskeluoikeus, callback }) => {
   return (
@@ -46,7 +47,17 @@ export default ({ opiskeluoikeus, callback }) => {
           return (
             <span key={i}>
               {opiskeluoikeus.context.edit && !onLopputilassa(opiskeluoikeus) && (
-                <a className="add-suoritus-link" onClick={startAdding}>
+                <a
+                  className="add-suoritus-link"
+                  onClick={startAdding}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={
+                    PopUp.addSuoritusTitleKey
+                      ? t(PopUp.addSuoritusTitleKey)
+                      : t('lisää suoritus')
+                  }
+                >
                   <span className="plus">{''}</span>
                   {PopUp.addSuoritusTitle(opiskeluoikeus)}
                 </a>

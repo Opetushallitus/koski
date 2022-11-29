@@ -238,6 +238,9 @@ UusiAmmatillisenTutkinnonSuoritus.addSuoritusTitle = () => (
   <Text name="lisää ammatillisen tutkinnon suoritus" />
 )
 
+UusiAmmatillisenTutkinnonSuoritus.addSuoritusTitleKey =
+  'lisää ammatillisen tutkinnon suoritus'
+
 export const UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus = Popup(true)
 UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.canAddSuoritus = (
   opiskeluoikeus
@@ -251,3 +254,5 @@ UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.canAddSuoritus = (
 UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.addSuoritusTitle = () => (
   <Text name="lisää näyttötutkintoon valmistavan koulutuksen suoritus" />
 )
+UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.addSuoritusTitleKey =
+  'lisää näyttötutkintoon valmistavan koulutuksen suoritus'
