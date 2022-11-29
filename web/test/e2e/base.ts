@@ -1,5 +1,6 @@
 import { test as base, Page } from '@playwright/test'
 import { KoskiFixtures } from './fixtures/KoskiFixtures'
+import { KoskiKansalainenPage } from './pages/kansalainen/KoskiKansalainenPage'
 import { KoskiLoginPage } from './pages/login/KoskiLoginPage'
 import { KoskiOppijaHaku } from './pages/oppija/KoskiOppijaHaku'
 import { KoskiOppijaPage } from './pages/oppija/KoskiOppijaPage'
@@ -13,6 +14,7 @@ type Fixtures = {
   oppijaHaku: KoskiOppijaHaku
   uusiOppijaPage: KoskiUusiOppijaPage
   virkailijaPage: KoskiVirkailijaPage
+  kansalainenPage: KoskiKansalainenPage
   fixtures: KoskiFixtures
 }
 
@@ -39,6 +41,9 @@ export const test = base.extend<Fixtures>({
   },
   virkailijaPage: async ({ customPage }, use) => {
     await use(new KoskiVirkailijaPage(customPage))
+  },
+  kansalainenPage: async ({ customPage }, use) => {
+    await use(new KoskiKansalainenPage(customPage))
   },
   fixtures: async ({ customPage }, use) => {
     // Kirjautumissivu luodaan tässä uudestaan, jotta ne käyttävät samaa kontestia kuin KoskiFixtures
