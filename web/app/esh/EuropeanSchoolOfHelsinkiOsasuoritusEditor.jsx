@@ -3,7 +3,8 @@ import classNames from 'classnames'
 import {
   modelLookup,
   modelErrorMessages,
-  pushRemoval
+  pushRemoval,
+  modelItems
 } from '../editor/EditorModel'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { suoritusProperties } from '../suoritus/SuoritustaulukkoCommon'
@@ -29,10 +30,16 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
 
     const osasuoritukset = modelLookup(model, 'osasuoritukset')
 
+    const hasOsasuorituksia =
+      (modelItems(model, 'osasuoritukset') || []).length > 0
+
     const showOsasuoritukset =
-      model.value.classes.includes(eshSuorituksenClass.ebtutkintoOsasuoritus) ||
-      model.value.classes.includes(eshSuorituksenClass.secondaryUppers7) ||
-      model.value.classes.includes(eshSuorituksenClass.primaryOsasuoritus)
+      (model.context.edit || hasOsasuorituksia) &&
+      (model.value.classes.includes(
+        eshSuorituksenClass.ebtutkintoOsasuoritus
+      ) ||
+        model.value.classes.includes(eshSuorituksenClass.secondaryUppers7) ||
+        model.value.classes.includes(eshSuorituksenClass.primaryOsasuoritus))
 
     return (
       <tbody
