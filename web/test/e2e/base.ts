@@ -1,21 +1,27 @@
 import { test as base, Page } from '@playwright/test'
+import AxeBuilder from '@axe-core/playwright'
 import { KoskiFixtures } from './fixtures/KoskiFixtures'
 import { KoskiKansalainenPage } from './pages/kansalainen/KoskiKansalainenPage'
-import { KoskiLoginPage } from './pages/login/KoskiLoginPage'
+import { KansalainenLoginPage } from './pages/login/KansalainenLoginPage'
+import { VirkailijaLoginPage } from './pages/login/VirkailijaLoginPage'
 import { KoskiOppijaHaku } from './pages/oppija/KoskiOppijaHaku'
 import { KoskiOppijaPage } from './pages/oppija/KoskiOppijaPage'
 import { KoskiUusiOppijaPage } from './pages/oppija/KoskiUusiOppijaPage'
 import { KoskiVirkailijaPage } from './pages/virkailija/KoskiVirkailijaPage'
 
+type CustomPage = Page
+
 type Fixtures = {
-  customPage: Page
-  loginPage: KoskiLoginPage
+  customPage: CustomPage
+  virkailijaLoginPage: VirkailijaLoginPage
+  kansalainenLoginPage: KansalainenLoginPage
   oppijaPage: KoskiOppijaPage
   oppijaHaku: KoskiOppijaHaku
   uusiOppijaPage: KoskiUusiOppijaPage
   virkailijaPage: KoskiVirkailijaPage
   kansalainenPage: KoskiKansalainenPage
   fixtures: KoskiFixtures
+  makeAxeBuilder: () => AxeBuilder
 }
 
 export const test = base.extend<Fixtures>({
@@ -27,8 +33,11 @@ export const test = base.extend<Fixtures>({
     },
     { scope: 'test' }
   ],
-  loginPage: async ({ customPage }, use) => {
-    await use(new KoskiLoginPage(customPage))
+  virkailijaLoginPage: async ({ customPage }, use) => {
+    await use(new VirkailijaLoginPage(customPage))
+  },
+  kansalainenLoginPage: async ({ customPage }, use) => {
+    await use(new KansalainenLoginPage(customPage))
   },
   oppijaPage: async ({ customPage }, use) => {
     await use(new KoskiOppijaPage(customPage))
@@ -47,10 +56,20 @@ export const test = base.extend<Fixtures>({
   },
   fixtures: async ({ customPage }, use) => {
     // Kirjautumissivu luodaan tässä uudestaan, jotta ne käyttävät samaa kontestia kuin KoskiFixtures
-    const loginPage = new KoskiLoginPage(customPage)
+    const loginPage = new VirkailijaLoginPage(customPage)
     await loginPage.apiLoginAsUser('kalle', 'kalle')
     const fixtures = new KoskiFixtures(customPage)
     await use(fixtures)
+  },
+  makeAxeBuilder: async ({ customPage }, use, testInfo) => {
+    const makeAxeBuilder = () =>
+      new AxeBuilder({ page: customPage }).disableRules([
+        'color-contrast',
+        'landmark-one-main',
+        'link-in-text-block',
+        'region'
+      ])
+    await use(makeAxeBuilder)
   }
 })
 export { expect } from '@playwright/test'
