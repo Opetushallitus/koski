@@ -12,6 +12,7 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
   private val henkilöRepository = application.henkilöRepository
   private val opiskeluoikeusRepository = application.opiskeluoikeusRepository
   private val rajapäivätService = application.valpasRajapäivätService
+  private val koodistoViitePalvelu = application.koodistoViitePalvelu
   private val accessResolver = new ValpasAccessResolver
 
   def getOppijaLaajatTiedotOppijanumerorekisteristä
@@ -59,7 +60,12 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
   ): Either[HttpStatus, ValpasOppivelvollinenOppijaLaajatTiedot] = {
     henkilöRepository.findByOid(oppijaOid, findMasterIfSlaveOid = true) match {
       case Some(henkilö) if onPalautettavaOppija(henkilö) =>
-        Right(ValpasOppivelvollinenOppijaLaajatTiedot(henkilö, rajapäivätService, onTallennettuKoskeen = false))
+        Right(ValpasOppivelvollinenOppijaLaajatTiedot(
+          henkilö,
+          rajapäivätService,
+          koodistoViitePalvelu,
+          onTallennettuKoskeen = false
+        ))
       case _ => Left(ValpasErrorCategory.forbidden.oppija())
     }
   }

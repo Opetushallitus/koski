@@ -9,7 +9,13 @@ import { WarningIcon } from "../../components/icons/Icon"
 import { InfoTable, InfoTableRow } from "../../components/tables/InfoTable"
 import { TertiaryHeading } from "../../components/typography/headings"
 import { NoDataMessage } from "../../components/typography/NoDataMessage"
-import { getLocalized, getLocalizedMaybe, t, T } from "../../i18n/i18n"
+import {
+  getLocalized,
+  getLocalizedMaybe,
+  koodiviiteToShortString,
+  t,
+  T,
+} from "../../i18n/i18n"
 import { HenkilöLaajatTiedot } from "../../state/apitypes/henkilo"
 import {
   isHakemukselta,
@@ -48,6 +54,31 @@ export const OppijanYhteystiedot = (props: OppijanYhteystiedotProps) => {
           />
         </IconSection>
       )}
+      <InfoTable id={"kotikunta-yhteystiedot-table"}>
+        {props.henkilö.turvakielto ? (
+          <InfoTableRow
+            label={t("oppija__virallinen_kotikunta")}
+            value={
+              <NoDataMessage>
+                {t("oppija__henkilöllä_turvakielto")}
+              </NoDataMessage>
+            }
+            testId={"kotikunta-yhteystiedot"}
+          />
+        ) : (
+          <InfoTableRow
+            label={t("oppija__virallinen_kotikunta")}
+            value={
+              props.henkilö.kotikunta ? (
+                koodiviiteToShortString(props.henkilö.kotikunta)
+              ) : (
+                <NoDataMessage>{t("tieto_puuttuu")}</NoDataMessage>
+              )
+            }
+            testId={"kotikunta-yhteystiedot"}
+          />
+        )}
+      </InfoTable>
       <ColumnsContainer>
         {viewIlmoitetut && (
           <Column size={6} id="ilmoitetut-yhteystiedot">

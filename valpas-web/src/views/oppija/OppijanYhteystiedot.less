@@ -1,7 +1,14 @@
 @import "../../style/typography.less";
 @import "../../style/colors.less";
+@import "../../style/responsive.less";
 
 .oppijanyhteystiedot__lahde {
   color: @color-gray;
   font-size: @font-size-small;
+}
+
+#kotikunta-yhteystiedot-table {
+  @media screen and (min-width: @breakpoint-desktop) {
+    width: 50%;
+  }
 }

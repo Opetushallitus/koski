@@ -108,6 +108,7 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
     syntymäaika = Some(date(2005, 1, 9)),
     etunimet = "Etu",
     sukunimi = "Suku",
+    kotikunta = None,
     turvakielto = false,
     äidinkieli = None
   )

@@ -9,7 +9,6 @@ import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.util.Monoids.rightSeqMonoid
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.db.ValpasSchema.OpiskeluoikeusLisätiedotKey
-import fi.oph.koski.valpas.hakukooste.Hakukooste
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKunnat
 import fi.oph.koski.valpas.opiskeluoikeusrepository._
 import fi.oph.koski.valpas.valpasrepository._
@@ -50,8 +49,10 @@ class ValpasOppijaLaajatTiedotService(
         asValpasOppijaLaajatTiedot(oppijaRow)
           .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
           .map(withTurvakieltosiivottuVapautus)
+          .map(withTurvakieltosiivottuKotikunta)
       case None if haeMyösVainOppijanumerorekisterissäOleva =>
         oppijanumerorekisteriService.getOppijaLaajatTiedotOppijanumerorekisteristä(oppijaOid)
+          .map(withTurvakieltosiivottuKotikunta)
       case _ =>
         Left(ValpasErrorCategory.forbidden.oppija())
     }
@@ -126,6 +127,7 @@ class ValpasOppijaLaajatTiedotService(
       case None => getOppijaLaajatTiedot(oppijaOid)
       case Some(r) => getOppijaLaajatTiedot(r, oppijaOid, haeMyösVainOppijanumerorekisterissäOleva)
     })
+      .map(withTurvakieltosiivottuKotikunta)
       .map(fetchHakuYhteystiedoilla)
       .flatMap(withVirallisetYhteystiedot)
       .map(_.validate(koodistoviitepalvelu))
@@ -148,6 +150,7 @@ class ValpasOppijaLaajatTiedotService(
             syntymäaika = dbRow.syntymäaika,
             etunimet = dbRow.etunimet,
             sukunimi = dbRow.sukunimi,
+            kotikunta = dbRow.kotikunta.flatMap(k => application.koodistoViitePalvelu.validate("kunta", k)),
             turvakielto = dbRow.turvakielto,
             äidinkieli = dbRow.äidinkieli
           ),
@@ -182,6 +185,19 @@ class ValpasOppijaLaajatTiedotService(
       oppija match {
         case o: ValpasOppivelvollinenOppijaLaajatTiedot => o.copy(oppivelvollisuudestaVapautus = vapautus)
         case o: ValpasOppivelvollisuudestaVapautettuLaajatTiedot => o.copy(oppivelvollisuudestaVapautus = vapautus)
+      }
+    } else {
+      oppija
+    }
+  }
+
+  def withTurvakieltosiivottuKotikunta(oppija: ValpasOppijaLaajatTiedot)(implicit session: ValpasSession): ValpasOppijaLaajatTiedot = {
+    def onTurvakielto: Boolean = oppija.henkilö.turvakielto
+
+    if(onTurvakielto){
+      oppija match {
+        case o: ValpasOppivelvollinenOppijaLaajatTiedot => o.copy(henkilö = o.henkilö.copy(kotikunta = None))
+        case o: ValpasOppivelvollisuudestaVapautettuLaajatTiedot => o.copy(henkilö = o.henkilö.copy(kotikunta = None))
       }
     } else {
       oppija

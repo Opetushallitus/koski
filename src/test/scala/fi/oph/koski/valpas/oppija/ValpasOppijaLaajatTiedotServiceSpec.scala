@@ -141,5 +141,10 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
         )
       )
     }
+
+    "palauttaa turvakiellon alaisen oppijan tiedot ilman kotikuntaa" in {
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.turvakieltoOppija.oid)(session(ValpasMockUsers.valpasMonta))
+      result.right.get.oppija.henkilö.kotikunta shouldBe None
+    }
   }
 }
