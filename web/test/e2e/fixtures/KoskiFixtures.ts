@@ -12,5 +12,6 @@ export class KoskiFixtures {
       `/koski/fixtures/reset?${params.toString()}`
     )
     expect(request.ok()).toBeTruthy()
+    await this.page.context().clearCookies()
   }
 }
