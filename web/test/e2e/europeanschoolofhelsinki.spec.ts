@@ -151,4 +151,27 @@ test.describe('European School of Helsinki', () => {
       })
     })
   })
+  test.describe('Kansalaisen näkymä', () => {
+    test.beforeAll(async ({ fixtures }) => {
+      await fixtures.reset(false)
+    })
+
+    test.beforeEach(async ({ kansalainenLoginPage }) => {
+      await kansalainenLoginPage.loginWithHetu('050707A130V')
+    })
+
+    test('Sivulla ei saavutettavuusvirheitä', async ({
+      kansalainenPage,
+      makeAxeBuilder
+    }) => {
+      await kansalainenPage.goto()
+      const accessibilityScanResults = await makeAxeBuilder().analyze()
+      expect(accessibilityScanResults.violations).toEqual([])
+    })
+
+    test.afterEach(async ({ customPage }) => {
+      // Tämä pitää muistaa kutsua jokaisen testin päätteeksi, jotta saman kontekstin jakava sivuobjekti sulkeutuu oikein. Muuten selainikkunat jäävät päälle.
+      await customPage.close()
+    })
+  })
 })
