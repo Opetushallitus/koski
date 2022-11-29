@@ -39,7 +39,12 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
         className={classNames('tutkinnon-osa', groupId, { expanded })}
         data-testid={`tutkinnon-osa-${model.value.classes[0]}`}
       >
-        <tr>
+        <tr
+          data-testid={`osasuoritus-row-${
+            modelLookup(model, 'koulutusmoduuli.tunniste')?.value?.data
+              ?.koodiarvo
+          }`}
+        >
           {columns.map((column) =>
             column.renderData({
               model,

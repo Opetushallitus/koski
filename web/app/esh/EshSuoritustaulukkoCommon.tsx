@@ -56,7 +56,12 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
     const koulutusmoduuliTunniste = modelData(koulutusmoduuli, 'tunniste.nimi')
 
     return (
-      <td key="suoritus" className="suoritus" role="listitem">
+      <td
+        key="suoritus"
+        className="suoritus"
+        role="listitem"
+        data-testid="suoritus-cell"
+      >
         <a
           className={hasProperties ? 'toggle-expand' : 'toggle-expand disabled'}
           onClick={() => onExpand(!expanded)}
@@ -147,8 +152,8 @@ export const EshArvosanaColumn: ColumnIface<
     </th>
   ),
   renderData: ({ model }) => {
-  return (
-      <td key="arvosana" className="arvosana">
+    return (
+      <td key="arvosana" className="arvosana" data-testid="arvosana-cell">
         <EshArvosanaEditor
           model={model}
           notFoundText={''}
@@ -194,7 +199,11 @@ export const EshSuorituskieliColumn: ColumnIface<
   ),
   renderData: ({ model }) => {
     return (
-      <td key="suorituskieli" className="suorituskieli">
+      <td
+        key="suorituskieli"
+        className="suorituskieli"
+        data-testid="suorituskieli-cell"
+      >
         <Editor
           model={model}
           path="suorituskieli"

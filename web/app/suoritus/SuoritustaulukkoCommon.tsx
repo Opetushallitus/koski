@@ -566,7 +566,7 @@ export const LaajuusColumn: LaajuusColumn = {
     )
   },
   renderData: ({ model, showScope }) => (
-    <td key="laajuus" className="laajuus">
+    <td key="laajuus" className="laajuus" data-testid="laajuus-cell">
       <Editor
         model={model}
         path="koulutusmoduuli.laajuus"
