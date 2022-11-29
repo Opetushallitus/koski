@@ -4,12 +4,14 @@ import {
   modelLookup,
   modelErrorMessages,
   pushRemoval,
-  modelItems
+  modelItems,
+  modelData
 } from '../editor/EditorModel'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { suoritusProperties } from '../suoritus/SuoritustaulukkoCommon'
 import { eshSuorituksenClass } from './europeanschoolofhelsinkiSuoritus'
 import { EuropeanSchoolOfHelsinkiSuoritustaulukko } from './EuropeanSchoolOfHelsinkiSuoritustaulukko'
+import { t } from '../i18n/i18n'
 
 export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
   render() {
@@ -41,15 +43,17 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
         model.value.classes.includes(eshSuorituksenClass.secondaryUppers7) ||
         model.value.classes.includes(eshSuorituksenClass.primaryOsasuoritus))
 
-    const rivinTestidTunniste = modelLookup(model, 'koulutusmoduuli.tunniste')
-      ?.value?.data?.koodiarvo
+    const koulutusmoduuliTunniste = modelData(
+      model,
+      'koulutusmoduuli.tunniste.nimi'
+    )
 
     return (
       <tbody
         className={classNames('tutkinnon-osa', groupId, { expanded })}
         data-testid={`tutkinnon-osa-${model.value.classes[0]}`}
       >
-        <tr data-testid={`osasuoritus-row-${rivinTestidTunniste}`}>
+        <tr data-testid={`osasuoritus-row-${t(koulutusmoduuliTunniste)}`}>
           {columns.map((column) =>
             column.renderData({
               model,
@@ -86,7 +90,9 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
           <tr
             className="details"
             key="details"
-            data-testid={`osasuoritus-details-row-${rivinTestidTunniste}`}
+            data-testid={`osasuoritus-details-row-${t(
+              koulutusmoduuliTunniste
+            )}`}
           >
             <td colSpan="4">
               <PropertiesEditor model={model} properties={displayProperties} />
@@ -97,7 +103,7 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
           <tr
             className="osasuoritukset"
             key="osasuoritukset"
-            data-testid={`osasuoritukset-row-${rivinTestidTunniste}`}
+            data-testid={`osasuoritukset-row-${t(koulutusmoduuliTunniste)}`}
           >
             <td colSpan="4">
               <EuropeanSchoolOfHelsinkiSuoritustaulukko

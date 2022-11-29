@@ -49,85 +49,60 @@ test.describe('European School of Helsinki', () => {
     })
 
     test.describe('Primary-vuosiluokan suoritukset', () => {
-      test(`Lisää P1-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-        customPage,
-        oppijaPage
-      }) => {
-        await oppijaPage.clickSuoritusTabByLabel('P1', 'first')
-        await oppijaPage.avaaMuokkausnäkymä()
-        await customPage
-          .getByRole('combobox', { name: 'Lisää osasuoritus' })
-          .click()
-        await customPage
-          .getByRole('listitem', {
-            name: 'Advanced studies of the second language'
-          })
-          .click()
-        await oppijaPage.tallenna()
-      })
-      test(`Lisää P2-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-        customPage,
-        oppijaPage
-      }) => {
-        await oppijaPage.clickSuoritusTabByLabel('P2', 'first')
-        await oppijaPage.avaaMuokkausnäkymä()
-        await customPage
-          .getByRole('combobox', { name: 'Lisää osasuoritus' })
-          .click()
-        await customPage
-          .getByRole('listitem', {
-            name: 'Advanced studies of the second language'
-          })
-          .click()
-        await oppijaPage.tallenna()
-      })
-      test(`Lisää P3-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-        customPage,
-        oppijaPage
-      }) => {
-        await oppijaPage.clickSuoritusTabByLabel('P3', 'first')
-        await oppijaPage.avaaMuokkausnäkymä()
-        await customPage
-          .getByRole('combobox', { name: 'Lisää osasuoritus' })
-          .click()
-        await customPage
-          .getByRole('listitem', {
-            name: 'Advanced studies of the second language'
-          })
-          .click()
-        await oppijaPage.tallenna()
-      })
-      test(`Lisää P4-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-        customPage,
-        oppijaPage
-      }) => {
-        await oppijaPage.clickSuoritusTabByLabel('P4', 'first')
-        await oppijaPage.avaaMuokkausnäkymä()
-        await customPage
-          .getByRole('combobox', { name: 'Lisää osasuoritus' })
-          .click()
-        await customPage
-          .getByRole('listitem', {
-            name: 'Advanced studies of the second language'
-          })
-          .click()
-        await oppijaPage.tallenna()
-      })
-      test(`Lisää P5-vuosiluokan suoritukseen uuden osasuorituksen`, async ({
-        customPage,
-        oppijaPage
-      }) => {
-        await oppijaPage.clickSuoritusTabByLabel('P1', 'first')
-        await oppijaPage.avaaMuokkausnäkymä()
-        await customPage
-          .getByRole('combobox', { name: 'Lisää osasuoritus' })
-          .click()
-        await customPage
-          .getByRole('listitem', {
-            name: 'Advanced studies of the second language'
-          })
-          .click()
-        await oppijaPage.tallenna()
+      const vuosiluokat = ['P1', 'P5']
+
+      vuosiluokat.forEach((vuosiluokka) => {
+        test(`Lisää ${vuosiluokka}-vuosiluokan suoritukseen uuden osasuorituksen, jolla ei ole prefillattuja alaosasuorituksia`, async ({
+          customPage,
+          oppijaPage
+        }) => {
+          await oppijaPage.clickSuoritusTabByLabel(vuosiluokka, 'first')
+          await oppijaPage.avaaMuokkausnäkymä()
+
+          // Lisää osasuoritus
+          const osasuoritus = await oppijaPage.lisääESHOsasuoritus(
+            'Advanced studies of the second language'
+          )
+
+          // Syötä osasuorituksen pakolliset tiedot
+          await osasuoritus.valitseKieli('englanti')
+          await osasuoritus.valitseSuorituskieli('englanti')
+          await osasuoritus.syötäLaajuus('4')
+          await osasuoritus.valitseArvosana('pass')
+
+          // Syötä osasuorituksen valinnaiset tiedot
+          await osasuoritus.laajennaBtn.click()
+          await osasuoritus.syötäArviointipäivä('31.7.2007')
+          await osasuoritus.lisääArvioija('Pekka Perhonen')
+          await osasuoritus.lisääKuvaus('Good job!')
+
+          // Lisää alaosasuorituksia
+          const alaosasuoritus1 = await osasuoritus.lisääOsasuoritus(
+            'Listening and understanding'
+          )
+          await alaosasuoritus1.valitseArvosana(/^\+\+\+$/)
+          await alaosasuoritus1.laajennaBtn.click()
+          await alaosasuoritus1.syötäArviointipäivä('31.7.2007')
+          await alaosasuoritus1.lisääArvioija('Paula Perhonen')
+
+          const alaosasuoritus2 = await osasuoritus.lisääOsasuoritus(
+            'Reading and understanding'
+          )
+          await alaosasuoritus2.valitseArvosana('++++')
+          await alaosasuoritus2.laajennaBtn.click()
+          await alaosasuoritus2.syötäArviointipäivä('31.7.2007')
+          await alaosasuoritus2.lisääArvioija('Paula Perhonen')
+
+          // Tallenna opiskeluoikeus
+          await oppijaPage.tallenna()
+
+          await expect(customPage).toHaveURL(
+            new RegExp(
+              `koski\/oppija\/1\.2\..*\?1\.2\..*\.suoritus=${vuosiluokka}$`
+            )
+          )
+          await expect(oppijaPage.muokkausNäkymäBtn).toBeVisible()
+        })
       })
     })
 

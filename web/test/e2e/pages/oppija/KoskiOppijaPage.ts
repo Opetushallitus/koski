@@ -1,6 +1,6 @@
 import { Page, Locator } from '@playwright/test'
 import { expect } from '../../base'
-import { KoskiOsasuoritus } from '../../fragments/KoskiOsasuoritus'
+import { ESHOsasuoritus } from '../../fragments/ESHOsasuoritus'
 
 export class KoskiOppijaPage {
   readonly page: Page
@@ -21,7 +21,6 @@ export class KoskiOppijaPage {
   readonly vahvistaOpiskeluoikeudenMitätöintiButton: Locator
 
   readonly opiskeluoikeudet?: Locator
-  readonly osasuoritukset: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -60,9 +59,6 @@ export class KoskiOppijaPage {
     this.vahvistaOpiskeluoikeudenMitätöintiButton = page.getByRole('link', {
       name: 'Vahvista mitätöinti, operaatiota ei voi peruuttaa'
     })
-
-    // TODO: Wrappaa opaan Page Object Modeliin
-    this.osasuoritukset = page.getByTestId('tutkinnonOsat')
   }
 
   async goto(oid: string) {
@@ -108,10 +104,27 @@ export class KoskiOppijaPage {
     await this.peruutaMuutoksetLink.click()
   }
 
-  getTutkinnonOsa(testId: string) {
-    return new KoskiOsasuoritus(
-      this.page,
-      this.osasuoritukset?.getByTestId(testId)
+  async lisääESHOsasuoritus(
+    koulutusmoduulinTunnisteenNimi: string
+  ): Promise<ESHOsasuoritus> {
+    await this.page.getByRole('combobox', { name: 'Lisää osasuoritus' }).click()
+
+    await this.page
+      .getByRole('listitem', {
+        name: koulutusmoduulinTunnisteenNimi
+      })
+      .click()
+
+    const osasuoritus = await this.getESHOsasuoritus(
+      koulutusmoduulinTunnisteenNimi
     )
+
+    await osasuoritus.isVisible()
+
+    return osasuoritus
+  }
+
+  getESHOsasuoritus(koulutusmoduulinTunnisteenNimi: string): ESHOsasuoritus {
+    return new ESHOsasuoritus(this.page, koulutusmoduulinTunnisteenNimi)
   }
 }
