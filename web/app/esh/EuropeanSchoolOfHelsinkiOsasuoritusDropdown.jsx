@@ -1,23 +1,17 @@
 import React from 'baret'
 import {
-  contextualizeModel,
   contextualizeSubModel,
   ensureArrayKey,
   modelData,
-  modelItems,
-  modelLookup,
   modelProperty,
   modelSet,
   modelSetTitle,
   modelSetValues,
-  pushModel,
-  resolveActualModel,
-  wrapOptional
+  pushModel
 } from '../editor/EditorModel'
 import { zeroValue } from '../editor/EnumEditor'
 import { t } from '../i18n/i18n'
 import { newOsasuoritusProto, newOsasuoritusProtos } from '../suoritus/Suoritus'
-import { isOneOfModel } from '../types/EditorModels'
 import { luokkaAsteenOsasuorituksenAlaosasuoritukset } from './esh'
 import { UusiEshOsasuoritusDropdown } from './UusiEshOsasuoritusDropdown'
 
@@ -92,28 +86,6 @@ export const UusiEuropeanSchoolOfHelsinkiOsasuoritusDropdown = ({
           pushModel(osasuoritusModel)
         }
       })
-    }
-
-    if (isAlaosasuoritus) {
-      // wrapOptional poistaa valinnaisuuden modelista, jotta seuraavassa vaiheessa voidaan resolvaa uuden arvioinnin model käyttämällä sen arrayPrototypeä
-      const arviointiArrayModel = wrapOptional(
-        contextualizeModel(
-          modelLookup(wrapOptional(baseOsasuoritusModel), 'arviointi'),
-          model.context
-        )
-      )
-
-      const uusiArviointiModel = contextualizeSubModel(
-        arviointiArrayModel.arrayPrototype,
-        arviointiArrayModel,
-        modelItems(arviointiArrayModel).length
-      )
-
-      const resolvedArviointimodel = isOneOfModel(uusiArviointiModel)
-        ? resolveActualModel(uusiArviointiModel, uusiArviointiModel.parent)
-        : uusiArviointiModel
-
-      pushModel(resolvedArviointimodel)
     }
   }
 
