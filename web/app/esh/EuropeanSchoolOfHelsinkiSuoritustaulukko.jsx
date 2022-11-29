@@ -17,6 +17,8 @@ import {
   ExpandAllRows,
   getLaajuusYksikkö,
   groupSuoritukset,
+  isEB,
+  isEshS7,
   LaajuusColumn,
   suoritusProperties
 } from '../suoritus/SuoritustaulukkoCommon'
@@ -69,7 +71,9 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
     )
     const showColumns = !(nestedLevel > 0 && suoritukset.length === 0)
     const canAddNewOsasuoritus = context.edit
-    const showLaajuusYhteensä = nestedLevel === 0
+
+    const showLaajuusYhteensä =
+      nestedLevel === 0 && !isEshS7(parentSuoritus) && !isEB(parentSuoritus)
 
     const columns = [
       EshSuoritusColumn,
