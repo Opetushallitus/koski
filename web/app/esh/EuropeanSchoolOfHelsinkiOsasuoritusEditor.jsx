@@ -41,17 +41,15 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
         model.value.classes.includes(eshSuorituksenClass.secondaryUppers7) ||
         model.value.classes.includes(eshSuorituksenClass.primaryOsasuoritus))
 
+    const rivinTestidTunniste = modelLookup(model, 'koulutusmoduuli.tunniste')
+      ?.value?.data?.koodiarvo
+
     return (
       <tbody
         className={classNames('tutkinnon-osa', groupId, { expanded })}
         data-testid={`tutkinnon-osa-${model.value.classes[0]}`}
       >
-        <tr
-          data-testid={`osasuoritus-row-${
-            modelLookup(model, 'koulutusmoduuli.tunniste')?.value?.data
-              ?.koodiarvo
-          }`}
-        >
+        <tr data-testid={`osasuoritus-row-${rivinTestidTunniste}`}>
           {columns.map((column) =>
             column.renderData({
               model,
@@ -85,14 +83,22 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
           </tr>
         ))}
         {expanded && displayProperties.length > 0 && (
-          <tr className="details" key="details">
+          <tr
+            className="details"
+            key="details"
+            data-testid={`osasuoritus-details-row-${rivinTestidTunniste}`}
+          >
             <td colSpan="4">
               <PropertiesEditor model={model} properties={displayProperties} />
             </td>
           </tr>
         )}
         {expanded && showOsasuoritukset && (
-          <tr className="osasuoritukset" key="osasuoritukset">
+          <tr
+            className="osasuoritukset"
+            key="osasuoritukset"
+            data-testid={`osasuoritukset-row-${rivinTestidTunniste}`}
+          >
             <td colSpan="4">
               <EuropeanSchoolOfHelsinkiSuoritustaulukko
                 parentSuoritus={model}
