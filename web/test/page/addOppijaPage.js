@@ -530,7 +530,7 @@ function AddOppijaPage() {
       return function () {
         return click(
           S(
-            '[data-test-id="maksuttomuus-radio-buttons"] .radio-option-container'
+            '[data-testid="maksuttomuus-radio-buttons"] .radio-option-container'
           )[index]
         )()
       }
@@ -642,22 +642,22 @@ function AddOppijaPage() {
     tutkinnot: function () {
       return extractAsText(
         S(
-          "[data-test-id='tutkinto-autocomplete'] [data-test-id='autocomplete-results']"
+          "[data-testid='tutkinto-autocomplete'] [data-testid='autocomplete-results']"
         )
       )
     },
     tutkinnotIsVisible: function () {
       return isElementVisible(
         S(
-          "[data-test-id='tutkinto-autocomplete'] [data-test-id='autocomplete-results']"
+          "[data-testid='tutkinto-autocomplete'] [data-testid='autocomplete-results']"
         )
       )
     },
     selectPeruste: function (peruste) {
-      return selectFromDropdown("[data-test-id='peruste-dropdown']", peruste)
+      return selectFromDropdown("[data-testid='peruste-dropdown']", peruste)
     },
     perusteet: function () {
-      return extractAsText(S("[data-test-id='peruste-dropdown'] .options"))
+      return extractAsText(S("[data-testid='peruste-dropdown'] .options"))
     },
     selectKieli: function (kieli) {
       return selectFromDropdown('.kieli .dropdown', kieli)

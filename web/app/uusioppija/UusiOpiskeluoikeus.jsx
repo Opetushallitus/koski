@@ -593,7 +593,7 @@ const MaksuttomuusRadioButtons = ({ maksuttomuusAtom }) => {
       options={maksuttomuusOptions}
       selected={maksuttomuusAtom}
       onSelectionChanged={(selected) => maksuttomuusAtom.set(selected.key)}
-      data-test-id="maksuttomuus-radio-buttons"
+      data-testid="maksuttomuus-radio-buttons"
     />
   )
 }
