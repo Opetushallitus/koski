@@ -1,4 +1,5 @@
-import { Page, Locator, expect } from '@playwright/test'
+import { Page, Locator } from '@playwright/test'
+import { expect } from '../../base'
 import { HeaderHuollettavanTiedotSection } from '../../../../app/omattiedot/header/HeaderHuollettavanTiedotSection'
 
 export class KoskiOppijaHaku {

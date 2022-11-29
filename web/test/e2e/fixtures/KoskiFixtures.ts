@@ -1,4 +1,5 @@
-import { Page, expect } from '@playwright/test'
+import { Page } from '@playwright/test'
+import { expect } from '../base'
 
 export class KoskiFixtures {
   constructor(private readonly page: Page) {}
