@@ -1,9 +1,17 @@
 import React from 'baret'
+import * as L from 'partial.lenses'
 import { t } from '../i18n/i18n'
 import {
+  contextualizeSubModel,
+  lensedModel,
   modelData,
   modelLookup,
+  modelProperty,
+  modelSetData,
+  modelSetValue,
   modelTitle,
+  oneOfPrototypes,
+  resolveActualModel,
   wrapOptional
 } from '../editor/EditorModel'
 import { hasArvosana, hasSuorituskieli, tilaText } from '../suoritus/Suoritus'
@@ -20,6 +28,8 @@ import {
 } from '../suoritus/SuoritustaulukkoCommon'
 import { BaseContext } from '../types/EditorModelContext'
 import { EshArvosanaEditor } from '../suoritus/EshArvosanaEditor'
+import { fetchAlternativesBasedOnPrototypes, zeroValue } from '../editor/EnumEditor'
+import { isOneOfModel } from '../types/EditorModels'
 
 // ESHSuoritusColumn
 
@@ -39,6 +49,73 @@ export type ESHSuoritusColumnDataProps = {
   onExpand: OnExpandFn
   hasProperties: boolean
   expanded: boolean
+}
+
+const EshKieliEditor: React.FC<any> = ({ model }) => {
+  // model: koulutusmoduuli
+  if (!modelProperty(model, 'kieli')) {
+    return null
+  }
+  const resolvedKoulutusmoduuli = isOneOfModel(model)
+    ? resolveActualModel(model, model.parent)
+    : model
+
+  const alternativesP = fetchAlternativesBasedOnPrototypes(
+    [resolvedKoulutusmoduuli],
+    'kieli'
+  ).startWith([])
+
+  const kieletP = alternativesP.map((alternatives: any) =>
+    alternatives.map((m: any) => modelLookup(m, 'kieli').value)
+  )
+
+  return (
+    <span className="value kieli">
+      {alternativesP.map((alternatives: any) => {
+        const kieliLens = L.lens<any, any>(
+          (model) => {
+            return modelLookup(model, 'kieli')
+          },
+          (value, model) => {
+            const valittu = modelData(value) as any
+            if (valittu) {
+              const found = alternatives.find((alt: any) => {
+                const altData = modelData(alt, 'kieli') as any
+                return (
+                  altData.koodiarvo === valittu.koodiarvo &&
+                  altData.koodistoUri === valittu.koodistoUri
+                )
+              })
+              if (found) {
+                return modelSetValue(
+                  model,
+                  { data: valittu, value: valittu.value, title: t(valittu.nimi) },
+                  'kieli'
+                )
+              }
+            } else {
+              return modelSetValue(
+                model,
+                zeroValue,
+                'kieli'
+              )
+            }
+          }
+        )
+        const kieliModel = lensedModel(model, kieliLens)
+        return (
+          <Editor
+            key={alternatives.length}
+            model={kieliModel}
+            fetchAlternatives={() => kieletP}
+            showEmptyOption="true"
+            inline={true}
+            sortBy={sortLanguages}
+          />
+        )
+      })}
+    </span>
+  )
 }
 
 export const EshSuoritusColumn: ESHSuoritusColumn = {
@@ -100,17 +177,7 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
             }
           >
             {t(koulutusmoduuliTunniste) + (kieliaine ? ', ' : '')}
-            {kieliaine && (
-              <span className="value kieli">
-                <Editor
-                  model={koulutusmoduuli}
-                  inline={true}
-                  showEmptyOption={true}
-                  path="kieli"
-                  sortBy={sortLanguages}
-                />
-              </span>
-            )}
+            {kieliaine && <EshKieliEditor model={koulutusmoduuli} />}
           </span>
         )}
       </td>
@@ -154,10 +221,7 @@ export const EshArvosanaColumn: ColumnIface<
   renderData: ({ model }) => {
     return (
       <td key="arvosana" className="arvosana" data-testid="arvosana-cell">
-        <EshArvosanaEditor
-          model={model}
-          notFoundText={''}
-        />
+        <EshArvosanaEditor model={model} notFoundText={''} />
       </td>
     )
   }

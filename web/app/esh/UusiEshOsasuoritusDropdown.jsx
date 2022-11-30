@@ -50,8 +50,9 @@ export const UusiEshOsasuoritusDropdown = ({
   const dropdownOppiaineet = fetchAlternativesBasedOnPrototypes(
     oppiaineModels,
     'tunniste'
-  ).map((aineet) =>
-    R.uniqBy((aine) => modelData(aine, 'tunniste.koodiarvo'), aineet).map(
+  ).map(
+    (aineet) =>
+      R.uniqBy((aine) => modelData(aine, 'tunniste.koodiarvo'), aineet) /* .map(
       (aine) => {
         const isMuuOppiaine = aine.value.classes.includes(
           'europeanschoolofhelsinkimuuoppiaine'
@@ -60,7 +61,7 @@ export const UusiEshOsasuoritusDropdown = ({
         Tämä saattanee vaikuttaa hieman häkiltä, mutta tietomallista johtuen muu oppiaine -prototyyppi
         resolvataan manuaalisesti.
         OnlyWhen ja NotWhen -annotaatiot onnistuvat kuitenkin valitsemaan kielioppiaineen / latin / ancient greek oikein.
-        */
+
         return isOneOfModel(aine)
           ? modelSetValue(
               isMuuOppiaine
@@ -69,7 +70,7 @@ export const UusiEshOsasuoritusDropdown = ({
                       muuOppiainePrototype,
                       aine.context
                     ),
-                    aine
+                    aine.parent
                   )
                 : resolveActualModel(aine, aine.parent),
               {
@@ -81,7 +82,7 @@ export const UusiEshOsasuoritusDropdown = ({
             )
           : aine
       }
-    )
+    ) */
   )
 
   const getDropdownDisplayValue = (oppiaine) => {
