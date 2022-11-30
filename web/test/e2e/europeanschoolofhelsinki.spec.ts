@@ -1,6 +1,6 @@
 import { test, expect } from './base'
 
-test.describe('European School of Helsinki', () => {
+test.describe.skip('European School of Helsinki', () => {
   test.beforeAll(async ({ fixtures }) => {
     await fixtures.reset()
   })
