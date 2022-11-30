@@ -116,6 +116,7 @@ export const EnumEditor = ({
     <a
       className="inline enum"
       data-test-id={`hyperlink-for-${koodistoUri || 'unknown'}-enum-editor`}
+      data-testid={`hyperlink-for-${koodistoUri || 'unknown'}-enum-editor`}
       href={asHyperlink(model).url || '#'}
       target={asHyperlink(model).target || '_self'}
     >
@@ -127,6 +128,7 @@ export const EnumEditor = ({
     <span
       className="inline enum"
       data-test-id={`span-for-${koodistoUri || 'unknown'}-enum-editor`}
+      data-testid={`span-for-${koodistoUri || 'unknown'}-enum-editor`}
     >
       {useHyphenate
         ? hyphenate(modelTitle(model, undefined, titleFormatter))

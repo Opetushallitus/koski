@@ -19,6 +19,11 @@ import { tutkinnonNimi } from './Koulutusmoduuli'
 import { isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus } from '../ammatillinen/TutkinnonOsa'
 
 const isInPast = (dateStr) => parseISODate(dateStr) < new Date()
+const intersects = (as, bs) => R.intersection(as, bs).length !== 0
+const ilmanArviointiaSuoritettavatClasses = [
+  'arvioinniton',
+  'mahdollisestiarvioinniton'
+]
 
 export const arvioituTaiVahvistettu = (suoritus) => {
   if (suoritus.value.classes.includes('paatasonsuoritus')) {
@@ -33,10 +38,7 @@ export const suoritusValmis = (suoritus) => {
     const vahvistuspäivä = modelData(suoritus, 'vahvistus.päivä')
     return vahvistuspäivä && isInPast(vahvistuspäivä)
   } else if (
-    R.intersection(suoritus.value.classes, [
-      'arvioinniton',
-      'mahdollisestiarvioinniton'
-    ]).length !== 0
+    intersects(suoritus.value.classes, ilmanArviointiaSuoritettavatClasses)
   ) {
     return true
   } else {
@@ -54,7 +56,8 @@ export const hasArviointi = (suoritus) => !!modelData(suoritus, 'arviointi.-1')
 export const hasArvosana = (suoritus) =>
   !!modelData(suoritus, 'arviointi.-1.arvosana')
 export const arviointiPuuttuu = (m) =>
-  !m.value.classes.includes('arvioinniton') && !hasArvosana(m)
+  !intersects(m.value.classes, ilmanArviointiaSuoritettavatClasses) &&
+  !hasArvosana(m)
 export const onKeskeneräisiäOsasuorituksia = (suoritus) => {
   return keskeneräisetOsasuoritukset(suoritus).length > 0
 }

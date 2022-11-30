@@ -1,10 +1,12 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
 ## 21.11.2022
+
 - Nuorten perusopetuksen vuosiluokan päätason suoritus sallitaan vahvistaa ilman osasuorituksia,
   kun oppija on vuosiluokkiin sitomattomassa opetuksessa.
 
 ## 15.11.2022
+
 - Ammatillisen perustutkinnon osatutkinnosta valmistuneilta vaaditaan keskiarvo, kun valmistumispäivä on 1.1.2022 tai sen jälkeen.
 
 ## 11.11.2022

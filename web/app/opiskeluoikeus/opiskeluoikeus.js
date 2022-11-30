@@ -32,7 +32,12 @@ const tuvaTilat = [
   'valiaikaisestikeskeytynyt',
   'valmistunut'
 ]
-const vainVapaanSivistystyönKoulutuksissaKäytettävätTilat = [
+const muunKuinSäännellynKoulutuksenTilat = [
+  'lasna',
+  'hyvaksytystisuoritettu',
+  'keskeytynyt'
+]
+const vainVstJaMuksKoulutuksissaKäytettävätTilat = [
   'hyvaksytystisuoritettu',
   'keskeytynyt'
 ]
@@ -130,7 +135,9 @@ const filterBySuorituksenTyyppi = (
     return sallitutTilat ? tilat.filter(includedIn(sallitutTilat)) : []
   }
 
-  return tilat.filter(
-    notIncludedIn(vainVapaanSivistystyönKoulutuksissaKäytettävätTilat)
-  )
+  if (opiskeluoikeudenTyyppi?.koodiarvo === 'muukuinsaanneltykoulutus') {
+    return tilat.filter(includedIn(muunKuinSäännellynKoulutuksenTilat))
+  }
+
+  return tilat.filter(notIncludedIn(vainVstJaMuksKoulutuksissaKäytettävätTilat))
 }

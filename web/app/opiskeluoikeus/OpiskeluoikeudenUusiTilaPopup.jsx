@@ -121,7 +121,10 @@ export const OpiskeluoikeudenUusiTilaPopup = ({
           isAllowedDate={isAllowedDate}
         />
       </div>
-      <div className="property tila">
+      <div
+        className="property tila"
+        data-testid="opiskeluoikeuden-tila-valitsin"
+      >
         <label>
           <Text name="Tila" />
           {':'}

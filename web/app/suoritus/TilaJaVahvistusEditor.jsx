@@ -145,6 +145,7 @@ const MerkitseValmiiksiButton = ({ model }) => {
         title={title}
         disabled={disabled}
         onClick={() => addingAtom.modify((x) => !x)}
+        data-testid="merkitse-suoritus-valmiiksi"
       >
         {buttonText}
       </button>

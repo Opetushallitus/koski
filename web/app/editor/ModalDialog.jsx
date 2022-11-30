@@ -66,6 +66,7 @@ export default ({
               submittedAtom.set(true)
               onSubmit()
             }}
+            data-testid="dialog-vahvista"
           >
             <Text name={okTextKey} />
           </button>

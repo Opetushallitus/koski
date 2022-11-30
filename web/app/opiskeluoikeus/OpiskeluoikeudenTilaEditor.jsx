@@ -116,7 +116,10 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
           ))}
           {showLisaaTila && (
             <li className="add-item">
-              <a onClick={showAddDialog}>
+              <a
+                onClick={showAddDialog}
+                data-testid="lisää-opiskeluoikeuden-tila-btn"
+              >
                 <Text name="Lisää opiskeluoikeuden tila" />
               </a>
             </li>
@@ -152,9 +155,14 @@ export const fixOpiskeluoikeudenPäättymispäivä = (model) =>
 
 export const onLopputila = (tila) => {
   const koodi = modelData(tila).koodiarvo
-  return (
-    koodi === 'eronnut' || koodi === 'valmistunut' || koodi === 'peruutettu'
-  )
+  const terminaalitilat = [
+    'eronnut',
+    'valmistunut',
+    'peruutettu',
+    'keskeytynyt',
+    'hyvaksytystisuoritettu'
+  ]
+  return terminaalitilat.includes(koodi)
 }
 
 export const onLopputilassa = (opiskeluoikeus) => {

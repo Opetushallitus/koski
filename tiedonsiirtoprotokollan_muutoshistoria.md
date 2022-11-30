@@ -1,7 +1,13 @@
+## 30.11.2022
+
+- Lisätty uusi muun kuin säännellyn koulutuksen tietomalli.
+
 ## 15.11.2022
+
 - Ammatillisen perustutkinnon osatutkinnosta valmistuneilta vaaditaan keskiarvo, kun valmistumispäivä on 1.1.2022 tai sen jälkeen.
 
 ## 9.11.2022
+
 - TUVA-koulutuksen valinnaisten opintojen kokonaislaajuus voidaan syöttää ilman osasuorituksia
 - Jatkuvaan oppimiseen suunnatun vapaan sivistystyön koulutuksen opiskeluoikeuden koulutusmoduulista poistettu `kuvaus`-kenttä.
 - Opiskeluoikeuden siirto lähdejärjestelmän id:llä päivittää samalla id:llä ja oppilaitos-oid:lla löytyvää opiskeluoikeutta.
@@ -10,16 +16,18 @@
   - Jos samalla lähdejärjestelmän id:n ja oppilaitos-oid:n yhdistelmällä ei löydy opiskeluoikeutta, luodaan uusi opiskeluoikeus.
 
 ## 4.11.2022
+
 - Suorituksen tilan deprekointi dokumentoitu selkeämmin.
 
 ## 26.10.2022
+
 - Tietomalliin lisätty katselmoitava toteutus jatkuvaan oppimiseen suunnatulle vapaan sivistyön koulutuksen opiskeluoikeudelle. Tämän tietomallin mukaisia opiskeluoikeuksia
-ei pysty vielä tallentamaan.
+  ei pysty vielä tallentamaan.
 
 ## 17.10.2022
 
 - Tietomalliin lisätty osittainen toteutus Helsingin eurooppalaista koulua varten. Tämän tietomallin mukaisia opiskeluoikeuksia
-ei pysty vielä tallentamaan.
+  ei pysty vielä tallentamaan.
 
 ## 4.10.2022
 
@@ -38,15 +46,19 @@ ei pysty vielä tallentamaan.
 - Lisätty International school -opiskeluoikeuden MYP-suorituksen arviointiasteikkoon `Pass` ja `Fail` koodistosta `arviointiasteikkointernationalschool`
 
 ## 12.7.2022
+
 - Lisätty ammatillisen koulutuksen järjestämisluvan piirissä oleville TUVA-opiskeluoikeuksille sallituksi tilaksi 'loma'
 
 ## 8.7.2022
+
 - Lisätty TUVA-koulutuksen perusopetuksen lisätietoihin uusi kenttä `erityisenTuenPäätökset`
 
 ## 5.7.2022
+
 - Sallitaan ammatillisen yhteisen tutkinnon osan osa-alueen uusi koodi VVAI22 (Viestintä- ja vuorovaikutus äidinkielellä)
 
 ## 4.7.2022
+
 - Sallitaan muuttuneet ammatillisen koulutuksen yhteisten tutkinnon osien koodit:
   - 106727: Viestintä- ja vuorovaikutusosaaminen
   - 106728: Matemaattis-luonnontieteellinen osaaminen
@@ -67,6 +79,7 @@ ei pysty vielä tallentamaan.
 - Lisätty vapaan sivistystyön kotoutumiskoulutuksen opetussuunnitelman 2022 mukainen tietomalli
 
 ## 23.5.2022
+
 - VST-opiskeluoikeuksiin on lisätty linkitys paikallisiin opetussuunnitelmiin ePerusteissa
 
 ## 19.5.2022

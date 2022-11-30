@@ -336,6 +336,7 @@ object Responses {
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KELA_SUPPEA"))
       ))
     )),
@@ -347,6 +348,7 @@ object Responses {
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KELA_LAAJA"))
       ))
     )),
@@ -357,7 +359,8 @@ object Responses {
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"))
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"))
       ))
     )),
     "Pertti" -> List(Map(
@@ -398,7 +401,8 @@ object Responses {
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"))
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"))
       ))
     )),
     "Lasse" -> List(Map(
@@ -409,7 +413,9 @@ object Responses {
           Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO_LUOVUTUSPALVELU"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"))))
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"))
+      ))
     )),
     "esiopetus" -> List(Map(
       "oidHenkilo" -> MockUsers.jyväskylänKatselijaEsiopetus.oid,

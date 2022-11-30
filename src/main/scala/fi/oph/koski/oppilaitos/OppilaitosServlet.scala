@@ -21,6 +21,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
   val vapaanSivistysTyönTyypit = List(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus)
   val tuvaTyypit = List(OpiskeluoikeudenTyyppi.tuva)
   val eshTyypit = List(OpiskeluoikeudenTyyppi.europeanschoolofhelsinki)
+  val muunKuinSäännellynKoulutuksenTyypit = List(OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus)
 
   // Organisaatiopoikkeukset, jotka käydään ensin läpi. Esimerkiksi, jos on tarve näyttää vain yhdentyypinen opiskeluoikeus organisaatiolle, laita OID:t tähän listaan.
   val organisaatioPoikkeukset = Map(
@@ -44,14 +45,15 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
       case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => perusopetuksenTyypit ++ ammatillisenTyypit ++ tuvaTyypit
       case tyyppi if List(lukio).contains(tyyppi) => perusopetuksenTyypit ++ lukionTyypit ++ tuvaTyypit
       case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ lukionTyypit ++ saksalaisenKoulunTyypit ++ internationalSchoolTyypit ++ tuvaTyypit
+      case tyyppi if List(muunKuinSäännellynKoulutuksenOppilaitokset).contains(tyyppi) => List.empty
       case _ => perusopetuksenTyypit ++ ammatillisenTyypit ++ vapaanSivistysTyönTyypit ++ tuvaTyypit
     }
 
   private def byOrganisaatioTyyppi(organisaatiot: List[OrganisaatioHierarkia]) =
     if (organisaatiot.flatMap(_.organisaatiotyypit).contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA)) {
-      esiopetuksenTyypit
+      esiopetuksenTyypit ++ muunKuinSäännellynKoulutuksenTyypit
     } else {
-      Nil
+      muunKuinSäännellynKoulutuksenTyypit
     }
 
   private def byOrganisaatioPoikkeus(organisaatiot: List[OrganisaatioHierarkia]) = organisaatioPoikkeukset.filter(_._1.exists(poikkeusOid => organisaatiot.map(_.oid).contains(poikkeusOid))).flatMap(_._2).toList

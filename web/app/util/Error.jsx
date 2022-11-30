@@ -75,7 +75,9 @@ export const Error = ({ error }) => {
       {ift(
         showAtom,
         <span>
-          <span className="error-text">{errorText(error)}</span>
+          <span className="error-text" data-testid="error">
+            {errorText(error)}
+          </span>
           <a onClick={() => showAtom.set(false)}>{'✕'}</a>
         </span>
       )}

@@ -254,4 +254,20 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_muukuinsaanneltykoulutus",
+  "koodiArvo" : "muukuinsaanneltykoulutus",
+  "metadata" : [ {
+    "nimi" : "Muu kuin säännelty koulutus",
+    "lyhytNimi" : "MUKS",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Muu kuin säännelty koulutus",
+    "lyhytNimi" : "MUKS",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

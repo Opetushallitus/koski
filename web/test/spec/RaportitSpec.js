@@ -7,6 +7,7 @@ const kaikkiOrganisaatiot = [
   'Helsingin yliopisto',
   'International School of Helsinki',
   'Itä-Suomen yliopisto',
+  'Jatkuva Koulutus Oy',
   'Jyväskylän normaalikoulu',
   'Kallaveden lukio',
   'Kulosaaren ala-aste',

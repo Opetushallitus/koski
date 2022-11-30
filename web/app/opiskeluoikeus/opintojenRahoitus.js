@@ -1,6 +1,10 @@
 import Http from '../util/http'
 import Bacon from 'baconjs'
-import { jotpaSallitutRahoituskoodiarvot } from '../jotpa/jotpa'
+import {
+  isJotpaRahoitteinenKoodiarvo,
+  isJotpaRahoitteinen,
+  jotpaSallitutRahoituskoodiarvot
+} from '../jotpa/jotpa'
 
 const valtionosuusrahoitteinen = '1'
 
@@ -29,13 +33,15 @@ export const autoFillRahoitusmuoto = ({
 }
 
 export const opiskeluoikeudenTilaVaatiiRahoitusmuodon = (
-  opiskeluoikeudenTyyppi,
+  opiskeluoikeudenTyyppiKoodiarvo,
   tila,
-  suoritustyyppi
+  suoritustyyppiKoodiarvo
 ) => {
   if (
-    opiskeluoikeudenTyyppi === 'vapaansivistystyonkoulutus' &&
-    suoritustyyppi === 'vstjotpakoulutus'
+    isJotpaRahoitteinenKoodiarvo(
+      opiskeluoikeudenTyyppiKoodiarvo,
+      suoritustyyppiKoodiarvo
+    )
   ) {
     return ['lasna', 'hyvaksytystisuoritettu'].includes(tila)
   }
@@ -48,26 +54,19 @@ export const opiskeluoikeudenTilaVaatiiRahoitusmuodon = (
       'internationalschool',
       'diatutkinto',
       'tuva'
-    ].includes(opiskeluoikeudenTyyppi)
+    ].includes(opiskeluoikeudenTyyppiKoodiarvo)
   ) {
     return ['lasna', 'valmistunut'].includes(tila)
   }
-  if (opiskeluoikeudenTyyppi === 'ammatillinenkoulutus') {
+  if (opiskeluoikeudenTyyppiKoodiarvo === 'ammatillinenkoulutus') {
     return ['lasna', 'valmistunut', 'loma'].includes(tila)
   }
   return false
 }
 
-export const opiskeluoikeudenRahoitusmuotoEiVoiVaihdella = (
-  opiskeluoikeudenTyyppi,
-  suoritustyyppi
-) =>
-  opiskeluoikeudenTyyppi === 'vapaansivistystyonkoulutus' &&
-  suoritustyyppi === 'vstjotpakoulutus'
+export const opiskeluoikeudenRahoitusmuotoEiVoiVaihdella = isJotpaRahoitteinen
 
-export const defaultRahoituskoodi = (suoritustyyppi) => {
-  if (suoritustyyppi?.koodiarvo === 'vstjotpakoulutus') {
-    return jotpaSallitutRahoituskoodiarvot[0]
-  }
-  return valtionosuusrahoitteinen
-}
+export const defaultRahoituskoodi = (opiskeluoikeudenTyyppi, suoritustyyppi) =>
+  isJotpaRahoitteinen(opiskeluoikeudenTyyppi, suoritustyyppi)
+    ? jotpaSallitutRahoituskoodiarvot[0]
+    : valtionosuusrahoitteinen

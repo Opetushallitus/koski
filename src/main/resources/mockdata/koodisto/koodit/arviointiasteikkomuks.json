@@ -1,0 +1,50 @@
+[
+  {
+    "koodiUri": "arviointiasteikkomuks_hylatty",
+    "koodiArvo": "hylatty",
+    "metadata": [
+      {
+        "nimi": "Hylätty",
+        "lyhytNimi": "Hylätty",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Underkänd",
+        "lyhytNimi": "Underkänd",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Hylätty",
+        "lyhytNimi": "Hylätty",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkomuks_hyvaksytty",
+    "koodiArvo": "hyvaksytty",
+    "metadata": [
+      {
+        "nimi": "Hyväksytty",
+        "lyhytNimi": "Hyväksytty",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Godkänd",
+        "lyhytNimi": "Godkänd",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Hyväksytty",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

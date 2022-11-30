@@ -3,8 +3,10 @@ let currentHook = null
 
 export const addExitHook = (msg) => {
   removeExitHook()
-  currentHook = makeExitHook(msg)
-  window.addEventListener('beforeunload', currentHook)
+  if (!window.DISABLE_EXIT_HOOKS) {
+    currentHook = makeExitHook(msg)
+    window.addEventListener('beforeunload', currentHook)
+  }
 }
 
 export const removeExitHook = () => {

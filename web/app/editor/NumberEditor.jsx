@@ -32,6 +32,7 @@ export class NumberEditor extends React.Component {
           defaultValue={value}
           onChange={onChange}
           className={'editor-input inline number' + (error ? ' error' : '')}
+          data-testid="number-editor"
         />
       ) : (
         <span className="inline number">{value}</span>
