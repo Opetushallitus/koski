@@ -18766,7 +18766,6 @@
             }
           }
         },
-        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "ebtutkinnonosasuoritus",
           "koodistoUri" : "suorituksentyyppi"
@@ -18876,7 +18875,6 @@
             "koodistoUri" : "kieli"
           }
         },
-        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "ebtutkinnonosasuoritus",
           "koodistoUri" : "suorituksentyyppi"
@@ -19008,7 +19006,6 @@
             "koodistoUri" : "kieli"
           }
         },
-        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "ebtutkinnonosasuoritus",
           "koodistoUri" : "suorituksentyyppi"

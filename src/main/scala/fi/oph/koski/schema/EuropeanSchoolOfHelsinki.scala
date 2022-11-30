@@ -358,9 +358,12 @@ object SecondaryUpperLuokkaAste {
  * OSASUORITUKSET
  *****************************************************************************/
 
-trait EuropeanSchoolOfHelsinkiOsasuoritus extends Suoritus with Vahvistukseton with Yksilöllistettävä {
+trait EuropeanSchoolOfHelsinkiOsasuoritus extends Suoritus with Vahvistukseton {
   @KoodistoUri("suorituksentyyppi")
   def tyyppi: Koodistokoodiviite
+}
+
+trait YksilöllistettyEuropeanSchoolOfHelsinkiOsasuoritus extends EuropeanSchoolOfHelsinkiOsasuoritus with Yksilöllistettävä {
   @DefaultValue(false)
   @Description("Tieto siitä, onko oppimäärä yksilöllistetty (true/false).")
   @Tooltip("Onko oppilas opiskellut yksilöllisen oppimäärän.")
@@ -378,7 +381,7 @@ trait EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus extends EuropeanSch
   def suorituskieli: Koodistokoodiviite
 }
 
-trait PrimaryOsasuoritus extends EuropeanSchoolOfHelsinkiOsasuoritus
+trait PrimaryOsasuoritus extends YksilöllistettyEuropeanSchoolOfHelsinkiOsasuoritus
 
 case class PrimaryLapsiOppimisalueenSuoritus(
   @Title("Oppimisalue")
@@ -410,9 +413,9 @@ case class SecondaryLowerOppiaineenSuoritus(
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritussecondarylower")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "europeanschoolofhelsinkiosasuoritussecondarylower", koodistoUri = "suorituksentyyppi"),
   suorituskieli: Koodistokoodiviite
-) extends EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus
+) extends EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus with YksilöllistettyEuropeanSchoolOfHelsinkiOsasuoritus
 
-trait SecondaryUpperOppiaineenSuoritus extends EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus
+trait SecondaryUpperOppiaineenSuoritus extends EuropeanSchoolOfHelsinkiSuorituskielellinenOsasuoritus with YksilöllistettyEuropeanSchoolOfHelsinkiOsasuoritus
 
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S6")
 case class SecondaryUpperOppiaineenSuoritusS6(
@@ -441,7 +444,7 @@ case class EBTutkinnonOsasuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: SecondaryOppiaine,
   // TODO: TOR-1685: Voiko tämä olla EB-tutkinnossa?
-  yksilöllistettyOppimäärä: Boolean = false,
+  // yksilöllistettyOppimäärä: Boolean = false,
   @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ebtutkinnonosasuoritus", koodistoUri = "suorituksentyyppi"),
   suorituskieli: Koodistokoodiviite,
