@@ -98,8 +98,9 @@ test.describe('European School of Helsinki', () => {
 
           await expect(customPage).toHaveURL(
             new RegExp(
-              `koski\/oppija\/1\.2\..*\?1\.2\..*\.suoritus=${vuosiluokka}$`
-            )
+              `koski\\/oppija\\/1\\.2\\..*\\?1\\.2\\..*\\.suoritus=${vuosiluokka}$`
+            ),
+            { timeout: 20000 }
           )
           await expect(oppijaPage.muokkausNäkymäBtn).toBeVisible()
         })
