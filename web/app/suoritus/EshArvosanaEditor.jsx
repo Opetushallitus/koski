@@ -10,12 +10,14 @@ import {
   modelLookup,
   modelSetValue,
   contextualizeSubModel,
-  oneOfPrototypes
+  oneOfPrototypes,
+  resolveActualModel
 } from '../editor/EditorModel'
 import * as L from 'partial.lenses'
 import { sortGrades } from '../util/sorting'
 import { fetchAlternativesBasedOnPrototypes } from '../editor/EnumEditor'
 import { fixArviointi } from './Suoritus'
+import { isOneOfModel } from '../types/EditorModels'
 
 export const EshArvosanaEditor = ({ model, notFoundText, ...rest }) => {
   if (!model.context.edit) {
@@ -33,13 +35,14 @@ export const EshArvosanaEditor = ({ model, notFoundText, ...rest }) => {
 
   model = fixArviointi(model)
   const arviointi = wrapOptional(modelLookup(model, 'arviointi'))
-  const protoArviointi = arviointi.oneOfPrototypes
-    ? arviointi
-    : contextualizeSubModel(
-        arviointi.arrayPrototype,
-        arviointi,
-        modelItems(arviointi).length
-      )
+  const uusiArviointiModel = contextualizeSubModel(
+    arviointi.arrayPrototype,
+    arviointi,
+    modelItems(arviointi).length
+  )
+  const protoArviointi = isOneOfModel(uusiArviointiModel)
+    ? resolveActualModel(uusiArviointiModel, uusiArviointiModel.parent)
+    : uusiArviointiModel
   const alternativesP = fetchAlternativesBasedOnPrototypes(
     oneOfPrototypes(protoArviointi),
     'arvosana'

@@ -157,7 +157,6 @@ export const EshArvosanaColumn: ColumnIface<
         <EshArvosanaEditor
           model={model}
           notFoundText={''}
-          aria-label="ESH arvosanaeditor"
         />
       </td>
     )
