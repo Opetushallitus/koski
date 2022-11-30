@@ -135,6 +135,6 @@ object EuropeanSchoolOfHelsinkiValidation {
   }
 
   private def osasuorituksetKunnossa(s: EBTutkinnonOsasuoritus): Boolean = {
-    s.osasuoritukset.exists(_.length > 1)
+    s.osasuoritukset.exists(_.length >= 1)
   }
 }
