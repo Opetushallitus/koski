@@ -1,13 +1,17 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestelmäId
+import fi.oph.koski.documentation.ExampleData.{jyväskylä, opiskeluoikeusEronnut, opiskeluoikeusKatsotaanEronneeksi, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, jyväskylänNormaalikoulu, ressunLukio}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.MockUsers.{jyväskylänNormaalikoulunPalvelukäyttäjä}
+import fi.oph.koski.localization.LocalizedStringImplicits._
+
 import fi.oph.koski.schema._
 import mojave._
 
@@ -568,6 +572,40 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       ))
     )) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää("Vuosiluokan 9 suoritus ei voi alkaa opiskeluoikeuden päättymisen jälkeen"))
+    }
+  }
+
+  "Opiskeluoikeus alkaa myöhemmin kuin aikaisin päätason suoritus -> HTTP 400" in {
+    val seiskaluokanSuoritus = defaultOpiskeluoikeus.copy(
+      lähdejärjestelmänId = Some(primusLähdejärjestelmäId("primus-30405321")),
+      suoritukset = List(
+        seitsemännenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2017, 1, 1)),
+          vahvistus = Some(HenkilövahvistusPaikkakunnalla(LocalDate.of(2017, 1, 1), jyväskylä, jyväskylänNormaalikoulu, List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
+        )),
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2017, 1, 1), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2019, 1, 1), opiskeluoikeusKatsotaanEronneeksi)
+      ))
+    )
+
+    putOpiskeluoikeus(seiskaluokanSuoritus, headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+      verifyResponseStatus(200)
+    }
+
+    val kasiluokanSuoritusVäärälläAlkupäivällä = seiskaluokanSuoritus.copy(
+      suoritukset = List(
+        // valmis seiskaluokan suoritus kopioidaan tämän rinnalle luokassa OpiskeluoikeusChangeMigrator
+        kahdeksannenLuokanSuoritus.copy(alkamispäivä = Some(LocalDate.of(2018, 1, 1)),
+          vahvistus = None
+        )),
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2018, 1, 1), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2019, 1, 3), opiskeluoikeusKatsotaanEronneeksi)
+      ))
+    )
+
+    putOpiskeluoikeus(kasiluokanSuoritusVäärälläAlkupäivällä, headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+      verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.suorituksenAlkamispäiväEnnenOpiskeluoikeudenAlkamispäivää("opiskeluoikeuden ensimmäisen tilan alkamispäivä (2018-01-01) oltava sama tai aiempi kuin päätason suorituksen alkamispäivä (2017-01-01)"))
     }
   }
 
