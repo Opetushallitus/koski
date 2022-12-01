@@ -5,6 +5,7 @@ describe('VST', function () {
   var editor = opinnot.opiskeluoikeusEditor()
   var addOppija = AddOppijaPage()
   var page = KoskiPage()
+  var opiskeluoikeus = OpiskeluoikeusDialog()
 
   describe('Opiskeluoikeuden lisääminen oppivelvollisten suorituksella', function () {
     before(
@@ -563,6 +564,21 @@ describe('VST', function () {
             expect(osasuoritukset.length).to.equal(2)
           })
         })
+
+        describe('Opiskeluoikeuden tilan lisääminen toimii', function () {
+          before(
+            editor.edit,
+            opinnot.avaaLisaysDialogi,
+            opiskeluoikeus.tila().aseta('hyvaksytystisuoritettu'),
+            opiskeluoikeus.tallenna
+          )
+
+          it('toimii', function () {
+            expect(opinnot.lisääSuoritusDialog.isLinkVisible('Lisää')).to.equal(
+              false
+            )
+          })
+        })
       })
     })
   })
@@ -660,6 +676,21 @@ describe('VST', function () {
             )
 
             it('tallentaminen onnistuu', function () {})
+
+            describe('Opiskeluoikeuden tilan lisääminen toimii', function () {
+              before(
+                editor.edit,
+                opinnot.avaaLisaysDialogi,
+                opiskeluoikeus.tila().aseta('katsotaaneronneeksi'),
+                opiskeluoikeus.tallenna
+              )
+
+              it('toimii', function () {
+                expect(
+                  opinnot.lisääSuoritusDialog.isLinkVisible('Lisää')
+                ).to.equal(false)
+              })
+            })
           })
         })
       })
