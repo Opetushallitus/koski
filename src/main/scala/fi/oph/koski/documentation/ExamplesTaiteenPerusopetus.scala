@@ -25,7 +25,7 @@ object ExamplesTaiteenPerusopetus {
     nimi = Some(Finnish("Helsingin kaupungin suomenkielinen työväenopisto"))
   )
 
-  val arviointiHyväksytty = TaiteenPerusopetuksenSanallinenArviointi(
+  val arviointiHyväksytty = TaiteenPerusopetuksenArviointi(
     päivä = alkupäivä,
     arvioitsijat = Some(
       List(
@@ -59,7 +59,7 @@ object ExamplesTaiteenPerusopetus {
       tila = Koodistokoodiviite("hyvaksytystisuoritettu", "koskiopiskeluoikeudentila")
     )
 
-    val aloittanut = TaiteenPerusopetuksenOpiskeluoikeus(
+    val aloitettuYleinenOppimäärä = TaiteenPerusopetuksenOpiskeluoikeus(
       oid = None,
       versionumero = None,
       aikaleima = None,
@@ -71,12 +71,13 @@ object ExamplesTaiteenPerusopetus {
           tilaLäsnä()
         )
       ),
+      oppimäärä = Koodistokoodiviite("yleinenoppimaara", "taiteenperusopetusoppimäärä"),
       suoritukset = List(PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia),
       organisaatiohistoria = None,
       arvioituPäättymispäivä = None
     )
 
-    val hyväksytystiSuoritettuLaajatPerusopinnot = TaiteenPerusopetuksenOpiskeluoikeus(
+    val hyväksytystiSuoritettuLaajaOppimäärä = TaiteenPerusopetuksenOpiskeluoikeus(
       oid = None,
       versionumero = None,
       aikaleima = None,
@@ -89,25 +90,11 @@ object ExamplesTaiteenPerusopetus {
           tilaHyväksytystiSuoritettu(alkupäivä.plusMonths(6))
         )
       ),
-      suoritukset = List(PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia),
-      organisaatiohistoria = None,
-      arvioituPäättymispäivä = Some(alkupäivä.plusYears(1))
-    )
-
-    val hyväksytystiSuoritettuLaajatSyventävätOpinnot = TaiteenPerusopetuksenOpiskeluoikeus(
-      oid = None,
-      versionumero = None,
-      aikaleima = None,
-      lähdejärjestelmänId = None,
-      oppilaitos = Some(helsinginTyöväenopistoOppilaitos),
-      koulutustoimija = Some(helsinginKaupunkiKoulutustoimija),
-      tila = TaiteenPerusopetuksenOpiskeluoikeudenTila(
-        opiskeluoikeusjaksot = List(
-          tilaLäsnä(alkupäivä.plusMonths(6)),
-          tilaHyväksytystiSuoritettu(alkupäivä.plusYears(1))
-        )
+      oppimäärä = Koodistokoodiviite("laajaoppimaara", "taiteenperusopetusoppimäärä"),
+      suoritukset = List(
+        PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia,
+        PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
       ),
-      suoritukset = List(PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia),
       organisaatiohistoria = None,
       arvioituPäättymispäivä = Some(alkupäivä.plusYears(1))
     )
@@ -168,7 +155,7 @@ object ExamplesTaiteenPerusopetus {
         diaari: String,
         opintotaso: String,
         laajuus: Option[Double]
-      ) = TaiteenPerusopetuksenOpintotaso(
+      ) = MusiikinOpintotaso(
         opintotaso = Koodistokoodiviite(opintotaso, "taiteenperusopetusopintotaso"),
         taiteenala = musiikinTaiteenala,
         laajuus = laajuus.map(LaajuusOpintopisteissä(_)),
@@ -191,7 +178,6 @@ object ExamplesTaiteenPerusopetus {
     object Koulutusmoduuli {
       def paikallinenOsasuoritus(tunniste: String, laajuus: Double) = TaiteenPerusopetuksenPaikallinenOpintokokonaisuus(
         tunniste = PaikallinenKoodi(tunniste, Finnish("Musiikin kurssi")),
-        kuvaus = Finnish("Musiikin kurssin kuvaus"),
         laajuus = LaajuusOpintopisteissä(laajuus)
       )
     }
@@ -202,15 +188,14 @@ object ExamplesTaiteenPerusopetus {
   lazy val oppijaOpiskeluoikeusAloitettu = Oppija(
     henkilö = MockOppijat.asUusiOppija(taiteenPerusopetusAloitettu),
     opiskeluoikeudet = List(
-      Opiskeluoikeus.aloittanut
+      Opiskeluoikeus.aloitettuYleinenOppimäärä
     )
   )
 
   lazy val oppijaOpiskeluoikeusValmis = Oppija(
     henkilö = MockOppijat.asUusiOppija(taiteenPerusopetusValmis),
     opiskeluoikeudet = List(
-      Opiskeluoikeus.hyväksytystiSuoritettuLaajatPerusopinnot,
-      Opiskeluoikeus.hyväksytystiSuoritettuLaajatSyventävätOpinnot
+      Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä
     )
   )
 
