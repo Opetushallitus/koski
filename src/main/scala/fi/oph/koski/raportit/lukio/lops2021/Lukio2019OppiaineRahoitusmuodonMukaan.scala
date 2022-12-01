@@ -54,9 +54,9 @@ object Lukio2019RahoitusmuotoEiTiedossa {
 }
 
 object Lukio2019OppiaineRahoitusmuodonMukaan extends DatabaseConverters {
-  def createMaterializedView(s: Schema) =
+  def createPrecomputedTable(s: Schema) =
     sqlu"""
-      create materialized view #${s.name}.lukion_aineopintojen_moduulien_rahoitusmuodot as select
+      create table #${s.name}.lukion_aineopintojen_moduulien_rahoitusmuodot as select
         opiskeluoikeus.oppilaitos_oid,
         opiskeluoikeus.opiskeluoikeus_oid,
         opiskeluoikeus.oppija_oid,

@@ -4,9 +4,9 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
 object OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset {
 
-  def createMaterializedView(s: Schema) =
+  def createPrecomputedTable(s: Schema) =
     sqlu"""
-      create materialized view #${s.name}.osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella as select
+      create table #${s.name}.osasuoritus_arvioitu_opiskeluoikeuden_ulkopuolella as select
         opiskeluoikeus.opiskeluoikeus_oid,
         opiskeluoikeus.oppilaitos_oid,
         osasuoritus.osasuoritus_id,

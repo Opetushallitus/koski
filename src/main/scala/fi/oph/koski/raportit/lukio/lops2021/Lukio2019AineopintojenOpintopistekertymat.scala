@@ -28,9 +28,9 @@ object Lukio2019AineopintojenOpintopistekertymat extends DatabaseConverters {
     )
   }
 
-  def createMaterializedView(s: Schema) =
+  def createPrecomputedTable(s: Schema) =
     sqlu"""
-      create materialized view #${s.name}.lukion_aineopintojen_opintopistekertyma as select
+      create table #${s.name}.lukion_aineopintojen_opintopistekertyma as select
         oppilaitos_oid,
         arviointi_paiva,
         oppimaara_koodiarvo,

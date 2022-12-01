@@ -41,9 +41,9 @@ object LukioOppiaineenOppimaaranKurssikertymat extends DatabaseConverters {
     )
   }
 
-  def createMaterializedView(s: Schema) =
+  def createPrecomputedTable(s: Schema) =
     sqlu"""
-      create materialized view #${s.name}.lukion_oppiaineen_oppimaaran_kurssikertyma as select
+      create table #${s.name}.lukion_oppiaineen_oppimaaran_kurssikertyma as select
         oppilaitos_oid,
         arviointi_paiva,
         perusteen_diaarinumero,
