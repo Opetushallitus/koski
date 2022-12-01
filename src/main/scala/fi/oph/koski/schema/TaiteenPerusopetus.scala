@@ -16,8 +16,11 @@ case class TaiteenPerusopetuksenOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos] = None,
   koulutustoimija: Option[Koulutustoimija] = None,
   tila: TaiteenPerusopetuksenOpiskeluoikeudenTila,
-  @MinItems(1)
-  @MaxItems(1)
+  @Title("Oppimäärä")
+  @Description("Taiteen perusopetuksen opiskeluoikeuden oppimäärä")
+  @KoodistoUri("taiteenperusopetusoppimäärä")
+  oppimäärä: Koodistokoodiviite,
+  @MaxItems(2)
   suoritukset: List[TaiteenPerusopetuksenPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.taiteenperusopetus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.taiteenperusopetus,
@@ -43,7 +46,7 @@ case class TaiteenPerusopetuksenOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("mitatoity")
-  @KoodistoKoodiarvo("keskeytynyt")
+  @KoodistoKoodiarvo("keskeytynyt") //TODO: korvaa uudella tilalla päättynyt / paattynyt
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
   tila: Koodistokoodiviite,
 ) extends KoskiOpiskeluoikeusjakso
@@ -55,92 +58,180 @@ case class TaiteenPerusopetuksenOpiskeluoikeusjakso(
 trait TaiteenPerusopetuksenPäätasonSuoritus
   extends KoskeenTallennettavaPäätasonSuoritus
 
-trait TaiteenPerusopetuksenYleisenOppimääränSuoritus
-  extends TaiteenPerusopetuksenPäätasonSuoritus
-
-trait TaiteenPerusopetuksenLaajanOppimääränSuoritus
-  extends TaiteenPerusopetuksenPäätasonSuoritus
-
-@Title("Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus")
+@Title("Yleisen oppimäärän yhteisten opintojen suoritus")
 @Description("Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen opintotason suoritus")
 @OnlyWhen("koulutusmoduuli/opintotaso/koodiarvo", "yleisenoppimaaranyhteisetopinnot")
 case class TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus(
   koulutusmoduuli: TaiteenPerusopetuksenOpintotaso,
   toimipiste: OrganisaatioWithOid,
-  arviointi: Option[List[TaiteenPerusopetuksenSanallinenArviointi]],
+  arviointi: Option[List[TaiteenPerusopetuksenArviointi]],
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla],
   @KoodistoKoodiarvo("taiteenperusopetuksenyleisenoppimääränyhteisetopinnot")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("taiteenperusopetuksenyleisenoppimääränyhteisetopinnot", "suorituksentyyppi"),
   override val osasuoritukset: Option[List[TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus]]
-) extends TaiteenPerusopetuksenYleisenOppimääränSuoritus
+) extends TaiteenPerusopetuksenPäätasonSuoritus
 
-@Title("Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus")
+@Title("Yleisen oppimäärän teemaopintojen suoritus")
 @Description("Taiteen perusopetuksen yleisen oppimäärän teemaopintojen opintotason suoritus")
 @OnlyWhen("koulutusmoduuli/opintotaso/koodiarvo", "yleisenoppimaaranteemaopinnot")
 case class TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus(
   koulutusmoduuli: TaiteenPerusopetuksenOpintotaso,
   toimipiste: OrganisaatioWithOid,
-  arviointi: Option[List[TaiteenPerusopetuksenSanallinenArviointi]],
+  arviointi: Option[List[TaiteenPerusopetuksenArviointi]],
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla],
   @KoodistoKoodiarvo("taiteenperusopetuksenyleisenoppimääränteemaopinnot")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("taiteenperusopetuksenyleisenoppimääränteemaopinnot", "suorituksentyyppi"),
   override val osasuoritukset: Option[List[TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus]]
-) extends TaiteenPerusopetuksenYleisenOppimääränSuoritus
+) extends TaiteenPerusopetuksenPäätasonSuoritus
 
-@Title("Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus")
+@Title("Laajan oppimäärän perusopintojen suoritus")
 @Description("Taiteen perusopetuksen laajan oppimäärän perusopintojen opintotason suoritus")
 @OnlyWhen("koulutusmoduuli/opintotaso/koodiarvo", "laajanoppimaaranperusopinnot")
 case class TaiteenPerusopetuksenLaajanOppimääränPerusopintojenSuoritus(
   koulutusmoduuli: TaiteenPerusopetuksenOpintotaso,
   toimipiste: OrganisaatioWithOid,
-  arviointi: Option[List[TaiteenPerusopetuksenSanallinenArviointi]],
+  arviointi: Option[List[TaiteenPerusopetuksenArviointi]],
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla],
   @KoodistoKoodiarvo("taiteenperusopetuksenlaajanoppimääränperusopinnot")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("taiteenperusopetuksenlaajanoppimääränperusopinnot", "suorituksentyyppi"),
   override val osasuoritukset: Option[List[TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus]]
-) extends TaiteenPerusopetuksenLaajanOppimääränSuoritus
+) extends TaiteenPerusopetuksenPäätasonSuoritus
 
-@Title("Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus")
+@Title("Laajan oppimäärän syventävien opintojen suoritus")
 @Description("Taiteen perusopetuksen laajan oppimäärän syventävien opintojen opintotason suoritus")
 @OnlyWhen("koulutusmoduuli/opintotaso/koodiarvo", "laajanoppimaaransyventavatopinnot")
 case class TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus(
   koulutusmoduuli: TaiteenPerusopetuksenOpintotaso,
   toimipiste: OrganisaatioWithOid,
-  arviointi: Option[List[TaiteenPerusopetuksenSanallinenArviointi]],
+  arviointi: Option[List[TaiteenPerusopetuksenArviointi]],
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla],
   @KoodistoKoodiarvo("taiteenperusopetuksenlaajanoppimääränsyventävätopinnot")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("taiteenperusopetuksenlaajanoppimääränsyventävätopinnot", "suorituksentyyppi"),
   override val osasuoritukset: Option[List[TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus]]
-) extends TaiteenPerusopetuksenLaajanOppimääränSuoritus
+) extends TaiteenPerusopetuksenPäätasonSuoritus
 
 
 /******************************************************************************
  * PÄÄTASON SUORITUKSET - KOULUTUSMODUULIT
  *****************************************************************************/
 
-@Title("Taiteen perusopetuksen opintotaso")
-@Description("Taiteen perusopetuksen oppimäärän opintotaso")
-case class TaiteenPerusopetuksenOpintotaso(
-  @KoodistoKoodiarvo("999907")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
-  koulutustyyppi: Option[Koodistokoodiviite] = None,
+trait TaiteenPerusopetuksenOpintotaso extends DiaarinumerollinenKoulutus with KoulutusmoduuliValinnainenLaajuus {
+
+  // TODO: ehkä turha, koska päätason suorituksen tyyppi on jo käytännössä sama tieto?
   @Title("Opintotaso")
   @Description("Suoritettavan oppimäärän opintotaso")
   @KoodistoUri("taiteenperusopetusopintotaso")
-  opintotaso: Koodistokoodiviite,
+  def opintotaso: Koodistokoodiviite
   @Title("Taiteenala")
   @Description("Suoritettavan oppimäärän opintotason taiteenala")
   @KoodistoUri("taiteenperusopetustaiteenala")
+  @Discriminator
+  def taiteenala: Koodistokoodiviite
+}
+case class ArkkitehtuurinOpintotaso(
+  @KoodistoKoodiarvo("999907")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  opintotaso: Koodistokoodiviite,
+  @KoodistoKoodiarvo("arkkitehtuuri")
   taiteenala: Koodistokoodiviite,
   laajuus: Option[LaajuusOpintopisteissä] = None,
   perusteenDiaarinumero: Option[String]
-) extends DiaarinumerollinenKoulutus with KoulutusmoduuliValinnainenLaajuus
+) extends TaiteenPerusopetuksenOpintotaso
+
+case class KuvataiteenOpintotaso(
+  @KoodistoKoodiarvo("999907")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  opintotaso: Koodistokoodiviite,
+  @KoodistoKoodiarvo("kuvataide")
+  taiteenala: Koodistokoodiviite,
+  laajuus: Option[LaajuusOpintopisteissä] = None,
+  perusteenDiaarinumero: Option[String]
+) extends TaiteenPerusopetuksenOpintotaso
+
+case class KäsityönOpintotaso(
+  @KoodistoKoodiarvo("999907")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  opintotaso: Koodistokoodiviite,
+  @KoodistoKoodiarvo("kasityo")
+  taiteenala: Koodistokoodiviite,
+  laajuus: Option[LaajuusOpintopisteissä] = None,
+  perusteenDiaarinumero: Option[String]
+) extends TaiteenPerusopetuksenOpintotaso
+
+case class MediataiteenOpintotaso(
+  @KoodistoKoodiarvo("999907")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  opintotaso: Koodistokoodiviite,
+  @KoodistoKoodiarvo("mediataiteet")
+  taiteenala: Koodistokoodiviite,
+  laajuus: Option[LaajuusOpintopisteissä] = None,
+  perusteenDiaarinumero: Option[String]
+) extends TaiteenPerusopetuksenOpintotaso
+
+case class MusiikinOpintotaso(
+  @KoodistoKoodiarvo("999907")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  opintotaso: Koodistokoodiviite,
+  @KoodistoKoodiarvo("musiikki")
+  taiteenala: Koodistokoodiviite,
+  laajuus: Option[LaajuusOpintopisteissä] = None,
+  perusteenDiaarinumero: Option[String]
+) extends TaiteenPerusopetuksenOpintotaso
+
+case class SanataiteenOpintotaso(
+  @KoodistoKoodiarvo("999907")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  opintotaso: Koodistokoodiviite,
+  @KoodistoKoodiarvo("sanataide")
+  taiteenala: Koodistokoodiviite,
+  laajuus: Option[LaajuusOpintopisteissä] = None,
+  perusteenDiaarinumero: Option[String]
+) extends TaiteenPerusopetuksenOpintotaso
+
+case class SirkustaiteenOpintotaso(
+  @KoodistoKoodiarvo("999907")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  opintotaso: Koodistokoodiviite,
+  @KoodistoKoodiarvo("sirkustaide")
+  taiteenala: Koodistokoodiviite,
+  laajuus: Option[LaajuusOpintopisteissä] = None,
+  perusteenDiaarinumero: Option[String]
+) extends TaiteenPerusopetuksenOpintotaso
+
+case class TanssinOpintotaso(
+  @KoodistoKoodiarvo("999907")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  opintotaso: Koodistokoodiviite,
+  @KoodistoKoodiarvo("tanssi")
+  taiteenala: Koodistokoodiviite,
+  laajuus: Option[LaajuusOpintopisteissä] = None,
+  perusteenDiaarinumero: Option[String]
+) extends TaiteenPerusopetuksenOpintotaso
+
+case class TeatteritaiteenOpintotaso(
+  @KoodistoKoodiarvo("999907")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
+  koulutustyyppi: Option[Koodistokoodiviite] = None,
+  opintotaso: Koodistokoodiviite,
+  @KoodistoKoodiarvo("teatteritaide")
+  taiteenala: Koodistokoodiviite,
+  laajuus: Option[LaajuusOpintopisteissä] = None,
+  perusteenDiaarinumero: Option[String]
+) extends TaiteenPerusopetuksenOpintotaso
 
 /******************************************************************************
  * SUORITUKSET - ARVIOINTI
  *****************************************************************************/
 
-case class TaiteenPerusopetuksenSanallinenArviointi(
+case class TaiteenPerusopetuksenArviointi(
   @KoodistoUri("arviointiasteikkotaiteenperusopetus")
   @KoodistoKoodiarvo("hyvaksytty")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("hyvaksytty", "arviointiasteikkotaiteenperusopetus"),
@@ -158,7 +249,7 @@ case class TaiteenPerusopetuksenSanallinenArviointi(
 @Description("Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus")
 case class TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus(
   koulutusmoduuli: TaiteenPerusopetuksenPaikallinenOpintokokonaisuus,
-  arviointi: Option[List[TaiteenPerusopetuksenSanallinenArviointi]],
+  arviointi: Option[List[TaiteenPerusopetuksenArviointi]],
   @KoodistoKoodiarvo("taiteenperusopetuksenpaikallinenopintokokonaisuus")
   override val tyyppi: Koodistokoodiviite = Koodistokoodiviite("taiteenperusopetuksenpaikallinenopintokokonaisuus", "suorituksentyyppi")
 ) extends Suoritus {
@@ -173,6 +264,5 @@ case class TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus(
 @Description("Taiteen perusopetuksen paikallinen opintokokonaisuus")
 case class TaiteenPerusopetuksenPaikallinenOpintokokonaisuus(
   tunniste: PaikallinenKoodi,
-  kuvaus: LocalizedString,
   laajuus: LaajuusOpintopisteissä
-) extends PaikallinenKoulutusmoduuliPakollinenLaajuus with StorablePreference
+) extends PaikallinenKoulutusmoduuli with KoulutusmoduuliPakollinenLaajuus with StorablePreference

@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "taiteenperusopetusoppimäärä",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Taiteen perusopetuksen oppimäärä"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Taiteen perusopetuksen oppimäärä"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Taiteen perusopetuksen oppimäärä"
+  } ],
+  "codesGroupUri" : "koski",
+  "voimassaAlkuPvm" : "2020-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
+}
