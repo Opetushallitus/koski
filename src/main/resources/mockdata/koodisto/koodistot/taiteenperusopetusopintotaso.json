@@ -3,13 +3,13 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Taiteen perusopetuksen opintotaso"
+    "nimi" : "Taiteen perusopetus opintotaso"
   }, {
     "kieli" : "SV",
-    "nimi" : "Taiteen perusopetuksen opintotaso"
+    "nimi" : "Taiteen perusopetus opintotaso"
   }, {
     "kieli" : "EN",
-    "nimi" : "Taiteen perusopetuksen opintotaso"
+    "nimi" : "Taiteen perusopetus opintotaso"
   } ],
   "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2020-01-01",
