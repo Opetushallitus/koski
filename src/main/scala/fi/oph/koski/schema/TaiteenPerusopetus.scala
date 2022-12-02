@@ -46,7 +46,7 @@ case class TaiteenPerusopetuksenOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("mitatoity")
-  @KoodistoKoodiarvo("keskeytynyt") //TODO: korvaa uudella tilalla päättynyt / paattynyt
+  @KoodistoKoodiarvo("paattynyt")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
   tila: Koodistokoodiviite,
 ) extends KoskiOpiskeluoikeusjakso
