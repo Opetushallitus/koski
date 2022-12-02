@@ -1,10 +1,11 @@
 import React from 'baret'
 import classNames from 'classnames'
-import { modelItems } from '../editor/EditorModel'
+import { modelItems, modelProperty } from '../editor/EditorModel'
 import { accumulateExpandedState } from '../editor/ExpandableItems'
 import {
   EshArvosanaColumn,
-  EshSuoritusColumn
+  EshSuoritusColumn,
+  EshSuorituskieliColumn
 } from './EshSuoritustaulukkoCommon'
 import {
   selectOsasuoritusPrototype,
@@ -16,6 +17,8 @@ import {
   ExpandAllRows,
   getLaajuusYksikkö,
   groupSuoritukset,
+  isEB,
+  isEshS7,
   LaajuusColumn,
   suoritusProperties
 } from '../suoritus/SuoritustaulukkoCommon'
@@ -34,8 +37,8 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
 
     const context = suorituksetModel.context
     const suoritukset = modelItems(suorituksetModel) || []
-
     const parentSuoritus = _parentSuoritus || context.suoritus
+    const isAlaosasuoritus = nestedLevel === 1
 
     const { isExpandedP, allExpandedP, toggleExpandAll, setExpanded } =
       accumulateExpandedState({
@@ -45,6 +48,7 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
       })
 
     const suoritusProtos = osasuoritusPrototypes(suorituksetModel)
+
     const suoritusProto = context.edit
       ? selectOsasuoritusPrototype(suoritusProtos)
       : suoritukset[0]
@@ -56,16 +60,24 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
       suoritusProto
     )
 
-    const laajuusYksikkö = getLaajuusYksikkö(suoritusProto)
+    const laajuuksellinenProto = suoritusProtos.find(
+      (s) => modelProperty(s, 'koulutusmoduuli.laajuus') !== undefined
+    )
+    const laajuusYksikkö = getLaajuusYksikkö(
+      laajuuksellinenProto !== undefined ? laajuuksellinenProto : suoritusProto
+    )
     const showExpandAll = suoritukset.some(
       (s) => suoritusProperties(s).length > 0
     )
     const showColumns = !(nestedLevel > 0 && suoritukset.length === 0)
     const canAddNewOsasuoritus = context.edit
-    const showLaajuusYhteensä = nestedLevel === 0
+
+    const showLaajuusYhteensä =
+      nestedLevel === 0 && !isEshS7(parentSuoritus) && !isEB(parentSuoritus)
 
     const columns = [
       EshSuoritusColumn,
+      EshSuorituskieliColumn,
       LaajuusColumn,
       EshArvosanaColumn
     ].filter((column) =>
@@ -73,7 +85,8 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
         parentSuoritus,
         suorituksetModel,
         suoritukset,
-        context
+        context,
+        isAlaosasuoritus
       })
     )
 

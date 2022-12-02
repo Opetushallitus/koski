@@ -180,6 +180,76 @@ SuoritusEditor.validateModel = (model) => {
     return []
   }
 
+  const validateEshKieliaineidenValinta = (suoritus) => {
+    if (
+      suoritus.value.classes.includes(
+        'europeanschoolofhelsinkipaatasonsuoritus'
+      )
+    ) {
+      const suorituskielellisetOsasuoritukset = osasuoritukset(suoritus).filter(
+        (osasuoritus) => {
+          const koulutusmoduuli = modelLookup(osasuoritus, 'koulutusmoduuli')
+          return koulutusmoduuli.value.classes.includes(
+            'europeanschoolofhelsinkikielioppiaine'
+          )
+        }
+      )
+      return suorituskielellisetOsasuoritukset.flatMap((osasuoritus) => {
+        const koulutusmoduuli = modelLookup(osasuoritus, 'koulutusmoduuli')
+        if (
+          koulutusmoduuli.value.classes.includes(
+            'europeanschoolofhelsinkikielioppiaine'
+          )
+        ) {
+          if (modelData(koulutusmoduuli, 'kieli') === undefined) {
+            return [
+              {
+                path: removeCommonPath(koulutusmoduuli.path, model.path).concat(
+                  'kieli'
+                ),
+                key: 'eshKieliaineenKieli',
+                message: (
+                  <Text name="description:esh_kielioppiaine_kieli_vaadittu" />
+                )
+              }
+            ]
+          }
+          return []
+        }
+      })
+    }
+    return []
+  }
+
+  const validateEshSuorituskielenValinta = (suoritus) => {
+    if (
+      suoritus.value.classes.includes(
+        'europeanschoolofhelsinkipaatasonsuoritus'
+      )
+    ) {
+      const kaikkiOsasuoritukset = osasuoritukset(suoritus)
+      return kaikkiOsasuoritukset.flatMap((osasuoritus) => {
+        const suorituskieliModel = modelLookup(osasuoritus, 'suorituskieli')
+        if (
+          suorituskieliModel !== undefined &&
+          modelData(suorituskieliModel) === undefined
+        ) {
+          return [
+            {
+              path: removeCommonPath(osasuoritus.path, model.path).concat(
+                'suorituskieli'
+              ),
+              key: 'eshSuorituskieli',
+              message: <Text name="description:esh_suorituskieli_vaadittu" />
+            }
+          ]
+        }
+        return []
+      })
+    }
+    return []
+  }
+
   const validationError = (suoritus, virheviesti) => {
     const subPath = removeCommonPath(suoritus.path, model.path)
     return [
@@ -194,4 +264,6 @@ SuoritusEditor.validateModel = (model) => {
   return validateSuoritus(model)
     .concat(validateValmisOsittaisenAmmatillisenTutkinnonSuoritus(model))
     .concat(validateLuokkaAsteSallittuVainErityiselleTutkinnolle(model))
+    .concat(validateEshKieliaineidenValinta(model))
+    .concat(validateEshSuorituskielenValinta(model))
 }

@@ -40,7 +40,6 @@ export default ({
   onRemoval,
   removeText,
   isOptionEnabled = () => true,
-  dropdownTestId,
   itemTestId = (o) => o.testId,
   ...rest
 }) => {
@@ -176,13 +175,16 @@ export default ({
               tabIndex={enableFilter ? '' : '0'}
               onBlur={handleOnBlur}
               onKeyDown={onKeyDown(allOptions)}
-              data-testid={dropdownTestId}
+              role="combobox"
               {...rest}
             >
               {enableFilter ? (
                 <div className="input-container" onClick={toggleOpen}>
                   <input
                     type="text"
+                    role="combobox"
+                    data-testid="koodisto-dropdown-multi-selection-input"
+                    aria-owns="options-list"
                     ref={(input) => (inputElem = input)}
                     onChange={handleInput}
                     onBlur={selectedP.map((s) =>
@@ -191,6 +193,17 @@ export default ({
                     value={Bacon.combineWith(queryAtom, selectedP, (q, s) => {
                       return q != undefined ? q : s ? displayValue(s) : ''
                     })}
+                    aria-label={Bacon.combineWith(
+                      queryAtom,
+                      selectedP,
+                      (q, s) => {
+                        return q != undefined
+                          ? q
+                          : s
+                          ? displayValue(s)
+                          : selectionText
+                      }
+                    )}
                     placeholder={selectionText}
                     className={selectedP.map((s) =>
                       s ? 'select' : 'select no-selection'
@@ -202,6 +215,11 @@ export default ({
                   className={selectedP.map((s) =>
                     s ? 'select' : 'select no-selection'
                   )}
+                  role="combobox"
+                  aria-label={selectedP.map((s) =>
+                    s ? displayValue(s) : selectionText
+                  )}
+                  aria-owns="options-list"
                   onClick={toggleOpen}
                 >
                   {selectedP.map((s) => (s ? displayValue(s) : selectionText))}
@@ -212,7 +230,11 @@ export default ({
                   className={openAtom.map((open) =>
                     open ? 'options open' : 'options'
                   )}
+                  aria-expanded={open}
                   ref={(ref) => (listElem = ref)}
+                  id="options-list"
+                  data-testid="koodisto-dropdown-all-options"
+                  role="listbox"
                 >
                   {flatMapArray(allOptions, (o, i) => {
                     const isNew = isNewItem(allOptions, o, i)
@@ -236,7 +258,9 @@ export default ({
                     )
                     const itemElement = (
                       <li
+                        role="listitem"
                         key={keyValue(o) || displayValue(o)}
+                        aria-label={displayValue(o)}
                         className={itemClassName}
                         onMouseDown={(e) => {
                           selectOption(e, o)

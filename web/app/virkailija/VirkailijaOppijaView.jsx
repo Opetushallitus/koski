@@ -504,6 +504,8 @@ const EditBar = ({ stateP, saveChangesBus, cancelChangesBus, oppija }) => {
             ['edit', 'dirty'].includes(state) ? 'cancel' : 'cancel disabled'
           )}
           onClick={() => cancelChangesBus.push()}
+          role="link"
+          aria-label="Peruuta muutokset"
         >
           <Text name="Peruuta" />
         </a>
@@ -511,6 +513,7 @@ const EditBar = ({ stateP, saveChangesBus, cancelChangesBus, oppija }) => {
           className="koski-button"
           disabled={canSaveP.not()}
           onClick={saveChanges}
+          aria-label="Tallenna muutokset"
         >
           <Text name="Tallenna" />
         </button>

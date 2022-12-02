@@ -11,6 +11,7 @@ import org.json4s.{Extraction, _}
 
 object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   def serializeOnlyWhen(o: OnlyWhen) = Serializer.serialize(o.serializableForm, SerializationContext(KoskiSchema.schemaFactory))
+  def serializeNotWhen(o: NotWhen) = Serializer.serialize(o.serializableForm, SerializationContext(KoskiSchema.schemaFactory))
   def serializeModel(model: EditorModel) = serialize(LegacyJsonSerialization.jsonFormats)(model)
   def serializeEnum(enum: EnumValue) = serializeEnumValue(enum)(LegacyJsonSerialization.jsonFormats)
 
@@ -93,6 +94,13 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
       case conditions => List(JField("onlyWhen", JArray(conditions)))
     }
 
+    val notWhen = metadata.collect {
+      case o: NotWhen => serializeNotWhen(o)
+    } match {
+      case Nil => Nil
+      case conditions => List(JField("notWhen", JArray(conditions)))
+    }
+
     metadata.collect {
       case MinItems(x) => JField("minItems", JInt(x))
       case MaxItems(x) => JField("maxItems", JInt(x))
@@ -108,7 +116,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
       case InfoLinkTitle(x) => JField("infoLinkTitle", JString(x))
       case RegularExpression(x) => JField("regularExpression", JString(x))
       case Example(x) => JField("example", JString(x))
-    } ++ onlyWhen
+    } ++ onlyWhen ++ notWhen
   }
 
   private def metadataToObject(metadata: List[Metadata]) = JObject(metadataToFields(metadata))

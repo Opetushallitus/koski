@@ -237,6 +237,7 @@ export type Metadata = {
   regularExpression?: string;
   example?: string;
   onlyWhen?: OnlyWhen[];
+  notWhen?: NotWhen[];
   title?: string;
   key?: string;
 };
@@ -244,4 +245,9 @@ export type Metadata = {
 export type OnlyWhen = {
   path: string;
   value: any;
+};
+
+export type NotWhen = {
+  path: string;
+  values: any | ArrayLike<any>
 };

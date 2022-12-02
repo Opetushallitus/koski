@@ -32,7 +32,8 @@ import {
   isValueModel,
   PrototypeModel,
   Maybe,
-  MaybeOneOfModel
+  MaybeOneOfModel,
+  NotWhen
 } from '../types/EditorModels'
 import {
   EditorMappingContext,
@@ -599,6 +600,7 @@ export const oneOfPrototypes = <
     return (model.oneOfPrototypes = model.oneOfPrototypes
       .map((proto) => preparePrototypeModel(proto, model))
       .filter(notUndefined)
+      .filter((m) => checkNotWhen(m, m.notWhen))
       .filter((m) => checkOnlyWhen(m, m.onlyWhen)))
   }
   return [model]
@@ -689,7 +691,6 @@ const modelErrors = <T extends ValidationContext>(
       ? pathString === key || R.startsWith(pathString + '.', key)
       : pathString === key
   let validationResult = (context && context.validationResult) || {}
-
   return pathString.length
     ? R.fromPairs(R.toPairs(validationResult).filter(keyMatch))
     : validationResult
@@ -756,6 +757,7 @@ export const validateModel = <
   const validationResult = isEditableModel(mainModel)
     ? validateInner(mainModel, {})
     : {}
+  // TODO: Onko tämä typo?
   const x = addContext(mainModel, { validationResult })
   return addContext(mainModel, { validationResult })
 }
@@ -996,19 +998,62 @@ export const resolveActualModel = <T extends object>(
   oneOfModel: EditorModel & OneOfModel & Contextualized,
   parentModel: EditorModel & Contextualized<T>
 ) => {
-  const actualModels = oneOfModel.oneOfPrototypes
-    .map((protos) => resolvePrototypeReference(protos, parentModel.context))
+  const protoModels = oneOfModel.oneOfPrototypes
+  const resolvedPrototypeReferences = protoModels.map((protos) =>
+    resolvePrototypeReference(protos, parentModel.context)
+  )
+  const actualModels = resolvedPrototypeReferences
     .map((model) => ({ ...model, path: oneOfModel.path, parent: parentModel }))
-    .filter((p) => !p.onlyWhen || checkOnlyWhen(p, p.onlyWhen))
+    .filter((p) => {
+      if (p.notWhen !== undefined) {
+        // FIXME: Vertailussa ei voi käyttää spreadattua propertyä, koska modelLookup ja modelData eivät tällöin toimi
+        return checkNotWhen(oneOfModel, p.notWhen)
+      }
+      return true
+    })
+    .filter((p) => {
+      if (p.onlyWhen !== undefined) {
+        // FIXME: Vertailussa ei voi käyttää spreadattua propertyä, koska modelLookup ja modelData eivät tällöin toimi.
+        return checkOnlyWhen(oneOfModel, p.onlyWhen)
+      }
+      return true
+    })
+
+  const actualModelsWithAnnotations = actualModels.filter(
+    (p) => p.onlyWhen !== undefined || p.notWhen !== undefined
+  )
 
   if (actualModels.length > 1) {
+    if (actualModelsWithAnnotations.length === 0) {
+      console.warn(
+        `Could not resolve actual editor model reliably, as there are no annotated candidates, and ${actualModels.length} candidates without annotations:`,
+        actualModels
+      )
+    } else if (actualModelsWithAnnotations.length > 1) {
+      console.warn(
+        `Could not resolve actual editor model reliably, as there are ${actualModelsWithAnnotations.length} annotated candidates, and ${actualModels.length} candidates without annotations:`,
+        actualModels,
+        actualModelsWithAnnotations
+      )
+    }
+  }
+
+  if (actualModelsWithAnnotations.length > 1) {
     console.warn(
-      `Could not resolve actual editor model reliably as there are ${actualModels.length} candidates:`,
-      actualModels
+      `More than one annotated candidate resolved. Please consider making changes to the annotations to match only one case at a time:`,
+      actualModelsWithAnnotations
     )
   }
 
-  const actualModel = actualModels[0]
+  // Jos löydetään tasan yksi prototype, niin palautetaan se suoraan
+  // Jos toisaalta löydetään edes yksi model, joka täsmää, palautetaan se.
+  // Muuten palautetaan tyhjää.
+  const actualModel =
+    actualModelsWithAnnotations.length === 1
+      ? actualModelsWithAnnotations[0]
+      : actualModels.length > 0
+      ? actualModels[0]
+      : null
   return actualModel
     ? contextualizeModel(actualModel, parentModel.context)
     : oneOfModel
@@ -1115,6 +1160,17 @@ export const checkOnlyWhen = (model: EditorModel, conditions?: OnlyWhen[]) => {
   return conditions.some((onlyWhen) => {
     let data = modelData(model, onlyWhen.path.split('/'))
     let match = onlyWhen.value == data
+    return match
+  })
+}
+
+export const checkNotWhen = (model: EditorModel, conditions?: NotWhen[]) => {
+  if (!conditions) return true
+  return conditions.some((notWhen) => {
+    let data = modelData(model, notWhen.path.split('/'))
+    let match = Array.isArray(notWhen.values)
+      ? !notWhen.values.includes(data)
+      : notWhen.values != data
     return match
   })
 }

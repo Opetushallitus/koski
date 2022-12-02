@@ -34,146 +34,6 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
     }
   }
 
-  "Synteettisiä arvosanoja käyttävissä arvioinneissa" - {
-    val alkamispäivä = ExamplesEuropeanSchoolOfHelsinki.alkamispäivä
-    val arviointipäivä = alkamispäivä.plusMonths(1)
-    "yli 10 arvosanoja" - {
-      "ei hyväksytä NumericalMark:ssa" in {
-        putOpiskeluoikeus(teeOpiskeluoikeusS6("10.5", secondaryNumericalMarkArviointi), henkilö = oppija) {
-          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
-        }
-      }
-      "ei hyväksytä S7PreliminaryMark:ssa" in {
-        putOpiskeluoikeus(teeOpiskeluoikeusS7("10.1", secondaryS7PreliminaryMarkArviointi), henkilö = oppija) {
-          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
-        }
-      }
-    }
-
-    "10 desimaaleilla" - {
-      "ei hyväksytä NumericalMark:ssa" in {
-        putOpiskeluoikeus(teeOpiskeluoikeusS6("10.0", secondaryNumericalMarkArviointi), henkilö = oppija) {
-          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
-        }
-      }
-      "ei hyväksytä S7PreliminaryMark:ssa" in {
-        putOpiskeluoikeus(teeOpiskeluoikeusS7("10.0", secondaryS7PreliminaryMarkArviointi), henkilö = oppija) {
-          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
-        }
-      }
-    }
-
-    "0 desimaaleilla" - {
-      "ei hyväksytä NumericalMark:ssa" in {
-        putOpiskeluoikeus(teeOpiskeluoikeusS6("0.0", secondaryNumericalMarkArviointi), henkilö = oppija) {
-          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
-        }
-      }
-      "ei hyväksytä S7PreliminaryMark:ssa" in {
-        putOpiskeluoikeus(teeOpiskeluoikeusS7("0.0", secondaryS7PreliminaryMarkArviointi), henkilö = oppija) {
-          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
-        }
-      }
-    }
-
-    "alle 0 arvosanoja ei hyväksytä" - {
-      "ei hyväksytä NumericalMark:ssa" in {
-        putOpiskeluoikeus(teeOpiskeluoikeusS6("-0.5", secondaryNumericalMarkArviointi), henkilö = oppija) {
-          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
-        }
-      }
-      "ei hyväksytä S7PreliminaryMark:ssa" in {
-        putOpiskeluoikeus(teeOpiskeluoikeusS7("-0.1", secondaryS7PreliminaryMarkArviointi), henkilö = oppija) {
-          verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
-        }
-      }
-    }
-
-    "desimaalien määrä" - {
-      "NumericalMark:ssa" - {
-        "hyväksytään .0" in {
-          putOpiskeluoikeus(teeOpiskeluoikeusS6("4.0", secondaryNumericalMarkArviointi), henkilö = oppija) {
-            verifyResponseStatusOk()
-          }
-        }
-        "hyväksytään .5" in {
-          putOpiskeluoikeus(teeOpiskeluoikeusS6("4.5", secondaryNumericalMarkArviointi), henkilö = oppija) {
-            verifyResponseStatusOk()
-          }
-
-        }
-        "ei hyväksytä muita" in {
-          putOpiskeluoikeus(teeOpiskeluoikeusS6("4.4", secondaryNumericalMarkArviointi), henkilö = oppija) {
-            verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
-          }
-        }
-      }
-
-      "S7PreliminaryMark:ssa" - {
-        "hyväksytään .0" in {
-          putOpiskeluoikeus(teeOpiskeluoikeusS7("6.0", secondaryS7PreliminaryMarkArviointi), henkilö = oppija) {
-            verifyResponseStatusOk()
-          }
-        }
-        "hyväksytään 1 desimaali" in {
-          putOpiskeluoikeus(teeOpiskeluoikeusS7("6.3", secondaryS7PreliminaryMarkArviointi), henkilö = oppija) {
-            verifyResponseStatusOk()
-          }
-        }
-        "ei hyväksytä yli 1 desimaalia" in {
-          putOpiskeluoikeus(teeOpiskeluoikeusS7("6.38", secondaryS7PreliminaryMarkArviointi), henkilö = oppija) {
-            verifyResponseStatus(400, ErrorMatcher.regex( KoskiErrorCategory.badRequest.validation.jsonSchema, ".*ei ole kelvollinen synteettinen koodiarvo koodistossa.*".r))
-          }
-        }
-      }
-    }
-
-    def teeOpiskeluoikeusS6(arvosana: String, teeArviointi: (String, Option[LocalizedString], Option[List[Arvioitsija]], LocalDate) => Option[List[SecondaryNumericalMarkArviointi]]) = {
-      val luokkaAste = "S6"
-
-      defaultOpiskeluoikeus.copy(
-        suoritukset = List(
-          secondaryUpperSuoritusS6(luokkaAste, alkamispäivä.plusYears(1)).copy(
-            osasuoritukset = Some(List(
-              secondaryUpperMuunOppiaineenOsasuoritusS6(
-                oppiainekoodi = "PE",
-                arviointi = teeArviointi(
-                  arvosana,
-                  None,
-                  Some(List(Arvioitsija("Pekka Paunanen"))),
-                  arviointipäivä
-                )
-              ),
-            ))
-          )
-        )
-      )
-    }
-
-    def teeOpiskeluoikeusS7(arvosana: String, teeArviointi: (String, Option[LocalizedString], Option[List[Arvioitsija]], LocalDate) => Option[List[SecondaryS7PreliminaryMarkArviointi]]) = {
-      val luokkaAste = "S7"
-
-      defaultOpiskeluoikeus.copy(
-        suoritukset = List(
-          secondaryUpperSuoritusS7(luokkaAste, alkamispäivä.plusYears(1)).copy(
-            osasuoritukset = Some(List(
-              secondaryUpperMuunOppiaineenOsasuoritusS7(
-                oppiainekoodi = "PE",
-                arviointi = teeArviointi(
-                  arvosana,
-                  None,
-                  Some(List(Arvioitsija("Pekka Paunanen"))),
-                  arviointipäivä
-                )
-              ),
-            ))
-          )
-        )
-      )
-    }
-
-  }
-
   "Koulutustyyppi" - {
     "Täydennetään" in {
       val putOo = defaultOpiskeluoikeus.copy(
@@ -258,7 +118,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
           ),
         suoritukset =
           List(
-            defaultOpiskeluoikeus.suoritukset.headOption.get.ilmanAlkamispäivää()
+            defaultOpiskeluoikeus.suoritukset.collectFirst { case s: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus => s }.map(_.ilmanAlkamispäivää).get
           )
       )
       ) {
@@ -342,7 +202,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiB(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
@@ -374,13 +234,13 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiA(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("A", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
                 ),
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiB(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = None
@@ -413,13 +273,13 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiB(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("B", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
                 ),
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
@@ -452,7 +312,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = None
@@ -485,7 +345,7 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
               suorituskieli = ExampleData.englanti,
               osasuoritukset = Some(List(
                 S7OppiaineenAlaosasuoritus(
-                  koulutusmoduuli = S7OppiaineKomponenttiYearMark(
+                  koulutusmoduuli = S7OppiaineKomponentti(
                     Koodistokoodiviite("yearmark", "europeanschoolofhelsinkis7oppiaineenkomponentti")
                   ),
                   arviointi = secondaryS7PreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
@@ -498,6 +358,25 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
 
       putOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "Päätason suorituksen vahvistus EB-tutkinnossa" - {
+    "Ei voi tehdä, jos yleisarvosanaa ei ole annettu" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
+          yleisarvosana = None
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.esh.yleisarvosana())
       }
     }
   }

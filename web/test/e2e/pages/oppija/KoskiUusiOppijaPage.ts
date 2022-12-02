@@ -13,33 +13,42 @@ interface BaseOppija {
   opintokokonaisuus?: string
 }
 
-type ESHOppija = BaseOppija & {
-  opiskeluoikeus: 'European School of Helsinki'
-  curriculum: string
-  luokkaAste: string
-}
+type ESHOppija =
+  | BaseOppija
+  | (BaseOppija & {
+      opiskeluoikeus: 'European School of Helsinki'
+      curriculum: string
+      luokkaAste: string
+    })
 
 type Oppija = ESHOppija
 
 export class KoskiUusiOppijaPage {
   readonly page: Page
-  readonly lisaaOppijaButton: Locator
   readonly etunimet: Locator
   readonly sukunimi: Locator
+  readonly lisaaOppijaButton: Locator
   readonly opintokokonaisuus: Dropdown
   readonly opiskeluoikeudenTila: Dropdown
   readonly opintojenRahoitus: Dropdown
   readonly submitBtn: Locator
+  readonly oppilaitosTextInput: Locator
+  readonly oppilaitosHakuInput: Locator
 
   constructor(page: Page) {
     this.page = page
     this.lisaaOppijaButton = page.getByLabel('Tunnus')
-    this.etunimet = page.getByLabel('Etunimet')
-    this.sukunimi = page.getByLabel('Sukunimi')
-    this.opintokokonaisuus = new Dropdown(page, 'Opintokokonaisuus')
-    this.opiskeluoikeudenTila = new Dropdown(page, 'Opiskeluoikeuden tila')
-    this.opintojenRahoitus = new Dropdown(page, 'Opintojen rahoitus')
+    this.oppilaitosTextInput = page.getByTestId('organisaatio-text-input')
+    this.oppilaitosHakuInput = page.getByTestId('organisaatio-haku-input')
+    this.opintokokonaisuus = new Dropdown(
+      page,
+      'Opintokokonaisuus-koodisto-dropdown'
+    )
+    this.opiskeluoikeudenTila = new Dropdown(page, 'Opiskeluoikeuden tila-koodisto-dropdown')
+    this.opintojenRahoitus = new Dropdown(page, 'Opintojen rahoitus-koodisto-dropdown')
     this.submitBtn = page.getByRole('button', { name: 'Lisää opiskelija' })
+    this.etunimet = page.getByRole('textbox', { name: 'Etunimet' })
+    this.sukunimi = page.getByRole('textbox', { name: 'Sukunimi' })
   }
 
   async goTo(hetu: Oppija['hetu']) {
@@ -51,6 +60,15 @@ export class KoskiUusiOppijaPage {
   }
 
   async fill(oppija: Partial<BaseOppija>) {
+    if (oppija.oppilaitos) {
+      await this.oppilaitosTextInput.click()
+
+      await this.oppilaitosHakuInput.fill('helsingin eurooppalainen koulu')
+
+      await this.page
+        .getByTestId(`organisaatio-list-item-${oppija.oppilaitos}`)
+        .click()
+    }
     if (oppija.etunimet) {
       await this.etunimet.fill(oppija.etunimet)
     }
@@ -69,12 +87,9 @@ export class KoskiUusiOppijaPage {
 
   async lisaaOppija(oppija: Oppija) {
     await this.goTo(oppija.hetu)
-    await expect(
-      this.page.getByPlaceholder('henkilötunnus, nimi tai oppijanumero')
-    ).toHaveText(oppija.hetu)
-
-    return {
-      submitAndExceptSuccess: async () => {}
-    }
+    await this.etunimet.type(oppija.etunimet)
+    await expect(this.etunimet).toHaveValue(oppija.etunimet)
+    await this.sukunimi.type(oppija.sukunimi)
+    await expect(this.sukunimi).toHaveValue(oppija.sukunimi)
   }
 }

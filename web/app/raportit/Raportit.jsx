@@ -462,7 +462,7 @@ const RaportitContent = ({
             onSelect={onSelectTab}
           />
         ) : (
-          <div className="error">
+          <div className="error" role="error" aria-live="polite">
             <Text name="virhe-ei-organisaatiokayttaoikeuksia" />
           </div>
         )

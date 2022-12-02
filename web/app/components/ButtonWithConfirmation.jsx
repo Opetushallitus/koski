@@ -14,7 +14,8 @@ class ButtonWithConfirmation extends React.Component {
       cancelText,
       action,
       className,
-      confirmationClassName
+      confirmationClassName,
+      ...rest // Loput propsit sisältävät a-elementin aria-labelin jne..
     } = this.props
 
     const isActionRequested = this.state.isActionRequested
@@ -24,11 +25,17 @@ class ButtonWithConfirmation extends React.Component {
         <button
           className={`koski-button ${confirmationClassName || ''}`}
           onClick={action}
+          aria-label={confirmationText}
+          {...rest}
         >
           <Text name={confirmationText} />
         </button>
 
-        <a onClick={() => this.setState({ isActionRequested: false })}>
+        <a
+          onClick={() => this.setState({ isActionRequested: false })}
+          aria-label={cancelText}
+          {...rest}
+        >
           <Text name={cancelText} />
         </a>
       </div>
@@ -36,6 +43,8 @@ class ButtonWithConfirmation extends React.Component {
       <a
         className={className}
         onClick={() => this.setState({ isActionRequested: true })}
+        aria-label={text}
+        {...rest}
       >
         <Text name={text} />
       </a>

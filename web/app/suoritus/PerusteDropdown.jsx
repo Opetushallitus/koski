@@ -62,7 +62,7 @@ export const PerusteDropdown = ({ suoritusTyyppiP, perusteAtom }) => {
         diaarinumerotP.map((diaarinumerot) =>
           diaarinumerot.length > 1 ? (
             <Dropdown
-              data-test-id="peruste-dropdown"
+              data-testid="peruste-dropdown"
               options={diaarinumerotP}
               keyValue={(option) => option.koodiarvo}
               displayValue={(option) => option.koodiarvo + ' ' + t(option.nimi)}

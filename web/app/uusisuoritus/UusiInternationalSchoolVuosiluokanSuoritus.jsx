@@ -78,6 +78,9 @@ UusiInternationalSchoolVuosiluokanSuoritus.addSuoritusTitle = () => (
   <Text name="lisää vuosiluokan suoritus" />
 )
 
+UusiInternationalSchoolVuosiluokanSuoritus.addSuoritusTitleKey =
+  'lisää vuosiluokan suoritus'
+
 const withKoulutusmoduulinTunniste = (suoritusProto, tunniste) => {
   let kmt = modelLookup(suoritusProto, 'koulutusmoduuli.tunniste')
   kmt = modelSetData(kmt, tunniste)

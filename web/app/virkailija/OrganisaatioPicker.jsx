@@ -87,6 +87,7 @@ export default class OrganisaatioPicker extends BaconComponent {
                 e.preventDefault()
                 e.stopPropagation()
               }}
+              data-testid={`organisaatio-list-item-${t(org.nimi)}`}
             >
               {orgName(org)}
             </a>
@@ -112,6 +113,7 @@ export default class OrganisaatioPicker extends BaconComponent {
         tabIndex="0"
         onKeyDown={this.onKeyDown.bind(this)}
         ref={(root) => (this.root = root)}
+        data-testid={'organisaatio-picker'}
       >
         <div
           className={buildClassNames([
@@ -119,6 +121,7 @@ export default class OrganisaatioPicker extends BaconComponent {
             singleResult && 'disabled single-result'
           ])}
           onClick={() => !singleResult && this.setState({ open: !open })}
+          data-testid={'organisaatio-text-input'}
         >
           {selectionStr}
         </div>
@@ -134,6 +137,7 @@ export default class OrganisaatioPicker extends BaconComponent {
                 if (e.target.value.length >= 3 || e.target.value.length == 0)
                   this.inputBus.push(e.target.value)
               }}
+              data-testid="organisaatio-haku-input"
             />
             {clearText && (
               <button
@@ -148,7 +152,9 @@ export default class OrganisaatioPicker extends BaconComponent {
             )}
             {organisaatiot.length > 0 && (
               <div className="scroll-container">
-                <ul className="organisaatiot">{renderTree(organisaatiot)}</ul>
+                <ul className="organisaatiot" data-testid={'organisaatio-list'}>
+                  {renderTree(organisaatiot)}
+                </ul>
               </div>
             )}
           </div>
