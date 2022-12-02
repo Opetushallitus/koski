@@ -113,7 +113,7 @@ object Koodistot {
     KoodistoAsetus("ebtutkinnonoppiaineenkomponentti"),
     KoodistoAsetus("taiteenperusopetustaiteenala"),
     KoodistoAsetus("taiteenperusopetusopintotaso"),
-    KoodistoAsetus("taiteenperusopetusoppimäärä"),
+    KoodistoAsetus("taiteenperusopetusoppimaara"),
     KoodistoAsetus("arviointiasteikkotaiteenperusopetus")
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.toString)

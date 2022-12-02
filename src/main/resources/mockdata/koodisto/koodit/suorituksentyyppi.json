@@ -2178,8 +2178,8 @@
   "versio": 1,
   "withinCodeElements": []
 }, {
-  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenyleisenoppimääränyhteisetopinnot",
-  "koodiArvo" : "taiteenperusopetuksenyleisenoppimääränyhteisetopinnot",
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
+  "koodiArvo" : "taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
   "metadata" : [ {
     "nimi" : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
     "lyhytNimi" : "",
@@ -2199,8 +2199,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenyleisenoppimääränteemaopinnot",
-  "koodiArvo" : "taiteenperusopetuksenyleisenoppimääränteemaopinnot",
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranteemaopinnot",
+  "koodiArvo" : "taiteenperusopetuksenyleisenoppimaaranteemaopinnot",
   "metadata" : [ {
     "nimi" : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
     "lyhytNimi" : "",
@@ -2220,8 +2220,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenlaajanoppimääränperusopinnot",
-  "koodiArvo" : "taiteenperusopetuksenlaajanoppimääränperusopinnot",
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaranperusopinnot",
+  "koodiArvo" : "taiteenperusopetuksenlaajanoppimaaranperusopinnot",
   "metadata" : [ {
     "nimi" : "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
     "lyhytNimi" : "",
@@ -2241,8 +2241,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenlaajanoppimääränsyventävätopinnot",
-  "koodiArvo" : "taiteenperusopetuksenlaajanoppimääränsyventävätopinnot",
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaransyventavatopinnot",
+  "koodiArvo" : "taiteenperusopetuksenlaajanoppimaaransyventavatopinnot",
   "metadata" : [ {
     "nimi" : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
     "lyhytNimi" : "",

@@ -3,13 +3,13 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Taiteen perusopetuksen taiteenala"
+    "nimi" : "Taiteen perusopetus taiteenala"
   }, {
     "kieli" : "SV",
-    "nimi" : "Taiteen perusopetuksen taiteenala"
+    "nimi" : "Taiteen perusopetus taiteenala"
   }, {
     "kieli" : "EN",
-    "nimi" : "Taiteen perusopetuksen taiteenala"
+    "nimi" : "Taiteen perusopetus taiteenala"
   } ],
   "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2020-01-01",

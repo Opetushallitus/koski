@@ -1,5 +1,5 @@
 [ {
-  "koodiUri" : "taiteenperusopetusoppimäärä_yleinenoppimaara",
+  "koodiUri" : "taiteenperusopetusoppimaara_yleinenoppimaara",
   "koodiArvo" : "yleinenoppimaara",
   "metadata" : [ {
     "nimi" : "Taiteen perusopetuksen yleinen oppimäärä",
@@ -20,7 +20,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "taiteenperusopetusoppimäärä_laajaoppimaara",
+  "koodiUri" : "taiteenperusopetusoppimaara_laajaoppimaara",
   "koodiArvo" : "laajaoppimaara",
   "metadata" : [ {
     "nimi" : "Taiteen perusopetuksen laaja oppimäärä",
