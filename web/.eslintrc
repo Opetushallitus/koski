@@ -50,7 +50,7 @@
     "array-callback-return": "off", // Bacon.js flatmap
     "react/no-render-return-value": "off", // Bacon.js React VDOM
     "prefer-regex-literals": "off", // Heitetään varoitus, TODO: Vaihda --> "warn"
-    "eqeqeq": "off" // Suosi triple-equalsin käyttöä, TODO: Vaihda --> "warn"
+    "eqeqeq": "warn"
   },
   "settings": {
     "react": {
