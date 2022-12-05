@@ -63,7 +63,7 @@ const LaajuudenYksikköEditor = ({ model, compact, showReadonlyScope }) => {
   return model.context.edit ? (
     !yksikköModel ||
     !alternatives ||
-    (alternatives.length == 1 && parseBool(compact)) ? null : (
+    (alternatives.length === 1 && parseBool(compact)) ? null : (
       <span className="property laajuudenyksikko yksikko inline">
         <Editor
           model={yksikköModel}

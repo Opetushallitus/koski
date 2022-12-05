@@ -87,12 +87,12 @@ export type PäätasonSuoritus = {
 
 export const isHakeutumisvalvottavaOpiskeluoikeus =
   (organisaatioOid: string | undefined) => (oo: OpiskeluoikeusSuppeatTiedot) =>
-    oo.onHakeutumisValvottava && oo.oppilaitos.oid == organisaatioOid
+    oo.onHakeutumisValvottava && oo.oppilaitos.oid === organisaatioOid
 
 export const isSuorittamisvalvottavaOpiskeluoikeus =
   (organisaatioOid: string | undefined) => (oo: OpiskeluoikeusSuppeatTiedot) =>
     oo.onSuorittamisValvottava &&
-    oo.oppilaitos.oid == organisaatioOid &&
+    oo.oppilaitos.oid === organisaatioOid &&
     // Redundantti tarkistus bugien varalta. Suorittamisvalvottavien pitäisi
     // kaikkien olla perusopetuksen jälkeisiä opintoja sisältäviä opiskeluoikeuksia:
     oo.perusopetuksenJälkeinenTiedot !== undefined

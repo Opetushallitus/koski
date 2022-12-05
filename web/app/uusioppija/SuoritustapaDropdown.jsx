@@ -34,7 +34,7 @@ export default ({ diaarinumero, suoritustapaAtom, title }) => {
                     .map((k) => k.koodiarvo)
                     .includes(suoritustapa.koodiarvo)
                 if (!currentOneFound) {
-                  if (suoritustavat.length == 1) {
+                  if (suoritustavat.length === 1) {
                     suoritustapaAtom.set(suoritustavat[0])
                   } else if (suoritustapa) {
                     suoritustapaAtom.set(undefined)

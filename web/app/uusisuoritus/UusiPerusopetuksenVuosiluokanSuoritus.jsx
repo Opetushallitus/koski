@@ -79,7 +79,7 @@ const UusiPerusopetuksenVuosiluokanSuoritusPopup = ({
           .map(modelP)
           .flatMapFirst((suoritus) => {
             const oppiaineidenSuoritukset =
-              luokkaAste(suoritus) == '9'
+              luokkaAste(suoritus) === '9'
                 ? Bacon.constant([])
                 : luokkaAsteenOsasuoritukset(
                     luokkaAste(suoritus),
@@ -130,7 +130,7 @@ UusiPerusopetuksenVuosiluokanSuoritusPopup.canAddSuoritus = (
   opiskeluoikeus
 ) => {
   return (
-    modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'perusopetus' &&
+    modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'perusopetus' &&
     puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0 &&
     !nuortenPerusopetuksenOppiaineenOppimääränSuoritus(opiskeluoikeus)
   )
@@ -167,7 +167,7 @@ const siirretäänSeuraavalleLuokalle = (suoritus) =>
 const olemassaolevatLuokkaAsteenSuoritukset = (opiskeluoikeus) =>
   modelItems(opiskeluoikeus, 'suoritukset').filter(
     (suoritus) =>
-      modelData(suoritus, 'tyyppi.koodiarvo') == 'perusopetuksenvuosiluokka'
+      modelData(suoritus, 'tyyppi.koodiarvo') === 'perusopetuksenvuosiluokka'
   )
 
 const suorituksenLuokkaAste = (suoritus) =>

@@ -52,12 +52,12 @@ export const LuvaEditor = ({ suorituksetModel }) => {
             ]}
             suoritusFilter={lukioonvalmistavankurssinsuorituksetFilter}
             forceLaajuusOpintopisteinä={
-              oppimaaraDiaarinumero == 'OPH-4958-2020'
+              oppimaaraDiaarinumero === 'OPH-4958-2020'
             }
           />
         </div>
       )}
-      {oppimaaraDiaarinumero == '56/011/2015' && (edit || hasLukionKursseja) && (
+      {oppimaaraDiaarinumero === '56/011/2015' && (edit || hasLukionKursseja) && (
         <div className="valinnaisena-suoritetut-lukiokurssit">
           <h5>
             <Text name="Valinnaisena suoritetut lukiokurssit" />
@@ -71,7 +71,7 @@ export const LuvaEditor = ({ suorituksetModel }) => {
           />
         </div>
       )}
-      {oppimaaraDiaarinumero == 'OPH-4958-2020' &&
+      {oppimaaraDiaarinumero === 'OPH-4958-2020' &&
         (edit || hasLukion2019Moduuleja) && (
           <div className="valinnaisena-suoritetut-lukiokurssit">
             <h5>

@@ -23,7 +23,7 @@ export const LisääOsaToisestaTutkinnosta = ({
           modelSetValues(koulutusmoduuliProto(), { tunniste: osa }),
           osa.title
         ),
-        tutkinto.diaarinumero != diaarinumero && tutkinto
+        tutkinto.diaarinumero !== diaarinumero && tutkinto
       )
     }
   }

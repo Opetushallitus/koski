@@ -38,7 +38,7 @@ export const PerusteDropdown = ({ suoritusTyyppiP, perusteAtom }) => {
   const selectedOptionP = Bacon.combineWith(
     diaarinumerotP,
     perusteAtom,
-    (options, selected) => options.find((o) => o.koodiarvo == selected)
+    (options, selected) => options.find((o) => o.koodiarvo === selected)
   )
   const selectOption = (option) => {
     perusteAtom.set(option && option.koodiarvo)

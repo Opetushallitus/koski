@@ -25,8 +25,8 @@ export default ({
     .map('.e')
 
   function handleKeys(e) {
-    if (e.keyCode == 27) onDismiss()
-    if (e.keyCode == 13 && submitOnEnterKey) onSubmit()
+    if (e.keyCode === 27) onDismiss()
+    if (e.keyCode === 13 && submitOnEnterKey) onSubmit()
   }
   const classNameP = submittedAtom.map(
     (submitted) =>

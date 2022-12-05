@@ -12,10 +12,10 @@ export default class extends React.Component {
       ? [field, defaultSort]
       : []
 
-    const selected = sortBy == field
+    const selected = sortBy === field
 
     return (
-      <th className={sortBy == field ? field + ' sorted' : field}>
+      <th className={sortBy === field ? field + ' sorted' : field}>
         <div
           className="sorting"
           onClick={() =>
@@ -23,7 +23,7 @@ export default class extends React.Component {
               sort:
                 field +
                 ':' +
-                (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')
+                (selected ? (sortOrder === 'asc' ? 'desc' : 'asc') : 'asc')
             })
           }
         >
@@ -33,12 +33,12 @@ export default class extends React.Component {
           <div className="sort-indicator">
             <div
               className={
-                selected && sortOrder == 'asc' ? 'asc selected' : 'asc'
+                selected && sortOrder === 'asc' ? 'asc selected' : 'asc'
               }
             ></div>
             <div
               className={
-                selected && sortOrder == 'desc' ? 'desc selected' : 'desc'
+                selected && sortOrder === 'desc' ? 'desc selected' : 'desc'
               }
             ></div>
           </div>

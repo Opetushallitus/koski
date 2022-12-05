@@ -70,7 +70,7 @@ Editor.shouldComponentUpdate = function (nextProps) {
   if (parseBool(nextProps.alwaysUpdate)) return true
   const next = nextProps.model
   const current = this.props.model
-  let result = next.modelId != current.modelId
+  let result = next.modelId !== current.modelId
   if (pathHash(next) !== pathHash(current)) {
     result = true
   }

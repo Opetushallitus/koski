@@ -70,7 +70,7 @@ export class Oppijataulukko extends React.Component {
                       onChange={(e) => {
                         if (
                           e.target.value.length >= 3 ||
-                          e.target.value.length == 0
+                          e.target.value.length === 0
                         )
                           this.textFilterBus.push({ nimihaku: e.target.value })
                       }}
@@ -89,7 +89,7 @@ export class Oppijataulukko extends React.Component {
                         })
                       }
                       selected={opiskeluoikeudenTyypit.find(
-                        (o) => o.key == params.opiskeluoikeudenTyyppi
+                        (o) => o.key === params.opiskeluoikeudenTyyppi
                       )}
                     />
                   </th>
@@ -104,7 +104,7 @@ export class Oppijataulukko extends React.Component {
                         this.filterBus.push({ suorituksenTyyppi: option.key })
                       }
                       selected={koulutus.find(
-                        (o) => o.key == params.suorituksenTyyppi
+                        (o) => o.key === params.suorituksenTyyppi
                       )}
                     />
                   </th>
@@ -119,7 +119,7 @@ export class Oppijataulukko extends React.Component {
                       onChange={(e) => {
                         if (
                           e.target.value.length >= 3 ||
-                          e.target.value.length == 0
+                          e.target.value.length === 0
                         )
                           this.textFilterBus.push({
                             tutkintohaku: e.target.value
@@ -140,7 +140,7 @@ export class Oppijataulukko extends React.Component {
                         })
                       }
                       selected={opiskeluoikeudenTila.find(
-                        (o) => o.key == params.opiskeluoikeudenTila
+                        (o) => o.key === params.opiskeluoikeudenTila
                       )}
                     />
                   </th>
@@ -341,8 +341,8 @@ export class Oppijataulukko extends React.Component {
 
   UNSAFE_componentWillMount() {
     const koodistoMetadata = (k) =>
-      k.metadata.find((m) => m.kieli == lang.toUpperCase()) ||
-      k.metadata.find((m) => m.kieli == 'FI')
+      k.metadata.find((m) => m.kieli === lang.toUpperCase()) ||
+      k.metadata.find((m) => m.kieli === 'FI')
     const koodistoDropdownArvot = (koodit) =>
       koodit
         .filter((k) => k.koodiArvo !== 'mitatoity')

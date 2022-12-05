@@ -365,9 +365,9 @@ const compareDatum = (index: number) => (a: Datum, b: Datum) => {
     return string.Ord.compare(av, bv)
   } else if (typeof av === "number" && typeof bv === "number") {
     return number.Ord.compare(av, bv)
-  } else if (av == null && bv != null) {
+  } else if (av === null && bv !== null) {
     return 1
-  } else if (bv == null && av != null) {
+  } else if (bv === null && av !== null) {
     return -1
   } else {
     return 0

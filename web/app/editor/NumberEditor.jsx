@@ -57,7 +57,7 @@ NumberEditor.isEmpty = (m) =>
 NumberEditor.createEmpty = (m) => modelSetValue(m, undefined)
 NumberEditor.validateModel = (model) => {
   const value = modelData(model)
-  if (value == undefined) {
+  if (value === undefined) {
     if (!model.optional) return [{ key: 'missing' }]
   } else {
     if (

@@ -43,10 +43,10 @@ const makeApiUrl = (basePath, params) => {
 
 const curlCommand = (method, url) => {
   let curl = 'curl "' + url + '" --user kalle:kalle'
-  if (method != 'GET') {
+  if (method !== 'GET') {
     curl += ' -X ' + method
   }
-  if (method == 'POST' || method == 'PUT') {
+  if (method === 'POST' || method === 'PUT') {
     curl += ' -H "content-type: application/json" -d @curltestdata.json'
   }
   return curl
@@ -196,7 +196,7 @@ const ApiOperationTester = ({ operation }) => {
           .text()
           .then(function (text) {
             loadingA.set(false)
-            if (response.status == 401) {
+            if (response.status === 401) {
               resultA.set(
                 <div>
                   {response.status +
@@ -290,7 +290,7 @@ const ApiOperationStatusCodeRow = ({ errorCategory }) => {
   return (
     <tr>
       <td>{errorCategory.statusCode}</td>
-      <td>{errorCategory.statusCode != 200 ? errorCategory.key : ''}</td>
+      <td>{errorCategory.statusCode !== 200 ? errorCategory.key : ''}</td>
       <td>{errorCategory.message}</td>
       <td>
         <span

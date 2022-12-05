@@ -35,7 +35,7 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
   return (
     <ul className="opiskeluoikeustyypit-nav">
       {opiskeluoikeusTyypit.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
-        const selected = tyyppiIndex == selectedIndex
+        const selected = tyyppiIndex === selectedIndex
         const koodiarvo = modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo
         const className = selected ? koodiarvo + ' selected' : koodiarvo
         const content = (

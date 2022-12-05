@@ -70,7 +70,7 @@ const UusiPerusopetuksenOppiaineenSuoritusPopup = ({
                 'toimipiste'
               ])}
               getValueEditor={(p, getDefault) => {
-                return p.key == 'tunniste' ? (
+                return p.key === 'tunniste' ? (
                   <UusiPerusopetuksenOppiaineDropdown
                     organisaatioOid={modelData(
                       oppiaineenSuoritus,

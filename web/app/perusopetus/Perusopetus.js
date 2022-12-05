@@ -15,7 +15,7 @@ export const isToimintaAlueittain = (suoritus) =>
       ).some((etp) => modelData(etp, 'opiskeleeToimintaAlueittain'))
     : false
 
-export const isYsiluokka = (suoritus) => luokkaAste(suoritus) == '9'
+export const isYsiluokka = (suoritus) => luokkaAste(suoritus) === '9'
 
 export const isPäättötodistus = (suoritus) => {
   const tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
@@ -31,7 +31,7 @@ export const isPerusopetuksenOppimäärä = (suoritus) => {
 export const jääLuokalle = (suoritus) => modelData(suoritus, 'jääLuokalle')
 export const luokkaAste = (suoritus) => {
   const tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
-  return tunniste.koodistoUri == 'perusopetuksenluokkaaste'
+  return tunniste.koodistoUri === 'perusopetuksenluokkaaste'
     ? tunniste.koodiarvo
     : undefined
 }

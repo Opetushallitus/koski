@@ -448,7 +448,7 @@ const myöhempienOpintojenKoskiTilanAlkamispäivä = (
 
 const isValmistunutInternationalSchoolinPerusopetuksestaAiemminTaiLähitulevaisuudessa =
   (oo: MinimiOpiskeluoikeus) =>
-    oo.tyyppi?.koodiarvo == "internationalschool" &&
+    oo.tyyppi?.koodiarvo === "internationalschool" &&
     oo.perusopetusTiedot !== undefined &&
     oo.perusopetusTiedot.valmistunutAiemminTaiLähitulevaisuudessa &&
     oo.perusopetusTiedot.päättymispäivä !== undefined

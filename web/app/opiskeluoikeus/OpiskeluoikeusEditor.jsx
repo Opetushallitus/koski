@@ -249,7 +249,7 @@ export const OpiskeluoikeudenVoimassaoloaika = ({ opiskeluoikeus }) => {
           path={päättymispäiväProperty}
         />
       </span>{' '}
-      {päättymispäiväProperty == 'arvioituPäättymispäivä' && (
+      {päättymispäiväProperty === 'arvioituPäättymispäivä' && (
         <Text name="(arvioitu)" />
       )}
     </div>

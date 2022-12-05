@@ -128,7 +128,7 @@ export const SuorittaminenOppivelvollisetView =
             </CardHeader>
             <ConstrainedCardBody>
               {isLoading(fetch) && <Spinner />}
-              {isSuccess(fetch) && fetch.data.length == 0 && (
+              {isSuccess(fetch) && fetch.data.length === 0 && (
                 <NoDataMessage>
                   <T id="suorittaminennäkymä__ei_oppivelvollisia" />
                 </NoDataMessage>

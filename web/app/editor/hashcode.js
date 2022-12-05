@@ -2,7 +2,7 @@ export const hashCode = (x) => {
   if (x === undefined || x === null) return 0
   let hash = 0
   if (typeof x === 'string') {
-    if (x.length == 0) return hash
+    if (x.length === 0) return hash
     for (let i = 0; i < x.length; i++) {
       const char = x.charCodeAt(i)
       hash = hashAdd(hash, char)

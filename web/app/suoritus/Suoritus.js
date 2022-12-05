@@ -185,7 +185,7 @@ export const copyToimipiste = (from, to) =>
 
 export const opiskeluoikeudenSuoritusByTyyppi = (tyyppi) => (opiskeluoikeus) =>
   modelItems(opiskeluoikeus, 'suoritukset').find(
-    (suoritus) => suorituksenTyyppi(suoritus) == tyyppi
+    (suoritus) => suorituksenTyyppi(suoritus) === tyyppi
   )
 export const aikuistenPerusopetuksenOppimääränSuoritus =
   opiskeluoikeudenSuoritusByTyyppi('aikuistenperusopetuksenoppimaara')

@@ -115,7 +115,7 @@ export default ({
     const matchingOptions = allOptions.filter(
       (o) =>
         inputElem.value &&
-        displayValue(o).toLowerCase() == inputElem.value.toLowerCase()
+        displayValue(o).toLowerCase() === inputElem.value.toLowerCase()
     )
     if (!R.isEmpty(matchingOptions) && !R.includes(s, matchingOptions)) {
       // if multiple options have the same display value (e.g. arviointiasteikkoammatillinent1k3 and ...15),
@@ -135,11 +135,11 @@ export default ({
   }
   const handleMouseOver = (allOptions, o) => {
     const index = allOptions.findIndex(
-      (option) => keyValue(option) == keyValue(o)
+      (option) => keyValue(option) === keyValue(o)
     )
     selectionIndexAtom.set(index)
   }
-  const isNewItem = (allOptions, o, i) => newItem && i == allOptions.length - 1
+  const isNewItem = (allOptions, o, i) => newItem && i === allOptions.length - 1
   const selectOption = (e, option) => {
     e.preventDefault()
     e.stopPropagation()
@@ -191,13 +191,13 @@ export default ({
                       handleInputBlur(allOptions, s)
                     )}
                     value={Bacon.combineWith(queryAtom, selectedP, (q, s) => {
-                      return q != undefined ? q : s ? displayValue(s) : ''
+                      return q !== undefined ? q : s ? displayValue(s) : ''
                     })}
                     aria-label={Bacon.combineWith(
                       queryAtom,
                       selectedP,
                       (q, s) => {
-                        return q != undefined
+                        return q !== undefined
                           ? q
                           : s
                           ? displayValue(s)
@@ -238,7 +238,7 @@ export default ({
                 >
                   {flatMapArray(allOptions, (o, i) => {
                     const isNew = isNewItem(allOptions, o, i)
-                    const isZeroValue = keyValue(o) == 'eivalintaa'
+                    const isZeroValue = keyValue(o) === 'eivalintaa'
                     const itemClassName = Bacon.combineWith(
                       (s, r, a) => s + r + a,
                       selectionIndexAtom.map((selectionIndex) =>
@@ -300,7 +300,7 @@ export default ({
                     )
                     const groupName =
                       grouped &&
-                      (i == 0 || allOptions[i - 1].groupName != o.groupName)
+                      (i === 0 || allOptions[i - 1].groupName !== o.groupName)
                         ? o.groupName
                         : ''
                     if (groupName) {

@@ -85,7 +85,7 @@ export const OppijaHaku = () => {
             href,
             element: (
               <li
-                className={i == selectedIndex ? 'selected' : ''}
+                className={i === selectedIndex ? 'selected' : ''}
                 role="listitem"
                 aria-label={`${o.sukunimi}, ${o.etunimet}`}
                 key={i}
@@ -123,7 +123,7 @@ export const OppijaHaku = () => {
                 key={selectedIndexAtom.map((i) => i)}
                 baret-lift
                 className={selectedIndexAtom.map(
-                  (i) => 'lisaa-oppija' + (i == 0 ? ' selected' : '')
+                  (i) => 'lisaa-oppija' + (i === 0 ? ' selected' : '')
                 )}
                 href={href}
               >

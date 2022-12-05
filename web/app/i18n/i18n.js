@@ -23,7 +23,7 @@ export const t = (s, ignoreMissing, languageOverride) => {
     if (!localizedString[usedLanguage]) {
       if (ignoreMissing === true) return null
       if (!missing[usedLanguage + '.' + s]) {
-        if (usedLanguage == 'fi')
+        if (usedLanguage === 'fi')
           console.error(`Localization missing for language ${usedLanguage}:`, s)
         missing[usedLanguage + '.' + s] = true
       }

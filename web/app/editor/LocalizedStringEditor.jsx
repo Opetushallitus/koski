@@ -43,7 +43,7 @@ const localizedStringLens = (model) => {
     (m) => modelLookup(m, usedLanguage),
     (v, m) => {
       const protoForUsedLanguage = oneOfPrototypes(m).find(
-        (proto) => proto.value.properties[0].key == usedLanguage
+        (proto) => proto.value.properties[0].key === usedLanguage
       )
       const modelToPush = modelSetValue(
         protoForUsedLanguage,

@@ -110,7 +110,7 @@ export function currentLocation() {
 }
 
 export function parseQuery(qstr) {
-  if (qstr == '') return {}
+  if (qstr === '') return {}
   const query = {}
   const a = qstr.substr(1).split('&')
   for (let i = 0; i < a.length; i++) {

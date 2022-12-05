@@ -20,7 +20,7 @@ const findSingleResult =
       return thisSelectable.concat(selectableChildren)
     }
     const selectables = flatMapArray(organisaatiot, selectableOrgs)
-    return selectables.length == 1 && selectables[0]
+    return selectables.length === 1 && selectables[0]
   }
 export default class OrganisaatioPicker extends BaconComponent {
   constructor(props) {
@@ -134,7 +134,7 @@ export default class OrganisaatioPicker extends BaconComponent {
               ref="hakuboksi"
               defaultValue={this.state.searchString}
               onChange={(e) => {
-                if (e.target.value.length >= 3 || e.target.value.length == 0)
+                if (e.target.value.length >= 3 || e.target.value.length === 0)
                   this.inputBus.push(e.target.value)
               }}
               data-testid="organisaatio-haku-input"
@@ -208,7 +208,7 @@ export default class OrganisaatioPicker extends BaconComponent {
     if (this.props.preselectSingleOption) {
       this.searchStringBus.push('')
       searchResult
-        .filter((r) => r.searchString == '')
+        .filter((r) => r.searchString === '')
         .take(1)
         .map('.organisaatiot')
         .map(findSingleResult(this.props.canSelectOrg))
@@ -232,8 +232,9 @@ export default class OrganisaatioPicker extends BaconComponent {
   }
 
   handleFocus(e) {
+    // TODO: Testaa, toimiiko oikein eqeqeq-säännön kanssa
     const focusInside =
-      e.target == window ? false : !!this.root.contains(e.target)
+      e.target === window ? false : !!this.root.contains(e.target)
     if (!focusInside) {
       this.setState({ open: false })
     }

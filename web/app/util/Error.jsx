@@ -40,7 +40,7 @@ export const handleError = (error) => {
 }
 
 export function requiresLogin(e) {
-  return e.httpStatus == 401 || e.httpStatus == 403
+  return e.httpStatus === 401 || e.httpStatus === 403
 }
 
 const extractValidationErrorText = (error) => {
@@ -54,7 +54,7 @@ const extractValidationErrorText = (error) => {
 const errorText = (error) => {
   if (error.text) return error.text
   else if (
-    error.httpStatus == 400 &&
+    error.httpStatus === 400 &&
     error.jsonMessage &&
     error.jsonMessage[0] &&
     error.jsonMessage[0].key.startsWith('badRequest.validation')

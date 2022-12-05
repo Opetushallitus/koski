@@ -262,7 +262,7 @@ class TabulatedSuoritukset extends React.Component {
 
 const SuoritusTabs = ({ selectedTabIndex, suoritukset, onChange }) => {
   const tabTitle = (suoritusModel) =>
-    suorituksenTyyppi(suoritusModel) == 'perusopetuksenoppimaara' ? (
+    suorituksenTyyppi(suoritusModel) === 'perusopetuksenoppimaara' ? (
       <Text name="Päättötodistus" />
     ) : (
       suoritusTitle(suoritusModel)

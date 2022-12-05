@@ -12,7 +12,7 @@ export class TogglableEditor extends React.Component {
     const context = model.context
     const opiskeluoikeusOid = modelData(model.context.opiskeluoikeus, 'oid')
     const edit =
-      opiskeluoikeusOid && currentLocation().params.edit == opiskeluoikeusOid
+      opiskeluoikeusOid && currentLocation().params.edit === opiskeluoikeusOid
     const editingAny = !!currentLocation().params.edit
     const modifiedContext = R.mergeRight(context, { edit })
     const showEditLink = model.editable && !editingAny
