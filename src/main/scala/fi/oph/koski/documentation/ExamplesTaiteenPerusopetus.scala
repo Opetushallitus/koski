@@ -67,6 +67,10 @@ object ExamplesTaiteenPerusopetus {
       alku = päivä,
       tila = Koodistokoodiviite("hyvaksytystisuoritettu", "koskiopiskeluoikeudentila")
     )
+    def tilaPäättynyt(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeusjakso(
+      alku = päivä,
+      tila = Koodistokoodiviite("paattynyt", "koskiopiskeluoikeudentila")
+    )
 
     val aloitettuYleinenOppimäärä = TaiteenPerusopetuksenOpiskeluoikeus(
       oid = None,
@@ -113,7 +117,7 @@ object ExamplesTaiteenPerusopetus {
   object PäätasonSuoritus {
 
     val yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia = TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus(
-      koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnot,
+      koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnotEiLaajuutta,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
       arviointi = None,
       vahvistus = None,
@@ -144,10 +148,15 @@ object ExamplesTaiteenPerusopetus {
     )
 
     object Koulutusmoduuli {
+      val musiikkiYleinenOppimääräYhteisetOpinnotEiLaajuutta = musiikinOppimäärä(
+        taiteenPerusopetusYleinenOppimääräDiaari,
+        "yleisenoppimaaranyhteisetopinnot",
+        None
+      )
       val musiikkiYleinenOppimääräYhteisetOpinnot = musiikinOppimäärä(
         taiteenPerusopetusYleinenOppimääräDiaari,
         "yleisenoppimaaranyhteisetopinnot",
-        None // 11.11 op
+        Some(11.11)
       )
       val musiikkiLaajaOppimääräPerusopinnot = musiikinOppimäärä(
         taiteenPerusopetusLaajaOppimääräDiaari,
