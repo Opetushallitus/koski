@@ -208,7 +208,7 @@ jobs:
     name: Frontend 6/6
     runs-on: ${{ inputs.runs-on }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ./.github/actions/koski_frontend_playwright_test
 
   valpas_integration_tests_1:
