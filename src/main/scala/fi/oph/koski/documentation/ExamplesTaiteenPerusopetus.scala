@@ -150,31 +150,25 @@ object ExamplesTaiteenPerusopetus {
     object Koulutusmoduuli {
       val musiikkiYleinenOppimääräYhteisetOpinnotEiLaajuutta = musiikinOppimäärä(
         taiteenPerusopetusYleinenOppimääräDiaari,
-        "yleisenoppimaaranyhteisetopinnot",
         None
       )
       val musiikkiYleinenOppimääräYhteisetOpinnot = musiikinOppimäärä(
         taiteenPerusopetusYleinenOppimääräDiaari,
-        "yleisenoppimaaranyhteisetopinnot",
         Some(11.11)
       )
       val musiikkiLaajaOppimääräPerusopinnot = musiikinOppimäärä(
         taiteenPerusopetusLaajaOppimääräDiaari,
-        "laajanoppimaaranperusopinnot",
         Some(29.63)
       )
       val musiikkiLaajaOppimääräSyventävätOpinnot = musiikinOppimäärä(
         taiteenPerusopetusLaajaOppimääräDiaari,
-        "laajanoppimaaransyventavatopinnot",
         Some(18.52)
       )
 
       private def musiikinOppimäärä(
         diaari: String,
-        opintotaso: String,
         laajuus: Option[Double]
       ) = MusiikinOpintotaso(
-        opintotaso = Koodistokoodiviite(opintotaso, "taiteenperusopetusopintotaso"),
         taiteenala = musiikinTaiteenala,
         laajuus = laajuus.map(LaajuusOpintopisteissä(_)),
         perusteenDiaarinumero = Some(diaari)

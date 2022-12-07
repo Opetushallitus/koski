@@ -52,10 +52,6 @@
           "koodiarvo" : "999907",
           "koodistoUri" : "koulutus"
         },
-        "opintotaso" : {
-          "koodiarvo" : "laajanoppimaaranperusopinnot",
-          "koodistoUri" : "taiteenperusopetusopintotaso"
-        },
         "taiteenala" : {
           "koodiarvo" : "musiikki",
           "koodistoUri" : "taiteenperusopetustaiteenala"
@@ -262,10 +258,6 @@
         "tunniste" : {
           "koodiarvo" : "999907",
           "koodistoUri" : "koulutus"
-        },
-        "opintotaso" : {
-          "koodiarvo" : "laajanoppimaaransyventavatopinnot",
-          "koodistoUri" : "taiteenperusopetusopintotaso"
         },
         "taiteenala" : {
           "koodiarvo" : "musiikki",

@@ -112,7 +112,6 @@ object Koodistot {
     KoodistoAsetus("arviointiasteikkoeuropeanschoolofhelsinkifinalmark"),
     KoodistoAsetus("ebtutkinnonoppiaineenkomponentti"),
     KoodistoAsetus("taiteenperusopetustaiteenala"),
-    KoodistoAsetus("taiteenperusopetusopintotaso"),
     KoodistoAsetus("taiteenperusopetusoppimaara"),
     KoodistoAsetus("arviointiasteikkotaiteenperusopetus")
   )
