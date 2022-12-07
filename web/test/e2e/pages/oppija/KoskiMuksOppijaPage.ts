@@ -13,7 +13,7 @@ export class KoskiMuksOppijaPage extends KoskiOppijaPage {
 
     this.osasuoritusDialog = new OsasuoritusDialog(page)
     this.opintokokonaisuus = page.getByTestId(
-      'span-for-opintokokonaisuudet-enum-editor'
+      'hyperlink-for-opintokokonaisuudet-enum-editor'
     )
     this.merkitseSuoritusValmiiksiBtn = page.getByTestId(
       'merkitse-suoritus-valmiiksi'
