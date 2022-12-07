@@ -1,66 +1,23 @@
 import React from 'react'
-import { PropertiesEditor } from '../editor/PropertiesEditor'
+import { buildClassNames } from '../components/classnames'
 import { Editor } from '../editor/Editor'
-import { EnumEditor, zeroValue } from '../editor/EnumEditor'
-import {
-  modelData,
-  modelEmpty,
-  modelLookup,
-  modelProperty
-} from '../editor/EditorModel'
-import { suorituksenTyyppi } from './Suoritus'
-import { tutkinnonNimi } from './Koulutusmoduuli'
-import { InternationalSchoolLevel } from '../internationalschool/InternationalSchoolLevel'
-import { isMuutaAmmatillistaPäätasonSuoritus } from '../muuammatillinen/MuuAmmatillinen'
+import { modelEmpty, modelLookup, modelProperty } from '../editor/EditorModel'
+import { EnumEditor } from '../editor/EnumEditor'
+import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { PropertyInfo } from '../editor/PropertyInfo'
 import { t } from '../i18n/i18n'
+import { InternationalSchoolLevel } from '../internationalschool/InternationalSchoolLevel'
+import { isMuutaAmmatillistaPäätasonSuoritus } from '../muuammatillinen/MuuAmmatillinen'
+import {
+  asHyperLink,
+  formatOpintokokonaisuusDisplayValue,
+  formatOpintokokonaisuusTitle
+} from '../util/opintokokonaisuus'
+import { tutkinnonNimi } from './Koulutusmoduuli'
+import { suorituksenTyyppi } from './Suoritus'
 import { TunnisteenKoodiarvoEditor } from './TunnisteenKoodiarvoEditor'
-import { buildClassNames } from '../components/classnames'
 
-const isZeroValue = (option) => option.value === zeroValue.value
-const hasKoodiarvo = (data) => data !== undefined && 'koodiarvo' in data
-const formatOpintokokonaisuusDisplayValue = (option) => {
-  if (option === undefined) {
-    return zeroValue.title
-  }
-  if (isZeroValue(option)) {
-    return option.title
-  }
-  if (!hasKoodiarvo(option.data)) {
-    return option.title
-  }
-  return `${option.data.koodiarvo} ${option.title}`
-}
-const formatOpintokokonaisuusTitle = (option) => {
-  if (option === undefined) {
-    return zeroValue.title
-  }
-  if (isZeroValue(option)) {
-    return option.title
-  }
-  if (!hasKoodiarvo(option.data)) {
-    return option.title
-  }
-  return `${option.data.koodiarvo} ${option.title}`
-}
-
-const asHyperLink = (model) => {
-  const data = modelData(model)
-  if (!hasKoodiarvo(data)) {
-    return {
-      url: '#',
-      target: '_self'
-    }
-  }
-  return {
-    url: `${window.ePerusteetBaseUrl}${t(
-      'eperusteet_opintopolku_url_fragment'
-    )}${data.koodiarvo}`,
-    target: '_blank'
-  }
-}
-
-export const VstVapaaTavoitteinenKoulutusmoduuliEditor = ({ model }) => {
+export const OpintokokonaisuudellinenKoulutusmoduuliEditor = ({ model }) => {
   const propertyFilter = (p) => {
     const excludedProperties = [
       'tunniste',
