@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 9.12.2022
+- Lukion nuorten oppimäärän (LOPS2015) voi merkitä valmiiksi vasta kun kursseja on suoritettu vähintään 75 kpl.
+- Lukion aikuisten oppimäärän (LOPS2015) voi merkitä valmiiksi vasta kun kursseja on suoritettu vähintään 44 kpl.
+
 ## 30.11.2022
 - Tarkistetaan tietyissä palvelukäyttäjän siirroissa, että suoritukset eivät ala ennen opiskeluoikeuden alkua
 
