@@ -8,12 +8,12 @@ import scala.util.matching.Regex
 
 object Hetu {
   val checkChars = List('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','H','J','K','L','M','N','P','R','S','T','U','V','W','X','Y')
-  val hetuRegex: Regex = "^([012][0-9]|3[01])(0[1-9]|1[0-2])([0-9]{2})(A|-|\\+)([0-9]{3})([0-9A-FHJ-NPR-Y])$".r
+  val hetuRegex: Regex = "^([012][0-9]|3[01])(0[1-9]|1[0-2])([0-9]{2})(A|B|C|D|E|F|Y|X|W|V|U|-|\\+)([0-9]{3})([0-9A-FHJ-NPR-Y])$".r
 
   def century(hetu: String): Option[Int] = hetu.lift(6) match {
     case Some('+') => Some(1800)
-    case Some('-') => Some(1900)
-    case Some('A') => Some(2000)
+    case Some('-') | Some('X') | Some('Y') | Some('W') | Some('V') | Some('U') => Some(1900)
+    case Some('A') | Some('B') | Some('C') | Some('D') | Some('E') | Some('F') => Some(2000)
     case _  => None
   }
 
