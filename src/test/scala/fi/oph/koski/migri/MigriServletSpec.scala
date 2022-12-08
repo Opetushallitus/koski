@@ -10,7 +10,7 @@ class MigriServletSpec extends AnyFreeSpec with KoskiHttpSpec with HttpSpecifica
   "MigriServlet" - {
     "Palauttaa json-objektin" in {
       post(
-        uri = "api/luovutuspalvelu/migri/valinta/oid",
+        uri = "api/luovutuspalvelu/migri/valinta/henkilo-oidit",
         body = "{\"oids\": [\"1.2.246.562.24.51986460849\"]}",
         headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
       ) {

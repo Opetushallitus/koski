@@ -44,9 +44,15 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
     }()
   }
 
-  post("/valinta/oid") {
+  post("/valinta/henkilo-oidit") {
     withJsonBody { json =>
       renderEither(extractAndValidateOids(json).flatMap(valintaTiedotOideilla))
+    }()
+  }
+
+  post("/valinta/hetut") {
+    withJsonBody { json =>
+      renderEither(extractAndValidateHetus(json).flatMap(valintaTiedotHetuilla))
     }()
   }
 
@@ -65,6 +71,11 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .map(req => req.oids)
 
+  private def extractAndValidateHetus(json: JValue): Either[HttpStatus, List[String]] =
+    JsonSerializer.validateAndExtract[MigriHetusRequest](json)
+      .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
+      .map(req => req.hetut)
+
   private def haeHetulla(hetu: String): Either[HttpStatus, MigriOppija] =
     application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu, useVirta = true, useYtr = true)(koskiSession)
       .flatMap(_.warningsToLeft)
@@ -77,7 +88,12 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
 
   private def valintaTiedotOideilla(oids: List[String]): Either[HttpStatus, RawJsonResponse] = {
     val basicAuthRequest = new BasicAuthRequest(request)
-    migriService.get(oids, basicAuthRequest)
+    migriService.getByOids(oids, basicAuthRequest)
+  }
+
+  private def valintaTiedotHetuilla(hetut: List[String]): Either[HttpStatus, RawJsonResponse] = {
+    val basicAuthRequest = new BasicAuthRequest(request)
+    migriService.getByHetus(hetut, basicAuthRequest)
   }
 
   private def convertToMigriSchema(oppija: Oppija): Either[HttpStatus, MigriOppija] =
@@ -90,3 +106,4 @@ case class MigriOidRequest(oid: String)
 
 case class MigriOidsRequest(oids: List[String])
 
+case class MigriHetusRequest(hetut: List[String])

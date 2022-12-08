@@ -10,38 +10,67 @@ import fi.oph.koski.servlet.RawJsonResponse
 import org.scalatra.auth.strategy.BasicAuthStrategy.BasicAuthRequest
 
 trait MigriService {
-  def get(oids: List[String], basicAuthRequest: BasicAuthRequest): Either[HttpStatus, RawJsonResponse]
+  def getByOids(oids: List[String], basicAuthRequest: BasicAuthRequest): Either[HttpStatus, RawJsonResponse]
+  def getByHetus(hetus: List[String], basicAuthRequest: BasicAuthRequest): Either[HttpStatus, RawJsonResponse]
 }
 
 class RemoteMigriService (implicit val application: KoskiApplication) extends Logging with MigriService {
-  def get(oids: List[String], basicAuthRequest: BasicAuthRequest) = {
-    val config = ServiceConfig(application.config.getString("opintopolku.virkailija.url"), basicAuthRequest.username, basicAuthRequest.password, true)
-    val client = VirkailijaHttpClient(config,
+  private def getClient(username: String, password: String) = {
+    val config = ServiceConfig(application.config.getString("opintopolku.virkailija.url"), username, password, useCas = true)
+    VirkailijaHttpClient(config,
       "/valinta-tulos-service",
       sessionCookieName = "session",
       serviceUrlSuffix = "auth/login",
-      false)
+      preferGettingCredentialsFromSecretsManager = false)
+  }
 
-    runIO(client.post(uri"/valinta-tulos-service/cas/migri/hakemukset/", oids)(json4sEncoderOf[List[String]]) {
+  def getByOids(oids: List[String], basicAuthRequest: BasicAuthRequest): Either[HttpStatus, RawJsonResponse] = {
+    val client = getClient(basicAuthRequest.username, basicAuthRequest.password)
+
+    runIO(client.post(uri"/valinta-tulos-service/cas/migri/hakemukset/henkilo-oidit", oids)(json4sEncoderOf[List[String]]) {
       case (200, text, _) => Right(RawJsonResponse(text))
       case (status, text, _) =>
         logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} and first oid ${oids.headOption} from ${application.config.getString("opintopolku.virkailija.url")}")
         Left(KoskiErrorCategory.internalError("Virhe kutsuttaessa valinta-tulos-servicea"))
     })
   }
+
+  def getByHetus(hetus: List[String], basicAuthRequest: BasicAuthRequest): Either[HttpStatus, RawJsonResponse] = {
+    val client = getClient(basicAuthRequest.username, basicAuthRequest.password)
+
+    runIO(client.post(uri"/valinta-tulos-service/cas/migri/hakemukset/hetut", hetus)(json4sEncoderOf[List[String]]) {
+      case (200, text, _) => Right(RawJsonResponse(text))
+      case (status, text, _) =>
+        logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} from ${application.config.getString("opintopolku.virkailija.url")}")
+        Left(KoskiErrorCategory.internalError("Virhe kutsuttaessa valinta-tulos-servicea"))
+    })
+  }
 }
 
 class MockMigriService (implicit val application: KoskiApplication) extends Logging with MigriService {
-  def get(oids: List[String], basicAuthRequest: BasicAuthRequest): Either[HttpStatus, RawJsonResponse] = {
+  def getByOids(oids: List[String], basicAuthRequest: BasicAuthRequest): Either[HttpStatus, RawJsonResponse] = {
     // Hyvin tynkä toteutus, lähinnä tarkistetaan, että BasicAuthRequest tulee testistä perille oikeanlaisena
-    val data = MockResponse(oids, basicAuthRequest.username, basicAuthRequest.password)
+    val data = MockResponseOids(oids, basicAuthRequest.username, basicAuthRequest.password)
+    val json = JsonSerializer.writeWithRoot(data)
+    Right(RawJsonResponse(json))
+  }
+
+  def getByHetus(hetus: List[String], basicAuthRequest: BasicAuthRequest): Either[HttpStatus, RawJsonResponse] = {
+    val data = MockResponseHetus(hetus, basicAuthRequest.username, basicAuthRequest.password)
     val json = JsonSerializer.writeWithRoot(data)
     Right(RawJsonResponse(json))
   }
 }
 
-case class MockResponse(
+case class MockResponseOids(
   oids: List[String],
+  username: String,
+  password: String,
+)
+
+
+case class MockResponseHetus(
+  hetus: List[String],
   username: String,
   password: String,
 )
