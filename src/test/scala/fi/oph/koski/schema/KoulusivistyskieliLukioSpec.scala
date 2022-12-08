@@ -63,7 +63,7 @@ class KoulusivistyskieliLukioSpec extends AnyFreeSpec with KoskiHttpSpec with Op
       suorituskieli = ExampleData.suomenKieli,
       toimipiste = YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu,
       osasuoritukset = Some(oppiaineet.toList),
-      vahvistus = ExampleData.vahvistusPaikkakunnalla()
+      vahvistus = None
     ))
   )
 }
