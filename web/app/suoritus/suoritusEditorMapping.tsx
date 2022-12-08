@@ -31,10 +31,11 @@ import { VapaanSivistystyonSuoritustaulukko } from '../vapaasivistystyo/VapaanSi
 import { TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko } from '../tuva/TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko'
 import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
 import { ObjectModel, ObjectModelProperty } from '../types/EditorModels'
-import { VstVapaaTavoitteinenKoulutusmoduuliEditor } from './VstVapaaTavoitteinenKoulutusmoduuliEditor'
+import { OpintokokonaisuudellinenKoulutusmoduuliEditor } from './OpintokokonaisuudellinenKoulutusmoduuliEditor'
 import { EuropeanSchoolOfHelsinkiOsasuorituksetEditor } from '../esh/EuropeanSchoolOfHelsinkiOsasuorituksetEditor'
 import { eshSuorituksenClass } from '../esh/europeanschoolofhelsinkiSuoritus'
 import { MuuKuinSäänneltySuoritustaulukko } from '../jotpa/MuuKuinSäänneltySuoritustaulukko'
+import { opintokokonaisuuteenKuuluvatPäätasonSuoritukset } from '../util/opintokokonaisuus'
 
 export const resolveOsasuorituksetEditor = (mdl: OsasuoritusEditorModel) => {
   const oneOf = (...classes: string[]) =>
@@ -288,11 +289,13 @@ export const resolvePropertyEditor = (
       return <ArvosanaEditor model={model} />
     case 'koulutusmoduuli':
       if (
-        oneOf('vapaansivistystyonpaatasonsuoritus') &&
+        oneOf(...opintokokonaisuuteenKuuluvatPäätasonSuoritukset) &&
         hasModelProperty(property.model, 'opintokokonaisuus')
       ) {
         return (
-          <VstVapaaTavoitteinenKoulutusmoduuliEditor model={property.model} />
+          <OpintokokonaisuudellinenKoulutusmoduuliEditor
+            model={property.model}
+          />
         )
       } else {
         return null
