@@ -367,7 +367,8 @@ class PostgresOpiskeluoikeusRepository(
           case HttpStatus.ok =>
             if (
               tallennettavaOpiskeluoikeus.mitätöity &&
-                tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus")
+                (tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus") ||
+                  tallennettavaOpiskeluoikeus.tyyppi.koodiarvo == "taiteenperusopetus")
             ) {
               OpiskeluoikeusPoistoUtils
                 .poistaOpiskeluOikeus(id, oid, tallennettavaOpiskeluoikeus, nextVersionumero, oldRow.oppijaOid, true)

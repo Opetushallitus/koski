@@ -49,14 +49,18 @@ case class TaiteenPerusopetuksenOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("paattynyt")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
   tila: Koodistokoodiviite,
-) extends KoskiOpiskeluoikeusjakso
+) extends KoskiOpiskeluoikeusjakso {
+  def hyväksytystiSuoritettu = tila.koodiarvo == "hyvaksytystisuoritettu"
+}
 
 /******************************************************************************
  * PÄÄTASON SUORITUKSET
  *****************************************************************************/
 
 trait TaiteenPerusopetuksenPäätasonSuoritus
-  extends KoskeenTallennettavaPäätasonSuoritus
+  extends KoskeenTallennettavaPäätasonSuoritus {
+  def koulutusmoduuli: TaiteenPerusopetuksenOpintotaso
+}
 
 @Title("Yleisen oppimäärän yhteisten opintojen suoritus")
 @Description("Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen opintotason suoritus")
