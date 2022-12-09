@@ -24,7 +24,8 @@ export default {
   },
   canAddSuoritus: (opiskeluoikeus) => {
     return (
-      modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'aikuistenperusopetus' &&
+      modelData(opiskeluoikeus, 'tyyppi.koodiarvo') ===
+        'aikuistenperusopetus' &&
       !!aikuistenPerusopetuksenOppimääränSuoritus(opiskeluoikeus) &&
       !aikuistenPerusopetuksenAlkuvaiheenSuoritus(opiskeluoikeus)
     )

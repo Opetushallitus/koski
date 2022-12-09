@@ -13,7 +13,7 @@ export const OppijaEditor = ({ model }) => {
   const selectedIndex = selectedTyyppi
     ? opiskeluoikeusTyypit.findIndex(
         (opiskeluoikeudenTyyppi) =>
-          selectedTyyppi == modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo
+          selectedTyyppi === modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo
       )
     : 0
 

@@ -171,7 +171,7 @@ export const OppijanOppivelvollisuustiedot = (
                   <Error>
                     <T
                       id={
-                        pohjatiedot.status == 403
+                        pohjatiedot.status === 403
                           ? "oppija__ei_oikeuksia_tehdä_ilmoitusta"
                           : "oppija__pohjatietojen_haku_epäonnistui"
                       }

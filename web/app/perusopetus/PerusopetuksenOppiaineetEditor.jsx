@@ -340,11 +340,11 @@ class Oppiainetaulukko extends React.Component {
         ? uusiPerusopetukseenValmistavanOppiaineenSuoritus
         : uusiOppiaineenSuoritus
 
-    if (suoritukset.length == 0 && !model.context.edit) return null
+    if (suoritukset.length === 0 && !model.context.edit) return null
     const placeholder = t(
       isToimintaAlueittain(model)
         ? 'Lisää toiminta-alue'
-        : pakolliset == undefined
+        : pakolliset === undefined
         ? 'Lisää oppiaine'
         : pakolliset
         ? 'Lisää pakollinen oppiaine'

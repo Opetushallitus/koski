@@ -14,7 +14,7 @@ export default ({ location, user }) => {
             'Opiskelijat',
             location.path,
             '',
-            (path, loc) => loc == path || loc.startsWith('/koski/oppija')
+            (path, loc) => loc === path || loc.startsWith('/koski/oppija')
           )}
         </li>
       )}

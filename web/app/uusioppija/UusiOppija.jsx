@@ -73,7 +73,7 @@ const toCreateOppija = (henkilö, opiskeluoikeus) => {
 export const postNewOppija = (oppija) =>
   Http.post('/koski/api/v2/oppija', oppija, {
     errorHandler: (e) => {
-      if (e.httpStatus == 409) {
+      if (e.httpStatus === 409) {
         e.text = (
           <Text name="Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus." />
         )

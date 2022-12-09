@@ -17,7 +17,7 @@ export const JääLuokalleTaiSiirretäänEditor = ({ model }) => {
   const jääLuokalle = modelData(jääLuokalleModel)
   const luokka = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
   if (luokka && suoritusValmis(model)) {
-    if (luokka == '9' || isEshS7(model)) {
+    if (luokka === '9' || isEshS7(model)) {
       if (!model.context.edit && jääLuokalle) {
         return (
           <div className="jaa-tai-siirretaan">

@@ -60,11 +60,11 @@ const tutkintoLens = L.lens(
 const hasValmistavaTutkinto = (opiskeluoikeus) =>
   modelItems(opiskeluoikeus, 'suoritukset').find(
     (suoritus) =>
-      suorituksenTyyppi(suoritus) == 'nayttotutkintoonvalmistavakoulutus'
+      suorituksenTyyppi(suoritus) === 'nayttotutkintoonvalmistavakoulutus'
   )
 const hasAmmatillinenTutkinto = (opiskeluoikeus) =>
   modelItems(opiskeluoikeus, 'suoritukset').find(
-    (suoritus) => suorituksenTyyppi(suoritus) == 'ammatillinentutkinto'
+    (suoritus) => suorituksenTyyppi(suoritus) === 'ammatillinentutkinto'
   )
 const hasContradictingSuoritus = (opiskeluoikeus) => {
   const disallowedSuoritustyypit = [
@@ -229,7 +229,7 @@ const Popup =
 export const UusiAmmatillisenTutkinnonSuoritus = Popup(false)
 UusiAmmatillisenTutkinnonSuoritus.canAddSuoritus = (opiskeluoikeus) => {
   return (
-    modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' &&
+    modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'ammatillinenkoulutus' &&
     !hasAmmatillinenTutkinto(opiskeluoikeus) &&
     !hasContradictingSuoritus(opiskeluoikeus)
   )
@@ -246,7 +246,7 @@ UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus.canAddSuoritus = (
   opiskeluoikeus
 ) => {
   return (
-    modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'ammatillinenkoulutus' &&
+    modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'ammatillinenkoulutus' &&
     !hasValmistavaTutkinto(opiskeluoikeus) &&
     !hasContradictingSuoritus(opiskeluoikeus)
   )

@@ -13,7 +13,7 @@ export default () => {
       <p id="health-status">
         {isInitial(res) || isLoading(res)
           ? "Checking..."
-          : isSuccess(res) && res.data == ""
+          : isSuccess(res) && res.data === ""
           ? "OK"
           : "Backend failure"}
       </p>

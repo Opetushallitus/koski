@@ -29,7 +29,7 @@ const rowInTable = ({ key, value, path }, index) => {
   )
 }
 
-export const NumberView = ({ value }) => <span>{value == 0 ? '' : value}</span>
+export const NumberView = ({ value }) => <span>{value === 0 ? '' : value}</span>
 export const BooleanView = ({ value }) => <Text name={value ? 'kyllä' : 'ei'} />
 export const DateView = ({ value }) => (
   <span>{(value && formatFinnishDate(parseISODate(value))) || ''}</span>

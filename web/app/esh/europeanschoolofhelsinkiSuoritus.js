@@ -72,7 +72,7 @@ export const suoritusTyyppi = (koulutusmoduulinTunniste) => {
   }
   if (
     koulutusmoduulinTunniste.koodistoUri === 'koulutus' &&
-    koulutusmoduulinTunniste.koodiarvo == '301104'
+    koulutusmoduulinTunniste.koodiarvo === '301104'
   ) {
     return eshSuorituksenTyyppi.ebtutkinto
   }

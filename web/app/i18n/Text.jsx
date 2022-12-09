@@ -7,7 +7,7 @@ import Atom from 'bacon.atom'
 import { buildClassNames } from '../components/classnames'
 
 export default ({ name, ignoreMissing, lang, edit, className, ...rest }) => {
-  const editP = edit == undefined ? editAtom : Bacon.constant(parseBool(edit))
+  const editP = edit === undefined ? editAtom : Bacon.constant(parseBool(edit))
 
   if (name === null || name === undefined) {
     return null
@@ -41,7 +41,7 @@ const TextEditor = ({ name, lang }) => {
 
   const onInput = (event) => {
     const newValue = event.target.textContent
-    if (newValue != currentValue) {
+    if (newValue !== currentValue) {
       currentValue = newValue
       changed.set(true)
       changeText(name, newValue, lang)

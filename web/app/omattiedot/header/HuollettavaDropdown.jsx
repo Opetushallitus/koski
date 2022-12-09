@@ -12,7 +12,7 @@ export const HuollettavaDropdown = ({ oppija, oppijaSelectionBus }) => {
 
   const options = huollettavat
     .concat(kirjautunutHenkilo)
-    .filter((h) => h.oid != valittuHenkilo.oid)
+    .filter((h) => h.oid !== valittuHenkilo.oid)
     .sort(aakkosjarjestys)
 
   return (

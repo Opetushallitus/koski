@@ -45,8 +45,8 @@ const hakemuksenTilaT = (
 ): Translation => {
   if (isLoadingHakutilanteet) return t("Ladataan")
   else if (hakutilanneError) return t("oppija__hakuhistoria_virhe")
-  else if (hakemusCount == 0) return t("hakemuksentila__ei_hakemusta")
-  else if (hakemusCount == 1) return t("hakemuksentila__hakenut")
+  else if (hakemusCount === 0) return t("hakemuksentila__ei_hakemusta")
+  else if (hakemusCount === 1) return t("hakemuksentila__hakenut")
   else return t("hakemuksentila__n_hakua", { lukumäärä: hakemusCount })
 }
 
@@ -59,7 +59,7 @@ const hakemuksenTilaDisplay = (
   pipe(
     A.head(hakutilanteet),
     O.map((hakutilanne) =>
-      hakutilanteet.length == 1 ? (
+      hakutilanteet.length === 1 ? (
         <ExternalLink to={hakutilanne.hakemusUrl}>
           {hakemuksenTilaValue}
         </ExternalLink>

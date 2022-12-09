@@ -31,7 +31,7 @@ export const removeClass = (x, name) => {
   if (isElement(x)) {
     x.className = removeClass(x.className, name)
   } else {
-    return buildClassNames(parseClassNames(x).filter((n) => n != name))
+    return buildClassNames(parseClassNames(x).filter((n) => n !== name))
   }
 }
 const isElement = (x) => x instanceof HTMLElement

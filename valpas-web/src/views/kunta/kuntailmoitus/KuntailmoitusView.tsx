@@ -157,7 +157,7 @@ export const KuntailmoitusView = withRequiresKuntavalvonta(
           </CardHeader>
           <CardBody>
             {isLoading(fetch) && <Spinner />}
-            {isSuccess(fetch) && fetch.data.length == 0 && (
+            {isSuccess(fetch) && fetch.data.length === 0 && (
               <NoDataMessage>
                 <T id="kuntailmoitusnäkymä__ei_ilmoituksia" />
               </NoDataMessage>

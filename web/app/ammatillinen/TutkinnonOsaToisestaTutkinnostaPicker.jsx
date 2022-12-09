@@ -35,7 +35,7 @@ const TutkinnonOsaToisestaTutkinnostaPicker = ({
           placeholder={osatP
             .map('.length')
             .map((len) =>
-              len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa'
+              len === 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa'
             )
             .map(t)}
         />

@@ -73,7 +73,7 @@ export const OppivelvollisuudenKeskeytysForm = (
   const isOk =
     organisaatio !== undefined &&
     (määräaikainenSelected
-      ? dateRange.every((d) => d != null)
+      ? dateRange.every((d) => d !== null)
       : toistaiseksiVahvistettu)
 
   const submit = useCallback(() => {

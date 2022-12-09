@@ -56,8 +56,8 @@ export const oppijaContentP = (oppijaOid) => {
   const version = currentLocation().params.versionumero
   if (
     !currentState ||
-    currentState.oppijaOid != oppijaOid ||
-    currentState.version != version
+    currentState.oppijaOid !== oppijaOid ||
+    currentState.version !== version
   ) {
     currentState = {
       oppijaOid,
@@ -156,10 +156,10 @@ const createState = (oppijaOid) => {
     const model = getModelFromChange(batch[0])
     const willThrottle =
       model &&
-      (model.type == 'string' ||
-        model.type == 'date' ||
-        model.type == 'number' ||
-        model.oneOfClass == 'localizedstring')
+      (model.type === 'string' ||
+        model.type === 'date' ||
+        model.type === 'number' ||
+        model.oneOfClass === 'localizedstring')
     return willThrottle
   }
 
@@ -209,7 +209,7 @@ const createState = (oppijaOid) => {
       (x) => x.opiskeluoikeudet
     )
     const opiskeluoikeus = opiskeluoikeudet.find(
-      (x) => x.oid == opiskeluoikeusOid
+      (x) => x.oid === opiskeluoikeusOid
     )
 
     const oppijaUpdate = {
@@ -434,7 +434,7 @@ export class Oppija extends React.Component {
         </div>
         <EditBar {...{ saveChangesBus, cancelChangesBus, stateP, oppija }} />
         {doActionWhileMounted(
-          globalSaveKeyEvent.filter(stateP.map((s) => s == 'dirty')),
+          globalSaveKeyEvent.filter(stateP.map((s) => s === 'dirty')),
           () => saveChangesBus.push()
         )}
       </div>
@@ -469,7 +469,7 @@ const globalSaveKeyEvent = Bacon.fromEvent(window, 'keydown')
   .filter(
     (e) =>
       (e.getModifierState('Meta') || e.getModifierState('Control')) &&
-      e.keyCode == 83
+      e.keyCode === 83
   )
   .doAction('.preventDefault')
 
@@ -479,7 +479,7 @@ const EditBar = ({ stateP, saveChangesBus, cancelChangesBus, oppija }) => {
     saveChangesBus.push()
   }
 
-  const dirtyP = stateP.map((state) => state == 'dirty')
+  const dirtyP = stateP.map((state) => state === 'dirty')
   const validationErrorP = dirtyP.map((dirty) => dirty && !modelValid(oppija))
   const canSaveP = dirtyP.and(validationErrorP.not())
   const messageMap = {

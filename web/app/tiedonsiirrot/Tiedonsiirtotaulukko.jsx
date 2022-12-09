@@ -77,7 +77,7 @@ class Lokiriviryhmä extends React.Component {
     return (
       <tbody className="alternating">
         {flatMapArray(tiedonsiirtoRivit, (rivi, j) => {
-          const isParent = j == 0 && isGroup
+          const isParent = j === 0 && isGroup
           const isChild = j > 0 && isGroup
           const isHidden = isChild && !isExpanded
           return isHidden
@@ -89,7 +89,7 @@ class Lokiriviryhmä extends React.Component {
                   isParent={isParent}
                   isChild={isChild}
                   isExpanded={isExpanded}
-                  isEven={i % 2 == 1}
+                  isEven={i % 2 === 1}
                   showError={showError}
                   setExpanded={setExpanded}
                   selected={selected}

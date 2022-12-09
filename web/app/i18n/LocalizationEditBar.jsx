@@ -42,7 +42,7 @@ export default ({ user }) => {
                 {languages.map((l) => (
                   <a
                     key={l}
-                    className={l + (l == lang ? ' selected' : '')}
+                    className={l + (l === lang ? ' selected' : '')}
                     onClick={() => {
                       localStorage.editLocalizations = true
                       setLang(l)
@@ -87,7 +87,7 @@ const EditAllTexts = () => {
                 <tr key={key}>
                   {languages.map((l) => (
                     <td>
-                      <Text key={l} name={key} lang={l} edit={l != 'fi'} />
+                      <Text key={l} name={key} lang={l} edit={l !== 'fi'} />
                     </td>
                   ))}
                 </tr>

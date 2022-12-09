@@ -231,7 +231,7 @@ const ryhmä = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
   } else {
     if (
       oo.muuOpetusTiedot &&
-      oo.tyyppi.koodiarvo == "perusopetukseenvalmistavaopetus"
+      oo.tyyppi.koodiarvo === "perusopetukseenvalmistavaopetus"
     ) {
       const valo = t("hakutilanne__valo")
       return {

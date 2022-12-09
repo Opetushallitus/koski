@@ -83,7 +83,7 @@ export const perusopetuksenJälkeistäPreferoivatOpiskeluoikeustiedot = (
   const ooTiedots: Array<[OpiskeluoikeusSuppeatTiedot, OpintotasonTiedot]> =
     pipe(
       opiskeluoikeudet,
-      A.filter((oo) => oo.oid != käsiteltäväOpiskeluoikeus.oid),
+      A.filter((oo) => oo.oid !== käsiteltäväOpiskeluoikeus.oid),
       A.chain(perusopetuksenJälkeistäPreferoivaNäytettäväOpiskeluoikeusTieto)
     )
 

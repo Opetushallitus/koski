@@ -23,7 +23,7 @@ export default class Versiohistoria extends BaconComponent {
         navigateTo(`/koski/oppija/${oppijaOid}`)
       }
     }
-    const selectedVersion = this.versionumero() || history.length
+    const selectedVersion = String(this.versionumero() || history.length)
     return opiskeluoikeusOid ? (
       <div className={'versiohistoria' + (showHistory ? ' open' : '')}>
         <a onClick={() => toggle()}>
@@ -37,7 +37,9 @@ export default class Versiohistoria extends BaconComponent {
                 <li
                   key={i}
                   className={
-                    version.versionumero == selectedVersion ? 'selected' : ''
+                    String(version.versionumero) === selectedVersion
+                      ? 'selected'
+                      : ''
                   }
                 >
                   <Link

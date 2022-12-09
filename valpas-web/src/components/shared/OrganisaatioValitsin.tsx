@@ -98,7 +98,7 @@ export const getOrganisaatiot = (
 ): OrganisaatioHierarkia[] => {
   const sallitutKäyttöoikeusroolit = käyttöoikeusroolit.filter(
     (kayttooikeusrooli) =>
-      kayttooikeusrooli.kayttooikeusrooli == käytettäväKäyttöoikeus
+      kayttooikeusrooli.kayttooikeusrooli === käytettäväKäyttöoikeus
   )
   const kaikki = pipe(
     sallitutKäyttöoikeusroolit,
