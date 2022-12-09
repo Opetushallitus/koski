@@ -53,6 +53,8 @@ export const UusiEshOsasuoritusDropdown = ({
     ? t('description:lisaa_alaosasuoritus')
     : t('Lisää osasuoritus')
 
+  const testId = isAlaosasuoritus ? 'uusi-alaosasuoritus' : 'uusi-osasuoritus'
+
   return (
     <div className={'uusi-oppiaine'}>
       {elementWithLoadingIndicator(
@@ -68,6 +70,7 @@ export const UusiEshOsasuoritusDropdown = ({
                 selectionText={dropdownPlaceholder}
                 selected={selected}
                 enableFilter={true}
+                data-testid={testId}
               />
             ) : (
               <></>

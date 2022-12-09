@@ -6,9 +6,13 @@ export class Dropdown {
   readonly textInput: Locator
   readonly options: Locator
 
-  constructor(page: Page, testId: string) {
+  static fromTestId(page: Page, testId: string) {
+    return new this(page, page.getByTestId(testId))
+  }
+
+  constructor(page: Page, container: Locator) {
     this.page = page
-    this.container = this.page.getByTestId(testId)
+    this.container = container
     this.textInput = this.container.getByRole('combobox')
     this.options = this.container.getByRole('listitem')
   }
@@ -23,5 +27,10 @@ export class Dropdown {
   async getOptions(): Promise<Locator> {
     await this.container.click()
     return this.options
+  }
+
+  async selectOptionByClick(optionName: string | RegExp) {
+    await this.textInput.click()
+    await this.container.getByRole('listitem', { name: optionName }).click()
   }
 }

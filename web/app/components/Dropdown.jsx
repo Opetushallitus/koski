@@ -272,7 +272,7 @@ export default ({
                         data-testid={itemTestId(o)}
                       >
                         {isNew ? (
-                          <span>
+                          <span data-testid={'new-item'}>
                             <span className="plus">{''}</span>
                             {displayValue(newItem)}
                           </span>

@@ -92,7 +92,7 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
 
     return (
       (suoritukset.length > 0 || context.edit) && (
-        <div className="suoritus-taulukko">
+        <div className="suoritus-taulukko" data-testid="suoritus-taulukko">
           <table>
             {showExpandAll && (
               <ExpandAllRows

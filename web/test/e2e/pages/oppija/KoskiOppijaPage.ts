@@ -73,6 +73,42 @@ export class KoskiOppijaPage {
     await expect(tab).toHaveClass(/selected/)
   }
 
+  async vahvistaSuoritus(
+    päivämäärä: string,
+    nimi: string = 'Reijo Rehtori',
+    titteli: string = 'Rehtori'
+  ) {
+    await this.page.getByTestId('merkitse-suoritus-valmiiksi').click()
+
+    const dialog = this.page.getByTestId('modal-dialog')
+
+    const päivämääräInput = dialog
+      .getByTestId('päivä-value')
+      .locator('input[type="text"]')
+
+    await päivämääräInput.click()
+
+    await päivämääräInput.fill(päivämäärä)
+
+    await dialog.getByRole('combobox', { name: 'Valitse...' }).click()
+
+    await dialog.getByTestId('new-item').click()
+
+    await dialog.getByRole('textbox', { name: 'nimi' }).click()
+
+    await dialog.getByRole('textbox', { name: 'nimi' }).fill(nimi)
+
+    await dialog.getByRole('textbox', { name: 'nimi' }).press('Tab')
+
+    await dialog.getByPlaceholder('titteli').fill(titteli)
+
+    await dialog.getByTestId('dialog-vahvista').click()
+
+    await expect(
+      this.page.getByTestId('merkitse-suoritus-kesken')
+    ).toBeVisible()
+  }
+
   async avaaMuokkausnäkymä() {
     // @ts-expect-error
     await this.page.evaluate(() => (window.DISABLE_EXIT_HOOKS = true))
@@ -95,5 +131,9 @@ export class KoskiOppijaPage {
   async peruutaMuutokset() {
     await expect(this.peruutaMuutoksetLink).toBeVisible()
     await this.peruutaMuutoksetLink.click()
+  }
+
+  async poistaViimeisinTila() {
+    await this.page.getByTestId('poista-tila').click()
   }
 }

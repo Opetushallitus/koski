@@ -109,6 +109,7 @@ export const EnumEditor = ({
           onSelectionChanged={(option) => onChange(option)}
           selected={defaultValue}
           enableFilter={true}
+          data-testid={'enum-editor-dropdown'}
         />
       </span>
     )

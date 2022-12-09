@@ -21,12 +21,11 @@ class ButtonWithConfirmation extends React.Component {
     const isActionRequested = this.state.isActionRequested
 
     return isActionRequested ? (
-      <div className={className}>
+      <div className={className} {...rest}>
         <button
           className={`koski-button ${confirmationClassName || ''}`}
           onClick={action}
           aria-label={confirmationText}
-          {...rest}
         >
           <Text name={confirmationText} />
         </button>
@@ -34,7 +33,6 @@ class ButtonWithConfirmation extends React.Component {
         <a
           onClick={() => this.setState({ isActionRequested: false })}
           aria-label={cancelText}
-          {...rest}
         >
           <Text name={cancelText} />
         </a>
@@ -44,6 +42,7 @@ class ButtonWithConfirmation extends React.Component {
         className={className}
         onClick={() => this.setState({ isActionRequested: true })}
         aria-label={text}
+        role="link"
         {...rest}
       >
         <Text name={text} />

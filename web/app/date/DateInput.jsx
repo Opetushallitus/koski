@@ -39,7 +39,8 @@ class DateInput extends React.Component {
       validityCallback = () => {},
       valueCallback = () => {},
       optional = false,
-      inputId = 'date-input'
+      inputId = 'date-input',
+      ...rest // aria-label jne.
     } = this.props
     const { invalidDate } = this.state
 
@@ -83,6 +84,7 @@ class DateInput extends React.Component {
       <div
         className="calendar-input"
         ref={(input) => (this.calendarInput = input)}
+        {...rest}
       >
         <HiddenDescription id={'aria-description:date-input'} />
         <input

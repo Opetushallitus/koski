@@ -51,7 +51,10 @@ export class EuropeanSchoolOfHelsinkiOsasuoritusEditor extends React.Component {
     return (
       <tbody
         className={classNames('tutkinnon-osa', groupId, { expanded })}
-        data-testid={`tutkinnon-osa-${model.value.classes[0]}`}
+        data-testid={`tutkinnon-osa`}
+        data-test-osasuoritus-class={model.value.classes[0]}
+        data-test-expanded={!!expanded}
+        data-test-nested-level={`${nestedLevel}`}
       >
         <tr data-testid={`osasuoritus-row-${t(koulutusmoduuliTunniste)}`}>
           {columns.map((column) =>

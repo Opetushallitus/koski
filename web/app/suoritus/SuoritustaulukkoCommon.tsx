@@ -324,6 +324,7 @@ export const ExpandAllRows = ({
               className={classNames('expand-all', 'koski-button', {
                 expanded: allExpanded
               })}
+              role="button"
               aria-label={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}
               // @ts-expect-error
               onClick={toggleExpandAll}

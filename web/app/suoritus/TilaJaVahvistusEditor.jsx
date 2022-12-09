@@ -81,6 +81,7 @@ const MerkitseKeskeneräiseksiButton = ({ model }) => {
       }
       disabled={valmistunut}
       onClick={merkitseKeskeneräiseksi}
+      data-testid="merkitse-suoritus-kesken"
     >
       <Text name="Merkitse keskeneräiseksi" />
     </button>
