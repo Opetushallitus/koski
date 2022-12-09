@@ -59,6 +59,42 @@
         "koodiarvo" : "taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
         "koodistoUri" : "suorituksentyyppi"
       }
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999907",
+          "koodistoUri" : "koulutus"
+        },
+        "taiteenala" : {
+          "koodiarvo" : "musiikki",
+          "koodistoUri" : "taiteenperusopetustaiteenala"
+        },
+        "laajuus" : {
+          "arvo" : 7.41,
+          "yksikkö" : {
+            "koodiarvo" : "2",
+            "nimi" : {
+              "fi" : "opintopistettä",
+              "sv" : "studiepoäng",
+              "en" : "ECTS credits"
+            },
+            "lyhytNimi" : {
+              "fi" : "op",
+              "sv" : "sp",
+              "en" : "ECTS cr"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
+        },
+        "perusteenDiaarinumero" : "OPH-2069-2017"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.78513447389"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "taiteenperusopetuksenyleisenoppimaaranteemaopinnot",
+        "koodistoUri" : "suorituksentyyppi"
+      }
     } ],
     "tyyppi" : {
       "koodiarvo" : "taiteenperusopetus",

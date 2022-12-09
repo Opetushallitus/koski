@@ -62,6 +62,8 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "vastaavan rinnakkaisen opiskeluoikeuden lisääminen on sallittu" in {
+      resetFixtures()
+
       val oo1 = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
       val oo2 = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
 
@@ -71,6 +73,32 @@ class OppijaValidationTaiteenPerusopetusSpec
       oot.size should be(2)
       oot.flatMap(_.oid) should contain(oo2.oid.get)
       oot.flatMap(_.oid) should contain(oo1.oid.get)
+    }
+
+    "päätason valmis suoritus yhdistetään samalle opiskeluoikeudelle uuden päätason suorituksen kanssa vaikka suoritukset siirretään erikseen" in {
+      resetFixtures()
+
+      val ooVanhaSuoritus = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
+        suoritukset = List(
+          TPO.PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
+        )
+      )
+
+      val oid = postAndGetOpiskeluoikeusV2(ooVanhaSuoritus, henkilö = KoskiSpecificMockOppijat.tyhjä).oid
+
+      val ooUusiSuoritus = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
+        oid = oid,
+        suoritukset = List(
+          TPO.PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
+        )
+      )
+
+      putOpiskeluoikeus(ooUusiSuoritus, henkilö = KoskiSpecificMockOppijat.tyhjä){
+        verifyResponseStatusOk()
+      }
+
+      val oot = getOpiskeluoikeus(oid.get).asInstanceOf[TaiteenPerusopetuksenOpiskeluoikeus]
+      oot.suoritukset.size shouldBe 2
     }
   }
 
