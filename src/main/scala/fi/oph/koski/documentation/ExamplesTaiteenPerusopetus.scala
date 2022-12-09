@@ -207,7 +207,6 @@ object ExamplesTaiteenPerusopetus {
         diaari: String,
         laajuus: Option[Double]
       ) = MusiikinOpintotaso(
-        taiteenala = musiikinTaiteenala,
         laajuus = laajuus.map(LaajuusOpintopisteissä(_)),
         perusteenDiaarinumero = Some(diaari)
       )

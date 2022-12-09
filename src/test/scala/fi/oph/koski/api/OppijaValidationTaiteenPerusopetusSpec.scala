@@ -10,6 +10,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.JObject
+import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -58,6 +59,18 @@ class OppijaValidationTaiteenPerusopetusSpec
       putOpiskeluoikeus(TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä, henkilö = oppija) {
         verifyResponseStatusOk()
       }
+    }
+
+    "vastaavan rinnakkaisen opiskeluoikeuden lisääminen on sallittu" in {
+      val oo1 = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
+      val oo2 = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
+
+      oo2.oid.get should not be(oo1.oid.get)
+
+      val oot = oppijaByHetu(KoskiSpecificMockOppijat.tyhjä.hetu).tallennettavatOpiskeluoikeudet
+      oot.size should be(2)
+      oot.flatMap(_.oid) should contain(oo2.oid.get)
+      oot.flatMap(_.oid) should contain(oo1.oid.get)
     }
   }
 
@@ -468,10 +481,17 @@ class OppijaValidationTaiteenPerusopetusSpec
     )
   }
 
-  private def putAndGetOpiskeluoikeus(oo: TaiteenPerusopetuksenOpiskeluoikeus): TaiteenPerusopetuksenOpiskeluoikeus = putOpiskeluoikeus(
-    oo
-  ) {
-    verifyResponseStatusOk()
-    getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid)
-  }.asInstanceOf[TaiteenPerusopetuksenOpiskeluoikeus]
+  private def postAndGetOpiskeluoikeusV2(
+    oo: TaiteenPerusopetuksenOpiskeluoikeus,
+    henkilö: Henkilö = defaultHenkilö,
+    headers: Headers = authHeaders() ++ jsonContent
+  ): TaiteenPerusopetuksenOpiskeluoikeus = {
+    val jsonString = JsonMethods.pretty(makeOppija(henkilö, List(oo)))
+    post("api/v2/oppija", body = jsonString, headers = headers) {
+      verifyResponseStatusOk()
+      val response = readPutOppijaResponse
+      response.opiskeluoikeudet.size shouldBe 1
+      getOpiskeluoikeus(readPutOppijaResponse.opiskeluoikeudet.head.oid).asInstanceOf[TaiteenPerusopetuksenOpiskeluoikeus]
+    }
+  }
 }

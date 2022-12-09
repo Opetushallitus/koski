@@ -130,7 +130,7 @@ case class ArkkitehtuurinOpintotaso(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("arkkitehtuuri")
-  taiteenala: Koodistokoodiviite,
+  taiteenala: Koodistokoodiviite = Koodistokoodiviite("arkkitehtuuri", koodistoUri = "taiteenperusopetustaiteenala"),
   laajuus: Option[LaajuusOpintopisteissä] = None,
   perusteenDiaarinumero: Option[String]
 ) extends TaiteenPerusopetuksenOpintotaso
@@ -141,7 +141,7 @@ case class KuvataiteenOpintotaso(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("kuvataide")
-  taiteenala: Koodistokoodiviite,
+  taiteenala: Koodistokoodiviite = Koodistokoodiviite("kuvataide", koodistoUri = "taiteenperusopetustaiteenala"),
   laajuus: Option[LaajuusOpintopisteissä] = None,
   perusteenDiaarinumero: Option[String]
 ) extends TaiteenPerusopetuksenOpintotaso
@@ -152,7 +152,7 @@ case class KäsityönOpintotaso(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("kasityo")
-  taiteenala: Koodistokoodiviite,
+  taiteenala: Koodistokoodiviite = Koodistokoodiviite("kasityo", koodistoUri = "taiteenperusopetustaiteenala"),
   laajuus: Option[LaajuusOpintopisteissä] = None,
   perusteenDiaarinumero: Option[String]
 ) extends TaiteenPerusopetuksenOpintotaso
@@ -163,7 +163,7 @@ case class MediataiteenOpintotaso(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("mediataiteet")
-  taiteenala: Koodistokoodiviite,
+  taiteenala: Koodistokoodiviite = Koodistokoodiviite("mediataiteet", koodistoUri = "taiteenperusopetustaiteenala"),
   laajuus: Option[LaajuusOpintopisteissä] = None,
   perusteenDiaarinumero: Option[String]
 ) extends TaiteenPerusopetuksenOpintotaso
@@ -174,7 +174,7 @@ case class MusiikinOpintotaso(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("musiikki")
-  taiteenala: Koodistokoodiviite,
+  taiteenala: Koodistokoodiviite = Koodistokoodiviite("musiikki", koodistoUri = "taiteenperusopetustaiteenala"),
   laajuus: Option[LaajuusOpintopisteissä] = None,
   perusteenDiaarinumero: Option[String]
 ) extends TaiteenPerusopetuksenOpintotaso
@@ -185,7 +185,7 @@ case class SanataiteenOpintotaso(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("sanataide")
-  taiteenala: Koodistokoodiviite,
+  taiteenala: Koodistokoodiviite = Koodistokoodiviite("sanataide", koodistoUri = "taiteenperusopetustaiteenala"),
   laajuus: Option[LaajuusOpintopisteissä] = None,
   perusteenDiaarinumero: Option[String]
 ) extends TaiteenPerusopetuksenOpintotaso
@@ -196,7 +196,7 @@ case class SirkustaiteenOpintotaso(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("sirkustaide")
-  taiteenala: Koodistokoodiviite,
+  taiteenala: Koodistokoodiviite = Koodistokoodiviite("sirkustaide", koodistoUri = "taiteenperusopetustaiteenala"),
   laajuus: Option[LaajuusOpintopisteissä] = None,
   perusteenDiaarinumero: Option[String]
 ) extends TaiteenPerusopetuksenOpintotaso
@@ -207,7 +207,7 @@ case class TanssinOpintotaso(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("tanssi")
-  taiteenala: Koodistokoodiviite,
+  taiteenala: Koodistokoodiviite = Koodistokoodiviite("tanssi", koodistoUri = "taiteenperusopetustaiteenala"),
   laajuus: Option[LaajuusOpintopisteissä] = None,
   perusteenDiaarinumero: Option[String]
 ) extends TaiteenPerusopetuksenOpintotaso
@@ -218,7 +218,7 @@ case class TeatteritaiteenOpintotaso(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999907", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("teatteritaide")
-  taiteenala: Koodistokoodiviite,
+  taiteenala: Koodistokoodiviite = Koodistokoodiviite("teatteritaide", koodistoUri = "taiteenperusopetustaiteenala"),
   laajuus: Option[LaajuusOpintopisteissä] = None,
   perusteenDiaarinumero: Option[String]
 ) extends TaiteenPerusopetuksenOpintotaso

@@ -67,6 +67,7 @@ object OppijaEditorModel extends Timing {
       case oo: DIAOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(diaSuoritustenJärjestysKriteeri))
       case oo: InternationalSchoolOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(internationalSchoolJärjestysKriteeri))
       case oo: EuropeanSchoolOfHelsinkiOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.suorituksenJärjestysKriteeriAlustaLoppuun).reverse)
+      case oo: TaiteenPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(taiteenPerusopetuksenSuoritustenJärjestysKriteeri))
       case oo: KorkeakoulunOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.vahvistus.map(_.päivä))(localDateOptionOrdering).reverse)
       case oo: Any => oo
     })
@@ -127,6 +128,16 @@ object OppijaEditorModel extends Timing {
     0
   } else {
     0 - s.koulutusmoduuli.tunniste.koodiarvo.toInt
+  }
+
+  def taiteenPerusopetuksenSuoritustenJärjestysKriteeri(s: TaiteenPerusopetuksenPäätasonSuoritus): Int = {
+    s match {
+      case _: TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus => -1
+      case _: TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus => 0
+      case _: TaiteenPerusopetuksenLaajanOppimääränPerusopintojenSuoritus => -1
+      case _: TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus => 0
+      case _ => 1
+    }
   }
 }
 
