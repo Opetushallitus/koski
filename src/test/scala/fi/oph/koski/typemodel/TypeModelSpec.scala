@@ -7,22 +7,22 @@ import org.scalatest.matchers.should.Matchers
 class TypeModelSpec extends AnyFreeSpec with Matchers {
 
   "TypeModel" - {
-    val types = SchemaExport.toTypeDef(KoskiSchema.schema)
+    val schemaTypes = SchemaExport.toTypeDef(KoskiSchema.schema)
     def tsTypesFor(model: TypeModelWithClassName): String = TypescriptTypes.build(Seq(model), KoskiSpecificTsGenerics.generics)
 
     "Should not contain duplicate classes" in {
-      val classNames = types.map(_.fullClassName)
+      val classNames = schemaTypes.map(_.fullClassName)
       classNames should equal (classNames.distinct)
     }
 
     "Typescript types" - {
       "Schema scaling smoke test" in {
-        val ts = TypescriptTypes.build(types, KoskiSpecificTsGenerics.generics)
+        val ts = TypescriptTypes.build(schemaTypes, KoskiSpecificTsGenerics.generics)
         println(ts)
       }
 
       "Union types" in {
-        val localizedString = types.find(_.fullClassName == "fi.oph.koski.schema.LocalizedString").get
+        val localizedString = schemaTypes.find(_.fullClassName == "fi.oph.koski.schema.LocalizedString").get
         tsTypesFor(localizedString) should equal(
           """/*
             | * fi.oph.koski.schema
@@ -53,7 +53,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
 
       "Generics" - {
         "Koodistokoodiviite can be typed with generics" in {
-          val koodiviite = types.find(_.fullClassName == "fi.oph.koski.schema.Koodistokoodiviite").get
+          val koodiviite = schemaTypes.find(_.fullClassName == "fi.oph.koski.schema.Koodistokoodiviite").get
           tsTypesFor(koodiviite) should equal(
             """/*
               | * fi.oph.koski.schema
@@ -69,7 +69,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
         }
 
         "Expected koodisto URI and koodistoarvo are filled properly on reference on Koodistokoodiviite" in {
-          val alkuvaihe = types.find(_.fullClassName == "fi.oph.koski.schema.AikuistenPerusopetuksenAlkuvaihe").get
+          val alkuvaihe = schemaTypes.find(_.fullClassName == "fi.oph.koski.schema.AikuistenPerusopetuksenAlkuvaihe").get
           tsTypesFor(alkuvaihe) should equal(
             """/*
               | * fi.oph.koski.schema
@@ -81,6 +81,38 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               |}""".stripMargin)
         }
       }
+
+      "Types from any Scala class" in {
+        val types = TypeExport.toTypeDef(classOf[Backlog])
+        val ts = TypescriptTypes.build(types)
+
+        ts should equal(
+          """/*
+            | * fi.oph.koski.typemodel
+            | */
+            |
+            |type Backlog = {
+            |    name: string,
+            |    tickets: Array<Ticket>
+            |}
+            |
+            |type Ticket = {
+            |    id: number,
+            |    title: string
+            |}""".stripMargin)
+      }
     }
   }
 }
+
+case class Backlog(
+  name: String,
+  tickets: Seq[Ticket],
+)
+
+case class Ticket(
+  id: Int,
+  title: String
+)
+
+
