@@ -9,7 +9,7 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.PerustiedotSyncRepository
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, MuunAmmatillisenKoulutuksenSuoritus, MuunKuinSäännellynKoulutuksenOpiskeluoikeus}
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, MuunAmmatillisenKoulutuksenSuoritus, MuunKuinSäännellynKoulutuksenOpiskeluoikeus, TaiteenPerusopetuksenOpiskeluoikeus}
 import slick.dbio
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
@@ -47,7 +47,7 @@ class PostgresOpiskeluoikeusRepositoryV2(
   }
 
   def vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean =
-    isMuuAmmatillinenOpiskeluoikeus(opiskeluoikeus) || isMuuKuinSäänneltyKoulutus(opiskeluoikeus)
+    isMuuAmmatillinenOpiskeluoikeus(opiskeluoikeus) || isMuuKuinSäänneltyKoulutus(opiskeluoikeus) || isTaiteenPerusopetus(opiskeluoikeus)
 
   def isMuuAmmatillinenOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean =
     opiskeluoikeus match {
@@ -60,4 +60,7 @@ class PostgresOpiskeluoikeusRepositoryV2(
 
   def isMuuKuinSäänneltyKoulutus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean =
     opiskeluoikeus.isInstanceOf[MuunKuinSäännellynKoulutuksenOpiskeluoikeus]
+
+  def isTaiteenPerusopetus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean =
+    opiskeluoikeus.isInstanceOf[TaiteenPerusopetuksenOpiskeluoikeus]
 }
