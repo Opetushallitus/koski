@@ -1,5 +1,18 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 19.12.2022
+- Taiteen perusopetuksen opiskeluoikeuksille lisätty validaatiot:
+  - Suoritusta ei voi vahvistaa jos sillä on arvioimattomia osasuorituksia.
+  - Suorituksen voi vahvistaa jos sillä ei ole yhtään osasuoritusta.
+  - Vahvistetun suorituksen laajuuden on oltava riittävä opintotason minimitasoon nähden.
+    - Yleisen oppimäärän yhteiset opinnot: 11,11op.
+    - Yleisen oppimäärän teemaopinnot: 7,41op.
+    - Laajan oppimäärän perusopinnot: 29,63op.
+    - Laajan oppimäärän syventävät opinnot: 18,52op.
+  - Opiskeluoikeudella voi olla vain yleisen tai laajan oppimäärän suorituksia, mutta ei molempia.
+  - Opiskeluoikeudella voi olla vain yhden taiteenalan suorituksia.
+  - Suorituksella on oltava kelvollinen perusteen diaarinumero.
+
 ## 14.12.2022
 - Siirretään TOR-1834:ssä lisätty validaatio (suorituksen alkamispäivämäärä ei saa olla ennen opiskeluoikeuden alkua) tulemaan voimaan myöhemmin 1.2.2023.
 

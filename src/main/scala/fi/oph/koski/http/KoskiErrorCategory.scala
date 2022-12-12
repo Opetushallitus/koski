@@ -135,6 +135,8 @@ object KoskiErrorCategory {
         val perusteEiVoimassa = subcategory("perusteEiVoimassa", "Perusteen tulee olla voimassa opiskeluoikeuden voimassaoloaikana.")
         val tuvaOpiskeluJaUrasuunnittelutaitojenOsasuoritusPuuttuu = subcategory("tuvaOpiskeluJaUrasuunnittelutaitojenOsasuoritusPuuttuu", "Tutkintokoulutukseen valmentavan koulutuksen pakollinen osasuoritus Opiskelu- ja urasuunnittelutaidot puuttuu.")
         val tuvaOsasuorituksiaLiianVähän = subcategory("tuvaOsasuorituksiaLiianVähän", "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksia on oltava vähintään kolmesta eri koulutuksen osasta.")
+        val tpoVääräOpintotaso = subcategory("tpoVääräOpintotaso", "Suorituksen opintotaso ei sisälly opiskeluoikeuden oppimäärään.")
+        val tpoEriTaiteenalat = subcategory("tpoEriTaiteenalat", "Taiteen perusopetuksen opiskeluoikeudella ei voi olla suorituksia eri taiteenaloilta.")
       }
       val rakenne = new Rakenne
 
@@ -181,6 +183,7 @@ object KoskiErrorCategory {
         val tuvaPäätasonSuoritusVääräLaajuus = subcategory("tuvaPäätasonSuoritusVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen päätason suorituksen laajuus on oltava vähintään 4 viikkoa ja enintään 38 viikkoa.")
         val tuvaOsaSuoritusVääräLaajuus = subcategory("tuvaOsaSuoritusVääräLaajuus", "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksella on väärä laajuus.")
         val oppiaineenLaajuusLiianSuppea = subcategory("oppiaineenLaajuusLiianSuppea", "Oppiaineen laajuus liian suppea")
+        val taiteenPerusopetuksenLaajuus = subcategory("taiteenPerusopetuksenLaajuus", "Taiteen perusopetuksen suorituksen laajuus on liian pieni")
       }
       val laajuudet = new Laajuudet
 

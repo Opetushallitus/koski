@@ -128,6 +128,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumisKoulutus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: VSTKotoutumiskoulutus2022 =>
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumisKoulutus)), Some(vaadittuPerusteenVoimassaolopäivä)))
+        case d: TaiteenPerusopetuksenOpintotaso =>
+          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(taiteenperusopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: Diaarinumerollinen =>
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, None, Some(vaadittuPerusteenVoimassaolopäivä)))
         case _ => HttpStatus.ok
