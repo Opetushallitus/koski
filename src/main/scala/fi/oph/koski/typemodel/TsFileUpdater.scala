@@ -1,6 +1,7 @@
 package fi.oph.koski.typemodel
 
 import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.typemodel.TypescriptTypes.Options
 
 import java.io.{BufferedWriter, File, FileWriter}
 
@@ -11,7 +12,7 @@ object TsFileUpdater {
 
   def updateKoskiSchema(): Unit = {
     val types = SchemaExport.toTypeDef(KoskiSchema.schema)
-    val source = TypescriptTypes.build(types, generics)
+    val source = TypescriptTypes.build(types, options)
     writeFile(s"$path/schema.ts", source)
   }
 
@@ -22,6 +23,9 @@ object TsFileUpdater {
     bw.close()
   }
 
-  def generics: Seq[GenericsObject] = KoskiSpecificTsGenerics.generics
+  def options: Options = Options(
+    generics = KoskiSpecificTsGenerics.generics,
+    exportClassNamesAs = Some("$class"),
+  )
   def path: String = "web/app/types/imported"
 }

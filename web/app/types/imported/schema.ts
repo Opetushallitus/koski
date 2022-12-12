@@ -3,16 +3,19 @@
  */
 
 export type Oppija = {
+  $class: 'Oppija'
   henkilö: Henkilö
   opiskeluoikeudet: Array<Opiskeluoikeus>
 }
 
 export type Aikajakso = {
+  $class: 'Aikajakso'
   alku: string
   loppu?: string
 }
 
 export type AikuistenPerusopetuksenAlkuvaihe = {
+  $class: 'AikuistenPerusopetuksenAlkuvaihe'
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -21,10 +24,12 @@ export type AikuistenPerusopetuksenAlkuvaihe = {
 }
 
 export type English = {
+  $class: 'English'
   en: string
 }
 
 export type Finnish = {
+  $class: 'Finnish'
   fi: string
   sv?: string
   en?: string
@@ -33,6 +38,7 @@ export type Finnish = {
 export type LocalizedString = English | Finnish | Swedish
 
 export type Swedish = {
+  $class: 'Swedish'
   sv: string
   en?: string
 }
@@ -42,6 +48,7 @@ export type AikuistenPerusopetuksenAlkuvaiheenKurssi =
   | ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017
 
 export type AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus = {
+  $class: 'AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -60,6 +67,7 @@ export type AikuistenPerusopetuksenAlkuvaiheenOppiaine =
   | MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine
 
 export type AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus = {
+  $class: 'AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -76,11 +84,13 @@ export type AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus = {
 }
 
 export type AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine = {
+  $class: 'AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
 }
 
 export type AikuistenPerusopetuksenAlkuvaiheenSuoritus = {
+  $class: 'AikuistenPerusopetuksenAlkuvaiheenSuoritus'
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -99,6 +109,7 @@ export type AikuistenPerusopetuksenAlkuvaiheenSuoritus = {
 }
 
 export type AikuistenPerusopetuksenAlkuvaiheenVierasKieli = {
+  $class: 'AikuistenPerusopetuksenAlkuvaiheenVierasKieli'
   tunniste: Koodistokoodiviite<
     'aikuistenperusopetuksenalkuvaiheenoppiaineet',
     'A1'
@@ -107,6 +118,7 @@ export type AikuistenPerusopetuksenAlkuvaiheenVierasKieli = {
 }
 
 export type AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus = {
+  $class: 'AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus'
   tunniste: Koodistokoodiviite<
     'aikuistenperusopetuksenalkuvaiheenoppiaineet',
     'AI'
@@ -120,6 +132,7 @@ export type AikuistenPerusopetuksenKurssi =
   | ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017
 
 export type AikuistenPerusopetuksenKurssinSuoritus = {
+  $class: 'AikuistenPerusopetuksenKurssinSuoritus'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -136,6 +149,7 @@ export type AikuistenPerusopetuksenKurssinTaiAlkuvaiheenKurssinSuoritus =
   | AikuistenPerusopetuksenKurssinSuoritus
 
 export type AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot = {
+  $class: 'AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot'
   tehostetunTuenPäätökset?: Array<Aikajakso>
   ulkomaanjaksot?: Array<Aikajakso>
   majoitusetu?: Aikajakso
@@ -152,10 +166,12 @@ export type AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot = {
 }
 
 export type AikuistenPerusopetuksenOpiskeluoikeudenTila = {
+  $class: 'AikuistenPerusopetuksenOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<AikuistenPerusopetuksenOpiskeluoikeusjakso>
 }
 
 export type AikuistenPerusopetuksenOpiskeluoikeus = {
+  $class: 'AikuistenPerusopetuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'aikuistenperusopetus'>
   tila: AikuistenPerusopetuksenOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -173,6 +189,7 @@ export type AikuistenPerusopetuksenOpiskeluoikeus = {
 }
 
 export type AikuistenPerusopetuksenOpiskeluoikeusjakso = {
+  $class: 'AikuistenPerusopetuksenOpiskeluoikeusjakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -195,6 +212,7 @@ export type AikuistenPerusopetuksenOppiaine =
   | MuuAikuistenPerusopetuksenOppiaine
 
 export type AikuistenPerusopetuksenOppiaineenOppimääränSuoritus = {
+  $class: 'AikuistenPerusopetuksenOppiaineenOppimääränSuoritus'
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
@@ -212,6 +230,7 @@ export type AikuistenPerusopetuksenOppiaineenOppimääränSuoritus = {
 }
 
 export type AikuistenPerusopetuksenOppiaineenSuoritus = {
+  $class: 'AikuistenPerusopetuksenOppiaineenSuoritus'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -236,6 +255,7 @@ export type AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine =
   | MuuAikuistenPerusopetuksenOppiaine
 
 export type AikuistenPerusopetuksenOppimääränSuoritus = {
+  $class: 'AikuistenPerusopetuksenOppimääränSuoritus'
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -254,6 +274,7 @@ export type AikuistenPerusopetuksenOppimääränSuoritus = {
 }
 
 export type AikuistenPerusopetuksenPaikallinenOppiaine = {
+  $class: 'AikuistenPerusopetuksenPaikallinenOppiaine'
   pakollinen?: boolean
   laajuus?: LaajuusVuosiviikkotunneissaTaiKursseissa
   kuvaus: LocalizedString
@@ -267,6 +288,7 @@ export type AikuistenPerusopetuksenPäätasonSuoritus =
   | AikuistenPerusopetuksenOppimääränSuoritus
 
 export type AikuistenPerusopetuksenUskonto = {
+  $class: 'AikuistenPerusopetuksenUskonto'
   pakollinen: boolean
   uskonnonOppimäärä?: Koodistokoodiviite<'uskonnonoppimaara', string>
   laajuus?: LaajuusVuosiviikkotunneissaTaiKursseissa
@@ -276,6 +298,7 @@ export type AikuistenPerusopetuksenUskonto = {
 }
 
 export type AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli = {
+  $class: 'AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli'
   pakollinen: boolean
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   laajuus?: LaajuusVuosiviikkotunneissaTaiKursseissa
@@ -288,6 +311,7 @@ export type AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli = {
 }
 
 export type AikuistenPerusopetuksenÄidinkieliJaKirjallisuus = {
+  $class: 'AikuistenPerusopetuksenÄidinkieliJaKirjallisuus'
   pakollinen: boolean
   kieli: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus', string>
   laajuus?: LaajuusVuosiviikkotunneissaTaiKursseissa
@@ -297,12 +321,14 @@ export type AikuistenPerusopetuksenÄidinkieliJaKirjallisuus = {
 }
 
 export type AikuistenPerusopetus = {
+  $class: 'AikuistenPerusopetus'
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<'koulutus', '201101'>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
 
 export type AmmatillinenArviointi = {
+  $class: 'AmmatillinenArviointi'
   päivä: string
   arvosana: Koodistokoodiviite<
     | 'arviointiasteikkoammatillinenhyvaksyttyhylatty'
@@ -316,10 +342,12 @@ export type AmmatillinenArviointi = {
 }
 
 export type AmmatillinenOpiskeluoikeudenTila = {
+  $class: 'AmmatillinenOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<AmmatillinenOpiskeluoikeusjakso>
 }
 
 export type AmmatillinenOpiskeluoikeus = {
+  $class: 'AmmatillinenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ammatillinenkoulutus'>
   tila: AmmatillinenOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -339,6 +367,7 @@ export type AmmatillinenOpiskeluoikeus = {
 }
 
 export type AmmatillinenOpiskeluoikeusjakso = {
+  $class: 'AmmatillinenOpiskeluoikeusjakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -364,6 +393,7 @@ export type AmmatillinenPäätasonSuoritus =
   | ValmaKoulutuksenSuoritus
 
 export type AmmatillinenTutkintoKoulutus = {
+  $class: 'AmmatillinenTutkintoKoulutus'
   tunniste: Koodistokoodiviite<'koulutus', string>
   perusteenDiaarinumero?: string
   perusteenNimi?: LocalizedString
@@ -371,6 +401,7 @@ export type AmmatillinenTutkintoKoulutus = {
 }
 
 export type AmmatilliseenTehtäväänValmistavaKoulutus = {
+  $class: 'AmmatilliseenTehtäväänValmistavaKoulutus'
   tunniste: Koodistokoodiviite<
     'ammatilliseentehtavaanvalmistavakoulutus',
     string
@@ -380,6 +411,7 @@ export type AmmatilliseenTehtäväänValmistavaKoulutus = {
 }
 
 export type AmmatillisenOpiskeluoikeudenLisätiedot = {
+  $class: 'AmmatillisenOpiskeluoikeudenLisätiedot'
   osaAikaisuusjaksot?: Array<OsaAikaisuusJakso>
   vaativanErityisenTuenErityinenTehtävä?: Array<Aikajakso>
   ulkomaanjaksot?: Array<Ulkomaanjakso>
@@ -400,6 +432,7 @@ export type AmmatillisenOpiskeluoikeudenLisätiedot = {
 }
 
 export type AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus = {
+  $class: 'AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus'
   arviointi?: Array<AmmatillinenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -414,6 +447,7 @@ export type AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus = {
 }
 
 export type AmmatillisenTutkinnonOsaaPienempiKokonaisuus = {
+  $class: 'AmmatillisenTutkinnonOsaaPienempiKokonaisuus'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   laajuus?: LaajuusOsaamispisteissä
@@ -421,6 +455,7 @@ export type AmmatillisenTutkinnonOsaaPienempiKokonaisuus = {
 
 export type AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus =
   {
+    $class: 'AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
     tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
     tila?: Koodistokoodiviite<'suorituksentila', string>
     koulutusmoduuli: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa
@@ -432,6 +467,7 @@ export type AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuori
   }
 
 export type AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = {
+  $class: 'AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   koulutusmoduuli: KorkeakouluopinnotTutkinnonOsa
@@ -440,6 +476,7 @@ export type AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = {
 }
 
 export type AmmatillisenTutkinnonOsanLisätieto = {
+  $class: 'AmmatillisenTutkinnonOsanLisätieto'
   tunniste: Koodistokoodiviite<'ammatillisentutkinnonosanlisatieto', string>
   kuvaus: LocalizedString
 }
@@ -458,6 +495,7 @@ export type AmmatillisenTutkinnonOsanSuoritus =
   | YhteisenAmmatillisenTutkinnonOsanSuoritus
 
 export type AmmatillisenTutkinnonOsittainenSuoritus = {
+  $class: 'AmmatillisenTutkinnonOsittainenSuoritus'
   toinenTutkintonimike?: boolean
   järjestämismuodot?: Array<Järjestämismuotojakso>
   tutkintonimike?: Array<Koodistokoodiviite<'tutkintonimikkeet', string>>
@@ -485,6 +523,7 @@ export type AmmatillisenTutkinnonOsittainenSuoritus = {
 }
 
 export type AmmatillisenTutkinnonSuoritus = {
+  $class: 'AmmatillisenTutkinnonSuoritus'
   järjestämismuodot?: Array<Järjestämismuotojakso>
   tutkintonimike?: Array<Koodistokoodiviite<'tutkintonimikkeet', string>>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillinentutkinto'>
@@ -507,6 +546,7 @@ export type AmmatillisenTutkinnonSuoritus = {
 }
 
 export type AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli = {
+  $class: 'AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli'
   tunniste: Koodistokoodiviite<'ammatillisenoppiaineet', 'VK' | 'TK1' | 'TK2'>
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   pakollinen: boolean
@@ -514,6 +554,7 @@ export type AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli = {
 }
 
 export type AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla = {
+  $class: 'AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla'
   tunniste: Koodistokoodiviite<
     'ammatillisenoppiaineet',
     'VVTK' | 'VVAI' | 'VVAI22' | 'VVVK'
@@ -524,6 +565,7 @@ export type AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla = {
 }
 
 export type AmmatillisenTutkinnonÄidinkieli = {
+  $class: 'AmmatillisenTutkinnonÄidinkieli'
   tunniste: Koodistokoodiviite<'ammatillisenoppiaineet', 'AI'>
   kieli: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus', string>
   pakollinen: boolean
@@ -531,14 +573,17 @@ export type AmmatillisenTutkinnonÄidinkieli = {
 }
 
 export type Arvioitsija = {
+  $class: 'Arvioitsija'
   nimi: string
 }
 
 export type DIANäyttötutkinto = {
+  $class: 'DIANäyttötutkinto'
   tunniste: Koodistokoodiviite<'diapaattokoe', 'nayttotutkinto'>
 }
 
 export type DIAOpiskeluoikeudenLisätiedot = {
+  $class: 'DIAOpiskeluoikeudenLisätiedot'
   ulkomaanjaksot?: Array<Ulkomaanjakso>
   oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
   maksuttomuus?: Array<Maksuttomuus>
@@ -548,10 +593,12 @@ export type DIAOpiskeluoikeudenLisätiedot = {
 }
 
 export type DIAOpiskeluoikeudenTila = {
+  $class: 'DIAOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<DIAOpiskeluoikeusjakso>
 }
 
 export type DIAOpiskeluoikeus = {
+  $class: 'DIAOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'diatutkinto'>
   tila: DIAOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -570,6 +617,7 @@ export type DIAOpiskeluoikeus = {
 }
 
 export type DIAOpiskeluoikeusjakso = {
+  $class: 'DIAOpiskeluoikeusjakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -592,11 +640,13 @@ export type DIAOppiaine =
   | DIAOppiaineÄidinkieli
 
 export type DIAOppiaineenTutkintovaiheenLukukausi = {
+  $class: 'DIAOppiaineenTutkintovaiheenLukukausi'
   tunniste: Koodistokoodiviite<'dialukukausi', '3' | '4' | '5' | '6'>
   laajuus?: LaajuusVuosiviikkotunneissa
 }
 
 export type DIAOppiaineenTutkintovaiheenNumeerinenArviointi = {
+  $class: 'DIAOppiaineenTutkintovaiheenNumeerinenArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkodiatutkinto',
     | '0'
@@ -623,6 +673,7 @@ export type DIAOppiaineenTutkintovaiheenNumeerinenArviointi = {
 }
 
 export type DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus = {
+  $class: 'DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus'
   koulutusmoduuli: DIAOppiaineenTutkintovaiheenOsasuoritus
   arviointi?: Array<DIATutkintovaiheenArviointi>
   tyyppi: Koodistokoodiviite<
@@ -638,6 +689,7 @@ export type DIAOppiaineenTutkintovaiheenOsasuoritus =
   | DIAPäättökoe
 
 export type DIAOppiaineenTutkintovaiheenSuoritus = {
+  $class: 'DIAOppiaineenTutkintovaiheenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'diaoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
@@ -648,18 +700,21 @@ export type DIAOppiaineenTutkintovaiheenSuoritus = {
 }
 
 export type DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi = {
+  $class: 'DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi'
   arvosana: Koodistokoodiviite<'arviointiasteikkodiatutkinto', 'S'>
   päivä?: string
   hyväksytty?: boolean
 }
 
 export type DIAOppiaineenValmistavanVaiheenLukukaudenArviointi = {
+  $class: 'DIAOppiaineenValmistavanVaiheenLukukaudenArviointi'
   arvosana: Koodistokoodiviite<'arviointiasteikkodiavalmistava', string>
   päivä?: string
   hyväksytty?: boolean
 }
 
 export type DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus = {
+  $class: 'DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus'
   koulutusmoduuli: DIAOppiaineenValmistavanVaiheenLukukausi
   arviointi?: Array<DIAOppiaineenValmistavanVaiheenLukukaudenArviointi>
   tyyppi: Koodistokoodiviite<
@@ -670,11 +725,13 @@ export type DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus = {
 }
 
 export type DIAOppiaineenValmistavanVaiheenLukukausi = {
+  $class: 'DIAOppiaineenValmistavanVaiheenLukukausi'
   tunniste: Koodistokoodiviite<'dialukukausi', '1' | '2'>
   laajuus?: LaajuusVuosiviikkotunneissa
 }
 
 export type DIAOppiaineenValmistavanVaiheenSuoritus = {
+  $class: 'DIAOppiaineenValmistavanVaiheenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'diaoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
@@ -683,6 +740,7 @@ export type DIAOppiaineenValmistavanVaiheenSuoritus = {
 }
 
 export type DIAOppiaineKieli = {
+  $class: 'DIAOppiaineKieli'
   pakollinen: boolean
   osaAlue: Koodistokoodiviite<'diaosaalue', '1'>
   kieli: Koodistokoodiviite<'kielivalikoima', 'EN' | 'FR' | 'SV' | 'RU'>
@@ -691,6 +749,7 @@ export type DIAOppiaineKieli = {
 }
 
 export type DIAOppiaineLisäaine = {
+  $class: 'DIAOppiaineLisäaine'
   tunniste: Koodistokoodiviite<
     'oppiaineetdia',
     | 'CLOE'
@@ -708,12 +767,14 @@ export type DIAOppiaineLisäaine = {
 }
 
 export type DIAOppiaineLisäaineKieli = {
+  $class: 'DIAOppiaineLisäaineKieli'
   tunniste: Koodistokoodiviite<'oppiaineetdia', 'B2'>
   laajuus?: LaajuusVuosiviikkotunneissa
   kieli: Koodistokoodiviite<'kielivalikoima', 'LA'>
 }
 
 export type DIAOppiaineMuu = {
+  $class: 'DIAOppiaineMuu'
   tunniste: Koodistokoodiviite<
     'oppiaineetdia',
     | 'KU'
@@ -737,6 +798,7 @@ export type DIAOppiaineMuu = {
 }
 
 export type DIAOppiaineÄidinkieli = {
+  $class: 'DIAOppiaineÄidinkieli'
   tunniste: Koodistokoodiviite<'oppiaineetdia', 'AI'>
   laajuus?: LaajuusVuosiviikkotunneissa
   kieli: Koodistokoodiviite<'oppiainediaaidinkieli', 'FI' | 'S2' | 'DE'>
@@ -748,6 +810,7 @@ export type DIAPäätasonSuoritus =
   | DIAValmistavanVaiheenSuoritus
 
 export type DIAPäättökoe = {
+  $class: 'DIAPäättökoe'
   tunniste: Koodistokoodiviite<
     'diapaattokoe',
     'kirjallinenkoe' | 'suullinenkoe'
@@ -755,6 +818,7 @@ export type DIAPäättökoe = {
 }
 
 export type DIATutkinnonSuoritus = {
+  $class: 'DIATutkinnonSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'diatutkintovaihe'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -770,6 +834,7 @@ export type DIATutkinnonSuoritus = {
 }
 
 export type DIATutkinto = {
+  $class: 'DIATutkinto'
   tunniste: Koodistokoodiviite<'koulutus', '301103'>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
@@ -779,6 +844,7 @@ export type DIATutkintovaiheenArviointi =
   | DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi
 
 export type DIAValmistavanVaiheenSuoritus = {
+  $class: 'DIAValmistavanVaiheenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'diavalmistavavaihe'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -790,10 +856,12 @@ export type DIAValmistavanVaiheenSuoritus = {
 }
 
 export type DIAValmistavaVaihe = {
+  $class: 'DIAValmistavaVaihe'
   tunniste: Koodistokoodiviite<'suorituksentyyppi', 'diavalmistavavaihe'>
 }
 
 export type DIAVastaavuustodistuksenTiedot = {
+  $class: 'DIAVastaavuustodistuksenTiedot'
   keskiarvo: number
   lukioOpintojenLaajuus: LaajuusOpintopisteissäTaiKursseissa
 }
@@ -804,10 +872,12 @@ export type DiplomaArviointi =
   | PassFailOppiaineenArviointi
 
 export type DiplomaCoreRequirementsOppiaine = {
+  $class: 'DiplomaCoreRequirementsOppiaine'
   tunniste: Koodistokoodiviite<'oppiaineetib', 'TOK' | 'EE' | 'CAS'>
 }
 
 export type DiplomaCoreRequirementsOppiaineenSuoritus = {
+  $class: 'DiplomaCoreRequirementsOppiaineenSuoritus'
   arviointi?: Array<InternationalSchoolCoreRequirementsArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -825,6 +895,7 @@ export type DiplomaIBOppiaineenSuoritus =
 export type DiplomaLuokkaAste = IBDiplomaLuokkaAste | ISHDiplomaLuokkaAste
 
 export type DiplomaOppiaineenSuoritus = {
+  $class: 'DiplomaOppiaineenSuoritus'
   arviointi?: Array<DiplomaArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -836,6 +907,7 @@ export type DiplomaOppiaineenSuoritus = {
 }
 
 export type DiplomaVuosiluokanSuoritus = {
+  $class: 'DiplomaVuosiluokanSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'internationalschooldiplomavuosiluokka'
@@ -851,6 +923,7 @@ export type DiplomaVuosiluokanSuoritus = {
 }
 
 export type Duplikaatti = {
+  $class: 'Duplikaatti'
   tyyppi: string
   arvo: string
 }
@@ -860,6 +933,7 @@ export type EBArviointi =
   | EBTutkintoPreliminaryMarkArviointi
 
 export type EBOppiaineenAlaosasuoritus = {
+  $class: 'EBOppiaineenAlaosasuoritus'
   koulutusmoduuli: EBOppiaineKomponentti
   arviointi?: Array<EBArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ebtutkinnonalaosasuoritus'>
@@ -867,10 +941,12 @@ export type EBOppiaineenAlaosasuoritus = {
 }
 
 export type EBOppiaineKomponentti = {
+  $class: 'EBOppiaineKomponentti'
   tunniste: Koodistokoodiviite<'ebtutkinnonoppiaineenkomponentti', string>
 }
 
 export type EBTutkinnonOsasuoritus = {
+  $class: 'EBTutkinnonOsasuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ebtutkinnonosasuoritus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -879,6 +955,7 @@ export type EBTutkinnonOsasuoritus = {
 }
 
 export type EBTutkinnonSuoritus = {
+  $class: 'EBTutkinnonSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ebtutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   luokka?: string
@@ -891,12 +968,14 @@ export type EBTutkinnonSuoritus = {
 }
 
 export type EBTutkinto = {
+  $class: 'EBTutkinto'
   tunniste: Koodistokoodiviite<'koulutus', '301104'>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', '21'>
   curriculum: Koodistokoodiviite<'europeanschoolofhelsinkicurriculum', string>
 }
 
 export type EBTutkintoFinalMarkArviointi = {
+  $class: 'EBTutkintoFinalMarkArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoeuropeanschoolofhelsinkifinalmark',
     string
@@ -907,6 +986,7 @@ export type EBTutkintoFinalMarkArviointi = {
 }
 
 export type EBTutkintoPreliminaryMarkArviointi = {
+  $class: 'EBTutkintoPreliminaryMarkArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark',
     string
@@ -917,17 +997,20 @@ export type EBTutkintoPreliminaryMarkArviointi = {
 }
 
 export type EiTiedossaOppiaine = {
+  $class: 'EiTiedossaOppiaine'
   tunniste: Koodistokoodiviite<'koskioppiaineetyleissivistava', 'XX'>
   perusteenDiaarinumero?: string
 }
 
 export type ErityisenKoulutustehtävänJakso = {
+  $class: 'ErityisenKoulutustehtävänJakso'
   alku: string
   loppu?: string
   tehtävä: Koodistokoodiviite<'erityinenkoulutustehtava', string>
 }
 
 export type ErityisenTuenPäätös = {
+  $class: 'ErityisenTuenPäätös'
   toteutuspaikka?: Koodistokoodiviite<'erityisopetuksentoteutuspaikka', string>
   opiskeleeToimintaAlueittain: boolean
   loppu?: string
@@ -937,6 +1020,7 @@ export type ErityisenTuenPäätös = {
 }
 
 export type EsiopetuksenOpiskeluoikeudenLisätiedot = {
+  $class: 'EsiopetuksenOpiskeluoikeudenLisätiedot'
   pidennettyOppivelvollisuus?: Aikajakso
   majoitusetu?: Aikajakso
   kuljetusetu?: Aikajakso
@@ -950,6 +1034,7 @@ export type EsiopetuksenOpiskeluoikeudenLisätiedot = {
 }
 
 export type EsiopetuksenOpiskeluoikeus = {
+  $class: 'EsiopetuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'esiopetus'>
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -972,6 +1057,7 @@ export type EsiopetuksenOpiskeluoikeus = {
 }
 
 export type EsiopetuksenSuoritus = {
+  $class: 'EsiopetuksenSuoritus'
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'esiopetuksensuoritus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -986,6 +1072,7 @@ export type EsiopetuksenSuoritus = {
 }
 
 export type Esiopetus = {
+  $class: 'Esiopetus'
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<'koulutus', '001101' | '001102'>
   kuvaus?: LocalizedString
@@ -993,39 +1080,46 @@ export type Esiopetus = {
 }
 
 export type EuropeanSchoolOfHelsinkiKielioppiaine = {
+  $class: 'EuropeanSchoolOfHelsinkiKielioppiaine'
   tunniste: Koodistokoodiviite<'europeanschoolofhelsinkikielioppiaine', string>
   laajuus: LaajuusVuosiviikkotunneissa
   kieli: Koodistokoodiviite<'kieli', string>
 }
 
 export type EuropeanSchoolOfHelsinkiKielioppiaineAncientGreek = {
+  $class: 'EuropeanSchoolOfHelsinkiKielioppiaineAncientGreek'
   tunniste: Koodistokoodiviite<'europeanschoolofhelsinkikielioppiaine', 'GRC'>
   laajuus: LaajuusVuosiviikkotunneissa
   kieli: Koodistokoodiviite<'kieli', 'EL'>
 }
 
 export type EuropeanSchoolOfHelsinkiKielioppiaineLatin = {
+  $class: 'EuropeanSchoolOfHelsinkiKielioppiaineLatin'
   tunniste: Koodistokoodiviite<'europeanschoolofhelsinkikielioppiaine', 'LA'>
   laajuus: LaajuusVuosiviikkotunneissa
   kieli: Koodistokoodiviite<'kieli', 'LA'>
 }
 
 export type EuropeanSchoolOfHelsinkiMuuOppiaine = {
+  $class: 'EuropeanSchoolOfHelsinkiMuuOppiaine'
   tunniste: Koodistokoodiviite<'europeanschoolofhelsinkimuuoppiaine', string>
   laajuus: LaajuusVuosiviikkotunneissa
 }
 
 export type EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot = {
+  $class: 'EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot'
   ulkomaanjaksot?: Array<Ulkomaanjakso>
   maksuttomuus?: Array<Maksuttomuus>
   oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
 }
 
 export type EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila = {
+  $class: 'EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso>
 }
 
 export type EuropeanSchoolOfHelsinkiOpiskeluoikeus = {
+  $class: 'EuropeanSchoolOfHelsinkiOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<
     'opiskeluoikeudentyyppi',
     'europeanschoolofhelsinki'
@@ -1046,6 +1140,7 @@ export type EuropeanSchoolOfHelsinkiOpiskeluoikeus = {
 }
 
 export type EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso = {
+  $class: 'EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -1059,6 +1154,7 @@ export type EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso = {
 }
 
 export type EuropeanSchoolOfHelsinkiOsasuoritusArviointi = {
+  $class: 'EuropeanSchoolOfHelsinkiOsasuoritusArviointi'
   päivä?: string
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoeuropeanschoolofhelsinkiosasuoritus',
@@ -1077,6 +1173,7 @@ export type EuropeanSchoolOfHelsinkiPäätasonSuoritus =
   | SecondaryUpperVuosiluokanSuoritus
 
 export type FitnessAndWellBeing = {
+  $class: 'FitnessAndWellBeing'
   tunniste: Koodistokoodiviite<'oppiaineetinternationalschool', 'HAWB'>
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
 }
@@ -1088,6 +1185,7 @@ export type Henkilö =
   | UusiHenkilö
 
 export type HenkilötiedotJaOid = {
+  $class: 'HenkilötiedotJaOid'
   sukunimi: string
   oid: string
   kutsumanimi: string
@@ -1096,6 +1194,7 @@ export type HenkilötiedotJaOid = {
 }
 
 export type HenkilövahvistusPaikkakunnalla = {
+  $class: 'HenkilövahvistusPaikkakunnalla'
   päivä: string
   paikkakunta: Koodistokoodiviite<'kunta', string>
   myöntäjäOrganisaatio: Organisaatio
@@ -1103,6 +1202,7 @@ export type HenkilövahvistusPaikkakunnalla = {
 }
 
 export type HenkilövahvistusValinnaisellaPaikkakunnalla = {
+  $class: 'HenkilövahvistusValinnaisellaPaikkakunnalla'
   päivä: string
   paikkakunta?: Koodistokoodiviite<'kunta', string>
   myöntäjäOrganisaatio: Organisaatio
@@ -1114,6 +1214,7 @@ export type HenkilövahvistusValinnaisellaTittelillä =
 
 export type HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla =
   {
+    $class: 'HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla'
     päivä: string
     paikkakunta?: Koodistokoodiviite<'kunta', string>
     myöntäjäOrganisaatio: Organisaatio
@@ -1121,6 +1222,7 @@ export type HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnal
   }
 
 export type Hojks = {
+  $class: 'Hojks'
   opetusryhmä: Koodistokoodiviite<'opetusryhma', string>
   alku?: string
   loppu?: string
@@ -1129,6 +1231,7 @@ export type Hojks = {
 export type IBAineRyhmäOppiaine = IBOppiaineLanguage | IBOppiaineMuu
 
 export type IBCASOppiaineenArviointi = {
+  $class: 'IBCASOppiaineenArviointi'
   päivä?: string
   effort?: Koodistokoodiviite<'effortasteikkoib', string>
   arvosana: Koodistokoodiviite<'arviointiasteikkoib', 'S'>
@@ -1137,6 +1240,7 @@ export type IBCASOppiaineenArviointi = {
 }
 
 export type IBCASSuoritus = {
+  $class: 'IBCASSuoritus'
   arviointi?: Array<IBCASOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'iboppiainecas'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1145,6 +1249,7 @@ export type IBCASSuoritus = {
 }
 
 export type IBCoreRequirementsArviointi = {
+  $class: 'IBCoreRequirementsArviointi'
   arvosana: Koodistokoodiviite<'arviointiasteikkocorerequirementsib', string>
   predicted: boolean
   päivä?: string
@@ -1152,11 +1257,13 @@ export type IBCoreRequirementsArviointi = {
 }
 
 export type IBDiplomaLuokkaAste = {
+  $class: 'IBDiplomaLuokkaAste'
   diplomaType: Koodistokoodiviite<'internationalschooldiplomatype', 'ib'>
   tunniste: Koodistokoodiviite<'internationalschoolluokkaaste', '11' | '12'>
 }
 
 export type IBExtendedEssaySuoritus = {
+  $class: 'IBExtendedEssaySuoritus'
   arviointi?: Array<IBCoreRequirementsArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'iboppiaineee'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1165,6 +1272,7 @@ export type IBExtendedEssaySuoritus = {
 }
 
 export type IBKurssi = {
+  $class: 'IBKurssi'
   kuvaus: LocalizedString
   tunniste: PaikallinenKoodi
   pakollinen: boolean
@@ -1172,6 +1280,7 @@ export type IBKurssi = {
 }
 
 export type IBKurssinArviointi = {
+  $class: 'IBKurssinArviointi'
   arvosana: Koodistokoodiviite<'arviointiasteikkoib', string>
   effort?: Koodistokoodiviite<'effortasteikkoib', string>
   päivä: string
@@ -1179,6 +1288,7 @@ export type IBKurssinArviointi = {
 }
 
 export type IBKurssinSuoritus = {
+  $class: 'IBKurssinSuoritus'
   arviointi?: Array<IBKurssinArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ibkurssi'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1187,6 +1297,7 @@ export type IBKurssinSuoritus = {
 }
 
 export type IBOpiskeluoikeus = {
+  $class: 'IBOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ibtutkinto'>
   tila: LukionOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -1205,12 +1316,14 @@ export type IBOpiskeluoikeus = {
 }
 
 export type IBOppiaineCAS = {
+  $class: 'IBOppiaineCAS'
   tunniste: Koodistokoodiviite<'oppiaineetib', 'CAS'>
   laajuus?: LaajuusTunneissa
   pakollinen: boolean
 }
 
 export type IBOppiaineenArviointi = {
+  $class: 'IBOppiaineenArviointi'
   päivä?: string
   effort?: Koodistokoodiviite<'effortasteikkoib', string>
   arvosana: Koodistokoodiviite<'arviointiasteikkoib', string>
@@ -1219,6 +1332,7 @@ export type IBOppiaineenArviointi = {
 }
 
 export type IBOppiaineenSuoritus = {
+  $class: 'IBOppiaineenSuoritus'
   arviointi?: Array<IBOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'iboppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1228,6 +1342,7 @@ export type IBOppiaineenSuoritus = {
 }
 
 export type IBOppiaineExtendedEssay = {
+  $class: 'IBOppiaineExtendedEssay'
   tunniste: Koodistokoodiviite<'oppiaineetib', 'EE'>
   aine: IBAineRyhmäOppiaine
   aihe: LocalizedString
@@ -1235,6 +1350,7 @@ export type IBOppiaineExtendedEssay = {
 }
 
 export type IBOppiaineLanguage = {
+  $class: 'IBOppiaineLanguage'
   pakollinen: boolean
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
   kieli: Koodistokoodiviite<'kielivalikoima', string>
@@ -1244,6 +1360,7 @@ export type IBOppiaineLanguage = {
 }
 
 export type IBOppiaineMuu = {
+  $class: 'IBOppiaineMuu'
   pakollinen: boolean
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
   laajuus?: LaajuusTunneissa
@@ -1276,6 +1393,7 @@ export type IBOppiaineMuu = {
 }
 
 export type IBOppiaineTheoryOfKnowledge = {
+  $class: 'IBOppiaineTheoryOfKnowledge'
   tunniste: Koodistokoodiviite<'oppiaineetib', 'TOK'>
   pakollinen: boolean
 }
@@ -1286,6 +1404,7 @@ export type IBPäätasonSuoritus =
   | PreIBSuoritus2019
 
 export type IBTheoryOfKnowledgeSuoritus = {
+  $class: 'IBTheoryOfKnowledgeSuoritus'
   arviointi?: Array<IBCoreRequirementsArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'iboppiainetok'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1295,6 +1414,7 @@ export type IBTheoryOfKnowledgeSuoritus = {
 }
 
 export type IBTutkinnonSuoritus = {
+  $class: 'IBTutkinnonSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ibtutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -1310,11 +1430,13 @@ export type IBTutkinnonSuoritus = {
 }
 
 export type IBTutkinto = {
+  $class: 'IBTutkinto'
   tunniste: Koodistokoodiviite<'koulutus', '301102'>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
 
 export type InternationalSchoolCoreRequirementsArviointi = {
+  $class: 'InternationalSchoolCoreRequirementsArviointi'
   predicted?: boolean
   arvosana: Koodistokoodiviite<'arviointiasteikkocorerequirementsib', string>
   päivä?: string
@@ -1328,6 +1450,7 @@ export type InternationalSchoolIBOppiaine =
   | MuuDiplomaOppiaine
 
 export type InternationalSchoolIBOppiaineenArviointi = {
+  $class: 'InternationalSchoolIBOppiaineenArviointi'
   predicted?: boolean
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoib',
@@ -1338,6 +1461,7 @@ export type InternationalSchoolIBOppiaineenArviointi = {
 }
 
 export type InternationalSchoolMuuDiplomaOppiaine = {
+  $class: 'InternationalSchoolMuuDiplomaOppiaine'
   tunniste: Koodistokoodiviite<
     'oppiaineetinternationalschool',
     'F' | 'HSCM' | 'ITGS' | 'MAA' | 'MAI' | 'INS'
@@ -1346,6 +1470,7 @@ export type InternationalSchoolMuuDiplomaOppiaine = {
 }
 
 export type InternationalSchoolOpiskeluoikeudenLisätiedot = {
+  $class: 'InternationalSchoolOpiskeluoikeudenLisätiedot'
   erityisenKoulutustehtävänJaksot?: Array<ErityisenKoulutustehtävänJakso>
   ulkomaanjaksot?: Array<Ulkomaanjakso>
   maksuttomuus?: Array<Maksuttomuus>
@@ -1353,10 +1478,12 @@ export type InternationalSchoolOpiskeluoikeudenLisätiedot = {
 }
 
 export type InternationalSchoolOpiskeluoikeudenTila = {
+  $class: 'InternationalSchoolOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<InternationalSchoolOpiskeluoikeusjakso>
 }
 
 export type InternationalSchoolOpiskeluoikeus = {
+  $class: 'InternationalSchoolOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'internationalschool'>
   tila: InternationalSchoolOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -1374,6 +1501,7 @@ export type InternationalSchoolOpiskeluoikeus = {
 }
 
 export type InternationalSchoolOpiskeluoikeusjakso = {
+  $class: 'InternationalSchoolOpiskeluoikeusjakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -1394,11 +1522,13 @@ export type InternationalSchoolVuosiluokanSuoritus =
   | PYPVuosiluokanSuoritus
 
 export type ISHDiplomaLuokkaAste = {
+  $class: 'ISHDiplomaLuokkaAste'
   diplomaType: Koodistokoodiviite<'internationalschooldiplomatype', 'ish'>
   tunniste: Koodistokoodiviite<'internationalschoolluokkaaste', '11' | '12'>
 }
 
 export type JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa = {
+  $class: 'JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa'
   tunniste: Koodistokoodiviite<'tutkinnonosatvalinnanmahdollisuus', '1'>
   laajuus?: LaajuusOsaamispisteissä
 }
@@ -1408,22 +1538,26 @@ export type Järjestämismuoto =
   | OppisopimuksellinenJärjestämismuoto
 
 export type JärjestämismuotoIlmanLisätietoja = {
+  $class: 'JärjestämismuotoIlmanLisätietoja'
   tunniste: Koodistokoodiviite<'jarjestamismuoto', string>
 }
 
 export type Järjestämismuotojakso = {
+  $class: 'Järjestämismuotojakso'
   alku: string
   loppu?: string
   järjestämismuoto: Järjestämismuoto
 }
 
 export type KieliDiplomaOppiaine = {
+  $class: 'KieliDiplomaOppiaine'
   tunniste: Koodistokoodiviite<'oppiaineetib', 'A' | 'A2' | 'B' | 'AB'>
   kieli: Koodistokoodiviite<'kielivalikoima', 'EN' | 'ES' | 'FI' | 'FR'>
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
 }
 
 export type Koodistokoodiviite<U extends string, A extends string> = {
+  $class: 'Koodistokoodiviite'
   koodistoVersio?: number
   koodiarvo: A
   nimi?: LocalizedString
@@ -1436,18 +1570,21 @@ export type KorkeakoulunArviointi =
   | KorkeakoulunPaikallinenArviointi
 
 export type KorkeakoulunKoodistostaLöytyväArviointi = {
+  $class: 'KorkeakoulunKoodistostaLöytyväArviointi'
   arvosana: Koodistokoodiviite<'virtaarvosana', string>
   päivä: string
   hyväksytty?: boolean
 }
 
 export type KorkeakoulunOpintojakso = {
+  $class: 'KorkeakoulunOpintojakso'
   tunniste: PaikallinenKoodi
   nimi: LocalizedString
   laajuus?: Laajuus
 }
 
 export type KorkeakoulunOpintojaksonSuoritus = {
+  $class: 'KorkeakoulunOpintojaksonSuoritus'
   arviointi?: Array<KorkeakoulunArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'korkeakoulunopintojakso'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1459,6 +1596,7 @@ export type KorkeakoulunOpintojaksonSuoritus = {
 }
 
 export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
+  $class: 'KorkeakoulunOpiskeluoikeudenLisätiedot'
   ensisijaisuus?: Array<Aikajakso>
   maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
   järjestäväOrganisaatio?: Oppilaitos
@@ -1470,16 +1608,19 @@ export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
 }
 
 export type KorkeakoulunOpiskeluoikeudenLukuvuosimaksu = {
+  $class: 'KorkeakoulunOpiskeluoikeudenLukuvuosimaksu'
   alku: string
   loppu?: string
   summa?: number
 }
 
 export type KorkeakoulunOpiskeluoikeudenTila = {
+  $class: 'KorkeakoulunOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<KorkeakoulunOpiskeluoikeusjakso>
 }
 
 export type KorkeakoulunOpiskeluoikeus = {
+  $class: 'KorkeakoulunOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'korkeakoulutus'>
   tila: KorkeakoulunOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -1496,23 +1637,27 @@ export type KorkeakoulunOpiskeluoikeus = {
 }
 
 export type KorkeakoulunOpiskeluoikeusjakso = {
+  $class: 'KorkeakoulunOpiskeluoikeusjakso'
   alku: string
   nimi?: LocalizedString
   tila: Koodistokoodiviite<'virtaopiskeluoikeudentila', string>
 }
 
 export type KorkeakoulunPaikallinenArviointi = {
+  $class: 'KorkeakoulunPaikallinenArviointi'
   arvosana: PaikallinenKoodi
   päivä: string
   hyväksytty?: boolean
 }
 
 export type KorkeakouluopinnotTutkinnonOsa = {
+  $class: 'KorkeakouluopinnotTutkinnonOsa'
   tunniste: Koodistokoodiviite<'tutkinnonosatvalinnanmahdollisuus', '2'>
   laajuus?: LaajuusOsaamispisteissä
 }
 
 export type KorkeakouluopintojenSuoritus = {
+  $class: 'KorkeakouluopintojenSuoritus'
   arviointi?: Array<AmmatillinenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -1527,6 +1672,7 @@ export type KorkeakouluopintojenSuoritus = {
 }
 
 export type KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus = {
+  $class: 'KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   laajuus?: LaajuusOsaamispisteissä
@@ -1538,6 +1684,7 @@ export type KorkeakouluSuoritus =
   | MuuKorkeakoulunSuoritus
 
 export type KorkeakoulututkinnonSuoritus = {
+  $class: 'KorkeakoulututkinnonSuoritus'
   arviointi?: Array<KorkeakoulunArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'korkeakoulututkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1549,12 +1696,14 @@ export type KorkeakoulututkinnonSuoritus = {
 }
 
 export type Korkeakoulututkinto = {
+  $class: 'Korkeakoulututkinto'
   tunniste: Koodistokoodiviite<'koulutus', string>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
   virtaNimi?: LocalizedString
 }
 
 export type Koulutussopimusjakso = {
+  $class: 'Koulutussopimusjakso'
   työssäoppimispaikka?: LocalizedString
   työssäoppimispaikanYTunnus?: string
   paikkakunta: Koodistokoodiviite<'kunta', string>
@@ -1565,6 +1714,7 @@ export type Koulutussopimusjakso = {
 }
 
 export type Koulutustoimija = {
+  $class: 'Koulutustoimija'
   oid: string
   nimi?: LocalizedString
   yTunnus?: string
@@ -1582,16 +1732,19 @@ export type Laajuus =
   | LaajuusVuosiviikkotunneissa
 
 export type LaajuusKaikkiYksiköt = {
+  $class: 'LaajuusKaikkiYksiköt'
   arvo: number
   yksikkö: Koodistokoodiviite<'opintojenlaajuusyksikko', string>
 }
 
 export type LaajuusKursseissa = {
+  $class: 'LaajuusKursseissa'
   arvo: number
   yksikkö: Koodistokoodiviite<'opintojenlaajuusyksikko', '4'>
 }
 
 export type LaajuusOpintopisteissä = {
+  $class: 'LaajuusOpintopisteissä'
   arvo: number
   yksikkö: Koodistokoodiviite<'opintojenlaajuusyksikko', '2'>
 }
@@ -1601,26 +1754,31 @@ export type LaajuusOpintopisteissäTaiKursseissa =
   | LaajuusOpintopisteissä
 
 export type LaajuusOpintoviikoissa = {
+  $class: 'LaajuusOpintoviikoissa'
   arvo: number
   yksikkö: Koodistokoodiviite<'opintojenlaajuusyksikko', '1'>
 }
 
 export type LaajuusOsaamispisteissä = {
+  $class: 'LaajuusOsaamispisteissä'
   arvo: number
   yksikkö: Koodistokoodiviite<'opintojenlaajuusyksikko', '6'>
 }
 
 export type LaajuusTunneissa = {
+  $class: 'LaajuusTunneissa'
   arvo: number
   yksikkö: Koodistokoodiviite<'opintojenlaajuusyksikko', '5'>
 }
 
 export type LaajuusViikoissa = {
+  $class: 'LaajuusViikoissa'
   arvo: number
   yksikkö: Koodistokoodiviite<'opintojenlaajuusyksikko', '8'>
 }
 
 export type LaajuusVuosiviikkotunneissa = {
+  $class: 'LaajuusVuosiviikkotunneissa'
   arvo: number
   yksikkö: Koodistokoodiviite<'opintojenlaajuusyksikko', '3'>
 }
@@ -1630,16 +1788,19 @@ export type LaajuusVuosiviikkotunneissaTaiKursseissa =
   | LaajuusVuosiviikkotunneissa
 
 export type LanguageAcquisition = {
+  $class: 'LanguageAcquisition'
   tunniste: Koodistokoodiviite<'oppiaineetinternationalschool', 'LAC'>
   kieli: Koodistokoodiviite<'kielivalikoima', 'ES' | 'FI' | 'FR' | 'EN'>
 }
 
 export type LanguageAndLiterature = {
+  $class: 'LanguageAndLiterature'
   tunniste: Koodistokoodiviite<'oppiaineetinternationalschool', 'LL'>
   kieli: Koodistokoodiviite<'kielivalikoima', 'EN' | 'FI'>
 }
 
 export type Lukiodiplomit2019 = {
+  $class: 'Lukiodiplomit2019'
   tunniste: Koodistokoodiviite<'lukionmuutopinnot', 'LD'>
   laajuus?: LaajuusOpintopisteissä
 }
@@ -1653,6 +1814,7 @@ export type LukionKurssi2015 =
   | ValtakunnallinenLukionKurssi2015
 
 export type LukionKurssinSuoritus2015 = {
+  $class: 'LukionKurssinSuoritus2015'
   arviointi?: Array<LukionArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionkurssi'>
   suoritettuLukiodiplomina?: boolean
@@ -1664,6 +1826,7 @@ export type LukionKurssinSuoritus2015 = {
 }
 
 export type LukionMatematiikka2015 = {
+  $class: 'LukionMatematiikka2015'
   pakollinen: boolean
   oppimäärä: Koodistokoodiviite<'oppiainematematiikka', string>
   laajuus?: LaajuusKursseissa
@@ -1672,6 +1835,7 @@ export type LukionMatematiikka2015 = {
 }
 
 export type LukionMatematiikka2019 = {
+  $class: 'LukionMatematiikka2019'
   tunniste: Koodistokoodiviite<'koskioppiaineetyleissivistava', 'MA'>
   oppimäärä: Koodistokoodiviite<'oppiainematematiikka', string>
   pakollinen: boolean
@@ -1683,6 +1847,7 @@ export type LukionModuuliMuissaOpinnoissa2019 =
   | LukionVieraanKielenModuuliMuissaOpinnoissa2019
 
 export type LukionModuulinSuoritusMuissaOpinnoissa2019 = {
+  $class: 'LukionModuulinSuoritusMuissaOpinnoissa2019'
   arviointi?: Array<LukionModuulinTaiPaikallisenOpintojaksonArviointi2019>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -1695,6 +1860,7 @@ export type LukionModuulinSuoritusMuissaOpinnoissa2019 = {
 }
 
 export type LukionModuulinSuoritusOppiaineissa2019 = {
+  $class: 'LukionModuulinSuoritusOppiaineissa2019'
   arviointi?: Array<LukionModuulinTaiPaikallisenOpintojaksonArviointi2019>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -1724,18 +1890,21 @@ export type LukionModuuliOppiaineissa2019 =
   | LukionVieraanKielenModuuliOppiaineissa2019
 
 export type LukionMuuModuuliMuissaOpinnoissa2019 = {
+  $class: 'LukionMuuModuuliMuissaOpinnoissa2019'
   tunniste: Koodistokoodiviite<'moduulikoodistolops2021', string>
   laajuus: LaajuusOpintopisteissä
   pakollinen: boolean
 }
 
 export type LukionMuuModuuliOppiaineissa2019 = {
+  $class: 'LukionMuuModuuliOppiaineissa2019'
   tunniste: Koodistokoodiviite<'moduulikoodistolops2021', string>
   laajuus: LaajuusOpintopisteissä
   pakollinen: boolean
 }
 
 export type LukionMuuValtakunnallinenOppiaine2015 = {
+  $class: 'LukionMuuValtakunnallinenOppiaine2015'
   tunniste: Koodistokoodiviite<
     'koskioppiaineetyleissivistava',
     | 'HI'
@@ -1761,6 +1930,7 @@ export type LukionMuuValtakunnallinenOppiaine2015 = {
 }
 
 export type LukionMuuValtakunnallinenOppiaine2019 = {
+  $class: 'LukionMuuValtakunnallinenOppiaine2019'
   tunniste: Koodistokoodiviite<
     'koskioppiaineetyleissivistava',
     | 'BI'
@@ -1783,6 +1953,7 @@ export type LukionMuuValtakunnallinenOppiaine2019 = {
 }
 
 export type LukionOpiskeluoikeudenLisätiedot = {
+  $class: 'LukionOpiskeluoikeudenLisätiedot'
   alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy?: LocalizedString
   ulkomaanjaksot?: Array<Ulkomaanjakso>
   oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
@@ -1796,10 +1967,12 @@ export type LukionOpiskeluoikeudenLisätiedot = {
 }
 
 export type LukionOpiskeluoikeudenTila = {
+  $class: 'LukionOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<LukionOpiskeluoikeusjakso>
 }
 
 export type LukionOpiskeluoikeus = {
+  $class: 'LukionOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'lukiokoulutus'>
   tila: LukionOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -1819,6 +1992,7 @@ export type LukionOpiskeluoikeus = {
 }
 
 export type LukionOpiskeluoikeusjakso = {
+  $class: 'LukionOpiskeluoikeusjakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -1850,6 +2024,7 @@ export type LukionOppiaine2019 =
   | VierasTaiToinenKotimainenKieli2019
 
 export type LukionOppiaineenArviointi = {
+  $class: 'LukionOppiaineenArviointi'
   arvosana: Koodistokoodiviite<'arviointiasteikkoyleissivistava', string>
   päivä?: string
   hyväksytty?: boolean
@@ -1861,6 +2036,7 @@ export type LukionOppiaineenArviointi2019 =
 
 export type LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa =
   {
+    $class: 'LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa'
     arviointi?: Array<LukionOppiaineenArviointi>
     tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'luvalukionoppiaine'>
     tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1871,6 +2047,7 @@ export type LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa =
 
 export type LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019 =
   {
+    $class: 'LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019'
     arviointi?: Array<LukionOppiaineenArviointi2019>
     tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'luvalukionoppiaine2019'>
     tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1881,6 +2058,7 @@ export type LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa20
   }
 
 export type LukionOppiaineenOppimääränSuoritus2015 = {
+  $class: 'LukionOppiaineenOppimääränSuoritus2015'
   arviointi?: Array<LukionOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionoppiaineenoppimaara'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1895,6 +2073,7 @@ export type LukionOppiaineenOppimääränSuoritus2015 = {
 }
 
 export type LukionOppiaineenPreIBSuoritus2019 = {
+  $class: 'LukionOppiaineenPreIBSuoritus2019'
   arviointi?: Array<LukionOppiaineenArviointi2019>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1905,6 +2084,7 @@ export type LukionOppiaineenPreIBSuoritus2019 = {
 }
 
 export type LukionOppiaineenSuoritus2015 = {
+  $class: 'LukionOppiaineenSuoritus2015'
   arviointi?: Array<LukionOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1914,6 +2094,7 @@ export type LukionOppiaineenSuoritus2015 = {
 }
 
 export type LukionOppiaineenSuoritus2019 = {
+  $class: 'LukionOppiaineenSuoritus2019'
   arviointi?: Array<LukionOppiaineenArviointi2019>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1924,6 +2105,7 @@ export type LukionOppiaineenSuoritus2019 = {
 }
 
 export type LukionOppiaineidenOppimäärienSuoritus2019 = {
+  $class: 'LukionOppiaineidenOppimäärienSuoritus2019'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionaineopinnot'>
   suullisenKielitaidonKokeet?: Array<SuullisenKielitaidonKoe2019>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -1940,11 +2122,13 @@ export type LukionOppiaineidenOppimäärienSuoritus2019 = {
 }
 
 export type LukionOppiaineidenOppimäärät2019 = {
+  $class: 'LukionOppiaineidenOppimäärät2019'
   tunniste: LukionOppiaineidenOppimäärätKoodi2019
   perusteenDiaarinumero?: string
 }
 
 export type LukionOppiaineidenOppimäärätKoodi2019 = {
+  $class: 'LukionOppiaineidenOppimäärätKoodi2019'
   koodiarvo?: string
 }
 
@@ -1958,6 +2142,7 @@ export type LukionOppiaineTaiEiTiedossaOppiaine2015 =
   | VierasTaiToinenKotimainenKieli2015
 
 export type LukionOppimäärä = {
+  $class: 'LukionOppimäärä'
   tunniste: Koodistokoodiviite<'koulutus', '309902'>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
@@ -1972,6 +2157,7 @@ export type LukionOppimääränOsasuoritus2019 =
   | MuidenLukioOpintojenSuoritus2019
 
 export type LukionOppimääränSuoritus2015 = {
+  $class: 'LukionOppimääränSuoritus2015'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionoppimaara'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
@@ -1987,6 +2173,7 @@ export type LukionOppimääränSuoritus2015 = {
 }
 
 export type LukionOppimääränSuoritus2019 = {
+  $class: 'LukionOppimääränSuoritus2019'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionoppimaara'>
   suullisenKielitaidonKokeet?: Array<SuullisenKielitaidonKoe2019>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -2005,6 +2192,7 @@ export type LukionOppimääränSuoritus2019 = {
 }
 
 export type LukionPaikallinenOpintojakso2019 = {
+  $class: 'LukionPaikallinenOpintojakso2019'
   tunniste: PaikallinenKoodi
   laajuus: LaajuusOpintopisteissä
   kuvaus: LocalizedString
@@ -2012,6 +2200,7 @@ export type LukionPaikallinenOpintojakso2019 = {
 }
 
 export type LukionPaikallisenOpintojaksonSuoritus2019 = {
+  $class: 'LukionPaikallisenOpintojaksonSuoritus2019'
   arviointi?: Array<LukionModuulinTaiPaikallisenOpintojaksonArviointi2019>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -2030,6 +2219,7 @@ export type LukionPäätasonSuoritus =
   | LukionOppimääränSuoritus2019
 
 export type LukionUskonto2015 = {
+  $class: 'LukionUskonto2015'
   pakollinen: boolean
   uskonnonOppimäärä?: Koodistokoodiviite<'uskonnonoppimaara', string>
   laajuus?: LaajuusKursseissa
@@ -2038,6 +2228,7 @@ export type LukionUskonto2015 = {
 }
 
 export type LukionUskonto2019 = {
+  $class: 'LukionUskonto2019'
   tunniste: Koodistokoodiviite<'koskioppiaineetyleissivistava', 'KT'>
   pakollinen: boolean
   laajuus?: LaajuusOpintopisteissä
@@ -2045,6 +2236,7 @@ export type LukionUskonto2019 = {
 }
 
 export type LukionVieraanKielenModuuliMuissaOpinnoissa2019 = {
+  $class: 'LukionVieraanKielenModuuliMuissaOpinnoissa2019'
   tunniste: Koodistokoodiviite<'moduulikoodistolops2021', string>
   laajuus: LaajuusOpintopisteissä
   pakollinen: boolean
@@ -2052,6 +2244,7 @@ export type LukionVieraanKielenModuuliMuissaOpinnoissa2019 = {
 }
 
 export type LukionVieraanKielenModuuliOppiaineissa2019 = {
+  $class: 'LukionVieraanKielenModuuliOppiaineissa2019'
   tunniste: Koodistokoodiviite<'moduulikoodistolops2021', string>
   laajuus: LaajuusOpintopisteissä
   pakollinen: boolean
@@ -2059,6 +2252,7 @@ export type LukionVieraanKielenModuuliOppiaineissa2019 = {
 }
 
 export type LukionÄidinkieliJaKirjallisuus2015 = {
+  $class: 'LukionÄidinkieliJaKirjallisuus2015'
   pakollinen: boolean
   kieli: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus', string>
   laajuus?: LaajuusKursseissa
@@ -2067,6 +2261,7 @@ export type LukionÄidinkieliJaKirjallisuus2015 = {
 }
 
 export type LukionÄidinkieliJaKirjallisuus2019 = {
+  $class: 'LukionÄidinkieliJaKirjallisuus2019'
   tunniste: Koodistokoodiviite<'koskioppiaineetyleissivistava', 'AI'>
   kieli: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus', string>
   pakollinen: boolean
@@ -2074,6 +2269,7 @@ export type LukionÄidinkieliJaKirjallisuus2019 = {
 }
 
 export type LukioonValmistavaKoulutus = {
+  $class: 'LukioonValmistavaKoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '999906'>
   perusteenDiaarinumero?: string
   laajuus?: LaajuusOpintopisteissäTaiKursseissa
@@ -2085,6 +2281,7 @@ export type LukioonValmistavanKoulutuksenKurssi =
   | ValtakunnallinenLukioonValmistavanKoulutuksenKurssi
 
 export type LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot = {
+  $class: 'LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot'
   ulkomaanjaksot?: Array<Ulkomaanjakso>
   oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
   oikeusMaksuttomaanAsuntolapaikkaan?: boolean
@@ -2095,6 +2292,7 @@ export type LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot = {
 }
 
 export type LukioonValmistavanKoulutuksenOpiskeluoikeus = {
+  $class: 'LukioonValmistavanKoulutuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'luva'>
   tila: LukionOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -2119,6 +2317,7 @@ export type LukioonValmistavanKoulutuksenOppiaine =
   | PaikallinenLukioonValmistavanKoulutuksenOppiaine
 
 export type LukioonValmistavanKoulutuksenOppiaineenSuoritus = {
+  $class: 'LukioonValmistavanKoulutuksenOppiaineenSuoritus'
   arviointi?: Array<LukionOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'luvaoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -2133,6 +2332,7 @@ export type LukioonValmistavanKoulutuksenOsasuoritus =
   | LukioonValmistavanKoulutuksenOppiaineenSuoritus
 
 export type LukioonValmistavanKoulutuksenSuoritus = {
+  $class: 'LukioonValmistavanKoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'luva'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -2145,6 +2345,7 @@ export type LukioonValmistavanKoulutuksenSuoritus = {
 }
 
 export type LukioonValmistavanKurssinSuoritus = {
+  $class: 'LukioonValmistavanKurssinSuoritus'
   arviointi?: Array<LukionArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'luvakurssi'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -2154,6 +2355,7 @@ export type LukioonValmistavanKurssinSuoritus = {
 }
 
 export type LukioonValmistavaÄidinkieliJaKirjallisuus = {
+  $class: 'LukioonValmistavaÄidinkieliJaKirjallisuus'
   tunniste: Koodistokoodiviite<'oppiaineetluva', 'LVAIK'>
   kieli: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus', 'AI7' | 'AI8'>
   pakollinen: boolean
@@ -2161,6 +2363,7 @@ export type LukioonValmistavaÄidinkieliJaKirjallisuus = {
 }
 
 export type LukioOpintojenSuoritus = {
+  $class: 'LukioOpintojenSuoritus'
   arviointi?: Array<AmmatillinenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillinenlukionopintoja'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -2172,10 +2375,12 @@ export type LukioOpintojenSuoritus = {
 }
 
 export type Lukukausi_Ilmoittautuminen = {
+  $class: 'Lukukausi_Ilmoittautuminen'
   ilmoittautumisjaksot: Array<Lukukausi_Ilmoittautumisjakso>
 }
 
 export type Lukukausi_Ilmoittautumisjakso = {
+  $class: 'Lukukausi_Ilmoittautumisjakso'
   tila: Koodistokoodiviite<'virtalukukausiilmtila', string>
   maksetutLukuvuosimaksut?: Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu
   ylioppilaskunnanJäsen?: boolean
@@ -2185,6 +2390,7 @@ export type Lukukausi_Ilmoittautumisjakso = {
 }
 
 export type LukutaitokoulutuksenArviointi = {
+  $class: 'LukutaitokoulutuksenArviointi'
   arvosana: Koodistokoodiviite<'arviointiasteikkovst', 'Hyväksytty'>
   päivä: string
   taitotaso: Koodistokoodiviite<
@@ -2207,23 +2413,27 @@ export type LukutaitokoulutuksenArviointi = {
 }
 
 export type Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu = {
+  $class: 'Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu'
   maksettu?: boolean
   summa?: number
   apuraha?: number
 }
 
 export type LähdejärjestelmäId = {
+  $class: 'LähdejärjestelmäId'
   id?: string
   lähdejärjestelmä: Koodistokoodiviite<'lahdejarjestelma', string>
 }
 
 export type Maksuttomuus = {
+  $class: 'Maksuttomuus'
   alku: string
   loppu?: string
   maksuton: boolean
 }
 
 export type MuidenLukioOpintojenPreIBSuoritus2019 = {
+  $class: 'MuidenLukioOpintojenPreIBSuoritus2019'
   koulutusmoduuli: PreIBMuutSuorituksetTaiVastaavat2019
   osasuoritukset?: Array<PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionmuuopinto'>
@@ -2231,6 +2441,7 @@ export type MuidenLukioOpintojenPreIBSuoritus2019 = {
 }
 
 export type MuidenLukioOpintojenSuoritus2015 = {
+  $class: 'MuidenLukioOpintojenSuoritus2015'
   arviointi?: Array<LukionOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionmuuopinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -2239,6 +2450,7 @@ export type MuidenLukioOpintojenSuoritus2015 = {
 }
 
 export type MuidenLukioOpintojenSuoritus2019 = {
+  $class: 'MuidenLukioOpintojenSuoritus2019'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionmuuopinto'>
   koulutusmoduuli: MuutSuorituksetTaiVastaavat2019
   osasuoritukset?: Array<LukionModuulinTaiPaikallisenOpintojaksonSuoritusMuissaOpinnoissa2019>
@@ -2246,6 +2458,7 @@ export type MuidenLukioOpintojenSuoritus2019 = {
 }
 
 export type MuidenOpintovalmiuksiaTukevienOpintojenSuoritus = {
+  $class: 'MuidenOpintovalmiuksiaTukevienOpintojenSuoritus'
   arviointi?: Array<AmmatillinenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -2260,6 +2473,7 @@ export type MuidenOpintovalmiuksiaTukevienOpintojenSuoritus = {
 }
 
 export type MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine = {
+  $class: 'MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine'
   tunniste: Koodistokoodiviite<
     'aikuistenperusopetuksenalkuvaiheenoppiaineet',
     'MA' | 'YH' | 'YL' | 'TE' | 'OP'
@@ -2267,6 +2481,7 @@ export type MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine = {
 }
 
 export type MuuAikuistenPerusopetuksenOppiaine = {
+  $class: 'MuuAikuistenPerusopetuksenOppiaine'
   pakollinen: boolean
   laajuus?: LaajuusVuosiviikkotunneissaTaiKursseissa
   kuvaus?: LocalizedString
@@ -2297,6 +2512,7 @@ export type MuuAikuistenPerusopetuksenOppiaine = {
 
 export type MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus =
   {
+    $class: 'MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus'
     arviointi?: Array<OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi>
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -2308,6 +2524,7 @@ export type MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpinto
   }
 
 export type MuuallaSuoritetutVapaanSivistystyönOpinnot = {
+  $class: 'MuuallaSuoritetutVapaanSivistystyönOpinnot'
   tunniste: Koodistokoodiviite<'vstmuuallasuoritetutopinnot', string>
   kuvaus: LocalizedString
   laajuus: LaajuusOpintopisteissä
@@ -2323,6 +2540,7 @@ export type MuuAmmatillinenOsasuoritus =
   | YhteisenTutkinnonOsanOsaAlueenSuoritus
 
 export type MuuDiplomaOppiaine = {
+  $class: 'MuuDiplomaOppiaine'
   tunniste: Koodistokoodiviite<
     'oppiaineetib',
     | 'BIO'
@@ -2340,12 +2558,14 @@ export type MuuDiplomaOppiaine = {
 }
 
 export type MuuKorkeakoulunOpinto = {
+  $class: 'MuuKorkeakoulunOpinto'
   tunniste: Koodistokoodiviite<'virtaopiskeluoikeudentyyppi', string>
   nimi: LocalizedString
   laajuus?: Laajuus
 }
 
 export type MuuKorkeakoulunSuoritus = {
+  $class: 'MuuKorkeakoulunSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'muukorkeakoulunsuoritus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
@@ -2356,6 +2576,7 @@ export type MuuKorkeakoulunSuoritus = {
 }
 
 export type MuuKuinSäänneltyKoulutus = {
+  $class: 'MuuKuinSäänneltyKoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '999951'>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
   laajuus?: LaajuusTunneissa
@@ -2367,11 +2588,13 @@ export type MuuKuinYhteinenTutkinnonOsa =
   | PaikallinenTutkinnonOsa
 
 export type MuuLukioOpinto2015 = {
+  $class: 'MuuLukioOpinto2015'
   tunniste: Koodistokoodiviite<'lukionmuutopinnot', string>
   laajuus?: LaajuusKursseissa
 }
 
 export type MuunAmmatillisenKoulutuksenArviointi = {
+  $class: 'MuunAmmatillisenKoulutuksenArviointi'
   päivä: string
   arvosana: Koodistokoodiviite<
     | 'arviointiasteikkomuuammatillinenkoulutus'
@@ -2386,11 +2609,13 @@ export type MuunAmmatillisenKoulutuksenArviointi = {
 }
 
 export type MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto = {
+  $class: 'MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto'
   tunniste: Koodistokoodiviite<'ammatillisentutkinnonosanlisatieto', string>
   kuvaus: LocalizedString
 }
 
 export type MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = {
+  $class: 'MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus'
   arviointi?: Array<MuunAmmatillisenKoulutuksenArviointi>
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<
@@ -2405,12 +2630,14 @@ export type MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = {
 }
 
 export type MuunAmmatillisenKoulutuksenOsasuoritus = {
+  $class: 'MuunAmmatillisenKoulutuksenOsasuoritus'
   tunniste: PaikallinenKoodi
   laajuus?: LaajuusKaikkiYksiköt
   kuvaus: LocalizedString
 }
 
 export type MuunAmmatillisenKoulutuksenSuoritus = {
+  $class: 'MuunAmmatillisenKoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'muuammatillinenkoulutus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
@@ -2427,6 +2654,7 @@ export type MuunAmmatillisenKoulutuksenSuoritus = {
 }
 
 export type MuunAmmatillisenTutkinnonOsanSuoritus = {
+  $class: 'MuunAmmatillisenTutkinnonOsanSuoritus'
   arviointi?: Array<AmmatillinenArviointi>
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
@@ -2447,6 +2675,7 @@ export type MuunAmmatillisenTutkinnonOsanSuoritus = {
 }
 
 export type MuunKuinSäännellynKoulutuksenArviointi = {
+  $class: 'MuunKuinSäännellynKoulutuksenArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkomuks',
     'hyvaksytty' | 'hylatty'
@@ -2456,6 +2685,7 @@ export type MuunKuinSäännellynKoulutuksenArviointi = {
 }
 
 export type MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso = {
+  $class: 'MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso'
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
     'lasna' | 'hyvaksytystisuoritettu' | 'keskeytynyt' | 'mitatoity'
@@ -2465,6 +2695,7 @@ export type MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso = {
 }
 
 export type MuunKuinSäännellynKoulutuksenOpiskeluoikeus = {
+  $class: 'MuunKuinSäännellynKoulutuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<
     'opiskeluoikeudentyyppi',
     'muukuinsaanneltykoulutus'
@@ -2484,12 +2715,14 @@ export type MuunKuinSäännellynKoulutuksenOpiskeluoikeus = {
 }
 
 export type MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli = {
+  $class: 'MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli'
   kuvaus: LocalizedString
   tunniste: PaikallinenKoodi
   laajuus: LaajuusTunneissa
 }
 
 export type MuunKuinSäännellynKoulutuksenOsasuoritus = {
+  $class: 'MuunKuinSäännellynKoulutuksenOsasuoritus'
   arviointi?: Array<MuunKuinSäännellynKoulutuksenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -2502,6 +2735,7 @@ export type MuunKuinSäännellynKoulutuksenOsasuoritus = {
 }
 
 export type MuunKuinSäännellynKoulutuksenPäätasonSuoritus = {
+  $class: 'MuunKuinSäännellynKoulutuksenPäätasonSuoritus'
   arviointi?: Array<MuunKuinSäännellynKoulutuksenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'muukuinsaanneltykoulutus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -2513,10 +2747,12 @@ export type MuunKuinSäännellynKoulutuksenPäätasonSuoritus = {
 }
 
 export type MuunKuinSäännellynKoulutuksenTila = {
+  $class: 'MuunKuinSäännellynKoulutuksenTila'
   opiskeluoikeusjaksot: Array<MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso>
 }
 
 export type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus = {
+  $class: 'MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
   arviointi?: Array<AmmatillinenArviointi>
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
@@ -2537,6 +2773,7 @@ export type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus = {
 }
 
 export type MuuNuortenPerusopetuksenOppiaine = {
+  $class: 'MuuNuortenPerusopetuksenOppiaine'
   pakollinen: boolean
   laajuus?: LaajuusVuosiviikkotunneissa
   kuvaus?: LocalizedString
@@ -2565,12 +2802,14 @@ export type MuuNuortenPerusopetuksenOppiaine = {
 }
 
 export type MuuPerusopetuksenLisäopetuksenKoulutusmoduuli = {
+  $class: 'MuuPerusopetuksenLisäopetuksenKoulutusmoduuli'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   laajuus?: LaajuusVuosiviikkotunneissa
 }
 
 export type MuuPerusopetuksenLisäopetuksenSuoritus = {
+  $class: 'MuuPerusopetuksenLisäopetuksenSuoritus'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -2582,6 +2821,7 @@ export type MuuPerusopetuksenLisäopetuksenSuoritus = {
 }
 
 export type MuutKielet = {
+  $class: 'MuutKielet'
   tunniste: Koodistokoodiviite<
     'oppiaineetluva',
     'LVMUUTK' | 'LVAK' | 'LVMAI' | 'LVPOAK'
@@ -2592,6 +2832,7 @@ export type MuutKielet = {
 }
 
 export type MuutLukionSuoritukset2019 = {
+  $class: 'MuutLukionSuoritukset2019'
   tunniste: Koodistokoodiviite<'lukionmuutopinnot', 'MS'>
   laajuus?: LaajuusOpintopisteissä
 }
@@ -2602,6 +2843,7 @@ export type MuutSuorituksetTaiVastaavat2019 =
   | TemaattisetOpinnot2019
 
 export type MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine = {
+  $class: 'MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine'
   tunniste: Koodistokoodiviite<
     'oppiaineetluva',
     'LVMALUO' | 'LVYHKU' | 'LVOPO' | 'LVMFKBM' | 'LVHIYH'
@@ -2611,6 +2853,7 @@ export type MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine = {
 }
 
 export type MuuValtakunnallinenTutkinnonOsa = {
+  $class: 'MuuValtakunnallinenTutkinnonOsa'
   tunniste: Koodistokoodiviite<'tutkinnonosat', string>
   pakollinen: boolean
   laajuus?: LaajuusOsaamispisteissä
@@ -2622,6 +2865,7 @@ export type MYPArviointi =
   | PassFailOppiaineenArviointi
 
 export type MYPLuokkaAste = {
+  $class: 'MYPLuokkaAste'
   tunniste: Koodistokoodiviite<
     'internationalschoolluokkaaste',
     '6' | '7' | '8' | '9' | '10'
@@ -2634,6 +2878,7 @@ export type MYPOppiaine =
   | MYPOppiaineMuu
 
 export type MYPOppiaineenSuoritus = {
+  $class: 'MYPOppiaineenSuoritus'
   arviointi?: Array<MYPArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -2645,6 +2890,7 @@ export type MYPOppiaineenSuoritus = {
 }
 
 export type MYPOppiaineMuu = {
+  $class: 'MYPOppiaineMuu'
   tunniste: Koodistokoodiviite<
     'oppiaineetinternationalschool',
     | 'AD'
@@ -2668,6 +2914,7 @@ export type MYPOppiaineMuu = {
 }
 
 export type MYPVuosiluokanSuoritus = {
+  $class: 'MYPVuosiluokanSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'internationalschoolmypvuosiluokka'
@@ -2683,6 +2930,7 @@ export type MYPVuosiluokanSuoritus = {
 }
 
 export type NumeerinenInternationalSchoolOppiaineenArviointi = {
+  $class: 'NumeerinenInternationalSchoolOppiaineenArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoib',
     'S' | 'F' | '1' | '2' | '3' | '4' | '5' | '6' | '7'
@@ -2692,6 +2940,7 @@ export type NumeerinenInternationalSchoolOppiaineenArviointi = {
 }
 
 export type NumeerinenLukionArviointi = {
+  $class: 'NumeerinenLukionArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
     '4' | '5' | '6' | '7' | '8' | '9' | '10'
@@ -2701,6 +2950,7 @@ export type NumeerinenLukionArviointi = {
 }
 
 export type NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 = {
+  $class: 'NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
     '4' | '5' | '6' | '7' | '8' | '9' | '10'
@@ -2710,6 +2960,7 @@ export type NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 = {
 }
 
 export type NumeerinenLukionOppiaineenArviointi2019 = {
+  $class: 'NumeerinenLukionOppiaineenArviointi2019'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
     '4' | '5' | '6' | '7' | '8' | '9' | '10'
@@ -2719,6 +2970,7 @@ export type NumeerinenLukionOppiaineenArviointi2019 = {
 }
 
 export type NumeerinenPerusopetuksenOppiaineenArviointi = {
+  $class: 'NumeerinenPerusopetuksenOppiaineenArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
     '4' | '5' | '6' | '7' | '8' | '9' | '10'
@@ -2728,10 +2980,12 @@ export type NumeerinenPerusopetuksenOppiaineenArviointi = {
 }
 
 export type NuortenPerusopetuksenOpiskeluoikeudenTila = {
+  $class: 'NuortenPerusopetuksenOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<NuortenPerusopetuksenOpiskeluoikeusjakso>
 }
 
 export type NuortenPerusopetuksenOpiskeluoikeusjakso = {
+  $class: 'NuortenPerusopetuksenOpiskeluoikeusjakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -2753,6 +3007,7 @@ export type NuortenPerusopetuksenOppiaine =
   | NuortenPerusopetuksenÄidinkieliJaKirjallisuus
 
 export type NuortenPerusopetuksenOppiaineenOppimääränSuoritus = {
+  $class: 'NuortenPerusopetuksenOppiaineenOppimääränSuoritus'
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
@@ -2770,6 +3025,7 @@ export type NuortenPerusopetuksenOppiaineenOppimääränSuoritus = {
 }
 
 export type NuortenPerusopetuksenOppiaineenSuoritus = {
+  $class: 'NuortenPerusopetuksenOppiaineenSuoritus'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -2784,6 +3040,7 @@ export type NuortenPerusopetuksenOppiaineenSuoritus = {
 }
 
 export type NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa = {
+  $class: 'NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -2808,6 +3065,7 @@ export type NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine =
   | NuortenPerusopetuksenÄidinkieliJaKirjallisuus
 
 export type NuortenPerusopetuksenOppimääränSuoritus = {
+  $class: 'NuortenPerusopetuksenOppimääränSuoritus'
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenoppimaara'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -2823,6 +3081,7 @@ export type NuortenPerusopetuksenOppimääränSuoritus = {
 }
 
 export type NuortenPerusopetuksenPaikallinenOppiaine = {
+  $class: 'NuortenPerusopetuksenPaikallinenOppiaine'
   pakollinen?: boolean
   laajuus?: LaajuusVuosiviikkotunneissa
   kuvaus: LocalizedString
@@ -2831,6 +3090,7 @@ export type NuortenPerusopetuksenPaikallinenOppiaine = {
 }
 
 export type NuortenPerusopetuksenUskonto = {
+  $class: 'NuortenPerusopetuksenUskonto'
   pakollinen: boolean
   uskonnonOppimäärä?: Koodistokoodiviite<'uskonnonoppimaara', string>
   laajuus?: LaajuusVuosiviikkotunneissa
@@ -2840,6 +3100,7 @@ export type NuortenPerusopetuksenUskonto = {
 }
 
 export type NuortenPerusopetuksenVierasTaiToinenKotimainenKieli = {
+  $class: 'NuortenPerusopetuksenVierasTaiToinenKotimainenKieli'
   pakollinen: boolean
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   laajuus?: LaajuusVuosiviikkotunneissa
@@ -2852,6 +3113,7 @@ export type NuortenPerusopetuksenVierasTaiToinenKotimainenKieli = {
 }
 
 export type NuortenPerusopetuksenÄidinkieliJaKirjallisuus = {
+  $class: 'NuortenPerusopetuksenÄidinkieliJaKirjallisuus'
   pakollinen: boolean
   kieli: Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus', string>
   laajuus?: LaajuusVuosiviikkotunneissa
@@ -2861,12 +3123,14 @@ export type NuortenPerusopetuksenÄidinkieliJaKirjallisuus = {
 }
 
 export type NuortenPerusopetus = {
+  $class: 'NuortenPerusopetus'
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<'koulutus', '201101'>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
 
 export type NurseryLuokkaAste = {
+  $class: 'NurseryLuokkaAste'
   tunniste: Koodistokoodiviite<
     'europeanschoolofhelsinkiluokkaaste',
     'N1' | 'N2'
@@ -2875,6 +3139,7 @@ export type NurseryLuokkaAste = {
 }
 
 export type NurseryVuosiluokanSuoritus = {
+  $class: 'NurseryVuosiluokanSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'europeanschoolofhelsinkivuosiluokkanursery'
@@ -2890,6 +3155,7 @@ export type NurseryVuosiluokanSuoritus = {
 }
 
 export type Näyttö = {
+  $class: 'Näyttö'
   arviointi?: NäytönArviointi
   suorituspaikka?: NäytönSuorituspaikka
   haluaaTodistuksen?: boolean
@@ -2899,6 +3165,7 @@ export type Näyttö = {
 }
 
 export type NäyttötutkintoonValmistavaKoulutus = {
+  $class: 'NäyttötutkintoonValmistavaKoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '999904'>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
@@ -2909,6 +3176,7 @@ export type NäyttötutkintoonValmistavanKoulutuksenOsa =
   | YhteinenTutkinnonOsa
 
 export type NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus = {
+  $class: 'NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'nayttotutkintoonvalmistavankoulutuksenosa'
@@ -2920,6 +3188,7 @@ export type NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus = {
 }
 
 export type NäyttötutkintoonValmistavanKoulutuksenSuoritus = {
+  $class: 'NäyttötutkintoonValmistavanKoulutuksenSuoritus'
   järjestämismuodot?: Array<Järjestämismuotojakso>
   tutkintonimike?: Array<Koodistokoodiviite<'tutkintonimikkeet', string>>
   tyyppi: Koodistokoodiviite<
@@ -2944,6 +3213,7 @@ export type NäyttötutkintoonValmistavanKoulutuksenSuoritus = {
 }
 
 export type NäytönArviointi = {
+  $class: 'NäytönArviointi'
   päivä: string
   arvosana: Koodistokoodiviite<
     | 'arviointiasteikkoammatillinenhyvaksyttyhylatty'
@@ -2967,6 +3237,7 @@ export type NäytönArviointi = {
 }
 
 export type NäytönArviointikohde = {
+  $class: 'NäytönArviointikohde'
   tunniste: Koodistokoodiviite<'ammatillisennaytonarviointikohde', string>
   arvosana: Koodistokoodiviite<
     | 'arviointiasteikkoammatillinenhyvaksyttyhylatty'
@@ -2977,36 +3248,43 @@ export type NäytönArviointikohde = {
 }
 
 export type NäytönArvioitsija = {
+  $class: 'NäytönArvioitsija'
   nimi: string
   ntm?: boolean
 }
 
 export type NäytönSuoritusaika = {
+  $class: 'NäytönSuoritusaika'
   alku: string
   loppu: string
 }
 
 export type NäytönSuorituspaikka = {
+  $class: 'NäytönSuorituspaikka'
   tunniste: Koodistokoodiviite<'ammatillisennaytonsuorituspaikka', string>
   kuvaus: LocalizedString
 }
 
 export type OidHenkilö = {
+  $class: 'OidHenkilö'
   oid: string
 }
 
 export type OidOrganisaatio = {
+  $class: 'OidOrganisaatio'
   oid: string
   nimi?: LocalizedString
   kotipaikka?: Koodistokoodiviite<'kunta', string>
 }
 
 export type OikeuttaMaksuttomuuteenPidennetty = {
+  $class: 'OikeuttaMaksuttomuuteenPidennetty'
   alku: string
   loppu: string
 }
 
 export type OmanÄidinkielenOpinnotLaajuusKursseina = {
+  $class: 'OmanÄidinkielenOpinnotLaajuusKursseina'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
     'O' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
@@ -3018,6 +3296,7 @@ export type OmanÄidinkielenOpinnotLaajuusKursseina = {
 }
 
 export type OmanÄidinkielenOpinnotLaajuusOpintopisteinä = {
+  $class: 'OmanÄidinkielenOpinnotLaajuusOpintopisteinä'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
     'O' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
@@ -3029,6 +3308,7 @@ export type OmanÄidinkielenOpinnotLaajuusOpintopisteinä = {
 }
 
 export type OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina = {
+  $class: 'OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
     'O' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
@@ -3040,6 +3320,7 @@ export type OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina = {
 }
 
 export type OpiskeluoikeudenOrganisaatiohistoria = {
+  $class: 'OpiskeluoikeudenOrganisaatiohistoria'
   muutospäivä: string
   oppilaitos?: Oppilaitos
   koulutustoimija?: Koulutustoimija
@@ -3065,11 +3346,13 @@ export type Opiskeluoikeus =
   | YlioppilastutkinnonOpiskeluoikeus
 
 export type OpiskeluoikeusAvaintaEiLöydy = {
+  $class: 'OpiskeluoikeusAvaintaEiLöydy'
   tyyppi: string
   arvo: string
 }
 
 export type OpiskeluvalmiuksiaTukevienOpintojenJakso = {
+  $class: 'OpiskeluvalmiuksiaTukevienOpintojenJakso'
   alku: string
   loppu: string
   kuvaus: LocalizedString
@@ -3080,6 +3363,7 @@ export type OppiaineenTaiToiminta_AlueenSuoritus =
   | PerusopetuksenToiminta_AlueenSuoritus
 
 export type Oppilaitos = {
+  $class: 'Oppilaitos'
   oid: string
   oppilaitosnumero?: Koodistokoodiviite<'oppilaitosnumero', string>
   nimi?: LocalizedString
@@ -3087,27 +3371,32 @@ export type Oppilaitos = {
 }
 
 export type OppisopimuksellinenJärjestämismuoto = {
+  $class: 'OppisopimuksellinenJärjestämismuoto'
   tunniste: Koodistokoodiviite<'jarjestamismuoto', '20'>
   oppisopimus: Oppisopimus
 }
 
 export type OppisopimuksellinenOsaamisenHankkimistapa = {
+  $class: 'OppisopimuksellinenOsaamisenHankkimistapa'
   tunniste: Koodistokoodiviite<'osaamisenhankkimistapa', 'oppisopimus'>
   oppisopimus: Oppisopimus
 }
 
 export type OppisopimuksenPurkaminen = {
+  $class: 'OppisopimuksenPurkaminen'
   päivä: string
   purettuKoeajalla: boolean
 }
 
 export type Oppisopimus = {
+  $class: 'Oppisopimus'
   työnantaja: Yritys
   oppisopimuksenPurkaminen?: OppisopimuksenPurkaminen
 }
 
 export type OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus =
   {
+    $class: 'OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus'
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
       'vstmaahanmuuttajienkotoutumiskoulutus'
@@ -3123,6 +3412,7 @@ export type OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuori
 
 export type OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 =
   {
+    $class: 'OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022'
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
       'vstmaahanmuuttajienkotoutumiskoulutus'
@@ -3137,6 +3427,7 @@ export type OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuori
   }
 
 export type OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus = {
+  $class: 'OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'vstoppivelvollisillesuunnattukoulutus'
@@ -3151,18 +3442,21 @@ export type OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus = {
 }
 
 export type OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus = {
+  $class: 'OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '999909'>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
 
 export type OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus = {
+  $class: 'OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   laajuus: LaajuusOpintopisteissä
 }
 
 export type OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso = {
+  $class: 'OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -3175,12 +3469,14 @@ export type OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso = {
 }
 
 export type OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus = {
+  $class: 'OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus'
   tunniste: Koodistokoodiviite<'vstosaamiskokonaisuus', string>
   laajuus?: LaajuusOpintopisteissä
 }
 
 export type OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi =
   {
+    $class: 'OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi'
     arvosana: Koodistokoodiviite<'arviointiasteikkovst', 'Hyväksytty'>
     päivä: string
     hyväksytty?: boolean
@@ -3188,6 +3484,7 @@ export type OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArvi
 
 export type OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus =
   {
+    $class: 'OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus'
     arviointi?: Array<OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi>
     tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'vstopintokokonaisuus'>
     tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -3197,6 +3494,7 @@ export type OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuor
 
 export type OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus =
   {
+    $class: 'OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus'
     koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus
     osasuoritukset?: Array<OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus>
     tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'vstosaamiskokonaisuus'>
@@ -3209,6 +3507,7 @@ export type OppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus =
 
 export type OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot =
   {
+    $class: 'OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot'
     tunniste: Koodistokoodiviite<
       'vstmuutopinnot',
       'valinnaisetsuuntautumisopinnot'
@@ -3218,6 +3517,7 @@ export type OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumis
 
 export type OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus =
   {
+    $class: 'OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus'
     koulutusmoduuli: OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot
     osasuoritukset?: Array<VapaanSivistystyönOpintokokonaisuudenSuoritus>
     tyyppi: Koodistokoodiviite<
@@ -3236,18 +3536,21 @@ export type Organisaatio =
   | Yritys
 
 export type Organisaatiohenkilö = {
+  $class: 'Organisaatiohenkilö'
   nimi: string
   titteli: LocalizedString
   organisaatio: Organisaatio
 }
 
 export type OrganisaatiohenkilöValinnaisellaTittelillä = {
+  $class: 'OrganisaatiohenkilöValinnaisellaTittelillä'
   nimi: string
   titteli?: LocalizedString
   organisaatio: Organisaatio
 }
 
 export type Organisaatiovahvistus = {
+  $class: 'Organisaatiovahvistus'
   päivä: string
   paikkakunta: Koodistokoodiviite<'kunta', string>
   myöntäjäOrganisaatio: Organisaatio
@@ -3260,6 +3563,7 @@ export type OrganisaatioWithOid =
   | Toimipiste
 
 export type OsaAikaisuusJakso = {
+  $class: 'OsaAikaisuusJakso'
   alku: string
   loppu?: string
   osaAikaisuus: number
@@ -3267,6 +3571,7 @@ export type OsaAikaisuusJakso = {
 
 export type Osaamisalajakso =
   | {
+      $class: 'Osaamisalajakso'
       osaamisala: Koodistokoodiviite<'osaamisala', string>
       alku?: string
       loppu?: string
@@ -3278,16 +3583,19 @@ export type OsaamisenHankkimistapa =
   | OsaamisenHankkimistapaIlmanLisätietoja
 
 export type OsaamisenHankkimistapaIlmanLisätietoja = {
+  $class: 'OsaamisenHankkimistapaIlmanLisätietoja'
   tunniste: Koodistokoodiviite<'osaamisenhankkimistapa', string>
 }
 
 export type OsaamisenHankkimistapajakso = {
+  $class: 'OsaamisenHankkimistapajakso'
   alku: string
   loppu?: string
   osaamisenHankkimistapa: OsaamisenHankkimistapa
 }
 
 export type OsaamisenTunnustaminen = {
+  $class: 'OsaamisenTunnustaminen'
   osaaminen?: Suoritus
   selite: LocalizedString
   rahoituksenPiirissä?: boolean
@@ -3295,6 +3603,7 @@ export type OsaamisenTunnustaminen = {
 
 export type OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus =
   {
+    $class: 'OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
     tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
     tila?: Koodistokoodiviite<'suorituksentila', string>
     koulutusmoduuli: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa
@@ -3306,6 +3615,7 @@ export type OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpin
   }
 
 export type OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = {
+  $class: 'OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   koulutusmoduuli: KorkeakouluopinnotTutkinnonOsa
@@ -3320,16 +3630,19 @@ export type OsittaisenAmmatillisenTutkinnonOsanSuoritus =
   | YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
 
 export type PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi = {
+  $class: 'PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi'
   tunniste: PaikallinenKoodi
   laajuus?: LaajuusVuosiviikkotunneissaTaiKursseissa
 }
 
 export type PaikallinenAikuistenPerusopetuksenKurssi = {
+  $class: 'PaikallinenAikuistenPerusopetuksenKurssi'
   tunniste: PaikallinenKoodi
   laajuus?: LaajuusVuosiviikkotunneissaTaiKursseissa
 }
 
 export type PaikallinenAmmatillisenTutkinnonOsanOsaAlue = {
+  $class: 'PaikallinenAmmatillisenTutkinnonOsanOsaAlue'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   pakollinen: boolean
@@ -3337,12 +3650,14 @@ export type PaikallinenAmmatillisenTutkinnonOsanOsaAlue = {
 }
 
 export type PaikallinenKoodi = {
+  $class: 'PaikallinenKoodi'
   koodiarvo: string
   nimi: LocalizedString
   koodistoUri?: string
 }
 
 export type PaikallinenLukionKurssi2015 = {
+  $class: 'PaikallinenLukionKurssi2015'
   tunniste: PaikallinenKoodi
   laajuus?: LaajuusKursseissa
   kuvaus: LocalizedString
@@ -3350,6 +3665,7 @@ export type PaikallinenLukionKurssi2015 = {
 }
 
 export type PaikallinenLukionOpinto = {
+  $class: 'PaikallinenLukionOpinto'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   laajuus?: LaajuusOsaamispisteissä
@@ -3357,6 +3673,7 @@ export type PaikallinenLukionOpinto = {
 }
 
 export type PaikallinenLukionOppiaine2015 = {
+  $class: 'PaikallinenLukionOppiaine2015'
   pakollinen: boolean
   laajuus?: LaajuusKursseissa
   kuvaus: LocalizedString
@@ -3365,6 +3682,7 @@ export type PaikallinenLukionOppiaine2015 = {
 }
 
 export type PaikallinenLukionOppiaine2019 = {
+  $class: 'PaikallinenLukionOppiaine2019'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   pakollinen: boolean
@@ -3372,12 +3690,14 @@ export type PaikallinenLukionOppiaine2019 = {
 }
 
 export type PaikallinenLukioonValmistavanKoulutuksenKurssi = {
+  $class: 'PaikallinenLukioonValmistavanKoulutuksenKurssi'
   tunniste: PaikallinenKoodi
   laajuus?: LaajuusOpintopisteissäTaiKursseissa
   kuvaus: LocalizedString
 }
 
 export type PaikallinenLukioonValmistavanKoulutuksenOppiaine = {
+  $class: 'PaikallinenLukioonValmistavanKoulutuksenOppiaine'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   pakollinen: boolean
@@ -3385,23 +3705,27 @@ export type PaikallinenLukioonValmistavanKoulutuksenOppiaine = {
 }
 
 export type PaikallinenMuuAmmatillinenKoulutus = {
+  $class: 'PaikallinenMuuAmmatillinenKoulutus'
   tunniste: PaikallinenKoodi
   laajuus?: LaajuusKaikkiYksiköt
   kuvaus: LocalizedString
 }
 
 export type PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa = {
+  $class: 'PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
 }
 
 export type PaikallinenOpintovalmiuksiaTukevaOpinto = {
+  $class: 'PaikallinenOpintovalmiuksiaTukevaOpinto'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   laajuus?: LaajuusOsaamispisteissä
 }
 
 export type PaikallinenTelmaKoulutuksenOsa = {
+  $class: 'PaikallinenTelmaKoulutuksenOsa'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   laajuus?: LaajuusOsaamispisteissä
@@ -3409,6 +3733,7 @@ export type PaikallinenTelmaKoulutuksenOsa = {
 }
 
 export type PaikallinenTutkinnonOsa = {
+  $class: 'PaikallinenTutkinnonOsa'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   pakollinen: boolean
@@ -3416,6 +3741,7 @@ export type PaikallinenTutkinnonOsa = {
 }
 
 export type PaikallinenValmaKoulutuksenOsa = {
+  $class: 'PaikallinenValmaKoulutuksenOsa'
   tunniste: PaikallinenKoodi
   kuvaus: LocalizedString
   laajuus?: LaajuusOsaamispisteissä
@@ -3423,6 +3749,7 @@ export type PaikallinenValmaKoulutuksenOsa = {
 }
 
 export type PassFailOppiaineenArviointi = {
+  $class: 'PassFailOppiaineenArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkointernationalschool',
     'pass' | 'fail'
@@ -3432,10 +3759,12 @@ export type PassFailOppiaineenArviointi = {
 }
 
 export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila = {
+  $class: 'PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso>
 }
 
 export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = {
+  $class: 'PerusopetukseenValmistavanOpetuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<
     'opiskeluoikeudentyyppi',
     'perusopetukseenvalmistavaopetus'
@@ -3455,6 +3784,7 @@ export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = {
 }
 
 export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso = {
+  $class: 'PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -3470,12 +3800,14 @@ export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso = {
 }
 
 export type PerusopetukseenValmistavanOpetuksenOppiaine = {
+  $class: 'PerusopetukseenValmistavanOpetuksenOppiaine'
   tunniste: PaikallinenKoodi
   laajuus?: LaajuusKaikkiYksiköt
   opetuksenSisältö?: LocalizedString
 }
 
 export type PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus = {
+  $class: 'PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus'
   arviointi?: Array<SanallinenPerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -3491,6 +3823,7 @@ export type PerusopetukseenValmistavanOpetuksenOsasuoritus =
   | PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus
 
 export type PerusopetukseenValmistavanOpetuksenSuoritus = {
+  $class: 'PerusopetukseenValmistavanOpetuksenSuoritus'
   kokonaislaajuus?: LaajuusVuosiviikkotunneissa
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<
@@ -3508,12 +3841,14 @@ export type PerusopetukseenValmistavanOpetuksenSuoritus = {
 }
 
 export type PerusopetukseenValmistavaOpetus = {
+  $class: 'PerusopetukseenValmistavaOpetus'
   tunniste: Koodistokoodiviite<'koulutus', '999905'>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
 
 export type PerusopetuksenKäyttäytymisenArviointi = {
+  $class: 'PerusopetuksenKäyttäytymisenArviointi'
   arvosana: Koodistokoodiviite<'arviointiasteikkoyleissivistava', string>
   kuvaus?: LocalizedString
   päivä?: string
@@ -3526,6 +3861,7 @@ export type PerusopetuksenLisäopetuksenAlisuoritus =
   | PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus
 
 export type PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot = {
+  $class: 'PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot'
   tehostetunTuenPäätökset?: Array<TehostetunTuenPäätös>
   joustavaPerusopetus?: Aikajakso
   pidennettyOppivelvollisuus?: Aikajakso
@@ -3552,6 +3888,7 @@ export type PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot = {
 }
 
 export type PerusopetuksenLisäopetuksenOpiskeluoikeus = {
+  $class: 'PerusopetuksenLisäopetuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<
     'opiskeluoikeudentyyppi',
     'perusopetuksenlisaopetus'
@@ -3572,6 +3909,7 @@ export type PerusopetuksenLisäopetuksenOpiskeluoikeus = {
 }
 
 export type PerusopetuksenLisäopetuksenOppiaineenSuoritus = {
+  $class: 'PerusopetuksenLisäopetuksenOppiaineenSuoritus'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -3585,6 +3923,7 @@ export type PerusopetuksenLisäopetuksenOppiaineenSuoritus = {
 }
 
 export type PerusopetuksenLisäopetuksenSuoritus = {
+  $class: 'PerusopetuksenLisäopetuksenSuoritus'
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenlisaopetus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -3599,6 +3938,7 @@ export type PerusopetuksenLisäopetuksenSuoritus = {
 }
 
 export type PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus = {
+  $class: 'PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -3611,18 +3951,21 @@ export type PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus = {
 }
 
 export type PerusopetuksenLisäopetus = {
+  $class: 'PerusopetuksenLisäopetus'
   tunniste: Koodistokoodiviite<'koulutus', '020075'>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
 
 export type PerusopetuksenLuokkaAste = {
+  $class: 'PerusopetuksenLuokkaAste'
   tunniste: Koodistokoodiviite<'perusopetuksenluokkaaste' | 'koulutus', string>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
 
 export type PerusopetuksenOpiskeluoikeudenLisätiedot = {
+  $class: 'PerusopetuksenOpiskeluoikeudenLisätiedot'
   tehostetunTuenPäätökset?: Array<TehostetunTuenPäätös>
   joustavaPerusopetus?: Aikajakso
   pidennettyOppivelvollisuus?: Aikajakso
@@ -3647,6 +3990,7 @@ export type PerusopetuksenOpiskeluoikeudenLisätiedot = {
 }
 
 export type PerusopetuksenOpiskeluoikeus = {
+  $class: 'PerusopetuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'perusopetus'>
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -3673,11 +4017,13 @@ export type PerusopetuksenPäätasonSuoritus =
   | PerusopetuksenVuosiluokanSuoritus
 
 export type PerusopetuksenToiminta_Alue = {
+  $class: 'PerusopetuksenToiminta_Alue'
   tunniste: Koodistokoodiviite<'perusopetuksentoimintaalue', string>
   laajuus?: LaajuusVuosiviikkotunneissa
 }
 
 export type PerusopetuksenToiminta_AlueenSuoritus = {
+  $class: 'PerusopetuksenToiminta_AlueenSuoritus'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksentoimintaalue'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -3686,6 +4032,7 @@ export type PerusopetuksenToiminta_AlueenSuoritus = {
 }
 
 export type PerusopetuksenVuosiluokanSuorituksenLiite = {
+  $class: 'PerusopetuksenVuosiluokanSuorituksenLiite'
   tunniste: Koodistokoodiviite<
     'perusopetuksentodistuksenliitetieto',
     'kayttaytyminen' | 'tyoskentely'
@@ -3694,6 +4041,7 @@ export type PerusopetuksenVuosiluokanSuorituksenLiite = {
 }
 
 export type PerusopetuksenVuosiluokanSuoritus = {
+  $class: 'PerusopetuksenVuosiluokanSuoritus'
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenvuosiluokka'>
   liitetiedot?: Array<PerusopetuksenVuosiluokanSuorituksenLiite>
@@ -3715,10 +4063,12 @@ export type PerusopetuksenVuosiluokanSuoritus = {
 }
 
 export type PreIBKoulutusmoduuli2015 = {
+  $class: 'PreIBKoulutusmoduuli2015'
   tunniste: Koodistokoodiviite<'suorituksentyyppi', 'preiboppimaara'>
 }
 
 export type PreIBKoulutusmoduuli2019 = {
+  $class: 'PreIBKoulutusmoduuli2019'
   tunniste: Koodistokoodiviite<'suorituksentyyppi', 'preiboppimaara2019'>
 }
 
@@ -3728,6 +4078,7 @@ export type PreIBKurssi2015 =
   | ValtakunnallinenLukionKurssi2015
 
 export type PreIBKurssinSuoritus2015 = {
+  $class: 'PreIBKurssinSuoritus2015'
   arviointi?: Array<LukionArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'preibkurssi'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -3740,6 +4091,7 @@ export type PreIBLukionModuuliMuissaOpinnoissa2019 =
   | LukionVieraanKielenModuuliMuissaOpinnoissa2019
 
 export type PreIBLukionModuulinSuoritusMuissaOpinnoissa2019 = {
+  $class: 'PreIBLukionModuulinSuoritusMuissaOpinnoissa2019'
   arviointi?: Array<LukionModuulinTaiPaikallisenOpintojaksonArviointi2019>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -3752,6 +4104,7 @@ export type PreIBLukionModuulinSuoritusMuissaOpinnoissa2019 = {
 }
 
 export type PreIBLukionModuulinSuoritusOppiaineissa2019 = {
+  $class: 'PreIBLukionModuulinSuoritusOppiaineissa2019'
   arviointi?: Array<LukionModuulinTaiPaikallisenOpintojaksonArviointi2019>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -3786,6 +4139,7 @@ export type PreIBLukionOppiaine2019 =
   | VierasTaiToinenKotimainenKieli2019
 
 export type PreIBLukionPaikallisenOpintojaksonSuoritus2019 = {
+  $class: 'PreIBLukionPaikallisenOpintojaksonSuoritus2019'
   arviointi?: Array<LukionModuulinTaiPaikallisenOpintojaksonArviointi2019>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -3813,6 +4167,7 @@ export type PreIBOppiaine2015 =
   | VierasTaiToinenKotimainenKieli2015
 
 export type PreIBOppiaineenSuoritus2015 = {
+  $class: 'PreIBOppiaineenSuoritus2015'
   arviointi?: Array<LukionOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'preiboppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -3832,6 +4187,7 @@ export type PreIBSuorituksenOsasuoritus2019 =
   | MuidenLukioOpintojenPreIBSuoritus2019
 
 export type PreIBSuoritus2015 = {
+  $class: 'PreIBSuoritus2015'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'preiboppimaara'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -3843,6 +4199,7 @@ export type PreIBSuoritus2015 = {
 }
 
 export type PreIBSuoritus2019 = {
+  $class: 'PreIBSuoritus2019'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'preiboppimaara'>
   suullisenKielitaidonKokeet?: Array<SuullisenKielitaidonKoe2019>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -3858,6 +4215,7 @@ export type PreIBSuoritus2019 = {
 }
 
 export type PrimaryAlaoppimisalue = {
+  $class: 'PrimaryAlaoppimisalue'
   tunniste: Koodistokoodiviite<
     'europeanschoolofhelsinkiprimaryalaoppimisalue',
     string
@@ -3865,6 +4223,7 @@ export type PrimaryAlaoppimisalue = {
 }
 
 export type PrimaryAlaoppimisalueArviointi = {
+  $class: 'PrimaryAlaoppimisalueArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoeuropeanschoolofhelsinkiprimarymark',
     string
@@ -3875,6 +4234,7 @@ export type PrimaryAlaoppimisalueArviointi = {
 }
 
 export type PrimaryLapsiAlaoppimisalue = {
+  $class: 'PrimaryLapsiAlaoppimisalue'
   tunniste: Koodistokoodiviite<
     'europeanschoolofhelsinkiprimarylapsialaoppimisalue',
     string
@@ -3882,6 +4242,7 @@ export type PrimaryLapsiAlaoppimisalue = {
 }
 
 export type PrimaryLapsiOppimisalue = {
+  $class: 'PrimaryLapsiOppimisalue'
   tunniste: Koodistokoodiviite<
     'europeanschoolofhelsinkilapsioppimisalue',
     string
@@ -3889,6 +4250,7 @@ export type PrimaryLapsiOppimisalue = {
 }
 
 export type PrimaryLapsiOppimisalueenAlaosasuoritus = {
+  $class: 'PrimaryLapsiOppimisalueenAlaosasuoritus'
   koulutusmoduuli: PrimaryLapsiAlaoppimisalue
   arviointi?: Array<PrimaryAlaoppimisalueArviointi>
   tyyppi: Koodistokoodiviite<
@@ -3899,6 +4261,7 @@ export type PrimaryLapsiOppimisalueenAlaosasuoritus = {
 }
 
 export type PrimaryLapsiOppimisalueenSuoritus = {
+  $class: 'PrimaryLapsiOppimisalueenSuoritus'
   arviointi?: Array<EuropeanSchoolOfHelsinkiOsasuoritusArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -3911,6 +4274,7 @@ export type PrimaryLapsiOppimisalueenSuoritus = {
 }
 
 export type PrimaryLuokkaAste = {
+  $class: 'PrimaryLuokkaAste'
   tunniste: Koodistokoodiviite<
     'europeanschoolofhelsinkiluokkaaste',
     'P1' | 'P2' | 'P3' | 'P4' | 'P5'
@@ -3920,6 +4284,7 @@ export type PrimaryLuokkaAste = {
 }
 
 export type PrimaryOppimisalueenAlaosasuoritus = {
+  $class: 'PrimaryOppimisalueenAlaosasuoritus'
   koulutusmoduuli: PrimaryAlaoppimisalue
   arviointi?: Array<PrimaryAlaoppimisalueArviointi>
   tyyppi: Koodistokoodiviite<
@@ -3930,6 +4295,7 @@ export type PrimaryOppimisalueenAlaosasuoritus = {
 }
 
 export type PrimaryOppimisalueenSuoritus = {
+  $class: 'PrimaryOppimisalueenSuoritus'
   arviointi?: Array<EuropeanSchoolOfHelsinkiOsasuoritusArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -3953,6 +4319,7 @@ export type PrimarySuorituskielenVaativaOppimisalue =
   | EuropeanSchoolOfHelsinkiMuuOppiaine
 
 export type PrimaryVuosiluokanSuoritus = {
+  $class: 'PrimaryVuosiluokanSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'europeanschoolofhelsinkivuosiluokkaprimary'
@@ -3969,6 +4336,7 @@ export type PrimaryVuosiluokanSuoritus = {
 }
 
 export type PuhviKoe2019 = {
+  $class: 'PuhviKoe2019'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
     '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'S' | 'H'
@@ -3979,6 +4347,7 @@ export type PuhviKoe2019 = {
 }
 
 export type PYPLuokkaAste = {
+  $class: 'PYPLuokkaAste'
   tunniste: Koodistokoodiviite<
     'internationalschoolluokkaaste',
     'explorer' | '1' | '2' | '3' | '4' | '5'
@@ -3991,6 +4360,7 @@ export type PYPOppiaine =
   | PYPOppiaineMuu
 
 export type PYPOppiaineenSuoritus = {
+  $class: 'PYPOppiaineenSuoritus'
   arviointi?: Array<SanallinenInternationalSchoolOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -4002,6 +4372,7 @@ export type PYPOppiaineenSuoritus = {
 }
 
 export type PYPOppiaineMuu = {
+  $class: 'PYPOppiaineMuu'
   tunniste: Koodistokoodiviite<
     'oppiaineetinternationalschool',
     | 'DD'
@@ -4030,6 +4401,7 @@ export type PYPOppiaineMuu = {
 }
 
 export type PYPVuosiluokanSuoritus = {
+  $class: 'PYPVuosiluokanSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'internationalschoolpypvuosiluokka'
@@ -4045,11 +4417,13 @@ export type PYPVuosiluokanSuoritus = {
 }
 
 export type Päivämäärävahvistus = {
+  $class: 'Päivämäärävahvistus'
   päivä: string
   myöntäjäOrganisaatio: Organisaatio
 }
 
 export type S7OppiaineenAlaosasuoritus = {
+  $class: 'S7OppiaineenAlaosasuoritus'
   koulutusmoduuli: S7OppiaineKomponentti
   arviointi?: Array<SecondaryS7PreliminaryMarkArviointi>
   tyyppi: Koodistokoodiviite<
@@ -4060,6 +4434,7 @@ export type S7OppiaineenAlaosasuoritus = {
 }
 
 export type S7OppiaineKomponentti = {
+  $class: 'S7OppiaineKomponentti'
   tunniste: Koodistokoodiviite<
     'europeanschoolofhelsinkis7oppiaineenkomponentti',
     string
@@ -4067,12 +4442,14 @@ export type S7OppiaineKomponentti = {
 }
 
 export type SanallinenInternationalSchoolOppiaineenArviointi = {
+  $class: 'SanallinenInternationalSchoolOppiaineenArviointi'
   arvosana: Koodistokoodiviite<'arviointiasteikkointernationalschool', string>
   päivä?: string
   hyväksytty?: boolean
 }
 
 export type SanallinenLukionArviointi = {
+  $class: 'SanallinenLukionArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
     'S' | 'H' | 'O'
@@ -4083,6 +4460,7 @@ export type SanallinenLukionArviointi = {
 }
 
 export type SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 = {
+  $class: 'SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019'
   arvosana: Koodistokoodiviite<'arviointiasteikkoyleissivistava', 'H' | 'S'>
   kuvaus?: LocalizedString
   päivä: string
@@ -4090,12 +4468,14 @@ export type SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 = {
 }
 
 export type SanallinenLukionOppiaineenArviointi2019 = {
+  $class: 'SanallinenLukionOppiaineenArviointi2019'
   arvosana: Koodistokoodiviite<'arviointiasteikkoyleissivistava', 'H' | 'S'>
   päivä?: string
   hyväksytty?: boolean
 }
 
 export type SanallinenPerusopetuksenOppiaineenArviointi = {
+  $class: 'SanallinenPerusopetuksenOppiaineenArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
     'S' | 'H' | 'O'
@@ -4107,6 +4487,7 @@ export type SanallinenPerusopetuksenOppiaineenArviointi = {
 
 export type SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi =
   {
+    $class: 'SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi'
     arvosana: Koodistokoodiviite<
       'arviointiasteikkotuva',
       'Hyväksytty' | 'Hylätty'
@@ -4117,6 +4498,7 @@ export type SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArvio
   }
 
 export type SecondaryGradeArviointi = {
+  $class: 'SecondaryGradeArviointi'
   päivä?: string
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoeuropeanschoolofhelsinkisecondarygrade',
@@ -4132,6 +4514,7 @@ export type SecondaryLowerArviointi =
   | SecondaryNumericalMarkArviointi
 
 export type SecondaryLowerLuokkaAste = {
+  $class: 'SecondaryLowerLuokkaAste'
   tunniste: Koodistokoodiviite<
     'europeanschoolofhelsinkiluokkaaste',
     'S1' | 'S2' | 'S3' | 'S4' | 'S5'
@@ -4141,6 +4524,7 @@ export type SecondaryLowerLuokkaAste = {
 }
 
 export type SecondaryLowerOppiaineenSuoritus = {
+  $class: 'SecondaryLowerOppiaineenSuoritus'
   arviointi?: Array<SecondaryLowerArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -4153,6 +4537,7 @@ export type SecondaryLowerOppiaineenSuoritus = {
 }
 
 export type SecondaryLowerVuosiluokanSuoritus = {
+  $class: 'SecondaryLowerVuosiluokanSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'europeanschoolofhelsinkivuosiluokkasecondarylower'
@@ -4169,6 +4554,7 @@ export type SecondaryLowerVuosiluokanSuoritus = {
 }
 
 export type SecondaryNumericalMarkArviointi = {
+  $class: 'SecondaryNumericalMarkArviointi'
   päivä?: string
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoeuropeanschoolofhelsinkinumericalmark',
@@ -4186,6 +4572,7 @@ export type SecondaryOppiaine =
   | EuropeanSchoolOfHelsinkiMuuOppiaine
 
 export type SecondaryS7PreliminaryMarkArviointi = {
+  $class: 'SecondaryS7PreliminaryMarkArviointi'
   päivä?: string
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark',
@@ -4197,6 +4584,7 @@ export type SecondaryS7PreliminaryMarkArviointi = {
 }
 
 export type SecondaryUpperLuokkaAste = {
+  $class: 'SecondaryUpperLuokkaAste'
   tunniste: Koodistokoodiviite<
     'europeanschoolofhelsinkiluokkaaste',
     'S6' | 'S7'
@@ -4210,6 +4598,7 @@ export type SecondaryUpperOppiaineenSuoritus =
   | SecondaryUpperOppiaineenSuoritusS7
 
 export type SecondaryUpperOppiaineenSuoritusS6 = {
+  $class: 'SecondaryUpperOppiaineenSuoritusS6'
   arviointi?: Array<SecondaryNumericalMarkArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -4222,6 +4611,7 @@ export type SecondaryUpperOppiaineenSuoritusS6 = {
 }
 
 export type SecondaryUpperOppiaineenSuoritusS7 = {
+  $class: 'SecondaryUpperOppiaineenSuoritusS7'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'europeanschoolofhelsinkiosasuorituss7'
@@ -4234,6 +4624,7 @@ export type SecondaryUpperOppiaineenSuoritusS7 = {
 }
 
 export type SecondaryUpperVuosiluokanSuoritus = {
+  $class: 'SecondaryUpperVuosiluokanSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'europeanschoolofhelsinkivuosiluokkasecondaryupper'
@@ -4250,6 +4641,7 @@ export type SecondaryUpperVuosiluokanSuoritus = {
 }
 
 export type SisältäväOpiskeluoikeus = {
+  $class: 'SisältäväOpiskeluoikeus'
   oppilaitos: Oppilaitos
   oid: string
 }
@@ -4400,6 +4792,7 @@ export type Suoritus =
   | YlioppilastutkinnonSuoritus
 
 export type SuullisenKielitaidonKoe2019 = {
+  $class: 'SuullisenKielitaidonKoe2019'
   päivä: string
   arvosana: Koodistokoodiviite<
     'arviointiasteikkoyleissivistava',
@@ -4426,12 +4819,14 @@ export type SuullisenKielitaidonKoe2019 = {
 }
 
 export type TehostetunTuenPäätös = {
+  $class: 'TehostetunTuenPäätös'
   alku: string
   loppu?: string
   tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
 }
 
 export type TelmaJaValmaArviointi = {
+  $class: 'TelmaJaValmaArviointi'
   päivä: string
   arvosana: Koodistokoodiviite<
     | 'arviointiasteikkoammatillinenhyvaksyttyhylatty'
@@ -4450,6 +4845,7 @@ export type TelmaKoulutuksenOsa =
   | YhteinenTutkinnonOsa
 
 export type TelmaKoulutuksenOsanSuoritus = {
+  $class: 'TelmaKoulutuksenOsanSuoritus'
   arviointi?: Array<TelmaJaValmaArviointi>
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'telmakoulutuksenosa'>
@@ -4463,6 +4859,7 @@ export type TelmaKoulutuksenOsanSuoritus = {
 }
 
 export type TelmaKoulutuksenSuoritus = {
+  $class: 'TelmaKoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'telma'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -4477,6 +4874,7 @@ export type TelmaKoulutuksenSuoritus = {
 }
 
 export type TelmaKoulutus = {
+  $class: 'TelmaKoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '999903'>
   perusteenDiaarinumero?: string
   laajuus?: LaajuusOsaamispisteissä
@@ -4484,17 +4882,20 @@ export type TelmaKoulutus = {
 }
 
 export type TemaattisetOpinnot2019 = {
+  $class: 'TemaattisetOpinnot2019'
   tunniste: Koodistokoodiviite<'lukionmuutopinnot', 'TO'>
   laajuus?: LaajuusOpintopisteissä
 }
 
 export type Toimipiste = {
+  $class: 'Toimipiste'
   oid: string
   nimi?: LocalizedString
   kotipaikka?: Koodistokoodiviite<'kunta', string>
 }
 
 export type TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus = {
+  $class: 'TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus'
   tunniste: PaikallinenKoodi
   laajuus?: LaajuusKaikkiYksiköt
   kuvaus: LocalizedString
@@ -4506,6 +4907,7 @@ export type TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuor
     | YhteisenTutkinnonOsanOsaAlueenSuoritus
 
 export type TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = {
+  $class: 'TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus'
@@ -4524,6 +4926,7 @@ export type TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = {
 }
 
 export type TutkinnonOsaaPienemmänKokonaisuudenSuoritus = {
+  $class: 'TutkinnonOsaaPienemmänKokonaisuudenSuoritus'
   arviointi?: Array<MuunAmmatillisenKoulutuksenArviointi>
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<
@@ -4539,12 +4942,14 @@ export type TutkinnonOsaaPienemmänKokonaisuudenSuoritus = {
 }
 
 export type TutkinnonOsaaPienempiKokonaisuus = {
+  $class: 'TutkinnonOsaaPienempiKokonaisuus'
   tunniste: PaikallinenKoodi
   laajuus?: LaajuusKaikkiYksiköt
   kuvaus: LocalizedString
 }
 
 export type TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus = {
+  $class: 'TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus'
   arviointi?: Array<SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -4578,6 +4983,7 @@ export type TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi =
   SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi
 
 export type TutkintokoulutukseenValmentavanKoulutuksenSuoritus = {
+  $class: 'TutkintokoulutukseenValmentavanKoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'tuvakoulutuksensuoritus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -4589,12 +4995,14 @@ export type TutkintokoulutukseenValmentavanKoulutuksenSuoritus = {
 }
 
 export type TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa = {
+  $class: 'TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa'
   tunniste: Koodistokoodiviite<'koulutuksenosattuva', '104'>
   laajuus?: LaajuusViikoissa
 }
 
 export type TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus =
   {
+    $class: 'TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus'
     arviointi?: Array<TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi>
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -4608,6 +5016,7 @@ export type TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsa
 
 export type TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus =
   {
+    $class: 'TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus'
     nimi: LocalizedString
     tunniste: PaikallinenKoodi
     laajuus?: LaajuusViikoissa
@@ -4615,6 +5024,7 @@ export type TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsa
 
 export type TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus =
   {
+    $class: 'TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus'
     arviointi?: Array<SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi>
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -4628,6 +5038,7 @@ export type TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus =
   }
 
 export type TutkintokoulutukseenValmentavanKoulutus = {
+  $class: 'TutkintokoulutukseenValmentavanKoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '999908'>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
@@ -4636,6 +5047,7 @@ export type TutkintokoulutukseenValmentavanKoulutus = {
 
 export type TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot =
   {
+    $class: 'TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot'
     osaAikaisuusjaksot?: Array<OsaAikaisuusJakso>
     vaativanErityisenTuenErityinenTehtävä?: Array<Aikajakso>
     ulkomaanjaksot?: Array<Ulkomaanjakso>
@@ -4659,6 +5071,7 @@ export type TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot =
 
 export type TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot =
   {
+    $class: 'TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot'
     ulkomaanjaksot?: Array<Ulkomaanjakso>
     oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
     maksuttomuus?: Array<Maksuttomuus>
@@ -4668,6 +5081,7 @@ export type TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvan
 
 export type TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot =
   {
+    $class: 'TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot'
     ulkomaanjaksot?: Array<Ulkomaanjakso>
     majoitusetu?: Aikajakso
     oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
@@ -4682,10 +5096,12 @@ export type TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLi
   }
 
 export type TutkintokoulutukseenValmentavanOpiskeluoikeudenTila = {
+  $class: 'TutkintokoulutukseenValmentavanOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<TutkintokoulutukseenValmentavanOpiskeluoikeusjakso>
 }
 
 export type TutkintokoulutukseenValmentavanOpiskeluoikeus = {
+  $class: 'TutkintokoulutukseenValmentavanOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'tuva'>
   tila: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -4704,6 +5120,7 @@ export type TutkintokoulutukseenValmentavanOpiskeluoikeus = {
 }
 
 export type TutkintokoulutukseenValmentavanOpiskeluoikeusjakso = {
+  $class: 'TutkintokoulutukseenValmentavanOpiskeluoikeusjakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -4719,48 +5136,57 @@ export type TutkintokoulutukseenValmentavanOpiskeluoikeusjakso = {
 }
 
 export type TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen = {
+  $class: 'TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen'
   tunniste: Koodistokoodiviite<'koulutuksenosattuva', '107'>
   laajuus?: LaajuusViikoissa
 }
 
 export type TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot = {
+  $class: 'TutkintokoulutukseenValmentavatAmmatillisenKoulutuksenOpinnot'
   tunniste: Koodistokoodiviite<'koulutuksenosattuva', '105'>
   laajuus?: LaajuusViikoissa
 }
 
 export type TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot =
   {
+    $class: 'TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot'
     tunniste: Koodistokoodiviite<'koulutuksenosattuva', '103'>
     laajuus?: LaajuusViikoissa
   }
 
 export type TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot = {
+  $class: 'TutkintokoulutukseenValmentavatLukiokoulutuksenOpinnot'
   tunniste: Koodistokoodiviite<'koulutuksenosattuva', '106'>
   laajuus?: LaajuusViikoissa
 }
 
 export type TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot = {
+  $class: 'TutkintokoulutukseenValmentavatOpiskeluJaUrasuunnittelutaidot'
   tunniste: Koodistokoodiviite<'koulutuksenosattuva', '101'>
   laajuus?: LaajuusViikoissa
 }
 
 export type TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen =
   {
+    $class: 'TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen'
     tunniste: Koodistokoodiviite<'koulutuksenosattuva', '102'>
     laajuus?: LaajuusViikoissa
   }
 
 export type Tutkintotoimikunta = {
+  $class: 'Tutkintotoimikunta'
   nimi: LocalizedString
   tutkintotoimikunnanNumero: string
 }
 
 export type TuvaErityisenTuenPäätös = {
+  $class: 'TuvaErityisenTuenPäätös'
   alku?: string
   loppu?: string
 }
 
 export type Työssäoppimisjakso = {
+  $class: 'Työssäoppimisjakso'
   työssäoppimispaikka?: LocalizedString
   paikkakunta: Koodistokoodiviite<'kunta', string>
   loppu?: string
@@ -4771,6 +5197,7 @@ export type Työssäoppimisjakso = {
 }
 
 export type TäydellisetHenkilötiedot = {
+  $class: 'TäydellisetHenkilötiedot'
   äidinkieli?: Koodistokoodiviite<'kieli', string>
   sukunimi: string
   oid: string
@@ -4783,6 +5210,7 @@ export type TäydellisetHenkilötiedot = {
 }
 
 export type Ulkomaanjakso = {
+  $class: 'Ulkomaanjakso'
   alku: string
   loppu?: string
   maa: Koodistokoodiviite<'maatjavaltiot2', string>
@@ -4790,6 +5218,7 @@ export type Ulkomaanjakso = {
 }
 
 export type UusiHenkilö = {
+  $class: 'UusiHenkilö'
   hetu: string
   etunimet: string
   kutsumanimi?: string
@@ -4809,6 +5238,7 @@ export type ValmaKoulutuksenOsa =
   | YhteinenTutkinnonOsa
 
 export type ValmaKoulutuksenOsanSuoritus = {
+  $class: 'ValmaKoulutuksenOsanSuoritus'
   arviointi?: Array<TelmaJaValmaArviointi>
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'valmakoulutuksenosa'>
@@ -4826,6 +5256,7 @@ export type ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus =
   | YhteisenTutkinnonOsanOsaAlueenSuoritus
 
 export type ValmaKoulutuksenSuoritus = {
+  $class: 'ValmaKoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'valma'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -4840,6 +5271,7 @@ export type ValmaKoulutuksenSuoritus = {
 }
 
 export type ValmaKoulutus = {
+  $class: 'ValmaKoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '999901'>
   perusteenDiaarinumero?: string
   laajuus?: LaajuusOsaamispisteissä
@@ -4847,6 +5279,7 @@ export type ValmaKoulutus = {
 }
 
 export type ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017 = {
+  $class: 'ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017'
   tunniste: Koodistokoodiviite<
     'aikuistenperusopetuksenalkuvaiheenkurssit2017',
     string
@@ -4855,11 +5288,13 @@ export type ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017 = {
 }
 
 export type ValtakunnallinenAikuistenPerusopetuksenKurssi2015 = {
+  $class: 'ValtakunnallinenAikuistenPerusopetuksenKurssi2015'
   tunniste: Koodistokoodiviite<'aikuistenperusopetuksenkurssit2015', string>
   laajuus?: LaajuusVuosiviikkotunneissaTaiKursseissa
 }
 
 export type ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017 = {
+  $class: 'ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017'
   tunniste: Koodistokoodiviite<
     'aikuistenperusopetuksenpaattovaiheenkurssit2017',
     string
@@ -4868,12 +5303,14 @@ export type ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017 = 
 }
 
 export type ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue = {
+  $class: 'ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue'
   tunniste: Koodistokoodiviite<'ammatillisenoppiaineet', string>
   pakollinen: boolean
   laajuus?: LaajuusOsaamispisteissä
 }
 
 export type ValtakunnallinenLukionKurssi2015 = {
+  $class: 'ValtakunnallinenLukionKurssi2015'
   tunniste: Koodistokoodiviite<
     | 'lukionkurssit'
     | 'lukionkurssitops2004aikuiset'
@@ -4885,6 +5322,7 @@ export type ValtakunnallinenLukionKurssi2015 = {
 }
 
 export type ValtakunnallinenLukioonValmistavanKoulutuksenKurssi = {
+  $class: 'ValtakunnallinenLukioonValmistavanKoulutuksenKurssi'
   tunniste: Koodistokoodiviite<
     | 'lukioonvalmistavankoulutuksenkurssit2015'
     | 'lukioonvalmistavankoulutuksenmoduulit2019',
@@ -4894,12 +5332,14 @@ export type ValtakunnallinenLukioonValmistavanKoulutuksenKurssi = {
 }
 
 export type VapaanSivistystyöJotpaKoulutuksenArviointi = {
+  $class: 'VapaanSivistystyöJotpaKoulutuksenArviointi'
   arvosana: Koodistokoodiviite<'arviointiasteikkovst', string>
   päivä: string
   hyväksytty?: boolean
 }
 
 export type VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso = {
+  $class: 'VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso'
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
@@ -4909,6 +5349,7 @@ export type VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso = {
 }
 
 export type VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = {
+  $class: 'VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus'
   arviointi?: Array<VapaanSivistystyöJotpaKoulutuksenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -4920,11 +5361,13 @@ export type VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = {
 }
 
 export type VapaanSivistystyönJotpaKoulutuksenOsasuoritus = {
+  $class: 'VapaanSivistystyönJotpaKoulutuksenOsasuoritus'
   tunniste: PaikallinenKoodi
   laajuus: LaajuusOpintopisteissä
 }
 
 export type VapaanSivistystyönJotpaKoulutuksenSuoritus = {
+  $class: 'VapaanSivistystyönJotpaKoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'vstjotpakoulutus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -4936,6 +5379,7 @@ export type VapaanSivistystyönJotpaKoulutuksenSuoritus = {
 }
 
 export type VapaanSivistystyönJotpaKoulutus = {
+  $class: 'VapaanSivistystyönJotpaKoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '099999'>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
   laajuus?: LaajuusOpintopisteissä
@@ -4943,11 +5387,13 @@ export type VapaanSivistystyönJotpaKoulutus = {
 }
 
 export type VapaanSivistystyönLukutaidonKokonaisuus = {
+  $class: 'VapaanSivistystyönLukutaidonKokonaisuus'
   tunniste: Koodistokoodiviite<'vstlukutaitokoulutuksenkokonaisuus', string>
   laajuus?: LaajuusOpintopisteissä
 }
 
 export type VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus = {
+  $class: 'VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus'
   koulutusmoduuli: VapaanSivistystyönLukutaidonKokonaisuus
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -4958,6 +5404,7 @@ export type VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus = {
 }
 
 export type VapaanSivistystyönLukutaitokoulutuksenSuoritus = {
+  $class: 'VapaanSivistystyönLukutaitokoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'vstlukutaitokoulutus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -4969,6 +5416,7 @@ export type VapaanSivistystyönLukutaitokoulutuksenSuoritus = {
 }
 
 export type VapaanSivistystyönLukutaitokoulutus = {
+  $class: 'VapaanSivistystyönLukutaitokoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '999911'>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
@@ -4977,6 +5425,7 @@ export type VapaanSivistystyönLukutaitokoulutus = {
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi'
     päivä: string
     luetunYmmärtämisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
     arvosana: Koodistokoodiviite<'arviointiasteikkovst', 'Hyväksytty'>
@@ -4988,6 +5437,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintoj
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli'
     tunniste: Koodistokoodiviite<
       'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
       'vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus'
@@ -4997,12 +5447,14 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintoj
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022 =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli2022'
     tunniste: Koodistokoodiviite<'vstkoto2022kielijaviestintakoulutus', string>
     laajuus?: LaajuusOpintopisteissä
   }
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus'
     koulutusmoduuli: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -5021,6 +5473,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKokonaisuude
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenKoulutusmoduuli =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenKoulutusmoduuli'
     tunniste: Koodistokoodiviite<
       'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
       'vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus'
@@ -5030,6 +5483,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenKou
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus'
     koulutusmoduuli: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenKoulutusmoduuli
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -5041,6 +5495,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuo
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus'
     tunniste: PaikallinenKoodi
     kuvaus: LocalizedString
     laajuus?: LaajuusOpintopisteissä
@@ -5048,6 +5503,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsa
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot'
     koulutusmoduuli: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
     arviointi?: Array<OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi>
     tyyppi: Koodistokoodiviite<
@@ -5059,6 +5515,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJ
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenKoulutusmoduuli =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenKoulutusmoduuli'
     tunniste: Koodistokoodiviite<
       'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
       'vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus'
@@ -5068,6 +5525,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJ
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus'
     arviointi?: Array<OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi>
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -5080,6 +5538,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJ
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso'
     koulutusmoduuli: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
     arviointi?: Array<OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi>
     tyyppi: Koodistokoodiviite<
@@ -5091,6 +5550,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJ
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli'
     tunniste: Koodistokoodiviite<
       'vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus',
       'vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus'
@@ -5100,6 +5560,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaisten
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus'
     koulutusmoduuli: VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
     arviointi?: Array<OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi>
     tyyppi: Koodistokoodiviite<
@@ -5111,6 +5572,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaisten
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus =
   {
+    $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenSuoritus'
     arviointi?: Array<OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi>
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -5122,6 +5584,7 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaisten
   }
 
 export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus = {
+  $class: 'VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '999910'>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
@@ -5134,6 +5597,7 @@ export type VapaanSivistystyönMaahanmuuttajienKuntoutuskoulutuksenTyöelämäJa
     | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenTyöelämäJakso
 
 export type VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen = {
+  $class: 'VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen'
   selite: LocalizedString
 }
 
@@ -5142,15 +5606,18 @@ export type VapaanSivistystyönOpintokokonaisuudenSuoritus =
   | OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus
 
 export type VapaanSivistystyönOpiskeluoikeudenLisätiedot = {
+  $class: 'VapaanSivistystyönOpiskeluoikeudenLisätiedot'
   maksuttomuus?: Array<Maksuttomuus>
   oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
 }
 
 export type VapaanSivistystyönOpiskeluoikeudenTila = {
+  $class: 'VapaanSivistystyönOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<VapaanSivistystyönOpiskeluoikeusjakso>
 }
 
 export type VapaanSivistystyönOpiskeluoikeus = {
+  $class: 'VapaanSivistystyönOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<
     'opiskeluoikeudentyyppi',
     'vapaansivistystyonkoulutus'
@@ -5184,6 +5651,7 @@ export type VapaanSivistystyönPäätasonSuoritus =
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
 
 export type VapaanSivistystyönVapaatavoitteinenKoulutus = {
+  $class: 'VapaanSivistystyönVapaatavoitteinenKoulutus'
   tunniste: Koodistokoodiviite<'koulutus', '099999'>
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
   laajuus?: LaajuusOpintopisteissä
@@ -5192,6 +5660,7 @@ export type VapaanSivistystyönVapaatavoitteinenKoulutus = {
 
 export type VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso =
   {
+    $class: 'VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso'
     alku: string
     tila: Koodistokoodiviite<
       'koskiopiskeluoikeudentila',
@@ -5201,6 +5670,7 @@ export type VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso =
 
 export type VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus =
   {
+    $class: 'VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
     arviointi?: Array<VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi>
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -5212,12 +5682,14 @@ export type VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritu
   }
 
 export type VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus = {
+  $class: 'VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus'
   kuvaus: LocalizedString
   tunniste: PaikallinenKoodi
   laajuus: LaajuusOpintopisteissä
 }
 
 export type VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus = {
+  $class: 'VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'vstvapaatavoitteinenkoulutus'
@@ -5232,6 +5704,7 @@ export type VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus = {
 }
 
 export type VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi = {
+  $class: 'VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkovstvapaatavoitteinen' | 'arviointiasteikkovst',
     string
@@ -5241,6 +5714,7 @@ export type VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi = {
 }
 
 export type VierasTaiToinenKotimainenKieli2015 = {
+  $class: 'VierasTaiToinenKotimainenKieli2015'
   pakollinen: boolean
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   laajuus?: LaajuusKursseissa
@@ -5252,6 +5726,7 @@ export type VierasTaiToinenKotimainenKieli2015 = {
 }
 
 export type VierasTaiToinenKotimainenKieli2019 = {
+  $class: 'VierasTaiToinenKotimainenKieli2019'
   tunniste: Koodistokoodiviite<
     'koskioppiaineetyleissivistava',
     'A' | 'B1' | 'B2' | 'B3' | 'AOM'
@@ -5264,6 +5739,7 @@ export type VierasTaiToinenKotimainenKieli2019 = {
 export type VirtaVirhe = Duplikaatti | OpiskeluoikeusAvaintaEiLöydy
 
 export type VSTKehittyvänKielenTaitotasonArviointi = {
+  $class: 'VSTKehittyvänKielenTaitotasonArviointi'
   taso: Koodistokoodiviite<
     'arviointiasteikkokehittyvankielitaidontasot',
     | 'A1.1'
@@ -5283,6 +5759,7 @@ export type VSTKehittyvänKielenTaitotasonArviointi = {
 }
 
 export type VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi = {
+  $class: 'VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi'
   arvosana: Koodistokoodiviite<
     'arviointiasteikkokehittyvankielitaidontasot',
     | 'A1.1'
@@ -5306,6 +5783,7 @@ export type VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi = {
 }
 
 export type VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus = {
+  $class: 'VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus'
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'vstmaahanmuuttajienkotoutumiskoulutuksenkielitaitojensuoritus'
@@ -5316,6 +5794,7 @@ export type VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus = {
 }
 
 export type VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 = {
+  $class: 'VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022'
   arviointi?: Array<VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -5327,6 +5806,7 @@ export type VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenSuoritus2022 = {
 }
 
 export type VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli = {
+  $class: 'VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli'
   tunniste: Koodistokoodiviite<
     'vstkoto2022kokonaisuus',
     'kielijaviestintaosaaminen'
@@ -5341,11 +5821,13 @@ export type VSTKotoutumiskoulutuksenKokonaisuudenOsasuoritus2022 =
   | VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022
 
 export type VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022 = {
+  $class: 'VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022'
   tunniste: Koodistokoodiviite<'vstkoto2022kokonaisuus', 'ohjaus'>
   laajuus?: LaajuusOpintopisteissä
 }
 
 export type VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 = {
+  $class: 'VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
   koulutusmoduuli: VSTKotoutumiskoulutuksenOhjauksenKoulutusmoduuli2022
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -5355,6 +5837,7 @@ export type VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 = {
 }
 
 export type VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 = {
+  $class: 'VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
   arvosana: Koodistokoodiviite<'arviointiasteikkovst', 'Hyväksytty'>
   päivä: string
   hyväksytty?: boolean
@@ -5362,17 +5845,20 @@ export type VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 = {
 
 export type VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022 =
   {
+    $class: 'VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022'
     kuvaus: LocalizedString
     tunniste: PaikallinenKoodi
     laajuus?: LaajuusOpintopisteissä
   }
 
 export type VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022 = {
+  $class: 'VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022'
   tunniste: Koodistokoodiviite<'vstkoto2022kokonaisuus', 'valinnaisetopinnot'>
   laajuus?: LaajuusOpintopisteissä
 }
 
 export type VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 = {
+  $class: 'VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022'
   arviointi?: Array<VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -5385,6 +5871,7 @@ export type VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 = {
 
 export type VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus =
   {
+    $class: 'VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus'
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
       'vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus'
@@ -5395,6 +5882,7 @@ export type VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuori
 
 export type VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenKoulutusmoduuli2022 =
   {
+    $class: 'VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenKoulutusmoduuli2022'
     tunniste: Koodistokoodiviite<
       'vstkoto2022kokonaisuus',
       'yhteiskuntajatyoelamaosaaminen'
@@ -5404,6 +5892,7 @@ export type VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenKoulutusmod
 
 export type VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022 =
   {
+    $class: 'VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus2022'
     arviointi?: Array<VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022>
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -5416,6 +5905,7 @@ export type VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenSuoritus202
 
 export type VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022 =
   {
+    $class: 'VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022'
     tunniste: Koodistokoodiviite<
       'vstkoto2022yhteiskuntajatyoosaamiskoulutus',
       string
@@ -5424,6 +5914,7 @@ export type VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituk
   }
 
 export type VSTKotoutumiskoulutus2022 = {
+  $class: 'VSTKotoutumiskoulutus2022'
   tunniste: Koodistokoodiviite<'koulutus', '999910'>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
@@ -5431,6 +5922,7 @@ export type VSTKotoutumiskoulutus2022 = {
 }
 
 export type VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus = {
+  $class: 'VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus'
   koulutusmoduuli: VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -5440,6 +5932,7 @@ export type VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus = {
 }
 
 export type YhteinenTutkinnonOsa = {
+  $class: 'YhteinenTutkinnonOsa'
   tunniste: Koodistokoodiviite<
     'tutkinnonosat',
     | '101053'
@@ -5460,6 +5953,7 @@ export type YhteinenTutkinnonOsa = {
 }
 
 export type YhteisenAmmatillisenTutkinnonOsanSuoritus = {
+  $class: 'YhteisenAmmatillisenTutkinnonOsanSuoritus'
   arviointi?: Array<AmmatillinenArviointi>
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
@@ -5477,6 +5971,7 @@ export type YhteisenAmmatillisenTutkinnonOsanSuoritus = {
 }
 
 export type YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus = {
+  $class: 'YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
   arviointi?: Array<AmmatillinenArviointi>
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
@@ -5494,6 +5989,7 @@ export type YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus = {
 }
 
 export type YhteisenTutkinnonOsanOsaAlueenSuoritus = {
+  $class: 'YhteisenTutkinnonOsanOsaAlueenSuoritus'
   arviointi?: Array<AmmatillinenArviointi>
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<
@@ -5515,16 +6011,19 @@ export type YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintova
     | YhteisenTutkinnonOsanOsaAlueenSuoritus
 
 export type YlioppilaskokeenArviointi = {
+  $class: 'YlioppilaskokeenArviointi'
   arvosana: Koodistokoodiviite<'koskiyoarvosanat', string>
   pisteet?: number
   hyväksytty?: boolean
 }
 
 export type YlioppilasTutkinnonKoe = {
+  $class: 'YlioppilasTutkinnonKoe'
   tunniste: Koodistokoodiviite<'koskiyokokeet', string>
 }
 
 export type YlioppilastutkinnonKokeenSuoritus = {
+  $class: 'YlioppilastutkinnonKokeenSuoritus'
   arviointi?: Array<YlioppilaskokeenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ylioppilastutkinnonkoe'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -5533,10 +6032,12 @@ export type YlioppilastutkinnonKokeenSuoritus = {
 }
 
 export type YlioppilastutkinnonOpiskeluoikeudenTila = {
+  $class: 'YlioppilastutkinnonOpiskeluoikeudenTila'
   opiskeluoikeusjaksot: Array<LukionOpiskeluoikeusjakso>
 }
 
 export type YlioppilastutkinnonOpiskeluoikeus = {
+  $class: 'YlioppilastutkinnonOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ylioppilastutkinto'>
   tila: YlioppilastutkinnonOpiskeluoikeudenTila
   alkamispäivä?: string
@@ -5548,6 +6049,7 @@ export type YlioppilastutkinnonOpiskeluoikeus = {
 }
 
 export type YlioppilastutkinnonSuoritus = {
+  $class: 'YlioppilastutkinnonSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ylioppilastutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   koulusivistyskieli?: Array<Koodistokoodiviite<'kieli', 'FI' | 'SV'>>
@@ -5559,18 +6061,21 @@ export type YlioppilastutkinnonSuoritus = {
 }
 
 export type YlioppilastutkinnonTutkintokerta = {
+  $class: 'YlioppilastutkinnonTutkintokerta'
   koodiarvo: string
   vuosi: number
   vuodenaika: LocalizedString
 }
 
 export type Ylioppilastutkinto = {
+  $class: 'Ylioppilastutkinto'
   tunniste: Koodistokoodiviite<'koulutus', '301000'>
   perusteenDiaarinumero?: string
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }
 
 export type Yritys = {
+  $class: 'Yritys'
   nimi: LocalizedString
   yTunnus: string
 }

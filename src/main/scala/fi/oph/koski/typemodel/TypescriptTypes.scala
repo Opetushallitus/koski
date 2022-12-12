@@ -5,66 +5,85 @@ import fi.oph.koski.util.JsStringInterpolation.JsStringInterpolation
 import scala.annotation.tailrec
 
 object TypescriptTypes {
-  def build(types: Seq[TypeModelWithClassName], generics: Seq[GenericsObject] = Seq.empty): String =
+  def build(types: Seq[TypeModelWithClassName], options: Options = Options()): String =
     types
       .groupBy(_.packageName)
-      .map { case (packageName, types) => toPackageDefinitions(packageName, types, generics) }
+      .map { case (packageName, types) => toPackageDefinitions(packageName, types, options) }
       .mkString("\n\n")
 
   private def toPackageDefinitions(
     packageName: String,
     types: Seq[TypeModelWithClassName],
-    generics: Seq[GenericsObject],
+    options: Options,
   ): String =
     "/*\n" +
     s" * ${packageName}\n" +
     " */\n\n" +
-      types.map(t => toTypeDefinition(t, generics)).mkString("\n\n")
+      types.map(t => toTypeDefinition(t, options)).mkString("\n\n")
 
-  private def toTypeDefinition(model: TypeModelWithClassName, generics: Seq[GenericsObject]): String = {
-    val generic = getGeneric(model, generics)
+  private def toTypeDefinition(
+    model: TypeModelWithClassName,
+    options: Options,
+  ): String = {
+    val generic = options.getGeneric(model)
     val genericsHeader = generic
       .map(_.genericsList)
       .getOrElse("")
 
-    s"export type ${model.className}$genericsHeader = ${toFirstLevelDefinition(model, generics)}"
+    s"export type ${model.className}$genericsHeader = ${toFirstLevelDefinition(model, options)}"
   }
 
-  private def toFirstLevelDefinition(model: TypeModel, generics: Seq[GenericsObject]): String = {
-    val generic = getGeneric(model, generics)
+  private def toFirstLevelDefinition(
+    model: TypeModel,
+    options: Options,
+  ): String = {
+    val generic = options.getGeneric(model)
     model match {
-      case t: ObjectType =>
-        val props = t.properties
-          .map(prop => toPropertyField(prop._1, prop._2, generic, generics))
-          .mkString(",\n")
-        s"{\n$props\n}"
-      case t: TypeModel => toDefinition(t, generics)
+      case t: ObjectType => toObject(t, options)
+      case t: TypeModel => toDefinition(t, options)
     }
   }
 
-  private def toDefinition(model: TypeModel, generics: Seq[GenericsObject]): String =
+  private def toDefinition(
+    model: TypeModel,
+    options: Options,
+  ): String =
     model match {
       case _: StringType => "string"
       case _: DateType => "string"
       case _: BooleanType => "boolean"
       case _: NumberType => "number"
 
-      case OptionalType(t) => s"${toDefinition(t, generics)} | undefined"
-      case ArrayType(t) => s"Array<${toDefinition(t, generics)}>"
-      case RecordType(t) => s"Record<string, ${toDefinition(t, generics)}>"
-      case t: ObjectType  => objectReference(t, generics)
+      case OptionalType(t) => s"${toDefinition(t, options)} | undefined"
+      case ArrayType(t) => s"Array<${toDefinition(t, options)}>"
+      case RecordType(t) => s"Record<string, ${toDefinition(t, options)}>"
+      case t: ObjectType  => objectReference(t, options)
       case t: ClassRef => t.className
       case t: EnumType[_] => t.enumValues.map(formatLiteral).mkString(" | ")
-      case t: UnionType => typeUnion(t, generics)
+      case t: UnionType => typeUnion(t, options)
+      case t: LiteralType => "\"" + t.literal + "\""
 
       case t: Any => s"any // ${t}"
     }
+
+  private def toObject(
+    obj: ObjectType,
+    options: Options
+  ): String = {
+    val generic = options.getGeneric(obj)
+    val metaProps = options.exportClassNamesAs.toList
+      .map(key => toPropertyField(key, LiteralType(obj.className), generic, options))
+    val objProps = obj.properties
+      .map(prop => toPropertyField(prop._1, prop._2, generic, options))
+    val props = (metaProps ++ objProps).mkString(",\n")
+    s"{\n$props\n}"
+  }
 
   private def toPropertyField(
     key: String,
     model: TypeModel,
     parentGeneric: Option[GenericsObject],
-    generics: Seq[GenericsObject],
+    options: Options,
   ): String = {
     val isOptional = model.isInstanceOf[OptionalType]
 
@@ -72,7 +91,7 @@ object TypescriptTypes {
     def getPropType(t: TypeModel): String =
       t match {
         case o: OptionalType => getPropType(o.item)
-        case t: TypeModel => toDefinition(t, generics)
+        case t: TypeModel => toDefinition(t, options)
       }
 
     indent +
@@ -85,30 +104,35 @@ object TypescriptTypes {
 
   private def formatLiteral(value: Any): String = js"$value"
 
-  private def objectReference(obj: ObjectType, generics: Seq[GenericsObject]): String = {
-    val refTypes = getGeneric(obj, generics)
+  private def objectReference(obj: ObjectType, options: Options): String = {
+    val refTypes = options.getGeneric(obj)
       .map(_.getRefTypes(obj))
-      .map(_.map(_.fold(identity, fb => toDefinition(fb, generics))))
+      .map(_.map(_.fold(identity, fb => toDefinition(fb, options))))
     val header = refTypes.map(t => s"<${t.mkString(", ")}>")
     obj.className + header.getOrElse("")
   }
 
-  private def typeUnion(union: UnionType, generics: Seq[GenericsObject]): String = {
+  private def typeUnion(union: UnionType, options: Options): String = {
     // Self references are a result of using @ReadFlattened annotation in schema
     val (selfReferences, alternatives) = union.anyOf.partition {
       case a: TypeModelWithClassName => union.fullClassName == a.fullClassName
     }
-    val list = selfReferences.map(t => toFirstLevelDefinition(t, generics)) ++ alternatives.map(t => toDefinition(t, generics))
+    val list = selfReferences.map(t => toFirstLevelDefinition(t, options)) ++ alternatives.map(t => toDefinition(t, options))
     "\n" + list.map(alt => s"$indent| $alt").mkString("\n")
   }
 
-  private def getGeneric(model: TypeModel, generics: Seq[GenericsObject]): Option[GenericsObject] =
-    model match {
-      case t: TypeModelWithClassName => generics.find(_.isClass(t.fullClassName))
-      case _ => None
-    }
-
   val indent: String = " " * 4
+
+  case class Options(
+    generics: Seq[GenericsObject] = Seq.empty,
+    exportClassNamesAs: Option[String] = None,
+  ) {
+    def getGeneric(model: TypeModel): Option[GenericsObject] =
+      model match {
+        case t: TypeModelWithClassName => generics.find(_.isClass(t.fullClassName))
+        case _ => None
+      }
+  }
 
   case class GenericsObject(
     className: String,

@@ -19,6 +19,7 @@ object DataTypes extends Enumeration {
   val Ref: DataType = Value("ref")
   val Any: DataType = Value("any")
   val Union: DataType = Value("union")
+  val Literal: DataType = Value("literal")
 }
 
 trait TypeModel {
@@ -38,6 +39,10 @@ trait TypeModelWithClassName extends TypeModel {
 
 case class StringType() extends TypeModel {
   def `type`: DataType = DataTypes.String
+}
+
+case class LiteralType(literal: String) extends TypeModel {
+  def `type`: DataType = DataTypes.Literal
 }
 
 case class DateType() extends TypeModel {

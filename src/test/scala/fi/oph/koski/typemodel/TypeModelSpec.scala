@@ -1,6 +1,7 @@
 package fi.oph.koski.typemodel
 
 import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.typemodel.TypescriptTypes.Options
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -8,7 +9,8 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
 
   "TypeModel" - {
     val schemaTypes = SchemaExport.toTypeDef(KoskiSchema.schema)
-    def tsTypesFor(model: TypeModelWithClassName): String = TypescriptTypes.build(Seq(model), KoskiSpecificTsGenerics.generics)
+    val defaultOptions = Options(generics = KoskiSpecificTsGenerics.generics)
+    def tsTypesFor(model: TypeModelWithClassName, options: Options = defaultOptions): String = TypescriptTypes.build(Seq(model), options)
 
     "Should not contain duplicate classes" in {
       val classNames = schemaTypes.map(_.fullClassName)
@@ -17,8 +19,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
 
     "Typescript types" - {
       "Schema scaling smoke test" in {
-        val ts = TypescriptTypes.build(schemaTypes, KoskiSpecificTsGenerics.generics)
-        println(ts)
+        TypescriptTypes.build(schemaTypes, defaultOptions)
       }
 
       "Union types" in {
@@ -28,7 +29,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
             | * fi.oph.koski.schema
             | */
             |
-            |type LocalizedString =
+            |export type LocalizedString =
             |    | English
             |    | Finnish
             |    | Swedish""".stripMargin)
@@ -41,7 +42,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
             | * fi.oph.koski.schema
             | */
             |
-            |type Osaamisalajakso =
+            |export type Osaamisalajakso =
             |    | {
             |    osaamisala: Koodistokoodiviite<"osaamisala", string>,
             |    alku?: string,
@@ -59,7 +60,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               | * fi.oph.koski.schema
               | */
               |
-              |type Koodistokoodiviite<U extends string, A extends string> = {
+              |export type Koodistokoodiviite<U extends string, A extends string> = {
               |    koodistoVersio?: number,
               |    koodiarvo: A,
               |    nimi?: LocalizedString,
@@ -75,7 +76,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               | * fi.oph.koski.schema
               | */
               |
-              |type AikuistenPerusopetuksenAlkuvaihe = {
+              |export type AikuistenPerusopetuksenAlkuvaihe = {
               |    perusteenDiaarinumero?: string,
               |    tunniste: Koodistokoodiviite<"suorituksentyyppi", "aikuistenperusopetuksenoppimaaranalkuvaihe">
               |}""".stripMargin)
@@ -91,12 +92,35 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
             | * fi.oph.koski.typemodel
             | */
             |
-            |type Backlog = {
+            |export type Backlog = {
+            |    id: number,
             |    name: string,
             |    tickets: Array<Ticket>
             |}
             |
-            |type Ticket = {
+            |export type Ticket = {
+            |    id: number,
+            |    title: string
+            |}""".stripMargin)
+      }
+
+      "Class name exporting" in {
+        val types = TypeExport.toTypeDef(classOf[Backlog])
+        val ts = TypescriptTypes.build(types, defaultOptions.copy(exportClassNamesAs = Some("$class")))
+
+        ts should equal(
+          """/*
+            | * fi.oph.koski.typemodel
+            | */
+            |
+            |export type Backlog = {
+            |    $class: "Backlog",
+            |    name: string,
+            |    tickets: Array<Ticket>
+            |}
+            |
+            |export type Ticket = {
+            |    $class: "Ticket",
             |    id: number,
             |    title: string
             |}""".stripMargin)
