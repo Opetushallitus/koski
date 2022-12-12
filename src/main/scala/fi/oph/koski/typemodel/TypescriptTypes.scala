@@ -15,11 +15,20 @@ object TypescriptTypes {
     packageName: String,
     types: Seq[TypeModelWithClassName],
     options: Options,
-  ): String =
-    "/*\n" +
-    s" * ${packageName}\n" +
-    " */\n\n" +
-      types.map(t => toTypeDefinition(t, options)).mkString("\n\n")
+  ): String = {
+    var result = "/*\n" +
+      s" * ${packageName}\n" +
+      " */\n\n" +
+        types.map(t => toTypeDefinition(t, options)).mkString("\n\n")
+
+    if (options.exportTypeGuards) {
+      result = result +
+        "\n\n// Type guards\n\n" ++
+        types.map(t => typeGuard(t, options.exportClassNamesAs.get)).mkString("\n\n")
+    }
+
+    result
+  }
 
   private def toTypeDefinition(
     model: TypeModelWithClassName,
@@ -36,13 +45,11 @@ object TypescriptTypes {
   private def toFirstLevelDefinition(
     model: TypeModel,
     options: Options,
-  ): String = {
-    val generic = options.getGeneric(model)
+  ): String =
     model match {
       case t: ObjectType => toObject(t, options)
       case t: TypeModel => toDefinition(t, options)
     }
-  }
 
   private def toDefinition(
     model: TypeModel,
@@ -121,11 +128,29 @@ object TypescriptTypes {
     "\n" + list.map(alt => s"$indent| $alt").mkString("\n")
   }
 
+  private def typeGuard(model: TypeModelWithClassName, classNameProp: String): String = {
+    def fnName(className: String): String = s"is$className"
+    def buildFn(className: String, condition: String): String =
+      s"export const is$className = (a: any): a is $className => $condition"
+    model match {
+      case t: UnionType =>
+        buildFn(
+          t.className,
+          t.anyOf
+            .collect { case t: TypeModelWithClassName => t }
+            .map(s => s"${fnName(s.className)}(a)")
+            .mkString(" || ")
+        )
+      case t: TypeModelWithClassName => buildFn(t.className, s"""a?.$classNameProp === "${t.className}"""")
+    }
+  }
+
   val indent: String = " " * 4
 
   case class Options(
     generics: Seq[GenericsObject] = Seq.empty,
     exportClassNamesAs: Option[String] = None,
+    exportTypeGuards: Boolean = false,
   ) {
     def getGeneric(model: TypeModel): Option[GenericsObject] =
       model match {
@@ -157,7 +182,7 @@ object TypescriptTypes {
     extend: String,
     getType: TypeModel => Option[TypeModel],
   ) {
-    def headerStr: String = s"$name extends $extend"
+    def headerStr: String = s"$name extends $extend = $extend"
   }
 }
 

@@ -95,8 +95,12 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
             |export type Backlog = {
             |    id: number,
             |    name: string,
-            |    tickets: Array<Ticket>
+            |    tickets: Array<Item>
             |}
+            |
+            |export type Item =
+            |    | Backlog
+            |    | Ticket
             |
             |export type Ticket = {
             |    id: number,
@@ -115,9 +119,14 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
             |
             |export type Backlog = {
             |    $class: "Backlog",
+            |    id: number,
             |    name: string,
-            |    tickets: Array<Ticket>
+            |    tickets: Array<Item>
             |}
+            |
+            |export type Item =
+            |    | Backlog
+            |    | Ticket
             |
             |export type Ticket = {
             |    $class: "Ticket",
@@ -125,18 +134,60 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
             |    title: string
             |}""".stripMargin)
       }
+
+      "Type guards" in {
+        val types = TypeExport.toTypeDef(classOf[Backlog])
+        val ts = TypescriptTypes.build(types, defaultOptions.copy(
+          exportClassNamesAs = Some("$class"),
+          exportTypeGuards = true,
+        ))
+
+        ts should equal(
+          """/*
+            | * fi.oph.koski.typemodel
+            | */
+            |
+            |export type Backlog = {
+            |    $class: "Backlog",
+            |    id: number,
+            |    name: string,
+            |    tickets: Array<Item>
+            |}
+            |
+            |export type Item =
+            |    | Backlog
+            |    | Ticket
+            |
+            |export type Ticket = {
+            |    $class: "Ticket",
+            |    id: number,
+            |    title: string
+            |}
+            |
+            |// Type guards
+            |
+            |export const isBacklog = (a: any): a is Backlog => a?.$class === "Backlog"
+            |
+            |export const isItem = (a: any): a is Item => isBacklog(a) || isTicket(a)
+            |
+            |export const isTicket = (a: any): a is Ticket => a?.$class === "Ticket"""".stripMargin)
+      }
     }
   }
 }
 
+trait Item {
+  def id: Int
+}
+
 case class Backlog(
+  id: Int,
   name: String,
-  tickets: Seq[Ticket],
-)
+  tickets: Seq[Item],
+) extends Item
 
 case class Ticket(
   id: Int,
   title: String
-)
-
+) extends Item
 
