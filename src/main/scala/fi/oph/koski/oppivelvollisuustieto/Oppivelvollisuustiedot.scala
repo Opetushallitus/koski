@@ -77,7 +77,7 @@ object Oppivelvollisuustiedot {
 
       - Jos oppija suorittaa lukion oppimäärää, voimassaolot päättyvät kun molemmat lukion oppimäärä ja ylioppilastutkinto ovat valmiita, jos henkilön ikä sitä ei aikaisemmin päätä.
   */
-  def createMaterializedView(s: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
+  def createPrecomputedTable(s: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
     val valpasLakiVoimassaVanhinSyntymäaika = valpasRajapäivätService.lakiVoimassaVanhinSyntymäaika
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
     val oppivelvollisuusAlkaaIka = valpasRajapäivätService.oppivelvollisuusAlkaaIka.toInt
@@ -89,7 +89,7 @@ object Oppivelvollisuustiedot {
     val oppivelvollisuudenUlkopuolisetKunnatList = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
 
     sqlu"""
-      create materialized view #${s.name}.oppivelvollisuustiedot as
+      create table #${s.name}.oppivelvollisuustiedot as
         with
           oppivelvolliset_henkilot as (
 

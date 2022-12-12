@@ -30,9 +30,9 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       columnSettings(t)
     )
 
-  def createMaterializedView(s: Schema) =
+  def createPrecomputedTable(s: Schema) =
     sqlu"""
-      create materialized view #${s.name}.paallekkaiset_opiskeluoikeudet as
+      create table #${s.name}.paallekkaiset_opiskeluoikeudet as
         select distinct
           opiskeluoikeus.oppija_oid,
           henkilo.sukunimi,

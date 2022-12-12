@@ -121,40 +121,40 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     logger.info(s"Luotiin henkilö-, organisaatio- ja koodisto-indeksit, ${indexElapsedSeconds} s")
   }
 
-  def createMaterializedViews(valpasRajapäivätService: ValpasRajapäivätService): Unit = {
-    logger.info("Creating materialized views")
+  def createPrecomputedTables(valpasRajapäivätService: ValpasRajapäivätService): Unit = {
+    logger.info("Creating precomputed tables (formerly materialized views)")
     val started = System.currentTimeMillis
     setStatusLoadStarted("materialized_views")
 
     val views = Seq(
-      PaallekkaisetOpiskeluoikeudet.createMaterializedView(schema),
+      PaallekkaisetOpiskeluoikeudet.createPrecomputedTable(schema),
       PaallekkaisetOpiskeluoikeudet.createIndex(schema),
-      LukioOppimaaranKussikertymat.createMaterializedView(schema),
+      LukioOppimaaranKussikertymat.createPrecomputedTable(schema),
       LukioOppimaaranKussikertymat.createIndex(schema),
-      Lukio2019OppimaaranOpintopistekertymat.createMaterializedView(schema),
+      Lukio2019OppimaaranOpintopistekertymat.createPrecomputedTable(schema),
       Lukio2019OppimaaranOpintopistekertymat.createIndex(schema),
-      OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createMaterializedView(schema),
+      OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createPrecomputedTable(schema),
       OpiskeluoikeudenUlkopuolellaArvioidutOsasuoritukset.createIndex(schema),
-      LukioOppiaineenOppimaaranKurssikertymat.createMaterializedView(schema),
+      LukioOppiaineenOppimaaranKurssikertymat.createPrecomputedTable(schema),
       LukioOppiaineenOppimaaranKurssikertymat.createIndex(schema),
-      Lukio2019AineopintojenOpintopistekertymat.createMaterializedView(schema),
+      Lukio2019AineopintojenOpintopistekertymat.createPrecomputedTable(schema),
       Lukio2019AineopintojenOpintopistekertymat.createIndex(schema),
-      LukioOppiaineRahoitusmuodonMukaan.createMaterializedView(schema),
+      LukioOppiaineRahoitusmuodonMukaan.createPrecomputedTable(schema),
       LukioOppiaineRahoitusmuodonMukaan.createIndex(schema),
-      Lukio2019OppiaineRahoitusmuodonMukaan.createMaterializedView(schema),
+      Lukio2019OppiaineRahoitusmuodonMukaan.createPrecomputedTable(schema),
       Lukio2019OppiaineRahoitusmuodonMukaan.createIndex(schema),
-      LukioOppiaineEriVuonnaKorotetutKurssit.createMaterializedView(schema),
+      LukioOppiaineEriVuonnaKorotetutKurssit.createPrecomputedTable(schema),
       LukioOppiaineEriVuonnaKorotetutKurssit.createIndex(schema),
-      Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createMaterializedView(schema),
+      Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createPrecomputedTable(schema),
       Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet.createIndex(schema),
-      Oppivelvollisuustiedot.createMaterializedView(schema, valpasRajapäivätService),
+      Oppivelvollisuustiedot.createPrecomputedTable(schema, valpasRajapäivätService),
       Oppivelvollisuustiedot.createIndexes(schema)
     )
     runDbSync(DBIO.seq(views: _*), timeout = 120.minutes)
     setStatusLoadCompletedAndCount("materialized_views", views.length)
 
     val duration = (System.currentTimeMillis - started) / 1000
-    logger.info(s"Materialized views created in $duration s")
+    logger.info(s"Precomputed tables created in $duration s")
   }
 
   def createCustomFunctions(): Unit = {

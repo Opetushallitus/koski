@@ -26,9 +26,9 @@ object Lukio2019OppimaaranOpintopistekertymat extends DatabaseConverters {
     )
   }
 
-  def createMaterializedView(s: Schema) =
+  def createPrecomputedTable(s: Schema) =
     sqlu"""
-      create materialized view #${s.name}.lukion_oppimaaran_opintopistekertyma as select
+      create table #${s.name}.lukion_oppimaaran_opintopistekertyma as select
         oppilaitos_oid,
         osasuoritus.arviointi_paiva,
         sum(osasuoritus.koulutusmoduuli_laajuus_arvo) filter (where tunnustettu = false) suoritettuja,

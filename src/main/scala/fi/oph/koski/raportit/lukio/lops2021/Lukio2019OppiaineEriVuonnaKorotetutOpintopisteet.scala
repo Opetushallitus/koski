@@ -26,9 +26,9 @@ object Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet extends DatabaseConverte
     )
   }
 
-  def createMaterializedView(s: Schema) =
+  def createPrecomputedTable(s: Schema) =
     sqlu"""
-      create materialized view #${s.name}.lukion_aineopintojen_eri_vuonna_korotetut as select
+      create table #${s.name}.lukion_aineopintojen_eri_vuonna_korotetut as select
         opiskeluoikeus.oppilaitos_oid,
         opiskeluoikeus.opiskeluoikeus_oid,
         opiskeluoikeus.oppija_oid,
