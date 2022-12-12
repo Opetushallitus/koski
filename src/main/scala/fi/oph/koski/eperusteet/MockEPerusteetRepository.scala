@@ -57,7 +57,9 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-vst-maahanmuuttajien-kotoutumiskoulutus-2022",
     "rakenne-vst-lukutaitokoulutus",
     "rakenne-tieto-ja-viestintätekniikan-perustutkinto",
-    "rakenne-tutkintokoulutukseen-valmentava-koulutus"
+    "rakenne-tutkintokoulutukseen-valmentava-koulutus",
+    "rakenne-tpo-yleinen",
+    "rakenne-tpo-laaja"
   )
 
   def findPerusteet(nimi: String): List[EPerusteRakenne] = {

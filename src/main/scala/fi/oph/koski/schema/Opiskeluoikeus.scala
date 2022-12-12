@@ -114,6 +114,7 @@ object OpiskeluoikeudenTyyppi {
   val tuva = apply("tuva")
   val europeanschoolofhelsinki = apply("europeanschoolofhelsinki")
   val muukuinsaanneltykoulutus = apply("muukuinsaanneltykoulutus")
+  val taiteenperusopetus = apply("taiteenperusopetus")
 
   private def apply(koodiarvo: String): Koodistokoodiviite = {
     val tyyppi = Koodistokoodiviite(koodiarvo, "opiskeluoikeudentyyppi")
@@ -182,8 +183,9 @@ trait Opiskeluoikeusjakso extends Alkupäivällinen {
 }
 
 object KoskiOpiskeluoikeusjakso {
-  // Jälkimmäiset kaksi tilakoodia ovat Vapaan sivistystyön koulutusta varten
-  def päätöstilat = List("valmistunut", "eronnut", "peruutettu", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt")
+  // Tiloista hyvaksytystisuoritettu ja keskeytynyt ovat vapaan sivistystyön sekä muun kuin säännellyn koulutuksen tiloja.
+  // Lisäksi taiteen perusopetuksessa käytetään tiloja hyvaksytystisuoritettu ja paattynyt.
+  def päätöstilat = List("valmistunut", "eronnut", "peruutettu", "katsotaaneronneeksi", "hyvaksytystisuoritettu", "keskeytynyt", "paattynyt")
 }
 
 trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {

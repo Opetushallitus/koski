@@ -2421,5 +2421,17 @@
   "Yleisarvosana" : "Yleisarvosana",
   "description:esh_kielioppiaine_kieli_vaadittu": "Kielioppiaineella on oltava valittuna kieli.",
   "description:esh_suorituskieli_vaadittu": "Suorituksella on oltava valittuna suorituskieli.",
-  "lisää suoritus": "lisää suoritus"
+  "lisää suoritus": "lisää suoritus",
+  "description:Taiteen perusopetuksen paikallinen opintokokonaisuus" : "Taiteen perusopetuksen paikallinen opintokokonaisuus",
+  "description:Suoritettavan oppimäärän opintotason taiteenala" : "Suoritettavan oppimäärän opintotason taiteenala",
+  "description:Taiteen perusopetuksen laajan oppimäärän syventävien..." : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen opintotason suoritus",
+  "description:Suoritettavan oppimäärän opintotaso" : "Suoritettavan oppimäärän opintotaso",
+  "Opintotaso" : "Opintotaso",
+  "description:Taiteen perusopetuksen laajan oppimäärän perusopintojen..." : "Taiteen perusopetuksen laajan oppimäärän perusopintojen opintotason suoritus",
+  "description:Taiteen perusopetuksen yleisen oppimäärän yhteisten..." : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen opintotason suoritus",
+  "description:Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
+  "description:Taiteen perusopetuksen yleisen oppimäärän teemaopintojen..." : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen opintotason suoritus",
+  "Taiteenala" : "Taiteenala",
+  "description:Taiteen perusopetuksen opiskeluoikeuden oppimäärä" : "Taiteen perusopetuksen opiskeluoikeuden oppimäärä"
+
 }
