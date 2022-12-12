@@ -28,6 +28,9 @@ object TypescriptTypes {
     }
 
     result
+      .split("\n")
+      .map(line => line.stripTrailing())
+      .mkString("\n")
   }
 
   private def toTypeDefinition(

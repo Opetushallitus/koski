@@ -60,7 +60,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               | * fi.oph.koski.schema
               | */
               |
-              |export type Koodistokoodiviite<U extends string, A extends string> = {
+              |export type Koodistokoodiviite<U extends string = string, A extends string = string> = {
               |    koodistoVersio?: number,
               |    koodiarvo: A,
               |    nimi?: LocalizedString,
