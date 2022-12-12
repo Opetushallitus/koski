@@ -1,4 +1,4 @@
-## 05.12.2022
+## 12.12.2022
 
 - Tietomalliin lisätty taiteen perusopetuksen opiskeluoikeus.
 
