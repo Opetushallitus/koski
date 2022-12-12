@@ -52,6 +52,10 @@ watch:
 watch-prod:
 	NODE_ENV="'production'" make watch
 
+.PHONY: ts-types
+ts-types:
+	cd web && curl http://localhost:7021/types/update && npx prettier --write app/types/imported
+
 ### Running tests
 
 
