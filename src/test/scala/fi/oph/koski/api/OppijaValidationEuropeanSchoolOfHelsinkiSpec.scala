@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.{osasuoritusArviointi, primaryOppimisalueenOsasuoritusKieli, primarySuoritus12, secondaryLowerSuoritus1, secondaryLowerSuoritus45, secondaryNumericalMarkArviointi, secondaryS7PreliminaryMarkArviointi, secondaryUpperMuunOppiaineenOsasuoritusS6, secondaryUpperMuunOppiaineenOsasuoritusS7, secondaryUpperSuoritusS6, secondaryUpperSuoritusS7}
+import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.{ebTutkintoFinalMarkArviointi, ebTutkintoPreliminaryMarkArviointi, osasuoritusArviointi, primaryOppimisalueenOsasuoritusKieli, primarySuoritus12, secondaryLowerSuoritus1, secondaryLowerSuoritus45, secondaryNumericalMarkArviointi, secondaryS7PreliminaryMarkArviointi, secondaryUpperMuunOppiaineenOsasuoritusS6, secondaryUpperMuunOppiaineenOsasuoritusS7, secondaryUpperSuoritusS6, secondaryUpperSuoritusS7}
 import fi.oph.koski.documentation.ExamplesEuropeanSchoolOfHelsinki.alkamispäivä
 import fi.oph.koski.documentation.{ExampleData, ExamplesEuropeanSchoolOfHelsinki, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -363,6 +363,105 @@ class OppijaValidationEuropeanSchoolOfHelsinkiSpec
   }
 
   "Päätason suorituksen vahvistus EB-tutkinnossa" - {
+    "Ei voi tehdä, jos ei ole final markkia" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
+          osasuoritukset = Some(List(
+            EBTutkinnonOsasuoritus(
+              koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
+                Koodistokoodiviite("MA", "europeanschoolofhelsinkimuuoppiaine"),
+                laajuus = LaajuusVuosiviikkotunneissa(4)
+              ),
+              suorituskieli = ExampleData.englanti,
+              osasuoritukset = Some(List(
+                EBOppiaineenAlaosasuoritus(
+                  koulutusmoduuli = EBOppiaineKomponentti(
+                    tunniste = Koodistokoodiviite("Preliminary", "ebtutkinnonoppiaineenkomponentti")
+                  ),
+                  arviointi = ebTutkintoPreliminaryMarkArviointi(päivä = alkamispäivä.plusMonths(3))
+                ),
+              ))
+            ),
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/301104 on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys"))
+      }
+    }
+
+    "Ei voi tehdä, jos on pelkkä final ilman arviointia" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
+          osasuoritukset = Some(List(
+            EBTutkinnonOsasuoritus(
+              koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
+                Koodistokoodiviite("MA", "europeanschoolofhelsinkimuuoppiaine"),
+                laajuus = LaajuusVuosiviikkotunneissa(4)
+              ),
+              suorituskieli = ExampleData.englanti,
+              osasuoritukset = Some(List(
+                EBOppiaineenAlaosasuoritus(
+                  koulutusmoduuli = EBOppiaineKomponentti(
+                    tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
+                  ),
+                  arviointi = None
+                ),
+              ))
+            ),
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/301104 on keskeneräinen osasuoritus ebtutkinnonoppiaineenkomponentti/Final"))
+      }
+    }
+
+    "voi tehdä, jos on pelkkä year mark" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
+          List(
+            EuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen),
+          )
+        ),
+        suoritukset = List(ExamplesEuropeanSchoolOfHelsinki.eb.copy(
+          osasuoritukset = Some(List(
+            EBTutkinnonOsasuoritus(
+              koulutusmoduuli =  EuropeanSchoolOfHelsinkiMuuOppiaine(
+                Koodistokoodiviite("MA", "europeanschoolofhelsinkimuuoppiaine"),
+                laajuus = LaajuusVuosiviikkotunneissa(4)
+              ),
+              suorituskieli = ExampleData.englanti,
+              osasuoritukset = Some(List(
+                EBOppiaineenAlaosasuoritus(
+                  koulutusmoduuli = EBOppiaineKomponentti(
+                    tunniste = Koodistokoodiviite("Final", "ebtutkinnonoppiaineenkomponentti")
+                  ),
+                  arviointi = ebTutkintoFinalMarkArviointi(päivä = alkamispäivä.plusMonths(3))
+                ),
+              ))
+            ),
+          ))
+        ))
+      )
+
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
     "Ei voi tehdä, jos yleisarvosanaa ei ole annettu" in {
       val oo = defaultOpiskeluoikeus.copy(
         tila = EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila(
