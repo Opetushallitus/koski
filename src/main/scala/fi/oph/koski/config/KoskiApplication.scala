@@ -104,7 +104,8 @@ class KoskiApplication(
     henkilöRepository.opintopolku,
     perustiedotSyncRepository,
     organisaatioRepository,
-    ePerusteetChangeValidator))
+    ePerusteetChangeValidator,
+    config))
   lazy val possuV2 = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepositoryV2(
     masterDatabase.db,
     historyRepository,
@@ -113,7 +114,8 @@ class KoskiApplication(
     henkilöRepository.opintopolku,
     perustiedotSyncRepository,
     organisaatioRepository,
-    ePerusteetChangeValidator))
+    ePerusteetChangeValidator,
+    config))
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator), koskiLocalizationRepository))
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, virta, ytr)
   lazy val opiskeluoikeusRepositoryV2 = new CompositeOpiskeluoikeusRepository(possuV2, virta, ytr)
