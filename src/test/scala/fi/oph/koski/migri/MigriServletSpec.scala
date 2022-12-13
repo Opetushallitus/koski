@@ -8,7 +8,7 @@ import org.scalatest.matchers.should.Matchers
 
 class MigriServletSpec extends AnyFreeSpec with KoskiHttpSpec with HttpSpecification with Matchers {
   "MigriServlet" - {
-    "Palauttaa json-objektin" in {
+    "Palauttaa json-objektin henkilo-oideilla" in {
       post(
         uri = "api/luovutuspalvelu/migri/valinta/henkilo-oidit",
         body = "{\"oids\": [\"1.2.246.562.24.51986460849\"]}",
@@ -16,6 +16,17 @@ class MigriServletSpec extends AnyFreeSpec with KoskiHttpSpec with HttpSpecifica
       ) {
         verifyResponseStatusOk()
         response.body should equal("{\"oids\":[\"1.2.246.562.24.51986460849\"],\"username\":\"Lasse\",\"password\":\"Lasse\"}")
+      }
+    }
+
+    "Palauttaa json-objektin hetuilla" in {
+      post(
+        uri = "api/luovutuspalvelu/migri/valinta/hetut",
+        body = "{\"hetut\": [\"170249-378D\"]}",
+        headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
+      ) {
+        verifyResponseStatusOk()
+        response.body should equal("{\"hetus\":[\"170249-378D\"],\"username\":\"Lasse\",\"password\":\"Lasse\"}")
       }
     }
   }
