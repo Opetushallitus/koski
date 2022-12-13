@@ -44,6 +44,13 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
     }()
   }
 
+  // TODO: poista tämä ennen kuin menee tuotantoon
+  post("/valinta/oid") {
+    withJsonBody { json =>
+      renderEither(extractAndValidateOids(json).flatMap(valintaTiedotOideilla))
+    }()
+  }
+
   post("/valinta/henkilo-oidit") {
     withJsonBody { json =>
       renderEither(extractAndValidateOids(json).flatMap(valintaTiedotOideilla))
