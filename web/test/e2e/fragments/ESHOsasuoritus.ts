@@ -1,5 +1,4 @@
 import { Locator, Page } from '@playwright/test'
-import { times } from 'ramda'
 import { expect } from '../base'
 import { Dropdown } from '../pages/oppija/components/Dropdown'
 
@@ -154,14 +153,14 @@ export class ESHOsasuoritus {
 
   async syötäLaajuus(laajuus: string, validaatioVirhePoistuu: boolean = true) {
     if (validaatioVirhePoistuu) {
-      expect(this.laajuusInput).toHaveClass(/error/)
+      await expect(this.laajuusInput).toHaveClass(/error/)
     }
     await this.laajuusInput.click()
     await this.laajuusInput.fill(laajuus)
     await this.laajuusInput.evaluate((e) => e.blur())
 
     if (validaatioVirhePoistuu) {
-      expect(this.laajuusInput).not.toHaveClass(/error/, {
+      await expect(this.laajuusInput).not.toHaveClass(/error/, {
         timeout: this.validaatioTimeout
       })
     }

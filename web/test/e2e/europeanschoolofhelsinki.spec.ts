@@ -335,11 +335,11 @@ test.describe('European School of Helsinki', () => {
           await osasuoritus.valitseSuorituskieli('englanti')
           await osasuoritus.syötäLaajuus('4')
 
-          expect(await eshOppijaPage.tallennusBtn).not.toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).not.toBeEnabled()
 
           await osasuoritus.valitseArvosana('pass')
 
-          expect(await eshOppijaPage.tallennusBtn).toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).toBeEnabled()
 
           // Syötä osasuorituksen valinnaiset tiedot
           await osasuoritus.laajennaBtn.click()
@@ -352,11 +352,11 @@ test.describe('European School of Helsinki', () => {
             'Listening and understanding'
           )
 
-          expect(await eshOppijaPage.tallennusBtn).not.toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).not.toBeEnabled()
 
           await alaosasuoritus1.valitseArvosana(/^\+\+\+$/)
 
-          expect(await eshOppijaPage.tallennusBtn).toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).toBeEnabled()
 
           await alaosasuoritus1.laajennaBtn.click()
           await alaosasuoritus1.syötäArviointipäivä('31.7.2007')
@@ -366,11 +366,11 @@ test.describe('European School of Helsinki', () => {
             'Reading and understanding'
           )
 
-          expect(await eshOppijaPage.tallennusBtn).not.toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).not.toBeEnabled()
 
           await alaosasuoritus2.valitseArvosana('++++')
 
-          expect(await eshOppijaPage.tallennusBtn).toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).toBeEnabled()
 
           await alaosasuoritus2.laajennaBtn.click()
           await alaosasuoritus2.syötäArviointipäivä('31.7.2007')
