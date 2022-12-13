@@ -7,6 +7,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema._
+import fi.oph.koski.tutkinto.Perusteet
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.JObject
@@ -363,15 +364,14 @@ class OppijaValidationTaiteenPerusopetusSpec
         suoritukset = List(
           TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot.copy(
-              perusteenDiaarinumero = Some(TPO.taiteenPerusopetusLaajaOppimääräDiaari)
+              perusteenDiaarinumero = Some(Perusteet.TaiteenPerusopetuksenLaajanOppimääränPerusteet2017.diaari)
             )
           )
         )
       )
 
       putOpiskeluoikeus(oo, henkilö = oppija) {
-        // TODO: virheilmoitus
-        verifyResponseStatus(400)
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari(s"""Väärä diaarinumero "OPH-2068-2017" suorituksella taiteenperusopetuksenyleisenoppimaaranteemaopinnot, sallitut arvot: OPH-2069-2017"""))
       }
     }
 
@@ -380,15 +380,14 @@ class OppijaValidationTaiteenPerusopetusSpec
         suoritukset = List(
           TPO.PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiLaajaOppimääräPerusopinnot.copy(
-              perusteenDiaarinumero = Some(TPO.taiteenPerusopetusYleinenOppimääräDiaari)
+              perusteenDiaarinumero = Some(Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari)
             )
           )
         )
       )
 
       putOpiskeluoikeus(oo, henkilö = oppija) {
-        // TODO: virheilmoitus
-        verifyResponseStatus(400)
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari(s"""Väärä diaarinumero "OPH-2069-2017" suorituksella taiteenperusopetuksenlaajanoppimaaranperusopinnot, sallitut arvot: OPH-2068-2017"""))
       }
     }
 

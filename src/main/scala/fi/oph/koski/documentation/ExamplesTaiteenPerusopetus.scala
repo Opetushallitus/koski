@@ -4,6 +4,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{taiteenPerusopetusAloitett
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
+import fi.oph.koski.tutkinto.Perusteet
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
@@ -11,9 +12,6 @@ import java.time.LocalDate.{of => date}
 object ExamplesTaiteenPerusopetus {
 
   val alkupäivä = date(2021, 1, 1)
-
-  val taiteenPerusopetusYleinenOppimääräDiaari = "OPH-2069-2017"
-  val taiteenPerusopetusLaajaOppimääräDiaari = "OPH-2068-2017"
 
   val musiikinTaiteenala = Koodistokoodiviite("musiikki", "taiteenperusopetustaiteenala")
   val kuvataiteenTaiteenala = Koodistokoodiviite("kuvataide", "taiteenperusopetustaiteenala")
@@ -183,23 +181,23 @@ object ExamplesTaiteenPerusopetus {
 
     object Koulutusmoduuli {
       val musiikkiYleinenOppimääräEiLaajuutta = musiikinOpintotaso(
-        taiteenPerusopetusYleinenOppimääräDiaari,
+        Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari,
         None
       )
       val musiikkiYleinenOppimääräYhteisetOpinnot = musiikinOpintotaso(
-        taiteenPerusopetusYleinenOppimääräDiaari,
+        Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari,
         Some(11.11)
       )
       val musiikkiYleinenOppimääräTeemaopinnot = musiikinOpintotaso(
-        taiteenPerusopetusYleinenOppimääräDiaari,
+        Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari,
         Some(7.41)
       )
       val musiikkiLaajaOppimääräPerusopinnot = musiikinOpintotaso(
-        taiteenPerusopetusLaajaOppimääräDiaari,
+        Perusteet.TaiteenPerusopetuksenLaajanOppimääränPerusteet2017.diaari,
         Some(29.63)
       )
       val musiikkiLaajaOppimääräSyventävätOpinnot = musiikinOpintotaso(
-        taiteenPerusopetusLaajaOppimääräDiaari,
+        Perusteet.TaiteenPerusopetuksenLaajanOppimääränPerusteet2017.diaari,
         Some(18.52)
       )
 

@@ -83,7 +83,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       )
     )
     case s: LukionPäätasonSuoritus2019 =>
-      HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(s.koulutusmoduuli, Some(lukionKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä))).onSuccess(validateLukio2019Diaarinumero(s))
+      HttpStatus.justStatus(
+        validateKoulutustyypitJaHaeRakenteet(s.koulutusmoduuli, Some(lukionKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä))
+      ).onSuccess(validateLukio2019Diaarinumero(s))
+    case s: TaiteenPerusopetuksenPäätasonSuoritus =>
+      HttpStatus.justStatus(
+        validateKoulutustyypitJaHaeRakenteet(s.koulutusmoduuli, Some(List(taiteenperusopetus)), Some(vaadittuPerusteenVoimassaolopäivä))
+      ).onSuccess(validateTaiteenPerusopetuksenPerusteenDiaarinumero2017(s))
     case _ =>
       suoritus.koulutusmoduuli match {
         case d: Esiopetus =>
@@ -128,8 +134,6 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumisKoulutus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: VSTKotoutumiskoulutus2022 =>
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(vapaanSivistystyönMaahanmuuttajienKotoutumisKoulutus)), Some(vaadittuPerusteenVoimassaolopäivä)))
-        case d: TaiteenPerusopetuksenOpintotaso =>
-          HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(List(taiteenperusopetus)), Some(vaadittuPerusteenVoimassaolopäivä)))
         case d: Diaarinumerollinen =>
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, None, Some(vaadittuPerusteenVoimassaolopäivä)))
         case _ => HttpStatus.ok
@@ -328,6 +332,26 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       case Some(koulutus) if !koulutus.perusteenDiaarinumero.exists(onKoodistossa) => Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari(s"Tutkinnon perustetta ei löydy diaarinumerolla ${koulutus.perusteenDiaarinumero.getOrElse("")}"))
       case Some(koulutus) => Left(KoskiErrorCategory.badRequest.validation.koodisto.koulutustyyppiPuuttuu(s"Koulutuksen ${koulutus.tunniste.koodiarvo} koulutustyyppiä ei löydy koulutustyyppi-koodistosta."))
       case None => Right(oo)
+    }
+  }
+
+  def validateTaiteenPerusopetuksenPerusteenDiaarinumero2017(s: TaiteenPerusopetuksenPäätasonSuoritus): HttpStatus = {
+    def validateDiaarinumero(s: TaiteenPerusopetuksenPäätasonSuoritus, expected: String): HttpStatus = {
+      HttpStatus.validate(s.koulutusmoduuli.perusteenDiaarinumero.contains(expected)) {
+        KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari(s"""Väärä diaarinumero "${s.koulutusmoduuli.perusteenDiaarinumero.getOrElse("")}" suorituksella ${s.tyyppi.koodiarvo}, sallitut arvot: $expected""")
+      }
+    }
+
+    s match {
+      case s: TaiteenPerusopetuksenPäätasonSuoritus if s.koulutusmoduuli.perusteenDiaarinumero.exists(onKoodistossa) => HttpStatus.ok
+      case s: TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus =>
+        validateDiaarinumero(s, Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari)
+      case s: TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus =>
+        validateDiaarinumero(s, Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari)
+      case s: TaiteenPerusopetuksenLaajanOppimääränPerusopintojenSuoritus =>
+        validateDiaarinumero(s, Perusteet.TaiteenPerusopetuksenLaajanOppimääränPerusteet2017.diaari)
+      case s: TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus =>
+        validateDiaarinumero(s, Perusteet.TaiteenPerusopetuksenLaajanOppimääränPerusteet2017.diaari)
     }
   }
 }
