@@ -15,14 +15,14 @@ object Lukio2015Validation {
     opiskeluoikeus match {
       case oo: LukionOpiskeluoikeus if oo.oppimääräSuoritettu.getOrElse(false) =>
         HttpStatus.fold(
-          aineopintojaOlemassa(oo),
+          aineopinnotVahvistettuJosOlemassa(oo),
           kurssejaRiittävästi(oo)
         )
       case _ => HttpStatus.ok
     }
   }
 
-  def aineopintojaOlemassa(oo: LukionOpiskeluoikeus) = {
+  def aineopinnotVahvistettuJosOlemassa(oo: LukionOpiskeluoikeus) = {
     val aineopinnot = oo.suoritukset.filter(_.isInstanceOf[LukionOppiaineenOppimääränSuoritus2015])
     HttpStatus.validate(aineopinnot.isEmpty || aineopinnot.exists(_.vahvistettu))(
       KoskiErrorCategory.badRequest.validation.rakenne.oppimääräSuoritettuIlmanVahvistettuaOppiaineenOppimäärää()
@@ -30,24 +30,16 @@ object Lukio2015Validation {
   }
 
   def kurssejaRiittävästi(oo: LukionOpiskeluoikeus): HttpStatus = {
-    val oppimääränSuoritus: Option[LukionOppimääränSuoritus2015] = oo.suoritukset
-      .find(_.isInstanceOf[LukionOppimääränSuoritus2015])
-      .map(_.asInstanceOf[LukionOppimääränSuoritus2015])
+    oo.suoritukset.collectFirst { case s: LukionOppimääränSuoritus2015 => s } match {
+      case Some(oppimääränSuoritus) =>
+        val kurssit = oppimääränSuoritus.osasuoritusLista.flatMap(_.osasuoritusLista)
+        val laajuudet = kurssit.map(_.koulutusmoduuli.laajuusArvo(1))
 
-    if (oppimääränSuoritus.isDefined) {
-      val kurssit = oppimääränSuoritus.get.osasuoritusLista.flatMap(_.osasuoritusLista)
-
-      val laajuudet = kurssit
-        .map(_.koulutusmoduuli.laajuusArvo(1))
-
-      val kokonaislaajuus = laajuudet.sum
-
-      oppimääränSuoritus.get.oppimääränKoodiarvo.get match {
-        case "aikuistenops" => HttpStatus.validate(kokonaislaajuus >= 44)(KoskiErrorCategory.badRequest.validation.laajuudet.yhteenlaskettuLaajuusVääräLops2015Aikuiset())
-        case "nuortenops" => HttpStatus.validate(kokonaislaajuus >= 75)(KoskiErrorCategory.badRequest.validation.laajuudet.yhteenlaskettuLaajuusVääräLops2015Nuoret())
-      }
-    } else {
-      HttpStatus.ok
+        oppimääränSuoritus.oppimääränKoodiarvo.get match {
+          case "aikuistenops" => HttpStatus.validate(laajuudet.sum >= 44)(KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusAikuiset())
+          case "nuortenops" => HttpStatus.validate(laajuudet.sum >= 75)(KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusNuoret())
+        }
+      case _ => HttpStatus.ok
     }
   }
 
