@@ -35,6 +35,7 @@ import {
   isOstettu
 } from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 import { AmmatillinenArviointiasteikko } from '../ammatillinen/AmmatillinenArviointiasteikko'
+import { isEshAlaosasuoritus } from '../esh/esh'
 
 export class SuoritusEditor extends React.Component {
   showDeleteButtonIfAllowed() {
@@ -126,7 +127,9 @@ SuoritusEditor.validateModel = (model) => {
             )
           : validationError(
               osasuoritus,
-              'Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.'
+              isEshAlaosasuoritus(osasuoritus)
+                ? 'Arvosana vaaditaan alaosasuoritukselta, koska päätason suoritus on merkitty valmiiksi.'
+                : 'Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.'
             )
       } else {
         return validateSuoritus(osasuoritus)
