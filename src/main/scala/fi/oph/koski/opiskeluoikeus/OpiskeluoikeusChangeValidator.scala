@@ -15,7 +15,7 @@ class OpiskeluoikeusChangeValidator(
   ePerusteetChangeValidator: EPerusteetOpiskeluoikeusChangeValidator,
   config: Config
 ) {
-  val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.päivitetynOpiskeluoikeudenPäivämäärienValidaatioAstuuVoimaan")).minusDays(1)
+  val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.paivitetynOpiskeluoikeudenPaivamaarienValidaatioAstuuVoimaan")).minusDays(1)
   val päivitetynOpiskeluoikeudenPäivämäärienValidaatioAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
 
   def validateOpiskeluoikeusChange(oldState: KoskeenTallennettavaOpiskeluoikeus, newState: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
