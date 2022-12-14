@@ -7,18 +7,37 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{Diaarinumerollinen, Henkilö, KoskeenTallennettavaOpiskeluoikeus, LukionOpiskeluoikeus, LukionOppiaine, LukionOppiaine2015, LukionOppiaineenOppimääränSuoritus2015, LukionOppimääränSuoritus2015}
+import fi.oph.koski.schema.{Diaarinumerollinen, Henkilö, KoskeenTallennettavaOpiskeluoikeus, LukionKurssinSuoritus2015, LukionOpiskeluoikeus, LukionOppiaine, LukionOppiaine2015, LukionOppiaineenOppimääränSuoritus2015, LukionOppimääränSuoritus2015}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 
 object Lukio2015Validation {
   def validateOppimääräSuoritettu(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     opiskeluoikeus match {
-      case lukio: LukionOpiskeluoikeus if lukio.oppimääräSuoritettu.getOrElse(false) =>
-        val aineopinnot = lukio.suoritukset.filter(_.isInstanceOf[LukionOppiaineenOppimääränSuoritus2015])
-        if (aineopinnot.isEmpty || aineopinnot.exists(_.vahvistettu)) {
-          HttpStatus.ok
-        } else {
-          KoskiErrorCategory.badRequest.validation.rakenne.oppimääräSuoritettuIlmanVahvistettuaOppiaineenOppimäärää()
+      case oo: LukionOpiskeluoikeus if oo.oppimääräSuoritettu.getOrElse(false) =>
+        HttpStatus.fold(
+          aineopinnotVahvistettuJosOlemassa(oo),
+          kurssejaRiittävästi(oo)
+        )
+      case _ => HttpStatus.ok
+    }
+  }
+
+  def aineopinnotVahvistettuJosOlemassa(oo: LukionOpiskeluoikeus) = {
+    val aineopinnot = oo.suoritukset.filter(_.isInstanceOf[LukionOppiaineenOppimääränSuoritus2015])
+    HttpStatus.validate(aineopinnot.isEmpty || aineopinnot.exists(_.vahvistettu))(
+      KoskiErrorCategory.badRequest.validation.rakenne.oppimääräSuoritettuIlmanVahvistettuaOppiaineenOppimäärää()
+    )
+  }
+
+  def kurssejaRiittävästi(oo: LukionOpiskeluoikeus): HttpStatus = {
+    oo.suoritukset.collectFirst { case s: LukionOppimääränSuoritus2015 => s } match {
+      case Some(oppimääränSuoritus) =>
+        val kurssit = oppimääränSuoritus.osasuoritusLista.flatMap(_.osasuoritusLista)
+        val laajuudet = kurssit.map(_.koulutusmoduuli.laajuusArvo(1))
+
+        oppimääränSuoritus.oppimääränKoodiarvo.get match {
+          case "aikuistenops" => HttpStatus.validate(laajuudet.sum >= 44)(KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusAikuiset())
+          case "nuortenops" => HttpStatus.validate(laajuudet.sum >= 75)(KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusNuoret())
         }
       case _ => HttpStatus.ok
     }

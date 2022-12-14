@@ -8,6 +8,7 @@ import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.{ExamplesLukio, LukioExampleData}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
+import junit.framework.Assert.assertEquals
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
@@ -142,7 +143,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           ))
         )))
       putOpiskeluoikeus(opiskeluoikeus) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus())
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaEronnutTaiKatsotaanEronneeksiVaikkaVahvistettuPäätasonSuoritus(), KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusNuoret())
       }
     }
   }
@@ -160,6 +161,44 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       )
       putOpiskeluoikeus(ExamplesLukio.päättötodistus().copy(tila = tila)) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
+      }
+    }
+  }
+
+  "Laajuus" - {
+    "vahvistetulta nuorten suoritukselta vaaditaan vähintään 75 kurssia" in {
+      val lukionSuoritus = ExamplesLukio.päättötodistus().copy(oppimääräSuoritettu = Some(false))
+      val päätasonSuoritus = lukionSuoritus.suoritukset.head.asInstanceOf[LukionOppimääränSuoritus2015]
+      val oppiaineet = päätasonSuoritus.osasuoritusLista.take(5).asInstanceOf[List[LukionOppiaineenSuoritus2015]]
+
+      assertEquals(39, oppiaineet.flatMap(f => f.osasuoritusLista).size)
+
+      putOpiskeluoikeus(lukionSuoritus.copy(suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusNuoret("Lukion nuorten oppimäärän LOPS2015 voi merkitä valmiiksi vain kun vähintään 75 kurssia on suoritettu"))
+      }
+    }
+
+    "vahvistetulta aikuisten suoritukselta vaaditaan vähintään 44 kurssia" in {
+      val lukionSuoritus = ExamplesLukio.päättötodistus().copy(oppimääräSuoritettu = Some(false))
+      val päätasonSuoritus = lukionSuoritus.suoritukset.head.asInstanceOf[LukionOppimääränSuoritus2015].copy(oppimäärä = aikuistenOpetussuunnitelma)
+      val oppiaineet = päätasonSuoritus.osasuoritusLista.take(5).asInstanceOf[List[LukionOppiaineenSuoritus2015]]
+
+      assertEquals(39, oppiaineet.flatMap(f => f.osasuoritusLista).size)
+
+      putOpiskeluoikeus(lukionSuoritus.copy(suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusAikuiset("Lukion aikuisten oppimäärän LOPS2015 voi merkitä valmiiksi vain kun vähintään 44 kurssia on suoritettu"))
+      }
+    }
+
+    "suoritus validoidaan vaikka oppimäärä olisi merkitty suoritetuksi" in {
+      val lukionSuoritus = ExamplesLukio.päättötodistus().copy(oppimääräSuoritettu = Some(true))
+      val päätasonSuoritus = lukionSuoritus.suoritukset.head.asInstanceOf[LukionOppimääränSuoritus2015]
+      val oppiaineet = päätasonSuoritus.osasuoritusLista.take(5).asInstanceOf[List[LukionOppiaineenSuoritus2015]]
+
+      assertEquals(39, oppiaineet.flatMap(f => f.osasuoritusLista).size)
+
+      putOpiskeluoikeus(lukionSuoritus.copy(suoritukset = List(päätasonSuoritus.copy(osasuoritukset = Some(oppiaineet))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.lops2015VääräLaajuusNuoret("Lukion nuorten oppimäärän LOPS2015 voi merkitä valmiiksi vain kun vähintään 75 kurssia on suoritettu"))
       }
     }
   }
