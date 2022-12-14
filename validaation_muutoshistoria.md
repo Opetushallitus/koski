@@ -1,11 +1,14 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 14.12.2022
+- Siirretään TOR-1834:ssä lisätty validaatio (suorituksen alkamispäivämäärä ei saa olla ennen opiskeluoikeuden alkua) tulemaan voimaan myöhemmin 1.2.2023.
+
 ## 9.12.2022
 - Lukion nuorten oppimäärän (LOPS2015) voi merkitä valmiiksi vasta kun kursseja on suoritettu vähintään 75 kpl.
 - Lukion aikuisten oppimäärän (LOPS2015) voi merkitä valmiiksi vasta kun kursseja on suoritettu vähintään 44 kpl.
 
 ## 30.11.2022
-- Tarkistetaan tietyissä palvelukäyttäjän siirroissa, että suoritukset eivät ala ennen opiskeluoikeuden alkua
+- Tarkistetaan tietyissä palvelukäyttäjän siirroissa, että suoritukset eivät ala ennen opiskeluoikeuden alkua.
 
 ## 21.11.2022
 
