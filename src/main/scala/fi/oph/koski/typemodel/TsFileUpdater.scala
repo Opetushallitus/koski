@@ -27,6 +27,7 @@ object TsFileUpdater {
     generics = KoskiSpecificTsGenerics.generics,
     exportClassNamesAs = Some("$class"),
     exportTypeGuards = true,
+    exportConstructors = true,
   )
   def path: String = "web/app/types/imported"
 }

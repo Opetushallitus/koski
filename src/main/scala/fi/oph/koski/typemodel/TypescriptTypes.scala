@@ -1,6 +1,8 @@
 package fi.oph.koski.typemodel
 
-import fi.oph.koski.util.JsStringInterpolation.JsStringInterpolation
+import fi.oph.koski.typemodel.DataTypes.DataType
+import fi.oph.koski.util.JsStringInterpolation.{JsStringInterpolation, parseExpression}
+import fi.oph.koski.util.RawJsString
 
 import scala.annotation.tailrec
 
@@ -25,6 +27,12 @@ object TypescriptTypes {
       result = result +
         "\n\n// Type guards\n\n" ++
         types.map(t => typeGuard(t, options.exportClassNamesAs.get)).mkString("\n\n")
+    }
+
+    if (options.exportConstructors) {
+      result = result +
+      "\n\n// Object constructors\n\n" ++
+        types.collect { case o: ObjectType => o }.map(o => objectConstructor(o, types, options)).mkString("\n\n")
     }
 
     result
@@ -148,12 +156,60 @@ object TypescriptTypes {
     }
   }
 
+  private def objectConstructor(obj: ObjectType, allTypes: Seq[TypeModelWithClassName], options: Options): String = {
+    def getClassProp(t: TypeModelWithClassName): Seq[(String, ObjectType.ObjectDefaultNode)] =
+      options.exportClassNamesAs.toList.map(key => (key, ObjectType.ObjectDefaultsProperty(t.className)))
+
+    def resolveKnownProps(o: ObjectType): Map[String, Any] =
+      o.properties
+        .mapValues {
+          case ref: ClassRef => ref.resolve(allTypes).getOrElse(ref)
+          case p: TypeModel => p
+        }
+        .mapValues(_.unambigiousDefaultValue)
+        .flatMap { case (key, defaults) => defaults.map(d => (key, d)) }
+
+    def valueToTs(value: Any, assignToObject: Option[String] = None): String = value match {
+      case obj: Map[_, _] =>
+        "{" + obj.flatMap {
+          case (_, None) => None
+          case (_, ObjectType.ObjectDefaultsProperty(None)) => None
+          case (key, value) => Some(s"$key: ${valueToTs(value)}")
+        }.mkString(",") + assignToObject.map(t => s", ...$t").getOrElse("") + "}"
+      case obj: ObjectType.ObjectDefaultsMap =>
+        s"${obj.className}(${valueToTs(obj.properties)})"
+      case ObjectType.ObjectDefaultsProperty(default) =>
+        parseExpression(default)
+      case any: Any =>
+        parseExpression(any)
+    }
+
+    val knownProperties = resolveKnownProps(obj)
+    val argType = obj.makeOptional(knownProperties.keys.toList)
+    val argTypeStr = toObject(argType, options.copy(exportClassNamesAs = None))
+    val defaultArg = if (argType.properties.values.forall(_.isInstanceOf[OptionalType])) " = {}" else ""
+
+    val fnName = obj.className
+    val generics = options.getGeneric(obj).map(_.genericsList).getOrElse("")
+    val arguments = s"$generics(o: $argTypeStr$defaultArg)"
+    val returnType = objectConstructorReturnValue(obj, options)
+
+    val properties = getClassProp(obj) ++ knownProperties
+    val fnBody = s"(${valueToTs(properties.toMap, Some("o"))})"
+
+    s"export const $fnName = $arguments: $returnType => $fnBody"
+  }
+
+  private def objectConstructorReturnValue(obj: ObjectType, options: Options): String =
+    obj.className + options.getGeneric(obj).map(_.returnValueGenerics).getOrElse("")
+
   val indent: String = " " * 4
 
   case class Options(
     generics: Seq[GenericsObject] = Seq.empty,
     exportClassNamesAs: Option[String] = None,
     exportTypeGuards: Boolean = false,
+    exportConstructors: Boolean = false,
   ) {
     def getGeneric(model: TypeModel): Option[GenericsObject] =
       model match {
@@ -168,6 +224,7 @@ object TypescriptTypes {
   ) {
     def isClass(name: String): Boolean = name == className
     def genericsList: String = s"<${mapping.values.map(_.headerStr).mkString(", ")}>"
+    def returnValueGenerics: String = s"<${mapping.values.map(_.name).mkString(", ")}>"
     def internalTypeName(key: String): Option[String] = mapping.get(key).map(_.name)
 
     def getType(key: String, model: TypeModel): Option[TypeModel] =
@@ -188,4 +245,3 @@ object TypescriptTypes {
     def headerStr: String = s"$name extends $extend = $extend"
   }
 }
-

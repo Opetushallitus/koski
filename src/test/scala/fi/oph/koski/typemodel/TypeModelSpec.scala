@@ -2,6 +2,7 @@ package fi.oph.koski.typemodel
 
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.typemodel.TypescriptTypes.Options
+import fi.oph.scalaschema.annotation.DefaultValue
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -172,6 +173,110 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
             |
             |export const isTicket = (a: any): a is Ticket => a?.$class === "Ticket"""".stripMargin)
       }
+
+      "Object constructors" in {
+        val types = TypeExport.toTypeDef(classOf[User])
+        val ts = TypescriptTypes.build(types, defaultOptions.copy(
+          exportClassNamesAs = Some("$class"),
+          exportConstructors = true,
+        ))
+
+        ts should equal(
+          """/*
+            | * fi.oph.koski.typemodel
+            | */
+            |
+            |export type User = {
+            |    $class: "User",
+            |    accountLocked: boolean,
+            |    hobbies: Array<string>,
+            |    username: string,
+            |    accessRight: AccessRight,
+            |    rank: string,
+            |    age: number,
+            |    ratings: Record<string, number>,
+            |    nickname?: string
+            |}
+            |
+            |export type AccessRight = {
+            |    $class: "AccessRight",
+            |    notes?: string,
+            |    group: string
+            |}
+            |
+            |// Object constructors
+            |
+            |export const User = (o: {
+            |    accountLocked?: boolean,
+            |    hobbies?: Array<string>,
+            |    username: string,
+            |    accessRight?: AccessRight,
+            |    rank?: string,
+            |    age?: number,
+            |    ratings?: Record<string, number>,
+            |    nickname?: string
+            |}): User => ({accountLocked: false,hobbies: [],accessRight: AccessRight({group: "viewer"}),rank: "newbie",age: 18,ratings: {},$class: "User", ...o})
+            |
+            |export const AccessRight = (o: {
+            |    notes?: string,
+            |    group?: string
+            |} = {}): AccessRight => ({$class: "AccessRight",group: "viewer", ...o})""".stripMargin)
+      }
+
+      "Object constructors with deep defaults" in {
+        val types = List(
+          "fi.oph.koski.schema.YlioppilastutkinnonSuoritus",
+          "fi.oph.koski.schema.Ylioppilastutkinto",
+        ).map(cn => schemaTypes.find(_.fullClassName == cn).get)
+
+        val ts = TypescriptTypes.build(types, defaultOptions.copy(
+          exportClassNamesAs = Some("$class"),
+          exportConstructors = true,
+        ))
+
+        ts should equal(
+          """/*
+            | * fi.oph.koski.schema
+            | */
+            |
+            |export type YlioppilastutkinnonSuoritus = {
+            |    $class: "YlioppilastutkinnonSuoritus",
+            |    tyyppi: Koodistokoodiviite<"suorituksentyyppi", "ylioppilastutkinto">,
+            |    tila?: Koodistokoodiviite<"suorituksentila", string>,
+            |    koulusivistyskieli?: Array<Koodistokoodiviite<"kieli", "FI" | "SV">>,
+            |    pakollisetKokeetSuoritettu: boolean,
+            |    koulutusmoduuli: Ylioppilastutkinto,
+            |    toimipiste?: OrganisaatioWithOid,
+            |    osasuoritukset?: Array<YlioppilastutkinnonKokeenSuoritus>,
+            |    vahvistus?: Organisaatiovahvistus
+            |}
+            |
+            |export type Ylioppilastutkinto = {
+            |    $class: "Ylioppilastutkinto",
+            |    tunniste: Koodistokoodiviite<"koulutus", "301000">,
+            |    perusteenDiaarinumero?: string,
+            |    koulutustyyppi?: Koodistokoodiviite<"koulutustyyppi", string>
+            |}
+            |
+            |// Object constructors
+            |
+            |export const YlioppilastutkinnonSuoritus = (o: {
+            |    tyyppi?: Koodistokoodiviite<"suorituksentyyppi", "ylioppilastutkinto">,
+            |    tila?: Koodistokoodiviite<"suorituksentila", string>,
+            |    koulusivistyskieli?: Array<Koodistokoodiviite<"kieli", "FI" | "SV">>,
+            |    pakollisetKokeetSuoritettu: boolean,
+            |    koulutusmoduuli?: Ylioppilastutkinto,
+            |    toimipiste?: OrganisaatioWithOid,
+            |    osasuoritukset?: Array<YlioppilastutkinnonKokeenSuoritus>,
+            |    vahvistus?: Organisaatiovahvistus
+            |}): YlioppilastutkinnonSuoritus => ({tyyppi: Koodistokoodiviite({koodiarvo: "ylioppilastutkinto",koodistoUri: "suorituksentyyppi"}),koulutusmoduuli: Ylioppilastutkinto({tunniste: Koodistokoodiviite({koodiarvo: "301000",koodistoUri: "koulutus"})}),$class: "YlioppilastutkinnonSuoritus", ...o})
+            |
+            |export const Ylioppilastutkinto = (o: {
+            |    tunniste?: Koodistokoodiviite<"koulutus", "301000">,
+            |    perusteenDiaarinumero?: string,
+            |    koulutustyyppi?: Koodistokoodiviite<"koulutustyyppi", string>
+            |} = {}): Ylioppilastutkinto => ({$class: "Ylioppilastutkinto",tunniste: Koodistokoodiviite({koodiarvo: "301000",koodistoUri: "koulutus"}), ...o})""".stripMargin)
+      }
     }
   }
 }
@@ -191,3 +296,22 @@ case class Ticket(
   title: String
 ) extends Item
 
+case class User(
+  username: String,
+  nickname: Option[String],
+  hobbies: List[String],
+  @DefaultValue(18)
+  age: Int,
+  @DefaultValue("newbie")
+  rank: String,
+  @DefaultValue(false)
+  accountLocked: Boolean,
+  ratings: Map[String, Int],
+  accessRight: AccessRight,
+)
+
+case class AccessRight(
+  notes: Option[String],
+  @DefaultValue("viewer")
+  group: String
+)
