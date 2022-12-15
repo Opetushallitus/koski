@@ -2,15 +2,12 @@ import React from 'baret'
 import * as L from 'partial.lenses'
 import { t } from '../i18n/i18n'
 import {
-  contextualizeSubModel,
   lensedModel,
   modelData,
   modelLookup,
   modelProperty,
-  modelSetData,
   modelSetValue,
   modelTitle,
-  oneOfPrototypes,
   resolveActualModel,
   wrapOptional
 } from '../editor/EditorModel'
@@ -28,7 +25,10 @@ import {
 } from '../suoritus/SuoritustaulukkoCommon'
 import { BaseContext } from '../types/EditorModelContext'
 import { EshArvosanaEditor } from '../suoritus/EshArvosanaEditor'
-import { fetchAlternativesBasedOnPrototypes, zeroValue } from '../editor/EnumEditor'
+import {
+  fetchAlternativesBasedOnPrototypes,
+  zeroValue
+} from '../editor/EnumEditor'
 import { isOneOfModel } from '../types/EditorModels'
 
 // ESHSuoritusColumn
@@ -89,16 +89,16 @@ const EshKieliEditor: React.FC<any> = ({ model }) => {
               if (found) {
                 return modelSetValue(
                   model,
-                  { data: valittu, value: valittu.value, title: t(valittu.nimi) },
+                  {
+                    data: valittu,
+                    value: valittu.value,
+                    title: t(valittu.nimi)
+                  },
                   'kieli'
                 )
               }
             } else {
-              return modelSetValue(
-                model,
-                zeroValue,
-                'kieli'
-              )
+              return modelSetValue(model, zeroValue, 'kieli')
             }
           }
         )
