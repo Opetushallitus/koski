@@ -1,4 +1,8 @@
 import { oppijaPath } from "../../src/state/paths"
+import {
+  contentEventuallyEquals,
+  testId,
+} from "../integrationtests-env/browser/content"
 import { $$, goToLocation } from "../integrationtests-env/browser/core"
 import {
   allowNetworkError,
@@ -22,7 +26,6 @@ import {
   virallisetYhteystiedot,
   virallisetYhteystiedotEquals,
 } from "./oppija.shared"
-import {contentEventuallyEquals, testId} from "../integrationtests-env/browser/content";
 
 const ysiluokkaKeskenKeväälläPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000001",
@@ -453,7 +456,10 @@ describe("Oppijakohtainen näkymä 1/2", () => {
       Oppijalla on turvakielto. Yhteystietoja saa käyttää ainoastaan oppivelvollisuuden valvontaan.
     `)
 
-    await contentEventuallyEquals(testId("kotikunta-yhteystiedot"), "Henkilöllä on turvakielto")
+    await contentEventuallyEquals(
+      testId("kotikunta-yhteystiedot"),
+      "Henkilöllä on turvakielto"
+    )
 
     await virallisetYhteystiedotEquals(`
       Viralliset yhteystiedot

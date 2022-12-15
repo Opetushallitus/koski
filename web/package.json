@@ -8,8 +8,8 @@
     "url": "https://github.com/Opetushallitus/koski.git"
   },
   "engines": {
-    "node": "14",
-    "npm": "7"
+    "node": "16.19.0",
+    "npm": "8"
   },
   "dependencies": {
     "@skidding/react-codemirror": "^1.0.2",
@@ -110,11 +110,6 @@
     "playwright:test": "npx playwright test",
     "playwright:test:debug": "npx playwright test --headed",
     "playwright:test:trace": "npx playwright test --trace on && npx playwright show-report",
-    "playwright:codegen": "npx playwright codegen",
-    "preinstall": "npx npm-force-resolutions"
-  },
-  "resolutions": {
-    "tar": "^6.1.9",
-    "ansi-regex": "5.0.1"
+    "playwright:codegen": "npx playwright codegen"
   }
 }

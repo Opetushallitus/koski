@@ -42,34 +42,34 @@ describe("DataTable", () => {
     ])
   })
 
-  test("Vapaatekstihaku toimii", () => {
+  test("Vapaatekstihaku toimii", async () => {
     const table = createTable()
-    fillTextFilter(table, 1, "he")
+    await fillTextFilter(table, 1, "he")
     expectOrderOfValuesToBe(table, 1, ["Heikki", "Heli"])
   })
 
-  test("Pudotusvalikkosuodatin toimii", () => {
+  test("Pudotusvalikkosuodatin toimii", async () => {
     const table = createTable()
-    selectDropdownOption(table, 2, 2)
+    await selectDropdownOption(table, 2, 2)
     expectOrderOfValuesToBe(table, 1, ["Heli", "Osmo"])
   })
 
-  test("Useamman suodattimen käyttö suodattaa AND-logiikalla", () => {
+  test("Useamman suodattimen käyttö suodattaa AND-logiikalla", async () => {
     const table = createTable()
-    fillTextFilter(table, 1, "he")
-    selectDropdownOption(table, 2, 2)
+    await fillTextFilter(table, 1, "he")
+    await selectDropdownOption(table, 2, 2)
     expectOrderOfValuesToBe(table, 1, ["Heli"])
   })
 
-  test("filterValues-property yliajaa valuen, jos se on määritelty", () => {
+  test("filterValues-property yliajaa valuen, jos se on määritelty", async () => {
     const table = createTable()
-    fillTextFilter(table, 1, "cosmic")
+    await fillTextFilter(table, 1, "cosmic")
     expectOrderOfValuesToBe(table, 1, ["Osmo", "Zorro #9"])
   })
 
-  test("filterValues-property yliajaa valuen, jos se on määritelty, osa 2", () => {
+  test("filterValues-property yliajaa valuen, jos se on määritelty, osa 2", async () => {
     const table = createTable()
-    fillTextFilter(table, 1, "avenger")
+    await fillTextFilter(table, 1, "avenger")
     expectOrderOfValuesToBe(table, 1, ["Zorro #9", "Zorro #10"])
   })
 })
@@ -98,7 +98,7 @@ const expectOrderOfValuesToBe = (
 const clickColumnLabel = (table: RenderResult, columnLabel: string) =>
   fireEvent.click(table.getByText(columnLabel))
 
-const fillTextFilter = (
+const fillTextFilter = async (
   table: RenderResult,
   columnIndex: number,
   text: string
@@ -107,10 +107,10 @@ const fillTextFilter = (
     `thead tr:nth-child(2) th:nth-child(${columnIndex}) input`
   )
   expect(input).not.toBeNull()
-  userEvent.type(input!!, text)
+  await userEvent.type(input!!, text)
 }
 
-const selectDropdownOption = (
+const selectDropdownOption = async (
   table: RenderResult,
   columnIndex: number,
   optionIndex: number
@@ -119,7 +119,7 @@ const selectDropdownOption = (
     `thead tr:nth-child(2) th:nth-child(${columnIndex}) select`
   )
   expect(select).not.toBeNull()
-  userEvent.selectOptions(select!!, optionIndex.toString())
+  await userEvent.selectOptions(select!!, optionIndex.toString())
 }
 
 // Test data

@@ -43,12 +43,10 @@ const oppivelvollisuusKeskeytettyToistaiseksiPath = oppijaPath.href(
     oppijaOid: "1.2.246.562.24.00000000057",
   }
 )
-const eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksiaPath = oppijaPath.href(
-  "/virkailija",
-  {
+const eiOppivelvollisuudenSuorittamiseenKelpaaviaOpiskeluoikeuksiaPath =
+  oppijaPath.href("/virkailija", {
     oppijaOid: "1.2.246.562.24.00000000058",
-  }
-)
+  })
 const hetutonPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000059",
 })
@@ -91,12 +89,10 @@ const oppivelvollisuusKeskeytettyHelsinkiläinenPath = oppijaPath.href(
   }
 )
 
-const eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaPath = oppijaPath.href(
-  "/virkailija",
-  {
+const eiKoskessaOppivelvollinenJollaKeskeytyksiäJaIlmoituksiaPath =
+  oppijaPath.href("/virkailija", {
     oppijaOid: "1.2.246.562.24.00000000144",
-  }
-)
+  })
 
 const pelkkäEsiopetusPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000126",
@@ -188,7 +184,10 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",
         oppivelvollisuus: "17.10.2023 asti",
-        oppivelvollisuudenKeskeytykset: ["1.9.2021 – 30.9.2021", "1.1.2020 – 30.1.2020"],
+        oppivelvollisuudenKeskeytykset: [
+          "1.9.2021 – 30.9.2021",
+          "1.1.2020 – 30.1.2020",
+        ],
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
       })
@@ -254,7 +253,10 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",
         oppivelvollisuus: "17.10.2023 asti",
-        oppivelvollisuudenKeskeytykset: ["1.9.2021 – 30.9.2021", "1.1.2020 – 30.1.2020"],
+        oppivelvollisuudenKeskeytykset: [
+          "1.9.2021 – 30.9.2021",
+          "1.1.2020 – 30.1.2020",
+        ],
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
       })
@@ -304,7 +306,11 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",
-        oppivelvollisuudenKeskeytykset: [`toistaiseksi 11.11.2022 alkaen`, `1.9.2021 – 30.9.2021`, `1.1.2020 – 30.1.2020`],
+        oppivelvollisuudenKeskeytykset: [
+          `toistaiseksi 11.11.2022 alkaen`,
+          `1.9.2021 – 30.9.2021`,
+          `1.1.2020 – 30.1.2020`,
+        ],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
@@ -334,7 +340,10 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       oppivelvollisuustiedot({
         opiskelutilanne: "Opiskelemassa",
         oppivelvollisuus: "17.10.2023 asti",
-        oppivelvollisuudenKeskeytykset: [`1.9.2021 – 30.9.2021`, `1.1.2020 – 30.1.2020`],
+        oppivelvollisuudenKeskeytykset: [
+          `1.9.2021 – 30.9.2021`,
+          `1.1.2020 – 30.1.2020`,
+        ],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
@@ -651,7 +660,10 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Ei opiskelupaikkaa",
-        oppivelvollisuudenKeskeytykset: ["toistaiseksi 1.9.2021 alkaen", "1.1.2019 – 1.12.2019"],
+        oppivelvollisuudenKeskeytykset: [
+          "toistaiseksi 1.9.2021 alkaen",
+          "1.1.2019 – 1.12.2019",
+        ],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,
         merkitseVapautusBtn: true,
@@ -697,7 +709,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         oppivelvollisuudenKeskeytykset: [
           "toistaiseksi 5.9.2021 alkaen",
           "toistaiseksi 1.9.2021 alkaen",
-          "1.1.2019 – 1.12.2019"
+          "1.1.2019 – 1.12.2019",
         ],
         maksuttomuusoikeus: "31.12.2025 asti",
         oppivelvollisuudenKeskeytysBtn: true,

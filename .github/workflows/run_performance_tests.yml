@@ -30,10 +30,10 @@ jobs:
           architecture: 'x64'
           distribution: 'zulu'
 
-      - name: Setup Node 14
+      - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "16.19.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -73,10 +73,10 @@ jobs:
           architecture: 'x64'
           distribution: 'zulu'
 
-      - name: Setup Node 14
+      - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "16.19.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -116,10 +116,10 @@ jobs:
           architecture: 'x64'
           distribution: 'zulu'
 
-      - name: Setup Node 14
+      - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "16.19.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -159,10 +159,10 @@ jobs:
           architecture: 'x64'
           distribution: 'zulu'
 
-      - name: Setup Node 14
+      - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "16.19.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -206,10 +206,10 @@ jobs:
           architecture: 'x64'
           distribution: 'zulu'
 
-      - name: Setup Node 14
+      - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "16.19.0"
 
       - name: Cache Maven packages
         uses: actions/cache@v3

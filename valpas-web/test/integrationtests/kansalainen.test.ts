@@ -242,60 +242,61 @@ const expectEiKoskessaOppivelvollinenKaikkiTiedot = async () => {
   `)
 }
 
-const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot = async () => {
-  await oppijaHeaderEquals(
-    "Kosketon-keskeytyksiä-ilmoituksia Valpas",
-    "26.7.2005"
-  )
-
-  await oppivelvollisuustiedotEquals(
-    oppivelvollisuustiedot({
-      opiskelutilanne: "Ei opiskelupaikkaa",
-      oppivelvollisuus: "Keskeytetty toistaiseksi 1.9.2021 alkaen",
-      oppivelvollisuudenKeskeytykset: ["1.1.2019 – 1.12.2019"],
-      maksuttomuusoikeus: "31.12.2025 asti",
-    })
-  )
-
-  await ilmoitetutYhteystiedotEquals(
-    ilmoitetutYhteystiedot({
-      pvm: "9.4.2020",
-      lähiosoite: "Esimerkkikatu 123",
-      postitoimipaikka: "99999 Helsinki",
-      matkapuhelin: "0401234567",
-      sähköposti: "Valpas.Kosketon-keskeytyksiä-ilmoituksia@gmail.com",
-      lähde: "Hakulomake – Yhteishaku 2021",
-    })
-  )
-
-  await virallisetYhteystiedotEquals(
-    virallisetYhteystiedot({
-      lähiosoite: "Esimerkkitie 10",
-      postitoimipaikka: "99999 Helsinki",
-      maa: "Costa rica",
-      puhelin: "0401122334",
-      sähköposti: "valpas@gmail.com",
-    })
-  )
-  await opiskeluhistoriaEquals(
-    merge(
-      historiaEiOpiskeluhistoriaa(),
-      historiaOppivelvollisuudenKeskeytysToistaiseksi("1.9.2021"),
-      historiaVastuuilmoitus({
-        päivämäärä: "15.8.2021",
-        ilmoittaja: "Jyväskylän normaalikoulu",
-        tahoJolleIlmoitettu: "Pyhtää",
-      }),
-      historiaVastuuilmoitus({
-        päivämäärä: "8.4.2021",
-        ilmoittaja: "Jyväskylän normaalikoulu",
-        tahoJolleIlmoitettu: "Helsinki",
-      }),
-      historiaOppivelvollisuudenKeskeytys("1.1.2019 – 1.12.2019")
+const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot =
+  async () => {
+    await oppijaHeaderEquals(
+      "Kosketon-keskeytyksiä-ilmoituksia Valpas",
+      "26.7.2005"
     )
-  )
 
-  await hautEquals(`
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Ei opiskelupaikkaa",
+        oppivelvollisuus: "Keskeytetty toistaiseksi 1.9.2021 alkaen",
+        oppivelvollisuudenKeskeytykset: ["1.1.2019 – 1.12.2019"],
+        maksuttomuusoikeus: "31.12.2025 asti",
+      })
+    )
+
+    await ilmoitetutYhteystiedotEquals(
+      ilmoitetutYhteystiedot({
+        pvm: "9.4.2020",
+        lähiosoite: "Esimerkkikatu 123",
+        postitoimipaikka: "99999 Helsinki",
+        matkapuhelin: "0401234567",
+        sähköposti: "Valpas.Kosketon-keskeytyksiä-ilmoituksia@gmail.com",
+        lähde: "Hakulomake – Yhteishaku 2021",
+      })
+    )
+
+    await virallisetYhteystiedotEquals(
+      virallisetYhteystiedot({
+        lähiosoite: "Esimerkkitie 10",
+        postitoimipaikka: "99999 Helsinki",
+        maa: "Costa rica",
+        puhelin: "0401122334",
+        sähköposti: "valpas@gmail.com",
+      })
+    )
+    await opiskeluhistoriaEquals(
+      merge(
+        historiaEiOpiskeluhistoriaa(),
+        historiaOppivelvollisuudenKeskeytysToistaiseksi("1.9.2021"),
+        historiaVastuuilmoitus({
+          päivämäärä: "15.8.2021",
+          ilmoittaja: "Jyväskylän normaalikoulu",
+          tahoJolleIlmoitettu: "Pyhtää",
+        }),
+        historiaVastuuilmoitus({
+          päivämäärä: "8.4.2021",
+          ilmoittaja: "Jyväskylän normaalikoulu",
+          tahoJolleIlmoitettu: "Helsinki",
+        }),
+        historiaOppivelvollisuudenKeskeytys("1.1.2019 – 1.12.2019")
+      )
+    )
+
+    await hautEquals(`
     list_alt
     Yhteishaku 2021 Hakenut open_in_new
       Hakukohde
@@ -304,7 +305,7 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot = as
       Alin pistemäärä
       1. Ressun lukio, Lukio 3. varasija 9,00 8,99
   `)
-}
+  }
 
 const expectHuollettavaTurvakieltoPerustiedot = async () => {
   await oppijaHeaderEquals("Turvakielto Valpas", "29.9.2004")

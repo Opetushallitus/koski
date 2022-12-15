@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react"
-import { Redirect, RouteComponentProps, useHistory } from "react-router"
+import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import {
   fetchOppijatSuorittaminen,
   fetchOppijatSuorittaminenCache,

@@ -82,10 +82,10 @@ export const suorittaminenListaHkiPath = suorittaminenPathWithOrg.href(
   helsinginMedialukioOid
 )
 
-export const suorittaminenKuntailmoitusListaJklPath = suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href(
-  "/virkailija",
-  { organisaatioOid: jyväskylänNormaalikouluOid }
-)
+export const suorittaminenKuntailmoitusListaJklPath =
+  suorittamisvalvonnanKunnalleIlmoitetutPathWithOrg.href("/virkailija", {
+    organisaatioOid: jyväskylänNormaalikouluOid,
+  })
 
 export const openSuorittaminenOppijaView = async (oppijaOid: Oid) => {
   const selector = `.suorittaminen .table__row[data-row*="${oppijaOid}"] td:first-child a`

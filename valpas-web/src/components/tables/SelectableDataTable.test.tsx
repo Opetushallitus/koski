@@ -5,7 +5,7 @@ import { Column, Datum, DatumKey } from "./DataTable"
 import { SelectableDataTable } from "./SelectableDataTable"
 
 describe("SelectableDataTable", () => {
-  test("rivien valinta toimii oikein", () => {
+  test("rivien valinta toimii oikein", async () => {
     const onSelect = jest.fn()
     const table = createTable(
       stringsToData([
@@ -20,10 +20,10 @@ describe("SelectableDataTable", () => {
       onSelect
     )
 
-    clickRow(table, 1)
-    clickRow(table, 3)
-    clickRow(table, 5)
-    clickRow(table, 3)
+    await clickRow(table, 1)
+    await clickRow(table, 3)
+    await clickRow(table, 5)
+    await clickRow(table, 3)
 
     expect(onSelect).toHaveBeenCalledTimes(4)
     expect(onSelect).toHaveBeenNthCalledWith(1, [["1", "aapeli"]])
@@ -42,7 +42,7 @@ describe("SelectableDataTable", () => {
     ])
   })
 
-  test("monivalitse rivit, jotka ovat annetun yhtäläisyysfunktion mukaan yhtäläiset rivit", () => {
+  test("monivalitse rivit, jotka ovat annetun yhtäläisyysfunktion mukaan yhtäläiset rivit", async () => {
     const equalNames = (a: DatumKey) => (b: DatumKey) => a[1] === b[1]
     const onSelect = jest.fn()
 
@@ -51,8 +51,8 @@ describe("SelectableDataTable", () => {
       onSelect,
       equalNames
     )
-    clickRow(table, 1)
-    clickRow(table, 2)
+    await clickRow(table, 1)
+    await clickRow(table, 2)
 
     expect(onSelect).toHaveBeenCalledTimes(2)
     expect(onSelect).toHaveBeenNthCalledWith(1, [
@@ -79,12 +79,12 @@ const createTable = (
     />
   )
 
-const clickRow = (table: RenderResult, nthRow: number) => {
+const clickRow = async (table: RenderResult, nthRow: number) => {
   const checkbox = table.container.querySelector(
     `tbody tr:nth-child(${nthRow}) td:first-child input`
   )
   expect(checkbox).not.toBeNull()
-  userEvent.click(checkbox!!)
+  await userEvent.click(checkbox!!)
 }
 
 // Test data

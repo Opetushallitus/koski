@@ -385,7 +385,7 @@
             </goals>
             <configuration>
               <workingDirectory>web</workingDirectory>
-              <nodeVersion>v14.15.4</nodeVersion>
+              <nodeVersion>v16.19.0</nodeVersion>
             </configuration>
           </execution>
           <execution>
@@ -425,7 +425,7 @@
             </goals>
             <configuration>
               <workingDirectory>valpas-web</workingDirectory>
-              <nodeVersion>v14.15.4</nodeVersion>
+              <nodeVersion>v16.19.0</nodeVersion>
             </configuration>
           </execution>
           <execution>

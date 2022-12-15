@@ -4,7 +4,7 @@ import { Checkbox } from "../forms/Checkbox"
 import {
   Column,
   DataTable,
-  DataTableProps as DataTableProps,
+  DataTableProps,
   DatumKey,
   equalKeys,
 } from "./DataTable"
