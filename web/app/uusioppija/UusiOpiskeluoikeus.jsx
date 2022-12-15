@@ -527,6 +527,7 @@ const Aloituspäivä = ({ dateAtom }) => {
         value={dateAtom.get()}
         valueCallback={(value) => dateAtom.set(value)}
         validityCallback={(valid) => !valid && dateAtom.set(undefined)}
+        data-testid={'aloituspaiva-input'}
       />
     </label>
   )

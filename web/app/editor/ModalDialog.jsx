@@ -15,7 +15,8 @@ export default ({
   okTextKey = 'Ok',
   cancelTextKey = 'Peruuta',
   validP = Bacon.constant(true),
-  fullscreen = false
+  fullscreen = false,
+  testId = 'modal-dialog'
 }) => {
   submitOnEnterKey = parseBool(submitOnEnterKey, true)
   const submittedAtom = Atom(false)
@@ -42,6 +43,7 @@ export default ({
       role="dialog"
       aria-modal={true}
       aria-describedby="modal-main-content"
+      data-testid={testId}
     >
       <div className="modal-shield" onClick={() => onDismiss()} />
       <div className="modal-content">

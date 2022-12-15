@@ -27,26 +27,291 @@ test.describe('European School of Helsinki', () => {
       )
     })
 
-    test(`Lisää S7-vuosiluokan osasuoritukseen uuden alaosasuorituksen`, async ({
-      customPage,
-      eshOppijaPage
-    }) => {
-      await eshOppijaPage.clickSuoritusTabByLabel('S1', 'first')
-      await eshOppijaPage.clickSuoritusTabByLabel('S7', 'first')
-      await eshOppijaPage.avaaMuokkausnäkymä()
+    test.describe('Vuosiluokan poisto ja uudelleenluonti', () => {
+      test.setTimeout(120000)
 
-      const osasuoritus = eshOppijaPage.getOsasuoritus('Third language')
-      await osasuoritus.laajennaBtn.click()
+      test.afterEach(async ({ fixtures }) => {
+        await fixtures.reset()
+      })
 
-      const alaosasuoritus = await osasuoritus.lisääOsasuoritus('Year mark')
+      test('S3-vuosiluokka', async ({ customPage, eshOppijaPage }) => {
+        const vuosiluokka = 'S3'
 
-      await alaosasuoritus.valitseArvosana('7.5')
+        await eshOppijaPage.poistaSuoritus(vuosiluokka)
 
-      await eshOppijaPage.tallenna()
-      await customPage.waitForURL(
-        new RegExp(`koski\\/oppija\\/1\\.2\\..*\\?1\\.2\\..*\\.suoritus=S7$`)
-      )
-      await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
+        await eshOppijaPage.poistaViimeisinTila()
+
+        await eshOppijaPage.lisääVuosiluokanSuoritus(vuosiluokka, '1.8.2014')
+
+        const luokkaInput = customPage
+          .getByTestId('luokka-value')
+          .locator('input[type="text"]')
+        await luokkaInput.click()
+        await luokkaInput.fill(`${vuosiluokka}A`)
+
+        await eshOppijaPage.avaaKaikkiOsasuoritukset()
+
+        const firstLanguageOsasuoritus =
+          eshOppijaPage.getOsasuoritus('First language')
+        await firstLanguageOsasuoritus.valitseKieli('englanti')
+        await firstLanguageOsasuoritus.valitseSuorituskieli('englanti')
+        await firstLanguageOsasuoritus.syötäLaajuus('3')
+        await firstLanguageOsasuoritus.valitseArvosana('B')
+
+        const mathematicsOsasuoritus =
+          eshOppijaPage.getOsasuoritus('Mathematics')
+        await mathematicsOsasuoritus.valitseSuorituskieli('aimara')
+        await mathematicsOsasuoritus.syötäLaajuus('6')
+        await mathematicsOsasuoritus.valitseArvosana('A')
+
+        const poistettavatOsasuoritukset = [
+          'Second language',
+          'Third language',
+          'Other National Language',
+          'Host Country Language',
+          'Physical Education',
+          'Religious Education',
+          'Human Sciences',
+          'Integrated Science',
+          'Art',
+          'Music',
+          'Information and Communication Technology',
+          'Health Education'
+        ]
+        for (const os of poistettavatOsasuoritukset) {
+          const osasuoritus = eshOppijaPage.getOsasuoritus(os)
+          await osasuoritus.poista()
+        }
+
+        await eshOppijaPage.vahvistaSuoritus('1.1.2015')
+
+        await eshOppijaPage.opiskeluoikeudenTila.lisääTila(
+          '31.5.2024',
+          'Valmistunut'
+        )
+
+        await eshOppijaPage.tallenna()
+        await eshOppijaPage.expectSuoritusUrl(vuosiluokka, '')
+        await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
+      })
+
+      test('S6-vuosiluokka', async ({ customPage, eshOppijaPage }) => {
+        const vuosiluokka = 'S6'
+
+        await eshOppijaPage.poistaSuoritus(vuosiluokka)
+
+        await eshOppijaPage.poistaViimeisinTila()
+
+        await eshOppijaPage.lisääVuosiluokanSuoritus(vuosiluokka, '1.8.2017')
+
+        const luokkaInput = customPage
+          .getByTestId('luokka-value')
+          .locator('input[type="text"]')
+        await luokkaInput.click()
+        await luokkaInput.fill(`${vuosiluokka}A`)
+
+        await eshOppijaPage.avaaKaikkiOsasuoritukset()
+
+        const firstLanguageOsasuoritus =
+          eshOppijaPage.getOsasuoritus('First language')
+        await firstLanguageOsasuoritus.valitseKieli('englanti')
+        await firstLanguageOsasuoritus.valitseSuorituskieli('englanti')
+        await firstLanguageOsasuoritus.syötäLaajuus('3')
+        await firstLanguageOsasuoritus.valitseArvosana('6.5')
+
+        const mathematicsOsasuoritus =
+          eshOppijaPage.getOsasuoritus('Mathematics')
+        await mathematicsOsasuoritus.valitseSuorituskieli('aimara')
+        await mathematicsOsasuoritus.syötäLaajuus('6')
+        await mathematicsOsasuoritus.valitseArvosana('9.0')
+
+        const poistettavatOsasuoritukset = [
+          'Second language',
+          'Religious Education',
+          'Physical Education',
+          'Biology',
+          'History',
+          'Philosophy',
+          'Latin',
+          'Ancient Greek',
+          'Geography',
+          'Third language',
+          'Fourth language',
+          'Physics',
+          'Chemistry',
+          'Art',
+          'Music',
+          'Advanced studies of the first language',
+          'Advanced studies of the second language',
+          'Advanced Mathematics',
+          'Practical Physics',
+          'Practical Chemistry',
+          'Practical Biology',
+          'Information and Communication Technology',
+          'Sociology',
+          'Economics',
+          'Political Science'
+        ]
+
+        for (const os of poistettavatOsasuoritukset) {
+          const osasuoritus = eshOppijaPage.getOsasuoritus(os)
+          await osasuoritus.poista()
+        }
+
+        await eshOppijaPage.vahvistaSuoritus('1.1.2018')
+
+        await eshOppijaPage.opiskeluoikeudenTila.lisääTila(
+          '31.5.2024',
+          'Valmistunut'
+        )
+
+        await eshOppijaPage.tallenna()
+        await eshOppijaPage.expectSuoritusUrl(vuosiluokka, '')
+        await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
+      })
+
+      test('S7-vuosiluokka', async ({ customPage, eshOppijaPage }) => {
+        const vuosiluokka = 'S7'
+
+        await eshOppijaPage.poistaSuoritus(vuosiluokka)
+
+        await eshOppijaPage.poistaViimeisinTila()
+
+        await eshOppijaPage.lisääVuosiluokanSuoritus(vuosiluokka, '1.8.2018')
+
+        const luokkaInput = customPage
+          .getByTestId('luokka-value')
+          .locator('input[type="text"]')
+        await luokkaInput.click()
+        await luokkaInput.fill(`${vuosiluokka}A`)
+
+        await eshOppijaPage.avaaKaikkiOsasuoritukset()
+
+        const firstLanguageOsasuoritus =
+          eshOppijaPage.getOsasuoritus('First language')
+        await firstLanguageOsasuoritus.valitseKieli('englanti')
+        await firstLanguageOsasuoritus.valitseSuorituskieli('englanti')
+        await firstLanguageOsasuoritus.syötäLaajuus('3')
+        await firstLanguageOsasuoritus
+          .getOsasuoritus('A')
+          .valitseArvosana('0.2')
+        await firstLanguageOsasuoritus
+          .getOsasuoritus('B')
+          .valitseArvosana('0.4')
+
+        const mathematicsOsasuoritus =
+          eshOppijaPage.getOsasuoritus('Mathematics')
+        await mathematicsOsasuoritus.valitseSuorituskieli('aimara')
+        await mathematicsOsasuoritus.syötäLaajuus('6')
+        await mathematicsOsasuoritus.getOsasuoritus('A').poista()
+        await mathematicsOsasuoritus.getOsasuoritus('B').poista()
+        await (
+          await mathematicsOsasuoritus.lisääOsasuoritus('Year mark')
+        ).valitseArvosana('6.4')
+
+        const poistettavatOsasuoritukset = [
+          'Second language',
+          'Religious Education',
+          'Physical Education',
+          'Biology',
+          'History',
+          'Philosophy',
+          'Latin',
+          'Ancient Greek',
+          'Geography',
+          'Third language',
+          'Fourth language',
+          'Physics',
+          'Chemistry',
+          'Art',
+          'Music',
+          'Advanced studies of the first language',
+          'Advanced studies of the second language',
+          'Advanced Mathematics',
+          'Practical Physics',
+          'Practical Chemistry',
+          'Practical Biology',
+          'Information and Communication Technology',
+          'Sociology',
+          'Economics',
+          'Political Science'
+        ]
+        for (const os of poistettavatOsasuoritukset) {
+          const osasuoritus = eshOppijaPage.getOsasuoritus(os)
+          await osasuoritus.poista()
+        }
+
+        await eshOppijaPage.vahvistaSuoritus('1.1.2019')
+
+        await eshOppijaPage.opiskeluoikeudenTila.lisääTila(
+          '31.5.2024',
+          'Valmistunut'
+        )
+
+        await eshOppijaPage.tallenna()
+        await eshOppijaPage.expectSuoritusUrl(vuosiluokka, '')
+        await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
+      })
+
+      test('EB-tutkinto', async ({ customPage, eshOppijaPage }) => {
+        await eshOppijaPage.poistaSuoritus('European Baccalaureate', 'S7')
+
+        await eshOppijaPage.poistaViimeisinTila()
+
+        await eshOppijaPage.lisääEBTutkinnonSuoritus()
+
+        const yleisarvosanaInput = customPage
+          .getByTestId('yleisarvosana-value')
+          .locator('input[type="text"]')
+        await yleisarvosanaInput.click()
+        await yleisarvosanaInput.fill('7,77')
+
+        const firstLanguageOsasuoritus = await eshOppijaPage.lisääOsasuoritus(
+          'First language'
+        )
+        await firstLanguageOsasuoritus.valitseKieli('englanti')
+        await firstLanguageOsasuoritus.valitseSuorituskieli('englanti')
+        await firstLanguageOsasuoritus.syötäLaajuus('3')
+
+        const mathematicsOsasuoritus = await eshOppijaPage.lisääOsasuoritus(
+          'Mathematics'
+        )
+
+        await mathematicsOsasuoritus.valitseSuorituskieli('aimara')
+        await mathematicsOsasuoritus.syötäLaajuus('6')
+
+        await eshOppijaPage.avaaKaikkiOsasuoritukset()
+
+        await (
+          await firstLanguageOsasuoritus.lisääOsasuoritus('Preliminary')
+        ).valitseArvosana('6.4')
+        await (
+          await firstLanguageOsasuoritus.lisääOsasuoritus('Written')
+        ).valitseArvosana('6.98')
+        await (
+          await firstLanguageOsasuoritus.lisääOsasuoritus('Oral')
+        ).valitseArvosana('8.91')
+        await (
+          await firstLanguageOsasuoritus.lisääOsasuoritus('Final')
+        ).valitseArvosana('7.44')
+        await (
+          await mathematicsOsasuoritus.lisääOsasuoritus('Final')
+        ).valitseArvosana('7.44')
+
+        await eshOppijaPage.vahvistaSuoritus('1.1.2020')
+
+        await eshOppijaPage.opiskeluoikeudenTila.lisääTila(
+          '31.5.2024',
+          'Valmistunut'
+        )
+
+        await eshOppijaPage.tallenna()
+        await eshOppijaPage.expectSuoritusUrl(
+          'EB-tutkinto\\%20\\(European\\%20Baccalaureate\\)',
+          ''
+        )
+        await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
+      })
     })
 
     test.describe('Primary-vuosiluokan suoritukset', () => {
@@ -70,11 +335,11 @@ test.describe('European School of Helsinki', () => {
           await osasuoritus.valitseSuorituskieli('englanti')
           await osasuoritus.syötäLaajuus('4')
 
-          expect(await eshOppijaPage.tallennusBtn).not.toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).not.toBeEnabled()
 
           await osasuoritus.valitseArvosana('pass')
 
-          expect(await eshOppijaPage.tallennusBtn).toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).toBeEnabled()
 
           // Syötä osasuorituksen valinnaiset tiedot
           await osasuoritus.laajennaBtn.click()
@@ -87,11 +352,11 @@ test.describe('European School of Helsinki', () => {
             'Listening and understanding'
           )
 
-          expect(await eshOppijaPage.tallennusBtn).not.toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).not.toBeEnabled()
 
           await alaosasuoritus1.valitseArvosana(/^\+\+\+$/)
 
-          expect(await eshOppijaPage.tallennusBtn).toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).toBeEnabled()
 
           await alaosasuoritus1.laajennaBtn.click()
           await alaosasuoritus1.syötäArviointipäivä('31.7.2007')
@@ -101,11 +366,11 @@ test.describe('European School of Helsinki', () => {
             'Reading and understanding'
           )
 
-          expect(await eshOppijaPage.tallennusBtn).not.toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).not.toBeEnabled()
 
           await alaosasuoritus2.valitseArvosana('++++')
 
-          expect(await eshOppijaPage.tallennusBtn).toBeEnabled()
+          await expect(eshOppijaPage.tallennusBtn).toBeEnabled()
 
           await alaosasuoritus2.laajennaBtn.click()
           await alaosasuoritus2.syötäArviointipäivä('31.7.2007')
@@ -114,11 +379,8 @@ test.describe('European School of Helsinki', () => {
           // Tallenna opiskeluoikeus
           await eshOppijaPage.tallenna()
 
-          await customPage.waitForURL(
-            new RegExp(
-              `koski\\/oppija\\/1\\.2\\..*\\?1\\.2\\..*\\.suoritus=${vuosiluokka}$`
-            )
-          )
+          await eshOppijaPage.expectSuoritusUrl(vuosiluokka, '')
+
           await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
         })
       })
@@ -194,12 +456,8 @@ test.describe('European School of Helsinki', () => {
         // Tallenna opiskeluoikeus
         await eshOppijaPage.tallenna()
 
-        await expect(customPage).toHaveURL(
-          new RegExp(
-            `koski\\/oppija\\/1\\.2\\..*\\?1\\.2\\..*\\.suoritus=${vuosiluokka}$`
-          ),
-          { timeout: 20000 }
-        )
+        await eshOppijaPage.expectSuoritusUrl(vuosiluokka, '')
+
         await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
       })
     })
@@ -235,12 +493,10 @@ test.describe('European School of Helsinki', () => {
 
         await expect(
           await uusiOppijaPage.opiskeluoikeudenTila.getOptions()
-        ).toHaveText([
-          'Eronnut',
-          'Läsnä',
-          'Valmistunut',
-          'Väliaikaisesti keskeytynyt'
-        ])
+        ).toHaveText(
+          ['Eronnut', 'Läsnä', 'Valmistunut', 'Väliaikaisesti keskeytynyt'],
+          { timeout: 5000 }
+        )
       })
 
       test('Opiskeluoikeuden luonti onnistuu ja luo uuden opiskeluoikeuden tyhjällä EB-tutkinnon suorituksella', async ({

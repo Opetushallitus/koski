@@ -40,12 +40,18 @@ export class KoskiUusiOppijaPage {
     this.lisaaOppijaButton = page.getByLabel('Tunnus')
     this.oppilaitosTextInput = page.getByTestId('organisaatio-text-input')
     this.oppilaitosHakuInput = page.getByTestId('organisaatio-haku-input')
-    this.opintokokonaisuus = new Dropdown(
+    this.opintokokonaisuus = Dropdown.fromTestId(
       page,
       'Opintokokonaisuus-koodisto-dropdown'
     )
-    this.opiskeluoikeudenTila = new Dropdown(page, 'Opiskeluoikeuden tila-koodisto-dropdown')
-    this.opintojenRahoitus = new Dropdown(page, 'Opintojen rahoitus-koodisto-dropdown')
+    this.opiskeluoikeudenTila = Dropdown.fromTestId(
+      page,
+      'Opiskeluoikeuden tila-koodisto-dropdown'
+    )
+    this.opintojenRahoitus = Dropdown.fromTestId(
+      page,
+      'Opintojen rahoitus-koodisto-dropdown'
+    )
     this.submitBtn = page.getByRole('button', { name: 'Lisää opiskelija' })
     this.etunimet = page.getByRole('textbox', { name: 'Etunimet' })
     this.sukunimi = page.getByRole('textbox', { name: 'Sukunimi' })

@@ -1,7 +1,6 @@
 import React from 'baret'
 import { addContext, modelLookup } from '../editor/EditorModel'
 import Text from '../i18n/Text'
-import { isToimintaAlueittain } from './esh'
 import { EuropeanSchoolOfHelsinkiSuoritustaulukko } from './EuropeanSchoolOfHelsinkiSuoritustaulukko'
 import { PropertyEditor } from '../editor/PropertyEditor'
 import { isEshS7 } from '../suoritus/SuoritustaulukkoCommon'
@@ -11,7 +10,7 @@ export const EuropeanSchoolOfHelsinkiOsasuorituksetEditor = ({ model }) => {
   const osasuorituksetModel = modelLookup(model, 'osasuoritukset')
 
   return (
-    <div className="oppiaineet osasuoritukset">
+    <div className="oppiaineet osasuoritukset" data-testid="oppiaineet-list">
       {isEshS7(model) && (
         <div className="esh-s7-jaa-luokalle">
           <PropertyEditor model={model} propertyName="jääLuokalle" />
@@ -19,15 +18,8 @@ export const EuropeanSchoolOfHelsinkiOsasuorituksetEditor = ({ model }) => {
       )}
       <div>
         <h5>
-          <Text
-            name={
-              (isToimintaAlueittain(model)
-                ? 'Toiminta-alueiden'
-                : 'Oppiaineiden') + ' arvosanat'
-            }
-          />
+          <Text name={'Oppiaineiden arvosanat'} />
         </h5>
-        <p>{/* <Text name="(ESH arvosteluteksti TODO)" /> */}</p>
         {osasuorituksetModel && (
           <EuropeanSchoolOfHelsinkiSuoritustaulukko
             parentSuoritus={model}

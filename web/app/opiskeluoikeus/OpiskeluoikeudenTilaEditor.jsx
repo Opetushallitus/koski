@@ -110,7 +110,12 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
                 </label>
               </div>
               {wrappedModel.context.edit && i === 0 && (
-                <a className="remove-item" onClick={removeItem} />
+                <a
+                  role="link"
+                  className="remove-item"
+                  onClick={removeItem}
+                  data-testid="poista-tila"
+                />
               )}
             </li>
           ))}

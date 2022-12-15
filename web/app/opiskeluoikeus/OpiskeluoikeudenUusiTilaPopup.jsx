@@ -106,6 +106,7 @@ export const OpiskeluoikeudenUusiTilaPopup = ({
       onSubmit={() => submitBus.push()}
       okTextKey="Lisää"
       validP={validP}
+      testId="lisaa-opiskeluoikeusjakso"
     >
       <h2>
         <Text name="Opiskeluoikeuden tilan lisäys" />
