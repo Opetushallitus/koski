@@ -2235,6 +2235,7 @@
   "raportti-excel-default-value-eshesiopetus": "European School of Helsinki esiopetus",
   "raportti-excel-default-value-eshperusopetus": "European School of Helsinki perusopetus",
   "raportti-excel-default-value-eshlukio": "European School of Helsinki lukio",
+  "raportti-excel-default-value-ebtutkinto": "EB-tutkinnon suoritus",
   "raportti-excel-default-value-pakollinen": "Pakollinen",
   "raportti-excel-default-value-vapaavalintainen": "Vapaavalintainen",
   "excel-export-default-value-kyllä": "kyllä",
