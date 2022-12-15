@@ -12,9 +12,9 @@ import scala.reflect.runtime.universe.TypeTag
   * JSON (de)serialization using scala-schema mechanisms
   */
 object JsonSerializer {
-  def writeWithRoot[T: TypeTag](x: T, pretty: Boolean = false): String = {
+  def writeWithRoot[T: TypeTag](x: T, pretty: Boolean = false, includeClassRef: Boolean = false): String = {
     implicit val u = SensitiveDataAllowed.SystemUser
-    write(x, pretty)
+    write(x, pretty, includeClassRef)
   }
 
   def serializeWithRoot[T: TypeTag](obj: T): JValue = serializeWithUser(SensitiveDataAllowed.SystemUser)(obj)
@@ -24,16 +24,16 @@ object JsonSerializer {
     serialize(obj)
   }
 
-  def write[T: TypeTag](x: T, pretty: Boolean = false)(implicit user: SensitiveDataAllowed): String = {
+  def write[T: TypeTag](x: T, pretty: Boolean = false, includeClassRef: Boolean = false)(implicit user: SensitiveDataAllowed): String = {
     if (pretty) {
-      JsonMethods.pretty(serialize(x))
+      JsonMethods.pretty(serialize(x, includeClassRef))
     } else {
-      JsonMethods.compact(serialize(x))
+      JsonMethods.compact(serialize(x, includeClassRef))
     }
   }
 
-  def serialize[T: TypeTag](obj: T)(implicit user: SensitiveDataAllowed): JValue = {
-    Serializer.serialize(obj, SensitiveAndRedundantDataFilter(user).serializationContext)
+  def serialize[T: TypeTag](obj: T, includeClassRef: Boolean = false)(implicit user: SensitiveDataAllowed): JValue = {
+    Serializer.serialize(obj, SensitiveAndRedundantDataFilter(user).serializationContext.copy(includeClassReferences = includeClassRef))
   }
 
   def serialize(obj: Any, schema: Schema)(implicit user: SensitiveDataAllowed): JValue = {

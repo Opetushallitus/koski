@@ -71,6 +71,7 @@ trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
     implicit val session = koskiSessionOption getOrElse KoskiSpecificSession.untrustedUser
     // Ajax request won't have "text/html" in Accept header, clicking "JSON" button will
     val pretty = Option(request.getHeader("accept")).exists(_.contains("text/html"))
+    val includeClassRef = params.getOrElse("class_refs", "false") == "true"
     val tag = implicitly[TypeTag[T]]
     tag.tpe match {
       case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[RawJsonResponse].getName) =>
@@ -86,7 +87,7 @@ trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
           "mayHaveMore" -> JBool(paginated.mayHaveMore)
         ))
       case t: Any =>
-        JsonSerializer.write(x, pretty)
+        JsonSerializer.write(x, pretty, includeClassRef)
     }
   }
 }

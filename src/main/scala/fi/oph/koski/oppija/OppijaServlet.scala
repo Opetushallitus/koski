@@ -8,13 +8,14 @@ import fi.oph.koski.json.SensitiveAndRedundantDataFilter
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
-import fi.oph.koski.schema.KoskiSchema.{lenientDeserializationWithoutValidation}
+import fi.oph.koski.schema.KoskiSchema.lenientDeserializationWithoutValidation
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing, XML}
 import fi.oph.koski.virta.{VirtaHakuehtoHetu, VirtaHakuehtoKansallinenOppijanumero}
+import fi.oph.scalaschema.{SerializationContext, Serializer}
 
 import javax.servlet.http.HttpServletRequest
 import org.json4s.JsonAST.{JBool, JObject, JString}
@@ -30,6 +31,8 @@ class OppijaServlet(implicit val application: KoskiApplication)
     with NoCache
     with Timing
     with Pagination {
+
+  private def serializationContext = SerializationContext(KoskiSchema.schemaFactory, includeClassReferences = true)
 
   post("/") { putSingle(false) }
 
