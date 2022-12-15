@@ -54,7 +54,7 @@ watch-prod:
 
 .PHONY: ts-types
 ts-types:
-	cd web && curl http://localhost:7021/types/update && npx prettier --write app/types/imported
+	cd web && rm -rf app/types/fi && curl http://localhost:7021/types/update && npx prettier --write app/types
 
 ### Running tests
 

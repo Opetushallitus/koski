@@ -13,7 +13,6 @@ object SchemaExport {
     Seq(parseSchema(schema)) ++ parseAssociatedSchemas(schema)
 
   private def parseSchema(schema: Schema): TypeModel = {
-    val x = schema.metadata
     (schema match {
       case StringSchema(enumValues) =>
         enumValues match {

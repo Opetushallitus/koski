@@ -1,44 +1,67 @@
 package fi.oph.koski.typemodel
 
-import fi.oph.koski.typemodel.DataTypes.DataType
+import fi.oph.koski.typemodel.ClassNameResolver.{nameToAbsolutePath, nameToRelativePath, safeFilename, safePath}
 import fi.oph.koski.util.JsStringInterpolation.{JsStringInterpolation, parseExpression}
-import fi.oph.koski.util.RawJsString
 
+import java.nio.file.Paths
 import scala.annotation.tailrec
 
 object TypescriptTypes {
-  def build(types: Seq[TypeModelWithClassName], options: Options = Options()): String =
-    types
-      .groupBy(_.packageName)
-      .map { case (packageName, types) => toPackageDefinitions(packageName, types, options) }
-      .mkString("\n\n")
+  def build(types: Seq[TypeModelWithClassName], options: Options = Options()): Seq[TsFile] =
+    types.map(model => buildFile(model, types, options))
 
-  private def toPackageDefinitions(
-    packageName: String,
+  private def buildFile(
+    typeModel: TypeModelWithClassName,
     types: Seq[TypeModelWithClassName],
     options: Options,
-  ): String = {
-    var result = "/*\n" +
-      s" * ${packageName}\n" +
-      " */\n\n" +
-        types.map(t => toTypeDefinition(t, options)).mkString("\n\n")
+  ): TsFile = {
+    var content = toImports(typeModel, options) + "\n\n"
 
-    if (options.exportTypeGuards) {
-      result = result +
-        "\n\n// Type guards\n\n" ++
-        types.map(t => typeGuard(t, options.exportClassNamesAs.get)).mkString("\n\n")
-    }
+    content += toTypeDefinition(typeModel, options) + "\n\n"
 
     if (options.exportConstructors) {
-      result = result +
-      "\n\n// Object constructors\n\n" ++
-        types.collect { case o: ObjectType => o }.map(o => objectConstructor(o, types, options)).mkString("\n\n")
+      content += (typeModel match {
+        case o: ObjectType => objectConstructor(o, types, options) + "\n\n"
+        case _ => ""
+      })
     }
 
-    result
-      .split("\n")
-      .map(line => line.stripTrailing())
+    if (options.exportTypeGuards) {
+      content += typeGuard(typeModel, options.exportClassNamesAs.get) + "\n\n"
+    }
+
+    TsFile(
+      directory = safePath(nameToRelativePath(typeModel.packageName)),
+      fileName = safeFilename(s"${typeModel.className}.ts"),
+      content = content,
+    )
+  }
+
+  private def toImports(
+    model: TypeModelWithClassName,
+    options: Options,
+  ): String = {
+    def importRow(fullClassName: String): String = {
+      val className = ClassNameResolver.className(fullClassName)
+      val imports = List(
+        Some(className),
+        if (options.exportTypeGuards && model.isInstanceOf[UnionType]) Some(s"is$className") else None
+      ).flatten
+      s"""import { ${imports.mkString(", ")} } from "${getImportPath(model.fullClassName, fullClassName)}""""
+    }
+
+    model
+      .dependencies
+      .filterNot(_ == model.fullClassName)
+      .map(importRow)
       .mkString("\n")
+  }
+
+  private def getImportPath(importerFullClassName: String, importedFullClassName: String): String = {
+    val importer = Paths.get(nameToAbsolutePath(importerFullClassName))
+    val imported = Paths.get(nameToAbsolutePath(importedFullClassName))
+    val path = safePath(importer.getParent.relativize(imported).toString)
+    if (path.startsWith(".")) path else s"./$path"
   }
 
   private def toTypeDefinition(
@@ -50,7 +73,19 @@ object TypescriptTypes {
       .map(_.genericsList)
       .getOrElse("")
 
-    s"export type ${model.className}$genericsHeader = ${toFirstLevelDefinition(model, options)}"
+    val jsDoc = if (options.exportJsDoc) {
+      val jsDocLines =
+        (if (model.description.nonEmpty) model.description else List(model.className)) ++ List(
+          "",
+          s"@see `${model.fullClassName}`",
+        )
+
+      (List("/**") ++ jsDocLines.map(l => s" * $l") ++ List(" */")).mkString("\n")
+    } else {
+      ""
+    }
+
+    s"$jsDoc\nexport type ${model.className}$genericsHeader = ${toFirstLevelDefinition(model, options)}"
   }
 
   private def toFirstLevelDefinition(
@@ -90,7 +125,7 @@ object TypescriptTypes {
   ): String = {
     val generic = options.getGeneric(obj)
     val metaProps = options.exportClassNamesAs.toList
-      .map(key => toPropertyField(key, LiteralType(obj.className), generic, options))
+      .map(key => toPropertyField(key, LiteralType(obj.fullClassName), generic, options))
     val objProps = obj.properties
       .map(prop => toPropertyField(prop._1, prop._2, generic, options))
     val props = (metaProps ++ objProps).mkString(",\n")
@@ -158,7 +193,7 @@ object TypescriptTypes {
 
   private def objectConstructor(obj: ObjectType, allTypes: Seq[TypeModelWithClassName], options: Options): String = {
     def getClassProp(t: TypeModelWithClassName): Seq[(String, ObjectType.ObjectDefaultNode)] =
-      options.exportClassNamesAs.toList.map(key => (key, ObjectType.ObjectDefaultsProperty(t.className)))
+      options.exportClassNamesAs.toList.map(key => (key, ObjectType.ObjectDefaultsProperty(t.fullClassName)))
 
     def resolveKnownProps(o: ObjectType): Map[String, Any] =
       o.properties
@@ -210,6 +245,7 @@ object TypescriptTypes {
     exportClassNamesAs: Option[String] = None,
     exportTypeGuards: Boolean = false,
     exportConstructors: Boolean = false,
+    exportJsDoc: Boolean = false,
   ) {
     def getGeneric(model: TypeModel): Option[GenericsObject] =
       model match {
@@ -244,4 +280,10 @@ object TypescriptTypes {
   ) {
     def headerStr: String = s"$name extends $extend = $extend"
   }
+
+  case class TsFile(
+    directory: String,
+    fileName: String,
+    content: String
+  )
 }

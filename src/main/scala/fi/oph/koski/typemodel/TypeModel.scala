@@ -1,9 +1,9 @@
 package fi.oph.koski.typemodel
 
 import fi.oph.koski.typemodel.DataTypes.DataType
-import fi.oph.koski.typemodel.ObjectType.{ObjectDefaultNode, ObjectDefaultsProperty, ObjectDefaultsMap}
+import fi.oph.koski.typemodel.ObjectType.{ObjectDefaultNode, ObjectDefaultsMap, ObjectDefaultsProperty}
 import fi.oph.scalaschema.Metadata
-import fi.oph.scalaschema.annotation.{DefaultValue, MaxValue, MinValue}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxValue, MinValue, Title}
 
 object DataTypes extends Enumeration {
   type DataType = Value
@@ -25,17 +25,25 @@ object DataTypes extends Enumeration {
 
 trait TypeModel {
   def `type`: DataTypes.DataType
+  def description: Seq[String] = Seq.empty
+
   def addMetadata(metadata: Metadata): TypeModel = this
   def withMetadata(metadata: List[Metadata]): TypeModel =
     metadata.foldLeft(this)((self, meta) => self.addMetadata(meta))
 
   def unambigiousDefaultValue: Option[Any] = None
+  def dependencies: Seq[String] = Seq.empty
+
+  protected def dependenciesFrom(model: TypeModel): Seq[String] = model match {
+    case t: TypeModelWithClassName => Seq(t.fullClassName)
+    case _ => Seq.empty
+  }
 }
 
 trait TypeModelWithClassName extends TypeModel {
   def fullClassName: String
-  def packageName: String = fullClassName.splitAt(fullClassName.lastIndexOf("."))._1
-  def className: String = fullClassName.splitAt(fullClassName.lastIndexOf(".") + 1)._2
+  def packageName: String = ClassNameResolver.packageName(fullClassName)
+  def className: String = ClassNameResolver.className(fullClassName)
 }
 
 // Primary types
@@ -96,6 +104,7 @@ case class OptionalType(
 ) extends TypeModel {
   def `type`: DataType = DataTypes.Optional
   override def unambigiousDefaultValue: Option[Option[_]] = Some(None)
+  override def dependencies: Seq[String] = item.dependencies
 }
 
 case class ArrayType(
@@ -103,6 +112,7 @@ case class ArrayType(
 ) extends TypeModel {
   def `type`: DataType = DataTypes.Array
   override def unambigiousDefaultValue: Option[List[_]] = Some(List())
+  override def dependencies: Seq[String] = items.dependencies
 }
 
 case class RecordType(
@@ -110,11 +120,13 @@ case class RecordType(
 ) extends TypeModel {
   def `type`: DataType = DataTypes.Record
   override def unambigiousDefaultValue: Option[Any] = Some(Map())
+  override def dependencies: Seq[String] = items.dependencies
 }
 
 case class ObjectType(
   fullClassName: String,
   properties: Map[String, TypeModel],
+  override val description: Seq[String] = Seq.empty,
 ) extends TypeModelWithClassName {
   def `type`: DataType = DataTypes.Object
 
@@ -125,6 +137,11 @@ case class ObjectType(
         case p: Any => p
       }
     )
+
+  override def addMetadata(metadata: Metadata): TypeModel = metadata match {
+    case Description(text) => this.copy(description = (description :+ text).distinct)
+    case _ => this
+  }
 
   override def unambigiousDefaultValue: Option[ObjectDefaultsMap] = {
     val propDefaults = properties.mapValues {
@@ -138,6 +155,8 @@ case class ObjectType(
       None
     }
   }
+
+  override def dependencies: Seq[String] = Seq(fullClassName) ++ properties.values.flatMap(_.dependencies).toSeq.distinct
 }
 
 object ObjectType {
@@ -161,6 +180,7 @@ case class ClassRef(
   def `type`: DataType = DataTypes.Ref
   def resolve(types: Seq[TypeModelWithClassName]): Option[TypeModelWithClassName] =
     types.find(_.fullClassName == fullClassName)
+  override def dependencies: Seq[String] = Seq(fullClassName)
 }
 
 // Composition types
@@ -170,6 +190,7 @@ case class UnionType(
   anyOf: List[TypeModel],
 ) extends TypeModelWithClassName {
   def `type`: DataType = DataTypes.Union
+  override def dependencies: Seq[String] = Seq(fullClassName) ++ anyOf.flatMap(_.dependencies).distinct
 }
 
 case class EnumType[T](
@@ -177,12 +198,14 @@ case class EnumType[T](
   enumValues: List[T],
 ) extends TypeModel {
   def `type`: DataType = DataTypes.Enum
-  override def unambigiousDefaultValue: Option[T] =
+  override def unambigiousDefaultValue: Option[T] = {
     if (enumValues.length == 1) {
       Some(enumValues.head)
     } else {
       None
     }
+  }
+  // TODO: override def dependencies: Seq[String] = ???
 }
 
 // Undefined types

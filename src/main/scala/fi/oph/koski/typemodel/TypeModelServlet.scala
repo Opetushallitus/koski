@@ -7,7 +7,7 @@ import fi.oph.koski.sso.KoskiSpecificSSOSupport
 
 class TypeModelServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with KoskiSpecificSSOSupport with NoCache {
   get("/update") {
-    TsFileUpdater.updateAll()
+    TsFileUpdater.updateTypeFiles()
     "Files written"
   }
 }

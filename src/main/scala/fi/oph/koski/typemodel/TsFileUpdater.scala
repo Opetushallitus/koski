@@ -4,30 +4,32 @@ import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 
 import java.io.{BufferedWriter, File, FileWriter}
+import java.nio.file.{Files, Paths}
 
 object TsFileUpdater {
-  def updateAll(): Unit = {
-    updateKoskiSchema()
-  }
-
-  def updateKoskiSchema(): Unit = {
+  def updateTypeFiles(): Unit = {
     val types = SchemaExport.toTypeDef(KoskiSchema.schema)
-    val source = TypescriptTypes.build(types, options)
-    writeFile(s"$path/schema.ts", source)
+    TypescriptTypes.build(types, options).foreach(writeFile)
   }
 
-  private def writeFile(name: String, source: String): Unit = {
-    val file = new File(name)
+  private def writeFile(tsFile: TypescriptTypes.TsFile): Unit = {
+    val directory = Paths.get(targetPath, tsFile.directory)
+    val filePath = Paths.get(directory.toString, tsFile.fileName)
+
+    Files.createDirectories(directory)
+    val file = new File(filePath.toString)
     val bw = new BufferedWriter(new FileWriter(file))
-    bw.write(source)
+    bw.write(tsFile.content)
     bw.close()
   }
 
-  def options: Options = Options(
+  private def options: Options = Options(
     generics = KoskiSpecificTsGenerics.generics,
     exportClassNamesAs = Some("$class"),
     exportTypeGuards = true,
     exportConstructors = true,
+    exportJsDoc = true,
   )
-  def path: String = "web/app/types/imported"
+
+  def targetPath: String = "web/app/types"
 }
