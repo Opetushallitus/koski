@@ -35,59 +35,6 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeus(
     suoritukset.sortBy(_.suorituksenJärjestysKriteeriAlustaLoppuun)
 }
 
-object EuropeanSchoolOfHelsinkiOpiskeluoikeus {
-
-  // TODO: TOR-1685 Saatetaan tarvita
-  /*
-  def onPeruskouluaVastaavaInternationalSchoolinSuoritus(
-    suorituksenTyyppi: String,
-    koulutusmoduulinKoodiarvo: String
-  ): Boolean =
-  {
-    (suorituksenTyyppi, koulutusmoduulinKoodiarvo) match {
-      case ("internationalschoolpypvuosiluokka", vuosiluokka) => true
-      case ("internationalschoolmypvuosiluokka", vuosiluokka) if vuosiluokka != "10" => true
-      case _ => false
-    }
-  }
-
-  def onLukiotaVastaavaInternationalSchoolinSuoritus(
-    suorituksenTyyppi: String,
-    koulutusmoduulinKoodiarvo: String
-  ): Boolean =
-  {
-    (suorituksenTyyppi, koulutusmoduulinKoodiarvo) match {
-      case ("internationalschooldiplomavuosiluokka", _) => true
-      case ("internationalschoolmypvuosiluokka", "10") => true
-      case _ => false
-    }
-  }
-
-  def onPeruskoulunPäättötodistustaVastaavaInternationalSchoolinSuoritus(
-    suorituksenTyyppi: String,
-    koulutusmoduulinKoodiarvo: String
-  ): Boolean =
-  {
-    (suorituksenTyyppi, koulutusmoduulinKoodiarvo) match {
-      case ("internationalschoolmypvuosiluokka", "9") => true
-      case _ => false
-    }
-  }
-
-  def onLukionPäättötodistustaVastaavaInternationalSchoolinSuoritus(
-    suorituksenTyyppi: String,
-    koulutusmoduulinKoodiarvo: String
-  ): Boolean =
-  {
-    (suorituksenTyyppi, koulutusmoduulinKoodiarvo) match {
-      case ("internationalschooldiplomavuosiluokka", "12") => true
-      case _ => false
-    }
-  }
-  */
-}
-
-
 /******************************************************************************
  * TILAT
  *****************************************************************************/
@@ -443,8 +390,6 @@ case class SecondaryUpperOppiaineenSuoritusS7(
 case class EBTutkinnonOsasuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: SecondaryOppiaine,
-  // TODO: TOR-1685: Voiko tämä olla EB-tutkinnossa?
-  // yksilöllistettyOppimäärä: Boolean = false,
   @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ebtutkinnonosasuoritus", koodistoUri = "suorituksentyyppi"),
   suorituskieli: Koodistokoodiviite,
