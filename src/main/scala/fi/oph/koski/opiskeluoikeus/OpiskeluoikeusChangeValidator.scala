@@ -1,5 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
+import com.typesafe.config.Config
 import fi.oph.koski.eperusteetvalidation.EPerusteetOpiskeluoikeusChangeValidator
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -7,13 +8,22 @@ import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.validation.DateValidation.validateOpiskeluoikeudenPäivämäärät
 import fi.oph.koski.validation.TutkintokoulutukseenValmentavaKoulutusValidation
 
-class OpiskeluoikeusChangeValidator(organisaatioRepository: OrganisaatioRepository, ePerusteetChangeValidator: EPerusteetOpiskeluoikeusChangeValidator) {
+import java.time.LocalDate
+
+class OpiskeluoikeusChangeValidator(
+  organisaatioRepository: OrganisaatioRepository,
+  ePerusteetChangeValidator: EPerusteetOpiskeluoikeusChangeValidator,
+  config: Config
+) {
+  val validaatioViimeinenPäiväEnnenVoimassaoloa = LocalDate.parse(config.getString("validaatiot.paivitetynOpiskeluoikeudenPaivamaarienValidaatioAstuuVoimaan")).minusDays(1)
+  val päivitetynOpiskeluoikeudenPäivämäärienValidaatioAstunutVoimaan = LocalDate.now().isAfter(validaatioViimeinenPäiväEnnenVoimassaoloa)
+
   def validateOpiskeluoikeusChange(oldState: KoskeenTallennettavaOpiskeluoikeus, newState: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(
       validateOpiskeluoikeudenTyypinMuutos(oldState, newState),
       validateLähdejärjestelmäIdnPoisto(oldState, newState),
       validateOppilaitoksenMuutos(oldState, newState),
-      validateOpiskeluoikeudenPäivämäärät(newState),
+      if (päivitetynOpiskeluoikeudenPäivämäärienValidaatioAstunutVoimaan) validateOpiskeluoikeudenPäivämäärät(newState) else HttpStatus.ok,
       ePerusteetChangeValidator.validateVanhanOpiskeluoikeudenTapaukset(oldState, newState),
       TutkintokoulutukseenValmentavaKoulutusValidation.validateJärjestämislupaEiMuuttunut(oldState, newState)
     )

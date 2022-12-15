@@ -1,5 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
+import com.typesafe.config.Config
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteetvalidation.EPerusteetOpiskeluoikeusChangeValidator
 import fi.oph.koski.henkilo._
@@ -21,7 +22,8 @@ class PostgresOpiskeluoikeusRepositoryV2(
   henkilöRepository: OpintopolkuHenkilöRepository,
   perustiedotSyncRepository: PerustiedotSyncRepository,
   organisaatioRepository: OrganisaatioRepository,
-  ePerusteetValidator: EPerusteetOpiskeluoikeusChangeValidator
+  ePerusteetValidator: EPerusteetOpiskeluoikeusChangeValidator,
+  config: Config
 ) extends PostgresOpiskeluoikeusRepository(
     db,
     historyRepository,
@@ -30,7 +32,8 @@ class PostgresOpiskeluoikeusRepositoryV2(
     henkilöRepository,
     perustiedotSyncRepository,
     organisaatioRepository,
-    ePerusteetValidator
+    ePerusteetValidator,
+    config
   ) {
 
   override protected def createOrUpdateActionBasedOnDbResult(oppijaOid: PossiblyUnverifiedHenkilöOid,

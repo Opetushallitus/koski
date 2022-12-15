@@ -1,5 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
+import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
@@ -34,9 +35,10 @@ class PostgresOpiskeluoikeusRepository(
   henkilöRepository: OpintopolkuHenkilöRepository,
   perustiedotSyncRepository: PerustiedotSyncRepository,
   organisaatioRepository: OrganisaatioRepository,
-  ePerusteetChangeValidator: EPerusteetOpiskeluoikeusChangeValidator
+  ePerusteetChangeValidator: EPerusteetOpiskeluoikeusChangeValidator,
+  config: Config
 ) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with QueryMethods with Logging {
-  lazy val validator = new OpiskeluoikeusChangeValidator(organisaatioRepository, ePerusteetChangeValidator)
+  lazy val validator = new OpiskeluoikeusChangeValidator(organisaatioRepository, ePerusteetChangeValidator, config)
   lazy val errorRepository = new OpiskeluoikeushistoriaErrorRepository(db)
 
   override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A] = {
