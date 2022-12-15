@@ -128,7 +128,7 @@ export const EshSuoritusColumn: ESHSuoritusColumn = {
   ),
   renderData: ({ model, showTila, onExpand, hasProperties, expanded }) => {
     const koulutusmoduuli = wrapOptional(modelLookup(model, 'koulutusmoduuli'))
-    const titleAsExpandLink = false
+    const titleAsExpandLink = hasProperties && !model.context.edit
     const kieliaine = isEshKieliaine(koulutusmoduuli)
     const koulutusmoduuliTunniste = modelData(koulutusmoduuli, 'tunniste.nimi')
 
