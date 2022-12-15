@@ -17,10 +17,14 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
   post("/:oid") {
     requireKansalainen
     renderStatus(
-      application.suostumuksenPeruutusService.peruutaSuostumus(getStringParam("oid"))(session)
+      application.suostumuksenPeruutusService.peruutaSuostumus(
+        oid = getStringParam("oid"),
+        suorituksenTyyppi = getOptionalStringParam("suorituksentyyppi")
+      )(session)
     )
   }
 
+  // TODO: optional suorituksen tyyppi mukaan
   post("/suoritusjakoTehty/:oid") {
     requireKansalainen
     if (application.suostumuksenPeruutusService.suoritusjakoTekemättäWithAccessCheck(getStringParam("oid"))(session).isOk) {

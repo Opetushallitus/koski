@@ -10,6 +10,10 @@ import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema.{Opiskeluoikeus, SuostumusPeruttavissaOpiskeluoikeudelta}
 import slick.jdbc.GetResult
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot
+import fi.oph.koski.suoritusjako.SuoritusIdentifier
 
 case class SuostumuksenPeruutusService(protected val application: KoskiApplication) extends Logging with QueryMethods {
 
@@ -39,30 +43,101 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   def etsiPoistetut(oids: Seq[String]): Seq[PoistettuOpiskeluoikeusRow] =
     runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(r => r.oid inSet oids).result)
 
-  def peruutaSuostumus(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
+  def peruutaSuostumus(
+    oid: String,
+    suorituksenTyyppi: Option[String]
+  )(implicit user: KoskiSpecificSession): HttpStatus = {
     henkilöRepository.findByOid(user.oid) match {
       case Some(henkilö) =>
         val opiskeluoikeudet = opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get
-        opiskeluoikeudet.filter(
-          suostumusPeruttavissa(_)
-        ).find (_.oid.contains(oid)) match {
-          case Some(oo) =>
-            val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
-            runDbSync(
-              DBIO.seq(
-                OpiskeluoikeusPoistoUtils.poistaOpiskeluOikeus(opiskeluoikeudenId, oid, oo, oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1), henkilö.oid, false),
-                application.perustiedotSyncRepository.addDeleteToSyncQueue(opiskeluoikeudenId)
-              )
-            )
-            teeLogimerkintäSähköpostinotifikaatiotaVarten(oid)
-            AuditLog.log(KoskiAuditLogMessage(KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
-            HttpStatus.ok
-          case None =>
+        val opiskeluoikeus = opiskeluoikeudet.filter(oo =>
+          suostumusPeruttavissa(oo)
+        ).find (_.oid.contains(oid))
+
+        (opiskeluoikeus, suorituksenTyyppi) match {
+          // Jos enemmän kuin yksi suoritus ja suorituksen tyyppi annettu, peru suostumus suoritukselta
+          case (Some(oo), Some(tyyppi)) if oo.suoritukset.map(_.tyyppi.koodiarvo).contains(tyyppi) && oo.suoritukset.size > 1 =>
+            peruutaSuostumusSuoritukselta(oid, user, henkilö, oo, tyyppi)
+          // Jos täsmälleen yksi suoritus ja suorituksen tyyppi annettu, peru suostumus opiskeluoikeudelta
+          case (Some(oo), Some(tyyppi)) if oo.suoritukset.map(_.tyyppi.koodiarvo).contains(tyyppi) => peruutaSuostumusOpiskeluoikeudelta(oid, user, henkilö, oo)
+          // Jos suorituksen tyyppiä ei annettu, peru suostumus opiskeluoikeudelta
+          case (Some(oo), None) => peruutaSuostumusOpiskeluoikeudelta(oid, user, henkilö, oo)
+          case (_, _) =>
             KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako, " +
-              s"viranomainen on käyttänyt opiskeluoikeuden tietoja päätöksenteossa tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua.")
+              s"viranomainen on käyttänyt opiskeluoikeuden tietoja päätöksenteossa, opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua " +
+              s"tai opiskeluoikeudelta ei löytynyt annetun syötteen tyyppistä päätason suoritusta.")
         }
       case None => KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
     }
+  }
+
+  private def peruutaSuostumusSuoritukselta(
+    oid: String,
+    user: KoskiSpecificSession,
+    henkilö: LaajatOppijaHenkilöTiedot,
+    oo: Opiskeluoikeus,
+    tyyppi: String
+  ): HttpStatus = {
+    val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
+    val perustiedot = OpiskeluoikeudenPerustiedot
+      .makePerustiedot(opiskeluoikeudenId, oo, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
+    runDbSync(
+      DBIO.seq(
+        OpiskeluoikeusPoistoUtils
+          .poistaPäätasonSuoritus(
+            opiskeluoikeudenId,
+            oid,
+            oo,
+            tyyppi,
+            oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1),
+            henkilö.oid,
+            false,
+            application.historyRepository
+          ),
+        application.perustiedotSyncRepository.addToSyncQueue(perustiedot, true)
+      )
+    )
+    teeLogimerkintäSähköpostinotifikaatiotaVarten(oid)
+    AuditLog.log(
+      KoskiAuditLogMessage(
+        KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN,
+        user,
+        Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid, KoskiAuditLogMessageField.suorituksenTyyppi -> tyyppi)
+      )
+    )
+    HttpStatus.ok
+  }
+
+  private def peruutaSuostumusOpiskeluoikeudelta(
+    oid: String,
+    user: KoskiSpecificSession,
+    henkilö: LaajatOppijaHenkilöTiedot,
+    oo: Opiskeluoikeus
+  ): HttpStatus = {
+    val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
+    runDbSync(
+      DBIO.seq(
+        OpiskeluoikeusPoistoUtils
+          .poistaOpiskeluOikeus(
+            opiskeluoikeudenId,
+            oid,
+            oo,
+            oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1),
+            henkilö.oid,
+            false
+          ),
+        application.perustiedotSyncRepository.addDeleteToSyncQueue(opiskeluoikeudenId)
+      )
+    )
+    teeLogimerkintäSähköpostinotifikaatiotaVarten(oid)
+    AuditLog.log(
+      KoskiAuditLogMessage(
+        KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN,
+        user,
+        Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)
+      )
+    )
+    HttpStatus.ok
   }
 
   def teeTestimerkintäSähköpostinotifikaatiotaVarten(): Unit = {

@@ -3,10 +3,14 @@ package fi.oph.koski.validation
 import com.typesafe.config.Config
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
+import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 
 object TaiteenPerusopetusValidation {
 
-  def validateOpiskeluoikeus(config: Config)(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+  def validateOpiskeluoikeus(config: Config)(
+    oo: KoskeenTallennettavaOpiskeluoikeus,
+    suostumuksenPeruutusService: SuostumuksenPeruutusService
+  ): HttpStatus = {
     oo match {
       case oo: TaiteenPerusopetuksenOpiskeluoikeus =>
         HttpStatus.fold(
@@ -14,6 +18,7 @@ object TaiteenPerusopetusValidation {
           validateTaiteenalat(oo),
           validateHyväksytystiSuoritettuPäätasonSuoritus(oo),
           validateSuoritustenLaajuus(oo),
+          validateSuostumusPeruttuSuoritukselta(oo, suostumuksenPeruutusService),
         )
       case _ => HttpStatus.ok
     }
@@ -92,5 +97,22 @@ object TaiteenPerusopetusValidation {
         )
       }
     )
+  }
+
+  def validateSuostumusPeruttuSuoritukselta(
+    oo: TaiteenPerusopetuksenOpiskeluoikeus,
+    suostumuksenPeruutusService: SuostumuksenPeruutusService
+  ): HttpStatus = {
+    val onPoistettuSuoritustyyppi = oo.oid match {
+      case Some(oid) => suostumuksenPeruutusService.etsiPoistetut(Seq(oid)).exists { poistettuOo =>
+        val suoritusTyypit = oo.suoritukset.map(_.tyyppi.koodiarvo)
+        poistettuOo.suoritustyypit.exists(poistettuSuoritusTyyppi => suoritusTyypit.contains(poistettuSuoritusTyyppi))
+      }
+      case None => false
+    }
+
+    HttpStatus.validate(!onPoistettuSuoritustyyppi){
+      KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
+    }
   }
 }
