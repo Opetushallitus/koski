@@ -38,6 +38,7 @@ import fi.oph.koski.suostumus.SuostumuksenPeruutusServlet
 import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
+import fi.oph.koski.typemodel.TypeModelServlet
 import fi.oph.koski.util.{Futures, Timing}
 import fi.oph.koski.valpas.kela.ValpasKelaServlet
 import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
@@ -164,14 +165,18 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
       mount("/koski/api/frontendvalvonta", new FrontendValvontaRaportointiServlet)
     }
 
-    if (Environment.isLocalDevelopmentEnvironment(application.config) && application.config.hasPath("oppijaRaamitProxy")) {
-      val proxyPrefix = "/oppija-raamit"
-      mount(proxyPrefix, new RaamiProxyServlet(application.config.getString("oppijaRaamitProxy"), "", application))
-    }
+    if (Environment.isLocalDevelopmentEnvironment(application.config)) {
+      if (application.config.hasPath("oppijaRaamitProxy")) {
+        val proxyPrefix = "/oppija-raamit"
+        mount(proxyPrefix, new RaamiProxyServlet(application.config.getString("oppijaRaamitProxy"), "", application))
+      }
 
-    if (Environment.isLocalDevelopmentEnvironment(application.config) && application.config.hasPath("virkailijaRaamitProxy")) {
-      val proxyPrefix = "/virkailija-raamit"
-      mount(proxyPrefix, new RaamiProxyServlet(application.config.getString("virkailijaRaamitProxy"), "", application))
+      if (application.config.hasPath("virkailijaRaamitProxy")) {
+        val proxyPrefix = "/virkailija-raamit"
+        mount(proxyPrefix, new RaamiProxyServlet(application.config.getString("virkailijaRaamitProxy"), "", application))
+      }
+
+      mount("/types", new TypeModelServlet())
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete

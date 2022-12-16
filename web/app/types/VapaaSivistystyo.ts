@@ -1,13 +1,18 @@
-import { PaikallinenKoodi, LocalizedString, LaajuusOpintopisteissä } from "./common"
+import {
+  PaikallinenKoodi,
+  LocalizedString,
+  LaajuusOpintopisteissä
+} from './common'
 
 export type OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus = {
-    tunniste: PaikallinenKoodi,
-    kuvaus: LocalizedString,
-    laajuus: LaajuusOpintopisteissä  
+  tunniste: PaikallinenKoodi
+  kuvaus: LocalizedString
+  laajuus: LaajuusOpintopisteissä
 }
 
-export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus = {
+export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus =
+  {
     tunniste: PaikallinenKoodi
     kuvaus: LocalizedString
     laajuus?: LaajuusOpintopisteissä
-}
+  }

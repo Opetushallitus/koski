@@ -128,7 +128,8 @@ jobs:
             fi.oph.koski.opiskeluoikeus, \
             fi.oph.koski.oppilaitos, \
             fi.oph.koski.oppivelvollisuustieto, \
-            fi.oph.koski.organisaatio
+            fi.oph.koski.organisaatio \
+            fi.oph.koski.typemodel
 
   run_backend_tests_other_2:
     name: Backend (other 2/2)
