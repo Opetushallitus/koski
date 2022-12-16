@@ -17,6 +17,7 @@ class FixtureServlet(implicit val application: KoskiApplication) extends KoskiSp
       case _: NoSuchElementException => true
       case _: Exception => true
     }
+    
     application.fixtureCreator.resetFixtures(reloadRaportointikanta = reloadRaportointikanta)
     "ok"
   }
