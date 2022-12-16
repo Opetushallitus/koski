@@ -4,6 +4,11 @@ import Http from '../util/http'
 
 export const eshSallitutRahoituskoodiarvot = ['6']
 
+export const isEshAlaosasuoritus = (suoritus) =>
+  suoritus.value.classes.includes(
+    'europeanschoolofhelsinkiosasuorituksenalaosasuoritus'
+  )
+
 export const jääLuokalle = (suoritus) =>
   modelData(suoritus, 'jääLuokalle') === true
 

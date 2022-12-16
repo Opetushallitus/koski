@@ -90,6 +90,10 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
       })
     )
 
+    const showTila =
+      parentSuoritus.context.huollettava !== true &&
+      parentSuoritus.context.kansalainen !== true
+
     return (
       (suoritukset.length > 0 || context.edit) && (
         <div className="suoritus-taulukko" data-testid="suoritus-taulukko">
@@ -129,7 +133,7 @@ export class EuropeanSchoolOfHelsinkiSuoritustaulukko extends React.Component {
                         expanded={isExpandedP(suoritus)}
                         onExpand={setExpanded(suoritus)}
                         groupId={groupId}
-                        showTila={true}
+                        showTila={showTila}
                         columns={columns}
                         nestedLevel={nestedLevel + 1}
                       />

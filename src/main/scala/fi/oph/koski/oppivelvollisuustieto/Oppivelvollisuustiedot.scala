@@ -188,9 +188,8 @@ object Oppivelvollisuustiedot {
               oppivelvolliset_henkilot
               join #${s.name}.r_opiskeluoikeus opiskeluoikeus on oppivelvolliset_henkilot.oppija_oid = opiskeluoikeus.oppija_oid
               join #${s.name}.r_paatason_suoritus paatason_suoritus on opiskeluoikeus.opiskeluoikeus_oid = paatason_suoritus.opiskeluoikeus_oid
-            where paatason_suoritus.suorituksen_tyyppi = 'europeanschoolofhelsinkivuosiluokkasecondaryupper'
-            -- TODO: TOR-1685: Onko tämä oikein, vai tuleeko erillinen EB-tutkinto, jonka vahvistusta pitäisi tarkkailla?
-              and paatason_suoritus.koulutusmoduuli_koodiarvo = 'S7'
+            where paatason_suoritus.suorituksen_tyyppi = 'ebtutkinto'
+              and paatason_suoritus.koulutusmoduuli_koodiarvo = '301104'
               and paatason_suoritus.vahvistus_paiva is not null
 
         ),
