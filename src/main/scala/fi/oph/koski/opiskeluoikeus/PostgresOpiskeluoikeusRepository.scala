@@ -373,7 +373,7 @@ class PostgresOpiskeluoikeusRepository(
                   tallennettavaOpiskeluoikeus.tyyppi.koodiarvo == "taiteenperusopetus")
             ) {
               OpiskeluoikeusPoistoUtils
-                .poistaOpiskeluOikeus(id, oid, tallennettavaOpiskeluoikeus, nextVersionumero, oldRow.oppijaOid, true)
+                .poistaOpiskeluOikeus(id, oid, tallennettavaOpiskeluoikeus, nextVersionumero, oldRow.oppijaOid, true, None)
                 .map(_ => Right(Updated(
                   id,
                   oid,

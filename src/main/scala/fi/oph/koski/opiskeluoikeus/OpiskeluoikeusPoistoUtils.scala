@@ -22,23 +22,24 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
     oo: Opiskeluoikeus,
     versionumero: Versionumero,
     oppijaOid: String,
-    mitätöity: Boolean
+    mitätöity: Boolean,
+    aiemminPoistettuRivi: Option[PoistettuOpiskeluoikeusRow]
   ): dbio.DBIOAction[Unit, NoStream, Write with Effect.Transactional] = {
     DBIO.seq(
       OpiskeluoikeusPoistoUtils.opiskeluoikeudenPoistonQuery(oid, versionumero),
-      poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo, oppijaOid, mitätöity, None),
+      poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo, oppijaOid, mitätöity, None, aiemminPoistettuRivi),
       opiskeluoikeudenHistorianPoistonQuery(id)
     ).transactionally
   }
 
   def poistaPäätasonSuoritus(
     opiskeluoikeusId: Int,
-    opiskeluoikeusOid: String,
     oo: Opiskeluoikeus,
     suorituksenTyyppi: String,
     versionumero: Versionumero,
     oppijaOid: String,
     mitätöity: Boolean,
+    aiemminPoistettuRivi: Option[PoistettuOpiskeluoikeusRow],
     historyRepository: OpiskeluoikeusHistoryRepository
   ): dbio.DBIOAction[Unit, NoStream, Write with Effect.Transactional] = {
     val tallennettavaOpiskeluoikeus = oo.withSuoritukset(oo.suoritukset.filter(_.tyyppi.koodiarvo != suorituksenTyyppi)) match {
@@ -51,7 +52,7 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
     DBIO.seq((
       List(
         OpiskeluOikeudetWithAccessCheck(KoskiSpecificSession.systemUser).filter(_.id === opiskeluoikeusId).map(_.updateableFields).update(updatedValues),
-        poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo, oppijaOid, mitätöity, Some(suorituksenTyyppi)),
+        poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo, oppijaOid, mitätöity, Some(suorituksenTyyppi), aiemminPoistettuRivi),
         opiskeluoikeudenHistorianPoistonQuery(opiskeluoikeusId),
       ) ++ Range.inclusive(1, versionumero).map(v => historyRepository.createAction(opiskeluoikeusId, v, oppijaOid, diff)).toList): _*
     ).transactionally
@@ -73,9 +74,11 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
     opiskeluoikeus: Opiskeluoikeus,
     oppijaOid: String,
     mitätöity: Boolean,
-    poistettuSuoritusTyyppi: Option[String]
+    poistettuSuoritusTyyppi: Option[String],
+    aiemminPoistettuRivi: Option[PoistettuOpiskeluoikeusRow]
   ): dbio.DBIOAction[Int, NoStream, Write] = {
     val timestamp = Timestamp.from(Instant.now())
+    val aiemminPoistetutSuoritukset = aiemminPoistettuRivi.map(_.suoritustyypit).getOrElse(List.empty)
 
     KoskiTables.PoistetutOpiskeluoikeudet.insertOrUpdate(PoistettuOpiskeluoikeusRow(
       opiskeluoikeus.oid.get,
@@ -88,7 +91,9 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
       mitätöityAikaleima = if (mitätöity) Some(timestamp) else None,
       suostumusPeruttuAikaleima = if (mitätöity) None else Some(timestamp),
       koulutusmuoto = opiskeluoikeus.tyyppi.koodiarvo,
-      suoritustyypit = poistettuSuoritusTyyppi.map(List(_)).getOrElse(opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)),
+      suoritustyypit = poistettuSuoritusTyyppi
+        .map(t => aiemminPoistetutSuoritukset :+ t)
+        .getOrElse((aiemminPoistetutSuoritukset ++ opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)).distinct),
       versio = opiskeluoikeus.versionumero
     ))
   }

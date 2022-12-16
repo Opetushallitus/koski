@@ -51,7 +51,8 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
                 peruttuOo.suostumusPeruttuAikaleima.map(sp => JField("Suostumus peruttu", JString(sp.toString))),
                 peruttuOo.mitätöityAikaleima.map(m => JField("Mitätöity", JString(m.toString))),
                 Some(JField("Oppilaitoksen oid", JString(peruttuOo.oppilaitosOid.getOrElse("")))),
-                Some(JField("Oppilaitoksen nimi", JString(peruttuOo.oppilaitosNimi.getOrElse(""))))
+                Some(JField("Oppilaitoksen nimi", JString(peruttuOo.oppilaitosNimi.getOrElse("")))),
+                Some(JField("Suoritusten tyypit", JString(peruttuOo.suoritustyypit.mkString(", "))))
               ).flatten
             )
           )

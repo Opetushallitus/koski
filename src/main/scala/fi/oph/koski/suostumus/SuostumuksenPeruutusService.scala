@@ -82,17 +82,18 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
     val perustiedot = OpiskeluoikeudenPerustiedot
       .makePerustiedot(opiskeluoikeudenId, oo, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
+    val aiemminPoistettuRivi = runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(_.oid === oid).result).headOption
     runDbSync(
       DBIO.seq(
         OpiskeluoikeusPoistoUtils
           .poistaPäätasonSuoritus(
             opiskeluoikeusId = opiskeluoikeudenId,
-            opiskeluoikeusOid = oid,
             oo = oo,
             suorituksenTyyppi = tyyppi,
             versionumero = oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1),
             oppijaOid = henkilö.oid,
             mitätöity = false,
+            aiemminPoistettuRivi = aiemminPoistettuRivi,
             application.historyRepository
           ),
         application.perustiedotSyncRepository.addToSyncQueue(perustiedot, true)
@@ -116,6 +117,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     oo: Opiskeluoikeus
   ): HttpStatus = {
     val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
+    val aiemminPoistettuRivi = runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(_.oid === oid).result).headOption
     runDbSync(
       DBIO.seq(
         OpiskeluoikeusPoistoUtils
@@ -125,7 +127,8 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
             oo = oo,
             versionumero = oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1),
             oppijaOid = henkilö.oid,
-            mitätöity = false
+            mitätöity = false,
+            aiemminPoistettuRivi = aiemminPoistettuRivi
           ),
         application.perustiedotSyncRepository.addDeleteToSyncQueue(opiskeluoikeudenId)
       )

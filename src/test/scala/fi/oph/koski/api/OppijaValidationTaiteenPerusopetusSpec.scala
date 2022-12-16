@@ -8,7 +8,6 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
-import fi.oph.koski.opiskeluoikeus.OppijaOidJaLähdejärjestelmänId
 import fi.oph.koski.schema._
 import fi.oph.koski.suoritusjako.Suoritusjako
 import fi.oph.koski.tutkinto.Perusteet
@@ -648,6 +647,85 @@ class OppijaValidationTaiteenPerusopetusSpec
       opiskeluoikeuksia.length should equal(opiskeluoikeuksiaEnnenPerumistaOpenSearchissa)
     }
 
+    "suostumuksen peruutus vuorotellen suorituksilta kun opiskeluoikeulla enemmän kuin yksi suoritus - opiskeluoikeus poistuu" in {
+      resetFixtures()
+      AuditLogTester.clearMessages
+      val ekaPoistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
+      val tokaPoistettavaSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
+
+      // Syötä opiskeluoikeus
+      val oo = postAndGetOpiskeluoikeusV2(
+        TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä,
+        henkilö = KoskiSpecificMockOppijat.tyhjä
+      )
+      oo.oid should not be empty
+
+      // Oppija-listauksen pituus ennen suostumuksen peruuttamista
+      KoskiApplicationForTests.perustiedotIndexer.sync(true)
+      val opiskeluoikeuksiaEnnenPerumistaOpenSearchissa = searchForPerustiedot(
+        Map("toimipiste" -> oo.oppilaitos.get.oid), MockUsers.paakayttaja
+      ).length
+
+      // Peru suostumukset käyttäjän omilla oikeuksilla
+      val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.tyhjä.hetu)
+      poistaSuostumusSuoritukselta(ekaPoistettavaSuoritus, oo, loginHeadersKansalainen)
+      poistaSuostumusSuoritukselta(tokaPoistettavaSuoritus, oo, loginHeadersKansalainen)
+
+      // Opiskeluoikeus on poistettu
+      authGet("api/opiskeluoikeus/" + oo.oid.get) {
+        verifyResponseStatus(404)
+      }
+
+      // Opiskeluoikeuden historia on tyhjennetty
+      KoskiApplicationForTests
+        .historyRepository
+        .findByOpiskeluoikeusOid(oo.oid.get)(KoskiSpecificSession.systemUser) should be(None)
+
+      // Suostumuksen peruutuksesta on jäänyt rivi peruttujen suostumuksen listaukseen
+      get(s"/api/opiskeluoikeus/suostumuksenperuutus", headers = authHeaders(MockUsers.paakayttaja)) {
+        verifyResponseStatusOk()
+
+        val json = JsonMethods.parse(body)
+        val obj = json(0)
+
+        (obj \\ "Opiskeluoikeuden oid") shouldBe JString(oo.oid.get)
+        (obj \\ "Oppijan oid") shouldBe a[JString]
+        (obj \\ "Opiskeluoikeuden päättymispäivä") shouldBe JString("")
+        (obj \\ "Mitätöity") should not be a[JString]
+        (obj \\ "Suostumus peruttu") shouldBe a[JString]
+        (obj \\ "Oppilaitoksen oid") shouldBe JString(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.oppilaitos.get.oid)
+        (obj \\ "Oppilaitoksen nimi") shouldBe JString(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.oppilaitos.get.nimi.get.get("fi"))
+        // Poistettujen suoritusten tyypit kertyvät eikä ensimmäisen poiston suorituksen tyyppiä ylikirjoiteta toisella
+        (obj \\ "Suoritusten tyypit") shouldBe JString(ekaPoistettavaSuoritus.tyyppi.koodiarvo + ", " + tokaPoistettavaSuoritus.tyyppi.koodiarvo)
+      }
+
+      // Suostumuksen peruutuksesta on jäänyt tiedot audit logille
+      val logMessages = AuditLogTester.getLogMessages
+      logMessages.length should equal(5)
+
+      AuditLogTester.verifyAuditLogMessage(
+        logMessages(3), Map(
+          "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
+          "target" -> Map(
+            KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> oo.oid.get,
+            KoskiAuditLogMessageField.suorituksenTyyppi.toString -> ekaPoistettavaSuoritus.tyyppi.koodiarvo
+          )
+        )
+      )
+      AuditLogTester.verifyAuditLogMessage(
+        logMessages(4), Map(
+          "operation" -> KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN.toString,
+          "target" -> Map(
+            KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> oo.oid.get,
+          )
+        )
+      )
+
+      // Opiskeluoikeus on poistunut oppija-listauksesta
+      KoskiApplicationForTests.perustiedotIndexer.sync(true)
+      searchForPerustiedot(Map("toimipiste" -> oo.oppilaitos.get.oid)).length should equal(opiskeluoikeuksiaEnnenPerumistaOpenSearchissa - 1)
+    }
+
     "kansalainen ei voi peruuttaa kenenkään muun suostumusta suoritukselta" in {
       resetFixtures()
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
@@ -1004,7 +1082,7 @@ class OppijaValidationTaiteenPerusopetusSpec
   }
 
   private def poistaSuostumusSuoritukselta(
-    poistettavaSuoritus: TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus,
+    poistettavaSuoritus: TaiteenPerusopetuksenPäätasonSuoritus,
     oo: TaiteenPerusopetuksenOpiskeluoikeus,
     loginHeadersKansalainen: List[(String, String)]
   ): Unit = {
