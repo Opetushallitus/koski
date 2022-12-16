@@ -21,6 +21,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   lazy val perustiedotIndexer = application.perustiedotIndexer
   lazy val opiskeluoikeusRepository = application.opiskeluoikeusRepository
   lazy val henkilöRepository = application.henkilöRepository
+  lazy val suoritusjakoRepository = application.suoritusjakoRepository
 
   val eiLisättyjäRivejä = 0
 
@@ -51,7 +52,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
       case Some(henkilö) =>
         val opiskeluoikeudet = opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get
         val opiskeluoikeus = opiskeluoikeudet.filter(oo =>
-          suostumusPeruttavissa(oo)
+          suostumusPeruttavissa(oo, henkilö.oid, suorituksenTyyppi)
         ).find (_.oid.contains(oid))
 
         (opiskeluoikeus, suorituksenTyyppi) match {
@@ -85,13 +86,13 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
       DBIO.seq(
         OpiskeluoikeusPoistoUtils
           .poistaPäätasonSuoritus(
-            opiskeluoikeudenId,
-            oid,
-            oo,
-            tyyppi,
-            oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1),
-            henkilö.oid,
-            false,
+            opiskeluoikeusId = opiskeluoikeudenId,
+            opiskeluoikeusOid = oid,
+            oo = oo,
+            suorituksenTyyppi = tyyppi,
+            versionumero = oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1),
+            oppijaOid = henkilö.oid,
+            mitätöity = false,
             application.historyRepository
           ),
         application.perustiedotSyncRepository.addToSyncQueue(perustiedot, true)
@@ -119,12 +120,12 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
       DBIO.seq(
         OpiskeluoikeusPoistoUtils
           .poistaOpiskeluOikeus(
-            opiskeluoikeudenId,
-            oid,
-            oo,
-            oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1),
-            henkilö.oid,
-            false
+            id = opiskeluoikeudenId,
+            oid = oid,
+            oo = oo,
+            versionumero = oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1),
+            oppijaOid = henkilö.oid,
+            mitätöity = false
           ),
         application.perustiedotSyncRepository.addDeleteToSyncQueue(opiskeluoikeudenId)
       )
@@ -148,12 +149,16 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     logger.warn(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${oid}. Ks. tarkemmat tiedot ${application.config.getString("opintopolku.virkailija.url")}/koski/api/opiskeluoikeus/suostumuksenperuutus")
   }
 
-  def suoritusjakoTekemättäWithAccessCheck(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
+  def suoritusjakoTekemättäWithAccessCheck(
+    oid: String,
+    suorituksenTyyppi: Option[String]
+  )(implicit user: KoskiSpecificSession): HttpStatus = {
     AuditLog.log(KoskiAuditLogMessage(KoskiOperation.KANSALAINEN_SUORITUSJAKO_TEKEMÄTTÄ_KATSOMINEN, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
     henkilöRepository.findByOid(user.oid) match {
       case Some(henkilö) =>
         opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get.exists(oo =>
-          oo.oid.contains(oid) && !suoritusjakoTehty(oo)) match {
+          oo.oid.contains(oid) &&
+            !suorituksenTyyppi.map(suoritusjakoTehty(oo, henkilö.oid, _)).getOrElse(suoritusjakoTehty(oo))) match {
           case true => HttpStatus.ok
           case false => KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Suorituksesta on tehty suoritusjako.")
         }
@@ -161,10 +166,16 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     }
   }
 
-  private def suostumusPeruttavissa(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession) =
-    suorituksetPeruutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo)
+  private def suostumusPeruttavissa(
+    oo: Opiskeluoikeus,
+    oppijaOid: String,
+    suorituksenTyyppi: Option[String]
+  )(implicit user: KoskiSpecificSession): Boolean = suorituksenTyyppi match {
+    case Some(tyyppi) => suorituksetPeruutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo, oppijaOid, tyyppi)
+    case None => suorituksetPeruutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo)
+  }
 
-  def suorituksetPeruutettavaaTyyppiä(oo: Opiskeluoikeus) = {
+  def suorituksetPeruutettavaaTyyppiä(oo: Opiskeluoikeus): Boolean = {
     val muitaPäätasonSuorituksiaKuinPeruttavissaOlevia = oo.suoritukset.exists {
       case _: SuostumusPeruttavissaOpiskeluoikeudelta => false
       case _ => true
@@ -172,8 +183,28 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     !muitaPäätasonSuorituksiaKuinPeruttavissaOlevia
   }
 
-  private def suoritusjakoTehty(oo: Opiskeluoikeus) = {
+  private def suoritusjakoTehty(oo: Opiskeluoikeus): Boolean = {
     opiskeluoikeusRepository.suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oo.oid.get)
+  }
+
+  private def suoritusjakoTehty(
+    oo: Opiskeluoikeus,
+    oppijaOid: String,
+    suorituksenTyyppi: String
+  ): Boolean = {
+    opiskeluoikeusRepository.suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oo.oid.get) &&
+      suoritusjakoRepository
+        .getAll(oppijaOid)
+        .flatMap(sj => JsonSerializer.extract[List[SuoritusIdentifier]](sj.suoritusIds))
+        .exists(suoritusId => suoritusId.lähdejärjestelmänId == oo.lähdejärjestelmänId.flatMap(_.id) &&
+          (suoritusId.opiskeluoikeusOid.isEmpty || suoritusId.opiskeluoikeusOid == oo.oid) &&
+          suoritusId.oppilaitosOid == oo.oppilaitos.map(_.oid) &&
+          suoritusId.suorituksenTyyppi == suorituksenTyyppi &&
+          oo.suoritukset.exists(s =>
+            suoritusId.suorituksenTyyppi == s.tyyppi.koodiarvo &&
+              suoritusId.koulutusmoduulinTunniste == s.koulutusmoduuli.tunniste.koodiarvo
+          )
+        )
   }
 
   // Kutsutaan vain fixtureita resetoitaessa

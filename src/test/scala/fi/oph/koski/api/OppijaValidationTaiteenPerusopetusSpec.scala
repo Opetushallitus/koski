@@ -5,13 +5,16 @@ import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.documentation.{ExamplesTaiteenPerusopetus => TPO}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
+import fi.oph.koski.opiskeluoikeus.OppijaOidJaLähdejärjestelmänId
 import fi.oph.koski.schema._
+import fi.oph.koski.suoritusjako.Suoritusjako
 import fi.oph.koski.tutkinto.Perusteet
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import org.json4s.{JObject, JString}
+import org.json4s.{JBool, JObject, JString}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 
@@ -497,7 +500,6 @@ class OppijaValidationTaiteenPerusopetusSpec
   }
 
   "Suostumuksen peruutus päätason suoritukselta" - {
-
     "suostumuksen peruutus opiskeluoikeuden ainoalta suoritukselta - opiskeluoikeus poistuu" in {
       resetFixtures()
       AuditLogTester.clearMessages
@@ -664,7 +666,6 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       }
     }
-
 
     "säilyneen suorituksen päivttäminen onnistuu vaikka toiselta suoritukselta on peruttu suostumus" in {
       resetFixtures()
@@ -841,9 +842,9 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       // Tee suoritusjako
       val json =
-        """[{
+        s"""[{
         "oppilaitosOid": "1.2.246.562.10.31915273374",
-        "suorituksenTyyppi": "taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
+        "suorituksenTyyppi": "${suoritus.tyyppi.koodiarvo}",
         "koulutusmoduulinTunniste": "999907"
       }]"""
 
@@ -874,9 +875,9 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       // Tee suoritusjako
       val json =
-        """[{
+        s"""[{
         "oppilaitosOid": "1.2.246.562.10.31915273374",
-        "suorituksenTyyppi": "taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
+        "suorituksenTyyppi": "${suoritus.tyyppi.koodiarvo}",
         "koulutusmoduulinTunniste": "999907"
       }]"""
 
@@ -902,15 +903,15 @@ class OppijaValidationTaiteenPerusopetusSpec
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
       val jaettavaSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
 
-      // Syötä opiskeluoikeus jolla yksi suoritus
+      // Syötä opiskeluoikeus jolla kaksi suoritusta
       val oo = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
       oo.oid should not be empty
 
       // Tee suoritusjako
       val json =
-        """[{
+        s"""[{
         "oppilaitosOid": "1.2.246.562.10.31915273374",
-        "suorituksenTyyppi": "taiteenperusopetuksenyleisenoppimaaranteemaopinnot",
+        "suorituksenTyyppi": "${jaettavaSuoritus.tyyppi.koodiarvo}",
         "koulutusmoduulinTunniste": "999907"
       }]"""
 
@@ -921,6 +922,84 @@ class OppijaValidationTaiteenPerusopetusSpec
       // Peru suostumus suoritukselta käyttäjän omilla oikeuksilla
       val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.tyhjä.hetu)
       poistaSuostumusSuoritukselta(poistettavaSuoritus, oo, loginHeadersKansalainen)
+    }
+
+    "suoritusjakoon ei sisälly rinnakkaisen opiskeluoikeuden vastaava suoritus ja rinnakkaisen opiskeluoikeuden suoritukselta voi perua suostumuksen" in {
+      resetFixtures()
+      val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
+
+      // Syötä opiskeluoikeudet
+      val oo = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
+      oo.oid should not be empty
+
+      val oo2 = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
+      oo2.oid should not be empty
+      oo.oid should not be oo2.oid
+
+      // Tee suoritusjako
+      val json =
+        s"""[{
+        "opiskeluoikeusOid": "${oo.oid.get}",
+        "oppilaitosOid": "1.2.246.562.10.31915273374",
+        "suorituksenTyyppi": "${poistettavaSuoritus.tyyppi.koodiarvo}",
+        "koulutusmoduulinTunniste": "999907"
+      }]"""
+
+      var secret = ""
+      createSuoritusjako(json, hetu = KoskiSpecificMockOppijat.tyhjä.hetu){
+        verifyResponseStatusOk()
+        secret = JsonSerializer.parse[Suoritusjako](response.body).secret
+      }
+
+      val suoritusjakoOppija = getSuoritusjakoOppija(secret)
+      suoritusjakoOppija.opiskeluoikeudet.size shouldBe 1
+      suoritusjakoOppija.opiskeluoikeudet.head.oid.get shouldBe oo.oid.get
+
+      // Peru suostumus jakamattomalta suoritukselta käyttäjän omilla oikeuksilla
+      val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.tyhjä.hetu)
+      poistaSuostumusSuoritukselta(poistettavaSuoritus, oo2, loginHeadersKansalainen)
+    }
+
+    "suoritusjaon olemassaolon tarkistus toimii päätason suorituksen tasolla" in {
+      resetFixtures()
+      val jaettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
+      val eiJaettuSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
+
+      // Syötä opiskeluoikeudet
+      val oo = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
+      oo.oid should not be empty
+
+      // Tee suoritusjako
+      val json =
+        s"""[{
+        "opiskeluoikeusOid": "${oo.oid.get}",
+        "oppilaitosOid": "1.2.246.562.10.31915273374",
+        "suorituksenTyyppi": "${jaettavaSuoritus.tyyppi.koodiarvo}",
+        "koulutusmoduulinTunniste": "999907"
+      }]"""
+
+      createSuoritusjako(json, hetu = KoskiSpecificMockOppijat.tyhjä.hetu){
+        verifyResponseStatusOk()
+      }
+
+      // Suoritusjako on tehty jaettavaan suoritukseen
+      val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.tyhjä.hetu)
+      post(
+        uri = s"/api/opiskeluoikeus/suostumuksenperuutus/suoritusjakoTehty/${oo.oid.get}",
+        headers = loginHeadersKansalainen.toMap,
+        params = Seq(("suorituksentyyppi", jaettavaSuoritus.tyyppi.koodiarvo))
+      ) {
+        response.body shouldBe """{"tehty":true}"""
+      }
+
+      // Suoritusjako ei ole tehty toiseen suoritukseen
+      post(
+        uri = s"/api/opiskeluoikeus/suostumuksenperuutus/suoritusjakoTehty/${oo.oid.get}",
+        headers = loginHeadersKansalainen.toMap,
+        params = Seq(("suorituksentyyppi", eiJaettuSuoritus.tyyppi.koodiarvo))
+      ) {
+        response.body shouldBe """{"tehty":false}"""
+      }
     }
   }
 

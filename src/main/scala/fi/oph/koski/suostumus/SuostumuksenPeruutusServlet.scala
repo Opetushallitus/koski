@@ -24,10 +24,12 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
     )
   }
 
-  // TODO: optional suorituksen tyyppi mukaan
   post("/suoritusjakoTehty/:oid") {
     requireKansalainen
-    if (application.suostumuksenPeruutusService.suoritusjakoTekemättäWithAccessCheck(getStringParam("oid"))(session).isOk) {
+    if (application.suostumuksenPeruutusService.suoritusjakoTekemättäWithAccessCheck(
+      oid = getStringParam("oid"),
+      suorituksenTyyppi = getOptionalStringParam("suorituksentyyppi")
+    )(session).isOk) {
       renderObject(JObject("tehty" -> JBool(false)))
     } else {
       renderObject(JObject("tehty" -> JBool(true)))

@@ -51,10 +51,11 @@ trait SuoritusjakoTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMetho
     JsonSerializer.parse[Oppija](response.body)
   }
 
-  def verifySuoritusIds(oppija: Oppija, expectedSuoritusIds: List[SuoritusIdentifier]): Unit = {
+  def verifySuoritusIds(oppija: Oppija, expectedSuoritusIds: List[SuoritusIdentifier], checkOpiskeluoikeusOid: Boolean = false): Unit = {
     val actualSuoritusIds = oppija.opiskeluoikeudet.flatMap(oo =>
       oo.suoritukset.map(s => SuoritusIdentifier(
         oo.lähdejärjestelmänId.flatMap(_.id),
+        opiskeluoikeusOid = if(checkOpiskeluoikeusOid) oo.oid else None,
         Some(oo.oppilaitos.get.oid),
         s.tyyppi.koodiarvo,
         s.koulutusmoduuli.tunniste.koodiarvo

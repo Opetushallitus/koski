@@ -51,6 +51,30 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         }
       }
 
+      "kahdella oikeellisella suorituksella joissa mukana opiskeluoikeuden oid" in {
+        val oos = oppijaByHetu(suoritusjakoHetu).opiskeluoikeudet
+        val seiskaluokka = oos.find(oo => oo.suoritukset.exists(s => s.koulutusmoduuli.tunniste.koodiarvo == "7")).get
+        val kasiluokka = oos.find(oo => oo.suoritukset.exists(s => s.koulutusmoduuli.tunniste.koodiarvo == "8")).get
+
+        val json =
+          s"""[{
+          "opiskeluoikeusOid": "${seiskaluokka.oid.get}",
+          "oppilaitosOid": "1.2.246.562.10.64353470871",
+          "suorituksenTyyppi": "perusopetuksenvuosiluokka",
+          "koulutusmoduulinTunniste": "7"
+        }, {
+          "opiskeluoikeusOid": "${kasiluokka.oid.get}",
+          "oppilaitosOid": "1.2.246.562.10.14613773812",
+          "suorituksenTyyppi": "perusopetuksenvuosiluokka",
+          "koulutusmoduulinTunniste": "8"
+        }]"""
+
+        createSuoritusjako(json) {
+          verifyResponseStatusOk()
+          secrets += ("kaksi suoritusta opiskeluoikeuden oideilla" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+        }
+      }
+
       "duplikoidulla suorituksella (vuosiluokan tuplaus)" in {
         val json =
           """[{
@@ -62,6 +86,22 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         createSuoritusjako(json, hetu = "170186-6520"){
           verifyResponseStatusOk()
           secrets += ("vuosiluokan tuplaus" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+        }
+      }
+
+      "duplikoidulla suorituksella (vuosiluokan tuplaus) kun jaossa mukana opiskeluoikeuden oid" in {
+        val oo = oppijaByHetu("170186-6520").opiskeluoikeudet.head
+        val json =
+          s"""[{
+          "opiskeluoikeusOid": "${oo.oid.get}",
+          "oppilaitosOid": "1.2.246.562.10.14613773812",
+          "suorituksenTyyppi": "perusopetuksenvuosiluokka",
+          "koulutusmoduulinTunniste": "7"
+        }]"""
+
+        createSuoritusjako(json, hetu = "170186-6520"){
+          verifyResponseStatusOk()
+          secrets += ("vuosiluokan tuplaus opiskeluoikeus oidilla" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
       }
 
@@ -243,6 +283,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         val oppija = getSuoritusjakoOppija(secrets("yksi suoritus"))
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
           lähdejärjestelmänId = None,
+          opiskeluoikeusOid = None,
           oppilaitosOid = Some("1.2.246.562.10.64353470871"),
           suorituksenTyyppi = "perusopetuksenvuosiluokka",
           koulutusmoduulinTunniste = "7"
@@ -254,17 +295,42 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         verifySuoritusIds(oppija, List(
           SuoritusIdentifier(
             lähdejärjestelmänId = None,
+            opiskeluoikeusOid = None,
             oppilaitosOid = Some("1.2.246.562.10.64353470871"),
             suorituksenTyyppi = "perusopetuksenvuosiluokka",
             koulutusmoduulinTunniste = "7"
           ),
           SuoritusIdentifier(
             lähdejärjestelmänId = None,
+            opiskeluoikeusOid = None,
             oppilaitosOid = Some("1.2.246.562.10.64353470871"),
             suorituksenTyyppi = "perusopetuksenvuosiluokka",
             koulutusmoduulinTunniste = "6"
           )
         ))
+      }
+
+      "kahden jaetun suorituksen salaisuudella kun jaossa mukana opiskeluoikeuden oid" in {
+        val oppija = getSuoritusjakoOppija(secrets("kaksi suoritusta opiskeluoikeuden oideilla"))
+        val seiskaluokka = oppija.opiskeluoikeudet.find(oo => oo.suoritukset.exists(s => s.koulutusmoduuli.tunniste.koodiarvo == "7")).get
+        val kasiluokka = oppija.opiskeluoikeudet.find(oo => oo.suoritukset.exists(s => s.koulutusmoduuli.tunniste.koodiarvo == "8")).get
+
+        verifySuoritusIds(oppija, List(
+          SuoritusIdentifier(
+            lähdejärjestelmänId = None,
+            opiskeluoikeusOid = Some(seiskaluokka.oid.get),
+            oppilaitosOid = Some("1.2.246.562.10.64353470871"),
+            suorituksenTyyppi = "perusopetuksenvuosiluokka",
+            koulutusmoduulinTunniste = "7"
+          ),
+          SuoritusIdentifier(
+            lähdejärjestelmänId = None,
+            opiskeluoikeusOid = Some(kasiluokka.oid.get),
+            oppilaitosOid = Some("1.2.246.562.10.14613773812"),
+            suorituksenTyyppi = "perusopetuksenvuosiluokka",
+            koulutusmoduulinTunniste = "8"
+          )
+        ), checkOpiskeluoikeusOid = true)
       }
 
       "duplikoidun suorituksen salaisuudella" in {
@@ -273,6 +339,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         // Palautetaan vain yksi suoritus
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
           lähdejärjestelmänId = None,
+          opiskeluoikeusOid = None,
           oppilaitosOid = Some("1.2.246.562.10.14613773812"),
           suorituksenTyyppi = "perusopetuksenvuosiluokka",
           koulutusmoduulinTunniste = "7"
@@ -285,10 +352,30 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         }
       }
 
+      "duplikoidun suorituksen salaisuudella kun mukana opiskeluoikeus oid" in {
+        val oppija = getSuoritusjakoOppija(secrets("vuosiluokan tuplaus opiskeluoikeus oidilla"))
+
+        // Palautetaan vain yksi suoritus
+        verifySuoritusIds(oppija, List(SuoritusIdentifier(
+          lähdejärjestelmänId = None,
+          opiskeluoikeusOid = Some(oppija.opiskeluoikeudet.head.oid.get),
+          oppilaitosOid = Some("1.2.246.562.10.14613773812"),
+          suorituksenTyyppi = "perusopetuksenvuosiluokka",
+          koulutusmoduulinTunniste = "7"
+        )), checkOpiskeluoikeusOid = true)
+
+        // Palautetaan tuplaus (ei luokallejäänti-suoritusta)
+        oppija.opiskeluoikeudet.head.suoritukset.head match {
+          case s: PerusopetuksenVuosiluokanSuoritus => !s.jääLuokalle && s.luokka == "7A"
+          case _ => fail("Väärä palautettu suoritus")
+        }
+      }
+
       "lähdejärjestelmällisellä suorituksella" in {
         val oppija = getSuoritusjakoOppija(secrets("lähdejärjestelmällinen"))
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
           lähdejärjestelmänId = Some("l-050504"),
+          opiskeluoikeusOid = None,
           oppilaitosOid = Some("1.2.246.562.10.52251087186"),
           suorituksenTyyppi = "ammatillinentutkinto",
           koulutusmoduulinTunniste = "351301"
@@ -368,18 +455,20 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
           verifySuoritusjakoDescriptors(List(
             Suoritusjako(secrets("yksi suoritus"), expirationDate, timestamp),
             Suoritusjako(secrets("kaksi suoritusta"), expirationDate, timestamp),
+            Suoritusjako(secrets("kaksi suoritusta opiskeluoikeuden oideilla"), expirationDate, timestamp),
             Suoritusjako(secrets("auditlog"), expirationDate, timestamp)
           ))
         }
       }
 
-      "yksittäisen jaon kun duplikoitu suoritus jaettu (vuosiluokan tuplaus)" in {
+      "molemmat jaot kun duplikoitu suoritus jaettu (vuosiluokan tuplaus)" in {
         val expirationDate = LocalDate.now.plusMonths(6)
         val timestamp = Timestamp.from(Instant.now())
 
         getSuoritusjakoDescriptors(hetu = "170186-6520"){
           verifySuoritusjakoDescriptors(List(
-            Suoritusjako(secrets("vuosiluokan tuplaus"), expirationDate, timestamp)
+            Suoritusjako(secrets("vuosiluokan tuplaus"), expirationDate, timestamp),
+            Suoritusjako(secrets("vuosiluokan tuplaus opiskeluoikeus oidilla"), expirationDate, timestamp)
           ))
         }
       }
