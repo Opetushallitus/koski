@@ -64,7 +64,7 @@ object TaiteenPerusopetusValidation {
 
   def validateSuoritustenLaajuus(oo: TaiteenPerusopetuksenOpiskeluoikeus): HttpStatus = {
     def laajuusVähintään(min: Double, k: Koulutusmoduuli, virheIlmoitus: HttpStatus): HttpStatus =
-      HttpStatus.validate(min <= k.laajuusArvo(default = 0.0)) {
+      HttpStatus.validate(min - 0.0001 < k.laajuusArvo(default = 0.0)) {
         virheIlmoitus
       }
 
