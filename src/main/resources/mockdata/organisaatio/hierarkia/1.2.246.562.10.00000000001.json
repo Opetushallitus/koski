@@ -23467,6 +23467,88 @@
       "organisaatiotyypit": [
         "organisaatiotyyppi_01"
       ]
+    },
+    {
+      "oid": "1.2.246.562.10.2013120211542064151791",
+      "alkuPvm": 694216800000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.00000000001",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Pohjoiskalotin koulutussäätiö",
+        "sv": "Pohjoiskalotin koulutussäätiö",
+        "en": "Pohjoiskalotin koulutussäätiö"
+      },
+      "lyhytNimi": {},
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_999",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.88417511545",
+          "alkuPvm": 694216800000,
+          "parentOid": "1.2.246.562.10.2013120211542064151791",
+          "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.2013120211542064151791",
+          "oppilaitosKoodi": "30049",
+          "oppilaitostyyppi": "oppilaitostyyppi_xx#1",
+          "toimipistekoodi": "30049",
+          "match": true,
+          "nimi": {
+            "sv": "Pohjoiskalotin koulutussäätiö",
+            "fi": "Pohjoiskalotin koulutussäätiö",
+            "en": "Pohjoiskalotin koulutussäätiö"
+          },
+          "lyhytNimi": {},
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
+          "kotipaikkaUri": "kunta_200",
+          "children": [],
+          "subRows": [],
+          "aliOrganisaatioMaara": 0,
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ],
+          "status": "AKTIIVINEN"
+        }
+      ],
+      "subRows": [
+        {
+          "oid": "1.2.246.562.10.88417511545",
+          "alkuPvm": 694216800000,
+          "parentOid": "1.2.246.562.10.2013120211542064151791",
+          "parentOidPath": "1.2.246.562.10.00000000001/1.2.246.562.10.2013120211542064151791",
+          "oppilaitosKoodi": "30049",
+          "oppilaitostyyppi": "oppilaitostyyppi_xx#1",
+          "toimipistekoodi": "30049",
+          "match": true,
+          "nimi": {
+            "sv": "Pohjoiskalotin koulutussäätiö",
+            "fi": "Pohjoiskalotin koulutussäätiö",
+            "en": "Pohjoiskalotin koulutussäätiö"
+          },
+          "lyhytNimi": {},
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
+          "kotipaikkaUri": "kunta_200",
+          "children": [],
+          "subRows": [],
+          "aliOrganisaatioMaara": 0,
+          "organisaatiotyypit": [
+            "organisaatiotyyppi_02"
+          ],
+          "status": "AKTIIVINEN"
+        }
+      ],
+      "aliOrganisaatioMaara": 1,
+      "virastoTunnus": "9999999-9",
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_01"
+      ],
+      "status": "AKTIIVINEN"
     }
   ]
 }

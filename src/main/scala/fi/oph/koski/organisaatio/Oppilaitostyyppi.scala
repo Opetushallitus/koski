@@ -20,5 +20,5 @@ object Oppilaitostyyppi {
   val opintokeskukset = "65"
   val kesäyliopistot = "66"
   val muutOppilaitokset = "99"
-  val muunKuinSäännellynKoulutuksenOppilaitokset = "xx"
+  val eiTiedossaOppilaitokset = "xx"
 }

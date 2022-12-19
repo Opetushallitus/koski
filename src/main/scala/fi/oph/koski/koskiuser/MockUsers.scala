@@ -437,6 +437,13 @@ object MockUsers {
     List(MuuKuinSäänneltyKoulutusToimija.oppilaitos).map(oppilaitosTallentaja)
   )
 
+  val pohjoiskalotinKoulutussäätiöKäyttäjä = KoskiMockUser(
+    "pohjoiskalotti-tallentaja",
+    "pohjoiskalotti-tallentaja",
+    "1.2.246.562.10.53455745792",
+    List(PohjoiskalotinKoulutussäätiö.oppilaitos).map(oppilaitosTallentaja)
+  )
+
   val users = List(
     kalle,
     pärre,
@@ -487,6 +494,7 @@ object MockUsers {
     ytlKäyttäjä,
     xssHyökkääjä,
     muuKuinSäänneltyKoulutusYritys,
+    pohjoiskalotinKoulutussäätiöKäyttäjä,
   )
 }
 

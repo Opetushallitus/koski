@@ -22,9 +22,15 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
   val tuvaTyypit = List(OpiskeluoikeudenTyyppi.tuva)
   val eshTyypit = List(OpiskeluoikeudenTyyppi.europeanschoolofhelsinki)
   val muunKuinSäännellynKoulutuksenTyypit = List(OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus)
+  val pohjoiskalotinTyypit = List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus, OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus)
 
   // Organisaatiopoikkeukset, jotka käydään ensin läpi. Esimerkiksi, jos on tarve näyttää vain yhdentyypinen opiskeluoikeus organisaatiolle, laita OID:t tähän listaan.
   val organisaatioPoikkeukset = Map(
+    // Pohjoiskalotin koulutussäätiö
+    // Tämä on toistaiseksi ainoa muuta kuin Muksia tallentava Ei tiedossa -tyyppinen oppilaitos. Tällä hetkellä pelkän
+    // organisaatiodatan perusteella ei ole muuta tapaa tunnistaa muks-oppilaitoksia, eikä niillä ole erillistä
+    // käyttöikeuttakaan.
+    List("1.2.246.562.10.2013120211542064151791", "1.2.246.562.10.88417511545") -> pohjoiskalotinTyypit,
     // European School of Helsinki
     List("1.2.246.562.10.962346066210", "1.2.246.562.10.13349113236", "1.2.246.562.10.12798841685") -> eshTyypit
   )
@@ -32,8 +38,8 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
   get("/opiskeluoikeustyypit/:oid") {
     val organisaatiot = application.organisaatioRepository.getOrganisaatioHierarkia(params("oid")).toList
     (byOrganisaatioPoikkeus(organisaatiot) match {
-      case List(loytyneetPoikkeustyypit) => List(loytyneetPoikkeustyypit)
       case Nil => (byOppilaitosTyyppi(organisaatiot) ++ byOrganisaatioTyyppi(organisaatiot))
+      case loytyneetPoikkeustyypit => loytyneetPoikkeustyypit
     }).distinct
       .flatMap(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t.koodiarvo))
       .filter(t => session.allowedOpiskeluoikeusTyypit.contains(t.koodiarvo))
@@ -45,7 +51,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
       case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => perusopetuksenTyypit ++ ammatillisenTyypit ++ tuvaTyypit
       case tyyppi if List(lukio).contains(tyyppi) => perusopetuksenTyypit ++ lukionTyypit ++ tuvaTyypit
       case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ lukionTyypit ++ saksalaisenKoulunTyypit ++ internationalSchoolTyypit ++ tuvaTyypit
-      case tyyppi if List(muunKuinSäännellynKoulutuksenOppilaitokset).contains(tyyppi) => List.empty
+      case tyyppi if List(eiTiedossaOppilaitokset).contains(tyyppi) => List.empty
       case _ => perusopetuksenTyypit ++ ammatillisenTyypit ++ vapaanSivistysTyönTyypit ++ tuvaTyypit
     }
 
@@ -56,6 +62,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
       muunKuinSäännellynKoulutuksenTyypit
     }
 
-  private def byOrganisaatioPoikkeus(organisaatiot: List[OrganisaatioHierarkia]) = organisaatioPoikkeukset.filter(_._1.exists(poikkeusOid => organisaatiot.map(_.oid).contains(poikkeusOid))).flatMap(_._2).toList
+  private def byOrganisaatioPoikkeus(organisaatiot: List[OrganisaatioHierarkia]): List[Koodistokoodiviite] =
+    organisaatioPoikkeukset.filter(_._1.exists(poikkeusOid => organisaatiot.map(_.oid).contains(poikkeusOid))).flatMap(_._2).toList
 
 }
