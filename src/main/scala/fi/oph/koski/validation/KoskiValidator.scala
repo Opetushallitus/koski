@@ -131,6 +131,7 @@ class KoskiValidator(
                 VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonOpintokokonaisuus(opiskeluoikeus),
                 JotpaValidation.validateOpiskeluoikeus(opiskeluoikeus, JotpaValidation.jotpaRahoitusVoimassaAlkaen(config)),
                 EuropeanSchoolOfHelsinkiValidation.validateOpiskeluoikeus(config)(opiskeluoikeus),
+                TaiteenPerusopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus)
               )
             } match {
             case HttpStatus.ok => Right(opiskeluoikeus)
@@ -1002,6 +1003,7 @@ class KoskiValidator(
         => EuropeanSchoolOfHelsinkiValidation.osasuorituksetKunnossa(s)
       case s: EBTutkinnonSuoritus
         => EuropeanSchoolOfHelsinkiValidation.osasuorituksetKunnossa(s)
+      case s: TaiteenPerusopetuksenPäätasonSuoritus => true
       case s => s.osasuoritusLista.nonEmpty
     }
 

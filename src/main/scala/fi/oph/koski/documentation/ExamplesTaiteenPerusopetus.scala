@@ -4,6 +4,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{taiteenPerusopetusAloitett
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
+import fi.oph.koski.tutkinto.Perusteet
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
@@ -12,10 +13,8 @@ object ExamplesTaiteenPerusopetus {
 
   val alkupäivä = date(2021, 1, 1)
 
-  val taiteenPerusopetusYleinenOppimääräDiaari = "OPH-2069-2017"
-  val taiteenPerusopetusLaajaOppimääräDiaari = "OPH-2068-2017"
-
   val musiikinTaiteenala = Koodistokoodiviite("musiikki", "taiteenperusopetustaiteenala")
+  val kuvataiteenTaiteenala = Koodistokoodiviite("kuvataide", "taiteenperusopetustaiteenala")
 
   lazy val varsinaisSuomenAikuiskoulutussäätiö: Koulutustoimija = Koulutustoimija(
     oid = MockOrganisaatiot.varsinaisSuomenAikuiskoulutussäätiö,
@@ -58,19 +57,44 @@ object ExamplesTaiteenPerusopetus {
 
   object Opiskeluoikeus {
 
-    def tilaLäsnä(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeusjakso(
+    def jaksoLäsnä(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeusjakso(
       alku = päivä,
       tila = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila")
     )
 
-    def tilaHyväksytystiSuoritettu(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeusjakso(
+    def jaksoHyväksytystiSuoritettu(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeusjakso(
       alku = päivä,
       tila = Koodistokoodiviite("hyvaksytystisuoritettu", "koskiopiskeluoikeudentila")
     )
-    def tilaPäättynyt(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeusjakso(
+    def jaksoPäättynyt(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeusjakso(
       alku = päivä,
       tila = Koodistokoodiviite("paattynyt", "koskiopiskeluoikeudentila")
     )
+
+    def jaksoMitätöity(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeusjakso(
+      alku = päivä,
+      tila = Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila")
+    )
+
+    def tilaLäsnä(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeudenTila(
+        opiskeluoikeusjaksot = List(
+          jaksoLäsnä(päivä)
+        )
+      )
+
+    def tilaHyväksytystiSuoritettu(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            jaksoLäsnä(päivä),
+            jaksoHyväksytystiSuoritettu(päivä.plusMonths(6))
+          )
+        )
+
+    def tilaMitätöity(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            jaksoLäsnä(päivä),
+            jaksoMitätöity(päivä.plusMonths(6))
+          )
+        )
 
     val aloitettuYleinenOppimäärä = TaiteenPerusopetuksenOpiskeluoikeus(
       oid = None,
@@ -79,45 +103,53 @@ object ExamplesTaiteenPerusopetus {
       lähdejärjestelmänId = None,
       oppilaitos = Some(varsinaisSuomenKansanopisto),
       koulutustoimija = Some(varsinaisSuomenAikuiskoulutussäätiö),
-      tila = TaiteenPerusopetuksenOpiskeluoikeudenTila(
-        opiskeluoikeusjaksot = List(
-          tilaLäsnä()
-        )
-      ),
+      tila = tilaLäsnä(),
       oppimäärä = Koodistokoodiviite("yleinenoppimaara", "taiteenperusopetusoppimaara"),
-      suoritukset = List(PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia),
+      suoritukset = List(
+        PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia,
+        PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
+      ),
       organisaatiohistoria = None,
       arvioituPäättymispäivä = None
     )
 
-    val hyväksytystiSuoritettuLaajaOppimäärä = TaiteenPerusopetuksenOpiskeluoikeus(
-      oid = None,
-      versionumero = None,
-      aikaleima = None,
-      lähdejärjestelmänId = None,
-      oppilaitos = Some(varsinaisSuomenKansanopisto),
-      koulutustoimija = Some(varsinaisSuomenAikuiskoulutussäätiö),
-      tila = TaiteenPerusopetuksenOpiskeluoikeudenTila(
-        opiskeluoikeusjaksot = List(
-          tilaLäsnä(),
-          tilaHyväksytystiSuoritettu(alkupäivä.plusMonths(6))
-        )
-      ),
-      oppimäärä = Koodistokoodiviite("laajaoppimaara", "taiteenperusopetusoppimaara"),
+    val hyväksytystiSuoritettuLaajaOppimäärä = suoritettuOppimäärä(
+      oppimäärä = "laajaoppimaara",
       suoritukset = List(
-        PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia,
-        PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
-      ),
-      organisaatiohistoria = None,
-      arvioituPäättymispäivä = Some(alkupäivä.plusYears(1))
+          PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia,
+          PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
+        )
     )
+
+    private def suoritettuOppimäärä(oppimäärä: String, suoritukset: List[TaiteenPerusopetuksenPäätasonSuoritus]) =
+      TaiteenPerusopetuksenOpiskeluoikeus(
+        oid = None,
+        versionumero = None,
+        aikaleima = None,
+        lähdejärjestelmänId = None,
+        oppilaitos = Some(varsinaisSuomenKansanopisto),
+        koulutustoimija = Some(varsinaisSuomenAikuiskoulutussäätiö),
+        tila = tilaHyväksytystiSuoritettu(),
+        oppimäärä = Koodistokoodiviite(oppimäärä, "taiteenperusopetusoppimaara"),
+        suoritukset = suoritukset,
+        organisaatiohistoria = None,
+        arvioituPäättymispäivä = Some(alkupäivä.plusYears(1))
+      )
 
   }
 
   object PäätasonSuoritus {
 
     val yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia = TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus(
-      koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnotEiLaajuutta,
+      koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräEiLaajuutta,
+      toimipiste = varsinaisSuomenKansanopistoToimipiste,
+      arviointi = None,
+      vahvistus = None,
+      osasuoritukset = None
+    )
+
+    val yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia = TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus(
+      koulutusmoduuli = Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot,
       toimipiste = varsinaisSuomenKansanopistoToimipiste,
       arviointi = None,
       vahvistus = None,
@@ -148,28 +180,31 @@ object ExamplesTaiteenPerusopetus {
     )
 
     object Koulutusmoduuli {
-      val musiikkiYleinenOppimääräYhteisetOpinnotEiLaajuutta = musiikinOppimäärä(
-        taiteenPerusopetusYleinenOppimääräDiaari,
+      val musiikkiYleinenOppimääräEiLaajuutta = musiikinOpintotaso(
+        Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari,
         None
       )
-      val musiikkiYleinenOppimääräYhteisetOpinnot = musiikinOppimäärä(
-        taiteenPerusopetusYleinenOppimääräDiaari,
+      val musiikkiYleinenOppimääräYhteisetOpinnot = musiikinOpintotaso(
+        Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari,
         Some(11.11)
       )
-      val musiikkiLaajaOppimääräPerusopinnot = musiikinOppimäärä(
-        taiteenPerusopetusLaajaOppimääräDiaari,
+      val musiikkiYleinenOppimääräTeemaopinnot = musiikinOpintotaso(
+        Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari,
+        Some(7.41)
+      )
+      val musiikkiLaajaOppimääräPerusopinnot = musiikinOpintotaso(
+        Perusteet.TaiteenPerusopetuksenLaajanOppimääränPerusteet2017.diaari,
         Some(29.63)
       )
-      val musiikkiLaajaOppimääräSyventävätOpinnot = musiikinOppimäärä(
-        taiteenPerusopetusLaajaOppimääräDiaari,
+      val musiikkiLaajaOppimääräSyventävätOpinnot = musiikinOpintotaso(
+        Perusteet.TaiteenPerusopetuksenLaajanOppimääränPerusteet2017.diaari,
         Some(18.52)
       )
 
-      private def musiikinOppimäärä(
+      private def musiikinOpintotaso(
         diaari: String,
         laajuus: Option[Double]
       ) = MusiikinOpintotaso(
-        taiteenala = musiikinTaiteenala,
         laajuus = laajuus.map(LaajuusOpintopisteissä(_)),
         perusteenDiaarinumero = Some(diaari)
       )

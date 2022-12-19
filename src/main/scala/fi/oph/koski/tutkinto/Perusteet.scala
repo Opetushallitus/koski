@@ -9,6 +9,9 @@ object Perusteet {
 
   val lops2019 = Diaarinumerot(List(LukionOpetussuunnitelmanPerusteet2019, AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019))
 
+  val TaiteenPerusopetuksenYleisenOppimääränPerusteet2017 = Diaarinumero("OPH-2069-2017")
+  val TaiteenPerusopetuksenLaajanOppimääränPerusteet2017 = Diaarinumero("OPH-2068-2017")
+
   def sallitutPerusteet(suorituksenTyyppi: SuorituksenTyyppi): Diaarinumerorajaus =
     perusteetBySuoritus.getOrElse(suorituksenTyyppi, Kaikki)
 
