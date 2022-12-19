@@ -2,7 +2,7 @@ package fi.oph.koski.migri
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.Http.{UriInterpolator, runIO}
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, ServiceConfig, VirkailijaHttpClient}
+import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
@@ -31,7 +31,7 @@ class RemoteMigriService (implicit val application: KoskiApplication) extends Lo
       case (200, text, _) => Right(RawJsonResponse(text))
       case (status, text, _) =>
         logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} and first oid ${oids.headOption} from ${application.config.getString("opintopolku.virkailija.url")}")
-        Left(KoskiErrorCategory.internalError("Virhe kutsuttaessa valinta-tulos-servicea"))
+        Left(HttpStatus(status, List(ErrorDetail("valinta-tulos-service-error", text))))
     })
   }
 
@@ -42,7 +42,7 @@ class RemoteMigriService (implicit val application: KoskiApplication) extends Lo
       case (200, text, _) => Right(RawJsonResponse(text))
       case (status, text, _) =>
         logger.error(s"valinta-tulos-service returned status $status: $text with user ${basicAuthRequest.username} from ${application.config.getString("opintopolku.virkailija.url")}")
-        Left(KoskiErrorCategory.internalError("Virhe kutsuttaessa valinta-tulos-servicea"))
+        Left(HttpStatus(status, List(ErrorDetail("valinta-tulos-service-error", text))))
     })
   }
 }
