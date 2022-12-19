@@ -306,13 +306,19 @@ function takeScreenshot(name) {
       callPhantom({ screenshot: filename })
     } else {
       return Q(
-        html2canvas(testFrame().document.body).then(function (canvas) {
-          $(document.body).append(
-            $('<div>')
-              .append($('<h4>').text('Screenshot: ' + filename))
-              .append($(canvas))
-          )
-        })
+        html2canvas(testFrame().document.body)
+          .then(function (canvas) {
+            console.log('HTML2CANVAS: then() called')
+            $(document.body).append(
+              $('<div>')
+                .append($('<h4>').text('Screenshot: ' + filename))
+                .append($(canvas))
+            )
+          })
+          .catch((err) => {
+            console.error('ERROR')
+            console.error(err)
+          })
       )
     }
   }
