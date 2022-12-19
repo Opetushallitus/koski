@@ -513,6 +513,32 @@ Esimerkkivastaus
 Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 <a href="/koski/json-schema-viewer/?schema=valpas-kela-oppija-schema.json">täällä</a>.
 
+## /koski/api/luovutuspalvelu/migri/valinta/hetut
+Tällä kutsulla haetaan usean (enintään 5000 kpl) valintakoetulokset henkilötunnusten perusteella.
+
+### Esimerkkipyyntö
+
+    POST /koski/api/luovutuspalvelu/migri/valinta/hetut HTTP/1.1
+    Content-Type: application/json
+    Body: {
+      "hetut": ["180859-914S", "020654-9025", "010326-953H"]
+    }
+
+Katso esimerkkivastaukset ja virhekoodit tarkemmin sivulta https://wiki.eduuni.fi/display/ophpolku/Valintarekisterin+rajapinta+Migrille
+
+## /koski/api/luovutuspalvelu/migri/valinta/oid
+Tällä kutsulla haetaan usean (enintään 5000 kpl) valintakoetulokset oppija-oidien perusteella.
+
+### Esimerkkipyyntö
+
+    POST /koski/api/luovutuspalvelu/migri/valinta/oid HTTP/1.1
+    Content-Type: application/json
+    Body: {
+      "oids": ["1.2.246.562.24.82405337123", "1.2.246.562.24.82405337995"]
+    }
+
+Katso esimerkkivastaukset ja virhekoodit tarkemmin sivulta https://wiki.eduuni.fi/display/ophpolku/Valintarekisterin+rajapinta+Migrille
+
 ## /koski/api/luovutuspalvelu/ytl/oppijat
 
 Tällä kutsulla haetaan usean (enintään 1000 kpl) henkilön tiedot henkilötunnusten tai
