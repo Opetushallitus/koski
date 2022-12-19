@@ -302,6 +302,9 @@ function takeScreenshot(name) {
         .replace(/ö/g, 'o')
         .replace(/"/g, '') || date.getTime())
     console.log('Taking screenshot web/' + filename + '.png')
+    console.log('window.callPhantom')
+    console.log(window.callPhantom)
+    console.log(Q)
     if (window.callPhantom) {
       callPhantom({ screenshot: filename })
     } else {
@@ -314,6 +317,7 @@ function takeScreenshot(name) {
                 .append($('<h4>').text('Screenshot: ' + filename))
                 .append($(canvas))
             )
+            console.log('DOCUMENT.BODY', document.body)
           })
           .catch((err) => {
             console.error('ERROR')
