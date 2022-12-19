@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
-import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
+import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation, RootLogTester}
 import fi.oph.koski.schema._
 import fi.oph.koski.suoritusjako.Suoritusjako
 import fi.oph.koski.tutkinto.Perusteet
@@ -502,6 +502,7 @@ class OppijaValidationTaiteenPerusopetusSpec
     "suostumuksen peruutus opiskeluoikeuden ainoalta suoritukselta - opiskeluoikeus poistuu" in {
       resetFixtures()
       AuditLogTester.clearMessages
+      RootLogTester.clearMessages
 
       // Syötä opiskeluoikeus
       val oo = postAndGetOpiskeluoikeusV2(
@@ -566,6 +567,9 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
+      // Suostumuksen peruutuksesta on jäänyt sähköposti-ilmoituksen laukaiseva logitus
+      RootLogTester.getLogMessages.find(_.startsWith("Kansalainen")).get should equal(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${oo.oid.get}. Ks. tarkemmat tiedot mock/koski/api/opiskeluoikeus/suostumuksenperuutus")
+
       // Opiskeluoikeus on poistunut oppija-listauksesta
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
       val opiskeluoikeuksia = searchForPerustiedot(Map("toimipiste" -> oo.oppilaitos.get.oid))
@@ -575,6 +579,7 @@ class OppijaValidationTaiteenPerusopetusSpec
     "suostumuksen peruutus suoritukselta kun opiskeluoikeulla enemmän kuin yksi suoritus - opiskeluoikeus säilyy mutta toinen suoritus poistuu" in {
       resetFixtures()
       AuditLogTester.clearMessages
+      RootLogTester.clearMessages
       val poistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
 
       // Syötä opiskeluoikeus
@@ -641,6 +646,9 @@ class OppijaValidationTaiteenPerusopetusSpec
         )
       )
 
+      // Suostumuksen peruutuksesta on jäänyt sähköposti-ilmoituksen laukaiseva logitus
+      RootLogTester.getLogMessages.find(_.startsWith("Kansalainen")).get should equal(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${oo.oid.get}. Ks. tarkemmat tiedot mock/koski/api/opiskeluoikeus/suostumuksenperuutus")
+
       // Opiskeluoikeus ei ole poistunut oppija-listauksesta
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
       val opiskeluoikeuksia = searchForPerustiedot(Map("toimipiste" -> oo.oppilaitos.get.oid))
@@ -650,6 +658,7 @@ class OppijaValidationTaiteenPerusopetusSpec
     "suostumuksen peruutus vuorotellen suorituksilta kun opiskeluoikeulla enemmän kuin yksi suoritus - opiskeluoikeus poistuu" in {
       resetFixtures()
       AuditLogTester.clearMessages
+      RootLogTester.clearMessages
       val ekaPoistettavaSuoritus = TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia
       val tokaPoistettavaSuoritus = TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia
 
@@ -720,6 +729,10 @@ class OppijaValidationTaiteenPerusopetusSpec
           )
         )
       )
+
+      // Suostumuksen peruutuksesta on jäänyt sähköposti-ilmoituksen laukaiseva logitus
+      RootLogTester.getLogMessages.count(_.startsWith("Kansalainen")) shouldBe 2
+      RootLogTester.getLogMessages.filter(_.startsWith("Kansalainen")).distinct should contain (s"Kansalainen perui suostumuksen. Opiskeluoikeus ${oo.oid.get}. Ks. tarkemmat tiedot mock/koski/api/opiskeluoikeus/suostumuksenperuutus")
 
       // Opiskeluoikeus on poistunut oppija-listauksesta
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
