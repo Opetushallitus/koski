@@ -16,5 +16,27 @@ class OppilaitosServletSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec
         JsonSerializer.parse[List[Koodistokoodiviite]](body).map(_.koodiarvo) should equal(List(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo))
       }
     }
+    "Pohjoiskalotin koulutussäätiölle palautetaan vain muks ja ammatillinen" in {
+      authGet(
+        s"api/oppilaitos/opiskeluoikeustyypit/${MockOrganisaatiot.PohjoiskalotinKoulutussäätiö.oppilaitos}",
+        headers = authHeaders(MockUsers.pohjoiskalotinKoulutussäätiöKäyttäjä)
+      ) {
+        verifyResponseStatusOk()
+        JsonSerializer.parse[List[Koodistokoodiviite]](body).map(_.koodiarvo).toSet should equal(
+          Set(OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
+        )
+      }
+    }
+    "Muks-organisaatiolle palautetaan vain muks" in {
+      authGet(
+        s"api/oppilaitos/opiskeluoikeustyypit/${MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.oppilaitos}",
+        headers = authHeaders(MockUsers.muuKuinSäänneltyKoulutusYritys)
+      ) {
+        verifyResponseStatusOk()
+        JsonSerializer.parse[List[Koodistokoodiviite]](body).map(_.koodiarvo).toSet should equal(
+          Set(OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo)
+        )
+      }
+    }
   }
 }
