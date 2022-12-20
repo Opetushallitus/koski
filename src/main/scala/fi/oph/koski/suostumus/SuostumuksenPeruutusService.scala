@@ -199,15 +199,24 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
       suoritusjakoRepository
         .getAll(oppijaOid)
         .flatMap(sj => JsonSerializer.extract[List[SuoritusIdentifier]](sj.suoritusIds))
-        .exists(suoritusId => suoritusId.lähdejärjestelmänId == oo.lähdejärjestelmänId.flatMap(_.id) &&
-          (suoritusId.opiskeluoikeusOid.isEmpty || suoritusId.opiskeluoikeusOid == oo.oid) &&
-          suoritusId.oppilaitosOid == oo.oppilaitos.map(_.oid) &&
-          suoritusId.suorituksenTyyppi == suorituksenTyyppi &&
-          oo.suoritukset.exists(s =>
-            suoritusId.suorituksenTyyppi == s.tyyppi.koodiarvo &&
-              suoritusId.koulutusmoduulinTunniste == s.koulutusmoduuli.tunniste.koodiarvo
-          )
-        )
+        .exists(suoritusId => suoritusIdMatches(suoritusId, oo, suorituksenTyyppi))
+  }
+
+  private def suoritusIdMatches(
+    suoritusId: SuoritusIdentifier,
+    oo: Opiskeluoikeus,
+    suorituksenTyyppi: String
+  ): Boolean = {
+    val lähdejärjestelmäMatch = suoritusId.lähdejärjestelmänId == oo.lähdejärjestelmänId.flatMap(_.id)
+    val opiskeluOidMatch = suoritusId.opiskeluoikeusOid.isEmpty || suoritusId.opiskeluoikeusOid == oo.oid
+    val oppilaitosMatch = suoritusId.oppilaitosOid == oo.oppilaitos.map(_.oid)
+    val suoritusMatch = suoritusId.suorituksenTyyppi == suorituksenTyyppi
+    val koulutusModuulinTunnisteMatch = oo.suoritukset.exists(s =>
+      suoritusId.suorituksenTyyppi == s.tyyppi.koodiarvo &&
+        suoritusId.koulutusmoduulinTunniste == s.koulutusmoduuli.tunniste.koodiarvo
+    )
+
+    lähdejärjestelmäMatch && opiskeluOidMatch && oppilaitosMatch && suoritusMatch && koulutusModuulinTunnisteMatch
   }
 
   // Kutsutaan vain fixtureita resetoitaessa
