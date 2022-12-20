@@ -15,6 +15,8 @@ import { PuhviKoePropertyTitle } from '../suoritus/PuhviKoePropertyTitle'
 import { SuullisenKielitaidonKoePropertyTitle } from '../suoritus/SuullisenKielitaidonKoePropertyTitle'
 import { PropertyInfo } from './PropertyInfo'
 import classNames from 'classnames'
+import { onEshPäätasonKoulutusmoduuliProperty } from '../esh/esh'
+import { EshPäätasonKoulutusmoduuliPropertyTitle } from '../esh/EshPaatasonKoulutusmoduuliPropertyTitle'
 
 export class PropertiesEditor extends React.Component {
   render() {
@@ -165,6 +167,8 @@ export const PropertyTitle = ({ property }) => {
     return <SuullisenKielitaidonKoePropertyTitle />
   } else if (property.title === 'Puhvi-koe') {
     return <PuhviKoePropertyTitle />
+  } else if (onEshPäätasonKoulutusmoduuliProperty(property)) {
+    return <EshPäätasonKoulutusmoduuliPropertyTitle title={property.title} />
   } else if (description) {
     return (
       <Text
