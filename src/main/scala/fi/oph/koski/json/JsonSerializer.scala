@@ -24,16 +24,16 @@ object JsonSerializer {
     serialize(obj)
   }
 
-  def write[T: TypeTag](x: T, pretty: Boolean = false)(implicit user: SensitiveDataAllowed): String = {
+  def write[T: TypeTag](x: T, pretty: Boolean = false, includeClassReferences: Boolean = false)(implicit user: SensitiveDataAllowed): String = {
     if (pretty) {
-      JsonMethods.pretty(serialize(x))
+      JsonMethods.pretty(serialize(x, includeClassReferences))
     } else {
-      JsonMethods.compact(serialize(x))
+      JsonMethods.compact(serialize(x, includeClassReferences))
     }
   }
 
-  def serialize[T: TypeTag](obj: T)(implicit user: SensitiveDataAllowed): JValue = {
-    Serializer.serialize(obj, SensitiveAndRedundantDataFilter(user).serializationContext)
+  def serialize[T: TypeTag](obj: T, includeClassReferences: Boolean = false)(implicit user: SensitiveDataAllowed): JValue = {
+    Serializer.serialize(obj, SensitiveAndRedundantDataFilter(user).serializationContext.copy(includeClassReferences = includeClassReferences))
   }
 
   def serialize(obj: Any, schema: Schema)(implicit user: SensitiveDataAllowed): JValue = {
