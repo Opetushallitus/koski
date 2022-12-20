@@ -97,7 +97,8 @@ object KoskiAuditLogMessageField extends Enumeration {
   opiskeluoikeusVersio,
   hakuEhto,
   juuriOrganisaatio,
-  omaDataKumppani = Value
+  omaDataKumppani,
+  suorituksenTyyppi = Value
 }
 
 object KoskiOperation extends Enumeration {

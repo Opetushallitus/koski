@@ -135,6 +135,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
 
     opiskeluoikeus.lähdejärjestelmänId.flatMap(_.id) == suoritusId.lähdejärjestelmänId &&
+      (suoritusId.opiskeluoikeusOid.isEmpty || opiskeluoikeus.oid == suoritusId.opiskeluoikeusOid) &&
       opiskeluoikeus.oppilaitos.map(_.oid) == suoritusId.oppilaitosOid &&
       suoritus.tyyppi.koodiarvo == suoritusId.suorituksenTyyppi &&
       checkKoulutusmoduulinTunniste(suoritusId)

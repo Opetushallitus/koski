@@ -1,7 +1,5 @@
 package fi.oph.koski.perustiedot
 
-import fi.oph.koski.db.KoskiTables.{OpiskeluOikeudet, PerustiedotManualSync}
-import fi.oph.koski.documentation.KoskiApiOperations.opiskeluoikeus
 import fi.oph.koski.opensearch.{OpenSearch, OpenSearchIndex}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -15,7 +13,6 @@ import fi.oph.koski.util.DateOrdering
 import fi.oph.koski.util.SortOrder.Descending
 import org.json4s._
 import org.json4s.jackson.JsonMethods
-import slick.ast.ScalaBaseType.stringType
 
 import scala.util.{Failure, Success, Try}
 
@@ -109,12 +106,12 @@ class OpiskeluoikeudenPerustiedotIndexer(
     val rowsToBeSync = allRows.groupBy(_.opiskeluoikeusId).mapValues(_.sortBy(_.aikaleima)(DateOrdering.ascedingSqlTimestampOrdering).last).map(_._2).toSeq
     if (allRows.nonEmpty) {
       logger.debug(s"Syncing ${allRows.length} rows")
-      val (itemsToDelete, itemsToUpdate) = allRows.partition(r => r.data == JObject(List.empty))
+      val (itemsToDelete, itemsToUpdate) = rowsToBeSync.partition(r => r.data == JObject(List.empty))
 
-      deletePerustiedot(itemsToDelete.map(_.opiskeluoikeusId).toList)
       itemsToUpdate.groupBy(_.upsert) foreach { case (upsert, syncRows) =>
         updatePerustiedotRaw(syncRows.map(_.data), upsert, refresh)
       }
+      deletePerustiedot(itemsToDelete.map(_.opiskeluoikeusId).toList)
       perustiedotSyncRepository.deleteFromQueue(allRows.map(_.id))
       logger.debug(s"Done syncing ${allRows.length} rows")
     }

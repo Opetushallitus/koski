@@ -10,6 +10,10 @@ import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema.{Opiskeluoikeus, SuostumusPeruttavissaOpiskeluoikeudelta}
 import slick.jdbc.GetResult
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot
+import fi.oph.koski.suoritusjako.SuoritusIdentifier
 
 case class SuostumuksenPeruutusService(protected val application: KoskiApplication) extends Logging with QueryMethods {
 
@@ -17,6 +21,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   lazy val perustiedotIndexer = application.perustiedotIndexer
   lazy val opiskeluoikeusRepository = application.opiskeluoikeusRepository
   lazy val henkilöRepository = application.henkilöRepository
+  lazy val suoritusjakoRepository = application.suoritusjakoRepository
 
   val eiLisättyjäRivejä = 0
 
@@ -39,30 +44,104 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
   def etsiPoistetut(oids: Seq[String]): Seq[PoistettuOpiskeluoikeusRow] =
     runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(r => r.oid inSet oids).result)
 
-  def peruutaSuostumus(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
+  def peruutaSuostumus(
+    oid: String,
+    suorituksenTyyppi: Option[String]
+  )(implicit user: KoskiSpecificSession): HttpStatus = {
     henkilöRepository.findByOid(user.oid) match {
       case Some(henkilö) =>
         val opiskeluoikeudet = opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get
-        opiskeluoikeudet.filter(
-          suostumusPeruttavissa(_)
-        ).find (_.oid.contains(oid)) match {
-          case Some(oo) =>
-            val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
-            runDbSync(
-              DBIO.seq(
-                OpiskeluoikeusPoistoUtils.poistaOpiskeluOikeus(opiskeluoikeudenId, oid, oo, oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1), henkilö.oid, false),
-                application.perustiedotSyncRepository.addDeleteToSyncQueue(opiskeluoikeudenId)
-              )
-            )
-            teeLogimerkintäSähköpostinotifikaatiotaVarten(oid)
-            AuditLog.log(KoskiAuditLogMessage(KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
-            HttpStatus.ok
-          case None =>
+        val opiskeluoikeus = opiskeluoikeudet.filter(oo =>
+          suostumusPeruttavissa(oo, henkilö.oid, suorituksenTyyppi)
+        ).find (_.oid.contains(oid))
+
+        (opiskeluoikeus, suorituksenTyyppi) match {
+          // Jos enemmän kuin yksi suoritus ja suorituksen tyyppi annettu, peru suostumus suoritukselta
+          case (Some(oo), Some(tyyppi)) if oo.suoritukset.map(_.tyyppi.koodiarvo).contains(tyyppi) && oo.suoritukset.size > 1 =>
+            peruutaSuostumusSuoritukselta(oid, user, henkilö, oo, tyyppi)
+          // Jos täsmälleen yksi suoritus ja suorituksen tyyppi annettu, peru suostumus opiskeluoikeudelta
+          case (Some(oo), Some(tyyppi)) if oo.suoritukset.map(_.tyyppi.koodiarvo).contains(tyyppi) => peruutaSuostumusOpiskeluoikeudelta(oid, user, henkilö, oo)
+          // Jos suorituksen tyyppiä ei annettu, peru suostumus opiskeluoikeudelta
+          case (Some(oo), None) => peruutaSuostumusOpiskeluoikeudelta(oid, user, henkilö, oo)
+          case (_, _) =>
             KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Joko opiskeluoikeudesta on tehty suoritusjako, " +
-              s"viranomainen on käyttänyt opiskeluoikeuden tietoja päätöksenteossa tai opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua.")
+              s"viranomainen on käyttänyt opiskeluoikeuden tietoja päätöksenteossa, opiskeluoikeus on tyyppiä, jonka kohdalla annettua suostumusta ei voida perua " +
+              s"tai opiskeluoikeudelta ei löytynyt annetun syötteen tyyppistä päätason suoritusta.")
         }
       case None => KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
     }
+  }
+
+  private def peruutaSuostumusSuoritukselta(
+    oid: String,
+    user: KoskiSpecificSession,
+    henkilö: LaajatOppijaHenkilöTiedot,
+    oo: Opiskeluoikeus,
+    tyyppi: String
+  ): HttpStatus = {
+    val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
+    val perustiedot = OpiskeluoikeudenPerustiedot
+      .makePerustiedot(opiskeluoikeudenId, oo, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
+    val aiemminPoistettuRivi = runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(_.oid === oid).result).headOption
+    runDbSync(
+      DBIO.seq(
+        OpiskeluoikeusPoistoUtils
+          .poistaPäätasonSuoritus(
+            opiskeluoikeusId = opiskeluoikeudenId,
+            oo = oo,
+            suorituksenTyyppi = tyyppi,
+            versionumero = oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1),
+            oppijaOid = henkilö.oid,
+            mitätöity = false,
+            aiemminPoistettuRivi = aiemminPoistettuRivi,
+            application.historyRepository
+          ),
+        application.perustiedotSyncRepository.addToSyncQueue(perustiedot, true)
+      )
+    )
+    teeLogimerkintäSähköpostinotifikaatiotaVarten(oid)
+    AuditLog.log(
+      KoskiAuditLogMessage(
+        KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN,
+        user,
+        Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid, KoskiAuditLogMessageField.suorituksenTyyppi -> tyyppi)
+      )
+    )
+    HttpStatus.ok
+  }
+
+  private def peruutaSuostumusOpiskeluoikeudelta(
+    oid: String,
+    user: KoskiSpecificSession,
+    henkilö: LaajatOppijaHenkilöTiedot,
+    oo: Opiskeluoikeus
+  ): HttpStatus = {
+    val opiskeluoikeudenId = runDbSync(KoskiTables.OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result).head
+    val aiemminPoistettuRivi = runDbSync(KoskiTables.PoistetutOpiskeluoikeudet.filter(_.oid === oid).result).headOption
+    runDbSync(
+      DBIO.seq(
+        OpiskeluoikeusPoistoUtils
+          .poistaOpiskeluOikeus(
+            id = opiskeluoikeudenId,
+            oid = oid,
+            oo = oo,
+            versionumero = oo.versionumero.map(v => v + 1).getOrElse(VERSIO_1),
+            oppijaOid = henkilö.oid,
+            mitätöity = false,
+            aiemminPoistettuRivi = aiemminPoistettuRivi
+          ),
+        application.perustiedotSyncRepository.addDeleteToSyncQueue(opiskeluoikeudenId)
+      )
+    )
+    teeLogimerkintäSähköpostinotifikaatiotaVarten(oid)
+    AuditLog.log(
+      KoskiAuditLogMessage(
+        KoskiOperation.KANSALAINEN_SUOSTUMUS_PERUMINEN,
+        user,
+        Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)
+      )
+    )
+    HttpStatus.ok
   }
 
   def teeTestimerkintäSähköpostinotifikaatiotaVarten(): Unit = {
@@ -73,12 +152,16 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     logger.warn(s"Kansalainen perui suostumuksen. Opiskeluoikeus ${oid}. Ks. tarkemmat tiedot ${application.config.getString("opintopolku.virkailija.url")}/koski/api/opiskeluoikeus/suostumuksenperuutus")
   }
 
-  def suoritusjakoTekemättäWithAccessCheck(oid: String)(implicit user: KoskiSpecificSession): HttpStatus = {
+  def suoritusjakoTekemättäWithAccessCheck(
+    oid: String,
+    suorituksenTyyppi: Option[String]
+  )(implicit user: KoskiSpecificSession): HttpStatus = {
     AuditLog.log(KoskiAuditLogMessage(KoskiOperation.KANSALAINEN_SUORITUSJAKO_TEKEMÄTTÄ_KATSOMINEN, user, Map(KoskiAuditLogMessageField.opiskeluoikeusOid -> oid)))
     henkilöRepository.findByOid(user.oid) match {
       case Some(henkilö) =>
         opiskeluoikeusRepository.findByCurrentUser(henkilö)(user).get.exists(oo =>
-          oo.oid.contains(oid) && !suoritusjakoTehty(oo)) match {
+          oo.oid.contains(oid) &&
+            !suorituksenTyyppi.map(suoritusjakoTehty(oo, henkilö.oid, _)).getOrElse(suoritusjakoTehty(oo))) match {
           case true => HttpStatus.ok
           case false => KoskiErrorCategory.forbidden.opiskeluoikeusEiSopivaSuostumuksenPerumiselle(s"Opiskeluoikeuden $oid annettu suostumus ei ole peruttavissa. Suorituksesta on tehty suoritusjako.")
         }
@@ -86,10 +169,16 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     }
   }
 
-  private def suostumusPeruttavissa(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession) =
-    suorituksetPeruutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo)
+  private def suostumusPeruttavissa(
+    oo: Opiskeluoikeus,
+    oppijaOid: String,
+    suorituksenTyyppi: Option[String]
+  )(implicit user: KoskiSpecificSession): Boolean = suorituksenTyyppi match {
+    case Some(tyyppi) => suorituksetPeruutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo, oppijaOid, tyyppi)
+    case None => suorituksetPeruutettavaaTyyppiä(oo) && !suoritusjakoTehty(oo)
+  }
 
-  def suorituksetPeruutettavaaTyyppiä(oo: Opiskeluoikeus) = {
+  def suorituksetPeruutettavaaTyyppiä(oo: Opiskeluoikeus): Boolean = {
     val muitaPäätasonSuorituksiaKuinPeruttavissaOlevia = oo.suoritukset.exists {
       case _: SuostumusPeruttavissaOpiskeluoikeudelta => false
       case _ => true
@@ -97,8 +186,37 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
     !muitaPäätasonSuorituksiaKuinPeruttavissaOlevia
   }
 
-  private def suoritusjakoTehty(oo: Opiskeluoikeus) = {
+  private def suoritusjakoTehty(oo: Opiskeluoikeus): Boolean = {
     opiskeluoikeusRepository.suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oo.oid.get)
+  }
+
+  private def suoritusjakoTehty(
+    oo: Opiskeluoikeus,
+    oppijaOid: String,
+    suorituksenTyyppi: String
+  ): Boolean = {
+    opiskeluoikeusRepository.suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oo.oid.get) &&
+      suoritusjakoRepository
+        .getAll(oppijaOid)
+        .flatMap(sj => JsonSerializer.extract[List[SuoritusIdentifier]](sj.suoritusIds))
+        .exists(suoritusId => suoritusIdMatches(suoritusId, oo, suorituksenTyyppi))
+  }
+
+  private def suoritusIdMatches(
+    suoritusId: SuoritusIdentifier,
+    oo: Opiskeluoikeus,
+    suorituksenTyyppi: String
+  ): Boolean = {
+    val lähdejärjestelmäMatch = suoritusId.lähdejärjestelmänId == oo.lähdejärjestelmänId.flatMap(_.id)
+    val opiskeluOidMatch = suoritusId.opiskeluoikeusOid.isEmpty || suoritusId.opiskeluoikeusOid == oo.oid
+    val oppilaitosMatch = suoritusId.oppilaitosOid == oo.oppilaitos.map(_.oid)
+    val suoritusMatch = suoritusId.suorituksenTyyppi == suorituksenTyyppi
+    val koulutusModuulinTunnisteMatch = oo.suoritukset.exists(s =>
+      suoritusId.suorituksenTyyppi == s.tyyppi.koodiarvo &&
+        suoritusId.koulutusmoduulinTunniste == s.koulutusmoduuli.tunniste.koodiarvo
+    )
+
+    lähdejärjestelmäMatch && opiskeluOidMatch && oppilaitosMatch && suoritusMatch && koulutusModuulinTunnisteMatch
   }
 
   // Kutsutaan vain fixtureita resetoitaessa

@@ -58,7 +58,7 @@ case class TaiteenPerusopetuksenOpiskeluoikeusjakso(
  *****************************************************************************/
 
 trait TaiteenPerusopetuksenPäätasonSuoritus
-  extends KoskeenTallennettavaPäätasonSuoritus {
+  extends KoskeenTallennettavaPäätasonSuoritus with SuostumusPeruttavissaOpiskeluoikeudelta {
   def koulutusmoduuli: TaiteenPerusopetuksenOpintotaso
 }
 

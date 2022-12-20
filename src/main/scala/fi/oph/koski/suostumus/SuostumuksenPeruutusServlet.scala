@@ -17,13 +17,19 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
   post("/:oid") {
     requireKansalainen
     renderStatus(
-      application.suostumuksenPeruutusService.peruutaSuostumus(getStringParam("oid"))(session)
+      application.suostumuksenPeruutusService.peruutaSuostumus(
+        oid = getStringParam("oid"),
+        suorituksenTyyppi = getOptionalStringParam("suorituksentyyppi")
+      )(session)
     )
   }
 
   post("/suoritusjakoTehty/:oid") {
     requireKansalainen
-    if (application.suostumuksenPeruutusService.suoritusjakoTekemättäWithAccessCheck(getStringParam("oid"))(session).isOk) {
+    if (application.suostumuksenPeruutusService.suoritusjakoTekemättäWithAccessCheck(
+      oid = getStringParam("oid"),
+      suorituksenTyyppi = getOptionalStringParam("suorituksentyyppi")
+    )(session).isOk) {
       renderObject(JObject("tehty" -> JBool(false)))
     } else {
       renderObject(JObject("tehty" -> JBool(true)))
@@ -45,7 +51,8 @@ class SuostumuksenPeruutusServlet(implicit val application: KoskiApplication)
                 peruttuOo.suostumusPeruttuAikaleima.map(sp => JField("Suostumus peruttu", JString(sp.toString))),
                 peruttuOo.mitätöityAikaleima.map(m => JField("Mitätöity", JString(m.toString))),
                 Some(JField("Oppilaitoksen oid", JString(peruttuOo.oppilaitosOid.getOrElse("")))),
-                Some(JField("Oppilaitoksen nimi", JString(peruttuOo.oppilaitosNimi.getOrElse(""))))
+                Some(JField("Oppilaitoksen nimi", JString(peruttuOo.oppilaitosNimi.getOrElse("")))),
+                Some(JField("Suoritusten tyypit", JString(peruttuOo.suoritustyypit.mkString(", "))))
               ).flatten
             )
           )

@@ -301,7 +301,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
   def peruutaSuostumusOpiskeluoikeudelta(oppijaOid: String, opiskeluoikeusOid: String): Boolean = {
     val oppija = oppijat.find(_.henkilö.oid == oppijaOid).get.henkilö
     val user = new KoskiSpecificSession(AuthenticationUser(oppija.oid, oppija.etunimet, oppija.etunimet, None), "fi", InetAddress.getLocalHost, "", Set())
-    val poistoResult = application.suostumuksenPeruutusService.peruutaSuostumus(opiskeluoikeusOid)(user)
+    val poistoResult = application.suostumuksenPeruutusService.peruutaSuostumus(opiskeluoikeusOid, None)(user)
     poistoResult.isOk
   }
 }
