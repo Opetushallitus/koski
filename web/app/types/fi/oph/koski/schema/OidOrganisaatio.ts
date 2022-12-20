@@ -20,4 +20,4 @@ export const OidOrganisaatio = (o: {
 }): OidOrganisaatio => ({ $class: 'fi.oph.koski.schema.OidOrganisaatio', ...o })
 
 export const isOidOrganisaatio = (a: any): a is OidOrganisaatio =>
-  a?.$class === 'OidOrganisaatio'
+  a?.$class === 'fi.oph.koski.schema.OidOrganisaatio'

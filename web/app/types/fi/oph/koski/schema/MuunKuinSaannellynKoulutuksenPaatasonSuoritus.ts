@@ -44,4 +44,5 @@ export const MuunKuinSäännellynKoulutuksenPäätasonSuoritus = (o: {
 export const isMuunKuinSäännellynKoulutuksenPäätasonSuoritus = (
   a: any
 ): a is MuunKuinSäännellynKoulutuksenPäätasonSuoritus =>
-  a?.$class === 'MuunKuinSäännellynKoulutuksenPäätasonSuoritus'
+  a?.$class ===
+  'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenPäätasonSuoritus'

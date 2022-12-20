@@ -22,4 +22,5 @@ export const Lukukausi_Ilmoittautuminen = (
 
 export const isLukukausi_Ilmoittautuminen = (
   a: any
-): a is Lukukausi_Ilmoittautuminen => a?.$class === 'Lukukausi_Ilmoittautuminen'
+): a is Lukukausi_Ilmoittautuminen =>
+  a?.$class === 'fi.oph.koski.schema.Lukukausi_Ilmoittautuminen'

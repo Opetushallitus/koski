@@ -31,4 +31,5 @@ export const TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen = (
 export const isTutkintokoulutukseenValmentavaPerustaitojenVahvistaminen = (
   a: any
 ): a is TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen =>
-  a?.$class === 'TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen'
+  a?.$class ===
+  'fi.oph.koski.schema.TutkintokoulutukseenValmentavaPerustaitojenVahvistaminen'

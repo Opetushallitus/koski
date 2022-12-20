@@ -32,4 +32,5 @@ export const SanallinenLukionArviointi = (o: {
 
 export const isSanallinenLukionArviointi = (
   a: any
-): a is SanallinenLukionArviointi => a?.$class === 'SanallinenLukionArviointi'
+): a is SanallinenLukionArviointi =>
+  a?.$class === 'fi.oph.koski.schema.SanallinenLukionArviointi'

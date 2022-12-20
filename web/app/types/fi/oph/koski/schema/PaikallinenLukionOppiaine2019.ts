@@ -29,4 +29,4 @@ export const PaikallinenLukionOppiaine2019 = (o: {
 export const isPaikallinenLukionOppiaine2019 = (
   a: any
 ): a is PaikallinenLukionOppiaine2019 =>
-  a?.$class === 'PaikallinenLukionOppiaine2019'
+  a?.$class === 'fi.oph.koski.schema.PaikallinenLukionOppiaine2019'

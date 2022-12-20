@@ -50,4 +50,5 @@ export const NurseryVuosiluokanSuoritus = (o: {
 
 export const isNurseryVuosiluokanSuoritus = (
   a: any
-): a is NurseryVuosiluokanSuoritus => a?.$class === 'NurseryVuosiluokanSuoritus'
+): a is NurseryVuosiluokanSuoritus =>
+  a?.$class === 'fi.oph.koski.schema.NurseryVuosiluokanSuoritus'

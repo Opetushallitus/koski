@@ -27,4 +27,5 @@ export const MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli = (o: 
 export const isMuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli = (
   a: any
 ): a is MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli =>
-  a?.$class === 'MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli'
+  a?.$class ===
+  'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli'

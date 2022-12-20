@@ -27,4 +27,4 @@ export const DIATutkinto = (
 })
 
 export const isDIATutkinto = (a: any): a is DIATutkinto =>
-  a?.$class === 'DIATutkinto'
+  a?.$class === 'fi.oph.koski.schema.DIATutkinto'

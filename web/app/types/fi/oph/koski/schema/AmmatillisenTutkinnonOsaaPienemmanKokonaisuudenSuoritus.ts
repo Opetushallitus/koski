@@ -50,4 +50,5 @@ export const AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus = (o: {
 export const isAmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus = (
   a: any
 ): a is AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus =>
-  a?.$class === 'AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus'
+  a?.$class ===
+  'fi.oph.koski.schema.AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus'

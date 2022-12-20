@@ -23,4 +23,4 @@ export const MuunKuinSäännellynKoulutuksenTila = (
 export const isMuunKuinSäännellynKoulutuksenTila = (
   a: any
 ): a is MuunKuinSäännellynKoulutuksenTila =>
-  a?.$class === 'MuunKuinSäännellynKoulutuksenTila'
+  a?.$class === 'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenTila'

@@ -24,4 +24,4 @@ export const OsaamisenTunnustaminen = (o: {
 })
 
 export const isOsaamisenTunnustaminen = (a: any): a is OsaamisenTunnustaminen =>
-  a?.$class === 'OsaamisenTunnustaminen'
+  a?.$class === 'fi.oph.koski.schema.OsaamisenTunnustaminen'

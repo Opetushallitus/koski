@@ -29,4 +29,4 @@ export const PaikallinenLukionKurssi2015 = (o: {
 export const isPaikallinenLukionKurssi2015 = (
   a: any
 ): a is PaikallinenLukionKurssi2015 =>
-  a?.$class === 'PaikallinenLukionKurssi2015'
+  a?.$class === 'fi.oph.koski.schema.PaikallinenLukionKurssi2015'

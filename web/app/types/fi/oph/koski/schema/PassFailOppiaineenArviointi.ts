@@ -31,4 +31,4 @@ export const PassFailOppiaineenArviointi = (o: {
 export const isPassFailOppiaineenArviointi = (
   a: any
 ): a is PassFailOppiaineenArviointi =>
-  a?.$class === 'PassFailOppiaineenArviointi'
+  a?.$class === 'fi.oph.koski.schema.PassFailOppiaineenArviointi'

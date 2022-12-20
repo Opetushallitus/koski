@@ -60,4 +60,5 @@ export const VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi = (o: {
 export const isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi = (
   a: any
 ): a is VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi =>
-  a?.$class === 'VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi'
+  a?.$class ===
+  'fi.oph.koski.schema.VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi'

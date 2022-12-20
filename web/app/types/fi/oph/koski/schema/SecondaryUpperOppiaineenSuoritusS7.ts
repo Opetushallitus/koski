@@ -44,4 +44,4 @@ export const SecondaryUpperOppiaineenSuoritusS7 = (o: {
 export const isSecondaryUpperOppiaineenSuoritusS7 = (
   a: any
 ): a is SecondaryUpperOppiaineenSuoritusS7 =>
-  a?.$class === 'SecondaryUpperOppiaineenSuoritusS7'
+  a?.$class === 'fi.oph.koski.schema.SecondaryUpperOppiaineenSuoritusS7'

@@ -49,4 +49,4 @@ export const MYPVuosiluokanSuoritus = (o: {
 })
 
 export const isMYPVuosiluokanSuoritus = (a: any): a is MYPVuosiluokanSuoritus =>
-  a?.$class === 'MYPVuosiluokanSuoritus'
+  a?.$class === 'fi.oph.koski.schema.MYPVuosiluokanSuoritus'

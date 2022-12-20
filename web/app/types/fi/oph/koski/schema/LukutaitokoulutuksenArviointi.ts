@@ -61,4 +61,4 @@ export const LukutaitokoulutuksenArviointi = (o: {
 export const isLukutaitokoulutuksenArviointi = (
   a: any
 ): a is LukutaitokoulutuksenArviointi =>
-  a?.$class === 'LukutaitokoulutuksenArviointi'
+  a?.$class === 'fi.oph.koski.schema.LukutaitokoulutuksenArviointi'

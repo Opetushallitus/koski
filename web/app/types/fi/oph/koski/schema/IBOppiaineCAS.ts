@@ -28,4 +28,4 @@ export const IBOppiaineCAS = (o: {
 })
 
 export const isIBOppiaineCAS = (a: any): a is IBOppiaineCAS =>
-  a?.$class === 'IBOppiaineCAS'
+  a?.$class === 'fi.oph.koski.schema.IBOppiaineCAS'

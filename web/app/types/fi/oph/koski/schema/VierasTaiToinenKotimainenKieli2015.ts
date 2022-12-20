@@ -37,4 +37,4 @@ export const VierasTaiToinenKotimainenKieli2015 = (o: {
 export const isVierasTaiToinenKotimainenKieli2015 = (
   a: any
 ): a is VierasTaiToinenKotimainenKieli2015 =>
-  a?.$class === 'VierasTaiToinenKotimainenKieli2015'
+  a?.$class === 'fi.oph.koski.schema.VierasTaiToinenKotimainenKieli2015'

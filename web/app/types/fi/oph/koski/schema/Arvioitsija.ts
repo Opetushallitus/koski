@@ -14,4 +14,4 @@ export const Arvioitsija = (o: { nimi: string }): Arvioitsija => ({
 })
 
 export const isArvioitsija = (a: any): a is Arvioitsija =>
-  a?.$class === 'Arvioitsija'
+  a?.$class === 'fi.oph.koski.schema.Arvioitsija'

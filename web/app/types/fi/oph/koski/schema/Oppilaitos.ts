@@ -22,4 +22,4 @@ export const Oppilaitos = (o: {
 }): Oppilaitos => ({ $class: 'fi.oph.koski.schema.Oppilaitos', ...o })
 
 export const isOppilaitos = (a: any): a is Oppilaitos =>
-  a?.$class === 'Oppilaitos'
+  a?.$class === 'fi.oph.koski.schema.Oppilaitos'

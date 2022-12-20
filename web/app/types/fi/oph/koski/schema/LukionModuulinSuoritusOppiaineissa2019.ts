@@ -44,4 +44,4 @@ export const LukionModuulinSuoritusOppiaineissa2019 = (o: {
 export const isLukionModuulinSuoritusOppiaineissa2019 = (
   a: any
 ): a is LukionModuulinSuoritusOppiaineissa2019 =>
-  a?.$class === 'LukionModuulinSuoritusOppiaineissa2019'
+  a?.$class === 'fi.oph.koski.schema.LukionModuulinSuoritusOppiaineissa2019'

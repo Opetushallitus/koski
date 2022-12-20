@@ -27,4 +27,4 @@ export const EiTiedossaOppiaine = (
 })
 
 export const isEiTiedossaOppiaine = (a: any): a is EiTiedossaOppiaine =>
-  a?.$class === 'EiTiedossaOppiaine'
+  a?.$class === 'fi.oph.koski.schema.EiTiedossaOppiaine'

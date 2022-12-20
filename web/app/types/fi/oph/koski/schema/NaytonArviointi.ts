@@ -56,4 +56,4 @@ export const NäytönArviointi = (o: {
 }): NäytönArviointi => ({ $class: 'fi.oph.koski.schema.NäytönArviointi', ...o })
 
 export const isNäytönArviointi = (a: any): a is NäytönArviointi =>
-  a?.$class === 'NäytönArviointi'
+  a?.$class === 'fi.oph.koski.schema.NäytönArviointi'

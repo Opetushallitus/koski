@@ -30,4 +30,5 @@ export const SecondaryLowerLuokkaAste = (o: {
 
 export const isSecondaryLowerLuokkaAste = (
   a: any
-): a is SecondaryLowerLuokkaAste => a?.$class === 'SecondaryLowerLuokkaAste'
+): a is SecondaryLowerLuokkaAste =>
+  a?.$class === 'fi.oph.koski.schema.SecondaryLowerLuokkaAste'

@@ -29,4 +29,5 @@ export const PaikallinenLukioonValmistavanKoulutuksenOppiaine = (o: {
 export const isPaikallinenLukioonValmistavanKoulutuksenOppiaine = (
   a: any
 ): a is PaikallinenLukioonValmistavanKoulutuksenOppiaine =>
-  a?.$class === 'PaikallinenLukioonValmistavanKoulutuksenOppiaine'
+  a?.$class ===
+  'fi.oph.koski.schema.PaikallinenLukioonValmistavanKoulutuksenOppiaine'

@@ -26,4 +26,5 @@ export const PreIBKoulutusmoduuli2015 = (
 
 export const isPreIBKoulutusmoduuli2015 = (
   a: any
-): a is PreIBKoulutusmoduuli2015 => a?.$class === 'PreIBKoulutusmoduuli2015'
+): a is PreIBKoulutusmoduuli2015 =>
+  a?.$class === 'fi.oph.koski.schema.PreIBKoulutusmoduuli2015'

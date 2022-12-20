@@ -22,4 +22,4 @@ export const MuuLukioOpinto2015 = (o: {
 })
 
 export const isMuuLukioOpinto2015 = (a: any): a is MuuLukioOpinto2015 =>
-  a?.$class === 'MuuLukioOpinto2015'
+  a?.$class === 'fi.oph.koski.schema.MuuLukioOpinto2015'

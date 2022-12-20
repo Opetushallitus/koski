@@ -70,4 +70,4 @@ export const EuropeanSchoolOfHelsinkiOpiskeluoikeus = (
 export const isEuropeanSchoolOfHelsinkiOpiskeluoikeus = (
   a: any
 ): a is EuropeanSchoolOfHelsinkiOpiskeluoikeus =>
-  a?.$class === 'EuropeanSchoolOfHelsinkiOpiskeluoikeus'
+  a?.$class === 'fi.oph.koski.schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus'

@@ -53,4 +53,4 @@ export const isTaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuor
     a: any
   ): a is TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus =>
     a?.$class ===
-    'TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus'
+    'fi.oph.koski.schema.TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus'

@@ -28,4 +28,4 @@ export const PaikallinenValmaKoulutuksenOsa = (o: {
 export const isPaikallinenValmaKoulutuksenOsa = (
   a: any
 ): a is PaikallinenValmaKoulutuksenOsa =>
-  a?.$class === 'PaikallinenValmaKoulutuksenOsa'
+  a?.$class === 'fi.oph.koski.schema.PaikallinenValmaKoulutuksenOsa'

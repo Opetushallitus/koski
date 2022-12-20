@@ -26,4 +26,4 @@ export const MuuallaSuoritetutVapaanSivistystyönOpinnot = (o: {
 export const isMuuallaSuoritetutVapaanSivistystyönOpinnot = (
   a: any
 ): a is MuuallaSuoritetutVapaanSivistystyönOpinnot =>
-  a?.$class === 'MuuallaSuoritetutVapaanSivistystyönOpinnot'
+  a?.$class === 'fi.oph.koski.schema.MuuallaSuoritetutVapaanSivistystyönOpinnot'

@@ -29,4 +29,4 @@ export const ErityisenTuenPäätös = (o: {
 })
 
 export const isErityisenTuenPäätös = (a: any): a is ErityisenTuenPäätös =>
-  a?.$class === 'ErityisenTuenPäätös'
+  a?.$class === 'fi.oph.koski.schema.ErityisenTuenPäätös'

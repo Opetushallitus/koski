@@ -66,4 +66,4 @@ export const MuunAmmatillisenTutkinnonOsanSuoritus = (o: {
 export const isMuunAmmatillisenTutkinnonOsanSuoritus = (
   a: any
 ): a is MuunAmmatillisenTutkinnonOsanSuoritus =>
-  a?.$class === 'MuunAmmatillisenTutkinnonOsanSuoritus'
+  a?.$class === 'fi.oph.koski.schema.MuunAmmatillisenTutkinnonOsanSuoritus'

@@ -49,4 +49,4 @@ export const TelmaKoulutuksenOsanSuoritus = (o: {
 export const isTelmaKoulutuksenOsanSuoritus = (
   a: any
 ): a is TelmaKoulutuksenOsanSuoritus =>
-  a?.$class === 'TelmaKoulutuksenOsanSuoritus'
+  a?.$class === 'fi.oph.koski.schema.TelmaKoulutuksenOsanSuoritus'

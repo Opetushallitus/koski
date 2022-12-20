@@ -29,4 +29,4 @@ export const LukionOppimäärä = (
 })
 
 export const isLukionOppimäärä = (a: any): a is LukionOppimäärä =>
-  a?.$class === 'LukionOppimäärä'
+  a?.$class === 'fi.oph.koski.schema.LukionOppimäärä'

@@ -46,4 +46,4 @@ export const isLukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksess
     a: any
   ): a is LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019 =>
     a?.$class ===
-    'LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019'
+    'fi.oph.koski.schema.LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019'

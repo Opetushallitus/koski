@@ -42,4 +42,5 @@ export const LukionOpiskeluoikeusjakso = (o: {
 
 export const isLukionOpiskeluoikeusjakso = (
   a: any
-): a is LukionOpiskeluoikeusjakso => a?.$class === 'LukionOpiskeluoikeusjakso'
+): a is LukionOpiskeluoikeusjakso =>
+  a?.$class === 'fi.oph.koski.schema.LukionOpiskeluoikeusjakso'

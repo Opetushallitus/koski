@@ -25,4 +25,4 @@ export const DIAValmistavaVaihe = (
 })
 
 export const isDIAValmistavaVaihe = (a: any): a is DIAValmistavaVaihe =>
-  a?.$class === 'DIAValmistavaVaihe'
+  a?.$class === 'fi.oph.koski.schema.DIAValmistavaVaihe'

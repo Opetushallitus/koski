@@ -25,4 +25,4 @@ export const ErityisenKoulutustehtävänJakso = (o: {
 export const isErityisenKoulutustehtävänJakso = (
   a: any
 ): a is ErityisenKoulutustehtävänJakso =>
-  a?.$class === 'ErityisenKoulutustehtävänJakso'
+  a?.$class === 'fi.oph.koski.schema.ErityisenKoulutustehtävänJakso'

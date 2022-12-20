@@ -29,4 +29,4 @@ export const PerusopetuksenVuosiluokanSuorituksenLiite = (o: {
 export const isPerusopetuksenVuosiluokanSuorituksenLiite = (
   a: any
 ): a is PerusopetuksenVuosiluokanSuorituksenLiite =>
-  a?.$class === 'PerusopetuksenVuosiluokanSuorituksenLiite'
+  a?.$class === 'fi.oph.koski.schema.PerusopetuksenVuosiluokanSuorituksenLiite'

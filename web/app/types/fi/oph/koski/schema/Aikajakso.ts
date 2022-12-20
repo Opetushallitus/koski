@@ -14,4 +14,5 @@ export const Aikajakso = (o: { alku: string; loppu?: string }): Aikajakso => ({
   ...o
 })
 
-export const isAikajakso = (a: any): a is Aikajakso => a?.$class === 'Aikajakso'
+export const isAikajakso = (a: any): a is Aikajakso =>
+  a?.$class === 'fi.oph.koski.schema.Aikajakso'

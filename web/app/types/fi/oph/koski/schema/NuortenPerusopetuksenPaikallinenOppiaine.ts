@@ -31,4 +31,4 @@ export const NuortenPerusopetuksenPaikallinenOppiaine = (o: {
 export const isNuortenPerusopetuksenPaikallinenOppiaine = (
   a: any
 ): a is NuortenPerusopetuksenPaikallinenOppiaine =>
-  a?.$class === 'NuortenPerusopetuksenPaikallinenOppiaine'
+  a?.$class === 'fi.oph.koski.schema.NuortenPerusopetuksenPaikallinenOppiaine'

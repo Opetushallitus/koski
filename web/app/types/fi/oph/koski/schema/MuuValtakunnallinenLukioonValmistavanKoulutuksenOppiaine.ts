@@ -33,4 +33,5 @@ export const MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine = (o: {
 export const isMuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine = (
   a: any
 ): a is MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine =>
-  a?.$class === 'MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine'
+  a?.$class ===
+  'fi.oph.koski.schema.MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine'

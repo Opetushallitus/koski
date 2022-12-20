@@ -31,4 +31,4 @@ export const NäytönArviointikohde = (o: {
 })
 
 export const isNäytönArviointikohde = (a: any): a is NäytönArviointikohde =>
-  a?.$class === 'NäytönArviointikohde'
+  a?.$class === 'fi.oph.koski.schema.NäytönArviointikohde'

@@ -24,4 +24,5 @@ export const MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto = (o: {
 export const isMuunAmmatillisenKoulutuksenOsasuorituksenLisätieto = (
   a: any
 ): a is MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto =>
-  a?.$class === 'MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto'
+  a?.$class ===
+  'fi.oph.koski.schema.MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto'

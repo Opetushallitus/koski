@@ -25,4 +25,5 @@ export const KorkeakoulunOpintojakso = (o: {
 
 export const isKorkeakoulunOpintojakso = (
   a: any
-): a is KorkeakoulunOpintojakso => a?.$class === 'KorkeakoulunOpintojakso'
+): a is KorkeakoulunOpintojakso =>
+  a?.$class === 'fi.oph.koski.schema.KorkeakoulunOpintojakso'

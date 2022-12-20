@@ -44,4 +44,5 @@ export const PreIBLukionModuulinSuoritusMuissaOpinnoissa2019 = (o: {
 export const isPreIBLukionModuulinSuoritusMuissaOpinnoissa2019 = (
   a: any
 ): a is PreIBLukionModuulinSuoritusMuissaOpinnoissa2019 =>
-  a?.$class === 'PreIBLukionModuulinSuoritusMuissaOpinnoissa2019'
+  a?.$class ===
+  'fi.oph.koski.schema.PreIBLukionModuulinSuoritusMuissaOpinnoissa2019'

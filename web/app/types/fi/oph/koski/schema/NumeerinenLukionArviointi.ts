@@ -30,4 +30,5 @@ export const NumeerinenLukionArviointi = (o: {
 
 export const isNumeerinenLukionArviointi = (
   a: any
-): a is NumeerinenLukionArviointi => a?.$class === 'NumeerinenLukionArviointi'
+): a is NumeerinenLukionArviointi =>
+  a?.$class === 'fi.oph.koski.schema.NumeerinenLukionArviointi'

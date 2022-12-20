@@ -27,4 +27,4 @@ export const NurseryLuokkaAste = (o: {
 })
 
 export const isNurseryLuokkaAste = (a: any): a is NurseryLuokkaAste =>
-  a?.$class === 'NurseryLuokkaAste'
+  a?.$class === 'fi.oph.koski.schema.NurseryLuokkaAste'

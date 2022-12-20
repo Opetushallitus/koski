@@ -35,4 +35,5 @@ export const SecondaryGradeArviointi = (o: {
 
 export const isSecondaryGradeArviointi = (
   a: any
-): a is SecondaryGradeArviointi => a?.$class === 'SecondaryGradeArviointi'
+): a is SecondaryGradeArviointi =>
+  a?.$class === 'fi.oph.koski.schema.SecondaryGradeArviointi'

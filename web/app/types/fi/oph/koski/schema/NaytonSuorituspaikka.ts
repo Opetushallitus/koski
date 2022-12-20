@@ -21,4 +21,4 @@ export const NäytönSuorituspaikka = (o: {
 })
 
 export const isNäytönSuorituspaikka = (a: any): a is NäytönSuorituspaikka =>
-  a?.$class === 'NäytönSuorituspaikka'
+  a?.$class === 'fi.oph.koski.schema.NäytönSuorituspaikka'

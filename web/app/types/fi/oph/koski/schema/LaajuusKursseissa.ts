@@ -25,4 +25,4 @@ export const LaajuusKursseissa = (o: {
 })
 
 export const isLaajuusKursseissa = (a: any): a is LaajuusKursseissa =>
-  a?.$class === 'LaajuusKursseissa'
+  a?.$class === 'fi.oph.koski.schema.LaajuusKursseissa'

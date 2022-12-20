@@ -43,4 +43,4 @@ export const KorkeakoulunOpintojaksonSuoritus = (o: {
 export const isKorkeakoulunOpintojaksonSuoritus = (
   a: any
 ): a is KorkeakoulunOpintojaksonSuoritus =>
-  a?.$class === 'KorkeakoulunOpintojaksonSuoritus'
+  a?.$class === 'fi.oph.koski.schema.KorkeakoulunOpintojaksonSuoritus'

@@ -38,4 +38,5 @@ export const VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus = (o: {
 export const isVSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus = (
   a: any
 ): a is VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus =>
-  a?.$class === 'VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus'
+  a?.$class ===
+  'fi.oph.koski.schema.VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus'

@@ -34,4 +34,4 @@ export const EBTutkintoFinalMarkArviointi = (o: {
 export const isEBTutkintoFinalMarkArviointi = (
   a: any
 ): a is EBTutkintoFinalMarkArviointi =>
-  a?.$class === 'EBTutkintoFinalMarkArviointi'
+  a?.$class === 'fi.oph.koski.schema.EBTutkintoFinalMarkArviointi'

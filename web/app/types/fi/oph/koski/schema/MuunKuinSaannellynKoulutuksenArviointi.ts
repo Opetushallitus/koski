@@ -31,4 +31,4 @@ export const MuunKuinSäännellynKoulutuksenArviointi = (o: {
 export const isMuunKuinSäännellynKoulutuksenArviointi = (
   a: any
 ): a is MuunKuinSäännellynKoulutuksenArviointi =>
-  a?.$class === 'MuunKuinSäännellynKoulutuksenArviointi'
+  a?.$class === 'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenArviointi'

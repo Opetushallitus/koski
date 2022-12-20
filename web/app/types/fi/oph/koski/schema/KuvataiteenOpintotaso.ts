@@ -38,4 +38,4 @@ export const KuvataiteenOpintotaso = (
 })
 
 export const isKuvataiteenOpintotaso = (a: any): a is KuvataiteenOpintotaso =>
-  a?.$class === 'KuvataiteenOpintotaso'
+  a?.$class === 'fi.oph.koski.schema.KuvataiteenOpintotaso'

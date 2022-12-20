@@ -32,4 +32,5 @@ export const VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso = (o: {
 export const isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso = (
   a: any
 ): a is VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso =>
-  a?.$class === 'VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso'
+  a?.$class ===
+  'fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso'

@@ -37,4 +37,5 @@ export const VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli = (
 export const isVSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli = (
   a: any
 ): a is VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli =>
-  a?.$class === 'VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli'
+  a?.$class ===
+  'fi.oph.koski.schema.VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli'

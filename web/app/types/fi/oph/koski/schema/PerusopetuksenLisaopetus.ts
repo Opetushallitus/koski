@@ -30,4 +30,5 @@ export const PerusopetuksenLisäopetus = (
 
 export const isPerusopetuksenLisäopetus = (
   a: any
-): a is PerusopetuksenLisäopetus => a?.$class === 'PerusopetuksenLisäopetus'
+): a is PerusopetuksenLisäopetus =>
+  a?.$class === 'fi.oph.koski.schema.PerusopetuksenLisäopetus'

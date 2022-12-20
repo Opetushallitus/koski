@@ -26,4 +26,5 @@ export const PerusopetukseenValmistavanOpetuksenOppiaine = (o: {
 export const isPerusopetukseenValmistavanOpetuksenOppiaine = (
   a: any
 ): a is PerusopetukseenValmistavanOpetuksenOppiaine =>
-  a?.$class === 'PerusopetukseenValmistavanOpetuksenOppiaine'
+  a?.$class ===
+  'fi.oph.koski.schema.PerusopetukseenValmistavanOpetuksenOppiaine'

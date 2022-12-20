@@ -187,7 +187,7 @@ object TypescriptTypes {
             .map(s => s"${fnName(s.className)}(a)")
             .mkString(" || ")
         )
-      case t: TypeModelWithClassName => buildFn(t.className, s"""a?.$classNameProp === "${t.className}"""")
+      case t: TypeModelWithClassName => buildFn(t.className, s"""a?.$classNameProp === "${t.fullClassName}"""")
     }
   }
 

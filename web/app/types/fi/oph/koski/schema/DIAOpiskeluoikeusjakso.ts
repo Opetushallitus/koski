@@ -41,4 +41,4 @@ export const DIAOpiskeluoikeusjakso = (o: {
 })
 
 export const isDIAOpiskeluoikeusjakso = (a: any): a is DIAOpiskeluoikeusjakso =>
-  a?.$class === 'DIAOpiskeluoikeusjakso'
+  a?.$class === 'fi.oph.koski.schema.DIAOpiskeluoikeusjakso'

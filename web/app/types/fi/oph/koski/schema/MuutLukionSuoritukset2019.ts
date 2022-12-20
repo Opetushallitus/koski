@@ -29,4 +29,5 @@ export const MuutLukionSuoritukset2019 = (
 
 export const isMuutLukionSuoritukset2019 = (
   a: any
-): a is MuutLukionSuoritukset2019 => a?.$class === 'MuutLukionSuoritukset2019'
+): a is MuutLukionSuoritukset2019 =>
+  a?.$class === 'fi.oph.koski.schema.MuutLukionSuoritukset2019'

@@ -28,4 +28,4 @@ export const OppisopimuksellinenJärjestämismuoto = (o: {
 export const isOppisopimuksellinenJärjestämismuoto = (
   a: any
 ): a is OppisopimuksellinenJärjestämismuoto =>
-  a?.$class === 'OppisopimuksellinenJärjestämismuoto'
+  a?.$class === 'fi.oph.koski.schema.OppisopimuksellinenJärjestämismuoto'

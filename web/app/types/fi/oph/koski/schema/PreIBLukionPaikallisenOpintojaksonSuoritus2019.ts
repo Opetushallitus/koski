@@ -44,4 +44,5 @@ export const PreIBLukionPaikallisenOpintojaksonSuoritus2019 = (o: {
 export const isPreIBLukionPaikallisenOpintojaksonSuoritus2019 = (
   a: any
 ): a is PreIBLukionPaikallisenOpintojaksonSuoritus2019 =>
-  a?.$class === 'PreIBLukionPaikallisenOpintojaksonSuoritus2019'
+  a?.$class ===
+  'fi.oph.koski.schema.PreIBLukionPaikallisenOpintojaksonSuoritus2019'

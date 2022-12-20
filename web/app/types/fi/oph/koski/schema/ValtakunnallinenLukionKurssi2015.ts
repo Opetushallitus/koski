@@ -36,4 +36,4 @@ export const ValtakunnallinenLukionKurssi2015 = (o: {
 export const isValtakunnallinenLukionKurssi2015 = (
   a: any
 ): a is ValtakunnallinenLukionKurssi2015 =>
-  a?.$class === 'ValtakunnallinenLukionKurssi2015'
+  a?.$class === 'fi.oph.koski.schema.ValtakunnallinenLukionKurssi2015'

@@ -27,4 +27,5 @@ export const PaikallinenLukionOpinto = (o: {
 
 export const isPaikallinenLukionOpinto = (
   a: any
-): a is PaikallinenLukionOpinto => a?.$class === 'PaikallinenLukionOpinto'
+): a is PaikallinenLukionOpinto =>
+  a?.$class === 'fi.oph.koski.schema.PaikallinenLukionOpinto'

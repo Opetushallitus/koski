@@ -57,4 +57,5 @@ export const TelmaKoulutuksenSuoritus = (o: {
 
 export const isTelmaKoulutuksenSuoritus = (
   a: any
-): a is TelmaKoulutuksenSuoritus => a?.$class === 'TelmaKoulutuksenSuoritus'
+): a is TelmaKoulutuksenSuoritus =>
+  a?.$class === 'fi.oph.koski.schema.TelmaKoulutuksenSuoritus'

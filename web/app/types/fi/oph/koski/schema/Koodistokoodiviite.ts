@@ -32,4 +32,4 @@ export const Koodistokoodiviite = <
 })
 
 export const isKoodistokoodiviite = (a: any): a is Koodistokoodiviite =>
-  a?.$class === 'Koodistokoodiviite'
+  a?.$class === 'fi.oph.koski.schema.Koodistokoodiviite'

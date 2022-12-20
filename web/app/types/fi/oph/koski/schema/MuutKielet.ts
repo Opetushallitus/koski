@@ -29,4 +29,4 @@ export const MuutKielet = (o: {
 }): MuutKielet => ({ $class: 'fi.oph.koski.schema.MuutKielet', ...o })
 
 export const isMuutKielet = (a: any): a is MuutKielet =>
-  a?.$class === 'MuutKielet'
+  a?.$class === 'fi.oph.koski.schema.MuutKielet'

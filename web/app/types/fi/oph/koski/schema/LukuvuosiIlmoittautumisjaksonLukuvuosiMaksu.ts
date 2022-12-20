@@ -24,4 +24,5 @@ export const Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu = (
 export const isLukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu = (
   a: any
 ): a is Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu =>
-  a?.$class === 'Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu'
+  a?.$class ===
+  'fi.oph.koski.schema.Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu'

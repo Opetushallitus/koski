@@ -46,4 +46,4 @@ export const AmmatillinenOpiskeluoikeusjakso = (o: {
 export const isAmmatillinenOpiskeluoikeusjakso = (
   a: any
 ): a is AmmatillinenOpiskeluoikeusjakso =>
-  a?.$class === 'AmmatillinenOpiskeluoikeusjakso'
+  a?.$class === 'fi.oph.koski.schema.AmmatillinenOpiskeluoikeusjakso'

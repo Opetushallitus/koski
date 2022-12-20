@@ -26,4 +26,4 @@ export const PaikallinenOpintovalmiuksiaTukevaOpinto = (o: {
 export const isPaikallinenOpintovalmiuksiaTukevaOpinto = (
   a: any
 ): a is PaikallinenOpintovalmiuksiaTukevaOpinto =>
-  a?.$class === 'PaikallinenOpintovalmiuksiaTukevaOpinto'
+  a?.$class === 'fi.oph.koski.schema.PaikallinenOpintovalmiuksiaTukevaOpinto'

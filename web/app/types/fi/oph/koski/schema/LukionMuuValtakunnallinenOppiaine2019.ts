@@ -59,4 +59,4 @@ export const LukionMuuValtakunnallinenOppiaine2019 = (o: {
 export const isLukionMuuValtakunnallinenOppiaine2019 = (
   a: any
 ): a is LukionMuuValtakunnallinenOppiaine2019 =>
-  a?.$class === 'LukionMuuValtakunnallinenOppiaine2019'
+  a?.$class === 'fi.oph.koski.schema.LukionMuuValtakunnallinenOppiaine2019'

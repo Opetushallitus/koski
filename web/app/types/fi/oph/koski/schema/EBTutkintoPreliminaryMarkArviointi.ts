@@ -34,4 +34,4 @@ export const EBTutkintoPreliminaryMarkArviointi = (o: {
 export const isEBTutkintoPreliminaryMarkArviointi = (
   a: any
 ): a is EBTutkintoPreliminaryMarkArviointi =>
-  a?.$class === 'EBTutkintoPreliminaryMarkArviointi'
+  a?.$class === 'fi.oph.koski.schema.EBTutkintoPreliminaryMarkArviointi'

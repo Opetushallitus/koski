@@ -20,4 +20,4 @@ export const Päivämäärävahvistus = (o: {
 })
 
 export const isPäivämäärävahvistus = (a: any): a is Päivämäärävahvistus =>
-  a?.$class === 'Päivämäärävahvistus'
+  a?.$class === 'fi.oph.koski.schema.Päivämäärävahvistus'

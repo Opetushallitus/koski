@@ -45,4 +45,5 @@ export const TeatteritaiteenOpintotaso = (
 
 export const isTeatteritaiteenOpintotaso = (
   a: any
-): a is TeatteritaiteenOpintotaso => a?.$class === 'TeatteritaiteenOpintotaso'
+): a is TeatteritaiteenOpintotaso =>
+  a?.$class === 'fi.oph.koski.schema.TeatteritaiteenOpintotaso'

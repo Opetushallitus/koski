@@ -64,4 +64,4 @@ export const PYPOppiaineMuu = (o: {
 }): PYPOppiaineMuu => ({ $class: 'fi.oph.koski.schema.PYPOppiaineMuu', ...o })
 
 export const isPYPOppiaineMuu = (a: any): a is PYPOppiaineMuu =>
-  a?.$class === 'PYPOppiaineMuu'
+  a?.$class === 'fi.oph.koski.schema.PYPOppiaineMuu'

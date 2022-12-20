@@ -45,4 +45,4 @@ export const MuuDiplomaOppiaine = (o: {
 })
 
 export const isMuuDiplomaOppiaine = (a: any): a is MuuDiplomaOppiaine =>
-  a?.$class === 'MuuDiplomaOppiaine'
+  a?.$class === 'fi.oph.koski.schema.MuuDiplomaOppiaine'

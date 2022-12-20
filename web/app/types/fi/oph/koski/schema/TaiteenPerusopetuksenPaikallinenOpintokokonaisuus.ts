@@ -24,4 +24,5 @@ export const TaiteenPerusopetuksenPaikallinenOpintokokonaisuus = (o: {
 export const isTaiteenPerusopetuksenPaikallinenOpintokokonaisuus = (
   a: any
 ): a is TaiteenPerusopetuksenPaikallinenOpintokokonaisuus =>
-  a?.$class === 'TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
+  a?.$class ===
+  'fi.oph.koski.schema.TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'

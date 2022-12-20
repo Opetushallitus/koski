@@ -65,4 +65,4 @@ export const SuullisenKielitaidonKoe2019 = (o: {
 export const isSuullisenKielitaidonKoe2019 = (
   a: any
 ): a is SuullisenKielitaidonKoe2019 =>
-  a?.$class === 'SuullisenKielitaidonKoe2019'
+  a?.$class === 'fi.oph.koski.schema.SuullisenKielitaidonKoe2019'

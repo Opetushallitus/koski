@@ -36,4 +36,4 @@ export const OmanÄidinkielenOpinnotLaajuusKursseina = (o: {
 export const isOmanÄidinkielenOpinnotLaajuusKursseina = (
   a: any
 ): a is OmanÄidinkielenOpinnotLaajuusKursseina =>
-  a?.$class === 'OmanÄidinkielenOpinnotLaajuusKursseina'
+  a?.$class === 'fi.oph.koski.schema.OmanÄidinkielenOpinnotLaajuusKursseina'

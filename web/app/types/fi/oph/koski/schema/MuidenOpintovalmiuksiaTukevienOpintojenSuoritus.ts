@@ -49,4 +49,5 @@ export const MuidenOpintovalmiuksiaTukevienOpintojenSuoritus = (o: {
 export const isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus = (
   a: any
 ): a is MuidenOpintovalmiuksiaTukevienOpintojenSuoritus =>
-  a?.$class === 'MuidenOpintovalmiuksiaTukevienOpintojenSuoritus'
+  a?.$class ===
+  'fi.oph.koski.schema.MuidenOpintovalmiuksiaTukevienOpintojenSuoritus'

@@ -20,4 +20,4 @@ export const OikeuttaMaksuttomuuteenPidennetty = (o: {
 export const isOikeuttaMaksuttomuuteenPidennetty = (
   a: any
 ): a is OikeuttaMaksuttomuuteenPidennetty =>
-  a?.$class === 'OikeuttaMaksuttomuuteenPidennetty'
+  a?.$class === 'fi.oph.koski.schema.OikeuttaMaksuttomuuteenPidennetty'

@@ -26,4 +26,5 @@ export const PrimaryLapsiAlaoppimisalue = (o: {
 
 export const isPrimaryLapsiAlaoppimisalue = (
   a: any
-): a is PrimaryLapsiAlaoppimisalue => a?.$class === 'PrimaryLapsiAlaoppimisalue'
+): a is PrimaryLapsiAlaoppimisalue =>
+  a?.$class === 'fi.oph.koski.schema.PrimaryLapsiAlaoppimisalue'

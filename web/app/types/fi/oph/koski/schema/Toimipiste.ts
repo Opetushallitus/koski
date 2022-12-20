@@ -20,4 +20,4 @@ export const Toimipiste = (o: {
 }): Toimipiste => ({ $class: 'fi.oph.koski.schema.Toimipiste', ...o })
 
 export const isToimipiste = (a: any): a is Toimipiste =>
-  a?.$class === 'Toimipiste'
+  a?.$class === 'fi.oph.koski.schema.Toimipiste'

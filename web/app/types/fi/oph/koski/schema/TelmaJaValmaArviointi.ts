@@ -38,4 +38,4 @@ export const TelmaJaValmaArviointi = (o: {
 })
 
 export const isTelmaJaValmaArviointi = (a: any): a is TelmaJaValmaArviointi =>
-  a?.$class === 'TelmaJaValmaArviointi'
+  a?.$class === 'fi.oph.koski.schema.TelmaJaValmaArviointi'

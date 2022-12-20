@@ -21,4 +21,4 @@ export const LähdejärjestelmäId = (o: {
 })
 
 export const isLähdejärjestelmäId = (a: any): a is LähdejärjestelmäId =>
-  a?.$class === 'LähdejärjestelmäId'
+  a?.$class === 'fi.oph.koski.schema.LähdejärjestelmäId'

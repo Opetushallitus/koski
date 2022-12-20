@@ -28,4 +28,5 @@ export const InternationalSchoolCoreRequirementsArviointi = (o: {
 export const isInternationalSchoolCoreRequirementsArviointi = (
   a: any
 ): a is InternationalSchoolCoreRequirementsArviointi =>
-  a?.$class === 'InternationalSchoolCoreRequirementsArviointi'
+  a?.$class ===
+  'fi.oph.koski.schema.InternationalSchoolCoreRequirementsArviointi'

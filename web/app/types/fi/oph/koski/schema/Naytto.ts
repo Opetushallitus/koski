@@ -33,4 +33,5 @@ export const Näyttö = (
   ...o
 })
 
-export const isNäyttö = (a: any): a is Näyttö => a?.$class === 'Näyttö'
+export const isNäyttö = (a: any): a is Näyttö =>
+  a?.$class === 'fi.oph.koski.schema.Näyttö'

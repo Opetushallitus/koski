@@ -29,4 +29,4 @@ export const InternationalSchoolMuuDiplomaOppiaine = (o: {
 export const isInternationalSchoolMuuDiplomaOppiaine = (
   a: any
 ): a is InternationalSchoolMuuDiplomaOppiaine =>
-  a?.$class === 'InternationalSchoolMuuDiplomaOppiaine'
+  a?.$class === 'fi.oph.koski.schema.InternationalSchoolMuuDiplomaOppiaine'

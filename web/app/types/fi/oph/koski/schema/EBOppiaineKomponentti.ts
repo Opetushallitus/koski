@@ -19,4 +19,4 @@ export const EBOppiaineKomponentti = (o: {
 })
 
 export const isEBOppiaineKomponentti = (a: any): a is EBOppiaineKomponentti =>
-  a?.$class === 'EBOppiaineKomponentti'
+  a?.$class === 'fi.oph.koski.schema.EBOppiaineKomponentti'

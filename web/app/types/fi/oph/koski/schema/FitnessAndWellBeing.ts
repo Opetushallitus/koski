@@ -27,4 +27,4 @@ export const FitnessAndWellBeing = (
 })
 
 export const isFitnessAndWellBeing = (a: any): a is FitnessAndWellBeing =>
-  a?.$class === 'FitnessAndWellBeing'
+  a?.$class === 'fi.oph.koski.schema.FitnessAndWellBeing'

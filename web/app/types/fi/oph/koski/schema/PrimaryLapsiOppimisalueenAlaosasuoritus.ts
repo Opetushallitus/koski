@@ -39,4 +39,4 @@ export const PrimaryLapsiOppimisalueenAlaosasuoritus = (o: {
 export const isPrimaryLapsiOppimisalueenAlaosasuoritus = (
   a: any
 ): a is PrimaryLapsiOppimisalueenAlaosasuoritus =>
-  a?.$class === 'PrimaryLapsiOppimisalueenAlaosasuoritus'
+  a?.$class === 'fi.oph.koski.schema.PrimaryLapsiOppimisalueenAlaosasuoritus'

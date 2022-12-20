@@ -57,4 +57,4 @@ export const isAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSu
     a: any
   ): a is AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus =>
     a?.$class ===
-    'AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
+    'fi.oph.koski.schema.AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'

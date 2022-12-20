@@ -26,4 +26,5 @@ export const PaikallinenLukioonValmistavanKoulutuksenKurssi = (o: {
 export const isPaikallinenLukioonValmistavanKoulutuksenKurssi = (
   a: any
 ): a is PaikallinenLukioonValmistavanKoulutuksenKurssi =>
-  a?.$class === 'PaikallinenLukioonValmistavanKoulutuksenKurssi'
+  a?.$class ===
+  'fi.oph.koski.schema.PaikallinenLukioonValmistavanKoulutuksenKurssi'

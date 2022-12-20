@@ -33,4 +33,4 @@ export const IBKurssinSuoritus = (o: {
 })
 
 export const isIBKurssinSuoritus = (a: any): a is IBKurssinSuoritus =>
-  a?.$class === 'IBKurssinSuoritus'
+  a?.$class === 'fi.oph.koski.schema.IBKurssinSuoritus'

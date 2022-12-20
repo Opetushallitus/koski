@@ -24,4 +24,5 @@ export const PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa = (o: {
 export const isPaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa = (
   a: any
 ): a is PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa =>
-  a?.$class === 'PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa'
+  a?.$class ===
+  'fi.oph.koski.schema.PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa'

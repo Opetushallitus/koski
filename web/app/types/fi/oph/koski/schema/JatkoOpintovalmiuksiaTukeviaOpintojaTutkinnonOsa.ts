@@ -31,4 +31,5 @@ export const JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa = (
 export const isJatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa = (
   a: any
 ): a is JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa =>
-  a?.$class === 'JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa'
+  a?.$class ===
+  'fi.oph.koski.schema.JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa'

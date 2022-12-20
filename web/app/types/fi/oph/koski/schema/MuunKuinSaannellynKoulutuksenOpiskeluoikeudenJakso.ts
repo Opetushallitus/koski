@@ -32,4 +32,5 @@ export const MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso = (o: {
 export const isMuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso = (
   a: any
 ): a is MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso =>
-  a?.$class === 'MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso'
+  a?.$class ===
+  'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso'

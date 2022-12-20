@@ -43,4 +43,4 @@ export const AikuistenPerusopetuksenOpiskeluoikeusjakso = (o: {
 export const isAikuistenPerusopetuksenOpiskeluoikeusjakso = (
   a: any
 ): a is AikuistenPerusopetuksenOpiskeluoikeusjakso =>
-  a?.$class === 'AikuistenPerusopetuksenOpiskeluoikeusjakso'
+  a?.$class === 'fi.oph.koski.schema.AikuistenPerusopetuksenOpiskeluoikeusjakso'

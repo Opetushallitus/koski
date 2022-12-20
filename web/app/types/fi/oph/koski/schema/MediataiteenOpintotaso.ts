@@ -41,4 +41,4 @@ export const MediataiteenOpintotaso = (
 })
 
 export const isMediataiteenOpintotaso = (a: any): a is MediataiteenOpintotaso =>
-  a?.$class === 'MediataiteenOpintotaso'
+  a?.$class === 'fi.oph.koski.schema.MediataiteenOpintotaso'

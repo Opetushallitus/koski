@@ -27,4 +27,5 @@ export const PaikallinenTutkinnonOsa = (o: {
 
 export const isPaikallinenTutkinnonOsa = (
   a: any
-): a is PaikallinenTutkinnonOsa => a?.$class === 'PaikallinenTutkinnonOsa'
+): a is PaikallinenTutkinnonOsa =>
+  a?.$class === 'fi.oph.koski.schema.PaikallinenTutkinnonOsa'

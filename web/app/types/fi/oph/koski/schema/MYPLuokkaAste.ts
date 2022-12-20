@@ -22,4 +22,4 @@ export const MYPLuokkaAste = (o: {
 }): MYPLuokkaAste => ({ $class: 'fi.oph.koski.schema.MYPLuokkaAste', ...o })
 
 export const isMYPLuokkaAste = (a: any): a is MYPLuokkaAste =>
-  a?.$class === 'MYPLuokkaAste'
+  a?.$class === 'fi.oph.koski.schema.MYPLuokkaAste'

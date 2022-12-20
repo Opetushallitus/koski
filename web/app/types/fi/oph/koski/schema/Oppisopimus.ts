@@ -18,4 +18,4 @@ export const Oppisopimus = (o: {
 }): Oppisopimus => ({ $class: 'fi.oph.koski.schema.Oppisopimus', ...o })
 
 export const isOppisopimus = (a: any): a is Oppisopimus =>
-  a?.$class === 'Oppisopimus'
+  a?.$class === 'fi.oph.koski.schema.Oppisopimus'

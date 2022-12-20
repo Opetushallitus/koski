@@ -21,4 +21,4 @@ export const DiplomaCoreRequirementsOppiaine = (o: {
 export const isDiplomaCoreRequirementsOppiaine = (
   a: any
 ): a is DiplomaCoreRequirementsOppiaine =>
-  a?.$class === 'DiplomaCoreRequirementsOppiaine'
+  a?.$class === 'fi.oph.koski.schema.DiplomaCoreRequirementsOppiaine'

@@ -35,4 +35,4 @@ export const isTutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTap
     a: any
   ): a is TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen =>
     a?.$class ===
-    'TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen'
+    'fi.oph.koski.schema.TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen'

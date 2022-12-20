@@ -21,4 +21,5 @@ export const SisältäväOpiskeluoikeus = (o: {
 
 export const isSisältäväOpiskeluoikeus = (
   a: any
-): a is SisältäväOpiskeluoikeus => a?.$class === 'SisältäväOpiskeluoikeus'
+): a is SisältäväOpiskeluoikeus =>
+  a?.$class === 'fi.oph.koski.schema.SisältäväOpiskeluoikeus'

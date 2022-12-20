@@ -72,4 +72,5 @@ export const EsiopetuksenOpiskeluoikeus = (
 
 export const isEsiopetuksenOpiskeluoikeus = (
   a: any
-): a is EsiopetuksenOpiskeluoikeus => a?.$class === 'EsiopetuksenOpiskeluoikeus'
+): a is EsiopetuksenOpiskeluoikeus =>
+  a?.$class === 'fi.oph.koski.schema.EsiopetuksenOpiskeluoikeus'

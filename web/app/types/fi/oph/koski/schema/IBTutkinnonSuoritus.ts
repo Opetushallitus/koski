@@ -58,4 +58,4 @@ export const IBTutkinnonSuoritus = (o: {
 })
 
 export const isIBTutkinnonSuoritus = (a: any): a is IBTutkinnonSuoritus =>
-  a?.$class === 'IBTutkinnonSuoritus'
+  a?.$class === 'fi.oph.koski.schema.IBTutkinnonSuoritus'

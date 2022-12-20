@@ -37,4 +37,5 @@ export const TäydellisetHenkilötiedot = (o: {
 
 export const isTäydellisetHenkilötiedot = (
   a: any
-): a is TäydellisetHenkilötiedot => a?.$class === 'TäydellisetHenkilötiedot'
+): a is TäydellisetHenkilötiedot =>
+  a?.$class === 'fi.oph.koski.schema.TäydellisetHenkilötiedot'

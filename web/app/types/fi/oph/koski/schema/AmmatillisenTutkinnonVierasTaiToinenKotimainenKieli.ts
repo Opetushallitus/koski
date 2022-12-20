@@ -29,4 +29,5 @@ export const AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli = (o: {
 export const isAmmatillisenTutkinnonVierasTaiToinenKotimainenKieli = (
   a: any
 ): a is AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli =>
-  a?.$class === 'AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli'
+  a?.$class ===
+  'fi.oph.koski.schema.AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli'

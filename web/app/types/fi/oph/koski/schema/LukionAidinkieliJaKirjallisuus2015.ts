@@ -35,4 +35,4 @@ export const LukionÄidinkieliJaKirjallisuus2015 = (o: {
 export const isLukionÄidinkieliJaKirjallisuus2015 = (
   a: any
 ): a is LukionÄidinkieliJaKirjallisuus2015 =>
-  a?.$class === 'LukionÄidinkieliJaKirjallisuus2015'
+  a?.$class === 'fi.oph.koski.schema.LukionÄidinkieliJaKirjallisuus2015'

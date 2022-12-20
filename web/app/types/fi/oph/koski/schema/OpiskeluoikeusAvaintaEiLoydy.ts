@@ -20,4 +20,4 @@ export const OpiskeluoikeusAvaintaEiLöydy = (o: {
 export const isOpiskeluoikeusAvaintaEiLöydy = (
   a: any
 ): a is OpiskeluoikeusAvaintaEiLöydy =>
-  a?.$class === 'OpiskeluoikeusAvaintaEiLöydy'
+  a?.$class === 'fi.oph.koski.schema.OpiskeluoikeusAvaintaEiLöydy'

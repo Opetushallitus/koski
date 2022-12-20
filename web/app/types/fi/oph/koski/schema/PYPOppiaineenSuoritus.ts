@@ -39,4 +39,4 @@ export const PYPOppiaineenSuoritus = (o: {
 })
 
 export const isPYPOppiaineenSuoritus = (a: any): a is PYPOppiaineenSuoritus =>
-  a?.$class === 'PYPOppiaineenSuoritus'
+  a?.$class === 'fi.oph.koski.schema.PYPOppiaineenSuoritus'

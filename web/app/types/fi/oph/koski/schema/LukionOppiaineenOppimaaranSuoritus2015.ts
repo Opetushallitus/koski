@@ -50,4 +50,4 @@ export const LukionOppiaineenOppimääränSuoritus2015 = (o: {
 export const isLukionOppiaineenOppimääränSuoritus2015 = (
   a: any
 ): a is LukionOppiaineenOppimääränSuoritus2015 =>
-  a?.$class === 'LukionOppiaineenOppimääränSuoritus2015'
+  a?.$class === 'fi.oph.koski.schema.LukionOppiaineenOppimääränSuoritus2015'

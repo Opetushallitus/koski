@@ -55,4 +55,4 @@ export const DIAOppiaineMuu = (o: {
 }): DIAOppiaineMuu => ({ $class: 'fi.oph.koski.schema.DIAOppiaineMuu', ...o })
 
 export const isDIAOppiaineMuu = (a: any): a is DIAOppiaineMuu =>
-  a?.$class === 'DIAOppiaineMuu'
+  a?.$class === 'fi.oph.koski.schema.DIAOppiaineMuu'

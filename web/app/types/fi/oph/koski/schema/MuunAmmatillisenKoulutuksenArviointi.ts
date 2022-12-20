@@ -42,4 +42,4 @@ export const MuunAmmatillisenKoulutuksenArviointi = (o: {
 export const isMuunAmmatillisenKoulutuksenArviointi = (
   a: any
 ): a is MuunAmmatillisenKoulutuksenArviointi =>
-  a?.$class === 'MuunAmmatillisenKoulutuksenArviointi'
+  a?.$class === 'fi.oph.koski.schema.MuunAmmatillisenKoulutuksenArviointi'

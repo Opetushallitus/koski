@@ -52,4 +52,4 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritus = (o: {
 export const isYhteisenTutkinnonOsanOsaAlueenSuoritus = (
   a: any
 ): a is YhteisenTutkinnonOsanOsaAlueenSuoritus =>
-  a?.$class === 'YhteisenTutkinnonOsanOsaAlueenSuoritus'
+  a?.$class === 'fi.oph.koski.schema.YhteisenTutkinnonOsanOsaAlueenSuoritus'

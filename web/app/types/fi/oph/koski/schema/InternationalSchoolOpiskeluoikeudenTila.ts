@@ -23,4 +23,4 @@ export const InternationalSchoolOpiskeluoikeudenTila = (
 export const isInternationalSchoolOpiskeluoikeudenTila = (
   a: any
 ): a is InternationalSchoolOpiskeluoikeudenTila =>
-  a?.$class === 'InternationalSchoolOpiskeluoikeudenTila'
+  a?.$class === 'fi.oph.koski.schema.InternationalSchoolOpiskeluoikeudenTila'

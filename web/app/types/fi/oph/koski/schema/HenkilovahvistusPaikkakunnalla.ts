@@ -30,4 +30,4 @@ export const HenkilövahvistusPaikkakunnalla = (o: {
 export const isHenkilövahvistusPaikkakunnalla = (
   a: any
 ): a is HenkilövahvistusPaikkakunnalla =>
-  a?.$class === 'HenkilövahvistusPaikkakunnalla'
+  a?.$class === 'fi.oph.koski.schema.HenkilövahvistusPaikkakunnalla'

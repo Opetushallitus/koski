@@ -30,4 +30,4 @@ export const IBOppiaineLanguage = (o: {
 })
 
 export const isIBOppiaineLanguage = (a: any): a is IBOppiaineLanguage =>
-  a?.$class === 'IBOppiaineLanguage'
+  a?.$class === 'fi.oph.koski.schema.IBOppiaineLanguage'

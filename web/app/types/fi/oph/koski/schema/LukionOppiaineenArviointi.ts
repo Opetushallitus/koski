@@ -24,4 +24,5 @@ export const LukionOppiaineenArviointi = (o: {
 
 export const isLukionOppiaineenArviointi = (
   a: any
-): a is LukionOppiaineenArviointi => a?.$class === 'LukionOppiaineenArviointi'
+): a is LukionOppiaineenArviointi =>
+  a?.$class === 'fi.oph.koski.schema.LukionOppiaineenArviointi'

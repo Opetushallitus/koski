@@ -32,4 +32,4 @@ export const Työssäoppimisjakso = (o: {
 })
 
 export const isTyössäoppimisjakso = (a: any): a is Työssäoppimisjakso =>
-  a?.$class === 'Työssäoppimisjakso'
+  a?.$class === 'fi.oph.koski.schema.Työssäoppimisjakso'

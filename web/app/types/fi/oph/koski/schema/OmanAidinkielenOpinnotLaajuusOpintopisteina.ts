@@ -36,4 +36,5 @@ export const OmanÄidinkielenOpinnotLaajuusOpintopisteinä = (o: {
 export const isOmanÄidinkielenOpinnotLaajuusOpintopisteinä = (
   a: any
 ): a is OmanÄidinkielenOpinnotLaajuusOpintopisteinä =>
-  a?.$class === 'OmanÄidinkielenOpinnotLaajuusOpintopisteinä'
+  a?.$class ===
+  'fi.oph.koski.schema.OmanÄidinkielenOpinnotLaajuusOpintopisteinä'
