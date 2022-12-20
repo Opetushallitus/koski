@@ -46,4 +46,4 @@ export const DIAOppiaineLisäaine = (o: {
 })
 
 export const isDIAOppiaineLisäaine = (a: any): a is DIAOppiaineLisäaine =>
-  a?.$class === 'DIAOppiaineLisäaine'
+  a?.$class === 'fi.oph.koski.schema.DIAOppiaineLisäaine'

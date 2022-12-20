@@ -45,4 +45,5 @@ export const ArkkitehtuurinOpintotaso = (
 
 export const isArkkitehtuurinOpintotaso = (
   a: any
-): a is ArkkitehtuurinOpintotaso => a?.$class === 'ArkkitehtuurinOpintotaso'
+): a is ArkkitehtuurinOpintotaso =>
+  a?.$class === 'fi.oph.koski.schema.ArkkitehtuurinOpintotaso'

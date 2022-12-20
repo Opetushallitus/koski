@@ -15,4 +15,4 @@ export const OidHenkilö = (o: { oid: string }): OidHenkilö => ({
 })
 
 export const isOidHenkilö = (a: any): a is OidHenkilö =>
-  a?.$class === 'OidHenkilö'
+  a?.$class === 'fi.oph.koski.schema.OidHenkilö'

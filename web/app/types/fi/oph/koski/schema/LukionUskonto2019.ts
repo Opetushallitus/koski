@@ -31,4 +31,4 @@ export const LukionUskonto2019 = (o: {
 })
 
 export const isLukionUskonto2019 = (a: any): a is LukionUskonto2019 =>
-  a?.$class === 'LukionUskonto2019'
+  a?.$class === 'fi.oph.koski.schema.LukionUskonto2019'

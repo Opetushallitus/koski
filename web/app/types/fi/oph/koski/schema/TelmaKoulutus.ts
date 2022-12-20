@@ -32,4 +32,4 @@ export const TelmaKoulutus = (
 })
 
 export const isTelmaKoulutus = (a: any): a is TelmaKoulutus =>
-  a?.$class === 'TelmaKoulutus'
+  a?.$class === 'fi.oph.koski.schema.TelmaKoulutus'

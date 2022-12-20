@@ -39,4 +39,4 @@ export const MYPOppiaineenSuoritus = (o: {
 })
 
 export const isMYPOppiaineenSuoritus = (a: any): a is MYPOppiaineenSuoritus =>
-  a?.$class === 'MYPOppiaineenSuoritus'
+  a?.$class === 'fi.oph.koski.schema.MYPOppiaineenSuoritus'

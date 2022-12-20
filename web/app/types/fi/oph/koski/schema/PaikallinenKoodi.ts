@@ -22,4 +22,4 @@ export const PaikallinenKoodi = (o: {
 })
 
 export const isPaikallinenKoodi = (a: any): a is PaikallinenKoodi =>
-  a?.$class === 'PaikallinenKoodi'
+  a?.$class === 'fi.oph.koski.schema.PaikallinenKoodi'

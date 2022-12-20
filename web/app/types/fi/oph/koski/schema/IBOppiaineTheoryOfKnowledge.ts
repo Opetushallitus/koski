@@ -27,4 +27,4 @@ export const IBOppiaineTheoryOfKnowledge = (o: {
 export const isIBOppiaineTheoryOfKnowledge = (
   a: any
 ): a is IBOppiaineTheoryOfKnowledge =>
-  a?.$class === 'IBOppiaineTheoryOfKnowledge'
+  a?.$class === 'fi.oph.koski.schema.IBOppiaineTheoryOfKnowledge'

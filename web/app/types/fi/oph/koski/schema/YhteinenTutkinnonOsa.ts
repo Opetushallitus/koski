@@ -52,4 +52,4 @@ export const YhteinenTutkinnonOsa = (o: {
 })
 
 export const isYhteinenTutkinnonOsa = (a: any): a is YhteinenTutkinnonOsa =>
-  a?.$class === 'YhteinenTutkinnonOsa'
+  a?.$class === 'fi.oph.koski.schema.YhteinenTutkinnonOsa'

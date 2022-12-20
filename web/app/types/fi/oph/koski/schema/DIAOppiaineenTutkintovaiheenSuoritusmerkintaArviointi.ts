@@ -32,4 +32,5 @@ export const DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi = (
 export const isDIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi = (
   a: any
 ): a is DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi =>
-  a?.$class === 'DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi'
+  a?.$class ===
+  'fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi'

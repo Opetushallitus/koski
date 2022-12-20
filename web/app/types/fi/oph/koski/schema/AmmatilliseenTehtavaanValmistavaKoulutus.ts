@@ -32,4 +32,4 @@ export const AmmatilliseenTehtäväänValmistavaKoulutus = (o: {
 export const isAmmatilliseenTehtäväänValmistavaKoulutus = (
   a: any
 ): a is AmmatilliseenTehtäväänValmistavaKoulutus =>
-  a?.$class === 'AmmatilliseenTehtäväänValmistavaKoulutus'
+  a?.$class === 'fi.oph.koski.schema.AmmatilliseenTehtäväänValmistavaKoulutus'

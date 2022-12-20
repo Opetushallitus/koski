@@ -65,4 +65,5 @@ export const MuunKuinSäännellynKoulutuksenOpiskeluoikeus = (
 export const isMuunKuinSäännellynKoulutuksenOpiskeluoikeus = (
   a: any
 ): a is MuunKuinSäännellynKoulutuksenOpiskeluoikeus =>
-  a?.$class === 'MuunKuinSäännellynKoulutuksenOpiskeluoikeus'
+  a?.$class ===
+  'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenOpiskeluoikeus'

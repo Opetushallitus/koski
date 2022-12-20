@@ -25,4 +25,4 @@ export const LaajuusOpintoviikoissa = (o: {
 })
 
 export const isLaajuusOpintoviikoissa = (a: any): a is LaajuusOpintoviikoissa =>
-  a?.$class === 'LaajuusOpintoviikoissa'
+  a?.$class === 'fi.oph.koski.schema.LaajuusOpintoviikoissa'

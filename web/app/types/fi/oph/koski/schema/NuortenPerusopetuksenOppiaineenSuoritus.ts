@@ -48,4 +48,4 @@ export const NuortenPerusopetuksenOppiaineenSuoritus = (o: {
 export const isNuortenPerusopetuksenOppiaineenSuoritus = (
   a: any
 ): a is NuortenPerusopetuksenOppiaineenSuoritus =>
-  a?.$class === 'NuortenPerusopetuksenOppiaineenSuoritus'
+  a?.$class === 'fi.oph.koski.schema.NuortenPerusopetuksenOppiaineenSuoritus'

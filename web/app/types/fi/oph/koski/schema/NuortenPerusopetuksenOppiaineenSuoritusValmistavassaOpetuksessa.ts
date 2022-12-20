@@ -56,4 +56,4 @@ export const isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa =
     a: any
   ): a is NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa =>
     a?.$class ===
-    'NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa'
+    'fi.oph.koski.schema.NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa'

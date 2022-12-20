@@ -44,4 +44,4 @@ export const LukionPaikallisenOpintojaksonSuoritus2019 = (o: {
 export const isLukionPaikallisenOpintojaksonSuoritus2019 = (
   a: any
 ): a is LukionPaikallisenOpintojaksonSuoritus2019 =>
-  a?.$class === 'LukionPaikallisenOpintojaksonSuoritus2019'
+  a?.$class === 'fi.oph.koski.schema.LukionPaikallisenOpintojaksonSuoritus2019'

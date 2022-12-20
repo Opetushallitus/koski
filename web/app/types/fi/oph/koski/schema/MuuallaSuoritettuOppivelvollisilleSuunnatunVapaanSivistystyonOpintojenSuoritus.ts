@@ -47,4 +47,4 @@ export const isMuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpi
     a: any
   ): a is MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus =>
     a?.$class ===
-    'MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus'
+    'fi.oph.koski.schema.MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus'

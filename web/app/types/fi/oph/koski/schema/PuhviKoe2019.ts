@@ -28,4 +28,4 @@ export const PuhviKoe2019 = (o: {
 }): PuhviKoe2019 => ({ $class: 'fi.oph.koski.schema.PuhviKoe2019', ...o })
 
 export const isPuhviKoe2019 = (a: any): a is PuhviKoe2019 =>
-  a?.$class === 'PuhviKoe2019'
+  a?.$class === 'fi.oph.koski.schema.PuhviKoe2019'

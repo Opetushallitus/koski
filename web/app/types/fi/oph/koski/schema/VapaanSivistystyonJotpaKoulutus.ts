@@ -32,4 +32,4 @@ export const VapaanSivistystyönJotpaKoulutus = (o: {
 export const isVapaanSivistystyönJotpaKoulutus = (
   a: any
 ): a is VapaanSivistystyönJotpaKoulutus =>
-  a?.$class === 'VapaanSivistystyönJotpaKoulutus'
+  a?.$class === 'fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutus'

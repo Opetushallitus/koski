@@ -27,4 +27,4 @@ export const IBCoreRequirementsArviointi = (o: {
 export const isIBCoreRequirementsArviointi = (
   a: any
 ): a is IBCoreRequirementsArviointi =>
-  a?.$class === 'IBCoreRequirementsArviointi'
+  a?.$class === 'fi.oph.koski.schema.IBCoreRequirementsArviointi'

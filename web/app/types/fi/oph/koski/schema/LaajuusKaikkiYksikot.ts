@@ -21,4 +21,4 @@ export const LaajuusKaikkiYksiköt = (o: {
 })
 
 export const isLaajuusKaikkiYksiköt = (a: any): a is LaajuusKaikkiYksiköt =>
-  a?.$class === 'LaajuusKaikkiYksiköt'
+  a?.$class === 'fi.oph.koski.schema.LaajuusKaikkiYksiköt'

@@ -36,4 +36,4 @@ export const SecondaryS7PreliminaryMarkArviointi = (o: {
 export const isSecondaryS7PreliminaryMarkArviointi = (
   a: any
 ): a is SecondaryS7PreliminaryMarkArviointi =>
-  a?.$class === 'SecondaryS7PreliminaryMarkArviointi'
+  a?.$class === 'fi.oph.koski.schema.SecondaryS7PreliminaryMarkArviointi'

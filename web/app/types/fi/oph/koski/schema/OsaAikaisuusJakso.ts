@@ -20,4 +20,4 @@ export const OsaAikaisuusJakso = (o: {
 })
 
 export const isOsaAikaisuusJakso = (a: any): a is OsaAikaisuusJakso =>
-  a?.$class === 'OsaAikaisuusJakso'
+  a?.$class === 'fi.oph.koski.schema.OsaAikaisuusJakso'

@@ -23,4 +23,4 @@ export const TehostetunTuenPäätös = (o: {
 })
 
 export const isTehostetunTuenPäätös = (a: any): a is TehostetunTuenPäätös =>
-  a?.$class === 'TehostetunTuenPäätös'
+  a?.$class === 'fi.oph.koski.schema.TehostetunTuenPäätös'

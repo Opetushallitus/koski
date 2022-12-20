@@ -22,4 +22,5 @@ export const LukionOpiskeluoikeudenTila = (
 
 export const isLukionOpiskeluoikeudenTila = (
   a: any
-): a is LukionOpiskeluoikeudenTila => a?.$class === 'LukionOpiskeluoikeudenTila'
+): a is LukionOpiskeluoikeudenTila =>
+  a?.$class === 'fi.oph.koski.schema.LukionOpiskeluoikeudenTila'

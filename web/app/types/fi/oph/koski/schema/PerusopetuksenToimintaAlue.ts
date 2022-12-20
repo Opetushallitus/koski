@@ -24,4 +24,4 @@ export const PerusopetuksenToiminta_Alue = (o: {
 export const isPerusopetuksenToiminta_Alue = (
   a: any
 ): a is PerusopetuksenToiminta_Alue =>
-  a?.$class === 'PerusopetuksenToiminta_Alue'
+  a?.$class === 'fi.oph.koski.schema.PerusopetuksenToiminta_Alue'

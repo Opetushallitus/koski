@@ -27,4 +27,4 @@ export const IBOppiaineenArviointi = (o: {
 })
 
 export const isIBOppiaineenArviointi = (a: any): a is IBOppiaineenArviointi =>
-  a?.$class === 'IBOppiaineenArviointi'
+  a?.$class === 'fi.oph.koski.schema.IBOppiaineenArviointi'

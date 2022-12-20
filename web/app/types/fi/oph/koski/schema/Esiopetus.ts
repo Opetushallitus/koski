@@ -21,4 +21,5 @@ export const Esiopetus = (o: {
   koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
 }): Esiopetus => ({ $class: 'fi.oph.koski.schema.Esiopetus', ...o })
 
-export const isEsiopetus = (a: any): a is Esiopetus => a?.$class === 'Esiopetus'
+export const isEsiopetus = (a: any): a is Esiopetus =>
+  a?.$class === 'fi.oph.koski.schema.Esiopetus'

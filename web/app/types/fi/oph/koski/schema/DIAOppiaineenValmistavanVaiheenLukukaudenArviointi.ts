@@ -26,4 +26,5 @@ export const DIAOppiaineenValmistavanVaiheenLukukaudenArviointi = (o: {
 export const isDIAOppiaineenValmistavanVaiheenLukukaudenArviointi = (
   a: any
 ): a is DIAOppiaineenValmistavanVaiheenLukukaudenArviointi =>
-  a?.$class === 'DIAOppiaineenValmistavanVaiheenLukukaudenArviointi'
+  a?.$class ===
+  'fi.oph.koski.schema.DIAOppiaineenValmistavanVaiheenLukukaudenArviointi'

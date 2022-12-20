@@ -21,4 +21,4 @@ export const JärjestämismuotoIlmanLisätietoja = (o: {
 export const isJärjestämismuotoIlmanLisätietoja = (
   a: any
 ): a is JärjestämismuotoIlmanLisätietoja =>
-  a?.$class === 'JärjestämismuotoIlmanLisätietoja'
+  a?.$class === 'fi.oph.koski.schema.JärjestämismuotoIlmanLisätietoja'

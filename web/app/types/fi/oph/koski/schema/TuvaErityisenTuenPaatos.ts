@@ -21,4 +21,5 @@ export const TuvaErityisenTuenPäätös = (
 
 export const isTuvaErityisenTuenPäätös = (
   a: any
-): a is TuvaErityisenTuenPäätös => a?.$class === 'TuvaErityisenTuenPäätös'
+): a is TuvaErityisenTuenPäätös =>
+  a?.$class === 'fi.oph.koski.schema.TuvaErityisenTuenPäätös'

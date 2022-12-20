@@ -33,4 +33,4 @@ export const EBTutkinnonOsasuoritus = (o: {
 })
 
 export const isEBTutkinnonOsasuoritus = (a: any): a is EBTutkinnonOsasuoritus =>
-  a?.$class === 'EBTutkinnonOsasuoritus'
+  a?.$class === 'fi.oph.koski.schema.EBTutkinnonOsasuoritus'

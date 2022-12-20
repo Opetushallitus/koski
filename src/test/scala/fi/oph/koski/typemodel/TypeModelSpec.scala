@@ -95,7 +95,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               |import { Item } from "./Item"
               |
               |export type Backlog = {
-              |    $class: "Backlog",
+              |    $class: "fi.oph.koski.typemodel.Backlog",
               |    id: number,
               |    name: string,
               |    tickets: Array<Item>
@@ -115,7 +115,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
           "Ticket.ts" ->
             """
               |export type Ticket = {
-              |    $class: "Ticket",
+              |    $class: "fi.oph.koski.typemodel.Ticket",
               |    id: number,
               |    title: string
               |}""".stripMargin,
@@ -132,13 +132,13 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               |import { Item } from "./Item"
               |
               |export type Backlog = {
-              |    $class: "Backlog",
+              |    $class: "fi.oph.koski.typemodel.Backlog",
               |    id: number,
               |    name: string,
               |    tickets: Array<Item>
               |}
               |
-              |export const isBacklog = (a: any): a is Backlog => a?.$class === "Backlog"
+              |export const isBacklog = (a: any): a is Backlog => a?.$class === "fi.oph.koski.typemodel.Backlog"
               |""".stripMargin,
 
           "Item.ts" ->
@@ -156,12 +156,12 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
           "Ticket.ts" ->
             """
               |export type Ticket = {
-              |    $class: "Ticket",
+              |    $class: "fi.oph.koski.typemodel.Ticket",
               |    id: number,
               |    title: string
               |}
               |
-              |export const isTicket = (a: any): a is Ticket => a?.$class === "Ticket"
+              |export const isTicket = (a: any): a is Ticket => a?.$class === "fi.oph.koski.typemodel.Ticket"
               |""".stripMargin,
         )
       }
@@ -174,7 +174,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
           "AccessRight.ts" ->
             """
               |export type AccessRight = {
-              |    $class: "AccessRight",
+              |    $class: "fi.oph.koski.typemodel.AccessRight",
               |    notes?: string,
               |    group: string
               |}
@@ -182,7 +182,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               |export const AccessRight = (o: {
               |    notes?: string,
               |    group?: string
-              |} = {}): AccessRight => ({$class: "AccessRight",group: "viewer", ...o})
+              |} = {}): AccessRight => ({$class: "fi.oph.koski.typemodel.AccessRight",group: "viewer", ...o})
               |
               |""".stripMargin,
 
@@ -191,7 +191,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               |import { AccessRight } from "./AccessRight"
               |
               |export type User = {
-              |    $class: "User",
+              |    $class: "fi.oph.koski.typemodel.User",
               |    accountLocked: boolean,
               |    hobbies: Array<string>,
               |    username: string,
@@ -211,7 +211,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               |    age?: number,
               |    ratings?: Record<string, number>,
               |    nickname?: string
-              |}): User => ({accountLocked: false,hobbies: [],accessRight: AccessRight({group: "viewer"}),rank: "newbie",age: 18,ratings: {},$class: "User", ...o})
+              |}): User => ({accountLocked: false,hobbies: [],accessRight: AccessRight({group: "viewer"}),rank: "newbie",age: 18,ratings: {},$class: "fi.oph.koski.typemodel.User", ...o})
               |
               |""".stripMargin
         )

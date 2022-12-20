@@ -34,4 +34,4 @@ export const isValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017
     a: any
   ): a is ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017 =>
     a?.$class ===
-    'ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017'
+    'fi.oph.koski.schema.ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017'

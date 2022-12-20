@@ -24,4 +24,4 @@ export const YlioppilastutkinnonTutkintokerta = (o: {
 export const isYlioppilastutkinnonTutkintokerta = (
   a: any
 ): a is YlioppilastutkinnonTutkintokerta =>
-  a?.$class === 'YlioppilastutkinnonTutkintokerta'
+  a?.$class === 'fi.oph.koski.schema.YlioppilastutkinnonTutkintokerta'

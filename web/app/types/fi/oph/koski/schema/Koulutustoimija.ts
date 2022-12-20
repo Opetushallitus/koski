@@ -22,4 +22,4 @@ export const Koulutustoimija = (o: {
 }): Koulutustoimija => ({ $class: 'fi.oph.koski.schema.Koulutustoimija', ...o })
 
 export const isKoulutustoimija = (a: any): a is Koulutustoimija =>
-  a?.$class === 'Koulutustoimija'
+  a?.$class === 'fi.oph.koski.schema.Koulutustoimija'

@@ -26,4 +26,4 @@ export const PaikallinenMuuAmmatillinenKoulutus = (o: {
 export const isPaikallinenMuuAmmatillinenKoulutus = (
   a: any
 ): a is PaikallinenMuuAmmatillinenKoulutus =>
-  a?.$class === 'PaikallinenMuuAmmatillinenKoulutus'
+  a?.$class === 'fi.oph.koski.schema.PaikallinenMuuAmmatillinenKoulutus'

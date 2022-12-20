@@ -28,4 +28,4 @@ export const Lukiodiplomit2019 = (
 })
 
 export const isLukiodiplomit2019 = (a: any): a is Lukiodiplomit2019 =>
-  a?.$class === 'Lukiodiplomit2019'
+  a?.$class === 'fi.oph.koski.schema.Lukiodiplomit2019'

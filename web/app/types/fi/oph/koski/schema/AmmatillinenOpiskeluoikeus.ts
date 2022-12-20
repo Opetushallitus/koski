@@ -70,4 +70,5 @@ export const AmmatillinenOpiskeluoikeus = (
 
 export const isAmmatillinenOpiskeluoikeus = (
   a: any
-): a is AmmatillinenOpiskeluoikeus => a?.$class === 'AmmatillinenOpiskeluoikeus'
+): a is AmmatillinenOpiskeluoikeus =>
+  a?.$class === 'fi.oph.koski.schema.AmmatillinenOpiskeluoikeus'

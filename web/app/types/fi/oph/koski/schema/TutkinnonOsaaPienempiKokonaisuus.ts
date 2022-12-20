@@ -26,4 +26,4 @@ export const TutkinnonOsaaPienempiKokonaisuus = (o: {
 export const isTutkinnonOsaaPienempiKokonaisuus = (
   a: any
 ): a is TutkinnonOsaaPienempiKokonaisuus =>
-  a?.$class === 'TutkinnonOsaaPienempiKokonaisuus'
+  a?.$class === 'fi.oph.koski.schema.TutkinnonOsaaPienempiKokonaisuus'

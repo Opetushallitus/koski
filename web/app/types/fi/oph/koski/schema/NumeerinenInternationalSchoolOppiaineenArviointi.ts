@@ -32,4 +32,5 @@ export const NumeerinenInternationalSchoolOppiaineenArviointi = (o: {
 export const isNumeerinenInternationalSchoolOppiaineenArviointi = (
   a: any
 ): a is NumeerinenInternationalSchoolOppiaineenArviointi =>
-  a?.$class === 'NumeerinenInternationalSchoolOppiaineenArviointi'
+  a?.$class ===
+  'fi.oph.koski.schema.NumeerinenInternationalSchoolOppiaineenArviointi'

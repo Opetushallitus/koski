@@ -22,4 +22,4 @@ export const DIAPäättökoe = (o: {
 }): DIAPäättökoe => ({ $class: 'fi.oph.koski.schema.DIAPäättökoe', ...o })
 
 export const isDIAPäättökoe = (a: any): a is DIAPäättökoe =>
-  a?.$class === 'DIAPäättökoe'
+  a?.$class === 'fi.oph.koski.schema.DIAPäättökoe'

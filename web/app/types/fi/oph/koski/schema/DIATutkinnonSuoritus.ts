@@ -55,4 +55,4 @@ export const DIATutkinnonSuoritus = (o: {
 })
 
 export const isDIATutkinnonSuoritus = (a: any): a is DIATutkinnonSuoritus =>
-  a?.$class === 'DIATutkinnonSuoritus'
+  a?.$class === 'fi.oph.koski.schema.DIATutkinnonSuoritus'

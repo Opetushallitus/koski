@@ -31,4 +31,4 @@ export const Koulutussopimusjakso = (o: {
 })
 
 export const isKoulutussopimusjakso = (a: any): a is Koulutussopimusjakso =>
-  a?.$class === 'Koulutussopimusjakso'
+  a?.$class === 'fi.oph.koski.schema.Koulutussopimusjakso'

@@ -19,4 +19,5 @@ export const OppisopimuksenPurkaminen = (o: {
 
 export const isOppisopimuksenPurkaminen = (
   a: any
-): a is OppisopimuksenPurkaminen => a?.$class === 'OppisopimuksenPurkaminen'
+): a is OppisopimuksenPurkaminen =>
+  a?.$class === 'fi.oph.koski.schema.OppisopimuksenPurkaminen'

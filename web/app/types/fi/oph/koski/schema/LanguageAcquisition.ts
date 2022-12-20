@@ -25,4 +25,4 @@ export const LanguageAcquisition = (o: {
 })
 
 export const isLanguageAcquisition = (a: any): a is LanguageAcquisition =>
-  a?.$class === 'LanguageAcquisition'
+  a?.$class === 'fi.oph.koski.schema.LanguageAcquisition'

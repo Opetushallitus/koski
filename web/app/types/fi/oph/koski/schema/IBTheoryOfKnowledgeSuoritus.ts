@@ -38,4 +38,4 @@ export const IBTheoryOfKnowledgeSuoritus = (o: {
 export const isIBTheoryOfKnowledgeSuoritus = (
   a: any
 ): a is IBTheoryOfKnowledgeSuoritus =>
-  a?.$class === 'IBTheoryOfKnowledgeSuoritus'
+  a?.$class === 'fi.oph.koski.schema.IBTheoryOfKnowledgeSuoritus'

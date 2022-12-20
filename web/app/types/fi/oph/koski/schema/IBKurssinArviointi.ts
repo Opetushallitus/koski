@@ -25,4 +25,4 @@ export const IBKurssinArviointi = (o: {
 })
 
 export const isIBKurssinArviointi = (a: any): a is IBKurssinArviointi =>
-  a?.$class === 'IBKurssinArviointi'
+  a?.$class === 'fi.oph.koski.schema.IBKurssinArviointi'

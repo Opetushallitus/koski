@@ -35,4 +35,4 @@ export const isTutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuud
     a: any
   ): a is TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot =>
     a?.$class ===
-    'TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot'
+    'fi.oph.koski.schema.TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot'

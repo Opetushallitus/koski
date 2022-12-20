@@ -49,4 +49,4 @@ export const DIAValmistavanVaiheenSuoritus = (o: {
 export const isDIAValmistavanVaiheenSuoritus = (
   a: any
 ): a is DIAValmistavanVaiheenSuoritus =>
-  a?.$class === 'DIAValmistavanVaiheenSuoritus'
+  a?.$class === 'fi.oph.koski.schema.DIAValmistavanVaiheenSuoritus'

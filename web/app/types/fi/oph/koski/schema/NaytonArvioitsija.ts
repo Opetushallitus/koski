@@ -18,4 +18,4 @@ export const NäytönArvioitsija = (o: {
 })
 
 export const isNäytönArvioitsija = (a: any): a is NäytönArvioitsija =>
-  a?.$class === 'NäytönArvioitsija'
+  a?.$class === 'fi.oph.koski.schema.NäytönArvioitsija'

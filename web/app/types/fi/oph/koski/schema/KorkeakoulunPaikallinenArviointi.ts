@@ -24,4 +24,4 @@ export const KorkeakoulunPaikallinenArviointi = (o: {
 export const isKorkeakoulunPaikallinenArviointi = (
   a: any
 ): a is KorkeakoulunPaikallinenArviointi =>
-  a?.$class === 'KorkeakoulunPaikallinenArviointi'
+  a?.$class === 'fi.oph.koski.schema.KorkeakoulunPaikallinenArviointi'

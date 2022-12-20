@@ -28,4 +28,4 @@ export const PaikallinenTelmaKoulutuksenOsa = (o: {
 export const isPaikallinenTelmaKoulutuksenOsa = (
   a: any
 ): a is PaikallinenTelmaKoulutuksenOsa =>
-  a?.$class === 'PaikallinenTelmaKoulutuksenOsa'
+  a?.$class === 'fi.oph.koski.schema.PaikallinenTelmaKoulutuksenOsa'

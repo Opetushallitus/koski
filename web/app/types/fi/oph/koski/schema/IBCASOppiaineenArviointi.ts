@@ -32,4 +32,5 @@ export const IBCASOppiaineenArviointi = (o: {
 
 export const isIBCASOppiaineenArviointi = (
   a: any
-): a is IBCASOppiaineenArviointi => a?.$class === 'IBCASOppiaineenArviointi'
+): a is IBCASOppiaineenArviointi =>
+  a?.$class === 'fi.oph.koski.schema.IBCASOppiaineenArviointi'

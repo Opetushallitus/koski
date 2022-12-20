@@ -37,4 +37,4 @@ export const LukioonValmistavanKurssinSuoritus = (o: {
 export const isLukioonValmistavanKurssinSuoritus = (
   a: any
 ): a is LukioonValmistavanKurssinSuoritus =>
-  a?.$class === 'LukioonValmistavanKurssinSuoritus'
+  a?.$class === 'fi.oph.koski.schema.LukioonValmistavanKurssinSuoritus'

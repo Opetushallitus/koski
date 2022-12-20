@@ -19,4 +19,4 @@ export const YlioppilasTutkinnonKoe = (o: {
 })
 
 export const isYlioppilasTutkinnonKoe = (a: any): a is YlioppilasTutkinnonKoe =>
-  a?.$class === 'YlioppilasTutkinnonKoe'
+  a?.$class === 'fi.oph.koski.schema.YlioppilasTutkinnonKoe'

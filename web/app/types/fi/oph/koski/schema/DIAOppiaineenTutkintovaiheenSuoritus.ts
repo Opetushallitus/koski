@@ -40,4 +40,4 @@ export const DIAOppiaineenTutkintovaiheenSuoritus = (o: {
 export const isDIAOppiaineenTutkintovaiheenSuoritus = (
   a: any
 ): a is DIAOppiaineenTutkintovaiheenSuoritus =>
-  a?.$class === 'DIAOppiaineenTutkintovaiheenSuoritus'
+  a?.$class === 'fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenSuoritus'

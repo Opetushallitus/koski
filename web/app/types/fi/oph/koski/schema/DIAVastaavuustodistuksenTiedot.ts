@@ -22,4 +22,4 @@ export const DIAVastaavuustodistuksenTiedot = (o: {
 export const isDIAVastaavuustodistuksenTiedot = (
   a: any
 ): a is DIAVastaavuustodistuksenTiedot =>
-  a?.$class === 'DIAVastaavuustodistuksenTiedot'
+  a?.$class === 'fi.oph.koski.schema.DIAVastaavuustodistuksenTiedot'

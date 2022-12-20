@@ -22,4 +22,5 @@ export const DIAOpiskeluoikeudenTila = (
 
 export const isDIAOpiskeluoikeudenTila = (
   a: any
-): a is DIAOpiskeluoikeudenTila => a?.$class === 'DIAOpiskeluoikeudenTila'
+): a is DIAOpiskeluoikeudenTila =>
+  a?.$class === 'fi.oph.koski.schema.DIAOpiskeluoikeudenTila'

@@ -50,4 +50,5 @@ export const DiplomaVuosiluokanSuoritus = (o: {
 
 export const isDiplomaVuosiluokanSuoritus = (
   a: any
-): a is DiplomaVuosiluokanSuoritus => a?.$class === 'DiplomaVuosiluokanSuoritus'
+): a is DiplomaVuosiluokanSuoritus =>
+  a?.$class === 'fi.oph.koski.schema.DiplomaVuosiluokanSuoritus'

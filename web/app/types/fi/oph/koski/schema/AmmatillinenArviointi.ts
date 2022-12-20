@@ -38,4 +38,4 @@ export const AmmatillinenArviointi = (o: {
 })
 
 export const isAmmatillinenArviointi = (a: any): a is AmmatillinenArviointi =>
-  a?.$class === 'AmmatillinenArviointi'
+  a?.$class === 'fi.oph.koski.schema.AmmatillinenArviointi'

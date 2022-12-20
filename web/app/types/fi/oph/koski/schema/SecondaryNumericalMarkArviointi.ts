@@ -36,4 +36,4 @@ export const SecondaryNumericalMarkArviointi = (o: {
 export const isSecondaryNumericalMarkArviointi = (
   a: any
 ): a is SecondaryNumericalMarkArviointi =>
-  a?.$class === 'SecondaryNumericalMarkArviointi'
+  a?.$class === 'fi.oph.koski.schema.SecondaryNumericalMarkArviointi'

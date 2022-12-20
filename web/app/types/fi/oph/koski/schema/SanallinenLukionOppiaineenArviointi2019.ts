@@ -25,4 +25,4 @@ export const SanallinenLukionOppiaineenArviointi2019 = (o: {
 export const isSanallinenLukionOppiaineenArviointi2019 = (
   a: any
 ): a is SanallinenLukionOppiaineenArviointi2019 =>
-  a?.$class === 'SanallinenLukionOppiaineenArviointi2019'
+  a?.$class === 'fi.oph.koski.schema.SanallinenLukionOppiaineenArviointi2019'

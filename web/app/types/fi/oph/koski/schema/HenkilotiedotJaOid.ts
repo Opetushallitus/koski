@@ -24,4 +24,4 @@ export const HenkilötiedotJaOid = (o: {
 })
 
 export const isHenkilötiedotJaOid = (a: any): a is HenkilötiedotJaOid =>
-  a?.$class === 'HenkilötiedotJaOid'
+  a?.$class === 'fi.oph.koski.schema.HenkilötiedotJaOid'

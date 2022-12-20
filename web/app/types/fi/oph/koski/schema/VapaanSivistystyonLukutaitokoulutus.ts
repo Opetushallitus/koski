@@ -34,4 +34,4 @@ export const VapaanSivistystyönLukutaitokoulutus = (
 export const isVapaanSivistystyönLukutaitokoulutus = (
   a: any
 ): a is VapaanSivistystyönLukutaitokoulutus =>
-  a?.$class === 'VapaanSivistystyönLukutaitokoulutus'
+  a?.$class === 'fi.oph.koski.schema.VapaanSivistystyönLukutaitokoulutus'

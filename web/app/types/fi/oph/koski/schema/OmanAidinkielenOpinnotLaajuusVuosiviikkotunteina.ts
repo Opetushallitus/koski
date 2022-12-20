@@ -37,4 +37,5 @@ export const OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina = (o: {
 export const isOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina = (
   a: any
 ): a is OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina =>
-  a?.$class === 'OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina'
+  a?.$class ===
+  'fi.oph.koski.schema.OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina'

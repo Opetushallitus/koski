@@ -24,4 +24,5 @@ export const PerusopetuksenLuokkaAste = (o: {
 
 export const isPerusopetuksenLuokkaAste = (
   a: any
-): a is PerusopetuksenLuokkaAste => a?.$class === 'PerusopetuksenLuokkaAste'
+): a is PerusopetuksenLuokkaAste =>
+  a?.$class === 'fi.oph.koski.schema.PerusopetuksenLuokkaAste'

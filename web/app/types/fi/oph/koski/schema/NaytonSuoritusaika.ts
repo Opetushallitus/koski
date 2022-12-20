@@ -18,4 +18,4 @@ export const NäytönSuoritusaika = (o: {
 })
 
 export const isNäytönSuoritusaika = (a: any): a is NäytönSuoritusaika =>
-  a?.$class === 'NäytönSuoritusaika'
+  a?.$class === 'fi.oph.koski.schema.NäytönSuoritusaika'

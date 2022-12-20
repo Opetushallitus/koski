@@ -25,4 +25,4 @@ export const S7OppiaineKomponentti = (o: {
 })
 
 export const isS7OppiaineKomponentti = (a: any): a is S7OppiaineKomponentti =>
-  a?.$class === 'S7OppiaineKomponentti'
+  a?.$class === 'fi.oph.koski.schema.S7OppiaineKomponentti'

@@ -36,4 +36,4 @@ export const MuidenLukioOpintojenSuoritus2015 = (o: {
 export const isMuidenLukioOpintojenSuoritus2015 = (
   a: any
 ): a is MuidenLukioOpintojenSuoritus2015 =>
-  a?.$class === 'MuidenLukioOpintojenSuoritus2015'
+  a?.$class === 'fi.oph.koski.schema.MuidenLukioOpintojenSuoritus2015'

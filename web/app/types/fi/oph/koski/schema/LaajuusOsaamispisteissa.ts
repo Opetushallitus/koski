@@ -26,4 +26,5 @@ export const LaajuusOsaamispisteissä = (o: {
 
 export const isLaajuusOsaamispisteissä = (
   a: any
-): a is LaajuusOsaamispisteissä => a?.$class === 'LaajuusOsaamispisteissä'
+): a is LaajuusOsaamispisteissä =>
+  a?.$class === 'fi.oph.koski.schema.LaajuusOsaamispisteissä'

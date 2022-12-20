@@ -29,4 +29,4 @@ export const PrimaryLuokkaAste = (o: {
 })
 
 export const isPrimaryLuokkaAste = (a: any): a is PrimaryLuokkaAste =>
-  a?.$class === 'PrimaryLuokkaAste'
+  a?.$class === 'fi.oph.koski.schema.PrimaryLuokkaAste'

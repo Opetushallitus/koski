@@ -27,4 +27,4 @@ export const LaajuusVuosiviikkotunneissa = (o: {
 export const isLaajuusVuosiviikkotunneissa = (
   a: any
 ): a is LaajuusVuosiviikkotunneissa =>
-  a?.$class === 'LaajuusVuosiviikkotunneissa'
+  a?.$class === 'fi.oph.koski.schema.LaajuusVuosiviikkotunneissa'

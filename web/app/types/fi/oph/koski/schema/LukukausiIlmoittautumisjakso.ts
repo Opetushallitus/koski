@@ -32,4 +32,4 @@ export const Lukukausi_Ilmoittautumisjakso = (o: {
 export const isLukukausi_Ilmoittautumisjakso = (
   a: any
 ): a is Lukukausi_Ilmoittautumisjakso =>
-  a?.$class === 'Lukukausi_Ilmoittautumisjakso'
+  a?.$class === 'fi.oph.koski.schema.Lukukausi_Ilmoittautumisjakso'

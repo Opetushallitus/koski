@@ -45,4 +45,5 @@ export const VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 = (
 export const isVSTKotoutumiskoulutuksenOhjauksenSuoritus2022 = (
   a: any
 ): a is VSTKotoutumiskoulutuksenOhjauksenSuoritus2022 =>
-  a?.$class === 'VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'
+  a?.$class ===
+  'fi.oph.koski.schema.VSTKotoutumiskoulutuksenOhjauksenSuoritus2022'

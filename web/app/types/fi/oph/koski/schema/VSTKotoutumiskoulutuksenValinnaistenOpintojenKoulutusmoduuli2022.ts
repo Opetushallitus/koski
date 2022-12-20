@@ -37,4 +37,4 @@ export const isVSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022 
     a: any
   ): a is VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022 =>
     a?.$class ===
-    'VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022'
+    'fi.oph.koski.schema.VSTKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli2022'

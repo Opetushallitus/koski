@@ -49,4 +49,4 @@ export const ValmaKoulutuksenOsanSuoritus = (o: {
 export const isValmaKoulutuksenOsanSuoritus = (
   a: any
 ): a is ValmaKoulutuksenOsanSuoritus =>
-  a?.$class === 'ValmaKoulutuksenOsanSuoritus'
+  a?.$class === 'fi.oph.koski.schema.ValmaKoulutuksenOsanSuoritus'

@@ -24,4 +24,5 @@ export const PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila = (
 export const isPerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila = (
   a: any
 ): a is PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila =>
-  a?.$class === 'PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila'
+  a?.$class ===
+  'fi.oph.koski.schema.PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila'

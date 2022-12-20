@@ -68,4 +68,4 @@ export const LukionOppimääränSuoritus2019 = (o: {
 export const isLukionOppimääränSuoritus2019 = (
   a: any
 ): a is LukionOppimääränSuoritus2019 =>
-  a?.$class === 'LukionOppimääränSuoritus2019'
+  a?.$class === 'fi.oph.koski.schema.LukionOppimääränSuoritus2019'

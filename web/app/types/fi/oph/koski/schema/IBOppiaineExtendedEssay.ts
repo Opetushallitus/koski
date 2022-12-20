@@ -31,4 +31,5 @@ export const IBOppiaineExtendedEssay = (o: {
 
 export const isIBOppiaineExtendedEssay = (
   a: any
-): a is IBOppiaineExtendedEssay => a?.$class === 'IBOppiaineExtendedEssay'
+): a is IBOppiaineExtendedEssay =>
+  a?.$class === 'fi.oph.koski.schema.IBOppiaineExtendedEssay'

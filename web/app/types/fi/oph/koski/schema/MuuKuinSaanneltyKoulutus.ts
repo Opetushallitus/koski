@@ -31,4 +31,5 @@ export const MuuKuinSäänneltyKoulutus = (o: {
 
 export const isMuuKuinSäänneltyKoulutus = (
   a: any
-): a is MuuKuinSäänneltyKoulutus => a?.$class === 'MuuKuinSäänneltyKoulutus'
+): a is MuuKuinSäänneltyKoulutus =>
+  a?.$class === 'fi.oph.koski.schema.MuuKuinSäänneltyKoulutus'

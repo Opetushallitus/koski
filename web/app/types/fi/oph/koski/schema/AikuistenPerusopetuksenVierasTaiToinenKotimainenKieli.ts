@@ -40,4 +40,5 @@ export const AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli = (o: {
 export const isAikuistenPerusopetuksenVierasTaiToinenKotimainenKieli = (
   a: any
 ): a is AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli =>
-  a?.$class === 'AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli'
+  a?.$class ===
+  'fi.oph.koski.schema.AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli'

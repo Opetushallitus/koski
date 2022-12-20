@@ -22,4 +22,4 @@ export const KorkeakoulunOpiskeluoikeudenLukuvuosimaksu = (o: {
 export const isKorkeakoulunOpiskeluoikeudenLukuvuosimaksu = (
   a: any
 ): a is KorkeakoulunOpiskeluoikeudenLukuvuosimaksu =>
-  a?.$class === 'KorkeakoulunOpiskeluoikeudenLukuvuosimaksu'
+  a?.$class === 'fi.oph.koski.schema.KorkeakoulunOpiskeluoikeudenLukuvuosimaksu'

@@ -22,4 +22,4 @@ export const Ulkomaanjakso = (o: {
 }): Ulkomaanjakso => ({ $class: 'fi.oph.koski.schema.Ulkomaanjakso', ...o })
 
 export const isUlkomaanjakso = (a: any): a is Ulkomaanjakso =>
-  a?.$class === 'Ulkomaanjakso'
+  a?.$class === 'fi.oph.koski.schema.Ulkomaanjakso'

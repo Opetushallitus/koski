@@ -31,4 +31,4 @@ export const EuropeanSchoolOfHelsinkiKielioppiaineLatin = (o: {
 export const isEuropeanSchoolOfHelsinkiKielioppiaineLatin = (
   a: any
 ): a is EuropeanSchoolOfHelsinkiKielioppiaineLatin =>
-  a?.$class === 'EuropeanSchoolOfHelsinkiKielioppiaineLatin'
+  a?.$class === 'fi.oph.koski.schema.EuropeanSchoolOfHelsinkiKielioppiaineLatin'

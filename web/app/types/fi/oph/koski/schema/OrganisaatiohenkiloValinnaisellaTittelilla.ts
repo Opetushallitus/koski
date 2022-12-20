@@ -25,4 +25,4 @@ export const OrganisaatiohenkilöValinnaisellaTittelillä = (o: {
 export const isOrganisaatiohenkilöValinnaisellaTittelillä = (
   a: any
 ): a is OrganisaatiohenkilöValinnaisellaTittelillä =>
-  a?.$class === 'OrganisaatiohenkilöValinnaisellaTittelillä'
+  a?.$class === 'fi.oph.koski.schema.OrganisaatiohenkilöValinnaisellaTittelillä'

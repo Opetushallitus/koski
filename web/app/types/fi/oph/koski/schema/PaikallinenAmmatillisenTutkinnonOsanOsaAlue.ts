@@ -28,4 +28,5 @@ export const PaikallinenAmmatillisenTutkinnonOsanOsaAlue = (o: {
 export const isPaikallinenAmmatillisenTutkinnonOsanOsaAlue = (
   a: any
 ): a is PaikallinenAmmatillisenTutkinnonOsanOsaAlue =>
-  a?.$class === 'PaikallinenAmmatillisenTutkinnonOsanOsaAlue'
+  a?.$class ===
+  'fi.oph.koski.schema.PaikallinenAmmatillisenTutkinnonOsanOsaAlue'

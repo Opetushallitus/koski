@@ -20,4 +20,4 @@ export const UusiHenkilö = (o: {
 }): UusiHenkilö => ({ $class: 'fi.oph.koski.schema.UusiHenkilö', ...o })
 
 export const isUusiHenkilö = (a: any): a is UusiHenkilö =>
-  a?.$class === 'UusiHenkilö'
+  a?.$class === 'fi.oph.koski.schema.UusiHenkilö'

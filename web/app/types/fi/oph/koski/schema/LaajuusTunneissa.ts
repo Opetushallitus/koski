@@ -25,4 +25,4 @@ export const LaajuusTunneissa = (o: {
 })
 
 export const isLaajuusTunneissa = (a: any): a is LaajuusTunneissa =>
-  a?.$class === 'LaajuusTunneissa'
+  a?.$class === 'fi.oph.koski.schema.LaajuusTunneissa'

@@ -40,4 +40,5 @@ export const DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus = (o: {
 export const isDIAOppiaineenValmistavanVaiheenLukukaudenSuoritus = (
   a: any
 ): a is DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus =>
-  a?.$class === 'DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus'
+  a?.$class ===
+  'fi.oph.koski.schema.DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus'

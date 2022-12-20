@@ -24,4 +24,4 @@ export const OpiskeluvalmiuksiaTukevienOpintojenJakso = (o: {
 export const isOpiskeluvalmiuksiaTukevienOpintojenJakso = (
   a: any
 ): a is OpiskeluvalmiuksiaTukevienOpintojenJakso =>
-  a?.$class === 'OpiskeluvalmiuksiaTukevienOpintojenJakso'
+  a?.$class === 'fi.oph.koski.schema.OpiskeluvalmiuksiaTukevienOpintojenJakso'

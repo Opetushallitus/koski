@@ -35,4 +35,4 @@ export const isHenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakun
     a: any
   ): a is HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla =>
     a?.$class ===
-    'HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla'
+    'fi.oph.koski.schema.HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla'

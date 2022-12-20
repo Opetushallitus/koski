@@ -28,4 +28,4 @@ export const MuuValtakunnallinenTutkinnonOsa = (o: {
 export const isMuuValtakunnallinenTutkinnonOsa = (
   a: any
 ): a is MuuValtakunnallinenTutkinnonOsa =>
-  a?.$class === 'MuuValtakunnallinenTutkinnonOsa'
+  a?.$class === 'fi.oph.koski.schema.MuuValtakunnallinenTutkinnonOsa'

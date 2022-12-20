@@ -34,4 +34,5 @@ export const IBExtendedEssaySuoritus = (o: {
 
 export const isIBExtendedEssaySuoritus = (
   a: any
-): a is IBExtendedEssaySuoritus => a?.$class === 'IBExtendedEssaySuoritus'
+): a is IBExtendedEssaySuoritus =>
+  a?.$class === 'fi.oph.koski.schema.IBExtendedEssaySuoritus'

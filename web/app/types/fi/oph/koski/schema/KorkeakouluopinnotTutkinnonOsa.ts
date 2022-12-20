@@ -30,4 +30,4 @@ export const KorkeakouluopinnotTutkinnonOsa = (
 export const isKorkeakouluopinnotTutkinnonOsa = (
   a: any
 ): a is KorkeakouluopinnotTutkinnonOsa =>
-  a?.$class === 'KorkeakouluopinnotTutkinnonOsa'
+  a?.$class === 'fi.oph.koski.schema.KorkeakouluopinnotTutkinnonOsa'

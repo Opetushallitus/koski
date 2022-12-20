@@ -47,4 +47,4 @@ export const PrimaryOppimisalueenSuoritus = (o: {
 export const isPrimaryOppimisalueenSuoritus = (
   a: any
 ): a is PrimaryOppimisalueenSuoritus =>
-  a?.$class === 'PrimaryOppimisalueenSuoritus'
+  a?.$class === 'fi.oph.koski.schema.PrimaryOppimisalueenSuoritus'

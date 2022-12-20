@@ -27,4 +27,5 @@ export const KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus = (o: {
 export const isKorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus = (
   a: any
 ): a is KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus =>
-  a?.$class === 'KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus'
+  a?.$class ===
+  'fi.oph.koski.schema.KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus'

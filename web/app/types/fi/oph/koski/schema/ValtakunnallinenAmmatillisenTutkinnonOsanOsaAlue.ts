@@ -27,4 +27,5 @@ export const ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue = (o: {
 export const isValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue = (
   a: any
 ): a is ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue =>
-  a?.$class === 'ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue'
+  a?.$class ===
+  'fi.oph.koski.schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue'

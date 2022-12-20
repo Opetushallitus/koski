@@ -25,4 +25,4 @@ export const KorkeakoulunKoodistostaLöytyväArviointi = (o: {
 export const isKorkeakoulunKoodistostaLöytyväArviointi = (
   a: any
 ): a is KorkeakoulunKoodistostaLöytyväArviointi =>
-  a?.$class === 'KorkeakoulunKoodistostaLöytyväArviointi'
+  a?.$class === 'fi.oph.koski.schema.KorkeakoulunKoodistostaLöytyväArviointi'

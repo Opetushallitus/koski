@@ -37,4 +37,5 @@ export const NuortenPerusopetuksenÄidinkieliJaKirjallisuus = (o: {
 export const isNuortenPerusopetuksenÄidinkieliJaKirjallisuus = (
   a: any
 ): a is NuortenPerusopetuksenÄidinkieliJaKirjallisuus =>
-  a?.$class === 'NuortenPerusopetuksenÄidinkieliJaKirjallisuus'
+  a?.$class ===
+  'fi.oph.koski.schema.NuortenPerusopetuksenÄidinkieliJaKirjallisuus'

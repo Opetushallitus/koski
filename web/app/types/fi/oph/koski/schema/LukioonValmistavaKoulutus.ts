@@ -33,4 +33,5 @@ export const LukioonValmistavaKoulutus = (
 
 export const isLukioonValmistavaKoulutus = (
   a: any
-): a is LukioonValmistavaKoulutus => a?.$class === 'LukioonValmistavaKoulutus'
+): a is LukioonValmistavaKoulutus =>
+  a?.$class === 'fi.oph.koski.schema.LukioonValmistavaKoulutus'

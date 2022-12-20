@@ -28,4 +28,5 @@ export const OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus =
 export const isOppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus = (
   a: any
 ): a is OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus =>
-  a?.$class === 'OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus'
+  a?.$class ===
+  'fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus'

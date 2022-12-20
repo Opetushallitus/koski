@@ -25,4 +25,4 @@ export const ISHDiplomaLuokkaAste = (o: {
 })
 
 export const isISHDiplomaLuokkaAste = (a: any): a is ISHDiplomaLuokkaAste =>
-  a?.$class === 'ISHDiplomaLuokkaAste'
+  a?.$class === 'fi.oph.koski.schema.ISHDiplomaLuokkaAste'

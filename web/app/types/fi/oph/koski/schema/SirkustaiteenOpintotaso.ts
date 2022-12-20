@@ -42,4 +42,5 @@ export const SirkustaiteenOpintotaso = (
 
 export const isSirkustaiteenOpintotaso = (
   a: any
-): a is SirkustaiteenOpintotaso => a?.$class === 'SirkustaiteenOpintotaso'
+): a is SirkustaiteenOpintotaso =>
+  a?.$class === 'fi.oph.koski.schema.SirkustaiteenOpintotaso'

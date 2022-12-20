@@ -25,4 +25,4 @@ export const OpiskeluoikeudenOrganisaatiohistoria = (o: {
 export const isOpiskeluoikeudenOrganisaatiohistoria = (
   a: any
 ): a is OpiskeluoikeudenOrganisaatiohistoria =>
-  a?.$class === 'OpiskeluoikeudenOrganisaatiohistoria'
+  a?.$class === 'fi.oph.koski.schema.OpiskeluoikeudenOrganisaatiohistoria'

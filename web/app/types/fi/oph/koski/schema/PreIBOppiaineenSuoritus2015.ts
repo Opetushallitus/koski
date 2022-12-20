@@ -38,4 +38,4 @@ export const PreIBOppiaineenSuoritus2015 = (o: {
 export const isPreIBOppiaineenSuoritus2015 = (
   a: any
 ): a is PreIBOppiaineenSuoritus2015 =>
-  a?.$class === 'PreIBOppiaineenSuoritus2015'
+  a?.$class === 'fi.oph.koski.schema.PreIBOppiaineenSuoritus2015'

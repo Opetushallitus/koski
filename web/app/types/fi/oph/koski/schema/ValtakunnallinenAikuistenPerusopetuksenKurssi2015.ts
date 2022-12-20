@@ -25,4 +25,5 @@ export const ValtakunnallinenAikuistenPerusopetuksenKurssi2015 = (o: {
 export const isValtakunnallinenAikuistenPerusopetuksenKurssi2015 = (
   a: any
 ): a is ValtakunnallinenAikuistenPerusopetuksenKurssi2015 =>
-  a?.$class === 'ValtakunnallinenAikuistenPerusopetuksenKurssi2015'
+  a?.$class ===
+  'fi.oph.koski.schema.ValtakunnallinenAikuistenPerusopetuksenKurssi2015'

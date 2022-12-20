@@ -47,4 +47,4 @@ export const PreIBSuoritus2015 = (o: {
 })
 
 export const isPreIBSuoritus2015 = (a: any): a is PreIBSuoritus2015 =>
-  a?.$class === 'PreIBSuoritus2015'
+  a?.$class === 'fi.oph.koski.schema.PreIBSuoritus2015'

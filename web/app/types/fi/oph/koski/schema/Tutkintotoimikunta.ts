@@ -20,4 +20,4 @@ export const Tutkintotoimikunta = (o: {
 })
 
 export const isTutkintotoimikunta = (a: any): a is Tutkintotoimikunta =>
-  a?.$class === 'Tutkintotoimikunta'
+  a?.$class === 'fi.oph.koski.schema.Tutkintotoimikunta'

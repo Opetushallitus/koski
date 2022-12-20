@@ -24,4 +24,5 @@ export const YlioppilaskokeenArviointi = (o: {
 
 export const isYlioppilaskokeenArviointi = (
   a: any
-): a is YlioppilaskokeenArviointi => a?.$class === 'YlioppilaskokeenArviointi'
+): a is YlioppilaskokeenArviointi =>
+  a?.$class === 'fi.oph.koski.schema.YlioppilaskokeenArviointi'

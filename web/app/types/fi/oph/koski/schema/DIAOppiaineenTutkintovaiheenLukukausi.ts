@@ -24,4 +24,4 @@ export const DIAOppiaineenTutkintovaiheenLukukausi = (o: {
 export const isDIAOppiaineenTutkintovaiheenLukukausi = (
   a: any
 ): a is DIAOppiaineenTutkintovaiheenLukukausi =>
-  a?.$class === 'DIAOppiaineenTutkintovaiheenLukukausi'
+  a?.$class === 'fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenLukukausi'

@@ -35,4 +35,4 @@ export const isNumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 =
     a: any
   ): a is NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 =>
     a?.$class ===
-    'NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019'
+    'fi.oph.koski.schema.NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019'

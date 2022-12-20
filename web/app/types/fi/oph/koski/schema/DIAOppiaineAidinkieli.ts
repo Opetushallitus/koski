@@ -31,4 +31,4 @@ export const DIAOppiaineÄidinkieli = (o: {
 })
 
 export const isDIAOppiaineÄidinkieli = (a: any): a is DIAOppiaineÄidinkieli =>
-  a?.$class === 'DIAOppiaineÄidinkieli'
+  a?.$class === 'fi.oph.koski.schema.DIAOppiaineÄidinkieli'

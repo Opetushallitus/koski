@@ -63,4 +63,4 @@ export const IBOpiskeluoikeus = (
 })
 
 export const isIBOpiskeluoikeus = (a: any): a is IBOpiskeluoikeus =>
-  a?.$class === 'IBOpiskeluoikeus'
+  a?.$class === 'fi.oph.koski.schema.IBOpiskeluoikeus'

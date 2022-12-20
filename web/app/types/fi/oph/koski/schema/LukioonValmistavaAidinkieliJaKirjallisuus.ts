@@ -32,4 +32,4 @@ export const LukioonValmistavaÄidinkieliJaKirjallisuus = (o: {
 export const isLukioonValmistavaÄidinkieliJaKirjallisuus = (
   a: any
 ): a is LukioonValmistavaÄidinkieliJaKirjallisuus =>
-  a?.$class === 'LukioonValmistavaÄidinkieliJaKirjallisuus'
+  a?.$class === 'fi.oph.koski.schema.LukioonValmistavaÄidinkieliJaKirjallisuus'

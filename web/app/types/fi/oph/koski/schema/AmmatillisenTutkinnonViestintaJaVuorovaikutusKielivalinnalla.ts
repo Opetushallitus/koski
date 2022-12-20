@@ -36,4 +36,5 @@ export const AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla =
 export const isAmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla = (
   a: any
 ): a is AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla =>
-  a?.$class === 'AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla'
+  a?.$class ===
+  'fi.oph.koski.schema.AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla'

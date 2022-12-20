@@ -50,4 +50,5 @@ export const TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus =
 export const isTaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus = (
   a: any
 ): a is TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus =>
-  a?.$class === 'TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus'
+  a?.$class ===
+  'fi.oph.koski.schema.TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus'

@@ -25,4 +25,4 @@ export const PrimaryAlaoppimisalue = (o: {
 })
 
 export const isPrimaryAlaoppimisalue = (a: any): a is PrimaryAlaoppimisalue =>
-  a?.$class === 'PrimaryAlaoppimisalue'
+  a?.$class === 'fi.oph.koski.schema.PrimaryAlaoppimisalue'

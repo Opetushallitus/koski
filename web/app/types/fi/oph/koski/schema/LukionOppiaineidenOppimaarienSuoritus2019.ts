@@ -55,4 +55,4 @@ export const LukionOppiaineidenOppimäärienSuoritus2019 = (o: {
 export const isLukionOppiaineidenOppimäärienSuoritus2019 = (
   a: any
 ): a is LukionOppiaineidenOppimäärienSuoritus2019 =>
-  a?.$class === 'LukionOppiaineidenOppimäärienSuoritus2019'
+  a?.$class === 'fi.oph.koski.schema.LukionOppiaineidenOppimäärienSuoritus2019'

@@ -28,4 +28,4 @@ export const TemaattisetOpinnot2019 = (
 })
 
 export const isTemaattisetOpinnot2019 = (a: any): a is TemaattisetOpinnot2019 =>
-  a?.$class === 'TemaattisetOpinnot2019'
+  a?.$class === 'fi.oph.koski.schema.TemaattisetOpinnot2019'

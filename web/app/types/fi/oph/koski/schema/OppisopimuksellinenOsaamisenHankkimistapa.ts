@@ -28,4 +28,4 @@ export const OppisopimuksellinenOsaamisenHankkimistapa = (o: {
 export const isOppisopimuksellinenOsaamisenHankkimistapa = (
   a: any
 ): a is OppisopimuksellinenOsaamisenHankkimistapa =>
-  a?.$class === 'OppisopimuksellinenOsaamisenHankkimistapa'
+  a?.$class === 'fi.oph.koski.schema.OppisopimuksellinenOsaamisenHankkimistapa'
