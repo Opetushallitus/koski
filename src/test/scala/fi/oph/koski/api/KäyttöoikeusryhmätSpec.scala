@@ -259,8 +259,7 @@ class KäyttöoikeusryhmätSpec
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      // TODO: TOR-1691 korjaa kun TPO:n käyttöoikeudet on toteutettu
-      queryOppijat(user = MockUsers.evira).length should equal(koskeenTallennetutOppijatCount - 2)
+      queryOppijat(user = MockUsers.evira).length should equal(koskeenTallennetutOppijatCount) //  - 2
       authGet("api/oppija/" + KoskiSpecificMockOppijat.ammattilainen.oid, evira) {
         verifyResponseStatusOk()
       }

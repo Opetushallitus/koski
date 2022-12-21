@@ -31,7 +31,7 @@ object Koulutustyyppi {
   val vapaanSivistystyönVapaatavoitteinenKoulutus = apply(10)
   val vstlukutaitokoulutus = apply(35)
   val tuva = apply(40)
-  val taiteenperusopetus = apply(999907) // TODO: korvaa oikealla koulutustyypillä kun se tiedetään
+  val taiteenperusopetus = apply(999907)
 
   def apply(numero: Int) = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(numero.toString, "koulutustyyppi"))
   def describe(koulutustyyppi: Koulutustyyppi) = koulutustyyppi.koodiarvo + koulutustyyppi.nimi.map(nimi => s"(${nimi.get("fi")})").getOrElse("")
