@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 21.12.2022
+
+- VALMA- ja perusopetuksen lisäopetuksen opiskeluoikeuksille ei sallita uusia tiloja, joiden alkupäivämäärä on 1.6.2023 tai sen jälkeen.
+
 ## 19.12.2022
 - Taiteen perusopetuksen opiskeluoikeuksille lisätty validaatiot:
   - Suoritusta ei voi vahvistaa jos sillä on arvioimattomia osasuorituksia.

@@ -50,11 +50,27 @@ class OppijaValidationPerusopetuksenLisäopetusSpec extends TutkinnonPerusteetTe
     }
   }
 
-  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 1.10.2022 jälkeen" in {
+  "Opiskeluoikeuden tilan alkupäivämäärä voi olla päiväys 31.5.2023 tai aiemmin" in {
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(
       tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
-        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2022, 10, 2), opiskeluoikeusLäsnä)
-      ))).withSuoritukset(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2023, 5, 31), opiskeluoikeusLäsnä)
+      )),
+      lisätiedot = None
+    ).withSuoritukset(
+      List(defaultLisäopetuksenSuoritus)
+    )
+    putOpiskeluoikeus(opiskeluoikeus) {
+      verifyResponseStatusOk()
+    }
+  }
+
+  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 31.5.2023 jälkeen" in {
+    val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2023, 6, 1), opiskeluoikeusLäsnä)
+      )),
+      lisätiedot = None
+    ).withSuoritukset(
       List(defaultLisäopetuksenSuoritus)
     )
     putOpiskeluoikeus(opiskeluoikeus) {

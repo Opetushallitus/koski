@@ -116,7 +116,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         // Katso myös EPerusteisiinPerustuvaValidation.validatePerusteVoimassa
         case d: ValmaKoulutus if vaadittuPerusteenVoimassaolopäivä.isBefore(LocalDate.of(2022, 7, 31)) =>
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(valmaKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä)))
-        case d: ValmaKoulutus if vaadittuPerusteenVoimassaolopäivä.isBefore(LocalDate.of(2022, 10, 2)) =>
+        case d: ValmaKoulutus if vaadittuPerusteenVoimassaolopäivä.isBefore(LocalDate.of(2023, 6, 1)) =>
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(valmaKoulutustyypit), Some(LocalDate.of(2022, 7, 31))))
         case d: ValmaKoulutus =>
           HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(d, Some(valmaKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä)))
