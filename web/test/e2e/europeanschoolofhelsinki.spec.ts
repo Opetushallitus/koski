@@ -315,6 +315,7 @@ test.describe('European School of Helsinki', () => {
     })
 
     test.describe('Primary-vuosiluokan suoritukset', () => {
+      test.setTimeout(120000)
       const vuosiluokat = ['P1', 'P5']
 
       vuosiluokat.forEach((vuosiluokka) => {
