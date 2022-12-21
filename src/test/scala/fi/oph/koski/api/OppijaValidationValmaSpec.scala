@@ -18,11 +18,11 @@ class OppijaValidationValmaSpec extends TutkinnonPerusteetTest[AmmatillinenOpisk
   override def tag: TypeTag[AmmatillinenOpiskeluoikeus] = implicitly[TypeTag[AmmatillinenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus: AmmatillinenOpiskeluoikeus = ExamplesValma.valmaOpiskeluoikeus
 
-  "Opiskeluoikeuden valmistumistilan alkupäivämäärä voi olla päiväys 1.10.2022 tai aikaisemmin vaikka peruste ei ole voimassa" in {
+  "Opiskeluoikeuden valmistumistilan alkupäivämäärä voi olla päiväys 31.5.2023 tai aikaisemmin vaikka peruste ei ole voimassa" in {
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(
       tila = AmmatillinenOpiskeluoikeudenTila(List(
         AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2021, 10, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
-        AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2022, 10, 1), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+        AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2023, 5, 31), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
       )),
       suoritukset = List(valmaKoulutuksenSuoritus.copy(
         koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(65)), perusteenDiaarinumero = Some("OOO-2658-2017"))
@@ -33,10 +33,10 @@ class OppijaValidationValmaSpec extends TutkinnonPerusteetTest[AmmatillinenOpisk
     }
   }
 
-  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 1.10.2022 jälkeen" in {
+  "Opiskeluoikeuden tilan alkupäivämäärä ei voi olla päiväys 31.5.2023 jälkeen" in {
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(
       tila = AmmatillinenOpiskeluoikeudenTila(List(
-        AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2022, 10, 2), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen))
+        AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2023, 6, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen))
       )),
       suoritukset = List(valmaKoulutuksenSuoritus.copy(
         koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(65)), perusteenDiaarinumero = Some("OOO-2658-2017"))

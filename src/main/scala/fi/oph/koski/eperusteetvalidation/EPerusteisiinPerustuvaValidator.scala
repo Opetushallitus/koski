@@ -101,7 +101,7 @@ class EPerusteisiinPerustuvaValidator(
           // Katso myös TutkintoRakenneValidator.validateTutkintoRakenne
           case (_: ValmaKoulutuksenSuoritus, diaarillinen: Diaarinumerollinen) if vaadittuPerusteenVoimassaolopäivä.isBefore(LocalDate.of(2022, 7, 31)) =>
             validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, vaadittuPerusteenVoimassaolopäivä)
-          case (_: ValmaKoulutuksenSuoritus, diaarillinen: Diaarinumerollinen) if vaadittuPerusteenVoimassaolopäivä.isBefore(LocalDate.of(2022, 10, 2)) =>
+          case (_: ValmaKoulutuksenSuoritus, diaarillinen: Diaarinumerollinen) if vaadittuPerusteenVoimassaolopäivä.isBefore(LocalDate.of(2023, 6, 1)) =>
             validatePerusteVoimassa(diaarillinen.perusteenDiaarinumero.get, LocalDate.of(2022, 7, 31))
           case (s: NäyttötutkintoonValmistavanKoulutuksenSuoritus, _) if s.tutkinto.perusteenDiaarinumero.isDefined =>
             validatePerusteVoimassa(s.tutkinto.perusteenDiaarinumero.get, vaadittuPerusteenVoimassaolopäivä)
