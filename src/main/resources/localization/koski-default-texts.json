@@ -2434,6 +2434,9 @@
   "description:Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
   "description:Taiteen perusopetuksen yleisen oppimäärän teemaopintojen..." : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen opintotason suoritus",
   "Taiteenala" : "Taiteenala",
-  "description:Taiteen perusopetuksen opiskeluoikeuden oppimäärä" : "Taiteen perusopetuksen opiskeluoikeuden oppimäärä"
-
+  "description:Taiteen perusopetuksen opiskeluoikeuden oppimäärä" : "Taiteen perusopetuksen opiskeluoikeuden oppimäärä",
+  "Helsingin eurooppalaisen koulun opetussuunnitelmat": "Helsingin eurooppalaisen koulun opetussuunnitelmat",
+  "Helsingin eurooppalaisen koulun opetussuunnitelmista ja arvosana-asteikoista on lisätietoja": "Helsingin eurooppalaisen koulun opetussuunnitelmista ja arvosana-asteikoista on lisätietoja",
+  "Eurooppakoulujen sivulla": "Eurooppakoulujen sivulla",
+  "infoLinkUrl:Eurooppakoulujen opetussuunnitelmat": "https://www.eursc.eu/en/European-Schools/studies/syllabuses"
 }

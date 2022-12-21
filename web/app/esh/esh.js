@@ -33,3 +33,8 @@ export const valmiitaSuorituksia = (oppiaineSuoritukset) =>
       arvioituTaiVahvistettu(oppiaine) ||
       modelItems(oppiaine, 'osasuoritukset').some(arvioituTaiVahvistettu)
   )
+
+export const onEshPäätasonKoulutusmoduuliProperty = (property) =>
+  property.model.parent.value.classes.includes(
+    'europeanschoolofhelsinkipaatasonsuoritus'
+  ) && property.key === 'koulutusmoduuli'

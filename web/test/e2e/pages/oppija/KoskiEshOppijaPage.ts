@@ -75,7 +75,7 @@ export class KoskiEshOppijaPage extends KoskiOppijaPage {
       new RegExp(
         `koski\\/oppija\\/1\\.2\\..*\\?1\\.2\\..*\\.suoritus=${suoritus}${hyväksyttyPostfix}$`
       ),
-      { timeout: 20000 }
+      { timeout: 30000 }
     )
   }
 
