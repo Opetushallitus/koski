@@ -230,9 +230,6 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
     .filter(_._1 != KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus.oid)
   // Filtteröidään vapaan sivistystyön vapaatavoitteista koulutusta käyvä kaveri pois,
   // katso TilastokeskusServlet / exclusionFilters
-    .filter(_._1 != KoskiSpecificMockOppijat.taiteenPerusopetusAloitettu.oid)
-    .filter(_._1 != KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid)
-  // TODO: TOR-1691 korjaa kun TPO:n käyttöoikeudet on toteutettu
 
   private def expectedPage(pageSize: Int, pageNumber: Int) = {
     kaikkiOppijat.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize)
