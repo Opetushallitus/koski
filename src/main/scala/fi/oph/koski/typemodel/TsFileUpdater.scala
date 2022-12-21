@@ -1,5 +1,6 @@
 package fi.oph.koski.typemodel
 
+import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 
@@ -8,7 +9,10 @@ import java.nio.file.{Files, Paths}
 
 object TsFileUpdater {
   def updateTypeFiles(): Unit = {
-    val types = SchemaExport.toTypeDef(KoskiSchema.schema)
+    val types =
+      SchemaExport.toTypeDef(KoskiSchema.schema) ++
+      TypeExport.toTypeDef(classOf[AdditionalExports]).filter(t => !AdditionalExports.getClass.getName.startsWith(t.fullClassName))
+
     TypescriptTypes.build(types, options).foreach(writeFile)
   }
 
@@ -33,3 +37,9 @@ object TsFileUpdater {
 
   def targetPath: String = "web/app/types"
 }
+
+case class AdditionalExports(
+  constraint: Constraint,
+  putOppijaApiResponse: HenkilönOpiskeluoikeusVersiot,
+  getKoodistoApiResponse: GroupedKoodistot,
+)

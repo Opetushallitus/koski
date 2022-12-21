@@ -37,6 +37,12 @@ export type IBOppiaineMuu = {
     | 'THE'
     | 'VA'
     | 'CS'
+    | 'LIT'
+    | 'INF'
+    | 'DES'
+    | 'SPO'
+    | 'MATAA'
+    | 'MATAI'
   >
 }
 
@@ -69,6 +75,12 @@ export const IBOppiaineMuu = (o: {
     | 'THE'
     | 'VA'
     | 'CS'
+    | 'LIT'
+    | 'INF'
+    | 'DES'
+    | 'SPO'
+    | 'MATAA'
+    | 'MATAI'
   >
 }): IBOppiaineMuu => ({ $class: 'fi.oph.koski.schema.IBOppiaineMuu', ...o })
 

@@ -3,7 +3,7 @@ import BaconComponent from '../components/BaconComponent'
 import Http from '../util/http'
 import Link from '../components/Link'
 import { currentLocation, navigateTo } from '../util/location.js'
-import { ISO2FinnishDateTime } from '../date/date.js'
+import { ISO2FinnishDateTime } from '../date/date'
 import Text from '../i18n/Text'
 
 export default class Versiohistoria extends BaconComponent {

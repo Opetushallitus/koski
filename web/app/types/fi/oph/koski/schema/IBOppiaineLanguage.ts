@@ -14,7 +14,7 @@ export type IBOppiaineLanguage = {
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   laajuus?: LaajuusTunneissa
   ryhmä: Koodistokoodiviite<'aineryhmaib', string>
-  tunniste: Koodistokoodiviite<'oppiaineetib', 'A' | 'A2' | 'B' | 'AB'>
+  tunniste: Koodistokoodiviite<'oppiaineetib', 'A' | 'A2' | 'B' | 'AB' | 'CLA'>
 }
 
 export const IBOppiaineLanguage = (o: {
@@ -23,7 +23,7 @@ export const IBOppiaineLanguage = (o: {
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   laajuus?: LaajuusTunneissa
   ryhmä: Koodistokoodiviite<'aineryhmaib', string>
-  tunniste: Koodistokoodiviite<'oppiaineetib', 'A' | 'A2' | 'B' | 'AB'>
+  tunniste: Koodistokoodiviite<'oppiaineetib', 'A' | 'A2' | 'B' | 'AB' | 'CLA'>
 }): IBOppiaineLanguage => ({
   $class: 'fi.oph.koski.schema.IBOppiaineLanguage',
   ...o

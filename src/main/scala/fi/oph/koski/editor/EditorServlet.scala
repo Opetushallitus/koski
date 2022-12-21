@@ -15,7 +15,7 @@ import fi.oph.koski.util.WithWarnings
 /**
   *  Endpoints for the Koski UI
   */
-class EditorServlet(implicit val application: KoskiApplication)
+class   EditorServlet(implicit val application: KoskiApplication)
   extends EditorApiServlet
     with RequiresVirkailijaOrPalvelukäyttäjä
     with NoCache {

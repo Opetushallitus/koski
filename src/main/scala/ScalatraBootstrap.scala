@@ -38,7 +38,7 @@ import fi.oph.koski.suostumus.SuostumuksenPeruutusServlet
 import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
-import fi.oph.koski.typemodel.TypeModelServlet
+import fi.oph.koski.typemodel.{LocalDevOnlyTypeModelServlet, TypeModelServlet}
 import fi.oph.koski.util.{Futures, Timing}
 import fi.oph.koski.valpas.kela.ValpasKelaServlet
 import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
@@ -91,6 +91,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/koski/api/documentation", new DocumentationApiServlet)
     mount("/koski/api/editor", new EditorServlet)
     mount("/koski/api/editor/koodit", new EditorKooditServlet)
+    mount("/koski/api/types", new TypeModelServlet)
     mount("/koski/api/elaketurvakeskus", new ElaketurvakeskusServlet)
     mount("/koski/api/opensearch", new OpenSearchServlet)
     mount("/koski/api/healthcheck", new HealthCheckApiServlet)
@@ -176,7 +177,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
         mount(proxyPrefix, new RaamiProxyServlet(application.config.getString("virkailijaRaamitProxy"), "", application))
       }
 
-      mount("/types", new TypeModelServlet())
+      mount("/types", new LocalDevOnlyTypeModelServlet())
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete

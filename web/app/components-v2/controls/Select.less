@@ -1,0 +1,70 @@
+.Select {
+  display: grid;
+  grid-template-areas: 'select';
+  align-items: center;
+  margin-bottom: 0.5 * @baseline;
+
+  .Select__input {
+    appearance: none;
+    grid-area: select;
+
+    width: 100%;
+    padding: 0 6px;
+
+    margin: 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: 2.5 * @baseline;
+
+    background: white;
+    border: 1px solid #aeaeae;
+    border-radius: 2px;
+
+    box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  &::after {
+    content: '';
+    grid-area: select;
+    width: 0.55em;
+    height: 0.3em;
+    margin-right: 12px;
+    background-color: @color-dark-blue;
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    justify-self: end;
+  }
+}
+
+.Select__optionListContainer {
+  position: relative;
+
+  .Select__optionList {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    background: white;
+    border-left: 4px solid @color-blue;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    .Select__option {
+      padding: 0 @h-padding;
+      min-height: 3 * @baseline;
+      line-height: 3 * @baseline;
+      cursor: pointer;
+
+      &:hover,
+      &.Select__option--hover {
+        background: #f0f0f0;
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { formatFinnishDate, parseFinnishDate } from './date.js'
+import { formatFinnishDate, parseFinnishDate } from './date'
 import React from 'react'
 import Text from '../i18n/Text'
 import { t } from '../i18n/i18n'

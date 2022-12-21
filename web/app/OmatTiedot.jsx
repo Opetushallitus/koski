@@ -23,6 +23,7 @@ import { locationP } from './util/location'
 import { Header } from './omattiedot/header/Header'
 import { EiSuorituksiaInfo } from './omattiedot/EiSuorituksiaInfo'
 import { patchSaavutettavuusLeima } from './saavutettavuusLeima'
+import { KoodistoProvider } from './appstate/koodisto'
 __webpack_nonce__ = window.nonce
 import(/* webpackChunkName: "styles" */ './style/main.less')
 
@@ -94,18 +95,20 @@ const domP = Bacon.combineWith(
   contentP,
   allErrorsP,
   (topBar, content, error) => (
-    <div>
-      <Error error={error} />
-      {topBar}
-      {isTopLevel(error) ? (
-        <TopLevelError error={error} />
-      ) : (
-        <div className="content-area omattiedot">
-          <nav className="sidebar omattiedot-navi"></nav>
-          {content}
-        </div>
-      )}
-    </div>
+    <KoodistoProvider>
+      <div>
+        <Error error={error} />
+        {topBar}
+        {isTopLevel(error) ? (
+          <TopLevelError error={error} />
+        ) : (
+          <div className="content-area omattiedot">
+            <nav className="sidebar omattiedot-navi"></nav>
+            {content}
+          </div>
+        )}
+      </div>
+    </KoodistoProvider>
   )
 )
 

@@ -20,6 +20,12 @@ export type MuuDiplomaOppiaine = {
     | 'PHY'
     | 'PSY'
     | 'VA'
+    | 'LIT'
+    | 'INF'
+    | 'DES'
+    | 'SPO'
+    | 'MATAA'
+    | 'MATAI'
   >
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
 }
@@ -37,6 +43,12 @@ export const MuuDiplomaOppiaine = (o: {
     | 'PHY'
     | 'PSY'
     | 'VA'
+    | 'LIT'
+    | 'INF'
+    | 'DES'
+    | 'SPO'
+    | 'MATAA'
+    | 'MATAI'
   >
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
 }): MuuDiplomaOppiaine => ({

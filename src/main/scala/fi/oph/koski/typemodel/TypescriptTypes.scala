@@ -116,7 +116,10 @@ object TypescriptTypes {
       case t: UnionType => typeUnion(t, options)
       case t: LiteralType => "\"" + t.literal + "\""
 
-      case t: Any => s"any // ${t}"
+      case _: AnyObjectType => "object"
+      case _: AnyArrayType => "any[]"
+      case _: AnyType => "any"
+      case t: Any => s"any /* ${t} */"
     }
 
   private def toObject(

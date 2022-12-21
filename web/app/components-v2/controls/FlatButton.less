@@ -1,0 +1,24 @@
+.FlatButton {
+  display: inline-block;
+  min-height: 3 * @baseline;
+  padding: 0 24px;
+
+  background-color: transparent;
+  color: @color-link-blue;
+
+  border: none;
+  border-radius: 3px;
+
+  transition: background-color 250ms;
+
+  cursor: pointer;
+
+  &.FlatButton__fullWidth {
+    width: 100%;
+  }
+
+  &:hover {
+    background-color: @color-light-blue;
+    transition: background-color 15ms;
+  }
+}

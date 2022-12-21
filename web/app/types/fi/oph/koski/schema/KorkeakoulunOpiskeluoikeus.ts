@@ -26,6 +26,9 @@ export type KorkeakoulunOpiskeluoikeus = {
   suoritukset: Array<KorkeakouluSuoritus>
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
+  luokittelu?: Array<
+    Koodistokoodiviite<'virtaopiskeluoikeudenluokittelu', string>
+  >
   arvioituPäättymispäivä?: string
   oppilaitos?: Oppilaitos
 }
@@ -42,6 +45,9 @@ export const KorkeakoulunOpiskeluoikeus = (o: {
   suoritukset?: Array<KorkeakouluSuoritus>
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
+  luokittelu?: Array<
+    Koodistokoodiviite<'virtaopiskeluoikeudenluokittelu', string>
+  >
   arvioituPäättymispäivä?: string
   oppilaitos?: Oppilaitos
 }): KorkeakoulunOpiskeluoikeus => ({

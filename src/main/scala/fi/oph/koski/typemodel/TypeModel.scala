@@ -3,7 +3,7 @@ package fi.oph.koski.typemodel
 import fi.oph.koski.typemodel.DataTypes.DataType
 import fi.oph.koski.typemodel.ObjectType.{ObjectDefaultNode, ObjectDefaultsMap, ObjectDefaultsProperty}
 import fi.oph.scalaschema.Metadata
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxValue, MinValue, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxValue, MaxValueExclusive, MinValue, MinValueExclusive, Title}
 
 object DataTypes extends Enumeration {
   type DataType = Value
@@ -82,15 +82,17 @@ case class BooleanType(
 case class NumberType(
   default: Option[Number] = None,
   decimals: Option[Int] = None,
-  min: Option[Double] = None,
-  max: Option[Double] = None,
+  min: Option[Limit] = None,
+  max: Option[Limit] = None,
 ) extends TypeModel {
   def `type`: DataType = DataTypes.Number
 
   override def addMetadata(metadata: Metadata): TypeModel = metadata match {
     case DefaultValue(value) if value.isInstanceOf[Number] => this.copy(default = Some(value.asInstanceOf[Number]))
-    case MinValue(value) => this.copy(min = Some(value))
-    case MaxValue(value) => this.copy(max = Some(value))
+    case MinValue(value) => this.copy(min = Some(Limit(value, inclusive = true)))
+    case MaxValue(value) => this.copy(max = Some(Limit(value, inclusive = true)))
+    case MinValueExclusive(value) => this.copy(min = Some(Limit(value, inclusive = false)))
+    case MaxValueExclusive(value) => this.copy(max = Some(Limit(value, inclusive = false)))
     case _ => this
   }
 
@@ -119,7 +121,7 @@ case class RecordType(
   items: TypeModel,
 ) extends TypeModel {
   def `type`: DataType = DataTypes.Record
-  override def unambigiousDefaultValue: Option[Any] = Some(Map())
+  override def unambigiousDefaultValue: Option[Map[String, _]] = Some(Map())
   override def dependencies: Seq[String] = items.dependencies
 }
 
@@ -208,10 +210,22 @@ case class EnumType[T](
   // TODO: override def dependencies: Seq[String] = ???
 }
 
-// Undefined types
+// Loose types
+
+case class AnyObjectType() extends TypeModel {
+  def `type`: DataType = DataTypes.Object
+}
+
+case class AnyArrayType() extends TypeModel {
+  def `type`: DataType = DataTypes.Array
+}
 
 case class AnyType(
   `case`: String,
 ) extends TypeModel {
   def `type`: DataType = DataTypes.Any
 }
+
+// Common
+
+case class Limit(n: Double, inclusive: Boolean)
