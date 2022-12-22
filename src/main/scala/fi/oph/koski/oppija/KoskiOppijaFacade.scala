@@ -41,6 +41,7 @@ class KoskiOppijaFacade(
     (oid: String, findMasterIfSlaveOid: Boolean = false, useVirta: Boolean = true, useYtr: Boolean = true)
     (implicit user: KoskiSpecificSession)
   : Either[HttpStatus, WithWarnings[(LaajatOppijaHenkilöTiedot, Seq[Opiskeluoikeus])]] = {
+    logger.warn("findOppijaHenkilö > henkilöRepository.findByOid(oid, findMasterIfSlaveOid) r. 44 ")
     henkilöRepository.findByOid(oid, findMasterIfSlaveOid)
       .toRight(notFound(oid))
       .flatMap(henkilö => withOpiskeluoikeudet(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))

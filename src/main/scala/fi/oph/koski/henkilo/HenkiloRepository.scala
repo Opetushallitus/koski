@@ -44,8 +44,10 @@ case class HenkilöRepository(
     })), findByCacheKey)
 
   private def findByCacheKey(key: HenkilöCacheKey) = if (key.findMasterIfSlaveOid) {
+    logger.warn("findByCacheKey opintopolku.findMasterByOid(key.oid) r. 47")
     opintopolku.findMasterByOid(key.oid)
   } else {
+    logger.warn("findByCacheKey opintopolku.findByOid(key.oid) r. 51")
     opintopolku.findByOid(key.oid)
   }
 

@@ -66,18 +66,24 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
   }
 
   def findByOppija(tunnisteet: HenkilönTunnisteet, useVirta: Boolean, useYtr: Boolean)(implicit user: KoskiSpecificSession): WithWarnings[Seq[Opiskeluoikeus]] = {
+    logger.warn("CompositeOpiskeluoikeusRepo findByOppija r.69")
     val oid = tunnisteet.oid
-    val isValidHetu = Hetu.validate(tunnisteet.hetu.getOrElse(""), false) match {
+    val isValidHetu = Hetu.validate(tunnisteet.hetu.getOrElse(""), true) match {
         case Right(_) => true
         case _ => false
     }
 
+    logger.warn("CompositeOpiskeluoikeusRepo findByOppija r.76, isValidHetu? " + isValidHetu.toString)
     val mainResult = withErrorLogging(() => main.findByOppijaOids(tunnisteet.oid :: tunnisteet.linkitetytOidit))
     val ytrResultFuture = Future { if (useYtr) ytr.findByOppija(tunnisteet) else Nil }.transform(mapFailureToYtrUnavailable(_, oid))
     val ytrResult = Futures.await(ytrResultFuture)
+    logger.warn("CompositeOpiskeluoikeusRepo findByOppija r.80, ytrResult ok ")
 
+    logger.warn("CompositeOpiskeluoikeusRepo findByOppija r.82")
     val virtaResultFuture = Future { if (useVirta) virta.findByOppija(if (isValidHetu) { tunnisteet } else { tunnisteet.ilmanHetua }) else Nil }.transform(mapFailureToVirtaUnavailable(_, oid))
     val virtaResult = Futures.await(virtaResultFuture)
+
+    logger.warn("CompositeOpiskeluoikeusRepo findByOppija r.86 virtaResult ok")
     WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
   }
 
