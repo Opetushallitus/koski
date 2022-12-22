@@ -1,6 +1,6 @@
 {
   "henkilö" : {
-    "hetu" : "010605A0734",
+    "hetu" : "110505A804B",
     "etunimet" : "Pentti",
     "kutsumanimi" : "Pentti",
     "sukunimi" : "Taiteilija"
@@ -45,6 +45,10 @@
     "oppimäärä" : {
       "koodiarvo" : "laajaoppimaara",
       "koodistoUri" : "taiteenperusopetusoppimaara"
+    },
+    "hankintakoulutus" : {
+      "koodiarvo" : "itsejarjestettykoulutus",
+      "koodistoUri" : "taiteenperusopetushankintakoulutus"
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
