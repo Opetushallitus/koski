@@ -112,6 +112,7 @@ object Koodistot {
     KoodistoAsetus("ebtutkinnonoppiaineenkomponentti"),
     KoodistoAsetus("taiteenperusopetustaiteenala"),
     KoodistoAsetus("taiteenperusopetusoppimaara"),
+    KoodistoAsetus("taiteenperusopetushankintakoulutus"),
     KoodistoAsetus("arviointiasteikkotaiteenperusopetus"),
     KoodistoAsetus("arviointiasteikkovstjotpa"),
   )
