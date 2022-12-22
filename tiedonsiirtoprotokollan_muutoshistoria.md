@@ -1,4 +1,9 @@
+## 2.1.2023
+
+- IB-opintoihin lisätty oppiaineet koodeilla CLA, LIT, INF, DES, SPO, MATAA ja MATAI
+
 ## 30.12.2022
+
 - Virta-datasta luetaan opiskeluoikeuden sekä suorituksen luokittelutieto.
 
 ## 12.12.2022

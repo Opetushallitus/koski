@@ -402,6 +402,12 @@ case class MuuDiplomaOppiaine(
   @KoodistoKoodiarvo("PHY")
   @KoodistoKoodiarvo("PSY")
   @KoodistoKoodiarvo("VA")
+  @KoodistoKoodiarvo("LIT")
+  @KoodistoKoodiarvo("INF")
+  @KoodistoKoodiarvo("DES")
+  @KoodistoKoodiarvo("SPO")
+  @KoodistoKoodiarvo("MATAA")
+  @KoodistoKoodiarvo("MATAI")
   tunniste: Koodistokoodiviite,
   taso: Option[Koodistokoodiviite]
 ) extends InternationalSchoolIBOppiaine with IBOppiaine with IBTaso
