@@ -92,13 +92,26 @@ class KoskiSpecificSession(
 
   def hasVarhaiskasvatusAccess(koulutustoimijaOid: Organisaatio.Oid, organisaatioOid: Organisaatio.Oid, accessType: AccessType.Value): Boolean = {
     val oikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(accessType))
-    globalAccess.contains(accessType)|| oikeudet.exists { case KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, organisaatio, _, _) =>
+    globalAccess.contains(accessType) || oikeudet.exists { case KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, organisaatio, _, _) =>
       koulutustoimijaOid == koulutustoimija.oid && organisaatioOid == organisaatio.oid
     }
   }
 
+  def hasTaiteenPerusopetusAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid], accessType: AccessType.Value): Boolean = {
+    val access = globalAccess.contains(accessType) ||
+      organisationOids(accessType).contains(organisaatio) ||
+      orgKäyttöoikeudet
+        .filter(_.organisaatio.toKoulutustoimija.isDefined)
+        .exists(k => koulutustoimija.contains(k.organisaatio.oid) && k.organisaatioAccessType.contains(accessType))
+
+    access && (accessType != AccessType.write || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  }
+
   def hasAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid], accessType: AccessType.Value): Boolean = {
-    val access = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio) || koulutustoimija.exists(kt => hasVarhaiskasvatusAccess(kt, organisaatio, accessType))
+    val access = globalAccess.contains(accessType) ||
+      organisationOids(accessType).contains(organisaatio) ||
+      koulutustoimija.exists(kt => hasVarhaiskasvatusAccess(kt, organisaatio, accessType))
+
     access && (accessType != AccessType.write || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   }
 
