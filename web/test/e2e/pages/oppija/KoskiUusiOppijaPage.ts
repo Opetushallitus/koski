@@ -1,5 +1,6 @@
 import { Locator, Page, expect } from '@playwright/test'
 import { Dropdown } from './components/Dropdown'
+import { RadioButton } from './components/RadioButton'
 
 interface BaseOppija {
   etunimet: string
@@ -11,6 +12,10 @@ interface BaseOppija {
   suorituskieli: string
   opiskeluoikeudenTila: string
   opintokokonaisuus?: string
+  oppimäärä?: string
+  opintojenMaksuttomuus?: string
+  peruste?: string
+  rahoitus?: string
 }
 
 type ESHOppija =
@@ -31,6 +36,10 @@ export class KoskiUusiOppijaPage {
   readonly opintokokonaisuus: Dropdown
   readonly opiskeluoikeudenTila: Dropdown
   readonly opintojenRahoitus: Dropdown
+  readonly opiskeluoikeus: Dropdown
+  readonly oppimäärä: Dropdown
+  readonly peruste: Dropdown
+  readonly maksuttomuus: RadioButton
   readonly submitBtn: Locator
   readonly oppilaitosTextInput: Locator
   readonly oppilaitosHakuInput: Locator
@@ -52,6 +61,16 @@ export class KoskiUusiOppijaPage {
       page,
       'Opintojen rahoitus-koodisto-dropdown'
     )
+    this.opiskeluoikeus = Dropdown.fromTestId(
+      page,
+      'Opiskeluoikeus-koodisto-dropdown'
+    )
+    this.maksuttomuus = RadioButton.fromTestId(
+      page,
+      'maksuttomuus-radio-buttons'
+    )
+    this.oppimäärä = Dropdown.fromTestId(page, 'Oppimäärä-koodisto-dropdown')
+    this.peruste = Dropdown.fromTestId(page, 'peruste-dropdown')
     this.submitBtn = page.getByRole('button', { name: 'Lisää opiskelija' })
     this.etunimet = page.getByRole('textbox', { name: 'Etunimet' })
     this.sukunimi = page.getByRole('textbox', { name: 'Sukunimi' })
@@ -65,7 +84,20 @@ export class KoskiUusiOppijaPage {
     await expect(this.page).toHaveURL(/\/koski\/uusioppija#hetu=.+/)
   }
 
+  /**
+   * Täyttää oppijan tiedot Uuden opiskelijan lisäys -näkymään.
+   *
+   * **Huom.! Testikoodi ei tarkista, löytyykö mm. perustetta, opintokokonaisuutta tai muita opiskeluoikeus-spesifisiä kenttiä, ennen kuin niitä aletaan täyttämään.**
+   * Testaa ensin luoda käyttöliittymän kautta opiskeluoikeus ja tarkista, mitkä kentät käyttöliittymässä näkyvät.
+   * @param oppija Oppijan tiedot
+   */
   async fill(oppija: Partial<BaseOppija>) {
+    if (oppija.etunimet) {
+      await this.etunimet.fill(oppija.etunimet)
+    }
+    if (oppija.sukunimi) {
+      await this.sukunimi.fill(oppija.sukunimi)
+    }
     if (oppija.oppilaitos) {
       await this.oppilaitosTextInput.click()
 
@@ -75,27 +107,38 @@ export class KoskiUusiOppijaPage {
         .getByTestId(`organisaatio-list-item-${oppija.oppilaitos}`)
         .click()
     }
-    if (oppija.etunimet) {
-      await this.etunimet.fill(oppija.etunimet)
+    if (oppija.opiskeluoikeus) {
+      await this.opiskeluoikeus.selectOptionByClick(oppija.opiskeluoikeus)
     }
-    if (oppija.sukunimi) {
-      await this.sukunimi.fill(oppija.sukunimi)
-    }
+    // TODO: Suorituskieli
+    // if (oppija.suorituskieli) {
+    //  ...
+    // }
     if (oppija.opintokokonaisuus) {
       await this.opintokokonaisuus.search(oppija.opintokokonaisuus)
+    }
+    // TODO: Aloituspäivä
+    // if (oppija.aloituspäivä) {
+    //  ...
+    // }
+    if (oppija.oppimäärä) {
+      await this.oppimäärä.selectOptionByClick(oppija.oppimäärä)
+    }
+    if (oppija.peruste) {
+      await this.peruste.selectOptionByClick(oppija.peruste)
+    }
+    if (oppija.rahoitus) {
+      await this.opintojenRahoitus.selectOptionByClick(oppija.rahoitus)
+    }
+    if (oppija.opintojenMaksuttomuus) {
+      await this.maksuttomuus.selectOptionByLabel(oppija.opintojenMaksuttomuus)
     }
   }
 
   async submitAndExpectSuccess() {
+    await expect(this.submitBtn).toBeEnabled()
     await this.submitBtn.click()
+    await expect(this.page.getByTestId('error')).not.toBeVisible()
     await expect(this.page).toHaveURL(/\/koski\/oppija\/1.2.246.562.24.\d+.*/)
-  }
-
-  async lisaaOppija(oppija: Oppija) {
-    await this.goTo(oppija.hetu)
-    await this.etunimet.type(oppija.etunimet)
-    await expect(this.etunimet).toHaveValue(oppija.etunimet)
-    await this.sukunimi.type(oppija.sukunimi)
-    await expect(this.sukunimi).toHaveValue(oppija.sukunimi)
   }
 }

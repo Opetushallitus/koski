@@ -3356,67 +3356,6 @@ describe('Perusopetus', function () {
         })
       })
 
-      describe('Päättövaiheen opintojen lisääminen', function () {
-        before(
-          editor.edit,
-          opinnot.lisääSuoritusDialog.clickLink(
-            'lisää opintojen päättövaiheen suoritus'
-          )
-        )
-
-        describe('Lisäyksen jälkeen', function () {
-          it('Lisäyslinkkiä ei näytetä lisäyksen jälkeen', function () {
-            expect(
-              opinnot.lisääSuoritusDialog.isLinkVisible(
-                'lisää opintojen päättövaiheen suoritus'
-              )
-            ).to.equal(false)
-          })
-
-          it('Esitäyttää pakolliset oppiaineet', function () {
-            expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([
-              'Äidinkieli ja kirjallisuus,',
-              'A1-kieli,',
-              'B1-kieli,',
-              'Matematiikka',
-              'Biologia',
-              'Maantieto',
-              'Fysiikka',
-              'Kemia',
-              'Terveystieto',
-              'Uskonto/Elämänkatsomustieto',
-              'Historia',
-              'Yhteiskuntaoppi',
-              'Musiikki',
-              'Kuvataide',
-              'Käsityö',
-              'Liikunta',
-              'Kotitalous',
-              'Opinto-ohjaus'
-            ])
-            expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal(
-              'Suomen kieli ja kirjallisuus'
-            )
-          })
-        })
-
-        describe('Tallennuksen jälkeen', function () {
-          before(editor.saveChanges)
-          it('Näytetään uusi suoritus', function () {
-            expect(opinnot.suoritusTabs()).to.deep.equal([
-              'Aikuisten perusopetuksen oppimäärä',
-              'Aikuisten perusopetuksen oppimäärän alkuvaihe'
-            ])
-          })
-
-          it('Näytetään aikuisten perusopetuksen oppimäärä opiskeluoikeuden otsikossa', function () {
-            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal(
-              'Aikuisten perusopetuksen oppimäärä'
-            )
-          })
-        })
-      })
-
       after(timeout.resetDefaultWaitTime())
     })
 

@@ -29,14 +29,22 @@ export class PerusopetuksenOppiaineEditor extends React.Component {
       <span>
         {oppiaine.context.edit && isPaikallinen(oppiaine) ? (
           <span className="koodi-ja-nimi">
-            <span className="koodi">
+            <span
+              className="koodi"
+              data-testid="property-koodi"
+              data-paikallinen={isPaikallinen(oppiaine)}
+            >
               <Editor
                 model={oppiaine}
                 path="tunniste.koodiarvo"
                 placeholder={t('Koodi')}
               />
             </span>
-            <span className="nimi">
+            <span
+              className="nimi"
+              data-testid="property-nimi"
+              data-paikallinen={isPaikallinen(oppiaine)}
+            >
               <Editor
                 model={fixKuvaus(oppiaine)}
                 path="tunniste.nimi"
@@ -52,12 +60,14 @@ export class PerusopetuksenOppiaineEditor extends React.Component {
             {oppiaineTitle(oppiaine)}
           </button>
         ) : (
-          <span className="nimi">{oppiaineTitle(oppiaine)}</span>
+          <span className="nimi" data-testid="property-nimi">
+            {oppiaineTitle(oppiaine)}
+          </span>
         )}
         {
           // kielivalinta
           isKieliaine(oppiaine) && (
-            <span className="value kieli">
+            <span className="value kieli" data-testid="property-kieli">
               <Editor
                 model={oppiaine}
                 inline={true}

@@ -5,10 +5,11 @@ import fi.oph.koski.util.Files
 import org.scalatest.Tag
 import org.scalatest.freespec.AnyFreeSpec
 
-trait KoskiParallelMochaSpec extends AnyFreeSpec with KoskiCommandLineSpec {
-  def runnerNumber: Int
+class KoskiParallelMochaSpec extends AnyFreeSpec with KoskiCommandLineSpec {
+  // Indeksointi lähtee nollasta
+  def shardIndex: Int = Integer.parseInt(scala.util.Properties.envOrElse("MOCHA_SHARD_INDEX", "1")) - 1
   "Mocha tests" taggedAs(Tag("parallelmocha")) in {
-    val specs = SplitMochaSpecs.takeSpecsForRunner(runnerNumber)
+    val specs = SplitMochaSpecs.takeSpecsForRunner(shardIndex)
     val sharedJetty = new SharedJetty(KoskiApplicationForTests)
     sharedJetty.start()
     //specFiles parameter makes runner.html to only load given spec.js files
@@ -16,28 +17,8 @@ trait KoskiParallelMochaSpec extends AnyFreeSpec with KoskiCommandLineSpec {
   }
 }
 
-class KoskiMochaSpecRunner0 extends KoskiParallelMochaSpec {
-  def runnerNumber: Int = 0
-}
-
-class KoskiMochaSpecRunner1 extends KoskiParallelMochaSpec {
-  def runnerNumber: Int = 1
-}
-
-class KoskiMochaSpecRunner2 extends KoskiParallelMochaSpec {
-  def runnerNumber: Int = 2
-}
-
-class KoskiMochaSpecRunner3 extends KoskiParallelMochaSpec {
-  def runnerNumber: Int = 3
-}
-
-class KoskiMochaSpecRunner4 extends KoskiParallelMochaSpec {
-  def runnerNumber: Int = 4
-}
-
 object SplitMochaSpecs {
-  val numberOfRunners = 5
+  val numberOfRunners = Integer.parseInt(scala.util.Properties.envOrElse("MOCHA_SHARD_TOTAL", "1"))
 
   def takeSpecsForRunner(number: Int)= {
     val runnerFile = Files

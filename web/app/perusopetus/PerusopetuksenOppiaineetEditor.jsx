@@ -100,7 +100,7 @@ export const PerusopetuksenOppiaineetEditor = ({ model }) => {
               }
             />
           </h5>
-          <p>
+          <p data-testid="perusopetuksen-arvosteluasteikko">
             <Text name="Arvostelu 4-10, S (suoritettu) tai H (hylätty)" />
           </p>
           {hasPakollisuus(model, uusiOppiaineenSuoritus) &&
@@ -408,7 +408,11 @@ class Oppiainetaulukko extends React.Component {
     )
 
     return (
-      <section className="oppiaine-taulukko" style={{ width: '100%' }}>
+      <section
+        className="oppiaine-taulukko"
+        data-testid="oppiaine-taulukko"
+        style={{ width: '100%' }}
+      >
         {title && (
           <h5>
             <Text name={title} />

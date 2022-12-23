@@ -60,9 +60,9 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
           0)
 
     return (
-      <tbody className={className}>
+      <tbody className={className} data-testid="oppiaine-row">
         <tr>
-          <td className="oppiaine">
+          <td className="oppiaine" data-testid="oppiaine">
             {
               // expansion link
               showExpand && (
@@ -86,14 +86,14 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
             />
           </td>
           {showArvosana && (
-            <td className="arvosana">
+            <td className="arvosana" data-testid="oppiaine-row-arvosana">
               <span className="value">
                 <ArvosanaEditor model={model} />
               </span>
             </td>
           )}
           {showLaajuus && (
-            <td className="laajuus">
+            <td className="laajuus" data-testid="oppiaine-row-laajuus">
               <Editor
                 model={model}
                 path="koulutusmoduuli.laajuus"
@@ -121,7 +121,11 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
           )}
         </tr>
         {showSanallinenArvio && (
-          <tr key="sanallinenArviointi" className="sanallinen-arviointi">
+          <tr
+            key="sanallinenArviointi"
+            className="sanallinen-arviointi"
+            data-testid="oppiaine-row-sanallinen-arviointi"
+          >
             <td colSpan="4" className="details">
               <PropertiesEditor
                 properties={sanallinenArvioProperties}

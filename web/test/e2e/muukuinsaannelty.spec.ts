@@ -1,16 +1,13 @@
 import { test, expect } from './base'
+import { virkailija } from './setup/auth'
 
 test.describe('Muu kuin säännelty koulutus', () => {
-  test.beforeEach(async ({ fixtures, virkailijaLoginPage, customPage }) => {
-    customPage.once('dialog', (dialog) => {
+  test.use({ storageState: virkailija('muks') })
+  test.beforeEach(async ({ fixtures, page }) => {
+    page.once('dialog', (dialog) => {
       dialog.accept()
     })
     await fixtures.reset()
-    await virkailijaLoginPage.apiLoginAsUser('muks', 'muks')
-  })
-
-  test.afterEach(async ({ customPage }) => {
-    await customPage.close()
   })
 
   test.describe('Uuden opiskeluoikeuden luonti', () => {

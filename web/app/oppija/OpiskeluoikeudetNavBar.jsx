@@ -33,7 +33,10 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
 
   const canAddOpiskeluoikeusP = userP.map((u) => !!u.hasWriteAccess)
   return (
-    <ul className="opiskeluoikeustyypit-nav">
+    <ul
+      className="opiskeluoikeustyypit-nav"
+      data-testid="opiskeluoikeustyypit-navigation"
+    >
       {opiskeluoikeusTyypit.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
         const selected = tyyppiIndex === selectedIndex
         const koodiarvo = modelData(opiskeluoikeudenTyyppi).tyyppi.koodiarvo
@@ -94,7 +97,13 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
           </div>
         )
         return (
-          <li className={className} key={tyyppiIndex}>
+          <li
+            className={className}
+            key={tyyppiIndex}
+            data-testid={`opiskeluoikeustyyppi-${koodiarvo}`}
+            data-tyyppi-index={tyyppiIndex}
+            data-selected={selected}
+          >
             {selected ? (
               content
             ) : (

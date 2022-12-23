@@ -3,7 +3,11 @@ import Bacon from 'baconjs'
 import { toObservable } from '../util/util'
 
 const RadioButton = ({ label, selected, onSelect }) => (
-  <label className="radio-option-container">
+  <label
+    className="radio-option-container"
+    data-label={label}
+    data-selected={selected}
+  >
     {label}
     <input
       type="radio"
