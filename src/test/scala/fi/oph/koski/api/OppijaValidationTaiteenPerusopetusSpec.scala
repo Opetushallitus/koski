@@ -8,12 +8,13 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation, RootLogTester}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.suoritusjako.Suoritusjako
 import fi.oph.koski.tutkinto.Perusteet
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import org.json4s.{JBool, JObject, JString}
+import org.json4s.{JObject, JString}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 
@@ -106,6 +107,222 @@ class OppijaValidationTaiteenPerusopetusSpec
       val oot = getOpiskeluoikeus(oid.get).asInstanceOf[TaiteenPerusopetuksenOpiskeluoikeus]
       oot.suoritukset.size shouldBe 2
     }
+  }
+
+  "Käyttöoikeudet" - {
+
+    "Lukuoikeudet" - {
+      "pääkäyttäjä voi lukea hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja)
+        oos.size shouldBe 1
+      }
+
+      "koulutustoimijan käyttäjä voi lukea hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.helsinkiTallentaja)
+        oos.size shouldBe 1
+      }
+
+      "väärän kaupungin koulutustoimijan käyttäjä ei voi lukea hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.tornioTallentaja)
+        oos.size shouldBe 0
+      }
+
+      "oppilaitoksen käyttäjä voi lukea hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.varsinaisSuomiPalvelukäyttäjä)
+        oos.size shouldBe 1
+      }
+
+      "helsinkiläisen oppilaitoksen käyttäjä ei voi lukea helsingistä hankittua hankintakoulutuksena järjestettyä opiskeluoikeutta" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.stadinAmmattiopistoPääkäyttäjä)
+        oos.size shouldBe 0
+      }
+
+      "väärän oppilaitoksen käyttäjä ei voi lukea hankintakoulutuksena järjestettävää opiskeluoikeutta eri oppilaitoksesta" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+        oos.size shouldBe 0
+      }
+    }
+
+    "Opiskeluoikeuden lisäämisen oikeudet" - {
+      "pääkäyttäjä voi luoda hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          henkilö = oppija,
+          headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "koulutustoimijan käyttäjä voi luoda hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          henkilö = oppija,
+          headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent
+        ) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "koulutustoimijan käyttäjä ei voi luoda hankintakoulutuksena järjestettävää opiskeluoikeutta itse järjestettynä" in {
+        putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
+            koulutuksenToteutustapa = Koodistokoodiviite("itsejarjestettykoulutus", "taiteenperusopetuskoulutuksentoteutustapa")
+          ),
+          henkilö = oppija,
+          headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent
+        ) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.vääräKoulutustoimija(s"Annettu koulutustoimija ${MockOrganisaatiot.helsinginKaupunki} ei vastaa organisaatiopalvelusta löytyvää koulutustoimijaa ${MockOrganisaatiot.varsinaisSuomenAikuiskoulutussäätiö}"))
+        }
+      }
+
+      "koulutustoimija voi siirtää väärän koulutustoimijatiedon hankintakoulutuksena järjestettävässä opiskeluoikeudessa ja väärä koulutustoimija ylikirjoitetaan käyttäjätietojen koulutustoimijalla" in {
+        val resp = putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          henkilö = oppija,
+          headers = authHeaders(MockUsers.tornioTallentaja) ++ jsonContent
+        ) {
+          verifyResponseStatus(200)
+          readPutOppijaResponse
+        }
+        resp.opiskeluoikeudet.size shouldBe 1
+        val oo = oppija(resp.henkilö.oid).opiskeluoikeudet.find(_.oid.contains(resp.opiskeluoikeudet.head.oid))
+        oo.head.koulutustoimija.head.oid == MockOrganisaatiot.tornionKaupunki
+      }
+
+      "hankintakoulutuksen oppilaitoksen käyttäjä ei voi luoda hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          henkilö = oppija,
+          headers = authHeaders(MockUsers.varsinaisSuomiPalvelukäyttäjä) ++ jsonContent
+        ) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainTaiteenPerusopetuksenJärjestäjä())
+        }
+      }
+
+      "väärän oppilaitoksen käyttäjä ei voi luoda hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          henkilö = oppija,
+          headers = authHeaders(MockUsers.stadinAmmattiopistoPääkäyttäjä) ++ jsonContent
+        ) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainTaiteenPerusopetuksenJärjestäjä())
+        }
+      }
+    }
+
+    "Opiskeluoikeuden muokkaamisen oikeudet" - {
+      "pääkäyttäjä voi muokata hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
+            arvioituPäättymispäivä = Some(LocalDate.now().plusDays(1))
+          ),
+          henkilö = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent
+        ) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "koulutustoimijan käyttäjä voi muokata hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
+            arvioituPäättymispäivä = Some(LocalDate.now().plusDays(2))
+          ),
+          henkilö = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent
+        ) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "väärän koulutustoimijan käyttäjä ei voi muokata hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        val resp = putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
+            arvioituPäättymispäivä = Some(LocalDate.now().plusDays(3))
+          ),
+          henkilö = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          headers = authHeaders(MockUsers.tornioTallentaja) ++ jsonContent
+        ) {
+          verifyResponseStatus(200)
+          readPutOppijaResponse
+        }
+        resp.opiskeluoikeudet.size shouldBe 1
+        val oo = oppija(resp.henkilö.oid).opiskeluoikeudet.find(_.oid.contains(resp.opiskeluoikeudet.head.oid))
+        oo.head.koulutustoimija.head.oid == MockOrganisaatiot.tornionKaupunki
+      }
+
+      "hankintakoulutuksen oppilaitoksen käyttäjä ei voi muokata hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
+            arvioituPäättymispäivä = Some(LocalDate.now().plusDays(4))
+          ),
+          henkilö = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          headers = authHeaders(MockUsers.varsinaisSuomiPalvelukäyttäjä) ++ jsonContent
+        ) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainTaiteenPerusopetuksenJärjestäjä())
+        }
+      }
+
+      "väärän oppilaitoksen käyttäjä ei voi muokata hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        putOpiskeluoikeus(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
+            arvioituPäättymispäivä = Some(LocalDate.now().plusDays(5))
+          ),
+          henkilö = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus,
+          headers = authHeaders(MockUsers.stadinAmmattiopistoPääkäyttäjä) ++ jsonContent
+        ) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainTaiteenPerusopetuksenJärjestäjä())
+        }
+      }
+    }
+
+    "Mitätöinnin oikeudet" - {
+      "pääkäyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeus(oid, user = MockUsers.paakayttaja)
+
+      }
+
+      "koulutustoimijan käyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeus(oid, user = MockUsers.helsinkiTallentaja)
+      }
+
+      "väärän kaupungin koulutustoimijan käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeusCallback(oid, user = MockUsers.tornioTallentaja) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
+        }
+      }
+
+      "oppilaitoksen käyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiPalvelukäyttäjä)
+      }
+
+      "helsinkiläisen oppilaitoksen käyttäjä ei voi mitätöidä helsingistä hankittua hankintakoulutuksena järjestettyä opiskeluoikeutta" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeusCallback(oid, user = MockUsers.stadinAmmattiopistoPääkäyttäjä) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+        }
+      }
+
+      "väärän oppilaitoksen käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta eri oppilaitoksesta" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeusCallback(oid, user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+        }
+      }
+    }
+
+
   }
 
   "Suorituksen vahvistaminen" - {

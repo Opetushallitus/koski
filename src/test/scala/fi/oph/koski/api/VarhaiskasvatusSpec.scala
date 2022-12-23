@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalvelu, päiväkodinEsiopetuksenTunniste}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{kulosaarenAlaAste, oidOrganisaatio, päiväkotiTouhula, päiväkotiVironniemi}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{jyväskylänNormaalikoulu, kulosaarenAlaAste, oidOrganisaatio, päiväkotiTouhula, päiväkotiVironniemi}
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.ysiluokkalainen
 import fi.oph.koski.http.KoskiErrorCategory
@@ -61,6 +61,17 @@ class VarhaiskasvatusSpec extends AnyFreeSpec with EsiopetusSpecification {
         putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
+      }
+
+      "koulutustoimija voi siirtää väärän koulutustoimijatiedon ostopalvelun opiskeluoikeudessa ja väärä koulutustoimija ylikirjoitetaan käyttäjätietojen koulutustoimijalla" in {
+        val opiskeluoikeus = päiväkotiEsiopetus(jyväskylänNormaalikoulu, ostopalvelu).copy(koulutustoimija = tornio)
+        val resp = putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+          readPutOppijaResponse
+        }
+        resp.opiskeluoikeudet.size shouldBe 1
+        val oo = oppija(resp.henkilö.oid).opiskeluoikeudet.find(_.oid.contains(resp.opiskeluoikeudet.head.oid))
+        oo.head.koulutustoimija.head.oid == MockOrganisaatiot.helsinginKaupunki
       }
 
       "voi luoda perusopetuksessa järjestettävän esiopetuksen opiskeluoikeuden organisaatiohierarkian ulkopuoliselle peruskoululle" in {
