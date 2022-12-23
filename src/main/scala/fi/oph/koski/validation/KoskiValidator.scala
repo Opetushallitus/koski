@@ -286,6 +286,7 @@ class KoskiValidator(
 
   private def addKoulutustoimija(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = oo match {
     case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined => validateAndAddVarhaiskasvatusKoulutustoimija(e)
+    case t: TaiteenPerusopetuksenOpiskeluoikeus if t.hankintakoulutus.koodiarvo == "hankintakoulutus" => validateAndAddTaiteenPerusopetuksenKoulutustoimija(t)
     case _ => organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
       case Some(löydettyKoulutustoimija) =>
         oo.koulutustoimija.map(_.oid) match {
@@ -300,8 +301,23 @@ class KoskiValidator(
     }
   }
 
+  private def validateAndAddTaiteenPerusopetuksenKoulutustoimija(oo: TaiteenPerusopetuksenOpiskeluoikeus)
+    (implicit user: KoskiSpecificSession): Either[HttpStatus, TaiteenPerusopetuksenOpiskeluoikeus] = {
+    val koulutustoimija = inferTaiteenPerusopetuksenKoulutustoimija(user)
+    järjestettyOmanOrganisaationUlkopuolella(oo.oppilaitos, oo.koulutustoimija.orElse(koulutustoimija.toOption)) match {
+      case true =>
+        if (oo.koulutustoimija.isDefined && user.hasWriteAccess(oo.koulutustoimija.get.oid, oo.koulutustoimija.map(_.oid))) {
+          Right(oo)
+        } else {
+          koulutustoimija.map(oo.withKoulutustoimija)
+        }
+      case _ =>
+        Left(KoskiErrorCategory.badRequest.validation.organisaatio.hankintakoulutus())
+    }
+  }
+
   private def validateAndAddVarhaiskasvatusKoulutustoimija(oo: EsiopetuksenOpiskeluoikeus)(implicit user: KoskiSpecificSession) = {
-    val koulutustoimija = inferKoulutustoimija(user)
+    val koulutustoimija = inferVarhaiskasvatuksenKoulutustoimija(user)
     (
       päiväkodinTaiPeruskoulunEsiopetus(oo),
       järjestettyOmanOrganisaationUlkopuolella(oo.oppilaitos, oo.koulutustoimija.orElse(koulutustoimija.toOption))
@@ -329,7 +345,19 @@ class KoskiValidator(
     )
   }
 
-  private def inferKoulutustoimija(user: KoskiSpecificSession) = {
+  private def inferTaiteenPerusopetuksenKoulutustoimija(user: KoskiSpecificSession): Either[HttpStatus, Koulutustoimija] = {
+    user.orgKäyttöoikeudet.flatMap(_.organisaatio.toKoulutustoimija).map(_.oid).toList match {
+      case koulutustoimijaOid :: Nil =>
+        organisaatioRepository.getOrganisaatio(koulutustoimijaOid)
+          .flatMap(_.toKoulutustoimija)
+          .toRight(KoskiErrorCategory.badRequest.validation.organisaatio.tuntematon(s"Koulutustoimijaa $koulutustoimijaOid ei löydy"))
+      case Nil =>
+        Left(KoskiErrorCategory.forbidden.vainTaiteenPerusopetuksenJärjestäjä())
+      case _ =>
+        Left(KoskiErrorCategory.badRequest.validation.organisaatio.koulutustoimijaPakollinen("Koulutustoimijaa ei voi yksiselitteisesti päätellä käyttäjätunnuksesta. Koulutustoimija on pakollinen."))
+    }
+  }
+  private def inferVarhaiskasvatuksenKoulutustoimija(user: KoskiSpecificSession) = {
     user.varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid).toList match {
       case koulutustoimijaOid :: Nil =>
         organisaatioRepository.getOrganisaatio(koulutustoimijaOid)
@@ -416,12 +444,21 @@ class KoskiValidator(
   private def validateOrganisaatioAccess(oo: Opiskeluoikeus, organisaatio: OrganisaatioWithOid)(implicit user: KoskiSpecificSession, accessType: AccessType.Value) = {
     val organisaationKoulutustoimija = organisaatioRepository.findKoulutustoimijaForOppilaitos(organisaatio).map(_.oid)
     val opiskeluoikeudenKoulutustoimija = oo.koulutustoimija.map(_.oid)
-    val koulutustoimija = oo match {
-      case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined => opiskeluoikeudenKoulutustoimija
-      case _ => organisaationKoulutustoimija
-    }
-    HttpStatus.validate(user.hasAccess(organisaatio.oid, koulutustoimija, accessType)) {
-      KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
+
+    oo match {
+      case t: TaiteenPerusopetuksenOpiskeluoikeus =>
+        val koulutustoimija = if(t.hankintakoulutus.koodiarvo == "hankintakoulutus") opiskeluoikeudenKoulutustoimija else organisaationKoulutustoimija
+        HttpStatus.validate(user.hasTaiteenPerusopetusAccess(organisaatio.oid, koulutustoimija, accessType)){
+          KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
+        }
+      case _ =>
+        val koulutustoimija = oo match {
+          case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined => opiskeluoikeudenKoulutustoimija
+          case _ => organisaationKoulutustoimija
+        }
+        HttpStatus.validate(user.hasAccess(organisaatio.oid, koulutustoimija, accessType)) {
+          KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
+        }
     }
   }
 
