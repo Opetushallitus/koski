@@ -15,8 +15,12 @@ trait OpiskeluoikeudenMitätöintiJaPoistoTestMethods extends HttpSpecification 
     OpiskeluOikeudet.filterNot(_.mitätöity).sortBy(_.id).result
   ).head
 
-  def mitätöiOpiskeluoikeus(oid: String, user: UserWithPassword = defaultUser) = {
+  def mitätöiOpiskeluoikeus(oid: String, user: UserWithPassword = defaultUser): Unit = {
     delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(user))(verifyResponseStatusOk())
+  }
+
+  def mitätöiOpiskeluoikeusCallback[A](oid: String, user: UserWithPassword = defaultUser)(f: => A = verifyResponseStatusOk()): A = {
+    delete(s"api/opiskeluoikeus/${oid}", headers = authHeaders(user))(f)
   }
 
   def ensimmäinenPoistettavissaolevaOpiskeluoikeusIdJärjestyksessä: OpiskeluoikeusRow = runDbSync(
