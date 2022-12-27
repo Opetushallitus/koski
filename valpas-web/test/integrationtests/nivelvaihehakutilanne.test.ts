@@ -37,9 +37,8 @@ import {
 } from "./oids"
 import { selectOrganisaatioByNimi } from "./organisaatiovalitsin-helpers"
 
-const nivelvaiheenHakutilannePath = nivelvaiheenHakutilannePathWithoutOrg.href(
-  "/virkailija"
-)
+const nivelvaiheenHakutilannePath =
+  nivelvaiheenHakutilannePathWithoutOrg.href("/virkailija")
 
 const ressunLukioHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",
@@ -55,12 +54,10 @@ const aapajoenKouluHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   }
 )
 
-const internationalSchoolHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
-  "/virkailija",
-  {
+const internationalSchoolHakutilannePath =
+  nivelvaiheenHakutilannePathWithOrg.href("/virkailija", {
     organisaatioOid: internationalSchoolOid,
-  }
-)
+  })
 
 const saksalainenKouluHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   "/virkailija",

@@ -25,7 +25,8 @@ const globalAllowedNetworkErrors: NetworkErrorCase[] = [
   [new RegExp("/valpas/api/oppijat/[\\d\\.]+/hakutiedot"), UNAUTHORIZED],
   [
     // Korhopankki functionality only used in local development causes errors on Macs, but apparently not on CI
-    new RegExp("koski-korhopankki.js"), ""
+    new RegExp("koski-korhopankki.js"),
+    "",
   ],
 ]
 let testCaseSpecificAllowedNetworkErrors: NetworkErrorCase[] = []

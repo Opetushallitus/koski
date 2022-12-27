@@ -29,7 +29,10 @@ import {
   Tekijä,
   täytäJaLähetäLomake,
 } from "./kuntailmoitus.shared"
-import { jyväskylänNormaalikouluNivelvaiheTableContent, ressunLukioTableContent_syyskuu2021 } from "./nivelvaihehakutilanne.shared"
+import {
+  jyväskylänNormaalikouluNivelvaiheTableContent,
+  ressunLukioTableContent_syyskuu2021,
+} from "./nivelvaihehakutilanne.shared"
 import { jyväskylänNormaalikouluOid, ressunLukioOid } from "./oids"
 
 const ressunLukioHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
@@ -39,12 +42,10 @@ const ressunLukioHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
   }
 )
 
-const jyväskylänNormaalikouluHakutilannePath = nivelvaiheenHakutilannePathWithOrg.href(
-  "/virkailija",
-  {
+const jyväskylänNormaalikouluHakutilannePath =
+  nivelvaiheenHakutilannePathWithOrg.href("/virkailija", {
     organisaatioOid: jyväskylänNormaalikouluOid,
-  }
-)
+  })
 
 const opo: Tekijä = {
   nimi: "käyttäjä valpas-monta",
@@ -142,12 +143,10 @@ const teeKuntailmoitusHakutilannenäkymästä = async (
 
   // Tarkista että oppijat ovat ilmestyneet "kunnalle tehdyt ilmoitukset" -tauluun
   for (const oppija of oppijat) {
-    const ilmotuksetPath = hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href(
-      "/virkailija",
-      {
+    const ilmotuksetPath =
+      hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href("/virkailija", {
         organisaatioOid: tekijä.organisaatioOid,
-      }
-    )
+      })
     await goToLocation(ilmotuksetPath)
     await urlIsEventually(pathToUrl(ilmotuksetPath))
     await expectElementEventuallyVisible(kuntailmoitusRowSelector(oppija.oid))

@@ -361,12 +361,10 @@ export const teeKuntailmoitusHakutilannenäkymästä = async (
 
   // Tarkista että oppijat ovat ilmestyneet "kunnalle tehdyt ilmoitukset" -tauluun
   for (const oppija of oppijat) {
-    const ilmotuksetPath = hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href(
-      "/virkailija",
-      {
+    const ilmotuksetPath =
+      hakeutumisvalvonnanKunnalleIlmoitetutPathWithOrg.href("/virkailija", {
         organisaatioOid: tekijä.organisaatioOid,
-      }
-    )
+      })
     await goToLocation(ilmotuksetPath)
     await urlIsEventually(pathToUrl(ilmotuksetPath))
     await expectElementEventuallyVisible(kuntailmoitusRowSelector(oppija.oid))

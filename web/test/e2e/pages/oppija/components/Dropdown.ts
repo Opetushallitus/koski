@@ -31,6 +31,9 @@ export class Dropdown {
 
   async selectOptionByClick(optionName: string | RegExp) {
     await this.textInput.click()
-    await this.container.getByRole('listitem', { name: optionName }).click()
+    await this.container
+    // exact-parametri matchaa myös merkkijonot täsmällisesti.
+      .getByRole('listitem', { name: optionName, exact: true })
+      .click()
   }
 }

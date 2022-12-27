@@ -1,4 +1,4 @@
-import { RouteComponentProps } from "react-router"
+import { RouteComponentProps } from "react-router-dom"
 import { nonNull } from "../utils/arrays"
 import { fromEntries, isEmptyObject, isEntry } from "../utils/objects"
 import { Oid } from "./common"

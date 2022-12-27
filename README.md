@@ -82,6 +82,7 @@ tarpeen mukaan.
 - OpenSearch -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.12 -ohjelmointikieli ja -kääntäjä
+  - Node 16.19.0 -runtime
   - Scalatra-web-framework
   - [Slick](http://slick.typesafe.com/doc/3.0.1/index.html)-relaatiokantakirjasto
   - Flyway-migraatiotyökalu kannan skeeman rakentamiseen ja päivittämiseen kehityksessä ja tuotannossa

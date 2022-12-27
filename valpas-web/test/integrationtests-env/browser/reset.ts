@@ -22,8 +22,8 @@ export const loginAs = async (
     await reset(initialPath, forceReset, tarkastelupäivä)
     await expectElementEventuallyVisible("#username")
   }, longTimeout)
-  ;(await $("#username")).sendKeys(username)
-  ;(await $("#password")).sendKeys(username, Key.ENTER)
+  await (await $("#username")).sendKeys(username)
+  await (await $("#password")).sendKeys(username, Key.ENTER)
   await driver.wait(
     until.elementLocated(By.css("article.page:not(#login-app)")),
     defaultTimeout

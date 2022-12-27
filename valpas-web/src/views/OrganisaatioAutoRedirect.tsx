@@ -1,5 +1,5 @@
 import React, { useMemo } from "react"
-import { Redirect } from "react-router"
+import { Redirect } from "react-router-dom"
 import {
   getOrganisaatiot,
   useStoredOrgState,

@@ -1,6 +1,6 @@
 import bem from "bem-ts"
 import React, { useCallback, useMemo, useState } from "react"
-import { useHistory } from "react-router"
+import { useHistory } from "react-router-dom"
 import {
   Card,
   CardHeader,

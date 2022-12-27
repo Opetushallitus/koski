@@ -15,32 +15,32 @@ describe("IlmoitusForm", () => {
     createForm()
   })
 
-  test("Pakollisten kenttien täyttäminen enabloi submit-nappulan", () => {
+  test("Pakollisten kenttien täyttäminen enabloi submit-nappulan", async () => {
     const form = createForm()
     expectSubmitButtonIsEnabled(form, false)
-    selectOption(form, "ilmoituslomake__asuinkunta *", 1)
-    fillTextField(form, "ilmoituslomake__postinumero", "00150")
-    fillTextField(form, "ilmoituslomake__postitoimipaikka", "Helsinki")
-    fillTextField(form, "ilmoituslomake__katuosoite", "Katu 5")
-    fillTextField(form, "ilmoituslomake__puhelinnumero", "04012345678")
-    fillTextField(form, "ilmoituslomake__sähköposti", "valpas@gmail.com")
+    await selectOption(form, "ilmoituslomake__asuinkunta *", 1)
+    await fillTextField(form, "ilmoituslomake__postinumero", "00150")
+    await fillTextField(form, "ilmoituslomake__postitoimipaikka", "Helsinki")
+    await fillTextField(form, "ilmoituslomake__katuosoite", "Katu 5")
+    await fillTextField(form, "ilmoituslomake__puhelinnumero", "04012345678")
+    await fillTextField(form, "ilmoituslomake__sähköposti", "valpas@gmail.com")
     expectSubmitButtonIsEnabled(form, true)
 
-    fillTextField(form, "ilmoituslomake__postinumero", "00150")
-    fillTextField(form, "ilmoituslomake__postitoimipaikka", "Helsinki")
-    fillTextField(form, "ilmoituslomake__katuosoite", "Katu 5")
-    fillTextField(form, "ilmoituslomake__puhelinnumero", "04012345678")
-    fillTextField(form, "ilmoituslomake__sähköposti", "valpas@gmail.com")
+    await fillTextField(form, "ilmoituslomake__postinumero", "00150")
+    await fillTextField(form, "ilmoituslomake__postitoimipaikka", "Helsinki")
+    await fillTextField(form, "ilmoituslomake__katuosoite", "Katu 5")
+    await fillTextField(form, "ilmoituslomake__puhelinnumero", "04012345678")
+    await fillTextField(form, "ilmoituslomake__sähköposti", "valpas@gmail.com")
     expectSubmitButtonIsEnabled(form, true)
   })
 
-  test("Fokuksen siirtyminen pois pakollisesta täyttämättömästä kentästä tuo esille virheilmoituksen", () => {
+  test("Fokuksen siirtyminen pois pakollisesta täyttämättömästä kentästä tuo esille virheilmoituksen", async () => {
     const form = createForm()
 
     expectFieldError(form, "ilmoituslomake__asuinkunta *", null)
 
-    userEvent.click(form.getByText("ilmoituslomake__asuinkunta *"))
-    userEvent.click(form.getByText("ilmoituslomake__maa"))
+    await userEvent.click(form.getByText("ilmoituslomake__asuinkunta *"))
+    await userEvent.click(form.getByText("ilmoituslomake__maa"))
 
     expectFieldError(
       form,
@@ -55,15 +55,15 @@ describe("IlmoitusForm", () => {
 
     await submit(form)
 
-    selectOption(form, "ilmoituslomake__asuinkunta *", 1)
-    selectOption(form, "ilmoituslomake__yhteydenottokieli", 1)
-    selectOption(form, "ilmoituslomake__maa", 1)
-    fillTextField(form, "ilmoituslomake__postinumero", "00010")
-    fillTextField(form, "ilmoituslomake__postitoimipaikka", "Helsinki")
-    fillTextField(form, "ilmoituslomake__katuosoite", "Testitie 5")
-    fillTextField(form, "ilmoituslomake__puhelinnumero", "0401234567")
-    fillTextField(form, "ilmoituslomake__sähköposti", "testi@gmail.com")
-    toggleCheckbox(
+    await selectOption(form, "ilmoituslomake__asuinkunta *", 1)
+    await selectOption(form, "ilmoituslomake__yhteydenottokieli", 1)
+    await selectOption(form, "ilmoituslomake__maa", 1)
+    await fillTextField(form, "ilmoituslomake__postinumero", "00010")
+    await fillTextField(form, "ilmoituslomake__postitoimipaikka", "Helsinki")
+    await fillTextField(form, "ilmoituslomake__katuosoite", "Testitie 5")
+    await fillTextField(form, "ilmoituslomake__puhelinnumero", "0401234567")
+    await fillTextField(form, "ilmoituslomake__sähköposti", "testi@gmail.com")
+    await toggleCheckbox(
       form,
       "ilmoituslomake__hakenut_opiskelemaan_yhteishakujen_ulkopuolella"
     )
@@ -88,7 +88,7 @@ describe("IlmoitusForm", () => {
     const callback = jest.fn()
     const form = createForm(callback)
 
-    userEvent.click(form.getByText("1) Yhteishaku kevät 2021"))
+    await userEvent.click(form.getByText("1) Yhteishaku kevät 2021"))
     await submit(form, callback)
 
     expect(callback).toHaveBeenLastCalledWith({
@@ -141,31 +141,39 @@ const createForm = (
   )
 }
 
-const selectOption = (form: RenderResult, labelText: string, index: number) => {
+const selectOption = async (
+  form: RenderResult,
+  labelText: string,
+  index: number
+) => {
   const s = getInputContainer(form, labelText)
     ?.getElementsByTagName("select")
     .item(0)
-  userEvent.selectOptions(s!!, index.toString())
+  await userEvent.selectOptions(s!!, index.toString())
 }
 
-const fillTextField = (form: RenderResult, labelText: string, text: string) => {
+const fillTextField = async (
+  form: RenderResult,
+  labelText: string,
+  text: string
+) => {
   const f = getInputContainer(form, labelText)
     ?.getElementsByTagName("input")
     .item(0)
-  userEvent.type(f!!, text)
+  await userEvent.type(f!!, text)
 }
 
-const toggleCheckbox = (form: RenderResult, labelText: string) => {
+const toggleCheckbox = async (form: RenderResult, labelText: string) => {
   const c = form
     .getByText(labelText)
     .parentElement?.getElementsByTagName("input")
     .item(0)
-  userEvent.click(c!!)
+  await userEvent.click(c!!)
 }
 
 const submit = async (form: RenderResult, onSubmitMock?: jest.Mock) => {
   const numberOfCalls = fetchMock.mock.calls.length
-  act(() => userEvent.click(getSubmitButton(form)))
+  await act(async () => await userEvent.click(getSubmitButton(form)))
   if (onSubmitMock) {
     await waitFor(() => expect(onSubmitMock).toHaveBeenCalledTimes(1))
     expect(fetchMock).toHaveBeenCalledTimes(numberOfCalls + 1)

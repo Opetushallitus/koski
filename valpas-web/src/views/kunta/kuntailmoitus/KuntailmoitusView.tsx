@@ -2,7 +2,7 @@ import bem from "bem-ts"
 import * as A from "fp-ts/Array"
 import { pipe } from "fp-ts/lib/function"
 import React, { useMemo, useState } from "react"
-import { Redirect, RouteComponentProps, useHistory } from "react-router"
+import { Redirect, RouteComponentProps, useHistory } from "react-router-dom"
 import {
   fetchKuntailmoitukset,
   fetchKuntailmoituksetCache,

@@ -11,13 +11,12 @@ export const mainHeadingEquals = (expected: string) =>
 export const secondaryHeadingEquals = (expected: string) =>
   textEventuallyEquals(".oppijaview__secondaryheading", expected)
 
-const cardBodyEquals = (id: string, innerSelector?: string) => (
-  expected: string
-) =>
-  contentEventuallyEquals(
-    `#${id} .card__body ${innerSelector || ""}`.trim(),
-    expected
-  )
+const cardBodyEquals =
+  (id: string, innerSelector?: string) => (expected: string) =>
+    contentEventuallyEquals(
+      `#${id} .card__body ${innerSelector || ""}`.trim(),
+      expected
+    )
 export const oppivelvollisuustiedotEquals = cardBodyEquals(
   "oppivelvollisuustiedot",
   ".infotable"

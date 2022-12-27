@@ -479,10 +479,9 @@ const expectResultToBe = async (
   linkTo?: string,
   className: string = "oppijasearch"
 ) => {
-  const result = await $(
-    `.${className}__resultvalue`,
-    defaultTimeout
-  ).then((e) => e.getText())
+  const result = await $(`.${className}__resultvalue`, defaultTimeout).then(
+    (e) => e.getText()
+  )
   expect(result).toBe(text)
   if (linkTo) {
     const href = await $(`.${className}__resultlink`).then((e) =>

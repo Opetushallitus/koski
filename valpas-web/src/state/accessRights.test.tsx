@@ -1,7 +1,6 @@
 import { render, RenderResult } from "@testing-library/react"
 import React from "react"
-import { MemoryRouter, Switch } from "react-router"
-import { Route } from "react-router-dom"
+import { MemoryRouter, Route, Switch } from "react-router-dom"
 import {
   KäyttöoikeusroolitProvider,
   WithRequiresAccessRightsProps,
