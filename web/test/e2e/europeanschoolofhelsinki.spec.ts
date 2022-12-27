@@ -1,15 +1,15 @@
 import { test, expect } from './base'
+import { KoskiFixtures } from './fixtures/KoskiFixtures'
+import { getVirkailijaSession, kansalainen, virkailija } from './setup/auth'
 
 const ESH_OID = '1.2.246.562.24.00000000065'
 
 test.describe('European School of Helsinki', () => {
   test.describe('Virkailijan näkymä', () => {
-    test.beforeAll(async ({ fixtures }) => {
-      await fixtures.reset(false)
-    })
+    test.use({ storageState: virkailija('kalle') })
 
-    test.beforeEach(async ({ virkailijaLoginPage, eshOppijaPage }) => {
-      await virkailijaLoginPage.apiLoginAsUser('kalle', 'kalle')
+    test.beforeEach(async ({ fixtures, eshOppijaPage }) => {
+      await fixtures.reset(false)
       await eshOppijaPage.goto(ESH_OID)
     })
 
@@ -28,13 +28,12 @@ test.describe('European School of Helsinki', () => {
     })
 
     test.describe('Vuosiluokan poisto ja uudelleenluonti', () => {
-      test.setTimeout(120000)
-
       test.afterEach(async ({ fixtures }) => {
         await fixtures.reset()
       })
 
-      test('S3-vuosiluokka', async ({ customPage, eshOppijaPage }) => {
+      test('S3-vuosiluokka', async ({ page, eshOppijaPage }) => {
+        test.slow()
         const vuosiluokka = 'S3'
 
         await eshOppijaPage.poistaSuoritus(vuosiluokka)
@@ -43,7 +42,7 @@ test.describe('European School of Helsinki', () => {
 
         await eshOppijaPage.lisääVuosiluokanSuoritus(vuosiluokka, '1.8.2014')
 
-        const luokkaInput = customPage
+        const luokkaInput = page
           .getByTestId('luokka-value')
           .locator('input[type="text"]')
         await luokkaInput.click()
@@ -95,7 +94,8 @@ test.describe('European School of Helsinki', () => {
         await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
       })
 
-      test('S6-vuosiluokka', async ({ customPage, eshOppijaPage }) => {
+      test('S6-vuosiluokka', async ({ page, eshOppijaPage }) => {
+        test.slow()
         const vuosiluokka = 'S6'
 
         await eshOppijaPage.poistaSuoritus(vuosiluokka)
@@ -104,7 +104,7 @@ test.describe('European School of Helsinki', () => {
 
         await eshOppijaPage.lisääVuosiluokanSuoritus(vuosiluokka, '1.8.2017')
 
-        const luokkaInput = customPage
+        const luokkaInput = page
           .getByTestId('luokka-value')
           .locator('input[type="text"]')
         await luokkaInput.click()
@@ -170,7 +170,8 @@ test.describe('European School of Helsinki', () => {
         await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
       })
 
-      test('S7-vuosiluokka', async ({ customPage, eshOppijaPage }) => {
+      test('S7-vuosiluokka', async ({ page, eshOppijaPage }) => {
+        test.slow()
         const vuosiluokka = 'S7'
 
         await eshOppijaPage.poistaSuoritus(vuosiluokka)
@@ -179,7 +180,7 @@ test.describe('European School of Helsinki', () => {
 
         await eshOppijaPage.lisääVuosiluokanSuoritus(vuosiluokka, '1.8.2018')
 
-        const luokkaInput = customPage
+        const luokkaInput = page
           .getByTestId('luokka-value')
           .locator('input[type="text"]')
         await luokkaInput.click()
@@ -253,14 +254,15 @@ test.describe('European School of Helsinki', () => {
         await expect(eshOppijaPage.muokkausNäkymäBtn).toBeVisible()
       })
 
-      test('EB-tutkinto', async ({ customPage, eshOppijaPage }) => {
+      test('EB-tutkinto', async ({ page, eshOppijaPage }) => {
+        test.slow()
         await eshOppijaPage.poistaSuoritus('European Baccalaureate', 'S7')
 
         await eshOppijaPage.poistaViimeisinTila()
 
         await eshOppijaPage.lisääEBTutkinnonSuoritus()
 
-        const yleisarvosanaInput = customPage
+        const yleisarvosanaInput = page
           .getByTestId('yleisarvosana-value')
           .locator('input[type="text"]')
         await yleisarvosanaInput.click()
@@ -317,12 +319,14 @@ test.describe('European School of Helsinki', () => {
     test.describe('Primary-vuosiluokan suoritukset', () => {
       test.setTimeout(120000)
       const vuosiluokat = ['P1', 'P5']
-
+      test.beforeEach(async ({ eshOppijaPage }) => {
+        await eshOppijaPage.goto(ESH_OID)
+      })
       vuosiluokat.forEach((vuosiluokka) => {
         test(`Lisää ${vuosiluokka}-vuosiluokan suoritukseen uuden osasuorituksen, jolla ei ole prefillattuja alaosasuorituksia, ja sallii tallentamisen vain kun pakollisissa kentissä ond tiedot syötettynä`, async ({
-          customPage,
           eshOppijaPage
         }) => {
+          test.slow()
           await eshOppijaPage.clickSuoritusTabByLabel(vuosiluokka, 'first')
           await eshOppijaPage.avaaMuokkausnäkymä()
 
@@ -355,7 +359,7 @@ test.describe('European School of Helsinki', () => {
 
           await expect(eshOppijaPage.tallennusBtn).not.toBeEnabled()
 
-          await alaosasuoritus1.valitseArvosana(/^\+\+\+$/)
+          await alaosasuoritus1.valitseArvosana('+++')
 
           await expect(eshOppijaPage.tallennusBtn).toBeEnabled()
 
@@ -387,9 +391,9 @@ test.describe('European School of Helsinki', () => {
       })
 
       test(`Poista P3-vuosiluokalta kaikki osasuoritukset ja lisää prefillattu lapsioppimisalue ja prefillattu oppiaine`, async ({
-        customPage,
         eshOppijaPage
       }) => {
+        test.slow()
         const vuosiluokka = 'P3'
 
         await eshOppijaPage.clickSuoritusTabByLabel(vuosiluokka, 'first')
@@ -521,27 +525,32 @@ test.describe('European School of Helsinki', () => {
       })
     })
   })
+
   test.describe('Kansalaisen näkymä', () => {
-    test.beforeAll(async ({ fixtures }) => {
-      await fixtures.reset(false)
+    test.beforeAll(async ({ browser }, testInfo) => {
+      // Pakotetaan fixture-reset käyttämään virkailijan istuntoa
+      const virkailijaSessionPath = await getVirkailijaSession(
+        testInfo,
+        'kalle',
+        'kalle'
+      )
+      const ctx = await browser.newContext({
+        storageState: virkailijaSessionPath
+      })
+      const page = await ctx.newPage()
+      await new KoskiFixtures(page).reset()
     })
 
-    test.beforeEach(async ({ kansalainenLoginPage }) => {
-      await kansalainenLoginPage.loginWithHetu('050707A130V')
-    })
-
-    test('Sivulla ei saavutettavuusvirheitä', async ({
-      kansalainenPage,
-      makeAxeBuilder
-    }) => {
-      await kansalainenPage.goto()
-      const accessibilityScanResults = await makeAxeBuilder().analyze()
-      expect(accessibilityScanResults.violations).toEqual([])
-    })
-
-    test.afterEach(async ({ customPage }) => {
-      // Tämä pitää muistaa kutsua jokaisen testin päätteeksi, jotta saman kontekstin jakava sivuobjekti sulkeutuu oikein. Muuten selainikkunat jäävät päälle.
-      await customPage.close()
+    test.describe('Saavutettavuus', () => {
+      test.use({ storageState: kansalainen('050707A130V') })
+      test('Sivulla ei saavutettavuusvirheitä', async ({
+        kansalainenPage,
+        makeAxeBuilder
+      }) => {
+        await kansalainenPage.goto()
+        const accessibilityScanResults = await makeAxeBuilder().analyze()
+        expect(accessibilityScanResults.violations).toEqual([])
+      })
     })
   })
 })

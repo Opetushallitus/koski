@@ -1,5 +1,13 @@
 name: Koski Playwright E2E tests
 
+inputs:
+  shardIndex:
+    required: true
+    type: string
+  shardTotal:
+    required: true
+    type: string
+
 runs:
   using: "composite"
   steps:
@@ -8,6 +16,9 @@ runs:
     - name: "🌍 Setup Playwright"
       uses: ./.github/actions/setup_playwright
     - name: Run Playwright tests
+      env:
+        PLAYWRIGHT_SHARD_INDEX: ${{inputs.shardIndex}}
+        PLAYWRIGHT_SHARD_TOTAL: ${{inputs.shardTotal}}
       run: mvn test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
       shell: bash
     - uses: actions/upload-artifact@v3

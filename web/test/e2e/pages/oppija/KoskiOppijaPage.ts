@@ -18,9 +18,20 @@ export class KoskiOppijaPage {
   readonly mitätöiOpiskeluoikeusLink: Locator
   readonly peruutaOpiskeluoikeudenMitätöintiLink: Locator
   readonly vahvistaOpiskeluoikeudenMitätöintiButton: Locator
+  readonly opiskeluoikeudenTiedot: Locator // TODO: Refactor
+  readonly opiskeluoikeudetNav: Locator
+  readonly opiskeluoikeudetNavValittuVälilehti: Locator
+  readonly error: Locator
 
   constructor(page: Page) {
     this.page = page
+    // Opiskeluoikeudet nav
+    this.opiskeluoikeudetNav = page.getByTestId(
+      'opiskeluoikeustyypit-navigation'
+    )
+    this.opiskeluoikeudetNavValittuVälilehti = this.opiskeluoikeudetNav.locator(
+      "[data-selected='true']"
+    )
     this.oppijaHeading = page.getByTestId('oppija-heading')
     // Opiskeluoikeuden perustiedot
     this.hetu = this.oppijaHeading.getByTestId('oppija-henkilotunnus')
@@ -51,11 +62,22 @@ export class KoskiOppijaPage {
     this.vahvistaOpiskeluoikeudenMitätöintiButton = page.getByRole('link', {
       name: 'Vahvista mitätöinti, operaatiota ei voi peruuttaa'
     })
+    // TODO: Refaktoroi assertio
+    this.opiskeluoikeudenTiedot = page.locator('.opiskeluoikeuden-tiedot')
+    this.error = page.getByTestId('error')
   }
 
   async goto(oid: string) {
     await this.page.goto(`/koski/oppija/${oid}`)
     await expect(this.page).toHaveURL(/\/koski\/oppija\/1\.2\..*/)
+  }
+
+  async selectOpiskeluoikeus(tyyppi: string) {
+    const opiskeluoikeusTab = this.opiskeluoikeudetNav.getByTestId(
+      `opiskeluoikeustyyppi-${tyyppi}`
+    )
+    await opiskeluoikeusTab.click()
+    await expect(opiskeluoikeusTab).toHaveAttribute('data-selected', 'true')
   }
 
   async clickNthSuoritusTab(selector: number) {
@@ -126,6 +148,18 @@ export class KoskiOppijaPage {
   async tallenna() {
     await expect(this.tallennaBtn).not.toBeDisabled()
     await this.tallennaBtn.click()
+    await expect(async () => {
+      const isErrorVisible = await this.error.isVisible()
+      // Jos virhettä ei näy, niin edit-queryparametrin pitäisi häipyä.
+      // Tällöin voidaan assertoida sitä
+      if (!isErrorVisible) {
+        await expect(this.page).not.toHaveURL(/&edit=/, {
+          timeout: 1000
+        })
+      }
+    }).toPass({
+      timeout: 40000
+    })
   }
 
   async peruutaMuutokset() {

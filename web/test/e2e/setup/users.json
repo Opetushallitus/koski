@@ -1,0 +1,253 @@
+{
+  "data": [
+    {
+      "username": "kalle",
+      "password": "kalle",
+      "type": "virkailija"
+    },
+    {
+      "username": "pärre",
+      "password": "pärre",
+      "type": "virkailija"
+    },
+    {
+      "username": "omnia-palvelukäyttäjä",
+      "password": "omnia-palvelukäyttäjä",
+      "type": "virkailija"
+    },
+    {
+      "username": "omnia-katselija",
+      "password": "omnia-katselija",
+      "type": "virkailija"
+    },
+    {
+      "username": "omnia-tallentaja",
+      "password": "omnia-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "omnia-pää",
+      "password": "omnia-pää",
+      "type": "virkailija"
+    },
+    {
+      "username": "epäluotettava-tallentaja",
+      "password": "epäluotettava-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "mikko",
+      "password": "mikko",
+      "type": "virkailija"
+    },
+    {
+      "username": "pää",
+      "password": "pää",
+      "type": "virkailija"
+    },
+    {
+      "username": "viranomais",
+      "password": "viranomais",
+      "type": "virkailija"
+    },
+    {
+      "username": "stadin-palvelu",
+      "password": "stadin-palvelu",
+      "type": "virkailija"
+    },
+    {
+      "username": "stadin-esiopetus",
+      "password": "stadin-esiopetus",
+      "type": "virkailija"
+    },
+    {
+      "username": "tallentaja",
+      "password": "tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "katselija",
+      "password": "katselija",
+      "type": "virkailija"
+    },
+    {
+      "username": "esiopetus",
+      "password": "esiopetus",
+      "type": "virkailija"
+    },
+    {
+      "username": "jyvas-eiluottoa",
+      "password": "jyvas-eiluottoa",
+      "type": "virkailija"
+    },
+    {
+      "username": "stadinammattiopisto-admin",
+      "password": "stadinammattiopisto-admin",
+      "type": "virkailija"
+    },
+    {
+      "username": "stadin-vastuu",
+      "password": "stadin-vastuu",
+      "type": "virkailija"
+    },
+    {
+      "username": "stadin-pää",
+      "password": "stadin-pää",
+      "type": "virkailija"
+    },
+    {
+      "username": "varsinaissuomi-tallentaja",
+      "password": "varsinaissuomi-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "hki-tallentaja",
+      "password": "hki-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "tornio-tallentaja",
+      "password": "tornio-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "helsinki-tornio-tallentaja",
+      "password": "helsinki-tornio-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "pyhtaa-tallentaja",
+      "password": "pyhtaa-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "jyvaskyla-tallentaja",
+      "password": "jyvaskyla-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "touhola-tallentaja",
+      "password": "touhola-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "majakka-tallentaja",
+      "password": "majakka-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "palvelu2",
+      "password": "palvelu2",
+      "type": "virkailija"
+    },
+    {
+      "username": "Oili",
+      "password": "Oili",
+      "type": "virkailija"
+    },
+    {
+      "username": "Otto",
+      "password": "Otto",
+      "type": "virkailija"
+    },
+    {
+      "username": "Eeva",
+      "password": "Eeva",
+      "type": "virkailija"
+    },
+    {
+      "username": "Suppea",
+      "password": "Suppea",
+      "type": "virkailija"
+    },
+    {
+      "username": "Laaja",
+      "password": "Laaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "Pertti",
+      "password": "Pertti",
+      "type": "virkailija"
+    },
+    {
+      "username": "Teuvo",
+      "password": "Teuvo",
+      "type": "virkailija"
+    },
+    {
+      "username": "Kaisa",
+      "password": "Kaisa",
+      "type": "virkailija"
+    },
+    {
+      "username": "jyväs-palvelu",
+      "password": "jyväs-palvelu",
+      "type": "virkailija"
+    },
+    {
+      "username": "jyväs-vastuu",
+      "password": "jyväs-vastuu",
+      "type": "virkailija"
+    },
+    {
+      "username": "Lasse",
+      "password": "Lasse",
+      "type": "virkailija"
+    },
+    {
+      "username": "Antti",
+      "password": "Antti",
+      "type": "virkailija"
+    },
+    {
+      "username": "Suomi",
+      "password": "Suomi",
+      "type": "virkailija"
+    },
+    {
+      "username": "Teppo",
+      "password": "Teppo",
+      "type": "virkailija"
+    },
+    {
+      "username": "Ville",
+      "password": "Ville",
+      "type": "virkailija"
+    },
+    {
+      "username": "esiopetus-tallentaja",
+      "password": "esiopetus-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "username": "oppivelvollisuustieto-rajapinnan-kutsuja",
+      "password": "oppivelvollisuustieto-rajapinnan-kutsuja",
+      "type": "virkailija"
+    },
+    {
+      "username": "ylermi",
+      "password": "ylermi",
+      "type": "virkailija"
+    },
+    {
+      "username": "xss-hakkeri",
+      "password": "xss-hakkeri",
+      "type": "virkailija"
+    },
+    {
+      "username": "muks",
+      "password": "muks",
+      "type": "virkailija"
+    },
+    {
+      "username": "pohjoiskalotti-tallentaja",
+      "password": "pohjoiskalotti-tallentaja",
+      "type": "virkailija"
+    },
+    {
+      "hetu": "251006-8837",
+      "type": "kansalainen"
+    }
+  ]
+}

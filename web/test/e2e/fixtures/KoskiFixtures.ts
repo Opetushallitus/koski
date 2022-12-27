@@ -10,7 +10,17 @@ export class KoskiFixtures {
     const request = await this.page.request.post(
       `/koski/fixtures/reset?${params.toString()}`
     )
+    expect(await request.json()).not.toEqual([
+      {
+        key: 'forbidden.vainVirkailija',
+        message: 'Sallittu vain virkailija-käyttäjille'
+      }
+    ])
     expect(request.ok()).toBeTruthy()
-    await this.page.context().clearCookies()
+  }
+
+  async teardown() {
+    // TODO: Teardown voisi resetoida fixturet
+    await Promise.resolve(true)
   }
 }
