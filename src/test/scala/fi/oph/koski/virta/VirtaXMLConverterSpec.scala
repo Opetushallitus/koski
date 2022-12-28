@@ -203,7 +203,24 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
 
   }
 
+
+
   "Suoritusten konvertointi" - {
+    "Luokittelu" - {
+      "parsitaan koodistoviitteeksi" in {
+        val luokittelut = convertSuoritus(suoritusWithOrganisaatio(None))
+          .flatMap {
+            case x: KorkeakoulunOpintojaksonSuoritus => {
+              x.luokittelu
+            }
+            case _ => None
+          }
+        luokittelut.size should be (1)
+        luokittelut.head.head.koodistoUri should be("virtaopsuorluokittelu")
+        luokittelut.head.head.koodiarvo should be("1")
+      }
+    }
+
     "Lähdeorganisaatio" - {
       def covertSuoritusWithOrganisaatio(organisaatioXml: Option[Elem]) =
         convertSuoritus(suoritusWithOrganisaatio(organisaatioXml)).get
