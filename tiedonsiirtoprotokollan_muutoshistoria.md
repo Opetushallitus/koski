@@ -1,3 +1,6 @@
+## 30.12.2022
+- Virta-datasta luetaan opiskeluoikeuden sekä suorituksen luokittelutieto.
+
 ## 12.12.2022
 
 - Tietomalliin lisätty taiteen perusopetuksen opiskeluoikeus.
