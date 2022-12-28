@@ -348,7 +348,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       vahvistus = päivämääräVahvistus,
       suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.validate(Koodistokoodiviite(kieli.text.toUpperCase, "kieli"))),
       toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
-      osasuoritukset = optionalList(osasuoritukset)
+      osasuoritukset = optionalList(osasuoritukset),
+      luokittelu = suorituksenLuokittelu(suoritus)
     )
   }
 
@@ -372,6 +373,15 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       case (None, Some(opintoviikko)) => Some(LaajuusOpintoviikoissa(opintoviikko, laajuusOpintoviikoissa))
       case _ => None
     }
+  }
+
+  private def suorituksenLuokittelu(suoritus: Node): Option[List[Koodistokoodiviite]] = {
+    val luokittelu = (suoritus \ "Luokittelu")
+      .map(_.text).filter(s => s.nonEmpty && s.toInt > 0).toList
+      .map(l =>
+        Koodistokoodiviite(koodiarvo = l, koodistoUri = "virtaopsuorluokittelu")
+      )
+    if (luokittelu.isEmpty) None else Some(luokittelu)
   }
 
   private val opintojenlaajuusyksikkoOpintopistettä = koodistoViitePalvelu.validateRequired("opintojenlaajuusyksikko", "2")

@@ -99,6 +99,7 @@ case class KorkeakoulunOpintojaksonSuoritus(
   arviointi: Option[List[KorkeakoulunArviointi]],
   vahvistus: Option[Päivämäärävahvistus],
   suorituskieli: Option[Koodistokoodiviite],
+  @KoodistoUri("virtaopsuorluokittelu")
   luokittelu: Option[List[Koodistokoodiviite]],
   @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
   @Title("Sisältyvät opintojaksot")
