@@ -42,6 +42,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       <virta:Osuus>1.000000</virta:Osuus>
     </virta:Koulutusala>
     <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+    <virta:Luokittelu>1</virta:Luokittelu>
   </virta:Opintosuoritus>
 
   val virtaOpiskeluoikeudet: Elem = opiskeluoikeusWithOrganisaatio(None)
@@ -118,6 +119,16 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         opiskeluoikeudet.head.tyyppi.koodiarvo should be ("korkeakoulutus")
         opiskeluoikeudet.head.tyyppi.nimi.value should be (LocalizedString.sanitizeRequired(Map(("fi" -> "Korkeakoulutus"), ("sv" -> "Högskoleutbildning")), "Korkeakoulutus"))
       }
+    }
+
+    "Luokittelu" - {
+        "parsitaan koodistoviitteeksi" in {
+          val luokittelut = opiskeluoikeudet
+            .flatMap(_.luokittelu)
+          luokittelut.size should be (1)
+          luokittelut.head.head.koodistoUri should be ("virtaopiskeluoikeudenluokittelu")
+          luokittelut.head.head.koodiarvo should be ("3")
+        }
     }
 
     "Lähdeorganisaatio" - {
