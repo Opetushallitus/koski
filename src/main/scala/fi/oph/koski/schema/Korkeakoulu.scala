@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.schema.LocalizedString.unlocalized
 
 import java.time.LocalDate
@@ -24,7 +25,9 @@ case class KorkeakoulunOpiskeluoikeus(
   tyyppi: Koodistokoodiviite,
   @SyntheticProperty
   virtaVirheet: List[VirtaVirhe] = List.empty,
-  synteettinen: Boolean = false
+  synteettinen: Boolean = false,
+  @KoodistoUri("virtaopiskeluoikeudenluokittelu")
+  luokittelu: Option[List[Koodistokoodiviite]]
 ) extends Opiskeluoikeus with Equals {
   override def canEqual(that: Any): Boolean = that.isInstanceOf[KorkeakoulunOpiskeluoikeus]
   override def equals(that: Any): Boolean = that match {
@@ -96,6 +99,7 @@ case class KorkeakoulunOpintojaksonSuoritus(
   arviointi: Option[List[KorkeakoulunArviointi]],
   vahvistus: Option[Päivämäärävahvistus],
   suorituskieli: Option[Koodistokoodiviite],
+  luokittelu: Option[List[Koodistokoodiviite]],
   @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
   @Title("Sisältyvät opintojaksot")
   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None,

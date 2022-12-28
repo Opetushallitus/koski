@@ -30,6 +30,14 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val opiskeluoikeusNodes: List[Node] = (virtaXml \\ "Opiskeluoikeus").toList
     val ooTyyppi: Koodistokoodiviite = koodistoViitePalvelu.validateRequired(OpiskeluoikeudenTyyppi.korkeakoulutus)
 
+    def opiskeluoikeudenLuokittelu(opiskeluoikeusNode: Node): Option[List[Koodistokoodiviite]] = {
+      val viitteet: List[Koodistokoodiviite] = (opiskeluoikeusNode \ "Jakso")
+        .map(j => j \ "Luokittelu")
+        .map(_.text).filter(s => s.nonEmpty && s.toInt > 0).toList
+        .map(i => Koodistokoodiviite(koodiarvo = i, koodistoUri = "virtaopiskeluoikeudenluokittelu"))
+      if (viitteet.isEmpty) None else Some(viitteet)
+    }
+
     val (orphans, opiskeluoikeudet) = opiskeluoikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
       virheet = ListBuffer[VirtaVirhe]()
       val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList, None))
@@ -68,7 +76,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           järjestäväOrganisaatio = järjestäväOrganisaatio(opiskeluoikeusNode, oppilaitoksenNimiPäivä),
           maksettavatLukuvuosimaksut = Some(lukuvuosimaksut)
         )),
-        virtaVirheet = virheet.toList
+        virtaVirheet = virheet.toList,
+        luokittelu = opiskeluoikeudenLuokittelu(opiskeluoikeusNode)
       )
 
       (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
@@ -87,7 +96,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         tila = KorkeakoulunOpiskeluoikeudenTila(Nil),
         tyyppi = ooTyyppi,
         virtaVirheet = virheet.toList,
-        synteettinen = true
+        synteettinen = true,
+        luokittelu = None
       )
     }
 
