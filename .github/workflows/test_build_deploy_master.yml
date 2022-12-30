@@ -110,7 +110,7 @@ jobs:
       - name: Get task definition ARN
         id: get-taskdef-arn
         run: |
-          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')"
+          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
         run: |
@@ -142,7 +142,7 @@ jobs:
       - name: Get raportointikanta-loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn
         run: |
-          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')"
+          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
         run: |
@@ -201,7 +201,7 @@ jobs:
       - name: Get task definition ARN
         id: get-taskdef-arn
         run: |
-          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')"
+          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
         run: |
@@ -233,7 +233,7 @@ jobs:
       - name: Get raportointikanta-loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn
         run: |
-          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')"
+          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
         run: |
@@ -292,7 +292,7 @@ jobs:
       - name: Get task definition ARN
         id: get-taskdef-arn
         run: |
-          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')"
+          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
         run: |
@@ -324,7 +324,7 @@ jobs:
       - name: Get raportointikanta-loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn
         run: |
-          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')"
+          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
         run: |

@@ -52,7 +52,7 @@ jobs:
           IMAGE_TAG: ${{ github.event.inputs.commithash  }}
         id: check-image
         run: |
-          echo "::set-output name=image-exists::$(docker manifest inspect $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG > /dev/null 2>&1 ; echo $?)"
+          echo "image-exists=$(docker manifest inspect $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG > /dev/null 2>&1 ; echo $?)" >> $GITHUB_OUTPUT
 
       - name: Set up SSH agent
         if: steps.check-image.outputs.image-exists != '0'
@@ -119,7 +119,7 @@ jobs:
       - name: Get task definition ARN
         id: get-taskdef-arn
         run: |
-          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')"
+          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
         run: |
@@ -151,7 +151,7 @@ jobs:
       - name: Get raportointikanta-loader loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn
         run: |
-          echo "::set-output name=taskdef-arn::$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')"
+          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
 
       - name: Get task definition skeleton
         run: |
