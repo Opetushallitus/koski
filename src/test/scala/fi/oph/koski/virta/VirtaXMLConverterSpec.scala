@@ -24,7 +24,11 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
   private val organisaatioVanhallaNimelläPvm = LocalDate.of(2010, 10, 10)
 
   def baseSuoritus: Elem = suoritusWithOrganisaatio(None)
-  def suoritusWithOrganisaatio(organisaatio: Option[Elem], suoritusPvm: String = "2014-05-30"): Elem = <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="Kul-49.3400" avain="1114935190">
+  def suoritusWithOrganisaatio(
+    organisaatio: Option[Elem],
+    suoritusPvm: String = "2014-05-30",
+    luokittelu: Option[Int] = None
+  ): Elem = <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="Kul-49.3400" avain="1114935190">
     <virta:SuoritusPvm>{suoritusPvm}</virta:SuoritusPvm>
     <virta:Laajuus>
       <virta:Opintopiste>5.000000</virta:Opintopiste>
@@ -42,12 +46,21 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
       <virta:Osuus>1.000000</virta:Osuus>
     </virta:Koulutusala>
     <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
-    <virta:Luokittelu>1</virta:Luokittelu>
+    {
+      if (luokittelu.isDefined) {
+        <virta:Luokittelu>{luokittelu.get}</virta:Luokittelu>
+      }
+    }
   </virta:Opintosuoritus>
 
   val virtaOpiskeluoikeudet: Elem = opiskeluoikeusWithOrganisaatio(None)
 
-  def opiskeluoikeusWithOrganisaatio(organisaatio: Option[Elem], tilallinen: Boolean = true, päättynyt: Boolean = false): Elem = <virta:Opiskeluoikeudet>
+  def opiskeluoikeusWithOrganisaatio(
+    organisaatio: Option[Elem],
+    tilallinen: Boolean = true,
+    päättynyt: Boolean = false,
+    luokittelu: Option[Int] = None
+  ): Elem = <virta:Opiskeluoikeudet>
     <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O1">
       <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
       {
@@ -75,7 +88,11 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         <virta:Koulutuskunta>091</virta:Koulutuskunta>
         <virta:Koulutuskieli>en</virta:Koulutuskieli>
         <virta:Rahoituslahde>1</virta:Rahoituslahde>
-        <virta:Luokittelu>3</virta:Luokittelu>
+        {
+          if (luokittelu.isDefined) {
+            <virta:Luokittelu>{luokittelu.get}</virta:Luokittelu>
+          }
+        }
       </virta:Jakso>
       <virta:Laajuus>
         <virta:Opintopiste>240</virta:Opintopiste>
@@ -122,13 +139,18 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     }
 
     "Luokittelu" - {
-        "parsitaan koodistoviitteeksi" in {
-          val luokittelut = opiskeluoikeudet
-            .flatMap(_.luokittelu)
-          luokittelut.size should be (1)
-          luokittelut.head.head.koodistoUri should be ("virtaopiskeluoikeudenluokittelu")
-          luokittelut.head.head.koodiarvo should be ("3")
-        }
+      "parsitaan koodistoviitteeksi jos olemassa" in {
+        val opiskeluoikeudetLuokittelulla = converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, luokittelu=Some(3)))
+        val luokittelut = opiskeluoikeudetLuokittelulla.flatMap(_.luokittelu)
+        luokittelut.size should be (1)
+        luokittelut.head.head.koodistoUri should be ("virtaopiskeluoikeudenluokittelu")
+        luokittelut.head.head.koodiarvo should be ("3")
+      }
+      "on None jos ei olemassa" in {
+        val opiskeluoikeudet = converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, luokittelu=None))
+        val luokittelut = opiskeluoikeudet.flatMap(_.luokittelu)
+        luokittelut should be (empty)
+      }
     }
 
     "Lähdeorganisaatio" - {
@@ -208,7 +230,7 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
   "Suoritusten konvertointi" - {
     "Luokittelu" - {
       "parsitaan koodistoviitteeksi" in {
-        val luokittelut = convertSuoritus(suoritusWithOrganisaatio(None))
+        val luokittelut = convertSuoritus(suoritusWithOrganisaatio(None, luokittelu=Some(1)))
           .flatMap {
             case x: KorkeakoulunOpintojaksonSuoritus => {
               x.luokittelu
@@ -218,6 +240,16 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         luokittelut.size should be (1)
         luokittelut.head.head.koodistoUri should be("virtaopsuorluokittelu")
         luokittelut.head.head.koodiarvo should be("1")
+      }
+      "on None jos ei löydy XML:stä" in {
+        val luokittelut = convertSuoritus(suoritusWithOrganisaatio(None, luokittelu=None))
+          .flatMap {
+            case x: KorkeakoulunOpintojaksonSuoritus => {
+              x.luokittelu
+            }
+            case _ => None
+          }
+        luokittelut should be (empty)
       }
     }
 
