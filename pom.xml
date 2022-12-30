@@ -324,7 +324,7 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-sts</artifactId>
-      <version>1.12.352</version>
+      <version>1.12.359</version>
     </dependency>
     <!-- test deps -->
     <dependency>
