@@ -21,6 +21,8 @@ import scala.collection.mutable.{HashMap, HashSet, ListBuffer}
 case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository) extends Logging {
   var virheet: ListBuffer[VirtaVirhe] = ListBuffer[VirtaVirhe]()
 
+  def noneIfEmpty[T](a: List[T]): Option[List[T]] = if (a.isEmpty) None else Some(a)
+
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     import fi.oph.koski.util.DateOrdering._
 
@@ -29,6 +31,10 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
     val opiskeluoikeusNodes: List[Node] = (virtaXml \\ "Opiskeluoikeus").toList
     val ooTyyppi: Koodistokoodiviite = koodistoViitePalvelu.validateRequired(OpiskeluoikeudenTyyppi.korkeakoulutus)
+
+    def opiskeluoikeudenLuokittelu(opiskeluoikeusNode: Node): List[Koodistokoodiviite] = (opiskeluoikeusNode \ "Jakso")
+        .flatMap(v => parseLuokittelu(v, "virtaopiskeluoikeudenluokittelu"))
+        .toList
 
     val (orphans, opiskeluoikeudet) = opiskeluoikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
       virheet = ListBuffer[VirtaVirhe]()
@@ -68,7 +74,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           järjestäväOrganisaatio = järjestäväOrganisaatio(opiskeluoikeusNode, oppilaitoksenNimiPäivä),
           maksettavatLukuvuosimaksut = Some(lukuvuosimaksut)
         )),
-        virtaVirheet = virheet.toList
+        virtaVirheet = virheet.toList,
+        luokittelu = noneIfEmpty(opiskeluoikeudenLuokittelu(opiskeluoikeusNode))
       )
 
       (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
@@ -87,7 +94,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         tila = KorkeakoulunOpiskeluoikeudenTila(Nil),
         tyyppi = ooTyyppi,
         virtaVirheet = virheet.toList,
-        synteettinen = true
+        synteettinen = true,
+        luokittelu = None
       )
     }
 
@@ -338,9 +346,16 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       vahvistus = päivämääräVahvistus,
       suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.validate(Koodistokoodiviite(kieli.text.toUpperCase, "kieli"))),
       toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
-      osasuoritukset = optionalList(osasuoritukset)
+      osasuoritukset = optionalList(osasuoritukset),
+      luokittelu = noneIfEmpty(parseLuokittelu(suoritus, "virtaopsuorluokittelu"))
     )
   }
+
+  private def parseLuokittelu(parentNode: Node, koodistoUri: String): List[Koodistokoodiviite] = (parentNode \ "Luokittelu")
+      .map(_.text).filter(s => s.nonEmpty && s.toInt > 0).toList
+      .map(l =>
+        Koodistokoodiviite(koodiarvo = l, koodistoUri = koodistoUri)
+      )
 
   private def laajuudetYhteensä(osasuoritukset: List[KorkeakoulunOpintojaksonSuoritus]) = {
     val laajuudet = osasuoritukset.flatMap(_.koulutusmoduuli.laajuus).map(_.arvo.toDouble).map(BigDecimal(_))
