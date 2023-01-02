@@ -167,6 +167,24 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetib_cla",
+  "koodiArvo" : "CLA",
+  "metadata" : [ {
+    "nimi" : "Classical languages",
+    "lyhytNimi" : "Classical languages",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Classical languages",
+    "lyhytNimi" : "Classical languages",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Classical languages",
+    "lyhytNimi" : "Classical languages",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetib_cs",
   "koodiArvo" : "CS",
   "metadata" : [ {
@@ -192,6 +210,24 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Dance",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetib_des",
+  "koodiArvo" : "DES",
+  "metadata" : [ {
+    "nimi" : "Design technology",
+    "lyhytNimi" : "Design technology",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Design technology",
+    "lyhytNimi" : "Design technology",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Design technology",
+    "lyhytNimi" : "Design technology",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -312,6 +348,42 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetib_inf",
+  "koodiArvo" : "INF",
+  "metadata" : [ {
+    "nimi" : "Information technology in a global society",
+    "lyhytNimi" : "Information technology in a global society",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Information technology in a global society",
+    "lyhytNimi" : "Information technology in a global society",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Information technology in a global society",
+    "lyhytNimi" : "Information technology in a global society",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetib_lit",
+  "koodiArvo" : "LIT",
+  "metadata" : [ {
+    "nimi" : "Literature and performance",
+    "lyhytNimi" : "Literature and performance",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Literature and performance",
+    "lyhytNimi" : "Literature and performance",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Literature and performance",
+    "lyhytNimi" : "Literature and performance",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetib_mat",
   "koodiArvo" : "MAT",
   "metadata" : [ {
@@ -328,6 +400,42 @@
     "nimi" : "Mathematics",
     "lyhytNimi" : "",
     "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetib_mataa",
+  "koodiArvo" : "MATAA",
+  "metadata" : [ {
+    "nimi" : "Mathematics: analysis and approaches",
+    "lyhytNimi" : "Mathematics: analysis and approaches",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Mathematics: analysis and approaches",
+    "lyhytNimi" : "Mathematics: analysis and approaches",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Mathematics: analysis and approaches",
+    "lyhytNimi" : "Mathematics: analysis and approaches",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetib_matai",
+  "koodiArvo" : "MATAI",
+  "metadata" : [ {
+    "nimi" : "Mathematics: applications and interpretation",
+    "lyhytNimi" : "Mathematics: applications and interpretation",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Mathematics: applications and interpretation",
+    "lyhytNimi" : "Mathematics: applications and interpretation",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Mathematics: applications and interpretation",
+    "lyhytNimi" : "Mathematics: applications and interpretation",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -511,6 +619,24 @@
     "nimi" : "Social and cultural anthropology",
     "lyhytNimi" : "",
     "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetib_spo",
+  "koodiArvo" : "SPO",
+  "metadata" : [ {
+    "nimi" : "Sports, exercise and health science",
+    "lyhytNimi" : "Sports, exercise and health science",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Sports, exercise and health science",
+    "lyhytNimi" : "Sports, exercise and health science",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Sports, exercise and health science",
+    "lyhytNimi" : "Sports, exercise and health science",
     "kieli" : "EN"
   } ],
   "versio" : 1,

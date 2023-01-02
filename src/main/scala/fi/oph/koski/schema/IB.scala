@@ -238,6 +238,7 @@ trait KieliOppiaineIB extends IBOppiaine with Kieliaine {
   @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B")
   @KoodistoKoodiarvo("AB")
+  @KoodistoKoodiarvo("CLA")
   def tunniste: Koodistokoodiviite
   @KoodistoUri("kielivalikoima")
   def kieli: Koodistokoodiviite
@@ -267,6 +268,12 @@ trait MuuOppiaineIB extends IBOppiaine {
   @KoodistoKoodiarvo("THE")
   @KoodistoKoodiarvo("VA")
   @KoodistoKoodiarvo("CS")
+  @KoodistoKoodiarvo("LIT")
+  @KoodistoKoodiarvo("INF")
+  @KoodistoKoodiarvo("DES")
+  @KoodistoKoodiarvo("SPO")
+  @KoodistoKoodiarvo("MATAA")
+  @KoodistoKoodiarvo("MATAI")
   def tunniste: Koodistokoodiviite
 }
 
