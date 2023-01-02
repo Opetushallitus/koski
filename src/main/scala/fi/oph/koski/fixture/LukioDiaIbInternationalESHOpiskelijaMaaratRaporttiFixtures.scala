@@ -9,7 +9,7 @@ import fi.oph.koski.schema._
 
 object LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiFixtures {
 
-  val date = LocalDate.now().minusYears(1)
+  val date = LocalDate.now().withYear(2021)
 
   val lukionOppimaaraNuorten = LukionOpiskeluoikeus(
       tila = LukionOpiskeluoikeudenTila(
