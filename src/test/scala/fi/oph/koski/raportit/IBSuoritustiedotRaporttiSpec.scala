@@ -26,7 +26,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
   private lazy val raporttiRivitIB = raporttiBuilder.build(
       ressunLukio,
       localDate(2012, 1, 1),
-      localDate(2022, 1, 1),
+      localDate(2099, 1, 1),
       false,
       IBTutkinnonSuoritusRaportti
     )(session(defaultUser)).map(sheet => zipRowsWithColumTitles(sheet))
@@ -34,7 +34,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
   private lazy val raporttiRivitPreIB = raporttiBuilder.build(
       ressunLukio,
       localDate(2012, 1, 1),
-      localDate(2022, 1, 1),
+      localDate(2099, 1, 1),
       false,
       PreIBSuoritusRaportti
     )(session(defaultUser)).map(sheet => zipRowsWithColumTitles(sheet))
