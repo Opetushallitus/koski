@@ -2,10 +2,12 @@ package fi.oph.koski.raportit.tuva
 
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.raportit.{Column, DynamicDataSheet}
+import fi.oph.koski.raportit.AmmatillinenRaporttiUtils.aikajaksoPäivät
+import fi.oph.koski.raportit.{AmmatillinenRaporttiUtils, Column, DynamicDataSheet}
 import fi.oph.koski.raportit.YleissivistäväUtils.{lengthInDaysInDateRange, rahoitusmuodotOk, removeContinuousSameTila}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.{Aikajakso, OpiskeluoikeudenTyyppi, Organisaatio}
 
 import java.time.LocalDate
 
@@ -33,6 +35,10 @@ case class TuvaSuoritustiedotRow(
   järjestämislupaNimi: Option[String],
   maksuttomuus: Option[String],
   oikeuttaMaksuttomuuteenPidennetty: Option[String],
+  opiskelijavuosikertymä: Double,
+  läsnäTaiValmistunutPäivät: Int,
+  opiskelijavuoteenKuuluvatLomaPäivät: Int,
+  muutLomaPäivät: Int,
   majoitusPäivät: Option[Int],
   majoitusetuPäivät: Option[Int],
   sisäoppilaitosmainenMajoitusPäivät: Option[Int],
@@ -83,6 +89,10 @@ case class TuvaSuoritustiedotRow(
     oikeuttaMaksuttomuuteenPidennetty
   )
   lazy val ammatillisenKentät: Seq[Any] = yhteisetKentät ++ Seq(
+    opiskelijavuosikertymä,
+    läsnäTaiValmistunutPäivät,
+    opiskelijavuoteenKuuluvatLomaPäivät,
+    muutLomaPäivät,
     majoitusPäivät,
     sisäoppilaitosmainenMajoitusPäivät,
     vaativanErityisenTuenYhteydessäJärjestettäväMajoitusPäivät,
@@ -177,6 +187,10 @@ object TuvaSuoritustiedotRaportti {
       Column(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty"), comment = Some(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty-comment")))
     )
   lazy val ammatillisenSarakkeet = Seq(
+      Column(t.get("raportti-excel-kolumni-opiskelijavuosikertymä")),
+      Column(t.get("raportti-excel-kolumni-läsnäTaiValmistunutPäivät")),
+      Column(t.get("raportti-excel-kolumni-opiskelijavuoteenKuuluvatLomaPäivät")),
+      Column(t.get("raportti-excel-kolumni-muutLomaPäivät")),
       Column(t.get("raportti-excel-kolumni-majoitusPäivät")),
       Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitusPäivät"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
       Column(t.get("raportti-excel-kolumni-vaativanErityisenTuenYhteydessäJärjestettäväMajoitusPäivät")),
@@ -234,6 +248,7 @@ object TuvaSuoritustiedotRaportti {
       case _ => None
     }
     val päätasonSuoritus = päätasonSuoritukset.head // Täsmälleen yksi päätason suoritus jokaisella TUVA opiskeluoikeudella
+    val (opiskelijavuoteenKuuluvatLomaPäivät, muutLomaPäivät) = AmmatillinenRaporttiUtils.lomaPäivät(aikajaksot)
 
     TuvaSuoritustiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -259,6 +274,10 @@ object TuvaSuoritustiedotRaportti {
       järjestämislupaNimi = JsonSerializer.extract[Option[LocalizedString]](opiskeluoikeus.data \ "järjestämislupa" \ "nimi").map(_.get(t.language)),
       maksuttomuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
       oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
+      opiskelijavuosikertymä = AmmatillinenRaporttiUtils.opiskelijavuosikertymä(aikajaksot),
+      läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => (a.tila == "lasna" || a.tila == "valmistunut")),
+      opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,
+      muutLomaPäivät = muutLomaPäivät,
       majoitusPäivät = Some(aikajaksoPäivät(aikajaksot, _.majoitus)),
       majoitusetuPäivät = Some(aikajaksoPäivät(aikajaksot, _.majoitusetu)),
       sisäoppilaitosmainenMajoitusPäivät = Some(aikajaksoPäivät(aikajaksot, _.sisäoppilaitosmainenMajoitus)),
@@ -271,7 +290,7 @@ object TuvaSuoritustiedotRaportti {
       vammainenPäivät = Some(aikajaksoPäivät(aikajaksot, _.vammainen)),
       vaikeastiVammainenPäivät = Some(aikajaksoPäivät(aikajaksot, _.vaikeastiVammainen)),
       vammainenJaAvustajaPäivät = Some(aikajaksoPäivät(aikajaksot, _.vammainenJaAvustaja)),
-      osaAikaisuusProsentit = Some(distinctAdjacent(aikajaksot.map(_.osaAikaisuus)).mkString(",")).filter(_ != "100"),
+      osaAikaisuusProsentit = Some(AmmatillinenRaporttiUtils.distinctAdjacent(aikajaksot.map(_.osaAikaisuus)).mkString(",")).filter(_ != "100"),
       osaAikaisuusKeskimäärin = Some(aikajaksot.map(a => a.osaAikaisuus * a.lengthInDays).sum.toDouble / aikajaksot.map(_.lengthInDays).sum),
       vankilaopetuksessaPäivät = Some(aikajaksoPäivät(aikajaksot, _.vankilaopetuksessa)),
       koulutusvienti = lisätiedot.flatMap {
@@ -281,16 +300,4 @@ object TuvaSuoritustiedotRaportti {
       pidennettyPäättymispäivä = lisätiedot.flatMap(_.pidennettyPäättymispäivä)
     )
   }
-
-  private def distinctAdjacent[A](input: Seq[A]): Seq[A] = {
-    if (input.size < 2) {
-      input
-    } else {
-      val rest = input.dropWhile(_ == input.head)
-      input.head +: distinctAdjacent(rest)
-    }
-  }
-
-  private def aikajaksoPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow], f: ROpiskeluoikeusAikajaksoRow => Boolean): Int =
-    aikajaksot.map(aikajakso => if(f(aikajakso)) aikajakso.lengthInDays else 0).sum
 }

@@ -4,8 +4,11 @@ import java.sql.Date
 import java.time.LocalDate
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RPäätasonSuoritusRow}
+import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, ROsasuoritusRow, RPäätasonSuoritusRow}
 import fi.oph.koski.schema._
+
+import java.time.temporal.ChronoUnit
+import scala.math.{max, min}
 
 object AmmatillinenRaporttiUtils {
   def extractOsaamisalatAikavalilta(päätasonSuoritus: RPäätasonSuoritusRow, alku: LocalDate, loppu: LocalDate) = {
@@ -130,4 +133,45 @@ object AmmatillinenRaporttiUtils {
       s"${suoritukset.size}"
     }
   }
+
+  def distinctAdjacent[A](input: Seq[A]): Seq[A] = {
+    if (input.size < 2) {
+      input
+    } else {
+      val rest = input.dropWhile(_ == input.head)
+      input.head +: distinctAdjacent(rest)
+    }
+  }
+
+  def aikajaksoPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow], f: ROpiskeluoikeusAikajaksoRow => Boolean): Int =
+    aikajaksot.map(aikajakso => if(f(aikajakso)) aikajakso.lengthInDays else 0).sum
+
+  def lomaPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): (Int, Int) = {
+    aikajaksot.map(lomaPäivät).reduce((a, b) => (a._1 + b._1, a._2 + b._2))
+  }
+
+  private def lomaPäivät(j: ROpiskeluoikeusAikajaksoRow): (Int, Int) = {
+    // "opiskelijavuoteen kuuluviksi päiviksi ei lueta koulutuksen järjestäjän päättämää yhtäjaksoisesti vähintään
+    // neljä viikkoa kestävää lomajaksoa siltä osin, kuin loma-aika ylittää neljä viikkoa."
+    // https://www.finlex.fi/fi/laki/alkup/2017/20170682)
+    val NeljäViikkoa = 28
+    if (j.tila != "loma") {
+      (0, 0)
+    } else {
+      val lomapäiviäKäytettyEnnenTätäAikajaksoa = ChronoUnit.DAYS.between(j.tilaAlkanut.toLocalDate, j.alku.toLocalDate).toInt
+      val päiviäTässäJaksossa = j.lengthInDays
+      val opiskelijavuoteenKuuluvatLomaPäivät = max(min(päiviäTässäJaksossa, NeljäViikkoa - lomapäiviäKäytettyEnnenTätäAikajaksoa), 0)
+      (opiskelijavuoteenKuuluvatLomaPäivät, päiviäTässäJaksossa - opiskelijavuoteenKuuluvatLomaPäivät)
+    }
+  }
+
+  def opiskelijavuosikertymä(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Double = {
+    aikajaksot.map(j => (j.tila match {
+      case "loma" => lomaPäivät(j)._1 * (j.osaAikaisuus.toDouble / 100.0)
+      case "lasna" => j.lengthInDays * (j.osaAikaisuus.toDouble / 100.0)
+      case "valmistunut" => j.lengthInDays // valmistumispäivä lasketaan aina 100% läsnäolopäiväksi
+      case _ => 0
+    })).sum
+  }
+
 }

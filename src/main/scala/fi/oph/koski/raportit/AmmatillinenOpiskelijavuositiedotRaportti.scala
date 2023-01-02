@@ -1,14 +1,12 @@
 package fi.oph.koski.raportit
 
-import java.time.temporal.ChronoUnit
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
+import fi.oph.koski.raportit.AmmatillinenRaporttiUtils.aikajaksoPäivät
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.{Aikajakso, AmmatillisenOpiskeluoikeudenLisätiedot, LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio, Osaamisalajakso}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
-import scala.math.{min, max}
 
 case class OpiskelijavuositiedotRow(
   opiskeluoikeusOid: String,
@@ -162,7 +160,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       .distinct
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val arvioituPäättymispäivä = JsonSerializer.validateAndExtract[Option[LocalDate]](opiskeluoikeus.data \ "arvioituPäättymispäivä").toOption.flatten
-    val (opiskelijavuoteenKuuluvatLomaPäivät, muutLomaPäivät) = lomaPäivät(aikajaksot)
+    val (opiskelijavuoteenKuuluvatLomaPäivät, muutLomaPäivät) = AmmatillinenRaporttiUtils.lomaPäivät(aikajaksot)
     val (koulutusmoduulit, päätasonSuoritustenNimet) =
       päätasonSuoritukset
         .sortBy(_.koulutusmoduuliKoodiarvo)
@@ -204,7 +202,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       opiskeluoikeusPäättynyt = aikajaksot.last.opiskeluoikeusPäättynyt,
       päättymispäivä = aikajaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku.toLocalDate), // toimii koska päättävä jakso on aina yhden päivän mittainen, jolloin truncateToDates ei muuta sen alkupäivää
       arvioituPäättymispäivä = arvioituPäättymispäivä,
-      opiskelijavuosikertymä = opiskelijavuosikertymä(aikajaksot),
+      opiskelijavuosikertymä = AmmatillinenRaporttiUtils.opiskelijavuosikertymä(aikajaksot),
       läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => (a.tila == "lasna" || a.tila == "valmistunut")),
       opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,
       muutLomaPäivät = muutLomaPäivät,
@@ -216,7 +214,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       hojksPäivät = aikajaksoPäivät(aikajaksot, _.hojks),
       vaikeastiVammainenPäivät = aikajaksoPäivät(aikajaksot, _.vaikeastiVammainen),
       vammainenJaAvustajaPäivät = aikajaksoPäivät(aikajaksot, _.vammainenJaAvustaja),
-      osaAikaisuusProsentit = Some(distinctAdjacent(aikajaksot.map(_.osaAikaisuus)).mkString(",")).filter(_ != "100"),
+      osaAikaisuusProsentit = Some(AmmatillinenRaporttiUtils.distinctAdjacent(aikajaksot.map(_.osaAikaisuus)).mkString(",")).filter(_ != "100"),
       osaAikaisuusKeskimäärin = aikajaksot.map(a => a.osaAikaisuus * a.lengthInDays).sum.toDouble / aikajaksot.map(_.lengthInDays).sum,
       opiskeluvalmiuksiaTukevatOpinnotPäivät = aikajaksoPäivät(aikajaksot, _.opiskeluvalmiuksiaTukevatOpinnot),
       vankilaopetuksessaPäivät = aikajaksoPäivät(aikajaksot, _.vankilaopetuksessa),
@@ -227,45 +225,5 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       maksullisuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => !m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
       oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
     )
-  }
-
-  private def distinctAdjacent[A](input: Seq[A]): Seq[A] = {
-    if (input.size < 2) {
-      input
-    } else {
-      val rest = input.dropWhile(_ == input.head)
-      input.head +: distinctAdjacent(rest)
-    }
-  }
-
-  private def aikajaksoPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow], f: ROpiskeluoikeusAikajaksoRow => Boolean): Int =
-    aikajaksot.map(aikajakso => if(f(aikajakso)) aikajakso.lengthInDays else 0).sum
-
-  private[raportit] def lomaPäivät(j: ROpiskeluoikeusAikajaksoRow): (Int, Int) = {
-    // "opiskelijavuoteen kuuluviksi päiviksi ei lueta koulutuksen järjestäjän päättämää yhtäjaksoisesti vähintään
-    // neljä viikkoa kestävää lomajaksoa siltä osin, kuin loma-aika ylittää neljä viikkoa."
-    // https://www.finlex.fi/fi/laki/alkup/2017/20170682)
-    val NeljäViikkoa = 28
-    if (j.tila != "loma") {
-      (0, 0)
-    } else {
-      val lomapäiviäKäytettyEnnenTätäAikajaksoa = ChronoUnit.DAYS.between(j.tilaAlkanut.toLocalDate, j.alku.toLocalDate).toInt
-      val päiviäTässäJaksossa = j.lengthInDays
-      val opiskelijavuoteenKuuluvatLomaPäivät = max(min(päiviäTässäJaksossa, NeljäViikkoa - lomapäiviäKäytettyEnnenTätäAikajaksoa), 0)
-      (opiskelijavuoteenKuuluvatLomaPäivät, päiviäTässäJaksossa - opiskelijavuoteenKuuluvatLomaPäivät)
-    }
-  }
-
-  private[raportit] def lomaPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): (Int, Int) = {
-    aikajaksot.map(lomaPäivät).reduce((a, b) => (a._1 + b._1, a._2 + b._2))
-  }
-
-  private[raportit] def opiskelijavuosikertymä(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Double = {
-    aikajaksot.map(j => (j.tila match {
-      case "loma" => lomaPäivät(j)._1 * (j.osaAikaisuus.toDouble / 100.0)
-      case "lasna" => j.lengthInDays * (j.osaAikaisuus.toDouble / 100.0)
-      case "valmistunut" => j.lengthInDays // valmistumispäivä lasketaan aina 100% läsnäolopäiväksi
-      case _ => 0
-    })).sum
   }
 }
