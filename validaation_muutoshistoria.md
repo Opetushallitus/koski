@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 3.1.2023
+
+- Sallittu väliaikaisesti oppilaitoksen vaihto tilanteessa, jossa vaihdetaan oppilaitoksesta 1.2.246.562.10.21744269164 oppilaitokseen 1.2.246.562.10.70112627842
+
 ## 21.12.2022
 
 - VALMA- ja perusopetuksen lisäopetuksen opiskeluoikeuksille ei sallita uusia tiloja, joiden alkupäivämäärä on 1.6.2023 tai sen jälkeen.
