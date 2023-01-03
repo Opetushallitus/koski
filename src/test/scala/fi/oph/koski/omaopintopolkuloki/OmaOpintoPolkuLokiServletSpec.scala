@@ -53,7 +53,8 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
             hetu = oppija.hetu,
             etunimet = oppija.etunimet,
             kutsumanimi = oppija.kutsumanimi,
-            sukunimi = oppija.sukunimi
+            sukunimi = oppija.sukunimi,
+            huollettavat = None
           )
         )
       }
