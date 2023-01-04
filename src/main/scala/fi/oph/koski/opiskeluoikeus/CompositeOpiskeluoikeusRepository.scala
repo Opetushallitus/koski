@@ -14,7 +14,7 @@ import fi.oph.koski.util.{Futures, WithWarnings}
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
-class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, virta: AuxiliaryOpiskeluoikeusRepository, ytr: AuxiliaryOpiskeluoikeusRepository) extends GlobalExecutionContext with Logging {
+class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, virta: AuxiliaryOpiskeluoikeusRepository, ytr: AuxiliaryOpiskeluoikeusRepository, hetu: Hetu) extends GlobalExecutionContext with Logging {
 
   private def withErrorLogging[T](fun: () => T)(implicit user: KoskiSpecificSession): T = {
     Try(fun()) match {
@@ -67,7 +67,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
 
   def findByOppija(tunnisteet: HenkilönTunnisteet, useVirta: Boolean, useYtr: Boolean)(implicit user: KoskiSpecificSession): WithWarnings[Seq[Opiskeluoikeus]] = {
     val oid = tunnisteet.oid
-    val isValidHetu = Hetu.validate(tunnisteet.hetu.getOrElse(""), false) match {
+    val isValidHetu = hetu.validate(tunnisteet.hetu.getOrElse("")) match {
         case Right(_) => true
         case _ => false
     }
