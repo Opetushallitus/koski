@@ -1,35 +1,40 @@
 package fi.oph.koski.omaopintopolkuloki
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.huoltaja.{Huollettava, HuollettavienHakuOnnistui}
+import fi.oph.koski.huoltaja.{HuollettavienHakuOnnistui}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresKansalainen
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
+
+case class AuditlogRequest(
+  hetu: Option[String]
+)
 
 class OmaOpintoPolkuLokiServlet(implicit val application: KoskiApplication) extends
   RequiresKansalainen with KoskiSpecificApiServlet with NoCache {
 
   val auditLogs = new AuditLogService(application)
 
-  get("/auditlogs") {
-    renderEither(
-      auditLogs.queryLogsFromDynamo(session.oid)
-    )
-  }
+  post("/auditlogs") {
+    withJsonBody({ body =>
+      val request = JsonSerializer.extract[AuditlogRequest](body)
+      val requestedHetu = request.hetu
 
-  get("/auditlogs/:hetu") {
-    val requestedHetu = params("hetu")
+      val personOid: String = session.user.huollettavat.toList.flatMap {
+        case r: HuollettavienHakuOnnistui => r.huollettavat
+          .filter(_.hetu.exists(requestedHetu.contains))
+          .map(h => h.oid)
+          .flatMap {
+            case o: Some[String] => List(o.get)
+            case _ => List.empty
+          }
+        case _ => List.empty
+      }.headOption.getOrElse(session.oid)
 
-    val huollettava: Option[Huollettava] = session.user.huollettavat.toList.flatMap {
-      case r: HuollettavienHakuOnnistui => r.huollettavat
-        .filter(_.hetu.contains(requestedHetu))
-      case _ => Seq.empty
-    }.headOption
-
-    val oid = huollettava.map(_.oid.getOrElse("")).getOrElse("")
-
-    renderEither(
-      auditLogs.queryLogsFromDynamo(if (huollettava.isDefined) oid else session.oid)
-    )
+      renderEither(
+        auditLogs.queryLogsFromDynamo(personOid)
+      )
+    })()
   }
 
   get("/whoami") {
