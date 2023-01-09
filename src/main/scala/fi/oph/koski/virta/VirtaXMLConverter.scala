@@ -33,8 +33,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val ooTyyppi: Koodistokoodiviite = koodistoViitePalvelu.validateRequired(OpiskeluoikeudenTyyppi.korkeakoulutus)
 
     def opiskeluoikeudenLuokittelu(opiskeluoikeusNode: Node): List[Koodistokoodiviite] = (opiskeluoikeusNode \ "Jakso")
-        .flatMap(v => parseLuokittelu(v, "virtaopiskeluoikeudenluokittelu"))
-        .toList
+      .flatMap(v => parseLuokittelu(v, "virtaopiskeluoikeudenluokittelu"))
+      .toList
 
     val (orphans, opiskeluoikeudet) = opiskeluoikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
       virheet = ListBuffer[VirtaVirhe]()
@@ -353,9 +353,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def parseLuokittelu(parentNode: Node, koodistoUri: String): List[Koodistokoodiviite] = (parentNode \ "Luokittelu")
       .map(_.text).filter(s => s.nonEmpty && s.toInt > 0).toList
-      .map(l =>
-        Koodistokoodiviite(koodiarvo = l, koodistoUri = koodistoUri)
-      )
+      .map(l => koodistoViitePalvelu.validateRequired(koodistoUri, l))
 
   private def laajuudetYhteensä(osasuoritukset: List[KorkeakoulunOpintojaksonSuoritus]) = {
     val laajuudet = osasuoritukset.flatMap(_.koulutusmoduuli.laajuus).map(_.arvo.toDouble).map(BigDecimal(_))
