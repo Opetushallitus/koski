@@ -1,0 +1,308 @@
+[
+  {
+    "koodiUri": "virtaopsuorluokittelu_1",
+    "versio": 1,
+    "koodiArvo": "1",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2016-02-18",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2012-10-09",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on avoimessa korkeakouluopetuksessa suoritettu",
+        "kuvaus": "Opintosuoritus tulee merkitä avoimesssa korkeakouluopetuksessa suoritetuksi, jos sellaisesta on kyse riippumatta opiskelijan opiskeluoikeuksista.",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_15",
+    "versio": 1,
+    "koodiArvo": "15",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2018-02-19",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2018-02-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus sisältää kotimaista harjoittelua",
+        "kuvaus": null,
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_10",
+    "versio": 1,
+    "koodiArvo": "10",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2015-12-18",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2015-01-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on kansainvälinen kaksoistutkinto",
+        "kuvaus": null,
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_14",
+    "versio": 1,
+    "koodiArvo": "14",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2021-12-08",
+    "paivittajaOid": "1.2.246.562.24.83381171057",
+    "voimassaAlkuPvm": "2018-02-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on suomi toisena tai vieraana kielenä",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_6",
+    "versio": 1,
+    "koodiArvo": "6",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2016-02-18",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2012-10-09",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on maahanmuuttajien valmentavassa koulutuksessa opiskelevan suorittama",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_13",
+    "versio": 1,
+    "koodiArvo": "13",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2018-02-19",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2018-02-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Opintosuoritus on täydennyskoulutuksessa suoritettu",
+        "kuvaus": null,
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_12",
+    "versio": 1,
+    "koodiArvo": "12",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2018-02-19",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2018-02-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on korkeakoulujen välisillä yhteistyösopimuksilla opiskelevan suorittama ja kirjattu varsinaisena suorituksena opiskelijan kotikorkeakoulussa",
+        "kuvaus": null,
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_2",
+    "versio": 1,
+    "koodiArvo": "2",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2016-02-18",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2012-10-09",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on tulevan kansainvälisen vaihto-opiskelijan suorittama",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_11",
+    "versio": 1,
+    "koodiArvo": "11",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2016-11-22",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2016-11-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on erikoistumiskoulutuksessa suoritettu",
+        "kuvaus": null,
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_7",
+    "versio": 1,
+    "koodiArvo": "7",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2016-02-18",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2015-01-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on kotimainen harjoittelujakso",
+        "kuvaus": "Suoritus on tutkinto-opiskelijan Suomessa suorittama harjoittelu",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_4",
+    "versio": 1,
+    "koodiArvo": "4",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2016-02-18",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2012-10-09",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on erillisellä opiskeluoikeudella opiskelevan suorittama",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_3",
+    "versio": 1,
+    "koodiArvo": "3",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2016-02-18",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2012-10-09",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on korkeakoulujen välisillä yhteistyösopimuksilla opiskelevan suorittama",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_17",
+    "versio": 1,
+    "koodiArvo": "17",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2021-12-08",
+    "paivittajaOid": "1.2.246.562.24.83381171057",
+    "voimassaAlkuPvm": "2021-12-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on muun kuin korkeakoulun kanssa tehtyyn yhteistyösopimukseen perustuvan opiskeluoikeuden perusteella suoritettu",
+        "kuvaus": "Yhteistyöorganisaatio voi olla kotimainen tai ulkomainen organisaatio.\n\nKäytetään esim. opintosuorituksille, joita syntyy toisen asteen oppilaitoksen kanssa tehtävässä yhteistyössä.\n\nOpinnot ovat maksuttomia",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_16",
+    "versio": 1,
+    "koodiArvo": "16",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2021-12-08",
+    "paivittajaOid": "1.2.246.562.24.83381171057",
+    "voimassaAlkuPvm": "2021-12-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on ruotsi toisena tai vieraana kielenä",
+        "kuvaus": "Suoritus on ruotsi toisena tai vieraana kielenä. Käytetään suorituksille, joissa opintojen tavoitteena on lisätä henkilön ruotsin kielen taitoa ja edistää kulttuuritietoisuutta ja sitä kautta integroitumista Suomeen, työllistymistä ja maahan jäämistä. Opintojen kohderyhmänä ovat korkeakoulujen kansainväliset opiskelijat (tutkinto-opiskelijat, vaihto-opiskelijat, muilla erilaisilla opinto-oikeuksilla opiskelevat).",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_5",
+    "versio": 1,
+    "koodiArvo": "5",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2016-02-18",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2012-10-09",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on erillisellä opiskeluoikeudella opettajankoulutuksen opintoja suorittavan opiskelijan suorittama",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_9",
+    "versio": 1,
+    "koodiArvo": "9",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2015-12-18",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2015-01-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on kansainvälinen yhteistutkinto",
+        "kuvaus": null,
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_8",
+    "versio": 1,
+    "koodiArvo": "8",
+    "tila": "LUONNOS",
+    "paivitysPvm": "2016-02-18",
+    "paivittajaOid": null,
+    "voimassaAlkuPvm": "2015-01-01",
+    "voimassaLoppuPvm": null,
+    "metadata": [
+      {
+        "nimi": "Suoritus on ulkomainen harjoittelujakso",
+        "kuvaus": "Suoritus on tutkinto-opiskelijan kansainvälisellä liikkuvuusjaksolla ulkomailla suorittama harjoittelu",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ]
+  }
+]
