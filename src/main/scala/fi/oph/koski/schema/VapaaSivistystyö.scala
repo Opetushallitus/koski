@@ -193,7 +193,10 @@ trait VapaanSivistystyönKoulutuksenArviointi extends KoodistostaLöytyväArvioi
   def hyväksytty = VapaanSivistystyönKoulutuksenArviointi.hyväksytty(arvosana)
 }
 object VapaanSivistystyönKoulutuksenArviointi {
-  def hyväksytty(arvosana: Koodistokoodiviite) = arvosana.koodiarvo == "Hyväksytty"
+  def hyväksytty(arvosana: Koodistokoodiviite) = arvosana.koodiarvo == "Hyväksytty" ||
+    // Vapaatavoitteisessa ja Jotpassa kaikki omista koodistoista tulevat arvosanat katsotaan hyväksytyiksi
+    arvosana.koodistoUri == "arviointiasteikkovstvapaatavoitteinen" ||
+    arvosana.koodistoUri == "arviointiasteikkojotpa"
 }
 
 @Description("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
