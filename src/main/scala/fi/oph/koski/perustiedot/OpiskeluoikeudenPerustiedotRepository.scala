@@ -118,6 +118,14 @@ class OpiskeluoikeudenPerustiedotRepository(
         List(Map("range" -> Map("päättymispäivä" -> Map("gte" -> day, "format" -> "yyyy-MM-dd"))))
       case OpiskeluoikeusPäättynytViimeistään(day) =>
         List(Map("range" -> Map("päättymispäivä" -> Map("lte" -> day, "format" -> "yyyy-MM-dd"))))
+      case OpiskeluoikeusQueryFilter.TaiteenPerusopetuksenOppilaitos(oppilaitokset) => List(
+        OpenSearch.anyFilter(oppilaitokset.map { oppilaitos =>
+          OpenSearch.allFilter(List(
+            Map("term" -> Map("tyyppi.koodiarvo" -> "taiteenperusopetus")),
+            Map("term" -> Map("oppilaitos.oid" -> oppilaitos.oid))
+          ))
+        })
+      )
       case SuoritusJsonHaku(json) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suoritusJson-parametriä ei tueta"))
       case _ => Nil
     } ++ oppilaitosFilter(session) ++ suoritusFilter ++ mitätöityFilter
@@ -197,6 +205,10 @@ class OpiskeluoikeudenPerustiedotRepository(
         OpenSearch.allFilter(List(
           Map("terms" -> Map("oppilaitos.oid" -> varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid))),
           Map("terms" -> Map("koulutustoimija.oid" -> varhaiskasvatusOikeudet.map(_.koulutustoimija.oid)))
+        )),
+        OpenSearch.allFilter(List(
+          Map("term" -> Map("tyyppi.koodiarvo" -> "taiteenperusopetus")),
+          Map("terms" -> Map("koulutustoimija.oid" -> session.orgKäyttöoikeudet.flatMap(_.organisaatio.toKoulutustoimija).map(_.oid)))
         ))
       )))
     }

@@ -1,6 +1,6 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{taiteenPerusopetusAloitettu, taiteenPerusopetusValmis}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{taiteenPerusopetusAloitettu, taiteenPerusopetusHankintakoulutus, taiteenPerusopetusValmis}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -258,6 +258,13 @@ object ExamplesTaiteenPerusopetus {
     )
   )
 
+  lazy val oppijaOpiskeluoikeusValmisHankintakoulutus = Oppija(
+    henkilö = MockOppijat.asUusiOppija(taiteenPerusopetusHankintakoulutus),
+    opiskeluoikeudet = List(
+      Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä
+    )
+  )
+
   lazy val examples = List(
     Example(
       "taiteen perusopetus - läsnä",
@@ -267,6 +274,10 @@ object ExamplesTaiteenPerusopetus {
       "taiteen perusopetus - hyväksytystisuoritettu",
       "Oppijalla on hyväksytysti suoritettu taiteen perusopetuksen laajan oppimäärän opintotason suoritus",
       oppijaOpiskeluoikeusValmis
+    ), Example(
+      "taiteen perusopetus - hyväksytystisuoritettu hankintakoulutus",
+      "Oppijalla on hankintakoulutuksena järjestetty hyväksytysti suoritettu taiteen perusopetuksen laajan oppimäärän opintotason suoritus",
+      oppijaOpiskeluoikeusValmisHankintakoulutus
     )
   )
 
