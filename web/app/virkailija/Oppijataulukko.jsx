@@ -165,7 +165,8 @@ export class Oppijataulukko extends React.Component {
                       }}
                       noSelectionText={t('kaikki')}
                       shouldShowChildren={(org) =>
-                        org.oid !== 'OSTOPALVELUTAIPALVELUSETELI'
+                        org.oid !== 'OSTOPALVELUTAIPALVELUSETELI' &&
+                        org.oid !== 'HANKINTAKOULUTUS'
                       }
                     />
                   </th>
