@@ -6,9 +6,9 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{Luokkahaku, Nimihaku, SuoritusJsonHaku, _}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioOid, OrganisaatioRepository, OrganisaatioService}
-import fi.oph.koski.perustiedot.VarhaiskasvatusToimipistePerustiedot
+import fi.oph.koski.perustiedot.ToimipistePerustiedot
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import org.json4s.JsonAST.JValue
 import org.json4s.jackson.JsonMethods
@@ -31,6 +31,7 @@ object OpiskeluoikeusQueryFilter {
   case class Tutkintohaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
   case class VarhaiskasvatuksenToimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
+  case class TaiteenPerusopetuksenOppilaitos(oppilaitokset: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
   case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class SuoritusJsonHaku(json: JValue) extends OpiskeluoikeusQueryFilter
@@ -79,6 +80,11 @@ private object OpiskeluoikeusQueryFilterParser extends Logging {
       case ("suorituksenTyyppi", v +: _) => Right(SuorituksenTyyppi(koodisto.validateRequired("suorituksentyyppi", v)))
       case ("tutkintohaku", hakusana +: _) if hakusana.length < 3 => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
       case ("tutkintohaku", hakusana +: _) => Right(Tutkintohaku(hakusana))
+      case ("toimipiste", oid +: _) if oid == organisaatiot.hankintakoulutusRootOid => Right(
+        TaiteenPerusopetuksenOppilaitos(
+          organisaatiot.koulutustoimijoidenHankintakoulutuksenOrganisaatiot().map(_.toOrganisaatio)
+        )
+      )
       case ("toimipiste", oid +: _) if oid == organisaatiot.ostopalveluRootOid => organisaatiot.omatOstopalveluOrganisaatiot match {
         case Nil => Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy("Ostopalvelu/palveluseteli-toimipisteitä ei löydy"))
         case hierarkia => Right(VarhaiskasvatuksenToimipiste(hierarkia.map(_.toOrganisaatio)))

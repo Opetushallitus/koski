@@ -2,14 +2,15 @@ package fi.oph.koski.organisaatio
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, KäyttöoikeusOrg, Session}
-import fi.oph.koski.perustiedot.VarhaiskasvatusToimipistePerustiedot
+import fi.oph.koski.perustiedot.ToimipistePerustiedot
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.OrganisaatioWithOid
 
 class OrganisaatioService(application: KoskiApplication) {
   val ostopalveluRootOid = "OSTOPALVELUTAIPALVELUSETELI"
+  val hankintakoulutusRootOid = "HANKINTAKOULUTUS"
   val organisaatioRepository: OrganisaatioRepository = application.organisaatioRepository
-  private val perustiedot = VarhaiskasvatusToimipistePerustiedot(application.perustiedotIndexer)
+  private val perustiedot = ToimipistePerustiedot(application.perustiedotIndexer)
   private val localizationRepository = application.koskiLocalizationRepository
 
   def searchInAllOrganizations(query: Option[String])(implicit user: Session): Iterable[OrganisaatioHierarkia] = {
@@ -87,10 +88,23 @@ class OrganisaatioService(application: KoskiApplication) {
       case _ => Nil
     }
 
+  def koulutustoimijoidenHankintakoulutuksenOrganisaatiot()(implicit user: Session): List[OrganisaatioHierarkia] = {
+    val koulutustoimijat = user.orgKäyttöoikeudet.flatMap(_.organisaatio.toKoulutustoimija).map(_.oid)
+    perustiedot.haeTaiteenPerusopetuksenToimipisteet(koulutustoimijat) match {
+      case toimipisteetJoihinTallennettuOpiskeluoikeuksia: Set[String] if toimipisteetJoihinTallennettuOpiskeluoikeuksia.nonEmpty =>
+        val koulutustoimijoidenHierarkiat = koulutustoimijat.flatMap(organisaatioRepository.getOrganisaatioHierarkia)
+        val toimipisteHierarkiat = toimipisteetJoihinTallennettuOpiskeluoikeuksia.flatMap(
+          organisaatioRepository.getOrganisaatioHierarkia
+        )
+        toimipisteHierarkiat.filterNot(t => koulutustoimijoidenHierarkiat.exists(k => k.find(t.oid).isDefined)).toList
+      case _ => Nil
+    }
+  }
+
   private def getOrganisaatiot(orgTypes: OrgTypesToShow)(implicit user: Session) = orgTypes match {
     case OmatOrganisaatiot => omatOrganisaatioHierarkiat
     case VarhaiskasvatusToimipisteet => kaikkiOstopalveluOrganisaatiohierarkiat(excludedKoulutustoimijaOidit = user.varhaiskasvatusKoulutustoimijat)
-    case Kaikki => omatOrganisaatioHierarkiat ++ omatOstopalveluOrganisaatioHierarkiat
+    case Kaikki => omatOrganisaatioHierarkiat ++ omatOstopalveluOrganisaatioHierarkiat ++ omatHankintakoulutusOrganisaatioHierarkiat
   }
 
   private def omatOrganisaatioHierarkiat(implicit user: Session): List[OrganisaatioHierarkia] =
@@ -114,6 +128,18 @@ class OrganisaatioService(application: KoskiApplication) {
       children = children,
       organisaatiotyypit = List(ostopalveluRootOid)
     ))
+  }
+
+  private def omatHankintakoulutusOrganisaatioHierarkiat(implicit user: Session): List[OrganisaatioHierarkia] = {
+    koulutustoimijoidenHankintakoulutuksenOrganisaatiot() match {
+      case Nil => Nil
+      case children: List[OrganisaatioHierarkia] => List(OrganisaatioHierarkia(
+        oid = hankintakoulutusRootOid,
+        nimi = localizationRepository.get("Taiteen perusopetus (hankintakoulutus)"),
+        children = children,
+        organisaatiotyypit = List(hankintakoulutusRootOid)
+      ))
+    }
   }
 
   private def organisaatioNimi(implicit user: Session): OrganisaatioHierarkia => String = _.nimi.get(user.lang)
