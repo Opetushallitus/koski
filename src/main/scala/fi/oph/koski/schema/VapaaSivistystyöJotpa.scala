@@ -52,6 +52,7 @@ case class VapaanSivistystyönJotpaKoulutuksenOsasuoritus(
 
 @Title("Arviointi")
 case class VapaanSivistystyöJotpaKoulutuksenArviointi(
+  @KoodistoUri("arviointiasteikkovstjotpa")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", "arviointiasteikkovst"),
   päivä: LocalDate
 ) extends ArviointiPäivämäärällä with VapaanSivistystyönKoulutuksenArviointi

@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "arviointiasteikkovstjotpa",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko VST JOTPA"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Arviointiasteikko VST JOTPA"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Arviointiasteikko VST JOTPA"
+  } ],
+  "codesGroupUri" : "koski",
+  "voimassaAlkuPvm" : "2020-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
+}

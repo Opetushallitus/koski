@@ -1,0 +1,176 @@
+{
+  "henkilö" : {
+    "hetu" : "030200A005P",
+    "etunimet" : "Keskiö",
+    "kutsumanimi" : "Keskiö",
+    "sukunimi" : "Jotpanen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.31915273374",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "01694",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Varsinais-Suomen kansanopisto"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2023-01-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "14",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.78513447389"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "vstjotpakoulutus",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "099999",
+          "koodistoUri" : "koulutus"
+        },
+        "opintokokonaisuus" : {
+          "koodiarvo" : "1138",
+          "nimi" : {
+            "fi" : "Kuvallisen ilmaisun perusteet ja välineet"
+          },
+          "koodistoUri" : "opintokokonaisuudet",
+          "koodistoVersio" : 1
+        }
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1138-1",
+            "nimi" : {
+              "fi" : "Kuvantekemisen perusvälineistö"
+            }
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "2",
+              "nimi" : {
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
+              },
+              "lyhytNimi" : {
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstjotpakoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkovstjotpa"
+          },
+          "päivä" : "2023-02-01",
+          "hyväksytty" : false
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1138-2",
+            "nimi" : {
+              "fi" : "Kuvallisen viestinnän perusteet"
+            }
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "2",
+              "nimi" : {
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
+              },
+              "lyhytNimi" : {
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstjotpakoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "koodistoUri" : "arviointiasteikkovst"
+          },
+          "päivä" : "2023-03-01",
+          "hyväksytty" : true
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1138-3",
+            "nimi" : {
+              "fi" : "Tussitekniikat I ja II"
+            }
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "2",
+              "nimi" : {
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
+              },
+              "lyhytNimi" : {
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstjotpakoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "vapaansivistystyonkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2023-01-01"
+  } ]
+}
