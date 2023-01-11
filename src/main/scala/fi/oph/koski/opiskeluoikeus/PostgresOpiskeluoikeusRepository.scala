@@ -9,7 +9,7 @@ import fi.oph.koski.henkilo._
 import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRepository}
@@ -335,10 +335,20 @@ class PostgresOpiskeluoikeusRepository(
     }
   }
 
+  private def estäOpiskeluoikeudenLuonti(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Boolean = {
+    opiskeluoikeus match {
+      // Estä kirjoitusoikeus TPO hankintakoulutuksen opiskeluoikeuteen, jos käyttäjällä löytyy editOnly-access
+      case t: TaiteenPerusopetuksenOpiskeluoikeus if t.hankintakoulutus.koodiarvo == "hankintakoulutus" =>
+        user.hasTaiteenPerusopetusAccess(t.getOppilaitos.oid, t.koulutustoimija.map(_.oid), AccessType.editOnly)
+      case _ => false
+    }
+  }
   private def createAction(oppija: OppijaHenkilöWithMasterInfo, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     opiskeluoikeus.versionumero match {
       case Some(versio) if (versio != VERSIO_1) =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
+      case _ if estäOpiskeluoikeudenLuonti(opiskeluoikeus) =>
+        DBIO.successful(Left(KoskiErrorCategory.forbidden("Käyttäjällä ei ole riittäviä oikeuksia luoda opiskeluoikeutta")))
       case _ =>
         val tallennettavaOpiskeluoikeus = opiskeluoikeus
         val oid = oidGenerator.generateOid(oppija.henkilö.oid)
