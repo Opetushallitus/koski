@@ -44,6 +44,8 @@ import { append } from '../util/fp/arrays'
 import { saveOpiskeluoikeus } from '../util/koskiApi'
 import { mergeOpiskeluoikeusVersionumero } from '../util/opiskeluoikeus'
 import { usePäätasonSuoritus } from '../util/optics'
+import { createTpoArviointi } from './tpoCommon'
+import { TpoOsasuoritusProperties } from './TpoOsasuoritusProperties'
 
 export type TaiteenPerusopetusEditorProps = {
   oppijaOid: string
@@ -219,19 +221,14 @@ const osasuoritusToTableRow = (
           path={osasuoritus.prop('arviointi')}
           view={(props) => <ArviointiView {...props} />}
           edit={(props) => (
-            <ArviointiEdit
-              {...props}
-              createArviointi={(arvosana) =>
-                TaiteenPerusopetuksenArviointi({
-                  arvosana,
-                  päivä: todayISODate()
-                })
-              }
-            />
+            <ArviointiEdit {...props} createArviointi={createTpoArviointi} />
           )}
         />
       )
-    }
+    },
+    getContent: () => (
+      <TpoOsasuoritusProperties form={form} osasuoritusPath={osasuoritus} />
+    )
   }
 }
 

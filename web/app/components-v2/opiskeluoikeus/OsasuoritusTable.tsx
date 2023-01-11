@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
 import { t } from '../../i18n/i18n'
+import { useDepth } from '../../util/useDepth'
 import { BaseProps } from '../baseProps'
 import { Column, ColumnGrid } from '../containers/ColumnGrid'
+import { ExpandButton } from '../controls/ExpandButton'
+
+export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
 
 export type OsasuoritusTableProps<DATA_KEYS extends string> = BaseProps & {
   rows: Array<OsasuoritusRowData<DATA_KEYS>>
-  depth?: number
 }
 
 export type OsasuoritusRowData<DATA_KEYS extends string> = {
   columns: Record<DATA_KEYS, React.ReactNode>
-  children?: OsasuoritusRowData<DATA_KEYS>[]
+  getContent?: () => React.ReactNode
 }
 
 export const OsasuoritusTable = <DATA_KEYS extends string>(
@@ -26,13 +29,13 @@ export const OsasuoritusTable = <DATA_KEYS extends string>(
 
 export type OsasuoritusRowProps<DATA_KEYS extends string> = BaseProps & {
   row: OsasuoritusRowData<DATA_KEYS>
-  depth?: number
 }
 
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>
 ) => {
-  const spans = getSpans(props.row.columns, props.depth)
+  const [depth] = useDepth(OSASUORITUSTABLE_DEPTH_KEY)
+  const spans = getSpans(props.row.columns, depth)
   return (
     <>
       <ColumnGrid className="OsasuoritusHeader">
@@ -49,10 +52,6 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
           </Column>
         ))}
       </ColumnGrid>
-      {props.row.children &&
-        props.row.children.map((child, index) => (
-          <OsasuoritusRow depth={1 + (props.depth || 0)} row={child} />
-        ))}
     </>
   )
 }
@@ -60,19 +59,21 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
 export const OsasuoritusRow = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>
 ) => {
+  const [depth, DeeperLevel] = useDepth(OSASUORITUSTABLE_DEPTH_KEY)
   const [isOpen, setOpen] = useState(false)
-  const spans = getSpans(props.row.columns, props.depth)
+  const spans = getSpans(props.row.columns, depth)
 
   return (
     <>
       <ColumnGrid className="OsasuoritusRow">
         {spans.indent > 0 && (
-          <Column
-            span={spans.indent}
-            className="OsasuoritusHeader__indent"
-          ></Column>
+          <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
-        <Column span={spans.icons}></Column>
+        <Column span={spans.icons} align="right">
+          {props.row.getContent && (
+            <ExpandButton expanded={isOpen} onChange={setOpen} label="TODO" />
+          )}
+        </Column>
         {Object.values<React.ReactNode>(props.row.columns).map(
           (value, index) => (
             <Column key={index} span={index === 0 ? spans.name : spans.data}>
@@ -81,15 +82,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           )
         )}
       </ColumnGrid>
-      {isOpen &&
-        props.row.children &&
-        props.row.children.map((child, index) => (
-          <OsasuoritusRow
-            key={index}
-            depth={1 + (props.depth || 0)}
-            row={child}
-          />
-        ))}
+      {isOpen && <DeeperLevel>{props.row.getContent?.()}</DeeperLevel>}
     </>
   )
 }

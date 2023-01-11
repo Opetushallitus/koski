@@ -15,11 +15,13 @@ export const KeyValueTable = (props: KeyValueTableProps) => (
 export type KeyValueRowProps = BaseProps & {
   name: string | LocalizedString
   children?: React.ReactNode
+  indent?: number
 }
 
 export const KeyValueRow = (props: KeyValueRowProps) =>
   props.children ? (
     <ColumnGrid component="li" {...baseProps(props, 'KeyValueRow')}>
+      {props.indent && <Column span={props.indent} />}
       <Column
         className="KeyValueRow__name"
         span={4}
@@ -30,7 +32,7 @@ export const KeyValueRow = (props: KeyValueRowProps) =>
       </Column>
       <Column
         className="KeyValueRow__value"
-        span={20}
+        span={20 - (props.indent || 0)}
         valign="top"
         component="span"
       >

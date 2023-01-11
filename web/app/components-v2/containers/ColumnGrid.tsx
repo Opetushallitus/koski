@@ -21,6 +21,7 @@ export type ColumnProps = BaseProps & {
   spanSmall?: number
   spanLarge?: number
   valign?: 'top' | 'center' | 'bottom'
+  align?: 'left' | 'center' | 'right'
 }
 
 export const Column = (props: ColumnProps) => {
@@ -34,7 +35,8 @@ export const Column = (props: ColumnProps) => {
         props.spanPhone && `Column-phone-${props.spanPhone}`,
         props.spanSmall && `Column-small-${props.spanSmall}`,
         props.spanLarge && `Column-large-${props.spanLarge}`,
-        props.valign && `Column-valign-${props.valign}`
+        props.valign && `Column-valign-${props.valign}`,
+        props.align && `Column-align-${props.align}`
       )}
     >
       {props.children}
