@@ -1,8 +1,45 @@
 import * as $ from 'optics-ts'
 import { useMemo } from 'react'
+import { FormOptic, getValue } from '../components-v2/forms/FormModel'
 import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
+
+/**
+ * Palauttaa polun, johon optiikka osoittaa annetussa datassa. Polku on muotoa esimerkiksi "lapset.0.nimi.fi".
+ * Paluuarvo on undefined, jos optiikka ei osoita mihinkään annetussa datassa. Ainoastaan objekteihin tarkentuvat
+ * optiikat ovat sallittuja, koska primitiivien yksilöllisyyttä ei voida varmentaa.
+ *
+ * @param optic
+ * @param s
+ * @returns
+ */
+export const parsePath = <S, A extends object>(
+  optic: FormOptic<S, A>,
+  s: S
+): string | undefined => {
+  const walk = (haystack: any, needle: any): string[] | undefined => {
+    if (haystack === needle) {
+      return []
+    }
+    if (haystack === null || haystack === undefined) {
+      return undefined
+    }
+    if (typeof haystack === 'object') {
+      const entries = Object.entries(haystack).map(([key, value]) => ({
+        key,
+        path: walk(value, needle)
+      }))
+      const entry = entries.find((e) => e.path)
+      return entry?.path ? [entry.key, ...entry.path] : undefined
+    }
+    return undefined
+  }
+
+  const needle = getValue(optic)(s)
+  const path = needle && walk(s, needle)
+  return path ? path.join('.') : undefined
+}
 
 /**
  * Isomorfismi jolla voi viitata LocalizedStringin kaikkiin kielikenttiin
