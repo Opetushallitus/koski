@@ -303,12 +303,21 @@ class KoskiValidator(
 
   private def validateAndAddTaiteenPerusopetuksenKoulutustoimija(oo: TaiteenPerusopetuksenOpiskeluoikeus)
     (implicit user: KoskiSpecificSession): Either[HttpStatus, TaiteenPerusopetuksenOpiskeluoikeus] = {
-    val koulutustoimija = inferTaiteenPerusopetuksenKoulutustoimija(user)
-    järjestettyOmanOrganisaationUlkopuolella(oo.oppilaitos, oo.koulutustoimija.orElse(koulutustoimija.toOption)) match {
-      case true =>
-        if (oo.koulutustoimija.isDefined && user.hasWriteAccess(oo.koulutustoimija.get.oid, oo.koulutustoimija.map(_.oid))) {
+    val koulutustoimijat = user.orgKäyttöoikeudet.flatMap(_.organisaatio.toKoulutustoimija).map(_.oid).toList
+    järjestettyOmanOrganisaationUlkopuolella(oo.oppilaitos, oo.koulutustoimija) match {
+      // Ei koulutustoimija-organisaation käyttöoikeuksia eikä globaaleja kirjoitusoikeuksia
+      case true if koulutustoimijat.isEmpty && !user.globalAccess.contains(AccessType.write) =>
+        // Löytyy editOnly-access taiteen perusopetukseen, muuten ei oppilaitoksen käyttäjä saa kirjoittaa hankitakoulutuksen opiskeluoikeutta
+        if(user.hasTaiteenPerusopetusAccess(oo.getOppilaitos.oid, oo.koulutustoimija.map(_.oid), AccessType.editOnly)) {
           Right(oo)
         } else {
+          Left(KoskiErrorCategory.forbidden.vainTaiteenPerusopetuksenJärjestäjä())
+        }
+      case true =>
+        if (oo.koulutustoimija.isDefined && user.hasTaiteenPerusopetusAccess(oo.getOppilaitos.oid, oo.koulutustoimija.map(_.oid), AccessType.write)) {
+          Right(oo)
+        } else {
+          val koulutustoimija = inferTaiteenPerusopetuksenKoulutustoimija(user)
           koulutustoimija.map(oo.withKoulutustoimija)
         }
       case _ =>

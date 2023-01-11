@@ -180,6 +180,25 @@ object MockUsers {
     Seq(oppilaitosPalvelukäyttäjä(varsinaisSuomenKansanopisto))
   )
 
+  val varsinaisSuomiOppilaitosTallentaja = KoskiMockUser(
+    "varsinaissuomi-oppilaitos-tallentaja",
+    "varsinaissuomi-oppilaitos-tallentaja",
+    "1.2.246.562.24.99999966669",
+    Seq(oppilaitosTallentaja(varsinaisSuomenKansanopisto))
+  )
+
+  val varsinaisSuomiHankintakoulutusOppilaitosTallentaja = KoskiMockUser(
+    "varsinaissuomi-hankinta-oppilaitos-tallentaja",
+    "varsinaissuomi-hankinta-oppilaitos-tallentaja",
+    "1.2.246.562.24.99999966669",
+    // Oppilaitostallentaja + hankintakoulutuksen rooli
+    Seq(
+      organisaatioKäyttäjä(
+        varsinaisSuomenKansanopisto,
+        List(Rooli.READ, Rooli.READ_UPDATE, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.TAITEENPERUSOPETUS_HANKINTAKOULUTUS))
+    )
+  )
+
   val helsinkiTallentaja = KoskiMockUser(
     "hki-tallentaja",
     "hki-tallentaja",
@@ -497,6 +516,8 @@ object MockUsers {
     esiopetusTallentaja,
     oppivelvollisuutietoRajapinta,
     varsinaisSuomiPalvelukäyttäjä,
+    varsinaisSuomiOppilaitosTallentaja,
+    varsinaisSuomiHankintakoulutusOppilaitosTallentaja,
     ytlKäyttäjä,
     xssHyökkääjä,
     muuKuinSäänneltyKoulutusYritys,
