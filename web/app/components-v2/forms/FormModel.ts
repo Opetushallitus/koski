@@ -35,11 +35,13 @@ export type FormModel<O extends object> = {
     merge: (data: O, response: T) => O
   ) => void
   readonly cancel: () => void
+  readonly errors: ValidationError[]
 }
 
 export type FieldRenderer<O, T> = {
   path: FormOptic<O, T>
   updateAlso?: Array<FormOptic<O, T>>
+  errorsFromPath?: string
   view: React.FC<FieldViewBaseProps<T>>
   edit?: React.FC<FieldEditBaseProps<T>>
   auto?: () => T | undefined
@@ -53,6 +55,7 @@ export type FieldEditBaseProps<T> = {
   initialValue?: T
   value?: T
   onChange: (value: T) => void
+  errors: ValidationError[]
 }
 
 export type FormModelListener<O extends object> = (obj: O) => void
@@ -196,8 +199,6 @@ export const useForm = <O extends object>(
     [data]
   )
 
-  A.isNonEmpty(errors) && console.log('Form errors:', errors)
-
   return {
     state: data,
     initialState,
@@ -210,7 +211,8 @@ export const useForm = <O extends object>(
     updateAt,
     validate,
     save,
-    cancel
+    cancel,
+    errors
   }
 }
 

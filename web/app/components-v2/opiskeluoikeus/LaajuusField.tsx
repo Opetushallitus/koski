@@ -8,6 +8,7 @@ import { removeFloatingPointDrift } from '../../util/numbers'
 import { CollectableOptic } from '../../util/types'
 import { baseProps, BaseProps } from '../baseProps'
 import { NumberField } from '../controls/NumberField'
+import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormModel'
 
 /* ---------------------------------------------------------------------
@@ -48,14 +49,17 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
 
   return (
     <label {...baseProps(props, 'LaajuusField')}>
-      <NumberField
-        className="LaajuusField__arvo"
-        value={props.value?.arvo}
-        onChange={onChange}
-      />
-      <span className="LaajuusField__yksikko">
-        {t(props.value?.yksikkö.lyhytNimi || props.value?.yksikkö.nimi)}
-      </span>
+      <div className="LaajuusField__container">
+        <NumberField
+          className="LaajuusField__arvo"
+          value={props.value?.arvo}
+          onChange={onChange}
+        />
+        <span className="LaajuusField__yksikko">
+          {t(props.value?.yksikkö.lyhytNimi || props.value?.yksikkö.nimi)}
+        </span>
+      </div>
+      <FieldErrors errors={props.errors} />
     </label>
   )
 }

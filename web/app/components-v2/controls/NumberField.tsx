@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { t } from '../../i18n/i18n'
 import { baseProps, BaseProps } from '../baseProps'
+import { FieldErrors } from '../forms/FieldErrors'
 
 export type NumberFieldProps = BaseProps & {
   value?: number

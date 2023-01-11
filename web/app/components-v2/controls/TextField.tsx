@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 import { baseProps, BaseProps } from '../baseProps'
+import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormModel'
 
 export type TextViewProps = BaseProps & FieldViewBaseProps<string>
@@ -31,6 +32,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
         onChange={onChange}
         autoFocus={props.autoFocus}
       />
+      <FieldErrors errors={props.errors} />
     </label>
   )
 }

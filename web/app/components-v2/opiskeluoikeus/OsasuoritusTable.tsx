@@ -65,7 +65,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
 
   return (
     <>
-      <ColumnGrid>
+      <ColumnGrid className="OsasuoritusRow">
         {spans.indent > 0 && (
           <Column
             span={spans.indent}

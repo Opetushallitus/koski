@@ -1,15 +1,18 @@
 import React, { useCallback, useMemo } from 'react'
 import { useKoodistoFiller } from '../../appstate/koodisto'
 import { deepEqual } from '../../util/fp/objects'
-import { FieldRenderer, FormModel, getValue } from './FormModel'
+import { FieldRenderer, FormModel, FormOptic, getValue } from './FormModel'
+import { useFormErrors } from './useFormErrors'
 
 export const FormField = <O extends object, T>({
+  // TODO: Tää tyypitys siistemmäksi
   form,
   path,
   updateAlso: secondaryPaths,
   view,
   edit,
-  auto
+  auto,
+  errorsFromPath
 }: FieldRenderer<O, T> & { form: FormModel<O> }) => {
   const fillKoodistot = useKoodistoFiller()
 
@@ -22,6 +25,11 @@ export const FormField = <O extends object, T>({
     [form.initialState]
   )
   const value = useMemo(() => getValue(optics[0])(form.state), [form.state])
+
+  const errors = useFormErrors(
+    form,
+    errorsFromPath || (path as any as FormOptic<O, object>)
+  )
 
   const set = useCallback(
     async (newValue: T) => {
@@ -51,6 +59,7 @@ export const FormField = <O extends object, T>({
           initialValue={initialValue}
           value={value}
           onChange={set}
+          errors={errors}
         />
       )
     }

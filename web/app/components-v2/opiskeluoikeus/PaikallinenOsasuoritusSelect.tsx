@@ -103,6 +103,7 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
           form={form}
           path={koodiarvoPath}
           updateAlso={[nimiPath]}
+          errorsFromPath="nimi"
           view={TextView}
           edit={(props) => (
             <TextEdit

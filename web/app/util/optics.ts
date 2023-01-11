@@ -27,6 +27,7 @@ export const parsePath = <S, A extends object>(
     }
     if (typeof haystack === 'object') {
       const entries = Object.entries(haystack).map(([key, value]) => ({
+        // TODO: perffioptimointi
         key,
         path: walk(value, needle)
       }))
