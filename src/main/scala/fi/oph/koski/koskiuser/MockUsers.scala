@@ -195,7 +195,8 @@ object MockUsers {
     Seq(
       organisaatioKäyttäjä(
         varsinaisSuomenKansanopisto,
-        List(Rooli.READ, Rooli.READ_UPDATE, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.TAITEENPERUSOPETUS_HANKINTAKOULUTUS))
+        List(Rooli.READ, Rooli.READ_UPDATE, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.TAITEENPERUSOPETUS_HANKINTAKOULUTUS)
+      )
     )
   )
 

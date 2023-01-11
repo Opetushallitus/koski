@@ -6,7 +6,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.validation.DateValidation.validateOpiskeluoikeudenPäivämäärät
-import fi.oph.koski.validation.TutkintokoulutukseenValmentavaKoulutusValidation
+import fi.oph.koski.validation.{TaiteenPerusopetusValidation, TutkintokoulutukseenValmentavaKoulutusValidation}
 
 import java.time.LocalDate
 
@@ -25,7 +25,8 @@ class OpiskeluoikeusChangeValidator(
       validateOppilaitoksenMuutos(oldState, newState),
       if (päivitetynOpiskeluoikeudenPäivämäärienValidaatioAstunutVoimaan) validateOpiskeluoikeudenPäivämäärät(newState) else HttpStatus.ok,
       ePerusteetChangeValidator.validateVanhanOpiskeluoikeudenTapaukset(oldState, newState),
-      TutkintokoulutukseenValmentavaKoulutusValidation.validateJärjestämislupaEiMuuttunut(oldState, newState)
+      TutkintokoulutukseenValmentavaKoulutusValidation.validateJärjestämislupaEiMuuttunut(oldState, newState),
+      TaiteenPerusopetusValidation.validateHankintakoulutusEiMuuttunut(oldState, newState)
     )
   }
 

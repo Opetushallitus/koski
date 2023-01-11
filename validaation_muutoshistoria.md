@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.xx.2023
+- Taiteen perusopetuksen opiskeluoikeuden hankintakoulutus-tilaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen.
+
 ## 10.2.2023
 
 - Sallittu väliaikaisesti oppilaitoksen vaihto tilanteessa, jossa vaihdetaan oppilaitoksesta 1.2.246.562.10.13857290038 oppilaitokseen 1.2.246.562.10.38485743660

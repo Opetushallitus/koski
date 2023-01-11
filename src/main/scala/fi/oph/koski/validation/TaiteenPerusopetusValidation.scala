@@ -115,4 +115,19 @@ object TaiteenPerusopetusValidation {
       KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
     }
   }
+
+  def validateHankintakoulutusEiMuuttunut(
+    oldState: KoskeenTallennettavaOpiskeluoikeus,
+    newState: KoskeenTallennettavaOpiskeluoikeus
+  ): HttpStatus = {
+    (oldState, newState) match {
+      case (oldOo: TaiteenPerusopetuksenOpiskeluoikeus, newOo: TaiteenPerusopetuksenOpiskeluoikeus) =>
+        HttpStatus.validate(oldOo.hankintakoulutus.koodiarvo == newOo.hankintakoulutus.koodiarvo) {
+          KoskiErrorCategory.badRequest(
+            "Opiskeluoikeuden hankitakoulutuksen tilaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen"
+          )
+        }
+      case _ => HttpStatus.ok
+    }
+  }
 }
