@@ -262,7 +262,7 @@ object KoskiErrorCategory {
     val omienTietojenMuokkaus = subcategory("omienTietojenMuokkaus", "Omien tietojen muokkaus ei ole sallittua.")
     val oppijaOidinMuutos = subcategory("oppijaOidinMuutos", "Oppija OID ei vastaa opiskeluoikeuteen kuuluvaa oppija OID:a")
     val vainVarhaiskasvatuksenJärjestäjä = subcategory("vainVarhaiskasvatuksenJärjestäjä", "Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvatusta järjestävälle koulutustoimijalle")
-    val vainTaiteenPerusopetuksenJärjestäjä = subcategory("vainTaiteenPerusopetuksenJärjestäjä", "Operaatio on sallittu vain käyttäjälle joka on luotu taiteen perusopetusta järjestävälle koulutustoimijalle")
+    val vainTaiteenPerusopetuksenJärjestäjä = subcategory("vainTaiteenPerusopetuksenJärjestäjä", "Operaatio on sallittu vain käyttäjälle joka on luotu taiteen perusopetusta järjestävälle koulutustoimijalle tai jolla on riittävät oikeudet muokata hankintakoulutuksena järjestettävää opiskeluoikeutta")
     val vainVirkailija = subcategory("vainVirkailija", "Sallittu vain virkailija-käyttäjille")
     val vainKansalainen = subcategory("vainKansalainen", "Sallittu vain kansalainen-käyttäjille")
     val vainViranomainen = subcategory("vainViranomainen", "Sallittu vain viranomaisille")

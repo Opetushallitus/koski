@@ -107,7 +107,7 @@ class KoskiSpecificSession(
         .filter(_.organisaatio.toKoulutustoimija.isDefined)
         .exists(k => koulutustoimija.contains(k.organisaatio.oid) && k.organisaatioAccessType.contains(accessType))
 
-    access && (accessType != AccessType.write || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+    access && ((accessType != AccessType.write && accessType != AccessType.editOnly) || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   }
 
   def hasAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid], accessType: AccessType.Value): Boolean = {

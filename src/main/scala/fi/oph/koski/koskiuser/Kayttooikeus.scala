@@ -52,6 +52,7 @@ object Rooli {
   val ESH = "EUROPEANSCHOOLOFHELSINKI"
   val MUUKUINSAANNELTYKOULUTUS = "MUUKUINSAANNELTYKOULUTUS"
   val TAITEENPERUSOPETUS = "TAITEENPERUSOPETUS"
+  val TAITEENPERUSOPETUS_HANKINTAKOULUTUS = "TAITEENPERUSOPETUS_HANKINTAKOULUTUS"
 
   def globaalitKoulutusmuotoRoolit = List(GLOBAALI_LUKU_PERUSOPETUS, GLOBAALI_LUKU_TOINEN_ASTE, GLOBAALI_LUKU_KORKEAKOULU, GLOBAALI_LUKU_MUU_KUIN_SAANNELTY, GLOBAALI_LUKU_TAITEENPERUSOPETUS)
 }
@@ -161,6 +162,7 @@ trait OrgKäyttöoikeus extends Käyttöoikeus {
     case Palvelurooli("KOSKI", "TIEDONSIIRRON_MITATOINTI") => List(AccessType.tiedonsiirronMitätöinti)
     case Palvelurooli("KOSKI", "READ_UPDATE_ESIOPETUS") => List(AccessType.read, AccessType.write)
     case Palvelurooli("KOSKI", "LUKU_ESIOPETUS") => List(AccessType.read)
+    case Palvelurooli("KOSKI", "TAITEENPERUSOPETUS_HANKINTAKOULUTUS") => List(AccessType.read, AccessType.editOnly)
     case _ => Nil
   }
 

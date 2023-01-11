@@ -42,7 +42,7 @@ object MockKäyttöoikeusryhmät {
       kayttooikeudet = oppilaitosTallentaja(orgOid).kayttooikeudet.filterNot(_.oikeus == Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   }
 
-  private def organisaatioKäyttäjä(organisaatioOid: String, roolit: List[String], palvelu: String = "KOSKI"): OrganisaatioJaKäyttöoikeudet = {
+  def organisaatioKäyttäjä(organisaatioOid: String, roolit: List[String], palvelu: String = "KOSKI"): OrganisaatioJaKäyttöoikeudet = {
     OrganisaatioJaKäyttöoikeudet(organisaatioOid,
       roolit.map(PalveluJaOikeus(palvelu, _))
     )
