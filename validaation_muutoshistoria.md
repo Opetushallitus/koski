@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.xx.xxxx
+
+- Taiteen perusopetuksen koulutuksen toteutustapaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen.
+
 ## 15.2.2023
 
 - Taiteen perusopetuksen päätason suorituksille saa merkitä vahvistuksen, kun sillä on ainakin yksi arvioitu osasuoritus jolla on myös riittävä laajuus.
