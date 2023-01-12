@@ -13,9 +13,9 @@ import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { Snackbar } from '../components-v2/messages/Snackbar'
 import {
-  ArviointiEdit,
-  ArviointiView
-} from '../components-v2/opiskeluoikeus/ArviointiField'
+  ArvosanaEdit,
+  ArvosanaView
+} from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { EditBar } from '../components-v2/opiskeluoikeus/EditBar'
 import {
   LaajuusOpintopisteissäEdit,
@@ -219,9 +219,9 @@ const osasuoritusToTableRow = (
         <FormField
           form={form}
           path={osasuoritus.prop('arviointi')}
-          view={(props) => <ArviointiView {...props} />}
+          view={(props) => <ArvosanaView {...props} />}
           edit={(props) => (
-            <ArviointiEdit {...props} createArviointi={createTpoArviointi} />
+            <ArvosanaEdit {...props} createArviointi={createTpoArviointi} />
           )}
         />
       )

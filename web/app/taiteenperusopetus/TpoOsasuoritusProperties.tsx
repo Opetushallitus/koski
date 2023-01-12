@@ -3,9 +3,9 @@ import { Column, ColumnGrid } from '../components-v2/containers/ColumnGrid'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import {
-  ArviointiEdit,
-  ArviointiView
-} from '../components-v2/opiskeluoikeus/ArviointiField'
+  ArvosanaEdit,
+  ArvosanaView
+} from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { OSASUORITUSTABLE_DEPTH_KEY } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
@@ -39,9 +39,9 @@ export const TpoOsasuoritusProperties: React.FC<
           <FormField
             form={props.form}
             path={props.osasuoritusPath.prop('arviointi')}
-            view={(props) => <ArviointiView {...props} />}
+            view={(props) => <ArvosanaView {...props} />}
             edit={(props) => (
-              <ArviointiEdit {...props} createArviointi={createTpoArviointi} />
+              <ArvosanaEdit {...props} createArviointi={createTpoArviointi} />
             )}
           />
         </Column>

@@ -1,3 +1,6 @@
+import * as A from 'fp-ts/Array'
+import * as O from 'fp-ts/Option'
+import { pipe } from 'fp-ts/lib/function'
 import React, { useMemo } from 'react'
 import { useConstraint } from '../../appstate/constraints'
 import { useKoodistoOfConstraint } from '../../appstate/koodisto'
@@ -15,9 +18,9 @@ import {
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormModel'
 
 export type ArviointiViewProps<T extends ArviointiLike> = BaseProps &
-  FieldViewBaseProps<T[]>
+  FieldViewBaseProps<T[] | undefined>
 
-export const ArviointiView = <T extends ArviointiLike>(
+export const ArvosanaView = <T extends ArviointiLike>(
   props: ArviointiViewProps<T>
 ) => {
   const arviointi = props.value && viimeisinArviointi(props.value)
@@ -27,11 +30,11 @@ export const ArviointiView = <T extends ArviointiLike>(
 }
 
 export type ArviointiEditProps<T extends ArviointiLike> = BaseProps &
-  FieldEditBaseProps<T[]> & {
+  FieldEditBaseProps<T[] | undefined> & {
     createArviointi: (arvosana: T['arvosana']) => T
   }
 
-export const ArviointiEdit = <T extends ArviointiLike>(
+export const ArvosanaEdit = <T extends ArviointiLike>(
   props: ArviointiEditProps<T>
 ) => {
   const schemaClass = useMemo(
@@ -58,10 +61,14 @@ export const ArviointiEdit = <T extends ArviointiLike>(
     arviointi?.arvosana && toKoodistokoodiviiteValue(arviointi?.arvosana)
 
   const onChange = (option?: SelectOption<T['arvosana']>) => {
+    if (option) {
+    }
     props.onChange(
-      option
-        ? [...(props.initialValue || []), props.createArviointi(option.value)]
-        : []
+      option &&
+        updateArvioinnit(
+          props.createArviointi(option.value),
+          props.initialValue || []
+        )
     )
   }
 
@@ -76,3 +83,16 @@ export const ArviointiEdit = <T extends ArviointiLike>(
     )
   )
 }
+
+const updateArvioinnit = <T extends ArviointiLike>(
+  arviointi: T,
+  arvioinnit: T[]
+): T[] =>
+  pipe(
+    arvioinnit,
+    A.init,
+    O.fold(
+      () => [arviointi],
+      (vanhatArvioinnit) => [...vanhatArvioinnit, arviointi]
+    )
+  )
