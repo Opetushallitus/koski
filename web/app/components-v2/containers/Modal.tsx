@@ -1,14 +1,12 @@
 import React, { FormEventHandler, useCallback } from 'react'
 import { useModalState } from '../../appstate/modals'
-import { baseProps, BaseProps } from '../baseProps'
+import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
 import { ButtonGroup } from './ButtonGroup'
 
-export type ModalProps = React.PropsWithChildren<
-  BaseProps & {
-    onSubmit?: () => void
-    onClose?: () => void
-  }
->
+export type ModalProps = CommonPropsWithChildren<{
+  onSubmit?: () => void
+  onClose?: () => void
+}>
 
 export const Modal: React.FC<ModalProps> = (props) => {
   const { isActive, props: modalProps } = useModalState()
@@ -34,7 +32,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
 
   return (
     <form
-      {...baseProps(props, 'Modal', isActive && 'Modal__inactive')}
+      {...common(props, ['Modal', isActive && 'Modal__inactive'])}
       {...modalProps}
       onSubmit={onSubmit}
       onKeyDown={onKeyDown}
@@ -44,22 +42,22 @@ export const Modal: React.FC<ModalProps> = (props) => {
   )
 }
 
-export type ModalTitleProps = React.PropsWithChildren<BaseProps>
+export type ModalTitleProps = CommonPropsWithChildren
 
 export const ModalTitle: React.FC<ModalTitleProps> = (props) => (
-  <h1 {...baseProps(props, 'ModalTitle')}>{props.children}</h1>
+  <h1 {...common(props, ['ModalTitle'])}>{props.children}</h1>
 )
 
-export type ModalBodyProps = React.PropsWithChildren<BaseProps>
+export type ModalBodyProps = CommonPropsWithChildren
 
 export const ModalBody: React.FC<ModalBodyProps> = (props) => (
-  <section {...baseProps(props, 'ModalBody')}>{props.children}</section>
+  <section {...common(props, ['ModalBody'])}>{props.children}</section>
 )
 
-export type ModalFooterProps = React.PropsWithChildren<BaseProps>
+export type ModalFooterProps = CommonPropsWithChildren
 
 export const ModalFooter: React.FC<ModalFooterProps> = (props) => (
-  <section {...baseProps(props, 'ModalFooter')}>
+  <section {...common(props, ['ModalFooter'])}>
     <ButtonGroup>{props.children}</ButtonGroup>
   </section>
 )

@@ -1,8 +1,8 @@
 import React from 'react'
-import { baseProps, BaseProps } from '../baseProps'
+import { common, CommonPropsWithChildren } from '../CommonProps'
 
-export type ButtonGroupProps = React.PropsWithChildren<BaseProps>
+export type ButtonGroupProps = CommonPropsWithChildren
 
 export const ButtonGroup: React.FC<ButtonGroupProps> = (props) => (
-  <nav {...baseProps(props, 'ButtonGroup')}>{props.children}</nav>
+  <nav {...common(props, ['ButtonGroup'])}>{props.children}</nav>
 )

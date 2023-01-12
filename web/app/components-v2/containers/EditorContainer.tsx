@@ -1,10 +1,8 @@
 import React from 'react'
-import { baseProps, BaseProps } from '../baseProps'
+import { common, CommonPropsWithChildren } from '../CommonProps'
 
-export type EditorContainerProps = BaseProps & {
-  children?: React.ReactNode
-}
+export type EditorContainerProps = CommonPropsWithChildren
 
 export const EditorContainer = (props: EditorContainerProps) => (
-  <div {...baseProps(props, 'EditorContainer')}>{props.children}</div>
+  <div {...common(props, ['EditorContainer'])}>{props.children}</div>
 )

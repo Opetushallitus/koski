@@ -13,16 +13,16 @@ import {
   pluck
 } from '../../util/fp/objects'
 import { clamp } from '../../util/numbers'
-import { baseProps, BaseProps } from '../baseProps'
+import { cx, CommonProps, common } from '../CommonProps'
 
-export type SelectProps<T> = BaseProps & {
+export type SelectProps<T> = CommonProps<{
   initialValue?: OptionKey
   value?: OptionKey
   options: GroupedOptions<T>
   onChange: (option?: SelectOption<T>) => void
   placeholder?: string | LocalizedString
   hideEmpty?: boolean
-}
+}>
 
 export type GroupedOptions<T> = Record<OptionGroupName, Array<SelectOption<T>>>
 export type OptionGroupName = string
@@ -138,7 +138,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
 
   return (
     <div
-      {...baseProps(props, 'Select')}
+      {...common(props, ['Select'])}
       onClick={onFocus}
       onTouchStart={onFocus}
       onKeyDown={onKeyDown}
@@ -156,7 +156,8 @@ export const Select = <T,>(props: SelectProps<T>) => {
           <ul className="Select__optionList">
             {!props.hideEmpty && (
               <li
-                {...baseProps(
+                className={cx(
+                  props.className,
                   'Select__option',
                   !hoveredOption && 'Select__option--hover'
                 )}
@@ -225,7 +226,7 @@ const Options = <T,>(props: OptionsProps<T>) => {
     <>
       {props.options.map((opt) => (
         <li
-          {...baseProps(
+          className={cx(
             'Select__option',
             props.hoveredOption?.key === opt.key && 'Select__option--hover'
           )}

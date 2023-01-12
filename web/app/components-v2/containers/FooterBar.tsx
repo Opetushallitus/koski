@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { baseProps, BaseProps } from '../baseProps'
+import { common, CommonPropsWithChildren } from '../CommonProps'
 import { ContentContainer } from './ContentContainer'
 
-export type FooterBarProps = React.PropsWithChildren<BaseProps>
+export type FooterBarProps = CommonPropsWithChildren
 
 export const FooterBar: React.FC<FooterBarProps> = (props) => {
   useEffect(() => {
@@ -11,7 +11,7 @@ export const FooterBar: React.FC<FooterBarProps> = (props) => {
   }, [])
 
   return (
-    <footer {...baseProps(props, 'FooterBar')}>
+    <footer {...common(props, ['FooterBar'])}>
       <ContentContainer>{props.children}</ContentContainer>
     </footer>
   )

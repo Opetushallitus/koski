@@ -1,19 +1,19 @@
 import React from 'react'
-import { baseProps, BaseProps } from '../baseProps'
+import { common, CommonProps } from '../CommonProps'
 
-export type ColumnGridProps = BaseProps & {
+export type ColumnGridProps = CommonProps<{
   component?: React.ComponentClass | string
   children?: React.ReactNode
-}
+}>
 
 export const ColumnGrid = (props: ColumnGridProps) => {
   const Component = props.component || 'section'
   return (
-    <Component {...baseProps(props, 'ColumnGrid')}>{props.children}</Component>
+    <Component {...common(props, ['ColumnGrid'])}>{props.children}</Component>
   )
 }
 
-export type ColumnProps = BaseProps & {
+export type ColumnProps = CommonProps<{
   component?: React.ComponentClass | string
   children?: React.ReactNode
   span: number
@@ -22,14 +22,13 @@ export type ColumnProps = BaseProps & {
   spanLarge?: number
   valign?: 'top' | 'center' | 'bottom'
   align?: 'left' | 'center' | 'right'
-}
+}>
 
 export const Column = (props: ColumnProps) => {
   const Component = props.component || 'div'
   return (
     <Component
-      {...baseProps(
-        props,
+      {...common(props, [
         'Column',
         `Column-span-${props.span}`,
         props.spanPhone && `Column-phone-${props.spanPhone}`,
@@ -37,7 +36,7 @@ export const Column = (props: ColumnProps) => {
         props.spanLarge && `Column-large-${props.spanLarge}`,
         props.valign && `Column-valign-${props.valign}`,
         props.align && `Column-align-${props.align}`
-      )}
+      ])}
     >
       {props.children}
     </Component>

@@ -9,7 +9,7 @@ import { constraintObjectProp } from '../../util/constraints'
 import { toKoodistokoodiviiteValue } from '../../util/koodisto'
 import { ArviointiLike, viimeisinArviointi } from '../../util/schema'
 import { schemaClassName } from '../../util/types'
-import { baseProps, BaseProps } from '../baseProps'
+import { common, CommonProps } from '../CommonProps'
 import {
   groupKoodistoToOptions,
   Select,
@@ -17,22 +17,24 @@ import {
 } from '../controls/Select'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormModel'
 
-export type ArviointiViewProps<T extends ArviointiLike> = BaseProps &
+export type ArviointiViewProps<T extends ArviointiLike> = CommonProps<
   FieldViewBaseProps<T[] | undefined>
+>
 
 export const ArvosanaView = <T extends ArviointiLike>(
   props: ArviointiViewProps<T>
 ) => {
   const arviointi = props.value && viimeisinArviointi(props.value)
   return arviointi ? (
-    <span {...baseProps(props)}>{t(arviointi.arvosana?.nimi)}</span>
+    <span {...common(props)}>{t(arviointi.arvosana?.nimi)}</span>
   ) : null
 }
 
-export type ArviointiEditProps<T extends ArviointiLike> = BaseProps &
+export type ArviointiEditProps<T extends ArviointiLike> = CommonProps<
   FieldEditBaseProps<T[] | undefined> & {
     createArviointi: (arvosana: T['arvosana']) => T
   }
+>
 
 export const ArvosanaEdit = <T extends ArviointiLike>(
   props: ArviointiEditProps<T>

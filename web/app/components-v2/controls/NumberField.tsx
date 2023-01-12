@@ -1,12 +1,10 @@
 import React, { useCallback } from 'react'
-import { t } from '../../i18n/i18n'
-import { baseProps, BaseProps } from '../baseProps'
-import { FieldErrors } from '../forms/FieldErrors'
+import { CommonProps, cx, common } from '../CommonProps'
 
-export type NumberFieldProps = BaseProps & {
+export type NumberFieldProps = CommonProps<{
   value?: number
   onChange: (text: number) => void
-}
+}>
 
 export const NumberField: React.FC<NumberFieldProps> = (props) => {
   const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -16,7 +14,7 @@ export const NumberField: React.FC<NumberFieldProps> = (props) => {
     [props.onChange]
   )
   return (
-    <div {...baseProps(props, 'NumberField')}>
+    <div {...common(props, ['NumberField'])}>
       <input
         className="NumberField__input"
         type="number"

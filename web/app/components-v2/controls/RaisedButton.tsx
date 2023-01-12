@@ -1,22 +1,21 @@
 import React from 'react'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { BaseProps, baseProps } from '../baseProps'
+import { common, CommonProps } from '../CommonProps'
 import { Trans } from '../texts/Trans'
 
-export type RaisedButtonProps = BaseProps & {
+export type RaisedButtonProps = CommonProps<{
   children: LocalizedString | string
   onClick?: () => void
   disabled?: boolean
   fullWidth?: boolean
-}
+}>
 
 export const RaisedButton = (props: RaisedButtonProps) => (
   <button
-    {...baseProps(
-      props,
+    {...common(props, [
       'RaisedButton',
       props.fullWidth && 'RaisedButton__fullWidth'
-    )}
+    ])}
     onClick={props.onClick}
     disabled={props.disabled}
   >

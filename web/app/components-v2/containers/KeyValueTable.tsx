@@ -1,26 +1,23 @@
 import React from 'react'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { baseProps, BaseProps } from '../baseProps'
+import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
 import { Trans } from '../texts/Trans'
 import { Column, ColumnGrid } from './ColumnGrid'
 
-export type KeyValueTableProps = BaseProps & {
-  children: React.ReactNode
-}
+export type KeyValueTableProps = CommonPropsWithChildren
 
 export const KeyValueTable = (props: KeyValueTableProps) => (
-  <ul {...baseProps(props, 'KeyValueTable')}>{props.children}</ul>
+  <ul {...common(props, ['KeyValueTable'])}>{props.children}</ul>
 )
 
-export type KeyValueRowProps = BaseProps & {
+export type KeyValueRowProps = CommonPropsWithChildren<{
   name: string | LocalizedString
-  children?: React.ReactNode
   indent?: number
-}
+}>
 
 export const KeyValueRow = (props: KeyValueRowProps) =>
   props.children ? (
-    <ColumnGrid component="li" {...baseProps(props, 'KeyValueRow')}>
+    <ColumnGrid component="li" {...common(props, ['KeyValueRow'])}>
       {props.indent && <Column span={props.indent} />}
       <Column
         className="KeyValueRow__name"
@@ -41,15 +38,15 @@ export const KeyValueRow = (props: KeyValueRowProps) =>
     </ColumnGrid>
   ) : null
 
-export type KeyMultiValueRowProps = BaseProps & {
+export type KeyMultiValueRowProps = CommonProps<{
   name: string | LocalizedString
   children: React.ReactNode[]
   columnSpans?: number[]
-}
+}>
 
 export const KeyMultiValueRow = (props: KeyMultiValueRowProps) =>
   props.children ? (
-    <ColumnGrid component="li" {...baseProps(props, 'KeyValueRow')}>
+    <ColumnGrid component="li" {...common(props, ['KeyValueRow'])}>
       <Column
         className="KeyValueRow__name"
         span={4}

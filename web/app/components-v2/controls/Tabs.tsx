@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { baseProps, BaseProps } from '../baseProps'
+import { common, CommonProps, cx } from '../CommonProps'
 
-export type TabsProps<T> = BaseProps & {
+export type TabsProps<T> = CommonProps<{
   tabs: Tab<T>[]
   onSelect: (key: T) => void
-}
+}>
 
 export type Tab<T> = {
   key: T
@@ -22,12 +22,12 @@ export const Tabs = <T,>(props: TabsProps<T>) => {
   }
 
   return (
-    <nav {...baseProps(props, 'Tabs')}>
+    <nav {...common(props, ['Tabs'])}>
       <ul className="Tabs__list">
         {props.tabs.map((tab, i) => (
           <li
             key={i}
-            {...baseProps(
+            className={cx(
               'Tabs__item',
               tab.key === active && 'Tabs__item-active'
             )}

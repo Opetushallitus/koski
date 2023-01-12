@@ -1,8 +1,8 @@
 import React from 'react'
-import { baseProps, BaseProps } from '../baseProps'
+import { common, CommonPropsWithChildren } from '../CommonProps'
 
-export type ContentContainerProps = React.PropsWithChildren<BaseProps>
+export type ContentContainerProps = CommonPropsWithChildren
 
 export const ContentContainer: React.FC<ContentContainerProps> = (props) => (
-  <div {...baseProps(props, 'ContentContainer')}>{props.children}</div>
+  <div {...common(props, ['ContentContainer'])}>{props.children}</div>
 )

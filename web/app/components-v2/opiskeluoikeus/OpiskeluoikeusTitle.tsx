@@ -1,21 +1,20 @@
 import React from 'react'
 import { formatYearRange } from '../../date/date'
 import { t } from '../../i18n/i18n'
-import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { nonNull } from '../../util/fp/arrays'
 import { viimeisinOpiskelujaksonTila } from '../../util/schema'
 import { uncapitalize } from '../../util/strings'
-import { baseProps, BaseProps } from '../baseProps'
+import { common, CommonProps } from '../CommonProps'
 import { Lowercase } from '../texts/Lowercase'
 import { Trans } from '../texts/Trans'
 
-export type OpiskeluoikeusTitleProps = BaseProps & {
+export type OpiskeluoikeusTitleProps = CommonProps<{
   opiskeluoikeus: Opiskeluoikeus
   // Nämä propertyt ylikirjoittavat opiskeluoikeudesta oletuksena tulkittavat arvot:
   oppilaitos?: string
   koulutus?: string
-}
+}>
 
 const join = (...as: Array<string | undefined>) => as.filter(nonNull).join(', ')
 
@@ -37,7 +36,7 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
   const oid: string | undefined = (props.opiskeluoikeus as any).oid
 
   return (
-    <h3 {...baseProps(props, 'OpiskeluoikeusTitle')}>
+    <h3 {...common(props, ['OpiskeluoikeusTitle'])}>
       <span className="OpiskeluoikeusTitle__title">
         {oppilaitosJaKoulutus} (<Lowercase>{aikaväliJaTila}</Lowercase>)
       </span>

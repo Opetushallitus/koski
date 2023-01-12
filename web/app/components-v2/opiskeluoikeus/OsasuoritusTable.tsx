@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { useDepth } from '../../util/useDepth'
-import { BaseProps } from '../baseProps'
+import { CommonProps } from '../CommonProps'
 import { Column, ColumnGrid } from '../containers/ColumnGrid'
 import { ExpandButton } from '../controls/ExpandButton'
 
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
 
-export type OsasuoritusTableProps<DATA_KEYS extends string> = BaseProps & {
+export type OsasuoritusTableProps<DATA_KEYS extends string> = CommonProps<{
   rows: Array<OsasuoritusRowData<DATA_KEYS>>
-}
+}>
 
 export type OsasuoritusRowData<DATA_KEYS extends string> = {
   columns: Record<DATA_KEYS, React.ReactNode>
@@ -27,9 +27,9 @@ export const OsasuoritusTable = <DATA_KEYS extends string>(
   </>
 )
 
-export type OsasuoritusRowProps<DATA_KEYS extends string> = BaseProps & {
+export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
   row: OsasuoritusRowData<DATA_KEYS>
-}
+}>
 
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>

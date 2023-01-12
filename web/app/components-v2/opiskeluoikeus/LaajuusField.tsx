@@ -6,7 +6,7 @@ import { Laajuus } from '../../types/fi/oph/koski/schema/Laajuus'
 import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { removeFloatingPointDrift } from '../../util/numbers'
 import { CollectableOptic } from '../../util/types'
-import { baseProps, BaseProps } from '../baseProps'
+import { CommonProps, cx, common } from '../CommonProps'
 import { NumberField } from '../controls/NumberField'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormModel'
@@ -18,21 +18,22 @@ import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormModel'
  * ---------------------------------------------------------------------
  */
 
-export type LaajuusViewProps = BaseProps & FieldViewBaseProps<Laajuus>
+export type LaajuusViewProps = CommonProps<FieldViewBaseProps<Laajuus>>
 
 export const LaajuusView = (props: LaajuusViewProps) => {
   return props.value ? (
-    <span {...baseProps(props)}>
+    <span {...common(props)}>
       {props.value.arvo}{' '}
       {t(props.value.yksikkö.lyhytNimi || props.value.yksikkö.nimi)}
     </span>
   ) : null
 }
 
-export type LaajuusEditProps<T extends Laajuus> = BaseProps &
+export type LaajuusEditProps<T extends Laajuus> = CommonProps<
   FieldEditBaseProps<T> & {
     createLaajuus: (arvo: number) => T
   }
+>
 
 /* ---------------------------------------------------------------------
  *
@@ -48,7 +49,7 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
   )
 
   return (
-    <label {...baseProps(props, 'LaajuusField')}>
+    <label {...common(props, ['LaajuusField'])}>
       <div className="LaajuusField__container">
         <NumberField
           className="LaajuusField__arvo"
@@ -71,8 +72,9 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
  * ---------------------------------------------------------------------
  */
 
-export type DefaultLaajuusEditProps<T extends Laajuus> = BaseProps &
+export type DefaultLaajuusEditProps<T extends Laajuus> = CommonProps<
   FieldEditBaseProps<T>
+>
 
 export const LaajuusOpintopisteissäEdit: React.FC<
   DefaultLaajuusEditProps<LaajuusOpintopisteissä>

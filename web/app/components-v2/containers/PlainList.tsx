@@ -1,12 +1,12 @@
 import React from 'react'
-import { baseProps, BaseProps } from '../baseProps'
+import { CommonProps, cx, common } from '../CommonProps'
 
-export type PlainListProps = BaseProps & {
+export type PlainListProps = CommonProps<{
   children: React.ReactNode[]
-}
+}>
 
 export const PlainList = (props: PlainListProps) => (
-  <ul {...baseProps(props, 'PlainList')}>
+  <ul {...common(props, ['PlainList'])}>
     {props.children.map((child, index) => (
       <li key={index}>{child}</li>
     ))}
