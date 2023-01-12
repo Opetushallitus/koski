@@ -21,7 +21,7 @@ export type SelectProps<T> = BaseProps & {
   options: GroupedOptions<T>
   onChange: (option?: SelectOption<T>) => void
   placeholder?: string | LocalizedString
-  emptyOption?: string | LocalizedString
+  hideEmpty?: boolean
 }
 
 export type GroupedOptions<T> = Record<OptionGroupName, Array<SelectOption<T>>>
@@ -49,6 +49,12 @@ export const Select = <T,>(props: SelectProps<T>) => {
       flattenObj(props.options).find((o) => o.key === props.value)
     setDisplayValue(option ? option.label : '')
   }, [props.value, props.options])
+
+  useEffect(() => {
+    if (props.hideEmpty) {
+      setHoveredOption(flattenObj(props.options)[0])
+    }
+  }, [])
 
   const onFocus = useCallback(() => {
     setDropdownVisible(true)
@@ -82,8 +88,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
   // Changes
 
   const onChange = useCallback(
-    (option: SelectOption<T>) => {
-      setDisplayValue(option.label)
+    (option?: SelectOption<T>) => {
       setDropdownVisible(false)
       props.onChange(option)
     },
@@ -96,13 +101,17 @@ export const Select = <T,>(props: SelectProps<T>) => {
     (event) => {
       switch (event.key) {
         case 'ArrowDown':
-          setHoveredOption(selectOption(props.options, hoveredOption, 1))
+          if (dropdownVisible) {
+            setHoveredOption(selectOption(props.options, hoveredOption, 1))
+          }
           setDropdownVisible(true)
           event.preventDefault()
           event.stopPropagation()
           return
         case 'ArrowUp':
-          setHoveredOption(selectOption(props.options, hoveredOption, -1))
+          if (dropdownVisible) {
+            setHoveredOption(selectOption(props.options, hoveredOption, -1))
+          }
           setDropdownVisible(true)
           event.preventDefault()
           event.stopPropagation()
@@ -116,7 +125,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
           setDropdownVisible(false)
           event.preventDefault()
           event.stopPropagation()
-          if (hoveredOption && dropdownVisible) {
+          if (dropdownVisible) {
             onChange(hoveredOption)
           }
           return
@@ -141,11 +150,23 @@ export const Select = <T,>(props: SelectProps<T>) => {
         placeholder={t(props.placeholder)}
         value={displayValue}
         onChange={doNothing} // TODO: Tähän vois hakufiltteröintihomman toteuttaa
-        // onKeyDown={onKeyDown}
       />
       {dropdownVisible && (
         <div className="Select__optionListContainer">
           <ul className="Select__optionList">
+            {!props.hideEmpty && (
+              <li
+                {...baseProps(
+                  'Select__option',
+                  !hoveredOption && 'Select__option--hover'
+                )}
+                onClick={() => onChange(undefined)}
+                onMouseOver={() => setHoveredOption(undefined)}
+              >
+                {t('Ei valintaa')}
+              </li>
+            )}
+
             {isSingularObject(props.options) ? (
               <Options
                 options={flattenObj(props.options)}
@@ -156,14 +177,13 @@ export const Select = <T,>(props: SelectProps<T>) => {
             ) : (
               mapRecordToArray(
                 (options: Array<SelectOption<T>>, group: OptionGroupName) => (
-                  <optgroup key={group} label={group}>
-                    <Options
-                      options={options}
-                      hoveredOption={hoveredOption}
-                      onClick={onChange}
-                      onMouseOver={setHoveredOption}
-                    />
-                  </optgroup>
+                  // TODO: Renderöi groupin nimi
+                  <Options
+                    options={options}
+                    hoveredOption={hoveredOption}
+                    onClick={onChange}
+                    onMouseOver={setHoveredOption}
+                  />
                 )
               )(props.options)
             )}
@@ -178,13 +198,13 @@ const selectOption = <T,>(
   options: GroupedOptions<T>,
   current: SelectOption<T> | undefined,
   steps: number
-): SelectOption<T> => {
+): SelectOption<T> | undefined => {
   const flatOptions = flattenObj(options)
   const currentIndex = current
     ? flatOptions?.findIndex((o) => o.key === current.key)
     : -1
-  const index = clamp(0, flatOptions.length - 1)(currentIndex + steps)
-  return flatOptions[index]
+  const index = clamp(-1, flatOptions.length - 1)(currentIndex + steps)
+  return index >= 0 ? flatOptions[index] : undefined
 }
 
 type OptionsProps<T> = {

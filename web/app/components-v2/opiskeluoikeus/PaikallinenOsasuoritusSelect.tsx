@@ -66,6 +66,7 @@ export const PaikallinenOsasuoritusSelect: React.FC<
       <Select
         placeholder={props.addNewText || t('Lisää osasuoritus')}
         options={options}
+        hideEmpty
         onChange={onChange}
       />
       {modalIsVisible && (
