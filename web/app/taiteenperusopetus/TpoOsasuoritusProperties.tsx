@@ -1,5 +1,5 @@
 import React from 'react'
-import { Column, ColumnGrid } from '../components-v2/containers/ColumnGrid'
+import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import {
@@ -27,7 +27,7 @@ export const TpoOsasuoritusProperties: React.FC<
 
   return (
     <div className="TpoOsasuoritusProperties">
-      <ColumnGrid>
+      <ColumnRow>
         <Column span={depth} />
         <Column span={3} className="TpoOsasuoritusProperties__label">
           Arviointi
@@ -45,8 +45,8 @@ export const TpoOsasuoritusProperties: React.FC<
             )}
           />
         </Column>
-      </ColumnGrid>
-      <ColumnGrid>
+      </ColumnRow>
+      <ColumnRow>
         <Column span={depth + 3} />
         <Column span={4} className="TpoOsasuoritusProperties__label">
           Päivämäärä
@@ -54,14 +54,14 @@ export const TpoOsasuoritusProperties: React.FC<
         <Column span={24 - depth - 7}>
           TODO: Päivämääräeditori (ArviointiDateEdit ja DateEdit)
         </Column>
-      </ColumnGrid>
-      <ColumnGrid>
+      </ColumnRow>
+      <ColumnRow>
         <Column span={depth + 3} />
         <Column span={4} className="TpoOsasuoritusProperties__label">
           Arvioijat
         </Column>
         <Column span={24 - depth - 7}>TODO: Arvioitsijaeditori</Column>
-      </ColumnGrid>
+      </ColumnRow>
     </div>
   )
 }

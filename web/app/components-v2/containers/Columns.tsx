@@ -1,15 +1,15 @@
 import React from 'react'
 import { common, CommonProps } from '../CommonProps'
 
-export type ColumnGridProps = CommonProps<{
+export type ColumnRowProps = CommonProps<{
   component?: React.ComponentClass | string
   children?: React.ReactNode
 }>
 
-export const ColumnGrid = (props: ColumnGridProps) => {
+export const ColumnRow = (props: ColumnRowProps) => {
   const Component = props.component || 'section'
   return (
-    <Component {...common(props, ['ColumnGrid'])}>{props.children}</Component>
+    <Component {...common(props, ['ColumnRow'])}>{props.children}</Component>
   )
 }
 

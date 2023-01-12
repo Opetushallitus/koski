@@ -1,0 +1,67 @@
+@Columns-columns: 24;
+@Columns-gutter: 24px;
+
+@Columns-phone-breakpoint: 640px;
+@Columns-small-breakpoint: 960px;
+@Columns-large-breakpoint: 1280px;
+
+.ColumnRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0 (-@Columns-gutter / 2);
+
+  // Gutter between columns
+  .Column {
+    padding: 0 (@Columns-gutter / 2);
+    min-height: 2 * @baseline;
+  }
+}
+
+// Spans
+.generate-columns(span, @Columns-columns);
+
+@media screen and (max-width: @Columns-phone-breakpoint) {
+  .generate-columns(phone, @Columns-columns);
+}
+
+@media screen and (max-width: @Columns-small-breakpoint) {
+  .generate-columns(small, @Columns-columns);
+}
+
+@media screen and (max-width: @Columns-large-breakpoint) {
+  .generate-columns(large, @Columns-columns);
+}
+
+.generate-columns(@name, @index) when (@index > 0) {
+  .generate-columns(@name, @index - 1);
+  .Column-@{name}-@{index} {
+    width: 100% * @index / @Columns-columns;
+  }
+}
+
+// Alignments
+
+.Column-valign-top {
+  align-self: flex-start;
+}
+
+.Column-valign-center {
+  align-self: center;
+}
+
+.Column-valign-bottom {
+  align-self: flex-end;
+}
+
+.Column-align-left {
+  text-align: left;
+}
+
+.Column-align-center {
+  text-align: center;
+}
+
+.Column-align-right {
+  text-align: right;
+}

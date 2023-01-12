@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useConstraint } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
-import { Column, ColumnGrid } from '../components-v2/containers/ColumnGrid'
+import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { EditorContainer } from '../components-v2/containers/EditorContainer'
 import {
   KeyValueRow,
@@ -167,7 +167,7 @@ export const TaiteenPerusopetusEditor = (
           />
         )}
         {form.editMode && (
-          <ColumnGrid>
+          <ColumnRow>
             <Column span={1} spanPhone={0}></Column>
             <Column span={15} spanPhone={24}>
               <PaikallinenOsasuoritusSelect
@@ -175,7 +175,7 @@ export const TaiteenPerusopetusEditor = (
                 onSelect={onAddOsasuoritus}
               />
             </Column>
-          </ColumnGrid>
+          </ColumnRow>
         )}
 
         <EditBar form={form} onSave={onSave} />

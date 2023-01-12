@@ -2,7 +2,7 @@ import React from 'react'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
 import { Trans } from '../texts/Trans'
-import { Column, ColumnGrid } from './ColumnGrid'
+import { Column, ColumnRow } from './Columns'
 
 export type KeyValueTableProps = CommonPropsWithChildren
 
@@ -17,7 +17,7 @@ export type KeyValueRowProps = CommonPropsWithChildren<{
 
 export const KeyValueRow = (props: KeyValueRowProps) =>
   props.children ? (
-    <ColumnGrid component="li" {...common(props, ['KeyValueRow'])}>
+    <ColumnRow component="li" {...common(props, ['KeyValueRow'])}>
       {props.indent && <Column span={props.indent} />}
       <Column
         className="KeyValueRow__name"
@@ -35,7 +35,7 @@ export const KeyValueRow = (props: KeyValueRowProps) =>
       >
         {props.children}
       </Column>
-    </ColumnGrid>
+    </ColumnRow>
   ) : null
 
 export type KeyMultiValueRowProps = CommonProps<{
@@ -46,7 +46,7 @@ export type KeyMultiValueRowProps = CommonProps<{
 
 export const KeyMultiValueRow = (props: KeyMultiValueRowProps) =>
   props.children ? (
-    <ColumnGrid component="li" {...common(props, ['KeyValueRow'])}>
+    <ColumnRow component="li" {...common(props, ['KeyValueRow'])}>
       <Column
         className="KeyValueRow__name"
         span={4}
@@ -66,5 +66,5 @@ export const KeyMultiValueRow = (props: KeyMultiValueRowProps) =>
           {child}
         </Column>
       ))}
-    </ColumnGrid>
+    </ColumnRow>
   ) : null

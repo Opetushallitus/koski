@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { useDepth } from '../../util/useDepth'
 import { CommonProps } from '../CommonProps'
-import { Column, ColumnGrid } from '../containers/ColumnGrid'
+import { Column, ColumnRow } from '../containers/Columns'
 import { ExpandButton } from '../controls/ExpandButton'
 
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
@@ -38,7 +38,7 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
   const spans = getSpans(props.row.columns, depth)
   return (
     <>
-      <ColumnGrid className="OsasuoritusHeader">
+      <ColumnRow className="OsasuoritusHeader">
         {spans.indent > 0 && (
           <Column
             span={spans.indent}
@@ -51,7 +51,7 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
             {t(key)}
           </Column>
         ))}
-      </ColumnGrid>
+      </ColumnRow>
     </>
   )
 }
@@ -65,7 +65,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
 
   return (
     <>
-      <ColumnGrid className="OsasuoritusRow">
+      <ColumnRow className="OsasuoritusRow">
         {spans.indent > 0 && (
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
@@ -81,7 +81,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
             </Column>
           )
         )}
-      </ColumnGrid>
+      </ColumnRow>
       {isOpen && <DeeperLevel>{props.row.getContent?.()}</DeeperLevel>}
     </>
   )
