@@ -87,7 +87,9 @@ case class KorkeakoulututkinnonSuoritus(
   @Title("Opintojaksot")
   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
   @KoodistoKoodiarvo("korkeakoulututkinto")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi"),
+  @KoodistoUri("virtaopsuorluokittelu")
+  luokittelu: Option[List[Koodistokoodiviite]]
 ) extends KorkeakouluSuoritus {
   override def tarvitseeVahvistuksen = false
 }
@@ -112,15 +114,17 @@ case class KorkeakoulunOpintojaksonSuoritus(
 
 @Description("Muut kuin tutkintoon johtavat opiskeluoikeudet, joilla ei ole koulutuskoodia")
 case class MuuKorkeakoulunSuoritus (
-   @Title("Opiskeluoikeus")
-   @FlattenInUI
-   koulutusmoduuli: MuuKorkeakoulunOpinto,
-   toimipiste: Oppilaitos,
-   vahvistus: Option[Päivämäärävahvistus],
-   suorituskieli: Option[Koodistokoodiviite],
-   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
-   @KoodistoKoodiarvo("muukorkeakoulunsuoritus")
-   tyyppi: Koodistokoodiviite = Koodistokoodiviite("muukorkeakoulunsuoritus", koodistoUri = "suorituksentyyppi")
+  @Title("Opiskeluoikeus")
+  @FlattenInUI
+  koulutusmoduuli: MuuKorkeakoulunOpinto,
+  toimipiste: Oppilaitos,
+  vahvistus: Option[Päivämäärävahvistus],
+  suorituskieli: Option[Koodistokoodiviite],
+  override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
+  @KoodistoKoodiarvo("muukorkeakoulunsuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("muukorkeakoulunsuoritus", koodistoUri = "suorituksentyyppi"),
+  @KoodistoUri("virtaopsuorluokittelu")
+  luokittelu: Option[List[Koodistokoodiviite]] = None
  ) extends KorkeakouluSuoritus with Arvioinniton {
 }
 

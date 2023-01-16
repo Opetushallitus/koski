@@ -1,3 +1,7 @@
+## 16.1.2023
+
+- Tietomalleihin "Korkeakoulututkinnon suoritus" ja "Muu korkeakoulun suoritus" lisätty Virta-datasta poimittava luokittelutieto
+
 ## 2.1.2023
 
 - IB-opintoihin lisätty oppiaineet koodeilla CLA, LIT, INF, DES, SPO, MATAA ja MATAI

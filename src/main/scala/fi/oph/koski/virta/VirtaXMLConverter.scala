@@ -21,8 +21,6 @@ import scala.collection.mutable.{HashMap, HashSet, ListBuffer}
 case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository) extends Logging {
   var virheet: ListBuffer[VirtaVirhe] = ListBuffer[VirtaVirhe]()
 
-  def noneIfEmpty[T](a: List[T]): Option[List[T]] = if (a.isEmpty) None else Some(a)
-
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     import fi.oph.koski.util.DateOrdering._
 
@@ -39,6 +37,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val (orphans, opiskeluoikeudet) = opiskeluoikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
       virheet = ListBuffer[VirtaVirhe]()
       val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList, None))
+      val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(Some(opiskeluoikeusNode), _, suoritusNodeList))
 
       val opiskeluoikeudenTila: KorkeakoulunOpiskeluoikeudenTila = KorkeakoulunOpiskeluoikeudenTila((opiskeluoikeusNode \ "Tila")
         .sortBy(alkuPvm)
@@ -46,8 +45,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         .toList)
 
       val lukuvuosimaksut: Seq[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu] = (opiskeluoikeusNode \ "LukuvuosiMaksu").map(lukuvuosiMaksuTiedot)
-
-      val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(Some(opiskeluoikeusNode), _, suoritusNodeList))
 
       val vahvistus = suoritukset.flatMap(_.vahvistus).sortBy(_.päivä)(localDateOrdering).lastOption
       val oppilaitoksenNimiPäivä = getOppilaitoksenNimiPäivä(
@@ -75,7 +72,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           maksettavatLukuvuosimaksut = Some(lukuvuosimaksut)
         )),
         virtaVirheet = virheet.toList,
-        luokittelu = noneIfEmpty(opiskeluoikeudenLuokittelu(opiskeluoikeusNode))
+        luokittelu = optionalList(opiskeluoikeudenLuokittelu(opiskeluoikeusNode))
       )
 
       (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
@@ -130,7 +127,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       val opiskeluoikeudenTutkinto = tutkinto(jakso.koulutuskoodi)
       suoritukset.exists(_.koulutusmoduuli.tunniste == opiskeluoikeudenTutkinto.tunniste)
     }
-    def viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi, jaksonNimi(opiskeluoikeusNode))
 
     if (suoritusLöytyyKoulutuskoodilla) { // suoritus löytyy virta datasta vain jos se on valmis
       moveOpintojaksotUnderPäätasonSuoritusIfNecessary(suoritukset)
@@ -161,14 +157,19 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def addKeskeneräinenTutkinnonSuoritus(tila: KorkeakoulunOpiskeluoikeudenTila, suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tutkinto: Korkeakoulututkinto): List[KorkeakouluSuoritus] = {
     val toimipiste = oppilaitos(opiskeluoikeusNode, None)
-    val (opintojaksot, muutSuoritukset) = suoritukset.partition(_.isInstanceOf[KorkeakoulunOpintojaksonSuoritus])
+    val (opintojaksot, muutSuoritukset) = suoritukset.partition {
+      case _: KorkeakoulunOpintojaksonSuoritus => true
+      case _ => false
+    }.asInstanceOf[(List[KorkeakoulunOpintojaksonSuoritus], List[KorkeakouluSuoritus])]
+
     KorkeakoulututkinnonSuoritus(
       koulutusmoduuli = tutkinto,
       arviointi = None,
       vahvistus = None,
       suorituskieli = None,
-      osasuoritukset = Some(opintojaksot collect { case s: KorkeakoulunOpintojaksonSuoritus => s }),
-      toimipiste = toimipiste
+      osasuoritukset = Some(opintojaksot),
+      toimipiste = toimipiste,
+      luokittelu = opintojaksojenLuokittelut(opintojaksot)
     ) :: muutSuoritukset
   }
 
@@ -188,11 +189,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val virtaOpiskeluoikeudenTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeusNode)
 
     val (päätasonSuoritukset, osasuoritukset) = if (sisällytäOpintojaksotOsasuorituksina(virtaOpiskeluoikeudenTyyppi)) {
-      val (opintojaksot, muut) = suoritukset.foldRight((List.empty[KorkeakoulunOpintojaksonSuoritus], List.empty[KorkeakouluSuoritus])) {
+      val (opintojaksot, muutSuoritukset) = suoritukset.foldRight((List.empty[KorkeakoulunOpintojaksonSuoritus], List.empty[KorkeakouluSuoritus])) {
         case (jakso: KorkeakoulunOpintojaksonSuoritus, (jaksot, muut)) => (jakso :: jaksot, muut)
         case (muu, (jaksot, muut)) => (jaksot, muu :: muut)
       }
-      (muut, if (opintojaksot.isEmpty) None else Some(opintojaksot))
+      (muutSuoritukset, if (opintojaksot.isEmpty) None else Some(opintojaksot))
     } else {
       (suoritukset, None)
     }
@@ -203,6 +204,13 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       tila.opiskeluoikeusjaksot.lastOption,
       suoritukset.flatMap(_.vahvistus).sortBy(_.päivä)(DateOrdering.localDateOrdering).lastOption.map(_.päivä)
     )
+
+    val osasuoritustenLuokittelut = {
+      osasuoritukset.flatMap {
+        case os: List[KorkeakoulunOpintojaksonSuoritus] => opintojaksojenLuokittelut(os)
+        case _ => None
+      }
+    }
 
     val muuKorkeakoulunSuoritus = optionalOppilaitos(opiskeluoikeusNode, oppilaitoksenNimiPäivä).map { org =>
       val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
@@ -216,7 +224,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         vahvistus = päivämääräVahvistus(vahvistusPäivä, org),
         suorituskieli = None,
         osasuoritukset = osasuoritukset,
-        toimipiste = org
+        toimipiste = org,
+        luokittelu = osasuoritustenLuokittelut
       )
     }
 
@@ -228,7 +237,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           vahvistus = päivämääräVahvistus(vahvistusPäivä, org),
           suorituskieli = None,
           osasuoritukset = osasuoritukset,
-          toimipiste = org
+          toimipiste = org,
+          luokittelu = osasuoritustenLuokittelut
         )
       }
     }
@@ -256,7 +266,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
             vahvistus = päivämääräVahvistus,
             suorituskieli = None,
             toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
-            osasuoritukset = optionalList(osasuoritukset)
+            osasuoritukset = optionalList(osasuoritukset),
+            luokittelu = optionalList(parseLuokittelu(suoritus, "virtaopsuorluokittelu"))
           )
         }
         if (tutkinnonSuoritus.isEmpty) {
@@ -347,7 +358,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.validate(Koodistokoodiviite(kieli.text.toUpperCase, "kieli"))),
       toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
       osasuoritukset = optionalList(osasuoritukset),
-      luokittelu = noneIfEmpty(parseLuokittelu(suoritus, "virtaopsuorluokittelu"))
+      luokittelu = optionalList(parseLuokittelu(suoritus, "virtaopsuorluokittelu"))
     )
   }
 
@@ -640,6 +651,9 @@ object VirtaXMLConverterUtils {
   // huom, tässä kentässä voi olla oppilaitosnumeron lisäksi muitakin arvoja, esim. "UK" = "Ulkomainen korkeakoulu"
   // https://wiki.eduuni.fi/display/CSCVIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaatio,Organisation
   private def nykyinenOppilaitosnumero(node: Node): Option[String] = (node \ "Myontaja").headOption.map(_.text)
+
+  def opintojaksojenLuokittelut(opintojaksoSuoritukset: List[KorkeakoulunOpintojaksonSuoritus]) =
+    optionalList(opintojaksoSuoritukset.flatMap(_.luokittelu.getOrElse(List.empty)).distinct)
 }
 
 case class Oppilaitosnumerot(
