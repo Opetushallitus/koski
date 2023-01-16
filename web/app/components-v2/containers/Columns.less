@@ -1,42 +1,73 @@
-@Columns-columns: 24;
-@Columns-gutter: 24px;
+@Columns-count: 24;
+@Columns-gutter: 12px;
 
 @Columns-phone-breakpoint: 640px;
 @Columns-small-breakpoint: 960px;
 @Columns-large-breakpoint: 1280px;
 
 .ColumnRow {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns:
+    [cols-start]
+    repeat(@Columns-count, [col-start] 1fr [col-end])
+    [cols-end];
+  column-gap: @Columns-gutter;
+  grid-template-rows: auto;
+  justify-items: stretch;
   align-items: center;
-  margin: 0 (-@Columns-gutter / 2);
 
-  // Gutter between columns
   .Column {
-    padding: 0 (@Columns-gutter / 2);
     min-height: 2 * @baseline;
   }
 }
 
+// Indentations
+.generate-indents(@Columns-count);
+.generate-indents(@cols) when (@cols > 0) {
+  .generate-indents(@cols - 1);
+  .ColumnRow-indent-@{cols} {
+    *:nth-child(1) {
+      grid-column-start: col-start (@cols + 1);
+    }
+  }
+}
+
+// Rows
+.generate-rows(8);
+.generate-rows(@row) when (@row > 0) {
+  .generate-rows(@row - 1);
+  .ColumnRow {
+    .Column-row-@{row} {
+      grid-row-start: @row;
+    }
+  }
+}
+
 // Spans
-.generate-columns(span, @Columns-columns);
+.generate-columns(default, @Columns-count);
 
 @media screen and (max-width: @Columns-phone-breakpoint) {
-  .generate-columns(phone, @Columns-columns);
+  .generate-columns(phone, @Columns-count);
 }
 
 @media screen and (max-width: @Columns-small-breakpoint) {
-  .generate-columns(small, @Columns-columns);
+  .generate-columns(small, @Columns-count);
 }
 
 @media screen and (max-width: @Columns-large-breakpoint) {
-  .generate-columns(large, @Columns-columns);
+  .generate-columns(large, @Columns-count);
 }
 
-.generate-columns(@name, @index) when (@index > 0) {
-  .generate-columns(@name, @index - 1);
-  .Column-@{name}-@{index} {
-    width: 100% * @index / @Columns-columns;
+.generate-columns(@name, @span) when (@span > 0) {
+  .generate-columns(@name, @span - 1);
+
+  .ColumnRow {
+    .Column-@{name}-span-@{span} {
+      grid-column-end: span @span;
+    }
+    .Column-@{name}-start-@{span} {
+      grid-column-start: col-start @span;
+    }
   }
 }
 

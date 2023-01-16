@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { t } from '../../i18n/i18n'
-import { useDepth } from '../../util/useDepth'
+import { useLayout } from '../../util/useDepth'
 import { CommonProps } from '../CommonProps'
 import { Column, ColumnRow } from '../containers/Columns'
 import { ExpandButton } from '../controls/ExpandButton'
@@ -34,8 +34,8 @@ export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>
 ) => {
-  const [depth] = useDepth(OSASUORITUSTABLE_DEPTH_KEY)
-  const spans = getSpans(props.row.columns, depth)
+  const [layout] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
+  const spans = getSpans(props.row.columns, layout.col)
   return (
     <>
       <ColumnRow className="OsasuoritusHeader">
@@ -59,9 +59,9 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
 export const OsasuoritusRow = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>
 ) => {
-  const [depth, DeeperLevel] = useDepth(OSASUORITUSTABLE_DEPTH_KEY)
+  const [layout, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
   const [isOpen, setOpen] = useState(false)
-  const spans = getSpans(props.row.columns, depth)
+  const spans = getSpans(props.row.columns, layout.col)
 
   return (
     <>
@@ -82,7 +82,9 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           )
         )}
       </ColumnRow>
-      {isOpen && <DeeperLevel>{props.row.getContent?.()}</DeeperLevel>}
+      {isOpen && (
+        <LayoutProvider indent={1}>{props.row.getContent?.()}</LayoutProvider>
+      )}
     </>
   )
 }

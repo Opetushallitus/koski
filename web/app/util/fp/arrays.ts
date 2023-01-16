@@ -64,3 +64,11 @@ export const append =
   <T>(a: T) =>
   (as?: T[]): NEA.NonEmptyArray<T> =>
     [...(as || []), a] as any as NEA.NonEmptyArray<T>
+
+export const ensureArray = <T>(a: T | T[]): NEA.NonEmptyArray<T> =>
+  (Array.isArray(a) ? a : [a]) as NEA.NonEmptyArray<T>
+
+export const initialsAndLast = <T>(as: NEA.NonEmptyArray<T>): [T[], T] => [
+  as.slice(0, -1),
+  as[as.length - 1]
+]

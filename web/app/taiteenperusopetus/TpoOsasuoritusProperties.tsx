@@ -6,10 +6,16 @@ import {
   ArvosanaEdit,
   ArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
+import {
+  OsasuoritusProperty,
+  OsasuoritusPropertyLabel,
+  OsasuoritusPropertyValue,
+  OsasuoritusSubproperty
+} from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import { OSASUORITUSTABLE_DEPTH_KEY } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
-import { useDepth } from '../util/useDepth'
+import { useLayout } from '../util/useDepth'
 import { createTpoArviointi } from './tpoCommon'
 
 export type TpoOsasuoritusPropertiesProps = {
@@ -23,19 +29,12 @@ export type TpoOsasuoritusPropertiesProps = {
 export const TpoOsasuoritusProperties: React.FC<
   TpoOsasuoritusPropertiesProps
 > = (props) => {
-  const [depth] = useDepth(OSASUORITUSTABLE_DEPTH_KEY)
+  const [depth] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
 
   return (
-    <div className="TpoOsasuoritusProperties">
-      <ColumnRow>
-        <Column span={depth} />
-        <Column span={3} className="TpoOsasuoritusProperties__label">
-          Arviointi
-        </Column>
-        <Column span={4} className="TpoOsasuoritusProperties__label">
-          Arvosana
-        </Column>
-        <Column span={24 - depth - 7}>
+    <>
+      <OsasuoritusProperty label="Arviointi">
+        <OsasuoritusSubproperty label="Arvosana">
           <FormField
             form={props.form}
             path={props.osasuoritusPath.prop('arviointi')}
@@ -44,24 +43,14 @@ export const TpoOsasuoritusProperties: React.FC<
               <ArvosanaEdit {...props} createArviointi={createTpoArviointi} />
             )}
           />
-        </Column>
-      </ColumnRow>
-      <ColumnRow>
-        <Column span={depth + 3} />
-        <Column span={4} className="TpoOsasuoritusProperties__label">
-          Päivämäärä
-        </Column>
-        <Column span={24 - depth - 7}>
-          TODO: Päivämääräeditori (ArviointiDateEdit ja DateEdit)
-        </Column>
-      </ColumnRow>
-      <ColumnRow>
-        <Column span={depth + 3} />
-        <Column span={4} className="TpoOsasuoritusProperties__label">
-          Arvioijat
-        </Column>
-        <Column span={24 - depth - 7}>TODO: Arvioitsijaeditori</Column>
-      </ColumnRow>
-    </div>
+        </OsasuoritusSubproperty>
+        <OsasuoritusSubproperty rowNumber={1} label="Päivämäärä">
+          TODO: Päivämääräeditori
+        </OsasuoritusSubproperty>
+        <OsasuoritusSubproperty rowNumber={2} label="Arvioitsijat">
+          TODO: Arvioitsijaeditori
+        </OsasuoritusSubproperty>
+      </OsasuoritusProperty>
+    </>
   )
 }
