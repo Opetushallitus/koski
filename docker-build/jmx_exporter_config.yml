@@ -1,3 +1,2 @@
-hostPort: localhost:5555
 rules:
   - pattern: ".*"
