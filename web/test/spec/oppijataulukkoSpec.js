@@ -695,7 +695,7 @@ describe('Oppijataulukko', function () {
     )
     var organisaatiovalitsin = OrganisaatioHaku(page.oppijataulukko.tableElem)
 
-    describe('ei voi hakea yksittäisistä hankitakoulutuksen oppilaitoksista joihin on tallennettu opiskeluoikeuksia', function () {
+    describe('ei voi hakea yksittäisistä hankintakoulutuksen oppilaitoksista joihin on tallennettu opiskeluoikeuksia', function () {
       before(
         page.oppijataulukko.filterBy('tyyppi'),
         page.oppijataulukko.filterBy('tila'),
