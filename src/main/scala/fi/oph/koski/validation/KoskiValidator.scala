@@ -330,7 +330,7 @@ class KoskiValidator(
     järjestettyOmanOrganisaationUlkopuolella(oo.oppilaitos, oo.koulutustoimija) match {
       // Ei koulutustoimija-organisaation käyttöoikeuksia eikä globaaleja kirjoitusoikeuksia
       case true if koulutustoimijat.isEmpty && !user.globalAccess.contains(AccessType.write) =>
-        // Löytyy editOnly-access taiteen perusopetukseen, muuten ei oppilaitoksen käyttäjä saa kirjoittaa hankitakoulutuksen opiskeluoikeutta
+        // Löytyy editOnly-access taiteen perusopetukseen, muuten ei oppilaitoksen käyttäjä saa kirjoittaa hankintakoulutuksen opiskeluoikeutta
         if(user.hasTaiteenPerusopetusAccess(oo.getOppilaitos.oid, oo.koulutustoimija.map(_.oid), AccessType.editOnly)) {
           Right(oo)
         } else {
