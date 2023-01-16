@@ -69,8 +69,6 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "vastaavan rinnakkaisen opiskeluoikeuden lisääminen on sallittu" in {
-      resetFixtures()
-
       val oo1 = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
       val oo2 = postAndGetOpiskeluoikeusV2(TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä, henkilö = KoskiSpecificMockOppijat.tyhjä)
 
@@ -83,8 +81,6 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "päätason valmis suoritus yhdistetään samalle opiskeluoikeudelle uuden päätason suorituksen kanssa vaikka suoritukset siirretään erikseen" in {
-      resetFixtures()
-
       val ooVanhaSuoritus = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
         suoritukset = List(
           TPO.PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia
@@ -144,8 +140,7 @@ class OppijaValidationTaiteenPerusopetusSpec
 
     "Opiskeluoikeuden lisäämisen oikeudet" - {
       "pääkäyttäjä voi luoda hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
-        resetFixtures()
-        putOpiskeluoikeus(
+        postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
           henkilö = KoskiSpecificMockOppijat.tyhjä,
           headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent
@@ -155,8 +150,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "koulutustoimijan käyttäjä voi luoda hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
-        resetFixtures()
-        putOpiskeluoikeus(
+        postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
           henkilö = KoskiSpecificMockOppijat.tyhjä,
           headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent
@@ -166,8 +160,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "hankintakoulutuksena järjestettävää opiskeluoikeutta ei voi luoda oman organisaation toimipaikkaan" in {
-        resetFixtures()
-        putOpiskeluoikeus(
+        postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
             koulutustoimija = Some(TPO.varsinaisSuomenAikuiskoulutussäätiö)
           ),
@@ -179,8 +172,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "koulutustoimijan käyttäjä ei voi luoda hankintakoulutuksena järjestettävää opiskeluoikeutta itse järjestettynä" in {
-        resetFixtures()
-        putOpiskeluoikeus(
+        postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
             hankintakoulutus = Koodistokoodiviite("itsejarjestettykoulutus", "taiteenperusopetushankintakoulutus")
           ),
@@ -192,13 +184,12 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "koulutustoimija voi siirtää väärän koulutustoimijatiedon hankintakoulutuksena järjestettävässä opiskeluoikeudessa ja väärä koulutustoimija ylikirjoitetaan käyttäjätietojen koulutustoimijalla" in {
-        resetFixtures()
-        val resp = putOpiskeluoikeus(
+        val resp = postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
           henkilö = KoskiSpecificMockOppijat.tyhjä,
           headers = authHeaders(MockUsers.tornioTallentaja) ++ jsonContent
         ) {
-          verifyResponseStatus(200)
+          verifyResponseStatusOk()
           readPutOppijaResponse
         }
         resp.opiskeluoikeudet.size shouldBe 1
@@ -207,8 +198,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "oppilaitoksen käyttäjä ei voi luoda hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
-        resetFixtures()
-        putOpiskeluoikeus(
+        postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
           henkilö = KoskiSpecificMockOppijat.tyhjä,
           headers = authHeaders(MockUsers.varsinaisSuomiOppilaitosTallentaja) ++ jsonContent
@@ -218,8 +208,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "oppilaitoksen hankintakoulutuksen käyttäjä ei voi luoda hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
-        resetFixtures()
-        putOpiskeluoikeus(
+        postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
           henkilö = KoskiSpecificMockOppijat.tyhjä,
           headers = authHeaders(MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja) ++ jsonContent
@@ -229,8 +218,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "oppilaitoksen käyttäjä voi luoda itse järjestettävän opiskeluoikeuden" in {
-        resetFixtures()
-        putOpiskeluoikeus(
+        postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä,
           henkilö = KoskiSpecificMockOppijat.tyhjä,
           headers = authHeaders(MockUsers.varsinaisSuomiOppilaitosTallentaja) ++ jsonContent
@@ -240,8 +228,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "oppilaitoksen hankintakoulutuksen käyttäjä voi luoda itse järjestettävän opiskeluoikeuden" in {
-        resetFixtures()
-        putOpiskeluoikeus(
+        postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä,
           henkilö = KoskiSpecificMockOppijat.tyhjä,
           headers = authHeaders(MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja) ++ jsonContent
@@ -251,8 +238,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
 
       "väärän oppilaitoksen käyttäjä ei voi luoda hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
-        resetFixtures()
-        putOpiskeluoikeus(
+        postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
           henkilö = KoskiSpecificMockOppijat.tyhjä,
           headers = authHeaders(MockUsers.stadinAmmattiopistoPääkäyttäjä) ++ jsonContent
@@ -1377,7 +1363,7 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
   }
 
-  "Hankitakoulutus-tieto" - {
+  "Hankintakoulutus-tieto" - {
     "ei voi muuttua opiskeluoikeudelle" in {
       resetFixtures()
       putOpiskeluoikeus(
@@ -1400,7 +1386,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         henkilö = KoskiSpecificMockOppijat.tyhjä,
         headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent
       ) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest("Opiskeluoikeuden hankitakoulutuksen tilaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest("Opiskeluoikeuden hankintakoulutuksen tilaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen"))
       }
     }
   }
@@ -1431,6 +1417,17 @@ class OppijaValidationTaiteenPerusopetusSpec
       KoskiApplicationForTests.koodistoViitePalvelu,
       config
     )
+  }
+
+  private def postOpiskeluoikeusV2[A](
+    oo: TaiteenPerusopetuksenOpiskeluoikeus,
+    henkilö: Henkilö = defaultHenkilö,
+    headers: Headers = authHeaders() ++ jsonContent
+  )(f: => A): A = {
+    val jsonString = JsonMethods.pretty(makeOppija(henkilö, List(oo)))
+    post("api/v2/oppija", body = jsonString, headers = headers) {
+      f
+    }
   }
 
   private def postAndGetOpiskeluoikeusV2(

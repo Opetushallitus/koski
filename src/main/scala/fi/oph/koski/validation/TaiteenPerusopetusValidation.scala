@@ -124,7 +124,7 @@ object TaiteenPerusopetusValidation {
       case (oldOo: TaiteenPerusopetuksenOpiskeluoikeus, newOo: TaiteenPerusopetuksenOpiskeluoikeus) =>
         HttpStatus.validate(oldOo.hankintakoulutus.koodiarvo == newOo.hankintakoulutus.koodiarvo) {
           KoskiErrorCategory.badRequest(
-            "Opiskeluoikeuden hankitakoulutuksen tilaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen"
+            "Opiskeluoikeuden hankintakoulutuksen tilaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen"
           )
         }
       case _ => HttpStatus.ok
