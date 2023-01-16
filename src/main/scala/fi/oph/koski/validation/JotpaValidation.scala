@@ -18,7 +18,30 @@ object JotpaValidation {
       oo.tila.opiskeluoikeusjaksot.map(validateOpiskeluoikeusjaksonRahoitusmuoto)
       :+ validateJaksojenRahoituksenYhtenäisyys(oo.tila.opiskeluoikeusjaksot)
       :+ validateJotpaRahoituksenAlkamispäivä(oo, jotpaRahoituksenRajapäivä)
+      :+ validateLaajuudet(oo)
     )
+
+  private def validateLaajuudet(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    HttpStatus.fold(
+      oo.suoritukset.map {
+        case s: VapaanSivistystyönJotpaKoulutuksenSuoritus if s.vahvistettu => validateSuorituksenLaajuus(s)
+        case _ => HttpStatus.ok
+      }
+    )
+  }
+
+  private def validateSuorituksenLaajuus(s: VapaanSivistystyönJotpaKoulutuksenSuoritus): HttpStatus = {
+    HttpStatus.fold(
+      HttpStatus.validate(s.koulutusmoduuli.getLaajuus.isDefined)(
+        KoskiErrorCategory.badRequest.validation.laajuudet(s"Vahvistetulta jatkuvaan oppimiseen suunnatulta vapaan sivistystyön koulutuksen suoritukselta ${suorituksenTunniste(s)} puuttuu laajuus")
+      ),
+      HttpStatus.fold(s.rekursiivisetOsasuoritukset.map{ os =>
+        HttpStatus.validate(os.koulutusmoduuli.getLaajuus.isDefined)(
+          KoskiErrorCategory.badRequest.validation.laajuudet(s"Vahvistetulta jatkuvaan oppimiseen suunnatulta vapaan sivistystyön koulutuksen osasuoritukselta ${suorituksenTunniste(os)} puuttuu laajuus")
+        )
+      })
+    )
+  }
 
   def validateOpiskeluoikeusjaksonRahoitusmuoto(jakso: Opiskeluoikeusjakso): HttpStatus = {
     val jotpaRahoitteinen = rahoitusmuoto(jakso).exists(JOTPARAHOITUS_KOODIARVOT.contains)
@@ -64,4 +87,8 @@ object JotpaValidation {
     Option(jakso)
       .collect { case j: KoskiOpiskeluoikeusjakso => j }
       .flatMap(_.opintojenRahoitus.map(_.koodiarvo))
+
+  private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
+    suoritus.koulutusmoduuli.tunniste
+  }
 }
