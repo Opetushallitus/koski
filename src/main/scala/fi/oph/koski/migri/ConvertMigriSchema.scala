@@ -141,6 +141,10 @@ object ConvertMigriSchema {
           }
         )
       ),
+      luokittelu = opiskeluoikeus match {
+        case x: KorkeakoulunOpiskeluoikeus => x.luokittelu
+        case _ => None
+      },
       suoritukset = opiskeluoikeus.suoritukset.map(suoritus =>
         MigriSuoritus(
           koulutusmoduuli = MigriSuorituksenKoulutusmoduuli(
@@ -214,6 +218,12 @@ object ConvertMigriSchema {
           },
           pakollisetKokeetSuoritettu = suoritus match {
             case x: YlioppilastutkinnonSuoritus => Some(x.pakollisetKokeetSuoritettu)
+            case _ => None
+          },
+          luokittelu = suoritus match {
+            case x: KorkeakoulunOpintojaksonSuoritus => x.luokittelu
+            case x: KorkeakoulututkinnonSuoritus => x.luokittelu
+            case x: MuuKorkeakoulunSuoritus => x.luokittelu
             case _ => None
           },
           osasuoritukset = suoritus.osasuoritukset.map(_.map(osasuoritus =>
