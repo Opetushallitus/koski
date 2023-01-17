@@ -16,7 +16,9 @@ const stringValidator =
 export const expectNonEmptyString = stringValidator((input) => input.length > 0)
 
 export const isValidHetu = (input: string): input is Hetu => {
-  const match = input.toUpperCase().match(/^(\d{6})[-+A](\d{3})([0-9A-Y])$/)
+  const match = input
+    .toUpperCase()
+    .match(/^(\d{6})[-+ABCDEFXYUWV](\d{3})([0-9A-Y])$/)
   return match ? validHetuChecksum(match[1]!! + match[2]!!, match[3]!!) : false
 }
 
