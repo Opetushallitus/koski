@@ -15,7 +15,11 @@ export const useFormErrors = <S extends object, A extends object>(
 
   return useMemo(
     () =>
-      pathStr ? form.errors.filter((e) => e.path.startsWith(pathStr)) : [],
+      pathStr
+        ? form.errors.filter(
+            (e) => e.type !== 'otherError' && e.path.startsWith(pathStr)
+          )
+        : [],
     [pathStr, form.errors]
   )
 }

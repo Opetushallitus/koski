@@ -4,6 +4,7 @@ import { CommonProps, cx, common } from '../CommonProps'
 export type NumberFieldProps = CommonProps<{
   value?: number
   onChange: (text: number) => void
+  hasErrors?: boolean
 }>
 
 export const NumberField: React.FC<NumberFieldProps> = (props) => {
@@ -16,7 +17,10 @@ export const NumberField: React.FC<NumberFieldProps> = (props) => {
   return (
     <div {...common(props, ['NumberField'])}>
       <input
-        className="NumberField__input"
+        className={cx(
+          'NumberField__input',
+          props.hasErrors && 'NumberField__input--error'
+        )}
         type="number"
         value={props.value}
         onChange={onChange}

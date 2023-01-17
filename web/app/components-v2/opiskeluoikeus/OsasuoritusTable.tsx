@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { useLayout } from '../../util/useDepth'
 import { CommonProps } from '../CommonProps'
@@ -13,19 +13,21 @@ export type OsasuoritusTableProps<DATA_KEYS extends string> = CommonProps<{
 
 export type OsasuoritusRowData<DATA_KEYS extends string> = {
   columns: Record<DATA_KEYS, React.ReactNode>
-  getContent?: () => React.ReactNode
+  content?: React.ReactElement
 }
 
 export const OsasuoritusTable = <DATA_KEYS extends string>(
   props: OsasuoritusTableProps<DATA_KEYS>
-) => (
-  <>
-    {props.rows[0] && <OsasuoritusHeader row={props.rows[0]} />}
-    {props.rows.map((row, index) => (
-      <OsasuoritusRow key={index} row={row} />
-    ))}
-  </>
-)
+) => {
+  return (
+    <>
+      {props.rows[0] && <OsasuoritusHeader row={props.rows[0]} />}
+      {props.rows.map((row, index) => (
+        <OsasuoritusRow key={index} row={row} />
+      ))}
+    </>
+  )
+}
 
 export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
   row: OsasuoritusRowData<DATA_KEYS>
@@ -34,8 +36,8 @@ export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>
 ) => {
-  const [layout] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
-  const spans = getSpans(props.row.columns, layout.col)
+  const [indentation] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
+  const spans = getSpans(props.row.columns, indentation)
   return (
     <>
       <ColumnRow className="OsasuoritusHeader">
@@ -59,9 +61,9 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
 export const OsasuoritusRow = <DATA_KEYS extends string>(
   props: OsasuoritusRowProps<DATA_KEYS>
 ) => {
-  const [layout, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
+  const [indentation, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
   const [isOpen, setOpen] = useState(false)
-  const spans = getSpans(props.row.columns, layout.col)
+  const spans = getSpans(props.row.columns, indentation)
 
   return (
     <>
@@ -70,7 +72,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
         <Column span={spans.icons} align="right">
-          {props.row.getContent && (
+          {props.row.content && (
             <ExpandButton expanded={isOpen} onChange={setOpen} label="TODO" />
           )}
         </Column>
@@ -82,8 +84,8 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           )
         )}
       </ColumnRow>
-      {isOpen && (
-        <LayoutProvider indent={1}>{props.row.getContent?.()}</LayoutProvider>
+      {isOpen && props.row.content && (
+        <LayoutProvider indent={1}>{props.row.content}</LayoutProvider>
       )}
     </>
   )

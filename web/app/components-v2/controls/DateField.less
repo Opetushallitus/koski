@@ -1,0 +1,19 @@
+@import '../controls/inputs.less';
+
+.default-input-error-styles(DateEdit__input);
+
+.DateEdit {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0.5 * @baseline;
+
+  .DateEdit__input {
+    flex-grow: 1;
+  }
+
+  .DateEdit__pickerBtn {
+    padding: 0 12px;
+    font-family: FontAwesome;
+  }
+}

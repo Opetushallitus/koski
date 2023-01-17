@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { common, CommonProps } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormModel'
+import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 
 export type TextViewProps = CommonProps<FieldViewBaseProps<string>>
 

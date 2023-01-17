@@ -15,7 +15,7 @@ import {
   Select,
   SelectOption
 } from '../controls/Select'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormModel'
+import { FieldViewBaseProps, FieldEditBaseProps } from '../forms/FormField'
 
 export type ArviointiViewProps<T extends ArviointiLike> = CommonProps<
   FieldViewBaseProps<T[] | undefined>

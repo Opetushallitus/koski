@@ -57,6 +57,17 @@ export const allLanguages = $.optic_<LocalizedString>().iso(
 )
 
 /**
+ * Linssi jolla voi viitata taulukon viimeiseen alkioon
+ */
+export const lastElement = <T>() =>
+  $.optic_<T[]>()
+    .lens(
+      (as): T | undefined => as[as.length - 1],
+      (as, v) => (v === undefined ? as.slice(0, -1) : [...as.slice(0, -1), v])
+    )
+    .optional()
+
+/**
  * Opiskeluoikeuden päätason suoritus
  */
 export const päätasonSuoritus = <T extends Opiskeluoikeus = Opiskeluoikeus>(

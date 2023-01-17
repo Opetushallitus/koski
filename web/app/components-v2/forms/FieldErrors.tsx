@@ -1,16 +1,21 @@
 import * as A from 'fp-ts/Array'
 import React from 'react'
 import { t } from '../../i18n/i18n'
-import { ValidationError } from './validator'
+import { otherError, ValidationError } from './validator'
 
 export type FieldErrorsProps = {
   errors: ValidationError[]
+  customError?: string
 }
 
 export const FieldErrors: React.FC<FieldErrorsProps> = (props) => {
-  return A.isNonEmpty(props.errors) ? (
+  const errors: ValidationError[] = props.customError
+    ? [otherError(props.customError), ...props.errors]
+    : props.errors
+
+  return A.isNonEmpty(errors) ? (
     <ul className="FieldErrors">
-      {props.errors.map((error, index) => (
+      {errors.map((error, index) => (
         <li key={index}>{fieldErrorMessage(error)}</li>
       ))}
     </ul>
@@ -35,6 +40,8 @@ export const fieldErrorMessage = (error: ValidationError): string => {
       return `Odottamaton virhe, ota yhteyttä KOSKI-tiimiin (lisätiedot: ${JSON.stringify(
         error
       )})`
+    case 'otherError':
+      return error.message
     default:
       // @ts-expect-error - jos tämä kommentti antaa virheen, yläpuolelta puuttuu case
       return error.type

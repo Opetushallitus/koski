@@ -1,7 +1,7 @@
 import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as $ from 'optics-ts'
-import React, {
+import {
   Dispatch,
   Reducer,
   ReducerAction,
@@ -36,26 +36,6 @@ export type FormModel<O extends object> = {
   ) => void
   readonly cancel: () => void
   readonly errors: ValidationError[]
-}
-
-export type FieldRenderer<O, T> = {
-  path: FormOptic<O, T>
-  updateAlso?: Array<FormOptic<O, T>>
-  errorsFromPath?: string
-  view: React.FC<FieldViewBaseProps<T>>
-  edit?: React.FC<FieldEditBaseProps<T>>
-  auto?: () => T | undefined
-}
-
-export type FieldViewBaseProps<T> = {
-  value?: T
-}
-
-export type FieldEditBaseProps<T> = {
-  initialValue?: T
-  value?: T
-  onChange: (value: T) => void
-  errors: ValidationError[]
 }
 
 export type FormModelListener<O extends object> = (obj: O) => void
@@ -199,21 +179,35 @@ export const useForm = <O extends object>(
     [data]
   )
 
-  return {
-    state: data,
-    initialState,
-    editMode,
-    hasChanged,
-    isSaved,
-    isValid: A.isEmpty(errors),
-    root: $.optic_<O>(),
-    startEdit,
-    updateAt,
-    validate,
-    save,
-    cancel,
-    errors
-  }
+  return useMemo(
+    () => ({
+      state: data,
+      initialState,
+      editMode,
+      hasChanged,
+      isSaved,
+      isValid: A.isEmpty(errors),
+      root: $.optic_<O>(),
+      startEdit,
+      updateAt,
+      validate,
+      save,
+      cancel,
+      errors
+    }),
+    [
+      data,
+      editMode,
+      hasChanged,
+      isSaved,
+      startEdit,
+      updateAt,
+      validate,
+      save,
+      cancel,
+      errors
+    ]
+  )
 }
 
 export type FormOptic<S, A> =

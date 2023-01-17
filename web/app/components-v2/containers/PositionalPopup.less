@@ -1,0 +1,30 @@
+.PositionalPopupHolder {
+  display: inline;
+  position: relative;
+}
+
+.PositionalPopup {
+  position: absolute;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+  background: white;
+  top: 28px;
+  left: -16px;
+  z-index: @z-index-popup + 1;
+}
+
+.PositionalPopup--overlay {
+  background: white;
+
+  &:before {
+    content: '';
+    transform: rotate(-315deg);
+    background: #ffffff;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+    position: absolute;
+    height: 27px;
+    width: 27px;
+    top: -10px;
+    left: 10px;
+    z-index: @z-index-base - 1;
+  }
+}

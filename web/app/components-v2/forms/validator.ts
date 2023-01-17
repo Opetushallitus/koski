@@ -34,6 +34,7 @@ export type ValidationError =
   | MustBeAtMostError
   | NoMatchError
   | NoClassNameError
+  | OtherError
 
 export type InvalidTypeError = {
   type: 'invalidType'
@@ -87,6 +88,11 @@ export type NoClassNameError = {
   type: 'noClassName'
   data: any
   path: string
+}
+
+export type OtherError = {
+  type: 'otherError'
+  message: string
 }
 
 export const validateData = (
@@ -305,4 +311,9 @@ const noClassName = (data: any, path: string[]): NoClassNameError => ({
   type: 'noClassName',
   data,
   path: pathToString(path)
+})
+
+export const otherError = (message: string): OtherError => ({
+  type: 'otherError',
+  message
 })

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useConstraint } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
@@ -226,8 +226,12 @@ const osasuoritusToTableRow = (
         />
       )
     },
-    getContent: () => (
-      <TpoOsasuoritusProperties form={form} osasuoritusPath={osasuoritus} />
+    content: (
+      <TpoOsasuoritusProperties
+        key="lol"
+        form={form}
+        osasuoritusPath={osasuoritus}
+      />
     )
   }
 }

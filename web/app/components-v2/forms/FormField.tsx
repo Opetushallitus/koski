@@ -1,11 +1,32 @@
 import React, { useCallback, useMemo } from 'react'
 import { useKoodistoFiller } from '../../appstate/koodisto'
 import { deepEqual } from '../../util/fp/objects'
-import { FieldRenderer, FormModel, FormOptic, getValue } from './FormModel'
+import { FormModel, FormOptic, getValue } from './FormModel'
 import { useFormErrors } from './useFormErrors'
+import { ValidationError } from './validator'
+
+export type FieldViewBaseProps<T> = {
+  value?: T
+}
+
+export type FieldEditBaseProps<T> = {
+  initialValue?: T
+  value?: T
+  onChange: (value: T) => void
+  errors: ValidationError[]
+}
+
+export type FormFieldProps<O extends object, T> = {
+  form: FormModel<O>
+  path: FormOptic<O, T>
+  updateAlso?: Array<FormOptic<O, T>>
+  errorsFromPath?: string
+  view: React.FC<FieldViewBaseProps<T>>
+  edit?: React.FC<FieldEditBaseProps<T>>
+  auto?: () => T | undefined
+}
 
 export const FormField = <O extends object, T>({
-  // TODO: Tää tyypitys siistemmäksi
   form,
   path,
   updateAlso: secondaryPaths,
@@ -13,7 +34,7 @@ export const FormField = <O extends object, T>({
   edit,
   auto,
   errorsFromPath
-}: FieldRenderer<O, T> & { form: FormModel<O> }) => {
+}: FormFieldProps<O, T>) => {
   const fillKoodistot = useKoodistoFiller()
 
   const optics = useMemo(

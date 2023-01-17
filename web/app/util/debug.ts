@@ -1,3 +1,6 @@
+import * as A from 'fp-ts/Array'
+import * as string from 'fp-ts/string'
+import React from 'react'
 import { useEffect, useState } from 'react'
 
 export const useDebugChanges = (a: any) => {
