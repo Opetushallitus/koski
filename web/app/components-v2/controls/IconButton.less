@@ -1,0 +1,25 @@
+.IconButton {
+  font-family: FontAwesome;
+  width: 3 * @baseline;
+  height: 3 * @baseline;
+
+  background-color: transparent;
+  color: @color-link-blue;
+
+  border: none;
+  border-radius: 99999px;
+
+  cursor: pointer;
+
+  transition: background-color 250ms;
+
+  &:hover {
+    background-color: @color-light-blue;
+    transition: background-color 15ms;
+  }
+}
+
+.IconButton--size-input {
+  width: 2.5 * @baseline;
+  height: 2.5 * @baseline;
+}

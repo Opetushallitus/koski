@@ -16,6 +16,7 @@ import {
 } from '../containers/PositionalPopup'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldViewBaseProps, FieldEditBaseProps } from '../forms/FormField'
+import { IconButton } from './IconButton'
 
 export type DateViewProps = CommonProps<FieldViewBaseProps<string>>
 
@@ -85,7 +86,12 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
         className={cx('DateEdit__input', hasError && 'DateEdit__input--error')}
       />
       <PositionalPopupHolder>
-        <CalendarButton onClick={toggleDayPicker} />
+        <IconButton
+          charCode="f133"
+          label={t('valitse päivä')}
+          size="input"
+          onClick={toggleDayPicker}
+        />
         {datePickerVisible && (
           <PositionalPopup>
             <DayPickerInput

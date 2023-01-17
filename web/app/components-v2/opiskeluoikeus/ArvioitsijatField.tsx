@@ -7,13 +7,14 @@ import { common, CommonProps } from '../CommonProps'
 import { TextEdit } from '../controls/TextField'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { FlatButton } from '../controls/FlatButton'
+import { Removable } from '../controls/Removable'
 
 export type ArvioitsijatViewProps = CommonProps<
   FieldViewBaseProps<Arvioitsija[] | undefined>
 >
 
 export const ArvioitsijatView: React.FC<ArvioitsijatViewProps> = (props) => {
-  return props.value ? (
+  return props.value && A.isNonEmpty(props.value) ? (
     <ul {...common(props, ['ArvioitsijatView'])}>
       {props.value.map((a, i) => (
         <li key={i}>{a.nimi}</li>
@@ -51,20 +52,37 @@ export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {
     setFocusNew(true)
   }, [props.onChange, props.value])
 
+  const removeAt = (index: number) => () => {
+    pipe(
+      props.value || [],
+      A.deleteAt(index),
+      O.fold(
+        () =>
+          console.error(
+            `Could not remove at ${index}, original array:`,
+            props.value
+          ),
+        props.onChange
+      )
+    )
+  }
+
   return (
     <ul {...common(props, ['ArvioitsijatEdit'])}>
       {props.value &&
         props.value.map((a, i) => (
           <li key={i}>
-            <TextEdit
-              required
-              value={a.nimi}
-              onChange={onChange(i)}
-              errors={props.errors}
-              autoFocus={
-                props.value && i === props.value.length - 1 && focusNew
-              }
-            />
+            <Removable onClick={removeAt(i)}>
+              <TextEdit
+                required
+                value={a.nimi}
+                onChange={onChange(i)}
+                errors={props.errors}
+                autoFocus={
+                  props.value && i === props.value.length - 1 && focusNew
+                }
+              />
+            </Removable>
           </li>
         ))}
       <li>
