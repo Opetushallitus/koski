@@ -7,6 +7,8 @@ export type ColumnRowProps = CommonProps<{
   component?: React.ComponentClass | string
   children?: React.ReactNode
   indent?: number
+  valign?: 'top' | 'center' | 'bottom'
+  align?: 'left' | 'center' | 'right'
 }>
 
 export const ColumnRow = (props: ColumnRowProps) => {
@@ -15,7 +17,9 @@ export const ColumnRow = (props: ColumnRowProps) => {
     <Component
       {...common(props, [
         'ColumnRow',
-        props.indent && `ColumnRow-indent-${props.indent}`
+        props.indent && `ColumnRow-indent-${props.indent}`,
+        props.valign && `ColumnRow-valign-${props.valign}`,
+        props.align && `ColumnRow-align-${props.align}`
       ])}
     >
       {props.children}

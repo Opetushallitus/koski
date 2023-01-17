@@ -1,5 +1,7 @@
+import * as A from 'fp-ts/Array'
 import React, { useCallback } from 'react'
-import { common, CommonProps } from '../CommonProps'
+import { t } from '../../i18n/i18n'
+import { common, CommonProps, cx } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 
@@ -13,6 +15,7 @@ export type TextEditProps = CommonProps<
   FieldEditBaseProps<string> & {
     placeholder?: string
     autoFocus?: boolean
+    required?: boolean
   }
 >
 
@@ -24,16 +27,27 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
     [props.onChange]
   )
 
+  const requiredButEmpty = Boolean(props.required && !props.value)
+
   return (
     <label {...common(props)}>
       <input
-        className="TextEdit__input"
+        className={cx(
+          'TextEdit__input',
+          (requiredButEmpty || A.isNonEmpty(props.errors)) &&
+            'TextEdit__input--error'
+        )}
         placeholder={props.placeholder}
         value={props.value}
         onChange={onChange}
         autoFocus={props.autoFocus}
       />
-      <FieldErrors errors={props.errors} />
+      <FieldErrors
+        errors={props.errors}
+        customError={
+          requiredButEmpty ? t('Kenttä ei voi olla tyhjä') : undefined
+        }
+      />
     </label>
   )
 }

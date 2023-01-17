@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { DateEdit, DateView } from '../components-v2/controls/DateField'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
+import {
+  ArvioitsijatEdit,
+  ArvioitsijatView
+} from '../components-v2/opiskeluoikeus/ArvioitsijatField'
 import {
   ArvosanaEdit,
   ArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   OsasuoritusProperty,
-  OsasuoritusPropertyLabel,
-  OsasuoritusPropertyValue,
   OsasuoritusSubproperty
 } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
@@ -47,7 +49,6 @@ export const TpoOsasuoritusProperties: React.FC<
       </OsasuoritusSubproperty>
       <OsasuoritusSubproperty rowNumber={1} label="Päivämäärä" key="pvm">
         <FormField
-          key="pvm"
           form={props.form}
           path={viimeisinArviointiPath.prop('päivä')}
           view={DateView}
@@ -55,7 +56,12 @@ export const TpoOsasuoritusProperties: React.FC<
         />
       </OsasuoritusSubproperty>
       <OsasuoritusSubproperty rowNumber={2} label="Arvioitsijat">
-        TODO: Arvioitsijaeditori
+        <FormField
+          form={props.form}
+          path={viimeisinArviointiPath.prop('arvioitsijat')}
+          view={ArvioitsijatView}
+          edit={ArvioitsijatEdit}
+        />
       </OsasuoritusSubproperty>
     </OsasuoritusProperty>
   )

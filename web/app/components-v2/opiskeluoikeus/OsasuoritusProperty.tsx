@@ -15,7 +15,11 @@ export const OsasuoritusProperty: React.FC<OsasuoritusPropertyProps> = (
 ) => {
   const [indentation, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
   return (
-    <ColumnRow {...common(props, ['OsasuoritusProperty'])} indent={indentation}>
+    <ColumnRow
+      {...common(props, ['OsasuoritusProperty'])}
+      valign="top"
+      indent={indentation}
+    >
       <OsasuoritusPropertyLabel>{props.label}</OsasuoritusPropertyLabel>
       <LayoutProvider indent={LABEL_WIDTH_COLUMNS}>
         {props.children}
@@ -34,10 +38,10 @@ export const OsasuoritusSubproperty: React.FC<OsasuoritusSubpropertyProps> = (
 ) => {
   return (
     <>
-      <OsasuoritusPropertyLabel key="subprop-label" row={props.rowNumber}>
+      <OsasuoritusPropertyLabel row={props.rowNumber}>
         {props.label}
       </OsasuoritusPropertyLabel>
-      <OsasuoritusPropertyValue key="subprop-value" row={props.rowNumber}>
+      <OsasuoritusPropertyValue row={props.rowNumber}>
         {props.children}
       </OsasuoritusPropertyValue>
     </>
