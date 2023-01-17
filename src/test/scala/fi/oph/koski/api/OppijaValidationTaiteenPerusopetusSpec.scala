@@ -122,9 +122,34 @@ class OppijaValidationTaiteenPerusopetusSpec
         oos.size shouldBe 0
       }
 
-      "oppilaitoksen käyttäjä voi lukea hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
-        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.varsinaisSuomiPalvelukäyttäjä)
+      "oppilaitoksen käyttäjä voi lukea itse järjestettävän opiskeluoikeuden" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.varsinaisSuomiOppilaitosTallentaja)
         oos.size shouldBe 1
+      }
+
+      "oppilaitoksen käyttäjä voi lukea hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.varsinaisSuomiOppilaitosTallentaja)
+        oos.size shouldBe 1
+      }
+
+      "oppilaitoksen käyttäjä voi lukea omassa organisaatiossa järjestetyn muun kuin taiteen perusopetuksen opiskeluoikeuden" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen.oid, user = MockUsers.varsinaisSuomiOppilaitosTallentaja)
+        oos.size shouldBe 1
+      }
+
+      "oppilaitoksen hankintakoulutuksen käyttäjä voi lukea itse järjestettävän opiskeluoikeuden" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja)
+        oos.size shouldBe 1
+      }
+
+      "oppilaitoksen hankintakoulutuksen käyttäjä voi lukea hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja)
+        oos.size shouldBe 1
+      }
+
+      "oppilaitoksen hankintakoulutuksen käyttäjä ei voi lukea omassa organisaatiossa järjestettyä muun kuin taiteen perusopetuksen opiskeluoikeutta" in {
+        val oos = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen.oid, user = MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja)
+        oos.size shouldBe 0
       }
 
       "helsinkiläisen oppilaitoksen käyttäjä ei voi lukea helsingistä hankittua hankintakoulutuksena järjestettyä opiskeluoikeutta" in {
@@ -356,7 +381,13 @@ class OppijaValidationTaiteenPerusopetusSpec
       "oppilaitoksen käyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
         resetFixtures()
         val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
-        mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiPalvelukäyttäjä)
+        mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiOppilaitosTallentaja)
+      }
+
+      "oppilaitoksen hankintakoulutuksen käyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja)
       }
 
       "helsinkiläisen oppilaitoksen käyttäjä ei voi mitätöidä helsingistä hankittua hankintakoulutuksena järjestettyä opiskeluoikeutta" in {

@@ -135,6 +135,7 @@ object Käyttöoikeus {
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_KORKEAKOULU) => List(Palvelurooli(KORKEAKOULUTUS))
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_MUU_KUIN_SAANNELTY) => List(Palvelurooli(MUUKUINSAANNELTYKOULUTUS))
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_TAITEENPERUSOPETUS) => List(Palvelurooli(TAITEENPERUSOPETUS))
+    case Palvelurooli("KOSKI", TAITEENPERUSOPETUS_HANKINTAKOULUTUS) => List(Palvelurooli(TAITEENPERUSOPETUS))
     case rooli => List(rooli)
   }
 }
