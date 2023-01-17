@@ -15,7 +15,7 @@ export type TextEditProps = CommonProps<
   FieldEditBaseProps<string> & {
     placeholder?: string
     autoFocus?: boolean
-    required?: boolean
+    allowEmpty?: boolean
   }
 >
 
@@ -27,7 +27,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
     [props.onChange]
   )
 
-  const requiredButEmpty = Boolean(props.required && !props.value)
+  const requiredButEmpty = Boolean(!props.allowEmpty && !props.value)
 
   return (
     <label {...common(props)}>

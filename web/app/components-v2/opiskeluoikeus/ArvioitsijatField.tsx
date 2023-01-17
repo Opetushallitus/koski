@@ -8,6 +8,7 @@ import { TextEdit } from '../controls/TextField'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { FlatButton } from '../controls/FlatButton'
 import { Removable } from '../controls/Removable'
+import { narrowErrorsToLeaf } from '../forms/validator'
 
 export type ArvioitsijatViewProps = CommonProps<
   FieldViewBaseProps<Arvioitsija[] | undefined>
@@ -74,10 +75,9 @@ export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {
           <li key={i}>
             <Removable onClick={removeAt(i)}>
               <TextEdit
-                required
                 value={a.nimi}
                 onChange={onChange(i)}
-                errors={props.errors}
+                errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
                 autoFocus={
                   props.value && i === props.value.length - 1 && focusNew
                 }

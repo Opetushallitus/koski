@@ -20,6 +20,10 @@ import {
   OptionalConstraint
 } from '../../types/fi/oph/koski/typemodel/OptionalConstraint'
 import {
+  isStringConstraint,
+  StringConstraint
+} from '../../types/fi/oph/koski/typemodel/StringConstraint'
+import {
   isUnionConstraint,
   UnionConstraint
 } from '../../types/fi/oph/koski/typemodel/UnionConstraint'
@@ -117,6 +121,8 @@ const validate = (
     return validateOptional(data, constraint, path)
   } else if (isNumberConstraint(constraint)) {
     return validateNumber(data, constraint, path)
+  } else if (isStringConstraint(constraint)) {
+    return validateString(data, constraint, path)
   }
   return []
 }
@@ -215,13 +221,24 @@ const validateNumber = (
   return [invalidType('number', data, path)]
 }
 
+// | StringConstraint
+const validateString = (
+  data: unknown,
+  constraint: StringConstraint,
+  path: string[]
+): ValidationError[] => {
+  if (typeof data === 'string') {
+    return [data.length === 0 && emptyString(path)].filter(nonFalsy)
+  }
+  return [invalidType('string', data, path)]
+}
+
 // TODO: Implement rest of the constraints
 // | AnyConstraint
 // | BooleanConstraint
 // | DateConstraint
 // | LiteralConstraint
 // | RecordConstraint
-// | StringConstraint
 
 // LocalizationString
 const validateLocalizationString = (
@@ -317,3 +334,13 @@ export const otherError = (message: string): OtherError => ({
   type: 'otherError',
   message
 })
+
+// Utils
+
+export const errorPathIs =
+  (fn: (path: string) => boolean) => (error: ValidationError) =>
+    error.type !== 'otherError' && fn(error.path)
+
+export const narrowErrorsToLeaf =
+  (pathPostfix: string) => (errors: ValidationError[]) =>
+    errors.filter(errorPathIs((path) => path.endsWith(pathPostfix)))

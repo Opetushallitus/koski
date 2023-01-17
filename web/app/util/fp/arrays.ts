@@ -72,3 +72,13 @@ export const initialsAndLast = <T>(as: NEA.NonEmptyArray<T>): [T[], T] => [
   as.slice(0, -1),
   as[as.length - 1]
 ]
+
+export const deleteAt = <T>(as: T[], index: number): T[] =>
+  pipe(
+    as,
+    A.deleteAt(index),
+    O.fold(
+      () => as,
+      (as) => as
+    )
+  )

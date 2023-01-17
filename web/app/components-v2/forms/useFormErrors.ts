@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { parsePath } from '../../util/optics'
 import { FormModel, FormOptic } from './FormModel'
+import { errorPathIs } from './validator'
 
 export const useFormErrors = <S extends object, A extends object>(
   form: FormModel<S>,
@@ -16,9 +17,7 @@ export const useFormErrors = <S extends object, A extends object>(
   return useMemo(
     () =>
       pathStr
-        ? form.errors.filter(
-            (e) => e.type !== 'otherError' && e.path.startsWith(pathStr)
-          )
+        ? form.errors.filter(errorPathIs((path) => path.startsWith(pathStr)))
         : [],
     [pathStr, form.errors]
   )

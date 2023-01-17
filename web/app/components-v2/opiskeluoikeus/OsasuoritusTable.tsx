@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { useLayout } from '../../util/useDepth'
 import { CommonProps } from '../CommonProps'
 import { Column, ColumnRow } from '../containers/Columns'
 import { ExpandButton } from '../controls/ExpandButton'
+import { CHARCODE_REMOVE, IconButton } from '../controls/IconButton'
 
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
 
 export type OsasuoritusTableProps<DATA_KEYS extends string> = CommonProps<{
+  editMode: boolean
   rows: Array<OsasuoritusRowData<DATA_KEYS>>
+  onRemove?: (index: number) => void
 }>
 
 export type OsasuoritusRowData<DATA_KEYS extends string> = {
@@ -21,16 +24,25 @@ export const OsasuoritusTable = <DATA_KEYS extends string>(
 ) => {
   return (
     <>
-      {props.rows[0] && <OsasuoritusHeader row={props.rows[0]} />}
+      {props.rows[0] && (
+        <OsasuoritusHeader row={props.rows[0]} editMode={props.editMode} />
+      )}
       {props.rows.map((row, index) => (
-        <OsasuoritusRow key={index} row={row} />
+        <OsasuoritusRow
+          key={index}
+          editMode={props.editMode}
+          row={row}
+          onRemove={props.onRemove ? () => props.onRemove?.(index) : undefined}
+        />
       ))}
     </>
   )
 }
 
 export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
+  editMode: boolean
   row: OsasuoritusRowData<DATA_KEYS>
+  onRemove?: () => void
 }>
 
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
@@ -47,7 +59,7 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
             className="OsasuoritusHeader__indent"
           ></Column>
         )}
-        <Column span={spans.icons}></Column>
+        <Column span={spans.leftIcons}></Column>
         {Object.keys(props.row.columns).map((key, index) => (
           <Column key={index} span={index === 0 ? spans.name : spans.data}>
             {t(key)}
@@ -63,7 +75,11 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
 ) => {
   const [indentation, LayoutProvider] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
   const [isOpen, setOpen] = useState(false)
-  const spans = getSpans(props.row.columns, indentation)
+  const spans = getSpans(
+    props.row.columns,
+    indentation,
+    Boolean(props.editMode && props.onRemove)
+  )
 
   return (
     <>
@@ -71,7 +87,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         {spans.indent > 0 && (
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
-        <Column span={spans.icons} align="right">
+        <Column span={spans.leftIcons} align="right">
           {props.row.content && (
             <ExpandButton expanded={isOpen} onChange={setOpen} label="TODO" />
           )}
@@ -83,6 +99,18 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
             </Column>
           )
         )}
+        {props.editMode && props.onRemove && (
+          <Column span={spans.rightIcons}>
+            {props.row.content && (
+              <IconButton
+                charCode={CHARCODE_REMOVE}
+                label={t('poista')}
+                size="input"
+                onClick={props.onRemove}
+              />
+            )}
+          </Column>
+        )}
       </ColumnRow>
       {isOpen && props.row.content && (
         <LayoutProvider indent={1}>{props.row.content}</LayoutProvider>
@@ -91,18 +119,20 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
   )
 }
 
-const getSpans = (dataObj: object, depth?: number) => {
+const getSpans = (dataObj: object, depth?: number, canRemove?: boolean) => {
   const DATA_SPAN = 4
 
   const indent = depth || 0
-  const icons = 1
+  const leftIcons = 1
+  const rightIcons = canRemove ? 1 : 0
   const dataCount = Object.values(dataObj).length
   const data = DATA_SPAN * Math.max(0, dataCount - 1)
-  const name = 24 - indent - icons - data
+  const name = 24 - indent - leftIcons - data - rightIcons
 
   return {
     indent,
-    icons,
+    leftIcons,
+    rightIcons,
     data: DATA_SPAN,
     name
   }

@@ -1,3 +1,4 @@
+import * as A from 'fp-ts/Array'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useConstraint } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
@@ -40,7 +41,7 @@ import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schem
 import { TaiteenPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaatasonSuoritus'
 import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
-import { append } from '../util/fp/arrays'
+import { append, deleteAt, ensureArray } from '../util/fp/arrays'
 import { saveOpiskeluoikeus } from '../util/koskiApi'
 import { mergeOpiskeluoikeusVersionumero } from '../util/opiskeluoikeus'
 import { usePäätasonSuoritus } from '../util/optics'
@@ -96,6 +97,20 @@ export const TaiteenPerusopetusEditor = (
         ...a,
         osasuoritukset: append(newOsasuoritus)(a.osasuoritukset)
       }))
+    },
+    [form.updateAt, päätasonSuoritusPath]
+  )
+
+  const onRemoveOsasuoritus = useCallback(
+    (osasuoritusIndex: number) => {
+      form.updateAt(päätasonSuoritusPath, (a) =>
+        a.osasuoritukset
+          ? {
+              ...a,
+              osasuoritukset: deleteAt(a.osasuoritukset, osasuoritusIndex)
+            }
+          : a
+      )
     },
     [form.updateAt, päätasonSuoritusPath]
   )
@@ -157,6 +172,7 @@ export const TaiteenPerusopetusEditor = (
         {suoritus.osasuoritukset && (
           <OsasuoritusTable
             key={suoritusIndex}
+            editMode={form.editMode}
             rows={suoritus.osasuoritukset.map((_, osasuoritusIndex) =>
               osasuoritusToTableRow(
                 form,
@@ -164,6 +180,7 @@ export const TaiteenPerusopetusEditor = (
                 osasuoritusIndex
               )
             )}
+            onRemove={onRemoveOsasuoritus}
           />
         )}
         {form.editMode && (

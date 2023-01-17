@@ -30,3 +30,5 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
     </button>
   )
 }
+
+export const CHARCODE_REMOVE = 'f1f8'

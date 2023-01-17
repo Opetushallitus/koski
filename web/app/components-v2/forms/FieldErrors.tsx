@@ -1,5 +1,6 @@
 import * as A from 'fp-ts/Array'
-import React from 'react'
+import * as string from 'fp-ts/string'
+import React, { useMemo } from 'react'
 import { t } from '../../i18n/i18n'
 import { otherError, ValidationError } from './validator'
 
@@ -13,10 +14,15 @@ export const FieldErrors: React.FC<FieldErrorsProps> = (props) => {
     ? [otherError(props.customError), ...props.errors]
     : props.errors
 
+  const messages = useMemo(
+    () => A.uniq(string.Eq)(errors.map(fieldErrorMessage)),
+    [errors]
+  )
+
   return A.isNonEmpty(errors) ? (
     <ul className="FieldErrors">
-      {errors.map((error, index) => (
-        <li key={index}>{fieldErrorMessage(error)}</li>
+      {messages.map((message, index) => (
+        <li key={index}>{message}</li>
       ))}
     </ul>
   ) : null

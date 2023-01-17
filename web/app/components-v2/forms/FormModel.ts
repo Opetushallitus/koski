@@ -41,6 +41,7 @@ export type FormModel<O extends object> = {
 export type FormModelListener<O extends object> = (obj: O) => void
 
 type InternalFormState<O> = {
+  initialData: O
   data: O
   editMode: boolean
   hasChanged: boolean
@@ -53,6 +54,7 @@ const internalInitialState = <O>(
   startWithEditMode: boolean,
   constraint?: Constraint | null
 ): InternalFormState<O> => ({
+  initialData: initialState,
   data: initialState,
   editMode: startWithEditMode,
   hasChanged: false,
@@ -65,10 +67,10 @@ const internalInitialState = <O>(
 
 type StartEdit = { type: 'startEdit'; constraint?: Constraint | null }
 type ModifyData<O> = { type: 'modify'; modify: (o: O) => O }
-type Cancel<O> = { type: 'cancel'; initialState: O }
+type Cancel = { type: 'cancel' }
 type EndEdit<O> = { type: 'endEdit'; value: O }
 type Validate = { type: 'validate'; constraint: Constraint }
-type Action<O> = StartEdit | ModifyData<O> | Cancel<O> | EndEdit<O> | Validate
+type Action<O> = StartEdit | ModifyData<O> | Cancel | EndEdit<O> | Validate
 
 const reducer = <O>(
   state: InternalFormState<O>,
@@ -77,11 +79,13 @@ const reducer = <O>(
   switch (action.type) {
     case 'modify':
       const data = action.modify(state.data)
-      return {
-        ...state,
-        data,
-        hasChanged: state.hasChanged || !deepEqual(state.data, data)
-      }
+      return state.editMode
+        ? {
+            ...state,
+            data,
+            hasChanged: state.hasChanged || !deepEqual(state.data, data)
+          }
+        : state
     case 'startEdit':
       return {
         ...state,
@@ -96,7 +100,7 @@ const reducer = <O>(
       return {
         ...state,
         editMode: false,
-        data: action.initialState,
+        data: state.initialData,
         isSaved: false,
         errors: []
       }
@@ -104,6 +108,7 @@ const reducer = <O>(
       return {
         ...state,
         data: action.value,
+        initialData: action.value,
         editMode: false,
         isSaved: true,
         errors: []
@@ -119,20 +124,22 @@ const reducer = <O>(
 }
 
 export const useForm = <O extends object>(
-  initialState: O,
+  initialStatex: O,
   startWithEditMode: boolean = false,
   constraint?: Constraint | null
 ): FormModel<O> => {
   const init = useMemo(
-    () => internalInitialState(initialState, startWithEditMode, constraint),
+    () => internalInitialState(initialStatex, startWithEditMode, constraint),
     []
   )
 
-  const [{ data, editMode, hasChanged, isSaved, errors }, dispatch] =
-    useReducer(reducer, init) as [
-      InternalFormState<O>,
-      Dispatch<ReducerAction<Reducer<O, Action<O>>>>
-    ]
+  const [
+    { data, initialData, editMode, hasChanged, isSaved, errors },
+    dispatch
+  ] = useReducer(reducer, init) as [
+    InternalFormState<O>,
+    Dispatch<ReducerAction<Reducer<O, Action<O>>>>
+  ]
 
   const globalErrors = useGlobalErrors()
 
@@ -141,8 +148,8 @@ export const useForm = <O extends object>(
   }, [])
 
   const cancel = useCallback(() => {
-    dispatch({ type: 'cancel', initialState })
-  }, [initialState])
+    dispatch({ type: 'cancel' })
+  }, [])
 
   const updateAt = useCallback(
     async <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
@@ -182,7 +189,7 @@ export const useForm = <O extends object>(
   return useMemo(
     () => ({
       state: data,
-      initialState,
+      initialState: initialData,
       editMode,
       hasChanged,
       isSaved,
@@ -197,6 +204,7 @@ export const useForm = <O extends object>(
     }),
     [
       data,
+      initialData,
       editMode,
       hasChanged,
       isSaved,
