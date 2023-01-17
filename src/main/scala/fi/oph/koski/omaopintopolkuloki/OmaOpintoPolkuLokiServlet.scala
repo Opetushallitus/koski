@@ -57,7 +57,7 @@ class OmaOpintoPolkuLokiServlet(implicit val application: KoskiApplication) exte
         h.etunimet,
         h.kutsumanimi,
         h.sukunimi,
-        huollettavat = if (huollettavat.isEmpty) None else Some(huollettavat)) // eikö tälle ole abstraktiota?
+        huollettavat = if (huollettavat.isEmpty) None else Some(huollettavat))
     })
   }
 }
