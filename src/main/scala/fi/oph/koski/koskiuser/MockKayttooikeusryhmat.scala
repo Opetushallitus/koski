@@ -8,19 +8,22 @@ object MockKäyttöoikeusryhmät {
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.LUKU_ESIOPETUS, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
 
   def oppilaitosKatselija(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
-    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
 
   def oppilaitosTodistuksenMyöntäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ))
 
   def oppilaitosTallentaja(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
-    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.READ_UPDATE, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+    organisaatioKäyttäjä(organisaatioOid, List(Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.READ_UPDATE, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+
+  def oppilaitosTallentajaTaiteenPerusopetusHankintakoulutus(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
+    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.READ_UPDATE, Rooli.TAITEENPERUSOPETUS_HANKINTAKOULUTUS))
 
   def oppilaitosPalvelukäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.READ_UPDATE, Rooli.TIEDONSIIRTO, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
 
   def oppilaitosPääkäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
-    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.TIEDONSIIRRON_MITATOINTI, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.TIEDONSIIRRON_MITATOINTI, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
 
   def vastuukäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ))
