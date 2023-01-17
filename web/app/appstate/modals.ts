@@ -8,7 +8,7 @@ export type ModalState = {
 
 export type ModalProps = {
   'aria-hidden': boolean
-  'z-index'?: number
+  style?: React.CSSProperties
 }
 
 export type ModalStateListener = (state: ModalState) => void
@@ -18,7 +18,12 @@ const inactiveModalState = (zIndex?: number): ModalState => ({
   isActive: false,
   props: {
     'aria-hidden': true,
-    'z-index': zIndex !== undefined ? 1000 + zIndex : undefined
+    style:
+      zIndex !== undefined
+        ? {
+            zIndex: 1000 + zIndex
+          }
+        : undefined
   }
 })
 
@@ -26,7 +31,7 @@ const activeModalState = (zIndex: number): ModalState => ({
   isActive: true,
   props: {
     'aria-hidden': false,
-    'z-index': 1000 + zIndex
+    style: { zIndex: 1000 + zIndex }
   }
 })
 

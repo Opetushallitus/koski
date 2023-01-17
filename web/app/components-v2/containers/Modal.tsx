@@ -1,6 +1,6 @@
 import React, { FormEventHandler, useCallback } from 'react'
 import { useModalState } from '../../appstate/modals'
-import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
+import { common, CommonPropsWithChildren } from '../CommonProps'
 import { ButtonGroup } from './ButtonGroup'
 
 export type ModalProps = CommonPropsWithChildren<{
@@ -36,6 +36,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
       {...modalProps}
       onSubmit={onSubmit}
       onKeyDown={onKeyDown}
+      // onClick={props.onClose}
     >
       <div className="Modal__content">{props.children}</div>
     </form>

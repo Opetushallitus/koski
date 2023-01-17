@@ -6,13 +6,13 @@ import { useFormErrors } from './useFormErrors'
 import { ValidationError } from './validator'
 
 export type FieldViewBaseProps<T> = {
-  value?: T
+  value?: T | undefined
 }
 
 export type FieldEditBaseProps<T> = {
-  initialValue?: T
-  value?: T
-  onChange: (value: T) => void
+  initialValue?: T | undefined
+  value?: T | undefined
+  onChange: (value?: T) => void
   errors: ValidationError[]
 }
 
@@ -53,10 +53,12 @@ export const FormField = <O extends object, T>({
   )
 
   const set = useCallback(
-    async (newValue: T) => {
+    async (newValue?: T) => {
       const filledValue = await fillKoodistot(newValue)
       const getValue = () => filledValue
-      optics.forEach((optic) => form.updateAt(optic, getValue))
+      optics.forEach((optic) =>
+        form.updateAt(optic as FormOptic<O, T | undefined>, getValue)
+      )
       form.validate()
     },
     [form]

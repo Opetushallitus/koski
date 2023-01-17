@@ -33,10 +33,10 @@ export type ArvioitsijatEditProps = CommonProps<
 export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {
   const [focusNew, setFocusNew] = useState(false)
 
-  const onChange = (index: number) => (nimi: string) => {
+  const onChange = (index: number) => (nimi?: string) => {
     pipe(
       props.value || [],
-      A.updateAt(index, Arvioitsija({ nimi })),
+      A.updateAt(index, Arvioitsija({ nimi: nimi || '' })),
       O.fold(
         () =>
           console.error(

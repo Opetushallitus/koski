@@ -58,9 +58,9 @@ export const TpoOsasuoritusProperties: React.FC<
       <OsasuoritusSubproperty rowNumber={2} label="Arvioitsijat">
         <FormField
           form={props.form}
-          path={viimeisinArviointiPath.prop('arvioitsijat')}
+          path={viimeisinArviointiPath.prop('arvioitsijat').optional()}
           view={ArvioitsijatView}
-          edit={ArvioitsijatEdit}
+          edit={(props) => <ArvioitsijatEdit {...props} />}
         />
       </OsasuoritusSubproperty>
     </OsasuoritusProperty>

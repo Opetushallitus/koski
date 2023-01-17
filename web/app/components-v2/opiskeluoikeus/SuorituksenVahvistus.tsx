@@ -1,18 +1,66 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Vahvistus } from '../../types/fi/oph/koski/schema/Vahvistus'
 import { isHenkilövahvistus } from '../../util/schema'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
+import { Modal, ModalTitle } from '../containers/Modal'
+import { FlatButton } from '../controls/FlatButton'
+import { RaisedButton } from '../controls/RaisedButton'
+import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { Trans } from '../texts/Trans'
 
-export type SuorituksenVahvistusProps = CommonProps<{
+export type SuorituksenVahvistusViewProps<T extends Vahvistus> = CommonProps<
+  FieldViewBaseProps<T | undefined>
+>
+
+export const SuorituksenVahvistusView = <T extends Vahvistus>({
+  value,
+  ...rest
+}: SuorituksenVahvistusViewProps<T>) => (
+  <SuorituksenVahvistus vahvistus={value} {...rest} />
+)
+
+export type SuorituksenVahvistusEditProps<T extends Vahvistus> = CommonProps<
+  FieldEditBaseProps<T | undefined>
+>
+
+export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
+  value,
+  onChange,
+  ...rest
+}: SuorituksenVahvistusEditProps<T>) => {
+  const [modalVisible, setModalVisible] = useState(false)
+
+  const onMerkitseValmiiksi = useCallback(() => {
+    setModalVisible(true)
+  }, [])
+
+  const onMerkitseKeskeneräiseksi = useCallback(() => {
+    onChange(undefined)
+  }, [onChange])
+
+  return (
+    <SuorituksenVahvistus vahvistus={value} {...rest}>
+      {value ? (
+        <FlatButton onClick={onMerkitseKeskeneräiseksi}>
+          Merkitse keskeneräiseksi
+        </FlatButton>
+      ) : (
+        <RaisedButton onClick={onMerkitseValmiiksi}>
+          Merkitse valmiiksi
+        </RaisedButton>
+      )}
+      {modalVisible && <SuorituksenVahvistusModal />}
+    </SuorituksenVahvistus>
+  )
+}
+
+type SuorituksenVahvistusProps = CommonPropsWithChildren<{
   vahvistus?: Vahvistus
 }>
 
-export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
-  props
-) => {
+const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (props) => {
   const { vahvistus } = props
   const myöntäjäHenkilöt = useMemo(
     () =>
@@ -47,6 +95,19 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
           ))}
         </>
       )}
+      {props.children}
     </div>
+  )
+}
+
+type SuorituksenVahvistusModalProps = CommonProps
+
+const SuorituksenVahvistusModal: React.FC<SuorituksenVahvistusModalProps> = (
+  props
+) => {
+  return (
+    <Modal>
+      <ModalTitle>Tästä jatketaan huomenna!</ModalTitle>
+    </Modal>
   )
 }

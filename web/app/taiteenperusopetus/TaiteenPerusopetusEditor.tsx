@@ -30,7 +30,10 @@ import {
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
-import { SuorituksenVahvistus } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
+import {
+  SuorituksenVahvistusEdit,
+  SuorituksenVahvistusView
+} from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { Trans } from '../components-v2/texts/Trans'
 import { t } from '../i18n/i18n'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
@@ -71,6 +74,11 @@ export const TaiteenPerusopetusEditor = (
   const osasuoritustenLaajuudetPath = useMemo(
     () => osasuorituksetPath.elems().path('koulutusmoduuli.laajuus'),
     [osasuorituksetPath]
+  )
+
+  const suorituksenVahvistusPath = useMemo(
+    () => päätasonSuoritusPath.prop('vahvistus').optional(),
+    [päätasonSuoritusPath]
   )
 
   const onSave = useCallback(() => {
@@ -167,7 +175,12 @@ export const TaiteenPerusopetusEditor = (
 
         <Spacer />
 
-        <SuorituksenVahvistus vahvistus={suoritus.vahvistus} />
+        <FormField
+          form={form}
+          path={suorituksenVahvistusPath}
+          view={SuorituksenVahvistusView}
+          edit={(props) => <SuorituksenVahvistusEdit {...props} />}
+        />
 
         {suoritus.osasuoritukset && (
           <OsasuoritusTable
