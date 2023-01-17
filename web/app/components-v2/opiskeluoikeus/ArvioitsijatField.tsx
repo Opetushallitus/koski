@@ -1,13 +1,13 @@
 import * as A from 'fp-ts/Array'
-import * as O from 'fp-ts/Option'
 import { pipe } from 'fp-ts/lib/function'
-import React, { useCallback, useEffect, useState } from 'react'
+import * as O from 'fp-ts/Option'
+import React, { useCallback, useState } from 'react'
 import { Arvioitsija } from '../../types/fi/oph/koski/schema/Arvioitsija'
 import { common, CommonProps } from '../CommonProps'
-import { TextEdit } from '../controls/TextField'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { FlatButton } from '../controls/FlatButton'
 import { Removable } from '../controls/Removable'
+import { TextEdit } from '../controls/TextField'
+import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
 
 export type ArvioitsijatViewProps = CommonProps<

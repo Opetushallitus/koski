@@ -59,9 +59,11 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
             className="OsasuoritusHeader__indent"
           ></Column>
         )}
-        <Column span={spans.leftIcons}></Column>
         {Object.keys(props.row.columns).map((key, index) => (
-          <Column key={index} span={index === 0 ? spans.name : spans.data}>
+          <Column
+            key={index}
+            span={index === 0 ? spans.name + spans.leftIcons : spans.data}
+          >
             {t(key)}
           </Column>
         ))}

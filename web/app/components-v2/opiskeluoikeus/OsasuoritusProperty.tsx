@@ -76,7 +76,7 @@ export const OsasuoritusPropertyValue: React.FC<
   OsasuoritusPropertyValueProps
 > = (props) => {
   const [indentation] = useLayout(OSASUORITUSTABLE_DEPTH_KEY)
-  const span = COLUMN_COUNT - indentation - LABEL_WIDTH_COLUMNS
+  const span = COLUMN_COUNT - indentation - LABEL_WIDTH_COLUMNS - 1
 
   return (
     <Column

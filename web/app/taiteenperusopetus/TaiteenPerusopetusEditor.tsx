@@ -1,5 +1,4 @@
-import * as A from 'fp-ts/Array'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useConstraint } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
@@ -31,17 +30,16 @@ import {
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
+import { SuorituksenVahvistus } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { Trans } from '../components-v2/texts/Trans'
-import { todayISODate } from '../date/date'
 import { t } from '../i18n/i18n'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
-import { TaiteenPerusopetuksenArviointi } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenArviointi'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
 import { TaiteenPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaatasonSuoritus'
 import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
-import { append, deleteAt, ensureArray } from '../util/fp/arrays'
+import { append, deleteAt } from '../util/fp/arrays'
 import { saveOpiskeluoikeus } from '../util/koskiApi'
 import { mergeOpiskeluoikeusVersionumero } from '../util/opiskeluoikeus'
 import { usePäätasonSuoritus } from '../util/optics'
@@ -168,6 +166,8 @@ export const TaiteenPerusopetusEditor = (
         </KeyValueTable>
 
         <Spacer />
+
+        <SuorituksenVahvistus vahvistus={suoritus.vahvistus} />
 
         {suoritus.osasuoritukset && (
           <OsasuoritusTable
