@@ -98,13 +98,11 @@ class KoskiSpecificSession(
   }
 
   def hasTaiteenPerusopetusAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid], accessType: AccessType.Value): Boolean = {
-    val access = globalAccess.contains(accessType) ||
+    globalAccess.contains(accessType) ||
       organisationOids(accessType).contains(organisaatio) ||
       orgKäyttöoikeudet
         .filter(_.organisaatio.toKoulutustoimija.isDefined)
         .exists(k => koulutustoimija.contains(k.organisaatio.oid) && k.organisaatioAccessType.contains(accessType))
-
-    access && ((accessType != AccessType.write && accessType != AccessType.editOnly) || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   }
 
   def hasAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid], accessType: AccessType.Value): Boolean = {
