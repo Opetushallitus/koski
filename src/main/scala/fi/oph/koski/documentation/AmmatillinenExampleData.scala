@@ -367,15 +367,15 @@ object AmmatillinenExampleData {
     )
   )
 
-  def perustutkintoOpiskeluoikeusValmis(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
+  def perustutkintoOpiskeluoikeusValmis(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste, valmistumispäivä: LocalDate = date(2016, 5, 31)) = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     oppilaitos = Some(oppilaitos),
-    suoritukset = List(ympäristöalanPerustutkintoValmis(toimipiste)),
+    suoritukset = List(ympäristöalanPerustutkintoValmis(toimipiste, valmistumispäivä)),
     lisätiedot = None,
     tila = AmmatillinenOpiskeluoikeudenTila(
       List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
-        AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+        AmmatillinenOpiskeluoikeusjakso(valmistumispäivä, opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
       )
     )
   )
@@ -476,7 +476,7 @@ object AmmatillinenExampleData {
   lazy val työssäoppimisjakso = Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), Some("Sortti-asema"), jyväskylä, suomi, Some(LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla")), LaajuusOsaamispisteissä(5))
   lazy val koulutussopimusjakso = Koulutussopimusjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), Some("Sortti-asema"), Some("1572860-0"), jyväskylä, suomi, Some(LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla")))
 
-  def ympäristöalanPerustutkintoValmis(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = {
+  def ympäristöalanPerustutkintoValmis(toimipiste: OrganisaatioWithOid = stadinToimipiste, valmistumispäivä: LocalDate = date(2016, 5, 31)): AmmatillisenTutkinnonSuoritus = {
     AmmatillisenTutkinnonSuoritus(
       koulutusmoduuli = AmmatillinenTutkintoKoulutus(
         Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
@@ -490,7 +490,7 @@ object AmmatillinenExampleData {
       suorituskieli = suomenKieli,
       alkamispäivä = None,
       toimipiste = toimipiste,
-      vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
+      vahvistus = vahvistus(valmistumispäivä, stadinAmmattiopisto, Some(helsinki)),
       ryhmä = Some("YMP14SN"),
       keskiarvo = Some(4.0),
       osasuoritukset = Some(List(

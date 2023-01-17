@@ -1,10 +1,10 @@
 package fi.oph.koski.perftest
 
 import java.util.UUID
-
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesLukio, PerusopetusExampleData}
 import fi.oph.koski.perftest.OppilaitosImuri.{ammatillisetOppilaitokset, lukiot, peruskoulut}
 import fi.oph.koski.schema.{Koodistokoodiviite, LähdejärjestelmäId, Oppilaitos}
+import java.time.LocalDate
 
 import scala.util.Random
 
@@ -24,11 +24,13 @@ object MixedOpiskeluoikeusInserterScenario extends FixtureDataInserterScenario {
     val perusopetuksenOpiskeluoikeus = PerusopetusExampleData.päättötodistusOpiskeluoikeus(peruskoulu, peruskoulu.toOidOrganisaatio).copy(lähdejärjestelmänId = lähdejärjestelmäId)
 
     val lukioTaiAmmattikouluOpiskeluoikeus = if(x % 3 == 0) {
-      AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis(ammattikoulu, ammattikoulu.toOidOrganisaatio).copy(lähdejärjestelmänId = lähdejärjestelmäId)
+      AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis(ammattikoulu, ammattikoulu.toOidOrganisaatio, tuotantoEPerusteidenMukainenKelvollinenValmistumispäivä).copy(lähdejärjestelmänId = lähdejärjestelmäId)
     } else {
       ExamplesLukio.päättötodistus(lukio, lukio.toOidOrganisaatio).copy(lähdejärjestelmänId = lähdejärjestelmäId)
     }
 
     List(perusopetuksenOpiskeluoikeus, lukioTaiAmmattikouluOpiskeluoikeus)
   }
+
+  private val tuotantoEPerusteidenMukainenKelvollinenValmistumispäivä = LocalDate.of(2016, 8, 31)
 }
