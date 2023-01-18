@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { useConstraint } from '../../appstate/constraints'
 import { todayISODate } from '../../date/date'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { OidOrganisaatio } from '../../types/fi/oph/koski/schema/OidOrganisaatio'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { OrganisaatiohenkilöValinnaisellaTittelillä } from '../../types/fi/oph/koski/schema/OrganisaatiohenkiloValinnaisellaTittelilla'
 import { Vahvistus } from '../../types/fi/oph/koski/schema/Vahvistus'
@@ -14,6 +15,7 @@ import { FormField } from '../forms/FormField'
 import { useForm } from '../forms/FormModel'
 import { Trans } from '../texts/Trans'
 import { KuntaEdit, KuntaView } from './KuntaField'
+import { OrganisaatioEdit, OrganisaatioView } from './OrganisaatioField'
 
 export type SuorituksenVahvistusModalProps<T extends Vahvistus> = CommonProps<{
   vahvistusClass: ClassOf<T>
@@ -22,14 +24,15 @@ export type SuorituksenVahvistusModalProps<T extends Vahvistus> = CommonProps<{
 export type VahvistusForm = {
   päivä: string
   paikkakunta: Koodistokoodiviite<'kunta', string>
-  myöntäjäOrganisaatio?: Organisaatio
+  myöntäjäOrganisaatio: Organisaatio
   myöntäjäHenkilöt: Array<OrganisaatiohenkilöValinnaisellaTittelillä>
 }
 
 const initialState: VahvistusForm = {
   päivä: todayISODate(),
   paikkakunta: Koodistokoodiviite({ koodiarvo: '', koodistoUri: 'kunta' }),
-  myöntäjäHenkilöt: []
+  myöntäjäHenkilöt: [],
+  myöntäjäOrganisaatio: OidOrganisaatio({ oid: '' })
 }
 
 export const SuorituksenVahvistusModal = <T extends Vahvistus>(
@@ -38,7 +41,12 @@ export const SuorituksenVahvistusModal = <T extends Vahvistus>(
   const constraint = useConstraint(props.vahvistusClass)
   const form = useForm(initialState, true, constraint)
 
+  const pvmPath = useMemo(() => form.root.prop('päivä'), [])
   const paikkakuntaPath = useMemo(() => form.root.prop('paikkakunta'), [])
+  const organisaatioPath = useMemo(
+    () => form.root.prop('myöntäjäOrganisaatio'),
+    []
+  )
 
   return (
     <Modal {...common(props, ['SuorituksenVahvistusModal'])}>
@@ -50,7 +58,7 @@ export const SuorituksenVahvistusModal = <T extends Vahvistus>(
           Päivämäärä
           <FormField
             form={form}
-            path={form.root.prop('päivä')}
+            path={pvmPath}
             view={DateView}
             edit={DateEdit}
           />
@@ -63,6 +71,16 @@ export const SuorituksenVahvistusModal = <T extends Vahvistus>(
             path={paikkakuntaPath}
             view={KuntaView}
             edit={KuntaEdit}
+          />
+        </label>
+
+        <label>
+          Myöntäjäorganisaatio
+          <FormField
+            form={form}
+            path={organisaatioPath}
+            view={OrganisaatioView}
+            edit={OrganisaatioEdit}
           />
         </label>
       </ModalBody>

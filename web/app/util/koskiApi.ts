@@ -1,15 +1,16 @@
 import { ApiFailure, apiGet, apiPut } from '../api-fetch'
 import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
-import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { OidHenkilö } from '../types/fi/oph/koski/schema/OidHenkilo'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../types/fi/oph/koski/schema/Oppija'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodistot'
 import { tapLeftP } from './fp/either'
+import { queryString } from './url'
 
-const apiUrl = (path: string, withClasses: boolean = true): string =>
-  `/koski/api/${path}${withClasses ? '?class_refs=true' : ''}`
+const apiUrl = (path: string, query?: object): string =>
+  `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
 
 export const fetchOppija = (oppijaOid: String) =>
   handleExpiredSession(apiGet<Oppija>(apiUrl(`oppija/${oppijaOid}`)))
@@ -22,12 +23,15 @@ export const fetchOpiskeluoikeus = (opiskeluoikeusOid: string) =>
 export const saveOpiskeluoikeus =
   (oppijaOid: string) => (opiskeluoikeus: Opiskeluoikeus) =>
     handleExpiredSession(
-      apiPut<HenkilönOpiskeluoikeusVersiot>(apiUrl('oppija', false), {
-        body: Oppija({
-          henkilö: OidHenkilö({ oid: oppijaOid }),
-          opiskeluoikeudet: [opiskeluoikeus]
-        })
-      })
+      apiPut<HenkilönOpiskeluoikeusVersiot>(
+        apiUrl('oppija', { class_refs: false }),
+        {
+          body: Oppija({
+            henkilö: OidHenkilö({ oid: oppijaOid }),
+            opiskeluoikeudet: [opiskeluoikeus]
+          })
+        }
+      )
     )
 
 export const fetchKoodistot = (koodistoUris: string[]) =>
@@ -38,6 +42,16 @@ export const fetchKoodistot = (koodistoUris: string[]) =>
 export const fetchConstraint = (schemaClass: string) =>
   handleExpiredSession(
     apiGet<Constraint>(apiUrl(`types/constraints/${schemaClass}`))
+  )
+
+export const fetchOrganisaatioHierarkia = () =>
+  handleExpiredSession(
+    apiGet<OrganisaatioHierarkia[]>(apiUrl(`organisaatio/hierarkia`))
+  )
+
+export const queryOrganisaatioHierarkia = (query: string) =>
+  handleExpiredSession(
+    apiGet<OrganisaatioHierarkia[]>(apiUrl(`organisaatio/hierarkia`, { query }))
   )
 
 // Virhetilanteiden hallinta

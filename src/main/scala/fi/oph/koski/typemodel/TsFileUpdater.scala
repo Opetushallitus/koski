@@ -1,6 +1,7 @@
 package fi.oph.koski.typemodel
 
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
+import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 
@@ -42,4 +43,5 @@ case class AdditionalExports(
   constraint: Constraint,
   putOppijaApiResponse: HenkilönOpiskeluoikeusVersiot,
   getKoodistoApiResponse: GroupedKoodistot,
+  organisaatiohierarkia: OrganisaatioHierarkia,
 )

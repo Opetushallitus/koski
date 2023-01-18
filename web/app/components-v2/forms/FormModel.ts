@@ -16,6 +16,7 @@ import { t } from '../../i18n/i18n'
 import { Constraint } from '../../types/fi/oph/koski/typemodel/Constraint'
 import { tap, tapLeft } from '../../util/fp/either'
 import { deepEqual } from '../../util/fp/objects'
+import { parsePath } from '../../util/optics'
 import { validateData, ValidationError } from './validator'
 
 export type FormModel<O extends object> = {
@@ -218,29 +219,15 @@ export const useForm = <O extends object>(
   )
 }
 
-export type FormOptic<S, A> =
-  // | $.Equivalence<S, any, A>
-  // | $.Iso<S, any, A>
-  | $.Lens<S, any, A>
-  // | $.Getter<S, A>
-  | $.Prism<S, any, A>
-// | $.Traversal<S, any, A>
-// | $.AffineFold<S, A>
-// | $.Fold<S, A>
+export type FormOptic<S, A> = $.Lens<S, any, A> | $.Prism<S, any, A>
 
 export const getValue =
   <S, A>(optic: FormOptic<S, A>) =>
   (source: S): A | undefined => {
     switch (optic._tag) {
-      // case 'Equivalence':
-      // case 'Iso':
       case 'Lens':
-        // case 'Getter':
         return $.get(optic)(source)
       case 'Prism':
-        // case 'Traversal':
-        // case 'AffineFold':
-        // case 'Fold':
         return $.preview(optic)(source)
       default:
         // @ts-expect-error - seuraava rivi antaa virheen, jos kaikki caset on käsitelty
@@ -253,16 +240,14 @@ const modifyValue =
   (fn: (a: A) => A) =>
   (source: S): S => {
     switch (optic._tag) {
-      // case 'Equivalence':
-      // case 'Iso':
       case 'Lens':
       case 'Prism':
-        // case 'Traversal':
-        return $.modify(optic)(fn)(source)
-      // case 'Getter':
-      // case 'AffineFold':
-      // case 'Fold':
-      //   return source
+        console.log('heh', optic, fn, source)
+        console.log('path', parsePath(optic as any, source))
+        return $.modify(optic)((a) => {
+          console.log('modify', a, '-->', fn(a))
+          return fn(a)
+        })(source)
       default:
         // @ts-expect-error - seuraava rivi antaa virheen, jos kaikki caset on käsitelty
         optic._tag

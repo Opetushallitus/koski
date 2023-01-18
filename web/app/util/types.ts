@@ -18,3 +18,8 @@ export type CollectableOptic<S, A> =
   | $.Prism<S, any, A>
   | $.Traversal<S, any, A>
   | $.Fold<S, A>
+
+export const isKoodistoOf =
+  <T extends string>(koodistoUri: T) =>
+  (koodiviite?: Koodistokoodiviite): koodiviite is Koodistokoodiviite<T> =>
+    koodiviite?.koodistoUri === koodistoUri

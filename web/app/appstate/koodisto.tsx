@@ -15,10 +15,9 @@ import {
   Koodistokoodiviite
 } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
-import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodistot'
 import { koodiviiteConstraints } from '../util/constraints'
 import { nonNull } from '../util/fp/arrays'
-import { fromEntries, mapObjectValues } from '../util/fp/objects'
+import { mapObjectValues } from '../util/fp/objects'
 import { fetchKoodistot } from '../util/koskiApi'
 
 const Loading = Symbol('loading')
