@@ -130,9 +130,16 @@ export const KoodistoProvider = (props: KoodistoProviderProps) => {
   )
 }
 
-export const useKoodisto = (
+// Ylimäärittelyt paremmalle tyypitykselle
+export function useKoodisto<T extends string>(
+  koodistoUri: T
+): KoodistokoodiviiteKoodistonNimellä<T>[] | null
+export function useKoodisto(
   ...koodistoUris: Array<string | null | undefined>
-): KoodistokoodiviiteKoodistonNimellä[] | null => {
+): KoodistokoodiviiteKoodistonNimellä[] | null
+export function useKoodisto(
+  ...koodistoUris: Array<string | null | undefined>
+): KoodistokoodiviiteKoodistonNimellä[] | null {
   const context = useContext(KoodistoContext)
 
   useEffect(() => {

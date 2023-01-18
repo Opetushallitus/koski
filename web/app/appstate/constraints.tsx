@@ -9,6 +9,7 @@ import React, {
 } from 'react'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { fetchConstraint } from '../util/koskiApi'
+import { schemaClassName } from '../util/types'
 
 const Loading = Symbol('loading')
 
@@ -73,10 +74,17 @@ export const ConstraintsProvider = (props: ConstraintsProviderProps) => {
   )
 }
 
-export const useConstraint = (
-  schemaClass: string | null
-): Constraint | null => {
+/**
+ * Antaa skeemaluokan nimeä vastaavan constraintin.
+ * @param className skeemaluokan nimi pitkässä tai lyhyessä muodossa (esim. "fi.oph.koski.schema.Vahvistus" tai pelkkä "Vahvistus")
+ * @returns Rakennekuvauksen sekä validointitietoja
+ */
+export const useConstraint = (className: string | null): Constraint | null => {
   const context = useContext(ConstraintsContext)
+  const schemaClass = useMemo(
+    () => (className && schemaClassName(className)) || className,
+    [className]
+  )
   useEffect(() => {
     if (schemaClass) {
       context.loadConstraint(schemaClass)

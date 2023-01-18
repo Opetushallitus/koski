@@ -1,0 +1,54 @@
+import React, { useCallback, useMemo } from 'react'
+import { useKoodisto } from '../../appstate/koodisto'
+import { t } from '../../i18n/i18n'
+import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { koodiviiteId } from '../../util/koodisto'
+import { common, CommonProps } from '../CommonProps'
+import {
+  groupKoodistoToOptions,
+  Select,
+  SelectOption
+} from '../controls/Select'
+import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+
+export type Kuntakoodiviite = Koodistokoodiviite<'kunta'>
+
+export type KuntaViewProps = CommonProps<FieldViewBaseProps<Kuntakoodiviite>>
+
+export const KuntaView: React.FC<KuntaViewProps> = (props) => (
+  <div {...common(props, ['KuntaView'])}>{t(props.value?.nimi) || '–'}</div>
+)
+
+export type KuntaEditProps = CommonProps<FieldEditBaseProps<Kuntakoodiviite>>
+
+export const KuntaEdit: React.FC<KuntaEditProps> = (props) => {
+  const kunnat = useKoodisto('kunta')
+
+  const options = useMemo(
+    () => kunnat && groupKoodistoToOptions(kunnat),
+    [kunnat]
+  )
+
+  const selected = useMemo(
+    () => props.value && koodiviiteId(props.value),
+    [props.value]
+  )
+
+  const onChange = useCallback(
+    (option?: SelectOption<Kuntakoodiviite>) => {
+      props.onChange(option?.value)
+    },
+    [props.onChange]
+  )
+
+  return options ? (
+    <Select
+      {...common(props, ['KuntaEdit'])}
+      options={options}
+      value={selected}
+      onChange={onChange}
+    />
+  ) : (
+    <KuntaView value={props.value} />
+  )
+}

@@ -35,7 +35,8 @@ export const PaikallinenOsasuoritusSelect: React.FC<
         {
           key: NEW_KEY,
           label: t('Uusi osasuoritus'),
-          value: emptyPaikallinenKoodi
+          value: emptyPaikallinenKoodi,
+          ignoreFilter: true
         }
       ]
     }),

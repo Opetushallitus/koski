@@ -3,12 +3,13 @@ import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Vahvistus } from '../../types/fi/oph/koski/schema/Vahvistus'
 import { isHenkilövahvistus } from '../../util/schema'
+import { ClassOf } from '../../util/types'
 import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
-import { Modal, ModalTitle } from '../containers/Modal'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { Trans } from '../texts/Trans'
+import { SuorituksenVahvistusModal } from './SuorituksenVahvistusModal'
 
 export type SuorituksenVahvistusViewProps<T extends Vahvistus> = CommonProps<
   FieldViewBaseProps<T | undefined>
@@ -22,12 +23,15 @@ export const SuorituksenVahvistusView = <T extends Vahvistus>({
 )
 
 export type SuorituksenVahvistusEditProps<T extends Vahvistus> = CommonProps<
-  FieldEditBaseProps<T | undefined>
+  FieldEditBaseProps<T | undefined> & {
+    vahvistusClass: ClassOf<T>
+  }
 >
 
 export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
   value,
   onChange,
+  vahvistusClass,
   ...rest
 }: SuorituksenVahvistusEditProps<T>) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -51,7 +55,9 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
           Merkitse valmiiksi
         </RaisedButton>
       )}
-      {modalVisible && <SuorituksenVahvistusModal />}
+      {modalVisible && (
+        <SuorituksenVahvistusModal vahvistusClass={vahvistusClass} />
+      )}
     </SuorituksenVahvistus>
   )
 }
@@ -97,17 +103,5 @@ const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (props) => {
       )}
       {props.children}
     </div>
-  )
-}
-
-type SuorituksenVahvistusModalProps = CommonProps
-
-const SuorituksenVahvistusModal: React.FC<SuorituksenVahvistusModalProps> = (
-  props
-) => {
-  return (
-    <Modal>
-      <ModalTitle>Tästä jatketaan huomenna!</ModalTitle>
-    </Modal>
   )
 }

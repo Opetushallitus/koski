@@ -3,6 +3,12 @@ import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { isObjectConstraint } from '../types/fi/oph/koski/typemodel/ObjectConstraint'
 import { isStringConstraint } from '../types/fi/oph/koski/typemodel/StringConstraint'
 
+export const constraintHasProp = (
+  constraint: Constraint | null,
+  propKey: string
+): boolean =>
+  isObjectConstraint(constraint) && constraint.properties[propKey] !== undefined
+
 // TODO: Heitä näissä kaikissa poikkeus, jos constraintin havaitaan olevan väärän tyyppinen constraint
 
 export const constraintObjectProp = (

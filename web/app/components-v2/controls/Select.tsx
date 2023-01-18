@@ -1,6 +1,6 @@
 import { flow } from 'fp-ts/lib/function'
 import * as NEA from 'fp-ts/NonEmptyArray'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { KoodistokoodiviiteKoodistonNimellä } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
@@ -33,6 +33,17 @@ export type SelectOption<T> = {
   label: string
   display?: React.ReactNode
   value: T
+  ignoreFilter?: boolean
+}
+
+const scrollHoveredIntoView = (
+  selectContainer: React.RefObject<HTMLDivElement>
+) => {
+  setTimeout(() => {
+    selectContainer.current
+      ?.querySelector('.Select__option--hover')
+      ?.scrollIntoView({ block: 'nearest' })
+  }, 0)
 }
 
 export const Select = <T,>(props: SelectProps<T>) => {
@@ -41,6 +52,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
   const [hoveredOption, setHoveredOption] = useState<
     SelectOption<T> | undefined
   >()
+  const [filter, setFilter] = useState<string | null>(null)
   const selectContainer = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -63,12 +75,9 @@ export const Select = <T,>(props: SelectProps<T>) => {
   // Losing the focus
 
   const onBlur: React.FocusEventHandler = useCallback((event) => {
-    const currentTarget = event.currentTarget
     setTimeout(() => {
-      if (document.activeElement?.contains(currentTarget)) {
-        setDropdownVisible(false)
-      }
-    }, 250) // TODO: Tää on vähän vaarallinen, voi aiheuttaa flakya
+      setDropdownVisible(false)
+    }, 1000) // TODO: Tää on vähän vaarallinen, voi aiheuttaa flakya
   }, [])
 
   useEffect(() => {
@@ -90,34 +99,51 @@ export const Select = <T,>(props: SelectProps<T>) => {
   const onChange = useCallback(
     (option?: SelectOption<T>) => {
       setDropdownVisible(false)
+      setFilter(null)
       props.onChange(option)
     },
     [props.onChange]
   )
+
+  // Filter options
+
+  const options: GroupedOptions<T> = useMemo(() => {
+    if (filter === '' || filter === null) return props.options
+    const needle = filter.toLowerCase()
+    return mapRecordValues((os: Array<SelectOption<T>>) =>
+      os.filter((o) => o.ignoreFilter || o.label.toLowerCase().includes(needle))
+    )(props.options)
+  }, [filter, props.options])
 
   // Interaction
 
   const onKeyDown: React.KeyboardEventHandler = useCallback(
     (event) => {
       switch (event.key) {
+        case 'Tab':
+          setDropdownVisible(false)
+          return
         case 'ArrowDown':
           if (dropdownVisible) {
-            setHoveredOption(selectOption(props.options, hoveredOption, 1))
+            setHoveredOption(selectOption(options, hoveredOption, 1))
           }
           setDropdownVisible(true)
           event.preventDefault()
           event.stopPropagation()
+          scrollHoveredIntoView(selectContainer)
           return
         case 'ArrowUp':
           if (dropdownVisible) {
-            setHoveredOption(selectOption(props.options, hoveredOption, -1))
+            setHoveredOption(selectOption(options, hoveredOption, -1))
           }
           setDropdownVisible(true)
           event.preventDefault()
           event.stopPropagation()
+          scrollHoveredIntoView(selectContainer)
           return
         case 'Escape':
           setDropdownVisible(false)
+          setFilter(null)
           event.preventDefault()
           event.stopPropagation()
           return
@@ -133,8 +159,27 @@ export const Select = <T,>(props: SelectProps<T>) => {
         // console.log(event.key)
       }
     },
-    [props.options, hoveredOption, dropdownVisible]
+    [options, hoveredOption, dropdownVisible]
   )
+
+  const onUserType: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+    (event) => {
+      setFilter(event.target.value)
+      setDropdownVisible(true)
+      const needle = event.target.value.toLowerCase()
+      if (needle && !props.hideEmpty) {
+        const firstMatch = flattenObj(props.options).find((o) =>
+          o.label.toLowerCase().includes(needle)
+        )
+        setHoveredOption(firstMatch)
+      } else {
+        setHoveredOption(undefined)
+      }
+    },
+    [props.options, props.hideEmpty]
+  )
+
+  // Render
 
   return (
     <div
@@ -148,13 +193,15 @@ export const Select = <T,>(props: SelectProps<T>) => {
       <input
         className="Select__input"
         placeholder={t(props.placeholder)}
-        value={displayValue}
-        onChange={doNothing} // TODO: Tähän vois hakufiltteröintihomman toteuttaa
+        value={filter === null ? displayValue : filter}
+        onChange={onUserType}
+        type="search"
+        autoComplete="off"
       />
       {dropdownVisible && (
         <div className="Select__optionListContainer">
           <ul className="Select__optionList">
-            {!props.hideEmpty && (
+            {!props.hideEmpty && !filter && (
               <li
                 className={cx(
                   props.className,
@@ -168,9 +215,9 @@ export const Select = <T,>(props: SelectProps<T>) => {
               </li>
             )}
 
-            {isSingularObject(props.options) ? (
+            {isSingularObject(options) ? (
               <Options
-                options={flattenObj(props.options)}
+                options={flattenObj(options)}
                 hoveredOption={hoveredOption}
                 onClick={onChange}
                 onMouseOver={setHoveredOption}
@@ -186,7 +233,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
                     onMouseOver={setHoveredOption}
                   />
                 )
-              )(props.options)
+              )(options)
             )}
           </ul>
         </div>
@@ -253,5 +300,3 @@ export const groupKoodistoToOptions: <T extends string>(
     }))
   )
 )
-
-const doNothing = () => {}

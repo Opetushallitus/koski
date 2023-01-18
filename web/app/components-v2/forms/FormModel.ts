@@ -124,12 +124,12 @@ const reducer = <O>(
 }
 
 export const useForm = <O extends object>(
-  initialStatex: O,
+  initialState: O,
   startWithEditMode: boolean = false,
   constraint?: Constraint | null
 ): FormModel<O> => {
   const init = useMemo(
-    () => internalInitialState(initialStatex, startWithEditMode, constraint),
+    () => internalInitialState(initialState, startWithEditMode, constraint),
     []
   )
 

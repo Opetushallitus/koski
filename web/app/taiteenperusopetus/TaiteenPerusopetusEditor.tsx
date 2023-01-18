@@ -179,7 +179,12 @@ export const TaiteenPerusopetusEditor = (
           form={form}
           path={suorituksenVahvistusPath}
           view={SuorituksenVahvistusView}
-          edit={(props) => <SuorituksenVahvistusEdit {...props} />}
+          edit={(props) => (
+            <SuorituksenVahvistusEdit
+              {...props}
+              vahvistusClass="fi.oph.koski.schema.HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla"
+            />
+          )}
         />
 
         {suoritus.osasuoritukset && (
