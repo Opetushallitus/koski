@@ -33,12 +33,14 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
       auditlogs(KoskiSpecificMockOppijat.lukiolainen) shouldBe empty
     }
     "Organisaation oidia, jota ei löydy organisaatiopalvelusta, ei osata käsitellä" in {
-      get("api/omaopintopolkuloki/auditlogs", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.virtaEiVastaa.hetu.get)) {
+      auditlogsRequest(KoskiSpecificMockOppijat.virtaEiVastaa) {
         verifyResponseStatus(500, KoskiErrorCategory.internalError())
       }
     }
     "Rajapinta vaatii kirjautumisen" in {
-      get("api/omaopintopolkuloki/auditlogs") {
+      post("api/omaopintopolkuloki/auditlogs",
+        body = JsonSerializer.writeWithRoot(Map("hetu" -> "")),jsonContent
+      ) {
         verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
       }
     }
@@ -53,7 +55,8 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
             hetu = oppija.hetu,
             etunimet = oppija.etunimet,
             kutsumanimi = oppija.kutsumanimi,
-            sukunimi = oppija.sukunimi
+            sukunimi = oppija.sukunimi,
+            huollettavat = None
           )
         )
       }
@@ -61,9 +64,16 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
   }
 
   private def auditlogs(oppija: LaajatOppijaHenkilöTiedot) = {
-    get("api/omaopintopolkuloki/auditlogs", headers = kansalainenLoginHeaders(oppija.hetu.get)) {
+    auditlogsRequest(oppija) {
       verifyResponseStatusOk()
       JsonSerializer.parse[List[OrganisaationAuditLogit]](body)
     }
+  }
+
+  private def auditlogsRequest[T](oppija: LaajatOppijaHenkilöTiedot)(f: => T): T = {
+    post("api/omaopintopolkuloki/auditlogs",
+      body = JsonSerializer.writeWithRoot(Map("hetu" -> oppija.hetu)),
+      headers = kansalainenLoginHeaders(oppija.hetu.get) ++ jsonContent
+    )(f)
   }
 }
