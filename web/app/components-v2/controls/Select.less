@@ -46,13 +46,12 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1;
+    z-index: 999999999;
 
-    max-height: 200px;
+    max-height: 300px;
     overflow: scroll;
 
     background: white;
-    border-left: 4px solid @color-blue;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
 
     list-style-type: none;
@@ -60,15 +59,30 @@
     margin: 0;
 
     .Select__option {
-      padding: 0 @h-padding;
-      min-height: 3 * @baseline;
-      line-height: 3 * @baseline;
-      cursor: pointer;
+      .Select__optionLabel {
+        border-left: 2px solid @color-blue;
+        padding: 0 @h-padding;
+        min-height: 3 * @baseline;
+        line-height: 3 * @baseline;
+        cursor: pointer;
 
-      &:hover,
-      &.Select__option--hover {
-        background: #f0f0f0;
+        &:hover,
+        &.Select__optionLabel--hover {
+          background: #f0f0f0;
+        }
       }
+    }
+
+    .Select__optionGroup {
+      font-size: 80%;
+      opacity: 80%;
+      text-transform: uppercase;
+    }
+
+    .Select__optionList {
+      position: static;
+      margin-left: 32px;
+      max-height: none;
     }
   }
 }

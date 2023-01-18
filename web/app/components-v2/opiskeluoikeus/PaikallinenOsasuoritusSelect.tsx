@@ -8,7 +8,7 @@ import { allLanguages } from '../../util/optics'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
-import { GroupedOptions, Select, SelectOption } from '../controls/Select'
+import { OptionList, Select, SelectOption } from '../controls/Select'
 import { TextEdit, TextView } from '../controls/TextField'
 import { FormField } from '../forms/FormField'
 import { useForm } from '../forms/FormModel'
@@ -29,17 +29,15 @@ export const PaikallinenOsasuoritusSelect: React.FC<
     return setModalVisible(false)
   }, [])
 
-  const options: GroupedOptions<PaikallinenKoodi> = useMemo(
-    () => ({
-      paikallinen: [
-        {
-          key: NEW_KEY,
-          label: t('Uusi osasuoritus'),
-          value: emptyPaikallinenKoodi,
-          ignoreFilter: true
-        }
-      ]
-    }),
+  const options: OptionList<PaikallinenKoodi> = useMemo(
+    () => [
+      {
+        key: NEW_KEY,
+        label: t('Uusi osasuoritus'),
+        value: emptyPaikallinenKoodi,
+        ignoreFilter: true
+      }
+    ],
     []
   )
 
@@ -47,7 +45,7 @@ export const PaikallinenOsasuoritusSelect: React.FC<
     (option?: SelectOption<PaikallinenKoodi>) => {
       if (option?.key === NEW_KEY) {
         setModalVisible(true)
-      } else if (option) {
+      } else if (option?.value) {
         props.onSelect(option.value)
       }
     },

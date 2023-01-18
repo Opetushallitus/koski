@@ -1,3 +1,4 @@
+import * as A from 'fp-ts/Array'
 import { flow } from 'fp-ts/lib/function'
 import * as NEA from 'fp-ts/NonEmptyArray'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -5,46 +6,45 @@ import { KoodistokoodiviiteKoodistonNimellä } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import {
-  flattenObj,
-  isSingularObject,
-  mapRecordToArray,
-  mapRecordValues,
-  pluck
-} from '../../util/fp/objects'
+import { nonNull } from '../../util/fp/arrays'
+import { pluck } from '../../util/fp/objects'
 import { clamp } from '../../util/numbers'
-import { cx, CommonProps, common } from '../CommonProps'
+import { common, CommonProps, cx } from '../CommonProps'
 
 export type SelectProps<T> = CommonProps<{
   initialValue?: OptionKey
   value?: OptionKey
-  options: GroupedOptions<T>
+  options: OptionList<T>
   onChange: (option?: SelectOption<T>) => void
   placeholder?: string | LocalizedString
   hideEmpty?: boolean
 }>
 
-export type GroupedOptions<T> = Record<OptionGroupName, Array<SelectOption<T>>>
-export type OptionGroupName = string
-export type OptionKey = string
+export type OptionList<T> = Array<SelectOption<T>>
 
-export type SelectOption<T> = {
+export type FlatOptionList<T> = { arr: Array<FlatOption<T>> }
+
+export type FlatOption<T> = {
+  // Uniikki tunnisteavain, joka erottaa eri vaihtoehdot toisistaan
   key: OptionKey
+  // Puhtaasti tekstimuotoinen näytettävä arvo
   label: string
+  // Muotoiltu näytettävä arvo
   display?: React.ReactNode
-  value: T
+  // Vaihtoehtoon sidottu vapaamuotoinen data
+  value?: T
+  // Jos tosi, filtteri ei vaikuta tähän vaihtoehtoon (näkyy aina)
   ignoreFilter?: boolean
+  // Jos tosi, tämä vaihtoehto ei ole valittavissa, vaan toimii ainoastaan ryhmän otsikkona
+  isGroup?: boolean
 }
 
-const scrollHoveredIntoView = (
-  selectContainer: React.RefObject<HTMLDivElement>
-) => {
-  setTimeout(() => {
-    selectContainer.current
-      ?.querySelector('.Select__option--hover')
-      ?.scrollIntoView({ block: 'nearest' })
-  }, 0)
+export type SelectOption<T> = FlatOption<T> & {
+  // Vaihtoehdolle/ryhmälle näytettävät alivaihtoehdot
+  children?: OptionList<T>
 }
+
+export type OptionKey = string
 
 export const Select = <T,>(props: SelectProps<T>) => {
   const [dropdownVisible, setDropdownVisible] = useState(false)
@@ -55,16 +55,20 @@ export const Select = <T,>(props: SelectProps<T>) => {
   const [filter, setFilter] = useState<string | null>(null)
   const selectContainer = useRef<HTMLDivElement>(null)
 
+  const flatOptions = useMemo(
+    () => flattenOptions(props.options),
+    [props.options]
+  )
+
   useEffect(() => {
     const option =
-      props.value &&
-      flattenObj(props.options).find((o) => o.key === props.value)
+      props.value && flatOptions.arr.find((o) => o.key === props.value)
     setDisplayValue(option ? option.label : '')
-  }, [props.value, props.options])
+  }, [props.value, flatOptions])
 
   useEffect(() => {
     if (props.hideEmpty) {
-      setHoveredOption(flattenObj(props.options)[0])
+      setHoveredOption(flatOptions.arr.find((o) => !o.isGroup))
     }
   }, [])
 
@@ -107,12 +111,13 @@ export const Select = <T,>(props: SelectProps<T>) => {
 
   // Filter options
 
-  const options: GroupedOptions<T> = useMemo(() => {
-    if (filter === '' || filter === null) return props.options
-    const needle = filter.toLowerCase()
-    return mapRecordValues((os: Array<SelectOption<T>>) =>
-      os.filter((o) => o.ignoreFilter || o.label.toLowerCase().includes(needle))
-    )(props.options)
+  const options: OptionList<T> = useMemo(() => {
+    const opts =
+      filter === '' || filter === null
+        ? props.options
+        : filterOptions(props.options, filter)
+    // Remove one level of grouping if only one group is present
+    return opts.length === 1 && opts[0].isGroup ? opts[0].children || [] : opts
   }, [filter, props.options])
 
   // Interaction
@@ -125,7 +130,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
           return
         case 'ArrowDown':
           if (dropdownVisible) {
-            setHoveredOption(selectOption(options, hoveredOption, 1))
+            setHoveredOption(selectOption(flatOptions, hoveredOption, 1))
           }
           setDropdownVisible(true)
           event.preventDefault()
@@ -134,7 +139,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
           return
         case 'ArrowUp':
           if (dropdownVisible) {
-            setHoveredOption(selectOption(options, hoveredOption, -1))
+            setHoveredOption(selectOption(flatOptions, hoveredOption, -1))
           }
           setDropdownVisible(true)
           event.preventDefault()
@@ -159,7 +164,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
         // console.log(event.key)
       }
     },
-    [options, hoveredOption, dropdownVisible]
+    [flatOptions, hoveredOption, dropdownVisible]
   )
 
   const onUserType: React.ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -168,7 +173,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
       setDropdownVisible(true)
       const needle = event.target.value.toLowerCase()
       if (needle && !props.hideEmpty) {
-        const firstMatch = flattenObj(props.options).find((o) =>
+        const firstMatch = flatOptions.arr.find((o) =>
           o.label.toLowerCase().includes(needle)
         )
         setHoveredOption(firstMatch)
@@ -176,7 +181,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
         setHoveredOption(undefined)
       }
     },
-    [props.options, props.hideEmpty]
+    [flatOptions, props.hideEmpty]
   )
 
   // Render
@@ -200,103 +205,144 @@ export const Select = <T,>(props: SelectProps<T>) => {
       />
       {dropdownVisible && (
         <div className="Select__optionListContainer">
-          <ul className="Select__optionList">
-            {!props.hideEmpty && !filter && (
-              <li
-                className={cx(
-                  props.className,
-                  'Select__option',
-                  !hoveredOption && 'Select__option--hover'
-                )}
-                onClick={() => onChange(undefined)}
-                onMouseOver={() => setHoveredOption(undefined)}
-              >
-                {t('Ei valintaa')}
-              </li>
-            )}
-
-            {isSingularObject(options) ? (
-              <Options
-                options={flattenObj(options)}
-                hoveredOption={hoveredOption}
-                onClick={onChange}
-                onMouseOver={setHoveredOption}
-              />
-            ) : (
-              mapRecordToArray(
-                (options: Array<SelectOption<T>>, group: OptionGroupName) => (
-                  // TODO: Renderöi groupin nimi
-                  <Options
-                    options={options}
-                    hoveredOption={hoveredOption}
-                    onClick={onChange}
-                    onMouseOver={setHoveredOption}
-                  />
-                )
-              )(options)
-            )}
-          </ul>
+          <OptionList
+            options={options}
+            hoveredOption={hoveredOption}
+            onClick={onChange}
+            onMouseOver={setHoveredOption}
+          />
         </div>
       )}
     </div>
   )
 }
 
-const selectOption = <T,>(
-  options: GroupedOptions<T>,
-  current: SelectOption<T> | undefined,
-  steps: number
-): SelectOption<T> | undefined => {
-  const flatOptions = flattenObj(options)
-  const currentIndex = current
-    ? flatOptions?.findIndex((o) => o.key === current.key)
-    : -1
-  const index = clamp(-1, flatOptions.length - 1)(currentIndex + steps)
-  return index >= 0 ? flatOptions[index] : undefined
+// TODO: Palauta tämä tyhjä valinta mukaan
+{
+  /* <li
+className={cx(
+  props.className,
+  'Select__option',
+  !hoveredOption && 'Select__option--hover'
+)}
+onClick={() => onChange(undefined)}
+onMouseOver={() => setHoveredOption(undefined)}
+>
+{t('Ei valintaa')}
+</li> */
 }
 
-type OptionsProps<T> = {
-  options: Array<SelectOption<T>>
+type OptionListProps<T> = {
+  options: OptionList<T>
   hoveredOption?: SelectOption<T>
   onClick: (o: SelectOption<T>) => void
   onMouseOver: (o: SelectOption<T>) => void
 }
 
-const Options = <T,>(props: OptionsProps<T>) => {
+const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
   const onClick = (option: SelectOption<T>) => (event: React.MouseEvent) => {
     event.preventDefault()
     event.stopPropagation()
     props.onClick(option)
   }
 
+  const { options, ...rest } = props
+
   return (
-    <>
-      {props.options.map((opt) => (
+    <ul className="Select__optionList">
+      {options.map((opt) => (
         <li
-          className={cx(
-            'Select__option',
-            props.hoveredOption?.key === opt.key && 'Select__option--hover'
-          )}
+          className="Select__option"
           key={opt.key}
-          onClick={onClick(opt)}
-          onMouseOver={() => props.onMouseOver(opt)}
+          onClick={opt.isGroup ? undefined : onClick(opt)}
         >
-          {opt.display || t(opt.label)}
+          <div
+            className={cx(
+              'Select__optionLabel',
+              props.hoveredOption?.key === opt.key &&
+                'Select__optionLabel--hover',
+              opt.isGroup && 'Select__optionGroup'
+            )}
+            onMouseOver={opt.isGroup ? undefined : () => props.onMouseOver(opt)}
+          >
+            {opt.display || t(opt.label)}
+          </div>
+          {opt.children && <OptionList options={opt.children} {...rest} />}
         </li>
       ))}
-    </>
+    </ul>
   )
 }
 
+// Exported utils
+
 export const groupKoodistoToOptions: <T extends string>(
   koodit: KoodistokoodiviiteKoodistonNimellä<T>[]
-) => GroupedOptions<Koodistokoodiviite<T>> = flow(
+) => Array<SelectOption<Koodistokoodiviite<T>>> = flow(
   NEA.groupBy(pluck('koodistoNimi')),
-  mapRecordValues(
-    NEA.map((k) => ({
-      key: k.id,
-      label: t(k.koodiviite.nimi) || k.koodiviite.koodiarvo,
-      value: k.koodiviite
+  (grouped) =>
+    Object.entries(grouped).map(([groupName, koodit]) => ({
+      key: groupName,
+      label: groupName,
+      isGroup: true,
+      children: koodit.map((k) => ({
+        key: k.id,
+        label: t(k.koodiviite.nimi) || k.koodiviite.koodiarvo,
+        value: k.koodiviite
+      }))
     }))
-  )
 )
+
+// Internal utils
+
+const selectOption = <T,>(
+  flatOptions: FlatOptionList<T>,
+  current: SelectOption<T> | undefined,
+  steps: number
+): SelectOption<T> | undefined => {
+  const currentIndex = current
+    ? flatOptions.arr.findIndex((o) => o.key === current.key)
+    : -1
+  const index = clamp(-1, flatOptions.arr.length - 1)(currentIndex + steps)
+  const option = index >= 0 ? flatOptions.arr[index] : undefined
+  return option?.isGroup ? selectOption(flatOptions, option, steps) : option
+}
+
+const flattenOptions = <T,>(options: OptionList<T>): FlatOptionList<T> => {
+  const flatten = (option: SelectOption<T>): FlatOption<T>[] => {
+    const { children, ...flatOption } = option
+    const x: FlatOption<T> = flatOption
+    return [x, ...(children?.flatMap(flatten) || [])]
+  }
+  return { arr: options.flatMap(flatten) }
+}
+
+const filterOptions = <T,>(
+  options: OptionList<T>,
+  query: string
+): OptionList<T> => {
+  const needle = query.toLowerCase().trim()
+
+  const matchesNeedle = (option: SelectOption<T>): SelectOption<T> | null => {
+    const children = option.children?.filter(matchesNeedle)
+    return (children && A.isNonEmpty(children)) ||
+      option.label.toLowerCase().includes(needle)
+      ? {
+          ...option,
+          children
+        }
+      : null
+  }
+
+  return options.map(matchesNeedle).filter(nonNull)
+}
+
+const scrollHoveredIntoView = (
+  selectContainer: React.RefObject<HTMLDivElement>
+) => {
+  setTimeout(() => {
+    selectContainer.current
+      ?.querySelector('.Select__optionLabel--hover')
+      ?.scrollIntoView({ block: 'nearest' })
+  }, 0)
+}
