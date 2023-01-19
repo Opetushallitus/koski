@@ -2,13 +2,11 @@ import React, { useMemo } from 'react'
 import { useConstraint } from '../../appstate/constraints'
 import { todayISODate } from '../../date/date'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { OidOrganisaatio } from '../../types/fi/oph/koski/schema/OidOrganisaatio'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { OrganisaatiohenkilöValinnaisellaTittelillä } from '../../types/fi/oph/koski/schema/OrganisaatiohenkiloValinnaisellaTittelilla'
 import { Vahvistus } from '../../types/fi/oph/koski/schema/Vahvistus'
 import { ClassOf } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
-import { Column, ColumnRow } from '../containers/Columns'
 import { Modal, ModalBody, ModalTitle } from '../containers/Modal'
 import { DateEdit, DateView } from '../controls/DateField'
 import { FormField } from '../forms/FormField'
@@ -23,16 +21,13 @@ export type SuorituksenVahvistusModalProps<T extends Vahvistus> = CommonProps<{
 
 export type VahvistusForm = {
   päivä: string
-  paikkakunta: Koodistokoodiviite<'kunta', string>
-  myöntäjäOrganisaatio: Organisaatio
-  myöntäjäHenkilöt: Array<OrganisaatiohenkilöValinnaisellaTittelillä>
+  paikkakunta?: Koodistokoodiviite<'kunta', string>
+  myöntäjäOrganisaatio?: Organisaatio
+  myöntäjäHenkilöt?: Array<OrganisaatiohenkilöValinnaisellaTittelillä>
 }
 
 const initialState: VahvistusForm = {
-  päivä: todayISODate(),
-  paikkakunta: Koodistokoodiviite({ koodiarvo: '', koodistoUri: 'kunta' }),
-  myöntäjäHenkilöt: [],
-  myöntäjäOrganisaatio: OidOrganisaatio({ oid: '' })
+  päivä: todayISODate()
 }
 
 export const SuorituksenVahvistusModal = <T extends Vahvistus>(
@@ -69,6 +64,7 @@ export const SuorituksenVahvistusModal = <T extends Vahvistus>(
           <FormField
             form={form}
             path={paikkakuntaPath}
+            optional
             view={KuntaView}
             edit={KuntaEdit}
           />
@@ -79,6 +75,7 @@ export const SuorituksenVahvistusModal = <T extends Vahvistus>(
           <FormField
             form={form}
             path={organisaatioPath}
+            optional
             view={OrganisaatioView}
             edit={OrganisaatioEdit}
           />

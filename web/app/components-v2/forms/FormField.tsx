@@ -12,19 +12,23 @@ export type FieldViewBaseProps<T> = {
 export type FieldEditBaseProps<T> = {
   initialValue?: T | undefined
   value?: T | undefined
+  optional: boolean
   onChange: (value?: T) => void
   errors: ValidationError[]
 }
 
 export type FormFieldProps<O extends object, T> = {
   form: FormModel<O>
-  path: FormOptic<O, T>
+
   updateAlso?: Array<FormOptic<O, T>>
   errorsFromPath?: string
   view: React.FC<FieldViewBaseProps<T>>
   edit?: React.FC<FieldEditBaseProps<T>>
   auto?: () => T | undefined
-}
+} & (
+  | { path: FormOptic<O, T>; optional?: false }
+  | { path: FormOptic<O, T | undefined>; optional: true }
+)
 
 export const FormField = <O extends object, T>({
   form,
@@ -33,12 +37,13 @@ export const FormField = <O extends object, T>({
   view,
   edit,
   auto,
-  errorsFromPath
+  errorsFromPath,
+  optional
 }: FormFieldProps<O, T>) => {
   const fillKoodistot = useKoodistoFiller()
 
   const optics = useMemo(
-    () => [path, ...(secondaryPaths || [])],
+    () => [path, ...(secondaryPaths || [])] as FormOptic<O, T | undefined>[],
     [path, ...(secondaryPaths || [])]
   )
   const initialValue = useMemo(
@@ -81,6 +86,7 @@ export const FormField = <O extends object, T>({
           key="edit"
           initialValue={initialValue}
           value={value}
+          optional={Boolean(optional)}
           onChange={set}
           errors={errors}
         />

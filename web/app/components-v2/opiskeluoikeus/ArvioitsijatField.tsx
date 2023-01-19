@@ -75,6 +75,7 @@ export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {
           <li key={i}>
             <Removable onClick={removeAt(i)}>
               <TextEdit
+                optional
                 value={a.nimi}
                 onChange={onChange(i)}
                 errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
