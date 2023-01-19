@@ -7,7 +7,7 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Cookie from 'js-cookie'
 import { TopBar } from './topbar/TopBar'
-import { t } from './i18n/i18n.js'
+import { t } from './i18n/i18n'
 import Text from './i18n/Text'
 import Input from './components/Input'
 __webpack_nonce__ = window.nonce

@@ -23,15 +23,20 @@ export const SuorituksenVahvistusView = <T extends Vahvistus>({
 )
 
 export type SuorituksenVahvistusEditProps<T extends Vahvistus> = CommonProps<
-  FieldEditBaseProps<T | undefined> & {
-    vahvistusClass: ClassOf<T>
-  }
+  FieldEditBaseProps<
+    T | undefined,
+    {
+      vahvistusClass: ClassOf<T>
+      organisaatioOid: string
+    }
+  >
 >
 
 export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
   value,
   onChange,
   vahvistusClass,
+  organisaatioOid,
   ...rest
 }: SuorituksenVahvistusEditProps<T>) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -43,6 +48,16 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
   const onMerkitseKeskeneräiseksi = useCallback(() => {
     onChange(undefined)
   }, [onChange])
+
+  const onCancel = useCallback(() => setModalVisible(false), [])
+
+  const onSubmit = useCallback(
+    (vahvistus: T) => {
+      onChange(vahvistus)
+      setModalVisible(false)
+    },
+    [onChange]
+  )
 
   return (
     <SuorituksenVahvistus vahvistus={value} {...rest}>
@@ -56,7 +71,12 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
         </RaisedButton>
       )}
       {modalVisible && (
-        <SuorituksenVahvistusModal vahvistusClass={vahvistusClass} />
+        <SuorituksenVahvistusModal
+          organisaatioOid={organisaatioOid}
+          vahvistusClass={vahvistusClass}
+          onSubmit={onSubmit}
+          onCancel={onCancel}
+        />
       )}
     </SuorituksenVahvistus>
   )
@@ -72,7 +92,7 @@ const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (props) => {
     () =>
       vahvistus && isHenkilövahvistus(vahvistus)
         ? vahvistus.myöntäjäHenkilöt.map(
-            (h) => `${h.nimi}${h.titteli ? ` (${t(h.titteli)})` : ''}`
+            (h) => `${h.nimi}${t(h.titteli) ? ` (${t(h.titteli)})` : ''}`
           )
         : [],
     [vahvistus]

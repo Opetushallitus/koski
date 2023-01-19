@@ -46,7 +46,7 @@ export const ArvosanaEdit = <T extends ArviointiLike>(
   )
   const arviointiC = useConstraint(schemaClass)
   const koodisto = useKoodistoOfConstraint(
-    constraintObjectProp(arviointiC, 'arvosana')
+    constraintObjectProp('arvosana')(arviointiC)
   )
   const groupedKoodisto = useMemo(
     () => koodisto && groupKoodistoToOptions(koodisto),

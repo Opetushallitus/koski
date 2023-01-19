@@ -66,8 +66,11 @@ export const TaiteenPerusopetusEditor = (
   const päätasonSuoritusPath =
     usePäätasonSuoritus<TaiteenPerusopetuksenOpiskeluoikeus>(suoritusIndex)
 
-  const osasuorituksetPath = useMemo(
-    () => päätasonSuoritusPath.prop('osasuoritukset').optional(),
+  const [osasuorituksetPath, suorituksenVahvistusPath] = useMemo(
+    () => [
+      päätasonSuoritusPath.prop('osasuoritukset').optional(),
+      päätasonSuoritusPath.prop('vahvistus')
+    ],
     [päätasonSuoritusPath]
   )
 
@@ -76,10 +79,7 @@ export const TaiteenPerusopetusEditor = (
     [osasuorituksetPath]
   )
 
-  const suorituksenVahvistusPath = useMemo(
-    () => päätasonSuoritusPath.prop('vahvistus').optional(),
-    [päätasonSuoritusPath]
-  )
+  const organisaatioOid = props.opiskeluoikeus.oppilaitos?.oid
 
   const onSave = useCallback(() => {
     form.save(
@@ -178,10 +178,12 @@ export const TaiteenPerusopetusEditor = (
         <FormField
           form={form}
           path={suorituksenVahvistusPath}
-          view={SuorituksenVahvistusView}
+          optional
+          view={(props) => <SuorituksenVahvistusView {...props} />}
           edit={(props) => (
             <SuorituksenVahvistusEdit
               {...props}
+              organisaatioOid={organisaatioOid!}
               vahvistusClass="fi.oph.koski.schema.HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla"
             />
           )}

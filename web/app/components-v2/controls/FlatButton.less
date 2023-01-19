@@ -9,7 +9,7 @@
   border: none;
   border-radius: 3px;
 
-  transition: background-color 250ms;
+  transition: background-color 100ms;
 
   cursor: pointer;
 
@@ -17,8 +17,13 @@
     width: 100%;
   }
 
-  &:hover {
+  &:hover:enabled {
     background-color: rgba(64, 196, 255, 0.1);
     transition: background-color 15ms;
+  }
+
+  &:disabled {
+    color: @color-darkgray-text;
+    cursor: default;
   }
 }

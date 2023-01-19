@@ -5,6 +5,8 @@ import { OidOrganisaatio } from '../types/fi/oph/koski/schema/OidOrganisaatio'
 import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { Organisaatio } from '../types/fi/oph/koski/schema/Organisaatio'
 import { Toimipiste } from '../types/fi/oph/koski/schema/Toimipiste'
+import { isTutkintotoimikunta } from '../types/fi/oph/koski/schema/Tutkintotoimikunta'
+import { isYritys } from '../types/fi/oph/koski/schema/Yritys'
 import { intersects } from './fp/arrays'
 import { isKoodistoOf } from './types'
 
@@ -62,3 +64,6 @@ export const toOrganisaatio = (org: OrganisaatioHierarkia): Organisaatio => {
     ? Toimipiste(seed)
     : OidOrganisaatio(seed)
 }
+
+export const getOrganisaatioOid = (org: Organisaatio): string | undefined =>
+  isYritys(org) || isTutkintotoimikunta(org) ? undefined : org.oid

@@ -1,0 +1,21 @@
+.OrganisaatioHenkilotView,
+.OrganisaatioHenkilotEdit {
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.OrganisaatioHenkilotView {
+  min-height: 2 * @baseline;
+
+  li {
+    display: inline;
+    &::after {
+      content: ', ';
+    }
+    &:last-child::after {
+      content: none;
+    }
+  }
+}

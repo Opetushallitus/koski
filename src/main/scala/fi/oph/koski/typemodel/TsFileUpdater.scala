@@ -2,7 +2,7 @@ package fi.oph.koski.typemodel
 
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
-import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.schema.{KoskiSchema, StorablePreference}
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 
 import java.io.{BufferedWriter, File, FileWriter}
@@ -44,4 +44,5 @@ case class AdditionalExports(
   putOppijaApiResponse: HenkilönOpiskeluoikeusVersiot,
   getKoodistoApiResponse: GroupedKoodistot,
   organisaatiohierarkia: OrganisaatioHierarkia,
+  storablePreference: StorablePreference,
 )

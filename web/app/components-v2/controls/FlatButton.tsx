@@ -7,6 +7,7 @@ export type FlatButtonProps = CommonProps<{
   children: LocalizedString | string
   onClick: () => void
   fullWidth?: boolean
+  disabled?: boolean
 }>
 
 export const FlatButton = (props: FlatButtonProps) => (
@@ -16,6 +17,7 @@ export const FlatButton = (props: FlatButtonProps) => (
       props.fullWidth && 'FlatButton__fullWidth'
     ])}
     onClick={props.onClick}
+    disabled={props.disabled}
   >
     <Trans>{props.children}</Trans>
   </button>

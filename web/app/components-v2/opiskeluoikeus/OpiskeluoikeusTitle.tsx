@@ -30,7 +30,7 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
       props.opiskeluoikeus.alkamispäivä,
       props.opiskeluoikeus.päättymispäivä
     ),
-    t(viimeisinOpiskelujaksonTila(props.opiskeluoikeus.tila))
+    t(viimeisinOpiskelujaksonTila(props.opiskeluoikeus.tila)?.nimi)
   )
 
   const oid: string | undefined = (props.opiskeluoikeus as any).oid

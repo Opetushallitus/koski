@@ -5,11 +5,11 @@ import { FormModel, FormOptic, getValue } from './FormModel'
 import { useFormErrors } from './useFormErrors'
 import { ValidationError } from './validator'
 
-export type FieldViewBaseProps<T> = {
+export type FieldViewBaseProps<T, P = {}> = P & {
   value?: T | undefined
 }
 
-export type FieldEditBaseProps<T> = {
+export type FieldEditBaseProps<T, P = {}> = P & {
   initialValue?: T | undefined
   value?: T | undefined
   optional: boolean
@@ -17,29 +17,50 @@ export type FieldEditBaseProps<T> = {
   errors: ValidationError[]
 }
 
-export type FormFieldProps<O extends object, T> = {
+export type FormFieldProps<
+  O extends object,
+  T,
+  VP,
+  EP,
+  VIEW_PROPS extends FieldViewBaseProps<T, VP>,
+  EDIT_PROPS extends FieldEditBaseProps<T, EP>
+> = {
   form: FormModel<O>
 
   updateAlso?: Array<FormOptic<O, T>>
   errorsFromPath?: string
-  view: React.FC<FieldViewBaseProps<T>>
-  edit?: React.FC<FieldEditBaseProps<T>>
+  view: React.FC<VIEW_PROPS>
+  viewProps?: VP
+  edit?: React.FC<EDIT_PROPS>
+  editProps?: EP
   auto?: () => T | undefined
 } & (
   | { path: FormOptic<O, T>; optional?: false }
   | { path: FormOptic<O, T | undefined>; optional: true }
 )
 
-export const FormField = <O extends object, T>({
-  form,
-  path,
-  updateAlso: secondaryPaths,
-  view,
-  edit,
-  auto,
-  errorsFromPath,
-  optional
-}: FormFieldProps<O, T>) => {
+export const FormField = <
+  O extends object,
+  T,
+  VP,
+  EP,
+  VIEW_PROPS extends FieldViewBaseProps<T, VP>,
+  EDIT_PROPS extends FieldEditBaseProps<T, EP>
+>(
+  props: FormFieldProps<O, T, VP, EP, VIEW_PROPS, EDIT_PROPS>
+) => {
+  const {
+    form,
+    path,
+    updateAlso: secondaryPaths,
+    view,
+    viewProps,
+    edit,
+    editProps,
+    auto,
+    errorsFromPath,
+    optional
+  } = props
   const fillKoodistot = useKoodistoFiller()
 
   const optics = useMemo(
@@ -68,8 +89,9 @@ export const FormField = <O extends object, T>({
     },
     [form]
   )
-  const View = useMemo(() => view, [])
-  const Edit = useMemo(() => edit, [])
+
+  const View = useMemo(() => view, [JSON.stringify(viewProps)])
+  const Edit = useMemo(() => edit, [JSON.stringify(editProps)])
 
   if (form.editMode) {
     if (auto) {
@@ -77,12 +99,15 @@ export const FormField = <O extends object, T>({
       if (automaticValue && !deepEqual(automaticValue, value)) {
         set(automaticValue)
       }
-      return <View key="auto" value={automaticValue} />
+      // @ts-ignore - TODO tyyppicastaus?
+      return <View {...viewProps} key="auto" value={automaticValue} />
     }
 
     if (Edit) {
       return (
+        // @ts-ignore - TODO tyyppicastaus?
         <Edit
+          {...editProps}
           key="edit"
           initialValue={initialValue}
           value={value}
@@ -94,5 +119,6 @@ export const FormField = <O extends object, T>({
     }
   }
 
-  return <View key="view" value={value} />
+  // @ts-ignore - TODO tyyppicastaus?
+  return <View {...viewProps} key="view" value={value} />
 }

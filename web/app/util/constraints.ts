@@ -1,4 +1,5 @@
 import * as A from 'fp-ts/Array'
+import { isArrayConstraint } from '../types/fi/oph/koski/typemodel/ArrayConstraint'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { isObjectConstraint } from '../types/fi/oph/koski/typemodel/ObjectConstraint'
 import { isStringConstraint } from '../types/fi/oph/koski/typemodel/StringConstraint'
@@ -11,19 +12,27 @@ export const constraintHasProp = (
 
 // TODO: Heitä näissä kaikissa poikkeus, jos constraintin havaitaan olevan väärän tyyppinen constraint
 
-export const constraintObjectProp = (
-  constraint: Constraint | null,
-  ...propNamePath: string[]
-): Constraint | null => {
-  if (A.isEmpty(propNamePath)) {
-    return constraint
+export const constraintObjectProp =
+  (...propNamePath: string[]) =>
+  (constraint: Constraint | null): Constraint | null => {
+    if (A.isEmpty(propNamePath)) {
+      return constraint
+    }
+    const c =
+      (isObjectConstraint(constraint) &&
+        constraint.properties[propNamePath[0]]) ||
+      null
+    return c ? constraintObjectProp(...propNamePath.slice(1))(c) : null
   }
-  const c =
-    (isObjectConstraint(constraint) &&
-      constraint.properties[propNamePath[0]]) ||
-    null
-  return c ? constraintObjectProp(c, ...propNamePath.slice(1)) : null
-}
+
+export const constraintObjectClass = (
+  constraint: Constraint | null
+): string | null => (isObjectConstraint(constraint) ? constraint.class : null)
+
+export const constraintArrayItem = (
+  constraint: Constraint | null
+): Constraint | null =>
+  isArrayConstraint(constraint) ? constraint.items : null
 
 export const allowedStrings = (
   constraint: Constraint | null
@@ -43,9 +52,9 @@ export const koodiviiteConstraints = (
     ? {
         koodistoUri:
           allowedStrings(
-            constraintObjectProp(constraint, 'koodistoUri')
+            constraintObjectProp('koodistoUri')(constraint)
           )?.[0] || null,
         koodiarvot:
-          allowedStrings(constraintObjectProp(constraint, 'koodiarvo')) || null
+          allowedStrings(constraintObjectProp('koodiarvo')(constraint)) || null
       }
     : null

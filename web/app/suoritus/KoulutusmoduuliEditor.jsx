@@ -1,7 +1,7 @@
 import React from 'react'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
 import { Editor } from '../editor/Editor'
-import { t } from '../i18n/i18n.js'
+import { t } from '../i18n/i18n'
 import { suorituksenTyyppi } from './Suoritus'
 import { buildClassNames } from '../components/classnames'
 import { tutkinnonNimi } from './Koulutusmoduuli'

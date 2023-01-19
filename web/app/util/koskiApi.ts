@@ -4,6 +4,7 @@ import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/Organi
 import { OidHenkilö } from '../types/fi/oph/koski/schema/OidHenkilo'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../types/fi/oph/koski/schema/Oppija'
+import { StorablePreference } from '../types/fi/oph/koski/schema/StorablePreference'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodistot'
 import { tapLeftP } from './fp/either'
@@ -52,6 +53,25 @@ export const fetchOrganisaatioHierarkia = () =>
 export const queryOrganisaatioHierarkia = (query: string) =>
   handleExpiredSession(
     apiGet<OrganisaatioHierarkia[]>(apiUrl(`organisaatio/hierarkia`, { query }))
+  )
+
+export const fetchPreferences = <T extends StorablePreference>(
+  organisaatioOid: string,
+  type: string
+) =>
+  handleExpiredSession(
+    apiGet<T[]>(apiUrl(`preferences/${organisaatioOid}/${type}`))
+  )
+
+export const storePreference = (
+  organisaatioOid: string,
+  type: string,
+  data: StorablePreference
+) =>
+  handleExpiredSession(
+    apiPut<void>(apiUrl(`preferences/${organisaatioOid}/${type}`), {
+      body: data
+    })
   )
 
 // Virhetilanteiden hallinta

@@ -12,7 +12,7 @@ import {
 } from './EditorModel'
 import Http from '../util/http'
 import DropDown from '../components/Dropdown'
-import { t } from '../i18n/i18n.js'
+import { t } from '../i18n/i18n'
 import { parseBool } from '../util/util'
 import { buildClassNames } from '../components/classnames'
 import { hyphenate } from '../util/hyphenate'
