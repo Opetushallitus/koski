@@ -179,7 +179,7 @@ object AmmatillinenPerustutkintoExample {
 
   import fi.oph.koski.documentation.AmmatillinenExampleData._
 
-  val perustutkinto = oppija(opiskeluoikeus = perustutkintoOpiskeluoikeusValmis())
+  val perustutkinto = oppija(opiskeluoikeus = perustutkintoOpiskeluoikeusValmis(valmistumispäivä = date(2016, 8, 31)))
 
   val osittainenPerustutkintoOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
