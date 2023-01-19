@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 19.1.2023
+- Lisätty validaatio että vahvistetulta jatkuvaan oppimiseen suunnatulta vapaan sivistystyön koulutuksen suoritukselta löytyy laajuus.
+  - Myös vahvistetun suorituksen osasuorituksilta ja niiden aliosasuorituksilta validoidaan että laajuudet löytyvät.
+
 ## 3.1.2023
 
 - Sallittu väliaikaisesti oppilaitoksen vaihto tilanteessa, jossa vaihdetaan oppilaitoksesta 1.2.246.562.10.21744269164 oppilaitokseen 1.2.246.562.10.70112627842

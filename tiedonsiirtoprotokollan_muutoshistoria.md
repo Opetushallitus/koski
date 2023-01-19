@@ -1,3 +1,6 @@
+# 19.1.2023
+- Jatkuvaan oppimiseen suunnatun vapaan sivistystyön koulutuksen osasuoritusten ja aliosasuoritusten laajuus on muutettu valinnaiseksi kentäksi.
+
 ## 2.1.2023
 
 - IB-opintoihin lisätty oppiaineet koodeilla CLA, LIT, INF, DES, SPO, MATAA ja MATAI

@@ -73,6 +73,65 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
         }
       }
 
+      "Jos päätason suoritus vahvistettu, tulee suorituksen, osasuoritusten sekä alaosasuoritusten laajuudet olla syötetty" in {
+        val oo = opiskeluoikeus.copy(
+          suoritukset = List(ExamplesVapaaSivistystyöJotpa.PäätasonSuoritus.suoritettu.copy(
+            koulutusmoduuli = ExamplesVapaaSivistystyöJotpa.PäätasonSuoritus.suoritettu.koulutusmoduuli.copy(
+              laajuus = None
+            ),
+            osasuoritukset = Some(List(
+              ExamplesVapaaSivistystyöJotpa.Osasuoritus.osasuoritus1,
+              ExamplesVapaaSivistystyöJotpa.Osasuoritus.osasuoritus2,
+              ExamplesVapaaSivistystyöJotpa.Osasuoritus.osasuoritus3Arvioitu.copy(
+                koulutusmoduuli = ExamplesVapaaSivistystyöJotpa.Osasuoritus.Koulutusmoduuli.kurssi3EiLaajuutta,
+                osasuoritukset = Some(List(
+                  ExamplesVapaaSivistystyöJotpa.Osasuoritus.osasuoritus3Arvioitu.copy(
+                    koulutusmoduuli = VapaanSivistystyönJotpaKoulutuksenOsasuoritus(
+                      tunniste = PaikallinenKoodi(nimi = LocalizedString.finnish("Johdatus tussitukseen"), koodiarvo = "1138-3-1"),
+                      laajuus = None
+                    )
+                  )
+                ))
+              )
+            ))
+          ))
+        )
+        putOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.laajuudet("Vahvistetulta jatkuvaan oppimiseen suunnatulta vapaan sivistystyön koulutuksen suoritukselta koulutus/099999 puuttuu laajuus"),
+            KoskiErrorCategory.badRequest.validation.laajuudet("Vahvistetulta jatkuvaan oppimiseen suunnatulta vapaan sivistystyön koulutuksen osasuoritukselta 1138-3 (Tussitekniikat I ja II) puuttuu laajuus"),
+            KoskiErrorCategory.badRequest.validation.laajuudet("Vahvistetulta jatkuvaan oppimiseen suunnatulta vapaan sivistystyön koulutuksen osasuoritukselta 1138-3-1 (Johdatus tussitukseen) puuttuu laajuus")
+          )
+        }
+      }
+
+      "Jos päätason suoritus ei ole vahvistettu, ei vaadita laajuuksia suorituksilta, osasuorituksilta tai alaosasuorituksilta" in {
+        val oo = opiskeluoikeus.copy(
+          tila = opiskeluoikeudenTila(List(opiskeluoikeusLäsnä)),
+          suoritukset = List(ExamplesVapaaSivistystyöJotpa.PäätasonSuoritus.suoritettu.copy(
+            vahvistus = None,
+            koulutusmoduuli = ExamplesVapaaSivistystyöJotpa.PäätasonSuoritus.suoritettu.koulutusmoduuli.copy(
+              laajuus = None
+            ),
+            osasuoritukset = Some(List(
+              ExamplesVapaaSivistystyöJotpa.Osasuoritus.osasuoritus1,
+              ExamplesVapaaSivistystyöJotpa.Osasuoritus.osasuoritus2,
+              ExamplesVapaaSivistystyöJotpa.Osasuoritus.osasuoritus3Arvioitu.copy(
+                koulutusmoduuli = ExamplesVapaaSivistystyöJotpa.Osasuoritus.Koulutusmoduuli.kurssi3EiLaajuutta,
+                osasuoritukset = Some(List(
+                  ExamplesVapaaSivistystyöJotpa.Osasuoritus.osasuoritus3Arvioitu.copy(
+                    koulutusmoduuli = ExamplesVapaaSivistystyöJotpa.Osasuoritus.Koulutusmoduuli.kurssi3EiLaajuutta
+                  )
+                ))
+              )
+            ))
+          ))
+        )
+        putOpiskeluoikeus(oo, headers = authHeaders(varsinaisSuomiPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+      }
+
       "Jos päätason suoritus vahvistamaton, tilan tulee olla 'Keskeytynyt'" in {
         val oo = opiskeluoikeus.copy(
           suoritukset = List(opiskeluoikeus.suoritukset.head.asInstanceOf[VapaanSivistystyönJotpaKoulutuksenSuoritus].copy(

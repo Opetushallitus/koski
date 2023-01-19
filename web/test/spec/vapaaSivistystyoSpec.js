@@ -476,6 +476,7 @@ describe('VST', function () {
       describe('Osasuorituksen voi lisätä', function () {
         before(
           editor.edit,
+          vst.lisääSuorituksenLaajuus(5),
           vst.lisääPaikallinen(
             'Paikallinen vapaan sivistystyön koulutuksen osasuoritus'
           ),
@@ -555,8 +556,21 @@ describe('VST', function () {
           before(
             editor.edit,
             opinnot.avaaKaikki,
-            vst.lisääTallennettuPaikallinen(),
-            opinnot.avaaKaikki
+            vst.lisääTallennettuPaikallinenJotpa(),
+            function () {
+              return vst
+                .selectOsasuoritus('Osasuorituksen osasuoritus')()
+                .property('laajuus')
+                .setValue(5)()
+            },
+            function () {
+              return vst
+                .selectOsasuoritus('Osasuorituksen osasuoritus')()
+                .propertyBySelector('tr td.arvosana')
+                .selectValue('Hyväksytty')()
+            },
+            vst.lisääSuorituksenLaajuus(10),
+            editor.saveChanges
           )
 
           it('toimii', function () {
@@ -578,6 +592,10 @@ describe('VST', function () {
               false
             )
           })
+
+          after(
+            editor.saveChangesAndWaitForSuccess
+          )
         })
       })
     })

@@ -129,7 +129,7 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
             />
           ))}
           {context.edit && (
-            <SingleColumnRowTable colSpan={4}>
+            <SingleColumnRowTable className={'vst-uusi-osasuoritus'} colSpan={4}>
               <UusiVapaanSivistystyonOsasuoritus
                 // @ts-expect-error TutkinnonOsa
                 suoritusPrototypes={

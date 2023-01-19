@@ -64,6 +64,7 @@ object ExamplesVapaaSivistystyöJotpa {
         suorituskieli = suomenKieli,
         koulutusmoduuli = VapaanSivistystyönJotpaKoulutus(
           opintokokonaisuus = VapaaSivistystyöExample.exampleOpintokokonaisuus,
+          laajuus = Some(LaajuusOpintopisteissä(3))
         ),
         osasuoritukset = Some(Osasuoritus.arvioidutOsasuoritukset),
         vahvistus = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(
@@ -82,7 +83,10 @@ object ExamplesVapaaSivistystyöJotpa {
 
     lazy val osasuoritus1: VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.kurssi1,
-      arviointi = Some(List(VapaanSivistystyöJotpaKoulutuksenArviointi(päivä = LocalDate.of(2023, 2, 1))))
+      arviointi = Some(List(VapaanSivistystyöJotpaKoulutuksenArviointi(
+        arvosana = Koodistokoodiviite("9", "arviointiasteikkovstjotpa"),
+        päivä = LocalDate.of(2023, 2, 1)
+      )))
     )
 
     lazy val osasuoritus2: VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(
@@ -102,15 +106,19 @@ object ExamplesVapaaSivistystyöJotpa {
     object Koulutusmoduuli {
       lazy val kurssi1: VapaanSivistystyönJotpaKoulutuksenOsasuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuoritus(
         tunniste = PaikallinenKoodi(nimi = finnish("Kuvantekemisen perusvälineistö"), koodiarvo = "1138-1"),
-        laajuus = LaajuusOpintopisteissä(1),
+        laajuus = Some(LaajuusOpintopisteissä(1)),
       )
       lazy val kurssi2: VapaanSivistystyönJotpaKoulutuksenOsasuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuoritus(
         tunniste = PaikallinenKoodi(nimi = finnish("Kuvallisen viestinnän perusteet"), koodiarvo = "1138-2"),
-        laajuus = LaajuusOpintopisteissä(1),
+        laajuus = Some(LaajuusOpintopisteissä(1)),
       )
       lazy val kurssi3: VapaanSivistystyönJotpaKoulutuksenOsasuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuoritus(
         tunniste = PaikallinenKoodi(nimi = finnish("Tussitekniikat I ja II"), koodiarvo = "1138-3"),
-        laajuus = LaajuusOpintopisteissä(1),
+        laajuus = Some(LaajuusOpintopisteissä(1)),
+      )
+      lazy val kurssi3EiLaajuutta: VapaanSivistystyönJotpaKoulutuksenOsasuoritus = VapaanSivistystyönJotpaKoulutuksenOsasuoritus(
+        tunniste = PaikallinenKoodi(nimi = finnish("Tussitekniikat I ja II"), koodiarvo = "1138-3"),
+        laajuus = None
       )
     }
   }

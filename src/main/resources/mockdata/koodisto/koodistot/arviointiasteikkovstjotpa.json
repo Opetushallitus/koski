@@ -1,15 +1,15 @@
 {
-  "koodistoUri" : "arviointiasteikkovstkoto",
+  "koodistoUri" : "arviointiasteikkovstjotpa",
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Arviointiasteikko VST KOTO"
+    "nimi" : "Arviointiasteikko VST JOTPA"
   }, {
     "kieli" : "SV",
-    "nimi" : "Arviointiasteikko VST KOTO"
+    "nimi" : "Arviointiasteikko VST JOTPA"
   }, {
     "kieli" : "EN",
-    "nimi" : "Arviointiasteikko VST KOTO"
+    "nimi" : "Arviointiasteikko VST JOTPA"
   } ],
   "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2020-01-01",

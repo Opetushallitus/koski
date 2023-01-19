@@ -992,6 +992,17 @@ function VSTSuoritukset(prev) {
           .then(wait.forAjax)
       }
     },
+    lisääSuorituksenLaajuus: function (laajuus) {
+      return function () {
+        return Page(
+          findFirst(
+            '.koulutusmoduuli [data-testid="laajuus-editor"]'
+          )
+        )
+          .setInputValue('input', laajuus)()
+          .then(wait.forAjax)
+      }
+    },
     lisääSuuntautumisopinto: function (hakusana) {
       return function () {
         return Page(
@@ -1035,6 +1046,12 @@ function VSTSuoritukset(prev) {
         return click('.lisaa-paikallinen-suoritus .dropdown .select')().then(
           click('.lisaa-paikallinen-suoritus .dropdown li:nth-child(1)')
         )
+      }
+    },
+    lisääTallennettuPaikallinenJotpa: function () {
+      return function () {
+        return click('.vapaansivistystyonjotpakoulutuksensuoritus > .osasuoritukset > .suoritus-taulukko > table > .vst-uusi-osasuoritus .lisaa-paikallinen-suoritus .dropdown .select')()
+          .then(click('.vapaansivistystyonjotpakoulutuksensuoritus > .osasuoritukset > .suoritus-taulukko > table > .vst-uusi-osasuoritus .lisaa-paikallinen-suoritus .dropdown li:nth-child(1)'))
       }
     },
     lisääLukutaitokoulutuksenKokonaisuus: function (hakusana) {

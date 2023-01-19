@@ -35,7 +35,6 @@ object Koodistot {
     KoodistoAsetus("arviointiasteikkolisapisteetib", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("arviointiasteikkomuuammatillinenkoulutus"),
     KoodistoAsetus("arviointiasteikkovst"),
-    KoodistoAsetus("arviointiasteikkovstkoto"),
     KoodistoAsetus("arviointiasteikkovstvapaatavoitteinen"),
     KoodistoAsetus("arviointiasteikkoyleissivistava"),
     KoodistoAsetus("arviointiasteikkokehittyvankielitaidontasot"),
@@ -113,7 +112,8 @@ object Koodistot {
     KoodistoAsetus("ebtutkinnonoppiaineenkomponentti"),
     KoodistoAsetus("taiteenperusopetustaiteenala"),
     KoodistoAsetus("taiteenperusopetusoppimaara"),
-    KoodistoAsetus("arviointiasteikkotaiteenperusopetus")
+    KoodistoAsetus("arviointiasteikkotaiteenperusopetus"),
+    KoodistoAsetus("arviointiasteikkovstjotpa"),
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.toString)
 

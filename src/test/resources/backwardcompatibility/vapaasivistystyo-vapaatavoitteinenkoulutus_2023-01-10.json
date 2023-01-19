@@ -1,0 +1,240 @@
+{
+  "henkilö" : {
+    "hetu" : "231158-467R",
+    "etunimet" : "Lukutaitokouluttautuja",
+    "kutsumanimi" : "Lukutaitokouluttautuja",
+    "sukunimi" : "Vapaa-Sivistys"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.31915273374",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "01694",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Varsinais-Suomen kansanopisto"
+      }
+    },
+    "arvioituPäättymispäivä" : "2022-05-31",
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2022-05-31",
+        "tila" : {
+          "koodiarvo" : "hyvaksytystisuoritettu",
+          "nimi" : {
+            "fi" : "Hyväksytysti suoritettu"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.31915273374"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "vstvapaatavoitteinenkoulutus",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "099999",
+          "koodistoUri" : "koulutus"
+        },
+        "laajuus" : {
+          "arvo" : 5.0,
+          "yksikkö" : {
+            "koodiarvo" : "2",
+            "nimi" : {
+              "fi" : "opintopistettä",
+              "sv" : "studiepoäng",
+              "en" : "ECTS credits"
+            },
+            "lyhytNimi" : {
+              "fi" : "op",
+              "sv" : "sp",
+              "en" : "ECTS cr"
+            },
+            "koodistoUri" : "opintojenlaajuusyksikko"
+          }
+        },
+        "opintokokonaisuus" : {
+          "koodiarvo" : "1138",
+          "nimi" : {
+            "fi" : "Kuvallisen ilmaisun perusteet ja välineet"
+          },
+          "koodistoUri" : "opintokokonaisuudet",
+          "koodistoVersio" : 1
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2022-05-31",
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "lyhytNimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu",
+            "sv" : "Jyväskylän normaalikoulu",
+            "en" : "Jyväskylän normaalikoulu"
+          },
+          "kotipaikka" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä",
+              "sv" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "nimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "lyhytNimi" : {
+                "fi" : "Jyväskylän normaalikoulu",
+                "sv" : "Jyväskylän normaalikoulu",
+                "en" : "Jyväskylän normaalikoulu"
+              },
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu",
+              "sv" : "Jyväskylän normaalikoulu",
+              "en" : "Jyväskylän normaalikoulu"
+            },
+            "kotipaikka" : {
+              "koodiarvo" : "179",
+              "nimi" : {
+                "fi" : "Jyväskylä",
+                "sv" : "Jyväskylä"
+              },
+              "koodistoUri" : "kunta"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "kuvaus" : {
+            "fi" : "Sienestämisen kokonaisuus"
+          },
+          "tunniste" : {
+            "koodiarvo" : "SK-K",
+            "nimi" : {
+              "fi" : "Sienestämisen kokonaisuus"
+            }
+          },
+          "laajuus" : {
+            "arvo" : 5.0,
+            "yksikkö" : {
+              "koodiarvo" : "2",
+              "nimi" : {
+                "fi" : "opintopistettä",
+                "sv" : "studiepoäng",
+                "en" : "ECTS credits"
+              },
+              "lyhytNimi" : {
+                "fi" : "op",
+                "sv" : "sp",
+                "en" : "ECTS cr"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "vstvapaatavoitteisenkoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "arviointiasteikkovstvapaatavoitteinen"
+          },
+          "päivä" : "2021-10-30",
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "kuvaus" : {
+              "fi" : "Sienien tunnistaminen 1"
+            },
+            "tunniste" : {
+              "koodiarvo" : "ST1",
+              "nimi" : {
+                "fi" : "Sienien tunnistaminen 1"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 5.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "opintopistettä",
+                  "sv" : "studiepoäng",
+                  "en" : "ECTS credits"
+                },
+                "lyhytNimi" : {
+                  "fi" : "op",
+                  "sv" : "sp",
+                  "en" : "ECTS cr"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tyyppi" : {
+            "koodiarvo" : "vstvapaatavoitteisenkoulutuksenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkovstvapaatavoitteinen"
+            },
+            "päivä" : "2021-10-30",
+            "hyväksytty" : true
+          } ]
+        } ]
+      } ]
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "vapaansivistystyonkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2022-05-31",
+    "päättymispäivä" : "2022-05-31"
+  } ]
+}

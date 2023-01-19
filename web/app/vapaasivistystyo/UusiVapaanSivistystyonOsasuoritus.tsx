@@ -37,7 +37,7 @@ import {
   OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
   VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
 } from '../types/VapaaSivistystyo'
-import { Koodistokoodiviite } from '../types/common'
+import {Koodistokoodiviite, PaikallinenKoodi} from '../types/common'
 import { withoutNullValues } from '../util/objects'
 
 export type UusiVapaanSivistystyonOsasuoritusProps = {
@@ -535,6 +535,8 @@ const LisääPaikallinen = ({
         kuvaus: modelData(suoritus, 'kuvaus'),
         tunniste: modelData(suoritus, 'tunniste')
       }
+    }).sort((a: { tunniste: PaikallinenKoodi }, b: { tunniste: PaikallinenKoodi }) => {
+      return a.tunniste.koodiarvo.localeCompare(b.tunniste.koodiarvo)
     })
     options.set(tallennetutSuoritukset)
   }
