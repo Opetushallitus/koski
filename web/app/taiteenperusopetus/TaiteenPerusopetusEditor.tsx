@@ -79,7 +79,8 @@ export const TaiteenPerusopetusEditor = (
     [osasuorituksetPath]
   )
 
-  const organisaatioOid = props.opiskeluoikeus.oppilaitos?.oid
+  const organisaatio =
+    props.opiskeluoikeus.oppilaitos || props.opiskeluoikeus.koulutustoimija
 
   const onSave = useCallback(() => {
     form.save(
@@ -183,7 +184,7 @@ export const TaiteenPerusopetusEditor = (
           edit={(props) => (
             <SuorituksenVahvistusEdit
               {...props}
-              organisaatioOid={organisaatioOid!}
+              organisaatio={organisaatio!}
               vahvistusClass="fi.oph.koski.schema.HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla"
             />
           )}

@@ -10,7 +10,7 @@ import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 import { TextEdit, TextView } from '../controls/TextField'
-import { FormField } from '../forms/FormField'
+import { FormField, sideUpdate } from '../forms/FormField'
 import { useForm } from '../forms/FormModel'
 
 const NEW_KEY = '__NEW__'
@@ -89,11 +89,19 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
   const constraint = useConstraint('PaikallinenKoodi')
   const form = useForm(emptyPaikallinenKoodi, true, constraint)
   const koodiarvoPath = form.root.prop('koodiarvo')
-  const nimiPath = form.root.prop('nimi').compose(allLanguages)
 
   const onSubmit = useCallback(() => {
     props.onSubmit(form.state)
   }, [props.onSubmit, form.state])
+
+  const updateOsasuoritusNimi = useMemo(
+    () =>
+      sideUpdate<PaikallinenKoodi, string, string>(
+        form.root.prop('nimi').compose(allLanguages),
+        (koodiarvo) => koodiarvo || ''
+      ),
+    []
+  )
 
   return (
     <Modal onSubmit={onSubmit} onClose={props.onClose}>
@@ -102,7 +110,7 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
         <FormField
           form={form}
           path={koodiarvoPath}
-          updateAlso={[nimiPath]}
+          updateAlso={[updateOsasuoritusNimi]}
           errorsFromPath="nimi"
           view={TextView}
           edit={(props) => (

@@ -1,3 +1,4 @@
+import { constant } from 'fp-ts/lib/function'
 import React, { useCallback, useMemo } from 'react'
 import { useKoodistoFiller } from '../../appstate/koodisto'
 import { deepEqual } from '../../util/fp/objects'
@@ -27,7 +28,7 @@ export type FormFieldProps<
 > = {
   form: FormModel<O>
 
-  updateAlso?: Array<FormOptic<O, T>>
+  updateAlso?: Array<SideUpdate<O, T, any>>
   errorsFromPath?: string
   view: React.FC<VIEW_PROPS>
   viewProps?: VP
@@ -38,6 +39,21 @@ export type FormFieldProps<
   | { path: FormOptic<O, T>; optional?: false }
   | { path: FormOptic<O, T | undefined>; optional: true }
 )
+
+export type SideUpdate<O extends object, T, S> = (value?: T) => {
+  path: FormOptic<O, S>
+  update: (sideValue?: S) => S
+}
+
+export const sideUpdate =
+  <O extends object, T, S>(
+    path: FormOptic<O, S>,
+    transform: (value?: T, sideValue?: S) => S
+  ): SideUpdate<O, T, S> =>
+  (value?: T) => ({
+    path,
+    update: (sideValue?: S) => transform(value, sideValue)
+  })
 
 export const FormField = <
   O extends object,
@@ -63,15 +79,14 @@ export const FormField = <
   } = props
   const fillKoodistot = useKoodistoFiller()
 
-  const optics = useMemo(
-    () => [path, ...(secondaryPaths || [])] as FormOptic<O, T | undefined>[],
-    [path, ...(secondaryPaths || [])]
-  )
   const initialValue = useMemo(
-    () => getValue(optics[0])(form.initialState),
+    () => getValue(path as FormOptic<O, T | undefined>)(form.initialState),
     [form.initialState]
   )
-  const value = useMemo(() => getValue(optics[0])(form.state), [form.state])
+  const value = useMemo(
+    () => getValue(path as FormOptic<O, T | undefined>)(form.state),
+    [form.state]
+  )
 
   const errors = useFormErrors(
     form,
@@ -81,10 +96,11 @@ export const FormField = <
   const set = useCallback(
     async (newValue?: T) => {
       const filledValue = await fillKoodistot(newValue)
-      const getValue = () => filledValue
-      optics.forEach((optic) =>
-        form.updateAt(optic as FormOptic<O, T | undefined>, getValue)
-      )
+      form.updateAt(path as FormOptic<O, T | undefined>, constant(filledValue))
+      secondaryPaths?.forEach(<S,>(sideUpdate: SideUpdate<O, T, S>) => {
+        const side = sideUpdate(filledValue)
+        form.updateAt(side.path, side.update)
+      })
       form.validate()
     },
     [form]

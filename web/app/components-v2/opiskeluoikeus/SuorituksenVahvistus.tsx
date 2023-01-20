@@ -1,7 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
+import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { Vahvistus } from '../../types/fi/oph/koski/schema/Vahvistus'
+import { getOrganisaatioOid } from '../../util/organisaatiot'
 import { isHenkilövahvistus } from '../../util/schema'
 import { ClassOf } from '../../util/types'
 import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
@@ -27,7 +29,7 @@ export type SuorituksenVahvistusEditProps<T extends Vahvistus> = CommonProps<
     T | undefined,
     {
       vahvistusClass: ClassOf<T>
-      organisaatioOid: string
+      organisaatio: Organisaatio
     }
   >
 >
@@ -36,7 +38,7 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
   value,
   onChange,
   vahvistusClass,
-  organisaatioOid,
+  organisaatio,
   ...rest
 }: SuorituksenVahvistusEditProps<T>) => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -72,7 +74,7 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
       )}
       {modalVisible && (
         <SuorituksenVahvistusModal
-          organisaatioOid={organisaatioOid}
+          organisaatio={organisaatio}
           vahvistusClass={vahvistusClass}
           onSubmit={onSubmit}
           onCancel={onCancel}

@@ -23,16 +23,20 @@ import {
   AnyOrganisaatiohenkilö,
   castOrganisaatiohenkilö
 } from '../../util/henkilo'
+import {
+  getOrganisaationKotipaikka,
+  getOrganisaatioOid
+} from '../../util/organisaatiot'
 import { ClassOf } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
 import { DateEdit, DateView } from '../controls/DateField'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
-import { FormField } from '../forms/FormField'
+import { FormField, sideUpdate } from '../forms/FormField'
 import { useForm } from '../forms/FormModel'
 import { Trans } from '../texts/Trans'
-import { KuntaEdit, KuntaView } from './KuntaField'
+import { KuntaEdit, Kuntakoodiviite, KuntaView } from './KuntaField'
 import { OrganisaatioEdit, OrganisaatioView } from './OrganisaatioField'
 import {
   OrganisaatioHenkilötEdit,
@@ -41,7 +45,7 @@ import {
 
 export type SuorituksenVahvistusModalProps<T extends Vahvistus> = CommonProps<{
   vahvistusClass: ClassOf<T>
-  organisaatioOid: string
+  organisaatio: Organisaatio
   onSubmit: (form: T) => void
   onCancel: () => void
 }>
@@ -53,23 +57,25 @@ export type VahvistusForm<T extends AnyOrganisaatiohenkilö> = {
   myöntäjäHenkilöt: Array<T>
 }
 
-const initialState = <
-  T extends AnyOrganisaatiohenkilö
->(): VahvistusForm<T> => ({
+const initialState = <T extends AnyOrganisaatiohenkilö>(
+  organisaatio: Organisaatio
+): VahvistusForm<T> => ({
   päivä: todayISODate(),
-  myöntäjäHenkilöt: []
+  myöntäjäHenkilöt: [],
+  myöntäjäOrganisaatio: organisaatio,
+  paikkakunta: getOrganisaationKotipaikka(organisaatio)
 })
 
 export const SuorituksenVahvistusModal = <
-  T extends Vahvistus,
-  S extends AnyOrganisaatiohenkilö
+  V extends Vahvistus,
+  H extends AnyOrganisaatiohenkilö
 >(
-  props: SuorituksenVahvistusModalProps<T>
+  props: SuorituksenVahvistusModalProps<V>
 ): React.ReactElement => {
   const vahvistusC = useConstraint(props.vahvistusClass)
 
   const [storedMyöntäjät, storeMyöntäjä] = usePreferences<Organisaatiohenkilö>(
-    props.organisaatioOid,
+    getOrganisaatioOid(props.organisaatio),
     'myöntäjät'
   )
 
@@ -80,7 +86,7 @@ export const SuorituksenVahvistusModal = <
         constraintObjectProp('myöntäjäHenkilöt'),
         constraintArrayItem,
         constraintObjectClass
-      ) as ClassOf<S> | null,
+      ) as ClassOf<H> | null,
     [vahvistusC]
   )
 
@@ -88,9 +94,9 @@ export const SuorituksenVahvistusModal = <
     ? storedMyöntäjät.map(castOrganisaatiohenkilö(organisaatiohenkilöClass))
     : []
 
-  const form = useForm(initialState<S>(), true, vahvistusC)
+  const form = useForm(initialState<H>(props.organisaatio), true, vahvistusC)
   const vahvistus = useMemo(
-    () => formDataToVahvistus(form.state, props.vahvistusClass) as T | null,
+    () => formDataToVahvistus(form.state, props.vahvistusClass) as V | null,
     [form.state, props.vahvistusClass]
   )
 
@@ -110,6 +116,28 @@ export const SuorituksenVahvistusModal = <
       props.onSubmit(vahvistus)
     }
   }, [vahvistus])
+
+  const updatePaikkakuntaByOrganisaatio = useMemo(
+    () =>
+      sideUpdate<VahvistusForm<H>, Organisaatio, Kuntakoodiviite | undefined>(
+        paikkakuntaPath,
+        (org) => org && getOrganisaationKotipaikka(org)
+      ),
+    [paikkakuntaPath]
+  )
+
+  /** TODO: Selvitä tarvitaanko tätä?
+   
+  const updateHenkilöidenOrganisaatiot = useMemo(
+    () =>
+      sideUpdate<VahvistusForm<H>, Organisaatio, H[]>(
+        myöntäjäHenkilötPath,
+        (organisaatio, henkilöt) =>
+          henkilöt?.map((henkilö) => ({ ...henkilö, organisaatio })) || []
+      ),
+    [paikkakuntaPath]
+  )
+   */
 
   return (
     <Modal
@@ -146,6 +174,10 @@ export const SuorituksenVahvistusModal = <
           <FormField
             form={form}
             path={organisaatioPath}
+            updateAlso={[
+              updatePaikkakuntaByOrganisaatio
+              // updateHenkilöidenOrganisaatiot
+            ]}
             optional
             view={OrganisaatioView}
             edit={OrganisaatioEdit}

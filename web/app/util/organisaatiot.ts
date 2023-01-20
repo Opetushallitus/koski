@@ -1,5 +1,6 @@
 import * as string from 'fp-ts/string'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
 import { OidOrganisaatio } from '../types/fi/oph/koski/schema/OidOrganisaatio'
 import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
@@ -67,3 +68,8 @@ export const toOrganisaatio = (org: OrganisaatioHierarkia): Organisaatio => {
 
 export const getOrganisaatioOid = (org: Organisaatio): string | undefined =>
   isYritys(org) || isTutkintotoimikunta(org) ? undefined : org.oid
+
+export const getOrganisaationKotipaikka = (
+  org: Organisaatio
+): Koodistokoodiviite<'kunta'> | undefined =>
+  isYritys(org) || isTutkintotoimikunta(org) ? undefined : org.kotipaikka

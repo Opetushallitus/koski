@@ -48,8 +48,6 @@ export const OrganisaatioEdit = <T extends Organisaatio>(
     [props.onChange]
   )
 
-  console.log('Orgvalitsin', props.value, '-->', selected)
-
   return <Select options={options} value={selected} onChange={onChange} />
 }
 
