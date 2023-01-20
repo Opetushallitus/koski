@@ -49,7 +49,7 @@ object Http extends Logging {
       .withIdleTimeout(2.minutes)
 
     configFn(builder)
-      .allocated
+      .resource.allocated
       .map(_._1)
       .unsafeRunSync()
   }
