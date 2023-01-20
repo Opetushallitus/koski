@@ -1,3 +1,4 @@
+import * as Eq from 'fp-ts/Eq'
 import { localize } from '../i18n/i18n'
 import {
   isLocalizedString,
@@ -6,6 +7,7 @@ import {
 import { Organisaatio } from '../types/fi/oph/koski/schema/Organisaatio'
 import { Organisaatiohenkilö } from '../types/fi/oph/koski/schema/Organisaatiohenkilo'
 import { OrganisaatiohenkilöValinnaisellaTittelillä } from '../types/fi/oph/koski/schema/OrganisaatiohenkiloValinnaisellaTittelilla'
+import { getOrganisaatioId, OrganisaatioEq } from './organisaatiot'
 import { ClassOf } from './types'
 
 export type AnyOrganisaatiohenkilö =
@@ -46,3 +48,11 @@ export const castOrganisaatiohenkilö =
           henkilö.nimi,
           henkilö.titteli
         ) as T)
+
+export const OrganisaatiohenkilöEq: Eq.Eq<AnyOrganisaatiohenkilö> = {
+  equals(x, y) {
+    return (
+      x.nimi === y.nimi && OrganisaatioEq.equals(x.organisaatio, y.organisaatio)
+    )
+  }
+}

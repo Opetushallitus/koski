@@ -4,6 +4,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useConstraint } from '../../appstate/constraints'
 import { usePreferences } from '../../appstate/preferences'
 import { todayISODate } from '../../date/date'
+import { localize } from '../../i18n/i18n'
 import { HenkilövahvistusPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusPaikkakunnalla'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
@@ -21,12 +22,14 @@ import {
 } from '../../util/constraints'
 import {
   AnyOrganisaatiohenkilö,
-  castOrganisaatiohenkilö
+  castOrganisaatiohenkilö,
+  OrganisaatiohenkilöEq
 } from '../../util/henkilo'
 import {
   getOrganisaationKotipaikka,
   getOrganisaatioOid
 } from '../../util/organisaatiot'
+import { isHenkilövahvistus } from '../../util/schema'
 import { ClassOf } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
@@ -113,9 +116,23 @@ export const SuorituksenVahvistusModal = <
 
   const onSubmit = useCallback(() => {
     if (vahvistus) {
+      console.log('vahvistus', vahvistus, isHenkilövahvistus(vahvistus))
+      if (isHenkilövahvistus(vahvistus)) {
+        A.difference(OrganisaatiohenkilöEq)(storedMyöntäjät)(
+          vahvistus.myöntäjäHenkilöt
+        ).forEach((henkilö) =>
+          storeMyöntäjä(
+            henkilö.nimi,
+            Organisaatiohenkilö({
+              ...henkilö,
+              titteli: henkilö.titteli || localize('')
+            })
+          )
+        )
+      }
       props.onSubmit(vahvistus)
     }
-  }, [vahvistus])
+  }, [vahvistus, storedMyöntäjät])
 
   const updatePaikkakuntaByOrganisaatio = useMemo(
     () =>
@@ -192,13 +209,11 @@ export const SuorituksenVahvistusModal = <
               path={myöntäjäHenkilötPath}
               view={OrganisaatioHenkilötView}
               edit={OrganisaatioHenkilötEdit}
-              editProps={
-                {
-                  henkilöClass: organisaatiohenkilöClass,
-                  organisaatio: form.state.myöntäjäOrganisaatio,
-                  storedHenkilöt: castStoredMyöntäjät
-                } as const
-              }
+              editProps={{
+                henkilöClass: organisaatiohenkilöClass,
+                organisaatio: form.state.myöntäjäOrganisaatio,
+                storedHenkilöt: castStoredMyöntäjät
+              }}
             />
           </label>
         )}

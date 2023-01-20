@@ -1,3 +1,4 @@
+import * as Eq from 'fp-ts/Eq'
 import * as string from 'fp-ts/string'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
@@ -69,7 +70,20 @@ export const toOrganisaatio = (org: OrganisaatioHierarkia): Organisaatio => {
 export const getOrganisaatioOid = (org: Organisaatio): string | undefined =>
   isYritys(org) || isTutkintotoimikunta(org) ? undefined : org.oid
 
+export const getOrganisaatioId = (org: Organisaatio): string =>
+  isYritys(org)
+    ? org.yTunnus
+    : isTutkintotoimikunta(org)
+    ? org.tutkintotoimikunnanNumero
+    : org.oid
+
 export const getOrganisaationKotipaikka = (
   org: Organisaatio
 ): Koodistokoodiviite<'kunta'> | undefined =>
   isYritys(org) || isTutkintotoimikunta(org) ? undefined : org.kotipaikka
+
+export const OrganisaatioEq: Eq.Eq<Organisaatio> = {
+  equals(x, y) {
+    return getOrganisaatioId(x) === getOrganisaatioId(y)
+  }
+}

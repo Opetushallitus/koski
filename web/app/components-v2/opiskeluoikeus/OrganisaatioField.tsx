@@ -5,7 +5,7 @@ import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/Org
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { isTutkintotoimikunta } from '../../types/fi/oph/koski/schema/Tutkintotoimikunta'
 import { isYritys } from '../../types/fi/oph/koski/schema/Yritys'
-import { toOrganisaatio } from '../../util/organisaatiot'
+import { getOrganisaatioId, toOrganisaatio } from '../../util/organisaatiot'
 import { common, CommonProps } from '../CommonProps'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
@@ -36,7 +36,7 @@ export const OrganisaatioEdit = <T extends Organisaatio>(
   )
 
   const selected = useMemo(
-    () => props.value && organisaatioId(props.value),
+    () => props.value && getOrganisaatioId(props.value),
     [props.value]
   )
 
@@ -57,15 +57,8 @@ const organisaatioHierarkiaToOptions = <T extends Organisaatio>(
   orgs.map((organisaatiohierarkia) => {
     const org = toOrganisaatio(organisaatiohierarkia)
     return {
-      key: organisaatioId(org),
+      key: getOrganisaatioId(org),
       label: t(org.nimi),
       value: org as T
     }
   })
-
-const organisaatioId = (org: Organisaatio): string =>
-  isYritys(org)
-    ? org.yTunnus
-    : isTutkintotoimikunta(org)
-    ? org.tutkintotoimikunnanNumero
-    : org.oid

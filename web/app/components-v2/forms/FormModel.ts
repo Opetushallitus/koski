@@ -242,12 +242,7 @@ const modifyValue =
     switch (optic._tag) {
       case 'Lens':
       case 'Prism':
-        console.log('heh', optic, fn, source)
-        console.log('path', parsePath(optic as any, source))
-        return $.modify(optic)((a) => {
-          console.log('modify', a, '-->', fn(a))
-          return fn(a)
-        })(source)
+        return $.modify(optic)(fn)(source)
       default:
         // @ts-expect-error - seuraava rivi antaa virheen, jos kaikki caset on käsitelty
         optic._tag

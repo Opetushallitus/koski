@@ -1,6 +1,7 @@
 import { ApiFailure, apiGet, apiPut } from '../api-fetch'
 import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
+import { KeyValue } from '../types/fi/oph/koski/preferences/KeyValue'
 import { OidHenkilö } from '../types/fi/oph/koski/schema/OidHenkilo'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../types/fi/oph/koski/schema/Oppija'
@@ -66,11 +67,12 @@ export const fetchPreferences = <T extends StorablePreference>(
 export const storePreference = (
   organisaatioOid: string,
   type: string,
-  data: StorablePreference
+  key: string,
+  value: StorablePreference
 ) =>
   handleExpiredSession(
     apiPut<void>(apiUrl(`preferences/${organisaatioOid}/${type}`), {
-      body: data
+      body: KeyValue({ key, value })
     })
   )
 

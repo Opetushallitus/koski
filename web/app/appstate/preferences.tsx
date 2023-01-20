@@ -39,6 +39,7 @@ class PreferencesLoader {
   async store(
     organisaatioOid: OrganisaatioOid,
     type: PreferenceType,
+    key: string,
     data: StorablePreference
   ): Promise<void> {
     if (!this.preferences[organisaatioOid]) {
@@ -48,7 +49,7 @@ class PreferencesLoader {
       this.preferences[organisaatioOid][type] = []
     }
     pipe(
-      await storePreference(organisaatioOid, type, data),
+      await storePreference(organisaatioOid, type, key, data),
       tap(() => {
         this.preferences[organisaatioOid][type].push(data)
       })
@@ -64,6 +65,7 @@ export type PreferencesContext = {
   store: (
     OrganisaatioOid: OrganisaatioOid,
     type: PreferenceType,
+    key: string,
     data: StorablePreference
   ) => void
 }
@@ -99,9 +101,10 @@ export const PreferencesProvider: React.FC<React.PropsWithChildren> = (
     async (
       organisaatioOid: OrganisaatioOid,
       type: PreferenceType,
+      key: string,
       data: StorablePreference
     ) => {
-      await preferencesLoader.store(organisaatioOid, type, data)
+      await preferencesLoader.store(organisaatioOid, type, key, data)
       setPreferences(preferencesLoader.preferences)
     },
     []
@@ -122,7 +125,7 @@ export const PreferencesProvider: React.FC<React.PropsWithChildren> = (
 export const usePreferences = <T extends StorablePreference>(
   organisaatioOid?: OrganisaatioOid,
   type?: PreferenceType
-): [T[], (data: T) => void] => {
+): [T[], (key: string, data: T) => void] => {
   const context = useContext(PreferencesContext)
 
   useEffect(() => {
@@ -131,9 +134,9 @@ export const usePreferences = <T extends StorablePreference>(
     }
   }, [organisaatioOid, type])
 
-  const store = useCallback((data: T) => {
+  const store = useCallback((key: string, data: T) => {
     if (organisaatioOid && type) {
-      context.store(organisaatioOid, type, data)
+      context.store(organisaatioOid, type, key, data)
     } else {
       console.error(
         `Cannot store preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
