@@ -76,24 +76,24 @@ object TaiteenPerusopetusValidation {
     HttpStatus.fold(
       oo.suoritukset.filter(_.vahvistettu).map {
         case s: TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus => laajuusVähintään(
-          min = 11.11,
+          min = 11.1,
           k = s.koulutusmoduuli,
-          KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Yleisen oppimäärän yhteisten opintojen laajuus on oltava vähintään 11.11 opintopistettä.")
+          KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Yleisen oppimäärän yhteisten opintojen laajuus on oltava vähintään 11.1 opintopistettä.")
         )
         case s: TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus => laajuusVähintään(
-          min = 7.41,
+          min = 7.4,
           k = s.koulutusmoduuli,
-          KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Yleisen oppimäärän teemaopintojen laajuus on oltava vähintään 7.41 opintopistettä.")
+          KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Yleisen oppimäärän teemaopintojen laajuus on oltava vähintään 7.4 opintopistettä.")
         )
         case s: TaiteenPerusopetuksenLaajanOppimääränPerusopintojenSuoritus => laajuusVähintään(
-          min = 29.63,
+          min = 29.6,
           k = s.koulutusmoduuli,
-          KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Laajan oppimäärän perusopintojen laajuus on oltava vähintään 29.63 opintopistettä.")
+          KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Laajan oppimäärän perusopintojen laajuus on oltava vähintään 29.6 opintopistettä.")
         )
         case s: TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus => laajuusVähintään(
-          min = 18.52,
+          min = 18.5,
           k = s.koulutusmoduuli,
-          KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Laajan oppimäärän syventävien opintojen laajuus on oltava vähintään 18.52 opintopistettä.")
+          KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Laajan oppimäärän syventävien opintojen laajuus on oltava vähintään 18.5 opintopistettä.")
         )
       }
     )
