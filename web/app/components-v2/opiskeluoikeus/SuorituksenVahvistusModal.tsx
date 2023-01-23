@@ -32,6 +32,7 @@ import {
 import { isHenkilövahvistus } from '../../util/schema'
 import { ClassOf } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
+import { Label } from '../containers/Label'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
 import { DateEdit, DateView } from '../controls/DateField'
 import { FlatButton } from '../controls/FlatButton'
@@ -165,18 +166,16 @@ export const SuorituksenVahvistusModal = <
         <Trans>Suoritus valmis</Trans>
       </ModalTitle>
       <ModalBody>
-        <label>
-          Päivämäärä
+        <Label label="Päivämäärä">
           <FormField
             form={form}
             path={pvmPath}
             view={DateView}
             edit={DateEdit}
           />
-        </label>
+        </Label>
 
-        <label>
-          Paikkakunta
+        <Label label="Paikkakunta">
           <FormField
             form={form}
             path={paikkakuntaPath}
@@ -184,10 +183,9 @@ export const SuorituksenVahvistusModal = <
             view={KuntaView}
             edit={KuntaEdit}
           />
-        </label>
+        </Label>
 
-        <label>
-          Myöntäjäorganisaatio
+        <Label label="Myöntäjäorganisaatio">
           <FormField
             form={form}
             path={organisaatioPath}
@@ -199,11 +197,10 @@ export const SuorituksenVahvistusModal = <
             view={OrganisaatioView}
             edit={OrganisaatioEdit}
           />
-        </label>
+        </Label>
 
         {organisaatiohenkilöClass && (
-          <label>
-            Myöntäjät
+          <Label label="Myöntäjät">
             <FormField
               form={form}
               path={myöntäjäHenkilötPath}
@@ -215,7 +212,7 @@ export const SuorituksenVahvistusModal = <
                 storedHenkilöt: castStoredMyöntäjät
               }}
             />
-          </label>
+          </Label>
         )}
       </ModalBody>
       <ModalFooter>

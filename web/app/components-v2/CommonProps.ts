@@ -23,3 +23,10 @@ export const common = <T extends object>(
   style: props.style,
   className: cx(props.className, ...classNames)
 })
+
+export const rest = <T extends object>({
+  testId,
+  style,
+  className,
+  ...rest
+}: CommonProps<T>) => rest

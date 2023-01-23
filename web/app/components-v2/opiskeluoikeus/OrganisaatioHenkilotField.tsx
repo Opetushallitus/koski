@@ -1,20 +1,25 @@
 import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { localize, t } from '../../i18n/i18n'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
+import { OrganisaatiohenkilöValinnaisellaTittelillä } from '../../types/fi/oph/koski/schema/OrganisaatiohenkiloValinnaisellaTittelilla'
 import {
   AnyOrganisaatiohenkilö,
-  createOrganisaatiohenkilö
+  castOrganisaatiohenkilö,
+  OrganisaatiohenkilöEq
 } from '../../util/henkilo'
 import { ClassOf } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
-import { FlatButton } from '../controls/FlatButton'
+import { MultiField } from '../containers/MultiField'
 import { Removable } from '../controls/Removable'
+import { OptionList, Select, SelectOption } from '../controls/Select'
 import { TextEdit } from '../controls/TextField'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
+
+const ADD_NEW_KEY = '__NEW__'
 
 export type OrganisaatioHenkilötViewProps<T extends AnyOrganisaatiohenkilö> =
   CommonProps<FieldViewBaseProps<T[] | undefined>>
@@ -52,7 +57,7 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
   props: OrganisaatioHenkilötEditProps<T>
 ): React.ReactElement => {
   const [focusNew, setFocusNew] = useState(false)
-  const addNewDisabled = !props.organisaatio
+  const [newHenkilöt, setNewHenkilöt] = useState<T[]>([])
 
   const onChangeNimi = (index: number) => (nimi?: string) => {
     pipe(
@@ -87,16 +92,6 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
     )
   }
 
-  const addNew = useCallback(() => {
-    if (props.organisaatio) {
-      props.onChange([
-        ...(props.value || []),
-        createOrganisaatiohenkilö(props.henkilöClass, props.organisaatio) as T
-      ])
-      setFocusNew(true)
-    }
-  }, [props.onChange, props.value, props.organisaatio, props.henkilöClass])
-
   const removeAt = (index: number) => () => {
     pipe(
       props.value || [],
@@ -112,36 +107,103 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
     )
   }
 
+  const options: OptionList<T> | undefined = useMemo(
+    () =>
+      props.storedHenkilöt?.map((h) => ({
+        key: h.nimi,
+        label: `${h.nimi}${h.titteli ? ` (${t(h.titteli)})` : ''}`,
+        value: h
+      })) || [],
+    [props.storedHenkilöt]
+  )
+
+  const newOptions: OptionList<T> | undefined = useMemo(
+    () => [
+      ...(props.organisaatio
+        ? [
+            {
+              key: ADD_NEW_KEY,
+              label: 'Lisää uusi'
+            }
+          ]
+        : []),
+      ...options
+    ],
+    [options]
+  )
+
+  const addHenkilö = useCallback(
+    (option?: SelectOption<T>) => {
+      if (option) {
+        const newHenkilö =
+          option.value ||
+          castOrganisaatiohenkilö(props.henkilöClass)(
+            OrganisaatiohenkilöValinnaisellaTittelillä({
+              nimi: '',
+              organisaatio: props.organisaatio!
+            })
+          )
+        props.onChange([...(props.value || []), newHenkilö])
+        setFocusNew(true)
+      }
+    },
+    [props.value]
+  )
+
+  const updateHenkilö = (index: number) => (option?: SelectOption<T>) => {
+    if (option && option.value) {
+      pipe(
+        props.value || [],
+        A.updateAt(index, option.value),
+        O.map(props.onChange)
+      )
+    }
+  }
+
   return (
     <ul {...common(props, ['ArvioitsijatEdit'])}>
-      {props.value &&
-        props.value.map((a, i) => (
+      {(props.value || []).map((a, i) => {
+        const isNew = !props.storedHenkilöt?.find((h) =>
+          OrganisaatiohenkilöEq.equals(a, h)
+        )
+        return isNew ? (
+          <MultiField>
+            <TextEdit
+              placeholder="Nimi"
+              optional
+              value={a.nimi}
+              onChange={onChangeNimi(i)}
+              errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
+              autoFocus={
+                props.value && i === props.value.length - 1 && focusNew
+              }
+            />
+            <TextEdit
+              placeholder="Titteli"
+              optional
+              value={t(a.titteli)}
+              onChange={onChangeTitteli(i)}
+              errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
+              allowEmpty={
+                props.henkilöClass ===
+                'fi.oph.koski.schema.OrganisaatiohenkilöValinnaisellaTittelillä'
+              }
+            />
+          </MultiField>
+        ) : (
           <li key={i}>
             <Removable onClick={removeAt(i)}>
-              <TextEdit
-                placeholder="Nimi"
-                optional
+              <Select
+                options={options}
                 value={a.nimi}
-                onChange={onChangeNimi(i)}
-                errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
-                autoFocus={
-                  props.value && i === props.value.length - 1 && focusNew
-                }
-              />
-              <TextEdit
-                placeholder="Titteli"
-                optional
-                value={t(a.titteli)}
-                onChange={onChangeTitteli(i)}
-                errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
+                onChange={updateHenkilö(i)}
               />
             </Removable>
           </li>
-        ))}
+        )
+      })}
       <li>
-        <FlatButton onClick={addNew} disabled={addNewDisabled}>
-          lisää uusi
-        </FlatButton>
+        <Select options={newOptions} onChange={addHenkilö} />
       </li>
     </ul>
   )

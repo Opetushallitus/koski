@@ -82,3 +82,6 @@ export const deleteAt = <T>(as: T[], index: number): T[] =>
       (as) => as
     )
   )
+
+export const mapTimes = <T>(count: number, fn: (index: number) => T): T[] =>
+  new Array(count).fill(undefined).map((_, i) => fn(i))
