@@ -56,6 +56,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
   const [hoveredOption, setHoveredOption] = useState<
     SelectOption<T> | undefined
   >()
+
   const [filter, setFilter] = useState<string | null>(null)
   const selectContainer = useRef<HTMLDivElement>(null)
 

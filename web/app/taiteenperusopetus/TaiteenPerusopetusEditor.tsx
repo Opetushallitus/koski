@@ -66,10 +66,15 @@ export const TaiteenPerusopetusEditor = (
   const päätasonSuoritusPath =
     usePäätasonSuoritus<TaiteenPerusopetuksenOpiskeluoikeus>(suoritusIndex)
 
-  const [osasuorituksetPath, suorituksenVahvistusPath] = useMemo(
+  const [
+    osasuorituksetPath,
+    suorituksenVahvistusPath,
+    opiskeluoikeudenLaajuusPath
+  ] = useMemo(
     () => [
       päätasonSuoritusPath.prop('osasuoritukset').optional(),
-      päätasonSuoritusPath.prop('vahvistus')
+      päätasonSuoritusPath.prop('vahvistus'),
+      päätasonSuoritusPath.path('koulutusmoduuli.laajuus')
     ],
     [päätasonSuoritusPath]
   )
@@ -165,9 +170,7 @@ export const TaiteenPerusopetusEditor = (
           <KeyValueRow name="Laajuus">
             <FormField
               form={form}
-              path={päätasonSuoritusPath
-                .path('koulutusmoduuli.laajuus')
-                .optional()}
+              path={opiskeluoikeudenLaajuusPath}
               view={LaajuusView}
               auto={laajuusSum(osasuoritustenLaajuudetPath, form.state)}
             />

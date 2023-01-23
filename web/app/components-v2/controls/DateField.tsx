@@ -1,12 +1,11 @@
 import * as A from 'fp-ts/Array'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import DayPickerInput, { DateUtils } from 'react-day-picker'
 import {
   formatFinnishDate,
   formatISODate,
   ISO2FinnishDate,
-  parseFinnishDate,
-  parseISODate
+  parseFinnishDate
 } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { common, CommonProps, cx } from '../CommonProps'
@@ -15,7 +14,7 @@ import {
   PositionalPopupHolder
 } from '../containers/PositionalPopup'
 import { FieldErrors } from '../forms/FieldErrors'
-import { FieldViewBaseProps, FieldEditBaseProps } from '../forms/FormField'
+import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { IconButton } from './IconButton'
 
 export type DateViewProps = CommonProps<FieldViewBaseProps<string>>

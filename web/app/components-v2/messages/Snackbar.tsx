@@ -12,7 +12,7 @@ export const Snackbar: React.FC<SnackbarProps> = (props) => {
   useEffect(() => {
     const timeout = setTimeout(() => setVisible(false), props.timeout || 3000)
     return () => clearTimeout(timeout)
-  })
+  }, [])
 
   return visible ? (
     <aside className="Snackbar" onClick={() => setVisible(false)}>

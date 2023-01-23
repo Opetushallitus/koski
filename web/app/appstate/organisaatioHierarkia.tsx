@@ -103,5 +103,7 @@ export const useOrganisaatioHierarkia = (
     }
   }, [queryText])
 
-  return context.queries[queryText || ROOT_QUERY] || []
+  return context.queries[queryText || ROOT_QUERY] || emptyResult
 }
+
+const emptyResult: OrganisaatioHierarkia[] = []

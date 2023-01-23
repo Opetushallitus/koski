@@ -42,7 +42,6 @@ export const OrganisaatioEdit = <T extends Organisaatio>(
 
   const onChange = useCallback(
     (option?: SelectOption<T>) => {
-      console.log('onChange', option?.value)
       props.onChange(option?.value)
     },
     [props.onChange]

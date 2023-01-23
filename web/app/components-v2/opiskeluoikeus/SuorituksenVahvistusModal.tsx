@@ -121,7 +121,6 @@ export const SuorituksenVahvistusModal = <
 
   const onSubmit = useCallback(() => {
     if (vahvistus) {
-      console.log('vahvistus', vahvistus, isHenkilövahvistus(vahvistus))
       if (isHenkilövahvistus(vahvistus)) {
         A.difference(OrganisaatiohenkilöEq)(storedMyöntäjät)(
           vahvistus.myöntäjäHenkilöt
@@ -150,7 +149,6 @@ export const SuorituksenVahvistusModal = <
 
   const onRemoveStoredHenkilö = useCallback(
     (henkilö: AnyOrganisaatiohenkilö) => {
-      console.log('onRemoveStoredHenkilö', henkilö)
       removeMyöntäjä(henkilö.nimi)
     },
     []

@@ -17,7 +17,6 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
   )
   const onClick: React.MouseEventHandler = useCallback(
     (event) => {
-      console.log('klik')
       event.preventDefault()
       event.stopPropagation()
       props.onClick()

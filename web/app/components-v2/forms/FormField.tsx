@@ -1,5 +1,5 @@
 import { constant } from 'fp-ts/lib/function'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useKoodistoFiller } from '../../appstate/koodisto'
 import { deepEqual } from '../../util/fp/objects'
 import { FormModel, FormOptic, getValue } from './FormModel'
@@ -106,19 +106,19 @@ export const FormField = <
     [form]
   )
 
-  const View = useMemo(() => view, [JSON.stringify(viewProps)])
-  const Edit = useMemo(() => edit, [JSON.stringify(editProps)])
-
-  if (form.editMode) {
-    if (auto) {
+  useEffect(() => {
+    if (form.editMode && auto) {
       const automaticValue = auto()
       if (automaticValue && !deepEqual(automaticValue, value)) {
         set(automaticValue)
       }
-      // @ts-ignore - TODO tyyppicastaus?
-      return <View {...viewProps} key="auto" value={automaticValue} />
     }
+  }, [form.editMode, auto, value])
 
+  const View = useMemo(() => view, [JSON.stringify(viewProps)])
+  const Edit = useMemo(() => edit, [JSON.stringify(editProps)])
+
+  if (form.editMode) {
     if (Edit) {
       return (
         // @ts-ignore - TODO tyyppicastaus?

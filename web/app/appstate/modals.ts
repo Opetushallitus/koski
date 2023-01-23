@@ -69,6 +69,6 @@ const modalManager = new ModalManager()
 
 export const useModalState = (): ModalState => {
   const [state, setState] = useSafeState(inactiveModalState())
-  useEffect(() => modalManager.register(setState), [])
+  useEffect(() => modalManager.register(setState), []) // TODO: Tästähän puuttuu unregister
   return state
 }

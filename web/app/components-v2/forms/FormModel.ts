@@ -16,7 +16,6 @@ import { t } from '../../i18n/i18n'
 import { Constraint } from '../../types/fi/oph/koski/typemodel/Constraint'
 import { tap, tapLeft } from '../../util/fp/either'
 import { deepEqual } from '../../util/fp/objects'
-import { parsePath } from '../../util/optics'
 import { validateData, ValidationError } from './validator'
 
 export type FormModel<O extends object> = {
@@ -115,9 +114,10 @@ const reducer = <O>(
         errors: []
       }
     case 'validate':
+      const errors = validateData(state.data, action.constraint)
       return {
         ...state,
-        errors: validateData(state.data, action.constraint)
+        errors: deepEqual(errors, state.errors) ? state.errors : errors
       }
     default:
       return state
@@ -153,7 +153,7 @@ export const useForm = <O extends object>(
   }, [])
 
   const updateAt = useCallback(
-    async <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
+    <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
       dispatch({ type: 'modify', modify: modifyValue(optic)(modify) })
     },
     []

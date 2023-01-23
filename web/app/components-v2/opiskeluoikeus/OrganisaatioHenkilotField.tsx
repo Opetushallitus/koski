@@ -163,7 +163,6 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
 
   const onRemoveStored = useCallback(
     (option: SelectOption<T>) => {
-      console.log('onRemoveStored', option)
       option.value && props.onRemoveStoredHenkilö(option.value)
     },
     [props.onRemoveStoredHenkilö]

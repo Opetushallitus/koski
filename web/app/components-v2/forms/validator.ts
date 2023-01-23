@@ -255,12 +255,18 @@ const invalidType = (
   expected: string,
   actual: any,
   path: string[]
-): InvalidTypeError => ({
-  type: 'invalidType',
-  expected,
-  actual,
-  path: pathToString(path)
-})
+): InvalidTypeError => {
+  console.error(
+    `Invalid type detected on form data at '${path}'. Expected ${expected} but got:`,
+    actual
+  )
+  return {
+    type: 'invalidType',
+    expected,
+    actual,
+    path: pathToString(path)
+  }
+}
 
 const emptyString = (path: string[]): EmptyStringError => ({
   type: 'emptyString',

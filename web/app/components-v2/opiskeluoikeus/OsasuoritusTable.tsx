@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { t } from '../../i18n/i18n'
 import { useLayout } from '../../util/useDepth'
 import { CommonProps } from '../CommonProps'

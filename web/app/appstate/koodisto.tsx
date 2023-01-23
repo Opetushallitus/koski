@@ -73,7 +73,7 @@ class KoodistoLoader {
             NEA.groupBy((k) => k.koodiviite.koodistoUri)
           )
 
-          Object.assign(this.koodistot, k)
+          this.koodistot = { ...this.koodistot, ...k }
         })
       )
       return true
@@ -147,23 +147,30 @@ export function useKoodisto(
     }
   }, [koodistoUris])
 
-  return koodistoUris.flatMap((uri) => {
-    const k = uri && context.koodistot[uri]
-    return Array.isArray(k) ? k : []
-  })
+  return useMemo(() => {
+    return koodistoUris.flatMap((uri) => {
+      const k = uri && context.koodistot[uri]
+      return Array.isArray(k) ? k : []
+    })
+  }, [context.koodistot, JSON.stringify(koodistoUris)])
 }
 
 export const useKoodistoOfConstraint = (
   constraint: Constraint | null
 ): KoodistokoodiviiteKoodistonNimellä[] | null => {
-  const koodiviiteC = koodiviiteConstraints(constraint)
+  const koodiviiteC = useMemo(
+    () => koodiviiteConstraints(constraint),
+    [constraint]
+  )
   const koodit = useKoodisto(koodiviiteC?.koodistoUri)
-  return (
-    koodit?.filter(
-      (k) =>
-        !koodiviiteC?.koodiarvot ||
-        koodiviiteC.koodiarvot.includes(k.koodiviite.koodiarvo)
-    ) || null
+  return useMemo(
+    () =>
+      koodit?.filter(
+        (k) =>
+          !koodiviiteC?.koodiarvot ||
+          koodiviiteC.koodiarvot.includes(k.koodiviite.koodiarvo)
+      ) || null,
+    [koodiviiteC, koodit]
   )
 }
 

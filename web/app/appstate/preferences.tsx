@@ -223,11 +223,14 @@ export const usePreferences = <T extends StorablePreference>(
     }
   }, [])
 
-  return {
-    preferences: (organisaatioOid && type
-      ? context.preferences[organisaatioOid]?.[type] || []
-      : []) as T[],
-    store,
-    remove
-  }
+  return useMemo(
+    () => ({
+      preferences: (organisaatioOid && type
+        ? context.preferences[organisaatioOid]?.[type] || []
+        : []) as T[],
+      store,
+      remove
+    }),
+    [organisaatioOid, type, context.preferences, store, remove]
+  )
 }
