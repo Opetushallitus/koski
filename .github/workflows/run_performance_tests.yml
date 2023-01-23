@@ -59,6 +59,15 @@ jobs:
           export PERFTEST_THREADS=2
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.RandomOpiskeluoikeusGetter"
 
+      - name: Report failure
+        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        if: ${{ failure() }}
+        with:
+          status: ${{ job.status }}
+          notification_title: 'Run performance tests: failure in randomget-light'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
   insert_light:
     needs: [ random_get_light ]
     name: insert-light
@@ -102,6 +111,15 @@ jobs:
           export PERFTEST_THREADS=4
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedOpiskeluoikeusInserterUpdater"
 
+      - name: Report failure
+        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        if: ${{ failure() }}
+        with:
+          status: ${{ job.status }}
+          notification_title: 'Run performance tests: failure in insert-light'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
   mixed-overload:
     needs: [ insert_light ]
     name: mixed-overload
@@ -144,6 +162,15 @@ jobs:
         run: |
           export PERFTEST_THREADS=100
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedPerfTester"
+
+      - name: Report failure
+        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        if: ${{ failure() }}
+        with:
+          status: ${{ job.status }}
+          notification_title: 'Run performance tests: failure in mixed-overload'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   valpas-organisaatio-listaus:
     needs: [ insert_light ]
@@ -191,6 +218,15 @@ jobs:
           export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=98
           export KOSKI_VALPAS_ORGANISAATIOT_FILENAME="valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt"
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
+
+      - name: Report failure
+        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        if: ${{ failure() }}
+        with:
+          status: ${{ job.status }}
+          notification_title: 'Run performance tests: failure in valpas-organisaatio-listaus'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   valpas-oppija-detaalit:
     needs: [ insert_light ]
@@ -244,5 +280,6 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
+          notification_title: 'Run performance tests: failure in valpas-oppija-detaalit'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

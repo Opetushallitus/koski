@@ -57,6 +57,15 @@ jobs:
           export KOSKI_VALPAS_ORGANISAATIOT_FILENAME="valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt"
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
 
+      - name: Report failure
+        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        if: ${{ failure() }}
+        with:
+          status: ${{ job.status }}
+          notification_title: 'Run Valpas performance tests: failure in valpas-organisaatio-listaus'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
   valpas-oppija-detaalit:
     name: valpas-oppija-detaalit
     runs-on: ubuntu-20.04
@@ -108,5 +117,6 @@ jobs:
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
+          notification_title: 'Run Valpas performance tests: failure in valpas-oppija-detaalit'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
