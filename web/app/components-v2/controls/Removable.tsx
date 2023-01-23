@@ -4,17 +4,23 @@ import { common, CommonPropsWithChildren } from '../CommonProps'
 import { CHARCODE_REMOVE, IconButton } from './IconButton'
 
 export type RemovableProps = CommonPropsWithChildren<{
+  isRemovable?: boolean // default true
   onClick: () => void
 }>
 
-export const Removable: React.FC<RemovableProps> = (props) => (
-  <div {...common(props, ['Removable'])}>
-    <div className="Removable__content">{props.children}</div>
-    <IconButton
-      charCode={CHARCODE_REMOVE}
-      label={t('poista')}
-      size="input"
-      onClick={props.onClick}
-    />
-  </div>
-)
+export const Removable: React.FC<RemovableProps> = (props) =>
+  props.isRemovable === false ? (
+    <div {...common(props, ['NotRemovable'])}>
+      <div className="NotRemovable__content">{props.children}</div>
+    </div>
+  ) : (
+    <div {...common(props, ['Removable'])}>
+      <div className="Removable__content">{props.children}</div>
+      <IconButton
+        charCode={CHARCODE_REMOVE}
+        label={t('poista')}
+        size="input"
+        onClick={props.onClick}
+      />
+    </div>
+  )

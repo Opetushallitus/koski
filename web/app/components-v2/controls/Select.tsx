@@ -10,12 +10,14 @@ import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
 import { clamp } from '../../util/numbers'
 import { common, CommonProps, cx } from '../CommonProps'
+import { Removable } from './Removable'
 
 export type SelectProps<T> = CommonProps<{
   initialValue?: OptionKey
   value?: OptionKey
   options: OptionList<T>
   onChange: (option?: SelectOption<T>) => void
+  onRemove?: (option: SelectOption<T>) => void
   placeholder?: string | LocalizedString
   hideEmpty?: boolean
 }>
@@ -37,6 +39,8 @@ export type FlatOption<T> = {
   ignoreFilter?: boolean
   // Jos tosi, tämä vaihtoehto ei ole valittavissa, vaan toimii ainoastaan ryhmän otsikkona
   isGroup?: boolean
+  // Jos tosi, näytetään poistosymboli nimen vieressä, jonka klikkaaminen kutsuu Selectin callbackia onRemove
+  removable?: boolean
 }
 
 export type SelectOption<T> = FlatOption<T> & {
@@ -210,6 +214,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
             hoveredOption={hoveredOption}
             onClick={onChange}
             onMouseOver={setHoveredOption}
+            onRemove={props.onRemove}
           />
         </div>
       )}
@@ -217,26 +222,12 @@ export const Select = <T,>(props: SelectProps<T>) => {
   )
 }
 
-// TODO: Palauta tämä tyhjä valinta mukaan
-{
-  /* <li
-className={cx(
-  props.className,
-  'Select__option',
-  !hoveredOption && 'Select__option--hover'
-)}
-onClick={() => onChange(undefined)}
-onMouseOver={() => setHoveredOption(undefined)}
->
-{t('Ei valintaa')}
-</li> */
-}
-
 type OptionListProps<T> = {
   options: OptionList<T>
   hoveredOption?: SelectOption<T>
   onClick: (o: SelectOption<T>) => void
   onMouseOver: (o: SelectOption<T>) => void
+  onRemove?: (o: SelectOption<T>) => void
 }
 
 const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
@@ -246,7 +237,7 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
     props.onClick(option)
   }
 
-  const { options, ...rest } = props
+  const { options, onRemove, ...rest } = props
 
   return (
     <ul className="Select__optionList">
@@ -256,17 +247,24 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
           key={opt.key}
           onClick={opt.isGroup ? undefined : onClick(opt)}
         >
-          <div
-            className={cx(
-              'Select__optionLabel',
-              props.hoveredOption?.key === opt.key &&
-                'Select__optionLabel--hover',
-              opt.isGroup && 'Select__optionGroup'
-            )}
-            onMouseOver={opt.isGroup ? undefined : () => props.onMouseOver(opt)}
+          <Removable
+            isRemovable={Boolean(opt.removable && props.onRemove)}
+            onClick={() => onRemove?.(opt)}
           >
-            {opt.display || t(opt.label)}
-          </div>
+            <div
+              className={cx(
+                'Select__optionLabel',
+                props.hoveredOption?.key === opt.key &&
+                  'Select__optionLabel--hover',
+                opt.isGroup && 'Select__optionGroup'
+              )}
+              onMouseOver={
+                opt.isGroup ? undefined : () => props.onMouseOver(opt)
+              }
+            >
+              {opt.display || t(opt.label)}
+            </div>
+          </Removable>
           {opt.children && <OptionList options={opt.children} {...rest} />}
         </li>
       ))}

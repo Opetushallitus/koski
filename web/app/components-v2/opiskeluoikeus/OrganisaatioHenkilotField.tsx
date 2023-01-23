@@ -49,6 +49,7 @@ export type OrganisaatioHenkilötEditProps<T extends AnyOrganisaatiohenkilö> =
         henkilöClass: ClassOf<T>
         organisaatio?: Organisaatio
         storedHenkilöt?: T[]
+        onRemoveStoredHenkilö: (henkilö: T) => void
       }
     >
   >
@@ -57,7 +58,6 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
   props: OrganisaatioHenkilötEditProps<T>
 ): React.ReactElement => {
   const [focusNew, setFocusNew] = useState(false)
-  const [newHenkilöt, setNewHenkilöt] = useState<T[]>([])
 
   const onChangeNimi = (index: number) => (nimi?: string) => {
     pipe(
@@ -112,7 +112,8 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
       props.storedHenkilöt?.map((h) => ({
         key: h.nimi,
         label: `${h.nimi}${h.titteli ? ` (${t(h.titteli)})` : ''}`,
-        value: h
+        value: h,
+        removable: true
       })) || [],
     [props.storedHenkilöt]
   )
@@ -160,6 +161,14 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
     }
   }
 
+  const onRemoveStored = useCallback(
+    (option: SelectOption<T>) => {
+      console.log('onRemoveStored', option)
+      option.value && props.onRemoveStoredHenkilö(option.value)
+    },
+    [props.onRemoveStoredHenkilö]
+  )
+
   return (
     <ul {...common(props, ['ArvioitsijatEdit'])}>
       {(props.value || []).map((a, i) => {
@@ -197,13 +206,18 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                 options={options}
                 value={a.nimi}
                 onChange={updateHenkilö(i)}
+                onRemove={onRemoveStored}
               />
             </Removable>
           </li>
         )
       })}
       <li>
-        <Select options={newOptions} onChange={addHenkilö} />
+        <Select
+          options={newOptions}
+          onChange={addHenkilö}
+          onRemove={onRemoveStored}
+        />
       </li>
     </ul>
   )

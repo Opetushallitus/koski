@@ -1,4 +1,4 @@
-import { ApiFailure, apiGet, apiPut } from '../api-fetch'
+import { apiDelete, ApiFailure, apiGet, apiPut } from '../api-fetch'
 import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { KeyValue } from '../types/fi/oph/koski/preferences/KeyValue'
@@ -74,6 +74,15 @@ export const storePreference = (
     apiPut<void>(apiUrl(`preferences/${organisaatioOid}/${type}`), {
       body: KeyValue({ key, value })
     })
+  )
+
+export const removePreference = (
+  organisaatioOid: string,
+  type: string,
+  key: string
+) =>
+  handleExpiredSession(
+    apiDelete<void>(apiUrl(`preferences/${organisaatioOid}/${type}/${key}`))
   )
 
 // Virhetilanteiden hallinta

@@ -78,7 +78,11 @@ export const SuorituksenVahvistusModal = <
 ): React.ReactElement => {
   const vahvistusC = useConstraint(props.vahvistusClass)
 
-  const [storedMyöntäjät, storeMyöntäjä] = usePreferences<Organisaatiohenkilö>(
+  const {
+    preferences: storedMyöntäjät,
+    store: storeMyöntäjä,
+    remove: removeMyöntäjä
+  } = usePreferences<Organisaatiohenkilö>(
     getOrganisaatioOid(props.organisaatio),
     'myöntäjät'
   )
@@ -126,7 +130,7 @@ export const SuorituksenVahvistusModal = <
             henkilö.nimi,
             Organisaatiohenkilö({
               ...henkilö,
-              titteli: henkilö.titteli || localize('')
+              titteli: henkilö.titteli || localize('-')
             })
           )
         )
@@ -144,18 +148,13 @@ export const SuorituksenVahvistusModal = <
     [paikkakuntaPath]
   )
 
-  /** TODO: Selvitä tarvitaanko tätä?
-   
-  const updateHenkilöidenOrganisaatiot = useMemo(
-    () =>
-      sideUpdate<VahvistusForm<H>, Organisaatio, H[]>(
-        myöntäjäHenkilötPath,
-        (organisaatio, henkilöt) =>
-          henkilöt?.map((henkilö) => ({ ...henkilö, organisaatio })) || []
-      ),
-    [paikkakuntaPath]
+  const onRemoveStoredHenkilö = useCallback(
+    (henkilö: AnyOrganisaatiohenkilö) => {
+      console.log('onRemoveStoredHenkilö', henkilö)
+      removeMyöntäjä(henkilö.nimi)
+    },
+    []
   )
-   */
 
   return (
     <Modal
@@ -209,7 +208,8 @@ export const SuorituksenVahvistusModal = <
               editProps={{
                 henkilöClass: organisaatiohenkilöClass,
                 organisaatio: form.state.myöntäjäOrganisaatio,
-                storedHenkilöt: castStoredMyöntäjät
+                storedHenkilöt: castStoredMyöntäjät,
+                onRemoveStoredHenkilö
               }}
             />
           </Label>

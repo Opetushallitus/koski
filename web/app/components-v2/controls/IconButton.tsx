@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { common, CommonProps } from '../CommonProps'
 
 export type IconButtonSize = 'normal' | 'input'
@@ -15,6 +15,15 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
     () => String.fromCharCode(parseInt(props.charCode, 16)),
     [props.charCode]
   )
+  const onClick: React.MouseEventHandler = useCallback(
+    (event) => {
+      console.log('klik')
+      event.preventDefault()
+      event.stopPropagation()
+      props.onClick()
+    },
+    [props.onClick]
+  )
 
   return (
     <button
@@ -22,7 +31,7 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
         'IconButton',
         props.size && `IconButton--size-${props.size}`
       ])}
-      onClick={props.onClick}
+      onClick={onClick}
       aria-label={props.label}
       title={props.label}
     >
