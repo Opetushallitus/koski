@@ -4,6 +4,7 @@ import { t } from '../../i18n/i18n'
 import { common, CommonProps, cx } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { emptyString } from '../forms/validator'
 
 export type TextViewProps = CommonProps<FieldViewBaseProps<string>>
 
@@ -30,7 +31,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
   const requiredButEmpty = Boolean(!props.allowEmpty && !props.value)
 
   return (
-    <label {...common(props)}>
+    <label {...common(props, ['TextEdit'])}>
       <input
         className={cx(
           'TextEdit__input',
@@ -44,9 +45,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
       />
       <FieldErrors
         errors={props.errors}
-        customError={
-          requiredButEmpty ? t('Kenttä ei voi olla tyhjä') : undefined
-        }
+        localErrors={requiredButEmpty ? [emptyString([])] : undefined}
       />
     </label>
   )

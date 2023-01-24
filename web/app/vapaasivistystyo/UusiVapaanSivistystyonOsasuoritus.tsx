@@ -33,12 +33,12 @@ import {
 } from '../types/EditorModels'
 import { ChangeBusContext, Contextualized } from '../types/EditorModelContext'
 import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
-import {
-  OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
-  VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
-} from '../types/VapaaSivistystyo'
-import {Koodistokoodiviite, PaikallinenKoodi} from '../types/common'
+import { Deprecated_Koodistokoodiviite } from '../types/common'
 import { withoutNullValues } from '../util/objects'
+import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpintokokonaisuus'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus'
+import { LegacyClass } from '../util/types'
 
 export type UusiVapaanSivistystyonOsasuoritusProps = {
   suoritusPrototypes: OsasuoritusEditorModel[]
@@ -404,7 +404,9 @@ const LisääVSTKOTO2022Osasuoritus = ({
   setExpanded,
   className
 }: LisääOsasuoritusProps) => {
-  const selectedAtom = Atom<EnumValue<Koodistokoodiviite> | undefined>()
+  const selectedAtom = Atom<
+    EnumValue<Deprecated_Koodistokoodiviite> | undefined
+  >()
 
   const koulutusmoduuliPrototypes = suoritusPrototypes.flatMap(
     (suoritusPrototype) =>
@@ -477,9 +479,10 @@ const LisääPaikallinen = ({
   lisääTitle,
   disableKuvaus
 }: LisääPaikallinenProps) => {
-  type TallennettuSuoritus =
+  type TallennettuSuoritus = LegacyClass<
     | OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus
     | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
+  >
 
   const showModal = Atom(false)
   const inputState = Atom('')
@@ -498,9 +501,9 @@ const LisääPaikallinen = ({
     const updateValues = withoutNullValues({
       'kuvaus.fi': disableKuvaus
         ? null
-        : { data: storedSuoritus ? storedSuoritus.kuvaus.fi : input },
+        : { data: storedSuoritus ? t(storedSuoritus.kuvaus) : input },
       'tunniste.nimi.fi': {
-        data: storedSuoritus ? storedSuoritus.tunniste.nimi.fi : input
+        data: storedSuoritus ? t(storedSuoritus.tunniste.nimi) : input
       },
       'tunniste.koodiarvo': {
         data: storedSuoritus ? storedSuoritus.tunniste.koodiarvo : input
@@ -508,7 +511,7 @@ const LisääPaikallinen = ({
     })
     const koulutusmoduuli = modelSetTitle(
       modelSetValues(koulutusmoduuliPrototype, updateValues),
-      storedSuoritus ? storedSuoritus.tunniste.nimi.fi : input
+      storedSuoritus ? t(storedSuoritus.tunniste.nimi) : input
     )
     const suoritus = modelSet(
       suoritusPrototype,
@@ -530,14 +533,21 @@ const LisääPaikallinen = ({
     .classes[0]
 
   const setOptions = (suoritukset: EditorModel[]) => {
-    const tallennetutSuoritukset = suoritukset.map((suoritus) => {
-      return {
-        kuvaus: modelData(suoritus, 'kuvaus'),
-        tunniste: modelData(suoritus, 'tunniste')
-      }
-    }).sort((a: { tunniste: PaikallinenKoodi }, b: { tunniste: PaikallinenKoodi }) => {
-      return a.tunniste.koodiarvo.localeCompare(b.tunniste.koodiarvo)
-    })
+    const tallennetutSuoritukset = suoritukset
+      .map((suoritus) => {
+        return {
+          kuvaus: modelData(suoritus, 'kuvaus'),
+          tunniste: modelData(suoritus, 'tunniste')
+        }
+      })
+      .sort(
+        (
+          a: { tunniste: PaikallinenKoodi },
+          b: { tunniste: PaikallinenKoodi }
+        ) => {
+          return a.tunniste.koodiarvo.localeCompare(b.tunniste.koodiarvo)
+        }
+      )
     options.set(tallennetutSuoritukset)
   }
 

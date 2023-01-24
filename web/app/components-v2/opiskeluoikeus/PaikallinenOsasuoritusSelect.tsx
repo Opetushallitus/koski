@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useConstraint } from '../../appstate/constraints'
-import { t } from '../../i18n/i18n'
-import { LocalizedString } from '../../types/common'
-import { Finnish } from '../../types/fi/oph/koski/schema/Finnish'
+import { localize, t } from '../../i18n/i18n'
+import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { allLanguages } from '../../util/optics'
 import { CommonProps } from '../CommonProps'
@@ -36,7 +35,7 @@ export const PaikallinenOsasuoritusSelect: React.FC<
     () => [
       {
         key: NEW_KEY,
-        label: t('Uusi osasuoritus'),
+        label: t('Lisää osasuoritus'),
         value: emptyPaikallinenKoodi,
         ignoreFilter: true
       },
@@ -93,7 +92,7 @@ export const PaikallinenOsasuoritusSelect: React.FC<
 
 const emptyPaikallinenKoodi = PaikallinenKoodi({
   koodiarvo: '',
-  nimi: Finnish({ fi: '' })
+  nimi: localize('')
 })
 
 type UusiOsasuoritusModalProps = {
@@ -121,7 +120,7 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
 
   return (
     <Modal onSubmit={onSubmit} onClose={props.onClose}>
-      <ModalTitle>{t('Uusi osasuoritus')}</ModalTitle>
+      <ModalTitle>{t('Lisää osasuoritus')}</ModalTitle>
       <ModalBody>
         <FormField
           form={form}

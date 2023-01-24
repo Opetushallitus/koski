@@ -1,27 +1,7 @@
-export type Koodistokoodiviite<
+import { Koodistokoodiviite as SchemaKoodistokoodiviite } from './fi/oph/koski/schema/Koodistokoodiviite'
+
+// Älä käytä tätä, tässä on uri ja koodiarvo väärinpäin
+export type Deprecated_Koodistokoodiviite<
   T extends string = string,
   S extends string = string
-> = {
-  koodiarvo: T
-  koodistoUri: S
-  nimi?: LocalizedString
-  lyhytNimi?: LocalizedString
-  koodistoVersio?: number
-}
-
-export type PaikallinenKoodi = {
-  koodiarvo: string
-  nimi: LocalizedString
-  koodistoUri?: string
-}
-
-export type LocalizedString = {
-  fi: string
-  sv?: string
-  en?: string
-}
-
-export type LaajuusOpintopisteissä = {
-  arvo: number
-  yksikkö: Koodistokoodiviite
-}
+> = SchemaKoodistokoodiviite<S, T>

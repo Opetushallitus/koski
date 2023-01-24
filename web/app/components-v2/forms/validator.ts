@@ -32,13 +32,13 @@ import { nonFalsy } from '../../util/fp/arrays'
 export type ValidationError =
   | InvalidTypeError
   | EmptyStringError
+  | InvalidDateError
   | MustBeGreaterThanError
   | MustBeAtLeastError
   | MustBeLesserThanError
   | MustBeAtMostError
   | NoMatchError
   | NoClassNameError
-  | OtherError
 
 export type InvalidTypeError = {
   type: 'invalidType'
@@ -49,6 +49,12 @@ export type InvalidTypeError = {
 
 export type EmptyStringError = {
   type: 'emptyString'
+  path: string
+}
+
+export type InvalidDateError = {
+  type: 'invalidDate'
+  actual: string
   path: string
 }
 
@@ -92,11 +98,6 @@ export type NoClassNameError = {
   type: 'noClassName'
   data: any
   path: string
-}
-
-export type OtherError = {
-  type: 'otherError'
-  message: string
 }
 
 export const validateData = (
@@ -268,12 +269,21 @@ const invalidType = (
   }
 }
 
-const emptyString = (path: string[]): EmptyStringError => ({
+export const emptyString = (path: string[]): EmptyStringError => ({
   type: 'emptyString',
   path: pathToString(path)
 })
 
-const mustBeGreater = (
+export const invalidDate = (
+  sample: string,
+  path: string[]
+): InvalidDateError => ({
+  type: 'invalidDate',
+  actual: sample,
+  path: pathToString(path)
+})
+
+export const mustBeGreater = (
   limit: number,
   actual: number,
   path: string[]
@@ -284,7 +294,7 @@ const mustBeGreater = (
   path: pathToString(path)
 })
 
-const mustBeAtLeast = (
+export const mustBeAtLeast = (
   limit: number,
   actual: number,
   path: string[]
@@ -295,7 +305,7 @@ const mustBeAtLeast = (
   path: pathToString(path)
 })
 
-const mustBeLesser = (
+export const mustBeLesser = (
   limit: number,
   actual: number,
   path: string[]
@@ -306,7 +316,7 @@ const mustBeLesser = (
   path: pathToString(path)
 })
 
-const mustBeAtMost = (
+export const mustBeAtMost = (
   limit: number,
   actual: number,
   path: string[]
@@ -317,7 +327,7 @@ const mustBeAtMost = (
   path: pathToString(path)
 })
 
-const noMatch = (
+export const noMatch = (
   expected: string[],
   actual: any,
   data: any,
@@ -330,22 +340,17 @@ const noMatch = (
   path: pathToString(path)
 })
 
-const noClassName = (data: any, path: string[]): NoClassNameError => ({
+export const noClassName = (data: any, path: string[]): NoClassNameError => ({
   type: 'noClassName',
   data,
   path: pathToString(path)
-})
-
-export const otherError = (message: string): OtherError => ({
-  type: 'otherError',
-  message
 })
 
 // Utils
 
 export const errorPathIs =
   (fn: (path: string) => boolean) => (error: ValidationError) =>
-    error.type !== 'otherError' && fn(error.path)
+    fn(error.path)
 
 export const narrowErrorsToLeaf =
   (pathPostfix: string) => (errors: ValidationError[]) =>

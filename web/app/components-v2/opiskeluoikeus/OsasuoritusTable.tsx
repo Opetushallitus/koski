@@ -4,7 +4,8 @@ import { useLayout } from '../../util/useDepth'
 import { CommonProps } from '../CommonProps'
 import { Column, ColumnRow } from '../containers/Columns'
 import { ExpandButton } from '../controls/ExpandButton'
-import { CHARCODE_REMOVE, IconButton } from '../controls/IconButton'
+import { IconButton } from '../controls/IconButton'
+import { CHARCODE_REMOVE } from '../texts/Icon'
 
 export const OSASUORITUSTABLE_DEPTH_KEY = 'OsasuoritusTable'
 
@@ -106,7 +107,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
             {props.row.content && (
               <IconButton
                 charCode={CHARCODE_REMOVE}
-                label={t('poista')}
+                label={t('Poista')}
                 size="input"
                 onClick={props.onRemove}
               />

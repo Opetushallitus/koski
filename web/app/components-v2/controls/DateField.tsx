@@ -15,6 +15,7 @@ import {
 } from '../containers/PositionalPopup'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { invalidDate } from '../forms/validator'
 import { IconButton } from './IconButton'
 
 export type DateViewProps = CommonProps<FieldViewBaseProps<string>>
@@ -78,35 +79,44 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
 
   return (
     <label {...common(props, ['DateEdit'])}>
-      <input
-        type="text"
-        value={internalFinnishDate}
-        onChange={onChange}
-        className={cx('DateEdit__input', hasError && 'DateEdit__input--error')}
-      />
-      <PositionalPopupHolder>
-        <IconButton
-          charCode="f133"
-          label={t('valitse päivä')}
-          size="input"
-          onClick={toggleDayPicker}
+      <div className="DateEdit__field">
+        <input
+          type="text"
+          value={internalFinnishDate}
+          onChange={onChange}
+          className={cx(
+            'DateEdit__input',
+            hasError && 'DateEdit__input--error'
+          )}
         />
-        {datePickerVisible && (
-          <PositionalPopup>
-            <DayPickerInput
-              initialMonth={internalDate}
-              onDayClick={onDayClick}
-              selectedDays={selectedDays}
-              weekdaysShort={weekdaysShort}
-              months={months}
-              firstDayOfWeek={1}
-            />
-          </PositionalPopup>
-        )}
-      </PositionalPopupHolder>
+        <PositionalPopupHolder>
+          <IconButton
+            charCode="f133"
+            label={t('Valitse päivämäärä')}
+            size="input"
+            onClick={toggleDayPicker}
+          />
+          {datePickerVisible && (
+            <PositionalPopup>
+              <DayPickerInput
+                initialMonth={internalDate}
+                onDayClick={onDayClick}
+                selectedDays={selectedDays}
+                weekdaysShort={weekdaysShort}
+                months={months}
+                firstDayOfWeek={1}
+              />
+            </PositionalPopup>
+          )}
+        </PositionalPopupHolder>
+      </div>
       <FieldErrors
         errors={props.errors}
-        customError={isInvalidDate ? t('Virheellinen päivämäärä') : undefined}
+        localErrors={
+          isInvalidDate
+            ? [invalidDate(internalFinnishDate || '', [])]
+            : undefined
+        }
       />
     </label>
   )

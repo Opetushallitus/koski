@@ -19,13 +19,12 @@ import { ift } from '../util/util'
 import { EditorModel, ObjectModel } from '../types/EditorModels'
 import { OsasuoritusEditorModel } from '../types/OsasuoritusEditorModel'
 import {
-  OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus,
-  VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
-} from '../types/VapaaSivistystyo'
-import {
   deleteOrganizationalPreference,
   getOrganizationalPreferences
 } from '../virkailija/organizationalPreferences'
+import { LegacyClass } from '../util/types'
+import { OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpintokokonaisuus'
+import { VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus'
 
 export type UusiMuuKuinSäänneltyOsasuoritusProps = {
   suoritusPrototypes: OsasuoritusEditorModel[]
@@ -61,10 +60,10 @@ const LisääPaikallinen = ({
   suoritusPrototype,
   setExpanded
 }: LisääPaikallinenProps) => {
-  type TallennettuSuoritus = // TODO: Tähän oikea tyypitys
-
-      | OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus
-      | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
+  type TallennettuSuoritus = LegacyClass<
+    | OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus
+    | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOpintojenOsasuoritus
+  >
 
   const showModal = Atom(false)
   const inputState = Atom('')
@@ -81,9 +80,9 @@ const LisääPaikallinen = ({
   const addNewSuoritus = (storedSuoritus: TallennettuSuoritus) => {
     const input = inputState.get()
     const updateValues = {
-      'kuvaus.fi': { data: storedSuoritus ? storedSuoritus.kuvaus.fi : input },
+      'kuvaus.fi': { data: storedSuoritus ? t(storedSuoritus.kuvaus) : input },
       'tunniste.nimi.fi': {
-        data: storedSuoritus ? storedSuoritus.tunniste.nimi.fi : input
+        data: storedSuoritus ? t(storedSuoritus.tunniste.nimi) : input
       },
       'tunniste.koodiarvo': {
         data: storedSuoritus ? storedSuoritus.tunniste.koodiarvo : input
@@ -91,7 +90,7 @@ const LisääPaikallinen = ({
     }
     const koulutusmoduuli = modelSetTitle(
       modelSetValues(koulutusmoduuliPrototype, updateValues),
-      storedSuoritus ? storedSuoritus.tunniste.nimi.fi : input
+      storedSuoritus ? t(storedSuoritus.tunniste.nimi) : input
     )
     const suoritus = modelSet(
       suoritusPrototype,

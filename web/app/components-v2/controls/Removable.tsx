@@ -1,7 +1,8 @@
 import React from 'react'
 import { t } from '../../i18n/i18n'
 import { common, CommonPropsWithChildren } from '../CommonProps'
-import { CHARCODE_REMOVE, IconButton } from './IconButton'
+import { CHARCODE_REMOVE } from '../texts/Icon'
+import { IconButton } from './IconButton'
 
 export type RemovableProps = CommonPropsWithChildren<{
   isRemovable?: boolean // default true
@@ -18,7 +19,7 @@ export const Removable: React.FC<RemovableProps> = (props) =>
       <div className="Removable__content">{props.children}</div>
       <IconButton
         charCode={CHARCODE_REMOVE}
-        label={t('poista')}
+        label={t('Poista')}
         size="input"
         onClick={props.onClick}
       />

@@ -129,7 +129,10 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
             />
           ))}
           {context.edit && (
-            <SingleColumnRowTable className={'vst-uusi-osasuoritus'} colSpan={4}>
+            <SingleColumnRowTable
+              className={'vst-uusi-osasuoritus'}
+              colSpan={4}
+            >
               <UusiVapaanSivistystyonOsasuoritus
                 // @ts-expect-error TutkinnonOsa
                 suoritusPrototypes={
@@ -144,7 +147,6 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
             <SingleColumnRowTable className={'yhteislaajuus'}>
               <YhteensäSuoritettu
                 suoritukset={suoritukset}
-                // @ts-expect-error YhteensäSuoritettu
                 laajuusYksikkö={laajuusYksikkö}
               />
             </SingleColumnRowTable>

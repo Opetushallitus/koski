@@ -1,7 +1,7 @@
 import { modelData } from '../editor/EditorModel'
 import { zeroValue } from '../editor/EnumEditor'
 import { t } from '../i18n/i18n'
-import { Koodistokoodiviite } from '../types/common'
+import { Deprecated_Koodistokoodiviite } from '../types/common'
 import { EditorModel } from '../types/EditorModels'
 
 declare global {
@@ -24,7 +24,9 @@ export const opintokokonaisuuteenKuuluvatPäätasonSuoritukset = [
 const isZeroValue = <T>(option: EnumOption<T>): boolean =>
   option.value === zeroValue.value
 
-const hasKoodiarvo = (data?: Koodistokoodiviite): data is Koodistokoodiviite =>
+const hasKoodiarvo = (
+  data?: Deprecated_Koodistokoodiviite
+): data is Deprecated_Koodistokoodiviite =>
   data !== undefined && 'koodiarvo' in data
 
 export const asHyperLink = (model: EditorModel) => {
@@ -45,7 +47,7 @@ export const asHyperLink = (model: EditorModel) => {
 }
 
 export const formatOpintokokonaisuusDisplayValue = (
-  option?: EnumOption<Koodistokoodiviite>
+  option?: EnumOption<Deprecated_Koodistokoodiviite>
 ) => {
   if (option === undefined) {
     return zeroValue.title
@@ -60,7 +62,7 @@ export const formatOpintokokonaisuusDisplayValue = (
 }
 
 export const formatOpintokokonaisuusTitle = (
-  option?: EnumOption<Koodistokoodiviite>
+  option?: EnumOption<Deprecated_Koodistokoodiviite>
 ): string => {
   if (option === undefined) {
     return zeroValue.title

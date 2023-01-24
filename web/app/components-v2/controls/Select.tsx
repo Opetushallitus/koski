@@ -202,7 +202,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
     >
       <input
         className="Select__input"
-        placeholder={t(props.placeholder)}
+        placeholder={t(props.placeholder || 'Valitse...')}
         value={filter === null ? displayValue : filter}
         onChange={onUserType}
         type="search"

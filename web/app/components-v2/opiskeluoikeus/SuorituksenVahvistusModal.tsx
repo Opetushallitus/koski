@@ -182,7 +182,7 @@ export const SuorituksenVahvistusModal = <
           />
         </Label>
 
-        <Label label="Myöntäjäorganisaatio">
+        <Label label="Organisaatio">
           <FormField
             form={form}
             path={organisaatioPath}
@@ -216,7 +216,7 @@ export const SuorituksenVahvistusModal = <
       <ModalFooter>
         <FlatButton onClick={props.onCancel}>Peruuta</FlatButton>
         <RaisedButton onClick={onSubmit} disabled={!form.errors || !vahvistus}>
-          Vahvista suoritus
+          Merkitse valmiiksi
         </RaisedButton>
       </ModalFooter>
     </Modal>

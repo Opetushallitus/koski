@@ -109,7 +109,6 @@ export class MuuKuinSäänneltySuoritustaulukko extends React.Component<MuuKuinS
             <SingleColumnRowTable className={'yhteislaajuus'}>
               <YhteensäSuoritettu
                 suoritukset={suoritukset}
-                // @ts-expect-error YhteensäSuoritettu
                 laajuusYksikkö={laajuusYksikkö}
               />
             </SingleColumnRowTable>

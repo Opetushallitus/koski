@@ -28,11 +28,17 @@ export const setLang = (newLang: Language) => {
   window.location.reload()
 }
 
-export const t = (
+export function t(
+  s: string | LocalizedString | undefined,
+  ignoreMissing?: false | undefined,
+  languageOverride?: Language
+): string
+
+export function t(
   s: string | LocalizedString | undefined,
   ignoreMissing?: boolean,
   languageOverride?: Language
-) => {
+): string | null {
   const usedLanguage = languageOverride || lang
   if (!s) return ''
   if (typeof s === 'object') {
@@ -54,7 +60,21 @@ export const t = (
     return localizedString[usedLanguage]
   }
   console.error('Trying to localize', s)
+  return null
 }
+
+// @ts-ignore
+export const tExists = (s: string): boolean => texts[s] !== undefined
+
+export const tTemplate = (s: string, args: object): string =>
+  Object.entries(args).reduce(
+    (str, [key, value]) =>
+      str.replace(
+        `{{${key}}}`,
+        typeof value === 'object' ? JSON.stringify(value) : value
+      ),
+    t(s)
+  )
 
 export const localize = (str: string): LocalizedString =>
   lang === 'fi'

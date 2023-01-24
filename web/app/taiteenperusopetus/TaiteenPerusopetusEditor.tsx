@@ -36,9 +36,10 @@ import {
   SuorituksenVahvistusView
 } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { Trans } from '../components-v2/texts/Trans'
-import { t } from '../i18n/i18n'
+import { localize, t } from '../i18n/i18n'
 import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
+import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
 import { TaiteenPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaatasonSuoritus'
@@ -320,19 +321,9 @@ const tpoKoulutuksenNimi = (
 
 const tpoSuorituksenNimi = (
   suoritus: TaiteenPerusopetuksenPäätasonSuoritus
-): string => {
-  const tyyppi = suoritus.tyyppi.koodiarvo
-  const nimet: Record<typeof tyyppi, string> = {
-    taiteenperusopetuksenlaajanoppimaaranperusopinnot:
-      'Laajan oppimäärän perusopinnot',
-    taiteenperusopetuksenlaajanoppimaaransyventavatopinnot:
-      'Laajan oppimäärän syventävät opinnot',
-    taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot:
-      'Yleisen oppimäärän yhteisetopinnot',
-    taiteenperusopetuksenyleisenoppimaaranteemaopinnot:
-      'Yleisen oppimäärän teemaopinnot'
-  }
-  return `${t(nimet[tyyppi])}, ${t(
-    suoritus.koulutusmoduuli.taiteenala.nimi
-  ).toLowerCase()}`
-}
+): LocalizedString =>
+  localize(
+    `${t(suoritus.tyyppi.lyhytNimi) || t(suoritus.tyyppi.nimi)}, ${t(
+      suoritus.koulutusmoduuli.taiteenala.nimi
+    ).toLowerCase()}`
+  )

@@ -18,6 +18,7 @@ import { OptionList, Select, SelectOption } from '../controls/Select'
 import { TextEdit } from '../controls/TextField'
 import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
+import { CHARCODE_ADD, IconLabel } from '../texts/Icon'
 
 const ADD_NEW_KEY = '__NEW__'
 
@@ -124,7 +125,10 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
         ? [
             {
               key: ADD_NEW_KEY,
-              label: 'Lisää uusi'
+              label: 'Lisää henkilö',
+              display: (
+                <IconLabel charCode={CHARCODE_ADD}>Lisää henkilö</IconLabel>
+              )
             }
           ]
         : []),
@@ -170,36 +174,35 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
 
   return (
     <ul {...common(props, ['ArvioitsijatEdit'])}>
-      {(props.value || []).map((a, i) => {
-        const isNew = !props.storedHenkilöt?.find((h) =>
-          OrganisaatiohenkilöEq.equals(a, h)
-        )
-        return isNew ? (
-          <MultiField>
-            <TextEdit
-              placeholder="Nimi"
-              optional
-              value={a.nimi}
-              onChange={onChangeNimi(i)}
-              errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
-              autoFocus={
-                props.value && i === props.value.length - 1 && focusNew
-              }
-            />
-            <TextEdit
-              placeholder="Titteli"
-              optional
-              value={t(a.titteli)}
-              onChange={onChangeTitteli(i)}
-              errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
-              allowEmpty={
-                props.henkilöClass ===
-                'fi.oph.koski.schema.OrganisaatiohenkilöValinnaisellaTittelillä'
-              }
-            />
-          </MultiField>
-        ) : (
-          <li key={i}>
+      {(props.value || []).map((a, i) => (
+        <li key={i}>
+          {!props.storedHenkilöt?.find((h) =>
+            OrganisaatiohenkilöEq.equals(a, h)
+          ) ? (
+            <MultiField key={i}>
+              <TextEdit
+                placeholder="Nimi"
+                optional
+                value={a.nimi}
+                onChange={onChangeNimi(i)}
+                errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
+                autoFocus={
+                  props.value && i === props.value.length - 1 && focusNew
+                }
+              />
+              <TextEdit
+                placeholder="Titteli"
+                optional
+                value={t(a.titteli)}
+                onChange={onChangeTitteli(i)}
+                errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
+                allowEmpty={
+                  props.henkilöClass ===
+                  'fi.oph.koski.schema.OrganisaatiohenkilöValinnaisellaTittelillä'
+                }
+              />
+            </MultiField>
+          ) : (
             <Removable onClick={removeAt(i)}>
               <Select
                 options={options}
@@ -208,9 +211,9 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                 onRemove={onRemoveStored}
               />
             </Removable>
-          </li>
-        )
-      })}
+          )}
+        </li>
+      ))}
       <li>
         <Select
           options={newOptions}
