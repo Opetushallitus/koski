@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { useConstraint } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
+import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { EditorContainer } from '../components-v2/containers/EditorContainer'
 import {
@@ -95,8 +96,24 @@ export const TaiteenPerusopetusEditor = (
     )
   }, [props.oppijaOid, form])
 
+  const osasuoritukset =
+    usePreferences<TaiteenPerusopetuksenPaikallinenOpintokokonaisuus>(
+      organisaatio?.oid,
+      // Ladataan ja tallennetaan osasuoritukset oppimäärän ja taiteenalan perusteella omiin lokeroihin
+      assortedPreferenceType(
+        'taiteenperusopetus',
+        form.state.oppimäärä.koodiarvo,
+        suoritus?.koulutusmoduuli.taiteenala.koodiarvo
+      )
+    )
+
+  const storedOsasuoritustunnisteet = useMemo(
+    () => osasuoritukset.preferences.map((p) => p.tunniste),
+    [osasuoritukset.preferences]
+  )
+
   const onAddOsasuoritus = useCallback(
-    async (tunniste: PaikallinenKoodi) => {
+    async (tunniste: PaikallinenKoodi, isNew: boolean) => {
       const newOsasuoritus = await fillKoodistot(
         TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus({
           koulutusmoduuli: TaiteenPerusopetuksenPaikallinenOpintokokonaisuus({
@@ -110,6 +127,10 @@ export const TaiteenPerusopetusEditor = (
         ...a,
         osasuoritukset: append(newOsasuoritus)(a.osasuoritukset)
       }))
+
+      if (isNew) {
+        osasuoritukset.store(tunniste.koodiarvo, newOsasuoritus.koulutusmoduuli)
+      }
     },
     [form.updateAt, päätasonSuoritusPath]
   )
@@ -126,6 +147,13 @@ export const TaiteenPerusopetusEditor = (
       )
     },
     [form.updateAt, päätasonSuoritusPath]
+  )
+
+  const onRemoveStoredOsasuoritus = useCallback(
+    (tunniste: PaikallinenKoodi) => {
+      osasuoritukset.remove(tunniste.koodiarvo)
+    },
+    []
   )
 
   return (
@@ -216,7 +244,9 @@ export const TaiteenPerusopetusEditor = (
             <Column span={15} spanPhone={24}>
               <PaikallinenOsasuoritusSelect
                 key={suoritusIndex}
+                tunnisteet={storedOsasuoritustunnisteet}
                 onSelect={onAddOsasuoritus}
+                onRemove={onRemoveStoredOsasuoritus}
               />
             </Column>
           </ColumnRow>

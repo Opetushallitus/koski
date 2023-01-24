@@ -5,6 +5,7 @@ import { LocalizedString } from '../../types/common'
 import { Finnish } from '../../types/fi/oph/koski/schema/Finnish'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { allLanguages } from '../../util/optics'
+import { CommonProps } from '../CommonProps'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
@@ -15,10 +16,12 @@ import { useForm } from '../forms/FormModel'
 
 const NEW_KEY = '__NEW__'
 
-export type PaikallinenOsasuoritusSelectProps = {
+export type PaikallinenOsasuoritusSelectProps = CommonProps<{
+  tunnisteet?: PaikallinenKoodi[]
   addNewText?: string | LocalizedString
-  onSelect: (tunniste: PaikallinenKoodi) => void
-}
+  onSelect: (tunniste: PaikallinenKoodi, isNew: boolean) => void
+  onRemove?: (tunniste: PaikallinenKoodi) => void
+}>
 
 export const PaikallinenOsasuoritusSelect: React.FC<
   PaikallinenOsasuoritusSelectProps
@@ -36,9 +39,15 @@ export const PaikallinenOsasuoritusSelect: React.FC<
         label: t('Uusi osasuoritus'),
         value: emptyPaikallinenKoodi,
         ignoreFilter: true
-      }
+      },
+      ...(props.tunnisteet || []).map((tunniste) => ({
+        key: tunniste.koodiarvo,
+        label: t(tunniste.nimi),
+        value: tunniste,
+        removable: true
+      }))
     ],
-    []
+    [props.tunnisteet]
   )
 
   const onChange = useCallback(
@@ -46,7 +55,7 @@ export const PaikallinenOsasuoritusSelect: React.FC<
       if (option?.key === NEW_KEY) {
         setModalVisible(true)
       } else if (option?.value) {
-        props.onSelect(option.value)
+        props.onSelect(option.value, false)
       }
     },
     [props.onSelect]
@@ -55,9 +64,15 @@ export const PaikallinenOsasuoritusSelect: React.FC<
   const onCreateNew = useCallback(
     (tunniste: PaikallinenKoodi) => {
       setModalVisible(false)
-      props.onSelect(tunniste)
+      props.onSelect(tunniste, true)
     },
     [props.onSelect]
+  )
+
+  const onRemove = useCallback(
+    (option: SelectOption<PaikallinenKoodi>) =>
+      option.value && props.onRemove?.(option.value),
+    [props.onRemove]
   )
 
   return (
@@ -67,6 +82,7 @@ export const PaikallinenOsasuoritusSelect: React.FC<
         options={options}
         hideEmpty
         onChange={onChange}
+        onRemove={onRemove}
       />
       {modalIsVisible && (
         <UusiOsasuoritusModal onClose={hideModal} onSubmit={onCreateNew} />

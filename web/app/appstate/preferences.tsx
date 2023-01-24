@@ -234,3 +234,11 @@ export const usePreferences = <T extends StorablePreference>(
     [organisaatioOid, type, context.preferences, store, remove]
   )
 }
+
+export const assortedPreferenceType = (
+  group: string,
+  ...subtypes: Array<string | undefined>
+): string | undefined =>
+  subtypes.some((s) => s === undefined)
+    ? undefined
+    : [group, ...subtypes].join('.')
