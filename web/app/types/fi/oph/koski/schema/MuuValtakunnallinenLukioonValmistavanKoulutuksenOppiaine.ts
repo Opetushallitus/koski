@@ -30,6 +30,9 @@ export const MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine = (o: {
   ...o
 })
 
+MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine.className =
+  'fi.oph.koski.schema.MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine' as const
+
 export const isMuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine = (
   a: any
 ): a is MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine =>

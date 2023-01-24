@@ -25,6 +25,9 @@ export const MuuValtakunnallinenTutkinnonOsa = (o: {
   ...o
 })
 
+MuuValtakunnallinenTutkinnonOsa.className =
+  'fi.oph.koski.schema.MuuValtakunnallinenTutkinnonOsa' as const
+
 export const isMuuValtakunnallinenTutkinnonOsa = (
   a: any
 ): a is MuuValtakunnallinenTutkinnonOsa =>

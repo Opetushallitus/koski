@@ -33,6 +33,9 @@ export const OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSu
     ...o
   })
 
+OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus.className =
+  'fi.oph.koski.schema.OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus' as const
+
 export const isOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus =
   (
     a: any

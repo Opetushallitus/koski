@@ -33,6 +33,9 @@ export const MuidenLukioOpintojenSuoritus2015 = (o: {
   ...o
 })
 
+MuidenLukioOpintojenSuoritus2015.className =
+  'fi.oph.koski.schema.MuidenLukioOpintojenSuoritus2015' as const
+
 export const isMuidenLukioOpintojenSuoritus2015 = (
   a: any
 ): a is MuidenLukioOpintojenSuoritus2015 =>

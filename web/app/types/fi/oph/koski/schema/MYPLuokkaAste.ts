@@ -21,5 +21,7 @@ export const MYPLuokkaAste = (o: {
   >
 }): MYPLuokkaAste => ({ $class: 'fi.oph.koski.schema.MYPLuokkaAste', ...o })
 
+MYPLuokkaAste.className = 'fi.oph.koski.schema.MYPLuokkaAste' as const
+
 export const isMYPLuokkaAste = (a: any): a is MYPLuokkaAste =>
   a?.$class === 'fi.oph.koski.schema.MYPLuokkaAste'

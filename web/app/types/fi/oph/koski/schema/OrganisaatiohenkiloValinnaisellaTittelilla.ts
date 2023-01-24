@@ -22,6 +22,9 @@ export const OrganisaatiohenkilöValinnaisellaTittelillä = (o: {
   ...o
 })
 
+OrganisaatiohenkilöValinnaisellaTittelillä.className =
+  'fi.oph.koski.schema.OrganisaatiohenkilöValinnaisellaTittelillä' as const
+
 export const isOrganisaatiohenkilöValinnaisellaTittelillä = (
   a: any
 ): a is OrganisaatiohenkilöValinnaisellaTittelillä =>

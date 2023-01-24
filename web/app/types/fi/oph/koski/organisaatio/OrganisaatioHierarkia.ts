@@ -39,5 +39,8 @@ export const OrganisaatioHierarkia = (o: {
   ...o
 })
 
+OrganisaatioHierarkia.className =
+  'fi.oph.koski.organisaatio.OrganisaatioHierarkia' as const
+
 export const isOrganisaatioHierarkia = (a: any): a is OrganisaatioHierarkia =>
   a?.$class === 'fi.oph.koski.organisaatio.OrganisaatioHierarkia'

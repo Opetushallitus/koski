@@ -23,5 +23,7 @@ export const UnionConstraint = (
   ...o
 })
 
+UnionConstraint.className = 'fi.oph.koski.typemodel.UnionConstraint' as const
+
 export const isUnionConstraint = (a: any): a is UnionConstraint =>
   a?.$class === 'fi.oph.koski.typemodel.UnionConstraint'

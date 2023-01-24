@@ -17,6 +17,9 @@ export const OpiskeluoikeusAvaintaEiLöydy = (o: {
   ...o
 })
 
+OpiskeluoikeusAvaintaEiLöydy.className =
+  'fi.oph.koski.schema.OpiskeluoikeusAvaintaEiLöydy' as const
+
 export const isOpiskeluoikeusAvaintaEiLöydy = (
   a: any
 ): a is OpiskeluoikeusAvaintaEiLöydy =>

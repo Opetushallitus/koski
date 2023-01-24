@@ -33,6 +33,9 @@ export const AikuistenPerusopetuksenUskonto = (o: {
   ...o
 })
 
+AikuistenPerusopetuksenUskonto.className =
+  'fi.oph.koski.schema.AikuistenPerusopetuksenUskonto' as const
+
 export const isAikuistenPerusopetuksenUskonto = (
   a: any
 ): a is AikuistenPerusopetuksenUskonto =>

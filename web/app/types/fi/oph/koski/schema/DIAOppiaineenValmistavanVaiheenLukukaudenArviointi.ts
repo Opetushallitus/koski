@@ -23,6 +23,9 @@ export const DIAOppiaineenValmistavanVaiheenLukukaudenArviointi = (o: {
   ...o
 })
 
+DIAOppiaineenValmistavanVaiheenLukukaudenArviointi.className =
+  'fi.oph.koski.schema.DIAOppiaineenValmistavanVaiheenLukukaudenArviointi' as const
+
 export const isDIAOppiaineenValmistavanVaiheenLukukaudenArviointi = (
   a: any
 ): a is DIAOppiaineenValmistavanVaiheenLukukaudenArviointi =>

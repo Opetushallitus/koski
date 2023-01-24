@@ -37,5 +37,7 @@ export const KäsityönOpintotaso = (
   ...o
 })
 
+KäsityönOpintotaso.className = 'fi.oph.koski.schema.KäsityönOpintotaso' as const
+
 export const isKäsityönOpintotaso = (a: any): a is KäsityönOpintotaso =>
   a?.$class === 'fi.oph.koski.schema.KäsityönOpintotaso'

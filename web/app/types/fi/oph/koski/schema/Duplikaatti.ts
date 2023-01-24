@@ -14,5 +14,7 @@ export const Duplikaatti = (o: {
   arvo: string
 }): Duplikaatti => ({ $class: 'fi.oph.koski.schema.Duplikaatti', ...o })
 
+Duplikaatti.className = 'fi.oph.koski.schema.Duplikaatti' as const
+
 export const isDuplikaatti = (a: any): a is Duplikaatti =>
   a?.$class === 'fi.oph.koski.schema.Duplikaatti'

@@ -33,6 +33,9 @@ export const ValtakunnallinenLukionKurssi2015 = (o: {
   ...o
 })
 
+ValtakunnallinenLukionKurssi2015.className =
+  'fi.oph.koski.schema.ValtakunnallinenLukionKurssi2015' as const
+
 export const isValtakunnallinenLukionKurssi2015 = (
   a: any
 ): a is ValtakunnallinenLukionKurssi2015 =>

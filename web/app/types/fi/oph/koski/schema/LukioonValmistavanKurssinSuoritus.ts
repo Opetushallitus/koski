@@ -34,6 +34,9 @@ export const LukioonValmistavanKurssinSuoritus = (o: {
   ...o
 })
 
+LukioonValmistavanKurssinSuoritus.className =
+  'fi.oph.koski.schema.LukioonValmistavanKurssinSuoritus' as const
+
 export const isLukioonValmistavanKurssinSuoritus = (
   a: any
 ): a is LukioonValmistavanKurssinSuoritus =>

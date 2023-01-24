@@ -22,6 +22,9 @@ export const ValtakunnallinenAikuistenPerusopetuksenKurssi2015 = (o: {
   ...o
 })
 
+ValtakunnallinenAikuistenPerusopetuksenKurssi2015.className =
+  'fi.oph.koski.schema.ValtakunnallinenAikuistenPerusopetuksenKurssi2015' as const
+
 export const isValtakunnallinenAikuistenPerusopetuksenKurssi2015 = (
   a: any
 ): a is ValtakunnallinenAikuistenPerusopetuksenKurssi2015 =>

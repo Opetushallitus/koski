@@ -18,6 +18,9 @@ export const OsaamisenHankkimistapaIlmanLisätietoja = (o: {
   ...o
 })
 
+OsaamisenHankkimistapaIlmanLisätietoja.className =
+  'fi.oph.koski.schema.OsaamisenHankkimistapaIlmanLisätietoja' as const
+
 export const isOsaamisenHankkimistapaIlmanLisätietoja = (
   a: any
 ): a is OsaamisenHankkimistapaIlmanLisätietoja =>

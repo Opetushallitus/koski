@@ -36,6 +36,9 @@ export const VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaiste
     ...o
   })
 
+VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli.className =
+  'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli' as const
+
 export const isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenValinnaistenOpintojenKoulutusmoduuli =
   (
     a: any

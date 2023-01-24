@@ -42,6 +42,9 @@ export const PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus = (o: {
   ...o
 })
 
+PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus.className =
+  'fi.oph.koski.schema.PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus' as const
+
 export const isPerusopetuksenLisäopetuksenToiminta_AlueenSuoritus = (
   a: any
 ): a is PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus =>

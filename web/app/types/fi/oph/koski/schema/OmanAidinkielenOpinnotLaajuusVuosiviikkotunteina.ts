@@ -34,6 +34,9 @@ export const OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina = (o: {
   ...o
 })
 
+OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina.className =
+  'fi.oph.koski.schema.OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina' as const
+
 export const isOmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina = (
   a: any
 ): a is OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina =>

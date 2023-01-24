@@ -37,6 +37,9 @@ export const AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli = (o: {
   ...o
 })
 
+AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli.className =
+  'fi.oph.koski.schema.AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli' as const
+
 export const isAikuistenPerusopetuksenVierasTaiToinenKotimainenKieli = (
   a: any
 ): a is AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli =>

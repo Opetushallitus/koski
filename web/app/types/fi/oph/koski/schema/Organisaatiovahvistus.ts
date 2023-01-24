@@ -23,5 +23,8 @@ export const Organisaatiovahvistus = (o: {
   ...o
 })
 
+Organisaatiovahvistus.className =
+  'fi.oph.koski.schema.Organisaatiovahvistus' as const
+
 export const isOrganisaatiovahvistus = (a: any): a is Organisaatiovahvistus =>
   a?.$class === 'fi.oph.koski.schema.Organisaatiovahvistus'

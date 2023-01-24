@@ -27,6 +27,9 @@ export const HenkilövahvistusValinnaisellaPaikkakunnalla = (o: {
   ...o
 })
 
+HenkilövahvistusValinnaisellaPaikkakunnalla.className =
+  'fi.oph.koski.schema.HenkilövahvistusValinnaisellaPaikkakunnalla' as const
+
 export const isHenkilövahvistusValinnaisellaPaikkakunnalla = (
   a: any
 ): a is HenkilövahvistusValinnaisellaPaikkakunnalla =>

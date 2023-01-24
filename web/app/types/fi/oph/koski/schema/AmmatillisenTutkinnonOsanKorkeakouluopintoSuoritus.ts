@@ -44,6 +44,9 @@ export const AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = (
   ...o
 })
 
+AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus.className =
+  'fi.oph.koski.schema.AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus' as const
+
 export const isAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus = (
   a: any
 ): a is AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus =>

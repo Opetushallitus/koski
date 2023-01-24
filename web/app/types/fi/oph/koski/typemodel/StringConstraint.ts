@@ -22,5 +22,7 @@ export const StringConstraint = (
   ...o
 })
 
+StringConstraint.className = 'fi.oph.koski.typemodel.StringConstraint' as const
+
 export const isStringConstraint = (a: any): a is StringConstraint =>
   a?.$class === 'fi.oph.koski.typemodel.StringConstraint'

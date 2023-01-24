@@ -32,6 +32,9 @@ export const LukionÄidinkieliJaKirjallisuus2015 = (o: {
   ...o
 })
 
+LukionÄidinkieliJaKirjallisuus2015.className =
+  'fi.oph.koski.schema.LukionÄidinkieliJaKirjallisuus2015' as const
+
 export const isLukionÄidinkieliJaKirjallisuus2015 = (
   a: any
 ): a is LukionÄidinkieliJaKirjallisuus2015 =>

@@ -17,5 +17,7 @@ export const Finnish = (o: {
   en?: string
 }): Finnish => ({ $class: 'fi.oph.koski.schema.Finnish', ...o })
 
+Finnish.className = 'fi.oph.koski.schema.Finnish' as const
+
 export const isFinnish = (a: any): a is Finnish =>
   a?.$class === 'fi.oph.koski.schema.Finnish'

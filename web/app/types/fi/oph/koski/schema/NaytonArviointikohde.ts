@@ -30,5 +30,8 @@ export const NäytönArviointikohde = (o: {
   ...o
 })
 
+NäytönArviointikohde.className =
+  'fi.oph.koski.schema.NäytönArviointikohde' as const
+
 export const isNäytönArviointikohde = (a: any): a is NäytönArviointikohde =>
   a?.$class === 'fi.oph.koski.schema.NäytönArviointikohde'

@@ -24,6 +24,9 @@ export const PerusopetuksenKäyttäytymisenArviointi = (o: {
   ...o
 })
 
+PerusopetuksenKäyttäytymisenArviointi.className =
+  'fi.oph.koski.schema.PerusopetuksenKäyttäytymisenArviointi' as const
+
 export const isPerusopetuksenKäyttäytymisenArviointi = (
   a: any
 ): a is PerusopetuksenKäyttäytymisenArviointi =>

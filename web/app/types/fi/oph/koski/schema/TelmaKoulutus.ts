@@ -31,5 +31,7 @@ export const TelmaKoulutus = (
   ...o
 })
 
+TelmaKoulutus.className = 'fi.oph.koski.schema.TelmaKoulutus' as const
+
 export const isTelmaKoulutus = (a: any): a is TelmaKoulutus =>
   a?.$class === 'fi.oph.koski.schema.TelmaKoulutus'

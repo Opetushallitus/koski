@@ -38,6 +38,9 @@ export const VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopinto
     ...o
   })
 
+VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi.className =
+  'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi' as const
+
 export const isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi =
   (
     a: any

@@ -31,6 +31,9 @@ export const InternationalSchoolIBOppiaineenArviointi = (o: {
   ...o
 })
 
+InternationalSchoolIBOppiaineenArviointi.className =
+  'fi.oph.koski.schema.InternationalSchoolIBOppiaineenArviointi' as const
+
 export const isInternationalSchoolIBOppiaineenArviointi = (
   a: any
 ): a is InternationalSchoolIBOppiaineenArviointi =>

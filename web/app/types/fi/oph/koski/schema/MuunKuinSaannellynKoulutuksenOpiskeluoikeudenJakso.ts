@@ -29,6 +29,9 @@ export const MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso = (o: {
   ...o
 })
 
+MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso.className =
+  'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso' as const
+
 export const isMuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso = (
   a: any
 ): a is MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso =>

@@ -38,6 +38,9 @@ export const DiplomaOppiaineenSuoritus = (o: {
   ...o
 })
 
+DiplomaOppiaineenSuoritus.className =
+  'fi.oph.koski.schema.DiplomaOppiaineenSuoritus' as const
+
 export const isDiplomaOppiaineenSuoritus = (
   a: any
 ): a is DiplomaOppiaineenSuoritus =>

@@ -235,7 +235,10 @@ object TypescriptTypes {
     val properties = getClassProp(obj) ++ knownProperties
     val fnBody = s"(${valueToTs(properties.toMap, Some("o"))})"
 
-    s"export const $fnName = $arguments: $returnType => $fnBody"
+    List(
+      s"export const $fnName = $arguments: $returnType => $fnBody",
+      s"""$fnName.className = "${obj.fullClassName}" as const""",
+    ).mkString("\n\n")
   }
 
   private def objectConstructorReturnValue(obj: ObjectType, options: Options): String =

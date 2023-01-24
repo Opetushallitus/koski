@@ -31,6 +31,9 @@ export const PrimaryAlaoppimisalueArviointi = (o: {
   ...o
 })
 
+PrimaryAlaoppimisalueArviointi.className =
+  'fi.oph.koski.schema.PrimaryAlaoppimisalueArviointi' as const
+
 export const isPrimaryAlaoppimisalueArviointi = (
   a: any
 ): a is PrimaryAlaoppimisalueArviointi =>

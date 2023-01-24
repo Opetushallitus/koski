@@ -38,6 +38,9 @@ export const NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus = (o: {
   ...o
 })
 
+NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus.className =
+  'fi.oph.koski.schema.NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus' as const
+
 export const isNäyttötutkintoonValmistavanKoulutuksenOsanSuoritus = (
   a: any
 ): a is NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus =>

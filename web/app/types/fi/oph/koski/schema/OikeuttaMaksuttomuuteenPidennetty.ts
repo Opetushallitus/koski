@@ -17,6 +17,9 @@ export const OikeuttaMaksuttomuuteenPidennetty = (o: {
   ...o
 })
 
+OikeuttaMaksuttomuuteenPidennetty.className =
+  'fi.oph.koski.schema.OikeuttaMaksuttomuuteenPidennetty' as const
+
 export const isOikeuttaMaksuttomuuteenPidennetty = (
   a: any
 ): a is OikeuttaMaksuttomuuteenPidennetty =>

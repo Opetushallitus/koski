@@ -50,6 +50,9 @@ export const VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 = (
   ...o
 })
 
+VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022.className =
+  'fi.oph.koski.schema.VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022' as const
+
 export const isVSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 = (
   a: any
 ): a is VSTKotoutumiskoulutuksenValinnaistenOpintojenOsasuoritus2022 =>

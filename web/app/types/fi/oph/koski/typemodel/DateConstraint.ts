@@ -18,5 +18,7 @@ export const DateConstraint = (
   ...o
 })
 
+DateConstraint.className = 'fi.oph.koski.typemodel.DateConstraint' as const
+
 export const isDateConstraint = (a: any): a is DateConstraint =>
   a?.$class === 'fi.oph.koski.typemodel.DateConstraint'

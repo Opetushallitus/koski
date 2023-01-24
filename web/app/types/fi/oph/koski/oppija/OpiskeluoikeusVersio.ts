@@ -21,5 +21,8 @@ export const OpiskeluoikeusVersio = (o: {
   ...o
 })
 
+OpiskeluoikeusVersio.className =
+  'fi.oph.koski.oppija.OpiskeluoikeusVersio' as const
+
 export const isOpiskeluoikeusVersio = (a: any): a is OpiskeluoikeusVersio =>
   a?.$class === 'fi.oph.koski.oppija.OpiskeluoikeusVersio'

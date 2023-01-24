@@ -31,5 +31,8 @@ export const LukionMatematiikka2019 = (o: {
   ...o
 })
 
+LukionMatematiikka2019.className =
+  'fi.oph.koski.schema.LukionMatematiikka2019' as const
+
 export const isLukionMatematiikka2019 = (a: any): a is LukionMatematiikka2019 =>
   a?.$class === 'fi.oph.koski.schema.LukionMatematiikka2019'

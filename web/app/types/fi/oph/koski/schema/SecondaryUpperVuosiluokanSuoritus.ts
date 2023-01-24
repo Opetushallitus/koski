@@ -51,6 +51,9 @@ export const SecondaryUpperVuosiluokanSuoritus = (o: {
   ...o
 })
 
+SecondaryUpperVuosiluokanSuoritus.className =
+  'fi.oph.koski.schema.SecondaryUpperVuosiluokanSuoritus' as const
+
 export const isSecondaryUpperVuosiluokanSuoritus = (
   a: any
 ): a is SecondaryUpperVuosiluokanSuoritus =>

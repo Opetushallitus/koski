@@ -55,6 +55,9 @@ export const ValmaKoulutuksenSuoritus = (o: {
   ...o
 })
 
+ValmaKoulutuksenSuoritus.className =
+  'fi.oph.koski.schema.ValmaKoulutuksenSuoritus' as const
+
 export const isValmaKoulutuksenSuoritus = (
   a: any
 ): a is ValmaKoulutuksenSuoritus =>

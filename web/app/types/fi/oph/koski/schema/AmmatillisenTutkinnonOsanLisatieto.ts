@@ -20,6 +20,9 @@ export const AmmatillisenTutkinnonOsanLisätieto = (o: {
   ...o
 })
 
+AmmatillisenTutkinnonOsanLisätieto.className =
+  'fi.oph.koski.schema.AmmatillisenTutkinnonOsanLisätieto' as const
+
 export const isAmmatillisenTutkinnonOsanLisätieto = (
   a: any
 ): a is AmmatillisenTutkinnonOsanLisätieto =>

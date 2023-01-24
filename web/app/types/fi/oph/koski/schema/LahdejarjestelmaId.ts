@@ -20,5 +20,7 @@ export const LähdejärjestelmäId = (o: {
   ...o
 })
 
+LähdejärjestelmäId.className = 'fi.oph.koski.schema.LähdejärjestelmäId' as const
+
 export const isLähdejärjestelmäId = (a: any): a is LähdejärjestelmäId =>
   a?.$class === 'fi.oph.koski.schema.LähdejärjestelmäId'

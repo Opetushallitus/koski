@@ -26,5 +26,7 @@ export const IBTutkinto = (
   ...o
 })
 
+IBTutkinto.className = 'fi.oph.koski.schema.IBTutkinto' as const
+
 export const isIBTutkinto = (a: any): a is IBTutkinto =>
   a?.$class === 'fi.oph.koski.schema.IBTutkinto'

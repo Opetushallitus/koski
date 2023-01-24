@@ -36,6 +36,9 @@ export const OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso =
     ...o
   })
 
+OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso.className =
+  'fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso' as const
+
 export const isOppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso =
   (
     a: any

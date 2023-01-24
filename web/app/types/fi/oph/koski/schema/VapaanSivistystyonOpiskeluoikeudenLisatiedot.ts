@@ -22,6 +22,9 @@ export const VapaanSivistystyönOpiskeluoikeudenLisätiedot = (
   ...o
 })
 
+VapaanSivistystyönOpiskeluoikeudenLisätiedot.className =
+  'fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeudenLisätiedot' as const
+
 export const isVapaanSivistystyönOpiskeluoikeudenLisätiedot = (
   a: any
 ): a is VapaanSivistystyönOpiskeluoikeudenLisätiedot =>

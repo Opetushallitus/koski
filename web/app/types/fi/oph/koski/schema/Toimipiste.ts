@@ -19,5 +19,7 @@ export const Toimipiste = (o: {
   kotipaikka?: Koodistokoodiviite<'kunta', string>
 }): Toimipiste => ({ $class: 'fi.oph.koski.schema.Toimipiste', ...o })
 
+Toimipiste.className = 'fi.oph.koski.schema.Toimipiste' as const
+
 export const isToimipiste = (a: any): a is Toimipiste =>
   a?.$class === 'fi.oph.koski.schema.Toimipiste'

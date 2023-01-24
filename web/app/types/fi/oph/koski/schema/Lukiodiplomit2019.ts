@@ -27,5 +27,7 @@ export const Lukiodiplomit2019 = (
   ...o
 })
 
+Lukiodiplomit2019.className = 'fi.oph.koski.schema.Lukiodiplomit2019' as const
+
 export const isLukiodiplomit2019 = (a: any): a is Lukiodiplomit2019 =>
   a?.$class === 'fi.oph.koski.schema.Lukiodiplomit2019'

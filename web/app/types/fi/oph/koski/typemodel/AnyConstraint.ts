@@ -18,5 +18,7 @@ export const AnyConstraint = (
   ...o
 })
 
+AnyConstraint.className = 'fi.oph.koski.typemodel.AnyConstraint' as const
+
 export const isAnyConstraint = (a: any): a is AnyConstraint =>
   a?.$class === 'fi.oph.koski.typemodel.AnyConstraint'

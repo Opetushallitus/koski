@@ -29,6 +29,9 @@ export const DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi = (
   ...o
 })
 
+DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi.className =
+  'fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi' as const
+
 export const isDIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi = (
   a: any
 ): a is DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi =>

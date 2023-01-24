@@ -16,5 +16,7 @@ export const Maksuttomuus = (o: {
   maksuton: boolean
 }): Maksuttomuus => ({ $class: 'fi.oph.koski.schema.Maksuttomuus', ...o })
 
+Maksuttomuus.className = 'fi.oph.koski.schema.Maksuttomuus' as const
+
 export const isMaksuttomuus = (a: any): a is Maksuttomuus =>
   a?.$class === 'fi.oph.koski.schema.Maksuttomuus'

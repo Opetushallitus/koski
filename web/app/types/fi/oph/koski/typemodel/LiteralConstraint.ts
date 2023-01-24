@@ -18,5 +18,8 @@ export const LiteralConstraint = (o: {
   ...o
 })
 
+LiteralConstraint.className =
+  'fi.oph.koski.typemodel.LiteralConstraint' as const
+
 export const isLiteralConstraint = (a: any): a is LiteralConstraint =>
   a?.$class === 'fi.oph.koski.typemodel.LiteralConstraint'

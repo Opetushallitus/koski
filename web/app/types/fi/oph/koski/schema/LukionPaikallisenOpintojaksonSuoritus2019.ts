@@ -41,6 +41,9 @@ export const LukionPaikallisenOpintojaksonSuoritus2019 = (o: {
   ...o
 })
 
+LukionPaikallisenOpintojaksonSuoritus2019.className =
+  'fi.oph.koski.schema.LukionPaikallisenOpintojaksonSuoritus2019' as const
+
 export const isLukionPaikallisenOpintojaksonSuoritus2019 = (
   a: any
 ): a is LukionPaikallisenOpintojaksonSuoritus2019 =>

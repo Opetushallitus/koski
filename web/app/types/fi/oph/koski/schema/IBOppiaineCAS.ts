@@ -27,5 +27,7 @@ export const IBOppiaineCAS = (o: {
   ...o
 })
 
+IBOppiaineCAS.className = 'fi.oph.koski.schema.IBOppiaineCAS' as const
+
 export const isIBOppiaineCAS = (a: any): a is IBOppiaineCAS =>
   a?.$class === 'fi.oph.koski.schema.IBOppiaineCAS'

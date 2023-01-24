@@ -35,6 +35,9 @@ export const PreIBOppiaineenSuoritus2015 = (o: {
   ...o
 })
 
+PreIBOppiaineenSuoritus2015.className =
+  'fi.oph.koski.schema.PreIBOppiaineenSuoritus2015' as const
+
 export const isPreIBOppiaineenSuoritus2015 = (
   a: any
 ): a is PreIBOppiaineenSuoritus2015 =>

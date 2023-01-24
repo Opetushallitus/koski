@@ -40,6 +40,9 @@ export const VapaanSivistystyönJotpaKoulutuksenSuoritus = (o: {
   ...o
 })
 
+VapaanSivistystyönJotpaKoulutuksenSuoritus.className =
+  'fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenSuoritus' as const
+
 export const isVapaanSivistystyönJotpaKoulutuksenSuoritus = (
   a: any
 ): a is VapaanSivistystyönJotpaKoulutuksenSuoritus =>

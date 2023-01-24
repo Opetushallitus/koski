@@ -63,6 +63,9 @@ export const DIAOppiaineenTutkintovaiheenNumeerinenArviointi = (o: {
   ...o
 })
 
+DIAOppiaineenTutkintovaiheenNumeerinenArviointi.className =
+  'fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenNumeerinenArviointi' as const
+
 export const isDIAOppiaineenTutkintovaiheenNumeerinenArviointi = (
   a: any
 ): a is DIAOppiaineenTutkintovaiheenNumeerinenArviointi =>

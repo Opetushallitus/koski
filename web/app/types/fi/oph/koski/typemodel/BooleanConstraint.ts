@@ -22,5 +22,8 @@ export const BooleanConstraint = (
   ...o
 })
 
+BooleanConstraint.className =
+  'fi.oph.koski.typemodel.BooleanConstraint' as const
+
 export const isBooleanConstraint = (a: any): a is BooleanConstraint =>
   a?.$class === 'fi.oph.koski.typemodel.BooleanConstraint'

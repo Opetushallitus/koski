@@ -25,6 +25,9 @@ export const InternationalSchoolCoreRequirementsArviointi = (o: {
   ...o
 })
 
+InternationalSchoolCoreRequirementsArviointi.className =
+  'fi.oph.koski.schema.InternationalSchoolCoreRequirementsArviointi' as const
+
 export const isInternationalSchoolCoreRequirementsArviointi = (
   a: any
 ): a is InternationalSchoolCoreRequirementsArviointi =>

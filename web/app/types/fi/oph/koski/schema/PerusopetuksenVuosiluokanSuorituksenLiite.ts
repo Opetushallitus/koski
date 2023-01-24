@@ -26,6 +26,9 @@ export const PerusopetuksenVuosiluokanSuorituksenLiite = (o: {
   ...o
 })
 
+PerusopetuksenVuosiluokanSuorituksenLiite.className =
+  'fi.oph.koski.schema.PerusopetuksenVuosiluokanSuorituksenLiite' as const
+
 export const isPerusopetuksenVuosiluokanSuorituksenLiite = (
   a: any
 ): a is PerusopetuksenVuosiluokanSuorituksenLiite =>

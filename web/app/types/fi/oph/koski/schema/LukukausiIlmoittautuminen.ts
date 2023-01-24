@@ -20,6 +20,9 @@ export const Lukukausi_Ilmoittautuminen = (
   ...o
 })
 
+Lukukausi_Ilmoittautuminen.className =
+  'fi.oph.koski.schema.Lukukausi_Ilmoittautuminen' as const
+
 export const isLukukausi_Ilmoittautuminen = (
   a: any
 ): a is Lukukausi_Ilmoittautuminen =>

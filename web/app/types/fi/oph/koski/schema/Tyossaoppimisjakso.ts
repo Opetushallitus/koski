@@ -31,5 +31,7 @@ export const Työssäoppimisjakso = (o: {
   ...o
 })
 
+Työssäoppimisjakso.className = 'fi.oph.koski.schema.Työssäoppimisjakso' as const
+
 export const isTyössäoppimisjakso = (a: any): a is Työssäoppimisjakso =>
   a?.$class === 'fi.oph.koski.schema.Työssäoppimisjakso'

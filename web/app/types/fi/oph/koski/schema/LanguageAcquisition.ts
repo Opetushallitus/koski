@@ -24,5 +24,8 @@ export const LanguageAcquisition = (o: {
   ...o
 })
 
+LanguageAcquisition.className =
+  'fi.oph.koski.schema.LanguageAcquisition' as const
+
 export const isLanguageAcquisition = (a: any): a is LanguageAcquisition =>
   a?.$class === 'fi.oph.koski.schema.LanguageAcquisition'

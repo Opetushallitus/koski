@@ -30,5 +30,7 @@ export const NumberConstraint = (
   ...o
 })
 
+NumberConstraint.className = 'fi.oph.koski.typemodel.NumberConstraint' as const
+
 export const isNumberConstraint = (a: any): a is NumberConstraint =>
   a?.$class === 'fi.oph.koski.typemodel.NumberConstraint'

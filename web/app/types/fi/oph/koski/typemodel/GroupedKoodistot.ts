@@ -20,5 +20,7 @@ export const GroupedKoodistot = (
   ...o
 })
 
+GroupedKoodistot.className = 'fi.oph.koski.typemodel.GroupedKoodistot' as const
+
 export const isGroupedKoodistot = (a: any): a is GroupedKoodistot =>
   a?.$class === 'fi.oph.koski.typemodel.GroupedKoodistot'

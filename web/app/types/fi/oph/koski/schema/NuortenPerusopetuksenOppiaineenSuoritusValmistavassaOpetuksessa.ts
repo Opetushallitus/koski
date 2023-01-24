@@ -51,6 +51,9 @@ export const NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa =
     ...o
   })
 
+NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa.className =
+  'fi.oph.koski.schema.NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa' as const
+
 export const isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa =
   (
     a: any

@@ -23,5 +23,7 @@ export const HenkilötiedotJaOid = (o: {
   ...o
 })
 
+HenkilötiedotJaOid.className = 'fi.oph.koski.schema.HenkilötiedotJaOid' as const
+
 export const isHenkilötiedotJaOid = (a: any): a is HenkilötiedotJaOid =>
   a?.$class === 'fi.oph.koski.schema.HenkilötiedotJaOid'

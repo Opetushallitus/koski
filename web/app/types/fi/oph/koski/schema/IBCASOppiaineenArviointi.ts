@@ -30,6 +30,9 @@ export const IBCASOppiaineenArviointi = (o: {
   ...o
 })
 
+IBCASOppiaineenArviointi.className =
+  'fi.oph.koski.schema.IBCASOppiaineenArviointi' as const
+
 export const isIBCASOppiaineenArviointi = (
   a: any
 ): a is IBCASOppiaineenArviointi =>

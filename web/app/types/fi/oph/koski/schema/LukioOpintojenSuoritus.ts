@@ -40,5 +40,8 @@ export const LukioOpintojenSuoritus = (o: {
   ...o
 })
 
+LukioOpintojenSuoritus.className =
+  'fi.oph.koski.schema.LukioOpintojenSuoritus' as const
+
 export const isLukioOpintojenSuoritus = (a: any): a is LukioOpintojenSuoritus =>
   a?.$class === 'fi.oph.koski.schema.LukioOpintojenSuoritus'

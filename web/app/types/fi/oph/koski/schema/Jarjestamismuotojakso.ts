@@ -21,5 +21,8 @@ export const Järjestämismuotojakso = (o: {
   ...o
 })
 
+Järjestämismuotojakso.className =
+  'fi.oph.koski.schema.Järjestämismuotojakso' as const
+
 export const isJärjestämismuotojakso = (a: any): a is Järjestämismuotojakso =>
   a?.$class === 'fi.oph.koski.schema.Järjestämismuotojakso'

@@ -24,5 +24,8 @@ export const IBDiplomaLuokkaAste = (o: {
   ...o
 })
 
+IBDiplomaLuokkaAste.className =
+  'fi.oph.koski.schema.IBDiplomaLuokkaAste' as const
+
 export const isIBDiplomaLuokkaAste = (a: any): a is IBDiplomaLuokkaAste =>
   a?.$class === 'fi.oph.koski.schema.IBDiplomaLuokkaAste'

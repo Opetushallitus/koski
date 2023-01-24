@@ -53,6 +53,9 @@ export const MuunAmmatillisenKoulutuksenSuoritus = (o: {
   ...o
 })
 
+MuunAmmatillisenKoulutuksenSuoritus.className =
+  'fi.oph.koski.schema.MuunAmmatillisenKoulutuksenSuoritus' as const
+
 export const isMuunAmmatillisenKoulutuksenSuoritus = (
   a: any
 ): a is MuunAmmatillisenKoulutuksenSuoritus =>

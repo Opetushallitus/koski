@@ -48,6 +48,9 @@ export const NurseryVuosiluokanSuoritus = (o: {
   ...o
 })
 
+NurseryVuosiluokanSuoritus.className =
+  'fi.oph.koski.schema.NurseryVuosiluokanSuoritus' as const
+
 export const isNurseryVuosiluokanSuoritus = (
   a: any
 ): a is NurseryVuosiluokanSuoritus =>

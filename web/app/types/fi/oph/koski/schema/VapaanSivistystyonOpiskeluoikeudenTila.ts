@@ -20,6 +20,9 @@ export const VapaanSivistystyönOpiskeluoikeudenTila = (
   ...o
 })
 
+VapaanSivistystyönOpiskeluoikeudenTila.className =
+  'fi.oph.koski.schema.VapaanSivistystyönOpiskeluoikeudenTila' as const
+
 export const isVapaanSivistystyönOpiskeluoikeudenTila = (
   a: any
 ): a is VapaanSivistystyönOpiskeluoikeudenTila =>

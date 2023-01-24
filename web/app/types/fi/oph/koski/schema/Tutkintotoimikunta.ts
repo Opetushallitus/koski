@@ -19,5 +19,7 @@ export const Tutkintotoimikunta = (o: {
   ...o
 })
 
+Tutkintotoimikunta.className = 'fi.oph.koski.schema.Tutkintotoimikunta' as const
+
 export const isTutkintotoimikunta = (a: any): a is Tutkintotoimikunta =>
   a?.$class === 'fi.oph.koski.schema.Tutkintotoimikunta'

@@ -20,6 +20,9 @@ export const TaiteenPerusopetuksenOpiskeluoikeudenTila = (
   ...o
 })
 
+TaiteenPerusopetuksenOpiskeluoikeudenTila.className =
+  'fi.oph.koski.schema.TaiteenPerusopetuksenOpiskeluoikeudenTila' as const
+
 export const isTaiteenPerusopetuksenOpiskeluoikeudenTila = (
   a: any
 ): a is TaiteenPerusopetuksenOpiskeluoikeudenTila =>

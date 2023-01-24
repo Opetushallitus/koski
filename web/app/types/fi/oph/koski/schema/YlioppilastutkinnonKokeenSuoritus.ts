@@ -33,6 +33,9 @@ export const YlioppilastutkinnonKokeenSuoritus = (o: {
   ...o
 })
 
+YlioppilastutkinnonKokeenSuoritus.className =
+  'fi.oph.koski.schema.YlioppilastutkinnonKokeenSuoritus' as const
+
 export const isYlioppilastutkinnonKokeenSuoritus = (
   a: any
 ): a is YlioppilastutkinnonKokeenSuoritus =>

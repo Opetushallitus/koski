@@ -21,6 +21,9 @@ export const HenkilönOpiskeluoikeusVersiot = (o: {
   ...o
 })
 
+HenkilönOpiskeluoikeusVersiot.className =
+  'fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot' as const
+
 export const isHenkilönOpiskeluoikeusVersiot = (
   a: any
 ): a is HenkilönOpiskeluoikeusVersiot =>

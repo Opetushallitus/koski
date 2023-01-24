@@ -27,5 +27,8 @@ export const TemaattisetOpinnot2019 = (
   ...o
 })
 
+TemaattisetOpinnot2019.className =
+  'fi.oph.koski.schema.TemaattisetOpinnot2019' as const
+
 export const isTemaattisetOpinnot2019 = (a: any): a is TemaattisetOpinnot2019 =>
   a?.$class === 'fi.oph.koski.schema.TemaattisetOpinnot2019'

@@ -42,6 +42,9 @@ export const PrimaryLapsiOppimisalueenSuoritus = (o: {
   ...o
 })
 
+PrimaryLapsiOppimisalueenSuoritus.className =
+  'fi.oph.koski.schema.PrimaryLapsiOppimisalueenSuoritus' as const
+
 export const isPrimaryLapsiOppimisalueenSuoritus = (
   a: any
 ): a is PrimaryLapsiOppimisalueenSuoritus =>

@@ -24,5 +24,8 @@ export const S7OppiaineKomponentti = (o: {
   ...o
 })
 
+S7OppiaineKomponentti.className =
+  'fi.oph.koski.schema.S7OppiaineKomponentti' as const
+
 export const isS7OppiaineKomponentti = (a: any): a is S7OppiaineKomponentti =>
   a?.$class === 'fi.oph.koski.schema.S7OppiaineKomponentti'

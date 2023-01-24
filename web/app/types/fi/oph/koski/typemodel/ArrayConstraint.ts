@@ -26,5 +26,7 @@ export const ArrayConstraint = (o: {
   ...o
 })
 
+ArrayConstraint.className = 'fi.oph.koski.typemodel.ArrayConstraint' as const
+
 export const isArrayConstraint = (a: any): a is ArrayConstraint =>
   a?.$class === 'fi.oph.koski.typemodel.ArrayConstraint'

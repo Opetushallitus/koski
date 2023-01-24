@@ -53,5 +53,7 @@ export const MYPOppiaineMuu = (o: {
   >
 }): MYPOppiaineMuu => ({ $class: 'fi.oph.koski.schema.MYPOppiaineMuu', ...o })
 
+MYPOppiaineMuu.className = 'fi.oph.koski.schema.MYPOppiaineMuu' as const
+
 export const isMYPOppiaineMuu = (a: any): a is MYPOppiaineMuu =>
   a?.$class === 'fi.oph.koski.schema.MYPOppiaineMuu'

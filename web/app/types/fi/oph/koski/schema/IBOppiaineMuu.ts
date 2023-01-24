@@ -84,5 +84,7 @@ export const IBOppiaineMuu = (o: {
   >
 }): IBOppiaineMuu => ({ $class: 'fi.oph.koski.schema.IBOppiaineMuu', ...o })
 
+IBOppiaineMuu.className = 'fi.oph.koski.schema.IBOppiaineMuu' as const
+
 export const isIBOppiaineMuu = (a: any): a is IBOppiaineMuu =>
   a?.$class === 'fi.oph.koski.schema.IBOppiaineMuu'

@@ -14,5 +14,7 @@ export const KeyValue = (o: { key: string; value: any }): KeyValue => ({
   ...o
 })
 
+KeyValue.className = 'fi.oph.koski.preferences.KeyValue' as const
+
 export const isKeyValue = (a: any): a is KeyValue =>
   a?.$class === 'fi.oph.koski.preferences.KeyValue'

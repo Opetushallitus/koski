@@ -23,6 +23,9 @@ export const PaikallinenOpintovalmiuksiaTukevaOpinto = (o: {
   ...o
 })
 
+PaikallinenOpintovalmiuksiaTukevaOpinto.className =
+  'fi.oph.koski.schema.PaikallinenOpintovalmiuksiaTukevaOpinto' as const
+
 export const isPaikallinenOpintovalmiuksiaTukevaOpinto = (
   a: any
 ): a is PaikallinenOpintovalmiuksiaTukevaOpinto =>

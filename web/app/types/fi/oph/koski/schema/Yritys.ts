@@ -16,5 +16,7 @@ export const Yritys = (o: {
   yTunnus: string
 }): Yritys => ({ $class: 'fi.oph.koski.schema.Yritys', ...o })
 
+Yritys.className = 'fi.oph.koski.schema.Yritys' as const
+
 export const isYritys = (a: any): a is Yritys =>
   a?.$class === 'fi.oph.koski.schema.Yritys'

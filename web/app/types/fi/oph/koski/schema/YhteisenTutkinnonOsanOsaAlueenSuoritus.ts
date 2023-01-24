@@ -49,6 +49,9 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritus = (o: {
   ...o
 })
 
+YhteisenTutkinnonOsanOsaAlueenSuoritus.className =
+  'fi.oph.koski.schema.YhteisenTutkinnonOsanOsaAlueenSuoritus' as const
+
 export const isYhteisenTutkinnonOsanOsaAlueenSuoritus = (
   a: any
 ): a is YhteisenTutkinnonOsanOsaAlueenSuoritus =>

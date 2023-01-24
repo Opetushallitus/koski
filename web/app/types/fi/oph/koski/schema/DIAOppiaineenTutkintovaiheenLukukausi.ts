@@ -21,6 +21,9 @@ export const DIAOppiaineenTutkintovaiheenLukukausi = (o: {
   ...o
 })
 
+DIAOppiaineenTutkintovaiheenLukukausi.className =
+  'fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenLukukausi' as const
+
 export const isDIAOppiaineenTutkintovaiheenLukukausi = (
   a: any
 ): a is DIAOppiaineenTutkintovaiheenLukukausi =>

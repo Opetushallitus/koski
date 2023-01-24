@@ -18,6 +18,9 @@ export const JärjestämismuotoIlmanLisätietoja = (o: {
   ...o
 })
 
+JärjestämismuotoIlmanLisätietoja.className =
+  'fi.oph.koski.schema.JärjestämismuotoIlmanLisätietoja' as const
+
 export const isJärjestämismuotoIlmanLisätietoja = (
   a: any
 ): a is JärjestämismuotoIlmanLisätietoja =>

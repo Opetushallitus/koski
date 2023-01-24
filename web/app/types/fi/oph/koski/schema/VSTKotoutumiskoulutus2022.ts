@@ -31,6 +31,9 @@ export const VSTKotoutumiskoulutus2022 = (
   ...o
 })
 
+VSTKotoutumiskoulutus2022.className =
+  'fi.oph.koski.schema.VSTKotoutumiskoulutus2022' as const
+
 export const isVSTKotoutumiskoulutus2022 = (
   a: any
 ): a is VSTKotoutumiskoulutus2022 =>

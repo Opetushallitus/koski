@@ -31,6 +31,9 @@ export const EBTutkintoFinalMarkArviointi = (o: {
   ...o
 })
 
+EBTutkintoFinalMarkArviointi.className =
+  'fi.oph.koski.schema.EBTutkintoFinalMarkArviointi' as const
+
 export const isEBTutkintoFinalMarkArviointi = (
   a: any
 ): a is EBTutkintoFinalMarkArviointi =>

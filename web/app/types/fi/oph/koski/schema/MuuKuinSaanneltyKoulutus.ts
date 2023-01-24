@@ -29,6 +29,9 @@ export const MuuKuinSäänneltyKoulutus = (o: {
   ...o
 })
 
+MuuKuinSäänneltyKoulutus.className =
+  'fi.oph.koski.schema.MuuKuinSäänneltyKoulutus' as const
+
 export const isMuuKuinSäänneltyKoulutus = (
   a: any
 ): a is MuuKuinSäänneltyKoulutus =>

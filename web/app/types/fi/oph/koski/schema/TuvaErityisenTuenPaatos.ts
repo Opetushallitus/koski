@@ -19,6 +19,9 @@ export const TuvaErityisenTuenPäätös = (
   ...o
 })
 
+TuvaErityisenTuenPäätös.className =
+  'fi.oph.koski.schema.TuvaErityisenTuenPäätös' as const
+
 export const isTuvaErityisenTuenPäätös = (
   a: any
 ): a is TuvaErityisenTuenPäätös =>

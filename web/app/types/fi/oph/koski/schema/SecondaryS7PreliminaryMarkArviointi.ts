@@ -33,6 +33,9 @@ export const SecondaryS7PreliminaryMarkArviointi = (o: {
   ...o
 })
 
+SecondaryS7PreliminaryMarkArviointi.className =
+  'fi.oph.koski.schema.SecondaryS7PreliminaryMarkArviointi' as const
+
 export const isSecondaryS7PreliminaryMarkArviointi = (
   a: any
 ): a is SecondaryS7PreliminaryMarkArviointi =>

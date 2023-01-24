@@ -24,6 +24,9 @@ export const PreIBKoulutusmoduuli2019 = (
   ...o
 })
 
+PreIBKoulutusmoduuli2019.className =
+  'fi.oph.koski.schema.PreIBKoulutusmoduuli2019' as const
+
 export const isPreIBKoulutusmoduuli2019 = (
   a: any
 ): a is PreIBKoulutusmoduuli2019 =>

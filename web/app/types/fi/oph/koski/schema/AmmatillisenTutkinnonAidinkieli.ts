@@ -29,6 +29,9 @@ export const AmmatillisenTutkinnonÄidinkieli = (o: {
   ...o
 })
 
+AmmatillisenTutkinnonÄidinkieli.className =
+  'fi.oph.koski.schema.AmmatillisenTutkinnonÄidinkieli' as const
+
 export const isAmmatillisenTutkinnonÄidinkieli = (
   a: any
 ): a is AmmatillisenTutkinnonÄidinkieli =>

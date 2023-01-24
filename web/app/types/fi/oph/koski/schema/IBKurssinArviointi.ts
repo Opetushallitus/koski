@@ -24,5 +24,7 @@ export const IBKurssinArviointi = (o: {
   ...o
 })
 
+IBKurssinArviointi.className = 'fi.oph.koski.schema.IBKurssinArviointi' as const
+
 export const isIBKurssinArviointi = (a: any): a is IBKurssinArviointi =>
   a?.$class === 'fi.oph.koski.schema.IBKurssinArviointi'

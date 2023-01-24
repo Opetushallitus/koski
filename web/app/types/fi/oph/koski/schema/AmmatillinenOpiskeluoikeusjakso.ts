@@ -43,6 +43,9 @@ export const AmmatillinenOpiskeluoikeusjakso = (o: {
   ...o
 })
 
+AmmatillinenOpiskeluoikeusjakso.className =
+  'fi.oph.koski.schema.AmmatillinenOpiskeluoikeusjakso' as const
+
 export const isAmmatillinenOpiskeluoikeusjakso = (
   a: any
 ): a is AmmatillinenOpiskeluoikeusjakso =>

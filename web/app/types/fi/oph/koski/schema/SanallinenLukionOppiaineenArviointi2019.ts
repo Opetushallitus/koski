@@ -22,6 +22,9 @@ export const SanallinenLukionOppiaineenArviointi2019 = (o: {
   ...o
 })
 
+SanallinenLukionOppiaineenArviointi2019.className =
+  'fi.oph.koski.schema.SanallinenLukionOppiaineenArviointi2019' as const
+
 export const isSanallinenLukionOppiaineenArviointi2019 = (
   a: any
 ): a is SanallinenLukionOppiaineenArviointi2019 =>

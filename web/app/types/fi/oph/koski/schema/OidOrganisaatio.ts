@@ -19,5 +19,7 @@ export const OidOrganisaatio = (o: {
   kotipaikka?: Koodistokoodiviite<'kunta', string>
 }): OidOrganisaatio => ({ $class: 'fi.oph.koski.schema.OidOrganisaatio', ...o })
 
+OidOrganisaatio.className = 'fi.oph.koski.schema.OidOrganisaatio' as const
+
 export const isOidOrganisaatio = (a: any): a is OidOrganisaatio =>
   a?.$class === 'fi.oph.koski.schema.OidOrganisaatio'

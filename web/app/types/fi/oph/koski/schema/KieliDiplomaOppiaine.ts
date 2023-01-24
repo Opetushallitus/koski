@@ -22,5 +22,8 @@ export const KieliDiplomaOppiaine = (o: {
   ...o
 })
 
+KieliDiplomaOppiaine.className =
+  'fi.oph.koski.schema.KieliDiplomaOppiaine' as const
+
 export const isKieliDiplomaOppiaine = (a: any): a is KieliDiplomaOppiaine =>
   a?.$class === 'fi.oph.koski.schema.KieliDiplomaOppiaine'

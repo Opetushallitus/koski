@@ -22,6 +22,9 @@ export const KorkeakoulunKoodistostaLöytyväArviointi = (o: {
   ...o
 })
 
+KorkeakoulunKoodistostaLöytyväArviointi.className =
+  'fi.oph.koski.schema.KorkeakoulunKoodistostaLöytyväArviointi' as const
+
 export const isKorkeakoulunKoodistostaLöytyväArviointi = (
   a: any
 ): a is KorkeakoulunKoodistostaLöytyväArviointi =>

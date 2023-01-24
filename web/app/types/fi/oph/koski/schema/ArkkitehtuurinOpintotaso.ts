@@ -43,6 +43,9 @@ export const ArkkitehtuurinOpintotaso = (
   ...o
 })
 
+ArkkitehtuurinOpintotaso.className =
+  'fi.oph.koski.schema.ArkkitehtuurinOpintotaso' as const
+
 export const isArkkitehtuurinOpintotaso = (
   a: any
 ): a is ArkkitehtuurinOpintotaso =>

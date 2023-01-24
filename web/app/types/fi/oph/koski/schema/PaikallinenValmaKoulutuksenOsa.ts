@@ -25,6 +25,9 @@ export const PaikallinenValmaKoulutuksenOsa = (o: {
   ...o
 })
 
+PaikallinenValmaKoulutuksenOsa.className =
+  'fi.oph.koski.schema.PaikallinenValmaKoulutuksenOsa' as const
+
 export const isPaikallinenValmaKoulutuksenOsa = (
   a: any
 ): a is PaikallinenValmaKoulutuksenOsa =>

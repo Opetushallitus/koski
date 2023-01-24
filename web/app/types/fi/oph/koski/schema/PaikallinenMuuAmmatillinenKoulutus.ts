@@ -23,6 +23,9 @@ export const PaikallinenMuuAmmatillinenKoulutus = (o: {
   ...o
 })
 
+PaikallinenMuuAmmatillinenKoulutus.className =
+  'fi.oph.koski.schema.PaikallinenMuuAmmatillinenKoulutus' as const
+
 export const isPaikallinenMuuAmmatillinenKoulutus = (
   a: any
 ): a is PaikallinenMuuAmmatillinenKoulutus =>

@@ -32,6 +32,9 @@ export const DIAOppiaineenValmistavanVaiheenSuoritus = (o: {
   ...o
 })
 
+DIAOppiaineenValmistavanVaiheenSuoritus.className =
+  'fi.oph.koski.schema.DIAOppiaineenValmistavanVaiheenSuoritus' as const
+
 export const isDIAOppiaineenValmistavanVaiheenSuoritus = (
   a: any
 ): a is DIAOppiaineenValmistavanVaiheenSuoritus =>

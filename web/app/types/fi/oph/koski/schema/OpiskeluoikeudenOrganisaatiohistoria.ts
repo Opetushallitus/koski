@@ -22,6 +22,9 @@ export const OpiskeluoikeudenOrganisaatiohistoria = (o: {
   ...o
 })
 
+OpiskeluoikeudenOrganisaatiohistoria.className =
+  'fi.oph.koski.schema.OpiskeluoikeudenOrganisaatiohistoria' as const
+
 export const isOpiskeluoikeudenOrganisaatiohistoria = (
   a: any
 ): a is OpiskeluoikeudenOrganisaatiohistoria =>

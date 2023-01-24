@@ -44,6 +44,9 @@ export const TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOs
     ...o
   })
 
+TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus.className =
+  'fi.oph.koski.schema.TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus' as const
+
 export const isTutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus =
   (
     a: any

@@ -22,5 +22,7 @@ export const RecordConstraint = (o: {
   ...o
 })
 
+RecordConstraint.className = 'fi.oph.koski.typemodel.RecordConstraint' as const
+
 export const isRecordConstraint = (a: any): a is RecordConstraint =>
   a?.$class === 'fi.oph.koski.typemodel.RecordConstraint'

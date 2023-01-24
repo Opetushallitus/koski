@@ -58,6 +58,9 @@ export const LukutaitokoulutuksenArviointi = (o: {
   ...o
 })
 
+LukutaitokoulutuksenArviointi.className =
+  'fi.oph.koski.schema.LukutaitokoulutuksenArviointi' as const
+
 export const isLukutaitokoulutuksenArviointi = (
   a: any
 ): a is LukutaitokoulutuksenArviointi =>

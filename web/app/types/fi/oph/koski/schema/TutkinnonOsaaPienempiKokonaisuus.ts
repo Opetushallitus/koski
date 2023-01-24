@@ -23,6 +23,9 @@ export const TutkinnonOsaaPienempiKokonaisuus = (o: {
   ...o
 })
 
+TutkinnonOsaaPienempiKokonaisuus.className =
+  'fi.oph.koski.schema.TutkinnonOsaaPienempiKokonaisuus' as const
+
 export const isTutkinnonOsaaPienempiKokonaisuus = (
   a: any
 ): a is TutkinnonOsaaPienempiKokonaisuus =>

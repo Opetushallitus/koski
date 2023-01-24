@@ -39,6 +39,9 @@ export const VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus =
     ...o
   })
 
+VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus.className =
+  'fi.oph.koski.schema.VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus' as const
+
 export const isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus = (
   a: any
 ): a is VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenOsasuoritus =>

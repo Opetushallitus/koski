@@ -38,6 +38,9 @@ export const MuuKorkeakoulunSuoritus = (o: {
   ...o
 })
 
+MuuKorkeakoulunSuoritus.className =
+  'fi.oph.koski.schema.MuuKorkeakoulunSuoritus' as const
+
 export const isMuuKorkeakoulunSuoritus = (
   a: any
 ): a is MuuKorkeakoulunSuoritus =>

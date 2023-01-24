@@ -14,5 +14,7 @@ export const Limit = (o: { n: number; inclusive: boolean }): Limit => ({
   ...o
 })
 
+Limit.className = 'fi.oph.koski.typemodel.Limit' as const
+
 export const isLimit = (a: any): a is Limit =>
   a?.$class === 'fi.oph.koski.typemodel.Limit'

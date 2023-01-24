@@ -22,5 +22,7 @@ export const IBKurssi = (o: {
   laajuus?: LaajuusKursseissa
 }): IBKurssi => ({ $class: 'fi.oph.koski.schema.IBKurssi', ...o })
 
+IBKurssi.className = 'fi.oph.koski.schema.IBKurssi' as const
+
 export const isIBKurssi = (a: any): a is IBKurssi =>
   a?.$class === 'fi.oph.koski.schema.IBKurssi'

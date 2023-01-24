@@ -28,6 +28,9 @@ export const NumeerinenLukionOppiaineenArviointi2019 = (o: {
   ...o
 })
 
+NumeerinenLukionOppiaineenArviointi2019.className =
+  'fi.oph.koski.schema.NumeerinenLukionOppiaineenArviointi2019' as const
+
 export const isNumeerinenLukionOppiaineenArviointi2019 = (
   a: any
 ): a is NumeerinenLukionOppiaineenArviointi2019 =>

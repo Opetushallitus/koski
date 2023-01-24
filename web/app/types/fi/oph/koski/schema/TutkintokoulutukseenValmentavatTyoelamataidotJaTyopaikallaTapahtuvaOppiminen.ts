@@ -30,6 +30,9 @@ export const TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapah
     ...o
   })
 
+TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen.className =
+  'fi.oph.koski.schema.TutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen' as const
+
 export const isTutkintokoulutukseenValmentavatTyöelämätaidotJaTyöpaikallaTapahtuvaOppiminen =
   (
     a: any

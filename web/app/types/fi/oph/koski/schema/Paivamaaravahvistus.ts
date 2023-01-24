@@ -19,5 +19,8 @@ export const Päivämäärävahvistus = (o: {
   ...o
 })
 
+Päivämäärävahvistus.className =
+  'fi.oph.koski.schema.Päivämäärävahvistus' as const
+
 export const isPäivämäärävahvistus = (a: any): a is Päivämäärävahvistus =>
   a?.$class === 'fi.oph.koski.schema.Päivämäärävahvistus'

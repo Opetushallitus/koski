@@ -30,6 +30,9 @@ export const DIAOppiaineLisäaineKieli = (
   ...o
 })
 
+DIAOppiaineLisäaineKieli.className =
+  'fi.oph.koski.schema.DIAOppiaineLisäaineKieli' as const
+
 export const isDIAOppiaineLisäaineKieli = (
   a: any
 ): a is DIAOppiaineLisäaineKieli =>

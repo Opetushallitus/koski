@@ -30,6 +30,9 @@ export const ValtakunnallinenLukioonValmistavanKoulutuksenKurssi = (o: {
   ...o
 })
 
+ValtakunnallinenLukioonValmistavanKoulutuksenKurssi.className =
+  'fi.oph.koski.schema.ValtakunnallinenLukioonValmistavanKoulutuksenKurssi' as const
+
 export const isValtakunnallinenLukioonValmistavanKoulutuksenKurssi = (
   a: any
 ): a is ValtakunnallinenLukioonValmistavanKoulutuksenKurssi =>

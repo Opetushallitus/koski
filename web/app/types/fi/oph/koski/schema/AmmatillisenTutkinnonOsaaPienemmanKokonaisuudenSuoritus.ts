@@ -47,6 +47,9 @@ export const AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus = (o: {
   ...o
 })
 
+AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus.className =
+  'fi.oph.koski.schema.AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus' as const
+
 export const isAmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus = (
   a: any
 ): a is AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus =>

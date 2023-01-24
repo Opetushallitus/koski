@@ -43,6 +43,9 @@ export const TeatteritaiteenOpintotaso = (
   ...o
 })
 
+TeatteritaiteenOpintotaso.className =
+  'fi.oph.koski.schema.TeatteritaiteenOpintotaso' as const
+
 export const isTeatteritaiteenOpintotaso = (
   a: any
 ): a is TeatteritaiteenOpintotaso =>

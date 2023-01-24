@@ -62,6 +62,9 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus =
     ...o
   })
 
+YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus.className =
+  'fi.oph.koski.schema.YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus' as const
+
 export const isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus = (
   a: any
 ): a is YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus =>

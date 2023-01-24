@@ -38,5 +38,8 @@ export const PYPOppiaineenSuoritus = (o: {
   ...o
 })
 
+PYPOppiaineenSuoritus.className =
+  'fi.oph.koski.schema.PYPOppiaineenSuoritus' as const
+
 export const isPYPOppiaineenSuoritus = (a: any): a is PYPOppiaineenSuoritus =>
   a?.$class === 'fi.oph.koski.schema.PYPOppiaineenSuoritus'

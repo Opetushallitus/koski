@@ -21,5 +21,7 @@ export const PaikallinenKoodi = (o: {
   ...o
 })
 
+PaikallinenKoodi.className = 'fi.oph.koski.schema.PaikallinenKoodi' as const
+
 export const isPaikallinenKoodi = (a: any): a is PaikallinenKoodi =>
   a?.$class === 'fi.oph.koski.schema.PaikallinenKoodi'

@@ -33,6 +33,9 @@ export const TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuva
     ...o
   })
 
+TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot.className =
+  'fi.oph.koski.schema.TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot' as const
+
 export const isTutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot =
   (
     a: any

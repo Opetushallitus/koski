@@ -22,6 +22,9 @@ export const LukionOppiaineenArviointi = (o: {
   ...o
 })
 
+LukionOppiaineenArviointi.className =
+  'fi.oph.koski.schema.LukionOppiaineenArviointi' as const
+
 export const isLukionOppiaineenArviointi = (
   a: any
 ): a is LukionOppiaineenArviointi =>

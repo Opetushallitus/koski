@@ -25,6 +25,9 @@ export const PaikallinenLukionOpinto = (o: {
   ...o
 })
 
+PaikallinenLukionOpinto.className =
+  'fi.oph.koski.schema.PaikallinenLukionOpinto' as const
+
 export const isPaikallinenLukionOpinto = (
   a: any
 ): a is PaikallinenLukionOpinto =>

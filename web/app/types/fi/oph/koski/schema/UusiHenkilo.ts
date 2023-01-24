@@ -19,5 +19,7 @@ export const UusiHenkilö = (o: {
   sukunimi: string
 }): UusiHenkilö => ({ $class: 'fi.oph.koski.schema.UusiHenkilö', ...o })
 
+UusiHenkilö.className = 'fi.oph.koski.schema.UusiHenkilö' as const
+
 export const isUusiHenkilö = (a: any): a is UusiHenkilö =>
   a?.$class === 'fi.oph.koski.schema.UusiHenkilö'

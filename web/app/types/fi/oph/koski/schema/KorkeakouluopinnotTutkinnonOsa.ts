@@ -27,6 +27,9 @@ export const KorkeakouluopinnotTutkinnonOsa = (
   ...o
 })
 
+KorkeakouluopinnotTutkinnonOsa.className =
+  'fi.oph.koski.schema.KorkeakouluopinnotTutkinnonOsa' as const
+
 export const isKorkeakouluopinnotTutkinnonOsa = (
   a: any
 ): a is KorkeakouluopinnotTutkinnonOsa =>

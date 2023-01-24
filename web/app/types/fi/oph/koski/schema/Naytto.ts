@@ -33,5 +33,7 @@ export const Näyttö = (
   ...o
 })
 
+Näyttö.className = 'fi.oph.koski.schema.Näyttö' as const
+
 export const isNäyttö = (a: any): a is Näyttö =>
   a?.$class === 'fi.oph.koski.schema.Näyttö'

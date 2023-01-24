@@ -30,6 +30,9 @@ export const MuidenLukioOpintojenPreIBSuoritus2019 = (o: {
   ...o
 })
 
+MuidenLukioOpintojenPreIBSuoritus2019.className =
+  'fi.oph.koski.schema.MuidenLukioOpintojenPreIBSuoritus2019' as const
+
 export const isMuidenLukioOpintojenPreIBSuoritus2019 = (
   a: any
 ): a is MuidenLukioOpintojenPreIBSuoritus2019 =>

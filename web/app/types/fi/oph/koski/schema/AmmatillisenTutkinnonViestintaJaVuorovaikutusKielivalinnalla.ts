@@ -33,6 +33,9 @@ export const AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla =
     ...o
   })
 
+AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla.className =
+  'fi.oph.koski.schema.AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla' as const
+
 export const isAmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla = (
   a: any
 ): a is AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla =>

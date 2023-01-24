@@ -28,6 +28,9 @@ export const PassFailOppiaineenArviointi = (o: {
   ...o
 })
 
+PassFailOppiaineenArviointi.className =
+  'fi.oph.koski.schema.PassFailOppiaineenArviointi' as const
+
 export const isPassFailOppiaineenArviointi = (
   a: any
 ): a is PassFailOppiaineenArviointi =>

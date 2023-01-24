@@ -28,5 +28,7 @@ export const NuortenPerusopetus = (
   ...o
 })
 
+NuortenPerusopetus.className = 'fi.oph.koski.schema.NuortenPerusopetus' as const
+
 export const isNuortenPerusopetus = (a: any): a is NuortenPerusopetus =>
   a?.$class === 'fi.oph.koski.schema.NuortenPerusopetus'

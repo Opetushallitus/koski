@@ -24,5 +24,8 @@ export const LanguageAndLiterature = (o: {
   ...o
 })
 
+LanguageAndLiterature.className =
+  'fi.oph.koski.schema.LanguageAndLiterature' as const
+
 export const isLanguageAndLiterature = (a: any): a is LanguageAndLiterature =>
   a?.$class === 'fi.oph.koski.schema.LanguageAndLiterature'

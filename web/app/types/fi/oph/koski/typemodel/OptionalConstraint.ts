@@ -22,5 +22,8 @@ export const OptionalConstraint = (o: {
   ...o
 })
 
+OptionalConstraint.className =
+  'fi.oph.koski.typemodel.OptionalConstraint' as const
+
 export const isOptionalConstraint = (a: any): a is OptionalConstraint =>
   a?.$class === 'fi.oph.koski.typemodel.OptionalConstraint'

@@ -25,6 +25,9 @@ export const OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus =
     ...o
   })
 
+OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus.className =
+  'fi.oph.koski.schema.OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus' as const
+
 export const isOppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus = (
   a: any
 ): a is OppivelvollisilleSuunnattuVapaanSivistystyönOpintokokonaisuus =>

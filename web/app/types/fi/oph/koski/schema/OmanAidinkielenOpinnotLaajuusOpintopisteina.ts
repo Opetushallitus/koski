@@ -33,6 +33,9 @@ export const OmanÄidinkielenOpinnotLaajuusOpintopisteinä = (o: {
   ...o
 })
 
+OmanÄidinkielenOpinnotLaajuusOpintopisteinä.className =
+  'fi.oph.koski.schema.OmanÄidinkielenOpinnotLaajuusOpintopisteinä' as const
+
 export const isOmanÄidinkielenOpinnotLaajuusOpintopisteinä = (
   a: any
 ): a is OmanÄidinkielenOpinnotLaajuusOpintopisteinä =>

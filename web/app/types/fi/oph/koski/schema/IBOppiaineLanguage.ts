@@ -29,5 +29,7 @@ export const IBOppiaineLanguage = (o: {
   ...o
 })
 
+IBOppiaineLanguage.className = 'fi.oph.koski.schema.IBOppiaineLanguage' as const
+
 export const isIBOppiaineLanguage = (a: any): a is IBOppiaineLanguage =>
   a?.$class === 'fi.oph.koski.schema.IBOppiaineLanguage'

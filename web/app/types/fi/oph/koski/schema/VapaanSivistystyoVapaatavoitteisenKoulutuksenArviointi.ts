@@ -29,6 +29,9 @@ export const VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi = (o: {
   ...o
 })
 
+VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi.className =
+  'fi.oph.koski.schema.VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi' as const
+
 export const isVapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi = (
   a: any
 ): a is VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi =>

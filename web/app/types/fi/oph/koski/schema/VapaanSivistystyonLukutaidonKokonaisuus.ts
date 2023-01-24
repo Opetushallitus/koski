@@ -21,6 +21,9 @@ export const VapaanSivistystyönLukutaidonKokonaisuus = (o: {
   ...o
 })
 
+VapaanSivistystyönLukutaidonKokonaisuus.className =
+  'fi.oph.koski.schema.VapaanSivistystyönLukutaidonKokonaisuus' as const
+
 export const isVapaanSivistystyönLukutaidonKokonaisuus = (
   a: any
 ): a is VapaanSivistystyönLukutaidonKokonaisuus =>

@@ -40,6 +40,9 @@ export const VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämä
     ...o
   })
 
+VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot.className =
+  'fi.oph.koski.schema.VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot' as const
+
 export const isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataidot =
   (
     a: any

@@ -18,5 +18,8 @@ export const EBOppiaineKomponentti = (o: {
   ...o
 })
 
+EBOppiaineKomponentti.className =
+  'fi.oph.koski.schema.EBOppiaineKomponentti' as const
+
 export const isEBOppiaineKomponentti = (a: any): a is EBOppiaineKomponentti =>
   a?.$class === 'fi.oph.koski.schema.EBOppiaineKomponentti'

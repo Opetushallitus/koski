@@ -21,5 +21,7 @@ export const Oppilaitos = (o: {
   kotipaikka?: Koodistokoodiviite<'kunta', string>
 }): Oppilaitos => ({ $class: 'fi.oph.koski.schema.Oppilaitos', ...o })
 
+Oppilaitos.className = 'fi.oph.koski.schema.Oppilaitos' as const
+
 export const isOppilaitos = (a: any): a is Oppilaitos =>
   a?.$class === 'fi.oph.koski.schema.Oppilaitos'

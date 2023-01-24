@@ -28,5 +28,7 @@ export const MuutKielet = (o: {
   laajuus?: LaajuusKursseissa
 }): MuutKielet => ({ $class: 'fi.oph.koski.schema.MuutKielet', ...o })
 
+MuutKielet.className = 'fi.oph.koski.schema.MuutKielet' as const
+
 export const isMuutKielet = (a: any): a is MuutKielet =>
   a?.$class === 'fi.oph.koski.schema.MuutKielet'

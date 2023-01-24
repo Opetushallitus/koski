@@ -47,6 +47,9 @@ export const TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus =
     ...o
   })
 
+TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus.className =
+  'fi.oph.koski.schema.TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus' as const
+
 export const isTaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus = (
   a: any
 ): a is TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus =>

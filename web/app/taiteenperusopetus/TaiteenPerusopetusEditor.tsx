@@ -36,6 +36,7 @@ import {
 } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { Trans } from '../components-v2/texts/Trans'
 import { t } from '../i18n/i18n'
+import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
@@ -188,7 +189,9 @@ export const TaiteenPerusopetusEditor = (
             <SuorituksenVahvistusEdit
               {...props}
               organisaatio={organisaatio!}
-              vahvistusClass="fi.oph.koski.schema.HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla"
+              vahvistusClass={
+                HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla.className
+              }
             />
           )}
         />

@@ -38,6 +38,9 @@ export const LukionOppiaineenPreIBSuoritus2019 = (o: {
   ...o
 })
 
+LukionOppiaineenPreIBSuoritus2019.className =
+  'fi.oph.koski.schema.LukionOppiaineenPreIBSuoritus2019' as const
+
 export const isLukionOppiaineenPreIBSuoritus2019 = (
   a: any
 ): a is LukionOppiaineenPreIBSuoritus2019 =>

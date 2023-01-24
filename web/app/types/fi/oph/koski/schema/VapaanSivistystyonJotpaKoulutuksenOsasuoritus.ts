@@ -9,16 +9,19 @@ import { LaajuusOpintopisteissä } from './LaajuusOpintopisteissa'
 export type VapaanSivistystyönJotpaKoulutuksenOsasuoritus = {
   $class: 'fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOsasuoritus'
   tunniste: PaikallinenKoodi
-  laajuus: LaajuusOpintopisteissä
+  laajuus?: LaajuusOpintopisteissä
 }
 
 export const VapaanSivistystyönJotpaKoulutuksenOsasuoritus = (o: {
   tunniste: PaikallinenKoodi
-  laajuus: LaajuusOpintopisteissä
+  laajuus?: LaajuusOpintopisteissä
 }): VapaanSivistystyönJotpaKoulutuksenOsasuoritus => ({
   $class: 'fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOsasuoritus',
   ...o
 })
+
+VapaanSivistystyönJotpaKoulutuksenOsasuoritus.className =
+  'fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOsasuoritus' as const
 
 export const isVapaanSivistystyönJotpaKoulutuksenOsasuoritus = (
   a: any

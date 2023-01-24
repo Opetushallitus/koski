@@ -29,6 +29,9 @@ export const ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017 =
     ...o
   })
 
+ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017.className =
+  'fi.oph.koski.schema.ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017' as const
+
 export const isValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017 =
   (
     a: any
