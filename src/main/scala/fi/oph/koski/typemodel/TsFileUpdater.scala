@@ -1,5 +1,6 @@
 package fi.oph.koski.typemodel
 
+import fi.oph.koski.koskiuser.UserWithAccessRights
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.preferences.KeyValue
@@ -47,4 +48,5 @@ case class AdditionalExports(
   organisaatiohierarkia: OrganisaatioHierarkia,
   storablePreference: StorablePreference,
   storablePreferenceKeyValue: KeyValue,
+  userWithAccessRights: UserWithAccessRights,
 )

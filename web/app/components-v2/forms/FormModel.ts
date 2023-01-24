@@ -12,6 +12,7 @@ import {
 } from 'react'
 import { ApiResponse } from '../../api-fetch'
 import { useGlobalErrors } from '../../appstate/globalErrors'
+import { useUser } from '../../appstate/user'
 import { t } from '../../i18n/i18n'
 import { Constraint } from '../../types/fi/oph/koski/typemodel/Constraint'
 import { tap, tapLeft } from '../../util/fp/either'
@@ -129,8 +130,14 @@ export const useForm = <O extends object>(
   startWithEditMode: boolean = false,
   constraint?: Constraint | null
 ): FormModel<O> => {
+  const user = useUser()
   const init = useMemo(
-    () => internalInitialState(initialState, startWithEditMode, constraint),
+    () =>
+      internalInitialState(
+        initialState,
+        user?.hasWriteAccess ? startWithEditMode : false,
+        constraint
+      ),
     []
   )
 
@@ -145,8 +152,10 @@ export const useForm = <O extends object>(
   const globalErrors = useGlobalErrors()
 
   const startEdit = useCallback(() => {
-    dispatch({ type: 'startEdit', constraint })
-  }, [])
+    if (user?.hasWriteAccess) {
+      dispatch({ type: 'startEdit', constraint })
+    }
+  }, [user])
 
   const cancel = useCallback(() => {
     dispatch({ type: 'cancel' })
@@ -154,9 +163,11 @@ export const useForm = <O extends object>(
 
   const updateAt = useCallback(
     <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
-      dispatch({ type: 'modify', modify: modifyValue(optic)(modify) })
+      if (editMode) {
+        dispatch({ type: 'modify', modify: modifyValue(optic)(modify) })
+      }
     },
-    []
+    [editMode]
   )
 
   const validate = useCallback(() => {
@@ -174,17 +185,21 @@ export const useForm = <O extends object>(
       api: (data: O) => Promise<ApiResponse<T>>,
       merge: (data: O, response: T) => O
     ) => {
-      pipe(
-        await api(data),
-        tap((response) =>
-          dispatch({ type: 'endEdit', value: merge(data, response.data) })
-        ),
-        tapLeft((e) =>
-          globalErrors.push(e.errors.map((e) => ({ message: t(e.messageKey) })))
+      if (editMode) {
+        pipe(
+          await api(data),
+          tap((response) =>
+            dispatch({ type: 'endEdit', value: merge(data, response.data) })
+          ),
+          tapLeft((e) =>
+            globalErrors.push(
+              e.errors.map((e) => ({ message: t(e.messageKey) }))
+            )
+          )
         )
-      )
+      }
     },
-    [data]
+    [data, editMode]
   )
 
   return useMemo(

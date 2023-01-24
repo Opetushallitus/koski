@@ -16,7 +16,7 @@ import { TopBar } from './topbar/TopBar'
 import { locationP } from './util/location.js'
 import LocalizationEditBar from './i18n/LocalizationEditBar'
 import { t } from './i18n/i18n'
-import { AppStateProvider } from './appstate/AppStateProvider'
+import { VirkailijaAppStateProvider } from './appstate/VirkailijaAppStateProvider'
 
 __webpack_nonce__ = window.nonce
 import(/* webpackChunkName: "styles" */ './style/main.less')
@@ -46,7 +46,7 @@ const domP = Bacon.combineWith(
   allErrorsP,
   locationP,
   (topBar, user, content, error, location) => (
-    <AppStateProvider>
+    <VirkailijaAppStateProvider user={user}>
       <div>
         <Error error={error} />
         {topBar}
@@ -57,7 +57,7 @@ const domP = Bacon.combineWith(
         ) : null}
         {user && <LocalizationEditBar user={user} />}
       </div>
-    </AppStateProvider>
+    </VirkailijaAppStateProvider>
   )
 )
 

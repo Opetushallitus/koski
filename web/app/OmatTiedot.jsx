@@ -23,7 +23,8 @@ import { locationP } from './util/location'
 import { Header } from './omattiedot/header/Header'
 import { EiSuorituksiaInfo } from './omattiedot/EiSuorituksiaInfo'
 import { patchSaavutettavuusLeima } from './saavutettavuusLeima'
-import { KoodistoProvider } from './appstate/koodisto'
+import { OmatTiedotAppStateProvider } from './appstate/OmatTiedotAppStateProvider'
+
 __webpack_nonce__ = window.nonce
 import(/* webpackChunkName: "styles" */ './style/main.less')
 
@@ -95,7 +96,7 @@ const domP = Bacon.combineWith(
   contentP,
   allErrorsP,
   (topBar, content, error) => (
-    <KoodistoProvider>
+    <OmatTiedotAppStateProvider>
       <div>
         <Error error={error} />
         {topBar}
@@ -108,7 +109,7 @@ const domP = Bacon.combineWith(
           </div>
         )}
       </div>
-    </KoodistoProvider>
+    </OmatTiedotAppStateProvider>
   )
 )
 
