@@ -1,0 +1,47 @@
+{
+  "koodistoRyhmaMetadata": [
+    {
+      "id": 6,
+      "uri": "virta",
+      "nimi": "Virta",
+      "kieli": "FI"
+    },
+    {
+      "id": 6,
+      "uri": "virta",
+      "nimi": "Virta",
+      "kieli": "EN"
+    },
+    {
+      "id": 6,
+      "uri": "virta",
+      "nimi": "Virta",
+      "kieli": "SV"
+    }
+  ],
+  "codesGroupUri": "virta",
+  "resourceUri": "https://virkailija.testiopintopolku.fi/koodisto-service/rest/codes/virtaopsuorluokittelu",
+  "koodistoUri": "virtaopsuorluokittelu",
+  "versio": 1,
+  "lockingVersion": 2,
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "paivitysPvm": "2016-02-12",
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "omistaja": "",
+  "tila": "LUONNOS",
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "VIRTA Opintosuorituksen luokittelu",
+      "kuvaus": "Opintosuorituksen luokittelu  (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
+    }
+  ],
+  "koodistoVersio": [
+    1
+  ],
+  "sisaltyyKoodistoihin": [],
+  "sisaltaaKoodistot": [],
+  "rinnastuuKoodistoihin": []
+}
