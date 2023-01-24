@@ -122,6 +122,12 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
       tuvaOpiskeluOikeusjakso(date(2022, 8, 1), "katsotaaneronneeksi")
     )
   )
+  lazy val tuvaTilaLoma = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
+    opiskeluoikeusjaksot = List(
+      tuvaOpiskeluOikeusjakso(date(2021, 8, 1), "lasna"),
+      tuvaOpiskeluOikeusjakso(date(2022, 8, 1), "loma")
+    )
+  )
 
   lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
   lazy val lähdePrimus = Koodistokoodiviite("primus", Some("Primus"), "lahdejarjestelma", Some(1))
