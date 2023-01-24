@@ -117,7 +117,7 @@ class OppijaValidationTaiteenPerusopetusSpec
             arviointi = Some(List(TPO.arviointiHyväksytty)),
             vahvistus = Some(TPO.vahvistus),
             osasuoritukset = Some(List(
-              TPO.Osasuoritus.osasuoritusMusiikki("Musa 1", 11.11).copy(
+              TPO.Osasuoritus.osasuoritusMusiikki("Musa 1", 11.1).copy(
                 arviointi = None
               )
             ))
@@ -193,17 +193,17 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
 
       putOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Yleisen oppimäärän yhteisten opintojen laajuus on oltava vähintään 11.11 opintopistettä."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Yleisen oppimäärän yhteisten opintojen laajuus on oltava vähintään 11.1 opintopistettä."))
       }
     }
 
-    "vahvistetun yleisen oppimäärän yhteisten opintojen suorituksen laajuus oltava vähintään 11,11op" in {
+    "vahvistetun yleisen oppimäärän yhteisten opintojen suorituksen laajuus oltava vähintään 11,1op" in {
       val oo = TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
         tila = TPO.Opiskeluoikeus.tilaHyväksytystiSuoritettu(),
         suoritukset = List(
           TPO.PäätasonSuoritus.yleistenYhteistenOpintojenSuoritusEiArvioituEiOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräYhteisetOpinnot.copy(
-              laajuus = Some(LaajuusOpintopisteissä(11.10))
+              laajuus = Some(LaajuusOpintopisteissä(11.09))
             ),
             arviointi = Some(List(TPO.arviointiHyväksytty)),
             vahvistus = Some(TPO.vahvistus),
@@ -213,7 +213,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
 
       putOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Yleisen oppimäärän yhteisten opintojen laajuus on oltava vähintään 11.11 opintopistettä."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Yleisen oppimäärän yhteisten opintojen laajuus on oltava vähintään 11.1 opintopistettä."))
       }
     }
 
@@ -236,13 +236,13 @@ class OppijaValidationTaiteenPerusopetusSpec
       }
     }
 
-    "vahvistetun yleisen oppimäärän teemaopintojen suorituksen laajuus oltava vähintään 7,41op" in {
+    "vahvistetun yleisen oppimäärän teemaopintojen suorituksen laajuus oltava vähintään 7,4op" in {
       val oo = TPO.Opiskeluoikeus.aloitettuYleinenOppimäärä.copy(
         tila = TPO.Opiskeluoikeus.tilaHyväksytystiSuoritettu(),
         suoritukset = List(
           TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot.copy(
-              laajuus = Some(LaajuusOpintopisteissä(7.4))
+              laajuus = Some(LaajuusOpintopisteissä(7.39))
             ),
             arviointi = Some(List(TPO.arviointiHyväksytty)),
             vahvistus = Some(TPO.vahvistus),
@@ -252,16 +252,16 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
 
       putOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Yleisen oppimäärän teemaopintojen laajuus on oltava vähintään 7.41 opintopistettä."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Yleisen oppimäärän teemaopintojen laajuus on oltava vähintään 7.4 opintopistettä."))
       }
     }
 
-    "vahvistetun laajan oppimäärän perusopintojen suorituksen laajuus oltava vähintään 29,63op" in {
+    "vahvistetun laajan oppimäärän perusopintojen suorituksen laajuus oltava vähintään 29,6op" in {
       val oo = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
         suoritukset = List(
           TPO.PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiLaajaOppimääräPerusopinnot.copy(
-              laajuus = Some(LaajuusOpintopisteissä(29.62))
+              laajuus = Some(LaajuusOpintopisteissä(29.59))
             ),
             osasuoritukset = None
           ),
@@ -270,17 +270,17 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
 
       putOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Laajan oppimäärän perusopintojen laajuus on oltava vähintään 29.63 opintopistettä."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus ("Laajan oppimäärän perusopintojen laajuus on oltava vähintään 29.6 opintopistettä."))
       }
     }
 
-    "vahvistetun laajan oppimäärän syventävien opintojen suorituksen laajuus oltava vähintään 18,52op" in {
+    "vahvistetun laajan oppimäärän syventävien opintojen suorituksen laajuus oltava vähintään 18,5op" in {
       val oo = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
         suoritukset = List(
           TPO.PäätasonSuoritus.laajojenPerusopintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia,
           TPO.PäätasonSuoritus.laajojenSyventävienOpintojenSuoritusArvioituJaVahvistettuJaOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiLaajaOppimääräSyventävätOpinnot.copy(
-              laajuus = Some(LaajuusOpintopisteissä(18.51))
+              laajuus = Some(LaajuusOpintopisteissä(18.49))
             ),
             osasuoritukset = None
           )
@@ -288,7 +288,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
 
       putOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Laajan oppimäärän syventävien opintojen laajuus on oltava vähintään 18.52 opintopistettä."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.taiteenPerusopetuksenLaajuus("Laajan oppimäärän syventävien opintojen laajuus on oltava vähintään 18.5 opintopistettä."))
       }
     }
 
@@ -331,7 +331,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         suoritukset = List(
           TPO.PäätasonSuoritus.yleistenTeemaopintojenSuoritusEiArvioituEiOsasuorituksia.copy(
             koulutusmoduuli = TPO.PäätasonSuoritus.Koulutusmoduuli.musiikkiYleinenOppimääräTeemaopinnot.copy(
-              laajuus = Some(LaajuusOpintopisteissä(7.41))
+              laajuus = Some(LaajuusOpintopisteissä(7.4))
             ),
             arviointi = Some(List(TPO.arviointiHyväksytty)),
             vahvistus = Some(TPO.vahvistus),

@@ -1,5 +1,12 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 24.1.2023
+- Taiteen perusopetuksen päätason suoritusten laajuuksien minimitasot muutettu yhden desimaalin tarkkuudelle:
+  - Yleisen oppimäärän yhteiset opinnot: 11,1op.
+  - Yleisen oppimäärän teemaopinnot: 7,4op.
+  - Laajan oppimäärän perusopinnot: 29,6op.
+  - Laajan oppimäärän syventävät opinnot: 18,5op.
+
 ## 19.1.2023
 - Lisätty validaatio että vahvistetulta jatkuvaan oppimiseen suunnatulta vapaan sivistystyön koulutuksen suoritukselta löytyy laajuus.
   - Myös vahvistetun suorituksen osasuorituksilta ja niiden aliosasuorituksilta validoidaan että laajuudet löytyvät.

@@ -164,7 +164,7 @@ object ExamplesTaiteenPerusopetus {
       osasuoritukset = Some(List(
         Osasuoritus.osasuoritusMusiikki("musa1", 10.0),
         Osasuoritus.osasuoritusMusiikki("musa2", 10.0),
-        Osasuoritus.osasuoritusMusiikki("musa3", 9.63)
+        Osasuoritus.osasuoritusMusiikki("musa3", 9.6)
       ))
     )
 
@@ -175,7 +175,7 @@ object ExamplesTaiteenPerusopetus {
       vahvistus = Some(vahvistus),
       osasuoritukset = Some(List(
         Osasuoritus.osasuoritusMusiikki("musa1", 10.0),
-        Osasuoritus.osasuoritusMusiikki("musa2", 8.52)
+        Osasuoritus.osasuoritusMusiikki("musa2", 8.5)
       ))
     )
 
@@ -186,19 +186,19 @@ object ExamplesTaiteenPerusopetus {
       )
       val musiikkiYleinenOppimääräYhteisetOpinnot = musiikinOpintotaso(
         Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari,
-        Some(11.11)
+        Some(11.1)
       )
       val musiikkiYleinenOppimääräTeemaopinnot = musiikinOpintotaso(
         Perusteet.TaiteenPerusopetuksenYleisenOppimääränPerusteet2017.diaari,
-        Some(7.41)
+        Some(7.4)
       )
       val musiikkiLaajaOppimääräPerusopinnot = musiikinOpintotaso(
         Perusteet.TaiteenPerusopetuksenLaajanOppimääränPerusteet2017.diaari,
-        Some(29.63)
+        Some(29.6)
       )
       val musiikkiLaajaOppimääräSyventävätOpinnot = musiikinOpintotaso(
         Perusteet.TaiteenPerusopetuksenLaajanOppimääränPerusteet2017.diaari,
-        Some(18.52)
+        Some(18.5)
       )
 
       private def musiikinOpintotaso(
