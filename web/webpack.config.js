@@ -68,7 +68,7 @@ module.exports = {
   },
   plugins: [
     new ESLintPlugin({
-      extensions: ['js', 'jsx'],
+      extensions: ['js', 'jsx', 'ts', 'tsx'],
       failOnWarning: false // Ei failata compilationia ESLint-varoituksille
     }),
     new CopyWebpackPlugin({
