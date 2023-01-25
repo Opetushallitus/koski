@@ -15,13 +15,13 @@ object OpiskeluoikeusAccessChecker {
     koskeenTallennettava && ((!lähdejärjestelmällinen && orgWriteAccess) || (lähdejärjestelmällinen && orgTiedonsiirronMitätöintiAccess))
   }
 
-  private def hasWriteAccess(session: KoskiSpecificSession, opiskeluoikeus: Opiskeluoikeus, oppilaitos: Oppilaitos) = {
+  private def hasWriteAccess(session: KoskiSpecificSession, opiskeluoikeus: Opiskeluoikeus, oppilaitos: Oppilaitos): Boolean = {
     val koulutustoimijaOid = opiskeluoikeus.koulutustoimija.map(_.oid)
     opiskeluoikeus match {
       case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined =>
         koulutustoimijaOid.exists(kt => session.hasVarhaiskasvatusAccess(kt, oppilaitos.oid, AccessType.write))
-      case t: TaiteenPerusopetuksenOpiskeluoikeus =>
-        session.hasTaiteenPerusopetusAccess(oppilaitos.oid, koulutustoimijaOid, AccessType.write)
+      case t: TaiteenPerusopetuksenOpiskeluoikeus if t.onHankintakoulutus && !session.hasKoulutustoimijaOrganisaatioTaiGlobaaliWriteAccess => false
+      case _: TaiteenPerusopetuksenOpiskeluoikeus => session.hasTaiteenPerusopetusAccess(oppilaitos.oid, koulutustoimijaOid, AccessType.write)
       case _ => session.hasWriteAccess(oppilaitos.oid, koulutustoimijaOid)
     }
   }
