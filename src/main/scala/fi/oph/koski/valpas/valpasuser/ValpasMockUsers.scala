@@ -178,6 +178,20 @@ object ValpasMockUsers {
     oppilaitosKäyttäjäPelkkäSuorittaminen(stadinAmmattiopisto)
   )
 
+  val valpasPelkkäSuorittaminenkäyttäjäAmmattikouluOmnia = ValpasMockUser(
+    "käyttäjä",
+    "valpas-pelkkä-suorittaminen-amis-omnia",
+    "1.2.246.562.24.12315312848",
+    oppilaitosKäyttäjäPelkkäSuorittaminen(omnia)
+  )
+
+  val valpasPelkkäSuorittaminenkäyttäjäRessunLukio = ValpasMockUser(
+    "käyttäjä",
+    "valpas-pelkkä-suorittaminen-ressu",
+    "1.2.246.562.24.12315312849",
+    oppilaitosKäyttäjäPelkkäSuorittaminen(ressunLukio)
+  )
+
   val valpasMaksuttomuusJaHelsinkiKäyttäjä = ValpasMockUser(
     "käyttäjä",
     "valpas-maksuttomuus-hki",
@@ -301,6 +315,8 @@ object ValpasMockUsers {
         valpasMaksuttomuusJaHelsinkiKoskiKäyttäjä,
         valpasPelkkäSuorittaminenkäyttäjä,
         valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu,
+        valpasPelkkäSuorittaminenkäyttäjäAmmattikouluOmnia,
+        valpasPelkkäSuorittaminenkäyttäjäRessunLukio,
         valpasAapajoenKouluJaJklNormaalikoulu,
         valpasJklAapajokiHkiPyhtää,
         valpasJklYliopistoSuorittaminen,

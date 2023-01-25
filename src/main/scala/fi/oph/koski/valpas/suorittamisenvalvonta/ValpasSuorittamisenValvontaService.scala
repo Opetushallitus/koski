@@ -8,6 +8,8 @@ import fi.oph.koski.valpas.oppija.{OppijaHakutilanteillaLaajatTiedot, OppijaHaku
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaTiming
 import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
+import java.time.LocalDate
+
 
 class ValpasSuorittamisenValvontaService(
   application: KoskiApplication
@@ -39,10 +41,14 @@ class ValpasSuorittamisenValvontaService(
   private def poistaEronneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka(
     oppija: OppijaHakutilanteillaLaajatTiedot
   ): OppijaHakutilanteillaLaajatTiedot = {
+    // TODO: Poista myös oppijat, joilla on ollut eroamisen jälkeen tai ennen eroamista, mutta eroamispäivän jälkeisenä päivänä voimassaollut, toinen opiskelupaikka, joka on myös voinut päättyä eroon.
+    // TODO: pitäisikö kuitenkin näyttää jonkin aikaa eroamisen jälkeen aina, vaikka olisikin toinen opiskelupaikka?
+    // TODO: otetaanko tulevaisuudessa alkavaksi merkityt opiskeluoikeudet huomioon vai ei? Oletettavasti ei.
+    // TODO: älä poista listalta kuin silloin, jos uusi opiskelupaikka on varmasti kyseiselle oppijalle oppivelvollisuuden suorittamiseen kelpaava? Esim. nivelvaihe ei aina ole. Tämä on ehkä se syy, miksei aikanaan ole poistettu automaattisesti...
     oppija.oppija.ifOppivelvollinenOtherwise(oppija) { o =>
       val uudetOpiskeluoikeudet =
         oppija.oppija.opiskeluoikeudet.filterNot(
-          opiskeluoikeus => onEronnutJaUusiOpiskelupaikkaVoimassa(
+          opiskeluoikeus => onEronnutJaUusiOpiskelupaikkaVoimassaTaiEronnutMyöhemmin(
             opiskeluoikeus = opiskeluoikeus,
             muutOppijanOpiskeluoikeudet =
               oppija.oppija.opiskeluoikeudet.filterNot(opiskeluoikeus2 => opiskeluoikeus2.equals(opiskeluoikeus))
@@ -57,26 +63,32 @@ class ValpasSuorittamisenValvontaService(
     }
   }
 
-  private def onEronnutJaUusiOpiskelupaikkaVoimassa(
+  private def onEronnutJaUusiOpiskelupaikkaVoimassaTaiEronnutMyöhemmin(
     opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot,
     muutOppijanOpiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
   ): Boolean = {
-    val onEronnut =
-      opiskeluoikeus.onSuorittamisValvottava &&
-        opiskeluoikeus.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo)
-          .exists(Seq("eronnut", "katsotaaneronneeksi", "peruutettu", "keskeytynyt").contains)
-
     val onLasnaUudessaOpiskeluoikeudessa =
       sisältääVoimassaolevanToisenAsteenOpiskeluoikeuden(muutOppijanOpiskeluoikeudet) ||
         sisältääVoimassaolevanNivelvaiheenOpiskeluoikeuden(muutOppijanOpiskeluoikeudet)
 
-    onEronnut && onLasnaUudessaOpiskeluoikeudessa
+    val onEronnutUudestaOpiskeluoikeudestaMyöhemmin =
+      sisältääMyöhemminEronneenToisenAsteenOpiskeluoikeuden(opiskeluoikeus, muutOppijanOpiskeluoikeudet) ||
+        sisältääMyöhemminEronneenNivelvaiheenOpiskeluoikeuden(opiskeluoikeus, muutOppijanOpiskeluoikeudet)
+
+    onEronnut(opiskeluoikeus) && (onLasnaUudessaOpiskeluoikeudessa || onEronnutUudestaOpiskeluoikeudestaMyöhemmin)
   }
 
   private def sisältääVoimassaolevanToisenAsteenOpiskeluoikeuden(
     opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
   ): Boolean =
     opiskeluoikeudet.exists(oo => onToisenAsteenOpiskeluoikeus(oo) && oo.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo).contains("voimassa"))
+
+  private def sisältääMyöhemminEronneenToisenAsteenOpiskeluoikeuden(
+    opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot,
+    muutOppijanOpiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
+  ): Boolean = muutOppijanOpiskeluoikeudet.exists(muuOpiskeluoikeus =>
+    onToisenAsteenOpiskeluoikeus(muuOpiskeluoikeus) && onEronnutJaMyöhemminPäättynytOpiskeluoikeus(opiskeluoikeus, muuOpiskeluoikeus)
+  )
 
   private def onToisenAsteenOpiskeluoikeus(oo: ValpasOpiskeluoikeusLaajatTiedot): Boolean = {
     oo.tyyppi.koodiarvo match {
@@ -100,6 +112,13 @@ class ValpasSuorittamisenValvontaService(
     opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
   ): Boolean =
     opiskeluoikeudet.exists(oo => onNivelvaiheenOpiskeluoikeus(oo) && oo.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo).contains("voimassa"))
+
+  private def sisältääMyöhemminEronneenNivelvaiheenOpiskeluoikeuden(
+    opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot,
+    muutOppijanOpiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot]
+  ): Boolean = muutOppijanOpiskeluoikeudet.exists(muuOpiskeluoikeus =>
+    onNivelvaiheenOpiskeluoikeus(muuOpiskeluoikeus) && onEronnutJaMyöhemminPäättynytOpiskeluoikeus(opiskeluoikeus, muuOpiskeluoikeus)
+  )
 
   private def onNivelvaiheenOpiskeluoikeus(oo: ValpasOpiskeluoikeusLaajatTiedot): Boolean = {
     oo.tyyppi.koodiarvo match {
@@ -141,5 +160,28 @@ class ValpasSuorittamisenValvontaService(
   : Either[HttpStatus, Seq[OppijaHakutilanteillaSuppeatTiedot]] = {
     kuntailmoitusService.getOppilaitoksenKunnalleTekemätIlmoituksetLaajatTiedot(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid)
       .map(_.map(OppijaHakutilanteillaSuppeatTiedot.apply))
+  }
+
+  def onEronnut(opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot): Boolean =
+    opiskeluoikeus.onSuorittamisValvottava && onEronnutTila(opiskeluoikeus)
+
+  def onEronnutTila(opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot): Boolean =
+    opiskeluoikeus.perusopetuksenJälkeinenTiedot.map(_.tarkastelupäivänTila.koodiarvo)
+      .exists(Seq("eronnut", "katsotaaneronneeksi", "peruutettu", "keskeytynyt").contains)
+
+  def onEronnutJaMyöhemminPäättynytOpiskeluoikeus(
+    opiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot,
+    muuOpiskeluoikeus: ValpasOpiskeluoikeusLaajatTiedot
+  ): Boolean = {
+    def päättymispäivä(oo: ValpasOpiskeluoikeusLaajatTiedot): Option[LocalDate] = oo.perusopetuksenJälkeinenTiedot
+      .flatMap(_.päättymispäivä)
+      .map(LocalDate.parse)
+
+    onEronnutTila(muuOpiskeluoikeus) &&
+      päättymispäivä(muuOpiskeluoikeus).exists(muunOpiskeluoikeudenPäättymispäivä =>
+        muunOpiskeluoikeudenPäättymispäivä.isAfter(
+          päättymispäivä(opiskeluoikeus).getOrElse(LocalDate.MIN)
+        )
+      )
   }
 }
