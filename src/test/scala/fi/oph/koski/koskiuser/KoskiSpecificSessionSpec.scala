@@ -270,7 +270,6 @@ object Responses {
       "organisaatiot" -> List(Map(
         "organisaatioOid" -> "1.2.246.562.10.51720121923",
         "kayttooikeudet" -> List(
-          Map("palvelu" -> "KOSKI", "oikeus" -> "READ"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "READ_UPDATE"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT")
@@ -297,7 +296,6 @@ object Responses {
         Map(
           "organisaatioOid" -> "1.2.246.562.10.346830761110",
           "kayttooikeudet" -> List(
-            Map("palvelu" -> "KOSKI", "oikeus" -> "READ"),
             Map("palvelu" -> "KOSKI", "oikeus" -> "READ_UPDATE"),
             Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO"),
             Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))
@@ -305,7 +303,6 @@ object Responses {
         Map(
           "organisaatioOid" -> "1.2.246.562.10.51720121923",
           "kayttooikeudet" -> List(
-            Map("palvelu" -> "KOSKI", "oikeus" -> "READ"),
             Map("palvelu" -> "KOSKI", "oikeus" -> "READ_UPDATE"),
             Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO"),
             Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))

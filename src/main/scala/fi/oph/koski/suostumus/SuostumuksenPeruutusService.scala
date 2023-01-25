@@ -87,6 +87,7 @@ case class SuostumuksenPeruutusService(protected val application: KoskiApplicati
       DBIO.seq(
         OpiskeluoikeusPoistoUtils
           .poistaPäätasonSuoritus(
+            opiskeluoikeusOid = oid,
             opiskeluoikeusId = opiskeluoikeudenId,
             oo = oo,
             suorituksenTyyppi = tyyppi,

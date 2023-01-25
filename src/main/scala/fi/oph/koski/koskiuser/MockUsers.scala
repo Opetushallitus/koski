@@ -180,6 +180,20 @@ object MockUsers {
     Seq(oppilaitosPalvelukäyttäjä(varsinaisSuomenKansanopisto))
   )
 
+  val varsinaisSuomiKoulutustoimija = KoskiMockUser(
+    "varsinaissuomi-koulutustoimija-tallentaja",
+    "varsinaissuomi-koulutustoimija-tallentaja",
+    "1.2.246.562.24.99996669999",
+    Seq(oppilaitosTallentaja(varsinaisSuomenAikuiskoulutussäätiö))
+  )
+
+  val varsinaisSuomiPääkäyttäjä = KoskiMockUser(
+    "varsinaissuomi-oppilaitos-pää",
+    "varsinaissuomi-oppilaitos-pää",
+    "1.2.246.562.24.99999666999",
+    Seq(oppilaitosPääkäyttäjä(varsinaisSuomenKansanopisto))
+  )
+
   val varsinaisSuomiOppilaitosTallentaja = KoskiMockUser(
     "varsinaissuomi-oppilaitos-tallentaja",
     "varsinaissuomi-oppilaitos-tallentaja",
@@ -190,7 +204,7 @@ object MockUsers {
   val varsinaisSuomiHankintakoulutusOppilaitosTallentaja = KoskiMockUser(
     "varsinaissuomi-hankinta-oppilaitos-tallentaja",
     "varsinaissuomi-hankinta-oppilaitos-tallentaja",
-    "1.2.246.562.24.99999966669",
+    "1.2.246.562.24.99999966666",
     Seq(oppilaitosTallentajaTaiteenPerusopetusHankintakoulutus(varsinaisSuomenKansanopisto))
   )
 
@@ -511,6 +525,8 @@ object MockUsers {
     esiopetusTallentaja,
     oppivelvollisuutietoRajapinta,
     varsinaisSuomiPalvelukäyttäjä,
+    varsinaisSuomiKoulutustoimija,
+    varsinaisSuomiPääkäyttäjä,
     varsinaisSuomiOppilaitosTallentaja,
     varsinaisSuomiHankintakoulutusOppilaitosTallentaja,
     ytlKäyttäjä,

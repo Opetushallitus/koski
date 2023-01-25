@@ -1,8 +1,8 @@
 {
   "henkilö" : {
-    "hetu" : "010605A0734",
-    "etunimet" : "Pentti",
-    "kutsumanimi" : "Pentti",
+    "hetu" : "120505A794N",
+    "etunimet" : "Hank",
+    "kutsumanimi" : "Hank",
     "sukunimi" : "Taiteilija"
   },
   "opiskeluoikeudet" : [ {
@@ -17,14 +17,9 @@
       }
     },
     "koulutustoimija" : {
-      "oid" : "1.2.246.562.10.44330177021",
+      "oid" : "1.2.246.562.10.346830761110",
       "nimi" : {
-        "fi" : "Varsinais-Suomen Aikuiskoulutussäätiö sr"
-      },
-      "yTunnus" : "0136193-2",
-      "kotipaikka" : {
-        "koodiarvo" : "577",
-        "koodistoUri" : "kunta"
+        "fi" : "Helsingin kaupunki"
       }
     },
     "tila" : {
@@ -45,6 +40,10 @@
     "oppimäärä" : {
       "koodiarvo" : "laajaoppimaara",
       "koodistoUri" : "taiteenperusopetusoppimaara"
+    },
+    "hankintakoulutus" : {
+      "koodiarvo" : "hankintakoulutus",
+      "koodistoUri" : "taiteenperusopetushankintakoulutus"
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {

@@ -357,11 +357,60 @@ class OppijaValidationTaiteenPerusopetusSpec
     }
 
     "Mitätöinnin oikeudet" - {
-      "pääkäyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
-        resetFixtures()
+      "OPH pääkäyttäjä voi mitätöidä itse järjestetyn opiskeluoikeuden" in {
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeus(oid, user = MockUsers.paakayttaja)
+      }
+
+      "OPH pääkäyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
         val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
         mitätöiOpiskeluoikeus(oid, user = MockUsers.paakayttaja)
+      }
 
+      "oppilaitoksen pääkäyttäjä voi mitätöidä lähdejärjestelmällisen itse järjestetyn opiskeluoikeuden" in {
+        resetFixtures()
+
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oo = TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä.copy(
+          oid = Some(oid),
+          lähdejärjestelmänId = Some(
+            LähdejärjestelmäId(
+              id = Some("tpo1"),
+              lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
+            )
+          )
+        )
+
+        putOpiskeluoikeus(oo, henkilö = KoskiSpecificMockOppijat.taiteenPerusopetusValmis, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+        mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiPääkäyttäjä)
+      }
+
+      "oppilaitoksen pääkäyttäjä voi mitätöidä lähdejärjestelmällisen hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+        resetFixtures()
+
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oo = TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
+          oid = Some(oid),
+          lähdejärjestelmänId = Some(
+            LähdejärjestelmäId(
+              id = Some("tpo1"),
+              lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma")
+            )
+          )
+        )
+
+        putOpiskeluoikeus(oo, henkilö = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+        mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiPääkäyttäjä)
+      }
+
+      "koulutustoimijan käyttäjä voi mitätöidä itse järjestetyn opiskeluoikeuden" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiKoulutustoimija)
       }
 
       "koulutustoimijan käyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
@@ -378,16 +427,58 @@ class OppijaValidationTaiteenPerusopetusSpec
         }
       }
 
-      "oppilaitoksen käyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+      "oppilaitoksen käyttäjä voi mitätöidä itse järjestettävän opiskeluoikeuden" in {
         resetFixtures()
-        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.paakayttaja).head.oid.get
         mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiOppilaitosTallentaja)
       }
 
-      "oppilaitoksen hankintakoulutuksen käyttäjä voi mitätöidä hankintakoulutuksena järjestettävän opiskeluoikeuden" in {
+      "oppilaitoksen käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta DELETE-routella" in {
         resetFixtures()
         val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeusCallback(oid, user = MockUsers.varsinaisSuomiOppilaitosTallentaja) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
+        }
+      }
+
+      "oppilaitoksen käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta PUT-routella" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oo = TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
+          oid = Some(oid),
+          tila = TPO.Opiskeluoikeus.tilaMitätöity()
+        )
+
+        putOpiskeluoikeus(oo, henkilö = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus, headers = authHeaders(MockUsers.varsinaisSuomiOppilaitosTallentaja) ++ jsonContent) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainTaiteenPerusopetuksenJärjestäjä())
+        }
+      }
+
+      "oppilaitoksen hankintakoulutuksen käyttäjä voi mitätöidä itse järjestettävän opiskeluoikeuden" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusValmis.oid, user = MockUsers.paakayttaja).head.oid.get
         mitätöiOpiskeluoikeus(oid, user = MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja)
+      }
+
+      "oppilaitoksen hankintakoulutuksen käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta DELETE-routella" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        mitätöiOpiskeluoikeusCallback(oid, user = MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
+        }
+      }
+
+      "oppilaitoksen hankintakoulutuksen käyttäjä ei voi mitätöidä hankintakoulutuksena järjestettävää opiskeluoikeutta PUT-routella" in {
+        resetFixtures()
+        val oid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus.oid, user = MockUsers.paakayttaja).head.oid.get
+        val oo = TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä.copy(
+          oid = Some(oid),
+          tila = TPO.Opiskeluoikeus.tilaMitätöity()
+        )
+
+        putOpiskeluoikeus(oo, henkilö = KoskiSpecificMockOppijat.taiteenPerusopetusHankintakoulutus, headers = authHeaders(MockUsers.varsinaisSuomiHankintakoulutusOppilaitosTallentaja) ++ jsonContent) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
+        }
       }
 
       "helsinkiläisen oppilaitoksen käyttäjä ei voi mitätöidä helsingistä hankittua hankintakoulutuksena järjestettyä opiskeluoikeutta" in {
@@ -729,7 +820,7 @@ class OppijaValidationTaiteenPerusopetusSpec
         tila = TPO.Opiskeluoikeus.tilaMitätöity()
       )
 
-      putOpiskeluoikeus(oo, henkilö = oppija) {
+      putOpiskeluoikeus(oo, henkilö = oppija, headers = authHeaders(MockUsers.varsinaisSuomiPääkäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
 

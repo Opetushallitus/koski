@@ -33,6 +33,7 @@ case class TaiteenPerusopetuksenOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
   override def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
+  def onHankintakoulutus: Boolean = hankintakoulutus.koodiarvo == "hankintakoulutus"
 }
 
 /******************************************************************************

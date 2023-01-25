@@ -56,7 +56,7 @@
           "koodistoUri" : "taiteenperusopetustaiteenala"
         },
         "laajuus" : {
-          "arvo" : 29.63,
+          "arvo" : 29.6,
           "yksikkö" : {
             "koodiarvo" : "2",
             "nimi" : {
@@ -219,7 +219,7 @@
             }
           },
           "laajuus" : {
-            "arvo" : 9.63,
+            "arvo" : 9.6,
             "yksikkö" : {
               "koodiarvo" : "2",
               "nimi" : {
@@ -263,7 +263,7 @@
           "koodistoUri" : "taiteenperusopetustaiteenala"
         },
         "laajuus" : {
-          "arvo" : 18.52,
+          "arvo" : 18.5,
           "yksikkö" : {
             "koodiarvo" : "2",
             "nimi" : {
@@ -385,7 +385,7 @@
             }
           },
           "laajuus" : {
-            "arvo" : 8.52,
+            "arvo" : 8.5,
             "yksikkö" : {
               "koodiarvo" : "2",
               "nimi" : {
