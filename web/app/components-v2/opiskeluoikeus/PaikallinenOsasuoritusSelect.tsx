@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { useConstraint } from '../../appstate/constraints'
+import { useSchema } from '../../appstate/constraints'
 import { localize, t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
@@ -101,8 +101,8 @@ type UusiOsasuoritusModalProps = {
 }
 
 const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
-  const constraint = useConstraint('PaikallinenKoodi')
-  const form = useForm(emptyPaikallinenKoodi, true, constraint)
+  const paikallinenKoodiSchema = useSchema('PaikallinenKoodi')
+  const form = useForm(emptyPaikallinenKoodi, true, paikallinenKoodiSchema)
   const koodiarvoPath = form.root.prop('koodiarvo')
 
   const onSubmit = useCallback(() => {
@@ -119,7 +119,7 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
   )
 
   return (
-    <Modal onSubmit={onSubmit} onClose={props.onClose}>
+    <Modal onClose={props.onClose}>
       <ModalTitle>{t('Lisää osasuoritus')}</ModalTitle>
       <ModalBody>
         <FormField
@@ -139,7 +139,9 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
       </ModalBody>
       <ModalFooter>
         <FlatButton onClick={props.onClose}>Peruuta</FlatButton>
-        <RaisedButton disabled={!form.isValid}>Lisää</RaisedButton>
+        <RaisedButton disabled={!form.isValid} onClick={onSubmit}>
+          Lisää
+        </RaisedButton>
       </ModalFooter>
     </Modal>
   )

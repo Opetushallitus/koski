@@ -1,3 +1,5 @@
+import * as A from 'fp-ts/Array'
+import * as NEA from 'fp-ts/NonEmptyArray'
 import { constant } from 'fp-ts/lib/function'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useKoodistoFiller } from '../../appstate/koodisto'
@@ -13,9 +15,9 @@ export type FieldViewBaseProps<T, P = {}> = P & {
 export type FieldEditBaseProps<T, P = {}> = P & {
   initialValue?: T | undefined
   value?: T | undefined
-  optional: boolean
+  optional?: boolean
   onChange: (value?: T) => void
-  errors: ValidationError[]
+  errors?: NEA.NonEmptyArray<ValidationError>
 }
 
 export type FormFieldProps<
@@ -129,7 +131,7 @@ export const FormField = <
           value={value}
           optional={Boolean(optional)}
           onChange={set}
-          errors={errors}
+          errors={A.isNonEmpty(errors) ? errors : undefined}
         />
       )
     }
@@ -138,3 +140,5 @@ export const FormField = <
   // @ts-ignore - TODO tyyppicastaus?
   return <View {...viewProps} key="view" value={value} />
 }
+
+export const Nothing: React.FC = () => null

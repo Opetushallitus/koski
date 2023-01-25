@@ -15,7 +15,7 @@ import {
   Koodistokoodiviite
 } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
-import { koodiviiteConstraints } from '../util/constraints'
+import { toKoodiviite } from '../util/constraints'
 import { nonNull } from '../util/fp/arrays'
 import { mapObjectValues } from '../util/fp/objects'
 import { fetchKoodistot } from '../util/koskiApi'
@@ -129,47 +129,49 @@ export const KoodistoProvider = (props: KoodistoProviderProps) => {
   )
 }
 
-// Ylimäärittelyt paremmalle tyypitykselle
 export function useKoodisto<T extends string>(
-  koodistoUri: T
-): KoodistokoodiviiteKoodistonNimellä<T>[] | null
-export function useKoodisto(
-  ...koodistoUris: Array<string | null | undefined>
-): KoodistokoodiviiteKoodistonNimellä[] | null
-export function useKoodisto(
-  ...koodistoUris: Array<string | null | undefined>
-): KoodistokoodiviiteKoodistonNimellä[] | null {
+  koodistoUri?: T | null,
+  koodiarvot?: string[] | null
+): KoodistokoodiviiteKoodistonNimellä<T>[] | null {
   const context = useContext(KoodistoContext)
 
   useEffect(() => {
-    if (A.isNonEmpty(koodistoUris)) {
-      context.loadKoodistot(koodistoUris.filter(nonNull))
-    }
-  }, [koodistoUris])
+    koodistoUri && context.loadKoodistot([koodistoUri])
+  }, [koodistoUri])
 
-  return useMemo(() => {
-    return koodistoUris.flatMap((uri) => {
-      const k = uri && context.koodistot[uri]
-      return Array.isArray(k) ? k : []
-    })
-  }, [context.koodistot, JSON.stringify(koodistoUris)])
+  const koodit = useMemo(() => {
+    const k = koodistoUri && context.koodistot[koodistoUri]
+    return Array.isArray(k)
+      ? (k as KoodistokoodiviiteKoodistonNimellä<T>[])
+      : null
+  }, [context.koodistot, koodistoUri])
+
+  return useMemo(
+    () =>
+      koodit &&
+      koodit.filter((koodi) =>
+        koodiarvot === undefined
+          ? true
+          : koodiarvot === null
+          ? false
+          : koodiarvot.includes(koodi.koodiviite.koodiarvo)
+      ),
+    [koodit, koodiarvot]
+  )
 }
 
-export const useKoodistoOfConstraint = (
+export const useKoodistoOfConstraint = <T extends string = string>(
   constraint: Constraint | null
-): KoodistokoodiviiteKoodistonNimellä[] | null => {
-  const koodiviiteC = useMemo(
-    () => koodiviiteConstraints(constraint),
-    [constraint]
-  )
+): KoodistokoodiviiteKoodistonNimellä<T>[] | null => {
+  const koodiviiteC = useMemo(() => toKoodiviite(constraint), [constraint])
   const koodit = useKoodisto(koodiviiteC?.koodistoUri)
   return useMemo(
     () =>
-      koodit?.filter(
+      (koodit?.filter(
         (k) =>
           !koodiviiteC?.koodiarvot ||
           koodiviiteC.koodiarvot.includes(k.koodiviite.koodiarvo)
-      ) || null,
+      ) as KoodistokoodiviiteKoodistonNimellä<T>[]) || null,
     [koodiviiteC, koodit]
   )
 }

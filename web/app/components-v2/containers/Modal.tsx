@@ -1,44 +1,36 @@
-import React, { FormEventHandler, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { useModalState } from '../../appstate/modals'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { ButtonGroup } from './ButtonGroup'
 
 export type ModalProps = CommonPropsWithChildren<{
-  onSubmit?: () => void
   onClose?: () => void
 }>
 
 export const Modal: React.FC<ModalProps> = (props) => {
   const { isActive, props: modalProps } = useModalState()
-  const onSubmit: FormEventHandler = useCallback(
-    (event) => {
-      event.preventDefault()
-      props.onSubmit?.()
-    },
-    [props.onSubmit]
-  )
-
   const onKeyDown: React.KeyboardEventHandler = useCallback(
     (event) => {
       if (event.key === 'Enter') {
         event.preventDefault()
-        props.onSubmit?.()
       } else if (event.key === 'Escape') {
         props.onClose?.()
       }
     },
-    [props.onSubmit, props.onClose]
+    [props.onClose]
   )
 
   return (
     <form
       {...common(props, ['Modal', isActive && 'Modal__inactive'])}
       {...modalProps}
-      onSubmit={onSubmit}
+      onSubmit={stopPropagation}
       onKeyDown={onKeyDown}
-      // onClick={props.onClose}
+      onClick={props.onClose}
     >
-      <div className="Modal__content">{props.children}</div>
+      <div className="Modal__content" onClick={stopPropagation}>
+        {props.children}
+      </div>
     </form>
   )
 }
@@ -62,3 +54,8 @@ export const ModalFooter: React.FC<ModalFooterProps> = (props) => (
     <ButtonGroup>{props.children}</ButtonGroup>
   </section>
 )
+
+const stopPropagation: React.EventHandler<any> = (event) => {
+  event.preventDefault()
+  event.stopPropagation()
+}

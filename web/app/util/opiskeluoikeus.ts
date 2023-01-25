@@ -1,4 +1,5 @@
 import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 
 export const mergeOpiskeluoikeusVersionumero = <T extends Opiskeluoikeus>(
@@ -14,3 +15,14 @@ export const mergeOpiskeluoikeusVersionumero = <T extends Opiskeluoikeus>(
       }
     : oo
 }
+
+export const isTerminaalitila = (tila: Koodistokoodiviite): boolean =>
+  [
+    'eronnut',
+    'valmistunut',
+    'peruutettu',
+    'keskeytynyt',
+    'hyvaksytystisuoritettu',
+    'paattynyt',
+    'mitatoity'
+  ].includes(tila.koodiarvo)

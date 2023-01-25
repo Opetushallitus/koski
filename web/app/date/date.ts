@@ -1,4 +1,5 @@
 import fecha from 'fecha'
+import { pipe } from 'fp-ts/lib/function'
 
 const finnishDateRE = /([0-3]?\d)\.([0-2]?\d)\.(\d\d\d\d)/
 export const formatISODate = (date: Date) => format(date, 'YYYY-MM-DD')
@@ -64,3 +65,22 @@ const mapDate = <T>(
 export const today = (): Date => new Date()
 
 export const todayISODate = (): string => formatISODate(today())!
+
+export const addDays =
+  (days: number) =>
+  (date: Date | boolean): Date | undefined =>
+    mapDate(date, (date) => {
+      date.setDate(date.getDate() + days)
+      return date
+    })
+
+export const addDaysISO =
+  (days: number) =>
+  (dateStr?: string): string | undefined =>
+    dateStr &&
+    pipe(
+      dateStr,
+      parseISODate,
+      addDays(days),
+      (date) => date && formatISODate(date)
+    )!

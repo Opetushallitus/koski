@@ -3,16 +3,25 @@ import { isArrayConstraint } from '../types/fi/oph/koski/typemodel/ArrayConstrai
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { isObjectConstraint } from '../types/fi/oph/koski/typemodel/ObjectConstraint'
 import { isStringConstraint } from '../types/fi/oph/koski/typemodel/StringConstraint'
+import { ClassOf, ObjWithClass } from './types'
 
-export const constraintHasProp = (
+export const path =
+  (pathStr: string) =>
+  (constraint: Constraint | null): Constraint | null =>
+    constraint
+      ? pathStr
+          .split('.')
+          .map((key) => (key === '[]' ? elems : prop(key)))
+          .reduce<Constraint | null>((acc, f) => f(acc), constraint)
+      : null
+
+export const hasProp = (
   constraint: Constraint | null,
   propKey: string
 ): boolean =>
   isObjectConstraint(constraint) && constraint.properties[propKey] !== undefined
 
-// TODO: Heitä näissä kaikissa poikkeus, jos constraintin havaitaan olevan väärän tyyppinen constraint
-
-export const constraintObjectProp =
+export const prop =
   (...propNamePath: string[]) =>
   (constraint: Constraint | null): Constraint | null => {
     if (A.isEmpty(propNamePath)) {
@@ -22,16 +31,15 @@ export const constraintObjectProp =
       (isObjectConstraint(constraint) &&
         constraint.properties[propNamePath[0]]) ||
       null
-    return c ? constraintObjectProp(...propNamePath.slice(1))(c) : null
+    return c ? prop(...propNamePath.slice(1))(c) : null
   }
 
-export const constraintObjectClass = (
-  constraint: Constraint | null
-): string | null => (isObjectConstraint(constraint) ? constraint.class : null)
+export const className =
+  <T extends ObjWithClass>() =>
+  (constraint: Constraint | null): ClassOf<T> | null =>
+    isObjectConstraint(constraint) ? constraint.class : null
 
-export const constraintArrayItem = (
-  constraint: Constraint | null
-): Constraint | null =>
+export const elems = (constraint: Constraint | null): Constraint | null =>
   isArrayConstraint(constraint) ? constraint.items : null
 
 export const allowedStrings = (
@@ -44,17 +52,14 @@ export type KoodiviiteConstraint = {
   koodiarvot: string[] | null
 }
 
-export const koodiviiteConstraints = (
+export const toKoodiviite = (
   constraint: Constraint | null
 ): KoodiviiteConstraint | null =>
   isObjectConstraint(constraint) &&
   constraint.class === 'fi.oph.koski.schema.Koodistokoodiviite'
     ? {
         koodistoUri:
-          allowedStrings(
-            constraintObjectProp('koodistoUri')(constraint)
-          )?.[0] || null,
-        koodiarvot:
-          allowedStrings(constraintObjectProp('koodiarvo')(constraint)) || null
+          allowedStrings(prop('koodistoUri')(constraint))?.[0] || null,
+        koodiarvot: allowedStrings(prop('koodiarvo')(constraint)) || null
       }
     : null

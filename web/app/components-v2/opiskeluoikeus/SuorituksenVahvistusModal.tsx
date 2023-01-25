@@ -1,7 +1,6 @@
 import * as A from 'fp-ts/Array'
-import { pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useMemo } from 'react'
-import { useConstraint } from '../../appstate/constraints'
+import { useChildClassName, useSchema } from '../../appstate/constraints'
 import { usePreferences } from '../../appstate/preferences'
 import { todayISODate } from '../../date/date'
 import { localize } from '../../i18n/i18n'
@@ -15,11 +14,6 @@ import { OrganisaatiohenkilöValinnaisellaTittelillä } from '../../types/fi/oph
 import { Organisaatiovahvistus } from '../../types/fi/oph/koski/schema/Organisaatiovahvistus'
 import { Päivämäärävahvistus } from '../../types/fi/oph/koski/schema/Paivamaaravahvistus'
 import { Vahvistus } from '../../types/fi/oph/koski/schema/Vahvistus'
-import {
-  constraintArrayItem,
-  constraintObjectClass,
-  constraintObjectProp
-} from '../../util/constraints'
 import {
   AnyOrganisaatiohenkilö,
   castOrganisaatiohenkilö,
@@ -76,7 +70,12 @@ export const SuorituksenVahvistusModal = <
 >(
   props: SuorituksenVahvistusModalProps<V>
 ): React.ReactElement => {
-  const vahvistusC = useConstraint(props.vahvistusClass)
+  const vahvistusSchema = useSchema(props.vahvistusClass)
+
+  const organisaatiohenkilöClass = useChildClassName<H>(
+    props.vahvistusClass,
+    'myöntäjäHenkilöt.[]'
+  )
 
   const {
     preferences: storedMyöntäjät,
@@ -87,22 +86,15 @@ export const SuorituksenVahvistusModal = <
     'myöntäjät'
   )
 
-  const organisaatiohenkilöClass = useMemo(
-    () =>
-      pipe(
-        vahvistusC,
-        constraintObjectProp('myöntäjäHenkilöt'),
-        constraintArrayItem,
-        constraintObjectClass
-      ) as ClassOf<H> | null,
-    [vahvistusC]
-  )
-
   const castStoredMyöntäjät = organisaatiohenkilöClass
     ? storedMyöntäjät.map(castOrganisaatiohenkilö(organisaatiohenkilöClass))
     : []
 
-  const form = useForm(initialState<H>(props.organisaatio), true, vahvistusC)
+  const form = useForm(
+    initialState<H>(props.organisaatio),
+    true,
+    vahvistusSchema
+  )
   const vahvistus = useMemo(
     () => formDataToVahvistus(form.state, props.vahvistusClass) as V | null,
     [form.state, props.vahvistusClass]

@@ -1,27 +1,38 @@
 import * as A from 'fp-ts/Array'
-import * as O from 'fp-ts/Option'
 import { pipe } from 'fp-ts/lib/function'
+import * as O from 'fp-ts/Option'
 import React, { useMemo } from 'react'
-import { useConstraint } from '../../appstate/constraints'
+import { useSchema } from '../../appstate/constraints'
 import { useKoodistoOfConstraint } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
-import { constraintObjectProp } from '../../util/constraints'
-import { toKoodistokoodiviiteValue } from '../../util/koodisto'
-import { ArviointiLike, viimeisinArviointi } from '../../util/schema'
+import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
+import { prop } from '../../util/constraints'
+import {
+  KoodistoUriOf,
+  koodiviiteId,
+  KoodiviiteWithOptionalUri
+} from '../../util/koodisto'
+import { viimeisinArviointi } from '../../util/schema'
 import { schemaClassName } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
 import {
   groupKoodistoToOptions,
+  OptionList,
   Select,
   SelectOption
 } from '../controls/Select'
-import { FieldViewBaseProps, FieldEditBaseProps } from '../forms/FormField'
+import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 
-export type ArviointiViewProps<T extends ArviointiLike> = CommonProps<
+type ArvosanaOf<T extends Arviointi> = Exclude<
+  T['arvosana'],
+  KoodiviiteWithOptionalUri
+>
+
+export type ArviointiViewProps<T extends Arviointi> = CommonProps<
   FieldViewBaseProps<T[] | undefined>
 >
 
-export const ArvosanaView = <T extends ArviointiLike>(
+export const ArvosanaView = <T extends Arviointi>(
   props: ArviointiViewProps<T>
 ) => {
   const arviointi = props.value && viimeisinArviointi(props.value)
@@ -30,13 +41,13 @@ export const ArvosanaView = <T extends ArviointiLike>(
   ) : null
 }
 
-export type ArviointiEditProps<T extends ArviointiLike> = CommonProps<
+export type ArviointiEditProps<T extends Arviointi> = CommonProps<
   FieldEditBaseProps<T[] | undefined> & {
-    createArviointi: (arvosana: T['arvosana']) => T
+    createArviointi: (arvosana: ArvosanaOf<T>) => T
   }
 >
 
-export const ArvosanaEdit = <T extends ArviointiLike>(
+export const ArvosanaEdit = <T extends Arviointi>(
   props: ArviointiEditProps<T>
 ) => {
   const schemaClass = useMemo(
@@ -44,10 +55,8 @@ export const ArvosanaEdit = <T extends ArviointiLike>(
     () => schemaClassName(props.createArviointi(null).$class),
     []
   )
-  const arviointiC = useConstraint(schemaClass)
-  const koodisto = useKoodistoOfConstraint(
-    constraintObjectProp('arvosana')(arviointiC)
-  )
+  const arviointiSchema = useSchema(schemaClass)
+  const koodisto = useKoodistoOfConstraint(prop('arvosana')(arviointiSchema))
   const groupedKoodisto = useMemo(
     () => koodisto && groupKoodistoToOptions(koodisto),
     [koodisto]
@@ -56,17 +65,13 @@ export const ArvosanaEdit = <T extends ArviointiLike>(
   const initialArviointi =
     props.initialValue && viimeisinArviointi(props.initialValue)
   const initialValue =
-    initialArviointi?.arvosana &&
-    toKoodistokoodiviiteValue(initialArviointi.arvosana)
+    initialArviointi?.arvosana && koodiviiteId(initialArviointi.arvosana)
   const arviointi = props.value && viimeisinArviointi(props.value)
-  const selectedValue =
-    arviointi?.arvosana && toKoodistokoodiviiteValue(arviointi?.arvosana)
+  const selectedValue = arviointi?.arvosana && koodiviiteId(arviointi?.arvosana)
 
-  const onChange = (option?: SelectOption<T['arvosana']>) => {
-    if (option) {
-    }
+  const onChange = (option?: SelectOption<ArvosanaOf<T>>) => {
     props.onChange(
-      option &&
+      option?.value &&
         updateArvioinnit(
           props.createArviointi(option.value),
           props.initialValue || []
@@ -79,14 +84,14 @@ export const ArvosanaEdit = <T extends ArviointiLike>(
       <Select
         initialValue={initialValue}
         value={selectedValue}
-        options={groupedKoodisto}
+        options={groupedKoodisto as OptionList<ArvosanaOf<T>>}
         onChange={onChange}
       />
     )
   )
 }
 
-const updateArvioinnit = <T extends ArviointiLike>(
+const updateArvioinnit = <T extends Arviointi>(
   arviointi: T,
   arvioinnit: T[]
 ): T[] =>

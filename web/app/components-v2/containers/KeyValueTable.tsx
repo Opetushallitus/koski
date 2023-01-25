@@ -1,8 +1,12 @@
-import React from 'react'
+import { constant } from 'fp-ts/lib/function'
+import { isNumber } from 'fp-ts/lib/number'
+import React, { useMemo } from 'react'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
+import { mapTimes } from '../../util/fp/arrays'
+import { sum } from '../../util/numbers'
 import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
 import { Trans } from '../texts/Trans'
-import { Column, ColumnRow } from './Columns'
+import { Column, ColumnRow, COLUMN_COUNT } from './Columns'
 
 export type KeyValueTableProps = CommonPropsWithChildren
 
@@ -11,7 +15,7 @@ export const KeyValueTable = (props: KeyValueTableProps) => (
 )
 
 export type KeyValueRowProps = CommonPropsWithChildren<{
-  name: string | LocalizedString
+  name?: string | LocalizedString
   indent?: number
 }>
 
@@ -38,18 +42,33 @@ export const KeyValueRow = (props: KeyValueRowProps) =>
     </ColumnRow>
   ) : null
 
-export type KeyMultiValueRowProps = CommonProps<{
-  name: string | LocalizedString
+export type KeyColumnedValuesRowProps = CommonProps<{
+  name?: string | LocalizedString
   children: React.ReactNode[]
-  columnSpans?: number[]
+  columnSpans?: Array<number | '*'>
 }>
 
-export const KeyMultiValueRow = (props: KeyMultiValueRowProps) =>
-  props.children ? (
+export const KeyColumnedValuesRow = (props: KeyColumnedValuesRowProps) => {
+  const NAME_WIDTH = 4
+
+  const spans = useMemo(() => {
+    const VALUE_AREA_WIDTH = COLUMN_COUNT - NAME_WIDTH
+    if (props.columnSpans) {
+      const fixed = sum(props.columnSpans.filter(isNumber) || [])
+      const autoWidths = props.columnSpans.filter((s) => s === '*').length || 1
+      const autoWidth = Math.min((VALUE_AREA_WIDTH - fixed) / autoWidths)
+      return props.columnSpans.map((s) => (s === '*' ? autoWidth : s))
+    } else {
+      const autoWidth = Math.min(VALUE_AREA_WIDTH / props.children.length)
+      return mapTimes(props.children.length, constant(autoWidth))
+    }
+  }, [props.columnSpans, props.children.length])
+
+  return props.children ? (
     <ColumnRow component="li" {...common(props, ['KeyValueRow'])}>
       <Column
         className="KeyValueRow__name"
-        span={4}
+        span={NAME_WIDTH}
         valign="top"
         component="span"
       >
@@ -58,7 +77,7 @@ export const KeyMultiValueRow = (props: KeyMultiValueRowProps) =>
       {props.children.map((child, index) => (
         <Column
           className="KeyValueRow__value"
-          span={props.columnSpans?.[index] || 4}
+          span={spans[index] || 4}
           valign="top"
           component="span"
           key={index}
@@ -68,3 +87,4 @@ export const KeyMultiValueRow = (props: KeyMultiValueRowProps) =>
       ))}
     </ColumnRow>
   ) : null
+}

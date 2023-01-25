@@ -35,8 +35,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
       <input
         className={cx(
           'TextEdit__input',
-          (requiredButEmpty || A.isNonEmpty(props.errors)) &&
-            'TextEdit__input--error'
+          (requiredButEmpty || props.errors) && 'TextEdit__input--error'
         )}
         placeholder={props.placeholder}
         value={props.value}

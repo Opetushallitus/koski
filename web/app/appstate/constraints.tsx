@@ -1,4 +1,5 @@
 import * as E from 'fp-ts/Either'
+import * as C from '../util/constraints'
 import { pipe } from 'fp-ts/lib/function'
 import React, {
   useCallback,
@@ -9,7 +10,7 @@ import React, {
 } from 'react'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { fetchConstraint } from '../util/koskiApi'
-import { schemaClassName } from '../util/types'
+import { ClassOf, ObjWithClass, schemaClassName } from '../util/types'
 
 const Loading = Symbol('loading')
 
@@ -79,7 +80,7 @@ export const ConstraintsProvider = (props: ConstraintsProviderProps) => {
  * @param className skeemaluokan nimi pitkässä tai lyhyessä muodossa (esim. "fi.oph.koski.schema.Vahvistus" tai pelkkä "Vahvistus")
  * @returns Rakennekuvauksen sekä validointitietoja
  */
-export const useConstraint = (className: string | null): Constraint | null => {
+export const useSchema = (className?: string | null): Constraint | null => {
   const context = useContext(ConstraintsContext)
   const schemaClass = useMemo(
     () => (className && schemaClassName(className)) || className,
@@ -92,4 +93,20 @@ export const useConstraint = (className: string | null): Constraint | null => {
   }, [schemaClass])
   const constraint = schemaClass && context.constraints[schemaClass]
   return typeof constraint === 'object' ? constraint : null
+}
+
+export const useAllowedStrings = (
+  className: string | null | undefined,
+  path: string
+): string[] | null => {
+  const c = useSchema(className)
+  return useMemo(() => pipe(c, C.path(path), C.allowedStrings), [c])
+}
+
+export const useChildClassName = <T extends ObjWithClass>(
+  className: string | null | undefined,
+  path: string
+): ClassOf<T> | null => {
+  const c = useSchema(className)
+  return useMemo(() => pipe(c, C.path(path), C.className<T>()), [c])
 }

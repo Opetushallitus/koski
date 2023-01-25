@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { useConstraint } from '../appstate/constraints'
+import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
@@ -23,7 +23,10 @@ import {
   laajuusSum,
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
-import { OpiskeluoikeudenTila } from '../components-v2/opiskeluoikeus/OpiskeluoikeudenTila'
+import {
+  OpiskeluoikeudenTilaEdit,
+  OpiskeluoikeudenTilaView
+} from '../components-v2/opiskeluoikeus/OpiskeluoikeudenTila'
 import { OpiskeluoikeusEditToolbar } from '../components-v2/opiskeluoikeus/OpiskeluoikeusEditToolbar'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import {
@@ -42,6 +45,7 @@ import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpi
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
+import { TaiteenPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeusjakso'
 import { TaiteenPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaatasonSuoritus'
 import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
@@ -60,14 +64,16 @@ export type TaiteenPerusopetusEditorProps = {
 export const TaiteenPerusopetusEditor = (
   props: TaiteenPerusopetusEditorProps
 ) => {
-  const constraint = useConstraint('TaiteenPerusopetuksenOpiskeluoikeus')
-  const form = useForm(props.opiskeluoikeus, false, constraint)
+  const opiskeluoikeusSchema = useSchema('TaiteenPerusopetuksenOpiskeluoikeus')
+  const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
   const fillKoodistot = useKoodistoFiller()
   const [suoritusIndex, setSuoritusIndex] = useState(0)
   const suoritus = form.state.suoritukset[suoritusIndex]
 
   const päätasonSuoritusPath =
     usePäätasonSuoritus<TaiteenPerusopetuksenOpiskeluoikeus>(suoritusIndex)
+
+  const opiskeluoikeudenTilaPath = form.root.prop('tila')
 
   const [
     osasuorituksetPath,
@@ -170,7 +176,13 @@ export const TaiteenPerusopetusEditor = (
           onStartEdit={form.startEdit}
         />
         <Spacer />
-        <OpiskeluoikeudenTila tila={form.state.tila} />
+        <FormField
+          form={form}
+          path={opiskeluoikeudenTilaPath}
+          view={OpiskeluoikeudenTilaView}
+          edit={OpiskeluoikeudenTilaEdit}
+          editProps={{ createJakso: TaiteenPerusopetuksenOpiskeluoikeusjakso }}
+        />
         <Spacer />
 
         <h2>

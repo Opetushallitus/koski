@@ -1,3 +1,7 @@
+import * as A from 'fp-ts/Array'
+import { pipe } from 'fp-ts/lib/function'
+import * as NEA from 'fp-ts/NonEmptyArray'
+import * as O from 'fp-ts/Option'
 import {
   isLocalizedString,
   LocalizedString
@@ -39,6 +43,9 @@ export type ValidationError =
   | MustBeAtMostError
   | NoMatchError
   | NoClassNameError
+
+export const isValidationError = (a: any): a is ValidationError =>
+  typeof a === 'object' && typeof a.type === 'string'
 
 export type InvalidTypeError = {
   type: 'invalidType'
@@ -353,5 +360,13 @@ export const errorPathIs =
     fn(error.path)
 
 export const narrowErrorsToLeaf =
-  (pathPostfix: string) => (errors: ValidationError[]) =>
-    errors.filter(errorPathIs((path) => path.endsWith(pathPostfix)))
+  (pathPostfix: string) =>
+  (
+    errors?: ValidationError[]
+  ): NEA.NonEmptyArray<ValidationError> | undefined =>
+    pipe(
+      O.fromNullable(errors),
+      O.map(A.filter(errorPathIs((path) => path.endsWith(pathPostfix)))),
+      O.chain(NEA.fromArray),
+      O.toUndefined
+    )

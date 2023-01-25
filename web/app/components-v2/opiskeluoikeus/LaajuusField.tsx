@@ -1,4 +1,3 @@
-import * as A from 'fp-ts/Array'
 import { isNonEmpty } from 'fp-ts/lib/Array'
 import * as $ from 'optics-ts'
 import React, { useCallback } from 'react'
@@ -7,10 +6,10 @@ import { Laajuus } from '../../types/fi/oph/koski/schema/Laajuus'
 import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { removeFloatingPointDrift } from '../../util/numbers'
 import { CollectableOptic } from '../../util/types'
-import { CommonProps, cx, common } from '../CommonProps'
+import { common, CommonProps } from '../CommonProps'
 import { NumberField } from '../controls/NumberField'
 import { FieldErrors } from '../forms/FieldErrors'
-import { FieldViewBaseProps, FieldEditBaseProps } from '../forms/FormField'
+import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 
 /* ---------------------------------------------------------------------
  *
@@ -56,7 +55,7 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
           className="LaajuusField__arvo"
           value={props.value?.arvo}
           onChange={onChange}
-          hasErrors={A.isNonEmpty(props.errors)}
+          hasErrors={Boolean(props.errors)}
         />
         <span className="LaajuusField__yksikko">
           {t(props.value?.yksikkö.lyhytNimi || props.value?.yksikkö.nimi)}

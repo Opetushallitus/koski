@@ -10,14 +10,12 @@ export type ClassOf<T extends ObjWithClass> = T['$class']
 // Sovittaa v2-tyypityksen vanhalle datamallille, josta puuttuu luokkien nimet
 export type LegacyClass<T extends ObjWithClass> = Omit<T, '$class'>
 
-export type KoodistoUriOf<T extends Koodistokoodiviite> = T['koodistoUri']
-
-export type KoodiarvotOf<T extends Koodistokoodiviite> = T['koodiarvo']
-
 export type CollectableOptic<S, A> =
   | $.Prism<S, any, A>
   | $.Traversal<S, any, A>
   | $.Fold<S, A>
+
+export type ItemOf<S extends any[]> = S[0]
 
 export const schemaClassName = (fullClassName: string): string | null => {
   const match = fullClassName.match(/fi\.oph\.koski\.schema\.(.*)/)

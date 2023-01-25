@@ -28,7 +28,15 @@ export const DateView: React.FC<DateViewProps> = (props) => {
   return <span {...common(props, ['DateView'])}>{formattedDate}</span>
 }
 
-export type DateEditProps = CommonProps<FieldEditBaseProps<string>>
+export type DateEditProps = CommonProps<
+  FieldEditBaseProps<
+    string,
+    {
+      min?: string
+      max?: string
+    }
+  >
+>
 
 export const DateEdit: React.FC<DateEditProps> = (props) => {
   const [datePickerVisible, setDatePickerVisible] = useState(false)
@@ -54,10 +62,16 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
       const isoDate = date && formatISODate(date)
       setInvalidDate(!isoDate)
       if (isoDate && isoDate !== props.value) {
+        if (
+          (props.min && isoDate < props.min) ||
+          (props.max && isoDate > props.max)
+        ) {
+          setInvalidDate(true)
+        }
         props.onChange(isoDate)
       }
     },
-    [props.onChange, props.value]
+    [props.onChange, props.value, props.min, props.max]
   )
 
   const onDayClick = useCallback((date: Date) => {
@@ -75,7 +89,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
     [internalDate]
   )
 
-  const hasError = Boolean(isInvalidDate || A.isNonEmpty(props.errors))
+  const hasError = Boolean(isInvalidDate || props.errors)
 
   return (
     <label {...common(props, ['DateEdit'])}>
