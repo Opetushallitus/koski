@@ -29,7 +29,13 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
     if (koesuoritukset.koesuoritusExists(examPaper) && hasAccess) {
       // TODO: Vaatiikohan YTL koesuoritukset väljemmän CSP:n? Luultavasti on ainakin tyylejä, jotka vaatisivat noncen...
       contentType = if (examPaper.endsWith(".pdf")) "application/pdf" else "text/html"
-      koesuoritukset.writeKoesuoritus(examPaper, response.getOutputStream)
+      val os = response.getOutputStream
+      if (os != null) {
+        koesuoritukset.writeKoesuoritus(examPaper, os)
+      } else {
+        logger.warn(s"Exam paper $examPaper download failed")
+        haltWithStatus(KoskiErrorCategory.notFound.suoritustaEiLöydy("Koesuoritusta ei juuri nyt saatu ladattua. Yritä myöhemmin uudelleen."))
+      }
     } else {
       logger.warn(s"Exam paper $examPaper not found, hasAccess: $hasAccess")
       haltWithStatus(KoskiErrorCategory.notFound.suoritustaEiLöydy())
