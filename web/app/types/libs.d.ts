@@ -33,7 +33,7 @@ declare module 'baconjs' {
     log(text: string): Observable<T>
   }
 
-  interface EventStream<T> extends Observable<T> {}
+  type EventStream<T> = Observable<T>
 
   interface Bus<T, I> extends EventStream<T> {
     push(t: I): Bus<T, I>

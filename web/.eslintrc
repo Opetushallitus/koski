@@ -1,6 +1,6 @@
 {
   "root": true,
-  "parser": "@babel/eslint-parser",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module",
@@ -19,19 +19,20 @@
     "__webpack_nonce__": true // Koski CSP
   },
   "rules": {
-    "no-undef": "error",
+    "no-undef": "warn",
+    "no-var": "off", // TODO: Poista sääntö
     "no-unreachable": "error",
     "no-console": "off", // TODO: Vaihda --> "warn"
     "no-warning-comments": "off", // TODO: Vaihda --> "warn"
-    "no-unused-vars": [
+    "no-unused-vars": "off", // TODO: Korvaa sääntö
+    /*"no-unused-vars": [
       "warn",
       { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
-    ],
+    ], */
     "react/jsx-no-undef": "warn",
     "react/jsx-uses-react": "warn",
     "react/jsx-uses-vars": "warn",
     "react/jsx-no-literals": "warn",
-    "no-shadow": "error",
     "react/no-unknown-property": "warn",
     "react/react-in-jsx-scope": "warn",
     "react/self-closing-comp": [
@@ -44,13 +45,22 @@
     "react/jsx-wrap-multilines": "warn",
     "react/prop-types": "off",
     "react/display-name": "off", // default exportit komponenteissa
-    "react/jsx-key": "off",  // Bacon.js React VDOM, TODO: Vaihda --> "warn"
+    "react/jsx-key": "off", // Bacon.js React VDOM, TODO: Vaihda --> "warn"
     "react/no-string-refs": "off", // TODO: Vaihda --> "warn"
     "prettier/prettier": ["error"],
     "array-callback-return": "off", // Bacon.js flatmap
     "react/no-render-return-value": "off", // Bacon.js React VDOM
     "prefer-regex-literals": "off", // Heitetään varoitus, TODO: Vaihda --> "warn"
-    "eqeqeq": "warn"
+    "eqeqeq": "warn",
+    "no-shadow": "off",
+    "prefer-spread": "warn", // TODO: Poista sääntö
+    "@typescript-eslint/no-shadow": "warn",
+    "@typescript-eslint/no-explicit-any": "off", // TODO: Poista sääntö
+    "@typescript-eslint/no-unused-vars": "off", // TODO: Poista sääntö
+    "@typescript-eslint/ban-ts-comment": "off", // TODO: Poista sääntö
+    "@typescript-eslint/no-empty-function": "warn", // TODO: Poista sääntö
+    "@typescript-eslint/no-unnecessary-type-constraint": "warn", // TODO: Poista sääntö
+    "@typescript-eslint/ban-types": "warn" // TODO: Poista sääntö
   },
   "settings": {
     "react": {
@@ -58,10 +68,11 @@
     }
   },
   "extends": [
+    "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "standard",
+    "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
-  "plugins": ["react", "prettier", "mocha"]
+  "plugins": ["react", "prettier", "mocha", "@typescript-eslint"]
 }

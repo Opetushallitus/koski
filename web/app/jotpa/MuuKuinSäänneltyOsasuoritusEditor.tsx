@@ -29,7 +29,7 @@ export class MuuKuinSäänneltyOsasuoritusEditor extends React.Component<
   saveChangedPreferences() {
     if (!this.state || !this.state.changed) return null
 
-    let { model } = this.props
+    const { model } = this.props
 
     const koulutusmoduuliData = modelData(model).koulutusmoduuli
     const organisaatioOid = modelData(model.context.toimipiste).oid
@@ -53,7 +53,7 @@ export class MuuKuinSäänneltyOsasuoritusEditor extends React.Component<
   }
 
   render() {
-    let { model, onExpand, expanded, nestedLevel, columns } = this.props
+    const { model, onExpand, expanded, nestedLevel, columns } = this.props
 
     const editableProperties: ObjectModelProperty[] = suoritusProperties(
       model

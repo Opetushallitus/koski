@@ -76,7 +76,7 @@ const isRemoveAction = (
 
 // Find submodel with given path
 export const modelLookupRequired = (mainModel: EditorModel, path: string) => {
-  var model = modelLookup(mainModel, path)
+  const model = modelLookup(mainModel, path)
   if (!model) {
     throwError('model for ' + path + ' not found', mainModel)
   }
@@ -109,22 +109,22 @@ export const lensedModel = <
 }
 
 export const modelLens = <T, S>(path: PathExpr): L.Lens<T, S> => {
-  var pathElems = toPath(path)
-  let pathLenses = pathElems.map((key) =>
+  const pathElems = toPath(path)
+  const pathLenses = pathElems.map((key) =>
     L.compose(parseModelStep(key), manageModelIdLens)
   )
   return L.compose(manageModelIdLens, ...pathLenses)
 }
 
-let parseModelStep = <T, S>(key: any): L.Lens<T, S> => {
+const parseModelStep = <T, S>(key: any): L.Lens<T, S> => {
   if (key == '..') return modelParentLens as L.Lens<T, S>
   if (!isNaN(key)) return modelItemLens(parseInt(key))
-  if (typeof key == 'string') return modelPropertyValueLens(key)
-  if (typeof key == 'function') return key as L.Lens<T, S> // an actual lens then
+  if (typeof key === 'string') return modelPropertyValueLens(key)
+  if (typeof key === 'function') return key as L.Lens<T, S> // an actual lens then
   return throwError('Unexpected model path element', key)
 }
 
-let modelParentLens = L.lens(
+const modelParentLens = L.lens(
   (m?: Contextualized<object>) => m && findParent(m),
   (_v, m?: Contextualized<object>) =>
     throwError('Cannot set parent of model', m)
@@ -134,14 +134,14 @@ const findParent = <T extends object>(
   model: Contextualized<T>
 ): Contextualized<T> | undefined => {
   if (!model.parent) return undefined
-  if (typeof R.last(model.path || []) == 'function') {
+  if (typeof R.last(model.path || []) === 'function') {
     // Skip lenses in path, only consider actual path elements
     return findParent(model.parent)
   }
   return model.parent
 }
 
-let ensureModelId = <T extends EditorModel>(
+const ensureModelId = <T extends EditorModel>(
   model?: T,
   force?: boolean
 ): Identified<T> | undefined => {
@@ -152,11 +152,11 @@ let ensureModelId = <T extends EditorModel>(
   return model as Identified<T>
 }
 
-let getModelId = (model: EditorModel): number => {
+const getModelId = (model: EditorModel): number => {
   return ensureModelId(model)!.modelId
 }
 
-let calculateModelId = (m: EditorModel) => {
+const calculateModelId = (m: EditorModel) => {
   let id = 0
   if (isObjectModel(m) && m.value && m.value.properties) {
     id = 1 // to distinguish from a null value
@@ -223,10 +223,10 @@ export function modelData(mainModel?: EditorModel, path?: PathExpr): any {
     return L.get(objectLens(path), anyModel.value.data)
   }
 
-  let head = toPath(path).slice(0, 1)
+  const head = toPath(path).slice(0, 1)
   if (head.length) {
-    let model = modelLookup(anyModel, head)
-    let tail = toPath(path).slice(1)
+    const model = modelLookup(anyModel, head)
+    const tail = toPath(path).slice(1)
     return modelData(model, tail)
   } else {
     if (anyModel.data) return anyModel.data
@@ -250,7 +250,7 @@ export const modelTitle = (
   path?: PathExpr,
   titleFormatter?: (m: EditorModel) => string
 ): string => {
-  let model = modelLookup(mainModel, path)
+  const model = modelLookup(mainModel, path)
   if (model && titleFormatter !== undefined) {
     return titleFormatter(model)
   }
@@ -266,10 +266,10 @@ export const modelTitle = (
 }
 
 export const modelEmpty = (mainModel: EditorModel, path?: PathExpr) => {
-  let model = modelLookup(mainModel, path)
+  const model = modelLookup(mainModel, path)
   if (!model?.context) return throwError('context missing')
 
-  let editor = isEditableModel(model) ? getEditor(model) : undefined
+  const editor = isEditableModel(model) ? getEditor(model) : undefined
   if (editor && editor.isEmpty) {
     return editor.isEmpty(model)
   }
@@ -285,7 +285,7 @@ export const recursivelyEmpty = (m: EditorModel) => {
   if (isSomeOptionalModel(m)) return false
   if (isObjectModel(m)) {
     if (!m.value.properties) return true
-    for (var i in m.value.properties) {
+    for (const i in m.value.properties) {
       if (!recursivelyEmpty(m.value.properties[i].model)) return false
     }
     return true
@@ -383,18 +383,18 @@ export const modelValueLens = L.lens(
         )
       }
     }
-    let plainOptional = m.optional && !m.type
-    let usedModel = plainOptional ? getUsedModelForOptionalModel(m) : m
+    const plainOptional = m.optional && !m.type
+    const usedModel = plainOptional ? getUsedModelForOptionalModel(m) : m
     return L.set('value', v, usedModel)
   }
 )
 
-let throwError = (msg: string, ...args: any[]) => {
+const throwError = (msg: string, ...args: any[]) => {
   console.error(msg, ...args)
   throw new Error(msg)
 }
 
-let getUsedModelForOptionalModel = (
+const getUsedModelForOptionalModel = (
   m: EditorModel & OptionalModel & Contextualized<EditorMappingContext>,
   { model }: { model?: EditorModel & Contextualized } = {}
 ) => {
@@ -403,15 +403,15 @@ let getUsedModelForOptionalModel = (
   if (!hasContext(m)) {
     m = contextualizeSubModel(m, model)!
   }
-  let prototypeModel = optionalPrototypeModel(m)
-  let editor =
+  const prototypeModel = optionalPrototypeModel(m)
+  const editor =
     prototypeModel && isEditableModel(prototypeModel)
       ? getEditor(prototypeModel)
       : model && isEditableModel(model)
       ? getEditor(model)
       : undefined
-  let createEmpty = (editor && editor.createEmpty) || R.identity
-  let emptyModel = createEmpty(prototypeModel || model!)
+  const createEmpty = (editor && editor.createEmpty) || R.identity
+  const emptyModel = createEmpty(prototypeModel || model!)
 
   return emptyModel
 }
@@ -472,7 +472,7 @@ export const optionalPrototypeModel = <
 >(
   model: P
 ): P | undefined => {
-  let prototype = undefined
+  let prototype
   if (isSomeOptionalModel(model)) {
     prototype = model.optionalPrototype = preparePrototypeModel(
       model.optionalPrototype as P,
@@ -537,7 +537,7 @@ export const findModelProperty = (
   filter: (p: ObjectModelProperty) => boolean
 ) => {
   if (!mainModel.value) return undefined
-  var found = mainModel.value.properties.find(filter)
+  const found = mainModel.value.properties.find(filter)
   return contextualizeProperty(mainModel)(found)
 }
 
@@ -558,7 +558,7 @@ export const modelProperty = <
   if (!mainModel.value || !mainModel.value.properties) {
     throwError('No properties found', mainModel)
   }
-  var found = mainModel.value.properties.find((p) => p.key == path[0])
+  const found = mainModel.value.properties.find((p) => p.key == path[0])
   if (!found) {
     return undefined
   }
@@ -575,14 +575,14 @@ export const modelProperties = <
   if (isObjectModel(mainModel)) {
     if (pathsOrFilter && pathsOrFilter instanceof Array) {
       return flatMapArray(pathsOrFilter, (p) => {
-        let prop = modelProperty(mainModel, p)
+        const prop = modelProperty(mainModel, p)
         return prop ? [prop] : []
       })
     }
     let props = modelPropertiesRaw(mainModel).map(
       contextualizeProperty(mainModel)
     )
-    if (pathsOrFilter && typeof pathsOrFilter == 'function') {
+    if (pathsOrFilter && typeof pathsOrFilter === 'function') {
       props = props.filter(pathsOrFilter)
     }
     return props.filter(notUndefined)
@@ -634,7 +634,7 @@ export function contextualizeSubModel<M extends EditorModel, T extends object>(
   if (!parentModel) return parentModel
   const model = resolvePrototypeReference(subModel, parentModel.context)
   if (!model) return model
-  var subPath = childPath(parentModel, path)
+  const subPath = childPath(parentModel, path)
   return R.mergeRight(model, {
     context: parentModel.context,
     path: subPath,
@@ -661,17 +661,17 @@ export const addContext = <
 
 export const modelValid = (
   model: EditorModel & Contextualized,
-  recursive: boolean = true
+  recursive = true
 ): boolean => {
-  let errors = modelErrors(model, recursive)
-  let valid = R.keys(errors).length == 0
-  //if (!valid) console.log("errors", errors)
+  const errors = modelErrors(model, recursive)
+  const valid = R.keys(errors).length == 0
+  // if (!valid) console.log("errors", errors)
   return valid
 }
 
 export const modelErrorMessages = <T extends ValidationContext>(
   model: Contextualized<T>,
-  recursive: boolean = true
+  recursive = true
 ) => {
   return R.uniq(
     R.unnest(R.values(modelErrors(model, recursive)))
@@ -682,15 +682,15 @@ export const modelErrorMessages = <T extends ValidationContext>(
 
 const modelErrors = <T extends ValidationContext>(
   model: Contextualized<T>,
-  recursive: boolean = true
+  recursive = true
 ): ModelErrorRecord => {
-  let context = model.context
-  let pathString = justPath(model.path).join('.')
-  let keyMatch = <T>([key, _value]: [string, T]) =>
+  const context = model.context
+  const pathString = justPath(model.path).join('.')
+  const keyMatch = <T>([key, _value]: [string, T]) =>
     recursive
       ? pathString === key || R.startsWith(pathString + '.', key)
       : pathString === key
-  let validationResult = (context && context.validationResult) || {}
+  const validationResult = (context && context.validationResult) || {}
   return pathString.length
     ? R.fromPairs(R.toPairs(validationResult).filter(keyMatch))
     : validationResult
@@ -702,15 +702,21 @@ export const applyChangesAndValidate = <
   modelBeforeChange: M,
   changes: ChangeBusAction[]
 ) => {
-  let basePath = toPath(modelBeforeChange.path)
-  var withAppliedChanges = changes.reduce((acc: M, change: ChangeBusAction) => {
-    //console.log('apply', change, 'to', acc)
+  const basePath = toPath(modelBeforeChange.path)
+  const withAppliedChanges = changes.reduce(
+    (acc: M, change: ChangeBusAction) => {
+      // console.log('apply', change, 'to', acc)
 
-    let subPath = removeCommonPath(toPath(getPathFromChange(change)), basePath)
-    let actualLens = modelLens(subPath)
+      const subPath = removeCommonPath(
+        toPath(getPathFromChange(change)),
+        basePath
+      )
+      const actualLens = modelLens(subPath)
 
-    return L.set(actualLens, getModelFromChange(change), acc) as M
-  }, modelBeforeChange)
+      return L.set(actualLens, getModelFromChange(change), acc) as M
+    },
+    modelBeforeChange
+  )
 
   return validateModel(withAppliedChanges)
 }
@@ -727,8 +733,8 @@ export const validateModel = <
   const pushError =
     (model: EditorModel & Contextualized, results: ModelErrorRecord) =>
     (error: ModelError) => {
-      let path = justPath(model.path)
-      let fullPath = path.concat(error.path || []).join('.')
+      const path = justPath(model.path)
+      const fullPath = path.concat(error.path || []).join('.')
       results[fullPath]
         ? results[fullPath].push(error)
         : (results[fullPath] = [error])
@@ -738,9 +744,9 @@ export const validateModel = <
     model: EditableModel & Contextualized<EditorMappingContext>,
     results: ModelErrorRecord
   ) => {
-    let validator = getValidator(model, context)
+    const validator = getValidator(model, context)
     if (validator) {
-      let myResult = validator(model)
+      const myResult = validator(model)
       if (myResult) {
         myResult.forEach(pushError(model, results))
       }
@@ -778,8 +784,8 @@ export const accumulateModelStateAndValidity = <
 >(
   model: M
 ) => {
-  let modelP = accumulateModelState(model)
-  let errorP = modelP.map(modelValid).not()
+  const modelP = accumulateModelState(model)
+  const errorP = modelP.map(modelValid).not()
   return {
     modelP,
     errorP
@@ -853,13 +859,13 @@ export const ensureArrayKey = (v: ListModel) => {
 }
 
 const modelItemLens = <T, S>(index: number): L.Lens<T, S> => {
-  let valueIndexLens = L.compose('value', indexL(index))
-  let baseLens = L.lens(
+  const valueIndexLens = L.compose('value', indexL(index))
+  const baseLens = L.lens(
     (m?: ListModel & OptionalModel & Contextualized): EditorModel => {
       if (m && isSomeOptionalModel(m) && m.optionalPrototype && !m.value) {
         // Array is missing -> create optional value using array prototype
         // @ts-expect-error
-        var arrayPrototype = optionalPrototypeModel(m).arrayPrototype!
+        const arrayPrototype = optionalPrototypeModel(m).arrayPrototype!
         return { optional: true, optionalPrototype: arrayPrototype } as any
       }
       if (m && m.value && index >= m.value.length && m.arrayPrototype) {
@@ -875,7 +881,7 @@ const modelItemLens = <T, S>(index: number): L.Lens<T, S> => {
     },
     (v: any, m: any) => {
       if (m && m.optional && !m.value && m.optionalPrototype) {
-        let prototypeForArray = optionalPrototypeModel(m)
+        const prototypeForArray = optionalPrototypeModel(m)
         return L.set(valueIndexLens, v, prototypeForArray)
       }
       if (m && (!v || !v.value)) {
@@ -888,25 +894,25 @@ const modelItemLens = <T, S>(index: number): L.Lens<T, S> => {
   return recontextualizingLens(baseLens, index)
 }
 
-let modelPropertyValueLens = (key: string) => {
-  let propertyModelLens = L.compose(
+const modelPropertyValueLens = (key: string) => {
+  const propertyModelLens = L.compose(
     'value',
     'properties',
     L.find(R.whereEq({ key })),
     'model'
   )
-  let baseLens = L.lens(
+  const baseLens = L.lens(
     (m?: EditorModel & OptionalModel & Contextualized) => {
       if (m && isSomeOptionalModel(m) && m.optionalPrototype && !hasValue(m)) {
-        let proto = optionalPrototypeModel(m)
-        var propertyProto = L.get(propertyModelLens, proto)
+        const proto = optionalPrototypeModel(m)
+        const propertyProto = L.get(propertyModelLens, proto)
         return { optional: true, optionalPrototype: propertyProto }
       }
       return L.get(propertyModelLens, m)
     },
     (v: any, m: any) => {
       if (m && isSomeOptionalModel(m) && m.optionalPrototype && !hasValue(m)) {
-        let proto = optionalPrototypeModel(
+        const proto = optionalPrototypeModel(
           m as PrototypeModel & OptionalModel & Contextualized
         )
         return L.set(propertyModelLens, v, proto)
@@ -917,7 +923,7 @@ let modelPropertyValueLens = (key: string) => {
   return recontextualizingLens(baseLens, key)
 }
 
-let recontextualizingLens = <T, S>(
+const recontextualizingLens = <T, S>(
   baseLens: L.Lens<T, S>,
   pathElem?: PathExpr
 ): L.Lens<T, S> => {
@@ -944,9 +950,9 @@ const childPath = (
   ...pathElems: PathExpr[]
 ): DataPath => {
   if (!pathElems || pathElems[0] === undefined) return toPath(model.path)
-  let basePath = toPath(model.path)
-  let allPathElems = basePath.concat(pathElems)
-  let path = L.compose(...allPathElems)
+  const basePath = toPath(model.path)
+  const allPathElems = basePath.concat(pathElems)
+  const path = L.compose(...allPathElems)
   return toPath(path)
 }
 
@@ -969,7 +975,7 @@ export function resolvePrototypeReference<T extends object>(
         `Cannot resolve prototype ${model.key} without context`,
         model
       )
-    let foundProto = (context as any)?.prototypes[model.key]
+    const foundProto = (context as any)?.prototypes[model.key]
     if (!foundProto) {
       console.error('Prototype not found: ' + model.key)
     }
@@ -979,7 +985,7 @@ export function resolvePrototypeReference<T extends object>(
     const restructuredModel = model as EditorModel
 
     if (isListModel(restructuredModel) && restructuredModel.value) {
-      for (var i in restructuredModel.value) {
+      for (const i in restructuredModel.value) {
         restructuredModel.value[i] = resolvePrototypeReference(
           restructuredModel.value[i],
           context
@@ -1074,7 +1080,7 @@ const getValidator = (
   model: EditableModel<any> & Contextualized<EditorMappingContext>,
   context: ContextData<EditorMappingContext>
 ) => {
-  let editor = getEditor(model, context)
+  const editor = getEditor(model, context)
   return editor && editor.validateModel
 }
 
@@ -1088,15 +1094,15 @@ const getEditor = <M extends EditableModel<T> & Contextualized, T>(
     return throwError('editorMapping missing', model, ctx)
   }
   if (model.value && isObjectModel(model)) {
-    for (var i in model.value.classes) {
-      let editor = editorMapping[model.value.classes[i]]
+    for (const i in model.value.classes) {
+      const editor = editorMapping[model.value.classes[i]]
       if (editor) {
         return editor
       }
     }
   }
   if (!editorMapping[model.type]) {
-    //console.log('not found by type', model.type, model)
+    // console.log('not found by type', model.type, model)
   }
   return editorMapping[model.type]
 }
@@ -1114,26 +1120,26 @@ const itemsEmpty = <T>(items: T[]) => {
   return !items || !items.find((item) => !valueEmpty(item))
 }
 
-let lastL = L.lens(
+const lastL = L.lens(
   (xs?: any[]) => {
     return (xs && xs.length && R.last(xs)) || undefined
   },
   (x?: any, xs?: any[]) => (xs || []).slice(0, -1).concat([x])
 )
 
-let indexL = (index: number) => (index == -1 ? lastL : L.index(index))
+const indexL = (index: number) => (index == -1 ? lastL : L.index(index))
 
 const toPath = (path: any): DataPath => {
   if (path == undefined) {
     return []
   }
-  if (typeof path == 'number') {
+  if (typeof path === 'number') {
     path = '' + path
   }
-  if (typeof path == 'string') {
+  if (typeof path === 'string') {
     return path.split('.')
   }
-  if (typeof path == 'function') {
+  if (typeof path === 'function') {
     return [path]
   }
   if (path instanceof Array) {
@@ -1145,11 +1151,11 @@ const toPath = (path: any): DataPath => {
 
 // removes function/lenses, leaving just the data path
 const justPath = (path: PathExpr): DataPath =>
-  toPath(path).filter((pathElem) => typeof pathElem != 'function')
+  toPath(path).filter((pathElem) => typeof pathElem !== 'function')
 
 const objectLens = (path: any) => {
-  let pathLenses = toPath(path).map((key) => {
-    let index = parseInt(key)
+  const pathLenses = toPath(path).map((key) => {
+    const index = parseInt(key)
     return Number.isNaN(index) ? L.prop(key) : indexL(index)
   })
   return L.compose<object, unknown>(...pathLenses)
@@ -1158,8 +1164,8 @@ const objectLens = (path: any) => {
 export const checkOnlyWhen = (model: EditorModel, conditions?: OnlyWhen[]) => {
   if (!conditions) return true
   return conditions.some((onlyWhen) => {
-    let data = modelData(model, onlyWhen.path.split('/'))
-    let match = onlyWhen.value == data
+    const data = modelData(model, onlyWhen.path.split('/'))
+    const match = onlyWhen.value == data
     return match
   })
 }
@@ -1167,8 +1173,8 @@ export const checkOnlyWhen = (model: EditorModel, conditions?: OnlyWhen[]) => {
 export const checkNotWhen = (model: EditorModel, conditions?: NotWhen[]) => {
   if (!conditions) return true
   return conditions.some((notWhen) => {
-    let data = modelData(model, notWhen.path.split('/'))
-    let match = Array.isArray(notWhen.values)
+    const data = modelData(model, notWhen.path.split('/'))
+    const match = Array.isArray(notWhen.values)
       ? !notWhen.values.includes(data)
       : notWhen.values != data
     return match

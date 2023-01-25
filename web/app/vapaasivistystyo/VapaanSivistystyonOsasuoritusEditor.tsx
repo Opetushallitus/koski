@@ -5,10 +5,10 @@ import {
   modelData,
   modelEmpty,
   modelLookup,
-  modelProperties
+  modelProperties,
+  pushRemoval
 } from '../editor/EditorModel'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
-import { pushRemoval } from '../editor/EditorModel'
 import { suoritusProperties } from '../suoritus/SuoritustaulukkoCommon'
 import { VapaanSivistystyonSuoritustaulukko } from './VapaanSivistystyonSuoritustaulukko'
 import { saveOrganizationalPreference } from '../virkailija/organizationalPreferences'
@@ -41,7 +41,7 @@ export class VapaanSivistystyonOsasuoritusEditor extends React.Component<
   saveChangedPreferences() {
     if (!this.state || !this.state.changed) return null
 
-    let { model } = this.props
+    const { model } = this.props
 
     const koulutusmoduuliData = modelData(model).koulutusmoduuli
     const organisaatioOid = modelData(model.context.toimipiste).oid
@@ -68,7 +68,7 @@ export class VapaanSivistystyonOsasuoritusEditor extends React.Component<
   }
 
   render() {
-    let { model, onExpand, expanded, nestedLevel, columns } = this.props
+    const { model, onExpand, expanded, nestedLevel, columns } = this.props
 
     const editableProperties: ObjectModelProperty[] = suoritusProperties(
       model

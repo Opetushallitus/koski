@@ -1,52 +1,54 @@
-import React from "baret";
-import { modelLookup } from "../editor/EditorModel";
-import { PropertiesEditor } from "../editor/PropertiesEditor";
-import { pushRemoval } from "../editor/EditorModel";
+import React from 'baret'
+import { modelLookup, pushRemoval } from '../editor/EditorModel'
+import { PropertiesEditor } from '../editor/PropertiesEditor'
 import {
   ArvosanaColumn,
   LaajuusColumn,
   SuoritusColumn,
   SuoritusModel,
-  suoritusProperties,
-} from "../suoritus/SuoritustaulukkoCommon";
-import { TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko } from "./TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko";
-import { ChangeBusContext, Contextualized } from "../types/EditorModelContext";
+  suoritusProperties
+} from '../suoritus/SuoritustaulukkoCommon'
+import { TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko } from './TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko'
+import { ChangeBusContext, Contextualized } from '../types/EditorModelContext'
 
 export type TuvaOsasuoritusModel = SuoritusModel &
-  Contextualized<ChangeBusContext>;
+  Contextualized<ChangeBusContext>
 
-export type TuvaOsasuoritusColumn = SuoritusColumn | LaajuusColumn | ArvosanaColumn
+export type TuvaOsasuoritusColumn =
+  | SuoritusColumn
+  | LaajuusColumn
+  | ArvosanaColumn
 
 export type TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditorProps = {
-  model: TuvaOsasuoritusModel;
-  onExpand: () => void;
-  expanded: boolean;
-  nestedLevel: number;
-  columns: TuvaOsasuoritusColumn[];
-};
+  model: TuvaOsasuoritusModel
+  onExpand: () => void
+  expanded: boolean
+  nestedLevel: number
+  columns: TuvaOsasuoritusColumn[]
+}
 
 export const TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor = ({
   model,
   onExpand,
   expanded,
   nestedLevel,
-  columns,
+  columns
 }: TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditorProps) => {
   const editableProperties = suoritusProperties(model).filter(
-    (p) => p.key !== "osasuoritukset"
-  );
-  const osasuoritukset = modelLookup(model, "osasuoritukset");
+    (p) => p.key !== 'osasuoritukset'
+  )
+  const osasuoritukset = modelLookup(model, 'osasuoritukset')
 
   return (
-    <tbody className={"tuva-osasuoritus tuva-osasuoritus-" + nestedLevel}>
-      <tr className={"tuva-osasuoritusrivi-" + nestedLevel}>
+    <tbody className={'tuva-osasuoritus tuva-osasuoritus-' + nestedLevel}>
+      <tr className={'tuva-osasuoritusrivi-' + nestedLevel}>
         {columns.map((column) =>
           column.renderData({
             model,
             expanded,
             onExpand,
             showTila: true,
-            hasProperties: true,
+            hasProperties: true
           })
         )}
         {model.context.edit && (
@@ -74,5 +76,5 @@ export const TutkintokoulutukseenValmentavanKoulutuksenOsasuoritusEditor = ({
         </tr>
       )}
     </tbody>
-  );
-};
+  )
+}

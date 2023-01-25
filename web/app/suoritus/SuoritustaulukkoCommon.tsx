@@ -177,9 +177,9 @@ export const groupSuoritukset = (
       }
 
       return {
-        grouped: grouped,
-        groupTitles: groupTitles,
-        groupIds: groupIds
+        grouped,
+        groupTitles,
+        groupIds
       }
     }
   )
