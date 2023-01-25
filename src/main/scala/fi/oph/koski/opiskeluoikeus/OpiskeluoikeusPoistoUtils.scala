@@ -27,12 +27,13 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
   ): dbio.DBIOAction[Unit, NoStream, Write with Effect.Transactional] = {
     DBIO.seq(
       OpiskeluoikeusPoistoUtils.opiskeluoikeudenPoistonQuery(oid, versionumero),
-      poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo, oppijaOid, mitätöity, None, aiemminPoistettuRivi),
+      poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oid, oo, oppijaOid, mitätöity, None, aiemminPoistettuRivi),
       opiskeluoikeudenHistorianPoistonQuery(id)
     ).transactionally
   }
 
   def poistaPäätasonSuoritus(
+    opiskeluoikeusOid: String,
     opiskeluoikeusId: Int,
     oo: Opiskeluoikeus,
     suorituksenTyyppi: String,
@@ -52,7 +53,7 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
     DBIO.seq((
       List(
         OpiskeluOikeudetWithAccessCheck(KoskiSpecificSession.systemUser).filter(_.id === opiskeluoikeusId).map(_.updateableFields).update(updatedValues),
-        poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(oo, oppijaOid, mitätöity, Some(suorituksenTyyppi), aiemminPoistettuRivi),
+        poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(opiskeluoikeusOid, oo, oppijaOid, mitätöity, Some(suorituksenTyyppi), aiemminPoistettuRivi),
         opiskeluoikeudenHistorianPoistonQuery(opiskeluoikeusId),
       ) ++ Range.inclusive(1, versionumero).map(v => historyRepository.createAction(opiskeluoikeusId, v, oppijaOid, diff)).toList): _*
     ).transactionally
@@ -71,6 +72,7 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
   }
 
   private def poistettujenOpiskeluoikeuksienTauluunLisäämisenQuery(
+    opiskeluoikeusOid: String,
     opiskeluoikeus: Opiskeluoikeus,
     oppijaOid: String,
     mitätöity: Boolean,
@@ -81,7 +83,7 @@ object OpiskeluoikeusPoistoUtils extends DatabaseExecutionContext {
     val aiemminPoistetutSuoritukset = aiemminPoistettuRivi.map(_.suoritustyypit).getOrElse(List.empty)
 
     KoskiTables.PoistetutOpiskeluoikeudet.insertOrUpdate(PoistettuOpiskeluoikeusRow(
-      opiskeluoikeus.oid.get,
+      opiskeluoikeusOid,
       oppijaOid,
       opiskeluoikeus.oppilaitos.flatMap(_.nimi.map(_.get("fi"))),
       opiskeluoikeus.oppilaitos.map(_.oid),

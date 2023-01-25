@@ -307,7 +307,7 @@ class KoskiValidator(
 
   private def addKoulutustoimija(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = oo match {
     case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined => validateAndAddVarhaiskasvatusKoulutustoimija(e)
-    case t: TaiteenPerusopetuksenOpiskeluoikeus if t.koulutuksenToteutustapa.koodiarvo == "hankintakoulutus" => validateAndAddTaiteenPerusopetuksenKoulutustoimija(t)
+    case t: TaiteenPerusopetuksenOpiskeluoikeus if t.onHankintakoulutus => validateAndAddTaiteenPerusopetuksenKoulutustoimija(t)
     case ytrOo: YlioppilastutkinnonOpiskeluoikeus if ytrOo.oppilaitos.isEmpty && ytrOo.koulutustoimija.exists(_.oid == "1.2.246.562.10.43628088406") =>
       Right(oo)
     case _ => organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
@@ -326,10 +326,9 @@ class KoskiValidator(
 
   private def validateAndAddTaiteenPerusopetuksenKoulutustoimija(oo: TaiteenPerusopetuksenOpiskeluoikeus)
     (implicit user: KoskiSpecificSession): Either[HttpStatus, TaiteenPerusopetuksenOpiskeluoikeus] = {
-    val koulutustoimijat = user.orgKäyttöoikeudet.flatMap(_.organisaatio.toKoulutustoimija).map(_.oid).toList
     järjestettyOmanOrganisaationUlkopuolella(oo.oppilaitos, oo.koulutustoimija) match {
       // Ei koulutustoimija-organisaation käyttöoikeuksia eikä globaaleja kirjoitusoikeuksia
-      case true if koulutustoimijat.isEmpty && !user.globalAccess.contains(AccessType.write) =>
+      case true if !user.hasKoulutustoimijaOrganisaatioTaiGlobaaliWriteAccess =>
         // Löytyy editOnly-access taiteen perusopetukseen, muuten ei oppilaitoksen käyttäjä saa kirjoittaa hankintakoulutuksen opiskeluoikeutta
         if(user.hasTaiteenPerusopetusAccess(oo.getOppilaitos.oid, oo.koulutustoimija.map(_.oid), AccessType.editOnly)) {
           Right(oo)
@@ -492,7 +491,7 @@ class KoskiValidator(
           KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
         }
       case t: TaiteenPerusopetuksenOpiskeluoikeus =>
-        val koulutustoimija = if (t.koulutuksenToteutustapa.koodiarvo == "hankintakoulutus") opiskeluoikeudenKoulutustoimija else organisaationKoulutustoimija
+        val koulutustoimija = if(t.onHankintakoulutus) opiskeluoikeudenKoulutustoimija else organisaationKoulutustoimija
         HttpStatus.validate(user.hasTaiteenPerusopetusAccess(organisaatio.oid, koulutustoimija, accessType)) {
           KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
         }
