@@ -20,7 +20,7 @@ object MockKäyttöoikeusryhmät {
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.READ_UPDATE, Rooli.TAITEENPERUSOPETUS_HANKINTAKOULUTUS))
 
   def oppilaitosPalvelukäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
-    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.READ_UPDATE, Rooli.TIEDONSIIRTO, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ_UPDATE, Rooli.TIEDONSIIRTO, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
 
   def oppilaitosPääkäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.TIEDONSIIRRON_MITATOINTI, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))

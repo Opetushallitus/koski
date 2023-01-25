@@ -338,7 +338,7 @@ class PostgresOpiskeluoikeusRepository(
   private def estäOpiskeluoikeudenLuonti(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Boolean = {
     opiskeluoikeus match {
       // Estä kirjoitusoikeus TPO hankintakoulutuksen opiskeluoikeuteen, jos käyttäjällä löytyy editOnly-access
-      case t: TaiteenPerusopetuksenOpiskeluoikeus if t.koulutuksenToteutustapa.koodiarvo == "hankintakoulutus" =>
+      case t: TaiteenPerusopetuksenOpiskeluoikeus if t.onHankintakoulutus =>
         user.hasTaiteenPerusopetusAccess(t.getOppilaitos.oid, t.koulutustoimija.map(_.oid), AccessType.editOnly)
       case _ => false
     }
@@ -372,26 +372,20 @@ class PostgresOpiskeluoikeusRepository(
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
       case _ =>
         val vanhaOpiskeluoikeus = oldRow.toOpiskeluoikeusUnsafe
-
         val tallennettavaOpiskeluoikeus = OpiskeluoikeusChangeMigrator.migrate(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset)
 
+        val onTaiteenPerusopetusOpiskeluoikeus = tallennettavaOpiskeluoikeus.tyyppi.koodiarvo == "taiteenperusopetus"
+        val onVstVapaatavoitteinenSuoritus = tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus")
+        val onMitätöitävissä = OpiskeluoikeusAccessChecker.isInvalidatable(tallennettavaOpiskeluoikeus, user)
+
         validator.validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
+          case HttpStatus.ok if tallennettavaOpiskeluoikeus.mitätöity && onTaiteenPerusopetusOpiskeluoikeus && !onMitätöitävissä =>
+            DBIO.successful(Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu")))
           case HttpStatus.ok =>
-            if (
-              tallennettavaOpiskeluoikeus.mitätöity &&
-                (tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstvapaatavoitteinenkoulutus") ||
-                  tallennettavaOpiskeluoikeus.tyyppi.koodiarvo == "taiteenperusopetus")
-            ) {
+            if (tallennettavaOpiskeluoikeus.mitätöity && (onVstVapaatavoitteinenSuoritus || onTaiteenPerusopetusOpiskeluoikeus)) {
               OpiskeluoikeusPoistoUtils
                 .poistaOpiskeluOikeus(id, oid, tallennettavaOpiskeluoikeus, nextVersionumero, oldRow.oppijaOid, true, None)
-                .map(_ => Right(Updated(
-                  id,
-                  oid,
-                  uusiOpiskeluoikeus.lähdejärjestelmänId,
-                  oldRow.oppijaOid,
-                  nextVersionumero,
-                  vanhaOpiskeluoikeus
-                )))
+                .map(_ => Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, vanhaOpiskeluoikeus)))
             } else {
               val updatedValues@(newData, _, _, _, _, _, _, _, _, _, _) = KoskiTables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
               val diff: JArray = jsonDiff(oldRow.data, newData)
