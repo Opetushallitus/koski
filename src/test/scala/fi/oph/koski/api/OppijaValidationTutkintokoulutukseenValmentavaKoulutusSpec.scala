@@ -27,6 +27,35 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
   "Tutkintokoulutukseen valmentava koulutus" - {
     resetFixtures()
 
+    "Opiskeluoikeus" - {
+      def ilmanRahoitusta(oo: TutkintokoulutukseenValmentavanOpiskeluoikeus, tila: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila) = {
+        val viimeisinJakso = tila.opiskeluoikeusjaksot.last.copy(opintojenRahoitus = None)
+        oo.copy(tila = tila.copy(
+          opiskeluoikeusjaksot = tila.opiskeluoikeusjaksot.dropRight(1):+viimeisinJakso
+        ))
+      }
+
+      "jaksolla pitää olla rahoitusmuoto kun tila on läsnä" in {
+        putOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusEiValmistunut, tuvaTilaLäsnä), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
+        }
+      }
+
+      "jaksolla pitää olla rahoitusmuoto kun tila on valmistunut" in {
+        putOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusValmistunut, tuvaTilaValmistunut), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
+        }
+      }
+
+      "jaksolla pitää olla rahoitusmuoto kun tila on loma" in {
+        putOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusLoma, tuvaTilaLoma).copy(
+          järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa")
+        ), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
+        }
+      }
+    }
+
     "Suoritukset" - {
       "valmistuneen päätason suorituksen kesto ja osasuoritukset vaatimusten mukaiset" in {
         putOpiskeluoikeus(tuvaOpiskeluOikeusValmistunut, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {

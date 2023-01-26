@@ -412,8 +412,8 @@ function AddOppijaPage() {
         järjestämislupa: 'Ammatillisen koulutuksen järjestämislupa (TUVA)',
         suorituskieli: 'suomi',
         alkamispäivä: '1.8.2021',
-        opintojenRahoitus: 'Muuta kautta rahoitettu',
-        tila: 'Loma'
+        tila: 'Läsnä',
+        opintojenRahoitus: 'Muuta kautta rahoitettu'
       })
       return function () {
         return api
@@ -426,6 +426,7 @@ function AddOppijaPage() {
           .then(api.selectJärjestämislupa(params.järjestämislupa))
           .then(api.selectAloituspäivä(params.alkamispäivä))
           .then(api.selectOpiskeluoikeudenTila(params.tila))
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
           .then(api.selectMaksuttomuus(0))
       }
     },

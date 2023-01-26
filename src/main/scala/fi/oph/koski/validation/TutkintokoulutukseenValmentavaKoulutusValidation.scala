@@ -6,6 +6,8 @@ import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.tila.{tuvaSuor
 import fi.oph.koski.schema._
 
 object TutkintokoulutukseenValmentavaKoulutusValidation {
+  def validateOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
+    HttpStatus.fold(oo.tila.opiskeluoikeusjaksot.map(validateOpiskeluoikeusjaksonRahoitusmuoto))
 
   def validateTuvaSuoritus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     suoritus match {
@@ -45,6 +47,16 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
       HttpStatus.ok
     } else {
       tuvaPäätasonSuoritusVääräLaajuus()
+    }
+  }
+
+  def validateOpiskeluoikeusjaksonRahoitusmuoto(jakso: Opiskeluoikeusjakso): HttpStatus = {
+    val tuvanRahoitustiedonVaativatTilat = List("lasna", "valmistunut", "loma")
+
+    jakso match {
+      case j: TutkintokoulutukseenValmentavanOpiskeluoikeusjakso if j.opintojenRahoitus.isEmpty && tuvanRahoitustiedonVaativatTilat.contains(j.tila.koodiarvo) =>
+        KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto()
+      case _ => HttpStatus.ok
     }
   }
 

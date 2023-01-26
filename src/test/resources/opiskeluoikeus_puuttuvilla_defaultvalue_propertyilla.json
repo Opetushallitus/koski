@@ -30,6 +30,10 @@
             "tila": {
               "koodiarvo": "loma",
               "koodistoUri": "koskiopiskeluoikeudentila"
+            },
+            "opintojenRahoitus" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "opintojenrahoitus"
             }
           }
         ]

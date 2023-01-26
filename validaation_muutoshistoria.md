@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 25.1.2023
+- Tutkintoon valmentavan koulutuksen (TUVA) jaksolta vaaditaan rahoitustieto kun jakson tila on `valmistunut`, `lasna` tai `loma`.
+
 ## 24.1.2023
 - Taiteen perusopetuksen päätason suoritusten laajuuksien minimitasot muutettu yhden desimaalin tarkkuudelle:
   - Yleisen oppimäärän yhteiset opinnot: 11,1op.

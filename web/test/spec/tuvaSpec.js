@@ -209,7 +209,7 @@ describe('TUVA', function () {
         ).to.equal('1.8.2021')
         expect(
           editor.propertyBySelector('.opiskeluoikeusjakso .tila').getText()
-        ).to.equal('Loma')
+        ).to.equal('Läsnä (muuta kautta rahoitettu)')
         expect(
           editor.propertyBySelector('.järjestämislupa').getValue()
         ).to.equal('Ammatillisen koulutuksen järjestämislupa (TUVA)')

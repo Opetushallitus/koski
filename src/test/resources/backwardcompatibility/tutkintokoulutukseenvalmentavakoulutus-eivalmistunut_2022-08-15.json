@@ -172,5 +172,6 @@
       "koodistoUri" : "tuvajarjestamislupa"
     },
     "alkamispäivä" : "2021-08-01"
-  } ]
+  } ],
+  "ignoreKoskiValidator": true
 }
