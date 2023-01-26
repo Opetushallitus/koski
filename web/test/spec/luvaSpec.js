@@ -70,7 +70,7 @@ describe('Lukioon valmistava koulutus', function () {
           'Tietojenkäsittely *\n' +
           'ATK1 *\n' +
           'S 1 S\n' +
-          'Suoritettujen kurssien laajuus yhteensä: 7\n' +
+          'Suoritettujen kurssien määrä yhteensä: 7\n' +
           '* = paikallinen kurssi tai oppiaine\n' +
           'Valinnaisena suoritetut lukiokurssit\n' +
           'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
@@ -78,7 +78,7 @@ describe('Lukioon valmistava koulutus', function () {
           'ENA1\n' +
           '8 1 S\n' +
           '(8,0)\n' +
-          'Suoritettujen kurssien laajuus yhteensä: 1'
+          'Suoritettujen kurssien määrä yhteensä: 1'
       )
     })
   })

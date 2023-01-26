@@ -78,7 +78,7 @@ function VirheraportointiForm() {
     acceptDisclaimer: function () {
       function disclaimerToggle() {
         return S(
-          '.virheraportointi span:contains(Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.)'
+          '.virheraportointi span:contains(Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Oma Opintopolku-palvelussa.)'
         )
       }
 

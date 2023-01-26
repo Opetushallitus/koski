@@ -375,7 +375,7 @@ class AmmatillinenTutkintoRaporttiSpec
       verifyRaportinLataaminen(
         apiUrl = "api/raportit/ammatillinentutkintosuoritustietojentarkistus",
         expectedRaporttiNimi = AmmatillinenTutkintoSuoritustietojenTarkistus.toString,
-        expectedFileNamePrefix = "suoritustiedot",
+        expectedFileNamePrefix = "prestationsuppgifter",
         lang = "sv"
       )
     }

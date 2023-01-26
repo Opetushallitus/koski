@@ -26,14 +26,14 @@ const kaikkiOrganisaatiot = [
 
 const esiopetuksenRaportit = [
   'Opiskeluoikeus- ja suoritustiedot',
-  'VOS-tunnusluvut: oppilasmäärät'
+  'Tunnusluvut: oppilasmäärät'
 ]
 
 const lukionRaportit = [
   'Opiskeluoikeus- ja suoritustiedot',
-  'VOS-tunnusluvut: kurssikertymät',
-  'VOS-tunnusluvut: opiskelijamäärät',
-  'VOS-tunnusluvut: LUVA-opiskelijamäärät'
+  'Tunnusluvut: kurssikertymät',
+  'Tunnusluvut: opiskelijamäärät',
+  'Tunnusluvut: LUVA-opiskelijamäärät'
 ]
 
 describe('Raporttien luominen', function () {
@@ -67,11 +67,11 @@ describe('Raporttien luominen', function () {
           'Esiopetus',
           'Perusopetus',
           'Perusopetukseen valmistava opetus',
-          'Tutkintokoulutukseen valmentava koulutus',
+          'TUVA-koulutus',
           'Aikuisten perusopetus',
           'Ammatillinen koulutus',
           'Lukiokoulutus',
-          'Lukiokoulutus (Lops2021)',
+          'Lukiokoulutus (LOPS2021)',
           'IB-koulutus',
           'Yleiset'
         ])
@@ -103,11 +103,11 @@ describe('Raporttien luominen', function () {
           'Esiopetus',
           'Perusopetus',
           'Perusopetukseen valmistava opetus',
-          'Tutkintokoulutukseen valmentava koulutus',
+          'TUVA-koulutus',
           'Aikuisten perusopetus',
           'Ammatillinen koulutus',
           'Lukiokoulutus',
-          'Lukiokoulutus (Lops2021)',
+          'Lukiokoulutus (LOPS2021)',
           'IB-koulutus',
           'Yleiset'
         ])

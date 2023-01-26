@@ -61,9 +61,9 @@ describe('Perusopetus', function () {
         })
         it('näyttää oppiaineiden arvosanat', function () {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
-            'Oppiaineiden arvosanat\n' +
+            'Arviointiasteikko\n' +
               'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-              'Pakolliset oppiaineet\n' +
+              'Yhteiset oppiaineet\n' +
               'Oppiaine Arvosana\n' +
               'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
               'Suoritustapa Erityinen tutkinto\n' +
@@ -84,7 +84,7 @@ describe('Perusopetus', function () {
               'Terveystieto 8\n' +
               'Käsityö 9\n' +
               'Liikunta 9 **\n' +
-              'Valinnaiset oppiaineet\n' +
+              'Valinnaiset aineet\n' +
               'Oppiaine Arvosana Laajuus\n' +
               'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
               'Kotitalous S 1 vuosiviikkotuntia\n' +
@@ -167,9 +167,9 @@ describe('Perusopetus', function () {
         })
         it('näyttää oppiaineiden arvosanat', function () {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
-            'Oppiaineiden arvosanat\n' +
+            'Arviointiasteikko\n' +
               'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-              'Pakolliset oppiaineet\n' +
+              'Yhteiset oppiaineet\n' +
               'Oppiaine Arvosana\n' +
               'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
               'Suoritustapa Erityinen tutkinto\n' +
@@ -190,7 +190,7 @@ describe('Perusopetus', function () {
               'Terveystieto 8\n' +
               'Käsityö 9\n' +
               'Liikunta 9 **\n' +
-              'Valinnaiset oppiaineet\n' +
+              'Valinnaiset aineet\n' +
               'Oppiaine Arvosana Laajuus\n' +
               'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
               'Kotitalous S 1 vuosiviikkotuntia\n' +
@@ -278,10 +278,10 @@ describe('Perusopetus', function () {
               '15.8.2008 Läsnä\n' +
               'Lisätiedot\n' +
               'Pidennetty oppivelvollisuus 15.8.2010 — 4.6.2016\n' +
-              'Erityisen tuen päätös 15.8.2008 — 4.6.2016\n' +
+              'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
               'Opiskelee toiminta-alueittain kyllä\n' +
               'Opiskelee erityisryhmässä kyllä\n' +
-              'Erityisen tuen päätökset 15.8.2008 — 4.6.2016\n' +
+              'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
               'Opiskelee toiminta-alueittain kyllä\n' +
               'Opiskelee erityisryhmässä kyllä\n' +
               'Joustava perusopetus 15.8.2008 — 4.6.2016\n' +
@@ -290,7 +290,7 @@ describe('Perusopetus', function () {
               'Ulkomaanjaksot 15.8.2008 — 4.6.2016\n' +
               '16.9.2018 — 2.10.2019\n' +
               'Vuosiluokkiin sitomaton opetus kyllä\n' +
-              'Muu kuin vaikeimmin kehitysvammainen 15.8.2010 — 1.9.2010\n' +
+              'Oppilas on muiden kuin vaikeimmin kehitysvammaisten opetuksessa 15.8.2010 — 1.9.2010\n' +
               'Vaikeimmin kehitysvammainen 2.9.2010 — 4.6.2016\n' +
               'Majoitusetu 15.8.2008 — 4.6.2016\n' +
               'Kuljetusetu 15.8.2008 — 4.6.2016\n' +
@@ -510,7 +510,7 @@ describe('Perusopetus', function () {
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
             'Suorituskieli suomi\n' +
-            'Oman äidinkielen opinnot Arvosana 8\n' +
+            'Täydentävät oman äidinkielen opinnot Arvosana 8\n' +
             'Kieli saame, lappi\n' +
             'Laajuus 1 kurssia\n' +
             'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
@@ -518,9 +518,9 @@ describe('Perusopetus', function () {
       })
       it('näyttää oppiaineiden arvosanat', function () {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
-          'Oppiaineiden arvosanat\n' +
+          'Arviointiasteikko\n' +
             'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-            'Pakolliset oppiaineet\n' +
+            'Yhteiset oppiaineet\n' +
             'Oppiaine Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI4\n4 ÄI10\n9\n' +
             'B1-kieli, ruotsi 8\n' +
@@ -540,7 +540,7 @@ describe('Perusopetus', function () {
             'Terveystieto 8\n' +
             'Käsityö 9\n' +
             'Liikunta 9\n' +
-            'Valinnaiset oppiaineet\n' +
+            'Valinnaiset aineet\n' +
             'Oppiaine Arvosana Laajuus\n' +
             'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
             'Kotitalous S 1 vuosiviikkotuntia\n' +
@@ -787,7 +787,7 @@ describe('Perusopetus', function () {
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
             'Suorituskieli suomi\n' +
-            'Oman äidinkielen opinnot Arvosana 8\n' +
+            'Täydentävät oman äidinkielen opinnot Arvosana 8\n' +
             'Kieli saame, lappi\n' +
             'Laajuus 1 kurssia\n' +
             'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
@@ -795,7 +795,7 @@ describe('Perusopetus', function () {
       })
       it('näyttää oppiaineiden arvosanat', function () {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
-          'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+          'Arviointiasteikko\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
             'Oppiaine Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\nO LÄI8\n9 LÄI9\n9 AÄI1\n9 AÄI2\n9 AÄI3\n9 AÄI4\n9 AÄI5\n9 AÄI6\n9\n' +
             'Vieras kieli, englanti 7\nAENA1\n9 AENA2\n9 AENA3\n9 AENA4\n9\n' +
@@ -2695,9 +2695,9 @@ describe('Perusopetus', function () {
 
         it('Näytetään oppiaineiden arvosanat', function () {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
-            'Oppiaineiden arvosanat\n' +
+            'Arviointiasteikko\n' +
               'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-              'Pakolliset oppiaineet\n' +
+              'Yhteiset oppiaineet\n' +
               'Oppiaine Arvosana\n' +
               'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
               'B1-kieli, ruotsi 8\n' +
@@ -2716,7 +2716,7 @@ describe('Perusopetus', function () {
               'Terveystieto 8\n' +
               'Käsityö 9\n' +
               'Liikunta 9 **\n' +
-              'Valinnaiset oppiaineet\n' +
+              'Valinnaiset aineet\n' +
               'Oppiaine Arvosana Laajuus\n' +
               'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
               'Kotitalous S 1 vuosiviikkotuntia\n' +
@@ -4158,7 +4158,7 @@ describe('Perusopetus', function () {
 
           it('Ensin piilottaa oppiaineiden arvosanat (ja sanallisen arvioinnin)', function () {
             expect(extractAsText(S('.oppiaineet'))).to.equal(
-              'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine\nMatematiikka *\n* = yksilöllistetty oppimäärä'
+              'Arviointiasteikko\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nYhteiset oppiaineet\nOppiaine\nMatematiikka *\n* = yksilöllistetty oppimäärä'
             )
           })
 
@@ -4172,7 +4172,7 @@ describe('Perusopetus', function () {
 
             it('näyttää oppiaineiden arvosanat', function () {
               expect(extractAsText(S('.oppiaineet'))).to.equal(
-                'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine Arvosana\nMatematiikka S *\nSanallinen arviointi Hienoa työtä\n* = yksilöllistetty oppimäärä'
+                'Arviointiasteikko\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nYhteiset oppiaineet\nOppiaine Arvosana\nMatematiikka S *\nSanallinen arviointi Hienoa työtä\n* = yksilöllistetty oppimäärä'
               )
             })
 
@@ -4438,10 +4438,10 @@ describe('Perusopetus', function () {
             '15.8.2008 Läsnä\n' +
             'Lisätiedot\n' +
             'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
-            'Erityisen tuen päätökset 15.8.2008 — 4.6.2016\n' +
+            'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
             'Opiskelee toiminta-alueittain ei\n' +
             'Opiskelee erityisryhmässä ei\n' +
-            'Muu kuin vaikeimmin kehitysvammainen 15.8.2008 — 4.6.2016'
+            'Oppilas on muiden kuin vaikeimmin kehitysvammaisten opetuksessa 15.8.2008 — 4.6.2016'
         )
       })
 
@@ -4460,9 +4460,9 @@ describe('Perusopetus', function () {
       })
       it('näyttää oppiaineiden arvosanat', function () {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
-          'Oppiaineiden arvosanat\n' +
+          'Arviointiasteikko\n' +
             'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-            'Pakolliset oppiaineet\n' +
+            'Yhteiset oppiaineet\n' +
             'Oppiaine Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 7 †\n' +
             'A1-kieli, englanti 10 †\n' +
@@ -4477,7 +4477,7 @@ describe('Perusopetus', function () {
             'Yhteiskuntaoppi 8 †\n' +
             'Kuvataide 8\n' +
             'Liikunta 7 * †\n' +
-            'Valinnaiset oppiaineet\n' +
+            'Valinnaiset aineet\n' +
             'Oppiaine Arvosana\n' +
             'Monialainen oppimiskokonaisuus S\n' +
             'Kuvaus Tehtiin ryhmätyönä webbisivusto, jossa kerrotaan tupakoinnin haitoista\n' +
@@ -4632,7 +4632,7 @@ describe('Perusopetus', function () {
       })
       it('näyttää oppiaineiden arvosanat', function () {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
-          'Oppiaineiden arvosanat\n' +
+          'Arviointiasteikko\n' +
             'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
             'Perusopetuksen valmistavan opetuksen opinnot Oppiaine Arvosana Laajuus\n' +
             'Äidinkieli S 10 vuosiviikkotuntia\n' +

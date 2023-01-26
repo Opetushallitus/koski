@@ -154,11 +154,11 @@ describe('Omat tiedot', function () {
 
           it('näytetään lista tiedoista, joita palvelussa ei pystytä näyttämään', function () {
             expect(form.contentsAsText()).to.equal(
-              'Huomioithan, että Koski-palvelussa ei pystytä näyttämään seuraavia tietoja:\n' +
+              'Huomioithan, että Oma Opintopolku-palvelussa ei pystytä näyttämään seuraavia tietoja:\n' +
                 'Korkeakoulututkintoja ennen vuotta 1995. Tässä voi olla korkeakoulukohtaisia poikkeuksia.\n' +
-                'Ennen vuotta 1990 suoritettuja ylioppilastutkintoja.\n' +
-                'Ennen vuoden 2018 tammikuuta suoritettuja peruskoulun, lukion tai ammattikoulun suorituksia ja opiskeluoikeuksia.\n' +
-                'Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'
+                'Ennen vuotta 1990 suoritettuja suomalaisia ylioppilastutkintoja.\n' +
+                'Ennen vuotta 2018 suoritettuja peruskoulun, ammattikoulun, suomalaisen lukion tai Suomessa suoritetun kansainvälisen lukion tutkintoja, suorituksia ja opiskeluoikeuksia.\n' +
+                'Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Oma Opintopolku-palvelussa.'
             )
           })
 

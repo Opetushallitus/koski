@@ -54,14 +54,14 @@ describe('TUVA', function () {
               'Koulutuksen maksuttomuus lisää uusi\n' +
               'Oikeutta maksuttomuuteen pidennetty lisää uusi\n' +
               'Ulkomaanjaksot lisää uusi\n' +
-              'Muu kuin vaikeimmin kehitysvammainen lisää uusi\n' +
+              'Oppilas on muiden kuin vaikeimmin kehitysvammaisten opetuksessa lisää uusi\n' +
               'Vaikeimmin kehitysvammainen lisää uusi\n' +
               'Majoitusetu lisää\n' +
               'Kuljetusetu lisää\n' +
               'Sisäoppilaitosmainen majoitus lisää uusi\n' +
               'Koulukoti lisää uusi\n' +
               'Pidennetty päättymispäivä\n' +
-              'Erityisen tuen päätökset lisää uusi'
+              'Erityisen tuen jaksot lisää uusi'
           )
         })
         after(editor.cancelChanges)

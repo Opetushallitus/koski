@@ -48,7 +48,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         queryString = defaultQuery(lang = "sv"),
         apiUrl = "api/raportit/perusopetuksenvuosiluokka",
         expectedRaporttiNimi = "perusopetuksenvuosiluokka",
-        expectedFileNamePrefix = "Perusopetuksen_vuosiluokka"
+        expectedFileNamePrefix = "Grundläggande_utbildning_årskurs"
       )
     }
 

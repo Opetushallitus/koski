@@ -134,7 +134,7 @@ test.describe('Perusopetus', () => {
         aloituspäivä: new Date(2018, 1, 1),
         rahoitus: 'Valtionosuusrahoitteinen koulutus',
         opintojenMaksuttomuus:
-          'Henkilö on syntynyt ennen vuotta 2004 ja ei ole laajennetun oppivelvollisuuden piirissä'
+          'Henkilö on syntynyt vuonna 2004 tai aiemmin ja ei ole laajennetun oppivelvollisuuden piirissä'
       })
       await uusiOppijaPage.submitAndExpectSuccess()
       await page.close()

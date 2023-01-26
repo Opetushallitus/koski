@@ -41,7 +41,7 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     "Raportti voidaan ladata eri lokalisaatiolla ja lataaminen tuottaa auditlogin" in {
       authGet(s"api/raportit/esiopetus?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=sv&password=salasana") {
         verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="esiopetus_koski_raportti_${jyväskylänNormaalikoulu}_20180101.xlsx"""")
+        response.headers("Content-Disposition").head should equal(s"""attachment; filename="förskoleundervisning_koski_rapport_${jyväskylänNormaalikoulu}_20180101.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=sv")))
       }
