@@ -247,8 +247,10 @@ case class TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus(
   koulutusmoduuli: TaiteenPerusopetuksenPaikallinenOpintokokonaisuus,
   arviointi: Option[List[TaiteenPerusopetuksenArviointi]],
   @KoodistoKoodiarvo("taiteenperusopetuksenpaikallinenopintokokonaisuus")
-  override val tyyppi: Koodistokoodiviite = Koodistokoodiviite("taiteenperusopetuksenpaikallinenopintokokonaisuus", "suorituksentyyppi")
-) extends Suoritus {
+  override val tyyppi: Koodistokoodiviite = Koodistokoodiviite("taiteenperusopetuksenpaikallinenopintokokonaisuus", "suorituksentyyppi"),
+  @Description("Jos opintokokonaisuus on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot.")
+  tunnustettu: Option[TaiteenPerusopetuksenOsasuorituksenTunnustus] = None
+) extends Suoritus with MahdollisestiTunnustettu {
   override def vahvistus: Option[Vahvistus] = None
 }
 
@@ -262,3 +264,11 @@ case class TaiteenPerusopetuksenPaikallinenOpintokokonaisuus(
   tunniste: PaikallinenKoodi,
   laajuus: LaajuusOpintopisteissä
 ) extends PaikallinenKoulutusmoduuli with KoulutusmoduuliPakollinenLaajuus with StorablePreference
+
+/******************************************************************************
+ * OSASUORITUKSET - TUNNUSTAMINEN
+ *****************************************************************************/
+
+case class TaiteenPerusopetuksenOsasuorituksenTunnustus(
+  selite: LocalizedString
+) extends SelitettyOsaamisenTunnustaminen

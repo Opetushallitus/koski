@@ -55,6 +55,12 @@ object ExamplesTaiteenPerusopetus {
     )
   )
 
+  val tunnustus = Some(
+    TaiteenPerusopetuksenOsasuorituksenTunnustus(
+      selite = Finnish("Tunnustettu paikallinen opintokokonaisuus")
+    )
+  )
+
   object Opiskeluoikeus {
 
     def jaksoLäsnä(päivä: LocalDate = alkupäivä) = TaiteenPerusopetuksenOpiskeluoikeusjakso(
@@ -162,7 +168,7 @@ object ExamplesTaiteenPerusopetus {
       arviointi = Some(List(arviointiHyväksytty)),
       vahvistus = Some(vahvistus),
       osasuoritukset = Some(List(
-        Osasuoritus.osasuoritusMusiikki("musa1", 10.0),
+        Osasuoritus.tunnustettuOsasuoritusMusiikki("musa1", 10.0),
         Osasuoritus.osasuoritusMusiikki("musa2", 10.0),
         Osasuoritus.osasuoritusMusiikki("musa3", 9.6)
       ))
@@ -220,6 +226,13 @@ object ExamplesTaiteenPerusopetus {
     ) = TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus(
       koulutusmoduuli = Koulutusmoduuli.paikallinenOsasuoritus(tunniste, laajuus),
       arviointi = Some(List(arviointiHyväksytty))
+    )
+
+    def tunnustettuOsasuoritusMusiikki(
+      tunniste: String,
+      laajuus: Double
+    ): TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus = osasuoritusMusiikki(tunniste, laajuus).copy(
+      tunnustettu = tunnustus
     )
 
     object Koulutusmoduuli {

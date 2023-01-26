@@ -1,4 +1,7 @@
-# 19.1.2023
+## 26.1.2023
+- Taiteen perusopetuksen osasuorituksille lisätty valinnainen tunnustettu-rakenne.
+
+## 19.1.2023
 - Jatkuvaan oppimiseen suunnatun vapaan sivistystyön koulutuksen osasuoritusten ja aliosasuoritusten laajuus on muutettu valinnaiseksi kentäksi.
 
 ## 2.1.2023
