@@ -4,7 +4,7 @@ import fi.oph.koski.cache.GlobalCacheManager
 import fi.oph.koski.json.JsonFiles
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
-import org.json4s.{JArray, JObject, JValue}
+import org.json4s.{JArray, JObject, JString, JValue}
 
 // VIRKAILIJA_ROOT=https://virkailija.opintopolku.fi mvn scala:testCompile exec:java -Dexec.mainClass=fi.oph.koski.localization.LocalizationMockDataUpdater
 object LocalizationMockDataUpdater extends App {
@@ -18,7 +18,8 @@ object LocalizationMockDataUpdater extends App {
   val JArray(localizations) = new ReadOnlyRemoteLocalizationRepository(root, localizationConfig)(GlobalCacheManager).fetchLocalizations.asInstanceOf[JArray]
   //val JArray(localizations) = JsonFiles.readFile(filename)
   val sorted = stabilize(localizations)
-  JsonFiles.writeFile(filename, sorted)
+  val masked = mask(sorted)
+  JsonFiles.writeFile(filename, masked)
 
   private def stabilize(entries: Seq[JValue]) = {
     entries
@@ -28,6 +29,17 @@ object LocalizationMockDataUpdater extends App {
       }
       .map {
         case JObject(fields) => JObject(fields.sortBy(_._1))
+        case _ => ???
+      }
+  }
+  private def mask(entries: Seq[JValue]) = {
+    entries
+      .map {
+        case o: JObject => o mapField {
+          case ("createdBy", _) => ("createdBy", JString("anonymousUser"))
+          case ("modifiedBy", _) => ("modifiedBy", JString("anonymousUser"))
+          case a: (_, _) => a
+        }
         case _ => ???
       }
   }
