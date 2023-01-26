@@ -5,6 +5,8 @@
     "nimi" : "N1",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "N1",
     "kieli" : "EN"
   } ],
@@ -16,6 +18,8 @@
   "metadata" : [ {
     "nimi" : "N2",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "N2",
     "kieli" : "EN"
@@ -29,6 +33,8 @@
     "nimi" : "P1",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "P1",
     "kieli" : "EN"
   } ],
@@ -40,6 +46,8 @@
   "metadata" : [ {
     "nimi" : "P2",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "P2",
     "kieli" : "EN"
@@ -53,6 +61,8 @@
     "nimi" : "P3",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "P3",
     "kieli" : "EN"
   } ],
@@ -64,6 +74,8 @@
   "metadata" : [ {
     "nimi" : "P4",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "P4",
     "kieli" : "EN"
@@ -77,6 +89,8 @@
     "nimi" : "P5",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "P5",
     "kieli" : "EN"
   } ],
@@ -88,6 +102,8 @@
   "metadata" : [ {
     "nimi" : "S1",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "S1",
     "kieli" : "EN"
@@ -101,6 +117,8 @@
     "nimi" : "S2",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "S2",
     "kieli" : "EN"
   } ],
@@ -112,6 +130,8 @@
   "metadata" : [ {
     "nimi" : "S3",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "S3",
     "kieli" : "EN"
@@ -125,6 +145,8 @@
     "nimi" : "S4",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "S4",
     "kieli" : "EN"
   } ],
@@ -136,6 +158,8 @@
   "metadata" : [ {
     "nimi" : "S5",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "S5",
     "kieli" : "EN"
@@ -149,6 +173,8 @@
     "nimi" : "S6",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "S6",
     "kieli" : "EN"
   } ],
@@ -161,10 +187,11 @@
     "nimi" : "S7",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "S7",
     "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}
-]
+} ]

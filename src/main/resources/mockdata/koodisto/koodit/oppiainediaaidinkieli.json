@@ -43,6 +43,8 @@
   }, {
     "nimi" : "finska som andraspråk och litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

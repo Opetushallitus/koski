@@ -2,6 +2,10 @@
   "koodiUri" : "oppiaineentasoib_hl",
   "koodiArvo" : "HL",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Higher Level",
     "lyhytNimi" : "HL",
     "kieli" : "EN"
@@ -12,6 +16,10 @@
   "koodiUri" : "oppiaineentasoib_sl",
   "koodiArvo" : "SL",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Standard Level",
     "lyhytNimi" : "SL",
     "kieli" : "EN"

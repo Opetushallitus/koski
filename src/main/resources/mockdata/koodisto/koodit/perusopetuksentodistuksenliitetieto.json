@@ -11,6 +11,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "Bedömning av elevens uppförande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -27,6 +29,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -43,6 +47,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "Bedömning av arbetet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -59,6 +65,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "En verbal bedömning som bilaga över valfria ämnen som omfattar mindre än två årsveckotimmar",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

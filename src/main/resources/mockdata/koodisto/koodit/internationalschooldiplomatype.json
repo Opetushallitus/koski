@@ -5,6 +5,8 @@
     "nimi" : "IB Diploma",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "IB Diploma",
     "kieli" : "EN"
   } ],
@@ -16,6 +18,8 @@
   "metadata" : [ {
     "nimi" : "ISH Diploma",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "ISH Diploma",
     "kieli" : "EN"

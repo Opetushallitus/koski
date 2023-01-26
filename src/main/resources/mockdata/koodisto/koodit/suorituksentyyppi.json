@@ -371,6 +371,69 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_ebtutkinnonalaosasuoritus",
+  "koodiArvo" : "ebtutkinnonalaosasuoritus",
+  "metadata" : [ {
+    "nimi" : "Component of European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Component of European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Component of European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ebtutkinnonosasuoritus",
+  "koodiArvo" : "ebtutkinnonosasuoritus",
+  "metadata" : [ {
+    "nimi" : "European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European Baccalaureate subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ebtutkinto",
+  "koodiArvo" : "ebtutkinto",
+  "metadata" : [ {
+    "nimi" : "European Baccalaureate",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European Baccalaureate",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European Baccalaureate",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_esiopetuksensuoritus",
   "koodiArvo" : "esiopetuksensuoritus",
   "metadata" : [ {
@@ -381,6 +444,258 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Pre-primary education",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuoritusprimary",
+  "koodiArvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
+  "metadata" : [ {
+    "nimi" : "Component of primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Component of primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Component of primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuoritusprimarylapsi",
+  "koodiArvo" : "europeanschoolofhelsinkialaosasuoritusprimarylapsi",
+  "metadata" : [ {
+    "nimi" : "Component of primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Component of primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Component of primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuorituss7",
+  "koodiArvo" : "europeanschoolofhelsinkialaosasuorituss7",
+  "metadata" : [ {
+    "nimi" : "Component of S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Component of S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Component of S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritusprimary",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuoritusprimary",
+  "metadata" : [ {
+    "nimi" : "Primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Primary cycle subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritusprimarylapsi",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuoritusprimarylapsi",
+  "metadata" : [ {
+    "nimi" : "Primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Primary cycle child subject of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuorituss6",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuorituss6",
+  "metadata" : [ {
+    "nimi" : "S6 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "S6 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "S6 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuorituss7",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuorituss7",
+  "metadata" : [ {
+    "nimi" : "S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "S7 year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritussecondarylower",
+  "koodiArvo" : "europeanschoolofhelsinkiosasuoritussecondarylower",
+  "metadata" : [ {
+    "nimi" : "Lower year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lower year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lower year class subject of the secondary cycle of European School of Helsinki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkanursery",
+  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkanursery",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki nursery cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki nursery cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki nursery cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkaprimary",
+  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkaprimary",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki primary cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki primary cycle year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkasecondarylower",
+  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki secondary cycle lower year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle lower year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle lower year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkasecondaryupper",
+  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
+  "metadata" : [ {
+    "nimi" : "European School of Helsinki secondary cycle upper year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle upper year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "European School of Helsinki secondary cycle upper year class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -551,6 +866,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -609,6 +926,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -676,6 +995,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -896,6 +1217,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -915,6 +1238,27 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_muukuinsaanneltykoulutus",
+  "koodiArvo" : "muukuinsaanneltykoulutus",
+  "metadata" : [ {
+    "nimi" : "Muu kuin säännelty koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Muu kuin säännelty koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Muu kuin säännelty koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_muunammatillisenkoulutuksenosasuoritus",
   "koodiArvo" : "muunammatillisenkoulutuksenosasuoritus",
   "metadata" : [ {
@@ -927,6 +1271,29 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_muunkuinsaannellynkoulutuksenosasuoritus",
+  "koodiArvo" : "muunkuinsaannellynkoulutuksenosasuoritus",
+  "metadata" : [ {
+    "nimi" : "Muun kuin säännellyn koulutuksen osasuoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Muun kuin säännellyn koulutuksen osasuoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Muun kuin säännellyn koulutuksen osasuoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1108,6 +1475,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1223,6 +1592,111 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaranperusopinnot",
+  "koodiArvo" : "taiteenperusopetuksenlaajanoppimaaranperusopinnot",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaransyventavatopinnot",
+  "koodiArvo" : "taiteenperusopetuksenlaajanoppimaaransyventavatopinnot",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenpaikallinenopintokokonaisuus",
+  "koodiArvo" : "taiteenperusopetuksenpaikallinenopintokokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranteemaopinnot",
+  "koodiArvo" : "taiteenperusopetuksenyleisenoppimaaranteemaopinnot",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
+  "koodiArvo" : "taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_telma",
   "koodiArvo" : "telma",
   "metadata" : [ {
@@ -1265,6 +1739,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1281,6 +1757,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -1409,6 +1887,48 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Preparatory education for vocational training unit",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstjotpakoulutuksenosasuoritus",
+  "koodiArvo" : "vstjotpakoulutuksenosasuoritus",
+  "metadata" : [ {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_vstjotpakoulutus",
+  "koodiArvo" : "vstjotpakoulutus",
+  "metadata" : [ {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -1770,517 +2290,4 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkanursery",
-  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkanursery",
-  "metadata" : [ {
-    "nimi" : "European School of Helsinki nursery cycle year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "European School of Helsinki nursery cycle year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "European School of Helsinki nursery cycle year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkaprimary",
-  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkaprimary",
-  "metadata" : [ {
-    "nimi" : "European School of Helsinki primary cycle year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "European School of Helsinki primary cycle year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "European School of Helsinki primary cycle year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkasecondarylower",
-  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkasecondarylower",
-  "metadata" : [ {
-    "nimi" : "European School of Helsinki secondary cycle lower year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "European School of Helsinki secondary cycle lower year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "European School of Helsinki secondary cycle lower year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkivuosiluokkasecondaryupper",
-  "koodiArvo" : "europeanschoolofhelsinkivuosiluokkasecondaryupper",
-  "metadata" : [ {
-    "nimi" : "European School of Helsinki secondary cycle upper year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "European School of Helsinki secondary cycle upper year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "European School of Helsinki secondary cycle upper year class",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_ebtutkinto",
-  "koodiArvo" : "ebtutkinto",
-  "metadata" : [ {
-    "nimi" : "European Baccalaureate",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "European Baccalaureate",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "European Baccalaureate",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_ebtutkinnonosasuoritus",
-  "koodiArvo" : "ebtutkinnonosasuoritus",
-  "metadata" : [ {
-    "nimi" : "European Baccalaureate subject",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "European Baccalaureate subject",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "European Baccalaureate subject",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_ebtutkinnonalaosasuoritus",
-  "koodiArvo" : "ebtutkinnonalaosasuoritus",
-  "metadata" : [ {
-    "nimi" : "Component of European Baccalaureate subject",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Component of European Baccalaureate subject",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Component of European Baccalaureate subject",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstjotpakoulutus",
-  "koodiArvo" : "vstjotpakoulutus",
-  "metadata" : [ {
-    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_vstjotpakoulutuksenosasuoritus",
-  "koodiArvo" : "vstjotpakoulutuksenosasuoritus",
-  "metadata" : [ {
-    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutuksen osasuoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritusprimary",
-  "koodiArvo" : "europeanschoolofhelsinkiosasuoritusprimary",
-  "metadata" : [ {
-    "nimi" : "Primary cycle subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Primary cycle subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Primary cycle subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritusprimarylapsi",
-  "koodiArvo" : "europeanschoolofhelsinkiosasuoritusprimarylapsi",
-  "metadata" : [ {
-    "nimi" : "Primary cycle child subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Primary cycle child subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Primary cycle child subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuoritusprimarylapsi",
-  "koodiArvo" : "europeanschoolofhelsinkialaosasuoritusprimarylapsi",
-  "metadata" : [ {
-    "nimi" : "Component of primary cycle child subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Component of primary cycle child subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Component of primary cycle child subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuoritusprimary",
-  "koodiArvo" : "europeanschoolofhelsinkialaosasuoritusprimary",
-  "metadata" : [ {
-    "nimi" : "Component of primary cycle subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Component of primary cycle subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Component of primary cycle subject of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuoritussecondarylower",
-  "koodiArvo" : "europeanschoolofhelsinkiosasuoritussecondarylower",
-  "metadata" : [ {
-    "nimi" : "Lower year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Lower year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Lower year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuorituss6",
-  "koodiArvo" : "europeanschoolofhelsinkiosasuorituss6",
-  "metadata" : [ {
-    "nimi" : "S6 year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "S6 year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "S6 year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkiosasuorituss7",
-  "koodiArvo" : "europeanschoolofhelsinkiosasuorituss7",
-  "metadata" : [ {
-    "nimi" : "S7 year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "S7 year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "S7 year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_europeanschoolofhelsinkialaosasuorituss7",
-  "koodiArvo" : "europeanschoolofhelsinkialaosasuorituss7",
-  "metadata" : [ {
-    "nimi" : "Component of S7 year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Component of S7 year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Component of S7 year class subject of the secondary cycle of European School of Helsinki",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri": "suorituksentyyppi_muukuinsaanneltykoulutus",
-  "koodiArvo": "muukuinsaanneltykoulutus",
-  "metadata": [
-    {
-      "nimi": "Muu kuin säännelty koulutus",
-      "lyhytNimi": "",
-      "kuvaus": "",
-      "kieli": "FI"
-    },
-    {
-      "nimi": "Muu kuin säännelty koulutus",
-      "lyhytNimi": "",
-      "kuvaus": "",
-      "kieli": "SV"
-    },
-    {
-      "nimi": "Muu kuin säännelty koulutus",
-      "lyhytNimi": "",
-      "kuvaus": "",
-      "kieli": "EN"
-    }
-  ],
-  "versio": 1,
-  "withinCodeElements": []
-}, {
-  "koodiUri": "suorituksentyyppi_muunkuinsaannellynkoulutuksenosasuoritus",
-  "koodiArvo": "muunkuinsaannellynkoulutuksenosasuoritus",
-  "metadata": [
-    {
-      "nimi": "Muun kuin säännellyn koulutuksen osasuoritus",
-      "lyhytNimi": "",
-      "kuvaus": "",
-      "kieli": "FI"
-    },
-    {
-      "nimi": "Muun kuin säännellyn koulutuksen osasuoritus",
-      "lyhytNimi": "",
-      "kuvaus": "",
-      "kieli": "SV"
-    },
-    {
-      "nimi": "Muun kuin säännellyn koulutuksen osasuoritus",
-      "lyhytNimi": "",
-      "kuvaus": "",
-      "kieli": "EN"
-    }
-  ],
-  "versio": 1,
-  "withinCodeElements": []
-}, {
-  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
-  "koodiArvo" : "taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
-  "metadata" : [ {
-    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän yhteisten opintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranteemaopinnot",
-  "koodiArvo" : "taiteenperusopetuksenyleisenoppimaaranteemaopinnot",
-  "metadata" : [ {
-    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Taiteen perusopetuksen yleisen oppimäärän teemaopintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaranperusopinnot",
-  "koodiArvo" : "taiteenperusopetuksenlaajanoppimaaranperusopinnot",
-  "metadata" : [ {
-    "nimi" : "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Taiteen perusopetuksen laajan oppimäärän perusopintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaransyventavatopinnot",
-  "koodiArvo" : "taiteenperusopetuksenlaajanoppimaaransyventavatopinnot",
-  "metadata" : [ {
-    "nimi" : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Taiteen perusopetuksen laajan oppimäärän syventävien opintojen suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_taiteenperusopetuksenpaikallinenopintokokonaisuus",
-  "koodiArvo" : "taiteenperusopetuksenpaikallinenopintokokonaisuus",
-  "metadata" : [ {
-    "nimi" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}
-]
+} ]

@@ -4,6 +4,10 @@
   "metadata" : [ {
     "nimi" : "Adventistinen uskonto",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -13,6 +17,10 @@
   "metadata" : [ {
     "nimi" : "Bahá’í-uskonto",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -22,6 +30,10 @@
   "metadata" : [ {
     "nimi" : "Buddhalainen uskonto",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -34,6 +46,8 @@
   }, {
     "nimi" : "Evangelisk-luthersk tro",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -43,6 +57,10 @@
   "metadata" : [ {
     "nimi" : "Helluntailiikkeen uskonto",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -52,6 +70,10 @@
   "metadata" : [ {
     "nimi" : "Herran kansa ry:n uskonto",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -64,6 +86,8 @@
   }, {
     "nimi" : "Islam",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -76,6 +100,8 @@
   }, {
     "nimi" : "Juutalainen uskonto",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -88,6 +114,8 @@
   }, {
     "nimi" : "Katolinen uskonto",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -97,6 +125,10 @@
   "metadata" : [ {
     "nimi" : "Krishna-uskonto",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -106,6 +138,10 @@
   "metadata" : [ {
     "nimi" : "Kristiyhteisön uskonto",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -115,6 +151,10 @@
   "metadata" : [ {
     "nimi" : "Myöhempien Aikojen Pyhien Jeesuksen Kristuksen Kirkon uskonto",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -127,6 +167,8 @@
   }, {
     "nimi" : "Andra religioner",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -139,6 +181,8 @@
   }, {
     "nimi" : "Ortodox tro",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -148,6 +192,10 @@
   "metadata" : [ {
     "nimi" : "Vapaakirkollinen uskonto",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

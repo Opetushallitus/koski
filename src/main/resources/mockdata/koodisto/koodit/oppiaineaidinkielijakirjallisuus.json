@@ -7,6 +7,8 @@
   }, {
     "nimi" : "Finska och litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -19,6 +21,8 @@
   }, {
     "nimi" : "Svenska för samisktalande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -31,6 +35,8 @@
   }, {
     "nimi" : "Finska för teckenspråkiga",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -43,6 +49,8 @@
   }, {
     "nimi" : "Svenska för teckenspråkiga",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -55,6 +63,8 @@
   }, {
     "nimi" : "Svenska och litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -67,6 +77,8 @@
   }, {
     "nimi" : "Samiska och litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -79,6 +91,8 @@
   }, {
     "nimi" : "Romani och litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -91,6 +105,8 @@
   }, {
     "nimi" : "Teckenspråk och litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -103,6 +119,8 @@
   }, {
     "nimi" : "Annat modersmål",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -115,6 +133,8 @@
   }, {
     "nimi" : "Finska som andraspråk och litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -127,6 +147,8 @@
   }, {
     "nimi" : "Svenska som andraspråk och litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -139,6 +161,8 @@
   }, {
     "nimi" : "Finska för samisktalande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -151,6 +175,8 @@
   }, {
     "nimi" : "Finska, modersmålsinriktad finska",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

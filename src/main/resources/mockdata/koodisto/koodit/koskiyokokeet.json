@@ -1,916 +1,1449 @@
-[ {
-  "koodiUri" : "koskiyokokeet_a",
-  "koodiArvo" : "A",
-  "metadata" : [ {
-    "nimi" : "Äidinkielen koe, suomi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Provet i modersmålet, finska",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_a5",
-  "koodiArvo" : "A5",
-  "metadata" : [ {
-    "nimi" : "Suomi toisena kielenä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Finska som andra språk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ba",
-  "koodiArvo" : "BA",
-  "metadata" : [ {
-    "nimi" : "Ruotsi, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Svenska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_bb",
-  "koodiArvo" : "BB",
-  "metadata" : [ {
-    "nimi" : "Ruotsi, keskipitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Svenska, medellång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_bi",
-  "koodiArvo" : "BI",
-  "metadata" : [ {
-    "nimi" : "Biologia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Biologi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ca",
-  "koodiArvo" : "CA",
-  "metadata" : [ {
-    "nimi" : "Suomi, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Finska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_cb",
-  "koodiArvo" : "CB",
-  "metadata" : [ {
-    "nimi" : "Suomi, keskipitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Finska, medellång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_cc",
-  "koodiArvo" : "CC",
-  "metadata" : [ {
-    "nimi" : "Suomi, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Finska, kort lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_dc",
-  "koodiArvo" : "DC",
-  "metadata" : [ {
-    "nimi" : "Pohjoissaame, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Pohjoissaame, lyhyt oppimäärä",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_e1",
-  "koodiArvo" : "E1",
-  "metadata" : [ {
-    "nimi" : "Englanti, pitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Engelska, lång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_e2",
-  "koodiArvo" : "E2",
-  "metadata" : [ {
-    "nimi" : "Englanti, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Engelska, medellång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ea",
-  "koodiArvo" : "EA",
-  "metadata" : [ {
-    "nimi" : "Englanti, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Engelska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_eb",
-  "koodiArvo" : "EB",
-  "metadata" : [ {
-    "nimi" : "Englanti, keskipitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Engelska, medellång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ec",
-  "koodiArvo" : "EC",
-  "metadata" : [ {
-    "nimi" : "Englanti, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Engelska, kort lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_et",
-  "koodiArvo" : "ET",
-  "metadata" : [ {
-    "nimi" : "Elämänkatsomustieto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Livsåskådningskunskap",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_f1",
-  "koodiArvo" : "F1",
-  "metadata" : [ {
-    "nimi" : "Ranska, pitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Franska, lång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_f2",
-  "koodiArvo" : "F2",
-  "metadata" : [ {
-    "nimi" : "Ranska, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Franska, medellång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_fa",
-  "koodiArvo" : "FA",
-  "metadata" : [ {
-    "nimi" : "Ranska, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Franska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_fb",
-  "koodiArvo" : "FB",
-  "metadata" : [ {
-    "nimi" : "Ranska, keskipitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Franska, medellång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_fc",
-  "koodiArvo" : "FC",
-  "metadata" : [ {
-    "nimi" : "Ranska, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Franska, kort lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ff",
-  "koodiArvo" : "FF",
-  "metadata" : [ {
-    "nimi" : "Filosofia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Filosofi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_fy",
-  "koodiArvo" : "FY",
-  "metadata" : [ {
-    "nimi" : "Fysiikka",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Fysik",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_g1",
-  "koodiArvo" : "G1",
-  "metadata" : [ {
-    "nimi" : "Portugali, pitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Portugisiska, lång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_g2",
-  "koodiArvo" : "G2",
-  "metadata" : [ {
-    "nimi" : "Portugali, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Portugisiska, medellång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ga",
-  "koodiArvo" : "GA",
-  "metadata" : [ {
-    "nimi" : "Portugali, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Portugisiska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_gb",
-  "koodiArvo" : "GB",
-  "metadata" : [ {
-    "nimi" : "Portugali, keskipitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Portugisiska, medellång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_gc",
-  "koodiArvo" : "GC",
-  "metadata" : [ {
-    "nimi" : "Portugali, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Portugisiska, kort lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ge",
-  "koodiArvo" : "GE",
-  "metadata" : [ {
-    "nimi" : "Maantiede",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Geografi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_h1",
-  "koodiArvo" : "H1",
-  "metadata" : [ {
-    "nimi" : "Unkari, pitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ungerska, lång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_h2",
-  "koodiArvo" : "H2",
-  "metadata" : [ {
-    "nimi" : "Unkari, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ungerska, medellång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ha",
-  "koodiArvo" : "HA",
-  "metadata" : [ {
-    "nimi" : "Unkari, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ungerska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_hb",
-  "koodiArvo" : "HB",
-  "metadata" : [ {
-    "nimi" : "Unkari, keskipitkäoppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ungerska, medellång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_hi",
-  "koodiArvo" : "HI",
-  "metadata" : [ {
-    "nimi" : "Historia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Historia",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_i",
-  "koodiArvo" : "I",
-  "metadata" : [ {
-    "nimi" : "Äidinkielen koe, inarinsaame",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Äidinkielen koe, inarinsaame",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ic",
-  "koodiArvo" : "IC",
-  "metadata" : [ {
-    "nimi" : "Inarinsaame, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Inarinsaame, lyhyt oppimäärä",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_j",
-  "koodiArvo" : "J",
-  "metadata" : [ {
-    "nimi" : "Englanninkielinen kypsyyskoe",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Englanninkielinen kypsyyskoe",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_kc",
-  "koodiArvo" : "KC",
-  "metadata" : [ {
-    "nimi" : "Kreikka, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grekiska, kort lärökurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ke",
-  "koodiArvo" : "KE",
-  "metadata" : [ {
-    "nimi" : "Kemia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kemi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_l1",
-  "koodiArvo" : "L1",
-  "metadata" : [ {
-    "nimi" : "Latina, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Latin, kort lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_l7",
-  "koodiArvo" : "L7",
-  "metadata" : [ {
-    "nimi" : "Latina, laajempi oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Latin, längre lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_m",
-  "koodiArvo" : "M",
-  "metadata" : [ {
-    "nimi" : "Matematiikan koe, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Matematik, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_n",
-  "koodiArvo" : "N",
-  "metadata" : [ {
-    "nimi" : "Matematiikan koe, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Matematik, kort lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_o",
-  "koodiArvo" : "O",
-  "metadata" : [ {
-    "nimi" : "Äidinkielen koe, ruotsi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Provet i modersmålet",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_o5",
-  "koodiArvo" : "O5",
-  "metadata" : [ {
-    "nimi" : "Ruotsi toisena kielenä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Svenska som andra språk",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_p1",
-  "koodiArvo" : "P1",
-  "metadata" : [ {
-    "nimi" : "Espanja, pitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Spanska, lång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_p2",
-  "koodiArvo" : "P2",
-  "metadata" : [ {
-    "nimi" : "Espanja, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Spanska, medellång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_pa",
-  "koodiArvo" : "PA",
-  "metadata" : [ {
-    "nimi" : "Espanja, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Spanska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_pb",
-  "koodiArvo" : "PB",
-  "metadata" : [ {
-    "nimi" : "Espanja, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Spanska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_pc",
-  "koodiArvo" : "PC",
-  "metadata" : [ {
-    "nimi" : "Espanja, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Spanska, kort lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ps",
-  "koodiArvo" : "PS",
-  "metadata" : [ {
-    "nimi" : "Psykologia",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Psykologi",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_qc",
-  "koodiArvo" : "QC",
-  "metadata" : [ {
-    "nimi" : "Koltan saame, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Koltan saame, lyhyt oppimäärä",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ro",
-  "koodiArvo" : "RO",
-  "metadata" : [ {
-    "nimi" : "Reaali",
-    "lyhytNimi" : "Reaali, ortod. uskonnon kysymykset",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Real",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_rr",
-  "koodiArvo" : "RR",
-  "metadata" : [ {
-    "nimi" : "Reaali",
-    "lyhytNimi" : "Reaali, ev lut uskonnon kysymykset",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Real",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ry",
-  "koodiArvo" : "RY",
-  "metadata" : [ {
-    "nimi" : "Reaali",
-    "lyhytNimi" : "Reaali, elämänkatsomustiedon kysymykset",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Real",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_s1",
-  "koodiArvo" : "S1",
-  "metadata" : [ {
-    "nimi" : "Saksa, pitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tyska, lång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_s2",
-  "koodiArvo" : "S2",
-  "metadata" : [ {
-    "nimi" : "Saksa, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tyska, medellång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_s9",
-  "koodiArvo" : "S9",
-  "metadata" : [ {
-    "nimi" : "Saksalaisen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tyska",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_sa",
-  "koodiArvo" : "SA",
-  "metadata" : [ {
-    "nimi" : "Saksa, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tyska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_sb",
-  "koodiArvo" : "SB",
-  "metadata" : [ {
-    "nimi" : "Saksa, keskipitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tyska, medellång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_sc",
-  "koodiArvo" : "SC",
-  "metadata" : [ {
-    "nimi" : "Saksa, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tyska, kort lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_t1",
-  "koodiArvo" : "T1",
-  "metadata" : [ {
-    "nimi" : "Italia, pitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Italienska, lång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_t2",
-  "koodiArvo" : "T2",
-  "metadata" : [ {
-    "nimi" : "Italia, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Italienska, medellång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ta",
-  "koodiArvo" : "TA",
-  "metadata" : [ {
-    "nimi" : "Italia, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Italienska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_tb",
-  "koodiArvo" : "TB",
-  "metadata" : [ {
-    "nimi" : "Italia, keskipitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Italienska, medellång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_tc",
-  "koodiArvo" : "TC",
-  "metadata" : [ {
-    "nimi" : "Italia, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Italienska, kort lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_te",
-  "koodiArvo" : "TE",
-  "metadata" : [ {
-    "nimi" : "Terveystieto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Hälsokunskap",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_ue",
-  "koodiArvo" : "UE",
-  "metadata" : [ {
-    "nimi" : "Evankelis-luterilainen uskonto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Evangelisk-luthersk religion",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_uo",
-  "koodiArvo" : "UO",
-  "metadata" : [ {
-    "nimi" : "Ortodoksinen uskonto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ortodox religion",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_v1",
-  "koodiArvo" : "V1",
-  "metadata" : [ {
-    "nimi" : "Venäjä, pitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ryska, lång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_v2",
-  "koodiArvo" : "V2",
-  "metadata" : [ {
-    "nimi" : "Venäjä, keskipitkä oppimäärä erivapaudella",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ryska, medellång lärokurs, dispens",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_va",
-  "koodiArvo" : "VA",
-  "metadata" : [ {
-    "nimi" : "Venäjä, pitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ryska, lång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_vb",
-  "koodiArvo" : "VB",
-  "metadata" : [ {
-    "nimi" : "Venäjä,keskipitkä oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ryska, medellång lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_vc",
-  "koodiArvo" : "VC",
-  "metadata" : [ {
-    "nimi" : "Venäjä, lyhyt oppimäärä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ryska, kort lärokurs",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_w",
-  "koodiArvo" : "W",
-  "metadata" : [ {
-    "nimi" : "Äidinkielen koe, koltansaame",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Äidinkielen koe, koltansaame",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_yh",
-  "koodiArvo" : "YH",
-  "metadata" : [ {
-    "nimi" : "Yhteiskuntaoppi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Samhällslära",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskiyokokeet_z",
-  "koodiArvo" : "Z",
-  "metadata" : [ {
-    "nimi" : "Äidinkielen koe, pohjoissaame",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Äidinkielen koe, pohjoissaame",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "koskiyokokeet_a",
+    "koodiArvo": "A",
+    "metadata": [
+      {
+        "nimi": "Äidinkielen koe, suomi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Provet i modersmålet, finska",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_a5",
+    "koodiArvo": "A5",
+    "metadata": [
+      {
+        "nimi": "Suomi toisena kielenä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Finska som andra språk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ba",
+    "koodiArvo": "BA",
+    "metadata": [
+      {
+        "nimi": "Ruotsi, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Svenska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_bb",
+    "koodiArvo": "BB",
+    "metadata": [
+      {
+        "nimi": "Ruotsi, keskipitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Svenska, medellång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_bi",
+    "koodiArvo": "BI",
+    "metadata": [
+      {
+        "nimi": "Biologia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Biologi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ca",
+    "koodiArvo": "CA",
+    "metadata": [
+      {
+        "nimi": "Suomi, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Finska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_cb",
+    "koodiArvo": "CB",
+    "metadata": [
+      {
+        "nimi": "Suomi, keskipitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Finska, medellång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_cc",
+    "koodiArvo": "CC",
+    "metadata": [
+      {
+        "nimi": "Suomi, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Finska, kort lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_dc",
+    "koodiArvo": "DC",
+    "metadata": [
+      {
+        "nimi": "Pohjoissaame, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Pohjoissaame, lyhyt oppimäärä",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_e1",
+    "koodiArvo": "E1",
+    "metadata": [
+      {
+        "nimi": "Englanti, pitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Engelska, lång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_e2",
+    "koodiArvo": "E2",
+    "metadata": [
+      {
+        "nimi": "Englanti, keskipitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Engelska, medellång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ea",
+    "koodiArvo": "EA",
+    "metadata": [
+      {
+        "nimi": "Englanti, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Engelska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_eb",
+    "koodiArvo": "EB",
+    "metadata": [
+      {
+        "nimi": "Englanti, keskipitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Engelska, medellång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ec",
+    "koodiArvo": "EC",
+    "metadata": [
+      {
+        "nimi": "Englanti, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Engelska, kort lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_et",
+    "koodiArvo": "ET",
+    "metadata": [
+      {
+        "nimi": "Elämänkatsomustieto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Livsåskådningskunskap",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_f1",
+    "koodiArvo": "F1",
+    "metadata": [
+      {
+        "nimi": "Ranska, pitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Franska, lång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_f2",
+    "koodiArvo": "F2",
+    "metadata": [
+      {
+        "nimi": "Ranska, keskipitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Franska, medellång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_fa",
+    "koodiArvo": "FA",
+    "metadata": [
+      {
+        "nimi": "Ranska, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Franska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_fb",
+    "koodiArvo": "FB",
+    "metadata": [
+      {
+        "nimi": "Ranska, keskipitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Franska, medellång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_fc",
+    "koodiArvo": "FC",
+    "metadata": [
+      {
+        "nimi": "Ranska, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Franska, kort lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ff",
+    "koodiArvo": "FF",
+    "metadata": [
+      {
+        "nimi": "Filosofia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Filosofi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_fy",
+    "koodiArvo": "FY",
+    "metadata": [
+      {
+        "nimi": "Fysiikka",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Fysik",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_g1",
+    "koodiArvo": "G1",
+    "metadata": [
+      {
+        "nimi": "Portugali, pitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Portugisiska, lång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_g2",
+    "koodiArvo": "G2",
+    "metadata": [
+      {
+        "nimi": "Portugali, keskipitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Portugisiska, medellång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ga",
+    "koodiArvo": "GA",
+    "metadata": [
+      {
+        "nimi": "Portugali, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Portugisiska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_gb",
+    "koodiArvo": "GB",
+    "metadata": [
+      {
+        "nimi": "Portugali, keskipitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Portugisiska, medellång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_gc",
+    "koodiArvo": "GC",
+    "metadata": [
+      {
+        "nimi": "Portugali, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Portugisiska, kort lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ge",
+    "koodiArvo": "GE",
+    "metadata": [
+      {
+        "nimi": "Maantiede",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Geografi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_h1",
+    "koodiArvo": "H1",
+    "metadata": [
+      {
+        "nimi": "Unkari, pitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ungerska, lång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_h2",
+    "koodiArvo": "H2",
+    "metadata": [
+      {
+        "nimi": "Unkari, keskipitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ungerska, medellång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ha",
+    "koodiArvo": "HA",
+    "metadata": [
+      {
+        "nimi": "Unkari, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ungerska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_hb",
+    "koodiArvo": "HB",
+    "metadata": [
+      {
+        "nimi": "Unkari, keskipitkäoppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ungerska, medellång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_hi",
+    "koodiArvo": "HI",
+    "metadata": [
+      {
+        "nimi": "Historia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Historia",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_i",
+    "koodiArvo": "I",
+    "metadata": [
+      {
+        "nimi": "Äidinkielen koe, inarinsaame",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Äidinkielen koe, inarinsaame",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ic",
+    "koodiArvo": "IC",
+    "metadata": [
+      {
+        "nimi": "Inarinsaame, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Inarinsaame, lyhyt oppimäärä",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_j",
+    "koodiArvo": "J",
+    "metadata": [
+      {
+        "nimi": "Englanninkielinen kypsyyskoe",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Englanninkielinen kypsyyskoe",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_kc",
+    "koodiArvo": "KC",
+    "metadata": [
+      {
+        "nimi": "Kreikka, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grekiska, kort lärökurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ke",
+    "koodiArvo": "KE",
+    "metadata": [
+      {
+        "nimi": "Kemia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kemi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_l1",
+    "koodiArvo": "L1",
+    "metadata": [
+      {
+        "nimi": "Latina, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Latin, kort lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_l7",
+    "koodiArvo": "L7",
+    "metadata": [
+      {
+        "nimi": "Latina, laajempi oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Latin, längre lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_m",
+    "koodiArvo": "M",
+    "metadata": [
+      {
+        "nimi": "Matematiikan koe, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Matematik, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_n",
+    "koodiArvo": "N",
+    "metadata": [
+      {
+        "nimi": "Matematiikan koe, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Matematik, kort lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_o",
+    "koodiArvo": "O",
+    "metadata": [
+      {
+        "nimi": "Äidinkielen koe, ruotsi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Provet i modersmålet",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_o5",
+    "koodiArvo": "O5",
+    "metadata": [
+      {
+        "nimi": "Ruotsi toisena kielenä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Svenska som andra språk",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_p1",
+    "koodiArvo": "P1",
+    "metadata": [
+      {
+        "nimi": "Espanja, pitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Spanska, lång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_p2",
+    "koodiArvo": "P2",
+    "metadata": [
+      {
+        "nimi": "Espanja, keskipitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Spanska, medellång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_pa",
+    "koodiArvo": "PA",
+    "metadata": [
+      {
+        "nimi": "Espanja, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Spanska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_pb",
+    "koodiArvo": "PB",
+    "metadata": [
+      {
+        "nimi": "Espanja, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Spanska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_pc",
+    "koodiArvo": "PC",
+    "metadata": [
+      {
+        "nimi": "Espanja, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Spanska, kort lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ps",
+    "koodiArvo": "PS",
+    "metadata": [
+      {
+        "nimi": "Psykologia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Psykologi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_qc",
+    "koodiArvo": "QC",
+    "metadata": [
+      {
+        "nimi": "Koltan saame, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Koltan saame, lyhyt oppimäärä",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ro",
+    "koodiArvo": "RO",
+    "metadata": [
+      {
+        "nimi": "Reaali",
+        "lyhytNimi": "Reaali, ortod. uskonnon kysymykset",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Real",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_rr",
+    "koodiArvo": "RR",
+    "metadata": [
+      {
+        "nimi": "Reaali",
+        "lyhytNimi": "Reaali, ev lut uskonnon kysymykset",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Real",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ry",
+    "koodiArvo": "RY",
+    "metadata": [
+      {
+        "nimi": "Reaali",
+        "lyhytNimi": "Reaali, elämänkatsomustiedon kysymykset",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Real",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_s1",
+    "koodiArvo": "S1",
+    "metadata": [
+      {
+        "nimi": "Saksa, pitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tyska, lång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_s2",
+    "koodiArvo": "S2",
+    "metadata": [
+      {
+        "nimi": "Saksa, keskipitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tyska, medellång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_s9",
+    "koodiArvo": "S9",
+    "metadata": [
+      {
+        "nimi": "Saksalaisen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tyska",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_sa",
+    "koodiArvo": "SA",
+    "metadata": [
+      {
+        "nimi": "Saksa, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tyska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_sb",
+    "koodiArvo": "SB",
+    "metadata": [
+      {
+        "nimi": "Saksa, keskipitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tyska, medellång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_sc",
+    "koodiArvo": "SC",
+    "metadata": [
+      {
+        "nimi": "Saksa, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tyska, kort lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_t1",
+    "koodiArvo": "T1",
+    "metadata": [
+      {
+        "nimi": "Italia, pitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Italienska, lång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_t2",
+    "koodiArvo": "T2",
+    "metadata": [
+      {
+        "nimi": "Italia, keskipitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Italienska, medellång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ta",
+    "koodiArvo": "TA",
+    "metadata": [
+      {
+        "nimi": "Italia, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Italienska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_tb",
+    "koodiArvo": "TB",
+    "metadata": [
+      {
+        "nimi": "Italia, keskipitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Italienska, medellång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_tc",
+    "koodiArvo": "TC",
+    "metadata": [
+      {
+        "nimi": "Italia, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Italienska, kort lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_te",
+    "koodiArvo": "TE",
+    "metadata": [
+      {
+        "nimi": "Terveystieto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Hälsokunskap",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_ue",
+    "koodiArvo": "UE",
+    "metadata": [
+      {
+        "nimi": "Evankelis-luterilainen uskonto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Evangelisk-luthersk religion",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_uo",
+    "koodiArvo": "UO",
+    "metadata": [
+      {
+        "nimi": "Ortodoksinen uskonto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ortodox religion",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_v1",
+    "koodiArvo": "V1",
+    "metadata": [
+      {
+        "nimi": "Venäjä, pitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ryska, lång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_v2",
+    "koodiArvo": "V2",
+    "metadata": [
+      {
+        "nimi": "Venäjä, keskipitkä oppimäärä erivapaudella",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ryska, medellång lärokurs, dispens",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_va",
+    "koodiArvo": "VA",
+    "metadata": [
+      {
+        "nimi": "Venäjä, pitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ryska, lång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_vb",
+    "koodiArvo": "VB",
+    "metadata": [
+      {
+        "nimi": "Venäjä,keskipitkä oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ryska, medellång lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_vc",
+    "koodiArvo": "VC",
+    "metadata": [
+      {
+        "nimi": "Venäjä, lyhyt oppimäärä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ryska, kort lärokurs",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_w",
+    "koodiArvo": "W",
+    "metadata": [
+      {
+        "nimi": "Äidinkielen koe, koltansaame",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Äidinkielen koe, koltansaame",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_yh",
+    "koodiArvo": "YH",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntaoppi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Samhällslära",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskiyokokeet_z",
+    "koodiArvo": "Z",
+    "metadata": [
+      {
+        "nimi": "Äidinkielen koe, pohjoissaame",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Äidinkielen koe, pohjoissaame",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

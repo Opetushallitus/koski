@@ -7,6 +7,8 @@
   }, {
     "nimi" : "Vad är liv?",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -23,6 +25,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -43,6 +47,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -63,6 +69,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Jag och min miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -83,6 +91,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -99,6 +109,8 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -119,6 +131,8 @@
   }, {
     "nimi" : "Språket i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -139,6 +153,8 @@
   }, {
     "nimi" : "Rörlighet och internationella kontakter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -159,6 +175,8 @@
   }, {
     "nimi" : "Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -179,6 +197,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -199,6 +219,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -219,6 +241,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Jag och min miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -239,6 +263,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -259,6 +285,8 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -279,6 +307,8 @@
   }, {
     "nimi" : "Global engelska",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -299,6 +329,8 @@
   }, {
     "nimi" : "Rörlighet och internationella kontakter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -319,6 +351,8 @@
   }, {
     "nimi" : "Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -339,6 +373,8 @@
   }, {
     "nimi" : "Livsåskådningar och mänskliga rättigheter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -355,6 +391,8 @@
   }, {
     "nimi" : "Grunderna i språket: Utgångspunkter för studier i finska",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -375,6 +413,8 @@
   }, {
     "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -395,6 +435,8 @@
   }, {
     "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -415,6 +457,8 @@
   }, {
     "nimi" : "Grunderna i språket: Kommunikation i mera formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -435,6 +479,8 @@
   }, {
     "nimi" : "Grunderna i språket: Kommunikation i servicesituationer och med myndigheter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -455,6 +501,8 @@
   }, {
     "nimi" : "Grunderna i språket: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -475,6 +523,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Fakta om Finlands tvåspråkighet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -495,6 +545,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -515,6 +567,8 @@
   }, {
     "nimi" : "Fysik i det egna livet och livsmiljön",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -531,6 +585,8 @@
   }, {
     "nimi" : "En föränderlig värld och en hållbar framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -547,6 +603,8 @@
   }, {
     "nimi" : "Vändpunkter i Finlands historia",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -563,6 +621,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -583,6 +643,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -603,6 +665,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Jag och min miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -623,6 +687,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -643,6 +709,8 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -663,6 +731,8 @@
   }, {
     "nimi" : "Språket i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -683,6 +753,8 @@
   }, {
     "nimi" : "Rörlighet och internationella kontakter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -703,6 +775,8 @@
   }, {
     "nimi" : "Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -723,6 +797,8 @@
   }, {
     "nimi" : "Kemi i det egna livet och livsmiljön",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -739,6 +815,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -759,6 +837,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -779,6 +859,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Jag och min miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -799,6 +881,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -819,6 +903,8 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -839,6 +925,8 @@
   }, {
     "nimi" : "Språket i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -859,6 +947,8 @@
   }, {
     "nimi" : "Rörlighet och internationella kontakter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -879,6 +969,8 @@
   }, {
     "nimi" : "Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -899,6 +991,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -919,6 +1013,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -939,6 +1035,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Jag och min miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -959,6 +1057,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -979,6 +1079,8 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -999,6 +1101,8 @@
   }, {
     "nimi" : "Språket i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1019,6 +1123,8 @@
   }, {
     "nimi" : "Rörlighet och internationella kontakter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1039,6 +1145,8 @@
   }, {
     "nimi" : "Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1059,6 +1167,8 @@
   }, {
     "nimi" : "Tal och räkneoperationer I",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1075,6 +1185,8 @@
   }, {
     "nimi" : "Tal och räkneoperationer II",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1091,6 +1203,8 @@
   }, {
     "nimi" : "Uttryck",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1107,6 +1221,8 @@
   }, {
     "nimi" : "Ekvationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1123,6 +1239,8 @@
   }, {
     "nimi" : "Geometri",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1139,6 +1257,8 @@
   }, {
     "nimi" : "Procent",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1155,6 +1275,8 @@
   }, {
     "nimi" : "Funktioner och statistik",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1171,6 +1293,8 @@
   }, {
     "nimi" : "Geometri och trigonometri",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1191,6 +1315,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1215,6 +1341,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1239,6 +1367,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1263,6 +1393,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1287,6 +1419,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1311,6 +1445,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1335,6 +1471,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1359,6 +1497,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1383,6 +1523,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1407,6 +1549,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1427,6 +1571,8 @@
   }, {
     "nimi" : "Fortsatta studier och arbetslivet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1443,6 +1589,8 @@
   }, {
     "nimi" : "Arbetslivskompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1459,6 +1607,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1479,6 +1629,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1499,6 +1651,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Jag och min miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1519,6 +1673,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1539,6 +1695,8 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1559,6 +1717,8 @@
   }, {
     "nimi" : "Språket i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1579,6 +1739,8 @@
   }, {
     "nimi" : "Rörlighet och internationella kontakter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1599,6 +1761,8 @@
   }, {
     "nimi" : "Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1619,6 +1783,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1639,6 +1805,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1659,6 +1827,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Jag och min miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1679,6 +1849,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1699,6 +1871,8 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1719,6 +1893,8 @@
   }, {
     "nimi" : "Språket i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1739,6 +1915,8 @@
   }, {
     "nimi" : "Rörlighet och internationella kontakter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1759,6 +1937,8 @@
   }, {
     "nimi" : "Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1935,6 +2115,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1959,6 +2141,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1983,6 +2167,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2007,6 +2193,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2031,6 +2219,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2055,6 +2245,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2079,6 +2271,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2103,6 +2297,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2127,6 +2323,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2151,6 +2349,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2175,6 +2375,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2199,6 +2401,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2223,6 +2427,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2247,6 +2453,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2271,6 +2479,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2295,6 +2505,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2319,6 +2531,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2343,6 +2557,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2363,6 +2579,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2383,6 +2601,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2403,6 +2623,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Jag och min miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2423,6 +2645,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2443,6 +2667,8 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2463,6 +2689,8 @@
   }, {
     "nimi" : "Språket i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2483,6 +2711,8 @@
   }, {
     "nimi" : "Rörlighet och internationella kontakter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2503,6 +2733,8 @@
   }, {
     "nimi" : "Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2523,6 +2755,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2543,6 +2777,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2563,6 +2799,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Jag och min miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2583,6 +2821,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2603,6 +2843,8 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2623,6 +2865,8 @@
   }, {
     "nimi" : "Språket i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2643,6 +2887,8 @@
   }, {
     "nimi" : "Rörlighet och internationella kontakter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2663,6 +2909,8 @@
   }, {
     "nimi" : "Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2683,6 +2931,8 @@
   }, {
     "nimi" : "Ett sunt liv",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2699,6 +2949,8 @@
   }, {
     "nimi" : "Religionerna i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2715,6 +2967,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2735,6 +2989,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2755,6 +3011,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Jag och min miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2775,6 +3033,8 @@
   }, {
     "nimi" : "Växande språkkunskap: Aktuella företeelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2795,6 +3055,8 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2815,6 +3077,8 @@
   }, {
     "nimi" : "Språket i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2835,6 +3099,8 @@
   }, {
     "nimi" : "Rörlighet och internationella kontakter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2855,6 +3121,8 @@
   }, {
     "nimi" : "Nycklar till livslångt språklärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2875,6 +3143,8 @@
   }, {
     "nimi" : "Samhällssystemet och offentliga tjänster",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2891,6 +3161,8 @@
   }, {
     "nimi" : "Kunskap om arbetslivet, egen ekonom",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2911,6 +3183,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2935,6 +3209,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2959,6 +3235,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2983,6 +3261,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -3007,6 +3287,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -3031,6 +3313,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -3055,6 +3339,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -3079,6 +3365,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -3103,6 +3391,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -3127,6 +3417,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {

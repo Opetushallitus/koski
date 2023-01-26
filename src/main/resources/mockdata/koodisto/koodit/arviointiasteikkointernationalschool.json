@@ -5,6 +5,8 @@
     "nimi" : "Achieved Outcomes",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Achieved Outcomes",
     "kieli" : "EN"
   } ],
@@ -38,6 +40,8 @@
     "nimi" : "Fail",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Fail",
     "kieli" : "EN"
   } ],
@@ -49,6 +53,8 @@
   "metadata" : [ {
     "nimi" : "Learning Toward",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Learning Toward",
     "kieli" : "EN"
@@ -103,6 +109,8 @@
   "metadata" : [ {
     "nimi" : "Pass",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Pass",
     "kieli" : "EN"

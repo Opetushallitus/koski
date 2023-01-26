@@ -1,25 +1,4 @@
 [ {
-  "koodiUri" : "taiteenperusopetusoppimaara_yleinenoppimaara",
-  "koodiArvo" : "yleinenoppimaara",
-  "metadata" : [ {
-    "nimi" : "Taiteen perusopetuksen yleinen oppimäärä",
-    "lyhytNimi" : "Yleinen oppimäärä",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Taiteen perusopetuksen yleinen oppimäärä",
-    "lyhytNimi" : "Yleinen oppimäärä",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Taiteen perusopetuksen yleinen oppimäärä",
-    "lyhytNimi" : "Yleinen oppimäärä",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "taiteenperusopetusoppimaara_laajaoppimaara",
   "koodiArvo" : "laajaoppimaara",
   "metadata" : [ {
@@ -35,6 +14,27 @@
   }, {
     "nimi" : "Taiteen perusopetuksen laaja oppimäärä",
     "lyhytNimi" : "Laaja oppimäärä",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "taiteenperusopetusoppimaara_yleinenoppimaara",
+  "koodiArvo" : "yleinenoppimaara",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen yleinen oppimäärä",
+    "lyhytNimi" : "Yleinen oppimäärä",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiteen perusopetuksen yleinen oppimäärä",
+    "lyhytNimi" : "Yleinen oppimäärä",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Taiteen perusopetuksen yleinen oppimäärä",
+    "lyhytNimi" : "Yleinen oppimäärä",
     "kuvaus" : "",
     "kieli" : "EN"
   } ],

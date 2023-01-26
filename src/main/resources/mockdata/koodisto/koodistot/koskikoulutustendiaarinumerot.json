@@ -3,7 +3,16 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Koski - koulutusten diaarinumerot"
+    "nimi" : "Koski - koulutusten diaarinumerot",
+    "kuvaus" : "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Koski - koulutusten diaarinumerot",
+    "kuvaus" : "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Koski - koulutusten diaarinumerot",
+    "kuvaus" : "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
   } ],
   "codesGroupUri" : "koski",
   "voimassaAlkuPvm" : "2017-03-23",
@@ -14,5 +23,5 @@
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 1
+  "version" : 2
 }

@@ -7,6 +7,8 @@
   }, {
     "nimi" : "Närvarande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -19,6 +21,8 @@
   }, {
     "nimi" : "Frånvarande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

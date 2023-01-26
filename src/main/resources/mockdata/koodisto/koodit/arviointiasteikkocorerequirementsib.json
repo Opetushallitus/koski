@@ -2,6 +2,10 @@
   "koodiUri" : "arviointiasteikkocorerequirementsib_a",
   "koodiArvo" : "A",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Excellent",
     "lyhytNimi" : "A",
     "kieli" : "EN"
@@ -12,6 +16,10 @@
   "koodiUri" : "arviointiasteikkocorerequirementsib_b",
   "koodiArvo" : "B",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Good",
     "lyhytNimi" : "B",
     "kieli" : "EN"
@@ -22,6 +30,10 @@
   "koodiUri" : "arviointiasteikkocorerequirementsib_c",
   "koodiArvo" : "C",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Satisfactory",
     "lyhytNimi" : "C",
     "kieli" : "EN"
@@ -32,6 +44,10 @@
   "koodiUri" : "arviointiasteikkocorerequirementsib_d",
   "koodiArvo" : "D",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Mediocre",
     "lyhytNimi" : "D",
     "kieli" : "EN"
@@ -42,6 +58,10 @@
   "koodiUri" : "arviointiasteikkocorerequirementsib_e",
   "koodiArvo" : "E",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Elementary",
     "lyhytNimi" : "E",
     "kieli" : "EN"
@@ -52,6 +72,10 @@
   "koodiUri" : "arviointiasteikkocorerequirementsib_p",
   "koodiArvo" : "P",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Pass",
     "kieli" : "EN"
   } ],

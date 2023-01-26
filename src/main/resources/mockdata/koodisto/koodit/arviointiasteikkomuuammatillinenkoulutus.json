@@ -4,6 +4,10 @@
   "metadata" : [ {
     "nimi" : "Osallistunut",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -13,6 +17,10 @@
   "metadata" : [ {
     "nimi" : "Suoritettu",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

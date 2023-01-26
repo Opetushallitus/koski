@@ -5,6 +5,8 @@
     "nimi" : "A",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "A",
     "kieli" : "EN"
   } ],
@@ -16,6 +18,8 @@
   "metadata" : [ {
     "nimi" : "B",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "B",
     "kieli" : "EN"
@@ -29,10 +33,11 @@
     "nimi" : "Year mark",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Year mark",
     "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}
-]
+} ]

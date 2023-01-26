@@ -5,6 +5,8 @@
     "nimi" : "Advisory",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Advisory",
     "kieli" : "EN"
   } ],
@@ -38,6 +40,8 @@
     "nimi" : "Digital Design",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Digital Design",
     "kieli" : "EN"
   } ],
@@ -49,6 +53,8 @@
   "metadata" : [ {
     "nimi" : "Design",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Design",
     "kieli" : "EN"
@@ -62,6 +68,8 @@
     "nimi" : "Drama",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Drama",
     "kieli" : "EN"
   } ],
@@ -73,6 +81,8 @@
   "metadata" : [ {
     "nimi" : "English as an additional language",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "English as an additional language",
     "kieli" : "EN"
@@ -86,6 +96,8 @@
     "nimi" : "Extended Mathematics",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Extended Mathematics",
     "kieli" : "EN"
   } ],
@@ -97,6 +109,8 @@
   "metadata" : [ {
     "nimi" : "Film",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Film",
     "kieli" : "EN"
@@ -131,6 +145,8 @@
     "nimi" : "Foreign language",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Foreign language",
     "kieli" : "EN"
   } ],
@@ -143,6 +159,8 @@
     "nimi" : "Finnish Mother Tongue",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Finnish Mother Tongue",
     "kieli" : "EN"
   } ],
@@ -154,6 +172,8 @@
   "metadata" : [ {
     "nimi" : "French",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "French",
     "kieli" : "EN"
@@ -169,6 +189,8 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Fitness and Well-Being",
     "lyhytNimi" : "",
     "kuvaus" : "",
@@ -183,6 +205,8 @@
     "nimi" : "HS Consumer Math 11/12",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "HS Consumer Math 11/12",
     "kieli" : "EN"
   } ],
@@ -195,6 +219,8 @@
     "nimi" : "ICT",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "ICT",
     "kieli" : "EN"
   } ],
@@ -206,6 +232,8 @@
   "metadata" : [ {
     "nimi" : "Independent language studies",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Independent language studies",
     "kieli" : "EN"
@@ -240,6 +268,8 @@
     "nimi" : "Individuals and Societies",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Individuals and Societies",
     "kieli" : "EN"
   } ],
@@ -251,6 +281,8 @@
   "metadata" : [ {
     "nimi" : "Information Technology in a Global Society",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Information Technology in a Global Society",
     "kieli" : "EN"
@@ -264,6 +296,8 @@
     "nimi" : "Language Arts",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Language Arts",
     "kieli" : "EN"
   } ],
@@ -275,6 +309,8 @@
   "metadata" : [ {
     "nimi" : "Language Acquisition",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Language Acquisition",
     "kieli" : "EN"
@@ -288,6 +324,8 @@
     "nimi" : "Library",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Library",
     "kieli" : "EN"
   } ],
@@ -299,6 +337,8 @@
   "metadata" : [ {
     "nimi" : "Language and Literature",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Language and Literature",
     "kieli" : "EN"
@@ -312,6 +352,8 @@
     "nimi" : "Mathematics",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Mathematics",
     "kieli" : "EN"
   } ],
@@ -323,6 +365,8 @@
   "metadata" : [ {
     "nimi" : "Mathematics: Analysis and Approaches",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Mathematics: Analysis and Approaches",
     "kieli" : "EN"
@@ -336,6 +380,8 @@
     "nimi" : "Mathematics: Applications and Interpretation",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Mathematics: Applications and Interpretation",
     "kieli" : "EN"
   } ],
@@ -347,6 +393,8 @@
   "metadata" : [ {
     "nimi" : "Media",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Media",
     "kieli" : "EN"
@@ -381,6 +429,8 @@
     "nimi" : "Music",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Music",
     "kieli" : "EN"
   } ],
@@ -392,6 +442,8 @@
   "metadata" : [ {
     "nimi" : "Physical Education",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Physical Education",
     "kieli" : "EN"
@@ -405,6 +457,8 @@
     "nimi" : "Physical and Health Education",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Physical and Health Education",
     "kieli" : "EN"
   } ],
@@ -416,6 +470,8 @@
   "metadata" : [ {
     "nimi" : "Personal project",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Personal project",
     "kieli" : "EN"
@@ -429,6 +485,8 @@
     "nimi" : "Sciences",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Sciences",
     "kieli" : "EN"
   } ],
@@ -440,6 +498,8 @@
   "metadata" : [ {
     "nimi" : "Standard Mathematics",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Standard Mathematics",
     "kieli" : "EN"
@@ -453,6 +513,8 @@
     "nimi" : "Social Studies",
     "kieli" : "FI"
   }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Social Studies",
     "kieli" : "EN"
   } ],
@@ -464,6 +526,8 @@
   "metadata" : [ {
     "nimi" : "Visual Art",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
   }, {
     "nimi" : "Visual Art",
     "kieli" : "EN"

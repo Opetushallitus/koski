@@ -5,6 +5,10 @@
     "nimi" : "Kielet, kirjallisuus, taide",
     "lyhytNimi" : "Kielet, kirjallisuus, taide",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -15,6 +19,10 @@
     "nimi" : "Matematiikka ja luonnontieteet",
     "lyhytNimi" : "Matematiikka ja luonnontieteet",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -25,6 +33,10 @@
     "nimi" : "Yhteiskuntatieteet",
     "lyhytNimi" : "Yhteiskuntatieteet",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

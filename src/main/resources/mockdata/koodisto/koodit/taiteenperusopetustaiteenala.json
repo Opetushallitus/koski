@@ -20,27 +20,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "taiteenperusopetustaiteenala_kuvataide",
-  "koodiArvo" : "kuvataide",
-  "metadata" : [ {
-    "nimi" : "Kuvataide",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kuvataide",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kuvataide",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "taiteenperusopetustaiteenala_kasityo",
   "koodiArvo" : "kasityo",
   "metadata" : [ {
@@ -55,6 +34,27 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Käsityö",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "taiteenperusopetustaiteenala_kuvataide",
+  "koodiArvo" : "kuvataide",
+  "metadata" : [ {
+    "nimi" : "Kuvataide",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kuvataide",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kuvataide",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"

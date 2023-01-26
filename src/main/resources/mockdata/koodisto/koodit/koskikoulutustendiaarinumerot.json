@@ -1,353 +1,514 @@
-[ {
-  "koodiUri": "koskikoulutustendiaarinumerot_20111994",
-  "metadata": [
-    {
-      "nimi": "Lukion opetussuunnitelman perusteet 1994",
-      "lyhytNimi": "Lukion opetussuunnitelman perusteet 1994",
-      "kieli": "FI"
-    }
-  ],
-  "versio": 1,
-  "koodiArvo": "2/011/1994"
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_10112004",
-  "koodiArvo" : "1/011/2004",
-  "metadata" : [ {
-    "nimi" : "Perusopetuksen opetussuunnitelman perusteet 2004",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna för läroplanen för den grundläggande utbildningen 2004",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_16",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_1210111995",
-  "koodiArvo" : "121/011/1995",
-  "metadata" : [ {
-    "nimi" : "Keruutuotetarkastajan erikoisammattitutkinto 1.8.1995",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen inom branschen för naturprodukter 1.8.1995",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_130112009",
-  "koodiArvo" : "13/011/2009",
-  "metadata" : [ {
-    "nimi" : "Rytmimusiikkituotannon ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för producent inom rytmmusik",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_190112015",
-  "koodiArvo" : "19/011/2015",
-  "metadata" : [ {
-    "nimi" : "Aikuisten perusopetuksen opetussuunnitelman perusteet 2015",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna för läroplanen för den grundläggande utbildningen för vuxna 2015",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_17",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_20112004",
-  "koodiArvo" : "2/011/2004",
-  "metadata" : [ {
-    "nimi" : "Perusopetukseen valmistava opetus 2004",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Undervisning som förbereder för den grundläggande utbildningen 2004",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_220112004",
-  "koodiArvo" : "22/011/2004",
-  "metadata" : [ {
-    "nimi" : "Asiakirjahallinnon ja arkistotoimen ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för dokumentadministration och arkivväsen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_250111997",
-  "koodiArvo" : "25/011/1997",
-  "metadata" : [ {
-    "nimi" : "Luontokartoittajan erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för kartläggare av naturen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_30112004",
-  "koodiArvo" : "3/011/2004",
-  "metadata" : [ {
-    "nimi" : "Perusopetuksen lisäopetuksen opetussuunnitelman perusteet 2004",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna för påbyggnadsundervisningens läroplan 2004",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_6",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_330112003",
-  "koodiArvo" : "33/011/2003",
-  "metadata" : [ {
-    "nimi" : "Lukion opetussuunnitelman perusteet 2003",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna för gymnasiets läroplan 2003",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_2",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_340112008",
-  "koodiArvo" : "34/011/2008",
-  "metadata" : [ {
-    "nimi" : "Kultaajamestarin erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för förgyllare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_350112008",
-  "koodiArvo" : "35/011/2008",
-  "metadata" : [ {
-    "nimi" : "Kultaajakisällin ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för förgyllare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_40112004",
-  "koodiArvo" : "4/011/2004",
-  "metadata" : [ {
-    "nimi" : "Aikuisten perusopetus ja lukiokoulutus 2004",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grundläggande utbildning och gymnasieutbildning för vuxna 2004",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_14",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_500112001",
-  "koodiArvo" : "50/011/2001",
-  "metadata" : [ {
-    "nimi" : "Elektroniikka-asentajan ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för elektronikmontör",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_510112001",
-  "koodiArvo" : "51/011/2001",
-  "metadata" : [ {
-    "nimi" : "Elektroniikkayliasentajan erikoisammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialyrkesexamen för elektronikövermontör",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_550112002",
-  "koodiArvo" : "55/011/2002",
-  "metadata" : [ {
-    "nimi" : "Automaalarin ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för billackerare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri": "koskikoulutustendiaarinumerot_251986",
-  "metadata": [
-    {
-      "nimi": "Lukion opetussuunnitelman perusteet 1985",
-      "lyhytNimi": null,
-      "kieli": "FI"
-    }
-  ],
-  "versio": 1,
-  "koodiArvo": "25/1986"
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_50112015",
-  "koodiArvo" : "5/011/2015",
-  "metadata" : [ {
-    "nimi" : "Ammatilliseen peruskoulutukseen valmentava koulutus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Handledande utbildning för grundläggande yrkesutbildning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_18",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_60112015",
-  "koodiArvo" : "6/011/2015",
-  "metadata" : [ {
-    "nimi" : "Työhön ja itsenäiseen elämään valmentava koulutus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utbildning som handleder fö arbete och ett självständigt liv",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "koulutustyyppi_5",
-    "codeElementVersion" : 2,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_oph25242017",
-  "koodiArvo" : "OPH-2524-2017",
-  "metadata" : [ {
-    "nimi" : "Pintakäsittelyalan perustutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grundexamen inom ytbehandlingsbranschen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "koskikoulutustendiaarinumerot_310112013",
-  "koodiArvo" : "31/011/2013",
-  "metadata" : [ {
-    "nimi" : "Kiinteistöpalvelujen ammattitutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesexamen för fastighetsservice",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-} ]
+[
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_10112004",
+    "koodiArvo": "1/011/2004",
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen opetussuunnitelman perusteet 2004",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grunderna för läroplanen för den grundläggande utbildningen 2004",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_16",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_1210111995",
+    "koodiArvo": "121/011/1995",
+    "metadata": [
+      {
+        "nimi": "Keruutuotetarkastajan erikoisammattitutkinto 1.8.1995",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialyrkesexamen inom branschen för naturprodukter 1.8.1995",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_130112009",
+    "koodiArvo": "13/011/2009",
+    "metadata": [
+      {
+        "nimi": "Rytmimusiikkituotannon ammattitutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesexamen för producent inom rytmmusik",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_190112015",
+    "koodiArvo": "19/011/2015",
+    "metadata": [
+      {
+        "nimi": "Aikuisten perusopetuksen opetussuunnitelman perusteet 2015",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grunderna för läroplanen för den grundläggande utbildningen för vuxna 2015",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_17",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_20111994",
+    "koodiArvo": "2/011/1994",
+    "metadata": [
+      {
+        "nimi": "Lukion opetussuunnitelman perusteet 1994",
+        "lyhytNimi": "Lukion opetussuunnitelman perusteet 1994",
+        "kuvaus": "Alkuperäinen diaarinumero",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_20112004",
+    "koodiArvo": "2/011/2004",
+    "metadata": [
+      {
+        "nimi": "Perusopetukseen valmistava opetus 2004",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Undervisning som förbereder för den grundläggande utbildningen 2004",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_220112004",
+    "koodiArvo": "22/011/2004",
+    "metadata": [
+      {
+        "nimi": "Asiakirjahallinnon ja arkistotoimen ammattitutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesexamen för dokumentadministration och arkivväsen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_250111997",
+    "koodiArvo": "25/011/1997",
+    "metadata": [
+      {
+        "nimi": "Luontokartoittajan erikoisammattitutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialyrkesexamen för kartläggare av naturen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_251986",
+    "koodiArvo": "25/1986",
+    "metadata": [
+      {
+        "nimi": "Lukion opetussuunnitelman perusteet 1985",
+        "kuvaus": "Yleiskirjeen 27.11.1985 diaarinumero. Lukion opetusuunnitelman perusteet 1985.",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_30112004",
+    "koodiArvo": "3/011/2004",
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen lisäopetuksen opetussuunnitelman perusteet 2004",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grunderna för påbyggnadsundervisningens läroplan 2004",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_6",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_310112013",
+    "koodiArvo": "31/011/2013",
+    "metadata": [
+      {
+        "nimi": "Kiinteistöpalvelujen ammattitutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesexamen för fastighetsservice",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_330112003",
+    "koodiArvo": "33/011/2003",
+    "metadata": [
+      {
+        "nimi": "Lukion opetussuunnitelman perusteet 2003",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grunderna för gymnasiets läroplan 2003",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_2",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_340112008",
+    "koodiArvo": "34/011/2008",
+    "metadata": [
+      {
+        "nimi": "Kultaajamestarin erikoisammattitutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialyrkesexamen för förgyllare",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_350112008",
+    "koodiArvo": "35/011/2008",
+    "metadata": [
+      {
+        "nimi": "Kultaajakisällin ammattitutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesexamen för förgyllare",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_40112004",
+    "koodiArvo": "4/011/2004",
+    "metadata": [
+      {
+        "nimi": "Aikuisten perusopetus ja lukiokoulutus 2004",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundläggande utbildning och gymnasieutbildning för vuxna 2004",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_14",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_50112015",
+    "koodiArvo": "5/011/2015",
+    "metadata": [
+      {
+        "nimi": "Ammatilliseen peruskoulutukseen valmentava koulutus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Handledande utbildning för grundläggande yrkesutbildning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_500112001",
+    "koodiArvo": "50/011/2001",
+    "metadata": [
+      {
+        "nimi": "Elektroniikka-asentajan ammattitutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesexamen för elektronikmontör",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_510112001",
+    "koodiArvo": "51/011/2001",
+    "metadata": [
+      {
+        "nimi": "Elektroniikkayliasentajan erikoisammattitutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialyrkesexamen för elektronikövermontör",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_550112002",
+    "koodiArvo": "55/011/2002",
+    "metadata": [
+      {
+        "nimi": "Automaalarin ammattitutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesexamen för billackerare",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_60112015",
+    "koodiArvo": "6/011/2015",
+    "metadata": [
+      {
+        "nimi": "Työhön ja itsenäiseen elämään valmentava koulutus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utbildning som handleder fö arbete och ett självständigt liv",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppi_5",
+        "codeElementVersion": 2,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "koskikoulutustendiaarinumerot_oph25242017",
+    "koodiArvo": "OPH-2524-2017",
+    "metadata": [
+      {
+        "nimi": "Pintakäsittelyalan perustutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grundexamen inom ytbehandlingsbranschen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

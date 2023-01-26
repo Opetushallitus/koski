@@ -2,6 +2,10 @@
   "koodiUri" : "aineryhmaib_1",
   "koodiArvo" : "1",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Studies in language and literature",
     "lyhytNimi" : "Group 1",
     "kieli" : "EN"
@@ -12,6 +16,10 @@
   "koodiUri" : "aineryhmaib_2",
   "koodiArvo" : "2",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Language acquisition",
     "lyhytNimi" : "Group 2",
     "kieli" : "EN"
@@ -22,6 +30,10 @@
   "koodiUri" : "aineryhmaib_3",
   "koodiArvo" : "3",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Individuals and societies",
     "lyhytNimi" : "Group 3",
     "kieli" : "EN"
@@ -32,6 +44,10 @@
   "koodiUri" : "aineryhmaib_4",
   "koodiArvo" : "4",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Experimental sciences",
     "lyhytNimi" : "Group 4",
     "kieli" : "EN"
@@ -42,6 +58,10 @@
   "koodiUri" : "aineryhmaib_5",
   "koodiArvo" : "5",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Mathematics",
     "lyhytNimi" : "Group 5",
     "kieli" : "EN"
@@ -52,6 +72,10 @@
   "koodiUri" : "aineryhmaib_6",
   "koodiArvo" : "6",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "The arts",
     "lyhytNimi" : "Group 6",
     "kieli" : "EN"

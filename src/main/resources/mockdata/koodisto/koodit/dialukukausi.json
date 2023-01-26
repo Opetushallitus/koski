@@ -5,6 +5,10 @@
     "nimi" : "10/I",
     "lyhytNimi" : "10/I",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -15,6 +19,10 @@
     "nimi" : "10/II",
     "lyhytNimi" : "10/II",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -25,6 +33,10 @@
     "nimi" : "11/I",
     "lyhytNimi" : "11/I",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -35,6 +47,10 @@
     "nimi" : "11/II",
     "lyhytNimi" : "11/II",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -45,6 +61,10 @@
     "nimi" : "12/I",
     "lyhytNimi" : "12/I",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -55,6 +75,10 @@
     "nimi" : "12/II",
     "lyhytNimi" : "12/II",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

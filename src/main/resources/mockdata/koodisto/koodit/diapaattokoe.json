@@ -5,6 +5,10 @@
     "nimi" : "Kirjallinen koe",
     "lyhytNimi" : "Kirjallinen",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -15,6 +19,10 @@
     "nimi" : "Erityisosaamisen näyttötutkinto",
     "lyhytNimi" : "Näyttötutkinto",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -25,6 +33,10 @@
     "nimi" : "Suullinen koe",
     "lyhytNimi" : "Suullinen",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

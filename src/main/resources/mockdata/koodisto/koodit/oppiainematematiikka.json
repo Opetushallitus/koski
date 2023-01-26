@@ -7,6 +7,8 @@
   }, {
     "nimi" : "Matematik, lång lärokurs",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -19,6 +21,8 @@
   }, {
     "nimi" : "Matematik, kort lärokurs",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -31,6 +35,8 @@
   }, {
     "nimi" : "Matematik, gemensam studiehelhet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

@@ -76,6 +76,10 @@
   "metadata" : [ {
     "nimi" : "UPM Teollisuusoppilaitos",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -110,6 +114,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -119,6 +125,10 @@
   "metadata" : [ {
     "nimi" : "Ankkalampi",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -143,6 +153,10 @@
   "metadata" : [ {
     "nimi" : "Vesa Varhaiskasvatus",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -153,6 +167,10 @@
     "nimi" : "Daisy varhaiskasvatus",
     "lyhytNimi" : "Daisy",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -162,6 +180,10 @@
   "metadata" : [ {
     "nimi" : "Edukit",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -192,6 +214,10 @@
   "metadata" : [ {
     "nimi" : "e-Kurs",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -239,6 +265,10 @@
   "metadata" : [ {
     "nimi" : "Hailer",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -251,6 +281,8 @@
   }, {
     "nimi" : "Hellewi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -260,6 +292,10 @@
   "metadata" : [ {
     "nimi" : "Helmi oppilashallintojärjestelmä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -269,6 +305,10 @@
   "metadata" : [ {
     "nimi" : "Kehätieto opintohallintojärjestelmä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -296,6 +336,10 @@
   "metadata" : [ {
     "nimi" : "MS Dynamics CRM Accountor Enterprise Solutions",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -305,6 +349,10 @@
   "metadata" : [ {
     "nimi" : "Nexttime",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -344,6 +392,10 @@
   "metadata" : [ {
     "nimi" : "Peppi",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -353,6 +405,10 @@
   "metadata" : [ {
     "nimi" : "primus",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -362,6 +418,10 @@
   "metadata" : [ {
     "nimi" : "Pro Consona Varhaiskasvatus",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -371,6 +431,10 @@
   "metadata" : [ {
     "nimi" : "Pyramus",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -380,6 +444,10 @@
   "metadata" : [ {
     "nimi" : "Rediteq",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -392,6 +460,8 @@
   }, {
     "nimi" : "Sivisverkko",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -401,6 +471,10 @@
   "metadata" : [ {
     "nimi" : "Studentaplus",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -410,6 +484,10 @@
   "metadata" : [ {
     "nimi" : "Studyo Koski-integraatio",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -419,6 +497,10 @@
   "metadata" : [ {
     "nimi" : "Varda",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -428,6 +510,10 @@
   "metadata" : [ {
     "nimi" : "virta",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -437,6 +523,10 @@
   "metadata" : [ {
     "nimi" : "Winha aikuiskoulutus",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -446,6 +536,10 @@
   "metadata" : [ {
     "nimi" : "Winha",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -455,6 +549,10 @@
   "metadata" : [ {
     "nimi" : "Winnova oppilashallintojärjestelmä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -464,6 +562,10 @@
   "metadata" : [ {
     "nimi" : "Winnova oppilashallintojärjestelmä, EduErp",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -473,6 +575,10 @@
   "metadata" : [ {
     "nimi" : "Winnova oppilashallintojärjestelmä, Sopro",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -482,6 +588,10 @@
   "metadata" : [ {
     "nimi" : "Winnova oppilashallintojärjestelmä, Studenta",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -491,6 +601,10 @@
   "metadata" : [ {
     "nimi" : "ytr",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

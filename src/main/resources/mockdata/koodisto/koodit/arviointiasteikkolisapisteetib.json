@@ -2,6 +2,10 @@
   "koodiUri" : "arviointiasteikkolisapisteetib_0",
   "koodiArvo" : "0",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "0",
     "kieli" : "EN"
   } ],
@@ -11,6 +15,10 @@
   "koodiUri" : "arviointiasteikkolisapisteetib_1",
   "koodiArvo" : "1",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "1",
     "kieli" : "EN"
   } ],
@@ -20,6 +28,10 @@
   "koodiUri" : "arviointiasteikkolisapisteetib_2",
   "koodiArvo" : "2",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "2",
     "kieli" : "EN"
   } ],
@@ -29,6 +41,10 @@
   "koodiUri" : "arviointiasteikkolisapisteetib_3",
   "koodiArvo" : "3",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "3",
     "kieli" : "EN"
   } ],
@@ -38,6 +54,10 @@
   "koodiUri" : "arviointiasteikkolisapisteetib_f",
   "koodiArvo" : "F",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "Failing condition",
     "kieli" : "EN"
   } ],

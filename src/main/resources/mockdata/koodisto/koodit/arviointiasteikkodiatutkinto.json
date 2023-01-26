@@ -6,6 +6,10 @@
     "lyhytNimi" : "0",
     "kuvaus" : "Hylätty",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -17,6 +21,10 @@
     "lyhytNimi" : "1",
     "kuvaus" : "välttävä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -28,6 +36,10 @@
     "lyhytNimi" : "10",
     "kuvaus" : "hyvä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -39,6 +51,10 @@
     "lyhytNimi" : "11",
     "kuvaus" : "hyvä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -50,6 +66,10 @@
     "lyhytNimi" : "12",
     "kuvaus" : "hyvä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -61,6 +81,10 @@
     "lyhytNimi" : "13",
     "kuvaus" : "erinomainen",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -72,6 +96,10 @@
     "lyhytNimi" : "14",
     "kuvaus" : "erinomainen",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -83,6 +111,10 @@
     "lyhytNimi" : "15",
     "kuvaus" : "erinomainen",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -94,6 +126,10 @@
     "lyhytNimi" : "2",
     "kuvaus" : "välttävä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -105,6 +141,10 @@
     "lyhytNimi" : "3",
     "kuvaus" : "välttävä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -116,6 +156,10 @@
     "lyhytNimi" : "4",
     "kuvaus" : "kohtalainen",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -127,6 +171,10 @@
     "lyhytNimi" : "5",
     "kuvaus" : "kohtalainen",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -138,6 +186,10 @@
     "lyhytNimi" : "6",
     "kuvaus" : "kohtalainen",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -149,6 +201,10 @@
     "lyhytNimi" : "7",
     "kuvaus" : "tyydyttävä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -160,6 +216,10 @@
     "lyhytNimi" : "8",
     "kuvaus" : "tyydyttävä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -171,6 +231,10 @@
     "lyhytNimi" : "9",
     "kuvaus" : "tyydyttävä",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -181,6 +245,10 @@
     "nimi" : "Suoritettu",
     "lyhytNimi" : "S",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

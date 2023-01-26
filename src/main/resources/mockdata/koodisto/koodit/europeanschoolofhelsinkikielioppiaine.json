@@ -1,200 +1,193 @@
-[
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_l1",
-    "koodiArvo": "L1",
-    "metadata": [
-      {
-        "nimi" : "First language",
-        "lyhytNimi" : "First language",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "First language",
-        "lyhytNimi" : "First language",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_l2",
-    "koodiArvo": "L2",
-    "metadata": [
-      {
-        "nimi" : "Second language",
-        "lyhytNimi" : "Second language",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "Second language",
-        "lyhytNimi" : "Second language",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_l3",
-    "koodiArvo": "L3",
-    "metadata": [
-      {
-        "nimi" : "Third language",
-        "lyhytNimi" : "Third language",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "Third language",
-        "lyhytNimi" : "Third language",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_l4",
-    "koodiArvo": "L4",
-    "metadata": [
-      {
-        "nimi" : "Fourth language",
-        "lyhytNimi" : "Fourth language",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "Fourth language",
-        "lyhytNimi" : "Fourth language",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_l5",
-    "koodiArvo": "L5",
-    "metadata": [
-      {
-        "nimi" : "Fifth language",
-        "lyhytNimi" : "Fifth language",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "Fifth language",
-        "lyhytNimi" : "Fifth language",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_l1adv",
-    "koodiArvo": "L1adv",
-    "metadata": [
-      {
-        "nimi" : "Advanced studies of the first language",
-        "lyhytNimi" : "Advanced studies of the first language",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "Advanced studies of the first language",
-        "lyhytNimi" : "Advanced studies of the first language",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_l2adv",
-    "koodiArvo": "L2adv",
-    "metadata": [
-      {
-        "nimi" : "Advanced studies of the second language",
-        "lyhytNimi" : "Advanced studies of the second language",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "Advanced studies of the second language",
-        "lyhytNimi" : "Advanced studies of the second language",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_hclfi",
-    "koodiArvo": "HCLFI",
-    "metadata": [
-      {
-        "nimi" : "Host Country Language",
-        "lyhytNimi" : "Host Country Language",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "Host Country Language",
-        "lyhytNimi" : "Host Country Language",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_grc",
-    "koodiArvo": "GRC",
-    "metadata": [
-      {
-        "nimi" : "Ancient Greek",
-        "lyhytNimi" : "Ancient Greek",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "Ancient Greek",
-        "lyhytNimi" : "Ancient Greek",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_la",
-    "koodiArvo": "LA",
-    "metadata": [
-      {
-        "nimi" : "Latin",
-        "lyhytNimi" : "Latin",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "Latin",
-        "lyhytNimi" : "Latin",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "europeanschoolofhelsinkikielioppiaine_onl",
-    "koodiArvo": "ONL",
-    "metadata": [
-      {
-        "nimi" : "Other National Language",
-        "lyhytNimi" : "Other National Language",
-        "kieli" : "FI"
-      },
-      {
-        "nimi" : "Other National Language",
-        "lyhytNimi" : "Other National Language",
-        "kieli" : "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  }
-]
+[ {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_grc",
+  "koodiArvo" : "GRC",
+  "metadata" : [ {
+    "nimi" : "Ancient Greek",
+    "lyhytNimi" : "Ancient Greek",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ancient Greek",
+    "lyhytNimi" : "Ancient Greek",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_hclfi",
+  "koodiArvo" : "HCLFI",
+  "metadata" : [ {
+    "nimi" : "Host Country Language",
+    "lyhytNimi" : "Host Country Language",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Host Country Language",
+    "lyhytNimi" : "Host Country Language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_l1",
+  "koodiArvo" : "L1",
+  "metadata" : [ {
+    "nimi" : "First language",
+    "lyhytNimi" : "First language",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "First language",
+    "lyhytNimi" : "First language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_l1adv",
+  "koodiArvo" : "L1adv",
+  "metadata" : [ {
+    "nimi" : "Advanced studies of the first language",
+    "lyhytNimi" : "Advanced studies of the first language",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Advanced studies of the first language",
+    "lyhytNimi" : "Advanced studies of the first language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_l2",
+  "koodiArvo" : "L2",
+  "metadata" : [ {
+    "nimi" : "Second language",
+    "lyhytNimi" : "Second language",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Second language",
+    "lyhytNimi" : "Second language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_l2adv",
+  "koodiArvo" : "L2adv",
+  "metadata" : [ {
+    "nimi" : "Advanced studies of the second language",
+    "lyhytNimi" : "Advanced studies of the second language",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Advanced studies of the second language",
+    "lyhytNimi" : "Advanced studies of the second language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_l3",
+  "koodiArvo" : "L3",
+  "metadata" : [ {
+    "nimi" : "Third language",
+    "lyhytNimi" : "Third language",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Third language",
+    "lyhytNimi" : "Third language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_l4",
+  "koodiArvo" : "L4",
+  "metadata" : [ {
+    "nimi" : "Fourth language",
+    "lyhytNimi" : "Fourth language",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Fourth language",
+    "lyhytNimi" : "Fourth language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_l5",
+  "koodiArvo" : "L5",
+  "metadata" : [ {
+    "nimi" : "Fifth language",
+    "lyhytNimi" : "Fifth language",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Fifth language",
+    "lyhytNimi" : "Fifth language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_la",
+  "koodiArvo" : "LA",
+  "metadata" : [ {
+    "nimi" : "Latin",
+    "lyhytNimi" : "Latin",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Latin",
+    "lyhytNimi" : "Latin",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_onl",
+  "koodiArvo" : "ONL",
+  "metadata" : [ {
+    "nimi" : "Other National Language",
+    "lyhytNimi" : "Other National Language",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Other National Language",
+    "lyhytNimi" : "Other National Language",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "europeanschoolofhelsinkikielioppiaine_swals",
+  "koodiArvo" : "SWALS",
+  "metadata" : [ {
+    "nimi" : "L1 (S.W.A.L.S.)",
+    "lyhytNimi" : "L1 (S.W.A.L.S.)",
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "nimi" : "L1 (S.W.A.L.S.)",
+    "lyhytNimi" : "L1 (S.W.A.L.S.)",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

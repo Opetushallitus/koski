@@ -2,6 +2,10 @@
   "koodiUri" : "effortasteikkoib_a",
   "koodiArvo" : "A",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "very good",
     "kieli" : "EN"
   } ],
@@ -11,6 +15,10 @@
   "koodiUri" : "effortasteikkoib_b",
   "koodiArvo" : "B",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "good",
     "kieli" : "EN"
   } ],
@@ -20,6 +28,10 @@
   "koodiUri" : "effortasteikkoib_c",
   "koodiArvo" : "C",
   "metadata" : [ {
+    "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
     "nimi" : "needs improvement",
     "lyhytNimi" : "",
     "kuvaus" : "",

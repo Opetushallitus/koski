@@ -7,6 +7,8 @@
   }, {
     "nimi" : "Gymnasiet genomförs enligt läroplanen vuxna",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -19,6 +21,8 @@
   }, {
     "nimi" : "Gymnasiet genomförs enligt läroplanen för unga",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

@@ -6,6 +6,10 @@
     "lyhytNimi" : "1",
     "kuvaus" : "Paras arvosana",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -16,6 +20,10 @@
     "nimi" : "2",
     "lyhytNimi" : "2",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -26,6 +34,10 @@
     "nimi" : "2-",
     "lyhytNimi" : "2-",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -36,6 +48,10 @@
     "nimi" : "3",
     "lyhytNimi" : "3",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -46,6 +62,10 @@
     "nimi" : "4",
     "lyhytNimi" : "4",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -56,6 +76,10 @@
     "nimi" : "5",
     "lyhytNimi" : "5",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -67,6 +91,10 @@
     "lyhytNimi" : "6",
     "kuvaus" : "Hylätty",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

@@ -4,6 +4,10 @@
   "metadata" : [ {
     "nimi" : "Kieli- ja viestintäosaaminen",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -43,6 +47,10 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta- ja työelämäosaaminen",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
