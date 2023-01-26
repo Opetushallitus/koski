@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { useGlobalErrors } from '../../appstate/globalErrors'
 import { ButtonGroup } from '../containers/ButtonGroup'
 import { FooterBar } from '../containers/FooterBar'
 import { FlatButton } from '../controls/FlatButton'
@@ -11,14 +12,26 @@ export type EditBarProps<T extends object> = {
   onSave: () => void
 }
 
-export const EditBar = <T extends object>(props: EditBarProps<T>) =>
-  props.form.editMode ? (
+export const EditBar = <T extends object>(props: EditBarProps<T>) => {
+  const errors = useGlobalErrors()
+
+  const save = useCallback(() => {
+    errors.clearAll()
+    props.onSave()
+  }, [props.onSave])
+
+  const cancel = useCallback(() => {
+    errors.clearAll()
+    props.form.cancel()
+  }, [props.form])
+
+  return props.form.editMode ? (
     <FooterBar>
       <ButtonGroup>
-        <FlatButton onClick={props.form.cancel}>Peruuta</FlatButton>
+        <FlatButton onClick={cancel}>Peruuta</FlatButton>
         <RaisedButton
           disabled={!props.form.hasChanged || !props.form.isValid}
-          onClick={props.onSave}
+          onClick={save}
         >
           Tallenna
         </RaisedButton>
@@ -35,3 +48,4 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) =>
       </ButtonGroup>
     </FooterBar>
   ) : null
+}
