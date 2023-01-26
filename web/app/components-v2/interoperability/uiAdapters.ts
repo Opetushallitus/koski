@@ -2,6 +2,5 @@ import { TaiteenPerusopetusEditor } from '../../taiteenperusopetus/TaiteenPeruso
 import { AdaptedOpiskeluoikeusEditorCollection } from './useUiAdapter'
 
 export const opiskeluoikeusEditors: AdaptedOpiskeluoikeusEditorCollection = {
-  'fi.oph.koski.schema.TaiteenPerusopetuksenOpiskeluoikeus':
-    TaiteenPerusopetusEditor
+  taiteenperusopetus: TaiteenPerusopetusEditor
 }

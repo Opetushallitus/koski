@@ -1,5 +1,7 @@
 import * as $ from 'optics-ts'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
+import { KoodiarvotOf } from './koodisto'
 
 // Mikä tahansa luokka, joka on exportattu Scala-koodista
 export type ObjWithClass = { $class: string }
@@ -16,6 +18,10 @@ export type CollectableOptic<S, A> =
   | $.Fold<S, A>
 
 export type ItemOf<S extends any[]> = S[0]
+
+export type OpiskeluoikeudenTyyppiOf<T extends Opiskeluoikeus> = KoodiarvotOf<
+  T['tyyppi']
+>
 
 export const schemaClassName = (fullClassName: string): string | null => {
   const match = fullClassName.match(/fi\.oph\.koski\.schema\.(.*)/)

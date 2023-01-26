@@ -168,7 +168,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           <KeyColumnedValuesRow
             name={arrIndex === 0 ? 'Tila' : undefined}
             className={isLatest ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
-            columnSpans={[6, '*', 4]}
+            columnSpans={[6, '*']}
             key={index}
           >
             {[
@@ -180,7 +180,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                 onChange={onChangeDate(index)}
               />,
               <div key="jakso">
-                {t(jakso.tila.nimi)}{' '}
+                {t(jakso.tila.nimi)} {/* TODO Lisää rahoitusmuoto */}
                 {isLatest && (
                   <IconButton
                     charCode={CHARCODE_REMOVE}

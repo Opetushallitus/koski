@@ -7,16 +7,16 @@ export type IconButtonSize = 'normal' | 'input'
 export type IconButtonProps = CommonProps<{
   charCode: string
   label: string
-  onClick: () => void
+  onClick: React.MouseEventHandler<HTMLButtonElement>
   size?: IconButtonSize
 }>
 
 export const IconButton: React.FC<IconButtonProps> = (props) => {
-  const onClick: React.MouseEventHandler = useCallback(
+  const onClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (event) => {
       event.preventDefault()
       event.stopPropagation()
-      props.onClick()
+      props.onClick(event)
     },
     [props.onClick]
   )

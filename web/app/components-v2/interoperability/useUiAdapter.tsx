@@ -1,15 +1,13 @@
+import * as string from 'fp-ts/string'
 import React, { useEffect, useMemo } from 'react'
-import {
-  useApiWithParams,
-  useOnApiSuccess,
-  useSafeState
-} from '../../api-fetch'
+import { useApiMethod, useOnApiSuccess, useSafeState } from '../../api-fetch'
 import { modelData } from '../../editor/EditorModel'
 import { ObjectModel } from '../../types/EditorModels'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
-import { isTäydellisetHenkilötiedot } from '../../types/fi/oph/koski/schema/TaydellisetHenkilotiedot'
+import { intersects } from '../../util/fp/arrays'
 import { fetchOppija } from '../../util/koskiApi'
-import { ClassOf } from '../../util/types'
+import { getOpiskeluoikeusOid } from '../../util/opiskeluoikeus'
+import { OpiskeluoikeudenTyyppiOf } from '../../util/types'
 import { opiskeluoikeusEditors } from './uiAdapters'
 
 export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = (props: {
@@ -18,19 +16,24 @@ export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = (props: {
 }) => JSX.Element
 
 export type AdaptedOpiskeluoikeusEditorCollection = Partial<{
-  [OO in Opiskeluoikeus as ClassOf<OO>]: AdaptedOpiskeluoikeusEditor<OO>
+  [OO in Opiskeluoikeus as OpiskeluoikeudenTyyppiOf<OO>]: AdaptedOpiskeluoikeusEditor<OO>
 }>
 
 export type UiAdapter = {
-  isLoading: boolean
+  isLoadingV2: boolean
 
   getOpiskeluoikeusEditor: (
     opiskeluoikeusModel: ObjectModel
   ) => AdapterComponent | undefined
 }
 
-const initialUiAdapter: UiAdapter = {
-  isLoading: true,
+const loadingUiAdapter: UiAdapter = {
+  isLoadingV2: true,
+  getOpiskeluoikeusEditor: () => undefined
+}
+
+const disabledUiAdapter: UiAdapter = {
+  isLoadingV2: false,
   getOpiskeluoikeusEditor: () => undefined
 }
 
@@ -41,31 +44,43 @@ export type OpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
 }
 
 export const useUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
-  const [adapter, setAdapter] = useSafeState<UiAdapter>(initialUiAdapter)
+  const [adapter, setAdapter] = useSafeState<UiAdapter>(loadingUiAdapter)
+  const oppija = useApiMethod(fetchOppija)
 
-  const oppijaOid = useMemo(
-    () => modelData(oppijaModel, 'henkilö.oid'),
-    [oppijaModel]
-  )
-  const oppija = useApiWithParams(fetchOppija, [oppijaOid])
+  const v2Mode = useMemo(() => {
+    const ooTyypit: string[] =
+      modelData(oppijaModel, 'opiskeluoikeudet')?.map(
+        (o: any) => o.tyyppi.koodiarvo
+      ) || []
+    const v2OpiskeluoikeusTyypit = Object.keys(opiskeluoikeusEditors)
+    return intersects(string.Eq)(ooTyypit)(v2OpiskeluoikeusTyypit)
+  }, [oppijaModel])
 
-  useEffect(() => setAdapter(initialUiAdapter), [oppijaOid])
+  useEffect(() => {
+    if (v2Mode) {
+      const oppijaOid = modelData(oppijaModel, 'henkilö.oid')
+      setAdapter(loadingUiAdapter)
+      oppija.call(oppijaOid)
+    }
+  }, [oppijaModel, v2Mode])
+
   useOnApiSuccess(oppija, (result) => {
     const opiskeluoikeudet = result.data.opiskeluoikeudet
+    const oppijaOid = modelData(oppijaModel, 'henkilö.oid')
 
     setAdapter({
-      isLoading: false,
+      isLoadingV2: false,
       getOpiskeluoikeusEditor(opiskeluoikeusModel) {
         const tyyppi = modelData(opiskeluoikeusModel, 'tyyppi.koodiarvo')
         const oid = modelData(opiskeluoikeusModel, 'oid')
 
         const oo = opiskeluoikeudet.find(
-          // Tarkastetaan myös opiskeluoikeuden tyypillä, koska ylioppilastutkinnoilla ei ole oidia
-          (o) => o.tyyppi.koodiarvo === tyyppi && (o as any).oid === oid
+          (o) =>
+            o.tyyppi.koodiarvo === tyyppi && getOpiskeluoikeusOid(o) === oid
         )
 
         const Editor: AdaptedOpiskeluoikeusEditor<any> | undefined =
-          oo && opiskeluoikeusEditors[oo.$class]
+          oo && opiskeluoikeusEditors[oo.tyyppi.koodiarvo]
 
         return Editor
           ? () => <Editor oppijaOid={oppijaOid} opiskeluoikeus={oo} />
@@ -74,5 +89,5 @@ export const useUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
     })
   })
 
-  return adapter
+  return v2Mode ? adapter : disabledUiAdapter
 }

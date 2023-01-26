@@ -6,7 +6,7 @@ import { IconButton } from './IconButton'
 
 export type RemovableProps = CommonPropsWithChildren<{
   isRemovable?: boolean // default true
-  onClick: () => void
+  onClick: React.MouseEventHandler<HTMLButtonElement>
 }>
 
 export const Removable: React.FC<RemovableProps> = (props) =>

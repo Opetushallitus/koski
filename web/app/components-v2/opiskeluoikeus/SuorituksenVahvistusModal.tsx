@@ -178,10 +178,7 @@ export const SuorituksenVahvistusModal = <
           <FormField
             form={form}
             path={organisaatioPath}
-            updateAlso={[
-              updatePaikkakuntaByOrganisaatio
-              // updateHenkilöidenOrganisaatiot
-            ]}
+            updateAlso={[updatePaikkakuntaByOrganisaatio]}
             optional
             view={OrganisaatioView}
             edit={OrganisaatioEdit}

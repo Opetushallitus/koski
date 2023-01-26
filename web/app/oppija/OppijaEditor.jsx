@@ -21,42 +21,45 @@ export const OppijaEditor = ({ model }) => {
   const uiAdapter = useUiAdapter(model)
 
   return (
-    !uiAdapter.isLoading && (
-      <div>
-        <OpiskeluoikeudetNavBar
-          {...{ oppijaOid, opiskeluoikeusTyypit, selectedIndex }}
-        />
-        <ul className="opiskeluoikeuksientiedot">
-          {flatMapArray(
-            modelItems(
-              model,
-              'opiskeluoikeudet.' + selectedIndex + '.opiskeluoikeudet'
-            ),
-            (oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
-              return modelItems(
-                oppilaitoksenOpiskeluoikeudet,
-                'opiskeluoikeudet'
-              ).map((opiskeluoikeus, opiskeluoikeusIndex) => {
-                const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
-                return (
-                  <li key={oppilaitosIndex + '-' + opiskeluoikeusIndex}>
-                    {Editor ? (
-                      <Editor />
-                    ) : (
-                      <OpiskeluoikeusEditor
-                        model={addContext(opiskeluoikeus, {
-                          oppijaOid,
-                          opiskeluoikeusIndex
-                        })}
-                      />
-                    )}
-                  </li>
-                )
-              })
-            }
-          )}
-        </ul>
-      </div>
-    )
+    <>
+      <OpiskeluoikeudetNavBar
+        {...{ oppijaOid, opiskeluoikeusTyypit, selectedIndex }}
+      />
+      {!uiAdapter.isLoadingV2 && (
+        <div>
+          <ul className="opiskeluoikeuksientiedot">
+            {flatMapArray(
+              modelItems(
+                model,
+                'opiskeluoikeudet.' + selectedIndex + '.opiskeluoikeudet'
+              ),
+              (oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
+                return modelItems(
+                  oppilaitoksenOpiskeluoikeudet,
+                  'opiskeluoikeudet'
+                ).map((opiskeluoikeus, opiskeluoikeusIndex) => {
+                  const Editor =
+                    uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
+                  return (
+                    <li key={oppilaitosIndex + '-' + opiskeluoikeusIndex}>
+                      {Editor ? (
+                        <Editor />
+                      ) : (
+                        <OpiskeluoikeusEditor
+                          model={addContext(opiskeluoikeus, {
+                            oppijaOid,
+                            opiskeluoikeusIndex
+                          })}
+                        />
+                      )}
+                    </li>
+                  )
+                })
+              }
+            )}
+          </ul>
+        </div>
+      )}
+    </>
   )
 }

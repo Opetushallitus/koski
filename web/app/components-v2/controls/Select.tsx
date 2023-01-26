@@ -228,8 +228,8 @@ export const Select = <T,>(props: SelectProps<T>) => {
 type OptionListProps<T> = {
   options: OptionList<T>
   hoveredOption?: SelectOption<T>
-  onClick: (o: SelectOption<T>) => void
-  onMouseOver: (o: SelectOption<T>) => void
+  onClick: (o: SelectOption<T>, event: React.MouseEvent) => void
+  onMouseOver: (o: SelectOption<T>, event: React.MouseEvent) => void
   onRemove?: (o: SelectOption<T>) => void
 }
 
@@ -237,7 +237,7 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
   const onClick = (option: SelectOption<T>) => (event: React.MouseEvent) => {
     event.preventDefault()
     event.stopPropagation()
-    props.onClick(option)
+    props.onClick(option, event)
   }
 
   const { options, onRemove, ...rest } = props
@@ -262,10 +262,12 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
                 opt.isGroup && 'Select__optionGroup'
               )}
               onMouseOver={
-                opt.isGroup ? undefined : () => props.onMouseOver(opt)
+                opt.isGroup
+                  ? undefined
+                  : (event) => props.onMouseOver(opt, event)
               }
             >
-              {opt.display || t(opt.label)}
+              {opt.display || opt.label}
             </div>
           </Removable>
           {opt.children && <OptionList options={opt.children} {...rest} />}

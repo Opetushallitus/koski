@@ -155,7 +155,9 @@ const months = [
   'Joulukuu'
 ].map((v) => t(v))
 
-const CalendarButton: React.FC<{ onClick: () => void }> = (props) => (
+const CalendarButton: React.FC<{
+  onClick: React.MouseEventHandler<HTMLAnchorElement>
+}> = (props) => (
   <a className="DateEdit__pickerBtn" onClick={props.onClick}>
     {''}
   </a>

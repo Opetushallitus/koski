@@ -17,6 +17,7 @@ import { t } from '../../i18n/i18n'
 import { Constraint } from '../../types/fi/oph/koski/typemodel/Constraint'
 import { tap, tapLeft } from '../../util/fp/either'
 import { deepEqual } from '../../util/fp/objects'
+import { assertNever } from '../../util/selfcare'
 import { validateData, ValidationError } from './validator'
 
 export type FormModel<O extends object> = {
@@ -144,10 +145,7 @@ export const useForm = <O extends object>(
   const [
     { data, initialData, editMode, hasChanged, isSaved, errors },
     dispatch
-  ] = useReducer(reducer, init) as [
-    InternalFormState<O>,
-    Dispatch<ReducerAction<Reducer<O, Action<O>>>>
-  ]
+  ] = useReducer<Reducer<InternalFormState<O>, Action<O>>>(reducer, init)
 
   const globalErrors = useGlobalErrors()
 
@@ -245,8 +243,7 @@ export const getValue =
       case 'Prism':
         return $.preview(optic)(source)
       default:
-        // @ts-expect-error - seuraava rivi antaa virheen, jos kaikki caset on käsitelty
-        optic._tag
+        assertNever(optic)
     }
   }
 
@@ -259,8 +256,6 @@ const modifyValue =
       case 'Prism':
         return $.modify(optic)(fn)(source)
       default:
-        // @ts-expect-error - seuraava rivi antaa virheen, jos kaikki caset on käsitelty
-        optic._tag
-        return source
+        return assertNever(optic)
     }
   }
