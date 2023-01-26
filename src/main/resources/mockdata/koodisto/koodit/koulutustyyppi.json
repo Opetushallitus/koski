@@ -2792,6 +2792,8 @@
     "lyhytNimi" : "Fritt bildningsarbete ",
     "kuvaus" : "Fritt bildningsarbete ",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -26696,6 +26698,8 @@
     "lyhytNimi" : "Förskoleundervisning",
     "kuvaus" : "Förskoleundervisning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -26756,6 +26760,8 @@
     "lyhytNimi" : "Grundläggande utbildning",
     "kuvaus" : "Grundläggande utbildning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -26909,6 +26915,8 @@
     "lyhytNimi" : "VALMA",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -27029,6 +27037,8 @@
     "lyhytNimi" : "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -27145,6 +27155,8 @@
     "lyhytNimi" : "Gymnasieutbildning",
     "kuvaus" : "Gymnasieutbildning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -27297,6 +27309,8 @@
     "lyhytNimi" : "Småbarnspedagogik",
     "kuvaus" : "Småbarnspedagogik",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -27458,6 +27472,8 @@
   }, {
     "nimi" : "Utbildning som förbereder för grundläggande utbildning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -27470,6 +27486,8 @@
   }, {
     "nimi" : "Utbildning som förbereder för gymnasieutbildning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -27486,6 +27504,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -29039,6 +29059,8 @@
     "lyhytNimi" : "Högskoleutbildning",
     "kuvaus" : "Högskoleutbildning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -29395,6 +29417,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -29411,6 +29435,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -32156,6 +32182,58 @@
     "passive" : false
   } ]
 }, {
+  "koodiUri" : "koulutustyyppi_40",
+  "koodiArvo" : "40",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutus TUVA)",
+    "lyhytNimi" : "TUVA",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning som handleder för examensutbildning (Hux)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "haunkohdejoukko_11",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_999908",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "koulutustyyppi_41",
+  "koodiArvo" : "41",
+  "metadata" : [ {
+    "nimi" : "Tutkintokoulutukseen valmentava koulutus (TUVA) vaativa erityinen tuki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning som handleder för examensutbildning (Hux) krävande särskilt stöd",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "haunkohdejoukko_11",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koulutus_999908",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
   "koodiUri" : "koulutustyyppi_5",
   "koodiArvo" : "5",
   "metadata" : [ {
@@ -32168,6 +32246,8 @@
     "lyhytNimi" : "TELMA",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -32296,6 +32376,8 @@
     "lyhytNimi" : "Påbyggnadsundervisning efter den grundläggande utbildningen",
     "kuvaus" : "Påbyggnadsundervisning efter den grundläggande utbildningen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -32392,6 +32474,8 @@
     "lyhytNimi" : "Utbildning som orienterar och förbereder för grundläggande yrkesutbildning",
     "kuvaus" : "Utbildning som orienterar och förbereder för grundläggande yrkesutbildning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -32456,6 +32540,8 @@
     "lyhytNimi" : "Utbildning som förbereder invandrare för yrkesutbildning",
     "kuvaus" : "Utbildning som förbereder invandrare för yrkesutbildning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -32516,6 +32602,8 @@
     "lyhytNimi" : "Förberedande gymnasieutbildning för invandrare och personer med annat modersmål än finska och svenska",
     "kuvaus" : "Förberedande gymnasieutbildning för invandrare och personer med annat modersmål än finska och svenska",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 2,
   "withinCodeElements" : [ {
@@ -32591,193 +32679,4 @@
     "codeElementVersion" : 1,
     "passive" : false
   } ]
-}, {
-  "koodiUri": "koulutustyyppi_41",
-  "version": 3,
-  "versio": 1,
-  "koodiArvo": "41",
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "nimi": "Utbildning som handleder för examensutbildning (Hux) krävande särskilt stöd",
-      "kuvaus": "",
-      "lyhytNimi": "",
-      "kayttoohje": "",
-      "kasite": "",
-      "sisaltaaMerkityksen": "",
-      "eiSisallaMerkitysta": "",
-      "huomioitavaKoodi": "",
-      "sisaltaaKoodiston": "",
-      "kieli": "SV"
-    },
-    {
-      "nimi": "Tutkintokoulutukseen valmentava koulutus (TUVA) vaativa erityinen tuki",
-      "kuvaus": "",
-      "lyhytNimi": "",
-      "kayttoohje": "",
-      "kasite": "",
-      "sisaltaaMerkityksen": "",
-      "eiSisallaMerkitysta": "",
-      "huomioitavaKoodi": "",
-      "sisaltaaKoodiston": "",
-      "kieli": "FI"
-    }
-  ],
-  "withinCodeElements": [
-    {
-      "codeElementUri": "koulutus_999908",
-      "codeElementVersion": 1,
-      "codeElementValue": "999908",
-      "relationMetadata": [
-        {
-          "nimi": "Tutkintokoulutukseen valmentava koulutus",
-          "kieli": "FI",
-          "kuvaus": "Laki tulee voimaan 1.8.2021 eli yhtä aikaa oppivelvollisuuslain kanssa, mutta koulutuksen perusteiden mukaista koulutusta aletaan järjestää 1.8.2022."
-        },
-        {
-          "nimi": "Utbildning som handleder för examensutbildning",
-          "kieli": "SV",
-          "kuvaus": ""
-        }
-      ],
-      "parentMetadata": [
-        {
-          "nimi": "koulutus",
-          "kieli": "EN",
-          "kuvaus": "koulutus"
-        },
-        {
-          "nimi": "koulutus",
-          "kieli": "FI",
-          "kuvaus": "koulutus"
-        },
-        {
-          "nimi": "koulutus",
-          "kieli": "SV",
-          "kuvaus": "koulutus"
-        }
-      ],
-      "passive": false
-    }
-  ],
-  "includesCodeElements": [],
-  "levelsWithCodeElements": []
-}, {
-  "koodiUri": "koulutustyyppi_40",
-  "koodiArvo": "40",
-  "version": 4,
-  "versio": 1,
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "nimi": "Tutkintokoulutukseen valmentava koulutus TUVA)",
-      "kuvaus": "",
-      "lyhytNimi": "TUVA",
-      "kayttoohje": "",
-      "kasite": "",
-      "sisaltaaMerkityksen": "",
-      "eiSisallaMerkitysta": "",
-      "huomioitavaKoodi": "",
-      "sisaltaaKoodiston": "",
-      "kieli": "FI"
-    },
-    {
-      "nimi": "Utbildning som handleder för examensutbildning (Hux)",
-      "kuvaus": "",
-      "lyhytNimi": "",
-      "kayttoohje": "",
-      "kasite": "",
-      "sisaltaaMerkityksen": "",
-      "eiSisallaMerkitysta": "",
-      "huomioitavaKoodi": "",
-      "sisaltaaKoodiston": "",
-      "kieli": "SV"
-    }
-  ],
-  "withinCodeElements": [
-    {
-      "codeElementUri": "koulutus_999908",
-      "codeElementVersion": 1,
-      "codeElementValue": "999908",
-      "relationMetadata": [
-        {
-          "nimi": "Tutkintokoulutukseen valmentava koulutus",
-          "kieli": "FI",
-          "kuvaus": "Laki tulee voimaan 1.8.2021 eli yhtä aikaa oppivelvollisuuslain kanssa, mutta koulutuksen perusteiden mukaista koulutusta aletaan järjestää 1.8.2022."
-        },
-        {
-          "nimi": "Utbildning som handleder för examensutbildning",
-          "kieli": "SV",
-          "kuvaus": ""
-        }
-      ],
-      "parentMetadata": [
-        {
-          "nimi": "koulutus",
-          "kieli": "EN",
-          "kuvaus": "koulutus"
-        },
-        {
-          "nimi": "koulutus",
-          "kieli": "FI",
-          "kuvaus": "koulutus"
-        },
-        {
-          "nimi": "koulutus",
-          "kieli": "SV",
-          "kuvaus": "koulutus"
-        }
-      ],
-      "passive": false
-    }
-  ],
-  "includesCodeElements": [],
-  "levelsWithCodeElements": []
-}, {
-  "koodiUri": "koulutustyyppi_999907",
-  "koodiArvo": "999907",
-  "version": 4,
-  "versio": 1,
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "nimi": "Taiteen perusopetus",
-      "kuvaus": "",
-      "lyhytNimi": "TPO",
-      "kayttoohje": "",
-      "kasite": "",
-      "sisaltaaMerkityksen": "",
-      "eiSisallaMerkitysta": "",
-      "huomioitavaKoodi": "",
-      "sisaltaaKoodiston": "",
-      "kieli": "FI"
-    },
-    {
-      "nimi": "Grundläggande konstundervisning",
-      "kuvaus": "",
-      "lyhytNimi": "",
-      "kayttoohje": "",
-      "kasite": "",
-      "sisaltaaMerkityksen": "",
-      "eiSisallaMerkitysta": "",
-      "huomioitavaKoodi": "",
-      "sisaltaaKoodiston": "",
-      "kieli": "SV"
-    },
-    {
-      "nimi": "Taiteen perusopetus",
-      "kuvaus": "",
-      "lyhytNimi": "",
-      "kayttoohje": "",
-      "kasite": "",
-      "sisaltaaMerkityksen": "",
-      "eiSisallaMerkitysta": "",
-      "huomioitavaKoodi": "",
-      "sisaltaaKoodiston": "",
-      "kieli": "EN"
-    }
-  ],
-  "withinCodeElements": [],
-  "includesCodeElements": [],
-  "levelsWithCodeElements": []
 } ]

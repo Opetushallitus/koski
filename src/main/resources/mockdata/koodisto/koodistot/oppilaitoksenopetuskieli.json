@@ -4,15 +4,15 @@
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "oppilaitoksen opetuskieli",
-    "kuvaus" : "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. \n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä."
+    "kuvaus" : "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä."
   }, {
     "kieli" : "SV",
     "nimi" : "oppilaitoksen opetuskieli",
-    "kuvaus" : "oppilaitoksen opetuskieli"
+    "kuvaus" : "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä."
   }, {
     "kieli" : "EN",
     "nimi" : "oppilaitoksen opetuskieli",
-    "kuvaus" : "oppilaitoksen opetuskieli"
+    "kuvaus" : "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. Koodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia\n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä."
   } ],
   "codesGroupUri" : "oppilaitoskoodistot",
   "voimassaAlkuPvm" : "2021-06-08",
@@ -23,5 +23,5 @@
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 2
+  "version" : 4
 }

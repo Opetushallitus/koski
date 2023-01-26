@@ -7,8 +7,8 @@
     "kuvaus" : "tutkinnon osat"
   }, {
     "kieli" : "SV",
-    "nimi" : "examensdeler",
-    "kuvaus" : "examensdeler"
+    "nimi" : "examensdelar",
+    "kuvaus" : "examensdelar"
   }, {
     "kieli" : "EN",
     "nimi" : "tutkinnon osat",
@@ -27,5 +27,5 @@
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 61
+  "version" : 62
 }

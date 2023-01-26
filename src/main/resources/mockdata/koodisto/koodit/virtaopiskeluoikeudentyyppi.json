@@ -7,6 +7,8 @@
   }, {
     "nimi" : "Yrkeshögskoleexamen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -23,6 +25,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -39,6 +43,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -55,6 +61,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -71,6 +79,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -87,6 +97,9 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "-",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -103,6 +116,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -119,6 +134,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -135,6 +152,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -151,6 +170,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -167,6 +188,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -179,6 +202,8 @@
   }, {
     "nimi" : "Lägre högskoleexamen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -190,6 +215,10 @@
     "lyhytNimi" : "",
     "kuvaus" : "Opiskeluoikeus perustuu muun organisaation kuin korkeakoulun kanssa tehtyyn yhteistyösopimukseen.\n\nKotimainen korkeakoulu on tehnyt yhteistyösopimuksen kotimaisen tai ulkomaisen muun organisaation kuin korkeakoulun kanssa (esim. toisen asteen yhteistyö). Opinnot ovat maksutomia.",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -202,6 +231,8 @@
   }, {
     "nimi" : "Högre yrkeshögskoleexamen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -214,6 +245,8 @@
   }, {
     "nimi" : "Högre högskoleexamen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -230,6 +263,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -242,6 +277,8 @@
   }, {
     "nimi" : "Licentiatexamen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -254,6 +291,8 @@
   }, {
     "nimi" : "Doktorsexamen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -270,6 +309,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -286,6 +327,8 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

@@ -4,15 +4,15 @@
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "kunta",
-    "kuvaus" : "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. Koodistoa ylläpidetään Opetushallituksessa (Heidi Bergström)"
+    "kuvaus" : "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia"
   }, {
     "kieli" : "SV",
     "nimi" : "kommun",
-    "kuvaus" : "kommun"
+    "kuvaus" : "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia"
   }, {
     "kieli" : "EN",
     "nimi" : "municipality",
-    "kuvaus" : "municipality"
+    "kuvaus" : "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset. \n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia"
   } ],
   "codesGroupUri" : "alueet",
   "voimassaAlkuPvm" : "2018-02-08",
@@ -20,6 +20,10 @@
   "withinCodes" : [ {
     "codesUri" : "aluehallintovirasto",
     "codesVersion" : 1,
+    "passive" : true
+  }, {
+    "codesUri" : "aluehallintovirasto",
+    "codesVersion" : 2,
     "passive" : false
   }, {
     "codesUri" : "oppilaitosnumero",
@@ -27,5 +31,5 @@
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 5
+  "version" : 8
 }

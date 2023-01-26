@@ -4,20 +4,20 @@
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "Yhteystietotyypit",
-    "kuvaus" : ""
+    "kuvaus" : "Yhteystietotyypit"
   }, {
     "kieli" : "SV",
     "nimi" : "Yhteystietotyypit",
-    "kuvaus" : ""
+    "kuvaus" : "Yhteystietotyypit"
   }, {
     "kieli" : "EN",
     "nimi" : "Yhteystietotyypit",
-    "kuvaus" : ""
+    "kuvaus" : "Yhteystietotyypit"
   } ],
   "codesGroupUri" : "alueet",
   "voimassaAlkuPvm" : "2014-04-07",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 3
+  "version" : 4
 }

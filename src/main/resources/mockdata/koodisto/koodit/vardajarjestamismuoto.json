@@ -4,63 +4,88 @@
   "metadata" : [ {
     "nimi" : "Kunnan tai kuntayhtymän järjestämä",
     "lyhytNimi" : "",
+    "kuvaus" : "Kunnan tai kuntayhtymän järjestämä",
     "kieli" : "FI"
   }, {
     "nimi" : "Anordnas av kommunen eller samkommunen",
     "lyhytNimi" : "",
+    "kuvaus" : "Anordnas av kommunen eller samkommunen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "vardajarjestamismuoto_jm02",
   "koodiArvo" : "JM02",
   "metadata" : [ {
     "nimi" : "Ostopalvelu, kunnan tai kuntayhtymän järjestämä",
     "lyhytNimi" : "",
+    "kuvaus" : "Ostopalvelu, kunnan tai kuntayhtymän järjestämä",
     "kieli" : "FI"
   }, {
     "nimi" : "Anordnas som köpt tjänst av kommunen eller samkommunen",
     "lyhytNimi" : "",
+    "kuvaus" : "Anordnas som köpt tjänst av kommunen eller samkommunen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "vardajarjestamismuoto_jm03",
   "koodiArvo" : "JM03",
   "metadata" : [ {
     "nimi" : "Palveluseteli, kunnan tai kuntayhtymän järjestämä",
     "lyhytNimi" : "",
+    "kuvaus" : "Palveluseteli, kunnan tai kuntayhtymän järjestämä",
     "kieli" : "FI"
   }, {
     "nimi" : "Anordnas med servicesedlar av kommunen eller samkommunen",
     "lyhytNimi" : "",
+    "kuvaus" : "Anordnas med servicesedlar av kommunen eller samkommunen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "vardajarjestamismuoto_jm04",
   "koodiArvo" : "JM04",
   "metadata" : [ {
     "nimi" : "Yksityisen hoidon tuella järjestetty",
     "lyhytNimi" : "",
+    "kuvaus" : "Yksityisen hoidon tuella järjestetty",
     "kieli" : "FI"
   }, {
     "nimi" : "Anordnas med hjälp av stödet för privat vård av barn",
     "lyhytNimi" : "",
+    "kuvaus" : "Anordnas med hjälp av stödet för privat vård av barn",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "vardajarjestamismuoto_jm05",
   "koodiArvo" : "JM05",
   "metadata" : [ {
     "nimi" : "Yksityinen varhaiskasvatus ilman yksityisen hoidon tukea",
     "lyhytNimi" : "Yksityinen varhaiskasvatus ilman yksityisen hoidon tukea",
+    "kuvaus" : "Yksityinen varhaiskasvatus ilman yksityisen hoidon tukea",
     "kieli" : "FI"
   }, {
     "nimi" : "Privat småbarnspedagogik utan stöd för privat vård av barn",
     "lyhytNimi" : "Privat småbarnspedagogik utan stöd för privat vård av barn",
+    "kuvaus" : "Privat småbarnspedagogik utan stöd för privat vård av barn",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

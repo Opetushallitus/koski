@@ -7,8 +7,11 @@
   }, {
     "nimi" : "Livet och evolutionen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_bi2",
   "koodiArvo" : "BI2",
@@ -18,8 +21,11 @@
   }, {
     "nimi" : "Ekologi och miljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_bi3",
   "koodiArvo" : "BI3",
@@ -29,8 +35,11 @@
   }, {
     "nimi" : "Cellen och ärftligheten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_bi4",
   "koodiArvo" : "BI4",
@@ -40,8 +49,11 @@
   }, {
     "nimi" : "Människans biologi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_bi5",
   "koodiArvo" : "BI5",
@@ -51,8 +63,11 @@
   }, {
     "nimi" : "Biologins tillämpningar",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ena1",
   "koodiArvo" : "ENA1",
@@ -62,8 +77,11 @@
   }, {
     "nimi" : "Engelskan och min värld",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ena2",
   "koodiArvo" : "ENA2",
@@ -73,8 +91,11 @@
   }, {
     "nimi" : "Människans sociala nätverk",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ena3",
   "koodiArvo" : "ENA3",
@@ -84,8 +105,11 @@
   }, {
     "nimi" : "Kulturella fenomen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ena4",
   "koodiArvo" : "ENA4",
@@ -95,8 +119,11 @@
   }, {
     "nimi" : "Samhället och omvärlden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ena5",
   "koodiArvo" : "ENA5",
@@ -106,8 +133,11 @@
   }, {
     "nimi" : "Vetenskap och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ena6",
   "koodiArvo" : "ENA6",
@@ -117,8 +147,11 @@
   }, {
     "nimi" : "Studier, arbete och ekonomi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ena7",
   "koodiArvo" : "ENA7",
@@ -128,8 +161,11 @@
   }, {
     "nimi" : "Hållbar livsstil",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ena8",
   "koodiArvo" : "ENA8",
@@ -139,8 +175,11 @@
   }, {
     "nimi" : "Muntlig kommunikation och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_et1",
   "koodiArvo" : "ET1",
@@ -150,8 +189,11 @@
   }, {
     "nimi" : "Världsåskådning och kritiskt tänkande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_et2",
   "koodiArvo" : "ET2",
@@ -161,8 +203,11 @@
   }, {
     "nimi" : "Människan, identiteten och ett gott liv",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_et3",
   "koodiArvo" : "ET3",
@@ -172,8 +217,11 @@
   }, {
     "nimi" : "Individen och samhället",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_et4",
   "koodiArvo" : "ET4",
@@ -183,8 +231,11 @@
   }, {
     "nimi" : "Kulturens inverkan på människans livsåskådning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_et5",
   "koodiArvo" : "ET5",
@@ -194,8 +245,11 @@
   }, {
     "nimi" : "Livsåskådningarnas värld",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_et6",
   "koodiArvo" : "ET6",
@@ -205,8 +259,11 @@
   }, {
     "nimi" : "Teknologi, världsåskådningar och mänsklighetens framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fi1",
   "koodiArvo" : "FI1",
@@ -216,8 +273,11 @@
   }, {
     "nimi" : "Introduktion i filosofiskt tänkande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fi2",
   "koodiArvo" : "FI2",
@@ -227,8 +287,11 @@
   }, {
     "nimi" : "Etik",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fi3",
   "koodiArvo" : "FI3",
@@ -238,8 +301,11 @@
   }, {
     "nimi" : "Samhällsfilosofi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fi4",
   "koodiArvo" : "FI4",
@@ -249,8 +315,11 @@
   }, {
     "nimi" : "Kunskap, vetenskap och verklighet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fim1",
   "koodiArvo" : "FIM1",
@@ -260,8 +329,11 @@
   }, {
     "nimi" : "Vardagsliv, närmiljö och hälsa",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fim2",
   "koodiArvo" : "FIM2",
@@ -271,8 +343,11 @@
   }, {
     "nimi" : "Natur och vetenskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fim3",
   "koodiArvo" : "FIM3",
@@ -282,8 +357,11 @@
   }, {
     "nimi" : "Teknik och konsumtion",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fim4",
   "koodiArvo" : "FIM4",
@@ -293,8 +371,11 @@
   }, {
     "nimi" : "Medierna och samhället",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fim5",
   "koodiArvo" : "FIM5",
@@ -304,8 +385,11 @@
   }, {
     "nimi" : "Utbildning och arbetsliv",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fim6",
   "koodiArvo" : "FIM6",
@@ -315,8 +399,11 @@
   }, {
     "nimi" : "Finsk kultur och litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fim7",
   "koodiArvo" : "FIM7",
@@ -326,8 +413,11 @@
   }, {
     "nimi" : "Kommunicera i skrift",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fim8",
   "koodiArvo" : "FIM8",
@@ -337,8 +427,11 @@
   }, {
     "nimi" : "Kommunicera i tal",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fina1",
   "koodiArvo" : "FINA1",
@@ -348,8 +441,11 @@
   }, {
     "nimi" : "Vardagsliv, närmiljö och hälsa",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fina2",
   "koodiArvo" : "FINA2",
@@ -359,8 +455,11 @@
   }, {
     "nimi" : "Natur och vetenskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fina3",
   "koodiArvo" : "FINA3",
@@ -370,8 +469,11 @@
   }, {
     "nimi" : "Teknik och konsumtion",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fina4",
   "koodiArvo" : "FINA4",
@@ -381,8 +483,11 @@
   }, {
     "nimi" : "Medierna och samhället",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fina5",
   "koodiArvo" : "FINA5",
@@ -392,8 +497,11 @@
   }, {
     "nimi" : "Utbildning och arbetsliv",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fina6",
   "koodiArvo" : "FINA6",
@@ -403,8 +511,11 @@
   }, {
     "nimi" : "Finsk kultur och litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fina7",
   "koodiArvo" : "FINA7",
@@ -414,8 +525,11 @@
   }, {
     "nimi" : "Kommunicera i skrift",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fina8",
   "koodiArvo" : "FINA8",
@@ -425,8 +539,11 @@
   }, {
     "nimi" : "Kommunicera i tal",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb11",
   "koodiArvo" : "FINB11",
@@ -436,8 +553,11 @@
   }, {
     "nimi" : "Vardagsliv, närmiljö och hälsa",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb12",
   "koodiArvo" : "FINB12",
@@ -447,8 +567,11 @@
   }, {
     "nimi" : "Natur och vetenskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb13",
   "koodiArvo" : "FINB13",
@@ -458,8 +581,11 @@
   }, {
     "nimi" : "Teknik och konsumtion",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb14",
   "koodiArvo" : "FINB14",
@@ -469,8 +595,11 @@
   }, {
     "nimi" : "Samhälle, kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb15",
   "koodiArvo" : "FINB15",
@@ -480,8 +609,11 @@
   }, {
     "nimi" : "Utbildning och arbetsliv",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb16",
   "koodiArvo" : "FINB16",
@@ -491,8 +623,11 @@
   }, {
     "nimi" : "Kommunicera i tal",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb17",
   "koodiArvo" : "FINB17",
@@ -502,8 +637,11 @@
   }, {
     "nimi" : "Kommunicera i skrift",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb31",
   "koodiArvo" : "FINB31",
@@ -513,8 +651,11 @@
   }, {
     "nimi" : "Vi bekantar oss med varandra och den finskspråkiga kulturmiljön",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb32",
   "koodiArvo" : "FINB32",
@@ -524,8 +665,11 @@
   }, {
     "nimi" : "På finska i Finland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb33",
   "koodiArvo" : "FINB33",
@@ -535,8 +679,11 @@
   }, {
     "nimi" : "Viktiga frågor i livet och vardagen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb34",
   "koodiArvo" : "FINB34",
@@ -546,8 +693,11 @@
   }, {
     "nimi" : "Liv och levnadssätt",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb35",
   "koodiArvo" : "FINB35",
@@ -557,8 +707,11 @@
   }, {
     "nimi" : "Välbefinnande och omsorg",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb36",
   "koodiArvo" : "FINB36",
@@ -568,8 +721,11 @@
   }, {
     "nimi" : "Kultur och media",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb37",
   "koodiArvo" : "FINB37",
@@ -579,8 +735,11 @@
   }, {
     "nimi" : "Studie- och arbetsliv på finska",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_finb38",
   "koodiArvo" : "FINB38",
@@ -590,8 +749,11 @@
   }, {
     "nimi" : "Vår gemensamma jord",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fy1",
   "koodiArvo" : "FY1",
@@ -601,8 +763,11 @@
   }, {
     "nimi" : "Fysiken som naturvetenskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fy2",
   "koodiArvo" : "FY2",
@@ -612,8 +777,11 @@
   }, {
     "nimi" : "Värme",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fy3",
   "koodiArvo" : "FY3",
@@ -623,8 +791,11 @@
   }, {
     "nimi" : "Elektricitet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fy4",
   "koodiArvo" : "FY4",
@@ -634,8 +805,11 @@
   }, {
     "nimi" : "Kraft och rörelse",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fy5",
   "koodiArvo" : "FY5",
@@ -645,8 +819,11 @@
   }, {
     "nimi" : "Periodisk rörelse och vågor",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fy6",
   "koodiArvo" : "FY6",
@@ -656,8 +833,11 @@
   }, {
     "nimi" : "Elektromagnetism",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_fy7",
   "koodiArvo" : "FY7",
@@ -667,8 +847,11 @@
   }, {
     "nimi" : "Materia och strålning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ge1",
   "koodiArvo" : "GE1",
@@ -678,8 +861,11 @@
   }, {
     "nimi" : "En värld i förändring",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ge2",
   "koodiArvo" : "GE2",
@@ -689,8 +875,11 @@
   }, {
     "nimi" : "Den blå planeten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ge3",
   "koodiArvo" : "GE3",
@@ -700,8 +889,11 @@
   }, {
     "nimi" : "En gemensam värld",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ge4",
   "koodiArvo" : "GE4",
@@ -711,8 +903,11 @@
   }, {
     "nimi" : "Geomedia - undersök, delta och påverka",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_hi1",
   "koodiArvo" : "HI1",
@@ -722,8 +917,11 @@
   }, {
     "nimi" : "Människan i en föränderlig omvärld",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_hi2",
   "koodiArvo" : "HI2",
@@ -733,8 +931,11 @@
   }, {
     "nimi" : "Internationella relationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_hi3",
   "koodiArvo" : "HI3",
@@ -744,8 +945,11 @@
   }, {
     "nimi" : "Det självständiga Finlands historia",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_hi4",
   "koodiArvo" : "HI4",
@@ -755,8 +959,11 @@
   }, {
     "nimi" : "En europeisk världsbild växer fram",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_hi5",
   "koodiArvo" : "HI5",
@@ -766,8 +973,11 @@
   }, {
     "nimi" : "Sveriges östra rikshalva blir Finland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_hi6",
   "koodiArvo" : "HI6",
@@ -777,8 +987,11 @@
   }, {
     "nimi" : "Globala kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ke1",
   "koodiArvo" : "KE1",
@@ -788,8 +1001,11 @@
   }, {
     "nimi" : "Kemi överallt",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ke2",
   "koodiArvo" : "KE2",
@@ -799,8 +1015,11 @@
   }, {
     "nimi" : "Människans kemi och kemin i livsmiljön",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ke3",
   "koodiArvo" : "KE3",
@@ -810,8 +1029,11 @@
   }, {
     "nimi" : "Reaktioner och energi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ke4",
   "koodiArvo" : "KE4",
@@ -821,8 +1043,11 @@
   }, {
     "nimi" : "Material och teknologi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ke5",
   "koodiArvo" : "KE5",
@@ -832,8 +1057,11 @@
   }, {
     "nimi" : "Reaktioner och jämvikt",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_kold1",
   "koodiArvo" : "KOLD1",
@@ -843,8 +1071,11 @@
   }, {
     "nimi" : "Gymnasiediplom i huslig ekonomi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ku1",
   "koodiArvo" : "KU1",
@@ -854,8 +1085,11 @@
   }, {
     "nimi" : "Bilder och kulturer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ku2",
   "koodiArvo" : "KU2",
@@ -865,8 +1099,11 @@
   }, {
     "nimi" : "Formgivna och byggda miljöer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ku3",
   "koodiArvo" : "KU3",
@@ -876,8 +1113,11 @@
   }, {
     "nimi" : "Medier och delaktighet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ku4",
   "koodiArvo" : "KU4",
@@ -887,8 +1127,11 @@
   }, {
     "nimi" : "Konstens olika världar",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_kuld2",
   "koodiArvo" : "KULD2",
@@ -898,8 +1141,11 @@
   }, {
     "nimi" : "Gymnasiediplom i bildkonst",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_kald3",
   "koodiArvo" : "KÄLD3",
@@ -909,8 +1155,11 @@
   }, {
     "nimi" : "Gymnasiediplom i slöjd",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab21",
   "koodiArvo" : "LAB21",
@@ -920,8 +1169,11 @@
   }, {
     "nimi" : "Skeden i Roms historia",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab22",
   "koodiArvo" : "LAB22",
@@ -931,8 +1183,11 @@
   }, {
     "nimi" : "Framstående romare",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab23",
   "koodiArvo" : "LAB23",
@@ -942,8 +1197,11 @@
   }, {
     "nimi" : "Vårt kulturarv",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab24",
   "koodiArvo" : "LAB24",
@@ -953,8 +1211,11 @@
   }, {
     "nimi" : "Budskap från det förgångna",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab25",
   "koodiArvo" : "LAB25",
@@ -964,8 +1225,11 @@
   }, {
     "nimi" : "Latinet genom seklerna",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab26",
   "koodiArvo" : "LAB26",
@@ -975,8 +1239,11 @@
   }, {
     "nimi" : "Epik och lyrik",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab27",
   "koodiArvo" : "LAB27",
@@ -986,8 +1253,11 @@
   }, {
     "nimi" : "Retorik och filosofi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab28",
   "koodiArvo" : "LAB28",
@@ -997,8 +1267,11 @@
   }, {
     "nimi" : "Latinet under medeltiden och nutiden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab31",
   "koodiArvo" : "LAB31",
@@ -1008,8 +1281,11 @@
   }, {
     "nimi" : "Antiken i fokus",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab32",
   "koodiArvo" : "LAB32",
@@ -1019,8 +1295,11 @@
   }, {
     "nimi" : "Livet under antiken",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab33",
   "koodiArvo" : "LAB33",
@@ -1030,8 +1309,11 @@
   }, {
     "nimi" : "Kunskap, färdigheter och det mytologiska arvet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab34",
   "koodiArvo" : "LAB34",
@@ -1041,8 +1323,11 @@
   }, {
     "nimi" : "Skeden i Roms historia",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab35",
   "koodiArvo" : "LAB35",
@@ -1052,8 +1337,11 @@
   }, {
     "nimi" : "Framstående romare",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab36",
   "koodiArvo" : "LAB36",
@@ -1063,8 +1351,11 @@
   }, {
     "nimi" : "Vårt kulturarv",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab37",
   "koodiArvo" : "LAB37",
@@ -1074,8 +1365,11 @@
   }, {
     "nimi" : "Budskap från det förgångna",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lab38",
   "koodiArvo" : "LAB38",
@@ -1085,8 +1379,11 @@
   }, {
     "nimi" : "Latinet genom seklerna",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_li1",
   "koodiArvo" : "LI1",
@@ -1096,8 +1393,11 @@
   }, {
     "nimi" : "Motion ger energi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_li2",
   "koodiArvo" : "LI2",
@@ -1107,8 +1407,11 @@
   }, {
     "nimi" : "En aktiv livsstil",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_li3",
   "koodiArvo" : "LI3",
@@ -1118,8 +1421,11 @@
   }, {
     "nimi" : "Motion och hälsa",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_li4",
   "koodiArvo" : "LI4",
@@ -1129,8 +1435,11 @@
   }, {
     "nimi" : "Att motionera tillsammans",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_li5",
   "koodiArvo" : "LI5",
@@ -1140,8 +1449,11 @@
   }, {
     "nimi" : "Motion och välbefinnande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lild4",
   "koodiArvo" : "LILD4",
@@ -1151,283 +1463,386 @@
   }, {
     "nimi" : "Gymnasiediplom i gymnastik",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvhy1",
   "koodiArvo" : "LVHY1",
   "metadata" : [ {
     "nimi" : "Historian perusteita",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Grunderna i historia",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvhy2",
   "koodiArvo" : "LVHY2",
   "metadata" : [ {
     "nimi" : "Suomen yhteiskunta ja kulttuurit",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Samhället och kulturerna i Finland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvka1",
   "koodiArvo" : "LVKA1",
   "metadata" : [ {
     "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Språkfärdighet som en del av studierna och andra livsområden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvka2",
   "koodiArvo" : "LVKA2",
   "metadata" : [ {
     "nimi" : "Arkipäivän tilanteet",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Vardagssituationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvka3",
   "koodiArvo" : "LVKA3",
   "metadata" : [ {
     "nimi" : "Mediat",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvkb1",
   "koodiArvo" : "LVKB1",
   "metadata" : [ {
     "nimi" : "Kieleen tutustuminen",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Introduktion i språket",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvkb2",
   "koodiArvo" : "LVKB2",
   "metadata" : [ {
     "nimi" : "Asioiminen ja harrastukset",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Vardagsärenden och fritid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvkb3",
   "koodiArvo" : "LVKB3",
   "metadata" : [ {
     "nimi" : "Elinympäristö ja sosiaaliset verkostot",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Livsmiljö och sociala nätverk",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvluma1",
   "koodiArvo" : "LVLUMA1",
   "metadata" : [ {
     "nimi" : "Matematiikkaa, fysiikkaa ja kemiaa",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Matematik, fysik och kemi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvluma2",
   "koodiArvo" : "LVLUMA2",
   "metadata" : [ {
     "nimi" : "Biologiaa ja maantiedettä",
+    "kuvaus" : "Käytössö lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Biologi och geografi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvmai1",
   "koodiArvo" : "LVMAI1",
   "metadata" : [ {
     "nimi" : "Kieli ja identiteetti",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Språk och identitet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvmai2",
   "koodiArvo" : "LVMAI2",
   "metadata" : [ {
     "nimi" : "Kirjoittaminen ja nykykulttuuri",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Skrivande och modern kultur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvmai3",
   "koodiArvo" : "LVMAI3",
   "metadata" : [ {
     "nimi" : "Puheviestinnän taitojen syventäminen",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Fördjupade färdigheter i muntlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvop1",
   "koodiArvo" : "LVOP1",
   "metadata" : [ {
     "nimi" : "Opinto-ohjaus 1",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Studiehandledning 1",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvop2",
   "koodiArvo" : "LVOP2",
   "metadata" : [ {
     "nimi" : "Opinto-ohjaus 2",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Studiehandledning 2",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvs1",
   "koodiArvo" : "LVS1",
   "metadata" : [ {
     "nimi" : "Kielen rakenteet funktionaalisesta näkökulmasta",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Språkstrukturer ur funktionell synvinkel",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvs10",
   "koodiArvo" : "LVS10",
   "metadata" : [ {
     "nimi" : "Mediakulttuuri",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Mediakulttuuri",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvs2",
   "koodiArvo" : "LVS2",
   "metadata" : [ {
     "nimi" : "Tekstin rakenteet funktionaalisesta näkökulmasta",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Textstrukturer ur funktionell synvinkel",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvs3",
   "koodiArvo" : "LVS3",
   "metadata" : [ {
     "nimi" : "Eri tiedonalojen kieli",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Språket inom olika ämnesområden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvs4",
   "koodiArvo" : "LVS4",
   "metadata" : [ {
     "nimi" : "Tekstejä kirjoittamaan",
+    "kuvaus" : "käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Skriva texter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvs5",
   "koodiArvo" : "LVS5",
   "metadata" : [ {
     "nimi" : "Kuunnellaan ja puhutaan 1",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Lyssna och tala 1",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvs6",
   "koodiArvo" : "LVS6",
   "metadata" : [ {
     "nimi" : "Suomalainen kirjallisuus ja kulttuuri",
+    "kuvaus" : "Käytössö lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Litteratur och kultur i Finland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvs7",
   "koodiArvo" : "LVS7",
   "metadata" : [ {
     "nimi" : "Maailmankirjallisuus ja kulttuurinen monimuotoisuus",
+    "kuvaus" : "Käytössö lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Världslitteratur och kulturell mångfald",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvs8",
   "koodiArvo" : "LVS8",
   "metadata" : [ {
     "nimi" : "Kuunnellaan ja puhutaan 2",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Lyssna och tala 2",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_lvs9",
   "koodiArvo" : "LVS9",
   "metadata" : [ {
     "nimi" : "Digitaaliset tekstitaidot",
+    "kuvaus" : "Käytössä lukioon valmistava",
     "kieli" : "FI"
   }, {
     "nimi" : "Digital textkompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa10",
   "koodiArvo" : "MAA10",
@@ -1437,8 +1852,11 @@
   }, {
     "nimi" : "Sannolikhet och statistik",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa11",
   "koodiArvo" : "MAA11",
@@ -1448,8 +1866,11 @@
   }, {
     "nimi" : "Talteori och bevis",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa12",
   "koodiArvo" : "MAA12",
@@ -1459,8 +1880,11 @@
   }, {
     "nimi" : "Algoritmer i matematiken",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa13",
   "koodiArvo" : "MAA13",
@@ -1470,8 +1894,11 @@
   }, {
     "nimi" : "Fortsättningskurs i differential- och integralkalkyl",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa2",
   "koodiArvo" : "MAA2",
@@ -1481,8 +1908,11 @@
   }, {
     "nimi" : "Polynomfunktioner och polynomekvationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa3",
   "koodiArvo" : "MAA3",
@@ -1492,8 +1922,11 @@
   }, {
     "nimi" : "Geometri",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa4",
   "koodiArvo" : "MAA4",
@@ -1503,8 +1936,11 @@
   }, {
     "nimi" : "Vektorer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa5",
   "koodiArvo" : "MAA5",
@@ -1514,8 +1950,11 @@
   }, {
     "nimi" : "Analytisk geometri",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa6",
   "koodiArvo" : "MAA6",
@@ -1525,8 +1964,11 @@
   }, {
     "nimi" : "Derivatan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa7",
   "koodiArvo" : "MAA7",
@@ -1536,8 +1978,11 @@
   }, {
     "nimi" : "Trigonometriska funktioner",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa8",
   "koodiArvo" : "MAA8",
@@ -1547,8 +1992,11 @@
   }, {
     "nimi" : "Rot- och logaritmfunktioner",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_maa9",
   "koodiArvo" : "MAA9",
@@ -1558,8 +2006,11 @@
   }, {
     "nimi" : "Integralkalkyl",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mab2",
   "koodiArvo" : "MAB2",
@@ -1569,8 +2020,11 @@
   }, {
     "nimi" : "Uttryck och ekvationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mab3",
   "koodiArvo" : "MAB3",
@@ -1580,8 +2034,11 @@
   }, {
     "nimi" : "Geometri",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mab4",
   "koodiArvo" : "MAB4",
@@ -1591,8 +2048,11 @@
   }, {
     "nimi" : "Matematiska modeller",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mab5",
   "koodiArvo" : "MAB5",
@@ -1602,8 +2062,11 @@
   }, {
     "nimi" : "Statistik och sannolikhet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mab6",
   "koodiArvo" : "MAB6",
@@ -1613,8 +2076,11 @@
   }, {
     "nimi" : "Ekonomisk matematik",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mab7",
   "koodiArvo" : "MAB7",
@@ -1624,8 +2090,11 @@
   }, {
     "nimi" : "Matematisk analys",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mab8",
   "koodiArvo" : "MAB8",
@@ -1635,8 +2104,11 @@
   }, {
     "nimi" : "Statistik och sannolikhet II",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_may1",
   "koodiArvo" : "MAY1",
@@ -1646,8 +2118,11 @@
   }, {
     "nimi" : "Tal och talföljder",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_meld5",
   "koodiArvo" : "MELD5",
@@ -1657,8 +2132,11 @@
   }, {
     "nimi" : "Gymnasiediplom i mediekunskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mo1",
   "koodiArvo" : "MO1",
@@ -1668,8 +2146,11 @@
   }, {
     "nimi" : "En värld av texter",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mo2",
   "koodiArvo" : "MO2",
@@ -1679,8 +2160,11 @@
   }, {
     "nimi" : "Språk, kultur och identitet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mo3",
   "koodiArvo" : "MO3",
@@ -1690,8 +2174,11 @@
   }, {
     "nimi" : "Att analysera och tolka litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mo4",
   "koodiArvo" : "MO4",
@@ -1701,8 +2188,11 @@
   }, {
     "nimi" : "Text och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mo5",
   "koodiArvo" : "MO5",
@@ -1712,8 +2202,11 @@
   }, {
     "nimi" : "Text och kontext",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mo6",
   "koodiArvo" : "MO6",
@@ -1723,8 +2216,11 @@
   }, {
     "nimi" : "Berättelser i samtiden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mo7",
   "koodiArvo" : "MO7",
@@ -1734,8 +2230,11 @@
   }, {
     "nimi" : "Fördjupad muntlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mo8",
   "koodiArvo" : "MO8",
@@ -1745,8 +2244,11 @@
   }, {
     "nimi" : "Fördjupad skrivkompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mo9",
   "koodiArvo" : "MO9",
@@ -1756,8 +2258,11 @@
   }, {
     "nimi" : "Fördjupad läskompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mu1",
   "koodiArvo" : "MU1",
@@ -1767,8 +2272,11 @@
   }, {
     "nimi" : "Musiken och jag",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mu2",
   "koodiArvo" : "MU2",
@@ -1778,8 +2286,11 @@
   }, {
     "nimi" : "Ett flerstämmigt Finland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mu3",
   "koodiArvo" : "MU3",
@@ -1789,8 +2300,11 @@
   }, {
     "nimi" : "Fritt fram för musik",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_mu4",
   "koodiArvo" : "MU4",
@@ -1800,8 +2314,11 @@
   }, {
     "nimi" : "Musikens budskap och makt",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_muld6",
   "koodiArvo" : "MULD6",
@@ -1811,8 +2328,11 @@
   }, {
     "nimi" : "Gymnasiediplom i musik",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_op1",
   "koodiArvo" : "OP1",
@@ -1822,8 +2342,11 @@
   }, {
     "nimi" : "Jag som studerande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_op2",
   "koodiArvo" : "OP2",
@@ -1833,8 +2356,11 @@
   }, {
     "nimi" : "Fortsatta studier och arbetsliv",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ps1",
   "koodiArvo" : "PS1",
@@ -1844,8 +2370,11 @@
   }, {
     "nimi" : "Psykisk aktivitet och lärande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ps2",
   "koodiArvo" : "PS2",
@@ -1855,8 +2384,11 @@
   }, {
     "nimi" : "Människans utveckling",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ps3",
   "koodiArvo" : "PS3",
@@ -1866,8 +2398,11 @@
   }, {
     "nimi" : "Människan som informationsbehandlare",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ps4",
   "koodiArvo" : "PS4",
@@ -1877,8 +2412,11 @@
   }, {
     "nimi" : "Känslor, psykiskt välbefinnande och mental hälsa",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ps5",
   "koodiArvo" : "PS5",
@@ -1888,8 +2426,11 @@
   }, {
     "nimi" : "Människan som individ och social varelse",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_pso",
   "koodiArvo" : "PSO",
@@ -1899,8 +2440,11 @@
   }, {
     "nimi" : "Lokal tillämpad kurs",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_psy",
   "koodiArvo" : "PSY",
@@ -1910,8 +2454,11 @@
   }, {
     "nimi" : "Lokal fördjupad kurs",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rua1",
   "koodiArvo" : "RUA1",
@@ -1921,8 +2468,11 @@
   }, {
     "nimi" : "Min svenska värld",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rua2",
   "koodiArvo" : "RUA2",
@@ -1932,8 +2482,11 @@
   }, {
     "nimi" : "Människans sociala nätverk",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rua3",
   "koodiArvo" : "RUA3",
@@ -1943,8 +2496,11 @@
   }, {
     "nimi" : "Nordiska kulturfenomen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rua4",
   "koodiArvo" : "RUA4",
@@ -1954,8 +2510,11 @@
   }, {
     "nimi" : "Samhället och omvärlden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rua5",
   "koodiArvo" : "RUA5",
@@ -1965,8 +2524,11 @@
   }, {
     "nimi" : "Vetenskap och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rua6",
   "koodiArvo" : "RUA6",
@@ -1976,8 +2538,11 @@
   }, {
     "nimi" : "Studier, arbete och ekonomi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rua7",
   "koodiArvo" : "RUA7",
@@ -1987,8 +2552,11 @@
   }, {
     "nimi" : "Hållbar livsstil",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rua8",
   "koodiArvo" : "RUA8",
@@ -1998,8 +2566,11 @@
   }, {
     "nimi" : "Muntlig kommunikation och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub11",
   "koodiArvo" : "RUB11",
@@ -2009,8 +2580,11 @@
   }, {
     "nimi" : "Min svenska",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub12",
   "koodiArvo" : "RUB12",
@@ -2020,8 +2594,11 @@
   }, {
     "nimi" : "Välbefinnande och mänskliga relationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub13",
   "koodiArvo" : "RUB13",
@@ -2031,8 +2608,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub14",
   "koodiArvo" : "RUB14",
@@ -2042,8 +2622,11 @@
   }, {
     "nimi" : "Vår mångskiftande livsmiljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub15",
   "koodiArvo" : "RUB15",
@@ -2053,8 +2636,11 @@
   }, {
     "nimi" : "Studie- och arbetsliv på svenska",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub16",
   "koodiArvo" : "RUB16",
@@ -2064,8 +2650,11 @@
   }, {
     "nimi" : "Muntlig kommunikation och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub17",
   "koodiArvo" : "RUB17",
@@ -2075,8 +2664,11 @@
   }, {
     "nimi" : "Hållbar livsstil",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub31",
   "koodiArvo" : "RUB31",
@@ -2086,8 +2678,11 @@
   }, {
     "nimi" : "Vi bekantar oss med varandra och den svenska kulturmiljön",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub32",
   "koodiArvo" : "RUB32",
@@ -2097,8 +2692,11 @@
   }, {
     "nimi" : "På resa i Norden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub33",
   "koodiArvo" : "RUB33",
@@ -2108,8 +2706,11 @@
   }, {
     "nimi" : "Viktiga frågor i livet och vardagen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub34",
   "koodiArvo" : "RUB34",
@@ -2119,8 +2720,11 @@
   }, {
     "nimi" : "Liv och levnadssätt",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub35",
   "koodiArvo" : "RUB35",
@@ -2130,8 +2734,11 @@
   }, {
     "nimi" : "Välbefinnande och omsorg",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub36",
   "koodiArvo" : "RUB36",
@@ -2141,8 +2748,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub37",
   "koodiArvo" : "RUB37",
@@ -2152,8 +2762,11 @@
   }, {
     "nimi" : "Studie- och arbetsliv på svenska",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_rub38",
   "koodiArvo" : "RUB38",
@@ -2163,8 +2776,11 @@
   }, {
     "nimi" : "Vår gemensamma jord",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ruao1",
   "koodiArvo" : "RUÄO1",
@@ -2174,8 +2790,11 @@
   }, {
     "nimi" : "Min svenska värld",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ruao2",
   "koodiArvo" : "RUÄO2",
@@ -2185,8 +2804,11 @@
   }, {
     "nimi" : "Människans sociala nätverk",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ruao3",
   "koodiArvo" : "RUÄO3",
@@ -2196,8 +2818,11 @@
   }, {
     "nimi" : "Nordiska kulturfenomen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ruao4",
   "koodiArvo" : "RUÄO4",
@@ -2207,8 +2832,11 @@
   }, {
     "nimi" : "Samhället och omvärlden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ruao5",
   "koodiArvo" : "RUÄO5",
@@ -2218,8 +2846,11 @@
   }, {
     "nimi" : "Vetenskap och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ruao6",
   "koodiArvo" : "RUÄO6",
@@ -2229,8 +2860,11 @@
   }, {
     "nimi" : "Studier, arbete och ekonomi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ruao7",
   "koodiArvo" : "RUÄO7",
@@ -2240,8 +2874,11 @@
   }, {
     "nimi" : "Hållbar livsstil",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ruao8",
   "koodiArvo" : "RUÄO8",
@@ -2251,8 +2888,11 @@
   }, {
     "nimi" : "Muntlig kommunikation och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_s21",
   "koodiArvo" : "S21",
@@ -2262,8 +2902,11 @@
   }, {
     "nimi" : "Text och kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_s22",
   "koodiArvo" : "S22",
@@ -2273,8 +2916,11 @@
   }, {
     "nimi" : "Språk, kultur och identitet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_s23",
   "koodiArvo" : "S23",
@@ -2284,8 +2930,11 @@
   }, {
     "nimi" : "Att analysera och tolka litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_s24",
   "koodiArvo" : "S24",
@@ -2295,8 +2944,11 @@
   }, {
     "nimi" : "Text och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_s25",
   "koodiArvo" : "S25",
@@ -2306,8 +2958,11 @@
   }, {
     "nimi" : "Text och kontext",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_s26",
   "koodiArvo" : "S26",
@@ -2317,8 +2972,11 @@
   }, {
     "nimi" : "Samtidskultur och berättelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_s27",
   "koodiArvo" : "S27",
@@ -2328,8 +2986,11 @@
   }, {
     "nimi" : "Fördjupad muntlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_s28",
   "koodiArvo" : "S28",
@@ -2339,8 +3000,11 @@
   }, {
     "nimi" : "Fördjupad skrivkompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_s29",
   "koodiArvo" : "S29",
@@ -2350,8 +3014,11 @@
   }, {
     "nimi" : "Fördjupad läskompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ska1",
   "koodiArvo" : "SKA1",
@@ -2361,8 +3028,11 @@
   }, {
     "nimi" : "Samiskan och min värld",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ska2",
   "koodiArvo" : "SKA2",
@@ -2372,8 +3042,11 @@
   }, {
     "nimi" : "Människans sociala nätverk",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ska3",
   "koodiArvo" : "SKA3",
@@ -2383,8 +3056,11 @@
   }, {
     "nimi" : "Kultur i Sameland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ska4",
   "koodiArvo" : "SKA4",
@@ -2394,8 +3070,11 @@
   }, {
     "nimi" : "Sápmi - Samelandet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ska5",
   "koodiArvo" : "SKA5",
@@ -2405,8 +3084,11 @@
   }, {
     "nimi" : "Samisk naturkunskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ska6",
   "koodiArvo" : "SKA6",
@@ -2416,8 +3098,11 @@
   }, {
     "nimi" : "Studier, arbete och ekonomi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ska7",
   "koodiArvo" : "SKA7",
@@ -2427,8 +3112,11 @@
   }, {
     "nimi" : "Hållbar livsstil",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ska8",
   "koodiArvo" : "SKA8",
@@ -2438,8 +3126,11 @@
   }, {
     "nimi" : "Muntlig kommunikation och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb1",
   "koodiArvo" : "SKB1",
@@ -2449,8 +3140,11 @@
   }, {
     "nimi" : "Möten i Sameland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb2",
   "koodiArvo" : "SKB2",
@@ -2460,8 +3154,11 @@
   }, {
     "nimi" : "Välbefinnande och omsorg",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb3",
   "koodiArvo" : "SKB3",
@@ -2471,8 +3168,11 @@
   }, {
     "nimi" : "Sápmi - Samelandet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb31",
   "koodiArvo" : "SKB31",
@@ -2482,8 +3182,11 @@
   }, {
     "nimi" : "Vi bekantar oss med varandra och det samiska språket",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb32",
   "koodiArvo" : "SKB32",
@@ -2493,8 +3196,11 @@
   }, {
     "nimi" : "På resa i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb33",
   "koodiArvo" : "SKB33",
@@ -2504,8 +3210,11 @@
   }, {
     "nimi" : "Möten i Sameland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb34",
   "koodiArvo" : "SKB34",
@@ -2515,8 +3224,11 @@
   }, {
     "nimi" : "Välbefinnande och omsorg",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb35",
   "koodiArvo" : "SKB35",
@@ -2526,8 +3238,11 @@
   }, {
     "nimi" : "Sápmi - Samelandet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb36",
   "koodiArvo" : "SKB36",
@@ -2537,8 +3252,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb37",
   "koodiArvo" : "SKB37",
@@ -2548,8 +3266,11 @@
   }, {
     "nimi" : "Studier, arbete och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb38",
   "koodiArvo" : "SKB38",
@@ -2559,8 +3280,11 @@
   }, {
     "nimi" : "Samisk naturkunskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb4",
   "koodiArvo" : "SKB4",
@@ -2570,8 +3294,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb5",
   "koodiArvo" : "SKB5",
@@ -2581,8 +3308,11 @@
   }, {
     "nimi" : "Studier, arbete och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb6",
   "koodiArvo" : "SKB6",
@@ -2592,8 +3322,11 @@
   }, {
     "nimi" : "Samisk naturkunskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb7",
   "koodiArvo" : "SKB7",
@@ -2603,8 +3336,11 @@
   }, {
     "nimi" : "Internationell verksamhet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_skb8",
   "koodiArvo" : "SKB8",
@@ -2614,8 +3350,11 @@
   }, {
     "nimi" : "Muntlig och skriftlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sma1",
   "koodiArvo" : "SMA1",
@@ -2625,8 +3364,11 @@
   }, {
     "nimi" : "Samiskan och min värld",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sma2",
   "koodiArvo" : "SMA2",
@@ -2636,8 +3378,11 @@
   }, {
     "nimi" : "Människans sociala nätverk",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sma3",
   "koodiArvo" : "SMA3",
@@ -2647,8 +3392,11 @@
   }, {
     "nimi" : "Kultur i Sameland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sma4",
   "koodiArvo" : "SMA4",
@@ -2658,8 +3406,11 @@
   }, {
     "nimi" : "Sápmi - Samelandet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sma5",
   "koodiArvo" : "SMA5",
@@ -2669,8 +3420,11 @@
   }, {
     "nimi" : "Samisk naturkunskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sma6",
   "koodiArvo" : "SMA6",
@@ -2680,8 +3434,11 @@
   }, {
     "nimi" : "Studier, arbete och ekonomi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sma7",
   "koodiArvo" : "SMA7",
@@ -2691,8 +3448,11 @@
   }, {
     "nimi" : "Hållbar livsstil",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sma8",
   "koodiArvo" : "SMA8",
@@ -2702,8 +3462,11 @@
   }, {
     "nimi" : "Muntlig kommunikation och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb1",
   "koodiArvo" : "SMB1",
@@ -2713,8 +3476,11 @@
   }, {
     "nimi" : "Möten i Sameland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb2",
   "koodiArvo" : "SMB2",
@@ -2724,8 +3490,11 @@
   }, {
     "nimi" : "Välbefinnande och omsorg",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb21",
   "koodiArvo" : "SMB21",
@@ -2735,8 +3504,11 @@
   }, {
     "nimi" : "Möten i Sameland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb22",
   "koodiArvo" : "SMB22",
@@ -2746,8 +3518,11 @@
   }, {
     "nimi" : "Välbefinnande och omsorg",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb23",
   "koodiArvo" : "SMB23",
@@ -2757,8 +3532,11 @@
   }, {
     "nimi" : "Sápmi - Samelandet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb24",
   "koodiArvo" : "SMB24",
@@ -2768,8 +3546,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb25",
   "koodiArvo" : "SMB25",
@@ -2779,8 +3560,11 @@
   }, {
     "nimi" : "Studier, arbete och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb26",
   "koodiArvo" : "SMB26",
@@ -2790,8 +3574,11 @@
   }, {
     "nimi" : "Samisk naturkunskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb27",
   "koodiArvo" : "SMB27",
@@ -2801,8 +3588,11 @@
   }, {
     "nimi" : "Internationell verksamhet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb28",
   "koodiArvo" : "SMB28",
@@ -2812,8 +3602,11 @@
   }, {
     "nimi" : "Muntlig och skriftlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb3",
   "koodiArvo" : "SMB3",
@@ -2823,8 +3616,11 @@
   }, {
     "nimi" : "Sápmi - Samelandet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb31",
   "koodiArvo" : "SMB31",
@@ -2834,8 +3630,11 @@
   }, {
     "nimi" : "Vi bekantar oss med varandra och det samiska språket",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb32",
   "koodiArvo" : "SMB32",
@@ -2845,8 +3644,11 @@
   }, {
     "nimi" : "På resa i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb33",
   "koodiArvo" : "SMB33",
@@ -2856,8 +3658,11 @@
   }, {
     "nimi" : "Möten i Sameland",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb34",
   "koodiArvo" : "SMB34",
@@ -2867,8 +3672,11 @@
   }, {
     "nimi" : "Välbefinnande och omsorg",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb35",
   "koodiArvo" : "SMB35",
@@ -2878,8 +3686,11 @@
   }, {
     "nimi" : "Sápmi - Samelandet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb36",
   "koodiArvo" : "SMB36",
@@ -2889,8 +3700,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb37",
   "koodiArvo" : "SMB37",
@@ -2900,8 +3714,11 @@
   }, {
     "nimi" : "Studier, arbete och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb38",
   "koodiArvo" : "SMB38",
@@ -2911,8 +3728,11 @@
   }, {
     "nimi" : "Samisk naturkunskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb4",
   "koodiArvo" : "SMB4",
@@ -2922,8 +3742,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb5",
   "koodiArvo" : "SMB5",
@@ -2933,8 +3756,11 @@
   }, {
     "nimi" : "Studier, arbete och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb6",
   "koodiArvo" : "SMB6",
@@ -2944,8 +3770,11 @@
   }, {
     "nimi" : "Samisk naturkunskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb7",
   "koodiArvo" : "SMB7",
@@ -2955,8 +3784,11 @@
   }, {
     "nimi" : "Internationell verksamhet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_smb8",
   "koodiArvo" : "SMB8",
@@ -2966,8 +3798,11 @@
   }, {
     "nimi" : "Muntlig och skriftlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sv21",
   "koodiArvo" : "SV21",
@@ -2977,8 +3812,11 @@
   }, {
     "nimi" : "Text och kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sv22",
   "koodiArvo" : "SV22",
@@ -2988,8 +3826,11 @@
   }, {
     "nimi" : "Språk, kultur och identitet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sv23",
   "koodiArvo" : "SV23",
@@ -2999,8 +3840,11 @@
   }, {
     "nimi" : "Att analysera och tolka litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sv24",
   "koodiArvo" : "SV24",
@@ -3010,8 +3854,11 @@
   }, {
     "nimi" : "Text och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sv25",
   "koodiArvo" : "SV25",
@@ -3021,8 +3868,11 @@
   }, {
     "nimi" : "Text och kontext",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sv26",
   "koodiArvo" : "SV26",
@@ -3032,8 +3882,11 @@
   }, {
     "nimi" : "Berättelser i samtiden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sv27",
   "koodiArvo" : "SV27",
@@ -3043,8 +3896,11 @@
   }, {
     "nimi" : "Fördjupad muntlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sv28",
   "koodiArvo" : "SV28",
@@ -3054,8 +3910,11 @@
   }, {
     "nimi" : "Fördjupad skrivkompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_sv29",
   "koodiArvo" : "SV29",
@@ -3065,8 +3924,11 @@
   }, {
     "nimi" : "Fördjupad läskompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ta1",
   "koodiArvo" : "TA1",
@@ -3076,8 +3938,11 @@
   }, {
     "nimi" : "Tvärkonstnärligt musikprojekt",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ta2",
   "koodiArvo" : "TA2",
@@ -3087,8 +3952,11 @@
   }, {
     "nimi" : "Samtidskonst",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ta3",
   "koodiArvo" : "TA3",
@@ -3098,8 +3966,11 @@
   }, {
     "nimi" : "Konst med alla sinnen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_tald7",
   "koodiArvo" : "TALD7",
@@ -3109,8 +3980,11 @@
   }, {
     "nimi" : "Gymnasiediplom i dans",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_te1",
   "koodiArvo" : "TE1",
@@ -3120,8 +3994,11 @@
   }, {
     "nimi" : "Hälsans byggstenar",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_te2",
   "koodiArvo" : "TE2",
@@ -3131,8 +4008,11 @@
   }, {
     "nimi" : "Människan, miljön och hälsan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_te3",
   "koodiArvo" : "TE3",
@@ -3142,8 +4022,11 @@
   }, {
     "nimi" : "Hälsa och forskning",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_teld8",
   "koodiArvo" : "TELD8",
@@ -3153,8 +4036,11 @@
   }, {
     "nimi" : "Gymnasiediplom i teaterkonst",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_to1",
   "koodiArvo" : "TO1",
@@ -3164,8 +4050,11 @@
   }, {
     "nimi" : "Tvärvetenskapligt tänkande",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_to2",
   "koodiArvo" : "TO2",
@@ -3175,8 +4064,11 @@
   }, {
     "nimi" : "Undersökande projektarbete med hjälp av digitala arbetssätt",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_to3",
   "koodiArvo" : "TO3",
@@ -3186,8 +4078,11 @@
   }, {
     "nimi" : "Vardagskompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_tvk",
   "koodiArvo" : "TVK",
@@ -3197,8 +4092,11 @@
   }, {
     "nimi" : "Ämnesövergripande kurser i konststudier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ue1",
   "koodiArvo" : "UE1",
@@ -3208,8 +4106,11 @@
   }, {
     "nimi" : "Religion som fenomen - i kristendomens, judendomens och islams fotspår",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ue2",
   "koodiArvo" : "UE2",
@@ -3219,8 +4120,11 @@
   }, {
     "nimi" : "Kristendomen som världsomfattande religion",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ue3",
   "koodiArvo" : "UE3",
@@ -3230,8 +4134,11 @@
   }, {
     "nimi" : "Religioner och religiösa rörelser i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ue4",
   "koodiArvo" : "UE4",
@@ -3241,8 +4148,11 @@
   }, {
     "nimi" : "Religion i det finska samhället",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ue5",
   "koodiArvo" : "UE5",
@@ -3252,8 +4162,11 @@
   }, {
     "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ue6",
   "koodiArvo" : "UE6",
@@ -3263,8 +4176,11 @@
   }, {
     "nimi" : "Religioner och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ui1",
   "koodiArvo" : "UI1",
@@ -3274,8 +4190,11 @@
   }, {
     "nimi" : "Religion som fenomen - i islams, judendomens och kristendomens fotspår",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ui2",
   "koodiArvo" : "UI2",
@@ -3285,8 +4204,11 @@
   }, {
     "nimi" : "Islam som världsomfattande religion",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ui3",
   "koodiArvo" : "UI3",
@@ -3296,8 +4218,11 @@
   }, {
     "nimi" : "Religioner och religiösa rörelser i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ui4",
   "koodiArvo" : "UI4",
@@ -3307,8 +4232,11 @@
   }, {
     "nimi" : "Religion i det finska samhället",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ui5",
   "koodiArvo" : "UI5",
@@ -3318,8 +4246,11 @@
   }, {
     "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ui6",
   "koodiArvo" : "UI6",
@@ -3329,8 +4260,11 @@
   }, {
     "nimi" : "Religioner och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uj1",
   "koodiArvo" : "UJ1",
@@ -3340,8 +4274,11 @@
   }, {
     "nimi" : "Religion som fenomen - i judendomens, kristendomens och islams fotspår",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uj2",
   "koodiArvo" : "UJ2",
@@ -3351,8 +4288,11 @@
   }, {
     "nimi" : "Judendomen i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uj3",
   "koodiArvo" : "UJ3",
@@ -3362,8 +4302,11 @@
   }, {
     "nimi" : "Religioner och religiösa rörelser i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uj4",
   "koodiArvo" : "UJ4",
@@ -3373,8 +4316,11 @@
   }, {
     "nimi" : "Religion i det finska samhället",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uj5",
   "koodiArvo" : "UJ5",
@@ -3384,8 +4330,11 @@
   }, {
     "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uj6",
   "koodiArvo" : "UJ6",
@@ -3395,8 +4344,11 @@
   }, {
     "nimi" : "Religioner och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uk1",
   "koodiArvo" : "UK1",
@@ -3406,8 +4358,11 @@
   }, {
     "nimi" : "Religion som fenomen - i kristendomens, judendomens och islams fotspår",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uk2",
   "koodiArvo" : "UK2",
@@ -3417,8 +4372,11 @@
   }, {
     "nimi" : "Katolicismen i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uk3",
   "koodiArvo" : "UK3",
@@ -3428,8 +4386,11 @@
   }, {
     "nimi" : "Religioner och religiösa rörelser i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uk4",
   "koodiArvo" : "UK4",
@@ -3439,8 +4400,11 @@
   }, {
     "nimi" : "Religion i det finska samhället",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uk5",
   "koodiArvo" : "UK5",
@@ -3450,8 +4414,11 @@
   }, {
     "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uk6",
   "koodiArvo" : "UK6",
@@ -3461,8 +4428,11 @@
   }, {
     "nimi" : "Religioner och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uo1",
   "koodiArvo" : "UO1",
@@ -3472,8 +4442,11 @@
   }, {
     "nimi" : "Religion som fenomen - den ortodoxa läran, judendomen och islam",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uo2",
   "koodiArvo" : "UO2",
@@ -3483,8 +4456,11 @@
   }, {
     "nimi" : "Ortodoxin i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uo3",
   "koodiArvo" : "UO3",
@@ -3494,8 +4470,11 @@
   }, {
     "nimi" : "Religioner och religiösa rörelser i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uo4",
   "koodiArvo" : "UO4",
@@ -3505,8 +4484,11 @@
   }, {
     "nimi" : "Religion i det finska samhället",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uo5",
   "koodiArvo" : "UO5",
@@ -3516,8 +4498,11 @@
   }, {
     "nimi" : "Konsten i den ortodoxa kyrkan och andra religioner",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_uo6",
   "koodiArvo" : "UO6",
@@ -3527,8 +4512,11 @@
   }, {
     "nimi" : "Ortodox tro, religioner och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ux1",
   "koodiArvo" : "UX1",
@@ -3536,8 +4524,13 @@
     "nimi" : "Muut uskonnot kurssi 1",
     "lyhytNimi" : "Muut uskonnot kurssi 1",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ux2",
   "koodiArvo" : "UX2",
@@ -3545,8 +4538,13 @@
     "nimi" : "Muut uskonnot kurssi 2",
     "lyhytNimi" : "Muut uskonnot kurssi 2",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ux3",
   "koodiArvo" : "UX3",
@@ -3554,8 +4552,13 @@
     "nimi" : "Muut uskonnot kurssi 3",
     "lyhytNimi" : "Muut uskonnot kurssi 3",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ux4",
   "koodiArvo" : "UX4",
@@ -3563,8 +4566,13 @@
     "nimi" : "Muut uskonnot kurssi 4",
     "lyhytNimi" : "Muut uskonnot kurssi 4",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ux5",
   "koodiArvo" : "UX5",
@@ -3572,8 +4580,13 @@
     "nimi" : "Muut uskonnot kurssi 5",
     "lyhytNimi" : "Muut uskonnot kurssi 5",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ux6",
   "koodiArvo" : "UX6",
@@ -3581,8 +4594,13 @@
     "nimi" : "Muut uskonnot kurssi 6",
     "lyhytNimi" : "Muut uskonnot kurssi 6",
     "kieli" : "FI"
+  }, {
+    "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vka1",
   "koodiArvo" : "VKA1",
@@ -3592,8 +4610,11 @@
   }, {
     "nimi" : "Språket och min värld",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vka2",
   "koodiArvo" : "VKA2",
@@ -3603,8 +4624,11 @@
   }, {
     "nimi" : "Människans sociala nätverk",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vka3",
   "koodiArvo" : "VKA3",
@@ -3614,8 +4638,11 @@
   }, {
     "nimi" : "Kulturella fenomen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vka4",
   "koodiArvo" : "VKA4",
@@ -3625,8 +4652,11 @@
   }, {
     "nimi" : "Samhället och omvärlden",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vka5",
   "koodiArvo" : "VKA5",
@@ -3636,8 +4666,11 @@
   }, {
     "nimi" : "Vetenskap och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vka6",
   "koodiArvo" : "VKA6",
@@ -3647,8 +4680,11 @@
   }, {
     "nimi" : "Studier, arbete och ekonomi",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vka7",
   "koodiArvo" : "VKA7",
@@ -3658,8 +4694,11 @@
   }, {
     "nimi" : "Hållbar livsstil",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vka8",
   "koodiArvo" : "VKA8",
@@ -3669,8 +4708,11 @@
   }, {
     "nimi" : "Muntlig kommunikation och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkaa1",
   "koodiArvo" : "VKAA1",
@@ -3680,8 +4722,11 @@
   }, {
     "nimi" : "Vi bekantar oss med varandra och det nya språket",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkaa2",
   "koodiArvo" : "VKAA2",
@@ -3691,8 +4736,11 @@
   }, {
     "nimi" : "På resa i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkaa3",
   "koodiArvo" : "VKAA3",
@@ -3702,8 +4750,11 @@
   }, {
     "nimi" : "Viktiga frågor i livet och vardagen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkaa4",
   "koodiArvo" : "VKAA4",
@@ -3713,8 +4764,11 @@
   }, {
     "nimi" : "Kulturmöten",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkaa5",
   "koodiArvo" : "VKAA5",
@@ -3724,8 +4778,11 @@
   }, {
     "nimi" : "Välbefinnande och omsorg",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkaa6",
   "koodiArvo" : "VKAA6",
@@ -3735,8 +4792,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkaa7",
   "koodiArvo" : "VKAA7",
@@ -3746,8 +4806,11 @@
   }, {
     "nimi" : "Studier, arbete och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkaa8",
   "koodiArvo" : "VKAA8",
@@ -3757,8 +4820,11 @@
   }, {
     "nimi" : "Vår gemensamma jord",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb1",
   "koodiArvo" : "VKB1",
@@ -3768,8 +4834,11 @@
   }, {
     "nimi" : "Språket och min värld",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb2",
   "koodiArvo" : "VKB2",
@@ -3779,8 +4848,11 @@
   }, {
     "nimi" : "Välbefinnande och mänskliga relationer",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb21",
   "koodiArvo" : "VKB21",
@@ -3790,8 +4862,11 @@
   }, {
     "nimi" : "Viktiga frågor i livet och vardagen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb22",
   "koodiArvo" : "VKB22",
@@ -3801,8 +4876,11 @@
   }, {
     "nimi" : "Liv och levnadssätt",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb23",
   "koodiArvo" : "VKB23",
@@ -3812,8 +4890,11 @@
   }, {
     "nimi" : "Välbefinnande och omsorg",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb24",
   "koodiArvo" : "VKB24",
@@ -3823,8 +4904,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb25",
   "koodiArvo" : "VKB25",
@@ -3834,8 +4918,11 @@
   }, {
     "nimi" : " työ ja tulevaisuus",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb26",
   "koodiArvo" : "VKB26",
@@ -3845,8 +4932,11 @@
   }, {
     "nimi" : "Vår gemensamma jord",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb27",
   "koodiArvo" : "VKB27",
@@ -3856,8 +4946,11 @@
   }, {
     "nimi" : "Internationell verksamhet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb28",
   "koodiArvo" : "VKB28",
@@ -3867,8 +4960,11 @@
   }, {
     "nimi" : "Muntlig och skriftlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb3",
   "koodiArvo" : "VKB3",
@@ -3878,8 +4974,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb31",
   "koodiArvo" : "VKB31",
@@ -3889,8 +4988,11 @@
   }, {
     "nimi" : "Vi bekantar oss med varandra och det nya språket",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb32",
   "koodiArvo" : "VKB32",
@@ -3900,8 +5002,11 @@
   }, {
     "nimi" : "På resa i världen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb33",
   "koodiArvo" : "VKB33",
@@ -3911,8 +5016,11 @@
   }, {
     "nimi" : "Viktiga frågor i livet och vardagen",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb34",
   "koodiArvo" : "VKB34",
@@ -3922,8 +5030,11 @@
   }, {
     "nimi" : "Liv och levnadssätt",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb35",
   "koodiArvo" : "VKB35",
@@ -3933,8 +5044,11 @@
   }, {
     "nimi" : "Välbefinnande och omsorg",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb36",
   "koodiArvo" : "VKB36",
@@ -3944,8 +5058,11 @@
   }, {
     "nimi" : "Kultur och medier",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb37",
   "koodiArvo" : "VKB37",
@@ -3955,8 +5072,11 @@
   }, {
     "nimi" : "Studier, arbete och framtid",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb38",
   "koodiArvo" : "VKB38",
@@ -3966,8 +5086,11 @@
   }, {
     "nimi" : "Vår gemensamma jord",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb4",
   "koodiArvo" : "VKB4",
@@ -3977,8 +5100,11 @@
   }, {
     "nimi" : "Vår mångskiftande livsmiljö",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb5",
   "koodiArvo" : "VKB5",
@@ -3988,8 +5114,11 @@
   }, {
     "nimi" : "Studie- och arbetsliv",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb6",
   "koodiArvo" : "VKB6",
@@ -3999,8 +5128,11 @@
   }, {
     "nimi" : "Muntlig kommunikation och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_vkb7",
   "koodiArvo" : "VKB7",
@@ -4010,8 +5142,11 @@
   }, {
     "nimi" : "Hållbar livsstil",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_yh1",
   "koodiArvo" : "YH1",
@@ -4021,8 +5156,11 @@
   }, {
     "nimi" : "Det finländska samhället",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_yh2",
   "koodiArvo" : "YH2",
@@ -4032,8 +5170,11 @@
   }, {
     "nimi" : "Ekonomikunskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_yh3",
   "koodiArvo" : "YH3",
@@ -4043,8 +5184,11 @@
   }, {
     "nimi" : "Finland, Europa och en värld i förändring",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_yh4",
   "koodiArvo" : "YH4",
@@ -4054,8 +5198,11 @@
   }, {
     "nimi" : "Medborgarens lagkunskap",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ai1",
   "koodiArvo" : "ÄI1",
@@ -4065,8 +5212,11 @@
   }, {
     "nimi" : "Text och kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ai2",
   "koodiArvo" : "ÄI2",
@@ -4076,8 +5226,11 @@
   }, {
     "nimi" : "Språk, kultur och identitet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ai3",
   "koodiArvo" : "ÄI3",
@@ -4087,8 +5240,11 @@
   }, {
     "nimi" : "Att analysera och tolka litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ai4",
   "koodiArvo" : "ÄI4",
@@ -4098,8 +5254,11 @@
   }, {
     "nimi" : "Text och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ai5",
   "koodiArvo" : "ÄI5",
@@ -4109,8 +5268,11 @@
   }, {
     "nimi" : "Text och kontext",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ai6",
   "koodiArvo" : "ÄI6",
@@ -4120,8 +5282,11 @@
   }, {
     "nimi" : "Samtidskultur och berättelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ai7",
   "koodiArvo" : "ÄI7",
@@ -4131,8 +5296,11 @@
   }, {
     "nimi" : "Fördjupad muntlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ai8",
   "koodiArvo" : "ÄI8",
@@ -4142,8 +5310,11 @@
   }, {
     "nimi" : "Fördjupad skrivkompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ai9",
   "koodiArvo" : "ÄI9",
@@ -4153,8 +5324,11 @@
   }, {
     "nimi" : "Fördjupad läskompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_air1",
   "koodiArvo" : "ÄIR1",
@@ -4164,8 +5338,11 @@
   }, {
     "nimi" : "Text och kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_air2",
   "koodiArvo" : "ÄIR2",
@@ -4175,8 +5352,11 @@
   }, {
     "nimi" : "Språk, kultur och identitet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_air3",
   "koodiArvo" : "ÄIR3",
@@ -4186,8 +5366,11 @@
   }, {
     "nimi" : "Att analysera och tolka litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_air4",
   "koodiArvo" : "ÄIR4",
@@ -4197,8 +5380,11 @@
   }, {
     "nimi" : "Text och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_air5",
   "koodiArvo" : "ÄIR5",
@@ -4208,8 +5394,11 @@
   }, {
     "nimi" : "Text och kontext",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_air6",
   "koodiArvo" : "ÄIR6",
@@ -4219,8 +5408,11 @@
   }, {
     "nimi" : "Samtidskultur och berättelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_air7",
   "koodiArvo" : "ÄIR7",
@@ -4230,8 +5422,11 @@
   }, {
     "nimi" : "Fördjupad muntlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_air8",
   "koodiArvo" : "ÄIR8",
@@ -4241,8 +5436,11 @@
   }, {
     "nimi" : "Fördjupad skrivkompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_air9",
   "koodiArvo" : "ÄIR9",
@@ -4252,8 +5450,11 @@
   }, {
     "nimi" : "Fördjupad läskompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ais1",
   "koodiArvo" : "ÄIS1",
@@ -4263,8 +5464,11 @@
   }, {
     "nimi" : "Text och kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ais2",
   "koodiArvo" : "ÄIS2",
@@ -4274,8 +5478,11 @@
   }, {
     "nimi" : "Språk, kultur och identitet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ais3",
   "koodiArvo" : "ÄIS3",
@@ -4285,8 +5492,11 @@
   }, {
     "nimi" : "Att analysera och tolka litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ais4",
   "koodiArvo" : "ÄIS4",
@@ -4296,8 +5506,11 @@
   }, {
     "nimi" : "Text och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ais5",
   "koodiArvo" : "ÄIS5",
@@ -4307,8 +5520,11 @@
   }, {
     "nimi" : "Text och kontext",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ais6",
   "koodiArvo" : "ÄIS6",
@@ -4318,8 +5534,11 @@
   }, {
     "nimi" : "Samtidskultur och berättelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ais7",
   "koodiArvo" : "ÄIS7",
@@ -4329,8 +5548,11 @@
   }, {
     "nimi" : "Fördjupad muntlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ais8",
   "koodiArvo" : "ÄIS8",
@@ -4340,8 +5562,11 @@
   }, {
     "nimi" : "Fördjupad skrivkompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_ais9",
   "koodiArvo" : "ÄIS9",
@@ -4351,8 +5576,11 @@
   }, {
     "nimi" : "Fördjupad läskompetens",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_aiv1",
   "koodiArvo" : "ÄIV1",
@@ -4362,8 +5590,11 @@
   }, {
     "nimi" : "Text och kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_aiv2",
   "koodiArvo" : "ÄIV2",
@@ -4373,8 +5604,11 @@
   }, {
     "nimi" : "Språk, kultur och identitet",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_aiv3",
   "koodiArvo" : "ÄIV3",
@@ -4384,8 +5618,11 @@
   }, {
     "nimi" : "Att analysera och tolka litteratur",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_aiv4",
   "koodiArvo" : "ÄIV4",
@@ -4395,8 +5632,11 @@
   }, {
     "nimi" : "Text och påverkan",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_aiv5",
   "koodiArvo" : "ÄIV5",
@@ -4406,8 +5646,11 @@
   }, {
     "nimi" : "Text och kontext",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_aiv6",
   "koodiArvo" : "ÄIV6",
@@ -4417,8 +5660,11 @@
   }, {
     "nimi" : "Samtidskultur och berättelser",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_aiv7",
   "koodiArvo" : "ÄIV7",
@@ -4428,8 +5674,11 @@
   }, {
     "nimi" : "Fördjupad muntlig kommunikation",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_aiv8",
   "koodiArvo" : "ÄIV8",
@@ -4439,8 +5688,11 @@
   }, {
     "nimi" : "Fördjupad kompetens i textproduktion",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "lukionkurssit_aiv9",
   "koodiArvo" : "ÄIV9",
@@ -4450,6 +5702,9 @@
   }, {
     "nimi" : "Fördjupad läskompetens i teckenspråk",
     "kieli" : "SV"
+  }, {
+    "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
