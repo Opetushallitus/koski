@@ -2,7 +2,7 @@ package fi.oph.koski.config
 
 import com.typesafe.config.Config
 
-import java.time.ZonedDateTime
+import java.time.{DateTimeException, LocalDate, ZonedDateTime}
 import java.time.format.DateTimeParseException
 
 object Environment {
@@ -46,4 +46,44 @@ object Environment {
     } catch {
       case e: DateTimeParseException => throw new RuntimeException(s"Invalid timestamp format in environment variable RAPORTOINTIKANTA_DUETIME (expected ISO datetime format): ${e.getMessage}")
     })
+
+  def ytrDownloadConfig: YtrDownloadConfig = {
+    YtrDownloadConfig(
+      birthmonthStart = parseMonth("YTR_DOWNLOAD_BIRTHMONTH_START"),
+      birthmonthEnd = parseMonth("YTR_DOWNLOAD_BIRTHMONTH_END"),
+      modifiedSince = parseLocalDate("YTR_DOWNLOAD_MODIFIED_SINCE"),
+      force = getYtrForceMode
+    )
+  }
+
+  private def parseMonth(environmentVariableName: String): Option[String] = {
+    sys.env.get(environmentVariableName).map(yearAndMonth => try {
+      LocalDate.parse(yearAndMonth + "-01")
+      yearAndMonth
+    } catch {
+      case e: DateTimeException => throw new RuntimeException(s"Invalid month format in environment variable ${environmentVariableName} (expected ISO date format): ${e.getMessage}")
+    })
+  }
+
+  private def parseLocalDate(environmentVariableName: String): Option[LocalDate] = {
+    sys.env.get(environmentVariableName).map(date => try {
+      LocalDate.parse(date)
+    } catch {
+      case e: DateTimeException => throw new RuntimeException(s"Invalid date format in environment variable ${environmentVariableName} (expected ISO date format): ${e.getMessage}")
+    })
+  }
+
+  private def getYtrForceMode: Boolean = sys.env.get("YTR_DOWNLOAD_FORCE") match {
+    case Some("true") => true
+    case Some("false") => false
+    case Some(s) => throw new RuntimeException(s"Odottamaton arvo muuttujalla YTR_DOWNLOAD_FORCE: ${s} (sallitut arvot: true, false)")
+    case None => false
+  }
 }
+
+case class YtrDownloadConfig(
+  birthmonthStart: Option[String],
+  birthmonthEnd: Option[String],
+  modifiedSince: Option[LocalDate],
+  force: Boolean
+)
