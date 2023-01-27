@@ -51,7 +51,7 @@ import fi.oph.koski.valpas.sso.ValpasOppijaCasServlet
 import fi.oph.koski.valpas.ytl.ValpasYtlServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytl.YtlServlet
-import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
+import fi.oph.koski.ytr.{YtrDownloadService, YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 
 import javax.servlet.ServletContext
 import org.scalatra._
@@ -66,6 +66,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     RunMode.get match {
       case RunMode.NORMAL => initKoskiServices(context)(application)
       case RunMode.GENERATE_RAPORTOINTIKANTA => generateRaportointikanta(application)
+      case RunMode.DOWNLOAD_YTR => downloadYtr(application)
     }
   } catch {
     case e: Exception =>
@@ -203,6 +204,24 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     case Some("true") => true
     case Some("false") => false
     case Some(s) => throw new RuntimeException(s"Odottamaton arvo muuttujalla FORCE_RAPORTOINTIKANTA: ${s} (sallitut arvot: true, false)")
+    case None => false
+  }
+
+  private def downloadYtr(application: KoskiApplication): Unit = {
+    val service = new YtrDownloadService(application)
+    val generating = Future {
+      service.downloadAndExit(forceDownload = getYtrForceMode)
+    }
+    generating.failed.map(error => {
+      logger.error(error)("YTR-datan lataus keskeytyi odottamattomasti")
+      service.shutdown
+    })
+  }
+
+  private def getYtrForceMode: Boolean = sys.env.get("FORCE_YTR_DOWNLOAD") match {
+    case Some("true") => true
+    case Some("false") => false
+    case Some(s) => throw new RuntimeException(s"Odottamaton arvo muuttujalla FORCE_YTR_DOWNLOAD: ${s} (sallitut arvot: true, false)")
     case None => false
   }
 
