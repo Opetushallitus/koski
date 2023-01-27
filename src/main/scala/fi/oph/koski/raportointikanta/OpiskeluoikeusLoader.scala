@@ -538,7 +538,7 @@ object OpiskeluoikeusLoader extends Logging {
         case _ => false
       },
       tunnustettuRahoituksenPiirissä = os match {
-        case m: MahdollisestiTunnustettu => m.tunnustettu.exists(_.rahoituksenPiirissä)
+        case m: MahdollisestiTunnustettu => m.tunnustettuRahoituksenPiirissä
         case _ => false
       },
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson),
