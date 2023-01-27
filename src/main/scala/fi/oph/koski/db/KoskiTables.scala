@@ -290,7 +290,10 @@ object KoskiTables {
            (oo.oppilaitosOid inSet varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid)) &&
              oo.koulutustoimijaOid.map(_ inSet varhaiskasvatusOikeudet.map(_.koulutustoimija.oid)).getOrElse(false) ||
           (oo.koulutusmuoto === OpiskeluoikeudenTyyppi.taiteenperusopetus.koodiarvo &&
-            oo.koulutustoimijaOid.map(_ inSet user.orgKäyttöoikeudet.flatMap(_.organisaatio.toKoulutustoimija).map(_.oid)))
+            oo.koulutustoimijaOid.map(_ inSet user.orgKäyttöoikeudet
+              .filter(_.organisaatioAccessType.contains(AccessType.read))
+              .flatMap(_.organisaatio.toKoulutustoimija).map(_.oid))
+            )
       } yield oo
     }
 
