@@ -7,7 +7,7 @@ import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{evira, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
+import fi.oph.koski.koskiuser.MockUsers.{viranomainenGlobaaliKatselija, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUser, MockUsers, UserWithPassword}
 import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -240,7 +240,7 @@ class KäyttöoikeusryhmätSpec
 
   "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin muttei arkaluontoisiin tietoihin" - {
     "ei näe luottamuksellista dataa" in {
-      authGet("api/oppija/" + KoskiSpecificMockOppijat.eero.oid, evira) {
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.eero.oid, viranomainenGlobaaliKatselija) {
         verifyResponseStatusOk()
         suppeaSensitiveDataPiilotettu()
         laajaSensitiveDataPiilotettu()
@@ -249,18 +249,18 @@ class KäyttöoikeusryhmätSpec
     }
 
     "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(evira) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(KoskiSpecificMockOppijat.markkanen.oid), headers = authHeaders(viranomainenGlobaaliKatselija) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
 
     "voi hakea kaikkia opiskeluoikeuksia" in {
-      searchForNames("eero", evira) should equal(List("Jouni Çelik-Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
+      searchForNames("eero", viranomainenGlobaaliKatselija) should equal(List("Jouni Çelik-Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      queryOppijat(user = MockUsers.evira).length should equal(koskeenTallennetutOppijatCount) //  - 2
-      authGet("api/oppija/" + KoskiSpecificMockOppijat.ammattilainen.oid, evira) {
+      queryOppijat(user = MockUsers.viranomainenGlobaaliKatselija).length should equal(koskeenTallennetutOppijatCount) //  - 2
+      authGet("api/oppija/" + KoskiSpecificMockOppijat.ammattilainen.oid, viranomainenGlobaaliKatselija) {
         verifyResponseStatusOk()
       }
     }

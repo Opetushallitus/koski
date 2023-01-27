@@ -111,7 +111,7 @@ class KoskiSpecificSessionSpec
         session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA)) should be(true)
       }
       "viranomainen kaikki koulutusmuodot ei arkaluontoisten tietojen oikeuksia" in {
-        val session = createAndVerifySession("Eeva", MockUsers.evira.ldapUser)
+        val session = createAndVerifySession("Eeva", MockUsers.viranomainenGlobaaliKatselija.ldapUser)
         session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA)) should be(false)
       }
       "viranomainen perusopetus" in {
@@ -352,7 +352,7 @@ object Responses {
       ))
     )),
     "Eeva" -> List(Map(
-      "oidHenkilo" -> MockUsers.evira.oid,
+      "oidHenkilo" -> MockUsers.viranomainenGlobaaliKatselija.oid,
       "organisaatiot" -> List(Map(
         "organisaatioOid" -> MockOrganisaatiot.evira,
         "kayttooikeudet" -> List(

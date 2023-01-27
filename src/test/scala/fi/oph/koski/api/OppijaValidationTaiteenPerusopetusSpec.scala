@@ -222,6 +222,26 @@ class OppijaValidationTaiteenPerusopetusSpec
         oo.head.koulutustoimija.head.oid == MockOrganisaatiot.tornionKaupunki
       }
 
+      "koulutustoimijan katselija-käyttäjä ei voi luoda itse järjestettävää opiskeluoikeutta" in {
+        postOpiskeluoikeusV2(
+          TPO.Opiskeluoikeus.hyväksytystiSuoritettuLaajaOppimäärä,
+          henkilö = KoskiSpecificMockOppijat.tyhjä,
+          headers = authHeaders(MockUsers.varsinaisSuomiKoulutustoimijaKatselija) ++ jsonContent
+        ) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio(s"Ei oikeuksia organisatioon ${MockOrganisaatiot.varsinaisSuomenKansanopisto}"))
+        }
+      }
+
+      "koulutustoimijan katselija-käyttäjä ei voi luoda hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
+        postOpiskeluoikeusV2(
+          TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,
+          henkilö = KoskiSpecificMockOppijat.tyhjä,
+          headers = authHeaders(MockUsers.helsinkiKatselija) ++ jsonContent
+        ) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainTaiteenPerusopetuksenJärjestäjä())
+        }
+      }
+
       "oppilaitoksen käyttäjä ei voi luoda hankintakoulutuksena järjestettävää opiskeluoikeutta" in {
         postOpiskeluoikeusV2(
           TPO.Opiskeluoikeus.hankintakoulutuksenaHyväksytystiSuoritettuLaajaOppimäärä,

@@ -24,7 +24,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     lisätiedot = Some(List(lisätietoOsaamistavoitteet)))
 
   "Käyttäjä jolla ei ole luottamuksellisia oikeuksia ei näe mitään arkaluontoisia tietoja" in {
-    implicit val eiLuottumuksellisiaOikeuksia = MockUsers.evira.toKoskiSpecificSession(käyttöoikeusRepository)
+    implicit val eiLuottumuksellisiaOikeuksia = MockUsers.viranomainenGlobaaliKatselija.toKoskiSpecificSession(käyttöoikeusRepository)
     roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot())
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(AmmatillisenOpiskeluoikeudenLisätiedot(hojks = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(true)
@@ -41,17 +41,17 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto).uskonnonOppimäärä should equal(None)
     roundtrip[LukionUskonto2015](lukionUskonto).uskonnonOppimäärä should equal(None)
 
-    val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.evira)
+    val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.viranomainenGlobaaliKatselija)
     existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (false)
 
-    val perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija.oid, MockUsers.evira)
+    val perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija.oid, MockUsers.viranomainenGlobaaliKatselija)
     perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus.suoritukset.exists(_.osasuoritusLista.exists{
       case _: PerusopetuksenToiminta_AlueenSuoritus => true
       case _ => false
     }) should equal (false)
 
     // Tarkistetaan, että vain toiminta-alueen osasuoritukset jää pois
-    val perusopetuksenOpiskeluoikeusMuillaOsasuorituksilla = getOpiskeluoikeudet(KoskiSpecificMockOppijat.koululainen.oid, MockUsers.evira).find(
+    val perusopetuksenOpiskeluoikeusMuillaOsasuorituksilla = getOpiskeluoikeudet(KoskiSpecificMockOppijat.koululainen.oid, MockUsers.viranomainenGlobaaliKatselija).find(
       _.tyyppi.koodiarvo == OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
     ).get
     perusopetuksenOpiskeluoikeusMuillaOsasuorituksilla.suoritukset.head.osasuoritusLista.length should equal (17)
