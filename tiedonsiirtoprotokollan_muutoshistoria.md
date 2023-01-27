@@ -1,4 +1,4 @@
-## xx.xx.xxxx
+## 31.1.2023
 
 - Taiteen perusopetuksen opiskeluoikeuteen lisätty kenttä hankintakoulutus.
 

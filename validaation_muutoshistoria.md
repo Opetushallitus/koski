@@ -1,6 +1,6 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## xx.xx.2023
+## 31.1.2023
 - Taiteen perusopetuksen opiskeluoikeuden hankintakoulutus-tilaa ei voi muuttaa opiskeluoikeuden luonnin jälkeen.
 
 ## 10.2.2023

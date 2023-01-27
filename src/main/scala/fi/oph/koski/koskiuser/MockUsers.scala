@@ -180,6 +180,13 @@ object MockUsers {
     Seq(oppilaitosPalvelukäyttäjä(varsinaisSuomenKansanopisto))
   )
 
+  val varsinaisSuomiKoulutustoimijaKatselija = KoskiMockUser(
+    "varsinaissuomi-koulutustoimija-katselija",
+    "varsinaissuomi-koulutustoimija-katselija",
+    "1.2.246.562.24.99966699999",
+    Seq(oppilaitosKatselija(varsinaisSuomenAikuiskoulutussäätiö))
+  )
+
   val varsinaisSuomiKoulutustoimija = KoskiMockUser(
     "varsinaissuomi-koulutustoimija-tallentaja",
     "varsinaissuomi-koulutustoimija-tallentaja",
@@ -213,6 +220,13 @@ object MockUsers {
     "hki-tallentaja",
     "1.2.246.562.24.99999999977",
     Seq(oppilaitosTallentaja(helsinginKaupunki))
+  )
+
+  val helsinkiKatselija = KoskiMockUser(
+    "hki-katselija",
+    "hki-katselija",
+    "1.2.246.562.24.99999999777",
+    Seq(oppilaitosKatselija(helsinginKaupunki))
   )
 
   val tornioTallentaja = KoskiMockUser(
@@ -278,8 +292,8 @@ object MockUsers {
     Seq(OrganisaatioJaKäyttöoikeudet(lehtikuusentienToimipiste, List(PalveluJaOikeus("OPPIJANUMEROREKISTERI", "READ"))))
   )
 
-  val evira = KoskiMockUser(
-    "Evira",
+  val viranomainenGlobaaliKatselija = KoskiMockUser(
+    "Viranomainen",
     "Eeva",
     "1.2.246.562.24.99999999111",
     Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.evira, List(
@@ -502,6 +516,7 @@ object MockUsers {
     stadinPääkäyttäjä,
     tallentajaEiLuottamuksellinen,
     helsinkiTallentaja,
+    helsinkiKatselija,
     tornioTallentaja,
     helsinkiSekäTornioTallentaja,
     pyhtäänTallentaja,
@@ -511,7 +526,7 @@ object MockUsers {
     eiOikkia,
     jyväskylänNormaalikoulunPalvelukäyttäjä,
     jyväskylänYliopistonVastuukäyttäjä,
-    evira,
+    viranomainenGlobaaliKatselija,
     kelaSuppeatOikeudet,
     kelaLaajatOikeudet,
     perusopetusViranomainen,
@@ -525,6 +540,7 @@ object MockUsers {
     esiopetusTallentaja,
     oppivelvollisuutietoRajapinta,
     varsinaisSuomiPalvelukäyttäjä,
+    varsinaisSuomiKoulutustoimijaKatselija,
     varsinaisSuomiKoulutustoimija,
     varsinaisSuomiPääkäyttäjä,
     varsinaisSuomiOppilaitosTallentaja,
