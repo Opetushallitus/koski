@@ -67,7 +67,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     RunMode.get match {
       case RunMode.NORMAL => initKoskiServices(context)(application)
       case RunMode.GENERATE_RAPORTOINTIKANTA => generateRaportointikanta(application)
-      case RunMode.DOWNLOAD_YTR => downloadYtr(application)
+      case RunMode.YTR_DOWNLOAD => downloadYtr(application)
     }
   } catch {
     case e: Exception =>
