@@ -41,9 +41,9 @@ export const TpoOsasuoritusProperties: React.FC<
         <FormField
           form={props.form}
           path={props.osasuoritusPath.prop('arviointi')}
-          view={(props) => <ArvosanaView {...props} />}
-          edit={(props) => (
-            <ArvosanaEdit {...props} createArviointi={createTpoArviointi} />
+          view={ArvosanaView}
+          edit={(editProps) => (
+            <ArvosanaEdit {...editProps} createArviointi={createTpoArviointi} />
           )}
         />
       </OsasuoritusSubproperty>
@@ -60,7 +60,7 @@ export const TpoOsasuoritusProperties: React.FC<
           form={props.form}
           path={viimeisinArviointiPath.prop('arvioitsijat').optional()}
           view={ArvioitsijatView}
-          edit={(props) => <ArvioitsijatEdit {...props} />}
+          edit={ArvioitsijatEdit}
         />
       </OsasuoritusSubproperty>
     </OsasuoritusProperty>

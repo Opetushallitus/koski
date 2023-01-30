@@ -79,7 +79,7 @@ const reducer = <O>(
   action: Action<O>
 ): InternalFormState<O> => {
   switch (action.type) {
-    case 'modify':
+    case 'modify': {
       const data = action.modify(state.data)
       return state.editMode
         ? {
@@ -88,6 +88,7 @@ const reducer = <O>(
             hasChanged: state.hasChanged || !deepEqual(state.data, data)
           }
         : state
+    }
     case 'startEdit':
       return {
         ...state,
@@ -115,12 +116,13 @@ const reducer = <O>(
         isSaved: true,
         errors: []
       }
-    case 'validate':
+    case 'validate': {
       const errors = validateData(state.data, action.constraint)
       return {
         ...state,
         errors: deepEqual(errors, state.errors) ? state.errors : errors
       }
+    }
     default:
       return state
   }
@@ -128,7 +130,7 @@ const reducer = <O>(
 
 export const useForm = <O extends object>(
   initialState: O,
-  startWithEditMode: boolean = false,
+  startWithEditMode = false,
   constraint?: Constraint | null
 ): FormModel<O> => {
   const user = useUser()
@@ -139,6 +141,7 @@ export const useForm = <O extends object>(
         user?.hasWriteAccess ? startWithEditMode : false,
         constraint
       ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
 
@@ -153,7 +156,7 @@ export const useForm = <O extends object>(
     if (user?.hasWriteAccess) {
       dispatch({ type: 'startEdit', constraint })
     }
-  }, [user])
+  }, [constraint, user?.hasWriteAccess])
 
   const cancel = useCallback(() => {
     dispatch({ type: 'cancel' })
@@ -178,6 +181,7 @@ export const useForm = <O extends object>(
     validate()
   }, [validate])
 
+  const { push: setErrors } = globalErrors
   const save = useCallback(
     async <T>(
       api: (data: O) => Promise<ApiResponse<T>>,
@@ -189,16 +193,18 @@ export const useForm = <O extends object>(
           tap((response) =>
             dispatch({ type: 'endEdit', value: merge(data, response.data) })
           ),
-          tapLeft((e) =>
-            globalErrors.push(
-              e.errors.map((e) => ({ message: t(e.messageKey) }))
+          tapLeft((errorResponse) =>
+            setErrors(
+              errorResponse.errors.map((e) => ({ message: t(e.messageKey) }))
             )
           )
         )
       }
     },
-    [data, editMode]
+    [data, editMode, setErrors]
   )
+
+  const root = useMemo(() => $.optic_<O>(), [])
 
   return useMemo(
     () => ({
@@ -208,7 +214,7 @@ export const useForm = <O extends object>(
       hasChanged,
       isSaved,
       isValid: A.isEmpty(errors),
-      root: $.optic_<O>(),
+      root,
       startEdit,
       updateAt,
       validate,
@@ -222,12 +228,13 @@ export const useForm = <O extends object>(
       editMode,
       hasChanged,
       isSaved,
+      errors,
+      root,
       startEdit,
       updateAt,
       validate,
       save,
-      cancel,
-      errors
+      cancel
     ]
   )
 }

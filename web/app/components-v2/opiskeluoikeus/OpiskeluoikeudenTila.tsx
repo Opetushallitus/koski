@@ -84,7 +84,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
       const opiskeluoikeusjaksot = O.toUndefined(
         A.updateAt(index, {
           ...props.value.opiskeluoikeusjaksot[index],
-          alku: value!
+          alku: value
         })(props.value.opiskeluoikeusjaksot)
       )
       if (opiskeluoikeusjaksot) {
@@ -93,24 +93,26 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
     }
   }
 
+  const { onChange, value, createJakso } = props
+
   const onRemoveLatest = useCallback(() => {
-    if (props.value) {
-      const opiskeluoikeusjaksot = props.value.opiskeluoikeusjaksot.slice(0, -1)
-      props.onChange({ ...props.value, opiskeluoikeusjaksot })
+    if (value) {
+      const opiskeluoikeusjaksot = value.opiskeluoikeusjaksot.slice(0, -1)
+      onChange({ ...value, opiskeluoikeusjaksot })
     }
-  }, [props.value, props.onChange])
+  }, [onChange, value])
 
   const jaksot = useMemo(() => {
-    const jaksot =
+    const opiskeluoikeusjaksot =
       props.value?.opiskeluoikeusjaksot || emptyOpiskeluoikeusjaksotArray
     return pipe(
-      jaksot,
+      opiskeluoikeusjaksot,
       A.mapWithIndex((index, jakso) => ({
         jakso,
         index,
-        min: nextDay(jaksot[index - 1]?.alku),
-        max: previousDay(jaksot[index + 1]?.alku),
-        isLatest: index === jaksot.length - 1
+        min: nextDay(opiskeluoikeusjaksot[index - 1]?.alku),
+        max: previousDay(opiskeluoikeusjaksot[index + 1]?.alku),
+        isLatest: index === opiskeluoikeusjaksot.length - 1
       })),
       A.reverse
     )
@@ -124,21 +126,18 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
     (
       form: OpiskeluoikeusjaksoForm<OpiskeluoikeusjaksoOf<T>>
     ): NonEmptyArray<ValidationError> | undefined => {
-      const result = props.createJakso(form)
+      const result = createJakso(form)
       if (Array.isArray(result) && isValidationError(result[0])) {
         return result
       } else {
-        if (props.value) {
-          const opiskeluoikeusjaksot = [
-            ...props.value.opiskeluoikeusjaksot,
-            result
-          ]
-          props.onChange({ ...props.value, opiskeluoikeusjaksot })
+        if (value) {
+          const opiskeluoikeusjaksot = [...value.opiskeluoikeusjaksot, result]
+          onChange({ ...value, opiskeluoikeusjaksot })
           setModalVisible(false)
         }
       }
     },
-    [props.value, props.onChange]
+    [createJakso, onChange, value]
   )
 
   const closeModal = useCallback(() => {
@@ -195,7 +194,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
         ))}
         {!isTerminated && (
           <KeyValueRow name={A.isEmpty(jaksot) ? 'Tila' : undefined}>
-            <FlatButton onClick={openModal}>Lisää uusi</FlatButton>
+            <FlatButton onClick={openModal}>{'Lisää uusi'}</FlatButton>
           </KeyValueRow>
         )}
       </KeyValueTable>

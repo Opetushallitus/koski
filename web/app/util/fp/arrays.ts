@@ -79,7 +79,7 @@ export const deleteAt = <T>(as: T[], index: number): T[] =>
     A.deleteAt(index),
     O.fold(
       () => as,
-      (as) => as
+      (as_) => as_
     )
   )
 

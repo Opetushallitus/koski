@@ -43,9 +43,10 @@ export type LaajuusEditProps<T extends Laajuus> = CommonProps<
  */
 
 export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
-  const onChange = useCallback(
-    (arvo: number) => props.onChange(props.createLaajuus(arvo)),
-    [props.onChange, props.createLaajuus]
+  const { onChange, createLaajuus } = props
+  const onChangeCB = useCallback(
+    (arvo: number) => onChange(createLaajuus(arvo)),
+    [createLaajuus, onChange]
   )
 
   return (
@@ -54,7 +55,7 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
         <NumberField
           className="LaajuusField__arvo"
           value={props.value?.arvo}
-          onChange={onChange}
+          onChange={onChangeCB}
           hasErrors={Boolean(props.errors)}
         />
         <span className="LaajuusField__yksikko">

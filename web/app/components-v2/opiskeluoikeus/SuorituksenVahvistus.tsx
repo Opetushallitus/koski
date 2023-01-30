@@ -28,7 +28,7 @@ export type SuorituksenVahvistusEditProps<T extends Vahvistus> = CommonProps<
     T | undefined,
     {
       vahvistusClass: ClassOf<T>
-      organisaatio: Organisaatio
+      organisaatio?: Organisaatio
     }
   >
 >
@@ -60,15 +60,15 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
     [onChange]
   )
 
-  return (
+  return organisaatio ? (
     <SuorituksenVahvistus vahvistus={value} {...rest}>
       {value ? (
         <FlatButton onClick={onMerkitseKeskeneräiseksi}>
-          Merkitse keskeneräiseksi
+          {'Merkitse keskeneräiseksi'}
         </FlatButton>
       ) : (
         <RaisedButton onClick={onMerkitseValmiiksi}>
-          Merkitse valmiiksi
+          {'Merkitse valmiiksi'}
         </RaisedButton>
       )}
       {modalVisible && (
@@ -80,7 +80,7 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
         />
       )}
     </SuorituksenVahvistus>
-  )
+  ) : null
 }
 
 type SuorituksenVahvistusProps = CommonPropsWithChildren<{
@@ -112,7 +112,9 @@ const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (props) => {
       {vahvistus && (
         <>
           <div className="SuorituksenVahvistus__vahvistus">
-            <Trans>Vahvistus</Trans>: {ISO2FinnishDate(vahvistus.päivä)}{' '}
+            <Trans>{'Vahvistus'}</Trans>
+            {': '}
+            {ISO2FinnishDate(vahvistus.päivä)}{' '}
             {t(vahvistus.myöntäjäOrganisaatio.nimi)}
           </div>
           {myöntäjäHenkilöt.map((myöntäjä, i) => (

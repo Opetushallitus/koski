@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals */
 import React from 'baret'
 import * as L from 'partial.lenses'
 import { t } from '../i18n/i18n'
@@ -35,7 +36,7 @@ import { isOneOfModel } from '../types/EditorModels'
 
 export type ESHSuoritusColumn = ColumnIface<
   ESHSuoritusColumnDataProps,
-  {},
+  object,
   ESHSuoritusColumnHeaderProps
 >
 
@@ -73,10 +74,10 @@ const EshKieliEditor: React.FC<any> = ({ model }) => {
     <span className="value kieli">
       {alternativesP.map((alternatives: any) => {
         const kieliLens = L.lens<any, any>(
-          (model) => {
-            return modelLookup(model, 'kieli')
+          (thatModel) => {
+            return modelLookup(thatModel, 'kieli')
           },
-          (value, model) => {
+          (value, thatModel) => {
             const valittu = modelData(value) as any
             if (valittu) {
               const found = alternatives.find((alt: any) => {
@@ -88,7 +89,7 @@ const EshKieliEditor: React.FC<any> = ({ model }) => {
               })
               if (found) {
                 return modelSetValue(
-                  model,
+                  thatModel,
                   {
                     data: valittu,
                     value: valittu.value,
@@ -98,7 +99,7 @@ const EshKieliEditor: React.FC<any> = ({ model }) => {
                 )
               }
             } else {
-              return modelSetValue(model, zeroValue, 'kieli')
+              return modelSetValue(thatModel, zeroValue, 'kieli')
             }
           }
         )

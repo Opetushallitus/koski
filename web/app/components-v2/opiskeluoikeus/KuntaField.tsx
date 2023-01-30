@@ -34,11 +34,12 @@ export const KuntaEdit: React.FC<KuntaEditProps> = (props) => {
     [props.value]
   )
 
-  const onChange = useCallback(
+  const { onChange } = props
+  const onChangeCB = useCallback(
     (option?: SelectOption<Kuntakoodiviite>) => {
-      props.onChange(option?.value)
+      onChange(option?.value)
     },
-    [props.onChange]
+    [onChange]
   )
 
   return options ? (
@@ -46,7 +47,7 @@ export const KuntaEdit: React.FC<KuntaEditProps> = (props) => {
       {...common(props, ['KuntaEdit'])}
       options={options}
       value={selected}
-      onChange={onChange}
+      onChange={onChangeCB}
     />
   ) : (
     <KuntaView value={props.value} />

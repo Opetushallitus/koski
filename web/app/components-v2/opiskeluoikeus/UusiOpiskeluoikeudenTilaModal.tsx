@@ -53,7 +53,7 @@ const useInitialOpiskelujaksoForm = <T extends Opiskeluoikeusjakso>(
         koodiarvo: defaultTila(opiskeluoikeusjaksoClass)
       })
     }),
-    []
+    [opiskeluoikeusjaksoClass]
   )
 
 export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
@@ -84,19 +84,19 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
   const form = useForm(initialState, true)
   const [päivämääräPath, tilaPath] = useMemo(
     () => [form.root.prop('alku'), form.root.prop('tila')],
-    []
+    [form.root]
   )
 
   const onSubmit = useCallback(() => {
     props.onSubmit(form.state) // TODO: Käsittele onSubmitin mahdollisesti palauttamat virheet
-  }, [form.state])
+  }, [form.state, props])
 
   return (
     <Modal
       {...common(props, ['UusiOpiskeluoikeudenTilaModal'])}
       onClose={props.onClose}
     >
-      <ModalTitle>Uusi opiskeluoikeuden tila</ModalTitle>
+      <ModalTitle>{'Uusi opiskeluoikeuden tila'}</ModalTitle>
 
       <ModalBody>
         <Label label="Päivämäärä">
@@ -123,8 +123,8 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
       </ModalBody>
 
       <ModalFooter>
-        <FlatButton onClick={props.onClose}>Peruuta</FlatButton>
-        <RaisedButton onClick={onSubmit}>Lisää</RaisedButton>
+        <FlatButton onClick={props.onClose}>{'Peruuta'}</FlatButton>
+        <RaisedButton onClick={onSubmit}>{'Lisää'}</RaisedButton>
       </ModalFooter>
     </Modal>
   )

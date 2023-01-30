@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-literals */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'baret'
 import { tutkinnonOsanRyhmät } from '../koodisto/koodistot'
 import { t } from '../i18n/i18n'
@@ -36,7 +38,7 @@ import { Bus, Observable } from 'baconjs'
 import classNames from 'classnames'
 import { eshSuorituksenTyyppi } from '../esh/europeanschoolofhelsinkiSuoritus'
 
-export type SuoritusModel<T extends object = {}> = ObjectModel &
+export type SuoritusModel<T extends object = object> = ObjectModel &
   OptionalModel &
   Contextualized<T & SuoritusContext>
 export type SuoritusContext = {
@@ -99,9 +101,7 @@ export const isLukutaitokoulutuksenSuoritus = (suoritus: SuoritusModel) =>
     'vapaansivistystyonlukutaitokoulutuksensuoritus'
   )
 
-export const getLaajuusYksikkö = <
-  T extends EditorModel & OptionalModel & Contextualized
->(
+export const getLaajuusYksikkö = <T extends EditorModel & Contextualized>(
   suoritus?: T
 ): string => {
   const laajuusModel = modelLookup(suoritus, 'koulutusmoduuli.laajuus')
@@ -359,7 +359,7 @@ export type ColumnIface<
 
 export type SuoritusColumn = ColumnIface<
   SuoritusColumnDataProps,
-  {},
+  object,
   SuoritusColumnHeaderProps
 >
 

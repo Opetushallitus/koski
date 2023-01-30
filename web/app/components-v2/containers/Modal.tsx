@@ -9,15 +9,17 @@ export type ModalProps = CommonPropsWithChildren<{
 
 export const Modal: React.FC<ModalProps> = (props) => {
   const { isActive, props: modalProps } = useModalState()
+
+  const { onClose } = props
   const onKeyDown: React.KeyboardEventHandler = useCallback(
     (event) => {
       if (event.key === 'Enter') {
         event.preventDefault()
       } else if (event.key === 'Escape') {
-        props.onClose?.()
+        onClose?.()
       }
     },
-    [props.onClose]
+    [onClose]
   )
 
   return (

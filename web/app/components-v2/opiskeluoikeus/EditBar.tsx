@@ -18,31 +18,31 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
   const save = useCallback(() => {
     errors.clearAll()
     props.onSave()
-  }, [props.onSave])
+  }, [errors, props])
 
   const cancel = useCallback(() => {
     errors.clearAll()
     props.form.cancel()
-  }, [props.form])
+  }, [errors, props.form])
 
   return props.form.editMode ? (
     <FooterBar>
       <ButtonGroup>
-        <FlatButton onClick={cancel}>Peruuta</FlatButton>
+        <FlatButton onClick={cancel}>{'Peruuta'}</FlatButton>
         <RaisedButton
           disabled={!props.form.hasChanged || !props.form.isValid}
           onClick={save}
         >
-          Tallenna
+          {'Tallenna'}
         </RaisedButton>
         {!props.form.hasChanged && (
           <span>
-            <Trans>Ei tallentamattomia muutoksia</Trans>
+            <Trans>{'Ei tallentamattomia muutoksia'}</Trans>
           </span>
         )}
         {!props.form.isValid && (
           <span>
-            <Trans>Opiskelusuorituksessa on virheitä</Trans>
+            <Trans>{'Opiskelusuorituksessa on virheitä'}</Trans>
           </span>
         )}
       </ButtonGroup>

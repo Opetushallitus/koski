@@ -38,7 +38,7 @@ export const OrganisaatioHenkilötView = <T extends AnyOrganisaatiohenkilö>(
       ))}
     </ul>
   ) : (
-    <div {...common(props, ['OrganisaatioHenkilotView'])}>–</div>
+    <div {...common(props, ['OrganisaatioHenkilotView'])}>{'–'}</div>
   )
 }
 
@@ -127,32 +127,36 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
               key: ADD_NEW_KEY,
               label: 'Lisää henkilö',
               display: (
-                <IconLabel charCode={CHARCODE_ADD}>Lisää henkilö</IconLabel>
+                <IconLabel charCode={CHARCODE_ADD}>{'Lisää henkilö'}</IconLabel>
               )
             }
           ]
         : []),
       ...options
     ],
-    [options]
+    [options, props.organisaatio]
   )
 
+  const { onChange, value, organisaatio, henkilöClass } = props
   const addHenkilö = useCallback(
     (option?: SelectOption<T>) => {
       if (option) {
         const newHenkilö =
           option.value ||
-          castOrganisaatiohenkilö(props.henkilöClass)(
-            OrganisaatiohenkilöValinnaisellaTittelillä({
-              nimi: '',
-              organisaatio: props.organisaatio!
-            })
-          )
-        props.onChange([...(props.value || []), newHenkilö])
-        setFocusNew(true)
+          (organisaatio &&
+            castOrganisaatiohenkilö(henkilöClass)(
+              OrganisaatiohenkilöValinnaisellaTittelillä({
+                nimi: '',
+                organisaatio: organisaatio
+              })
+            ))
+        if (newHenkilö) {
+          onChange([...(value || []), newHenkilö])
+          setFocusNew(true)
+        }
       }
     },
-    [props.value]
+    [henkilöClass, onChange, organisaatio, value]
   )
 
   const updateHenkilö = (index: number) => (option?: SelectOption<T>) => {
@@ -165,11 +169,12 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
     }
   }
 
+  const { onRemoveStoredHenkilö } = props
   const onRemoveStored = useCallback(
     (option: SelectOption<T>) => {
-      option.value && props.onRemoveStoredHenkilö(option.value)
+      option.value && onRemoveStoredHenkilö(option.value)
     },
-    [props.onRemoveStoredHenkilö]
+    [onRemoveStoredHenkilö]
   )
 
   return (

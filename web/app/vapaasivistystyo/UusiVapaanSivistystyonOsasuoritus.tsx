@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'baret'
 import Atom from 'bacon.atom'
 import {
@@ -315,7 +316,7 @@ const LisääKoodistosta = ({
   selectionText,
   setExpanded
 }: LisääKoodistostaProps) => {
-  const selectedAtom = Atom<EnumValue<string> | undefined>()
+  const selectedAtom = Atom<EnumValue | undefined>()
   const koulutusmoduuliPrototype =
     koulutusModuuliprototypes(suoritusPrototype)[0]
 
@@ -404,9 +405,7 @@ const LisääVSTKOTO2022Osasuoritus = ({
   setExpanded,
   className
 }: LisääOsasuoritusProps) => {
-  const selectedAtom = Atom<
-    EnumValue<Deprecated_Koodistokoodiviite> | undefined
-  >()
+  const selectedAtom = Atom<EnumValue | undefined>()
 
   const koulutusmoduuliPrototypes = suoritusPrototypes.flatMap(
     (suoritusPrototype) =>

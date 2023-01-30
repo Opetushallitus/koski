@@ -21,6 +21,8 @@ declare module 'bacon.atom' {
 }
 
 declare module 'baconjs' {
+  import React from 'react'
+
   function Bus<T, I>(): Bus<T, I>
 
   function constant<T>(t: T): Observable<T>
@@ -28,7 +30,7 @@ declare module 'baconjs' {
   class Observable<T> {
     map<S>(f: (a: T) => S): Observable<S>
     map<S>(p: string): Observable<S>
-    map(e: JSX.Element): JSX.Element // baret
+    map(e: React.Element): React.Element
     not(): Observable<boolean>
     log(text: string): Observable<T>
   }

@@ -45,7 +45,7 @@ export const asKoodiviite = <U extends string, A extends string = string>(
         `Cannot cast Koodistokoodiviite<"${a.koodistoUri}", "${
           a.koodiarvo
         }"> to Koodistokoodiviite<"${koodistoUri}", ${koodiarvot
-          .map((a) => `"${a}"`)
+          .map((str) => `"${str}"`)
           .join(' | ')}>`
       )
     }

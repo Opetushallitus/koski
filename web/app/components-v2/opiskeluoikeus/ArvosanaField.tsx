@@ -50,10 +50,11 @@ export type ArviointiEditProps<T extends Arviointi> = CommonProps<
 export const ArvosanaEdit = <T extends Arviointi>(
   props: ArviointiEditProps<T>
 ) => {
+  const { createArviointi } = props
   const schemaClass = useMemo(
     // @ts-ignore - koska value ja initialValue voivat olla tyhjiä, saadaan $class varmuudella selvitettyä syöttämällä createArviointi-callbackille tyhjä arvosana
-    () => schemaClassName(props.createArviointi(null).$class),
-    []
+    () => schemaClassName(createArviointi(null).$class),
+    [createArviointi]
   )
   const arviointiSchema = useSchema(schemaClass)
   const koodisto = useKoodistoOfConstraint(prop('arvosana')(arviointiSchema))

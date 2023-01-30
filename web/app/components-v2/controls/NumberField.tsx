@@ -8,11 +8,12 @@ export type NumberFieldProps = CommonProps<{
 }>
 
 export const NumberField: React.FC<NumberFieldProps> = (props) => {
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+  const { onChange } = props
+  const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
-      props.onChange(parseFloat(event.target.value))
+      onChange(parseFloat(event.target.value))
     },
-    [props.onChange]
+    [onChange]
   )
   return (
     <div {...common(props, ['NumberField'])}>
@@ -23,7 +24,7 @@ export const NumberField: React.FC<NumberFieldProps> = (props) => {
         )}
         type="number"
         value={props.value}
-        onChange={onChange}
+        onChange={onChangeCB}
       />
     </div>
   )

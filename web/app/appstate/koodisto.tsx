@@ -70,7 +70,7 @@ class KoodistoLoader {
                 koodiviite
               }))
             ),
-            NEA.groupBy((k) => k.koodiviite.koodistoUri)
+            NEA.groupBy((koodi) => koodi.koodiviite.koodistoUri)
           )
 
           this.koodistot = { ...this.koodistot, ...k }
@@ -133,18 +133,18 @@ export function useKoodisto<T extends string>(
   koodistoUri?: T | null,
   koodiarvot?: string[] | null
 ): KoodistokoodiviiteKoodistonNimellä<T>[] | null {
-  const context = useContext(KoodistoContext)
+  const { koodistot, loadKoodistot } = useContext(KoodistoContext)
 
   useEffect(() => {
-    koodistoUri && context.loadKoodistot([koodistoUri])
-  }, [koodistoUri])
+    koodistoUri && loadKoodistot([koodistoUri])
+  }, [koodistoUri, loadKoodistot])
 
   const koodit = useMemo(() => {
-    const k = koodistoUri && context.koodistot[koodistoUri]
+    const k = koodistoUri && koodistot[koodistoUri]
     return Array.isArray(k)
       ? (k as KoodistokoodiviiteKoodistonNimellä<T>[])
       : null
-  }, [context.koodistot, koodistoUri])
+  }, [koodistoUri, koodistot])
 
   return useMemo(
     () =>
@@ -200,16 +200,16 @@ export const useKoodistoFiller = (): KoodistoFiller =>
     const uris = collectKoodistoUris(obj)
     await koodistoLoaderSingleton.loadKoodistot(uris)
 
-    const populate = <T,>(a: T): T =>
+    const populate = <A,>(a: A): A =>
       Array.isArray(a)
-        ? (a.map(populate) as T)
+        ? (a.map(populate) as A)
         : typeof a === 'object'
         ? isKoodistokoodiviite(a)
           ? a.nimi === undefined
             ? (koodistoLoaderSingleton.findKoodi(
                 a.koodistoUri,
                 a.koodiarvo
-              ) as T)
+              ) as A)
             : a
           : mapObjectValues(populate)(a)
         : a

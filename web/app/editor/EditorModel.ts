@@ -1,50 +1,52 @@
-import * as R from 'ramda'
+/* eslint-disable */
 import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
-import { hashAdd, hashCode } from './hashcode'
-import { debugFn, flatMapArray, notUndefined } from '../util/util'
+import * as R from 'ramda'
+import {
+  ChangeBus,
+  ChangeBusContext,
+  ContextData,
+  Contextualized,
+  DataPath,
+  EditorMappingContext,
+  hasContext,
+  ValidationContext
+} from '../types/EditorModelContext'
 import {
   BooleanModel,
+  ContextualizedObjectModelProperty,
   DateModel,
   DateTimeModel,
+  EditableModel,
   EditorModel,
+  hasTitle,
   hasValue,
   Identified,
+  isEditableModel,
   isEnumeratedModel,
   isIdentified,
   isListModel,
   isObjectModel,
-  isSomeOptionalModel,
+  isOneOfModel,
   isPrototypeModel,
+  isSomeOptionalModel,
+  isValueModel,
   ListModel,
+  Maybe,
+  MaybeOneOfModel,
+  NotWhen,
   NumberModel,
   ObjectModel,
   ObjectModelProperty,
+  OneOfModel,
   OnlyWhen,
   OptionalModel,
-  StringModel,
-  ValueModelValue,
-  isOneOfModel,
-  ContextualizedObjectModelProperty,
-  EditableModel,
-  OneOfModel,
-  isEditableModel,
-  isValueModel,
   PrototypeModel,
-  Maybe,
-  MaybeOneOfModel,
-  NotWhen
+  StringModel,
+  ValueModelValue
 } from '../types/EditorModels'
-import {
-  EditorMappingContext,
-  ValidationContext,
-  ChangeBusContext,
-  ChangeBus,
-  ContextData,
-  Contextualized,
-  hasContext,
-  DataPath
-} from '../types/EditorModelContext'
+import { flatMapArray, notUndefined } from '../util/util'
+import { hashAdd, hashCode } from './hashcode'
 
 export type EditorElement = JSX.Element & {
   isEmpty?: (model: EditorModel) => boolean
@@ -214,7 +216,7 @@ export function modelData(
 export function modelData(mainModel?: EditorModel, path?: PathExpr): any
 
 // TODO: Tämä funktio on vaikea ymmärtää ja se tuntuu mutatoivan annettua objektia --> Pitäisi uudelleenkirjoittaa.
-export function modelData(mainModel?: EditorModel, path?: PathExpr): any {
+export function modelData(mainModel?: any, path?: PathExpr): any {
   const anyModel = mainModel as any
   if (!anyModel || !anyModel.value) return
 
@@ -256,7 +258,7 @@ export const modelTitle = (
   }
   return (
     (model &&
-      (model.title ||
+      ((hasTitle(model) && model.title) ||
         // @ts-expect-error
         (model.value && model.value.title) ||
         // @ts-expect-error
@@ -416,7 +418,7 @@ const getUsedModelForOptionalModel = (
   return emptyModel
 }
 
-export const wrapOptional = (model?: EditableModel & Contextualized) => {
+export const wrapOptional = (model?: EditorModel & Contextualized) => {
   if (!model)
     throw new Error('model missing. remember to wrap model like { model }')
   if (!isSomeOptionalModel(model)) return model
@@ -425,7 +427,7 @@ export const wrapOptional = (model?: EditableModel & Contextualized) => {
   return lensedModel(model, optionalModelLens({ model }))
 }
 
-export const optionalModelLens = <T extends EditableModel & Contextualized, S>({
+export const optionalModelLens = <T extends EditorModel & Contextualized, S>({
   model
 }: {
   model: T
@@ -994,7 +996,7 @@ export function resolvePrototypeReference<T extends object>(
     }
 
     // merge in properties, such as maxLines
-    const { type: _type, key: _key, ...cleanedModel } = restructuredModel
+    const { type: _type, key: _key, ...cleanedModel } = restructuredModel as any
     return R.mergeRight(foundProto, cleanedModel) as EditorModel
   }
   return model
@@ -1077,14 +1079,14 @@ export const removeCommonPath = (
 }
 
 const getValidator = (
-  model: EditableModel<any> & Contextualized<EditorMappingContext>,
+  model: EditableModel & Contextualized<EditorMappingContext>,
   context: ContextData<EditorMappingContext>
 ) => {
   const editor = getEditor(model, context)
   return editor && editor.validateModel
 }
 
-const getEditor = <M extends EditableModel<T> & Contextualized, T>(
+const getEditor = <M extends EditableModel & Contextualized, T>(
   model: M,
   context?: ContextData<EditorMappingContext>
 ): EditorElement => {

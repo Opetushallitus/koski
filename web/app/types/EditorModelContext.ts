@@ -10,7 +10,7 @@ export const hasContext = <T extends object>(
   model?: Partial<Contextualized<T>>
 ): model is Contextualized<T> => model?.context !== undefined
 
-export type Contextualized<T extends object = {}> = {
+export type Contextualized<T extends object = object> = {
   context: ContextData<T>
   path: string[]
   parent?: Contextualized<T>

@@ -1,13 +1,13 @@
 import { isString } from 'fp-ts/string'
 import React from 'react'
 
-export type CommonProps<T extends object = {}> = T & {
+export type CommonProps<T extends object = object> = T & {
   className?: string
   style?: React.CSSProperties
   testId?: string
 }
 
-export type CommonPropsWithChildren<T extends object = {}> =
+export type CommonPropsWithChildren<T extends object = object> =
   React.PropsWithChildren<CommonProps<T>>
 
 export type MaybeClassName = string | undefined | null | false | 0
@@ -28,5 +28,5 @@ export const rest = <T extends object>({
   testId,
   style,
   className,
-  ...rest
-}: CommonProps<T>) => rest
+  ...restOfProps
+}: CommonProps<T>) => restOfProps

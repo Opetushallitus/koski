@@ -71,9 +71,9 @@ export const lastElement = <T>() =>
  * Opiskeluoikeuden päätason suoritus
  */
 export const päätasonSuoritus = <T extends Opiskeluoikeus = Opiskeluoikeus>(
-  index: number = 0
+  index = 0
 ) => $.optic_<T>().prop('suoritukset').at(index)
 
 export const usePäätasonSuoritus = <T extends Opiskeluoikeus = Opiskeluoikeus>(
-  index: number = 0
+  index = 0
 ) => useMemo(() => päätasonSuoritus<T>(index), [index])

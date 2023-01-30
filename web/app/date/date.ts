@@ -64,23 +64,24 @@ const mapDate = <T>(
 
 export const today = (): Date => new Date()
 
-export const todayISODate = (): string => formatISODate(today())!
+export const todayISODate = (): string => formatISODate(today()) || ''
 
 export const addDays =
   (days: number) =>
   (date: Date | boolean): Date | undefined =>
-    mapDate(date, (date) => {
-      date.setDate(date.getDate() + days)
-      return date
+    mapDate(date, (d) => {
+      d.setDate(d.getDate() + days)
+      return d
     })
 
 export const addDaysISO =
   (days: number) =>
   (dateStr?: string): string | undefined =>
-    dateStr &&
-    pipe(
-      dateStr,
-      parseISODate,
-      addDays(days),
-      (date) => date && formatISODate(date)
-    )!
+    (dateStr &&
+      pipe(
+        dateStr,
+        parseISODate,
+        addDays(days),
+        (date) => date && formatISODate(date)
+      )) ||
+    undefined

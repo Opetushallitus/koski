@@ -49,29 +49,31 @@ export const PaikallinenOsasuoritusSelect: React.FC<
     [props.tunnisteet]
   )
 
-  const onChange = useCallback(
+  const { onSelect } = props
+  const onChangeCB = useCallback(
     (option?: SelectOption<PaikallinenKoodi>) => {
       if (option?.key === NEW_KEY) {
         setModalVisible(true)
       } else if (option?.value) {
-        props.onSelect(option.value, false)
+        onSelect(option.value, false)
       }
     },
-    [props.onSelect]
+    [onSelect]
   )
 
   const onCreateNew = useCallback(
     (tunniste: PaikallinenKoodi) => {
       setModalVisible(false)
-      props.onSelect(tunniste, true)
+      onSelect(tunniste, true)
     },
-    [props.onSelect]
+    [onSelect]
   )
 
-  const onRemove = useCallback(
+  const { onRemove } = props
+  const onRemoveCB = useCallback(
     (option: SelectOption<PaikallinenKoodi>) =>
-      option.value && props.onRemove?.(option.value),
-    [props.onRemove]
+      option.value && onRemove?.(option.value),
+    [onRemove]
   )
 
   return (
@@ -80,8 +82,8 @@ export const PaikallinenOsasuoritusSelect: React.FC<
         placeholder={props.addNewText || t('Lisää osasuoritus')}
         options={options}
         hideEmpty
-        onChange={onChange}
-        onRemove={onRemove}
+        onChange={onChangeCB}
+        onRemove={onRemoveCB}
       />
       {modalIsVisible && (
         <UusiOsasuoritusModal onClose={hideModal} onSubmit={onCreateNew} />
@@ -105,9 +107,10 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
   const form = useForm(emptyPaikallinenKoodi, true, paikallinenKoodiSchema)
   const koodiarvoPath = form.root.prop('koodiarvo')
 
-  const onSubmit = useCallback(() => {
-    props.onSubmit(form.state)
-  }, [props.onSubmit, form.state])
+  const { onSubmit } = props
+  const onSubmitCB = useCallback(() => {
+    onSubmit(form.state)
+  }, [onSubmit, form.state])
 
   const updateOsasuoritusNimi = useMemo(
     () =>
@@ -115,7 +118,7 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
         form.root.prop('nimi').compose(allLanguages),
         (koodiarvo) => koodiarvo || ''
       ),
-    []
+    [form.root]
   )
 
   return (
@@ -128,9 +131,9 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
           updateAlso={[updateOsasuoritusNimi]}
           errorsFromPath="nimi"
           view={TextView}
-          edit={(props) => (
+          edit={(editProps) => (
             <TextEdit
-              {...props}
+              {...editProps}
               placeholder={t('Osasuorituksen nimi')}
               autoFocus
             />
@@ -138,9 +141,9 @@ const UusiOsasuoritusModal: React.FC<UusiOsasuoritusModalProps> = (props) => {
         />
       </ModalBody>
       <ModalFooter>
-        <FlatButton onClick={props.onClose}>Peruuta</FlatButton>
-        <RaisedButton disabled={!form.isValid} onClick={onSubmit}>
-          Lisää
+        <FlatButton onClick={props.onClose}>{'Peruuta'}</FlatButton>
+        <RaisedButton disabled={!form.isValid} onClick={onSubmitCB}>
+          {'Lisää'}
         </RaisedButton>
       </ModalFooter>
     </Modal>

@@ -17,6 +17,7 @@ export const ExpandButton: React.FC<ExpandButtonProps> = (props) => (
       props.expanded ? `Pienennä ${props.label}` : `Laajenna ${props.label}`
     }
   >
+    {/* eslint-disable-next-line react/jsx-no-literals */}
     {props.expanded ? <>&#61766;</> : <>&#61694;</>}
   </a>
 )

@@ -1,3 +1,4 @@
+import React from 'react'
 import { useEffect } from 'react'
 import { useSafeState } from '../api-fetch'
 
@@ -69,6 +70,6 @@ const modalManager = new ModalManager()
 
 export const useModalState = (): ModalState => {
   const [state, setState] = useSafeState(inactiveModalState())
-  useEffect(() => modalManager.register(setState), []) // TODO: Tästähän puuttuu unregister
+  useEffect(() => modalManager.register(setState), [setState]) // TODO: Tästähän puuttuu unregister
   return state
 }
