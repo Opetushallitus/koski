@@ -2,17 +2,16 @@ package fi.oph.koski.ytr
 
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
-import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
-import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler, Subscription}
 
-import java.time.{LocalDate, ZonedDateTime}
-import scala.concurrent.duration.{DurationInt, FiniteDuration}
+import java.time.LocalDate
 import scala.language.postfixOps
 
 class YtrDownloadService(application: KoskiApplication) extends Logging {
+  // TODO: metriikat cloudwatchiin
+  // TODO: paremmat logitukset
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
 
   def download(
