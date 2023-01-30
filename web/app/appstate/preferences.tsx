@@ -195,45 +195,58 @@ export const usePreferences = <T extends StorablePreference>(
   organisaatioOid?: OrganisaatioOid,
   type?: PreferenceType
 ): PreferencesHook<T> => {
-  const context = useContext(PreferencesContext)
+  const {
+    load,
+    store: storePref,
+    remove: removePref,
+    preferences
+  } = useContext(PreferencesContext)
 
   useEffect(() => {
     if (organisaatioOid && type) {
-      context.load(organisaatioOid, type)
+      load(organisaatioOid, type)
     }
-  }, [organisaatioOid, type])
+  }, [load, organisaatioOid, type])
 
-  const store = useCallback((key: string, data: T) => {
-    if (organisaatioOid && type) {
-      context.store(organisaatioOid, type, key, data)
-    } else {
-      console.error(
-        `Cannot store a preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
-      )
-    }
-  }, [])
+  const store = useCallback(
+    (key: string, data: T) => {
+      if (organisaatioOid && type) {
+        storePref(organisaatioOid, type, key, data)
+      } else {
+        console.error(
+          `Cannot store a preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
+        )
+      }
+    },
+    [organisaatioOid, storePref, type]
+  )
 
-  const remove = useCallback((key: string) => {
-    if (organisaatioOid && type) {
-      context.remove(organisaatioOid, type, key)
-    } else {
-      console.error(
-        `Cannot remove a preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
-      )
-    }
-  }, [])
+  const remove = useCallback(
+    (key: string) => {
+      if (organisaatioOid && type) {
+        removePref(organisaatioOid, type, key)
+      } else {
+        console.error(
+          `Cannot remove a preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
+        )
+      }
+    },
+    [organisaatioOid, removePref, type]
+  )
 
   return useMemo(
     () => ({
       preferences: (organisaatioOid && type
-        ? context.preferences[organisaatioOid]?.[type] || []
-        : []) as T[],
+        ? preferences[organisaatioOid]?.[type] || []
+        : emptyArray) as T[],
       store,
       remove
     }),
-    [organisaatioOid, type, context.preferences, store, remove]
+    [organisaatioOid, type, preferences, store, remove]
   )
 }
+
+const emptyArray: OrganisaatioPreferences[] = []
 
 export const assortedPreferenceType = (
   group: string,

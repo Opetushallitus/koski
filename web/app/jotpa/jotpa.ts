@@ -1,11 +1,10 @@
-import { suorituksenTyyppi } from '../suoritus/Suoritus'
-import { Deprecated_Koodistokoodiviite } from '../types/common'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 
 export const jotpaSallitutRahoituskoodiarvot = ['14', '15']
 
 export const isJotpaRahoitteinen = (
-  opiskeluoikeudenTyyppi: Deprecated_Koodistokoodiviite,
-  suorituksenTyyppi?: Deprecated_Koodistokoodiviite
+  opiskeluoikeudenTyyppi: Koodistokoodiviite,
+  suorituksenTyyppi?: Koodistokoodiviite
 ) =>
   isJotpaRahoitteinenKoodiarvo(
     opiskeluoikeudenTyyppi.koodiarvo,

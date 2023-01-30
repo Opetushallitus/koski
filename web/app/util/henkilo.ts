@@ -17,7 +17,7 @@ export type AnyOrganisaatiohenkilö =
 export const createOrganisaatiohenkilö = (
   henkilöClass: ClassOf<AnyOrganisaatiohenkilö>,
   organisaatio: Organisaatio,
-  nimi: string = '',
+  nimi = '',
   titteli?: string | LocalizedString
 ): AnyOrganisaatiohenkilö =>
   henkilöClass === 'fi.oph.koski.schema.Organisaatiohenkilö'

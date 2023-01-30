@@ -13,7 +13,7 @@ import { opiskeluoikeusEditors } from './uiAdapters'
 export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = (props: {
   oppijaOid: string
   opiskeluoikeus: T
-}) => JSX.Element
+}) => React.ReactElement
 
 export type AdaptedOpiskeluoikeusEditorCollection = Partial<{
   [OO in Opiskeluoikeus as OpiskeluoikeudenTyyppiOf<OO>]: AdaptedOpiskeluoikeusEditor<OO>
@@ -37,7 +37,7 @@ const disabledUiAdapter: UiAdapter = {
   getOpiskeluoikeusEditor: () => undefined
 }
 
-export type AdapterComponent = () => JSX.Element
+export type AdapterComponent = () => React.ReactElement
 
 export type OpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
   opiskeluoikeus: T
@@ -62,6 +62,7 @@ export const useUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
       setAdapter(loadingUiAdapter)
       oppija.call(oppijaOid)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [oppijaModel, v2Mode])
 
   useOnApiSuccess(oppija, (result) => {

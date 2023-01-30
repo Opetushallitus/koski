@@ -18,7 +18,7 @@ export const GlobalErrors: React.FC = () => {
             ))}
           </ul>
           <button className="GlobalErrors__clear" onClick={state.clearAll}>
-            ×
+            {'×'}
           </button>
         </div>
       </ContentContainer>

@@ -16,8 +16,9 @@ export const useLogPropUpdates = <T extends object>(
   container: string
 ) => {
   Object.entries(props).forEach(([name, prop]) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       console.log(`${container}.${name} updated:`, prop)
-    }, [prop])
+    }, [name, prop])
   })
 }

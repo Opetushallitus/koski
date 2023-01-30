@@ -2,6 +2,8 @@
 
 import { Contextualized } from './EditorModelContext'
 
+export type EmptyObject = Record<string, never>
+
 export type EditorModelType =
   | 'object'
   | 'prototype'
@@ -12,34 +14,25 @@ export type EditorModelType =
   | 'date'
   | 'string'
 
-export type EditorModel<T = any> = (
+export type EditorModel =
   | ObjectModel
   | PrototypeModel
   | ListModel
-  | EnumeratedModel<T>
-  | NumberModel
-  | StringModel
-  | BooleanModel
-  | DateModel
-  | DateTimeModel
-) &
-  (OptionalModel | {}) &
-  (OneOfModel | {})
+  | ValueModel
+  | EnumeratedModel
+  | OneOfModel
 
-export type EditorModelWithValue<T = any> =
+export type EditorModelWithValue =
   | ObjectModel
   | ListModel
-  | EnumeratedModel<T>
+  | EnumeratedModel
   | NumberModel
   | StringModel
   | BooleanModel
   | DateModel
   | DateTimeModel
 
-export type EditableModel<T = any> =
-  | ObjectModel
-  | ValueModel
-  | EnumeratedModel<T>
+export type EditableModel = ObjectModel | ValueModel | EnumeratedModel
 
 export type TypedEditorModelBase<T extends EditorModelType = EditorModelType> =
   {
@@ -54,13 +47,15 @@ export const isTypedEditorModel =
     (model as TypedEditorModelBase)?.type === t
 
 export const hasValue = <T>(
-  model: EditorModel<T> | OptionalModel | OneOfModel
-): model is EditorModelWithValue<T> =>
-  (model as EditorModelWithValue<T>)?.value !== undefined
+  model: EditorModel | OptionalModel | OneOfModel
+): model is EditorModelWithValue =>
+  (model as EditorModelWithValue)?.value !== undefined
 
-export const isEditableModel = <T>(
-  model: EditorModel<T>
-): model is EditableModel<T> =>
+export const hasTitle = <T>(
+  model: any
+): model is ObjectModelProperty | ObjectModelValue => model?.title !== undefined
+
+export const isEditableModel = (model: EditorModel): model is EditableModel =>
   isObjectModel(model) || isEnumeratedModel(model) || isValueModel(model)
 
 export type Maybe<T extends object> = Partial<T>
@@ -91,7 +86,7 @@ export type ObjectModelProperty = {
 }
 
 export type ContextualizedObjectModelProperty<
-  M extends EditorModel<T> & Contextualized,
+  M extends EditorModel & Contextualized<T>,
   T extends object
 > = {
   key: string
@@ -123,7 +118,7 @@ export type OptionalSomeModel = {
   optionalPrototype: EditorModel
 }
 
-export type OptionalNoneModel = {}
+export type OptionalNoneModel = EmptyObject
 
 // ListModel
 
@@ -137,19 +132,18 @@ export type ListModel = TypedEditorModelBase<'array'> & {
 
 // EnumeratedModel
 
-export const isEnumeratedModel =
-  isTypedEditorModel<EnumeratedModel<any>>('enum')
+export const isEnumeratedModel = isTypedEditorModel<EnumeratedModel>('enum')
 
-export type EnumeratedModel<T> = TypedEditorModelBase<'enum'> & {
-  value?: EnumValue<T>
-  alternatives?: EnumValue<T>[]
+export type EnumeratedModel = TypedEditorModelBase<'enum'> & {
+  value?: EnumValue
+  alternatives?: EnumValue[]
   alternativesPath?: string
 }
 
-export type EnumValue<T> = {
+export type EnumValue = {
   value: string
   title: string
-  data: T
+  data: any
   groupName?: string
 }
 
@@ -165,7 +159,7 @@ export type OneOfModel = {
   oneOfPrototypes: PrototypeModel[]
 }
 
-export type MaybeOneOfModel = Maybe<OneOfModel> | {}
+export type MaybeOneOfModel = Maybe<OneOfModel> | EmptyObject
 
 // Value models
 
@@ -203,7 +197,7 @@ export const isDateModel = isTypedEditorModel<DateModel>('date')
 export const isDateTimeModel = isTypedEditorModel<DateTimeModel>('date')
 export const isStringModel = isTypedEditorModel<StringModel>('string')
 
-export const isValueModel = (model: EditorModel<any>): model is ValueModel =>
+export const isValueModel = (model: EditorModel): model is ValueModel =>
   [
     isNumberModel,
     isBooleanModel,

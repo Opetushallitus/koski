@@ -108,7 +108,7 @@ export const SuorituksenVahvistusModal = <
         form.root.prop('myöntäjäOrganisaatio'),
         form.root.prop('myöntäjäHenkilöt')
       ],
-      []
+      [form.root]
     )
 
   const onSubmit = useCallback(() => {
@@ -128,7 +128,7 @@ export const SuorituksenVahvistusModal = <
       }
       props.onSubmit(vahvistus)
     }
-  }, [vahvistus, storedMyöntäjät])
+  }, [vahvistus, props, storedMyöntäjät, storeMyöntäjä])
 
   const updatePaikkakuntaByOrganisaatio = useMemo(
     () =>
@@ -143,7 +143,7 @@ export const SuorituksenVahvistusModal = <
     (henkilö: AnyOrganisaatiohenkilö) => {
       removeMyöntäjä(henkilö.nimi)
     },
-    []
+    [removeMyöntäjä]
   )
 
   return (
@@ -152,7 +152,7 @@ export const SuorituksenVahvistusModal = <
       onClose={props.onCancel}
     >
       <ModalTitle>
-        <Trans>Suoritus valmis</Trans>
+        <Trans>{'Suoritus valmis'}</Trans>
       </ModalTitle>
       <ModalBody>
         <Label label="Päivämäärä">
@@ -203,9 +203,9 @@ export const SuorituksenVahvistusModal = <
         )}
       </ModalBody>
       <ModalFooter>
-        <FlatButton onClick={props.onCancel}>Peruuta</FlatButton>
+        <FlatButton onClick={props.onCancel}>{'Peruuta'}</FlatButton>
         <RaisedButton onClick={onSubmit} disabled={!form.errors || !vahvistus}>
-          Merkitse valmiiksi
+          {'Merkitse valmiiksi'}
         </RaisedButton>
       </ModalFooter>
     </Modal>

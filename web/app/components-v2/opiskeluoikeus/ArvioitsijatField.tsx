@@ -22,7 +22,7 @@ export const ArvioitsijatView: React.FC<ArvioitsijatViewProps> = (props) => {
       ))}
     </ul>
   ) : (
-    <span {...common(props, ['ArvioitsijatView'])}>–</span>
+    <span {...common(props, ['ArvioitsijatView'])}>{'–'}</span>
   )
 }
 
@@ -33,25 +33,26 @@ export type ArvioitsijatEditProps = CommonProps<
 export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {
   const [focusNew, setFocusNew] = useState(false)
 
-  const onChange = (index: number) => (nimi?: string) => {
+  const { onChange, value } = props
+  const onChangeCB = (index: number) => (nimi?: string) => {
     pipe(
-      props.value || [],
+      value || [],
       A.updateAt(index, Arvioitsija({ nimi: nimi || '' })),
       O.fold(
         () =>
           console.error(
             `Could not add ${nimi} at ${index}, original array:`,
-            props.value
+            value
           ),
-        props.onChange
+        onChange
       )
     )
   }
 
   const addNew = useCallback(() => {
-    props.onChange([...(props.value || []), Arvioitsija({ nimi: '' })])
+    onChange([...(value || []), Arvioitsija({ nimi: '' })])
     setFocusNew(true)
-  }, [props.onChange, props.value])
+  }, [onChange, value])
 
   const removeAt = (index: number) => () => {
     pipe(
@@ -77,7 +78,7 @@ export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {
               <TextEdit
                 optional
                 value={a.nimi}
-                onChange={onChange(i)}
+                onChange={onChangeCB(i)}
                 errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
                 autoFocus={
                   props.value && i === props.value.length - 1 && focusNew
@@ -87,7 +88,7 @@ export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {
           </li>
         ))}
       <li>
-        <FlatButton onClick={addNew}>lisää uusi</FlatButton>
+        <FlatButton onClick={addNew}>{'lisää uusi'}</FlatButton>
       </li>
     </ul>
   )

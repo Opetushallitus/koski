@@ -81,17 +81,17 @@ export const ConstraintsProvider = (props: ConstraintsProviderProps) => {
  * @returns Rakennekuvauksen sekä validointitietoja
  */
 export const useSchema = (className?: string | null): Constraint | null => {
-  const context = useContext(ConstraintsContext)
+  const { constraints, loadConstraint } = useContext(ConstraintsContext)
   const schemaClass = useMemo(
     () => (className && schemaClassName(className)) || className,
     [className]
   )
   useEffect(() => {
     if (schemaClass) {
-      context.loadConstraint(schemaClass)
+      loadConstraint(schemaClass)
     }
-  }, [schemaClass])
-  const constraint = schemaClass && context.constraints[schemaClass]
+  }, [loadConstraint, schemaClass])
+  const constraint = schemaClass && constraints[schemaClass]
   return typeof constraint === 'object' ? constraint : null
 }
 
@@ -100,7 +100,7 @@ export const useAllowedStrings = (
   path: string
 ): string[] | null => {
   const c = useSchema(className)
-  return useMemo(() => pipe(c, C.path(path), C.allowedStrings), [c])
+  return useMemo(() => pipe(c, C.path(path), C.allowedStrings), [c, path])
 }
 
 export const useChildClassName = <T extends ObjWithClass>(
@@ -108,5 +108,5 @@ export const useChildClassName = <T extends ObjWithClass>(
   path: string
 ): ClassOf<T> | null => {
   const c = useSchema(className)
-  return useMemo(() => pipe(c, C.path(path), C.className<T>()), [c])
+  return useMemo(() => pipe(c, C.path(path), C.className<T>()), [c, path])
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useCallback, useContext } from 'react'
 
 export type LayoutProvider = React.FC<
   React.PropsWithChildren<{
@@ -19,15 +19,13 @@ export const useLayout = (key: string): [LayoutPosition, LayoutProvider] => {
   const indentation = useContext(contexts[key])
 
   const Provider = contexts[key].Provider
-  const LayoutProvider: LayoutProvider = useMemo(
-    () => (props) => {
-      return (
-        <Provider value={indentation + (props.indent || 0)}>
-          {props.children}
-        </Provider>
-      )
-    },
-    [indentation]
+  const LayoutProvider: LayoutProvider = useCallback(
+    (props) => (
+      <Provider value={indentation + (props.indent || 0)}>
+        {props.children}
+      </Provider>
+    ),
+    [indentation, Provider]
   )
 
   return [indentation, LayoutProvider]

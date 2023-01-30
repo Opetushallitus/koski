@@ -55,10 +55,7 @@ export const OsasuoritusHeader = <DATA_KEYS extends string>(
     <>
       <ColumnRow className="OsasuoritusHeader">
         {spans.indent > 0 && (
-          <Column
-            span={spans.indent}
-            className="OsasuoritusHeader__indent"
-          ></Column>
+          <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
         {Object.keys(props.row.columns).map((key, index) => (
           <Column

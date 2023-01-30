@@ -35,8 +35,7 @@ export default (baseUrl, rowsLens = L.identity, pageSize = defaultPageSize) => {
     ? cachedPages[cachedPages.length - 1].mayHaveMore
     : false
   const concatPages = (previousData, newData) => {
-    const previousRows =
-      previousData == null ? [] : L.get(rowsLens, previousData)
+    const previousRows = !previousData ? [] : L.get(rowsLens, previousData)
     return L.modify(
       rowsLens,
       (newRows) => previousRows.concat(newRows),

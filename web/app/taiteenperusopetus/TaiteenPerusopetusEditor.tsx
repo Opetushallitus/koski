@@ -139,7 +139,7 @@ export const TaiteenPerusopetusEditor = (
         osasuoritukset.store(tunniste.koodiarvo, newOsasuoritus.koulutusmoduuli)
       }
     },
-    [form.updateAt, päätasonSuoritusPath]
+    [fillKoodistot, form, osasuoritukset, päätasonSuoritusPath]
   )
 
   const onRemoveOsasuoritus = useCallback(
@@ -153,14 +153,14 @@ export const TaiteenPerusopetusEditor = (
           : a
       )
     },
-    [form.updateAt, päätasonSuoritusPath]
+    [form, päätasonSuoritusPath]
   )
 
   const onRemoveStoredOsasuoritus = useCallback(
     (tunniste: PaikallinenKoodi) => {
       osasuoritukset.remove(tunniste.koodiarvo)
     },
-    []
+    [osasuoritukset]
   )
 
   return (
@@ -186,7 +186,7 @@ export const TaiteenPerusopetusEditor = (
         <Spacer />
 
         <h2>
-          <Trans>Suoritukset</Trans>
+          <Trans>{'Suoritukset'}</Trans>
         </h2>
 
         <Tabs
@@ -225,11 +225,11 @@ export const TaiteenPerusopetusEditor = (
           form={form}
           path={suorituksenVahvistusPath}
           optional
-          view={(props) => <SuorituksenVahvistusView {...props} />}
-          edit={(props) => (
+          view={SuorituksenVahvistusView}
+          edit={(editProps) => (
             <SuorituksenVahvistusEdit
-              {...props}
-              organisaatio={organisaatio!}
+              {...editProps}
+              organisaatio={organisaatio}
               vahvistusClass={
                 HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla.className
               }
@@ -253,7 +253,7 @@ export const TaiteenPerusopetusEditor = (
         )}
         {form.editMode && (
           <ColumnRow>
-            <Column span={1} spanPhone={0}></Column>
+            <Column span={1} spanPhone={0} />
             <Column span={15} spanPhone={24}>
               <PaikallinenOsasuoritusSelect
                 key={suoritusIndex}
@@ -266,7 +266,7 @@ export const TaiteenPerusopetusEditor = (
         )}
 
         <EditBar form={form} onSave={onSave} />
-        {form.isSaved && <Snackbar>Tallennettu</Snackbar>}
+        {form.isSaved && <Snackbar>{'Tallennettu'}</Snackbar>}
       </EditorContainer>
     </>
   )

@@ -91,7 +91,7 @@ export const deepEqual = (a: any, b: any): boolean => {
   }
   if (typeof a === 'object' && typeof b === 'object') {
     if (Object.keys(a).length !== Object.keys(b).length) return false
-    for (let [key, aValue] of Object.entries(a)) {
+    for (const [key, aValue] of Object.entries(a)) {
       if (!deepEqual(aValue, b[key])) return false
     }
     return true

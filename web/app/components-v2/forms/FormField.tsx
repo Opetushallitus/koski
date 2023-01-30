@@ -8,11 +8,11 @@ import { FormModel, FormOptic, getValue } from './FormModel'
 import { useFormErrors } from './useFormErrors'
 import { ValidationError } from './validator'
 
-export type FieldViewBaseProps<T, P = {}> = P & {
+export type FieldViewBaseProps<T, P extends object = object> = P & {
   value?: T | undefined
 }
 
-export type FieldEditBaseProps<T, P = {}> = P & {
+export type FieldEditBaseProps<T, P extends object = object> = P & {
   initialValue?: T | undefined
   value?: T | undefined
   optional?: boolean
@@ -23,8 +23,8 @@ export type FieldEditBaseProps<T, P = {}> = P & {
 export type FormFieldProps<
   O extends object,
   T,
-  VP,
-  EP,
+  VP extends object,
+  EP extends object,
   VIEW_PROPS extends FieldViewBaseProps<T, VP>,
   EDIT_PROPS extends FieldEditBaseProps<T, EP>
 > = {
@@ -60,8 +60,8 @@ export const sideUpdate =
 export const FormField = <
   O extends object,
   T,
-  VP,
-  EP,
+  VP extends object,
+  EP extends object,
   VIEW_PROPS extends FieldViewBaseProps<T, VP>,
   EDIT_PROPS extends FieldEditBaseProps<T, EP>
 >(
@@ -83,10 +83,12 @@ export const FormField = <
 
   const initialValue = useMemo(
     () => getValue(path as FormOptic<O, T | undefined>)(form.initialState),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [form.initialState]
   )
   const value = useMemo(
     () => getValue(path as FormOptic<O, T | undefined>)(form.state),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [form.state]
   )
 
@@ -99,12 +101,13 @@ export const FormField = <
     async (newValue?: T) => {
       const filledValue = await fillKoodistot(newValue)
       form.updateAt(path as FormOptic<O, T | undefined>, constant(filledValue))
-      secondaryPaths?.forEach(<S,>(sideUpdate: SideUpdate<O, T, S>) => {
-        const side = sideUpdate(filledValue)
+      secondaryPaths?.forEach(<S,>(update: SideUpdate<O, T, S>) => {
+        const side = update(filledValue)
         form.updateAt(side.path, side.update)
       })
       form.validate()
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [form]
   )
 
@@ -115,9 +118,11 @@ export const FormField = <
         set(automaticValue)
       }
     }
-  }, [form.editMode, auto, value])
+  }, [form.editMode, auto, value, set])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const View = useMemo(() => view, [JSON.stringify(viewProps)])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const Edit = useMemo(() => edit, [JSON.stringify(editProps)])
 
   if (form.editMode) {

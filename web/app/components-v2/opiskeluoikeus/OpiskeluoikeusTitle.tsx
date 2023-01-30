@@ -38,11 +38,15 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
   return (
     <h3 {...common(props, ['OpiskeluoikeusTitle'])}>
       <span className="OpiskeluoikeusTitle__title">
-        {oppilaitosJaKoulutus} (<Lowercase>{aikaväliJaTila}</Lowercase>)
+        {oppilaitosJaKoulutus} {'('}
+        <Lowercase>{aikaväliJaTila}</Lowercase>
+        {')'}
       </span>
       {oid && (
         <span className="OpiskeluoikeusTitle__oid">
-          <Trans>Opiskeluoikeuden oid</Trans>: {oid}
+          <Trans>{'Opiskeluoikeuden oid'}</Trans>
+          {': '}
+          {oid}
         </span>
       )}
       {/* TODO TOR-1692: Opiskeluoikeuden versiohistoria */}

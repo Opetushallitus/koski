@@ -21,11 +21,12 @@ export type TextEditProps = CommonProps<
 >
 
 export const TextEdit: React.FC<TextEditProps> = (props) => {
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+  const { onChange } = props
+  const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
-      props.onChange(event.target.value)
+      onChange(event.target.value)
     },
-    [props.onChange]
+    [onChange]
   )
 
   const requiredButEmpty = Boolean(!props.allowEmpty && !props.value)
@@ -39,7 +40,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
         )}
         placeholder={props.placeholder}
         value={props.value}
-        onChange={onChange}
+        onChange={onChangeCB}
         autoFocus={props.autoFocus}
       />
       <FieldErrors

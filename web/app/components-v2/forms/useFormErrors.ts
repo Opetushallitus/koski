@@ -12,12 +12,14 @@ export const useFormErrors = <S extends object, A extends object>(
       return typeof path === 'string' ? path : parsePath(path, form.state)
     }
     return undefined
-  }, [path, form.editMode])
+  }, [form.editMode, form.state, path])
 
   return useMemo(
     () =>
       pathStr
-        ? form.errors.filter(errorPathIs((path) => path.startsWith(pathStr)))
+        ? form.errors.filter(
+            errorPathIs((thisPath) => thisPath.startsWith(pathStr))
+          )
         : [],
     [pathStr, form.errors]
   )

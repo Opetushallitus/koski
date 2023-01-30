@@ -38,14 +38,15 @@ export const OrganisaatioEdit = <T extends Organisaatio>(
     [props.value]
   )
 
-  const onChange = useCallback(
+  const { onChange } = props
+  const onChangeCB = useCallback(
     (option?: SelectOption<T>) => {
-      props.onChange(option?.value)
+      onChange(option?.value)
     },
-    [props.onChange]
+    [onChange]
   )
 
-  return <Select options={options} value={selected} onChange={onChange} />
+  return <Select options={options} value={selected} onChange={onChangeCB} />
 }
 
 const organisaatioHierarkiaToOptions = <T extends Organisaatio>(

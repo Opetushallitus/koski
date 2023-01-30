@@ -12,13 +12,14 @@ export type IconButtonProps = CommonProps<{
 }>
 
 export const IconButton: React.FC<IconButtonProps> = (props) => {
-  const onClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(
+  const { onClick } = props
+  const onClickCB: React.MouseEventHandler<HTMLButtonElement> = useCallback(
     (event) => {
       event.preventDefault()
       event.stopPropagation()
-      props.onClick(event)
+      onClick(event)
     },
-    [props.onClick]
+    [onClick]
   )
 
   return (
@@ -27,7 +28,7 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
         'IconButton',
         props.size && `IconButton--size-${props.size}`
       ])}
-      onClick={onClick}
+      onClick={onClickCB}
       aria-label={props.label}
       title={props.label}
     >

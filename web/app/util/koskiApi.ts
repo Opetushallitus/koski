@@ -14,7 +14,7 @@ import { queryString } from './url'
 const apiUrl = (path: string, query?: object): string =>
   `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
 
-export const fetchOppija = (oppijaOid: String) =>
+export const fetchOppija = (oppijaOid: string) =>
   handleExpiredSession(apiGet<Oppija>(apiUrl(`oppija/${oppijaOid}`)))
 
 export const fetchOpiskeluoikeus = (opiskeluoikeusOid: string) =>

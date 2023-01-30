@@ -78,7 +78,7 @@ export const OrganisaatioHierarkiaProvider: React.FC<
       load,
       query
     }),
-    [queries]
+    [load, queries, query]
   )
 
   return (
@@ -91,19 +91,19 @@ export const OrganisaatioHierarkiaProvider: React.FC<
 export const useOrganisaatioHierarkia = (
   queryText?: string
 ): OrganisaatioHierarkia[] => {
-  const context = useContext(OrganisaatioHierarkiaContext)
+  const { load, query, queries } = useContext(OrganisaatioHierarkiaContext)
 
   useEffect(() => {
-    context.load()
-  }, [])
+    load()
+  }, [load])
 
   useEffect(() => {
     if (queryText) {
-      context.query(queryText)
+      query(queryText)
     }
-  }, [queryText])
+  }, [query, queryText])
 
-  return context.queries[queryText || ROOT_QUERY] || emptyResult
+  return queries[queryText || ROOT_QUERY] || emptyResult
 }
 
 const emptyResult: OrganisaatioHierarkia[] = []

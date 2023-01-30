@@ -1,4 +1,3 @@
-import * as A from 'fp-ts/Array'
 import React, { useCallback, useMemo, useState } from 'react'
 import DayPickerInput, { DateUtils } from 'react-day-picker'
 import {
@@ -54,34 +53,35 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
   )
   const [isInvalidDate, setInvalidDate] = useState(false)
 
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+  const { onChange, min, max, value } = props
+  const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
-      const finnishDate = event.target.value
-      setInternalFinnishDate(finnishDate)
-      const date = parseFinnishDate(finnishDate)
+      const newFinnishDate = event.target.value
+      setInternalFinnishDate(newFinnishDate)
+      const date = parseFinnishDate(newFinnishDate)
       const isoDate = date && formatISODate(date)
       setInvalidDate(!isoDate)
-      if (isoDate && isoDate !== props.value) {
-        if (
-          (props.min && isoDate < props.min) ||
-          (props.max && isoDate > props.max)
-        ) {
+      if (isoDate && isoDate !== value) {
+        if ((min && isoDate < min) || (max && isoDate > max)) {
           setInvalidDate(true)
         }
-        props.onChange(isoDate)
+        onChange(isoDate)
       }
     },
-    [props.onChange, props.value, props.min, props.max]
+    [onChange, min, max, value]
   )
 
-  const onDayClick = useCallback((date: Date) => {
-    setInternalFinnishDate(formatFinnishDate(date))
-    setDatePickerVisible(false)
-    const isoDate = formatISODate(date)
-    if (isoDate && isoDate !== props.value) {
-      props.onChange(isoDate)
-    }
-  }, [])
+  const onDayClick = useCallback(
+    (date: Date) => {
+      setInternalFinnishDate(formatFinnishDate(date))
+      setDatePickerVisible(false)
+      const isoDate = formatISODate(date)
+      if (isoDate && isoDate !== value) {
+        onChange(isoDate)
+      }
+    },
+    [onChange, value]
+  )
 
   const selectedDays = useCallback(
     (date: Date) =>
@@ -97,7 +97,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
         <input
           type="text"
           value={internalFinnishDate}
-          onChange={onChange}
+          onChange={onChangeCB}
           className={cx(
             'DateEdit__input',
             hasError && 'DateEdit__input--error'

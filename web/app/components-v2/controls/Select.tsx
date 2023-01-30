@@ -77,7 +77,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
     if (props.hideEmpty) {
       setHoveredOption(flatOptions.arr.find((o) => !o.isGroup))
     }
-  }, [])
+  }, [flatOptions.arr, props.hideEmpty])
 
   const onFocus = useCallback(() => {
     setDropdownVisible(true)
@@ -107,13 +107,14 @@ export const Select = <T,>(props: SelectProps<T>) => {
 
   // Changes
 
+  const onChangeCb = props.onChange
   const onChange = useCallback(
     (option?: SelectOption<T>) => {
       setDropdownVisible(false)
       setFilter(null)
-      props.onChange(option)
+      onChangeCb(option)
     },
-    [props.onChange]
+    [onChangeCb]
   )
 
   // Filter options
@@ -171,7 +172,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
         // console.log(event.key)
       }
     },
-    [flatOptions, hoveredOption, dropdownVisible]
+    [dropdownVisible, flatOptions, hoveredOption, onChange]
   )
 
   const onUserType: React.ChangeEventHandler<HTMLInputElement> = useCallback(
