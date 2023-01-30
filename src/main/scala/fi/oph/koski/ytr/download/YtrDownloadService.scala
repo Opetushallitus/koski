@@ -48,9 +48,14 @@ class YtrDownloadService(application: KoskiApplication) extends Logging {
     }
   }
 
-  def downloadAndExit(forceDownload: Boolean): Unit = {
+  def downloadAndExit(): Unit = {
+    val config = Environment.ytrDownloadConfig
+
     download(
-      force = forceDownload,
+      birthdateStart = config.birthdateStart,
+      birthdateEnd = config.birthdateEnd,
+      modifiedSince = config.modifiedSince,
+      force = config.force,
       onEnd = () => {
         logger.info(s"Ended downloading YTR data, shutting down...")
       }

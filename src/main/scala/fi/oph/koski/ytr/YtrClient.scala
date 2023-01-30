@@ -17,8 +17,9 @@ trait YtrClient {
   def oppijaJsonByHetu(hetu: String): Option[JValue]
 
   // Rajapinnat, joilla haetaan kaikki YTL:n datat
-  def oppijaHetutBySyntymäaika(alku: LocalDate, loppuExclusive: LocalDate): Option[YtrSsns] = oppijaJsonHetutBySyntymäaika(alku, loppuExclusive).map(JsonSerializer.extract[YtrSsns](_, ignoreExtras = true))
-  def oppijaJsonHetutBySyntymäaika(alku: LocalDate, loppuExclusive: LocalDate): Option[JValue]
+  // TODO: Myös rajapinta, jolla voi hakea modifiedSince-flagillä
+  def oppijaHetutBySyntymäaika(birthdateStart: LocalDate, birthdateEnd: LocalDate): Option[YtrSsns] = oppijaJsonHetutBySyntymäaika(birthdateStart, birthdateEnd).map(JsonSerializer.extract[YtrSsns](_, ignoreExtras = true))
+  def oppijaJsonHetutBySyntymäaika(birthdateStart: LocalDate, birthdateEnd: LocalDate): Option[JValue]
 
   def oppijatByHetut(ssns: YtrSsns): List[YtrLaajaOppija] = oppijatJsonByHetut(ssns).map(JsonSerializer.extract[List[YtrLaajaOppija]](_, ignoreExtras = true)).getOrElse(List.empty)
   def oppijatJsonByHetut(ssns: YtrSsns): Option[JValue]
@@ -51,7 +52,7 @@ object YtrClient extends Logging {
 object EmptyYtrClient extends YtrClient {
   override def oppijaJsonByHetu(hetu: String): None.type = None
 
-  override def oppijaJsonHetutBySyntymäaika(alku: LocalDate, loppuExclusive: LocalDate): Option[JValue] = None
+  override def oppijaJsonHetutBySyntymäaika(birthdateStart: LocalDate, birthdateEnd: LocalDate): Option[JValue] = None
 
   override def oppijatJsonByHetut(ssns: YtrSsns): Option[JValue] = None
 }
@@ -61,10 +62,10 @@ object MockYrtClient extends YtrClient {
   def filename(hetu: String): String = "src/main/resources" + resourcename(hetu)
   private def resourcename(hetu: String) = "/mockdata/ytr/" + hetu + ".json"
 
-  override def oppijaJsonHetutBySyntymäaika(alku: LocalDate, loppuExclusive: LocalDate): Option[JValue] =
-    JsonResources.readResourceIfExists(hetutResourceName(alku, loppuExclusive))
-  private def hetutResourceName(alku: LocalDate, loppuExclusive: LocalDate) =
-    s"/mockdata/ytr/ssns_${alku.toString}_${loppuExclusive.toString}.json"
+  override def oppijaJsonHetutBySyntymäaika(birthdateStart: LocalDate, birthdateEnd: LocalDate): Option[JValue] =
+    JsonResources.readResourceIfExists(hetutResourceName(birthdateStart, birthdateEnd))
+  private def hetutResourceName(birthdateStart: LocalDate, birthdateEnd: LocalDate) =
+    s"/mockdata/ytr/ssns_${birthdateStart.toString}_${birthdateEnd.toString}.json"
 
   override def oppijatJsonByHetut(ssns: YtrSsns): Option[JValue] =
     JsonResources.readResourceIfExists(
@@ -84,8 +85,8 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     runIO(http.get(uri"/api/oph-koski/student/$hetu")(Http.parseJsonOptional[JValue]))
   }
 
-  override def oppijaJsonHetutBySyntymäaika(alku: LocalDate, loppuExclusive: LocalDate): Option[JValue] = {
-    runIO(http.get(uri"/api/oph-registrydata/ssns?birthdateStart=${alku.toString}&birthdateEnd=${loppuExclusive.minusDays(1).toString}")(Http.parseJsonOptional[JValue]))
+  override def oppijaJsonHetutBySyntymäaika(birthdateStart: LocalDate, birthdateEnd: LocalDate): Option[JValue] = {
+    runIO(http.get(uri"/api/oph-registrydata/ssns?birthdateStart=${birthdateStart.toString}&birthdateEnd=${birthdateEnd.toString}")(Http.parseJsonOptional[JValue]))
   }
 
   override def oppijatJsonByHetut(ssns: YtrSsns): Option[JValue] = {

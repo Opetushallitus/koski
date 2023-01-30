@@ -220,19 +220,12 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
   private def downloadYtr(application: KoskiApplication): Unit = {
     val service = new YtrDownloadService(application)
     val generating = Future {
-      service.downloadAndExit(forceDownload = getYtrForceMode)
+      service.downloadAndExit()
     }
     generating.failed.map(error => {
       logger.error(error)("YTR-datan lataus keskeytyi odottamattomasti")
       service.shutdown
     })
-  }
-
-  private def getYtrForceMode: Boolean = sys.env.get("FORCE_YTR_DOWNLOAD") match {
-    case Some("true") => true
-    case Some("false") => false
-    case Some(s) => throw new RuntimeException(s"Odottamaton arvo muuttujalla FORCE_YTR_DOWNLOAD: ${s} (sallitut arvot: true, false)")
-    case None => false
   }
 
   override def destroy(context: ServletContext): Unit = ()
