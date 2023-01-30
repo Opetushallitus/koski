@@ -1,4 +1,4 @@
-package fi.oph.koski.ytr
+package fi.oph.koski.ytr.download
 
 import java.time.LocalDate
 

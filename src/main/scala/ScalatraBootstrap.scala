@@ -51,7 +51,8 @@ import fi.oph.koski.valpas.sso.ValpasOppijaCasServlet
 import fi.oph.koski.valpas.ytl.ValpasYtlServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytl.YtlServlet
-import fi.oph.koski.ytr.{YtrDownloadService, YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
+import fi.oph.koski.ytr.download.{YtrDownloadService, YtrTestServlet}
+import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 
 import javax.servlet.ServletContext
 import org.scalatra._
@@ -179,6 +180,15 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
       }
 
       mount("/types", new LocalDevOnlyTypeModelServlet())
+    }
+
+    if (
+      Environment.isLocalDevelopmentEnvironment(application.config) ||
+      Environment.isMockEnvironment(application.config) ||
+      // TODO: toistaiseksi päällä QA+untuvalla, testausta varten
+      (Environment.isServerEnvironment(application.config) && !Environment.isProdEnvironment(application.config))
+    ) {
+      mount ("/koski/test/ytr", new YtrTestServlet())
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete

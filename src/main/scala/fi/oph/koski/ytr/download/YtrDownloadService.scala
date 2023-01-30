@@ -1,4 +1,4 @@
-package fi.oph.koski.ytr
+package fi.oph.koski.ytr.download
 
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
@@ -81,7 +81,7 @@ class YtrDownloadService(application: KoskiApplication) extends Logging {
       .subscribeOn(scheduler)
       .subscribe(
         onNext = oppija => {
-          // TODO: Käsittele oppija
+          // TODO: Käsittele oppija, älä turhaan yritä logittaa ssn:ää, joka kuitenkin maskataan
           logger.info(s"Downloaded oppija ${oppija.ssn} with ${
             val exams: Seq[YtrLaajaExam] = oppija.examinations.flatMap(_.examinationPeriods.flatMap(_.exams))
             exams.size
@@ -97,7 +97,7 @@ class YtrDownloadService(application: KoskiApplication) extends Logging {
             onEnd()
           } catch {
             case e: Throwable =>
-              logger.error(e)("Excpetion in YTR download:" + e.toString)
+              logger.error(e)("Exception in YTR download:" + e.toString)
               onEnd()
           }
         }
@@ -113,7 +113,7 @@ class YtrDownloadService(application: KoskiApplication) extends Logging {
 
     val groupedSsns = Observable.from(application.ytrClient.oppijaHetutBySyntymäaika(birthdateStart.get, birthdateEnd.get))
       .flatMap(a => Observable.from(a.ssns))
-      .map(_.grouped(500).toList) // TODO: hyvä batch size? 1500 on maksimi
+      .map(_.grouped(50).toList) // TODO: hyvä ja configista tuleva batch size? 1500 on maksimi
       .flatMap(a => Observable.from(a.map(Option.apply).map(YtrSsns.apply)))
 
     val oppijat: Observable[YtrLaajaOppija] = groupedSsns.flatMap(a => Observable.from(application.ytrClient.oppijatByHetut(a)))

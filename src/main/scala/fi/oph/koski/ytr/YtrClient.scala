@@ -7,6 +7,7 @@ import fi.oph.koski.http.{ClientWithBasicAuthentication, Http}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
+import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsns}
 import org.json4s.JValue
 
 import java.time.LocalDate
