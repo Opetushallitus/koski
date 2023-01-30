@@ -15,8 +15,7 @@ import {
   Koodistokoodiviite
 } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
-import { toKoodiviite } from '../util/constraints'
-import { nonNull } from '../util/fp/arrays'
+import * as C from '../util/constraints'
 import { mapObjectValues } from '../util/fp/objects'
 import { fetchKoodistot } from '../util/koskiApi'
 
@@ -163,16 +162,16 @@ export function useKoodisto<T extends string>(
 export const useKoodistoOfConstraint = <T extends string = string>(
   constraint: Constraint | null
 ): KoodistokoodiviiteKoodistonNimellä<T>[] | null => {
-  const koodiviiteC = useMemo(() => toKoodiviite(constraint), [constraint])
-  const koodit = useKoodisto(koodiviiteC?.koodistoUri)
+  const koodiviitteetC = useMemo(() => C.koodiviite(constraint), [constraint])
+  const koodit = useKoodisto(koodiviitteetC?.koodistoUri)
   return useMemo(
     () =>
       (koodit?.filter(
         (k) =>
-          !koodiviiteC?.koodiarvot ||
-          koodiviiteC.koodiarvot.includes(k.koodiviite.koodiarvo)
+          !koodiviitteetC?.koodiarvot ||
+          koodiviitteetC.koodiarvot.includes(k.koodiviite.koodiarvo)
       ) as KoodistokoodiviiteKoodistonNimellä<T>[]) || null,
-    [koodiviiteC, koodit]
+    [koodiviitteetC, koodit]
   )
 }
 

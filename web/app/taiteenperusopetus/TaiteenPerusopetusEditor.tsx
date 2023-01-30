@@ -1,5 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { useSchema } from '../appstate/constraints'
+import {
+  useAllowedStrings,
+  useChildClassName,
+  useChildClassNames,
+  useSchema
+} from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
@@ -8,26 +13,18 @@ import {
   KeyValueRow,
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
-import { Tabs } from '../components-v2/controls/Tabs'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
 import { Spacer } from '../components-v2/layout/Spacer'
-import { Snackbar } from '../components-v2/messages/Snackbar'
 import {
   ArvosanaEdit,
   ArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
-import { EditBar } from '../components-v2/opiskeluoikeus/EditBar'
 import {
   LaajuusOpintopisteissäEdit,
   laajuusSum,
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
-import {
-  OpiskeluoikeudenTilaEdit,
-  OpiskeluoikeudenTilaView
-} from '../components-v2/opiskeluoikeus/OpiskeluoikeudenTila'
-import { OpiskeluoikeusEditToolbar } from '../components-v2/opiskeluoikeus/OpiskeluoikeusEditToolbar'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import {
   OsasuoritusRowData,
@@ -50,8 +47,6 @@ import { TaiteenPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/s
 import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
 import { append, deleteAt } from '../util/fp/arrays'
-import { saveOpiskeluoikeus } from '../util/koskiApi'
-import { mergeOpiskeluoikeusVersionumero } from '../util/opiskeluoikeus'
 import { usePäätasonSuoritus } from '../util/optics'
 import { createTpoArviointi } from './tpoCommon'
 import { TpoOsasuoritusProperties } from './TpoOsasuoritusProperties'
@@ -67,13 +62,11 @@ export const TaiteenPerusopetusEditor = (
   const opiskeluoikeusSchema = useSchema('TaiteenPerusopetuksenOpiskeluoikeus')
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
   const fillKoodistot = useKoodistoFiller()
-  const [suoritusIndex, setSuoritusIndex] = useState(0)
-  const suoritus = form.state.suoritukset[suoritusIndex]
 
+  const [suoritusIndex, setSuoritusIndex] = useState(0)
+  const päätasonSuoritus = form.state.suoritukset[suoritusIndex]
   const päätasonSuoritusPath =
     usePäätasonSuoritus<TaiteenPerusopetuksenOpiskeluoikeus>(suoritusIndex)
-
-  const opiskeluoikeudenTilaPath = form.root.prop('tila')
 
   const [
     osasuorituksetPath,
@@ -81,7 +74,7 @@ export const TaiteenPerusopetusEditor = (
     opiskeluoikeudenLaajuusPath
   ] = useMemo(
     () => [
-      päätasonSuoritusPath.prop('osasuoritukset').optional(),
+      päätasonSuoritusPath.prop('osasuoritukset').optional(), // TODO: Tässä on paljon uudelleenkäytettäviä patheja siirrettäväksi utilseihin
       päätasonSuoritusPath.prop('vahvistus'),
       päätasonSuoritusPath.path('koulutusmoduuli.laajuus')
     ],
@@ -96,13 +89,6 @@ export const TaiteenPerusopetusEditor = (
   const organisaatio =
     props.opiskeluoikeus.oppilaitos || props.opiskeluoikeus.koulutustoimija
 
-  const onSave = useCallback(() => {
-    form.save(
-      saveOpiskeluoikeus(props.oppijaOid),
-      mergeOpiskeluoikeusVersionumero
-    )
-  }, [props.oppijaOid, form])
-
   const osasuoritukset =
     usePreferences<TaiteenPerusopetuksenPaikallinenOpintokokonaisuus>(
       organisaatio?.oid,
@@ -110,7 +96,7 @@ export const TaiteenPerusopetusEditor = (
       assortedPreferenceType(
         'taiteenperusopetus',
         form.state.oppimäärä.koodiarvo,
-        suoritus?.koulutusmoduuli.taiteenala.koodiarvo
+        päätasonSuoritus?.koulutusmoduuli.taiteenala.koodiarvo
       )
     )
 
@@ -169,39 +155,16 @@ export const TaiteenPerusopetusEditor = (
         opiskeluoikeus={form.state}
         koulutus={tpoKoulutuksenNimi(form.state)}
       />
-      <EditorContainer>
-        <OpiskeluoikeusEditToolbar
-          opiskeluoikeus={form.state}
-          editMode={form.editMode}
-          onStartEdit={form.startEdit}
-        />
-        <Spacer />
-        <FormField
-          form={form}
-          path={opiskeluoikeudenTilaPath}
-          view={OpiskeluoikeudenTilaView}
-          edit={OpiskeluoikeudenTilaEdit}
-          editProps={{ createJakso: TaiteenPerusopetuksenOpiskeluoikeusjakso }}
-        />
-        <Spacer />
-
-        <h2>
-          <Trans>{'Suoritukset'}</Trans>
-        </h2>
-
-        <Tabs
-          onSelect={setSuoritusIndex}
-          tabs={form.state.suoritukset.map((s, i) => ({
-            key: i,
-            label: tpoSuorituksenNimi(s)
-          }))}
-        />
-
-        <Spacer />
-
+      <EditorContainer
+        form={form}
+        oppijaOid={props.oppijaOid}
+        onChangeSuoritus={setSuoritusIndex} // TODO: tästä vois ehkä abstrahoida taas pidemmälle niin, että tuodaan ihan vaan se päätason suoritus
+        createOpiskeluoikeusjakso={TaiteenPerusopetuksenOpiskeluoikeusjakso}
+        suorituksenNimi={tpoSuorituksenNimi}
+      >
         <KeyValueTable>
           <KeyValueRow name="Taiteenala">
-            <Trans>{suoritus?.koulutusmoduuli.taiteenala.nimi}</Trans>
+            <Trans>{päätasonSuoritus?.koulutusmoduuli.taiteenala.nimi}</Trans>
           </KeyValueRow>
           <KeyValueRow name="Oppimäärä">
             <Trans>{form.state.oppimäärä.nimi}</Trans>
@@ -237,11 +200,11 @@ export const TaiteenPerusopetusEditor = (
           )}
         />
 
-        {suoritus.osasuoritukset && (
+        {päätasonSuoritus.osasuoritukset && (
           <OsasuoritusTable
             key={suoritusIndex}
             editMode={form.editMode}
-            rows={suoritus.osasuoritukset.map((_, osasuoritusIndex) =>
+            rows={päätasonSuoritus.osasuoritukset.map((_, osasuoritusIndex) =>
               osasuoritusToTableRow(
                 form,
                 päätasonSuoritusPath,
@@ -251,6 +214,7 @@ export const TaiteenPerusopetusEditor = (
             onRemove={onRemoveOsasuoritus}
           />
         )}
+
         {form.editMode && (
           <ColumnRow>
             <Column span={1} spanPhone={0} />
@@ -264,9 +228,6 @@ export const TaiteenPerusopetusEditor = (
             </Column>
           </ColumnRow>
         )}
-
-        <EditBar form={form} onSave={onSave} />
-        {form.isSaved && <Snackbar>{'Tallennettu'}</Snackbar>}
       </EditorContainer>
     </>
   )

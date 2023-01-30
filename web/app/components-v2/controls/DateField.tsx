@@ -17,6 +17,8 @@ import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { invalidDate } from '../forms/validator'
 import { IconButton } from './IconButton'
 
+// Date viewer
+
 export type DateViewProps = CommonProps<FieldViewBaseProps<string>>
 
 export const DateView: React.FC<DateViewProps> = (props) => {
@@ -26,6 +28,8 @@ export const DateView: React.FC<DateViewProps> = (props) => {
   )
   return <span {...common(props, ['DateView'])}>{formattedDate}</span>
 }
+
+// Date editor
 
 export type DateEditProps = CommonProps<
   FieldEditBaseProps<
@@ -38,6 +42,64 @@ export type DateEditProps = CommonProps<
 >
 
 export const DateEdit: React.FC<DateEditProps> = (props) => {
+  const {
+    date,
+    displayDate,
+    datePickerVisible,
+    isInvalidDate,
+    hasError,
+    selectedDays,
+    toggleDayPicker,
+    onDayClick,
+    onChange
+  } = useDateEditState(props)
+
+  return (
+    <label {...common(props, ['DateEdit'])}>
+      <div className="DateEdit__field">
+        <input
+          type="text"
+          value={displayDate}
+          onChange={onChange}
+          className={cx(
+            'DateEdit__input',
+            hasError && 'DateEdit__input--error'
+          )}
+        />
+        <PositionalPopupHolder>
+          <IconButton
+            charCode="f133"
+            label={t('Valitse päivämäärä')}
+            size="input"
+            onClick={toggleDayPicker}
+          />
+          {datePickerVisible && (
+            <PositionalPopup>
+              <DayPickerInput
+                initialMonth={date}
+                onDayClick={onDayClick}
+                selectedDays={selectedDays}
+                weekdaysShort={weekdaysShort}
+                months={months}
+                firstDayOfWeek={1}
+              />
+            </PositionalPopup>
+          )}
+        </PositionalPopupHolder>
+      </div>
+      <FieldErrors
+        errors={props.errors}
+        localErrors={
+          isInvalidDate ? [invalidDate(displayDate || '', [])] : undefined
+        }
+      />
+    </label>
+  )
+}
+
+// Utils
+
+const useDateEditState = (props: DateEditProps) => {
   const [datePickerVisible, setDatePickerVisible] = useState(false)
   const toggleDayPicker = useCallback(
     () => setDatePickerVisible(!datePickerVisible),
@@ -89,51 +151,17 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
     [internalDate]
   )
 
-  const hasError = Boolean(isInvalidDate || props.errors)
-
-  return (
-    <label {...common(props, ['DateEdit'])}>
-      <div className="DateEdit__field">
-        <input
-          type="text"
-          value={internalFinnishDate}
-          onChange={onChangeCB}
-          className={cx(
-            'DateEdit__input',
-            hasError && 'DateEdit__input--error'
-          )}
-        />
-        <PositionalPopupHolder>
-          <IconButton
-            charCode="f133"
-            label={t('Valitse päivämäärä')}
-            size="input"
-            onClick={toggleDayPicker}
-          />
-          {datePickerVisible && (
-            <PositionalPopup>
-              <DayPickerInput
-                initialMonth={internalDate}
-                onDayClick={onDayClick}
-                selectedDays={selectedDays}
-                weekdaysShort={weekdaysShort}
-                months={months}
-                firstDayOfWeek={1}
-              />
-            </PositionalPopup>
-          )}
-        </PositionalPopupHolder>
-      </div>
-      <FieldErrors
-        errors={props.errors}
-        localErrors={
-          isInvalidDate
-            ? [invalidDate(internalFinnishDate || '', [])]
-            : undefined
-        }
-      />
-    </label>
-  )
+  return {
+    date: internalDate,
+    displayDate: internalFinnishDate,
+    datePickerVisible,
+    isInvalidDate,
+    hasError: Boolean(isInvalidDate || props.errors),
+    selectedDays,
+    toggleDayPicker,
+    onDayClick,
+    onChange: onChangeCB
+  }
 }
 
 const weekdaysShort = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'].map((v) =>

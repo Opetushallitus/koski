@@ -20,7 +20,7 @@ import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
 import { CHARCODE_ADD, IconLabel } from '../texts/Icon'
 
-const ADD_NEW_KEY = '__NEW__'
+// Organisaatiohenkilö viewer
 
 export type OrganisaatioHenkilötViewProps<T extends AnyOrganisaatiohenkilö> =
   CommonProps<FieldViewBaseProps<T[] | undefined>>
@@ -42,6 +42,8 @@ export const OrganisaatioHenkilötView = <T extends AnyOrganisaatiohenkilö>(
   )
 }
 
+// Organisaatiohenkilö editor
+
 export type OrganisaatioHenkilötEditProps<T extends AnyOrganisaatiohenkilö> =
   CommonProps<
     FieldEditBaseProps<
@@ -58,6 +60,68 @@ export type OrganisaatioHenkilötEditProps<T extends AnyOrganisaatiohenkilö> =
 export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
   props: OrganisaatioHenkilötEditProps<T>
 ): React.ReactElement => {
+  const state = useOrganisaatioHenkilöState(props)
+
+  return (
+    <ul {...common(props, ['ArvioitsijatEdit'])}>
+      {(props.value || []).map((a, i) => (
+        <li key={i}>
+          {!props.storedHenkilöt?.find((h) =>
+            OrganisaatiohenkilöEq.equals(a, h)
+          ) ? (
+            <MultiField key={i}>
+              <TextEdit
+                placeholder="Nimi"
+                optional
+                value={a.nimi}
+                onChange={state.onChangeNimi(i)}
+                errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
+                autoFocus={
+                  props.value && i === props.value.length - 1 && state.focusNew
+                }
+              />
+              <TextEdit
+                placeholder="Titteli"
+                optional
+                value={t(a.titteli)}
+                onChange={state.onChangeTitteli(i)}
+                errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
+                allowEmpty={
+                  props.henkilöClass ===
+                  'fi.oph.koski.schema.OrganisaatiohenkilöValinnaisellaTittelillä'
+                }
+              />
+            </MultiField>
+          ) : (
+            <Removable onClick={state.removeAt(i)}>
+              <Select
+                options={state.options}
+                value={a.nimi}
+                onChange={state.updateHenkilö(i)}
+                onRemove={state.onRemoveStored}
+              />
+            </Removable>
+          )}
+        </li>
+      ))}
+      <li>
+        <Select
+          options={state.newOptions}
+          onChange={state.addHenkilö}
+          onRemove={state.onRemoveStored}
+        />
+      </li>
+    </ul>
+  )
+}
+
+// State
+
+const ADD_NEW_KEY = '__NEW__'
+
+const useOrganisaatioHenkilöState = <T extends AnyOrganisaatiohenkilö>(
+  props: OrganisaatioHenkilötEditProps<T>
+) => {
   const [focusNew, setFocusNew] = useState(false)
 
   const onChangeNimi = (index: number) => (nimi?: string) => {
@@ -177,55 +241,15 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
     [onRemoveStoredHenkilö]
   )
 
-  return (
-    <ul {...common(props, ['ArvioitsijatEdit'])}>
-      {(props.value || []).map((a, i) => (
-        <li key={i}>
-          {!props.storedHenkilöt?.find((h) =>
-            OrganisaatiohenkilöEq.equals(a, h)
-          ) ? (
-            <MultiField key={i}>
-              <TextEdit
-                placeholder="Nimi"
-                optional
-                value={a.nimi}
-                onChange={onChangeNimi(i)}
-                errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
-                autoFocus={
-                  props.value && i === props.value.length - 1 && focusNew
-                }
-              />
-              <TextEdit
-                placeholder="Titteli"
-                optional
-                value={t(a.titteli)}
-                onChange={onChangeTitteli(i)}
-                errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
-                allowEmpty={
-                  props.henkilöClass ===
-                  'fi.oph.koski.schema.OrganisaatiohenkilöValinnaisellaTittelillä'
-                }
-              />
-            </MultiField>
-          ) : (
-            <Removable onClick={removeAt(i)}>
-              <Select
-                options={options}
-                value={a.nimi}
-                onChange={updateHenkilö(i)}
-                onRemove={onRemoveStored}
-              />
-            </Removable>
-          )}
-        </li>
-      ))}
-      <li>
-        <Select
-          options={newOptions}
-          onChange={addHenkilö}
-          onRemove={onRemoveStored}
-        />
-      </li>
-    </ul>
-  )
+  return {
+    options,
+    newOptions,
+    addHenkilö,
+    focusNew,
+    onChangeNimi,
+    onChangeTitteli,
+    updateHenkilö,
+    removeAt,
+    onRemoveStored
+  }
 }
