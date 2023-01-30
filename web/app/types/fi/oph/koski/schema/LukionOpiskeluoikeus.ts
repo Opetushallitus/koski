@@ -64,5 +64,8 @@ export const LukionOpiskeluoikeus = (
   ...o
 })
 
+LukionOpiskeluoikeus.className =
+  'fi.oph.koski.schema.LukionOpiskeluoikeus' as const
+
 export const isLukionOpiskeluoikeus = (a: any): a is LukionOpiskeluoikeus =>
   a?.$class === 'fi.oph.koski.schema.LukionOpiskeluoikeus'

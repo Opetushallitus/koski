@@ -24,6 +24,9 @@ export const ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue = (o: {
   ...o
 })
 
+ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue.className =
+  'fi.oph.koski.schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue' as const
+
 export const isValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue = (
   a: any
 ): a is ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue =>

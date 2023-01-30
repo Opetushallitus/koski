@@ -41,6 +41,9 @@ export const TutkintokoulutukseenValmentavanOpiskeluoikeusjakso = (o: {
   ...o
 })
 
+TutkintokoulutukseenValmentavanOpiskeluoikeusjakso.className =
+  'fi.oph.koski.schema.TutkintokoulutukseenValmentavanOpiskeluoikeusjakso' as const
+
 export const isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso = (
   a: any
 ): a is TutkintokoulutukseenValmentavanOpiskeluoikeusjakso =>

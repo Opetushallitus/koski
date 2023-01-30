@@ -40,6 +40,9 @@ export const SirkustaiteenOpintotaso = (
   ...o
 })
 
+SirkustaiteenOpintotaso.className =
+  'fi.oph.koski.schema.SirkustaiteenOpintotaso' as const
+
 export const isSirkustaiteenOpintotaso = (
   a: any
 ): a is SirkustaiteenOpintotaso =>

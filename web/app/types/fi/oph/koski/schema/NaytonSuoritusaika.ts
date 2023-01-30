@@ -17,5 +17,7 @@ export const NäytönSuoritusaika = (o: {
   ...o
 })
 
+NäytönSuoritusaika.className = 'fi.oph.koski.schema.NäytönSuoritusaika' as const
+
 export const isNäytönSuoritusaika = (a: any): a is NäytönSuoritusaika =>
   a?.$class === 'fi.oph.koski.schema.NäytönSuoritusaika'

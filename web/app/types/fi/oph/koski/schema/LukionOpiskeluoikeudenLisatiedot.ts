@@ -44,6 +44,9 @@ export const LukionOpiskeluoikeudenLisätiedot = (
   ...o
 })
 
+LukionOpiskeluoikeudenLisätiedot.className =
+  'fi.oph.koski.schema.LukionOpiskeluoikeudenLisätiedot' as const
+
 export const isLukionOpiskeluoikeudenLisätiedot = (
   a: any
 ): a is LukionOpiskeluoikeudenLisätiedot =>

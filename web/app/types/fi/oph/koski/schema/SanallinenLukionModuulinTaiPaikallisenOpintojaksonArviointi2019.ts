@@ -26,6 +26,9 @@ export const SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 =
     ...o
   })
 
+SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019.className =
+  'fi.oph.koski.schema.SanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019' as const
+
 export const isSanallinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 =
   (
     a: any

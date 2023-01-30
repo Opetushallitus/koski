@@ -19,6 +19,9 @@ export const DIAVastaavuustodistuksenTiedot = (o: {
   ...o
 })
 
+DIAVastaavuustodistuksenTiedot.className =
+  'fi.oph.koski.schema.DIAVastaavuustodistuksenTiedot' as const
+
 export const isDIAVastaavuustodistuksenTiedot = (
   a: any
 ): a is DIAVastaavuustodistuksenTiedot =>

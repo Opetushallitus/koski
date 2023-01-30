@@ -14,5 +14,7 @@ export const English = (o: { en: string }): English => ({
   ...o
 })
 
+English.className = 'fi.oph.koski.schema.English' as const
+
 export const isEnglish = (a: any): a is English =>
   a?.$class === 'fi.oph.koski.schema.English'

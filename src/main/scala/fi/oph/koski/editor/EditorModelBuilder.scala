@@ -165,19 +165,18 @@ object KoodistoEnumModelBuilder {
   )
 
   def koodistoEnumValue(k: Koodistokoodiviite)(localization: LocalizedHtml, koodisto: KoodistoViitePalvelu) = {
-    def koodistoName(k: Koodistokoodiviite) = {
-      val kp = koodisto.koodistoPalvelu
-      kp.getLatestVersionOptional(k.koodistoUri).flatMap(kp.getKoodisto(_)).flatMap(_.nimi).map(_.get(localization.lang))
-    }
-
     val title = if (List("arviointiasteikkoammatillinent1k3").contains(k.koodistoUri)) {
       k.koodiarvo
     } else {
       localization.i(k.description)
     }
-    EnumValue(k.koodistoUri + "_" + k.koodiarvo, title, JsonSerializer.serializeWithRoot(k), koodistoName(k))
+    EnumValue(k.koodistoUri + "_" + k.koodiarvo, title, JsonSerializer.serializeWithRoot(k), koodistoName(k)(localization, koodisto))
   }
 
+  def koodistoName(k: Koodistokoodiviite)(localization: LocalizedHtml, koodisto: KoodistoViitePalvelu): Option[String] = {
+    val kp = koodisto.koodistoPalvelu
+    kp.getLatestVersionOptional(k.koodistoUri).flatMap(kp.getKoodisto(_)).flatMap(_.nimi).map(_.get(localization.lang))
+  }
 }
 
 case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[Koodistokoodiviite] {

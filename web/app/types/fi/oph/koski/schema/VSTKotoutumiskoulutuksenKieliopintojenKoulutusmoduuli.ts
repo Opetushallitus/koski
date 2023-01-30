@@ -34,6 +34,9 @@ export const VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli = (
   ...o
 })
 
+VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli.className =
+  'fi.oph.koski.schema.VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli' as const
+
 export const isVSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli = (
   a: any
 ): a is VSTKotoutumiskoulutuksenKieliopintojenKoulutusmoduuli =>

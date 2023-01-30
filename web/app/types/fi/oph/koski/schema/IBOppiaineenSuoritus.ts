@@ -35,5 +35,8 @@ export const IBOppiaineenSuoritus = (o: {
   ...o
 })
 
+IBOppiaineenSuoritus.className =
+  'fi.oph.koski.schema.IBOppiaineenSuoritus' as const
+
 export const isIBOppiaineenSuoritus = (a: any): a is IBOppiaineenSuoritus =>
   a?.$class === 'fi.oph.koski.schema.IBOppiaineenSuoritus'

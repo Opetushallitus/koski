@@ -20,6 +20,9 @@ export const MuunKuinSäännellynKoulutuksenTila = (
   ...o
 })
 
+MuunKuinSäännellynKoulutuksenTila.className =
+  'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenTila' as const
+
 export const isMuunKuinSäännellynKoulutuksenTila = (
   a: any
 ): a is MuunKuinSäännellynKoulutuksenTila =>

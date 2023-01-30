@@ -28,5 +28,8 @@ export const ErityisenTuenPäätös = (o: {
   ...o
 })
 
+ErityisenTuenPäätös.className =
+  'fi.oph.koski.schema.ErityisenTuenPäätös' as const
+
 export const isErityisenTuenPäätös = (a: any): a is ErityisenTuenPäätös =>
   a?.$class === 'fi.oph.koski.schema.ErityisenTuenPäätös'

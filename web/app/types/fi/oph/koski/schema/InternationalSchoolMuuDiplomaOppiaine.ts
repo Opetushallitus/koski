@@ -26,6 +26,9 @@ export const InternationalSchoolMuuDiplomaOppiaine = (o: {
   ...o
 })
 
+InternationalSchoolMuuDiplomaOppiaine.className =
+  'fi.oph.koski.schema.InternationalSchoolMuuDiplomaOppiaine' as const
+
 export const isInternationalSchoolMuuDiplomaOppiaine = (
   a: any
 ): a is InternationalSchoolMuuDiplomaOppiaine =>

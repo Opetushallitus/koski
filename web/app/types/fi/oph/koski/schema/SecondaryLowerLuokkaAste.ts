@@ -28,6 +28,9 @@ export const SecondaryLowerLuokkaAste = (o: {
   ...o
 })
 
+SecondaryLowerLuokkaAste.className =
+  'fi.oph.koski.schema.SecondaryLowerLuokkaAste' as const
+
 export const isSecondaryLowerLuokkaAste = (
   a: any
 ): a is SecondaryLowerLuokkaAste =>

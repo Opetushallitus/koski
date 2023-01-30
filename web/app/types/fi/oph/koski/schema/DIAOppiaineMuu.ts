@@ -54,5 +54,7 @@ export const DIAOppiaineMuu = (o: {
   pakollinen: boolean
 }): DIAOppiaineMuu => ({ $class: 'fi.oph.koski.schema.DIAOppiaineMuu', ...o })
 
+DIAOppiaineMuu.className = 'fi.oph.koski.schema.DIAOppiaineMuu' as const
+
 export const isDIAOppiaineMuu = (a: any): a is DIAOppiaineMuu =>
   a?.$class === 'fi.oph.koski.schema.DIAOppiaineMuu'

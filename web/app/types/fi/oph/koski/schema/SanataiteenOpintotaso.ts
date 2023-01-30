@@ -37,5 +37,8 @@ export const SanataiteenOpintotaso = (
   ...o
 })
 
+SanataiteenOpintotaso.className =
+  'fi.oph.koski.schema.SanataiteenOpintotaso' as const
+
 export const isSanataiteenOpintotaso = (a: any): a is SanataiteenOpintotaso =>
   a?.$class === 'fi.oph.koski.schema.SanataiteenOpintotaso'

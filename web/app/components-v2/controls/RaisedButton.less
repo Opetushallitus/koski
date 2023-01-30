@@ -1,0 +1,31 @@
+.RaisedButton {
+  display: inline-block;
+  min-height: 3 * @baseline;
+  padding: 0 24px;
+
+  background-color: @color-link-blue;
+  color: @color-white;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px;
+
+  border: none;
+  border-radius: 3px;
+
+  transition: background-color 250ms;
+
+  cursor: pointer;
+
+  &.RaisedButton__fullWidth {
+    width: 100%;
+  }
+
+  &:hover {
+    background-color: @color-link-hover-blue;
+    transition: background-color 15ms;
+  }
+
+  &:disabled {
+    background-color: @color-link-blue;
+    opacity: 0.3;
+    cursor: default;
+  }
+}

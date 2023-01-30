@@ -1,0 +1,21 @@
+.ArvioitsijatView,
+.ArvioitsijatEdit {
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ArvioitsijatView {
+  min-height: 2 * @baseline;
+
+  li {
+    display: inline;
+    &::after {
+      content: ', ';
+    }
+    &:last-child::after {
+      content: none;
+    }
+  }
+}

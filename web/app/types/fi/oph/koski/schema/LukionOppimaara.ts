@@ -28,5 +28,7 @@ export const LukionOppimäärä = (
   ...o
 })
 
+LukionOppimäärä.className = 'fi.oph.koski.schema.LukionOppimäärä' as const
+
 export const isLukionOppimäärä = (a: any): a is LukionOppimäärä =>
   a?.$class === 'fi.oph.koski.schema.LukionOppimäärä'

@@ -48,5 +48,8 @@ export const PYPVuosiluokanSuoritus = (o: {
   ...o
 })
 
+PYPVuosiluokanSuoritus.className =
+  'fi.oph.koski.schema.PYPVuosiluokanSuoritus' as const
+
 export const isPYPVuosiluokanSuoritus = (a: any): a is PYPVuosiluokanSuoritus =>
   a?.$class === 'fi.oph.koski.schema.PYPVuosiluokanSuoritus'

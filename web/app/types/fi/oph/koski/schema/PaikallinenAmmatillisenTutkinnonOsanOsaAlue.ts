@@ -25,6 +25,9 @@ export const PaikallinenAmmatillisenTutkinnonOsanOsaAlue = (o: {
   ...o
 })
 
+PaikallinenAmmatillisenTutkinnonOsanOsaAlue.className =
+  'fi.oph.koski.schema.PaikallinenAmmatillisenTutkinnonOsanOsaAlue' as const
+
 export const isPaikallinenAmmatillisenTutkinnonOsanOsaAlue = (
   a: any
 ): a is PaikallinenAmmatillisenTutkinnonOsanOsaAlue =>

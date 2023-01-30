@@ -21,6 +21,9 @@ export const OsaamisenHankkimistapajakso = (o: {
   ...o
 })
 
+OsaamisenHankkimistapajakso.className =
+  'fi.oph.koski.schema.OsaamisenHankkimistapajakso' as const
+
 export const isOsaamisenHankkimistapajakso = (
   a: any
 ): a is OsaamisenHankkimistapajakso =>

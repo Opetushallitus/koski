@@ -26,6 +26,9 @@ export const VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutus
     ...o
   })
 
+VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022.className =
+  'fi.oph.koski.schema.VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022' as const
+
 export const isVSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022 =
   (
     a: any

@@ -30,6 +30,9 @@ export const TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuuden
     ...o
   })
 
+TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot.className =
+  'fi.oph.koski.schema.TutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot' as const
+
 export const isTutkintokoulutukseenValmentavatArjenJaYhteiskunnallisenOsallisuudenTaidot =
   (
     a: any

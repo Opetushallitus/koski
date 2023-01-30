@@ -25,6 +25,9 @@ export const LukionPaikallinenOpintojakso2019 = (o: {
   ...o
 })
 
+LukionPaikallinenOpintojakso2019.className =
+  'fi.oph.koski.schema.LukionPaikallinenOpintojakso2019' as const
+
 export const isLukionPaikallinenOpintojakso2019 = (
   a: any
 ): a is LukionPaikallinenOpintojakso2019 =>

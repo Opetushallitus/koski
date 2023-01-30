@@ -46,6 +46,9 @@ export const MuidenOpintovalmiuksiaTukevienOpintojenSuoritus = (o: {
   ...o
 })
 
+MuidenOpintovalmiuksiaTukevienOpintojenSuoritus.className =
+  'fi.oph.koski.schema.MuidenOpintovalmiuksiaTukevienOpintojenSuoritus' as const
+
 export const isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus = (
   a: any
 ): a is MuidenOpintovalmiuksiaTukevienOpintojenSuoritus =>

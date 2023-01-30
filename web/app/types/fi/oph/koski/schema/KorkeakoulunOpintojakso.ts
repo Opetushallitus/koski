@@ -23,6 +23,9 @@ export const KorkeakoulunOpintojakso = (o: {
   ...o
 })
 
+KorkeakoulunOpintojakso.className =
+  'fi.oph.koski.schema.KorkeakoulunOpintojakso' as const
+
 export const isKorkeakoulunOpintojakso = (
   a: any
 ): a is KorkeakoulunOpintojakso =>

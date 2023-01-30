@@ -24,6 +24,9 @@ export const LaajuusVuosiviikkotunneissa = (o: {
   ...o
 })
 
+LaajuusVuosiviikkotunneissa.className =
+  'fi.oph.koski.schema.LaajuusVuosiviikkotunneissa' as const
+
 export const isLaajuusVuosiviikkotunneissa = (
   a: any
 ): a is LaajuusVuosiviikkotunneissa =>

@@ -61,6 +61,9 @@ export const LukionMuuValtakunnallinenOppiaine2015 = (o: {
   ...o
 })
 
+LukionMuuValtakunnallinenOppiaine2015.className =
+  'fi.oph.koski.schema.LukionMuuValtakunnallinenOppiaine2015' as const
+
 export const isLukionMuuValtakunnallinenOppiaine2015 = (
   a: any
 ): a is LukionMuuValtakunnallinenOppiaine2015 =>

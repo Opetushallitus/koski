@@ -24,6 +24,9 @@ export const MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine = (o: {
   ...o
 })
 
+MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine.className =
+  'fi.oph.koski.schema.MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine' as const
+
 export const isMuuAikuistenPerusopetuksenAlkuvaiheenOppiaine = (
   a: any
 ): a is MuuAikuistenPerusopetuksenAlkuvaiheenOppiaine =>

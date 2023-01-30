@@ -24,6 +24,9 @@ export const IBOppiaineTheoryOfKnowledge = (o: {
   ...o
 })
 
+IBOppiaineTheoryOfKnowledge.className =
+  'fi.oph.koski.schema.IBOppiaineTheoryOfKnowledge' as const
+
 export const isIBOppiaineTheoryOfKnowledge = (
   a: any
 ): a is IBOppiaineTheoryOfKnowledge =>

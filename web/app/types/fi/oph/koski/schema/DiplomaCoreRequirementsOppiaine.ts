@@ -18,6 +18,9 @@ export const DiplomaCoreRequirementsOppiaine = (o: {
   ...o
 })
 
+DiplomaCoreRequirementsOppiaine.className =
+  'fi.oph.koski.schema.DiplomaCoreRequirementsOppiaine' as const
+
 export const isDiplomaCoreRequirementsOppiaine = (
   a: any
 ): a is DiplomaCoreRequirementsOppiaine =>

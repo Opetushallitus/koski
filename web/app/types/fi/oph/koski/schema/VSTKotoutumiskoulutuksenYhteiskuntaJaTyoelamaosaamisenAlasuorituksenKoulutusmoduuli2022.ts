@@ -30,6 +30,9 @@ export const VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuoritu
     ...o
   })
 
+VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022.className =
+  'fi.oph.koski.schema.VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022' as const
+
 export const isVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaamisenAlasuorituksenKoulutusmoduuli2022 =
   (
     a: any

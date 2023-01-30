@@ -25,6 +25,9 @@ export const LukionVieraanKielenModuuliMuissaOpinnoissa2019 = (o: {
   ...o
 })
 
+LukionVieraanKielenModuuliMuissaOpinnoissa2019.className =
+  'fi.oph.koski.schema.LukionVieraanKielenModuuliMuissaOpinnoissa2019' as const
+
 export const isLukionVieraanKielenModuuliMuissaOpinnoissa2019 = (
   a: any
 ): a is LukionVieraanKielenModuuliMuissaOpinnoissa2019 =>

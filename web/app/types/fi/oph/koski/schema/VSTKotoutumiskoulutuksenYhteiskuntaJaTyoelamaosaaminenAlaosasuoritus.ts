@@ -37,6 +37,9 @@ export const VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuor
     ...o
   })
 
+VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus.className =
+  'fi.oph.koski.schema.VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus' as const
+
 export const isVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus =
   (
     a: any

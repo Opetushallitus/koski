@@ -35,6 +35,9 @@ export const IBTheoryOfKnowledgeSuoritus = (o: {
   ...o
 })
 
+IBTheoryOfKnowledgeSuoritus.className =
+  'fi.oph.koski.schema.IBTheoryOfKnowledgeSuoritus' as const
+
 export const isIBTheoryOfKnowledgeSuoritus = (
   a: any
 ): a is IBTheoryOfKnowledgeSuoritus =>

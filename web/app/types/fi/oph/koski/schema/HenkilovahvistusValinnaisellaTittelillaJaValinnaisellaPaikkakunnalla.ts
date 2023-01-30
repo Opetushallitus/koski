@@ -30,6 +30,9 @@ export const HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunna
     ...o
   })
 
+HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla.className =
+  'fi.oph.koski.schema.HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla' as const
+
 export const isHenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla =
   (
     a: any

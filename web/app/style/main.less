@@ -1,64 +1,67 @@
-@import "z-indices";
-@import "constants";
-@import "global";
-@import "typography";
-@import "icons";
-@import "ajax-indicators";
-@import "topbar";
-@import "leftnavi";
-@import "form";
-@import "oppija";
-@import "uusi-oppija";
-@import "oppija-haku";
-@import "modal";
-@import "opiskeluoikeus";
-@import "expand";
-@import "suoritustaulukko";
-@import "kurssi";
-@import "perusopetus";
-@import "esiopetus";
-@import "korkeakoulu";
-@import "lukio";
-@import "ib";
-@import "ammatillinen";
-@import "vapaasivistystyo";
-@import "oppijataulukko";
-@import "login";
-@import "colors";
-@import "error";
-@import "autocomplete";
-@import "tutkintorakenne";
-@import "tiedonsiirrot";
-@import "omattiedot";
-@import "copyable-text";
-@import "floating-action-button";
-@import "checkbox";
-@import "raportoi-virheesta-form";
-@import "suoritusjako-form";
-@import "suoritusjako";
-@import "popup";
-@import "dropdown";
-@import "daterangeselection";
-@import "organisaatiopicker";
-@import "table";
-@import "datepicker";
-@import "highlight";
-@import "localization";
-@import "documentation";
-@import "lander";
-@import "ei-suorituksia";
-@import "varoitukset";
-@import "omadata";
-@import "kayttoluvat";
-@import "raportit";
-@import "kela-virkailija";
-@import "infobox";
-@import "tabs";
-@import "radiobuttons";
-@import "tuva";
+@import 'z-indices';
+@import 'constants';
+@import 'global';
+@import 'typography';
+@import 'icons';
+@import 'ajax-indicators';
+@import 'topbar';
+@import 'leftnavi';
+@import 'form';
+@import 'oppija';
+@import 'uusi-oppija';
+@import 'oppija-haku';
+@import 'modal';
+@import 'opiskeluoikeus';
+@import 'expand';
+@import 'suoritustaulukko';
+@import 'kurssi';
+@import 'perusopetus';
+@import 'esiopetus';
+@import 'korkeakoulu';
+@import 'lukio';
+@import 'ib';
+@import 'ammatillinen';
+@import 'vapaasivistystyo';
+@import 'oppijataulukko';
+@import 'login';
+@import 'colors';
+@import 'error';
+@import 'autocomplete';
+@import 'tutkintorakenne';
+@import 'tiedonsiirrot';
+@import 'omattiedot';
+@import 'copyable-text';
+@import 'floating-action-button';
+@import 'checkbox';
+@import 'raportoi-virheesta-form';
+@import 'suoritusjako-form';
+@import 'suoritusjako';
+@import 'popup';
+@import 'dropdown';
+@import 'daterangeselection';
+@import 'organisaatiopicker';
+@import 'table';
+@import 'datepicker';
+@import 'highlight';
+@import 'localization';
+@import 'documentation';
+@import 'lander';
+@import 'ei-suorituksia';
+@import 'varoitukset';
+@import 'omadata';
+@import 'kayttoluvat';
+@import 'raportit';
+@import 'kela-virkailija';
+@import 'infobox';
+@import 'tabs';
+@import 'radiobuttons';
+@import 'tuva';
+
+@import '../components-v2/main';
+@import '../taiteenperusopetus/TpoOsasuoritusProperties.less';
 
 body {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   background-color: @color-lightgray;
 }
 
@@ -67,8 +70,8 @@ input,
 optgroup,
 select,
 textarea,
-#content.koski-content[data-inraamit="virkailija"] {
-  font-family: "Source Sans Pro", sans-serif;
+#content.koski-content[data-inraamit='virkailija'] {
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 * {
@@ -87,8 +90,8 @@ header.local.viranomainen + .content-area {
   margin-right: auto;
 }
 
-#content[data-inraamit="virkailija"] .content-area,
-#content[data-inraamit="oppija"] .content-area {
+#content[data-inraamit='virkailija'] .content-area,
+#content[data-inraamit='oppija'] .content-area {
   margin-top: 0;
 }
 

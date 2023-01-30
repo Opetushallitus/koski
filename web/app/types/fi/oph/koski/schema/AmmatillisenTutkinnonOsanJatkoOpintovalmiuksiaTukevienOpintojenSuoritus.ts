@@ -52,6 +52,9 @@ export const AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuor
     ...o
   })
 
+AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus.className =
+  'fi.oph.koski.schema.AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus' as const
+
 export const isAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus =
   (
     a: any

@@ -37,6 +37,9 @@ export const DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus = (o: {
   ...o
 })
 
+DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus.className =
+  'fi.oph.koski.schema.DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus' as const
+
 export const isDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus = (
   a: any
 ): a is DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus =>

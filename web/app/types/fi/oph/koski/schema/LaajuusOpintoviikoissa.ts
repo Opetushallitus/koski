@@ -24,5 +24,8 @@ export const LaajuusOpintoviikoissa = (o: {
   ...o
 })
 
+LaajuusOpintoviikoissa.className =
+  'fi.oph.koski.schema.LaajuusOpintoviikoissa' as const
+
 export const isLaajuusOpintoviikoissa = (a: any): a is LaajuusOpintoviikoissa =>
   a?.$class === 'fi.oph.koski.schema.LaajuusOpintoviikoissa'

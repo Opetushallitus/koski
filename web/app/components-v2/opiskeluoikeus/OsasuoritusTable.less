@@ -1,0 +1,26 @@
+.OsasuoritusHeader {
+  background-color: @color-light-blue;
+  font-weight: 600;
+  margin-bottom: @baseline;
+
+  .Column {
+    min-height: 4 * @baseline;
+    display: flex;
+    align-items: center;
+
+    &:first-child {
+      padding-left: @h-padding;
+    }
+  }
+  .OsasuoritusHeader__indent {
+    background: white;
+  }
+}
+
+.OsasuoritusProperty {
+  padding: @v-padding 0;
+}
+
+.OsasuoritusPropertyLabel {
+  opacity: 0.5;
+}

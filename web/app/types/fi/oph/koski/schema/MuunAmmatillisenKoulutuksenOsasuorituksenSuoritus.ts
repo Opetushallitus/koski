@@ -46,6 +46,9 @@ export const MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = (o: {
   ...o
 })
 
+MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus.className =
+  'fi.oph.koski.schema.MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus' as const
+
 export const isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = (
   a: any
 ): a is MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus =>

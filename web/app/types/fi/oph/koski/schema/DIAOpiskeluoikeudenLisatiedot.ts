@@ -34,6 +34,9 @@ export const DIAOpiskeluoikeudenLisätiedot = (
   ...o
 })
 
+DIAOpiskeluoikeudenLisätiedot.className =
+  'fi.oph.koski.schema.DIAOpiskeluoikeudenLisätiedot' as const
+
 export const isDIAOpiskeluoikeudenLisätiedot = (
   a: any
 ): a is DIAOpiskeluoikeudenLisätiedot =>

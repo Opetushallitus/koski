@@ -24,6 +24,9 @@ export const PrimaryLapsiAlaoppimisalue = (o: {
   ...o
 })
 
+PrimaryLapsiAlaoppimisalue.className =
+  'fi.oph.koski.schema.PrimaryLapsiAlaoppimisalue' as const
+
 export const isPrimaryLapsiAlaoppimisalue = (
   a: any
 ): a is PrimaryLapsiAlaoppimisalue =>

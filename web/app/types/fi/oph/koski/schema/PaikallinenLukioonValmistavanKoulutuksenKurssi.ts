@@ -23,6 +23,9 @@ export const PaikallinenLukioonValmistavanKoulutuksenKurssi = (o: {
   ...o
 })
 
+PaikallinenLukioonValmistavanKoulutuksenKurssi.className =
+  'fi.oph.koski.schema.PaikallinenLukioonValmistavanKoulutuksenKurssi' as const
+
 export const isPaikallinenLukioonValmistavanKoulutuksenKurssi = (
   a: any
 ): a is PaikallinenLukioonValmistavanKoulutuksenKurssi =>

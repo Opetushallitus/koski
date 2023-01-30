@@ -31,6 +31,9 @@ export const AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus = (o: {
   ...o
 })
 
+AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus.className =
+  'fi.oph.koski.schema.AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus' as const
+
 export const isAikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus = (
   a: any
 ): a is AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus =>

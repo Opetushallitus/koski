@@ -14,5 +14,7 @@ export const OidHenkilö = (o: { oid: string }): OidHenkilö => ({
   ...o
 })
 
+OidHenkilö.className = 'fi.oph.koski.schema.OidHenkilö' as const
+
 export const isOidHenkilö = (a: any): a is OidHenkilö =>
   a?.$class === 'fi.oph.koski.schema.OidHenkilö'

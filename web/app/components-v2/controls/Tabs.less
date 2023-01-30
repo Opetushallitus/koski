@@ -1,0 +1,65 @@
+.Tabs {
+  @tab-border-color: @color-input-border;
+
+  margin: 0 -@h-padding;
+
+  .Tabs__list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+    .Tabs__item {
+      .Tabs__button {
+        height: 100%;
+        min-height: 3 * @baseline;
+        padding: @baseline (2 * @baseline);
+
+        background: none;
+
+        border: none;
+        border-bottom: 1px solid @tab-border-color;
+        border-radius: 5px 5px 0 0;
+
+        color: @color-link-blue;
+        text-align: left;
+
+        cursor: pointer;
+
+        &:hover {
+          color: @color-link-hover-blue;
+        }
+      }
+
+      &:first-child {
+        .Tabs__button {
+          border-top-left-radius: 0;
+          border-left: none;
+        }
+      }
+    }
+
+    .Tabs__item-active {
+      .Tabs__button {
+        border: 1px solid @tab-border-color;
+        border-top: 2px solid @color-blue;
+        border-bottom: none;
+        color: black;
+        cursor: default;
+
+        &:hover {
+          color: inherit;
+        }
+      }
+    }
+
+    .Tabs__filler {
+      flex-grow: 1;
+      align-self: flex-end;
+      border-bottom: 1px solid @tab-border-color;
+    }
+  }
+}

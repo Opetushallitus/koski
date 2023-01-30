@@ -41,6 +41,9 @@ export const VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuorit
     ...o
   })
 
+VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus.className =
+  'fi.oph.koski.schema.VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus' as const
+
 export const isVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus =
   (
     a: any

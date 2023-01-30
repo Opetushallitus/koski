@@ -29,6 +29,9 @@ export const Lukukausi_Ilmoittautumisjakso = (o: {
   ...o
 })
 
+Lukukausi_Ilmoittautumisjakso.className =
+  'fi.oph.koski.schema.Lukukausi_Ilmoittautumisjakso' as const
+
 export const isLukukausi_Ilmoittautumisjakso = (
   a: any
 ): a is Lukukausi_Ilmoittautumisjakso =>

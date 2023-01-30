@@ -47,6 +47,9 @@ export const TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus
     ...o
   })
 
+TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus.className =
+  'fi.oph.koski.schema.TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus' as const
+
 export const isTaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus =
   (
     a: any

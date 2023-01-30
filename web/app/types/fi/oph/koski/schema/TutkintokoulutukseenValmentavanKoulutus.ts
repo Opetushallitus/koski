@@ -31,6 +31,9 @@ export const TutkintokoulutukseenValmentavanKoulutus = (
   ...o
 })
 
+TutkintokoulutukseenValmentavanKoulutus.className =
+  'fi.oph.koski.schema.TutkintokoulutukseenValmentavanKoulutus' as const
+
 export const isTutkintokoulutukseenValmentavanKoulutus = (
   a: any
 ): a is TutkintokoulutukseenValmentavanKoulutus =>

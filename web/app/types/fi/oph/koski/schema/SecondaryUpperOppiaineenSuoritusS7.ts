@@ -41,6 +41,9 @@ export const SecondaryUpperOppiaineenSuoritusS7 = (o: {
   ...o
 })
 
+SecondaryUpperOppiaineenSuoritusS7.className =
+  'fi.oph.koski.schema.SecondaryUpperOppiaineenSuoritusS7' as const
+
 export const isSecondaryUpperOppiaineenSuoritusS7 = (
   a: any
 ): a is SecondaryUpperOppiaineenSuoritusS7 =>

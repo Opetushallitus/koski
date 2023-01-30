@@ -1,5 +1,5 @@
 import React from 'react'
-import { parseFinnishDate, formatFinnishDate } from './date.js'
+import { parseFinnishDate, formatFinnishDate } from './date'
 import DayPicker, { DateUtils } from 'react-day-picker'
 import { t } from '../i18n/i18n'
 import PropTypes from 'prop-types'

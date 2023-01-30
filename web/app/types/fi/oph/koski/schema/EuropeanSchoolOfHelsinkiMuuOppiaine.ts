@@ -21,6 +21,9 @@ export const EuropeanSchoolOfHelsinkiMuuOppiaine = (o: {
   ...o
 })
 
+EuropeanSchoolOfHelsinkiMuuOppiaine.className =
+  'fi.oph.koski.schema.EuropeanSchoolOfHelsinkiMuuOppiaine' as const
+
 export const isEuropeanSchoolOfHelsinkiMuuOppiaine = (
   a: any
 ): a is EuropeanSchoolOfHelsinkiMuuOppiaine =>

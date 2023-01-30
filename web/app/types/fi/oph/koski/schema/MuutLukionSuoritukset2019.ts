@@ -27,6 +27,9 @@ export const MuutLukionSuoritukset2019 = (
   ...o
 })
 
+MuutLukionSuoritukset2019.className =
+  'fi.oph.koski.schema.MuutLukionSuoritukset2019' as const
+
 export const isMuutLukionSuoritukset2019 = (
   a: any
 ): a is MuutLukionSuoritukset2019 =>

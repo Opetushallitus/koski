@@ -21,6 +21,9 @@ export const Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu = (
   ...o
 })
 
+Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu.className =
+  'fi.oph.koski.schema.Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu' as const
+
 export const isLukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu = (
   a: any
 ): a is Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu =>

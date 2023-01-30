@@ -21,5 +21,7 @@ export const Ulkomaanjakso = (o: {
   kuvaus: LocalizedString
 }): Ulkomaanjakso => ({ $class: 'fi.oph.koski.schema.Ulkomaanjakso', ...o })
 
+Ulkomaanjakso.className = 'fi.oph.koski.schema.Ulkomaanjakso' as const
+
 export const isUlkomaanjakso = (a: any): a is Ulkomaanjakso =>
   a?.$class === 'fi.oph.koski.schema.Ulkomaanjakso'

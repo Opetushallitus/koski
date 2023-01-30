@@ -50,6 +50,10 @@ object SchemaExport {
         )
       case flattenedSchema: FlattenedSchema =>
         parseSchema(flattenedSchema.property.schema)
+      case _: AnyObjectSchema =>
+        AnyObjectType()
+      case _: AnyListSchema =>
+        AnyArrayType()
       case anySchema: AnySchema =>
         AnyType(anySchema.toString)
     }).withMetadata(schema.metadata)

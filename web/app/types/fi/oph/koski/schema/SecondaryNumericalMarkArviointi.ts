@@ -33,6 +33,9 @@ export const SecondaryNumericalMarkArviointi = (o: {
   ...o
 })
 
+SecondaryNumericalMarkArviointi.className =
+  'fi.oph.koski.schema.SecondaryNumericalMarkArviointi' as const
+
 export const isSecondaryNumericalMarkArviointi = (
   a: any
 ): a is SecondaryNumericalMarkArviointi =>

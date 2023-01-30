@@ -30,6 +30,9 @@ export const EBOppiaineenAlaosasuoritus = (o: {
   ...o
 })
 
+EBOppiaineenAlaosasuoritus.className =
+  'fi.oph.koski.schema.EBOppiaineenAlaosasuoritus' as const
+
 export const isEBOppiaineenAlaosasuoritus = (
   a: any
 ): a is EBOppiaineenAlaosasuoritus =>

@@ -39,6 +39,9 @@ export const MuunAmmatillisenKoulutuksenArviointi = (o: {
   ...o
 })
 
+MuunAmmatillisenKoulutuksenArviointi.className =
+  'fi.oph.koski.schema.MuunAmmatillisenKoulutuksenArviointi' as const
+
 export const isMuunAmmatillisenKoulutuksenArviointi = (
   a: any
 ): a is MuunAmmatillisenKoulutuksenArviointi =>

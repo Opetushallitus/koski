@@ -20,6 +20,9 @@ export const DIAOpiskeluoikeudenTila = (
   ...o
 })
 
+DIAOpiskeluoikeudenTila.className =
+  'fi.oph.koski.schema.DIAOpiskeluoikeudenTila' as const
+
 export const isDIAOpiskeluoikeudenTila = (
   a: any
 ): a is DIAOpiskeluoikeudenTila =>

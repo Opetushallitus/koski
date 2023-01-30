@@ -31,6 +31,9 @@ export const EBTutkintoPreliminaryMarkArviointi = (o: {
   ...o
 })
 
+EBTutkintoPreliminaryMarkArviointi.className =
+  'fi.oph.koski.schema.EBTutkintoPreliminaryMarkArviointi' as const
+
 export const isEBTutkintoPreliminaryMarkArviointi = (
   a: any
 ): a is EBTutkintoPreliminaryMarkArviointi =>

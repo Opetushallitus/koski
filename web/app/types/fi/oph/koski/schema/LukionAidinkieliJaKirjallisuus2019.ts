@@ -31,6 +31,9 @@ export const LukionÄidinkieliJaKirjallisuus2019 = (o: {
   ...o
 })
 
+LukionÄidinkieliJaKirjallisuus2019.className =
+  'fi.oph.koski.schema.LukionÄidinkieliJaKirjallisuus2019' as const
+
 export const isLukionÄidinkieliJaKirjallisuus2019 = (
   a: any
 ): a is LukionÄidinkieliJaKirjallisuus2019 =>

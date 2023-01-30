@@ -30,6 +30,9 @@ export const NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 =
     ...o
   })
 
+NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019.className =
+  'fi.oph.koski.schema.NumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019' as const
+
 export const isNumeerinenLukionModuulinTaiPaikallisenOpintojaksonArviointi2019 =
   (
     a: any

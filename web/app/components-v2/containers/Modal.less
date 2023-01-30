@@ -1,0 +1,52 @@
+.Modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 !important;
+  padding: @padding !important;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  .Modal__content {
+    background: white;
+    max-width: 90%;
+    min-width: 500px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+  }
+}
+
+.ModalTitle {
+  display: flex;
+  align-items: center;
+
+  min-height: 5 * @baseline;
+  padding: @baseline @h-padding;
+  margin: 0;
+
+  background-color: @color-dark-blue;
+  color: white;
+
+  font-size: 1.286rem;
+  font-weight: 400;
+}
+
+.ModalBody {
+  padding: @padding;
+}
+
+.ModalFooter {
+  display: flex;
+  align-items: center;
+
+  min-height: 4 * @baseline;
+  padding: @baseline 0;
+
+  background-color: @color-blue-background;
+  color: black;
+}

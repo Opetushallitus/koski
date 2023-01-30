@@ -19,5 +19,7 @@ export const OsaAikaisuusJakso = (o: {
   ...o
 })
 
+OsaAikaisuusJakso.className = 'fi.oph.koski.schema.OsaAikaisuusJakso' as const
+
 export const isOsaAikaisuusJakso = (a: any): a is OsaAikaisuusJakso =>
   a?.$class === 'fi.oph.koski.schema.OsaAikaisuusJakso'

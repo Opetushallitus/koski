@@ -33,6 +33,9 @@ export const SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArvi
     ...o
   })
 
+SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi.className =
+  'fi.oph.koski.schema.SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi' as const
+
 export const isSanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi =
   (
     a: any

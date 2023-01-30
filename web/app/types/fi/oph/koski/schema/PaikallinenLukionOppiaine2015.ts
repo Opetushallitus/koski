@@ -27,6 +27,9 @@ export const PaikallinenLukionOppiaine2015 = (o: {
   ...o
 })
 
+PaikallinenLukionOppiaine2015.className =
+  'fi.oph.koski.schema.PaikallinenLukionOppiaine2015' as const
+
 export const isPaikallinenLukionOppiaine2015 = (
   a: any
 ): a is PaikallinenLukionOppiaine2015 =>

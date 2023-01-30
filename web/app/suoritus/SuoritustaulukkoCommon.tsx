@@ -103,7 +103,7 @@ export const getLaajuusYksikkö = <
   T extends EditorModel & OptionalModel & Contextualized
 >(
   suoritus?: T
-): T => {
+): string => {
   const laajuusModel = modelLookup(suoritus, 'koulutusmoduuli.laajuus')
   return laajuusModel &&
     isSomeOptionalModel(laajuusModel) &&

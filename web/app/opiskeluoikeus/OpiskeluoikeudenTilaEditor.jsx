@@ -16,7 +16,7 @@ import {
 import { OpiskeluoikeudenUusiTilaPopup } from './OpiskeluoikeudenUusiTilaPopup'
 import { arvioituTaiVahvistettu, osasuoritukset } from '../suoritus/Suoritus'
 import { eiTiedossaOppiaine } from '../suoritus/TilaJaVahvistusEditor'
-import { parseISODate } from '../date/date.js'
+import { parseISODate } from '../date/date'
 import { Editor } from '../editor/Editor'
 import Text from '../i18n/Text'
 import { isLukionOppiaineidenOppimaarienSuoritus2019 } from '../lukio/lukio.js'

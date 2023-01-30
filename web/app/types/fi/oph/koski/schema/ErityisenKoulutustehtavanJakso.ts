@@ -22,6 +22,9 @@ export const ErityisenKoulutustehtävänJakso = (o: {
   ...o
 })
 
+ErityisenKoulutustehtävänJakso.className =
+  'fi.oph.koski.schema.ErityisenKoulutustehtävänJakso' as const
+
 export const isErityisenKoulutustehtävänJakso = (
   a: any
 ): a is ErityisenKoulutustehtävänJakso =>

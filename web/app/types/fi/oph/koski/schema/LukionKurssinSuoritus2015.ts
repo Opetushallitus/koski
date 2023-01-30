@@ -39,6 +39,9 @@ export const LukionKurssinSuoritus2015 = (o: {
   ...o
 })
 
+LukionKurssinSuoritus2015.className =
+  'fi.oph.koski.schema.LukionKurssinSuoritus2015' as const
+
 export const isLukionKurssinSuoritus2015 = (
   a: any
 ): a is LukionKurssinSuoritus2015 =>

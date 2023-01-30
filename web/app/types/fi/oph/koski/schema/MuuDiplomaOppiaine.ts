@@ -20,6 +20,12 @@ export type MuuDiplomaOppiaine = {
     | 'PHY'
     | 'PSY'
     | 'VA'
+    | 'LIT'
+    | 'INF'
+    | 'DES'
+    | 'SPO'
+    | 'MATAA'
+    | 'MATAI'
   >
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
 }
@@ -37,12 +43,20 @@ export const MuuDiplomaOppiaine = (o: {
     | 'PHY'
     | 'PSY'
     | 'VA'
+    | 'LIT'
+    | 'INF'
+    | 'DES'
+    | 'SPO'
+    | 'MATAA'
+    | 'MATAI'
   >
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
 }): MuuDiplomaOppiaine => ({
   $class: 'fi.oph.koski.schema.MuuDiplomaOppiaine',
   ...o
 })
+
+MuuDiplomaOppiaine.className = 'fi.oph.koski.schema.MuuDiplomaOppiaine' as const
 
 export const isMuuDiplomaOppiaine = (a: any): a is MuuDiplomaOppiaine =>
   a?.$class === 'fi.oph.koski.schema.MuuDiplomaOppiaine'

@@ -64,6 +64,9 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus = (o: {
   ...o
 })
 
+MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus.className =
+  'fi.oph.koski.schema.MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus' as const
+
 export const isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus = (
   a: any
 ): a is MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus =>

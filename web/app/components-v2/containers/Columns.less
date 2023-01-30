@@ -1,0 +1,123 @@
+@Columns-count: 24;
+@Columns-gutter: 12px;
+
+@Columns-phone-breakpoint: 640px;
+@Columns-small-breakpoint: 960px;
+@Columns-large-breakpoint: 1280px;
+
+.ColumnRow {
+  display: grid;
+  grid-template-columns:
+    [cols-start]
+    repeat(@Columns-count, [col-start] 1fr [col-end])
+    [cols-end];
+  column-gap: @Columns-gutter;
+  grid-template-rows: auto;
+  justify-items: stretch;
+  align-items: center;
+
+  .Column {
+    display: relative;
+    min-height: 2 * @baseline;
+  }
+}
+
+// Indentations
+.generate-indents(@Columns-count);
+.generate-indents(@cols) when (@cols > 0) {
+  .generate-indents(@cols - 1);
+  .ColumnRow-indent-@{cols} {
+    *:nth-child(1) {
+      grid-column-start: col-start (@cols + 1);
+    }
+  }
+}
+
+// Rows
+.generate-rows(8);
+.generate-rows(@row) when (@row > 0) {
+  .generate-rows(@row - 1);
+  .ColumnRow {
+    .Column-row-@{row} {
+      grid-row-start: @row;
+    }
+  }
+}
+
+// Spans
+.generate-columns(default, @Columns-count);
+
+@media screen and (max-width: @Columns-phone-breakpoint) {
+  .generate-columns(phone, @Columns-count);
+}
+
+@media screen and (max-width: @Columns-small-breakpoint) {
+  .generate-columns(small, @Columns-count);
+}
+
+@media screen and (max-width: @Columns-large-breakpoint) {
+  .generate-columns(large, @Columns-count);
+}
+
+.generate-columns(@name, @span) when (@span > 0) {
+  .generate-columns(@name, @span - 1);
+
+  .ColumnRow {
+    .Column-@{name}-span-@{span} {
+      grid-column-end: span @span;
+    }
+    .Column-@{name}-start-@{span} {
+      grid-column-start: col-start @span;
+    }
+  }
+}
+
+// Alignments
+
+.ColumnRow-valign-top {
+  align-items: flex-start;
+}
+
+.ColumnRow-valign-center {
+  align-items: center;
+}
+
+.ColumnRow-valign-bottom {
+  align-items: flex-end;
+}
+
+.ColumnRow-align-left {
+  justify-items: left;
+}
+
+.ColumnRow-align-center {
+  justify-items: center;
+}
+
+.ColumnRow-align-right {
+  justify-items: right;
+}
+
+.Column-valign-top {
+  align-self: flex-start;
+}
+
+.Column-valign-center {
+  align-self: center;
+}
+
+.Column-valign-bottom {
+  align-self: flex-end;
+}
+
+.Column-align-left {
+  justify-self: left;
+}
+
+.Column-align-center {
+  justify-self: center;
+}
+
+.Column-align-right {
+  justify-self: right;
+}

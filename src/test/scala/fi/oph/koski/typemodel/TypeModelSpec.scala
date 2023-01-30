@@ -184,6 +184,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               |    group?: string
               |} = {}): AccessRight => ({$class: "fi.oph.koski.typemodel.AccessRight",group: "viewer", ...o})
               |
+              |AccessRight.className = "fi.oph.koski.typemodel.AccessRight" as const
               |""".stripMargin,
 
           "User.ts" ->
@@ -213,6 +214,7 @@ class TypeModelSpec extends AnyFreeSpec with Matchers {
               |    nickname?: string
               |}): User => ({accountLocked: false,hobbies: [],accessRight: AccessRight({group: "viewer"}),rank: "newbie",age: 18,ratings: {},$class: "fi.oph.koski.typemodel.User", ...o})
               |
+              |User.className = "fi.oph.koski.typemodel.User" as const
               |""".stripMargin
         )
       }

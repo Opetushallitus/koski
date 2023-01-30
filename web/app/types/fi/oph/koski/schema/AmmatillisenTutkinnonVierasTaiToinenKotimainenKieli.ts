@@ -26,6 +26,9 @@ export const AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli = (o: {
   ...o
 })
 
+AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli.className =
+  'fi.oph.koski.schema.AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli' as const
+
 export const isAmmatillisenTutkinnonVierasTaiToinenKotimainenKieli = (
   a: any
 ): a is AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli =>

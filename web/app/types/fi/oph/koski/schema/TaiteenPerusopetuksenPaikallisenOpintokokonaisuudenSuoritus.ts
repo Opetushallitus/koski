@@ -37,6 +37,9 @@ export const TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus = (o: {
   ...o
 })
 
+TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus.className =
+  'fi.oph.koski.schema.TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus' as const
+
 export const isTaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus = (
   a: any
 ): a is TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus =>

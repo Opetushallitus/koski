@@ -23,5 +23,8 @@ export const OsaamisenTunnustaminen = (o: {
   ...o
 })
 
+OsaamisenTunnustaminen.className =
+  'fi.oph.koski.schema.OsaamisenTunnustaminen' as const
+
 export const isOsaamisenTunnustaminen = (a: any): a is OsaamisenTunnustaminen =>
   a?.$class === 'fi.oph.koski.schema.OsaamisenTunnustaminen'

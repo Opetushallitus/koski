@@ -28,5 +28,7 @@ export const PrimaryLuokkaAste = (o: {
   ...o
 })
 
+PrimaryLuokkaAste.className = 'fi.oph.koski.schema.PrimaryLuokkaAste' as const
+
 export const isPrimaryLuokkaAste = (a: any): a is PrimaryLuokkaAste =>
   a?.$class === 'fi.oph.koski.schema.PrimaryLuokkaAste'

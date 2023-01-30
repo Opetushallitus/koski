@@ -24,5 +24,7 @@ export const DIAValmistavaVaihe = (
   ...o
 })
 
+DIAValmistavaVaihe.className = 'fi.oph.koski.schema.DIAValmistavaVaihe' as const
+
 export const isDIAValmistavaVaihe = (a: any): a is DIAValmistavaVaihe =>
   a?.$class === 'fi.oph.koski.schema.DIAValmistavaVaihe'

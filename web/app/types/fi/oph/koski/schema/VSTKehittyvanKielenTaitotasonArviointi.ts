@@ -48,6 +48,9 @@ export const VSTKehittyvänKielenTaitotasonArviointi = (o: {
   ...o
 })
 
+VSTKehittyvänKielenTaitotasonArviointi.className =
+  'fi.oph.koski.schema.VSTKehittyvänKielenTaitotasonArviointi' as const
+
 export const isVSTKehittyvänKielenTaitotasonArviointi = (
   a: any
 ): a is VSTKehittyvänKielenTaitotasonArviointi =>

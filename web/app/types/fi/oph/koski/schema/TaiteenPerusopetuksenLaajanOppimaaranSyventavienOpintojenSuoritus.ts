@@ -48,6 +48,9 @@ export const TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuorit
     ...o
   })
 
+TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus.className =
+  'fi.oph.koski.schema.TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus' as const
+
 export const isTaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus =
   (
     a: any

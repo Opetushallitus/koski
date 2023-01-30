@@ -41,6 +41,9 @@ export const MuunKuinSäännellynKoulutuksenPäätasonSuoritus = (o: {
   ...o
 })
 
+MuunKuinSäännellynKoulutuksenPäätasonSuoritus.className =
+  'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenPäätasonSuoritus' as const
+
 export const isMuunKuinSäännellynKoulutuksenPäätasonSuoritus = (
   a: any
 ): a is MuunKuinSäännellynKoulutuksenPäätasonSuoritus =>

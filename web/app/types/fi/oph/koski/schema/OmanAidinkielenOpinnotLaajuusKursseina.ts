@@ -33,6 +33,9 @@ export const OmanÄidinkielenOpinnotLaajuusKursseina = (o: {
   ...o
 })
 
+OmanÄidinkielenOpinnotLaajuusKursseina.className =
+  'fi.oph.koski.schema.OmanÄidinkielenOpinnotLaajuusKursseina' as const
+
 export const isOmanÄidinkielenOpinnotLaajuusKursseina = (
   a: any
 ): a is OmanÄidinkielenOpinnotLaajuusKursseina =>

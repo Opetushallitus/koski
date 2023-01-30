@@ -116,7 +116,10 @@ object TypescriptTypes {
       case t: UnionType => typeUnion(t, options)
       case t: LiteralType => "\"" + t.literal + "\""
 
-      case t: Any => s"any // ${t}"
+      case _: AnyObjectType => "object"
+      case _: AnyArrayType => "any[]"
+      case _: AnyType => "any"
+      case t: Any => s"any /* ${t} */"
     }
 
   private def toObject(
@@ -232,7 +235,10 @@ object TypescriptTypes {
     val properties = getClassProp(obj) ++ knownProperties
     val fnBody = s"(${valueToTs(properties.toMap, Some("o"))})"
 
-    s"export const $fnName = $arguments: $returnType => $fnBody"
+    List(
+      s"export const $fnName = $arguments: $returnType => $fnBody",
+      s"""$fnName.className = "${obj.fullClassName}" as const""",
+    ).mkString("\n\n")
   }
 
   private def objectConstructorReturnValue(obj: ObjectType, options: Options): String =

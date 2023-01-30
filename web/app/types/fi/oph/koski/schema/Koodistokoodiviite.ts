@@ -31,5 +31,7 @@ export const Koodistokoodiviite = <
   ...o
 })
 
+Koodistokoodiviite.className = 'fi.oph.koski.schema.Koodistokoodiviite' as const
+
 export const isKoodistokoodiviite = (a: any): a is Koodistokoodiviite =>
   a?.$class === 'fi.oph.koski.schema.Koodistokoodiviite'

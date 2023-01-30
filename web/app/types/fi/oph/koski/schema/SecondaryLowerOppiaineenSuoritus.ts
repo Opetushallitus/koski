@@ -41,6 +41,9 @@ export const SecondaryLowerOppiaineenSuoritus = (o: {
   ...o
 })
 
+SecondaryLowerOppiaineenSuoritus.className =
+  'fi.oph.koski.schema.SecondaryLowerOppiaineenSuoritus' as const
+
 export const isSecondaryLowerOppiaineenSuoritus = (
   a: any
 ): a is SecondaryLowerOppiaineenSuoritus =>

@@ -21,6 +21,9 @@ export const YlioppilastutkinnonTutkintokerta = (o: {
   ...o
 })
 
+YlioppilastutkinnonTutkintokerta.className =
+  'fi.oph.koski.schema.YlioppilastutkinnonTutkintokerta' as const
+
 export const isYlioppilastutkinnonTutkintokerta = (
   a: any
 ): a is YlioppilastutkinnonTutkintokerta =>

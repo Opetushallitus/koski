@@ -30,6 +30,9 @@ export const SanallinenPerusopetuksenOppiaineenArviointi = (o: {
   ...o
 })
 
+SanallinenPerusopetuksenOppiaineenArviointi.className =
+  'fi.oph.koski.schema.SanallinenPerusopetuksenOppiaineenArviointi' as const
+
 export const isSanallinenPerusopetuksenOppiaineenArviointi = (
   a: any
 ): a is SanallinenPerusopetuksenOppiaineenArviointi =>

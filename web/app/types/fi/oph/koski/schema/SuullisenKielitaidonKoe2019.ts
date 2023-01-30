@@ -62,6 +62,9 @@ export const SuullisenKielitaidonKoe2019 = (o: {
   ...o
 })
 
+SuullisenKielitaidonKoe2019.className =
+  'fi.oph.koski.schema.SuullisenKielitaidonKoe2019' as const
+
 export const isSuullisenKielitaidonKoe2019 = (
   a: any
 ): a is SuullisenKielitaidonKoe2019 =>

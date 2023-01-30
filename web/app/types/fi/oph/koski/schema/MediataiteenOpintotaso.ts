@@ -40,5 +40,8 @@ export const MediataiteenOpintotaso = (
   ...o
 })
 
+MediataiteenOpintotaso.className =
+  'fi.oph.koski.schema.MediataiteenOpintotaso' as const
+
 export const isMediataiteenOpintotaso = (a: any): a is MediataiteenOpintotaso =>
   a?.$class === 'fi.oph.koski.schema.MediataiteenOpintotaso'

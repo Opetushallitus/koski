@@ -33,6 +33,9 @@ export const SecondaryGradeArviointi = (o: {
   ...o
 })
 
+SecondaryGradeArviointi.className =
+  'fi.oph.koski.schema.SecondaryGradeArviointi' as const
+
 export const isSecondaryGradeArviointi = (
   a: any
 ): a is SecondaryGradeArviointi =>

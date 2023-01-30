@@ -29,6 +29,9 @@ export const IBOppiaineExtendedEssay = (o: {
   ...o
 })
 
+IBOppiaineExtendedEssay.className =
+  'fi.oph.koski.schema.IBOppiaineExtendedEssay' as const
+
 export const isIBOppiaineExtendedEssay = (
   a: any
 ): a is IBOppiaineExtendedEssay =>

@@ -21,5 +21,7 @@ export const MuuLukioOpinto2015 = (o: {
   ...o
 })
 
+MuuLukioOpinto2015.className = 'fi.oph.koski.schema.MuuLukioOpinto2015' as const
+
 export const isMuuLukioOpinto2015 = (a: any): a is MuuLukioOpinto2015 =>
   a?.$class === 'fi.oph.koski.schema.MuuLukioOpinto2015'

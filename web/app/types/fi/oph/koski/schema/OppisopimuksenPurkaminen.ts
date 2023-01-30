@@ -17,6 +17,9 @@ export const OppisopimuksenPurkaminen = (o: {
   ...o
 })
 
+OppisopimuksenPurkaminen.className =
+  'fi.oph.koski.schema.OppisopimuksenPurkaminen' as const
+
 export const isOppisopimuksenPurkaminen = (
   a: any
 ): a is OppisopimuksenPurkaminen =>

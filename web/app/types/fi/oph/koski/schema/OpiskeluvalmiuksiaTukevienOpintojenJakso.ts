@@ -21,6 +21,9 @@ export const OpiskeluvalmiuksiaTukevienOpintojenJakso = (o: {
   ...o
 })
 
+OpiskeluvalmiuksiaTukevienOpintojenJakso.className =
+  'fi.oph.koski.schema.OpiskeluvalmiuksiaTukevienOpintojenJakso' as const
+
 export const isOpiskeluvalmiuksiaTukevienOpintojenJakso = (
   a: any
 ): a is OpiskeluvalmiuksiaTukevienOpintojenJakso =>

@@ -21,6 +21,9 @@ export const PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa = (o: {
   ...o
 })
 
+PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa.className =
+  'fi.oph.koski.schema.PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa' as const
+
 export const isPaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa = (
   a: any
 ): a is PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa =>

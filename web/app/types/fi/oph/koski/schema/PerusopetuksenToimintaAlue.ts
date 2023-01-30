@@ -21,6 +21,9 @@ export const PerusopetuksenToiminta_Alue = (o: {
   ...o
 })
 
+PerusopetuksenToiminta_Alue.className =
+  'fi.oph.koski.schema.PerusopetuksenToiminta_Alue' as const
+
 export const isPerusopetuksenToiminta_Alue = (
   a: any
 ): a is PerusopetuksenToiminta_Alue =>

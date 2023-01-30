@@ -1,4 +1,4 @@
-import { formatISODate } from '../date/date.js'
+import { formatISODate } from '../date/date'
 
 export const makeSuoritus = (
   oppilaitos,

@@ -25,6 +25,9 @@ export const OppisopimuksellinenJärjestämismuoto = (o: {
   ...o
 })
 
+OppisopimuksellinenJärjestämismuoto.className =
+  'fi.oph.koski.schema.OppisopimuksellinenJärjestämismuoto' as const
+
 export const isOppisopimuksellinenJärjestämismuoto = (
   a: any
 ): a is OppisopimuksellinenJärjestämismuoto =>

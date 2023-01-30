@@ -28,6 +28,9 @@ export const NumeerinenPerusopetuksenOppiaineenArviointi = (o: {
   ...o
 })
 
+NumeerinenPerusopetuksenOppiaineenArviointi.className =
+  'fi.oph.koski.schema.NumeerinenPerusopetuksenOppiaineenArviointi' as const
+
 export const isNumeerinenPerusopetuksenOppiaineenArviointi = (
   a: any
 ): a is NumeerinenPerusopetuksenOppiaineenArviointi =>

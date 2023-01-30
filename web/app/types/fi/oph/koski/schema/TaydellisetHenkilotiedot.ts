@@ -35,6 +35,9 @@ export const TäydellisetHenkilötiedot = (o: {
   ...o
 })
 
+TäydellisetHenkilötiedot.className =
+  'fi.oph.koski.schema.TäydellisetHenkilötiedot' as const
+
 export const isTäydellisetHenkilötiedot = (
   a: any
 ): a is TäydellisetHenkilötiedot =>

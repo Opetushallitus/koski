@@ -41,6 +41,9 @@ export const LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2
     ...o
   })
 
+LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019.className =
+  'fi.oph.koski.schema.LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019' as const
+
 export const isLukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa2019 =
   (
     a: any

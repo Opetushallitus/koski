@@ -8,19 +8,28 @@ import { LocalizedString } from './LocalizedString'
  */
 export type VapaanSivistystyöJotpaKoulutuksenArviointi = {
   $class: 'fi.oph.koski.schema.VapaanSivistystyöJotpaKoulutuksenArviointi'
-  arvosana: Koodistokoodiviite<'arviointiasteikkovst', string>
+  arvosana: Koodistokoodiviite<
+    'arviointiasteikkovstjotpa' | 'arviointiasteikkovst',
+    string
+  >
   päivä: string
   hyväksytty?: boolean
 }
 
 export const VapaanSivistystyöJotpaKoulutuksenArviointi = (o: {
-  arvosana: Koodistokoodiviite<'arviointiasteikkovst', string>
+  arvosana: Koodistokoodiviite<
+    'arviointiasteikkovstjotpa' | 'arviointiasteikkovst',
+    string
+  >
   päivä: string
   hyväksytty?: boolean
 }): VapaanSivistystyöJotpaKoulutuksenArviointi => ({
   $class: 'fi.oph.koski.schema.VapaanSivistystyöJotpaKoulutuksenArviointi',
   ...o
 })
+
+VapaanSivistystyöJotpaKoulutuksenArviointi.className =
+  'fi.oph.koski.schema.VapaanSivistystyöJotpaKoulutuksenArviointi' as const
 
 export const isVapaanSivistystyöJotpaKoulutuksenArviointi = (
   a: any

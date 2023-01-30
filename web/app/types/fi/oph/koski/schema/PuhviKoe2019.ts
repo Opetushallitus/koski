@@ -27,5 +27,7 @@ export const PuhviKoe2019 = (o: {
   hyväksytty?: boolean
 }): PuhviKoe2019 => ({ $class: 'fi.oph.koski.schema.PuhviKoe2019', ...o })
 
+PuhviKoe2019.className = 'fi.oph.koski.schema.PuhviKoe2019' as const
+
 export const isPuhviKoe2019 = (a: any): a is PuhviKoe2019 =>
   a?.$class === 'fi.oph.koski.schema.PuhviKoe2019'

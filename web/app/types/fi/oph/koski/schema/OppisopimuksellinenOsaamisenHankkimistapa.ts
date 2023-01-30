@@ -25,6 +25,9 @@ export const OppisopimuksellinenOsaamisenHankkimistapa = (o: {
   ...o
 })
 
+OppisopimuksellinenOsaamisenHankkimistapa.className =
+  'fi.oph.koski.schema.OppisopimuksellinenOsaamisenHankkimistapa' as const
+
 export const isOppisopimuksellinenOsaamisenHankkimistapa = (
   a: any
 ): a is OppisopimuksellinenOsaamisenHankkimistapa =>

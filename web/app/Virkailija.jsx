@@ -16,6 +16,8 @@ import { TopBar } from './topbar/TopBar'
 import { locationP } from './util/location.js'
 import LocalizationEditBar from './i18n/LocalizationEditBar'
 import { t } from './i18n/i18n'
+import { VirkailijaAppStateProvider } from './appstate/VirkailijaAppStateProvider'
+
 __webpack_nonce__ = window.nonce
 import(/* webpackChunkName: "styles" */ './style/main.less')
 
@@ -44,16 +46,18 @@ const domP = Bacon.combineWith(
   allErrorsP,
   locationP,
   (topBar, user, content, error, location) => (
-    <div>
-      <Error error={error} />
-      {topBar}
-      {isTopLevel(error) ? (
-        <TopLevelError error={error} />
-      ) : canAccess(user, location) ? (
-        content
-      ) : null}
-      {user && <LocalizationEditBar user={user} />}
-    </div>
+    <VirkailijaAppStateProvider user={user}>
+      <div>
+        <Error error={error} />
+        {topBar}
+        {isTopLevel(error) ? (
+          <TopLevelError error={error} />
+        ) : canAccess(user, location) ? (
+          content
+        ) : null}
+        {user && <LocalizationEditBar user={user} />}
+      </div>
+    </VirkailijaAppStateProvider>
   )
 )
 

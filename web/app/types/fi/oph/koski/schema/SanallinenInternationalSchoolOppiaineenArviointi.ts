@@ -23,6 +23,9 @@ export const SanallinenInternationalSchoolOppiaineenArviointi = (o: {
   ...o
 })
 
+SanallinenInternationalSchoolOppiaineenArviointi.className =
+  'fi.oph.koski.schema.SanallinenInternationalSchoolOppiaineenArviointi' as const
+
 export const isSanallinenInternationalSchoolOppiaineenArviointi = (
   a: any
 ): a is SanallinenInternationalSchoolOppiaineenArviointi =>

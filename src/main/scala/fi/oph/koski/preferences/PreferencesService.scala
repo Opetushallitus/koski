@@ -41,11 +41,17 @@ case class PreferencesService(protected val db: DB) extends Logging with QueryMe
     "muunkuinsaannellynkoulutuksenosasuorituksenkoulutusmoduuli"-> classOf[MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli],
   )
 
+  // Näille preferenceille riittää pelkkä nimen perusosa. Tyypit ovat muotoa esim. "perusosa.alatyyppi.mahdollinentoinenalatyyppi".
+  // Käytä tätä kun haluat tallentaa esimerkiksi osasuoritukset tietyllä kriteerillä omiin lokeroihinsa.
+  val assortedPrefTypes: Map[String, Class[_ <: StorablePreference]] = Map(
+    "taiteenperusopetus" -> classOf[TaiteenPerusopetuksenPaikallinenOpintokokonaisuus],
+  )
+
   def put(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String, key: String, value: JValue)(implicit session: KoskiSpecificSession) = {
     val `type` = migrateTypeName(rawType)
 
     if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
-    prefTypes.get(`type`) match {
+    getPrefType(`type`) match {
       case Some(klass) =>
         extract[StorablePreference](value, klass) match {
           case Right(deserialized) =>
@@ -63,7 +69,7 @@ case class PreferencesService(protected val db: DB) extends Logging with QueryMe
 
     if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
 
-    prefTypes.get(`type`) match {
+    getPrefType(`type`) match {
       case Some(klass) =>
         val koulutustoimija: String = koulutustoimijaOid.getOrElse("")
         runDbSync(KoskiTables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type` && r.key === key && r.koulutustoimijaOid.map(_ === koulutustoimija).getOrElse(true)).delete)
@@ -86,7 +92,7 @@ case class PreferencesService(protected val db: DB) extends Logging with QueryMe
 
     if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
 
-    prefTypes.get(`type`) match {
+    getPrefType(`type`) match {
       case Some(klass) =>
         val koulutustoimija: String = koulutustoimijaOid.getOrElse("")
         val jValues = runDbSync(KoskiTables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type` && r.koulutustoimijaOid.map(_ === koulutustoimija).getOrElse(true)).map(_.value).result).toList
@@ -104,4 +110,7 @@ case class PreferencesService(protected val db: DB) extends Logging with QueryMe
     "paikallinenlukionoppiaine2015" -> "paikallinenlukionoppiaine",
     "paikallinenlukionkurssi2015" -> "paikallinenlukionkurssi"
   )
+
+  private def getPrefType(key: String): Option[Class[_ <: StorablePreference]] =
+    prefTypes.get(key).orElse(assortedPrefTypes.find(p => key.startsWith(p._1 + ".")).map(_._2))
 }

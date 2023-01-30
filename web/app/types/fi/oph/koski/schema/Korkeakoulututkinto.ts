@@ -22,5 +22,8 @@ export const Korkeakoulututkinto = (o: {
   ...o
 })
 
+Korkeakoulututkinto.className =
+  'fi.oph.koski.schema.Korkeakoulututkinto' as const
+
 export const isKorkeakoulututkinto = (a: any): a is Korkeakoulututkinto =>
   a?.$class === 'fi.oph.koski.schema.Korkeakoulututkinto'

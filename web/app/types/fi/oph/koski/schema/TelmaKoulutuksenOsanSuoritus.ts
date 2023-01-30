@@ -46,6 +46,9 @@ export const TelmaKoulutuksenOsanSuoritus = (o: {
   ...o
 })
 
+TelmaKoulutuksenOsanSuoritus.className =
+  'fi.oph.koski.schema.TelmaKoulutuksenOsanSuoritus' as const
+
 export const isTelmaKoulutuksenOsanSuoritus = (
   a: any
 ): a is TelmaKoulutuksenOsanSuoritus =>

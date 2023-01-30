@@ -1,0 +1,21 @@
+.SuorituksenVahvistus {
+  display: flex;
+  align-items: center;
+  padding: 0 @h-padding;
+  min-height: 4 * @baseline;
+
+  background-color: @color-info-box-background--neutral;
+
+  & > * {
+    margin-right: 24px;
+  }
+
+  .SuorituksenVahvistus__status {
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  &.SuorituksenVahvistus--valmis {
+    background-color: @color-info-box-background--ok;
+  }
+}

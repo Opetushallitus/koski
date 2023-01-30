@@ -19,6 +19,9 @@ export const KorkeakoulunOpiskeluoikeudenLukuvuosimaksu = (o: {
   ...o
 })
 
+KorkeakoulunOpiskeluoikeudenLukuvuosimaksu.className =
+  'fi.oph.koski.schema.KorkeakoulunOpiskeluoikeudenLukuvuosimaksu' as const
+
 export const isKorkeakoulunOpiskeluoikeudenLukuvuosimaksu = (
   a: any
 ): a is KorkeakoulunOpiskeluoikeudenLukuvuosimaksu =>

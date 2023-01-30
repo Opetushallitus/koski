@@ -24,6 +24,9 @@ export const IBCoreRequirementsArviointi = (o: {
   ...o
 })
 
+IBCoreRequirementsArviointi.className =
+  'fi.oph.koski.schema.IBCoreRequirementsArviointi' as const
+
 export const isIBCoreRequirementsArviointi = (
   a: any
 ): a is IBCoreRequirementsArviointi =>

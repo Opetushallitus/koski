@@ -80,6 +80,9 @@ export const AmmatillisenTutkinnonOsittainenSuoritus = (o: {
   ...o
 })
 
+AmmatillisenTutkinnonOsittainenSuoritus.className =
+  'fi.oph.koski.schema.AmmatillisenTutkinnonOsittainenSuoritus' as const
+
 export const isAmmatillisenTutkinnonOsittainenSuoritus = (
   a: any
 ): a is AmmatillisenTutkinnonOsittainenSuoritus =>

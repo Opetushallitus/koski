@@ -32,6 +32,9 @@ export const IBExtendedEssaySuoritus = (o: {
   ...o
 })
 
+IBExtendedEssaySuoritus.className =
+  'fi.oph.koski.schema.IBExtendedEssaySuoritus' as const
+
 export const isIBExtendedEssaySuoritus = (
   a: any
 ): a is IBExtendedEssaySuoritus =>

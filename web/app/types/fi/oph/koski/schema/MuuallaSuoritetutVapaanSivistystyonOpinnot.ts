@@ -23,6 +23,9 @@ export const MuuallaSuoritetutVapaanSivistystyönOpinnot = (o: {
   ...o
 })
 
+MuuallaSuoritetutVapaanSivistystyönOpinnot.className =
+  'fi.oph.koski.schema.MuuallaSuoritetutVapaanSivistystyönOpinnot' as const
+
 export const isMuuallaSuoritetutVapaanSivistystyönOpinnot = (
   a: any
 ): a is MuuallaSuoritetutVapaanSivistystyönOpinnot =>

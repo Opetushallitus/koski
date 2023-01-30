@@ -23,5 +23,8 @@ export const MuuKorkeakoulunOpinto = (o: {
   ...o
 })
 
+MuuKorkeakoulunOpinto.className =
+  'fi.oph.koski.schema.MuuKorkeakoulunOpinto' as const
+
 export const isMuuKorkeakoulunOpinto = (a: any): a is MuuKorkeakoulunOpinto =>
   a?.$class === 'fi.oph.koski.schema.MuuKorkeakoulunOpinto'

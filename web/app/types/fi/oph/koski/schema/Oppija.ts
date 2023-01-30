@@ -21,5 +21,7 @@ export const Oppija = (o: {
   ...o
 })
 
+Oppija.className = 'fi.oph.koski.schema.Oppija' as const
+
 export const isOppija = (a: any): a is Oppija =>
   a?.$class === 'fi.oph.koski.schema.Oppija'

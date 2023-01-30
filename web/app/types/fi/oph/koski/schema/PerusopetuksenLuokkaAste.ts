@@ -22,6 +22,9 @@ export const PerusopetuksenLuokkaAste = (o: {
   ...o
 })
 
+PerusopetuksenLuokkaAste.className =
+  'fi.oph.koski.schema.PerusopetuksenLuokkaAste' as const
+
 export const isPerusopetuksenLuokkaAste = (
   a: any
 ): a is PerusopetuksenLuokkaAste =>

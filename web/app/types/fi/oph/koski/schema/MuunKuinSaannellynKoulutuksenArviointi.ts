@@ -28,6 +28,9 @@ export const MuunKuinSäännellynKoulutuksenArviointi = (o: {
   ...o
 })
 
+MuunKuinSäännellynKoulutuksenArviointi.className =
+  'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenArviointi' as const
+
 export const isMuunKuinSäännellynKoulutuksenArviointi = (
   a: any
 ): a is MuunKuinSäännellynKoulutuksenArviointi =>

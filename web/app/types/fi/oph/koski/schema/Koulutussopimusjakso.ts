@@ -30,5 +30,8 @@ export const Koulutussopimusjakso = (o: {
   ...o
 })
 
+Koulutussopimusjakso.className =
+  'fi.oph.koski.schema.Koulutussopimusjakso' as const
+
 export const isKoulutussopimusjakso = (a: any): a is Koulutussopimusjakso =>
   a?.$class === 'fi.oph.koski.schema.Koulutussopimusjakso'

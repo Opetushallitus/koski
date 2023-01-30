@@ -20,5 +20,8 @@ export const NäytönSuorituspaikka = (o: {
   ...o
 })
 
+NäytönSuorituspaikka.className =
+  'fi.oph.koski.schema.NäytönSuorituspaikka' as const
+
 export const isNäytönSuorituspaikka = (a: any): a is NäytönSuorituspaikka =>
   a?.$class === 'fi.oph.koski.schema.NäytönSuorituspaikka'

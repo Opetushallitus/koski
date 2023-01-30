@@ -26,6 +26,9 @@ export const PaikallinenLukioonValmistavanKoulutuksenOppiaine = (o: {
   ...o
 })
 
+PaikallinenLukioonValmistavanKoulutuksenOppiaine.className =
+  'fi.oph.koski.schema.PaikallinenLukioonValmistavanKoulutuksenOppiaine' as const
+
 export const isPaikallinenLukioonValmistavanKoulutuksenOppiaine = (
   a: any
 ): a is PaikallinenLukioonValmistavanKoulutuksenOppiaine =>

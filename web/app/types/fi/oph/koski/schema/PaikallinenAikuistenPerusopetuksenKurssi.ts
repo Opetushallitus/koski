@@ -20,6 +20,9 @@ export const PaikallinenAikuistenPerusopetuksenKurssi = (o: {
   ...o
 })
 
+PaikallinenAikuistenPerusopetuksenKurssi.className =
+  'fi.oph.koski.schema.PaikallinenAikuistenPerusopetuksenKurssi' as const
+
 export const isPaikallinenAikuistenPerusopetuksenKurssi = (
   a: any
 ): a is PaikallinenAikuistenPerusopetuksenKurssi =>

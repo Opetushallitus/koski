@@ -19,5 +19,7 @@ export const Hojks = (o: {
   loppu?: string
 }): Hojks => ({ $class: 'fi.oph.koski.schema.Hojks', ...o })
 
+Hojks.className = 'fi.oph.koski.schema.Hojks' as const
+
 export const isHojks = (a: any): a is Hojks =>
   a?.$class === 'fi.oph.koski.schema.Hojks'

@@ -30,5 +30,8 @@ export const DIAOppiaineÄidinkieli = (o: {
   ...o
 })
 
+DIAOppiaineÄidinkieli.className =
+  'fi.oph.koski.schema.DIAOppiaineÄidinkieli' as const
+
 export const isDIAOppiaineÄidinkieli = (a: any): a is DIAOppiaineÄidinkieli =>
   a?.$class === 'fi.oph.koski.schema.DIAOppiaineÄidinkieli'

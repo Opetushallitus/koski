@@ -36,6 +36,9 @@ export const S7OppiaineenAlaosasuoritus = (o: {
   ...o
 })
 
+S7OppiaineenAlaosasuoritus.className =
+  'fi.oph.koski.schema.S7OppiaineenAlaosasuoritus' as const
+
 export const isS7OppiaineenAlaosasuoritus = (
   a: any
 ): a is S7OppiaineenAlaosasuoritus =>

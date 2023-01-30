@@ -41,6 +41,9 @@ export const PreIBLukionPaikallisenOpintojaksonSuoritus2019 = (o: {
   ...o
 })
 
+PreIBLukionPaikallisenOpintojaksonSuoritus2019.className =
+  'fi.oph.koski.schema.PreIBLukionPaikallisenOpintojaksonSuoritus2019' as const
+
 export const isPreIBLukionPaikallisenOpintojaksonSuoritus2019 = (
   a: any
 ): a is PreIBLukionPaikallisenOpintojaksonSuoritus2019 =>

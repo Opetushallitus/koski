@@ -55,6 +55,9 @@ export const OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuor
     ...o
   })
 
+OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus.className =
+  'fi.oph.koski.schema.OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus' as const
+
 export const isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus =
   (
     a: any

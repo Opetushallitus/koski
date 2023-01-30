@@ -16,6 +16,7 @@ export type KorkeakoulunOpintojaksonSuoritus = {
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'korkeakoulunopintojakso'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
+  luokittelu?: Array<Koodistokoodiviite<'virtaopsuorluokittelu', string>>
   koulutusmoduuli: KorkeakoulunOpintojakso
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
@@ -27,6 +28,7 @@ export const KorkeakoulunOpintojaksonSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'korkeakoulunopintojakso'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
+  luokittelu?: Array<Koodistokoodiviite<'virtaopsuorluokittelu', string>>
   koulutusmoduuli: KorkeakoulunOpintojakso
   toimipiste: Oppilaitos
   osasuoritukset?: Array<KorkeakoulunOpintojaksonSuoritus>
@@ -39,6 +41,9 @@ export const KorkeakoulunOpintojaksonSuoritus = (o: {
   $class: 'fi.oph.koski.schema.KorkeakoulunOpintojaksonSuoritus',
   ...o
 })
+
+KorkeakoulunOpintojaksonSuoritus.className =
+  'fi.oph.koski.schema.KorkeakoulunOpintojaksonSuoritus' as const
 
 export const isKorkeakoulunOpintojaksonSuoritus = (
   a: any
