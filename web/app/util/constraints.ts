@@ -156,14 +156,14 @@ export const allowedStrings = (
 
 export const allAllowedStrings = flatMap(allowedStrings)
 
-export type KoodiviiteConstraint = {
-  koodistoUri: string | null
+export type KoodiviiteConstraint<T extends string> = {
+  koodistoUri: T | null
   koodiarvot: string[] | null
 }
 
-export const koodiviite = (
+export const koodiviite = <T extends string>(
   constraint: Constraint | null
-): KoodiviiteConstraint | null => {
+): KoodiviiteConstraint<T> | null => {
   if (!constraint) {
     return null
   }
@@ -173,7 +173,8 @@ export const koodiviite = (
   ) {
     return {
       koodistoUri:
-        allowedStrings(singular(prop('koodistoUri')(constraint)))?.[0] || null,
+        (allowedStrings(singular(prop('koodistoUri')(constraint)))?.[0] as T) ||
+        null,
       koodiarvot:
         allowedStrings(singular(prop('koodiarvo')(constraint))) || null
     }
