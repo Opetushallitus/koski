@@ -9,6 +9,7 @@ import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString
 import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
 import { clamp } from '../../util/numbers'
+import { textSearch } from '../../util/strings'
 import { common, CommonProps, cx } from '../CommonProps'
 import { Removable } from './Removable'
 
@@ -18,6 +19,7 @@ export type SelectProps<T> = CommonProps<{
   options: OptionList<T>
   onChange: (option?: SelectOption<T>) => void
   onRemove?: (option: SelectOption<T>) => void
+  onSearch?: (query: string) => void
   placeholder?: string | LocalizedString
   hideEmpty?: boolean
 }>
@@ -254,12 +256,13 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     [dropdownVisible, flatOptions, hoveredOption, onClickOption]
   )
 
+  const { hideEmpty, onSearch } = props
   const onUserType: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
       setFilter(event.target.value)
       setDropdownVisible(true)
       const needle = event.target.value.toLowerCase()
-      if (needle && !props.hideEmpty) {
+      if (needle && !hideEmpty) {
         const firstMatch = flatOptions.arr.find((o) =>
           o.label.toLowerCase().includes(needle)
         )
@@ -267,8 +270,9 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
       } else {
         onMouseOverOption(undefined)
       }
+      onSearch?.(event.target.value)
     },
-    [flatOptions, props.hideEmpty]
+    [flatOptions.arr, hideEmpty, onSearch]
   )
 
   return {
@@ -292,8 +296,6 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     }
   }
 }
-
-const useSelectUserInteraction = () => {}
 
 // Exported utils
 
@@ -342,20 +344,19 @@ const filterOptions = <T,>(
   options: OptionList<T>,
   query: string
 ): OptionList<T> => {
-  const needle = query.toLowerCase().trim()
+  const isMatch = textSearch(query)
 
-  const matchesNeedle = (option: SelectOption<T>): SelectOption<T> | null => {
-    const children = option.children?.filter(matchesNeedle)
-    return (children && A.isNonEmpty(children)) ||
-      option.label.toLowerCase().includes(needle)
-      ? {
-          ...option,
-          children
-        }
+  const matchesQuery = (option: SelectOption<T>): SelectOption<T> | null => {
+    if (option.ignoreFilter) {
+      return option
+    }
+    const children = option.children?.filter(matchesQuery)
+    return (children && A.isNonEmpty(children)) || isMatch(option.label)
+      ? option
       : null
   }
 
-  return options.map(matchesNeedle).filter(nonNull)
+  return options.map(matchesQuery).filter(nonNull)
 }
 
 const scrollHoveredIntoView = (
