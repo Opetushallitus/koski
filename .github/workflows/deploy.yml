@@ -177,6 +177,35 @@ jobs:
           TASKDEF_ARN: ${{ steps.raportointikanta-loader-taskdef-deploy.outputs.task-definition-arn }}
         run: aws ssm put-parameter --overwrite --name /koski/raportointikanta-loader/task-definition --type String --value ${TASKDEF_ARN}
 
+      - name: Get ytr-data-loader loader task definition ARN
+        id: get-ytr-data-loader-taskdef-arn
+        run: |
+          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/ytr-data-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
+
+      - name: Get task definition skeleton
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ steps.get-ytr-data-loader-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > ytr-data-loader-task-definition.json
+
+      - name: Render Amazon ECS task definition
+        id: ytr-data-loader-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ytr-data-loader-task-definition.json
+          container-name: YtrDataLoaderContainer
+          image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
+
+      - name: Deploy Amazon ECS task definition
+        id: ytr-data-loader-taskdef-deploy
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.ytr-data-loader-task-def.outputs.task-definition }}
+          cluster: koski-cluster
+
+      - name: Write task definition ARN to parameter store
+        env:
+          TASKDEF_ARN: ${{ steps.ytr-data-loader-taskdef-deploy.outputs.task-definition-arn }}
+        run: aws ssm put-parameter --overwrite --name /koski/ytr-data-loader/task-definition --type String --value ${TASKDEF_ARN}
+
       - name: Report task ready
         uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
         if: always()
