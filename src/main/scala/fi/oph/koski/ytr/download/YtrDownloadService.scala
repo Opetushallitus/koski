@@ -13,6 +13,7 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods
 
 import java.sql.Timestamp
+import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, LocalDateTime}
 import scala.language.postfixOps
 
@@ -197,10 +198,30 @@ class YtrDownloadService(
     birthmonthStart: String,
     birthmonthEnd: String
   ): Observable[YtrLaajaOppija] = {
-    // TODO: TOR-1639 YTR:n API tukee korkeintaan 1 vuosi kerralla hakua, splittaa syntymäpäiväjaksot tarvittaessa
-    // Myös splittaus sen jälkeen batchein kannatta tehdä sitten siistimmin Observable-työkaluilla.
-    val ssnData: Observable[YtrSsnData] = Observable.from(application.ytrClient.oppijaHetutBySyntymäaika(birthmonthStart, birthmonthEnd))
+    val ssnData: Observable[YtrSsnData] = byMonth(birthmonthStart, birthmonthEnd)
+      .flatMap {
+        case MonthParameters(birthmonthStart, birthmonthEnd) =>
+          Observable.from(application.ytrClient.oppijaHetutBySyntymäaika(birthmonthStart, birthmonthEnd))
+      }
+
     download(ssnData)
+  }
+
+  private def byMonth(birthmonthStart: String, birthmonthEnd: String): Observable[MonthParameters] = {
+    val representativeStartDate = LocalDate.parse(birthmonthStart + "-01")
+    val representativeEndDate = LocalDate.parse(birthmonthEnd + "-01")
+
+    Observable.from(
+      Iterator.iterate(representativeStartDate)(_.plusMonths(1))
+        .takeWhile(_.isBefore(representativeEndDate))
+        .map(startDate =>
+          MonthParameters(
+            startDate.format(DateTimeFormatter.ofPattern("yyyy-MM")),
+            startDate.plusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM"))
+          )
+        )
+        .toIterable
+    )
   }
 
   private def download(
@@ -210,12 +231,13 @@ class YtrDownloadService(
     download(ssnData)
   }
 
-  private def download(ssns: Observable[YtrSsnData]): Observable[YtrLaajaOppija] = {
-    val groupedSsns = ssns
+  private def download(ssnData: Observable[YtrSsnData]): Observable[YtrLaajaOppija] = {
+    val groupedSsns = ssnData
       .flatMap(a => Observable.from(a.ssns))
       .doOnEach(o =>
         logger.info(s"Downloaded ${o.length} ssns from YTR")
       )
+      // TODO: TOR-1639 splittaa batcheihin tarvittaessa useamman ssn-pyynnön yli
       .map(_.grouped(batchSize).toList)
       .flatMap(a => Observable.from(a.map(Option.apply).map(YtrSsnData.apply)))
 
@@ -239,3 +261,8 @@ class YtrDownloadService(
     sys.exit()
   }
 }
+
+case class MonthParameters(
+  birthmonthStart: String,
+  birthmonthEnd: String
+)

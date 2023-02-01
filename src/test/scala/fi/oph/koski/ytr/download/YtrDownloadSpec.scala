@@ -13,7 +13,7 @@ class YtrDownloadSpec
     with YtrDownloadTestMethods {
 
   val birthmonthStart = "1980-03"
-  val birthmonthEnd = "1980-04"
+  val birthmonthEnd = "1981-10"
 
   val modifiedSince = LocalDate.of(2023, 1, 1)
 
