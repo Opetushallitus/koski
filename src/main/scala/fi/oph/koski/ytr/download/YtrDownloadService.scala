@@ -2,75 +2,28 @@ package fi.oph.koski.ytr.download
 
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
-import fi.oph.koski.db.{DB, KoskiTables, QueryMethods}
+import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.log.Logging
-import org.json4s.JValue
 import rx.lang.scala.schedulers.NewThreadScheduler
-import rx.lang.scala.{Observable, Scheduler, Subscription}
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db._
-import org.json4s._
-import org.json4s.jackson.JsonMethods
-
-import java.sql.Timestamp
+import rx.lang.scala.{Observable, Scheduler}
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDate, LocalDateTime}
-import scala.language.postfixOps
+import java.time.{LocalDate}
 
 class YtrDownloadService(
   val db: DB,
   application: KoskiApplication
 ) extends QueryMethods with Logging {
-  implicit val formats = DefaultFormats
-
-  private val tietokantaStatusRivinNimi = "ytr_download"
+  val status = new YtrDownloadStatus(db)
 
   private val batchSize = application.config.getInt("ytr.download.batchSize").max(1).min(1500)
+
+  private lazy val defaultScheduler: Scheduler = NewThreadScheduler()
 
   // TODO: TOR-1639 metriikat cloudwatchiin
   // TODO: TOR-1639 paremmat logitukset
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
 
-  def download(
-    birthmonthStart: Option[String] = None,
-    birthmonthEnd: Option[String] = None,
-    modifiedSince: Option[LocalDate] = None,
-    force: Boolean = false,
-    scheduler: Scheduler = defaultScheduler,
-    onEnd: () => Unit = () => (),
-  ): Boolean = {
-    if (isLoading && !force) {
-      logger.info("YTR data already downloading, do nothing")
-      onEnd()
-      false
-    } else if (birthmonthStart.isDefined && birthmonthEnd.isDefined) {
-      startDownloading(birthmonthStart.get, birthmonthEnd.get, scheduler, onEnd)
-      logger.info(s"Started downloading YTR data (force: $force, birthmonthStart: ${
-        birthmonthStart.getOrElse("-")
-      }, birthmonthEnd: ${
-        birthmonthEnd.getOrElse("-")
-      }, modifiedSince: ${
-        modifiedSince.map(_.toString).getOrElse("-")
-      } )")
-      true
-    } else if (modifiedSince.isDefined) {
-      startDownloading(modifiedSince.get, scheduler, onEnd)
-      logger.info(s"Started downloading YTR data (force: $force, birthmonthStart: ${
-        birthmonthStart.getOrElse("-")
-      }, birthmonthEnd: ${
-        birthmonthEnd.getOrElse("-")
-      }, modifiedSince: ${
-        modifiedSince.map(_.toString).getOrElse("-")
-      } )")
-      true
-    } else {
-      logger.info("Valid parameters for YTR download not defined")
-      onEnd()
-      false
-    }
-  }
-
-  def downloadAndExit(): Unit = {
+  def downloadAndShutdown(): Unit = {
     val config = Environment.ytrDownloadConfig
 
     download(
@@ -85,130 +38,52 @@ class YtrDownloadService(
     )
   }
 
-  private def isLoading: Boolean = getDownloadStatus == "loading"
-  def isComplete: Boolean = getDownloadStatus == "complete"
-  private def setLoading = setStatus("loading")
-  private def setComplete = setStatus("complete")
-  private def setError = setStatus("error")
-
-  private def getDownloadStatus: String = {
-    (getDownloadStatusJson \ "current" \ "status").extract[String]
+  def download(
+    birthmonthStart: Option[String] = None,
+    birthmonthEnd: Option[String] = None,
+    modifiedSince: Option[LocalDate] = None,
+    force: Boolean = false,
+    scheduler: Scheduler = defaultScheduler,
+    onEnd: () => Unit = () => (),
+  ): Unit = {
+    (birthmonthStart, birthmonthEnd, modifiedSince) match {
+      case _ if status.isLoading && !force =>
+        logger.info("YTR data already downloading, do nothing")
+        onEnd()
+      case (Some(birthmonthStart), Some(birthmonthEnd), _) =>
+        startDownloadingUsingMonthInterval(birthmonthStart, birthmonthEnd, scheduler, onEnd)
+      case (_, _, Some(modifiedSince)) =>
+        startDownloadingUsingModifiedSince(modifiedSince, scheduler, onEnd)
+      case _ =>
+        logger.info("Valid parameters for YTR download not defined")
+        onEnd()
+    }
   }
 
-  def getDownloadStatusJson: JValue = {
-    runDbSync(KoskiTables.YtrDownloadStatus.filter(_.nimi === tietokantaStatusRivinNimi).result).headOption.map(_.data)
-      .getOrElse(constructStatusJson("idle"))
-  }
-
-  private def setStatus(currentStatus: String) = {
-    runDbSync(KoskiTables.YtrDownloadStatus.insertOrUpdate(
-      YtrDownloadStatusRow(
-        tietokantaStatusRivinNimi,
-        Timestamp.valueOf(LocalDateTime.now),
-        constructStatusJson(currentStatus, Some(LocalDateTime.now))
-      )
-    ))
-  }
-
-  // TODO: TOR-1639 tee tämä serialisointi (ja deserialisointi) paremmilla työkaluilla suoraan Scala case luokasta tms.
-  private def constructStatusJson(currentStatus: String, timestamp: Option[LocalDateTime] = None): JValue = {
-    val timestampPart = timestamp.map(Timestamp.valueOf).map(t =>
-      s"""
-         |, "timestamp": "${t.toString}"
-         |""".stripMargin).getOrElse("")
-
-    JsonMethods.parse(s"""
-      | {
-      |   "current": {
-      |     "status": "${currentStatus}"
-      |     ${timestampPart}
-      |   }
-      | }""".stripMargin
-    )
-  }
-
-  private def startDownloading(
+  private def startDownloadingUsingMonthInterval(
     birthmonthStart: String,
     birthmonthEnd: String,
     scheduler: Scheduler,
     onEnd: () => Unit
-  ): Subscription = {
+  ): Unit = {
     logger.info(s"Start downloading YTR data (birthmonthStart: ${birthmonthStart}, birthmonthEnd: ${birthmonthEnd}, batchSize: ${batchSize})")
 
-    setLoading
+    status.setLoading
 
-    startDownloading(
-      download(birthmonthStart, birthmonthEnd),
-      scheduler,
-      onEnd
-    )
-
-  }
-
-  private def startDownloading(
-    modifiedSince: LocalDate,
-    scheduler: Scheduler,
-    onEnd: () => Unit
-  ): Subscription = {
-    logger.info(s"Start downloading YTR data (modifiedSince: ${modifiedSince.toString}, batchSize: ${batchSize})")
-
-    setLoading
-
-    startDownloading(
-      download(modifiedSince),
-      scheduler,
-      onEnd
-    )
-  }
-
-  private def startDownloading(
-    oppijatObservable: Observable[YtrLaajaOppija],
-    scheduler: Scheduler,
-    onEnd: () => Unit
-  ): Subscription = {
-    oppijatObservable
-      .subscribeOn(scheduler)
-      .subscribe(
-        onNext = oppija => {
-          logger.info(s"Downloaded oppija with ${
-            val exams: Seq[YtrLaajaExam] = oppija.examinations.flatMap(_.examinationPeriods.flatMap(_.exams))
-            exams.size
-          } exams")
-          Thread.sleep(100)
-        },
-        onError = e => {
-          logger.error(e)("YTR download failed:" + e.toString)
-          setError
-          onEnd()
-        },
-        onCompleted = () => {
-          try {
-            setComplete
-            // TODO: Tilastot yms.
-            onEnd()
-          } catch {
-            case e: Throwable =>
-              logger.error(e)("Exception in YTR download:" + e.toString)
-              onEnd()
-          }
-        }
-      )
-  }
-
-  private def download(
-    birthmonthStart: String,
-    birthmonthEnd: String
-  ): Observable[YtrLaajaOppija] = {
-    val ssnData: Observable[YtrSsnData] = byMonth(birthmonthStart, birthmonthEnd)
+    val ssnDataObservable = splitToOneMonthIntervals(birthmonthStart, birthmonthEnd)
       .flatMap {
         case MonthParameters(birthmonthStart, birthmonthEnd) =>
           Observable.from(application.ytrClient.oppijaHetutBySyntymäaika(birthmonthStart, birthmonthEnd))
       }
 
-    download(ssnData)
+    startDownloadingAndUpdateToKoskiDatabase(
+      createOppijatObservable(ssnDataObservable),
+      scheduler,
+      onEnd
+    )
   }
 
-  private def byMonth(birthmonthStart: String, birthmonthEnd: String): Observable[MonthParameters] = {
+  private def splitToOneMonthIntervals(birthmonthStart: String, birthmonthEnd: String): Observable[MonthParameters] = {
     val representativeStartDate = LocalDate.parse(birthmonthStart + "-01")
     val representativeEndDate = LocalDate.parse(birthmonthEnd + "-01")
 
@@ -225,14 +100,25 @@ class YtrDownloadService(
     )
   }
 
-  private def download(
-    modifiedSince: LocalDate
-  ): Observable[YtrLaajaOppija] = {
-    val ssnData: Observable[YtrSsnData] = Observable.from(application.ytrClient.oppijaHetutByModifiedSince(modifiedSince))
-    download(ssnData)
+  private def startDownloadingUsingModifiedSince(
+    modifiedSince: LocalDate,
+    scheduler: Scheduler,
+    onEnd: () => Unit
+  ): Unit = {
+    logger.info(s"Start downloading YTR data (modifiedSince: ${modifiedSince.toString}, batchSize: ${batchSize})")
+
+    status.setLoading
+
+    val ssnDataObservable = Observable.from(application.ytrClient.oppijaHetutByModifiedSince(modifiedSince))
+
+    startDownloadingAndUpdateToKoskiDatabase(
+      createOppijatObservable(ssnDataObservable),
+      scheduler,
+      onEnd
+    )
   }
 
-  private def download(ssnData: Observable[YtrSsnData]): Observable[YtrLaajaOppija] = {
+  private def createOppijatObservable(ssnData: Observable[YtrSsnData]): Observable[YtrLaajaOppija] = {
     val groupedSsns = ssnData
       .flatMap(a => Observable.from(a.ssns))
       .doOnEach(o =>
@@ -251,13 +137,41 @@ class YtrDownloadService(
     oppijat
   }
 
-  private val doNothing = (_: Any) => ()
+  private def startDownloadingAndUpdateToKoskiDatabase(
+    oppijatObservable: Observable[YtrLaajaOppija],
+    scheduler: Scheduler,
+    onEnd: () => Unit
+  ): Unit = {
+    oppijatObservable
+      .subscribeOn(scheduler)
+      .subscribe(
+        onNext = oppija => {
+          logger.info(s"Downloaded oppija with ${
+            val exams: Seq[YtrLaajaExam] = oppija.examinations.flatMap(_.examinationPeriods.flatMap(_.exams))
+            exams.size
+          } exams")
+          Thread.sleep(100)
+        },
+        onError = e => {
+          logger.error(e)("YTR download failed:" + e.toString)
+          status.setError
+          onEnd()
+        },
+        onCompleted = () => {
+          try {
+            status.setComplete
+            // TODO: Tilastot yms.
+            onEnd()
+          } catch {
+            case e: Throwable =>
+              logger.error(e)("Exception in YTR download:" + e.toString)
+              onEnd()
+          }
+        }
+      )
+  }
 
-  protected lazy val defaultScheduler: Scheduler = NewThreadScheduler()
-
-  protected lazy val isMockEnvironment: Boolean = Environment.isMockEnvironment(application.config)
-
-  def shutdown = {
+  def shutdown: Nothing = {
     Thread.sleep(60000) //Varmistetaan, että kaikki logit ehtivät varmasti siirtyä Cloudwatchiin ennen sulkemista.
     sys.exit()
   }
