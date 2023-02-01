@@ -52,13 +52,14 @@ export const opiskeluoikeudenTilaVaatiiRahoitusmuodon = (
       'luva',
       'ibtutkinto',
       'internationalschool',
-      'diatutkinto',
-      'tuva'
+      'diatutkinto'
     ].includes(opiskeluoikeudenTyyppiKoodiarvo)
   ) {
     return ['lasna', 'valmistunut'].includes(tila)
   }
-  if (opiskeluoikeudenTyyppiKoodiarvo === 'ammatillinenkoulutus') {
+  if (
+    ['ammatillinenkoulutus', 'tuva'].includes(opiskeluoikeudenTyyppiKoodiarvo)
+  ) {
     return ['lasna', 'valmistunut', 'loma'].includes(tila)
   }
   return false

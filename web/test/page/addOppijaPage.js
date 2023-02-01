@@ -412,7 +412,7 @@ function AddOppijaPage() {
         järjestämislupa: 'Ammatillisen koulutuksen järjestämislupa (TUVA)',
         suorituskieli: 'suomi',
         alkamispäivä: '1.8.2021',
-        tila: 'Läsnä',
+        tila: 'Loma',
         opintojenRahoitus: 'Muuta kautta rahoitettu'
       })
       return function () {
