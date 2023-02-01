@@ -22,6 +22,16 @@ trait YtrDownloadTestMethods extends KoskiHttpSpec {
   )
 
   def redownloadYtrData(
+    modifiedSince: LocalDate,
+    force: Boolean
+  ): Unit = redownloadYtrData(
+    birthmonthStart = None,
+    birthmonthEnd = None,
+    modifiedSince = Some(modifiedSince),
+    force = force
+  )
+
+  private def redownloadYtrData(
     birthmonthStart: Option[String],
     birthmonthEnd: Option[String],
     modifiedSince: Option[LocalDate],

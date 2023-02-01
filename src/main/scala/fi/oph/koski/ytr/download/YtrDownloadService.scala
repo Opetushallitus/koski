@@ -41,7 +41,7 @@ class YtrDownloadService(
       onEnd()
       false
     } else if (birthmonthStart.isDefined && birthmonthEnd.isDefined) {
-      startDownloading(birthmonthStart, birthmonthEnd, scheduler, onEnd)
+      startDownloading(birthmonthStart.get, birthmonthEnd.get, scheduler, onEnd)
       logger.info(s"Started downloading YTR data (force: $force, birthmonthStart: ${
         birthmonthStart.getOrElse("-")
       }, birthmonthEnd: ${
@@ -51,10 +51,15 @@ class YtrDownloadService(
       } )")
       true
     } else if (modifiedSince.isDefined) {
-      // TODO: TOR-1639: toteuta modifiedSince:llä lataus
-      logger.info("Downloading with modifiedSince is not yet supported")
-      onEnd()
-      false
+      startDownloading(modifiedSince.get, scheduler, onEnd)
+      logger.info(s"Started downloading YTR data (force: $force, birthmonthStart: ${
+        birthmonthStart.getOrElse("-")
+      }, birthmonthEnd: ${
+        birthmonthEnd.getOrElse("-")
+      }, modifiedSince: ${
+        modifiedSince.map(_.toString).getOrElse("-")
+      } )")
+      true
     } else {
       logger.info("Valid parameters for YTR download not defined")
       onEnd()
@@ -119,20 +124,45 @@ class YtrDownloadService(
   }
 
   private def startDownloading(
-    birthmonthStart: Option[String],
-    birthmonthEnd: Option[String],
-    scheduler: Scheduler ,
+    birthmonthStart: String,
+    birthmonthEnd: String,
+    scheduler: Scheduler,
     onEnd: () => Unit
   ): Subscription = {
-    logger.info(s"Start downloading YTR data (birthmonthStart: ${
-      birthmonthStart.getOrElse("-")
-    }, birthmonthEnd: ${
-      birthmonthEnd.getOrElse("-")
-    } )")
+    logger.info(s"Start downloading YTR data (birthmonthStart: ${birthmonthStart}, birthmonthEnd: ${birthmonthEnd})")
 
     setLoading
 
-    download(birthmonthStart, birthmonthEnd)
+    startDownloading(
+      download(birthmonthStart, birthmonthEnd),
+      scheduler,
+      onEnd
+    )
+
+  }
+
+  private def startDownloading(
+    modifiedSince: LocalDate,
+    scheduler: Scheduler,
+    onEnd: () => Unit
+  ): Subscription = {
+    logger.info(s"Start downloading YTR data (modifiedSince: ${modifiedSince.toString})")
+
+    setLoading
+
+    startDownloading(
+      download(modifiedSince),
+      scheduler,
+      onEnd
+    )
+  }
+
+  private def startDownloading(
+    oppijatObservable: Observable[YtrLaajaOppija],
+    scheduler: Scheduler,
+    onEnd: () => Unit
+  ): Subscription = {
+    oppijatObservable
       .subscribeOn(scheduler)
       .subscribe(
         onNext = oppija => {
@@ -161,15 +191,25 @@ class YtrDownloadService(
       )
   }
 
-
   private def download(
-    birthmonthStart: Option[String],
-    birthmonthEnd: Option[String]
+    birthmonthStart: String,
+    birthmonthEnd: String
   ): Observable[YtrLaajaOppija] = {
     // TODO: TOR-1639 YTR:n API tukee korkeintaan 1 vuosi kerralla hakua, splittaa syntymäpäiväjaksot tarvittaessa
     // Myös splittaus sen jälkeen batchein kannatta tehdä sitten siistimmin Observable-työkaluilla.
+    val ssnData: Observable[YtrSsnData] = Observable.from(application.ytrClient.oppijaHetutBySyntymäaika(birthmonthStart, birthmonthEnd))
+    download(ssnData)
+  }
 
-    val groupedSsns = Observable.from(application.ytrClient.oppijaHetutBySyntymäaika(birthmonthStart.get, birthmonthEnd.get))
+  private def download(
+    modifiedSince: LocalDate
+  ): Observable[YtrLaajaOppija] = {
+    val ssnData: Observable[YtrSsnData] = Observable.from(application.ytrClient.oppijaHetutByModifiedSince(modifiedSince))
+    download(ssnData)
+  }
+
+  private def download(ssns: Observable[YtrSsnData]): Observable[YtrLaajaOppija] = {
+    val groupedSsns = ssns
       .flatMap(a => Observable.from(a.ssns))
       .doOnEach(o =>
         logger.info(s"Downloaded ${o.length} ssns from YTR")
