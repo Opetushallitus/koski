@@ -24,6 +24,8 @@ class YtrDownloadService(
 
   private val tietokantaStatusRivinNimi = "ytr_download"
 
+  private val batchSize = application.config.getInt("ytr.download.batchSize").max(1).min(1500)
+
   // TODO: TOR-1639 metriikat cloudwatchiin
   // TODO: TOR-1639 paremmat logitukset
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
@@ -129,7 +131,7 @@ class YtrDownloadService(
     scheduler: Scheduler,
     onEnd: () => Unit
   ): Subscription = {
-    logger.info(s"Start downloading YTR data (birthmonthStart: ${birthmonthStart}, birthmonthEnd: ${birthmonthEnd})")
+    logger.info(s"Start downloading YTR data (birthmonthStart: ${birthmonthStart}, birthmonthEnd: ${birthmonthEnd}, batchSize: ${batchSize})")
 
     setLoading
 
@@ -146,7 +148,7 @@ class YtrDownloadService(
     scheduler: Scheduler,
     onEnd: () => Unit
   ): Subscription = {
-    logger.info(s"Start downloading YTR data (modifiedSince: ${modifiedSince.toString})")
+    logger.info(s"Start downloading YTR data (modifiedSince: ${modifiedSince.toString}, batchSize: ${batchSize})")
 
     setLoading
 
@@ -214,7 +216,7 @@ class YtrDownloadService(
       .doOnEach(o =>
         logger.info(s"Downloaded ${o.length} ssns from YTR")
       )
-      .map(_.grouped(50).toList) // TODO: hyvä ja configista tuleva batch size? 1500 on maksimi
+      .map(_.grouped(batchSize).toList)
       .flatMap(a => Observable.from(a.map(Option.apply).map(YtrSsnData.apply)))
 
     val oppijat: Observable[YtrLaajaOppija] = groupedSsns
