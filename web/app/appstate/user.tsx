@@ -15,4 +15,9 @@ export const UserProvider: React.FC<UserProviderProps> = (props) => (
   </UserContext.Provider>
 )
 
-export const useUser = () => useContext(UserContext)
+/**
+ * Palauttaa kirjautuneen käyttäjän tiedot.
+ * @returns kirjautunut käyttäjä
+ */
+export const useUser = (): UserWithAccessRights | null =>
+  useContext(UserContext)
