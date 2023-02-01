@@ -80,6 +80,7 @@ class YtrDownloadService(
       force = config.force,
       onEnd = () => {
         logger.info(s"Ended downloading YTR data, shutting down...")
+        shutdown
       }
     )
   }
