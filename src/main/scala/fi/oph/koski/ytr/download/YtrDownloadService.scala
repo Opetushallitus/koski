@@ -120,13 +120,12 @@ class YtrDownloadService(
 
   private def createOppijatObservable(ssnData: Observable[YtrSsnData]): Observable[YtrLaajaOppija] = {
     val groupedSsns = ssnData
-      .flatMap(a => Observable.from(a.ssns))
       .doOnEach(o =>
-        logger.info(s"Downloaded ${o.length} ssns from YTR")
+        logger.info(s"Downloaded ${o.ssns.map(_.length).getOrElse('-')} ssns from YTR")
       )
-      // TODO: TOR-1639 splittaa batcheihin tarvittaessa useamman ssn-pyynnön yli
-      .map(_.grouped(batchSize).toList)
-      .flatMap(a => Observable.from(a.map(Option.apply).map(YtrSsnData.apply)))
+      .flatMap(a => Observable.from(a.ssns.toList.flatten))
+      .tumblingBuffer(batchSize)
+      .map(ssns => YtrSsnData(Some(ssns.toList)))
 
     val oppijat: Observable[YtrLaajaOppija] = groupedSsns
       .doOnEach(o =>
