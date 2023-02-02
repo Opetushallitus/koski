@@ -29,10 +29,6 @@ class YtrTestServlet(implicit val application: KoskiApplication) extends KoskiSp
         logger.info("Download YTR done")
       }
     )
-    renderObject(application.ytrDownloadService.status.getDownloadStatusJson)
-  }
-
-  get("/download-status") {
-    renderObject(application.ytrDownloadService.status.getDownloadStatusJson)
+    renderObject(downloadService.status.getDownloadStatusJson)
   }
 }

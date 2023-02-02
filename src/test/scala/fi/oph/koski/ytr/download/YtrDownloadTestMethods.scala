@@ -50,7 +50,7 @@ trait YtrDownloadTestMethods extends KoskiHttpSpec {
     Wait.until(downloadComplete)
   }
 
-  def downloadComplete = authGet("test/ytr/download-status") {
+  def downloadComplete = authGet("api/ytr/download-status") {
     val isComplete = (JsonMethods.parse(body) \ "current" \ "status").extract[String] == "complete"
     isComplete
   }
