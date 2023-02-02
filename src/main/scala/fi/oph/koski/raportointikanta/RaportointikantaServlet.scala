@@ -9,6 +9,7 @@ class RaportointikantaServlet(implicit val application: KoskiApplication) extend
   private val service = new RaportointikantaService(application)
 
   before() {
+    // TODO: TOR-1639 Tähän voisi olla tietoturvallisempi tapa siirtää testiroutet servletiin, jota ei ajeta ikinä ympäristöissä
     noRemoteCallsExpectFor("/status")
     if (!isAuthenticated) {
       redirectToVirkailijaLogin

@@ -10,7 +10,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
   "Migraatiot" - {
     "Havaittiin uusi tietokannan migraatiotiedosto. Migraatiot, varsinkin jos koskevat Kosken suurimpia tauluja, on hyvä testata tietokantareplikaa vasten.\n" +
       "Korjaa tämän testin odottama tiedostomäärä, kun olet varma että migraatiot voi viedä eteenpäin.\nDokumentaatio: documentation/tietokantamigraatiot.md" in {
-      new File("./src/main/resources/db/migration").listFiles.length should equal (86)
+      new File("./src/main/resources/db/migration").listFiles.length should equal (87)
     }
   }
 
@@ -36,7 +36,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers {
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
         "RaportointiDatabaseSchema.scala"                           -> "d262385770392330579a6751ab3a1834",
         "RaportointikantaService.scala"                             -> "1ed1d84259b2167204577ed793a57a52",
-        "RaportointikantaServlet.scala"                             -> "71d8d000353d42d663eea3fcc62f7bc6",
+        "RaportointikantaServlet.scala"                             -> "201b9e587b871a1bd4c04ea6070e9019",
         "RaportointikantaTableQueries.scala"                        -> "b97f971fa7a5896ec3c4d69882ca705d",
         "TOPKSAmmatillinenRaporttiRowBuilder.scala"                 -> "a9c26a13385ff576810f3ef831240437",
       )

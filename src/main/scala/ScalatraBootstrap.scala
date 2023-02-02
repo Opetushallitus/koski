@@ -51,6 +51,7 @@ import fi.oph.koski.valpas.sso.ValpasOppijaCasServlet
 import fi.oph.koski.valpas.ytl.ValpasYtlServlet
 import fi.oph.koski.valvira.ValviraServlet
 import fi.oph.koski.ytl.YtlServlet
+import fi.oph.koski.ytr.download.{YtrDownloadService, YtrTestServlet}
 import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 
 import javax.servlet.ServletContext
@@ -66,6 +67,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     RunMode.get match {
       case RunMode.NORMAL => initKoskiServices(context)(application)
       case RunMode.GENERATE_RAPORTOINTIKANTA => generateRaportointikanta(application)
+      case RunMode.YTR_DOWNLOAD => downloadYtr(application)
     }
   } catch {
     case e: Exception =>
@@ -180,6 +182,15 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
       mount("/types", new LocalDevOnlyTypeModelServlet())
     }
 
+    if (
+      Environment.isLocalDevelopmentEnvironment(application.config) ||
+      Environment.isMockEnvironment(application.config) ||
+      // TODO: TOR-1639 toistaiseksi päällä QA+untuvalla, testausta varten
+      (Environment.isServerEnvironment(application.config) && !Environment.isProdEnvironment(application.config))
+    ) {
+      mount ("/koski/test/ytr", new YtrTestServlet())
+    }
+
     Futures.await(initTasks) // await for all initialization tasks to complete
 
     if (application.fixtureCreator.shouldUseFixtures) {
@@ -204,6 +215,17 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     case Some("false") => false
     case Some(s) => throw new RuntimeException(s"Odottamaton arvo muuttujalla FORCE_RAPORTOINTIKANTA: ${s} (sallitut arvot: true, false)")
     case None => false
+  }
+
+  private def downloadYtr(application: KoskiApplication): Unit = {
+    val service = new YtrDownloadService(application.masterDatabase.db, application)
+    val generating = Future {
+      service.downloadAndShutdown()
+    }
+    generating.failed.map(error => {
+      logger.error(error)("YTR-datan lataus keskeytyi odottamattomasti")
+      service.shutdown
+    })
   }
 
   override def destroy(context: ServletContext): Unit = ()

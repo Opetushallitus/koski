@@ -3,7 +3,7 @@ package fi.oph.koski.config
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db.{KoskiDatabase, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig, ValpasDatabaseConfig}
-import fi.oph.koski.opensearch.{OpenSearch, IndexManager}
+import fi.oph.koski.opensearch.{IndexManager, OpenSearch}
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetOpiskeluoikeusChangeValidator, EPerusteisiinPerustuvaValidator}
 import fi.oph.koski.executors.GlobalExecutionContext
@@ -46,6 +46,7 @@ import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudes
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.valpasrepository.{OpiskeluoikeusLisätiedotRepository, OppivelvollisuudenKeskeytysRepository, OppivelvollisuudenKeskeytysRepositoryService, ValpasKuntailmoitusRepository}
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
+import fi.oph.koski.ytr.download.YtrDownloadService
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
 
 import scala.concurrent.Future
@@ -85,6 +86,7 @@ class KoskiApplication(
   lazy val virtaClient = VirtaClient(config)
   lazy val ytrClient = YtrClient(config)
   lazy val ytrRepository = new YtrRepository(ytrClient)
+  lazy val ytrDownloadService = new YtrDownloadService(masterDatabase.db, this)
   lazy val virtaAccessChecker = new VirtaAccessChecker(käyttöoikeusRepository)
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val henkilöRepository = HenkilöRepository(this)

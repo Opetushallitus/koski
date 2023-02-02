@@ -166,6 +166,8 @@ object KoskiSpecificMockOppijat {
   val jotpaMuuKuinSäännelty = koskiSpecificOppijat.oppija("Jotpanen", "Muksu", "200600A515B")
   val taiteenPerusopetusAloitettu = koskiSpecificOppijat.oppija("Taiteilija", "Petra", "260905A0520")
   val taiteenPerusopetusValmis = koskiSpecificOppijat.oppija("Taiteilija", "Pentti", "010605A0734")
+  val ylioppilasUusiApi = koskiSpecificOppijat.oppija("Ylioppilas-uusi", "Yölevi", "080380-2432")
+  val ylioppilasUusiApi2 = koskiSpecificOppijat.oppija("Ylioppilas-uusi", "Yrmiina", "140380-336X")
 
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen
