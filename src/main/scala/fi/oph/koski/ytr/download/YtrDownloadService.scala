@@ -130,7 +130,7 @@ class YtrDownloadService(
 
     val oppijat: Observable[YtrLaajaOppija] = groupedSsns
       .doOnEach(o =>
-        logger.info(s"Downloading a batch of ${o.ssns.map(_.length).getOrElse("-")} students from YTR")
+        logger.info(s"Downloading a batch of ${o.ssns.map(_.length).getOrElse("-")} students from YTR from ${o.minMonth} to ${o.maxMonth}")
       )
       .flatMap(a => Observable.from(application.ytrClient.oppijatByHetut(a)))
 
