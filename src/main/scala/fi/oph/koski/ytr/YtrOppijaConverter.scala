@@ -20,7 +20,12 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
 
     val oppilaitos = ytrOppija.certificateSchoolOphOid.flatMap(oid => oppilaitosRepository.findByOid(oid) match  {
       case None =>
-        logger.warn(s"Oppilaitosta $oid ei löydy")
+        // certificateSchoolOphOid on ollut jo muutaman vuoden aina tarkoituksella YO-tutkintolautakunnan organisaation oid.
+        // Tämä on ollut quick fix siihen, että omaopintopolussa ei hämäävästi väitettäisi YO-tutkinnon hyväksyjäksi oppilaitosta, kun
+        // oikeasti se on Ylioppilastutkintolautakunnan myöntämä.
+        if (oid != "1.2.246.562.10.43628088406") {
+          logger.warn(s"Oppilaitosta $oid ei löydy")
+        }
         None
       case Some(oppilaitos) =>
         vahvistus
