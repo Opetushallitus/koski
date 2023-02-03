@@ -128,9 +128,10 @@ class YtrDownloadService(
       .tumblingBuffer(batchSize)
       .map(ssns => YtrSsnData(Some(ssns.toList)))
 
+    def toMonthString(ssn: String) = ssn.substring(0, 5)
     val oppijat: Observable[YtrLaajaOppija] = groupedSsns
       .doOnEach(o =>
-        logger.info(s"Downloading a batch of ${o.ssns.map(_.length).getOrElse("-")} students from YTR")
+        logger.info(s"Downloading a batch of ${o.ssns.map(_.length).getOrElse("-")} students from YTR from ${o.asMonthStrings.min} to ${o.asMonthStrings.max}")
       )
       .flatMap(a => Observable.from(application.ytrClient.oppijatByHetut(a)))
 
