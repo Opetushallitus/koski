@@ -7,6 +7,8 @@ import fi.oph.koski.log.{Logging, NotLoggable}
 import fi.oph.koski.raportointikanta.Schema
 import slick.jdbc.PostgresProfile
 
+import java.util.Properties
+
 
 object DatabaseConfig {
   val EnvVarForKoskiDbSecret = "DB_KOSKI_SECRET_ID"
@@ -88,7 +90,8 @@ trait DatabaseConfig extends NotLoggable with Logging {
         .withValue("host", fromAnyRef(secretConfig.host))
         .withValue("port", fromAnyRef(secretConfig.port))
         .withValue("user", fromAnyRef(secretConfig.username))
-        .withValue("password", fromAnyRef(secretConfig.password))
+        // .withValue("dataSourceClassName", fromAnyRef("fi.oph.koski.db.DataSourceWithRdsIamSupport"))
+        // .withValue("wrapperPlugins", fromAnyRef("iam"))
         .withValue("secretId", fromAnyRef(secretId))
     } else {
       config
@@ -104,21 +107,31 @@ trait DatabaseConfig extends NotLoggable with Logging {
     }
   }
 
+  private final def configWithAWSIAM(config: Config): Config = {
+    if (useSecretsManager) {
+      config
+      .withValue("dataSourceClassName", fromAnyRef("fi.oph.koski.db.DataSourceWithRdsIamSupport"))
+      .withValue("wrapperPlugins", fromAnyRef("iam"))
+    } else {
+      // config
+      config
+        .withValue("dataSourceClassName", fromAnyRef("fi.oph.koski.db.DataSourceWithRdsIamSupport"))
+        .withValue("wrapperPlugins", fromAnyRef("iam"))
+    }
+  }
+
   protected def makeConfig(): Config = {
     databaseSpecificConfig
       .withFallback(sharedConfig)
       .andThen(configWithSecrets)
       .andThen(configWithTestDb)
+      .andThen(configWithAWSIAM)
   }
 
   private final def configForSlick(): Config = {
     (if (useSecretsManager) {
-      // Secrets Manager JDBC-ajuri haluaa käyttäjänimenä secret ID:n. Korvataan
-      // konfiguraation käyttäjänimi vasta tässä vaiheessa, jotta konfiguraatio
-      // toimii myös Flywayn käyttämän tavallisen JDBC-ajurin kanssa.
       config
         .withValue("user", config.getValue("secretId"))
-        .withValue("driverClassName", fromAnyRef("com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver"))
     } else {
       config
     }).withValue("url", fromAnyRef(url(useSecretsManagerProtocol = useSecretsManager)))
@@ -140,7 +153,7 @@ trait DatabaseConfig extends NotLoggable with Logging {
 
   final def url(useSecretsManagerProtocol: Boolean): String = {
     val protocol = if (useSecretsManagerProtocol) {
-      "jdbc-secretsmanager:postgresql"
+      "jdbc:aws-wrapper:postgresql"
     } else {
       "jdbc:postgresql"
     }
