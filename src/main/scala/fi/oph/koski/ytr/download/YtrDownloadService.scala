@@ -16,6 +16,7 @@ class YtrDownloadService(
   val status = new YtrDownloadStatus(db)
 
   private val batchSize = application.config.getInt("ytr.download.batchSize").max(1).min(1500)
+  private val extraSleepPerStudentInMs = application.config.getInt("ytr.download.extraSleepPerStudentInMs").max(0).min(100000)
 
   private lazy val defaultScheduler: Scheduler = NewThreadScheduler()
 
@@ -66,7 +67,7 @@ class YtrDownloadService(
     scheduler: Scheduler,
     onEnd: () => Unit
   ): Unit = {
-    logger.info(s"Start downloading YTR data (birthmonthStart: ${birthmonthStart}, birthmonthEnd: ${birthmonthEnd}, batchSize: ${batchSize})")
+    logger.info(s"Start downloading YTR data (birthmonthStart: ${birthmonthStart}, birthmonthEnd: ${birthmonthEnd}, batchSize: ${batchSize}, extraSleepPerStudentInMs: ${extraSleepPerStudentInMs})")
 
     status.setLoading
 
@@ -105,7 +106,7 @@ class YtrDownloadService(
     scheduler: Scheduler,
     onEnd: () => Unit
   ): Unit = {
-    logger.info(s"Start downloading YTR data (modifiedSince: ${modifiedSince.toString}, batchSize: ${batchSize})")
+    logger.info(s"Start downloading YTR data (modifiedSince: ${modifiedSince.toString}, batchSize: ${batchSize}, extraSleepPerStudentInMs: ${extraSleepPerStudentInMs})")
 
     status.setLoading
 
@@ -149,7 +150,9 @@ class YtrDownloadService(
             val exams: Seq[YtrLaajaExam] = oppija.examinations.flatMap(_.examinationPeriods.flatMap(_.exams))
             exams.size
           } exams")
-          Thread.sleep(100)
+          if (extraSleepPerStudentInMs > 0) {
+            Thread.sleep(extraSleepPerStudentInMs)
+          }
         },
         onError = e => {
           logger.error(e)("YTR download failed:" + e.toString)
