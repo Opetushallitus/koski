@@ -23,7 +23,7 @@ case class YtrExamination(
 
 case class YtrExaminationPeriod(
   examinationPeriod: String,
-  schoolOid: String,
+  schoolOid: Option[String],
   schoolName: Option[String],
   totalFee: Option[Int],
   education: Option[Int],
@@ -35,9 +35,9 @@ case class YtrLaajaExam(
   examId: String,
   grade: Option[String],
   gradePoints: Option[Int],
-  aborted: Boolean,
+  aborted: Option[Boolean],
   examFee: Option[Int],
-  freeOfCharge: Boolean,
+  freeOfCharge: Option[Boolean],
   totalScore: Option[Int],
   examItems: List[YtrExamItem]
 )
