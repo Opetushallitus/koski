@@ -18,10 +18,10 @@ class YtrDownloadSpec
   val modifiedSince = LocalDate.of(2023, 1, 1)
 
   "YTR download" in {
-    redownloadYtrData(birthmonthStart, birthmonthEnd)
+    redownloadYtrData(birthmonthStart, birthmonthEnd, force = true)
   }
 
   "YTR download modified since" in {
-    redownloadYtrData(modifiedSince, force = false)
+    redownloadYtrData(modifiedSince, force = true)
   }
 }
