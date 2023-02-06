@@ -33,8 +33,8 @@ test.describe('Muu kuin säännelty koulutus', () => {
       await expect(
         await uusiOppijaPage.opintojenRahoitus.getOptions()
       ).toHaveText([
-        'Jatkuvan oppimisen rahoitus (JOTPA)',
-        'Jatkuvan oppimisen uudistuksen rahoitus (RRF)'
+        'Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus',
+        'Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus (RRF)'
       ])
     })
 

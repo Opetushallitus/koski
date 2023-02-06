@@ -74,8 +74,8 @@ describe('Ammatillinen koulutus', function () {
             'Ammatillisen osaamisen pilotit 2019',
             'Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)',
             'Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)',
-            'Jatkuvan oppimisen rahoitus (JOTPA)',
-            'Jatkuvan oppimisen uudistuksen rahoitus (RRF)'
+            'Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus',
+            'Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus (RRF)'
           ])
         })
 
@@ -812,6 +812,7 @@ describe('Ammatillinen koulutus', function () {
                   'YTKK Kestävän kehityksen edistäminen',
                   'VVAI17 Kommunikation och interaktion på modersmålet, svenska som andraspråk',
                   'KU Kulttuurien tuntemus',
+                  'MAVA Matemaattis-luonnontieteellinen osaaminen',
                   'MA Matematiikka',
                   'MLMA Matematiikka ja matematiikan soveltaminen',
                   'YTOU Opiskelu- ja urasuunnitteluvalmiudet',
@@ -838,6 +839,8 @@ describe('Ammatillinen koulutus', function () {
                   'VVAI7 Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä',
                   'VVAI11 Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille',
                   'VVAI15 Viestintä ja vuorovaikutus äidinkielellä, viittomakieli',
+                  '003 Viestintä- ja vuorovaikutusosaaminen',
+                  '001 Yhteiskunnassa ja kansalaisena toimiminen',
                   'YTYK Yhteiskunnassa ja kansalaisena toimiminen',
                   'YKT Yhteiskuntataidot',
                   'YM Ympäristöosaaminen',
@@ -1801,6 +1804,7 @@ describe('Ammatillinen koulutus', function () {
                       'YTKK Kestävän kehityksen edistäminen',
                       'VVAI17 Kommunikation och interaktion på modersmålet, svenska som andraspråk',
                       'KU Kulttuurien tuntemus',
+                      'MAVA Matemaattis-luonnontieteellinen osaaminen',
                       'MA Matematiikka',
                       'MLMA Matematiikka ja matematiikan soveltaminen',
                       'YTOU Opiskelu- ja urasuunnitteluvalmiudet',
@@ -1827,6 +1831,8 @@ describe('Ammatillinen koulutus', function () {
                       'VVAI7 Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä',
                       'VVAI11 Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille',
                       'VVAI15 Viestintä ja vuorovaikutus äidinkielellä, viittomakieli',
+                      '003 Viestintä- ja vuorovaikutusosaaminen',
+                      '001 Yhteiskunnassa ja kansalaisena toimiminen',
                       'YTYK Yhteiskunnassa ja kansalaisena toimiminen',
                       'YKT Yhteiskuntataidot',
                       'YM Ympäristöosaaminen',

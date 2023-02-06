@@ -62,8 +62,8 @@ class KoodistotTest extends AnyFreeSpec with TestEnvironment with Matchers {
       "suorituksentyyppi_lukionoppiaineidenoppimaarat2019",
       "suorituksentyyppi_lukionpaikallinenopintojakso2019",
       "suorituksentyyppi_lukionvaltakunnallinenmoduuli2019",
-      "arviointiasteikkoeuropeanschoolofhelsinkinumericalmark_100",
-      "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_100",
+      "arviointiasteikkoeuropeanschoolofhelsinkinumericalmark_10-1",
+      "arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark_10-1",
       "arviointiasteikkoeuropeanschoolofhelsinkifinalmark_1000"
     )
     // Tässä koodistossa on niin monta poikkeusta ettei erikseen luetella niitä tässä.
