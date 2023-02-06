@@ -514,20 +514,19 @@ Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 <a href="/koski/json-schema-viewer/?schema=valpas-kela-oppija-schema.json">täällä</a>.
 
 ## /koski/api/luovutuspalvelu/migri/hetu
-Tällä kutsulla haetaan henkilön oppija-data hetun perusteella.
+## /koski/api/luovutuspalvelu/migri/oid
 
-### Esimerkkipyyntö
+Näillä kutsuilla haetaan henkilön oppija-data hetun tai oppija-oidin perusteella.
+
+Palautettavan JSON-rakenteen tietomallin dokumentaatio on [täällä](https://opintopolku.fi/koski/json-schema-viewer/?schema=migri-oppija-schema.json).
+
+### Esimerkkipyynnöt
 
     POST /koski/api/luovutuspalvelu/migri/hetu HTTP/1.1
     Content-Type: application/json
     Body: {
       "hetu": "180859-914S"
     }
-
-## /koski/api/luovutuspalvelu/migri/oid
-Tällä kutsulla haetaan henkilön oppija-data oppija-oidin perusteella.
-
-### Esimerkkipyyntö
 
     POST /koski/api/luovutuspalvelu/migri/oid HTTP/1.1
     Content-Type: application/json
@@ -536,9 +535,11 @@ Tällä kutsulla haetaan henkilön oppija-data oppija-oidin perusteella.
     }
 
 ## /koski/api/luovutuspalvelu/migri/valinta/hetut
-Tällä kutsulla haetaan usean (enintään 5000 kpl) valintakoetulokset henkilötunnusten perusteella.
+## /koski/api/luovutuspalvelu/migri/valinta/oid
 
-### Esimerkkipyyntö
+Näillä kutsuilla haetaan usean henkilön (enintään 5000 kpl) valintakoetulokset henkilötunnusten tai oppija-oidien perusteella.
+
+### Esimerkkipyynnöt
 
     POST /koski/api/luovutuspalvelu/migri/valinta/hetut HTTP/1.1
     Content-Type: application/json
@@ -546,20 +547,15 @@ Tällä kutsulla haetaan usean (enintään 5000 kpl) valintakoetulokset henkilö
       "hetut": ["180859-914S", "020654-9025", "010326-953H"]
     }
 
-Katso esimerkkivastaukset ja virhekoodit tarkemmin sivulta https://wiki.eduuni.fi/display/ophpolku/Valintarekisterin+rajapinta+Migrille
-
-## /koski/api/luovutuspalvelu/migri/valinta/oid
-Tällä kutsulla haetaan usean (enintään 5000 kpl) valintakoetulokset oppija-oidien perusteella.
-
-### Esimerkkipyyntö
-
     POST /koski/api/luovutuspalvelu/migri/valinta/oid HTTP/1.1
     Content-Type: application/json
     Body: {
-      "oids": ["1.2.246.562.24.82405337123", "1.2.246.562.24.82405337995"]
+        "oids": ["1.2.246.562.24.82405337123", "1.2.246.562.24.82405337995"]
     }
 
-Katso esimerkkivastaukset ja virhekoodit tarkemmin sivulta https://wiki.eduuni.fi/display/ophpolku/Valintarekisterin+rajapinta+Migrille
+Tiedot haetaan Valintarekisteristä. Koski välittää pyynnöt Valintarekisterin rajapintaan ja palauttaa vastaukset kutsujalle.
+
+Katso esimerkkivastaukset ja virhekoodit tarkemmin [Valintarekisterin dokumentaatiosta](https://wiki.eduuni.fi/display/ophpolku/Valintarekisterin+rajapinta+Migrille).
 
 ## /koski/api/luovutuspalvelu/ytl/oppijat
 
