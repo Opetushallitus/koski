@@ -9,11 +9,11 @@ import java.time.format.DateTimeFormatter
 case class YtrSsnData(
   ssns: Option[List[String]]
 ) {
-  private lazy val monthFormatter = DateTimeFormatter.ofPattern("yyyy-MM")
-  private lazy val asBirthdays = ssns.map(xs => xs.flatMap(x => Hetu.toBirthday(x).toList).sorted(localDateOrdering))
-  lazy val minMonth: String = asBirthdays.map(xs => xs.head.format(monthFormatter)).getOrElse("-")
-  lazy val maxMonth: String = asBirthdays.map(xs => xs.last.format(monthFormatter)).getOrElse("-")
+  private val monthFormatter = DateTimeFormatter.ofPattern("yyyy-MM")
+  private def asSortedBirthdays = sortedByBirthdays.ssns.map(xs => xs.flatMap(x => Hetu.toBirthday(x).toList))
 
+  def minMonth: String = asSortedBirthdays.map(xs => xs.head.format(monthFormatter)).getOrElse("-")
+  def maxMonth: String = asSortedBirthdays.map(xs => xs.last.format(monthFormatter)).getOrElse("-")
   def sortedByBirthdays: YtrSsnData =
     copy(ssns = ssns.map(_.sortBy(Hetu.toBirthday)(localDateOptionOrdering)))
 }
