@@ -1,6 +1,9 @@
 package fi.oph.koski.ytr.download
 
+import fi.oph.koski.henkilo.Hetu
+
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 case class YtrLaajaOppija(
   oid: Option[String],
@@ -12,7 +15,10 @@ case class YtrLaajaOppija(
   hasCompletedMandatoryExams: Option[Boolean],
   certificateDate: Option[LocalDate],
   examinations: List[YtrExamination]
-)
+) {
+  def birthMonth: String =
+    Hetu.toBirthday(ssn).map(_.format(DateTimeFormatter.ofPattern("yyyy-MM"))).getOrElse("-")
+}
 
 case class YtrExamination(
   language: String,

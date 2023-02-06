@@ -6,8 +6,9 @@ import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.log.Logging
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
+
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDate}
+import java.time.LocalDate
 
 class YtrDownloadService(
   val db: DB,
@@ -124,13 +125,14 @@ class YtrDownloadService(
       .doOnEach(o =>
         logger.info(s"Downloaded ${o.ssns.map(_.length).getOrElse('-')} ssns from YTR")
       )
+      .map(_.sortedByBirthdays)
       .flatMap(a => Observable.from(a.ssns.toList.flatten))
       .tumblingBuffer(batchSize)
       .map(ssns => YtrSsnData(Some(ssns.toList)))
 
     val oppijat: Observable[YtrLaajaOppija] = groupedSsns
       .doOnEach(o =>
-        logger.info(s"Downloading a batch of ${o.ssns.map(_.length).getOrElse("-")} students from YTR")
+        logger.info(s"Downloading a batch of ${o.ssns.map(_.length).getOrElse("-")} students from YTR from ${o.minMonth} to ${o.maxMonth}")
       )
       .flatMap(a => Observable.from(application.ytrClient.oppijatByHetut(a)))
 
@@ -142,25 +144,41 @@ class YtrDownloadService(
     scheduler: Scheduler,
     onEnd: () => Unit
   ): Unit = {
+    var latestHandledBirthMonth = "-"
+    var latestHandledBirthMonthCount = 0
+
     oppijatObservable
       .subscribeOn(scheduler)
       .subscribe(
         onNext = oppija => {
-          logger.info(s"Downloaded oppija with ${
-            val exams: Seq[YtrLaajaExam] = oppija.examinations.flatMap(_.examinationPeriods.flatMap(_.exams))
-            exams.size
-          } exams")
+//          logger.info(s"Downloaded oppija with ${
+//            val exams: Seq[YtrLaajaExam] = oppija.examinations.flatMap(_.examinationPeriods.flatMap(_.exams))
+//            exams.size
+//          } exams")
+
+          // TODO: TOR-1639: Datan konversio ja kirjoitus Koskeen
+
+          val birthMonth = oppija.birthMonth
+          if (latestHandledBirthMonth != birthMonth) {
+            logger.info(s"Handled first oppija of birth month ${birthMonth}. Previously handled birth month ${latestHandledBirthMonth} had ${latestHandledBirthMonthCount} oppijas.")
+            latestHandledBirthMonth = birthMonth
+            latestHandledBirthMonthCount = 0
+          }
+          latestHandledBirthMonthCount = latestHandledBirthMonthCount + 1
+
           if (extraSleepPerStudentInMs > 0) {
             Thread.sleep(extraSleepPerStudentInMs)
           }
         },
         onError = e => {
           logger.error(e)("YTR download failed:" + e.toString)
+          logger.info(s"From final handled birth month ${latestHandledBirthMonth} handled ${latestHandledBirthMonthCount} oppijas.")
           status.setError
           onEnd()
         },
         onCompleted = () => {
           try {
+            logger.info(s"Final handled birth month ${latestHandledBirthMonth} had ${latestHandledBirthMonthCount} oppijas.")
             status.setComplete
             // TODO: Tilastot yms.
             onEnd()
