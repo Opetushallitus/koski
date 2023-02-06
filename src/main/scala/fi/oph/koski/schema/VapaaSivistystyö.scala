@@ -51,7 +51,10 @@ case class VapaanSivistystyönOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot with MaksuttomuusTieto
 
-trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton
+trait VapaanSivistystyönPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen with Todistus with Arvioinniton {
+  @Title("Koulutus")
+  def koulutusmoduuli: Koulutusmoduuli
+}
 
 @Title("Oppivelvollisille suunnatun vapaan sivistystyön opiskeluoikeusjakso")
 @OnlyWhen("../../../suoritukset/0/tyyppi/koodiarvo", "vstoppivelvollisillesuunnattukoulutus")

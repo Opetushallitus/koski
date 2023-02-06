@@ -1,6 +1,6 @@
 package fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{InfoDescription, InfoLinkTitle, InfoLinkUrl, KoodistoKoodiarvo, KoodistoUri, ReadOnly, Tooltip}
-import fi.oph.scalaschema.annotation.{Description, MaxItems}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -44,6 +44,7 @@ case class MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(
 ) extends KoskiOpiskeluoikeusjakso
 
 case class MuunKuinSäännellynKoulutuksenPäätasonSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: MuuKuinSäänneltyKoulutus,
   @KoodistoKoodiarvo("muukuinsaanneltykoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("muukuinsaanneltykoulutus", "suorituksentyyppi"),

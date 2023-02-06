@@ -64,10 +64,11 @@ export class VapaanSivistystyonSuoritustaulukko extends React.Component<VapaanSi
       ) {
         return t('Osaamiskokonaisuus')
       } else if (
-        parentOneOf('vapaansivistystyonvapaatavoitteisenkoulutuksensuoritus') ||
-        parentOneOf('vapaansivistystyonjotpakoulutuksensuoritus')
+        parentOneOf('vapaansivistystyonvapaatavoitteisenkoulutuksensuoritus')
       ) {
         return t('Koulutus')
+      } else if (parentOneOf('vapaansivistystyonjotpakoulutuksensuoritus')) {
+        return t('Osasuoritus')
       } else {
         return t('Osa-alue')
       }
