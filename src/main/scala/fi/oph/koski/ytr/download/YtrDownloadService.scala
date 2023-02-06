@@ -6,8 +6,9 @@ import fi.oph.koski.db.{DB, QueryMethods}
 import fi.oph.koski.log.Logging
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
+
 import java.time.format.DateTimeFormatter
-import java.time.{LocalDate}
+import java.time.LocalDate
 
 class YtrDownloadService(
   val db: DB,
@@ -124,6 +125,7 @@ class YtrDownloadService(
       .doOnEach(o =>
         logger.info(s"Downloaded ${o.ssns.map(_.length).getOrElse('-')} ssns from YTR")
       )
+      .map(_.sortedByBirthdays)
       .flatMap(a => Observable.from(a.ssns.toList.flatten))
       .tumblingBuffer(batchSize)
       .map(ssns => YtrSsnData(Some(ssns.toList)))
