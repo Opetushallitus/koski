@@ -151,10 +151,10 @@ class YtrDownloadService(
       .subscribeOn(scheduler)
       .subscribe(
         onNext = oppija => {
-          logger.info(s"Downloaded oppija with ${
-            val exams: Seq[YtrLaajaExam] = oppija.examinations.flatMap(_.examinationPeriods.flatMap(_.exams))
-            exams.size
-          } exams")
+//          logger.info(s"Downloaded oppija with ${
+//            val exams: Seq[YtrLaajaExam] = oppija.examinations.flatMap(_.examinationPeriods.flatMap(_.exams))
+//            exams.size
+//          } exams")
 
           // TODO: TOR-1639: Datan konversio ja kirjoitus Koskeen
 
