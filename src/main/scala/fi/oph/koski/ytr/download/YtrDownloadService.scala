@@ -144,6 +144,9 @@ class YtrDownloadService(
     scheduler: Scheduler,
     onEnd: () => Unit
   ): Unit = {
+    var latestHandledBirthMonth = "-"
+    var latestHandledBirthMonthCount = 0
+
     oppijatObservable
       .subscribeOn(scheduler)
       .subscribe(
@@ -152,17 +155,30 @@ class YtrDownloadService(
             val exams: Seq[YtrLaajaExam] = oppija.examinations.flatMap(_.examinationPeriods.flatMap(_.exams))
             exams.size
           } exams")
+
+          // TODO: TOR-1639: Datan konversio ja kirjoitus Koskeen
+
+          val birthMonth = oppija.birthMonth
+          if (latestHandledBirthMonth != birthMonth) {
+            logger.info(s"Handled first oppija of birth month ${birthMonth}. Previously handled birth month ${latestHandledBirthMonth} had ${latestHandledBirthMonthCount} oppijas.")
+            latestHandledBirthMonth = birthMonth
+            latestHandledBirthMonthCount = 0
+          }
+          latestHandledBirthMonthCount = latestHandledBirthMonthCount + 1
+
           if (extraSleepPerStudentInMs > 0) {
             Thread.sleep(extraSleepPerStudentInMs)
           }
         },
         onError = e => {
           logger.error(e)("YTR download failed:" + e.toString)
+          logger.info(s"From final handled birth month ${latestHandledBirthMonth} handled ${latestHandledBirthMonthCount} oppijas.")
           status.setError
           onEnd()
         },
         onCompleted = () => {
           try {
+            logger.info(s"Final handled birth month ${latestHandledBirthMonth} had ${latestHandledBirthMonthCount} oppijas.")
             status.setComplete
             // TODO: Tilastot yms.
             onEnd()
