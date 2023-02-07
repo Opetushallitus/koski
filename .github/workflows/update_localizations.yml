@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Java 8
+      - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          java-version: '8'
+          java-version: '11'
           architecture: 'x64'
           distribution: 'zulu'
       - name: Cache Maven packages
@@ -32,16 +32,22 @@ jobs:
         id: date
         run: |
           echo "{date}={$(date +'%Y-%m-%d-%H%M%S')}" >> $GITHUB_STATE
+        shell: bash
+      - name: Compile Koski & Valpas
+        run: mvn -DskipTests=true clean install
+        shell: bash
       - name: Update Koski localizations
         env:
           VIRKAILIJA_ROOT: https://virkailija.opintopolku.fi
           LOCALIZATION_CATEGORY: koski
-        run: mvn scala:testCompile exec:java -Dexec.mainClass="fi.oph.koski.localization.LocalizationMockDataUpdater"
+        run: mvn exec:java -Dexec.mainClass=fi.oph.koski.localization.LocalizationMockDataUpdater
+        shell: bash
       - name: Update Valpas localizations
         env:
           VIRKAILIJA_ROOT: https://virkailija.opintopolku.fi
           LOCALIZATION_CATEGORY: valpas
-        run: mvn scala:testCompile exec:java -Dexec.mainClass="fi.oph.koski.localization.LocalizationMockDataUpdater"
+        run: mvn exec:java -Dexec.mainClass=fi.oph.koski.localization.LocalizationMockDataUpdater
+        shell: bash
       - name: Create PR with updated localizations
         uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
         with:
