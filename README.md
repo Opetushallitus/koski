@@ -81,17 +81,18 @@ tarpeen mukaan.
 - PostgreSQL 12.5 -tietokanta
 - OpenSearch -hakuindeksi
 - Palvelinteknologiat
-  - Scala 2.12 -ohjelmointikieli ja -kääntäjä
-  - Node 16.19.0 -runtime
+  - Scala 2.12 -ohjelmointikieli ja kääntäjä
+  - Node.js 16.19.0 -runtime
   - Scalatra-web-framework
   - [Slick](http://slick.typesafe.com/doc/3.0.1/index.html)-relaatiokantakirjasto
   - Flyway-migraatiotyökalu kannan skeeman rakentamiseen ja päivittämiseen kehityksessä ja tuotannossa
   - Maven-build-työkalu kehityskäyttöön ja asennettavan paketin rakentamiseen
   - Maven-riippuvuuksien lataus Jitpackilla, jolloin voidaan viitata suoraan Github-repoihin, eikä tarvitse itse buildata jar-artifaktoja
-  - Integraatiot Opintopolku-palveluihin, kuten organisaatio- ja henkilöpalveluun REST-rajpinnoilla, käyttäen http4s-clienttiä
+  - Integraatiot Opintopolku-palveluihin, kuten organisaatio- ja henkilöpalveluun REST-rajapinnoilla, käyttäen http4s-clienttiä
 - Web-sovelluksen frontend-teknologiat
-  - npm riippuvuuksien hakuun
-  - Webpack frontent-bundlen rakentamiseen
+  - npm-työkalu riippuvuuksien hakuun
+  - Webpack bundlaukseen
+  - TypeScript
   - React
   - Bacon.js
   - LESS
