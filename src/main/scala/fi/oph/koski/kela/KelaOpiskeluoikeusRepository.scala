@@ -49,6 +49,7 @@ with
       left join linkitetty on linkitetty.oppija_master_oid = haettu_oppija.oppija_master_oid
     where opiskeluoikeus.koulutusmuoto = any($palautettavatOpiskeluoikeudenTyypit)
       and 'vstvapaatavoitteinenkoulutus' != any(suoritustyypit) -- VST vapaatavoitteiset ei palauteta Kelalle, koska muuten pitäisi jotenkin käsitellä suostumuksen peruutukset
+      and 'vstjotpakoulutus' != any(suoritustyypit) -- VST Jotpa ei palauteta Kelalle toistaiseksi
       and mitatoity = false
     order by oppija_master_oid
   )
