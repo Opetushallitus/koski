@@ -32,17 +32,23 @@ jobs:
         id: date
         run: |
           echo "{date}={$(date +'%Y-%m-%d-%H%M%S')}" >> $GITHUB_STATE
-      - name: Update localizations
+      - name: Update Koski localizations
         env:
           VIRKAILIJA_ROOT: https://virkailija.opintopolku.fi
-        run: mvn exec:java -Dexec.mainClass="fi.oph.koski.localization.LocalizationMockDataUpdater"
+          LOCALIZATION_CATEGORY: koski
+        run: mvn scala:testCompile exec:java -Dexec.mainClass="fi.oph.koski.localization.LocalizationMockDataUpdater"
+      - name: Update Valpas localizations
+        env:
+          VIRKAILIJA_ROOT: https://virkailija.opintopolku.fi
+          LOCALIZATION_CATEGORY: valpas
+        run: mvn scala:testCompile exec:java -Dexec.mainClass="fi.oph.koski.localization.LocalizationMockDataUpdater"
       - name: Create PR with updated localizations
         uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
         with:
-            commit-message: Päivitä Kosken lokalisaatiot
-            title: "[${{ env.date }}]: Päivitä Kosken lokalisaatiot"
+            commit-message: Päivitä lokalisaatiot
+            title: "[${{ env.date }}]: Päivitä lokalisaatiot"
             body: |
-              Tämä on automaattisesti luotu PR, jolla päivitetään Kosken käyttämät lokalisaatiot.
+              Tämä on automaattisesti luotu PR, jolla päivitetään Koski- ja Valpas-palvelun käyttämät lokalisaatiot.
 
               Käy muutokset läpi ja korjaa mahdollisesti hajonneet testit.
             branch: tor-xxxx-koski-localization-update-${{ env.date }}
