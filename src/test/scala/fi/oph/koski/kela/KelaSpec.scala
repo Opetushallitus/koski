@@ -262,6 +262,12 @@ class KelaSpec
     }
   }
 
+  "Vapaan sivistystyön opiskeluoikeuksista ei välitetä Jotpa-koulutuksen suorituksia" in {
+    postHetu(KoskiSpecificMockOppijat.vstJotpaKeskenOppija.hetu.get) {
+      verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+    }
+  }
+
   "Opiskeluoikeuden versiohistorian haku tuottaa AuditLogin" in {
     resetFixtures
     val opiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis)
