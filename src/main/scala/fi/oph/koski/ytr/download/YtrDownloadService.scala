@@ -16,6 +16,12 @@ class YtrDownloadService(
 ) extends QueryMethods with Logging {
   val status = new YtrDownloadStatus(db)
 
+  val converter = new YtrDownloadOppijaConverter(
+    application.koodistoViitePalvelu,
+    application.organisaatioRepository,
+    application.koskiLocalizationRepository
+  )
+
   private val batchSize = application.config.getInt("ytr.download.batchSize").max(1).min(1500)
   private val extraSleepPerStudentInMs = application.config.getInt("ytr.download.extraSleepPerStudentInMs").max(0).min(100000)
 
@@ -157,6 +163,11 @@ class YtrDownloadService(
 //          } exams")
 
           // TODO: TOR-1639: Datan konversio ja kirjoitus Koskeen
+          try {
+            converter.convert(oppija)
+          } catch {
+            case e: Throwable => logger.info(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
+          }
 
           val birthMonth = oppija.birthMonth
           if (latestHandledBirthMonth != birthMonth) {

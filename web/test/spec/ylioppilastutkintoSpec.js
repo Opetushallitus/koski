@@ -63,7 +63,7 @@ describe('Ylioppilastutkinto', function () {
           extractAsText(S('.opiskeluoikeuden-tiedot, .suoritus > .properties'))
         ).to.equal(
           'Koulutus Ylioppilastutkinto 301000\n' +
-            'Oppilaitos / toimipiste Ylioppilastutkintolautakunta\n'
+            'Oppilaitos / toimipiste Ylioppilastutkintolautakunta'
         )
       })
 
