@@ -79,7 +79,7 @@ export type FormModel<O extends object> = {
 export const useForm = <O extends object>(
   initialState: O,
   startWithEditMode = false,
-  constraint?: Constraint | null,
+  constraint: Constraint | null,
   validationRules?: ValidationRule<any>[]
 ): FormModel<O> => {
   type FormModelProp<T extends keyof FormModel<O>> = FormModel<O>[T]

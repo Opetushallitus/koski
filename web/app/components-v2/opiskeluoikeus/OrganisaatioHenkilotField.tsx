@@ -86,10 +86,6 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
                 value={t(a.titteli)}
                 onChange={state.onChangeTitteli(i)}
                 errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
-                allowEmpty={
-                  props.henkilöClass ===
-                  'fi.oph.koski.schema.OrganisaatiohenkilöValinnaisellaTittelillä'
-                }
               />
             </MultiField>
           ) : (

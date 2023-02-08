@@ -181,14 +181,10 @@ const validateObject = (
     return [invalidType('object', data, path)]
   } else if (data === null || data === undefined) {
     return [invalidType('object', data, path)]
-  } else if ((data as any).$class === undefined) {
-    return [noClassName(data, path)]
   } else {
-    return Object.entries(constraint.properties)
-      .map(([key, child]) =>
-        validate((data as any)[key], child, [...path, key])
-      )
-      .flat()
+    return Object.entries(constraint.properties).flatMap(([key, child]) =>
+      validate((data as any)[key], child, [...path, key])
+    )
   }
 }
 

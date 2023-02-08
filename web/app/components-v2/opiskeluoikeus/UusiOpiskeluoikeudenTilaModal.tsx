@@ -1,6 +1,6 @@
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import React, { useCallback, useMemo } from 'react'
-import { useAllowedStrings } from '../../appstate/constraints'
+import { useAllowedStrings, useSchema } from '../../appstate/constraints'
 import { useKoodisto } from '../../appstate/koodisto'
 import { todayISODate } from '../../date/date'
 import { t } from '../../i18n/i18n'
@@ -26,7 +26,7 @@ export type UusiOpiskeluoikeudenTilaModalProps<T extends Opiskeluoikeusjakso> =
       form: UusiOpiskeluoikeusjakso<T>
     ) => NonEmptyArray<ValidationError> | undefined
     onClose: () => void
-    opiskeluoikeusjaksoClass: ClassOf<Opiskeluoikeusjakso>
+    opiskeluoikeusjaksoClass: ClassOf<T>
   }>
 
 export type UusiOpiskeluoikeusjakso<T extends Opiskeluoikeusjakso> = {
@@ -81,7 +81,8 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
   const initialState = useInitialOpiskelujaksoForm<T>(
     props.opiskeluoikeusjaksoClass
   )
-  const form = useForm(initialState, true)
+  const opiskeluoikeusjaksoSchema = useSchema(props.opiskeluoikeusjaksoClass)
+  const form = useForm(initialState, true, opiskeluoikeusjaksoSchema)
   const [päivämääräPath, tilaPath] = useMemo(
     () => [form.root.prop('alku'), form.root.prop('tila')],
     [form.root]

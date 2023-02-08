@@ -204,7 +204,10 @@ export const SuorituksenVahvistusModal = <
       </ModalBody>
       <ModalFooter>
         <FlatButton onClick={props.onCancel}>{'Peruuta'}</FlatButton>
-        <RaisedButton onClick={onSubmit} disabled={!form.errors || !vahvistus}>
+        <RaisedButton
+          onClick={onSubmit}
+          disabled={A.isNonEmpty(form.errors) || !vahvistus}
+        >
           {'Merkitse valmiiksi'}
         </RaisedButton>
       </ModalFooter>
