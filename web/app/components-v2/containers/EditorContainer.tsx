@@ -4,14 +4,17 @@ import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
 import { saveOpiskeluoikeus } from '../../util/koskiApi'
-import { mergeOpiskeluoikeusVersionumero } from '../../util/opiskeluoikeus'
-import { usePäätasonSuoritus } from '../../util/optics'
+import {
+  mergeOpiskeluoikeusVersionumero,
+  PäätasonSuoritusOf
+} from '../../util/opiskeluoikeus'
+import { päätasonSuoritusPath } from '../../util/optics'
 import { OpiskeluoikeusjaksoOf } from '../../util/schema'
 import { ItemOf } from '../../util/types'
 import { common, CommonPropsWithChildren } from '../CommonProps'
 import { Tabs } from '../controls/Tabs'
 import { FormField } from '../forms/FormField'
-import { FormModel } from '../forms/FormModel'
+import { FormModel, FormOptic, getValue } from '../forms/FormModel'
 import { Spacer } from '../layout/Spacer'
 import { Snackbar } from '../messages/Snackbar'
 import { EditBar } from '../opiskeluoikeus/EditBar'
@@ -27,21 +30,36 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
     form: FormModel<T>
     oppijaOid: string
-    onChangeSuoritus: (index: number) => void
+    onChangeSuoritus: (suoritus: ActivePäätasonSuoritus<T>) => void
     createOpiskeluoikeusjakso: (
       seed: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T['tila']>>
     ) => void
     suorituksenNimi?: (suoritus: ItemOf<T['suoritukset']>) => LocalizedString
   }>
 
+export type ActivePäätasonSuoritus<T extends Opiskeluoikeus> = {
+  index: number
+  path: FormOptic<T, PäätasonSuoritusOf<T>>
+  suoritus: PäätasonSuoritusOf<T>
+}
+
 export const EditorContainer = <T extends Opiskeluoikeus>(
   props: EditorContainerProps<T>
 ) => {
-  const [suoritusIndex, setSuoritusIndex] = useState(0)
-  const päätasonSuoritusPath = usePäätasonSuoritus<T>(suoritusIndex)
   const opiskeluoikeudenTilaPath = useMemo(
     () => props.form.root.prop('tila'),
     [props.form.root]
+  )
+
+  const onSelectSuoritus = useCallback(
+    (index: number) => {
+      const path = päätasonSuoritusPath<T>(index)
+      const suoritus = getValue(path)(props.form.state)
+      if (suoritus) {
+        props.onChangeSuoritus({ index, path, suoritus })
+      }
+    },
+    [props]
   )
 
   const onSave = useCallback(() => {
@@ -52,13 +70,6 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
   }, [props.form, props.oppijaOid])
 
   const { onChangeSuoritus: onSuoritusIndex } = props
-  const updateSuoritusIndex = useCallback(
-    (index: number) => {
-      setSuoritusIndex(index)
-      onSuoritusIndex(index)
-    },
-    [onSuoritusIndex]
-  )
 
   return (
     <article {...common(props, ['EditorContainer'])}>
@@ -84,7 +95,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
       </h2>
 
       <Tabs
-        onSelect={updateSuoritusIndex}
+        onSelect={onSelectSuoritus}
         tabs={props.form.state.suoritukset.map((s, i) => ({
           key: i,
           label: props.suorituksenNimi?.(s) || defaultSuorituksenNimi(s)
@@ -99,6 +110,21 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
       {props.form.isSaved && <Snackbar>{'Tallennettu'}</Snackbar>}
     </article>
   )
+}
+
+export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
+  form: FormModel<T>
+) => {
+  const initialState = useMemo(
+    () => ({
+      index: 0,
+      suoritus: form.state.suoritukset[0],
+      path: päätasonSuoritusPath(0)
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+  return useState<ActivePäätasonSuoritus<T>>(initialState)
 }
 
 const defaultSuorituksenNimi = (s: Suoritus): LocalizedString =>

@@ -2,6 +2,9 @@ import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/Hen
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { isYlioppilastutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/YlioppilastutkinnonOpiskeluoikeus'
+import { päätasonSuoritusPath } from './optics'
+
+export type PäätasonSuoritusOf<T extends Opiskeluoikeus> = T['suoritukset'][0]
 
 export const mergeOpiskeluoikeusVersionumero = <T extends Opiskeluoikeus>(
   oo: T,

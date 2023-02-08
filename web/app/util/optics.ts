@@ -4,6 +4,7 @@ import { FormOptic, getValue } from '../components-v2/forms/FormModel'
 import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
+import { PäätasonSuoritusOf } from './opiskeluoikeus'
 
 /**
  * Palauttaa polun, johon optiikka osoittaa annetussa datassa. Polku on muotoa esimerkiksi "lapset.0.nimi.fi".
@@ -70,10 +71,7 @@ export const lastElement = <T>() =>
 /**
  * Opiskeluoikeuden päätason suoritus
  */
-export const päätasonSuoritus = <T extends Opiskeluoikeus = Opiskeluoikeus>(
+export const päätasonSuoritusPath = <T extends Opiskeluoikeus = Opiskeluoikeus>(
   index = 0
-) => $.optic_<T>().prop('suoritukset').at(index)
-
-export const usePäätasonSuoritus = <T extends Opiskeluoikeus = Opiskeluoikeus>(
-  index = 0
-) => useMemo(() => päätasonSuoritus<T>(index), [index])
+): FormOptic<T, PäätasonSuoritusOf<T>> =>
+  $.optic_<T>().prop('suoritukset').at(index) as any
