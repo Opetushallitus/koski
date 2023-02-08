@@ -1,15 +1,7 @@
 import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as $ from 'optics-ts'
-import {
-  Dispatch,
-  Reducer,
-  ReducerAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer
-} from 'react'
+import { Reducer, useCallback, useEffect, useMemo, useReducer } from 'react'
 import { ApiResponse } from '../../api-fetch'
 import { useGlobalErrors } from '../../appstate/globalErrors'
 import { useUser } from '../../appstate/user'
@@ -21,26 +13,180 @@ import { assertNever } from '../../util/selfcare'
 import { validateData, ValidationError } from './validator'
 
 export type FormModel<O extends object> = {
+  // Lomakkeen tietojen viimeisin tila
   readonly state: O
+  // Lomakkeen tiedot ennen muokkausta ja tallennuksen jälkeen
   readonly initialState: O
+  // Muokkaustila päällä/pois
   readonly editMode: boolean
+  // Lomakkeelle on tehty muutoksia
   readonly hasChanged: boolean
+  // Tiedot on tallennettu viimeisimmän muokkaustilaan siirtymisen jälkeen
   readonly isSaved: boolean
+  // Lomakkeen tiedot ovat kunnossa (frontissa tehtävän validaation perusteella)
   readonly isValid: boolean
+  // Viimeisimmän validoinnin yhteydessä löydetyt virheet
+  readonly errors: ValidationError[]
+  // Optic lomaketietojen juureen (kts. https://akheron.github.io/optics-ts/)
   readonly root: $.Equivalence<O, $.OpticParams, O>
 
+  /**
+   * Aseta lomake muokkaustilaan
+   */
   readonly startEdit: () => void
+
+  /**
+   * Päivitä lomakkeen tietoja polun määrittelemästä paikasta.
+   *
+   * @param optic Lens tai Prism joka osoittaa muutettavaan kohtan lomakkeen tiedoissa.
+   * @param modify Funktio joka ottaa argumenttina vastaan osoitetun arvon edellisen tilan ja palauttaa uuden.
+   * @see https://akheron.github.io/optics-ts/
+   */
   readonly updateAt: <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => void
+
+  /**
+   * Validoi lomakkeen tiedot lomakkeelle annettua constraintia vasten.
+   * Validoinnin tulos tallentuu propertyihin *isValid* ja *errors*.
+   */
   readonly validate: () => void
+
+  /**
+   * Tallenna lomakkeen tiedot tietokantaan ja siirry pois muokkaustilasta, jos kutsu onnistui.
+   *
+   * @param api Funktio joka tallentaa datan (löytyvät tiedosta koskiApi.ts)
+   * @param merge Funktio joka yhdistää api-kutsun palauttaman datan lomakkeen dataan
+   */
   readonly save: <T>(
     api: (data: O) => Promise<ApiResponse<T>>,
     merge: (data: O, response: T) => O
   ) => void
+
+  /**
+   * Siirry pois muokkaustilasta ja palauta lomakkeen tiedot edeltäneeseen tilaan.
+   */
   readonly cancel: () => void
-  readonly errors: ValidationError[]
 }
 
-export type FormModelListener<O extends object> = (obj: O) => void
+/**
+ * Luo uuden lomakkeen vapaamuotoiselle datalle.
+ *
+ * @param initialState Tyhjä tai tietokannasta ladattu tila
+ * @param startWithEditMode Jos tosi, muokkaustila on päällä välittömästi
+ * @param constraint Constraint (skeema) jota vasten tiedot validoidaan
+ * @returns FormModel
+ */
+export const useForm = <O extends object>(
+  initialState: O,
+  startWithEditMode = false,
+  constraint?: Constraint | null
+): FormModel<O> => {
+  type FormModelProp<T extends keyof FormModel<O>> = FormModel<O>[T]
+
+  const user = useUser()
+  const init = useMemo(
+    () =>
+      internalInitialState(
+        initialState,
+        user?.hasWriteAccess ? startWithEditMode : false,
+        constraint
+      ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
+  const [
+    { data, initialData, editMode, hasChanged, isSaved, errors },
+    dispatch
+  ] = useReducer<Reducer<InternalFormState<O>, Action<O>>>(reducer, init)
+
+  const globalErrors = useGlobalErrors()
+
+  const startEdit: FormModelProp<'startEdit'> = useCallback(() => {
+    if (user?.hasWriteAccess) {
+      dispatch({ type: 'startEdit', constraint })
+    }
+  }, [constraint, user?.hasWriteAccess])
+
+  const cancel: FormModelProp<'cancel'> = useCallback(() => {
+    dispatch({ type: 'cancel' })
+  }, [])
+
+  const updateAt: FormModelProp<'updateAt'> = useCallback(
+    <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
+      if (editMode) {
+        dispatch({ type: 'modify', modify: modifyValue(optic)(modify) })
+      }
+    },
+    [editMode]
+  )
+
+  const validate: FormModelProp<'validate'> = useCallback(() => {
+    if (constraint && editMode) {
+      dispatch({ type: 'validate', constraint })
+    }
+  }, [constraint, editMode])
+
+  useEffect(() => {
+    validate()
+  }, [validate])
+
+  const { push: setErrors } = globalErrors
+  const save: FormModelProp<'save'> = useCallback(
+    async <T>(
+      api: (data: O) => Promise<ApiResponse<T>>,
+      merge: (data: O, response: T) => O
+    ) => {
+      if (editMode) {
+        pipe(
+          await api(data),
+          tap((response) =>
+            dispatch({ type: 'endEdit', value: merge(data, response.data) })
+          ),
+          tapLeft((errorResponse) =>
+            setErrors(
+              errorResponse.errors.map((e) => ({ message: t(e.messageKey) }))
+            )
+          )
+        )
+      }
+    },
+    [data, editMode, setErrors]
+  )
+
+  const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
+
+  return useMemo(
+    () => ({
+      state: data,
+      initialState: initialData,
+      editMode,
+      hasChanged,
+      isSaved,
+      isValid: A.isEmpty(errors),
+      root,
+      startEdit,
+      updateAt,
+      validate,
+      save,
+      cancel,
+      errors
+    }),
+    [
+      data,
+      initialData,
+      editMode,
+      hasChanged,
+      isSaved,
+      errors,
+      root,
+      startEdit,
+      updateAt,
+      validate,
+      save,
+      cancel
+    ]
+  )
+}
 
 type InternalFormState<O> = {
   initialData: O
@@ -126,117 +272,6 @@ const reducer = <O>(
     default:
       return state
   }
-}
-
-export const useForm = <O extends object>(
-  initialState: O,
-  startWithEditMode = false,
-  constraint?: Constraint | null
-): FormModel<O> => {
-  const user = useUser()
-  const init = useMemo(
-    () =>
-      internalInitialState(
-        initialState,
-        user?.hasWriteAccess ? startWithEditMode : false,
-        constraint
-      ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
-
-  const [
-    { data, initialData, editMode, hasChanged, isSaved, errors },
-    dispatch
-  ] = useReducer<Reducer<InternalFormState<O>, Action<O>>>(reducer, init)
-
-  const globalErrors = useGlobalErrors()
-
-  const startEdit = useCallback(() => {
-    if (user?.hasWriteAccess) {
-      dispatch({ type: 'startEdit', constraint })
-    }
-  }, [constraint, user?.hasWriteAccess])
-
-  const cancel = useCallback(() => {
-    dispatch({ type: 'cancel' })
-  }, [])
-
-  const updateAt = useCallback(
-    <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
-      if (editMode) {
-        dispatch({ type: 'modify', modify: modifyValue(optic)(modify) })
-      }
-    },
-    [editMode]
-  )
-
-  const validate = useCallback(() => {
-    if (constraint && editMode) {
-      dispatch({ type: 'validate', constraint })
-    }
-  }, [constraint, editMode])
-
-  useEffect(() => {
-    validate()
-  }, [validate])
-
-  const { push: setErrors } = globalErrors
-  const save = useCallback(
-    async <T>(
-      api: (data: O) => Promise<ApiResponse<T>>,
-      merge: (data: O, response: T) => O
-    ) => {
-      if (editMode) {
-        pipe(
-          await api(data),
-          tap((response) =>
-            dispatch({ type: 'endEdit', value: merge(data, response.data) })
-          ),
-          tapLeft((errorResponse) =>
-            setErrors(
-              errorResponse.errors.map((e) => ({ message: t(e.messageKey) }))
-            )
-          )
-        )
-      }
-    },
-    [data, editMode, setErrors]
-  )
-
-  const root = useMemo(() => $.optic_<O>(), [])
-
-  return useMemo(
-    () => ({
-      state: data,
-      initialState: initialData,
-      editMode,
-      hasChanged,
-      isSaved,
-      isValid: A.isEmpty(errors),
-      root,
-      startEdit,
-      updateAt,
-      validate,
-      save,
-      cancel,
-      errors
-    }),
-    [
-      data,
-      initialData,
-      editMode,
-      hasChanged,
-      isSaved,
-      errors,
-      root,
-      startEdit,
-      updateAt,
-      validate,
-      save,
-      cancel
-    ]
-  )
 }
 
 export type FormOptic<S, A> = $.Lens<S, any, A> | $.Prism<S, any, A>

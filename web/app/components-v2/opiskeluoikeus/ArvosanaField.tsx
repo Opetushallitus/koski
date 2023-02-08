@@ -6,12 +6,8 @@ import { useSchema } from '../../appstate/constraints'
 import { useKoodistoOfConstraint } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
-import { prop } from '../../util/constraints'
-import {
-  KoodistoUriOf,
-  koodiviiteId,
-  KoodiviiteWithOptionalUri
-} from '../../util/koodisto'
+import * as C from '../../util/constraints'
+import { koodiviiteId, KoodiviiteWithOptionalUri } from '../../util/koodisto'
 import { viimeisinArviointi } from '../../util/schema'
 import { schemaClassName } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
@@ -21,7 +17,7 @@ import {
   Select,
   SelectOption
 } from '../controls/Select'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 type ArvosanaOf<T extends Arviointi> = Exclude<
   T['arvosana'],
@@ -29,7 +25,7 @@ type ArvosanaOf<T extends Arviointi> = Exclude<
 >
 
 export type ArviointiViewProps<T extends Arviointi> = CommonProps<
-  FieldViewBaseProps<T[] | undefined>
+  FieldViewerProps<T[] | undefined>
 >
 
 export const ArvosanaView = <T extends Arviointi>(
@@ -42,7 +38,7 @@ export const ArvosanaView = <T extends Arviointi>(
 }
 
 export type ArviointiEditProps<T extends Arviointi> = CommonProps<
-  FieldEditBaseProps<T[] | undefined> & {
+  FieldEditorProps<T[] | undefined> & {
     createArviointi: (arvosana: ArvosanaOf<T>) => T
   }
 >
@@ -57,7 +53,9 @@ export const ArvosanaEdit = <T extends Arviointi>(
     [createArviointi]
   )
   const arviointiSchema = useSchema(schemaClass)
-  const koodisto = useKoodistoOfConstraint(prop('arvosana')(arviointiSchema))
+  const koodisto = useKoodistoOfConstraint(
+    C.singular(C.prop('arvosana')(arviointiSchema))
+  )
   const groupedKoodisto = useMemo(
     () => koodisto && groupKoodistoToOptions(koodisto),
     [koodisto]

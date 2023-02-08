@@ -12,6 +12,132 @@ import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { fetchConstraint } from '../util/koskiApi'
 import { ClassOf, ObjWithClass, schemaClassName } from '../util/types'
 
+/*
+ * CONSTRAINTS
+ *
+ * Constraint on tietomallia tai sen osaa kuvaava skeema. Siinä on piirteitä niin vanhasta editormodelista kuin myös json schemasta.
+ * Ne muodostavat puurakenteen, jossa jokainen solmu on tyypitetty. Eri tyypit löytyvät kansiosta /web/app/types/fi/oph/koski/typemodel
+ *
+ * Tyypillisiä käyttötapauksia on hakea kenttään sallittujen arvojen rajoitukset (esim. ylä- tai alaraja numeroarvolle),
+ * sallitut koodiarvot tai tietyn luokan lapsiluokkien nimet.
+ *
+ * Kaikki allaolevat hookit hyväksyvät luokan nimen lyhyessä ja pitkässä muodossa, esim. "Vahvistus" ja "fi.oph.koski.schema.Vahvistus"
+ * ovat molemmat oikein. Haku on rajoitettu vain fi.oph.koski.schema-pakettiin. Vinkki: Tietomallin luokkien nimet löytyvät myös
+ * exportatun tyypityksen konstrukorifunktioista:
+ *
+ *    import { Vahvistus } from '../types/fi/oph/koski/schema/Vahvistus'
+ *
+ *    // ...
+ *
+ *    const vahvistus = useSchema(Vahvistus.className)
+ *
+ * Tiedostosta /web/app/util/constraints.ts löytyy erilaisia apufunktioita constraintien käsittelyyn, jota on suunniteltu koostettavaksi
+ * fp-ts-kirjaston pipe-funktion kanssa. Esimerkiksi opiskeluoikeuden päätason suorituksen luokan nimen saa haettua näin:
+ *
+ *    import * as C from '../util/constraints'
+ *    import { pipe } from 'fp-ts'
+ *
+ *    // ...
+ *
+ *    const opiskeluoikeus = useSchema(opiskeluoikeusClassName)
+ *    const suoritusClassName = pipe(
+ *      opiskeluoikeus,
+ *      C.path('suoritukset.[]'),
+ *      C.className<Suoritus>()
+ *    )
+ */
+
+/**
+ * Palauttaa luokan nimeä vastaavan constraintin.
+ *
+ * @param className skeemaluokan nimi pitkässä tai lyhyessä muodossa (esim. "fi.oph.koski.schema.Vahvistus" tai pelkkä "Vahvistus")
+ * @returns Constraint jos luokka löytyi ja lataaminen onnistui, null jos haku kesken tai tietojen lataaminen epäonnistui.
+ */
+export const useSchema = (className?: string | null): Constraint | null => {
+  const { constraints, loadConstraint } = useContext(ConstraintsContext)
+  const schemaClass = useMemo(
+    () => (className && schemaClassName(className)) || className,
+    [className]
+  )
+  useEffect(() => {
+    if (schemaClass) {
+      loadConstraint(schemaClass)
+    }
+  }, [loadConstraint, schemaClass])
+  const constraint = schemaClass && constraints[schemaClass]
+  return typeof constraint === 'object' ? constraint : null
+}
+
+/**
+ * Palauttaa luokan nimen ja polun osoittaman merkkijonon (tavallisesti koodiviitteen uri tai koodiarvo) sallitut arvot.
+ * Jos arvoja ei ole rajattu, palautettu lista on tyhjä.
+ *
+ * Heittää poikkeuksen, jos:
+ *    - polun osoittamaa kenttää ei löydy
+ *    - tai polun osoittamalla kenttä ei ole merkkijono.
+ *
+ * @param className skeemaluokan nimi pitkässä tai lyhyessä muodossa (esim. "fi.oph.koski.schema.Vahvistus" tai pelkkä "Vahvistus")
+ * @param path merkkijonoon osoittava polku, esim. "tila.opiskeluoikeusjaksot.[].tila.koodiarvo"
+ * @returns string[] jos kenttä löytyi, null jos haku kesken, tietojen lataaminen epäonnistui
+ */
+export const useAllowedStrings = (
+  className: string | null | undefined,
+  path: string
+): string[] | null => {
+  const c = useSchema(className)
+  return useMemo(
+    () => pipe(c, C.asList, C.path(path), C.allAllowedStrings),
+    [c, path]
+  )
+}
+
+/**
+ * Palauttaa luokan ja polun osoittaman lapsiluokan nimen.
+ *
+ * Heittää poikkeuksen, jos:
+ *    - polun osoittamaa kenttää ei löydy
+ *    - tai polun osoittamalla kenttä ei ole luokka
+ *    - tai mahdollisia luokan nimiä on useampi kuin yksi.
+ *
+ * @param className skeemaluokan nimi pitkässä tai lyhyessä muodossa (esim. "fi.oph.koski.schema.Vahvistus" tai pelkkä "Vahvistus")
+ * @param path merkkijonoon osoittava polku, esim. "suoritukset.[].tyyppi.koodiarvo"
+ * @returns string jos kenttä löytyi, null jos haku kesken, tietojen lataaminen epäonnistui
+ */
+export const useChildClassName = <T extends ObjWithClass>(
+  className: string | null | undefined,
+  path: string
+): ClassOf<T> | null => {
+  const c = useSchema(className)
+  return useMemo(
+    () => pipe(c, C.asList, C.path(path), C.classNames<T>(), C.singular),
+    [c, path]
+  )
+}
+
+/**
+ * Palauttaa luokan ja polun osoittamien lapsiluokkien nimet.
+ *
+ * Heittää poikkeuksen, jos:
+ *    - polun osoittamaa kenttää ei löydy
+ *    - tai polun osoittamalla kenttä ei ole luokka.
+ *
+ * @param className skeemaluokan nimi pitkässä tai lyhyessä muodossa (esim. "fi.oph.koski.schema.Vahvistus" tai pelkkä "Vahvistus")
+ * @param path merkkijonoon osoittava polku, esim. "suoritukset.[].tyyppi.koodiarvo"
+ * @returns string[] jos kenttä löytyi, null jos haku kesken, tietojen lataaminen epäonnistui
+ */
+export const useChildClassNames = <T extends ObjWithClass>(
+  className: string | null | undefined,
+  path: string
+): ClassOf<T>[] | null => {
+  const c = useSchema(className)
+  return useMemo(
+    () => pipe(c, C.asList, C.path(path), C.classNames<T>()),
+    [c, path]
+  )
+}
+
+// Context
+
 const Loading = Symbol('loading')
 
 export type ConstraintsRecord = Record<string, Constraint | typeof Loading>
@@ -73,40 +199,4 @@ export const ConstraintsProvider = (props: ConstraintsProviderProps) => {
       {props.children}
     </ConstraintsContext.Provider>
   )
-}
-
-/**
- * Antaa skeemaluokan nimeä vastaavan constraintin.
- * @param className skeemaluokan nimi pitkässä tai lyhyessä muodossa (esim. "fi.oph.koski.schema.Vahvistus" tai pelkkä "Vahvistus")
- * @returns Rakennekuvauksen sekä validointitietoja
- */
-export const useSchema = (className?: string | null): Constraint | null => {
-  const { constraints, loadConstraint } = useContext(ConstraintsContext)
-  const schemaClass = useMemo(
-    () => (className && schemaClassName(className)) || className,
-    [className]
-  )
-  useEffect(() => {
-    if (schemaClass) {
-      loadConstraint(schemaClass)
-    }
-  }, [loadConstraint, schemaClass])
-  const constraint = schemaClass && constraints[schemaClass]
-  return typeof constraint === 'object' ? constraint : null
-}
-
-export const useAllowedStrings = (
-  className: string | null | undefined,
-  path: string
-): string[] | null => {
-  const c = useSchema(className)
-  return useMemo(() => pipe(c, C.path(path), C.allowedStrings), [c, path])
-}
-
-export const useChildClassName = <T extends ObjWithClass>(
-  className: string | null | undefined,
-  path: string
-): ClassOf<T> | null => {
-  const c = useSchema(className)
-  return useMemo(() => pipe(c, C.path(path), C.className<T>()), [c, path])
 }

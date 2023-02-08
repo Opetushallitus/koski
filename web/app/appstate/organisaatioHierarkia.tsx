@@ -1,3 +1,4 @@
+import * as A from 'fp-ts/Array'
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import * as E from 'fp-ts/Either'
 import { constant, identity, pipe } from 'fp-ts/lib/function'
@@ -7,38 +8,75 @@ import {
   fetchOrganisaatioHierarkia,
   queryOrganisaatioHierarkia
 } from '../util/koskiApi'
+import { useDebounce } from '../util/useDebounce'
+
+/**
+ * Palauttaa käyttäjälle organisaatiohierarkian.
+ *
+ * @param queryText Optionaalinen sanahaku
+ * @returns OrganisaatioHierarkia[]
+ */
+export const useOrganisaatioHierarkia = (
+  queryText?: string
+): OrganisaatioHierarkia[] => {
+  const { load, query, queries } = useContext(OrganisaatioHierarkiaContext)
+
+  useEffect(() => {
+    load()
+  }, [load])
+
+  useDebounce(200, (text) => text && query(text), [queryText])
+
+  return queries[asQueryKey(queryText)] || emptyResult
+}
+
+/**
+ * Palauttaa true, jos käyttäjälle palautuu yksikin organisaatio sanahaun ollessa tyhjä.
+ *
+ * @returns boolean
+ */
+export const useHasOwnOrganisaatiot = (): boolean => {
+  const { load, queries } = useContext(OrganisaatioHierarkiaContext)
+
+  useEffect(() => {
+    load()
+  }, [load])
+
+  return !!queries[ROOT_QUERY] && A.isNonEmpty(queries[ROOT_QUERY])
+}
+
+// Context provider
 
 const ROOT_QUERY = ''
 
 export type OrganisaatioHierarkiaContext = {
-  load: () => void
-  query: (searchText: string) => void
+  load: () => Promise<void>
+  query: (searchText: string) => Promise<void>
   queries: Record<string, OrganisaatioHierarkia[]>
 }
 
 class OrganisaatioHierarkiaLoader {
   cache: Record<string, OrganisaatioHierarkia[]> = {}
 
-  async query(queryText?: string): Promise<boolean> {
-    const needle = queryText?.trim() || ROOT_QUERY
-    const cached = this.cache[needle]
-    if (cached) {
-      return false
-    } else {
-      this.cache[needle] = []
-      return pipe(
-        await (needle
-          ? queryOrganisaatioHierarkia(needle)
+  async query(queryText?: string): Promise<void> {
+    const key = asQueryKey(queryText)
+    const cached = this.cache[key]
+    if (!cached) {
+      this.cache[key] = []
+      pipe(
+        await (key
+          ? queryOrganisaatioHierarkia(key)
           : fetchOrganisaatioHierarkia()),
         E.map((response) => {
-          this.cache[needle] = response.data
-          return response.data
-        }),
-        E.fold(constant(false), constant(true))
+          this.cache[key] = response.data
+        })
       )
     }
   }
 }
+
+const asQueryKey = (queryText?: string) =>
+  queryText?.trim().toLowerCase() || ROOT_QUERY
 
 const organisaatioLoader = new OrganisaatioHierarkiaLoader()
 
@@ -61,15 +99,15 @@ export const OrganisaatioHierarkiaProvider: React.FC<
   >({})
 
   const load = useCallback(async () => {
-    if (await organisaatioLoader.query(ROOT_QUERY)) {
-      setQueries(organisaatioLoader.cache)
-    }
+    await organisaatioLoader.query(ROOT_QUERY)
+    setQueries({
+      ...organisaatioLoader.cache
+    })
   }, [])
 
   const query = useCallback(async (searchText: string) => {
-    if (await organisaatioLoader.query(searchText)) {
-      setQueries(organisaatioLoader.cache)
-    }
+    await organisaatioLoader.query(searchText)
+    setQueries({ ...organisaatioLoader.cache })
   }, [])
 
   const contextValue = useMemo(
@@ -86,24 +124,6 @@ export const OrganisaatioHierarkiaProvider: React.FC<
       {props.children}
     </OrganisaatioHierarkiaContext.Provider>
   )
-}
-
-export const useOrganisaatioHierarkia = (
-  queryText?: string
-): OrganisaatioHierarkia[] => {
-  const { load, query, queries } = useContext(OrganisaatioHierarkiaContext)
-
-  useEffect(() => {
-    load()
-  }, [load])
-
-  useEffect(() => {
-    if (queryText) {
-      query(queryText)
-    }
-  }, [query, queryText])
-
-  return queries[queryText || ROOT_QUERY] || emptyResult
 }
 
 const emptyResult: OrganisaatioHierarkia[] = []

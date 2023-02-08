@@ -3,7 +3,9 @@ import { useEffect } from 'react'
 import { useSafeState } from '../api-fetch'
 
 export type ModalState = {
+  // True jos modaali on päällimmäisenä
   isActive: boolean
+  // Propertyt jotka pitää antaa modaalin sisällön omistavalle containerille
   props: ModalProps
 }
 
@@ -11,6 +13,20 @@ export type ModalProps = {
   'aria-hidden': boolean
   style?: React.CSSProperties
 }
+
+/**
+ * Rekisteröi kutsuvan komponentin modaaliksi ja palauttaa modaalille aktiivisuustiedot.
+ * Sinun ei yleensä tarvitse käyttää tätä hookia, vaan voit käyttää geneeristä Modal-komponenttia.
+ *
+ * @returns ModalState
+ */
+export const useModalState = (): ModalState => {
+  const [state, setState] = useSafeState(inactiveModalState())
+  useEffect(() => modalManager.register(setState), [setState])
+  return state
+}
+
+// Context provider
 
 export type ModalStateListener = (state: ModalState) => void
 export type Destructor = () => void
@@ -67,9 +83,3 @@ class ModalManager {
 }
 
 const modalManager = new ModalManager()
-
-export const useModalState = (): ModalState => {
-  const [state, setState] = useSafeState(inactiveModalState())
-  useEffect(() => modalManager.register(setState), [setState]) // TODO: Tästähän puuttuu unregister
-  return state
-}

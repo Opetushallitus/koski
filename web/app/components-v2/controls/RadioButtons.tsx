@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { common, CommonProps } from '../CommonProps'
-import { FieldEditBaseProps } from '../forms/FormField'
+import { FieldEditorProps } from '../forms/FormField'
 
 export type RadioButtonProps<T> = CommonProps<{
   options?: Array<RadioButtonOption<T>>
@@ -48,7 +48,7 @@ export const RadioButtons = <T,>(
 }
 
 export type RadioButtonsEditProps<T> = CommonProps<
-  FieldEditBaseProps<
+  FieldEditorProps<
     T,
     {
       getKey: (value: T) => string

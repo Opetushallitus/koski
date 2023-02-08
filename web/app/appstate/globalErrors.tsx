@@ -1,10 +1,24 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
 export type GlobalErrorContext = {
+  // Lista virheistä
   readonly errors: GlobalError[]
+  // Lisää uusia näytettäviä virheitä
   readonly push: (errors: GlobalError[]) => void
+  // Kuittaa kaikki virheet
   readonly clearAll: () => void
 }
+
+/**
+ * Palauttaa rajapinnan, jonka avulla pääsee käsiksi kaikkiin saman rajapinnan kautta julkaistuihin
+ * virheilmoituksiin. Rajapinta tarjoaa uusien virheiden ilmoittamisen sekä niiden kuittaamisen.
+ *
+ * @returns GlobalErrorContext
+ */
+export const useGlobalErrors = (): GlobalErrorContext =>
+  React.useContext(GlobalErrorContext)
+
+// Context provider
 
 export type GlobalError = {
   message: string
@@ -43,6 +57,3 @@ export const GlobalErrorProvider: React.FC<React.PropsWithChildren> = (
     </GlobalErrorContext.Provider>
   )
 }
-
-export const useGlobalErrors = (): GlobalErrorContext =>
-  React.useContext(GlobalErrorContext)

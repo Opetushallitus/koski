@@ -23,16 +23,18 @@ import {
 import { DateEdit } from '../controls/DateField'
 import { FlatButton } from '../controls/FlatButton'
 import { IconButton } from '../controls/IconButton'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { isValidationError, ValidationError } from '../forms/validator'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import {
-  OpiskeluoikeusjaksoForm,
+  UusiOpiskeluoikeusjakso,
   UusiOpiskeluoikeudenTilaModal
 } from './UusiOpiskeluoikeudenTilaModal'
 
+// Opiskeluoikeuden tila viewer
+
 export type OpiskeluoikeudenTilaViewProps<T extends OpiskeluoikeudenTila> =
-  CommonProps<FieldViewBaseProps<T>>
+  CommonProps<FieldViewerProps<T>>
 
 export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
   props: OpiskeluoikeudenTilaViewProps<T>
@@ -62,19 +64,77 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
   )
 }
 
+// Opiskeluoikeuden tila editor
+
 export type OpiskeluoikeudenTilaEditProps<T extends OpiskeluoikeudenTila> =
   CommonProps<
-    FieldEditBaseProps<
+    FieldEditorProps<
       T,
       {
         createJakso: (
-          form: OpiskeluoikeusjaksoForm<OpiskeluoikeusjaksoOf<T>>
+          form: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T>>
         ) => OpiskeluoikeusjaksoOf<T> | NonEmptyArray<ValidationError>
       }
     >
   >
 
 export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
+  props: OpiskeluoikeudenTilaEditProps<T>
+) => {
+  const oo = useOpiskeluoikeudenTilaState(props)
+
+  return (
+    <>
+      <KeyValueTable>
+        {oo.jaksot.map(({ jakso, index, min, max, isLatest }, arrIndex) => (
+          <KeyColumnedValuesRow
+            name={arrIndex === 0 ? 'Tila' : undefined}
+            className={isLatest ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
+            columnSpans={[6, '*']}
+            key={index}
+          >
+            {[
+              <DateEdit
+                key="date"
+                value={jakso.alku}
+                min={min}
+                max={max}
+                onChange={oo.onChangeDate(index)}
+              />,
+              <div key="jakso">
+                {t(jakso.tila.nimi)} {/* TODO Lisää rahoitusmuoto */}
+                {isLatest && (
+                  <IconButton
+                    charCode={CHARCODE_REMOVE}
+                    label={t('Poista')}
+                    size="input"
+                    onClick={oo.onRemoveLatest}
+                  />
+                )}
+              </div>
+            ]}
+          </KeyColumnedValuesRow>
+        ))}
+        {!oo.isTerminated && (
+          <KeyValueRow name={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}>
+            <FlatButton onClick={oo.openModal}>{'Lisää uusi'}</FlatButton>
+          </KeyValueRow>
+        )}
+      </KeyValueTable>
+      {oo.isModalVisible && props.value && oo.opiskeluoikeusjaksoClass && (
+        <UusiOpiskeluoikeudenTilaModal
+          onSubmit={oo.onAddNew}
+          onClose={oo.closeModal}
+          opiskeluoikeusjaksoClass={oo.opiskeluoikeusjaksoClass}
+        />
+      )}
+    </>
+  )
+}
+
+// State
+
+const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
   props: OpiskeluoikeudenTilaEditProps<T>
 ) => {
   const [isModalVisible, setModalVisible] = useState(false)
@@ -124,7 +184,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
 
   const onAddNew = useCallback(
     (
-      form: OpiskeluoikeusjaksoForm<OpiskeluoikeusjaksoOf<T>>
+      form: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T>>
     ): NonEmptyArray<ValidationError> | undefined => {
       const result = createJakso(form)
       if (Array.isArray(result) && isValidationError(result[0])) {
@@ -160,53 +220,17 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
     [jaksot]
   )
 
-  return (
-    <>
-      <KeyValueTable>
-        {jaksot.map(({ jakso, index, min, max, isLatest }, arrIndex) => (
-          <KeyColumnedValuesRow
-            name={arrIndex === 0 ? 'Tila' : undefined}
-            className={isLatest ? 'OpiskeluoikeudenTila-viimeisin' : undefined}
-            columnSpans={[6, '*']}
-            key={index}
-          >
-            {[
-              <DateEdit
-                key="date"
-                value={jakso.alku}
-                min={min}
-                max={max}
-                onChange={onChangeDate(index)}
-              />,
-              <div key="jakso">
-                {t(jakso.tila.nimi)} {/* TODO Lisää rahoitusmuoto */}
-                {isLatest && (
-                  <IconButton
-                    charCode={CHARCODE_REMOVE}
-                    label={t('Poista')}
-                    size="input"
-                    onClick={onRemoveLatest}
-                  />
-                )}
-              </div>
-            ]}
-          </KeyColumnedValuesRow>
-        ))}
-        {!isTerminated && (
-          <KeyValueRow name={A.isEmpty(jaksot) ? 'Tila' : undefined}>
-            <FlatButton onClick={openModal}>{'Lisää uusi'}</FlatButton>
-          </KeyValueRow>
-        )}
-      </KeyValueTable>
-      {isModalVisible && props.value && opiskeluoikeusjaksoClass && (
-        <UusiOpiskeluoikeudenTilaModal
-          onSubmit={onAddNew}
-          onClose={closeModal}
-          opiskeluoikeusjaksoClass={opiskeluoikeusjaksoClass}
-        />
-      )}
-    </>
-  )
+  return {
+    jaksot,
+    isTerminated,
+    opiskeluoikeusjaksoClass,
+    isModalVisible,
+    onChangeDate,
+    openModal,
+    closeModal,
+    onAddNew,
+    onRemoveLatest
+  }
 }
 
 // Utils

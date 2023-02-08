@@ -28,6 +28,11 @@ export const schemaClassName = (fullClassName: string): string | null => {
   return match ? match[1] : null
 }
 
+export const shortClassName = (fullClassName: string): string => {
+  const tokens = fullClassName.split('.')
+  return tokens[tokens.length - 1]
+}
+
 export const isKoodistoOf =
   <T extends string>(koodistoUri: T) =>
   (koodiviite?: Koodistokoodiviite): koodiviite is Koodistokoodiviite<T> =>

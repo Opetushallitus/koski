@@ -23,13 +23,13 @@ import { ValidationError } from '../forms/validator'
 export type UusiOpiskeluoikeudenTilaModalProps<T extends Opiskeluoikeusjakso> =
   CommonProps<{
     onSubmit: (
-      form: OpiskeluoikeusjaksoForm<T>
+      form: UusiOpiskeluoikeusjakso<T>
     ) => NonEmptyArray<ValidationError> | undefined
     onClose: () => void
     opiskeluoikeusjaksoClass: ClassOf<Opiskeluoikeusjakso>
   }>
 
-export type OpiskeluoikeusjaksoForm<T extends Opiskeluoikeusjakso> = {
+export type UusiOpiskeluoikeusjakso<T extends Opiskeluoikeusjakso> = {
   alku: string
   tila: OpiskeluoikeudenTilakoodi<KoodiarvotOf<T['tila']>>
 }
@@ -45,7 +45,7 @@ type OpiskeluoikeudenTilakoodi<S extends string = string> = Koodistokoodiviite<
 const useInitialOpiskelujaksoForm = <T extends Opiskeluoikeusjakso>(
   opiskeluoikeusjaksoClass: ClassOf<T>
 ) =>
-  useMemo<OpiskeluoikeusjaksoForm<T>>(
+  useMemo<UusiOpiskeluoikeusjakso<T>>(
     () => ({
       alku: todayISODate(),
       tila: Koodistokoodiviite({

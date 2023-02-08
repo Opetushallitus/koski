@@ -3,17 +3,17 @@ import React, { useCallback } from 'react'
 import { t } from '../../i18n/i18n'
 import { common, CommonProps, cx } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { emptyString } from '../forms/validator'
 
-export type TextViewProps = CommonProps<FieldViewBaseProps<string>>
+export type TextViewProps = CommonProps<FieldViewerProps<string>>
 
 export const TextView: React.FC<TextViewProps> = (props) => (
   <div {...common(props, ['TextView'])}>{props.value}</div>
 )
 
 export type TextEditProps = CommonProps<
-  FieldEditBaseProps<string> & {
+  FieldEditorProps<string> & {
     placeholder?: string
     autoFocus?: boolean
     allowEmpty?: boolean

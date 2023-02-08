@@ -14,10 +14,106 @@ import {
   storePreference
 } from '../util/koskiApi'
 import { tap } from '../util/fp/either'
+import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 
 type OrganisaatioOid = string
 type PreferenceType = string
 type OrganisaatioPreferences = Record<PreferenceType, StorablePreference[]>
+
+export type PreferencesHook<T extends StorablePreference> = {
+  // Lista ladatuista arvoista
+  preferences: T[]
+  // Tallenna uusi arvo (lisätään backendin puolelle ja preferences-listaan)
+  store: (key: string, t: T) => void
+  // Poista olemassaoleva arvo (poistetaan myös backendin puolelta)
+  remove: (key: string) => void
+}
+
+/**
+ * Palauttaa annetun organisaation ja määrätyn tyypin preferencet.
+ *
+ * Preference service on backendin puolella oleva avain-arvo-säilö, johon tallennetaan usein syötettäviä
+ * tietoja, kuten henkilöiden nimiä ja paikallisia osasuoritusten nimiä. Jokaisella organisaatiolla on
+ * omat säilönsä. `type`-parametrin ja geneerisen tyypin `T` pitää vastata tiedostossa
+ * PreferencesService.scala olevaa määrittelyä.
+ *
+ * @param organisaatioOid Organisaation oid
+ * @param type Preferencen tyyppi, kts. PreferencesService.scala
+ * @returns
+ */
+export const usePreferences = <T extends StorablePreference>(
+  organisaatioOid?: OrganisaatioOid,
+  type?: PreferenceType
+): PreferencesHook<T> => {
+  const {
+    load,
+    store: storePref,
+    remove: removePref,
+    preferences
+  } = useContext(PreferencesContext)
+
+  useEffect(() => {
+    if (organisaatioOid && type) {
+      load(organisaatioOid, type)
+    }
+  }, [load, organisaatioOid, type])
+
+  const store = useCallback(
+    (key: string, data: T) => {
+      if (organisaatioOid && type) {
+        storePref(organisaatioOid, type, key, data)
+      } else {
+        console.error(
+          `Cannot store a preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
+        )
+      }
+    },
+    [organisaatioOid, storePref, type]
+  )
+
+  const remove = useCallback(
+    (key: string) => {
+      if (organisaatioOid && type) {
+        removePref(organisaatioOid, type, key)
+      } else {
+        console.error(
+          `Cannot remove a preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
+        )
+      }
+    },
+    [organisaatioOid, removePref, type]
+  )
+
+  return useMemo(
+    () => ({
+      preferences: (organisaatioOid && type
+        ? preferences[organisaatioOid]?.[type] || []
+        : emptyArray) as T[],
+      store,
+      remove
+    }),
+    [organisaatioOid, type, preferences, store, remove]
+  )
+}
+
+/**
+ * Rakentaa yhdenmukaisen alityyppejä sisältävän tyypityksen nimen. Tällaisen tyypityksen käyttö vaatii
+ * PreferencesService.scala-tiedostossa assortedPrefTypes-ominaisuuden käyttöä. Alatyyppien avulla voi
+ * muodostaa hierarkian, esim. `assortedPreferenceType('taiteenperusopetus', oppimäärä, taiteenala)`
+ *
+ * @param group assortedPrefTypes-listassa mainittu nimi
+ * @param subtypes vapaavalintainen määrä alatyyppejä
+ * @returns Tyypin nimi. Jos yksikin annetuista alatyypeistä on undefined, palautetaan undefined.
+ */
+export const assortedPreferenceType = (
+  group: string,
+  ...subtypes: NonEmptyArray<string | undefined>
+): string | undefined =>
+  subtypes.some((s) => s === undefined)
+    ? undefined
+    : [group, ...subtypes].join('.')
+
+// Context provider
 
 class PreferencesLoader {
   preferences: Record<OrganisaatioOid, OrganisaatioPreferences> = {}
@@ -185,73 +281,4 @@ export const PreferencesProvider: React.FC<React.PropsWithChildren> = (
   )
 }
 
-export type PreferencesHook<T extends StorablePreference> = {
-  preferences: T[]
-  store: (key: string, t: T) => void
-  remove: (key: string) => void
-}
-
-export const usePreferences = <T extends StorablePreference>(
-  organisaatioOid?: OrganisaatioOid,
-  type?: PreferenceType
-): PreferencesHook<T> => {
-  const {
-    load,
-    store: storePref,
-    remove: removePref,
-    preferences
-  } = useContext(PreferencesContext)
-
-  useEffect(() => {
-    if (organisaatioOid && type) {
-      load(organisaatioOid, type)
-    }
-  }, [load, organisaatioOid, type])
-
-  const store = useCallback(
-    (key: string, data: T) => {
-      if (organisaatioOid && type) {
-        storePref(organisaatioOid, type, key, data)
-      } else {
-        console.error(
-          `Cannot store a preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
-        )
-      }
-    },
-    [organisaatioOid, storePref, type]
-  )
-
-  const remove = useCallback(
-    (key: string) => {
-      if (organisaatioOid && type) {
-        removePref(organisaatioOid, type, key)
-      } else {
-        console.error(
-          `Cannot remove a preference without organisaatioOid (${organisaatioOid}) and preference type (${type})`
-        )
-      }
-    },
-    [organisaatioOid, removePref, type]
-  )
-
-  return useMemo(
-    () => ({
-      preferences: (organisaatioOid && type
-        ? preferences[organisaatioOid]?.[type] || []
-        : emptyArray) as T[],
-      store,
-      remove
-    }),
-    [organisaatioOid, type, preferences, store, remove]
-  )
-}
-
 const emptyArray: OrganisaatioPreferences[] = []
-
-export const assortedPreferenceType = (
-  group: string,
-  ...subtypes: Array<string | undefined>
-): string | undefined =>
-  subtypes.some((s) => s === undefined)
-    ? undefined
-    : [group, ...subtypes].join('.')

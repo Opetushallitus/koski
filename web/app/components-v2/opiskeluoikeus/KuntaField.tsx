@@ -9,17 +9,17 @@ import {
   Select,
   SelectOption
 } from '../controls/Select'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 export type Kuntakoodiviite = Koodistokoodiviite<'kunta'>
 
-export type KuntaViewProps = CommonProps<FieldViewBaseProps<Kuntakoodiviite>>
+export type KuntaViewProps = CommonProps<FieldViewerProps<Kuntakoodiviite>>
 
 export const KuntaView: React.FC<KuntaViewProps> = (props) => (
   <div {...common(props, ['KuntaView'])}>{t(props.value?.nimi) || '–'}</div>
 )
 
-export type KuntaEditProps = CommonProps<FieldEditBaseProps<Kuntakoodiviite>>
+export type KuntaEditProps = CommonProps<FieldEditorProps<Kuntakoodiviite>>
 
 export const KuntaEdit: React.FC<KuntaEditProps> = (props) => {
   const kunnat = useKoodisto('kunta')

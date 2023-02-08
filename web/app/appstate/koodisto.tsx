@@ -15,10 +15,117 @@ import {
   Koodistokoodiviite
 } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
-import { toKoodiviite } from '../util/constraints'
+import * as C from '../util/constraints'
 import { nonNull } from '../util/fp/arrays'
 import { mapObjectValues } from '../util/fp/objects'
 import { fetchKoodistot } from '../util/koskiApi'
+
+/**
+ * Palauttaa annetun koodiston koodiarvot. Jos koodiarvot-argumentti on annettu,
+ * palautetaan vain siinä mainitut koodiarvot.
+ *
+ * @returns KoodistokoodiviiteKoodistonNimellä[] kun koodisto on saatu ladattua, null jos koodistoa vielä ladataan tai tapahtui virhe
+ */
+export function useKoodisto<T extends string>(
+  koodistoUri?: T | null,
+  koodiarvot?: string[] | null
+): KoodistokoodiviiteKoodistonNimellä<T>[] | null {
+  const koodit = useKoodistot<T>(koodistoUri)
+
+  return useMemo(
+    () =>
+      koodit &&
+      koodit.filter((koodi) =>
+        koodiarvot === undefined
+          ? true
+          : koodiarvot === null
+          ? false
+          : koodiarvot.includes(koodi.koodiviite.koodiarvo)
+      ),
+    [koodit, koodiarvot]
+  )
+}
+
+/**
+ * Palauttaa yhden tai useamman koodiston koodiarvot.
+ *
+ * @returns KoodistokoodiviiteKoodistonNimellä[] kun yksikin koodisto on saatu ladattua, muuten null.
+ */
+const useKoodistot = <T extends string>(
+  ...koodistoUris: NEA.NonEmptyArray<string | null | undefined>
+) => {
+  const { koodistot, loadKoodistot } = useContext(KoodistoContext)
+
+  useEffect(() => {
+    loadKoodistot(koodistoUris.filter(nonNull))
+  }, [koodistoUris, loadKoodistot])
+
+  return useMemo(() => {
+    const k = koodistoUris
+      .filter(nonNull)
+      .flatMap(
+        (uri) =>
+          (Array.isArray(koodistot[uri])
+            ? koodistot[uri]
+            : []) as KoodistokoodiviiteKoodistonNimellä<T>[]
+      )
+    return A.isNonEmpty(k) ? k : null
+  }, [koodistoUris, koodistot])
+}
+
+/**
+ * Palauttaa vastaavaa constraintia vastaavan koodiston.
+ *
+ * Heittää poikkeuksen, jos
+ *    - annettu constraint ei viittaa koodistokoodiviitteeseen
+ *    - tai constraint viittaa useampaan kuin yhteen koodistoon (TODO: lisää tälle tuki, jos tarvitset sitä).
+ *
+ * @returns KoodistokoodiviiteKoodistonNimellä[] kun koodisto on saatu ladattua, null jos koodistoa vielä ladataan tai tapahtui virhe
+ */
+export const useKoodistoOfConstraint = <T extends string = string>(
+  constraint: Constraint | null
+): KoodistokoodiviiteKoodistonNimellä<T>[] | null => {
+  const koodisto = useMemo(() => C.koodiviite<T>(constraint), [constraint])
+  return useKoodisto<T>(koodisto?.koodistoUri, koodisto?.koodiarvot)
+}
+
+/**
+ * Palauttaa funktion, joka täyttää sille annettuun mihin tahansa muuttujaan siitä puuttuvat koodistokoodiviitteiden nimet.
+ */
+export const useKoodistoFiller = (): (<T>(a: T) => Promise<T>) =>
+  useCallback(async <T,>(obj: T): Promise<T> => {
+    const collectKoodistoUris = (a: any): string[] =>
+      Array.isArray(a)
+        ? distinct(a.flatMap(collectKoodistoUris))
+        : typeof a === 'object'
+        ? isKoodistokoodiviite(a)
+          ? a.nimi === undefined
+            ? [a.koodistoUri]
+            : []
+          : distinct(Object.values(a).flatMap(collectKoodistoUris))
+        : []
+
+    const uris = collectKoodistoUris(obj)
+    await koodistoLoaderSingleton.loadKoodistot(uris)
+
+    const populate = <A,>(a: A): A =>
+      Array.isArray(a)
+        ? (a.map(populate) as A)
+        : typeof a === 'object'
+        ? isKoodistokoodiviite(a)
+          ? a.nimi === undefined
+            ? (koodistoLoaderSingleton.findKoodi(
+                a.koodistoUri,
+                a.koodiarvo
+              ) as A)
+            : a
+          : mapObjectValues(populate)(a)
+        : a
+
+    return populate(obj)
+  }, [])
+
+// Context provider
 
 const Loading = Symbol('loading')
 
@@ -129,90 +236,4 @@ export const KoodistoProvider = (props: KoodistoProviderProps) => {
   )
 }
 
-export function useKoodisto<T extends string>(
-  koodistoUri?: T | null,
-  koodiarvot?: string[] | null
-): KoodistokoodiviiteKoodistonNimellä<T>[] | null {
-  const { koodistot, loadKoodistot } = useContext(KoodistoContext)
-
-  useEffect(() => {
-    koodistoUri && loadKoodistot([koodistoUri])
-  }, [koodistoUri, loadKoodistot])
-
-  const koodit = useMemo(() => {
-    const k = koodistoUri && koodistot[koodistoUri]
-    return Array.isArray(k)
-      ? (k as KoodistokoodiviiteKoodistonNimellä<T>[])
-      : null
-  }, [koodistoUri, koodistot])
-
-  return useMemo(
-    () =>
-      koodit &&
-      koodit.filter((koodi) =>
-        koodiarvot === undefined
-          ? true
-          : koodiarvot === null
-          ? false
-          : koodiarvot.includes(koodi.koodiviite.koodiarvo)
-      ),
-    [koodit, koodiarvot]
-  )
-}
-
-export const useKoodistoOfConstraint = <T extends string = string>(
-  constraint: Constraint | null
-): KoodistokoodiviiteKoodistonNimellä<T>[] | null => {
-  const koodiviiteC = useMemo(() => toKoodiviite(constraint), [constraint])
-  const koodit = useKoodisto(koodiviiteC?.koodistoUri)
-  return useMemo(
-    () =>
-      (koodit?.filter(
-        (k) =>
-          !koodiviiteC?.koodiarvot ||
-          koodiviiteC.koodiarvot.includes(k.koodiviite.koodiarvo)
-      ) as KoodistokoodiviiteKoodistonNimellä<T>[]) || null,
-    [koodiviiteC, koodit]
-  )
-}
-
-/**
- * KoodistoFiller ottaa sisään minkä tahansa dataobjektin ja täyttää sieltä löytyville
- * nimettömille koodistoviitteille nimet.
- */
-export type KoodistoFiller = <T>(a: T) => Promise<T>
-
 const distinct = A.uniq(string.Eq)
-
-export const useKoodistoFiller = (): KoodistoFiller =>
-  useCallback(async <T,>(obj: T): Promise<T> => {
-    const collectKoodistoUris = (a: any): string[] =>
-      Array.isArray(a)
-        ? distinct(a.flatMap(collectKoodistoUris))
-        : typeof a === 'object'
-        ? isKoodistokoodiviite(a)
-          ? a.nimi === undefined
-            ? [a.koodistoUri]
-            : []
-          : distinct(Object.values(a).flatMap(collectKoodistoUris))
-        : []
-
-    const uris = collectKoodistoUris(obj)
-    await koodistoLoaderSingleton.loadKoodistot(uris)
-
-    const populate = <A,>(a: A): A =>
-      Array.isArray(a)
-        ? (a.map(populate) as A)
-        : typeof a === 'object'
-        ? isKoodistokoodiviite(a)
-          ? a.nimi === undefined
-            ? (koodistoLoaderSingleton.findKoodi(
-                a.koodistoUri,
-                a.koodiarvo
-              ) as A)
-            : a
-          : mapObjectValues(populate)(a)
-        : a
-
-    return populate(obj)
-  }, [])
