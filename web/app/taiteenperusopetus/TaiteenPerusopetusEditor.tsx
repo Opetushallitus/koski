@@ -1,10 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import {
-  useAllowedStrings,
-  useChildClassName,
-  useChildClassNames,
-  useSchema
-} from '../appstate/constraints'
+import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'

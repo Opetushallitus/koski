@@ -49,6 +49,7 @@ import {
   UnionConstraint
 } from '../../types/fi/oph/koski/typemodel/UnionConstraint'
 import { nonFalsy } from '../../util/fp/arrays'
+import { isValidationRule, ValidationRule } from './ValidationRule'
 
 export type ValidationError =
   | InvalidTypeError
@@ -134,12 +135,12 @@ export type NoClassNameError = {
 
 export const validateData = (
   data: unknown,
-  constraint: Constraint
+  constraint: Constraint | ValidationRule<any>
 ): ValidationError[] => validate(data, constraint, [])
 
 const validate = (
   data: unknown,
-  constraint: Constraint,
+  constraint: Constraint | ValidationRule<any>,
   path: string[]
 ): ValidationError[] => {
   if (isLocalizedString(data)) {
@@ -164,6 +165,8 @@ const validate = (
     return validateLiteral(data, constraint, path)
   } else if (isRecordConstraint(constraint)) {
     return validateRecord(data, constraint, path)
+  } else if (isValidationRule(constraint)) {
+    return constraint.isMatch(data, path) ? constraint.validate(data, path) : []
   }
   return []
 }
