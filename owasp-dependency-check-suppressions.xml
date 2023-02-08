@@ -49,4 +49,9 @@
     <packageUrl regex="true">^pkg:maven/com\.amazonaws/aws\-java\-sdk\-secretsmanager@.*$</packageUrl>
     <cve>CVE-2022-31159</cve>
   </suppress>
+  <suppress>
+    <notes>Suppress a false positive in the scalaz-core dependency.</notes>
+    <packageUrl regex="true">^pkg:maven/org\.scalaz/scalaz\-core_2\.12@.*$</packageUrl>
+    <cve>CVE-2022-2393</cve>
+  </suppress>
 </suppressions>
