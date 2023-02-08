@@ -7,7 +7,7 @@ import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Opiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
 import { KoodiarvotOf } from '../../util/koodisto'
-// import { OpiskeluoikeusjaksoOf } from '../../util/schema'
+import { isValmistuvaTerminaalitila } from '../../util/opiskeluoikeus'
 import { ClassOf } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
 import { Label } from '../containers/Label'
@@ -27,6 +27,7 @@ export type UusiOpiskeluoikeudenTilaModalProps<T extends Opiskeluoikeusjakso> =
     ) => NonEmptyArray<ValidationError> | undefined
     onClose: () => void
     opiskeluoikeusjaksoClass: ClassOf<T>
+    enableValmistuminen: boolean
   }>
 
 export type UusiOpiskeluoikeusjakso<T extends Opiskeluoikeusjakso> = {
@@ -73,9 +74,10 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
       tilat?.map((tila) => ({
         key: tila.koodiarvo,
         label: t(tila.nimi),
-        value: tila
+        value: tila,
+        disabled: !props.enableValmistuminen && isValmistuvaTerminaalitila(tila)
       })),
-    [tilat]
+    [props.enableValmistuminen, tilat]
   )
 
   const initialState = useInitialOpiskelujaksoForm<T>(

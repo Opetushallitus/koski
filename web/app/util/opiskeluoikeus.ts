@@ -31,5 +31,8 @@ export const isTerminaalitila = (tila: Koodistokoodiviite): boolean =>
     'mitatoity'
   ].includes(tila.koodiarvo)
 
+export const isValmistuvaTerminaalitila = (tila: Koodistokoodiviite): boolean =>
+  ['valmistunut', 'hyvaksytystisuoritettu'].includes(tila.koodiarvo)
+
 export const getOpiskeluoikeusOid = (oo: Opiskeluoikeus): string | undefined =>
   isYlioppilastutkinnonOpiskeluoikeus(oo) ? undefined : oo.oid

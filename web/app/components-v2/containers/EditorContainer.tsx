@@ -30,7 +30,7 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
     form: FormModel<T>
     oppijaOid: string
-    onChangeSuoritus: (suoritus: ActivePäätasonSuoritus<T>) => void
+    onChangeSuoritus: (suoritusIndex: number) => void
     createOpiskeluoikeusjakso: (
       seed: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T['tila']>>
     ) => void
@@ -51,17 +51,6 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     [props.form.root]
   )
 
-  const onSelectSuoritus = useCallback(
-    (index: number) => {
-      const path = päätasonSuoritusPath<T>(index)
-      const suoritus = getValue(path)(props.form.state)
-      if (suoritus) {
-        props.onChangeSuoritus({ index, path, suoritus })
-      }
-    },
-    [props]
-  )
-
   const onSave = useCallback(() => {
     props.form.save(
       saveOpiskeluoikeus(props.oppijaOid),
@@ -69,7 +58,10 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     )
   }, [props.form, props.oppijaOid])
 
-  const { onChangeSuoritus: onSuoritusIndex } = props
+  const suorituksetVahvistettu = props.form.state.suoritukset
+    .map((s) => Boolean(s.vahvistus))
+    .every((s) => s)
+  console.log('suorituksetVahvistettu', suorituksetVahvistettu)
 
   return (
     <article {...common(props, ['EditorContainer'])}>
@@ -86,7 +78,10 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
         path={opiskeluoikeudenTilaPath}
         view={OpiskeluoikeudenTilaView}
         edit={OpiskeluoikeudenTilaEdit}
-        editProps={{ createJakso: props.createOpiskeluoikeusjakso }}
+        editProps={{
+          enableValmistuminen: suorituksetVahvistettu,
+          createJakso: props.createOpiskeluoikeusjakso
+        }}
       />
       <Spacer />
 
@@ -95,7 +90,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
       </h2>
 
       <Tabs
-        onSelect={onSelectSuoritus}
+        onSelect={props.onChangeSuoritus}
         tabs={props.form.state.suoritukset.map((s, i) => ({
           key: i,
           label: props.suorituksenNimi?.(s) || defaultSuorituksenNimi(s)
@@ -114,17 +109,17 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 
 export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
   form: FormModel<T>
-) => {
-  const initialState = useMemo(
+): [ActivePäätasonSuoritus<T>, (suoritusIndex: number) => void] => {
+  const [index, setIndex] = useState(0)
+  const state = useMemo(
     () => ({
-      index: 0,
-      suoritus: form.state.suoritukset[0],
-      path: päätasonSuoritusPath(0)
+      index,
+      suoritus: form.state.suoritukset[index],
+      path: päätasonSuoritusPath(index)
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [form.state.suoritukset, index]
   )
-  return useState<ActivePäätasonSuoritus<T>>(initialState)
+  return [state, setIndex]
 }
 
 const defaultSuorituksenNimi = (s: Suoritus): LocalizedString =>

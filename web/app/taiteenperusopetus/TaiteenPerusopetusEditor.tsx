@@ -61,6 +61,8 @@ export const TaiteenPerusopetusEditor = (
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
   const fillKoodistot = useKoodistoFiller()
 
+  // TODO: Jatka siitä miksi suorituksen vahvistus
+
   const [
     osasuorituksetPath,
     suorituksenVahvistusPath,
@@ -142,6 +144,8 @@ export const TaiteenPerusopetusEditor = (
     [osasuoritukset]
   )
 
+  console.log('suoritus', päätasonSuoritus)
+
   return (
     <>
       <OpiskeluoikeusTitle
@@ -180,19 +184,17 @@ export const TaiteenPerusopetusEditor = (
         <Spacer />
 
         <FormField
+          key={'suopa' + päätasonSuoritus.index} // TODO: mietippä olisiko jokin siistimpi tapa hoitaa tämä, että valitun tabin vaihtuessa nää rendautuisi uudelleen ilman keyta
           form={form}
           path={suorituksenVahvistusPath}
           optional
           view={SuorituksenVahvistusView}
-          edit={(editProps) => (
-            <SuorituksenVahvistusEdit
-              {...editProps}
-              organisaatio={organisaatio}
-              vahvistusClass={
-                HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla.className
-              }
-            />
-          )}
+          edit={SuorituksenVahvistusEdit}
+          editProps={{
+            organisaatio,
+            vahvistusClass:
+              HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla.className
+          }}
         />
 
         {päätasonSuoritus.suoritus.osasuoritukset && (

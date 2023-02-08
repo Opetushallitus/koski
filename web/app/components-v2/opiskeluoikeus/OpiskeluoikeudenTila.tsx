@@ -71,6 +71,7 @@ export type OpiskeluoikeudenTilaEditProps<T extends OpiskeluoikeudenTila> =
     FieldEditorProps<
       T,
       {
+        enableValmistuminen: boolean
         createJakso: (
           form: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T>>
         ) => OpiskeluoikeusjaksoOf<T> | NonEmptyArray<ValidationError>
@@ -126,6 +127,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           onSubmit={oo.onAddNew}
           onClose={oo.closeModal}
           opiskeluoikeusjaksoClass={oo.opiskeluoikeusjaksoClass}
+          enableValmistuminen={props.enableValmistuminen}
         />
       )}
     </>
