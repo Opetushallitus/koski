@@ -89,7 +89,11 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         )}
         <Column span={spans.leftIcons} align="right">
           {props.row.content && (
-            <ExpandButton expanded={isOpen} onChange={setOpen} label="TODO" />
+            <ExpandButton
+              expanded={isOpen}
+              onChange={setOpen}
+              label={t('osasuoritus')}
+            />
           )}
         </Column>
         {Object.values<React.ReactNode>(props.row.columns).map(
