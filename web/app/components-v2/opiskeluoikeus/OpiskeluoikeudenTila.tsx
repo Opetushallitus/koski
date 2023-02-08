@@ -102,7 +102,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                 onChange={oo.onChangeDate(index)}
               />,
               <div key="jakso">
-                {t(jakso.tila.nimi)} {/* TODO Lisää rahoitusmuoto */}
+                {t(jakso.tila.nimi)}
                 {isLatest && (
                   <IconButton
                     charCode={CHARCODE_REMOVE}

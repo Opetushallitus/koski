@@ -88,7 +88,15 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
   )
 
   const onSubmit = useCallback(() => {
-    props.onSubmit(form.state) // TODO: Käsittele onSubmitin mahdollisesti palauttamat virheet
+    const errors = props.onSubmit(form.state)
+    if (errors) {
+      // onSubmitista ei tällä implementointihetkellä pitäisi tulla virheitä,
+      // joten virheiden näyttämisen voi toteuttaa myöhemmin vasta kun sitä tarvitaan.
+      console.warn(
+        'Käsittelemättömiä validointivirheitä UusiOpiskeluoikeudenTilaModalissa:',
+        errors
+      )
+    }
   }, [form.state, props])
 
   return (
