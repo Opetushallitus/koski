@@ -9,7 +9,7 @@ import { CollectableOptic } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
 import { NumberField } from '../controls/NumberField'
 import { FieldErrors } from '../forms/FieldErrors'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 /* ---------------------------------------------------------------------
  *
@@ -18,7 +18,7 @@ import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
  * ---------------------------------------------------------------------
  */
 
-export type LaajuusViewProps = CommonProps<FieldViewBaseProps<Laajuus>>
+export type LaajuusViewProps = CommonProps<FieldViewerProps<Laajuus>>
 
 export const LaajuusView = (props: LaajuusViewProps) => {
   return props.value ? (
@@ -30,7 +30,7 @@ export const LaajuusView = (props: LaajuusViewProps) => {
 }
 
 export type LaajuusEditProps<T extends Laajuus> = CommonProps<
-  FieldEditBaseProps<T> & {
+  FieldEditorProps<T> & {
     createLaajuus: (arvo: number) => T
   }
 >
@@ -75,7 +75,7 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
  */
 
 export type DefaultLaajuusEditProps<T extends Laajuus> = CommonProps<
-  FieldEditBaseProps<T>
+  FieldEditorProps<T>
 >
 
 export const LaajuusOpintopisteissäEdit: React.FC<

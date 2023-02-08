@@ -13,13 +13,13 @@ import {
   PositionalPopupHolder
 } from '../containers/PositionalPopup'
 import { FieldErrors } from '../forms/FieldErrors'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { invalidDate } from '../forms/validator'
 import { IconButton } from './IconButton'
 
 // Date viewer
 
-export type DateViewProps = CommonProps<FieldViewBaseProps<string>>
+export type DateViewProps = CommonProps<FieldViewerProps<string>>
 
 export const DateView: React.FC<DateViewProps> = (props) => {
   const formattedDate = useMemo(
@@ -32,7 +32,7 @@ export const DateView: React.FC<DateViewProps> = (props) => {
 // Date editor
 
 export type DateEditProps = CommonProps<
-  FieldEditBaseProps<
+  FieldEditorProps<
     string,
     {
       min?: string

@@ -10,10 +10,10 @@ import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { getOrganisaatioId, toOrganisaatio } from '../../util/organisaatiot'
 import { common, CommonProps } from '../CommonProps'
 import { OptionList, Select, SelectOption } from '../controls/Select'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 export type OrganisaatioViewProps<T extends Organisaatio> = CommonProps<
-  FieldViewBaseProps<T>
+  FieldViewerProps<T>
 >
 
 export const OrganisaatioView = <T extends Organisaatio>(
@@ -25,7 +25,7 @@ export const OrganisaatioView = <T extends Organisaatio>(
 )
 
 export type OrganisaatioEditProps<T extends Organisaatio> = CommonProps<
-  FieldEditBaseProps<T>
+  FieldEditorProps<T>
 >
 
 export const OrganisaatioEdit = <T extends Organisaatio>(

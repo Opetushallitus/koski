@@ -7,11 +7,11 @@ import { common, CommonProps } from '../CommonProps'
 import { FlatButton } from '../controls/FlatButton'
 import { Removable } from '../controls/Removable'
 import { TextEdit } from '../controls/TextField'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
 
 export type ArvioitsijatViewProps = CommonProps<
-  FieldViewBaseProps<Arvioitsija[] | undefined>
+  FieldViewerProps<Arvioitsija[] | undefined>
 >
 
 export const ArvioitsijatView: React.FC<ArvioitsijatViewProps> = (props) => {
@@ -27,7 +27,7 @@ export const ArvioitsijatView: React.FC<ArvioitsijatViewProps> = (props) => {
 }
 
 export type ArvioitsijatEditProps = CommonProps<
-  FieldEditBaseProps<Arvioitsija[] | undefined>
+  FieldEditorProps<Arvioitsija[] | undefined>
 >
 
 export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {

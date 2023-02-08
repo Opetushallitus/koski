@@ -23,7 +23,7 @@ import {
 import { DateEdit } from '../controls/DateField'
 import { FlatButton } from '../controls/FlatButton'
 import { IconButton } from '../controls/IconButton'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { isValidationError, ValidationError } from '../forms/validator'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import {
@@ -34,7 +34,7 @@ import {
 // Opiskeluoikeuden tila viewer
 
 export type OpiskeluoikeudenTilaViewProps<T extends OpiskeluoikeudenTila> =
-  CommonProps<FieldViewBaseProps<T>>
+  CommonProps<FieldViewerProps<T>>
 
 export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
   props: OpiskeluoikeudenTilaViewProps<T>
@@ -68,7 +68,7 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
 
 export type OpiskeluoikeudenTilaEditProps<T extends OpiskeluoikeudenTila> =
   CommonProps<
-    FieldEditBaseProps<
+    FieldEditorProps<
       T,
       {
         createJakso: (

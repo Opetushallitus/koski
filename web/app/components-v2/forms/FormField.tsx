@@ -8,15 +8,15 @@ import { FormModel, FormOptic, getValue } from './FormModel'
 import { useFormErrors } from './useFormErrors'
 import { ValidationError } from './validator'
 
-export type FieldViewBaseProps<T, P extends object = object> = P & {
+export type FieldViewerProps<T, P extends object = object> = P & {
   value?: T | undefined
 }
 
-export type FieldEditBaseProps<T, P extends object = object> = P & {
+export type FieldEditorProps<T, P extends object = object> = P & {
   initialValue?: T | undefined
   value?: T | undefined
-  optional?: boolean
   onChange: (value?: T) => void
+  optional?: boolean
   errors?: NEA.NonEmptyArray<ValidationError>
 }
 
@@ -25,19 +25,26 @@ export type FormFieldProps<
   T,
   VP extends object,
   EP extends object,
-  VIEW_PROPS extends FieldViewBaseProps<T, VP>,
-  EDIT_PROPS extends FieldEditBaseProps<T, EP>
+  VIEW_PROPS extends FieldViewerProps<T, VP>,
+  EDIT_PROPS extends FieldEditorProps<T, EP>
 > = {
+  // Lomake johon kenttä kytketään
   form: FormModel<O>
-
-  updateAlso?: Array<SideUpdate<O, T, any>>
-  errorsFromPath?: string
+  // Komponentti jota käytetään arvon näyttämiseen normaalitilassa
   view: React.FC<VIEW_PROPS>
+  // Näyttökomponentille annettavat lisäpropertyt
   viewProps?: VP
+  // Komponentti jota käytetään arvon näyttämiseen ja muokkaamiseen muokkaustilassa
   edit?: React.FC<EDIT_PROPS>
+  // Muokkauskomponentille annettavat lisäpropertyt
   editProps?: EP
+  // Funktio joka laskee kentän arvon automaattisesti (esim. laajuuksien yhteismäärä). Tätä käytetäessä älä käytä edit-propertya.
   auto?: () => T | undefined
-} & (
+  // Muut kohteet lomakedatassa, jotka päivitetään myös kentän arvoa muokatessa
+  updateAlso?: Array<SideUpdate<O, T, any>>
+  // Polku mitä käytetään virheiden hakemiseen, jos eri kuin mikä voidaan muodostaa path-propertysta.
+  errorsFromPath?: string
+} & ( // Polku (Lens tai Prism) joka osoittaa mitä arvoa lomakkeen datasta ollaan muokkaamassa
   | { path: FormOptic<O, T>; optional?: false }
   | { path: FormOptic<O, T | undefined>; optional: true }
 )
@@ -57,13 +64,19 @@ export const sideUpdate =
     update: (sideValue?: S) => transform(value, sideValue)
   })
 
+/**
+ * Lomakkeen kenttä. Vaihtaa automaattisesti muokkaustilassa käytettävän komponentin ja huolehtii kommunikoinnista FormModelin kanssa.
+ *
+ * @param props
+ * @returns
+ */
 export const FormField = <
   O extends object,
   T,
   VP extends object,
   EP extends object,
-  VIEW_PROPS extends FieldViewBaseProps<T, VP>,
-  EDIT_PROPS extends FieldEditBaseProps<T, EP>
+  VIEW_PROPS extends FieldViewerProps<T, VP>,
+  EDIT_PROPS extends FieldEditorProps<T, EP>
 >(
   props: FormFieldProps<O, T, VP, EP, VIEW_PROPS, EDIT_PROPS>
 ) => {

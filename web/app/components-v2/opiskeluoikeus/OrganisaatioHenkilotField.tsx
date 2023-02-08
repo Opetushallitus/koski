@@ -16,14 +16,14 @@ import { MultiField } from '../containers/MultiField'
 import { Removable } from '../controls/Removable'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 import { TextEdit } from '../controls/TextField'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
 import { CHARCODE_ADD, IconLabel } from '../texts/Icon'
 
 // Organisaatiohenkilö viewer
 
 export type OrganisaatioHenkilötViewProps<T extends AnyOrganisaatiohenkilö> =
-  CommonProps<FieldViewBaseProps<T[] | undefined>>
+  CommonProps<FieldViewerProps<T[] | undefined>>
 
 export const OrganisaatioHenkilötView = <T extends AnyOrganisaatiohenkilö>(
   props: OrganisaatioHenkilötViewProps<T>
@@ -46,7 +46,7 @@ export const OrganisaatioHenkilötView = <T extends AnyOrganisaatiohenkilö>(
 
 export type OrganisaatioHenkilötEditProps<T extends AnyOrganisaatiohenkilö> =
   CommonProps<
-    FieldEditBaseProps<
+    FieldEditorProps<
       T[] | undefined,
       {
         henkilöClass: ClassOf<T>

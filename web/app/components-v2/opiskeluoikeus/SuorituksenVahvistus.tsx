@@ -8,12 +8,12 @@ import { ClassOf } from '../../util/types'
 import { common, CommonProps, CommonPropsWithChildren } from '../CommonProps'
 import { FlatButton } from '../controls/FlatButton'
 import { RaisedButton } from '../controls/RaisedButton'
-import { FieldEditBaseProps, FieldViewBaseProps } from '../forms/FormField'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { Trans } from '../texts/Trans'
 import { SuorituksenVahvistusModal } from './SuorituksenVahvistusModal'
 
 export type SuorituksenVahvistusViewProps<T extends Vahvistus> = CommonProps<
-  FieldViewBaseProps<T | undefined>
+  FieldViewerProps<T | undefined>
 >
 
 export const SuorituksenVahvistusView = <T extends Vahvistus>({
@@ -24,7 +24,7 @@ export const SuorituksenVahvistusView = <T extends Vahvistus>({
 )
 
 export type SuorituksenVahvistusEditProps<T extends Vahvistus> = CommonProps<
-  FieldEditBaseProps<
+  FieldEditorProps<
     T | undefined,
     {
       vahvistusClass: ClassOf<T>
