@@ -42,7 +42,7 @@ class MuuAmmatillinenRaporttiSpec
     }
 
     "Voidaan ladata eri lokalisaatiolla ja tuottaa auditlogin" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/muuammatillinen", expectedRaporttiNimi = "muuammatillinen", expectedFileNamePrefix = "muu_ammatillinen_koski_raportti", lang = "sv")
+      verifyRaportinLataaminen(apiUrl = "api/raportit/muuammatillinen", expectedRaporttiNimi = "muuammatillinen", expectedFileNamePrefix = "övrig_yrkesutbildning_koski_rapport", lang = "sv")
     }
 
     "Raportin hakuväli päivämäärä rajaus" - {

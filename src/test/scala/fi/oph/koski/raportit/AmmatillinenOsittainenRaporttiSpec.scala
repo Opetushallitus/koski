@@ -55,7 +55,7 @@ class AmmatillinenOsittainenRaporttiSpec
       verifyRaportinLataaminen(
         apiUrl = "api/raportit/ammatillinenosittainensuoritustietojentarkistus",
         expectedRaporttiNimi = s"ammatillinenosittainensuoritustietojentarkistus",
-        expectedFileNamePrefix = "Ammatillinen_tutkinnon_osa_ja_osia",
+        expectedFileNamePrefix = "Yrkesinriktad_examensdel_och_delar",
         lang = "sv"
       )
     }

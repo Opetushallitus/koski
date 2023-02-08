@@ -57,7 +57,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
     "Raportti voidaan ladata eri lokalisaatiolla ja lataaminen tuottaa auditlogin" in {
       authGet(s"api/raportit/ibsuoritustietojentarkistus?oppilaitosOid=$ressunLukio&alku=2018-01-01&loppu=2022-01-01&raportinTyyppi=ibtutkinto&osasuoritustenAikarajaus=false&lang=sv&password=salasana") {
         verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="ib_suoritustiedot_ib-tutkinto_${ressunLukio}_2018-01-01_2022-01-01.xlsx"""")
+        response.headers("Content-Disposition").head should equal(s"""attachment; filename="ib_prestationsuppgifter_ib-examen_${ressunLukio}_2018-01-01_2022-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=ibsuoritustietojentarkistus&oppilaitosOid=$ressunLukio&alku=2018-01-01&loppu=2022-01-01&raportinTyyppi=ibtutkinto&osasuoritustenAikarajaus=false&lang=sv")))
       }
@@ -78,18 +78,18 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
         lazy val expectedPetteri = Map(
           "Opiskeluoikeuden oid" -> "",
           "Lähdejärjestelmä" -> None,
-          "Koulutustoimija" -> "Helsingin kaupunki",
+          "Koulutustoimijan nimi" -> "Helsingin kaupunki",
           "Oppilaitoksen nimi" -> "Ressun lukio",
-          "Toimipiste" -> "Ressun lukio",
+          "Toimipisteen nimi" -> "Ressun lukio",
           "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
           "Päivitetty" -> LocalDate.now,
           "Yksilöity" -> true,
           "Oppijan oid" -> ibPredicted.oid,
-          "Hetu" -> ibPredicted.hetu,
+          "hetu" -> ibPredicted.hetu,
           "Sukunimi" -> ibPredicted.sukunimi,
           "Etunimet" -> ibPredicted.etunimet,
           "Opiskeluoikeuden alkamispäivä" -> Some(LocalDate.of(2012, 9, 1)),
-          "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
+          "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
           "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna, valmistunut",
           "Päätason suoritusten nimet" -> Some("IB-tutkinto (International Baccalaureate)"),
           "Opiskeluoikeuden päättymispäivä" -> Some(LocalDate.of(2016, 6, 4)),
@@ -125,18 +125,18 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
         lazy val expectedPetteri = Map(
           "Opiskeluoikeuden oid" -> "",
           "Lähdejärjestelmä" -> None,
-          "Koulutustoimija" -> "Helsingin kaupunki",
+          "Koulutustoimijan nimi" -> "Helsingin kaupunki",
           "Oppilaitoksen nimi" -> "Ressun lukio",
-          "Toimipiste" -> "Ressun lukio",
+          "Toimipisteen nimi" -> "Ressun lukio",
           "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
           "Päivitetty" -> LocalDate.now,
           "Yksilöity" -> true,
           "Oppijan oid" -> ibPredicted.oid,
-          "Hetu" -> ibPredicted.hetu,
+          "hetu" -> ibPredicted.hetu,
           "Sukunimi" -> ibPredicted.sukunimi,
           "Etunimet" -> ibPredicted.etunimet,
           "Opiskeluoikeuden alkamispäivä" -> Some(LocalDate.of(2012, 9, 1)),
-          "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
+          "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
           "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna, valmistunut",
           "Päätason suoritusten nimet" -> Some("Pre-IB"),
           "Opiskeluoikeuden päättymispäivä" -> Some(LocalDate.of(2016, 6, 4)),
@@ -193,18 +193,18 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
         lazy val expectedPate = Map(
           "Opiskeluoikeuden oid" -> "",
           "Lähdejärjestelmä" -> None,
-          "Koulutustoimija" -> "Helsingin kaupunki",
+          "Koulutustoimijan nimi" -> "Helsingin kaupunki",
           "Oppilaitoksen nimi" -> "Ressun lukio",
-          "Toimipiste" -> "Ressun lukio",
+          "Toimipisteen nimi" -> "Ressun lukio",
           "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
           "Päivitetty" -> LocalDate.now,
           "Yksilöity" -> true,
           "Oppijan oid" -> ibPreIB2019.oid,
-          "Hetu" -> ibPreIB2019.hetu,
+          "hetu" -> ibPreIB2019.hetu,
           "Sukunimi" -> ibPreIB2019.sukunimi,
           "Etunimet" -> ibPreIB2019.etunimet,
           "Opiskeluoikeuden alkamispäivä" -> Some(LocalDate.of(2012, 9, 1)),
-          "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
+          "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
           "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna, valmistunut",
           "Päätason suoritusten nimet" -> Some("Pre-IB 2019"),
           "Opiskeluoikeuden päättymispäivä" -> Some(LocalDate.of(2016, 6, 4)),

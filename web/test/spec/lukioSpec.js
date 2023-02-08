@@ -27,7 +27,7 @@ describe('Lukiokoulutus', function () {
           'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 8.8.2016\n' +
             'Tila 8.8.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
             '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
-            'Oppimäärä suoritettu kyllä\n' +
+            'Lukion oppimäärä suoritettu kyllä\n' +
             'Lisätiedot\n' +
             'Erityisen koulutustehtävän jaksot 1.9.2012 — 1.9.2013 Tehtävä Kieliin painottuva koulutus\n' +
             'Ulkomaanjaksot 1.9.2012 — 1.9.2013 Maa Ruotsi Kuvaus Harjoittelua ulkomailla\n' +
@@ -75,7 +75,7 @@ describe('Lukiokoulutus', function () {
             'Tanssi ja liike *\nITT1 *\n10 1 10\n(10,0)\n' +
             'Teemaopinnot\nMTA *\nS 1 S\n' +
             'Oman äidinkielen opinnot\nOA1 *\nS 1 S\n' +
-            'Suoritettujen kurssien laajuus yhteensä: 89,5\n' +
+            'Suoritettujen kurssien määrä yhteensä: 89,5\n' +
             '* = paikallinen kurssi tai oppiaine'
         )
       })

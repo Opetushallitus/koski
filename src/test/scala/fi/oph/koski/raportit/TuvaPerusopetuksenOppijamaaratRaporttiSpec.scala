@@ -156,7 +156,7 @@ class TuvaPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Mat
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
       authGet(s"api/raportit/tuvaperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2021-10-01&lang=fi&password=salasana") {
         verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="tuva_perusopetus_vos_raportti-2021-10-01.xlsx"""")
+        response.headers("Content-Disposition").head should equal(s"""attachment; filename="tuva_perusopetus_tunnuslukuraportti-2021-10-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
         AuditLogTester.verifyAuditLogMessage(
           Map(
@@ -172,7 +172,7 @@ class TuvaPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Mat
     "Raportti voidaan ladata eri lokalisaatiolla ja lataaminen tuottaa auditlogin" in {
       authGet(s"api/raportit/tuvaperusopetuksenoppijamaaratraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2021-10-01&lang=sv&password=salasana") {
         verifyResponseStatusOk()
-        response.headers("Content-Disposition").head should equal(s"""attachment; filename="tuva_perusopetus_vos_raportti-2021-10-01.xlsx"""")
+        response.headers("Content-Disposition").head should equal(s"""attachment; filename="hux_grundlaggande_nyckeltalsrapport-2021-10-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
         AuditLogTester.verifyAuditLogMessage(
           Map(

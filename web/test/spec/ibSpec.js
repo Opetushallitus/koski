@@ -70,7 +70,7 @@ describe('IB', function () {
             'Terveystieto\nTE1\n7 1 7\n(7,0)\n' +
             'Opinto-ohjaus\nOP1\nS 1 7\n' +
             'Teemaopinnot\nMTA *\nS 1 S\n' +
-            'Suoritettujen kurssien laajuus yhteensä: 32\n' +
+            'Suoritettujen kurssien määrä yhteensä: 32\n' +
             '* = paikallinen kurssi tai oppiaine'
         )
       })

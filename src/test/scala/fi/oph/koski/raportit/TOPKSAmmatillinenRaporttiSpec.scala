@@ -43,7 +43,7 @@ class TOPKSAmmatillinenRaporttiSpec
     }
 
     "Voidaan ladata eri lokalisaatiolla ja tuottaa auditlogin" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/topksammatillinen", expectedRaporttiNimi = "topksammatillinen", expectedFileNamePrefix = "topks_ammatillinen_koski_raportti", lang = "sv")
+      verifyRaportinLataaminen(apiUrl = "api/raportit/topksammatillinen", expectedRaporttiNimi = "topksammatillinen", expectedFileNamePrefix = "mindre_än_examensdel_koski_rapport", lang = "sv")
     }
 
     "Raportin hakuvälin päivämäärä rajaus" - {

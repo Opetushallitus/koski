@@ -25,7 +25,7 @@ describe('Lukiokoulutus2019', function () {
           'Opiskeluoikeuden voimassaoloaika : 1.8.2019 — 1.8.2021\n' +
             'Tila 1.8.2021 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
             '1.8.2019 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
-            'Oppimäärä suoritettu kyllä'
+            'Lukion oppimäärä suoritettu kyllä'
         )
       })
 
