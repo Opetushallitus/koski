@@ -2,6 +2,7 @@ import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as NEA from 'fp-ts/NonEmptyArray'
 import * as O from 'fp-ts/Option'
+import { ISO2FinnishDate } from '../../date/date'
 import {
   isLocalizedString,
   LocalizedString
@@ -10,7 +11,19 @@ import {
   ArrayConstraint,
   isArrayConstraint
 } from '../../types/fi/oph/koski/typemodel/ArrayConstraint'
+import {
+  BooleanConstraint,
+  isBooleanConstraint
+} from '../../types/fi/oph/koski/typemodel/BooleanConstraint'
 import { Constraint } from '../../types/fi/oph/koski/typemodel/Constraint'
+import {
+  DateConstraint,
+  isDateConstraint
+} from '../../types/fi/oph/koski/typemodel/DateConstraint'
+import {
+  isLiteralConstraint,
+  LiteralConstraint
+} from '../../types/fi/oph/koski/typemodel/LiteralConstraint'
 import {
   isNumberConstraint,
   NumberConstraint
@@ -24,6 +37,10 @@ import {
   OptionalConstraint
 } from '../../types/fi/oph/koski/typemodel/OptionalConstraint'
 import {
+  isRecordConstraint,
+  RecordConstraint
+} from '../../types/fi/oph/koski/typemodel/RecordConstraint'
+import {
   isStringConstraint,
   StringConstraint
 } from '../../types/fi/oph/koski/typemodel/StringConstraint'
@@ -36,12 +53,13 @@ import { nonFalsy } from '../../util/fp/arrays'
 export type ValidationError =
   | InvalidTypeError
   | EmptyStringError
+  | NoMatchingValueError<any>
   | InvalidDateError
   | MustBeGreaterThanError
   | MustBeAtLeastError
   | MustBeLesserThanError
   | MustBeAtMostError
-  | NoMatchError
+  | NoMatchingClassError
   | NoClassNameError
 
 export const isValidationError = (a: any): a is ValidationError =>
@@ -57,6 +75,13 @@ export type InvalidTypeError = {
 export type EmptyStringError = {
   type: 'emptyString'
   path: string
+}
+
+export type NoMatchingValueError<T> = {
+  type: 'noMatchingValue'
+  path: string
+  expected: T[]
+  actual: T
 }
 
 export type InvalidDateError = {
@@ -93,8 +118,8 @@ export type MustBeAtMostError = {
   path: string
 }
 
-export type NoMatchError = {
-  type: 'noMatch'
+export type NoMatchingClassError = {
+  type: 'noMatchingClass'
   expected: string[]
   actual: any
   data: any
@@ -131,6 +156,14 @@ const validate = (
     return validateNumber(data, constraint, path)
   } else if (isStringConstraint(constraint)) {
     return validateString(data, constraint, path)
+  } else if (isBooleanConstraint(constraint)) {
+    return validateBoolean(data, constraint, path)
+  } else if (isDateConstraint(constraint)) {
+    return validateDate(data, constraint, path)
+  } else if (isLiteralConstraint(constraint)) {
+    return validateLiteral(data, constraint, path)
+  } else if (isRecordConstraint(constraint)) {
+    return validateRecord(data, constraint, path)
   }
   return []
 }
@@ -179,11 +212,15 @@ const validateUnion = (
 ): ValidationError[] => {
   const className = (data as any)?.$class as string
   if (!className) {
-    return [noMatch(Object.keys(constraint.anyOf), className, data, path)]
+    return [
+      noMatchingClass(Object.keys(constraint.anyOf), className, data, path)
+    ]
   }
   const childC = constraint.anyOf[className]
   if (!childC) {
-    return [noMatch(Object.keys(constraint.anyOf), className, data, path)]
+    return [
+      noMatchingClass(Object.keys(constraint.anyOf), className, data, path)
+    ]
   }
   return validate(data, childC, path)
 }
@@ -229,24 +266,90 @@ const validateNumber = (
   return [invalidType('number', data, path)]
 }
 
-// | StringConstraint
+// StringConstraint
 const validateString = (
   data: unknown,
   constraint: StringConstraint,
   path: string[]
 ): ValidationError[] => {
   if (typeof data === 'string') {
-    return [data.length === 0 && emptyString(path)].filter(nonFalsy)
+    return [
+      data.length === 0 && emptyString(path),
+      constraint.enum &&
+        A.isNonEmpty(constraint.enum) &&
+        !constraint.enum.includes(data) &&
+        noMatchingValue(constraint.enum, data, path)
+    ].filter(nonFalsy)
   }
   return [invalidType('string', data, path)]
 }
 
-// TODO: Implement rest of the constraints
-// | AnyConstraint
-// | BooleanConstraint
-// | DateConstraint
-// | LiteralConstraint
-// | RecordConstraint
+// BooleanConstraint
+
+const validateBoolean = (
+  data: unknown,
+  constraint: BooleanConstraint,
+  path: string[]
+): ValidationError[] => {
+  if (typeof data === 'boolean') {
+    return [
+      constraint.enum &&
+        A.isNonEmpty(constraint.enum) &&
+        constraint.enum.includes(data) &&
+        noMatchingValue(constraint.enum, data, path)
+    ].filter(nonFalsy)
+  }
+  return [invalidType('boolean', data, path)]
+}
+
+// DateConstraint
+
+const validateDate = (
+  data: unknown,
+  _constraint: DateConstraint,
+  path: string[]
+): ValidationError[] => {
+  if (typeof data === 'string') {
+    return [ISO2FinnishDate(data) ? null : invalidDate(data, path)].filter(
+      nonFalsy
+    )
+  }
+  return [invalidType('ISO 8601 date string', data, path)]
+}
+
+// LiteralConstraint
+
+const validateLiteral = (
+  data: unknown,
+  constraint: LiteralConstraint,
+  path: string[]
+): ValidationError[] => {
+  if (typeof data === 'string') {
+    return [
+      data === constraint.constant
+        ? null
+        : noMatchingValue([constraint.constant], data, path)
+    ].filter(nonFalsy)
+  }
+  return [invalidType('string', data, path)]
+}
+
+// RecordConstraint
+const validateRecord = (
+  data: unknown,
+  constraint: RecordConstraint,
+  path: string[]
+): ValidationError[] => {
+  if (typeof data !== 'object') {
+    return [invalidType('object', data, path)]
+  } else if (data === null || data === undefined) {
+    return [invalidType('object', data, path)]
+  } else {
+    return Object.entries(data).flatMap(([key, value]) =>
+      validate(value, constraint.items, [...path, key])
+    )
+  }
+}
 
 // LocalizationString
 const validateLocalizationString = (
@@ -279,6 +382,17 @@ const invalidType = (
 export const emptyString = (path: string[]): EmptyStringError => ({
   type: 'emptyString',
   path: pathToString(path)
+})
+
+export const noMatchingValue = <T>(
+  expected: T[],
+  actual: T,
+  path: string[]
+): NoMatchingValueError<T> => ({
+  type: 'noMatchingValue',
+  path: pathToString(path),
+  expected,
+  actual
 })
 
 export const invalidDate = (
@@ -334,13 +448,13 @@ export const mustBeAtMost = (
   path: pathToString(path)
 })
 
-export const noMatch = (
+export const noMatchingClass = (
   expected: string[],
   actual: any,
   data: any,
   path: string[]
-): NoMatchError => ({
-  type: 'noMatch',
+): NoMatchingClassError => ({
+  type: 'noMatchingClass',
   expected,
   actual,
   data,
