@@ -1,5 +1,6 @@
 import * as Eq from 'fp-ts/Eq'
 import { localize } from '../i18n/i18n'
+import { Henkilö } from '../types/fi/oph/koski/schema/Henkilo'
 import {
   isLocalizedString,
   LocalizedString
@@ -7,6 +8,7 @@ import {
 import { Organisaatio } from '../types/fi/oph/koski/schema/Organisaatio'
 import { Organisaatiohenkilö } from '../types/fi/oph/koski/schema/Organisaatiohenkilo'
 import { OrganisaatiohenkilöValinnaisellaTittelillä } from '../types/fi/oph/koski/schema/OrganisaatiohenkiloValinnaisellaTittelilla'
+import { isUusiHenkilö } from '../types/fi/oph/koski/schema/UusiHenkilo'
 import { getOrganisaatioId, OrganisaatioEq } from './organisaatiot'
 import { ClassOf } from './types'
 
@@ -56,3 +58,6 @@ export const OrganisaatiohenkilöEq: Eq.Eq<AnyOrganisaatiohenkilö> = {
     )
   }
 }
+
+export const getHenkilöOid = (h: Henkilö): string | undefined =>
+  isUusiHenkilö(h) ? undefined : h.oid

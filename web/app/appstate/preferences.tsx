@@ -46,6 +46,7 @@ export const usePreferences = <T extends StorablePreference>(
   type?: PreferenceType
 ): PreferencesHook<T> => {
   const {
+    available,
     load,
     store: storePref,
     remove: removePref,
@@ -53,10 +54,10 @@ export const usePreferences = <T extends StorablePreference>(
   } = useContext(PreferencesContext)
 
   useEffect(() => {
-    if (organisaatioOid && type) {
+    if (organisaatioOid && type && available) {
       load(organisaatioOid, type)
     }
-  }, [load, organisaatioOid, type])
+  }, [available, load, organisaatioOid, type])
 
   const store = useCallback(
     (key: string, data: T) => {
@@ -201,6 +202,7 @@ class PreferencesLoader {
 const preferencesLoader = new PreferencesLoader()
 
 export type PreferencesContext = {
+  available: boolean
   preferences: Record<OrganisaatioOid, OrganisaatioPreferences>
   load: (organisaatioOid: OrganisaatioOid, type: PreferenceType) => void
   store: (
@@ -221,6 +223,7 @@ const providerMissing = () => {
 }
 
 const initialContextValue: PreferencesContext = {
+  available: false,
   preferences: {},
   load: providerMissing,
   store: providerMissing,
@@ -270,7 +273,7 @@ export const PreferencesProvider: React.FC<React.PropsWithChildren> = (
   )
 
   const contextValue: PreferencesContext = useMemo(
-    () => ({ preferences, load, store, remove }),
+    () => ({ available: true, preferences, load, store, remove }),
     [preferences, load, store, remove]
   )
 
