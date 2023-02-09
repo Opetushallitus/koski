@@ -29,13 +29,9 @@ import {
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
-import {
-  SuorituksenVahvistusEdit,
-  SuorituksenVahvistusView
-} from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
+import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { Trans } from '../components-v2/texts/Trans'
 import { localize, t } from '../i18n/i18n'
-import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
@@ -61,16 +57,9 @@ export const TaiteenPerusopetusEditor = (
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
   const fillKoodistot = useKoodistoFiller()
 
-  // TODO: Jatka siitä miksi suorituksen vahvistus
-
-  const [
-    osasuorituksetPath,
-    suorituksenVahvistusPath,
-    opiskeluoikeudenLaajuusPath
-  ] = useMemo(
+  const [osasuorituksetPath, opiskeluoikeudenLaajuusPath] = useMemo(
     () => [
       päätasonSuoritus.path.prop('osasuoritukset').optional(),
-      päätasonSuoritus.path.prop('vahvistus'),
       päätasonSuoritus.path.prop('koulutusmoduuli').prop('laajuus')
     ],
     [päätasonSuoritus.path]
@@ -181,17 +170,10 @@ export const TaiteenPerusopetusEditor = (
 
         <Spacer />
 
-        <FormField
+        <SuorituksenVahvistusField
           form={form}
-          path={suorituksenVahvistusPath}
-          optional
-          view={SuorituksenVahvistusView}
-          edit={SuorituksenVahvistusEdit}
-          editProps={{
-            organisaatio,
-            vahvistusClass:
-              HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla.className
-          }}
+          suoritusPath={päätasonSuoritus.path}
+          organisaatio={organisaatio}
         />
 
         {päätasonSuoritus.suoritus.osasuoritukset && (

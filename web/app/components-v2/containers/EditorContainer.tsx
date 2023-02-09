@@ -48,7 +48,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 ) => {
   const opiskeluoikeudenTilaPath = useMemo(
     () => props.form.root.prop('tila'),
-    [props.form.root]
+    [props.form]
   )
 
   const onSave = useCallback(() => {
