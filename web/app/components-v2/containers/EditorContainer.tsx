@@ -61,7 +61,6 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
   const suorituksetVahvistettu = props.form.state.suoritukset
     .map((s) => Boolean(s.vahvistus))
     .every((s) => s)
-  console.log('suorituksetVahvistettu', suorituksetVahvistettu)
 
   return (
     <article {...common(props, ['EditorContainer'])}>
