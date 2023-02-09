@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
+import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import {
   EditorContainer,
@@ -23,6 +24,7 @@ import {
   laajuusSum,
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
+import { OpiskeluoikeudenSuostumuksenPeruminen } from '../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import {
   OsasuoritusRowData,
@@ -139,6 +141,11 @@ export const TaiteenPerusopetusEditor = (
         opiskeluoikeus={form.state}
         koulutus={tpoKoulutuksenNimi(form.state)}
       />
+
+      <KansalainenOnly>
+        <OpiskeluoikeudenSuostumuksenPeruminen opiskeluoikeus={form.state} />
+      </KansalainenOnly>
+
       <EditorContainer
         form={form}
         oppijaOid={props.oppijaOid}
@@ -167,15 +174,12 @@ export const TaiteenPerusopetusEditor = (
             />
           </KeyValueRow>
         </KeyValueTable>
-
         <Spacer />
-
         <SuorituksenVahvistusField
           form={form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
         />
-
         {päätasonSuoritus.suoritus.osasuoritukset && (
           <OsasuoritusTable
             editMode={form.editMode}
@@ -190,7 +194,6 @@ export const TaiteenPerusopetusEditor = (
             onRemove={onRemoveOsasuoritus}
           />
         )}
-
         {form.editMode && (
           <ColumnRow>
             <Column span={1} spanPhone={0} />

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useUser } from '../../appstate/user'
+import { useVirkailijaUser } from '../../appstate/user'
 
 export const RequiresWriteAccess: React.FC<React.PropsWithChildren> = (props) =>
-  useUser()?.hasWriteAccess ? <>{props.children}</> : null
+  useVirkailijaUser()?.hasWriteAccess ? <>{props.children}</> : null
