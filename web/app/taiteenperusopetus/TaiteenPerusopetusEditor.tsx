@@ -144,8 +144,6 @@ export const TaiteenPerusopetusEditor = (
     [osasuoritukset]
   )
 
-  console.log('suoritus', päätasonSuoritus)
-
   return (
     <>
       <OpiskeluoikeusTitle
@@ -159,7 +157,7 @@ export const TaiteenPerusopetusEditor = (
         createOpiskeluoikeusjakso={TaiteenPerusopetuksenOpiskeluoikeusjakso}
         suorituksenNimi={tpoSuorituksenNimi}
       >
-        <KeyValueTable>
+        <KeyValueTable key={'kikka' + päätasonSuoritus.index}>
           <KeyValueRow name="Taiteenala">
             <Trans>
               {päätasonSuoritus.suoritus.koulutusmoduuli.taiteenala.nimi}
@@ -184,7 +182,6 @@ export const TaiteenPerusopetusEditor = (
         <Spacer />
 
         <FormField
-          key={'suopa' + päätasonSuoritus.index} // TODO: mietippä olisiko jokin siistimpi tapa hoitaa tämä, että valitun tabin vaihtuessa nää rendautuisi uudelleen ilman keyta
           form={form}
           path={suorituksenVahvistusPath}
           optional
@@ -199,7 +196,6 @@ export const TaiteenPerusopetusEditor = (
 
         {päätasonSuoritus.suoritus.osasuoritukset && (
           <OsasuoritusTable
-            key={päätasonSuoritus.index}
             editMode={form.editMode}
             rows={päätasonSuoritus.suoritus.osasuoritukset.map(
               (_, osasuoritusIndex) =>
@@ -218,7 +214,6 @@ export const TaiteenPerusopetusEditor = (
             <Column span={1} spanPhone={0} />
             <Column span={15} spanPhone={24}>
               <PaikallinenOsasuoritusSelect
-                key={päätasonSuoritus.index}
                 tunnisteet={storedOsasuoritustunnisteet}
                 onSelect={onAddOsasuoritus}
                 onRemove={onRemoveStoredOsasuoritus}
