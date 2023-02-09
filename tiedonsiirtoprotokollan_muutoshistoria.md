@@ -1,3 +1,10 @@
+## 8.2.2023
+
+- Ylioppilastutkinnon opiskeluoikeuteen on lisätty valinnaiset kentät sitä ennakoiden, että YO-tutkinnon opiskeluoikeudet
+tallennetaan tulevaisuudessa myös Koskeen. Datan sisällössä ainut muutos on, että YO-tutkinnon päätason suorituksen
+toimipiste-kentässä palautetaan aina jatkossa Ylioppilastutkintolautakunnan organisaation tiedot, jos muuta dataa ei ole
+saatavilla.
+
 ## 26.1.2023
 - Taiteen perusopetuksen osasuorituksille lisätty valinnainen tunnustettu-rakenne.
 

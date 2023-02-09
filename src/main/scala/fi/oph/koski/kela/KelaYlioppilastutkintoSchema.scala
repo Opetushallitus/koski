@@ -35,10 +35,10 @@ object KelaYlioppilastutkinnonOpiskeluoikeus {
         s.koulutusmoduuli.perusteenDiaarinumero,
         s.koulutusmoduuli.koulutustyyppi.map(KelaKoodistokoodiviite.fromKoskiSchema)
       ),
-      s.toimipiste.map(t => Toimipiste(
-        t.oid,
-        t.nimi,
-        t.kotipaikka.map(KelaKoodistokoodiviite.fromKoskiSchema)
+      Some(Toimipiste(
+        s.toimipiste.oid,
+        s.toimipiste.nimi,
+        s.toimipiste.kotipaikka.map(KelaKoodistokoodiviite.fromKoskiSchema)
       )),
       vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
       osasuoritukset = s.osasuoritukset.map(opt => opt.map(os => KelaYlioppilastutkinnonOsasuoritus(

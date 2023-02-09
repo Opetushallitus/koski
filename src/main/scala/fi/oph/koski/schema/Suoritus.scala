@@ -216,7 +216,10 @@ trait PäätasonSuoritus extends Suoritus {
   }
 }
 
-trait KoskeenTallennettavaPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen
+// TODO: TOR-1639: yhdistä tämä KoskeenTallennettavaPäätasonSuoritus kanssa samalla kun YO-tutkinnon tallennus toteutetaan. Ja korjaa tarvittavat validoinnit, testit jne.
+trait KoskeenTallennettavanKaltainenPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen
+
+trait KoskeenTallennettavaPäätasonSuoritus extends KoskeenTallennettavanKaltainenPäätasonSuoritus
 
 trait OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[A <: Laajuus] extends PäätasonSuoritus {
   override def osasuoritukset: Option[List[OpintopistelaajuuksienYhteislaskennallinenSuoritus[A]]] = None

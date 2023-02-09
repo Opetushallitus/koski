@@ -4,7 +4,11 @@ import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
+import java.time.LocalDateTime
+
 case class YlioppilastutkinnonOpiskeluoikeus(
+  oid: Option[String] = None,
+  versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
@@ -13,14 +17,14 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   @MinItems(1) @MaxItems(1)
   suoritukset: List[YlioppilastutkinnonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
-  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.ylioppilastutkinto
-) extends Opiskeluoikeus {
+  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.ylioppilastutkinto,
+  aikaleima: Option[LocalDateTime] = None
+  ) extends KoskeenTallennettavanKaltainenOpiskeluoikeus {
   override def arvioituPäättymispäivä = None
   override def päättymispäivä = None
-  override def oid = None
-  override def versionumero = None
   override def lisätiedot = None
   override def sisältyyOpiskeluoikeuteen = None
+  override def organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
 }
 
 case class YlioppilastutkinnonOpiskeluoikeudenTila(
@@ -31,7 +35,7 @@ case class YlioppilastutkinnonOpiskeluoikeudenTila(
 case class YlioppilastutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
-  toimipiste: Option[OrganisaatioWithOid],
+  toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Organisaatiovahvistus] = None,
   pakollisetKokeetSuoritettu: Boolean,
   @Description("Ylioppilastutkinnon kokeiden suoritukset")
@@ -39,7 +43,7 @@ case class YlioppilastutkinnonSuoritus(
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi")
-) extends PäätasonSuoritus with MahdollisestiToimipisteellinen with Arvioinniton with KoulusivistyskieliYlioppilasKokeenSuorituksesta
+) extends KoskeenTallennettavanKaltainenPäätasonSuoritus with Arvioinniton with KoulusivistyskieliYlioppilasKokeenSuorituksesta
 
 case class YlioppilastutkinnonKokeenSuoritus(
   @Title("Koe")
