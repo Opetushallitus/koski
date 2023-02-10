@@ -182,6 +182,7 @@ export const SuorituksenVahvistusModal = <
             optional
             view={OrganisaatioView}
             edit={OrganisaatioEdit}
+            editProps={{ include: [props.organisaatio] }}
           />
         </Label>
 
