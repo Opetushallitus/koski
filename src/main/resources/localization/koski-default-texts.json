@@ -2450,5 +2450,9 @@
   "validation:mustBeLesser": "Arvon pitää olla vähemmän kuin {{error}}",
   "validation:invalidDate": "Virheellinen päivämäärä",
   "validation:other": "Odottamaton virhe, ota yhteyttä KOSKI-tiimiin (lisätiedot: {{details}}",
-  "Tallennettu": "Tallennettu"
+  "Tallennettu": "Tallennettu",
+  "Laajan oppimäärän perusopinnot": "Laajan oppimäärän perusopinnot",
+  "Laajan oppimäärän syventävät opinnot": "Laajan oppimäärän syventävät opinnot",
+  "Yleisen oppimäärän teemaopinnot": "Yleisen oppimäärän teemaopinnot",
+  "Yleisen oppimäärän yhteiset opinnot": "Yleisen oppimäärän yhteiset opinnot"
 }

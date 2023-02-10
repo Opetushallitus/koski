@@ -43,6 +43,7 @@ import { TaiteenPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/s
 import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
 import { append, deleteAt } from '../util/fp/arrays'
+import { KoodiarvotOf } from '../util/koodisto'
 import { createTpoArviointi } from './tpoCommon'
 import { TpoOsasuoritusProperties } from './TpoOsasuoritusProperties'
 
@@ -272,9 +273,24 @@ const tpoKoulutuksenNimi = (
 
 const tpoSuorituksenNimi = (
   suoritus: TaiteenPerusopetuksenPäätasonSuoritus
-): LocalizedString =>
-  localize(
-    `${t(suoritus.tyyppi.lyhytNimi) || t(suoritus.tyyppi.nimi)}, ${t(
+): LocalizedString => {
+  const titles: Record<
+    KoodiarvotOf<TaiteenPerusopetuksenPäätasonSuoritus['tyyppi']>,
+    string
+  > = {
+    taiteenperusopetuksenlaajanoppimaaranperusopinnot:
+      'Laajan oppimäärän perusopinnot',
+    taiteenperusopetuksenlaajanoppimaaransyventavatopinnot:
+      'Laajan oppimäärän syventävät opinnot',
+    taiteenperusopetuksenyleisenoppimaaranteemaopinnot:
+      'Yleisen oppimäärän teemaopinnot',
+    taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot:
+      'Yleisen oppimäärän yhteiset opinnot'
+  }
+
+  return localize(
+    `${t(titles[suoritus.tyyppi.koodiarvo])}, ${t(
       suoritus.koulutusmoduuli.taiteenala.nimi
     ).toLowerCase()}`
   )
+}
