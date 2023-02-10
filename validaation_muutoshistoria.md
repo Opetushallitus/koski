@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 10.2.2023
+
+- Sallittu väliaikaisesti oppilaitoksen vaihto tilanteessa, jossa vaihdetaan oppilaitoksesta 1.2.246.562.10.13857290038 oppilaitokseen 1.2.246.562.10.38485743660
+
 ## 25.1.2023
 - Tutkintoon valmentavan koulutuksen (TUVA) jaksolta vaaditaan rahoitustieto kun jakson tila on `valmistunut`, `lasna` tai `loma`.
 
