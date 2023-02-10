@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { common, CommonProps, cx } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
@@ -17,9 +17,13 @@ export type TextEditProps = CommonProps<
 >
 
 export const TextEdit: React.FC<TextEditProps> = (props) => {
+  const [internalValue, setInternalValue] = useState(props.value)
+  useEffect(() => setInternalValue(props.value), [props.value])
+
   const { onChange } = props
   const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
+      setInternalValue(event.target.value)
       onChange(event.target.value)
     },
     [onChange]
@@ -33,7 +37,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
           props.errors && 'TextEdit__input--error'
         )}
         placeholder={props.placeholder}
-        value={props.value}
+        value={internalValue}
         onChange={onChangeCB}
         autoFocus={props.autoFocus}
       />
