@@ -88,6 +88,11 @@ export const removePreference = (
 export const fetchOmatTiedotOppija = () =>
   handleExpiredSession(apiGet<Oppija>(apiUrl('omattiedotV2/oppija')))
 
+export const fetchSuoritusjako = (id: string) =>
+  handleExpiredSession(
+    apiPost<Oppija>(apiUrl(`suoritusjakoV3`), { body: { secret: id } })
+  )
+
 export type SuoritusjakoTehty = {
   tehty: boolean
 }

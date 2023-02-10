@@ -7,12 +7,17 @@ import {
   useSafeState
 } from '../../api-fetch'
 import { modelData } from '../../editor/EditorModel'
+import { Contextualized } from '../../types/EditorModelContext'
 import { ObjectModel } from '../../types/EditorModels'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../../types/fi/oph/koski/schema/Oppija'
-import { intersects } from '../../util/fp/arrays'
+import { intersects, last } from '../../util/fp/arrays'
 import { getHenkilöOid } from '../../util/henkilo'
-import { fetchOmatTiedotOppija, fetchOppija } from '../../util/koskiApi'
+import {
+  fetchOmatTiedotOppija,
+  fetchOppija,
+  fetchSuoritusjako
+} from '../../util/koskiApi'
 import { getOpiskeluoikeusOid } from '../../util/opiskeluoikeus'
 import { OpiskeluoikeudenTyyppiOf } from '../../util/types'
 import { opiskeluoikeusEditors } from './uiAdapters'
@@ -50,7 +55,7 @@ export type OpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
   opiskeluoikeus: T
 }
 
-export const useOppijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
+export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
   const oppijaOid = modelData(oppijaModel, 'henkilö.oid')
   const oppija = useApiMethod(fetchOppija)
 
@@ -67,9 +72,16 @@ export const useOppijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
 }
 
 export const useKansalainenUiAdapter = (
-  kansalainenModel: ObjectModel
+  kansalainenModel: ObjectModel & Contextualized<{ suoritusjako: boolean }>
 ): UiAdapter => {
-  const oppija = useApiMethod(fetchOmatTiedotOppija)
+  const isSuoritusjako = Boolean(kansalainenModel.context.suoritusjako)
+  const suoritusjakoId = isSuoritusjako
+    ? last(window.location.href.split('/'))
+    : undefined
+
+  const oppija = useApiMethod(
+    isSuoritusjako ? fetchSuoritusjako : fetchOmatTiedotOppija
+  )
 
   const ooTyypit: string[] =
     modelData(kansalainenModel, 'opiskeluoikeudet')?.flatMap(
@@ -77,7 +89,13 @@ export const useKansalainenUiAdapter = (
         oppilaitos.opiskeluoikeudet?.map((o: any) => o.tyyppi.koodiarvo) || []
     ) || []
 
-  return useUiAdapterImpl(ooTyypit, oppija.call, oppija)
+  return useUiAdapterImpl(
+    ooTyypit,
+    () => {
+      oppija.call(suoritusjakoId || 'xxx')
+    },
+    oppija
+  )
 }
 
 const useUiAdapterImpl = <T extends any[]>(

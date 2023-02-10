@@ -33,7 +33,7 @@ import fi.oph.koski.raportit.RaportitServlet
 import fi.oph.koski.raportointikanta.{RaportointikantaService, RaportointikantaServlet}
 import fi.oph.koski.servlet._
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
-import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2}
+import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2, SuoritusjakoServletV3}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusServlet
 import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
@@ -104,6 +104,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing {
     mount("/koski/api/omattiedotV2", new OmatTiedotServletV2)
     mount("/koski/api/suoritusjako", new SuoritusjakoServlet)
     mount("/koski/api/suoritusjakoV2", new SuoritusjakoServletV2)
+    mount("/koski/api/suoritusjakoV3", new SuoritusjakoServletV3)
     mount("/koski/api/opiskeluoikeus", new OpiskeluoikeusServlet)
     mount("/koski/api/opiskeluoikeus/perustiedot", new OpiskeluoikeudenPerustiedotServlet)
     mount("/koski/api/opiskeluoikeus/validate", new OpiskeluoikeusValidationServlet)

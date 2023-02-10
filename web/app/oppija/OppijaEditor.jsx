@@ -1,7 +1,7 @@
 import React from 'baret'
 import { addContext, modelData, modelItems } from '../editor/EditorModel'
 import { OpiskeluoikeusEditor } from '../opiskeluoikeus/OpiskeluoikeusEditor'
-import { useOppijaUiAdapter } from '../components-v2/interoperability/useUiAdapter'
+import { useVirkailijaUiAdapter } from '../components-v2/interoperability/useUiAdapter'
 import { currentLocation } from '../util/location.js'
 import { flatMapArray } from '../util/util'
 import OpiskeluoikeudetNavBar from './OpiskeluoikeudetNavBar'
@@ -18,7 +18,7 @@ export const OppijaEditor = ({ model }) => {
       )
     : 0
 
-  const uiAdapter = useOppijaUiAdapter(model)
+  const uiAdapter = useVirkailijaUiAdapter(model)
 
   return (
     <>
