@@ -118,7 +118,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
         ))}
         {!oo.isTerminated && (
           <KeyValueRow name={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}>
-            <FlatButton onClick={oo.openModal}>{'Lisää uusi'}</FlatButton>
+            <FlatButton onClick={oo.openModal}>{'lisää uusi'}</FlatButton>
           </KeyValueRow>
         )}
       </KeyValueTable>

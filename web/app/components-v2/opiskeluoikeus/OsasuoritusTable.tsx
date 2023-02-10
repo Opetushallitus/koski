@@ -92,7 +92,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
             <ExpandButton
               expanded={isOpen}
               onChange={setOpen}
-              label={t('osasuoritus')}
+              label={t('Osasuoritus')}
             />
           )}
         </Column>

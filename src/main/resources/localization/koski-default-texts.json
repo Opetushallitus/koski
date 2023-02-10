@@ -2318,6 +2318,7 @@
   "Tämän opiskeluoikeuden tiedot näytetään antamasi suostumuksen perusteella.": "Tämän opiskeluoikeuden tiedot näytetään antamasi suostumuksen perusteella.",
   "Takaisin": "Takaisin",
   "Suostumuksen peruminen: Vapaan sivistystyön koulutus": "Suostumuksen peruminen: Vapaan sivistystyön koulutus",
+  "Suostumuksen peruminen": "Suostumuksen peruminen",
   "Kyllä, peru suostumus": "Kyllä, peru suostumus",
   "Lisää kokonaisuus": "Lisää kokonaisuus",
   "Osaamiskokonaisuus": "Osaamiskokonaisuus",
@@ -2448,5 +2449,6 @@
   "validation:mustBeGreater": "Arvon pitää olla enemmän kuin {{limit}}",
   "validation:mustBeLesser": "Arvon pitää olla vähemmän kuin {{error}}",
   "validation:invalidDate": "Virheellinen päivämäärä",
-  "validation:other": "Odottamaton virhe, ota yhteyttä KOSKI-tiimiin (lisätiedot: {{details}}"
+  "validation:other": "Odottamaton virhe, ota yhteyttä KOSKI-tiimiin (lisätiedot: {{details}}",
+  "Tallennettu": "Tallennettu"
 }

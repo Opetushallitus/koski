@@ -583,7 +583,7 @@ const LisääPaikallinen = ({
                 option.uusi ? 'uusi' : 'lisää ' + option.tunniste.koodiarvo
               }
               displayValue={(option) =>
-                option.uusi ? 'Lisää uusi' : option.tunniste.nimi.fi
+                option.uusi ? 'lisää uusi' : option.tunniste.nimi.fi
               }
               selectionText={lisääText}
               isRemovable={() => true}
