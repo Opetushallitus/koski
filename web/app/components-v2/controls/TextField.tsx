@@ -41,3 +41,29 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
     </label>
   )
 }
+
+export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
+  const { onChange } = props
+  const onChangeCB: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback(
+    (event) => {
+      onChange(event.target.value)
+    },
+    [onChange]
+  )
+
+  return (
+    <label {...common(props, ['TextEdit'])}>
+      <textarea
+        className={cx(
+          'TextEdit__input',
+          props.errors && 'TextEdit__input--error'
+        )}
+        placeholder={props.placeholder}
+        value={props.value}
+        onChange={onChangeCB}
+        autoFocus={props.autoFocus}
+      />
+      <FieldErrors errors={props.errors} />
+    </label>
+  )
+}

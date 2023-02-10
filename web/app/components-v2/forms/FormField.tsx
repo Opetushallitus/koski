@@ -155,6 +155,7 @@ export const FormField = <
           optional={Boolean(optional)}
           onChange={set}
           errors={A.isNonEmpty(errors) ? errors : undefined}
+          path={path}
         />
       )
     }

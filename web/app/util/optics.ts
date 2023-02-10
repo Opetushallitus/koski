@@ -1,6 +1,7 @@
 import * as $ from 'optics-ts'
 import { useMemo } from 'react'
 import { FormOptic, getValue } from '../components-v2/forms/FormModel'
+import { localize, t } from '../i18n/i18n'
 import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -56,6 +57,8 @@ export const allLanguages = $.optic_<LocalizedString>().iso(
       en: str
     })
 )
+
+export const currentLanguage = $.optic_<LocalizedString>().iso(t, localize)
 
 /**
  * Linssi jolla voi viitata taulukon viimeiseen alkioon
