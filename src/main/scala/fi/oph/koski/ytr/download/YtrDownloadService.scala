@@ -16,7 +16,7 @@ class YtrDownloadService(
 ) extends QueryMethods with Logging {
   val status = new YtrDownloadStatus(db)
 
-  val converter = new YtrDownloadOppijaConverter(
+  val oppijaConverter = new YtrDownloadOppijaConverter(
     application.koodistoViitePalvelu,
     application.organisaatioRepository,
     application.koskiLocalizationRepository
@@ -81,7 +81,7 @@ class YtrDownloadService(
     val ssnDataObservable = splitToOneMonthIntervals(birthmonthStart, birthmonthEnd)
       .flatMap {
         case MonthParameters(birthmonthStart, birthmonthEnd) =>
-          Observable.from(application.ytrClient.oppijaHetutBySyntymäaika(birthmonthStart, birthmonthEnd))
+          Observable.from(application.ytrClient.getHetutBySyntymäaika(birthmonthStart, birthmonthEnd))
       }
 
     startDownloadingAndUpdateToKoskiDatabase(
@@ -117,7 +117,7 @@ class YtrDownloadService(
 
     status.setLoading
 
-    val ssnDataObservable = Observable.from(application.ytrClient.oppijaHetutByModifiedSince(modifiedSince))
+    val ssnDataObservable = Observable.from(application.ytrClient.getHetutByModifiedSince(modifiedSince))
 
     startDownloadingAndUpdateToKoskiDatabase(
       createOppijatObservable(ssnDataObservable),
@@ -164,7 +164,7 @@ class YtrDownloadService(
 
           // TODO: TOR-1639: Datan konversio ja kirjoitus Koskeen
           try {
-            converter.convert(oppija)
+            oppijaConverter.convertOppijastaOpiskeluoikeus(oppija)
           } catch {
             case e: Throwable => logger.info(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
           }

@@ -11,7 +11,7 @@ import java.time.LocalDate
 
 class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   val application = KoskiApplication.apply
-  private val converter = new YtrDownloadOppijaConverter(
+  private val oppijaConverter = new YtrDownloadOppijaConverter(
     application.koodistoViitePalvelu,
     application.organisaatioRepository,
     application.koskiLocalizationRepository
@@ -117,6 +117,6 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
       )
     )
 
-    converter.convert(simppeliOppija) should equal (Some(expectedYlioppilastutkinto))
+    oppijaConverter.convertOppijastaOpiskeluoikeus(simppeliOppija) should equal (Some(expectedYlioppilastutkinto))
   }
 }

@@ -13,18 +13,18 @@ import org.json4s.JValue
 import java.time.LocalDate
 
 trait YtrClient {
+  // Rajapinnat, joilla haetaan kaikki YTL:n datat.
   def oppijaByHetu(hetu: String): Option[YtrOppija] = oppijaJsonByHetu(hetu).map(JsonSerializer.extract[YtrOppija](_, ignoreExtras = true))
-  def oppijaJsonByHetu(hetu: String): Option[JValue]
-
-  // Rajapinnat, joilla haetaan kaikki YTL:n datat
-  def oppijaHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[YtrSsnData] = oppijaJsonHetutBySyntymäaika(birthmonthStart, birthmonthEnd).map(JsonSerializer.extract[YtrSsnData](_, ignoreExtras = true))
-  def oppijaJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue]
-
-  def oppijaHetutByModifiedSince(modifiedSince: LocalDate): Option[YtrSsnData] = oppijaJsonHetutByModifiedSince(modifiedSince).map(JsonSerializer.extract[YtrSsnData](_, ignoreExtras = true))
-  def oppijaJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue]
-
   def oppijatByHetut(ssnData: YtrSsnData): List[YtrLaajaOppija] = oppijatJsonByHetut(ssnData).map(JsonSerializer.extract[List[YtrLaajaOppija]](_, ignoreExtras = true)).getOrElse(List.empty)
+
+  def oppijaJsonByHetu(hetu: String): Option[JValue]
   def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue]
+
+  def getHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[YtrSsnData] = getJsonHetutBySyntymäaika(birthmonthStart, birthmonthEnd).map(JsonSerializer.extract[YtrSsnData](_, ignoreExtras = true))
+  def getJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue]
+
+  def getHetutByModifiedSince(modifiedSince: LocalDate): Option[YtrSsnData] = getJsonHetutByModifiedSince(modifiedSince).map(JsonSerializer.extract[YtrSsnData](_, ignoreExtras = true))
+  def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue]
 }
 
 object YtrClient extends Logging {
@@ -54,9 +54,9 @@ object YtrClient extends Logging {
 object EmptyYtrClient extends YtrClient {
   override def oppijaJsonByHetu(hetu: String): None.type = None
 
-  override def oppijaJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue] = None
+  override def getJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue] = None
 
-  override def oppijaJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue] = None
+  override def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue] = None
 
   override def oppijatJsonByHetut(ssnData: YtrSsnData): Option[JValue] = None
 }
@@ -66,12 +66,12 @@ object MockYrtClient extends YtrClient {
   def filename(hetu: String): String = "src/main/resources" + resourcename(hetu)
   private def resourcename(hetu: String) = "/mockdata/ytr/" + hetu + ".json"
 
-  override def oppijaJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue] =
+  override def getJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue] =
     JsonResources.readResourceIfExists(hetutResourceName(birthmonthStart, birthmonthEnd))
   private def hetutResourceName(birthmonthStart: String, birthmonthEnd: String) =
     s"/mockdata/ytr/ssns_${birthmonthStart}_${birthmonthEnd}.json"
 
-  override def oppijaJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue] =
+  override def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue] =
     JsonResources.readResourceIfExists(hetutResourceName(modifiedSince.toString))
   private def hetutResourceName(modifiedSince: String) =
     s"/mockdata/ytr/ssns_${modifiedSince}.json"
@@ -94,11 +94,11 @@ case class RemoteYtrClient(rootUrl: String, user: String, password: String) exte
     runIO(http.get(uri"/api/oph-koski/student/$hetu")(Http.parseJsonOptional[JValue]))
   }
 
-  override def oppijaJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue] = {
+  override def getJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue] = {
     runIO(http.get(uri"/api/oph-registrydata/ssns?birthmonthStart=${birthmonthStart}&birthmonthEnd=${birthmonthEnd}")(Http.parseJsonOptional[JValue]))
   }
 
-  override def oppijaJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue] = {
+  override def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue] = {
     runIO(http.get(uri"/api/oph-registrydata/ssns?modifiedSince=${modifiedSince.toString}")(Http.parseJsonOptional[JValue]))
   }
 

@@ -16,7 +16,7 @@ class YtrDownloadOppijaConverter(
 
   private val ytl = conversionUtils.ytl
 
-  def convert(ytrLaajaOppija: YtrLaajaOppija): Option[YlioppilastutkinnonOpiskeluoikeus] = {
+  def convertOppijastaOpiskeluoikeus(ytrLaajaOppija: YtrLaajaOppija): Option[YlioppilastutkinnonOpiskeluoikeus] = {
     Some(YlioppilastutkinnonOpiskeluoikeus(
       lähdejärjestelmänId = None,
       oppilaitos = None,
@@ -30,16 +30,16 @@ class YtrDownloadOppijaConverter(
           ),
           pakollisetKokeetSuoritettu = ytrLaajaOppija.hasCompletedMandatoryExams.getOrElse(false),
           osasuoritukset = Some(ytrLaajaOppija.examinations
-            .flatMap(ex => ex.examinationPeriods
-              .flatMap(ep => ep.exams
-                .map(x => YlioppilastutkinnonKokeenSuoritus(
+            .flatMap(examination => examination.examinationPeriods
+              .flatMap(period => period.exams
+                .map(exam => YlioppilastutkinnonKokeenSuoritus(
                   koulutusmoduuli = YlioppilasTutkinnonKoe(
-                    tunniste = conversionUtils.requiredKoodi("koskiyokokeet", x.examId)
+                    tunniste = conversionUtils.requiredKoodi("koskiyokokeet", exam.examId)
                   ),
-                  tutkintokerta = conversionUtils.convertTutkintokerta(ep.examinationPeriod),
-                  arviointi = x.grade.map(grade =>
-                    List(conversionUtils.convertArviointi(grade, x.gradePoints))
-                  )
+                  tutkintokerta = conversionUtils.convertTutkintokerta(period.examinationPeriod),
+                  arviointi = exam.grade.map(grade =>
+                    List(conversionUtils.convertArviointi(grade, exam.gradePoints))
+                  ),
                 ))
               )
             )
