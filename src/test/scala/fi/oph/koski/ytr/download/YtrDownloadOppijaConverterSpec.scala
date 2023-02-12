@@ -2,7 +2,8 @@ package fi.oph.koski.ytr.download
 
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.schema.{Koodistokoodiviite, Organisaatiovahvistus, YlioppilasTutkinnonKoe, YlioppilaskokeenArviointi, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerta}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, ressunLukio}
+import fi.oph.koski.schema.{Koodistokoodiviite, Organisaatiovahvistus, YlioppilasTutkinnonKoe, YlioppilaskokeenArviointi, YlioppilastutkinnonKokeenSuoritus, YlioppilastutkinnonOpiskeluoikeudenLisätiedot, YlioppilastutkinnonOpiskeluoikeudenTila, YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus, YlioppilastutkinnonTutkintokerranLisätiedot, YlioppilastutkinnonTutkintokerta, YlioppilastutkinnonTutkintokokonaisuudenLisätiedot}
 import fi.oph.koski.ytr.MockYrtClient
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -17,13 +18,14 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
     application.koskiLocalizationRepository
   )
 
-  val ytl =
-    application.organisaatioRepository.getOrganisaatio("1.2.246.562.10.43628088406")
+  val ytl = application.organisaatioRepository
+      .getOrganisaatio("1.2.246.562.10.43628088406")
       .flatMap(_.toKoulutustoimija)
+    .get
+  val helsinki = application.koodistoViitePalvelu
+      .validate("kunta", "091")
       .get
-  val helsinki =
-    application.koodistoViitePalvelu.validate("kunta", "091")
-      .get
+
   val kevät = application.koskiLocalizationRepository.get("kevät")
   val syksy = application.koskiLocalizationRepository.get("syksy")
 
@@ -40,6 +42,26 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
       oppilaitos = None,
       koulutustoimija = Some(ytl),
       tila = YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot = List()),
+      lisätiedot = Some(YlioppilastutkinnonOpiskeluoikeudenLisätiedot(Some(List(
+        YlioppilastutkinnonTutkintokokonaisuudenLisätiedot(
+          tunniste = 0,
+          tyyppi = Some(Koodistokoodiviite("candidate", "ytrtutkintokokonaisuudentyyppi")),
+          tila = Some(Koodistokoodiviite("ongoing", "ytrtutkintokokonaisuudentila")),
+          suorituskieli = Some(Koodistokoodiviite("FI", "kieli")),
+          tutkintokerrat = List(
+            YlioppilastutkinnonTutkintokerranLisätiedot(YlioppilastutkinnonTutkintokerta(koodiarvo = "2015K", vuosi = 2015, vuodenaika = kevät),Some(Koodistokoodiviite("1", "ytrkoulutustausta")), Some(helsinginMedialukio)),
+            YlioppilastutkinnonTutkintokerranLisätiedot(YlioppilastutkinnonTutkintokerta(koodiarvo = "2014S", vuosi = 2014, vuodenaika = syksy),Some(Koodistokoodiviite("1", "ytrkoulutustausta")), Some(helsinginMedialukio))
+          )),
+        YlioppilastutkinnonTutkintokokonaisuudenLisätiedot(
+          tunniste = 1,
+          tyyppi = Some(Koodistokoodiviite("candidate", "ytrtutkintokokonaisuudentyyppi")),
+          tila = Some(Koodistokoodiviite("ongoing", "ytrtutkintokokonaisuudentila")),
+          suorituskieli = Some(Koodistokoodiviite("FI", "kieli")),
+          tutkintokerrat = List(
+            YlioppilastutkinnonTutkintokerranLisätiedot(YlioppilastutkinnonTutkintokerta(koodiarvo = "2014K", vuosi = 2014, vuodenaika = kevät), Some(Koodistokoodiviite("1", "ytrkoulutustausta")), Some(helsinginMedialukio))
+          ))
+      )))),
+      // oppilaitosSuorituspäivänä = Some(ressunLukio),
       suoritukset = List(
         YlioppilastutkinnonSuoritus(
           toimipiste = ytl,
@@ -61,7 +83,10 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
                 vuosi = 2015,
                 vuodenaika = kevät
               ),
-              arviointi = None
+              arviointi = None,
+              keskeytynyt = Some(true),
+              maksuton = Some(false),
+              tutkintokokonaisuudenTunniste = Some(0)
             ),
             YlioppilastutkinnonKokeenSuoritus(
               koulutusmoduuli = YlioppilasTutkinnonKoe(
@@ -72,7 +97,10 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
                 vuosi = 2015,
                 vuodenaika = kevät
               ),
-              arviointi = None
+              arviointi = None,
+              keskeytynyt = Some(true),
+              maksuton = Some(false),
+              tutkintokokonaisuudenTunniste = Some(0),
             ),
             YlioppilastutkinnonKokeenSuoritus(
               koulutusmoduuli = YlioppilasTutkinnonKoe(
@@ -83,7 +111,10 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
                 vuosi = 2015,
                 vuodenaika = kevät
               ),
-              arviointi = None
+              arviointi = None,
+              keskeytynyt = Some(true),
+              maksuton = Some(false),
+              tutkintokokonaisuudenTunniste = Some(0),
             ),
             YlioppilastutkinnonKokeenSuoritus(
               koulutusmoduuli = YlioppilasTutkinnonKoe(
@@ -94,7 +125,10 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
                 vuosi = 2014,
                 vuodenaika = syksy
               ),
-              arviointi = None
+              arviointi = None,
+              keskeytynyt = Some(false), // TODO: olisiko null parempi mapata None:ksi?
+              maksuton = Some(false),
+              tutkintokokonaisuudenTunniste = Some(0),
             ),
             YlioppilastutkinnonKokeenSuoritus(
               koulutusmoduuli = YlioppilasTutkinnonKoe(
@@ -110,7 +144,10 @@ class YtrDownloadOppijaConverterSpec extends AnyFreeSpec with TestEnvironment wi
                   arvosana = Koodistokoodiviite("E", "koskiyoarvosanat"),
                   pisteet = Some(6)
                 )
-              ))
+              )),
+              keskeytynyt = Some(false), // TODO: olisiko null parempi mapata None:ksi?
+              maksuton = Some(false),
+              tutkintokokonaisuudenTunniste = Some(1),
             )
           ))
         )

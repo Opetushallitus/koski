@@ -1,0 +1,41 @@
+[ {
+  "koodiUri" : "ytrtutkintokokonaisuudentila_ongoing",
+  "koodiArvo" : "ongoing",
+  "metadata" : [ {
+    "nimi" : "Tutkinnon suorittaminen on käynnissä",
+    "lyhytNimi" : "käynnissä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "ytrtutkintokokonaisuudentila_graduated",
+  "koodiArvo" : "graduated",
+  "metadata" : [ {
+    "nimi" : "Tutkintokokonaisuus on valmistunut",
+    "lyhytNimi" : "Valmistunut",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "ytrtutkintokokonaisuudentila_failed",
+  "koodiArvo" : "failed",
+  "metadata" : [ {
+    "nimi" : "Tutkintokokonaisuus on hylätty",
+    "lyhytNimi" : "Hylätty",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "ytrtutkintokokonaisuudentila_terminated",
+  "koodiArvo" : "terminated",
+  "metadata" : [ {
+    "nimi" : "Tutkintokokokonaisuus on päätetty ennenaikaisesti",
+    "lyhytNimi" : "Päättynyt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}]

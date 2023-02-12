@@ -4,7 +4,7 @@ import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 case class YlioppilastutkinnonOpiskeluoikeus(
   oid: Option[String] = None,
@@ -12,25 +12,61 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  @Description("Sisältö on aina tyhjä lista opiskeluoikeusjaksoja. Kenttä näkyy tietomallissa vain teknisistä syistä.")
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Sisältö on aina tyhjä lista opiskeluoikeusjaksoja. Kenttä näkyy tietomallissa vain teknisistä syistä.")
   tila: YlioppilastutkinnonOpiskeluoikeudenTila,
   @MinItems(1) @MaxItems(1)
   suoritukset: List[YlioppilastutkinnonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.ylioppilastutkinto,
-  aikaleima: Option[LocalDateTime] = None
+  aikaleima: Option[LocalDateTime] = None,
+  // TODO: Testaa että nimi muuttuu lähtödatan certificateDate-kentän perusteella
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Organisaatiopalvelun oppilaitos-OID-tunniste, jossa ylioppilastutkinto on suoritettu. Ei välttämättä ole oppilaitos, jossa henkilöllä on opintooikeus")
+  oppilaitosSuorituspäivänä: Option[Oppilaitos] = None,
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä.")
+  lisätiedot: Option[YlioppilastutkinnonOpiskeluoikeudenLisätiedot] = None
   ) extends KoskeenTallennettavanKaltainenOpiskeluoikeus {
   override def arvioituPäättymispäivä = None
   override def päättymispäivä = None
-  override def lisätiedot = None
   override def sisältyyOpiskeluoikeuteen = None
   override def organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
 }
 
+case class YlioppilastutkinnonOpiskeluoikeudenLisätiedot(
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä.")
+  tutkintokokonaisuudet: Option[List[YlioppilastutkinnonTutkintokokonaisuudenLisätiedot]]
+) extends OpiskeluoikeudenLisätiedot
+
+case class YlioppilastutkinnonTutkintokokonaisuudenLisätiedot(
+  @Description("Keinotekoinen tutkintokokonaisuuden tunniste johon viitataan YlioppilastutkinnonKokeenSuoritus-luokasta")
+  tunniste: Int,
+  @KoodistoUri("ytrtutkintokokonaisuudentyyppi")
+  tyyppi: Option[Koodistokoodiviite] = None,
+  @KoodistoUri("ytrtutkintokokonaisuudentila")
+  tila: Option[Koodistokoodiviite] = None,
+  @KoodistoUri("kieli")
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  tutkintokerrat: List[YlioppilastutkinnonTutkintokerranLisätiedot]
+)
+
+case class YlioppilastutkinnonTutkintokerranLisätiedot(
+  tutkintokerta: YlioppilastutkinnonTutkintokerta,
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä. YTL:lle ilmoitettu henkilön koulutustausta, jonka perusteella hän osallistuu tutkintoon kyseisellä tutkintokerralla.")
+  @KoodistoUri("ytrkoulutustausta")
+  koulutustausta: Option[Koodistokoodiviite] = None,
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Organisaatiopalvelusta saatu oppilaitos, johon kokelas on ilmoittautunut. Ei välttämättä ole oppilaitos, jossa henkilöllä on opinto-oikeus.")
+  oppilaitos: Option[Oppilaitos] = None
+)
+
 case class YlioppilastutkinnonOpiskeluoikeudenTila(
-  @Description("Sisältö on aina tyhjä lista. Kenttä näkyy tietomallissa vain teknisistä syistä.")
-  opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Sisältö on tyhjä lista ellei tutkinto ole valmistunut. Streamaus-API:n osalta lista on aina tyhjä.")
+  opiskeluoikeusjaksot: List[YlioppilastutkinnonOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
+
+case class YlioppilastutkinnonOpiskeluoikeusjakso(
+  alku: LocalDate,
+  @KoodistoKoodiarvo("valmistunut")
+  tila: Koodistokoodiviite,
+) extends KoskiOpiskeluoikeusjakso
 
 case class YlioppilastutkinnonSuoritus(
   @Title("Koulutus")
@@ -51,7 +87,13 @@ case class YlioppilastutkinnonKokeenSuoritus(
   tutkintokerta: YlioppilastutkinnonTutkintokerta,
   arviointi: Option[List[YlioppilaskokeenArviointi]],
   @KoodistoKoodiarvo("ylioppilastutkinnonkoe")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinnonkoe", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinnonkoe", koodistoUri = "suorituksentyyppi"),
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Viittaa päätason lisätiedoissa määriteltyyn listaan tutkintokokonaisuuksia")
+  tutkintokokonaisuudenTunniste: Option[Int] = None,
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Kertoo, onko kyseessä ylioppilastutkinnosta annetun lain (502/2019) 14 § tai 15 § mukaisesti keskeytetty koe.")
+  keskeytynyt: Option[Boolean] = None,
+  @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Kertoo, onko kyseessä ylioppilastutkinnosta annetun lain (502/2019) 20 § mukaisesti koe, johon osallistumisesta ei peritä maksua.")
+  maksuton: Option[Boolean] = None
 ) extends Vahvistukseton
 
 case class YlioppilastutkinnonTutkintokerta(koodiarvo: String, vuosi: Int, vuodenaika: LocalizedString)
