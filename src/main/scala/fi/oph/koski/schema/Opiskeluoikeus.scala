@@ -125,22 +125,17 @@ object OpiskeluoikeudenTyyppi {
   def kaikkiTyypit: Set[Koodistokoodiviite] = tyypit
 }
 
-// TODO: TOR-1639: yhdistä tämä KoskeenTallennettavaOpiskeluoikeus samalla kun YO-tutkinnon tallennus toteutetaan. Ja korjaa tarvittavat validoinnit, testit jne.
-trait KoskeenTallennettavanKaltainenOpiskeluoikeus extends Opiskeluoikeus {
+trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
+  import mojave._
+
   @Hidden
   @ReadOnly("Aikaleima muodostetaan Koski-palvelimella tallennettaessa")
   def aikaleima: Option[LocalDateTime]
   @MinItems(1)
-  def suoritukset: List[KoskeenTallennettavanKaltainenPäätasonSuoritus]
+  def suoritukset: List[KoskeenTallennettavaPäätasonSuoritus]
   @ReadOnly("Muodostetaan Koski-palvelimella tallennettaessa")
   @Title("Opiskeluoikeuden organisaatiohistoria")
   def organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]
-}
-
-trait KoskeenTallennettavaOpiskeluoikeus extends KoskeenTallennettavanKaltainenOpiskeluoikeus {
-  import mojave._
-  @MinItems(1)
-  def suoritukset: List[KoskeenTallennettavaPäätasonSuoritus]
 
   def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus = {
     val withOid = shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[String]]("oid").set(this)(oid)
