@@ -1,3 +1,7 @@
+## 20.2.2023
+
+- YO-tutkinnon suorituksen koulutusmoduulista on poistettu kokonaan kenttä perusteenDiaarinumero, jota ei ole koskaan käytetty
+
 ## 15.2.2023
 
 - Taiteen perusopetuksen opiskeluoikeuteen lisätty kenttä koulutuksen toteutustapa.
