@@ -45,6 +45,7 @@ import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../
 import { append, deleteAt } from '../util/fp/arrays'
 import {
   createTpoArviointi,
+  minimimääräArvioitujaOsasuorituksia,
   taiteenPerusopetuksenSuorituksenNimi
 } from './tpoCommon'
 import { TpoOsasuoritusProperties } from './TpoOsasuoritusProperties'
@@ -186,6 +187,9 @@ export const TaiteenPerusopetusEditor = (
           form={form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
+          disableAdd={
+            !minimimääräArvioitujaOsasuorituksia(päätasonSuoritus.suoritus)
+          }
         />
 
         {päätasonSuoritus.suoritus.osasuoritukset && (

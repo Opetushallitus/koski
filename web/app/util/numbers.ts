@@ -1,3 +1,5 @@
+export const EPSILON = 0.000001
+
 export const sum = (as: number[]): number => as.reduce((a, n) => a + n, 0)
 
 export const removeFloatingPointDrift = (n: number): number =>

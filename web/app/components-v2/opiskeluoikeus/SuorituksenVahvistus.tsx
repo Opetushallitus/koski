@@ -34,6 +34,7 @@ export type SuorituksenVahvistusFieldProps<T extends Opiskeluoikeus> = {
   form: FormModel<T>
   suoritusPath: FormOptic<T, PäätasonSuoritusOf<T>>
   organisaatio?: Oppilaitos | Koulutustoimija
+  disableAdd?: boolean
 }
 
 export const SuorituksenVahvistusField = <T extends Opiskeluoikeus>(
@@ -53,6 +54,7 @@ export const SuorituksenVahvistusField = <T extends Opiskeluoikeus>(
         organisaatio: props.organisaatio,
         vahvistusClass:
           HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla.className,
+        disableAdd: props.disableAdd,
         disableRemoval
       }}
     />
@@ -80,6 +82,7 @@ export type SuorituksenVahvistusEditProps<T extends Vahvistus> = CommonProps<
     {
       vahvistusClass: ClassOf<T>
       organisaatio?: Organisaatio
+      disableAdd?: boolean
       disableRemoval?: boolean
     }
   >
@@ -90,6 +93,7 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
   onChange,
   vahvistusClass,
   organisaatio,
+  disableAdd,
   disableRemoval,
   ...rest
 }: SuorituksenVahvistusEditProps<T>) => {
@@ -123,7 +127,7 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
           {'Merkitse keskeneräiseksi'}
         </FlatButton>
       ) : (
-        <RaisedButton onClick={onMerkitseValmiiksi}>
+        <RaisedButton onClick={onMerkitseValmiiksi} disabled={disableAdd}>
           {'Merkitse valmiiksi'}
         </RaisedButton>
       )}
