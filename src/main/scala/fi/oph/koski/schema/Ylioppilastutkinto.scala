@@ -94,7 +94,7 @@ case class YlioppilastutkinnonKokeenSuoritus(
   keskeytynyt: Option[Boolean] = None,
   @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Kertoo, onko kyseessä ylioppilastutkinnosta annetun lain (502/2019) 20 § mukaisesti koe, johon osallistumisesta ei peritä maksua.")
   maksuton: Option[Boolean] = None
-) extends Vahvistukseton
+) extends Vahvistukseton with DuplikaatitSallittu
 
 case class YlioppilastutkinnonTutkintokerta(koodiarvo: String, vuosi: Int, vuodenaika: LocalizedString)
 
