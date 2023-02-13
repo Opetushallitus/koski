@@ -14,6 +14,7 @@ import {
 } from '../components-v2/containers/KeyValueTable'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
+import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { Spacer } from '../components-v2/layout/Spacer'
 import {
   ArvosanaEdit,
@@ -48,10 +49,8 @@ import {
 } from './tpoCommon'
 import { TpoOsasuoritusProperties } from './TpoOsasuoritusProperties'
 
-export type TaiteenPerusopetusEditorProps = {
-  oppijaOid: string
-  opiskeluoikeus: TaiteenPerusopetuksenOpiskeluoikeus
-}
+export type TaiteenPerusopetusEditorProps =
+  AdaptedOpiskeluoikeusEditorProps<TaiteenPerusopetuksenOpiskeluoikeus>
 
 export const TaiteenPerusopetusEditor = (
   props: TaiteenPerusopetusEditorProps
@@ -151,6 +150,7 @@ export const TaiteenPerusopetusEditor = (
       <EditorContainer
         form={form}
         oppijaOid={props.oppijaOid}
+        invalidatable={props.invalidatable}
         onChangeSuoritus={setPäätasonSuoritus}
         createOpiskeluoikeusjakso={TaiteenPerusopetuksenOpiskeluoikeusjakso}
         suorituksenNimi={taiteenPerusopetuksenSuorituksenNimi}

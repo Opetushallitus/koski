@@ -22,10 +22,15 @@ import { getOpiskeluoikeusOid } from '../../util/opiskeluoikeus'
 import { OpiskeluoikeudenTyyppiOf } from '../../util/types'
 import { opiskeluoikeusEditors } from './uiAdapters'
 
-export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = (props: {
+export type AdaptedOpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
   oppijaOid: string
   opiskeluoikeus: T
-}) => React.ReactElement
+  invalidatable: boolean
+}
+
+export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = (
+  prop: AdaptedOpiskeluoikeusEditorProps<T>
+) => React.ReactElement
 
 export type AdaptedOpiskeluoikeusEditorCollection = Partial<{
   [OO in Opiskeluoikeus as OpiskeluoikeudenTyyppiOf<OO>]: AdaptedOpiskeluoikeusEditor<OO>
@@ -68,7 +73,12 @@ export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
     oppija.call(oppijaOid)
   }
 
-  return useUiAdapterImpl(ooTyypit, fetchData, oppija)
+  return useUiAdapterImpl(
+    ooTyypit,
+    fetchData,
+    oppija,
+    oppijaModel.invalidatable
+  )
 }
 
 export const useKansalainenUiAdapter = (
@@ -94,14 +104,16 @@ export const useKansalainenUiAdapter = (
     () => {
       oppija.call(suoritusjakoId || 'xxx')
     },
-    oppija
+    oppija,
+    false
   )
 }
 
 const useUiAdapterImpl = <T extends any[]>(
   opiskeluoikeustyypit: string[],
   oppijaDataNeeded: () => void,
-  oppija: ApiMethodHook<Oppija, T>
+  oppija: ApiMethodHook<Oppija, T>,
+  invalidatable: boolean
 ): UiAdapter => {
   const [adapter, setAdapter] = useSafeState<UiAdapter>(loadingUiAdapter)
 
@@ -137,7 +149,13 @@ const useUiAdapterImpl = <T extends any[]>(
           oo && opiskeluoikeusEditors[oo.tyyppi.koodiarvo]
 
         return Editor
-          ? () => <Editor oppijaOid={oppijaOid} opiskeluoikeus={oo} />
+          ? () => (
+              <Editor
+                oppijaOid={oppijaOid}
+                opiskeluoikeus={oo}
+                invalidatable={invalidatable}
+              />
+            )
           : undefined
       }
     })

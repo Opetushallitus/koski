@@ -30,6 +30,7 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
     form: FormModel<T>
     oppijaOid: string
+    invalidatable: boolean
     onChangeSuoritus: (suoritusIndex: number) => void
     createOpiskeluoikeusjakso: (
       seed: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T['tila']>>
@@ -67,6 +68,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
       <OpiskeluoikeusEditToolbar
         opiskeluoikeus={props.form.state}
         editMode={props.form.editMode}
+        invalidatable={props.invalidatable}
         onStartEdit={props.form.startEdit}
       />
 

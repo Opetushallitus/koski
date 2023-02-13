@@ -28,4 +28,16 @@
     opacity: 0.3;
     cursor: default;
   }
+
+  &.RaisedButton__dangerzone {
+    background-color: @color-red;
+
+    &:hover {
+      background-color: darken(@color-red, 10%);
+    }
+
+    &:disabled {
+      background-color: @color-red;
+    }
+  }
 }

@@ -85,6 +85,11 @@ export const removePreference = (
     apiDelete<void>(apiUrl(`preferences/${organisaatioOid}/${type}/${key}`))
   )
 
+export const invalidateOpiskeluoikeus = (opiskeluoikeusOid: string) =>
+  handleExpiredSession(
+    apiDelete<void>(apiUrl(`opiskeluoikeus/${opiskeluoikeusOid}`))
+  )
+
 export const fetchOmatTiedotOppija = () =>
   handleExpiredSession(apiGet<Oppija>(apiUrl('omattiedotV2/oppija')))
 

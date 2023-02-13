@@ -42,7 +42,7 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
         )}
         {!props.form.isValid && (
           <span>
-            <Trans>{'Opiskelusuorituksessa on virheitä'}</Trans>
+            <Trans>{'Korjaa virheelliset tiedot.'}</Trans>
           </span>
         )}
       </ButtonGroup>
