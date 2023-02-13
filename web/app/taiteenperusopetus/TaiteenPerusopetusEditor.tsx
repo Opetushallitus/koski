@@ -158,7 +158,7 @@ export const TaiteenPerusopetusEditor = (
           />
         </KansalainenOnly>
 
-        <KeyValueTable key={'kikka' + päätasonSuoritus.index}>
+        <KeyValueTable>
           <KeyValueRow name="Taiteenala">
             <Trans>
               {päätasonSuoritus.suoritus.koulutusmoduuli.taiteenala.nimi}
@@ -179,12 +179,15 @@ export const TaiteenPerusopetusEditor = (
             />
           </KeyValueRow>
         </KeyValueTable>
+
         <Spacer />
+
         <SuorituksenVahvistusField
           form={form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
         />
+
         {päätasonSuoritus.suoritus.osasuoritukset && (
           <OsasuoritusTable
             editMode={form.editMode}
@@ -199,6 +202,7 @@ export const TaiteenPerusopetusEditor = (
             onRemove={onRemoveOsasuoritus}
           />
         )}
+
         {form.editMode && (
           <ColumnRow>
             <Column span={1} spanPhone={0} />

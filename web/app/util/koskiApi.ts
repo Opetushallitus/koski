@@ -102,11 +102,15 @@ export type SuoritusjakoTehty = {
   tehty: boolean
 }
 
-export const fetchSuoritusjakoTehty = (opiskeluoikeusOid: string) =>
+export const fetchSuoritusjakoTehty = (
+  opiskeluoikeusOid: string,
+  suorituksenTyyppi?: string
+) =>
   handleExpiredSession(
     apiPost<SuoritusjakoTehty>(
       apiUrl(
-        `opiskeluoikeus/suostumuksenperuutus/suoritusjakoTehty/${opiskeluoikeusOid}`
+        `opiskeluoikeus/suostumuksenperuutus/suoritusjakoTehty/${opiskeluoikeusOid}`,
+        { suorituksentyyppi: suorituksenTyyppi }
       )
     )
   )

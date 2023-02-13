@@ -63,6 +63,15 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     .map((s) => Boolean(s.vahvistus))
     .every((s) => s)
 
+  const [suoritusIndex, setSuoritusIndex] = useState(0)
+  const changeSuoritusTab = useCallback(
+    (index: number) => {
+      props.onChangeSuoritus(index)
+      setSuoritusIndex(index)
+    },
+    [props]
+  )
+
   return (
     <article {...common(props, ['EditorContainer'])}>
       <OpiskeluoikeusEditToolbar
@@ -91,7 +100,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
       </h2>
 
       <Tabs
-        onSelect={props.onChangeSuoritus}
+        onSelect={changeSuoritusTab}
         tabs={props.form.state.suoritukset.map((s, i) => ({
           key: i,
           label: props.suorituksenNimi?.(s) || defaultSuorituksenNimi(s)
@@ -100,7 +109,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 
       <Spacer />
 
-      {props.children}
+      <div key={suoritusIndex}>{props.children}</div>
 
       <EditBar form={props.form} onSave={onSave} />
       {props.form.isSaved && <Snackbar>{'Tallennettu'}</Snackbar>}

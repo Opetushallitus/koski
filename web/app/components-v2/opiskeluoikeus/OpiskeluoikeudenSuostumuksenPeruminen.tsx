@@ -1,5 +1,9 @@
 import React, { useCallback, useState } from 'react'
-import { useApiWithParams, useOnApiSuccess } from '../../api-fetch'
+import {
+  createPreferLocalCache,
+  useApiWithParams,
+  useOnApiSuccess
+} from '../../api-fetch'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -41,7 +45,7 @@ export const PäätasonSuorituksenSuostumuksenPeruminen: React.FC<
     opiskeluoikeusOid={getOpiskeluoikeusOid(opiskeluoikeus)}
     suorituksenTyyppi={suoritus.tyyppi}
     nimi={t(suoritus.tyyppi.nimi)}
-    text="Tämän opiskeluoikeuden suorituksen tiedot näytetään antamasi suostumuksen perusteella."
+    text="Tämän suorituksen tiedot näytetään antamasi suostumuksen perusteella."
   />
 )
 
@@ -51,6 +55,8 @@ export type SuostumuksenPeruminenProps = CommonProps<{
   nimi: string
   text: string
 }>
+
+const suoritusjakoTehtyCache = createPreferLocalCache(fetchSuoritusjakoTehty)
 
 export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
   props
@@ -64,8 +70,9 @@ export const SuostumuksenPeruminen: React.FC<SuostumuksenPeruminenProps> = (
   const suoritusjaonTekemisenHaku = useApiWithParams(
     fetchSuoritusjakoTehty,
     props.opiskeluoikeusOid !== undefined
-      ? [props.opiskeluoikeusOid]
-      : undefined
+      ? [props.opiskeluoikeusOid, props.suorituksenTyyppi?.koodiarvo]
+      : undefined,
+    suoritusjakoTehtyCache
   )
 
   useOnApiSuccess(suoritusjaonTekemisenHaku, (response) =>
