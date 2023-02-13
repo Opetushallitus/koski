@@ -1,19 +1,36 @@
 import * as string from 'fp-ts/string'
 import React, { useEffect, useMemo } from 'react'
-import { useApiMethod, useOnApiSuccess, useSafeState } from '../../api-fetch'
+import {
+  ApiMethodHook,
+  useApiMethod,
+  useOnApiSuccess,
+  useSafeState
+} from '../../api-fetch'
 import { modelData } from '../../editor/EditorModel'
+import { Contextualized } from '../../types/EditorModelContext'
 import { ObjectModel } from '../../types/EditorModels'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
-import { intersects } from '../../util/fp/arrays'
-import { fetchOppija } from '../../util/koskiApi'
+import { Oppija } from '../../types/fi/oph/koski/schema/Oppija'
+import { intersects, last } from '../../util/fp/arrays'
+import { getHenkilöOid } from '../../util/henkilo'
+import {
+  fetchOmatTiedotOppija,
+  fetchOppija,
+  fetchSuoritusjako
+} from '../../util/koskiApi'
 import { getOpiskeluoikeusOid } from '../../util/opiskeluoikeus'
 import { OpiskeluoikeudenTyyppiOf } from '../../util/types'
 import { opiskeluoikeusEditors } from './uiAdapters'
 
-export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = (props: {
+export type AdaptedOpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
   oppijaOid: string
   opiskeluoikeus: T
-}) => React.ReactElement
+  invalidatable: boolean
+}
+
+export type AdaptedOpiskeluoikeusEditor<T extends Opiskeluoikeus> = (
+  prop: AdaptedOpiskeluoikeusEditorProps<T>
+) => React.ReactElement
 
 export type AdaptedOpiskeluoikeusEditorCollection = Partial<{
   [OO in Opiskeluoikeus as OpiskeluoikeudenTyyppiOf<OO>]: AdaptedOpiskeluoikeusEditor<OO>
@@ -43,31 +60,79 @@ export type OpiskeluoikeusEditorProps<T extends Opiskeluoikeus> = {
   opiskeluoikeus: T
 }
 
-export const useUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
-  const [adapter, setAdapter] = useSafeState<UiAdapter>(loadingUiAdapter)
+export const useVirkailijaUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
+  const oppijaOid = modelData(oppijaModel, 'henkilö.oid')
   const oppija = useApiMethod(fetchOppija)
 
+  const ooTyypit: string[] =
+    modelData(oppijaModel, 'opiskeluoikeudet')?.map(
+      (o: any) => o.tyyppi.koodiarvo
+    ) || []
+
+  const fetchData = () => {
+    oppija.call(oppijaOid)
+  }
+
+  return useUiAdapterImpl(
+    ooTyypit,
+    fetchData,
+    oppija,
+    oppijaModel.invalidatable
+  )
+}
+
+export const useKansalainenUiAdapter = (
+  kansalainenModel: ObjectModel & Contextualized<{ suoritusjako: boolean }>
+): UiAdapter => {
+  const isSuoritusjako = Boolean(kansalainenModel.context.suoritusjako)
+  const suoritusjakoId = isSuoritusjako
+    ? last(window.location.href.split('/'))
+    : undefined
+
+  const oppija = useApiMethod(
+    isSuoritusjako ? fetchSuoritusjako : fetchOmatTiedotOppija
+  )
+
+  const ooTyypit: string[] =
+    modelData(kansalainenModel, 'opiskeluoikeudet')?.flatMap(
+      (oppilaitos: any) =>
+        oppilaitos.opiskeluoikeudet?.map((o: any) => o.tyyppi.koodiarvo) || []
+    ) || []
+
+  return useUiAdapterImpl(
+    ooTyypit,
+    () => {
+      oppija.call(suoritusjakoId || 'xxx')
+    },
+    oppija,
+    false
+  )
+}
+
+const useUiAdapterImpl = <T extends any[]>(
+  opiskeluoikeustyypit: string[],
+  oppijaDataNeeded: () => void,
+  oppija: ApiMethodHook<Oppija, T>,
+  invalidatable: boolean
+): UiAdapter => {
+  const [adapter, setAdapter] = useSafeState<UiAdapter>(loadingUiAdapter)
+
   const v2Mode = useMemo(() => {
-    const ooTyypit: string[] =
-      modelData(oppijaModel, 'opiskeluoikeudet')?.map(
-        (o: any) => o.tyyppi.koodiarvo
-      ) || []
     const v2OpiskeluoikeusTyypit = Object.keys(opiskeluoikeusEditors)
-    return intersects(string.Eq)(ooTyypit)(v2OpiskeluoikeusTyypit)
-  }, [oppijaModel])
+    return intersects(string.Eq)(opiskeluoikeustyypit)(v2OpiskeluoikeusTyypit)
+  }, [opiskeluoikeustyypit])
 
   useEffect(() => {
     if (v2Mode) {
-      const oppijaOid = modelData(oppijaModel, 'henkilö.oid')
       setAdapter(loadingUiAdapter)
-      oppija.call(oppijaOid)
+      oppijaDataNeeded()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [oppijaModel, v2Mode])
+  }, [v2Mode])
 
   useOnApiSuccess(oppija, (result) => {
     const opiskeluoikeudet = result.data.opiskeluoikeudet
-    const oppijaOid = modelData(oppijaModel, 'henkilö.oid')
+    const oppijaOid = getHenkilöOid(result.data.henkilö) || ''
 
     setAdapter({
       isLoadingV2: false,
@@ -84,7 +149,13 @@ export const useUiAdapter = (oppijaModel: ObjectModel): UiAdapter => {
           oo && opiskeluoikeusEditors[oo.tyyppi.koodiarvo]
 
         return Editor
-          ? () => <Editor oppijaOid={oppijaOid} opiskeluoikeus={oo} />
+          ? () => (
+              <Editor
+                oppijaOid={oppijaOid}
+                opiskeluoikeus={oo}
+                invalidatable={invalidatable}
+              />
+            )
           : undefined
       }
     })

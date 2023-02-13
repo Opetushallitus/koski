@@ -71,6 +71,7 @@ export type OpiskeluoikeudenTilaEditProps<T extends OpiskeluoikeudenTila> =
     FieldEditorProps<
       T,
       {
+        enableValmistuminen: boolean
         createJakso: (
           form: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T>>
         ) => OpiskeluoikeusjaksoOf<T> | NonEmptyArray<ValidationError>
@@ -102,7 +103,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                 onChange={oo.onChangeDate(index)}
               />,
               <div key="jakso">
-                {t(jakso.tila.nimi)} {/* TODO Lisää rahoitusmuoto */}
+                {t(jakso.tila.nimi)}
                 {isLatest && (
                   <IconButton
                     charCode={CHARCODE_REMOVE}
@@ -117,7 +118,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
         ))}
         {!oo.isTerminated && (
           <KeyValueRow name={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}>
-            <FlatButton onClick={oo.openModal}>{'Lisää uusi'}</FlatButton>
+            <FlatButton onClick={oo.openModal}>{'lisää uusi'}</FlatButton>
           </KeyValueRow>
         )}
       </KeyValueTable>
@@ -126,6 +127,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           onSubmit={oo.onAddNew}
           onClose={oo.closeModal}
           opiskeluoikeusjaksoClass={oo.opiskeluoikeusjaksoClass}
+          enableValmistuminen={props.enableValmistuminen}
         />
       )}
     </>

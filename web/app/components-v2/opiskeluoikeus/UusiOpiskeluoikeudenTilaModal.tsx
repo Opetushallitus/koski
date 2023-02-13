@@ -1,13 +1,13 @@
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import React, { useCallback, useMemo } from 'react'
-import { useAllowedStrings } from '../../appstate/constraints'
+import { useAllowedStrings, useSchema } from '../../appstate/constraints'
 import { useKoodisto } from '../../appstate/koodisto'
 import { todayISODate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Opiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
 import { KoodiarvotOf } from '../../util/koodisto'
-// import { OpiskeluoikeusjaksoOf } from '../../util/schema'
+import { isValmistuvaTerminaalitila } from '../../util/opiskeluoikeus'
 import { ClassOf } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
 import { Label } from '../containers/Label'
@@ -26,7 +26,8 @@ export type UusiOpiskeluoikeudenTilaModalProps<T extends Opiskeluoikeusjakso> =
       form: UusiOpiskeluoikeusjakso<T>
     ) => NonEmptyArray<ValidationError> | undefined
     onClose: () => void
-    opiskeluoikeusjaksoClass: ClassOf<Opiskeluoikeusjakso>
+    opiskeluoikeusjaksoClass: ClassOf<T>
+    enableValmistuminen: boolean
   }>
 
 export type UusiOpiskeluoikeusjakso<T extends Opiskeluoikeusjakso> = {
@@ -73,22 +74,32 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
       tilat?.map((tila) => ({
         key: tila.koodiarvo,
         label: t(tila.nimi),
-        value: tila
+        value: tila,
+        disabled: !props.enableValmistuminen && isValmistuvaTerminaalitila(tila)
       })),
-    [tilat]
+    [props.enableValmistuminen, tilat]
   )
 
   const initialState = useInitialOpiskelujaksoForm<T>(
     props.opiskeluoikeusjaksoClass
   )
-  const form = useForm(initialState, true)
+  const opiskeluoikeusjaksoSchema = useSchema(props.opiskeluoikeusjaksoClass)
+  const form = useForm(initialState, true, opiskeluoikeusjaksoSchema)
   const [päivämääräPath, tilaPath] = useMemo(
     () => [form.root.prop('alku'), form.root.prop('tila')],
     [form.root]
   )
 
   const onSubmit = useCallback(() => {
-    props.onSubmit(form.state) // TODO: Käsittele onSubmitin mahdollisesti palauttamat virheet
+    const errors = props.onSubmit(form.state)
+    if (errors) {
+      // onSubmitista ei tällä implementointihetkellä pitäisi tulla virheitä,
+      // joten virheiden näyttämisen voi toteuttaa myöhemmin vasta kun sitä tarvitaan.
+      console.warn(
+        'Käsittelemättömiä validointivirheitä UusiOpiskeluoikeudenTilaModalissa:',
+        errors
+      )
+    }
   }, [form.state, props])
 
   return (

@@ -21,12 +21,15 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 export type LaajuusViewProps = CommonProps<FieldViewerProps<Laajuus>>
 
 export const LaajuusView = (props: LaajuusViewProps) => {
-  return props.value ? (
+  return (
     <span {...common(props)}>
-      {props.value.arvo}{' '}
-      {t(props.value.yksikkö.lyhytNimi || props.value.yksikkö.nimi)}
+      {props.value
+        ? props.value.arvo +
+          ' ' +
+          t(props.value.yksikkö.lyhytNimi || props.value.yksikkö.nimi)
+        : '–'}
     </span>
-  ) : null
+  )
 }
 
 export type LaajuusEditProps<T extends Laajuus> = CommonProps<

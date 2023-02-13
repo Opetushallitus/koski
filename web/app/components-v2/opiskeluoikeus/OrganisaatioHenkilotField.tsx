@@ -66,42 +66,40 @@ export const OrganisaatioHenkilötEdit = <T extends AnyOrganisaatiohenkilö>(
     <ul {...common(props, ['ArvioitsijatEdit'])}>
       {(props.value || []).map((a, i) => (
         <li key={i}>
-          {!props.storedHenkilöt?.find((h) =>
-            OrganisaatiohenkilöEq.equals(a, h)
-          ) ? (
-            <MultiField key={i}>
-              <TextEdit
-                placeholder="Nimi"
-                optional
-                value={a.nimi}
-                onChange={state.onChangeNimi(i)}
-                errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
-                autoFocus={
-                  props.value && i === props.value.length - 1 && state.focusNew
-                }
-              />
-              <TextEdit
-                placeholder="Titteli"
-                optional
-                value={t(a.titteli)}
-                onChange={state.onChangeTitteli(i)}
-                errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
-                allowEmpty={
-                  props.henkilöClass ===
-                  'fi.oph.koski.schema.OrganisaatiohenkilöValinnaisellaTittelillä'
-                }
-              />
-            </MultiField>
-          ) : (
-            <Removable onClick={state.removeAt(i)}>
+          <Removable onClick={state.removeAt(i)}>
+            {!props.storedHenkilöt?.find((h) =>
+              OrganisaatiohenkilöEq.equals(a, h)
+            ) ? (
+              <MultiField key={i}>
+                <TextEdit
+                  placeholder="Nimi"
+                  optional
+                  value={a.nimi}
+                  onChange={state.onChangeNimi(i)}
+                  errors={narrowErrorsToLeaf(`${i}.nimi`)(props.errors)}
+                  autoFocus={
+                    props.value &&
+                    i === props.value.length - 1 &&
+                    state.focusNew
+                  }
+                />
+                <TextEdit
+                  placeholder="Titteli"
+                  optional
+                  value={t(a.titteli)}
+                  onChange={state.onChangeTitteli(i)}
+                  errors={narrowErrorsToLeaf(`${i}.titteli`)(props.errors)}
+                />
+              </MultiField>
+            ) : (
               <Select
                 options={state.options}
                 value={a.nimi}
                 onChange={state.updateHenkilö(i)}
                 onRemove={state.onRemoveStored}
               />
-            </Removable>
-          )}
+            )}
+          </Removable>
         </li>
       ))}
       <li>

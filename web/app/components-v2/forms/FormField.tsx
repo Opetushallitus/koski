@@ -1,6 +1,6 @@
 import * as A from 'fp-ts/Array'
-import * as NEA from 'fp-ts/NonEmptyArray'
 import { constant } from 'fp-ts/lib/function'
+import * as NEA from 'fp-ts/NonEmptyArray'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useKoodistoFiller } from '../../appstate/koodisto'
 import { deepEqual } from '../../util/fp/objects'
@@ -102,7 +102,7 @@ export const FormField = <
   const value = useMemo(
     () => getValue(path as FormOptic<O, T | undefined>)(form.state),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [form.state]
+    [form.state, path]
   )
 
   const errors = useFormErrors(
@@ -121,22 +121,28 @@ export const FormField = <
       form.validate()
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [form]
+    [form, path]
   )
 
   useEffect(() => {
     if (form.editMode && auto) {
       const automaticValue = auto()
-      if (automaticValue && !deepEqual(automaticValue, value)) {
+      if (!deepEqual(automaticValue, value)) {
         set(automaticValue)
       }
     }
-  }, [form.editMode, auto, value, set])
+  }, [form.editMode, auto, value, set, form.state])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const View = useMemo(() => view, [JSON.stringify(viewProps)])
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const Edit = useMemo(() => edit, [JSON.stringify(editProps)])
+  const View = useMemo(
+    () => view,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    viewProps ? Object.values(viewProps) : []
+  )
+  const Edit = useMemo(
+    () => edit,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    editProps ? Object.values(editProps) : []
+  )
 
   if (form.editMode) {
     if (Edit) {
@@ -144,19 +150,19 @@ export const FormField = <
         // @ts-ignore - TODO tyyppicastaus?
         <Edit
           {...editProps}
-          key="edit"
           initialValue={initialValue}
           value={value}
           optional={Boolean(optional)}
           onChange={set}
           errors={A.isNonEmpty(errors) ? errors : undefined}
+          path={path}
         />
       )
     }
   }
 
   // @ts-ignore - TODO tyyppicastaus?
-  return <View {...viewProps} key="view" value={value} />
+  return <View {...viewProps} value={value} />
 }
 
 export const Nothing: React.FC = () => null

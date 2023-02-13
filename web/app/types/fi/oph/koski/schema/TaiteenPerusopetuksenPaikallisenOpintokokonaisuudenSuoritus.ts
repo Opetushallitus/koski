@@ -1,7 +1,8 @@
-import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from './TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
 import { TaiteenPerusopetuksenArviointi } from './TaiteenPerusopetuksenArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from './TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
+import { TaiteenPerusopetuksenOsasuorituksenTunnustus } from './TaiteenPerusopetuksenOsasuorituksenTunnustus'
 
 /**
  * Taiteen perusopetuksen paikallisen opintokokonaisuuden suoritus
@@ -10,30 +11,32 @@ import { LocalizedString } from './LocalizedString'
  */
 export type TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus = {
   $class: 'fi.oph.koski.schema.TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
-  koulutusmoduuli: TaiteenPerusopetuksenPaikallinenOpintokokonaisuus
   arviointi?: Array<TaiteenPerusopetuksenArviointi>
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
     'taiteenperusopetuksenpaikallinenopintokokonaisuus'
   >
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  koulutusmoduuli: TaiteenPerusopetuksenPaikallinenOpintokokonaisuus
+  tunnustettu?: TaiteenPerusopetuksenOsasuorituksenTunnustus
 }
 
 export const TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus = (o: {
-  koulutusmoduuli: TaiteenPerusopetuksenPaikallinenOpintokokonaisuus
   arviointi?: Array<TaiteenPerusopetuksenArviointi>
   tyyppi?: Koodistokoodiviite<
     'suorituksentyyppi',
     'taiteenperusopetuksenpaikallinenopintokokonaisuus'
   >
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  koulutusmoduuli: TaiteenPerusopetuksenPaikallinenOpintokokonaisuus
+  tunnustettu?: TaiteenPerusopetuksenOsasuorituksenTunnustus
 }): TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus => ({
-  $class:
-    'fi.oph.koski.schema.TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus',
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'taiteenperusopetuksenpaikallinenopintokokonaisuus',
     koodistoUri: 'suorituksentyyppi'
   }),
+  $class:
+    'fi.oph.koski.schema.TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus',
   ...o
 })
 

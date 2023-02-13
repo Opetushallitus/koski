@@ -1,10 +1,7 @@
-import * as A from 'fp-ts/Array'
-import React, { useCallback } from 'react'
-import { t } from '../../i18n/i18n'
+import React, { useEffect, useCallback, useState } from 'react'
 import { common, CommonProps, cx } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { emptyString } from '../forms/validator'
 
 export type TextViewProps = CommonProps<FieldViewerProps<string>>
 
@@ -16,37 +13,61 @@ export type TextEditProps = CommonProps<
   FieldEditorProps<string> & {
     placeholder?: string
     autoFocus?: boolean
-    allowEmpty?: boolean
   }
 >
 
 export const TextEdit: React.FC<TextEditProps> = (props) => {
+  const [internalValue, setInternalValue] = useState(props.value)
+  useEffect(() => setInternalValue(props.value), [props.value])
+
   const { onChange } = props
   const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
+      setInternalValue(event.target.value)
       onChange(event.target.value)
     },
     [onChange]
   )
-
-  const requiredButEmpty = Boolean(!props.allowEmpty && !props.value)
 
   return (
     <label {...common(props, ['TextEdit'])}>
       <input
         className={cx(
           'TextEdit__input',
-          (requiredButEmpty || props.errors) && 'TextEdit__input--error'
+          props.errors && 'TextEdit__input--error'
+        )}
+        placeholder={props.placeholder}
+        value={internalValue}
+        onChange={onChangeCB}
+        autoFocus={props.autoFocus}
+      />
+      <FieldErrors errors={props.errors} />
+    </label>
+  )
+}
+
+export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
+  const { onChange } = props
+  const onChangeCB: React.ChangeEventHandler<HTMLTextAreaElement> = useCallback(
+    (event) => {
+      onChange(event.target.value)
+    },
+    [onChange]
+  )
+
+  return (
+    <label {...common(props, ['TextEdit'])}>
+      <textarea
+        className={cx(
+          'TextEdit__input',
+          props.errors && 'TextEdit__input--error'
         )}
         placeholder={props.placeholder}
         value={props.value}
         onChange={onChangeCB}
         autoFocus={props.autoFocus}
       />
-      <FieldErrors
-        errors={props.errors}
-        localErrors={requiredButEmpty ? [emptyString([])] : undefined}
-      />
+      <FieldErrors errors={props.errors} />
     </label>
   )
 }

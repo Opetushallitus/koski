@@ -17,6 +17,7 @@ import { parseISODate } from '../date/date'
 import { flatMapArray } from '../util/util'
 import { tutkinnonNimi } from './Koulutusmoduuli'
 import { isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus } from '../ammatillinen/TutkinnonOsa'
+import { taiteenPerusopetuksenSuorituksenNimi } from '../taiteenperusopetus/tpoCommon'
 
 const isInPast = (dateStr) => parseISODate(dateStr) < new Date()
 const intersects = (as, bs) => R.intersection(as, bs).length !== 0
@@ -96,6 +97,17 @@ export const suoritusTitle = (suoritus) => {
     case 'aikuistenperusopetuksenoppimaara':
     case 'ebtutkinto':
       return modelTitle(suoritus, 'tyyppi')
+    case 'taiteenperusopetuksenlaajanoppimaaranperusopinnot':
+    case 'taiteenperusopetuksenlaajanoppimaaransyventavatopinnot':
+    case 'taiteenperusopetuksenyleisenoppimaaranteemaopinnot':
+    case 'taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot':
+      return (
+        title +
+        ', ' +
+        t(
+          taiteenPerusopetuksenSuorituksenNimi(modelData(suoritus))
+        ).toLowerCase()
+      )
     default:
       return title
   }

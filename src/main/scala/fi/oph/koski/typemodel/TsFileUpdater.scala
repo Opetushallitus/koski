@@ -4,7 +4,7 @@ import fi.oph.koski.koskiuser.UserWithAccessRights
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.preferences.KeyValue
-import fi.oph.koski.schema.{Arviointi, KoodiViite, KoskiSchema, OpiskeluoikeudenTila, Opiskeluoikeusjakso, StorablePreference}
+import fi.oph.koski.schema.{Arviointi, KoodiViite, KoskiSchema, OpiskeluoikeudenTila, Opiskeluoikeusjakso, SelitettyOsaamisenTunnustaminen, StorablePreference}
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 
 import java.io.{BufferedWriter, File, FileWriter}
@@ -57,4 +57,5 @@ case class AdditionalExports(
   opiskeluoikeusjakso: Opiskeluoikeusjakso,
   arviointi: Arviointi,
   koodiviite: KoodiViite,
+  selitettyOsaamisenTunnustaminen: SelitettyOsaamisenTunnustaminen,
 )

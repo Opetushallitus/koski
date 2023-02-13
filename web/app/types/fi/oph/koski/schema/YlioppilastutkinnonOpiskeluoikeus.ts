@@ -16,8 +16,11 @@ export type YlioppilastutkinnonOpiskeluoikeus = {
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ylioppilastutkinto'>
   tila: YlioppilastutkinnonOpiskeluoikeudenTila
   alkamispäivä?: string
+  oid?: string
   koulutustoimija?: Koulutustoimija
+  versionumero?: number
   suoritukset: Array<YlioppilastutkinnonSuoritus>
+  aikaleima?: string
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
   oppilaitos?: Oppilaitos
@@ -28,8 +31,11 @@ export const YlioppilastutkinnonOpiskeluoikeus = (
     tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ylioppilastutkinto'>
     tila?: YlioppilastutkinnonOpiskeluoikeudenTila
     alkamispäivä?: string
+    oid?: string
     koulutustoimija?: Koulutustoimija
+    versionumero?: number
     suoritukset?: Array<YlioppilastutkinnonSuoritus>
+    aikaleima?: string
     päättymispäivä?: string
     lähdejärjestelmänId?: LähdejärjestelmäId
     oppilaitos?: Oppilaitos

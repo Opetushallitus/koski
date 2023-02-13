@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { CommonProps, cx, common } from '../CommonProps'
 
 export type NumberFieldProps = CommonProps<{
@@ -8,10 +8,15 @@ export type NumberFieldProps = CommonProps<{
 }>
 
 export const NumberField: React.FC<NumberFieldProps> = (props) => {
+  const [internalValue, setInternalValue] = useState(props.value)
+  useEffect(() => setInternalValue(props.value), [props.value])
+
   const { onChange } = props
   const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
-      onChange(parseFloat(event.target.value))
+      const value = parseFloat(event.target.value)
+      setInternalValue(value)
+      onChange(value)
     },
     [onChange]
   )
@@ -23,7 +28,7 @@ export const NumberField: React.FC<NumberFieldProps> = (props) => {
           props.hasErrors && 'NumberField__input--error'
         )}
         type="number"
-        value={props.value}
+        value={internalValue}
         onChange={onChangeCB}
       />
     </div>

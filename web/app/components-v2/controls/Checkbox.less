@@ -1,0 +1,68 @@
+.Checkbox {
+  margin-left: 12px;
+
+  // Checkbox input element hidden visually but still accessible to screen-readers
+  &__input[type='checkbox'] {
+    position: absolute;
+    height: 4px;
+    width: 4px;
+    overflow: hidden;
+    border: none;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    z-index: 9999;
+    display: block;
+    visibility: visible;
+
+    & + label {
+      position: relative;
+      display: block;
+    }
+
+    // Visible checkbox border
+    & + label:before {
+      font-family: FontAwesome;
+      content: '';
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+
+      border: 1px solid @color-label-darker;
+
+      background: @color-white;
+      color: @color-blue;
+    }
+
+    // Visible checkmark
+    &:checked + label:before {
+      content: '\f00c';
+    }
+
+    /*
+      Highlights checkbox when navigating via keyboard
+       */
+
+    &:active + label:before {
+      background: @color-neutral-gray;
+      box-shadow: inset 0 2px 2px @color-gray-darker;
+    }
+
+    &:focus:not(:active) + label:before {
+      box-shadow: 0 0 5px @color-blue;
+    }
+  }
+
+  .Checkbox__label {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 0;
+    right: 0;
+    left: 3 * @baseline;
+    min-height: 2 * @baseline;
+  }
+}

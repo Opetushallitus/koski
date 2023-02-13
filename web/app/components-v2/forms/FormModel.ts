@@ -4,12 +4,13 @@ import * as $ from 'optics-ts'
 import { Reducer, useCallback, useEffect, useMemo, useReducer } from 'react'
 import { ApiResponse } from '../../api-fetch'
 import { useGlobalErrors } from '../../appstate/globalErrors'
-import { useUser } from '../../appstate/user'
+import { useVirkailijaUser } from '../../appstate/user'
 import { t } from '../../i18n/i18n'
 import { Constraint } from '../../types/fi/oph/koski/typemodel/Constraint'
 import { tap, tapLeft } from '../../util/fp/either'
 import { deepEqual } from '../../util/fp/objects'
 import { assertNever } from '../../util/selfcare'
+import { ValidationRule } from './ValidationRule'
 import { validateData, ValidationError } from './validator'
 
 export type FormModel<O extends object> = {
@@ -78,11 +79,12 @@ export type FormModel<O extends object> = {
 export const useForm = <O extends object>(
   initialState: O,
   startWithEditMode = false,
-  constraint?: Constraint | null
+  constraint: Constraint | null,
+  validationRules?: ValidationRule<any>[]
 ): FormModel<O> => {
   type FormModelProp<T extends keyof FormModel<O>> = FormModel<O>[T]
 
-  const user = useUser()
+  const user = useVirkailijaUser()
   const init = useMemo(
     () =>
       internalInitialState(
@@ -122,9 +124,9 @@ export const useForm = <O extends object>(
 
   const validate: FormModelProp<'validate'> = useCallback(() => {
     if (constraint && editMode) {
-      dispatch({ type: 'validate', constraint })
+      dispatch({ type: 'validate', constraint, rules: validationRules || [] })
     }
-  }, [constraint, editMode])
+  }, [constraint, editMode, validationRules])
 
   useEffect(() => {
     validate()
@@ -217,7 +219,11 @@ type StartEdit = { type: 'startEdit'; constraint?: Constraint | null }
 type ModifyData<O> = { type: 'modify'; modify: (o: O) => O }
 type Cancel = { type: 'cancel' }
 type EndEdit<O> = { type: 'endEdit'; value: O }
-type Validate = { type: 'validate'; constraint: Constraint }
+type Validate = {
+  type: 'validate'
+  constraint?: Constraint
+  rules: ValidationRule[]
+}
 type Action<O> = StartEdit | ModifyData<O> | Cancel | EndEdit<O> | Validate
 
 const reducer = <O>(
@@ -263,7 +269,13 @@ const reducer = <O>(
         errors: []
       }
     case 'validate': {
-      const errors = validateData(state.data, action.constraint)
+      const schemaErrors = action.constraint
+        ? validateData(state.data, action.constraint)
+        : []
+      const ruleErrors = action.rules.flatMap((rule) =>
+        validateData(state.data, rule)
+      )
+      const errors = [...schemaErrors, ...ruleErrors]
       return {
         ...state,
         errors: deepEqual(errors, state.errors) ? state.errors : errors

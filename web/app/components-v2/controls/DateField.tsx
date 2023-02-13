@@ -46,7 +46,6 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
     date,
     displayDate,
     datePickerVisible,
-    isInvalidDate,
     hasError,
     selectedDays,
     toggleDayPicker,
@@ -87,12 +86,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
           )}
         </PositionalPopupHolder>
       </div>
-      <FieldErrors
-        errors={props.errors}
-        localErrors={
-          isInvalidDate ? [invalidDate(displayDate || '', [])] : undefined
-        }
-      />
+      <FieldErrors errors={props.errors} />
     </label>
   )
 }
@@ -113,7 +107,6 @@ const useDateEditState = (props: DateEditProps) => {
       internalFinnishDate ? parseFinnishDate(internalFinnishDate) : undefined,
     [internalFinnishDate]
   )
-  const [isInvalidDate, setInvalidDate] = useState(false)
 
   const { onChange, min, max, value } = props
   const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
@@ -122,15 +115,9 @@ const useDateEditState = (props: DateEditProps) => {
       setInternalFinnishDate(newFinnishDate)
       const date = parseFinnishDate(newFinnishDate)
       const isoDate = date && formatISODate(date)
-      setInvalidDate(!isoDate)
-      if (isoDate && isoDate !== value) {
-        if ((min && isoDate < min) || (max && isoDate > max)) {
-          setInvalidDate(true)
-        }
-        onChange(isoDate)
-      }
+      onChange(isoDate || `not parseable to ISO: ${newFinnishDate}`)
     },
-    [onChange, min, max, value]
+    [onChange]
   )
 
   const onDayClick = useCallback(
@@ -155,8 +142,7 @@ const useDateEditState = (props: DateEditProps) => {
     date: internalDate,
     displayDate: internalFinnishDate,
     datePickerVisible,
-    isInvalidDate,
-    hasError: Boolean(isInvalidDate || props.errors),
+    hasError: Boolean(props.errors),
     selectedDays,
     toggleDayPicker,
     onDayClick,

@@ -3,7 +3,7 @@ import {
   useHasOwnOrganisaatiot,
   useOrganisaatioHierarkia
 } from '../../appstate/organisaatioHierarkia'
-import { t } from '../../i18n/i18n'
+import { localize, t } from '../../i18n/i18n'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { isKoulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
@@ -25,14 +25,26 @@ export const OrganisaatioView = <T extends Organisaatio>(
 )
 
 export type OrganisaatioEditProps<T extends Organisaatio> = CommonProps<
-  FieldEditorProps<T>
+  FieldEditorProps<
+    T,
+    {
+      include?: Organisaatio[]
+    }
+  >
 >
 
 export const OrganisaatioEdit = <T extends Organisaatio>(
   props: OrganisaatioEditProps<T>
 ): React.ReactElement => {
   const [query, setQuery] = useState('')
-  const organisaatiot = useOrganisaatioHierarkia(query)
+  const queriedOrganisaatiot = useOrganisaatioHierarkia(query)
+  const organisaatiot = useMemo(
+    () => [
+      ...queriedOrganisaatiot,
+      ...(props.include?.map(organisaatioToOrganisaatioHierarkia) || [])
+    ],
+    [props.include, queriedOrganisaatiot]
+  )
   const hasOwnOrganisaatiot = useHasOwnOrganisaatiot()
 
   const options: OptionList<T> = useMemo(
@@ -82,4 +94,13 @@ const organisaatioHierarkiaToOptions = <T extends Organisaatio>(
       ignoreFilter: !hasOwnOrganisaatiot,
       isGroup: isKoulutustoimija(org)
     }
+  })
+
+const organisaatioToOrganisaatioHierarkia = <T extends Organisaatio>(
+  org: T
+): OrganisaatioHierarkia =>
+  OrganisaatioHierarkia({
+    oid: getOrganisaatioId(org),
+    aktiivinen: true,
+    nimi: org.nimi || localize('–')
   })

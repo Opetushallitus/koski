@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { common, CommonProps } from '../CommonProps'
+import { common, CommonProps, cx } from '../CommonProps'
 import { FieldEditorProps } from '../forms/FormField'
 
 export type RadioButtonProps<T> = CommonProps<{
@@ -12,6 +12,7 @@ export type RadioButtonOption<T> = {
   key: RadioButtonKey
   label: React.ReactNode
   value: T
+  disabled?: boolean
 }
 
 export type RadioButtonKey = string
@@ -28,7 +29,10 @@ export const RadioButtons = <T,>(
         return (
           <li
             key={Math.random()} // TODO: Tässä RadioButtonsin kanssa on nyt joku outo häiriö, eikä sen checked-tila vaihdu ilman tätä. Please PR.
-            className="RadioButtons__option"
+            className={cx(
+              'RadioButtons__option',
+              opt.disabled && 'RadioButtons__option--disabled'
+            )}
           >
             <input
               id={id}
@@ -36,8 +40,14 @@ export const RadioButtons = <T,>(
               name={name}
               checked={opt.key === props.value}
               onChange={() => props.onChange(opt.value)}
+              disabled={opt.disabled}
             />
-            <label htmlFor={id} onClick={() => props.onChange(opt.value)}>
+            <label
+              htmlFor={id}
+              onClick={
+                !opt.disabled ? () => props.onChange(opt.value) : undefined
+              }
+            >
               {opt.label}
             </label>
           </li>

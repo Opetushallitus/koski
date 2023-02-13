@@ -13,24 +13,29 @@ import { OpiskeluoikeudenTila } from './fragments/OpiskeluoikeudenTila'
 import ChevronUpIcon from '../icons/ChevronUpIcon'
 import ChevronDownIcon from '../icons/ChevronDownIcon'
 import { OmatTiedotOpiskeluoikeus } from './OmatTiedotOpiskeluoikeus'
+import { useKansalainenUiAdapter } from '../components-v2/interoperability/useUiAdapter'
 
 export const OmatTiedotEditor = ({ model }) => {
   const oppijaOid = modelData(model, 'henkilö.oid')
   const oppilaitokset = modelItems(model, 'opiskeluoikeudet')
+  const uiAdapter = useKansalainenUiAdapter(model)
+
   return (
     <div className="oppilaitos-list">
-      {oppilaitokset.map((oppilaitos, oppilaitosIndex) => (
-        <Oppilaitokset
-          key={oppilaitosIndex}
-          oppilaitos={oppilaitos}
-          oppijaOid={oppijaOid}
-        />
-      ))}
+      {!uiAdapter.isLoadingV2 &&
+        oppilaitokset.map((oppilaitos, oppilaitosIndex) => (
+          <Oppilaitokset
+            key={oppilaitosIndex}
+            oppilaitos={oppilaitos}
+            oppijaOid={oppijaOid}
+            uiAdapter={uiAdapter}
+          />
+        ))}
     </div>
   )
 }
 
-const Oppilaitokset = ({ oppilaitos, oppijaOid }) => {
+const Oppilaitokset = ({ oppilaitos, oppijaOid, uiAdapter }) => {
   return (
     <div className="oppilaitos-container">
       <h2 className="oppilaitos-title">
@@ -38,14 +43,19 @@ const Oppilaitokset = ({ oppilaitos, oppijaOid }) => {
       </h2>
       <ul className="opiskeluoikeudet-list">
         {modelItems(oppilaitos, 'opiskeluoikeudet').map(
-          (opiskeluoikeus, opiskeluoikeusIndex) => (
-            <li key={opiskeluoikeusIndex}>
-              <Opiskeluoikeus
-                opiskeluoikeus={opiskeluoikeus}
-                oppijaOid={oppijaOid}
-              />
-            </li>
-          )
+          (opiskeluoikeus, opiskeluoikeusIndex) => {
+            const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
+            return Editor ? (
+              <Editor key={opiskeluoikeusIndex} />
+            ) : (
+              <li key={opiskeluoikeusIndex}>
+                <Opiskeluoikeus
+                  opiskeluoikeus={opiskeluoikeus}
+                  oppijaOid={oppijaOid}
+                />
+              </li>
+            )
+          }
         )}
       </ul>
     </div>

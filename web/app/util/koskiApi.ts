@@ -1,4 +1,4 @@
-import { apiDelete, ApiFailure, apiGet, apiPut } from '../api-fetch'
+import { apiDelete, ApiFailure, apiGet, apiPost, apiPut } from '../api-fetch'
 import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { KeyValue } from '../types/fi/oph/koski/preferences/KeyValue'
@@ -83,6 +83,48 @@ export const removePreference = (
 ) =>
   handleExpiredSession(
     apiDelete<void>(apiUrl(`preferences/${organisaatioOid}/${type}/${key}`))
+  )
+
+export const invalidateOpiskeluoikeus = (opiskeluoikeusOid: string) =>
+  handleExpiredSession(
+    apiDelete<void>(apiUrl(`opiskeluoikeus/${opiskeluoikeusOid}`))
+  )
+
+export const fetchOmatTiedotOppija = () =>
+  handleExpiredSession(apiGet<Oppija>(apiUrl('omattiedotV2/oppija')))
+
+export const fetchSuoritusjako = (id: string) =>
+  handleExpiredSession(
+    apiPost<Oppija>(apiUrl(`suoritusjakoV3`), { body: { secret: id } })
+  )
+
+export type SuoritusjakoTehty = {
+  tehty: boolean
+}
+
+export const fetchSuoritusjakoTehty = (
+  opiskeluoikeusOid: string,
+  suorituksenTyyppi?: string
+) =>
+  handleExpiredSession(
+    apiPost<SuoritusjakoTehty>(
+      apiUrl(
+        `opiskeluoikeus/suostumuksenperuutus/suoritusjakoTehty/${opiskeluoikeusOid}`,
+        { suorituksentyyppi: suorituksenTyyppi }
+      )
+    )
+  )
+
+export const peruutaSuostumus = (
+  opiskeluoikeusOid: string,
+  suorituksenTyyppi?: string
+) =>
+  handleExpiredSession(
+    apiPost<SuoritusjakoTehty>(
+      apiUrl(`opiskeluoikeus/suostumuksenperuutus/${opiskeluoikeusOid}`, {
+        suorituksentyyppi: suorituksenTyyppi
+      })
+    )
   )
 
 // Virhetilanteiden hallinta

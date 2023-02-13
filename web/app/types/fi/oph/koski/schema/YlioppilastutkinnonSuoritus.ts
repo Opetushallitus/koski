@@ -17,7 +17,7 @@ export type YlioppilastutkinnonSuoritus = {
   koulusivistyskieli?: Array<Koodistokoodiviite<'kieli', 'FI' | 'SV'>>
   pakollisetKokeetSuoritettu: boolean
   koulutusmoduuli: Ylioppilastutkinto
-  toimipiste?: OrganisaatioWithOid
+  toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<YlioppilastutkinnonKokeenSuoritus>
   vahvistus?: Organisaatiovahvistus
 }
@@ -28,7 +28,7 @@ export const YlioppilastutkinnonSuoritus = (o: {
   koulusivistyskieli?: Array<Koodistokoodiviite<'kieli', 'FI' | 'SV'>>
   pakollisetKokeetSuoritettu: boolean
   koulutusmoduuli?: Ylioppilastutkinto
-  toimipiste?: OrganisaatioWithOid
+  toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<YlioppilastutkinnonKokeenSuoritus>
   vahvistus?: Organisaatiovahvistus
 }): YlioppilastutkinnonSuoritus => ({
