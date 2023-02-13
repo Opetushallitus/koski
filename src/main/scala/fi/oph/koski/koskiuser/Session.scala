@@ -97,6 +97,9 @@ class KoskiSpecificSession(
     }
   }
 
+  def hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess: Boolean =
+    globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli(TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET)))
+
   def hasAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid], accessType: AccessType.Value): Boolean = {
     val access = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio) || koulutustoimija.exists(kt => hasVarhaiskasvatusAccess(kt, organisaatio, accessType))
     access && (accessType != AccessType.write || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
@@ -160,6 +163,7 @@ object KoskiSpecificSession {
 
   private val systemKäyttöoikeudet: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))))
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
+  private val KOSKI_SYSTEM_USER_TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET = "Koski system user tallennetut ylioppilastutkinnon opiskeluoikeudet"
   private val KOSKI_SYSTEM_USER_MITÄTÖIDYT_JA_POISTETUT: String = "Koski system user mitätöidyt ja poistetut"
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   val SUORITUSJAKO_KATSOMINEN_USER = "Koski suoritusjako katsominen"
@@ -174,6 +178,19 @@ object KoskiSpecificSession {
     InetAddress.getLoopbackAddress,
     "",
     systemKäyttöoikeudet
+  )
+  // Internal user with access to YO-opiskeluoikeudet
+  val systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet = new KoskiSpecificSession(
+    AuthenticationUser(
+      KOSKI_SYSTEM_USER_TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET,
+      KOSKI_SYSTEM_USER_TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET,
+      KOSKI_SYSTEM_USER_TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET, None
+    ),
+    "fi",
+    InetAddress.getLoopbackAddress,
+    "",
+    systemKäyttöoikeudet ++
+      Set(KäyttöoikeusGlobal(List(Palvelurooli(TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET))))
   )
   // Internal user with root access to also mitätöidyt and poistetut opiskeluoikeudet
   val systemUserMitätöidytJaPoistetut = new KoskiSpecificSession(
