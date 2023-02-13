@@ -25,7 +25,7 @@ import {
   laajuusSum,
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
-import { OpiskeluoikeudenSuostumuksenPeruminen } from '../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
+import { PäätasonSuorituksenSuostumuksenPeruminen } from '../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import {
   OsasuoritusRowData,
@@ -143,10 +143,6 @@ export const TaiteenPerusopetusEditor = (
         koulutus={tpoKoulutuksenNimi(form.state)}
       />
 
-      <KansalainenOnly>
-        <OpiskeluoikeudenSuostumuksenPeruminen opiskeluoikeus={form.state} />
-      </KansalainenOnly>
-
       <EditorContainer
         form={form}
         oppijaOid={props.oppijaOid}
@@ -155,6 +151,13 @@ export const TaiteenPerusopetusEditor = (
         createOpiskeluoikeusjakso={TaiteenPerusopetuksenOpiskeluoikeusjakso}
         suorituksenNimi={taiteenPerusopetuksenSuorituksenNimi}
       >
+        <KansalainenOnly>
+          <PäätasonSuorituksenSuostumuksenPeruminen
+            opiskeluoikeus={form.state}
+            suoritus={päätasonSuoritus.suoritus}
+          />
+        </KansalainenOnly>
+
         <KeyValueTable key={'kikka' + päätasonSuoritus.index}>
           <KeyValueRow name="Taiteenala">
             <Trans>
