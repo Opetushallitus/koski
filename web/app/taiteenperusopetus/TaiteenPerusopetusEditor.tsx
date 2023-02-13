@@ -33,9 +33,8 @@ import {
 import { PaikallinenOsasuoritusSelect } from '../components-v2/opiskeluoikeus/PaikallinenOsasuoritusSelect'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { Trans } from '../components-v2/texts/Trans'
-import { localize, t } from '../i18n/i18n'
+import { t } from '../i18n/i18n'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
-import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
 import { TaiteenPerusopetuksenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeusjakso'
@@ -43,8 +42,10 @@ import { TaiteenPerusopetuksenPäätasonSuoritus } from '../types/fi/oph/koski/s
 import { TaiteenPerusopetuksenPaikallinenOpintokokonaisuus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallinenOpintokokonaisuus'
 import { TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus } from '../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaikallisenOpintokokonaisuudenSuoritus'
 import { append, deleteAt } from '../util/fp/arrays'
-import { KoodiarvotOf } from '../util/koodisto'
-import { createTpoArviointi } from './tpoCommon'
+import {
+  createTpoArviointi,
+  taiteenPerusopetuksenSuorituksenNimi
+} from './tpoCommon'
 import { TpoOsasuoritusProperties } from './TpoOsasuoritusProperties'
 
 export type TaiteenPerusopetusEditorProps = {
@@ -152,7 +153,7 @@ export const TaiteenPerusopetusEditor = (
         oppijaOid={props.oppijaOid}
         onChangeSuoritus={setPäätasonSuoritus}
         createOpiskeluoikeusjakso={TaiteenPerusopetuksenOpiskeluoikeusjakso}
-        suorituksenNimi={tpoSuorituksenNimi}
+        suorituksenNimi={taiteenPerusopetuksenSuorituksenNimi}
       >
         <KeyValueTable key={'kikka' + päätasonSuoritus.index}>
           <KeyValueRow name="Taiteenala">
@@ -269,28 +270,4 @@ const tpoKoulutuksenNimi = (
   return `${t(opiskeluoikeus.oppimäärä.nimi)}, ${t(
     opiskeluoikeus.suoritukset[0]?.koulutusmoduuli.taiteenala.nimi
   )}`.toLowerCase()
-}
-
-const tpoSuorituksenNimi = (
-  suoritus: TaiteenPerusopetuksenPäätasonSuoritus
-): LocalizedString => {
-  const titles: Record<
-    KoodiarvotOf<TaiteenPerusopetuksenPäätasonSuoritus['tyyppi']>,
-    string
-  > = {
-    taiteenperusopetuksenlaajanoppimaaranperusopinnot:
-      'Laajan oppimäärän perusopinnot',
-    taiteenperusopetuksenlaajanoppimaaransyventavatopinnot:
-      'Laajan oppimäärän syventävät opinnot',
-    taiteenperusopetuksenyleisenoppimaaranteemaopinnot:
-      'Yleisen oppimäärän teemaopinnot',
-    taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot:
-      'Yleisen oppimäärän yhteiset opinnot'
-  }
-
-  return localize(
-    `${t(titles[suoritus.tyyppi.koodiarvo])}, ${t(
-      suoritus.koulutusmoduuli.taiteenala.nimi
-    ).toLowerCase()}`
-  )
 }
