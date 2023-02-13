@@ -53,7 +53,7 @@ const TutkintoKoodiDropdown = ({ options, onSelectionChanged, selected }) => (
 const hideTunnisteenKoodiarvo = (model) => {
   return (
     model.context.kansalainen ||
-    !diaarinumerollinen(model) ||
+    (!diaarinumerollinen(model) && !isYlioppilastutkinto(model)) ||
     model.value.classes.includes('lukionoppiaineidenoppimaarat2019')
   )
 }
@@ -62,6 +62,9 @@ const Koodiarvo = ({ model }) => <span>{modelData(model, 'koodiarvo')}</span>
 
 const diaarinumerollinen = (model) =>
   model.value.classes.includes('diaarinumerollinen')
+
+const isYlioppilastutkinto = (model) =>
+  model.value.classes.includes('ylioppilastutkinto')
 
 const fetchKoulutuksetDiaarille = (diaari) =>
   Http.cachedGet(

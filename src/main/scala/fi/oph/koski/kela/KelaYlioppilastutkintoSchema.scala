@@ -32,7 +32,6 @@ object KelaYlioppilastutkinnonOpiskeluoikeus {
     suoritukset = yo.suoritukset.map(s => KelaYlioppilastutkinnonPäätasonSuoritus(
       KelaYlioppilastutkinnonSuorituksenKoulutusmoduuli(
         KelaKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste),
-        s.koulutusmoduuli.perusteenDiaarinumero,
         s.koulutusmoduuli.koulutustyyppi.map(KelaKoodistokoodiviite.fromKoskiSchema)
       ),
       Some(Toimipiste(
@@ -115,7 +114,6 @@ case class KelaYlioppilastutkinnonOsasuoritus(
 
 case class KelaYlioppilastutkinnonSuorituksenKoulutusmoduuli(
   tunniste: KelaKoodistokoodiviite,
-  perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[KelaKoodistokoodiviite],
 ) extends SuorituksenKoulutusmoduuli
 
