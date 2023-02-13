@@ -92,9 +92,14 @@ class KoskiValidator(
 
   private def updateFieldsAndValidateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
     opiskeluoikeus match {
-      case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus if opiskeluoikeus.mitätöity =>
+      case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus if opiskeluoikeus.mitätöity &&
+        (!opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||
+          user.hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess) =>
+        // TODO: TOR-1639: Toteuta YO-opiskeluoikeuksien lipsuva mitätöinti
         updateFields(opiskeluoikeus, lipsuTarvittaessaVirheistäMitätöinnissä = true)
-      case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
+      case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus if
+        (!opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus] ||
+         user.hasTallennetutYlioppilastutkinnonOpiskeluoikeudetAccess) =>
         updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
           (validateAccess(opiskeluoikeus)
             .onSuccess {

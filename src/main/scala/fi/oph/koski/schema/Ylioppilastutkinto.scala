@@ -24,11 +24,14 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   oppilaitosSuorituspäivänä: Option[Oppilaitos] = None,
   @Description("Toistaiseksi vain Kosken sisäisessä käytössä.")
   lisätiedot: Option[YlioppilastutkinnonOpiskeluoikeudenLisätiedot] = None
-  ) extends KoskeenTallennettavanKaltainenOpiskeluoikeus {
+  ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def arvioituPäättymispäivä = None
   override def päättymispäivä = None
   override def sisältyyOpiskeluoikeuteen = None
   override def organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
+
+  override def withOppilaitos(oppilaitos: Oppilaitos): YlioppilastutkinnonOpiskeluoikeus = this.copy(oppilaitos = Some(oppilaitos))
+  override def withKoulutustoimija(koulutustoimija: Koulutustoimija): YlioppilastutkinnonOpiskeluoikeus = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
 case class YlioppilastutkinnonOpiskeluoikeudenLisätiedot(
@@ -79,7 +82,7 @@ case class YlioppilastutkinnonSuoritus(
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi")
-) extends KoskeenTallennettavanKaltainenPäätasonSuoritus with Arvioinniton with KoulusivistyskieliYlioppilasKokeenSuorituksesta
+) extends KoskeenTallennettavaPäätasonSuoritus with Arvioinniton with KoulusivistyskieliYlioppilasKokeenSuorituksesta
 
 case class YlioppilastutkinnonKokeenSuoritus(
   @Title("Koe")
