@@ -3,6 +3,7 @@ package fi.oph.koski.ytr.download
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{DB, QueryMethods}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
@@ -164,7 +165,17 @@ class YtrDownloadService(
 
           // TODO: TOR-1639: Datan konversio ja kirjoitus Koskeen
           try {
-            converter.convert(oppija)
+            implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet
+            implicit val accessType: AccessType.Value = AccessType.write
+
+            converter.convert(oppija) match {
+              case Some(ytrOo) =>
+                application.validator.updateFieldsAndValidateOpiskeluoikeus(ytrOo, None) match {
+                  case Left(error) => logger.info(s"YTR-datan validointi epäonnistui: ${error.errorString.getOrElse("-")}")
+                  case Right(_) =>
+                }
+              case _ => logger.info(s"YTR-datan konversio palautti tyhjän opiskeluoikeuden")
+            }
           } catch {
             case e: Throwable => logger.info(s"YTR-datan konversio epäonnistui: ${e.getMessage}")
           }

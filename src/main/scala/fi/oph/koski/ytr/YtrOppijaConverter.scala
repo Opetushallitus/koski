@@ -42,7 +42,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
         tyyppi = conversionUtils.requiredKoodi("suorituksentyyppi", "ylioppilastutkinto"),
         vahvistus = vahvistus,
         toimipiste = oppilaitos.getOrElse(ytl),
-        koulutusmoduuli = Ylioppilastutkinto(conversionUtils.requiredKoodi("koulutus", "301000"), None),
+        koulutusmoduuli = Ylioppilastutkinto(conversionUtils.requiredKoodi("koulutus", "301000")),
         pakollisetKokeetSuoritettu = ytrOppija.hasCompletedMandatoryExams,
         osasuoritukset = Some(ytrOppija.exams.flatMap(convertExam).sorted(examOrdering))
       ))
