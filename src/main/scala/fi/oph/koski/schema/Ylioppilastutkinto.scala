@@ -52,7 +52,7 @@ case class YlioppilastutkinnonKokeenSuoritus(
   arviointi: Option[List[YlioppilaskokeenArviointi]],
   @KoodistoKoodiarvo("ylioppilastutkinnonkoe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinnonkoe", koodistoUri = "suorituksentyyppi")
-) extends Vahvistukseton
+) extends Vahvistukseton with DuplikaatitSallittu
 
 case class YlioppilastutkinnonTutkintokerta(koodiarvo: String, vuosi: Int, vuodenaika: LocalizedString)
 
