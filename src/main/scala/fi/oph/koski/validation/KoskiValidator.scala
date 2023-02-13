@@ -40,7 +40,6 @@ class KoskiValidator(
   koodistoPalvelu: KoodistoViitePalvelu,
   config: Config
 ) extends Timing {
-
   def updateFieldsAndValidateAsJson(oppija: Oppija)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     val serialized = timed("Oppija serialization", 500) {
       JsonSerializer.serialize(oppija)
@@ -88,6 +87,10 @@ class KoskiValidator(
       case Nil => Left(KoskiErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista())
       case opiskeluoikeudet => Right(oppija.copy(opiskeluoikeudet = opiskeluoikeudet))
     }
+  }
+
+  def updateFieldsAndValidateOpiskeluoikeus(ytrOpiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
+    updateFieldsAndValidateOpiskeluoikeus(ytrOpiskeluoikeus.asInstanceOf[Opiskeluoikeus], henkilö)
   }
 
   private def updateFieldsAndValidateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
@@ -170,7 +173,7 @@ class KoskiValidator(
       .map(fillLaajuudet)
       .map(fillVieraatKielet)
       .map(clearVahvistukset)
-      .map(_.withHistoria(None))
+      .map(fillOrganisaatioHistoria)
       .map(KoodistopoikkeustenKonversiot.konvertoiKoodit)
       .map(fillLukionOppimääräSuoritettu)
       .map(PerusopetuksenOpiskeluoikeusValidation.filterDeprekoidutKentät)
@@ -252,6 +255,13 @@ class KoskiValidator(
       case l: Any => l
     })
 
+  private def fillOrganisaatioHistoria(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+    oo match {
+      case _: YlioppilastutkinnonOpiskeluoikeus => oo
+      case _ => oo.withHistoria(None)
+    }
+  }
+
   private def fillMissingOrganisations(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     addOppilaitos(oo).flatMap(addKoulutustoimija).map(setOrganizationNames)
   }
@@ -273,24 +283,32 @@ class KoskiValidator(
   }
 
   private def addOppilaitos(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
-    val oppilaitos: Either[HttpStatus, Oppilaitos] = oo.oppilaitos.map(Right(_)).getOrElse {
-      val toimipisteet: List[OrganisaatioWithOid] = oo.suoritukset.map(_.toimipiste)
-      val oppilaitokset: Either[HttpStatus, Seq[Oppilaitos]] = HttpStatus.foldEithers(toimipisteet.map { toimipiste =>
-        organisaatioRepository.findOppilaitosForToimipiste(toimipiste) match {
-          case Some(oppilaitos) => Right(oppilaitos)
-          case None => Left(KoskiErrorCategory.badRequest.validation.organisaatio.eiOppilaitos(s"Toimipisteenä käytetylle organisaatiolle ${toimipiste.oid} ei löydy oppilaitos-tyyppistä yliorganisaatiota."))
+    oo match {
+      case ytrOo: YlioppilastutkinnonOpiskeluoikeus if ytrOo.oppilaitos.isEmpty =>
+        // YO-tutkinnon opiskeluoikeudella ei ole oppilaitosta, koska sen myöntää koulutustoimijana toimiva ylioppilastutkintolautakunta
+        Right(oo)
+      case oo: KoskeenTallennettavaOpiskeluoikeus =>
+        val oppilaitos: Either[HttpStatus, Oppilaitos] = oo.oppilaitos.map(Right(_)).getOrElse {
+          val toimipisteet: List[OrganisaatioWithOid] = oo.suoritukset.map(_.toimipiste)
+          val oppilaitokset: Either[HttpStatus, Seq[Oppilaitos]] = HttpStatus.foldEithers(toimipisteet.map { toimipiste =>
+            organisaatioRepository.findOppilaitosForToimipiste(toimipiste) match {
+              case Some(oppilaitos) => Right(oppilaitos)
+              case None => Left(KoskiErrorCategory.badRequest.validation.organisaatio.eiOppilaitos(s"Toimipisteenä käytetylle organisaatiolle ${toimipiste.oid} ei löydy oppilaitos-tyyppistä yliorganisaatiota."))
+            }
+          })
+          oppilaitokset.right.map(_.distinct).flatMap {
+            case List(oppilaitos) => Right(oppilaitos)
+            case _ => Left(KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitosPuuttuu("Opiskeluoikeudesta puuttuu oppilaitos, eikä sitä voi yksiselitteisesti päätellä annetuista toimipisteistä."))
+          }
         }
-      })
-      oppilaitokset.right.map(_.distinct).flatMap {
-        case List(oppilaitos) => Right(oppilaitos)
-        case _ => Left(KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitosPuuttuu("Opiskeluoikeudesta puuttuu oppilaitos, eikä sitä voi yksiselitteisesti päätellä annetuista toimipisteistä."))
-      }
+        oppilaitos.right.map(oo.withOppilaitos(_))
     }
-    oppilaitos.right.map(oo.withOppilaitos(_))
   }
 
   private def addKoulutustoimija(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = oo match {
     case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined => validateAndAddVarhaiskasvatusKoulutustoimija(e)
+    case ytrOo: YlioppilastutkinnonOpiskeluoikeus if ytrOo.oppilaitos.isEmpty && ytrOo.koulutustoimija.exists(_.oid == "1.2.246.562.10.43628088406") =>
+      Right(oo)
     case _ => organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
       case Some(löydettyKoulutustoimija) =>
         oo.koulutustoimija.map(_.oid) match {
@@ -409,7 +427,7 @@ class KoskiValidator(
   private def validateAccess(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {
     HttpStatus.fold(
       validateOpiskeluoikeudenTyypinAccess(oo.tyyppi.koodiarvo),
-      validateOrganisaatioAccess(oo, oo.getOppilaitos)
+      validateOrganisaatioAccess(oo)
     )
   }
 
@@ -418,7 +436,16 @@ class KoskiValidator(
       KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi("Ei oikeuksia opiskeluoikeuden tyyppiin " + opiskeluoikeudenTyyppi)
     }
 
-  private def validateOrganisaatioAccess(oo: Opiskeluoikeus, organisaatio: OrganisaatioWithOid)(implicit user: KoskiSpecificSession, accessType: AccessType.Value) = {
+  private def validateOrganisaatioAccess(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {
+    oo match {
+      case _: YlioppilastutkinnonOpiskeluoikeus =>
+        validateOrganisaatioAccess(oo, oo.getOppilaitosOrKoulutusToimija)
+      case _ =>
+        validateOrganisaatioAccess(oo, oo.getOppilaitos)
+    }
+  }
+
+  private def validateOrganisaatioAccess(oo: Opiskeluoikeus, organisaatio: OrganisaatioWithOid)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {
     val organisaationKoulutustoimija = organisaatioRepository.findKoulutustoimijaForOppilaitos(organisaatio).map(_.oid)
     val opiskeluoikeudenKoulutustoimija = oo.koulutustoimija.map(_.oid)
     val koulutustoimija = oo match {
@@ -966,6 +993,7 @@ class KoskiValidator(
   private def validatePäätasonSuorituksenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = suoritus match {
     case a: AmmatillisenTutkinnonOsittainenSuoritus => validateValmiinAmmatillisenTutkinnonOsittainenSuoritus(a, opiskeluoikeus)
     case _: VapaanSivistystyönPäätasonSuoritus => HttpStatus.ok // Osalle VST:n opiskeluoikeustyyppejä tämä validaatio ei päde. VST:llä omia validaatio tätä tapausta varten.
+    case _: YlioppilastutkinnonSuoritus => HttpStatus.ok // Ylioppilastutkinnon opiskeluoikeudessa voi tutkinnon suorituksesta huolimatta olla esim. keskeytettyjä osasuorituksia
     case s => validateValmiinSuorituksenStatus(s)
   }
 
@@ -1140,7 +1168,10 @@ class KoskiValidator(
     def valmiitaOppimääriäLöytyy =
       opiskeluoikeus.suoritukset.exists(s => s.valmis && s.isInstanceOf[OppiaineenOppimääränSuoritus] && !s.koulutusmoduuli.isInstanceOf[EiTiedossaOppiaine])
 
-    if (opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo != "valmistunut" || valmiitaOppimääriäLöytyy) {
+    if (opiskeluoikeus.isInstanceOf[YlioppilastutkinnonOpiskeluoikeus]) {
+      // TODO: TOR-1639: Toteuta myös YO-tutkinnoille nämä validaatiot, kunhan sille on ensin konversiossa luotu tilat
+      HttpStatus.ok
+    } else if (opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo != "valmistunut" || valmiitaOppimääriäLöytyy) {
       HttpStatus.ok
     } else if (opiskeluoikeus.tyyppi.koodiarvo == "aikuistenperusopetus") {
       validateAikuistenPerusopetuksenSuoritustenStatus(opiskeluoikeus)
