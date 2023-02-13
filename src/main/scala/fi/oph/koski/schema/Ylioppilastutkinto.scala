@@ -70,7 +70,7 @@ case class YlioppilastutkinnonOpiskeluoikeusjakso(
 
 case class YlioppilastutkinnonSuoritus(
   @Title("Koulutus")
-  koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
+  koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(),
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Organisaatiovahvistus] = None,
   pakollisetKokeetSuoritettu: Boolean,
@@ -112,9 +112,8 @@ case class YlioppilaskokeenArviointi(
 case class Ylioppilastutkinto(
  @KoodistoKoodiarvo("301000")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus"),
- perusteenDiaarinumero: Option[String],
  koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends Tutkinto with Laajuudeton with DiaarinumerollinenKoulutus
+) extends Tutkinto with Laajuudeton with Koulutus
 
 @Description("Ylioppilastutkinnon kokeen tunnistetiedot")
 case class YlioppilasTutkinnonKoe(

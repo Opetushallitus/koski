@@ -1,4 +1,9 @@
+## 1.3.2023
+
+- YO-tutkinnon suorituksen koulutusmoduulista on poistettu kokonaan kenttä perusteenDiaarinumero, jota ei ole koskaan käytetty
+
 ## 24.2.2023
+
 - YTR-tietomalliin lisätty kenttiä rinnakkaisen integraation tarpeisiin
 
 ## 15.2.2023
