@@ -1,55 +1,68 @@
 {
-  "koodistoUri" : "osaamisala",
-  "versio" : 3,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "osaamisala",
-    "kuvaus" : "osaamisala"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "kompetensområde för",
-    "kuvaus" : "kompetensområde"
-  } ],
-  "codesGroupUri" : "koulutuskoodistot",
-  "voimassaAlkuPvm" : "2015-09-30",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ {
-    "codesUri" : "koulutus",
-    "codesVersion" : 4,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 5,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 6,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 7,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 8,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 9,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 10,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 11,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 12,
-    "passive" : false
-  } ],
-  "tila" : "LUONNOS",
-  "version" : 19
+  "koodistoUri": "osaamisala",
+  "versio": 3,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "osaamisala",
+      "kuvaus": "osaamisala"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "kompetensområde för",
+      "kuvaus": "kompetensområde"
+    }
+  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "voimassaAlkuPvm": "2015-09-30",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 4,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 5,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 6,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 7,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 8,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 9,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 10,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 11,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 12,
+      "passive": false
+    }
+  ],
+  "tila": "LUONNOS",
+  "version": 19
 }

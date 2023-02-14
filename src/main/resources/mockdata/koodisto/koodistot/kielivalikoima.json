@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "kielivalikoima",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "kielivalikoima",
-    "kuvaus" : "kielivalikoima - käytetään ainakin KOSKI-palvelussa oppiaineiden kieliä määriteltäessä"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "kielivalikoima",
-    "kuvaus" : "kielivalikoima"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "kielivalikoima",
-    "kuvaus" : "kielivalikoima"
-  } ],
-  "codesGroupUri" : "koulutuskoodistot",
-  "voimassaAlkuPvm" : "2013-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "kielivalikoima",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "kielivalikoima",
+      "kuvaus": "kielivalikoima - käytetään ainakin KOSKI-palvelussa oppiaineiden kieliä määriteltäessä"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "kielivalikoima",
+      "kuvaus": "kielivalikoima"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "kielivalikoima",
+      "kuvaus": "kielivalikoima"
+    }
+  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "voimassaAlkuPvm": "2013-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

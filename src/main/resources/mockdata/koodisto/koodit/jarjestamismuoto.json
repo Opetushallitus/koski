@@ -1,33 +1,44 @@
-[ {
-  "koodiUri" : "jarjestamismuoto_10",
-  "koodiArvo" : "10",
-  "metadata" : [ {
-    "nimi" : "Koulutuksen järjestäminen oppilaitosmuotoisena",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Att ordna utbildningen som när-, distansundervisning eller på en arbetsplats",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "jarjestamismuoto_20",
-  "koodiArvo" : "20",
-  "metadata" : [ {
-    "nimi" : "Koulutuksen järjestäminen oppisopimuskoulutuksena",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Att ordna utbildningen som läroavtalsutbildning",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "jarjestamismuoto_10",
+    "koodiArvo": "10",
+    "metadata": [
+      {
+        "nimi": "Koulutuksen järjestäminen oppilaitosmuotoisena",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Att ordna utbildningen som när-, distansundervisning eller på en arbetsplats",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "jarjestamismuoto_20",
+    "koodiArvo": "20",
+    "metadata": [
+      {
+        "nimi": "Koulutuksen järjestäminen oppisopimuskoulutuksena",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Att ordna utbildningen som läroavtalsutbildning",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

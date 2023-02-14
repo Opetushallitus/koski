@@ -1,20 +1,24 @@
 {
-  "koodistoUri" : "vstosaamiskokonaisuus",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "VST osaamiskokonaisuus"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "VST osaamiskokonaisuus"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "VST osaamiskokonaisuus"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2020-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "vstosaamiskokonaisuus",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "VST osaamiskokonaisuus"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "VST osaamiskokonaisuus"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "VST osaamiskokonaisuus"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2020-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

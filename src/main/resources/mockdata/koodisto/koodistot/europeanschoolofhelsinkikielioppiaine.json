@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "europeanschoolofhelsinkikielioppiaine",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "European School of Helsinki kieli -oppiaine",
-    "kuvaus" : "European School of Helsinki kieli -oppiaine"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2023-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "europeanschoolofhelsinkikielioppiaine",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "European School of Helsinki kieli -oppiaine",
+      "kuvaus": "European School of Helsinki kieli -oppiaine"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2023-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

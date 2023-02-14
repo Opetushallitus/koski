@@ -1,530 +1,706 @@
-[ {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvhy1",
-  "koodiArvo" : "LVHY1",
-  "metadata" : [ {
-    "nimi" : "Historian perusteita",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Grunderna i historia",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Introductory history",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvyhku",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvhy2",
-  "koodiArvo" : "LVHY2",
-  "metadata" : [ {
-    "nimi" : "Suomen yhteiskunta ja kulttuurit",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Samhället och kulturerna i Finland",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Finnish society and cultures",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvyhku",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvka1",
-  "koodiArvo" : "LVKA1",
-  "metadata" : [ {
-    "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Språkfärdighet som en del av studierna och andra livsområden",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Language skills as part of studying and other areas of life",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvpoak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvka2",
-  "koodiArvo" : "LVKA2",
-  "metadata" : [ {
-    "nimi" : "Arkipäivän tilanteet",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vardagssituationer",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Everyday situations",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvpoak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvka3",
-  "koodiArvo" : "LVKA3",
-  "metadata" : [ {
-    "nimi" : "Mediat",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Medier",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Media",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvpoak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvkb1",
-  "koodiArvo" : "LVKB1",
-  "metadata" : [ {
-    "nimi" : "Kieleen tutustuminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Introduktion i språket",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Introduction to the language",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvkb2",
-  "koodiArvo" : "LVKB2",
-  "metadata" : [ {
-    "nimi" : "Asioiminen ja harrastukset",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Vardagsärenden och fritid",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Errands and hobbies",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvkb3",
-  "koodiArvo" : "LVKB3",
-  "metadata" : [ {
-    "nimi" : "Elinympäristö ja sosiaaliset verkostot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Livsmiljö och sociala nätverk",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Living environment and social networks",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvak",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvluma1",
-  "koodiArvo" : "LVLUMA1",
-  "metadata" : [ {
-    "nimi" : "Matematiikkaa, fysiikkaa ja kemiaa",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Matematik, fysik och kemi",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Mathematics, physics and chemistry",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmaluo",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvluma2",
-  "koodiArvo" : "LVLUMA2",
-  "metadata" : [ {
-    "nimi" : "Biologiaa ja maantiedettä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Biologi och geografi",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Biology and geography",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmaluo",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvmai1",
-  "koodiArvo" : "LVMAI1",
-  "metadata" : [ {
-    "nimi" : "Kieli ja identiteetti",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Språk och identitet",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Language and identity",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmai",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvmai2",
-  "koodiArvo" : "LVMAI2",
-  "metadata" : [ {
-    "nimi" : "Kirjoittaminen ja nykykulttuuri",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Skrivande och modern kultur",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Writing and contemporary culture",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmai",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvmai3",
-  "koodiArvo" : "LVMAI3",
-  "metadata" : [ {
-    "nimi" : "Puheviestinnän taitojen syventäminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Fördjupade färdigheter i muntlig kommunikation",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Deepening oral communication skills",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvmai",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvop1",
-  "koodiArvo" : "LVOP1",
-  "metadata" : [ {
-    "nimi" : "Opinto-ohjaus 1",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studiehandledning 1",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Guidance counselling 1",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvopo",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvop2",
-  "koodiArvo" : "LVOP2",
-  "metadata" : [ {
-    "nimi" : "Opinto-ohjaus 2",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studiehandledning 2",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Guidance counselling 2",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvopo",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvs1",
-  "koodiArvo" : "LVS1",
-  "metadata" : [ {
-    "nimi" : "Kielen rakenteet funktionaalisesta näkökulmasta",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Språkstrukturer ur funktionell synvinkel",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Language structures from a functional perspective",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvs10",
-  "koodiArvo" : "LVS10",
-  "metadata" : [ {
-    "nimi" : "Mediakulttuuri",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Mediekultur",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Media culture",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvs2",
-  "koodiArvo" : "LVS2",
-  "metadata" : [ {
-    "nimi" : "Tekstin rakenteet funktionaalisesta näkökulmasta",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Textstrukturer ur funktionell synvinkel",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Text structures from a functional perspective",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvs3",
-  "koodiArvo" : "LVS3",
-  "metadata" : [ {
-    "nimi" : "Eri tiedonalojen kieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Språket inom olika ämnesområden",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Language used within various disciplines",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvs4",
-  "koodiArvo" : "LVS4",
-  "metadata" : [ {
-    "nimi" : "Tekstejä kirjoittamaan",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Skriva texter",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Writing texts",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvs5",
-  "koodiArvo" : "LVS5",
-  "metadata" : [ {
-    "nimi" : "Kuunnellaan ja puhutaan 1",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Lyssna och tala 1",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Listening and speaking 1",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvs6",
-  "koodiArvo" : "LVS6",
-  "metadata" : [ {
-    "nimi" : "Suomalainen kirjallisuus ja kulttuuri",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Litteratur och kultur i Finland",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Finnish literature and culture",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvs7",
-  "koodiArvo" : "LVS7",
-  "metadata" : [ {
-    "nimi" : "Maailmankirjallisuus ja kulttuurinen monimuotoisuus",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Världslitteratur och kulturell mångfald",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "World literature and cultural diversity",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvs8",
-  "koodiArvo" : "LVS8",
-  "metadata" : [ {
-    "nimi" : "Kuunnellaan ja puhutaan 2",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Lyssna och tala 2",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Listening and speaking 2",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-}, {
-  "koodiUri" : "lukioonvalmistavankoulutuksenkurssit2015_lvs9",
-  "koodiArvo" : "LVS9",
-  "metadata" : [ {
-    "nimi" : "Digitaaliset tekstitaidot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Digital textkompetens",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Digital textual skills",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineetluva_lvaik",
-    "codeElementVersion" : 1,
-    "passive" : false
-  } ]
-} ]
+[
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvhy1",
+    "koodiArvo": "LVHY1",
+    "metadata": [
+      {
+        "nimi": "Historian perusteita",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Grunderna i historia",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Introductory history",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvyhku",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvhy2",
+    "koodiArvo": "LVHY2",
+    "metadata": [
+      {
+        "nimi": "Suomen yhteiskunta ja kulttuurit",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Samhället och kulturerna i Finland",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Finnish society and cultures",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvyhku",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvka1",
+    "koodiArvo": "LVKA1",
+    "metadata": [
+      {
+        "nimi": "Kielitaito osana opiskelua ja muita elämänalueita",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Språkfärdighet som en del av studierna och andra livsområden",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Language skills as part of studying and other areas of life",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvpoak",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvka2",
+    "koodiArvo": "LVKA2",
+    "metadata": [
+      {
+        "nimi": "Arkipäivän tilanteet",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vardagssituationer",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Everyday situations",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvpoak",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvka3",
+    "koodiArvo": "LVKA3",
+    "metadata": [
+      {
+        "nimi": "Mediat",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Medier",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Media",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvpoak",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvkb1",
+    "koodiArvo": "LVKB1",
+    "metadata": [
+      {
+        "nimi": "Kieleen tutustuminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Introduktion i språket",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Introduction to the language",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvak",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvkb2",
+    "koodiArvo": "LVKB2",
+    "metadata": [
+      {
+        "nimi": "Asioiminen ja harrastukset",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Vardagsärenden och fritid",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Errands and hobbies",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvak",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvkb3",
+    "koodiArvo": "LVKB3",
+    "metadata": [
+      {
+        "nimi": "Elinympäristö ja sosiaaliset verkostot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Livsmiljö och sociala nätverk",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Living environment and social networks",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvak",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvluma1",
+    "koodiArvo": "LVLUMA1",
+    "metadata": [
+      {
+        "nimi": "Matematiikkaa, fysiikkaa ja kemiaa",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Matematik, fysik och kemi",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Mathematics, physics and chemistry",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvmaluo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvluma2",
+    "koodiArvo": "LVLUMA2",
+    "metadata": [
+      {
+        "nimi": "Biologiaa ja maantiedettä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Biologi och geografi",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Biology and geography",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvmaluo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvmai1",
+    "koodiArvo": "LVMAI1",
+    "metadata": [
+      {
+        "nimi": "Kieli ja identiteetti",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Språk och identitet",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Language and identity",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvmai",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvmai2",
+    "koodiArvo": "LVMAI2",
+    "metadata": [
+      {
+        "nimi": "Kirjoittaminen ja nykykulttuuri",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Skrivande och modern kultur",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Writing and contemporary culture",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvmai",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvmai3",
+    "koodiArvo": "LVMAI3",
+    "metadata": [
+      {
+        "nimi": "Puheviestinnän taitojen syventäminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Fördjupade färdigheter i muntlig kommunikation",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Deepening oral communication skills",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvmai",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvop1",
+    "koodiArvo": "LVOP1",
+    "metadata": [
+      {
+        "nimi": "Opinto-ohjaus 1",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiehandledning 1",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Guidance counselling 1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvopo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvop2",
+    "koodiArvo": "LVOP2",
+    "metadata": [
+      {
+        "nimi": "Opinto-ohjaus 2",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiehandledning 2",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Guidance counselling 2",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvopo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs1",
+    "koodiArvo": "LVS1",
+    "metadata": [
+      {
+        "nimi": "Kielen rakenteet funktionaalisesta näkökulmasta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Språkstrukturer ur funktionell synvinkel",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Language structures from a functional perspective",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvaik",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs10",
+    "koodiArvo": "LVS10",
+    "metadata": [
+      {
+        "nimi": "Mediakulttuuri",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Mediekultur",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Media culture",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvaik",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs2",
+    "koodiArvo": "LVS2",
+    "metadata": [
+      {
+        "nimi": "Tekstin rakenteet funktionaalisesta näkökulmasta",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Textstrukturer ur funktionell synvinkel",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Text structures from a functional perspective",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvaik",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs3",
+    "koodiArvo": "LVS3",
+    "metadata": [
+      {
+        "nimi": "Eri tiedonalojen kieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Språket inom olika ämnesområden",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Language used within various disciplines",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvaik",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs4",
+    "koodiArvo": "LVS4",
+    "metadata": [
+      {
+        "nimi": "Tekstejä kirjoittamaan",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Skriva texter",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Writing texts",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvaik",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs5",
+    "koodiArvo": "LVS5",
+    "metadata": [
+      {
+        "nimi": "Kuunnellaan ja puhutaan 1",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Lyssna och tala 1",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Listening and speaking 1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvaik",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs6",
+    "koodiArvo": "LVS6",
+    "metadata": [
+      {
+        "nimi": "Suomalainen kirjallisuus ja kulttuuri",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Litteratur och kultur i Finland",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Finnish literature and culture",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvaik",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs7",
+    "koodiArvo": "LVS7",
+    "metadata": [
+      {
+        "nimi": "Maailmankirjallisuus ja kulttuurinen monimuotoisuus",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Världslitteratur och kulturell mångfald",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "World literature and cultural diversity",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvaik",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs8",
+    "koodiArvo": "LVS8",
+    "metadata": [
+      {
+        "nimi": "Kuunnellaan ja puhutaan 2",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Lyssna och tala 2",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Listening and speaking 2",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvaik",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  },
+  {
+    "koodiUri": "lukioonvalmistavankoulutuksenkurssit2015_lvs9",
+    "koodiArvo": "LVS9",
+    "metadata": [
+      {
+        "nimi": "Digitaaliset tekstitaidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Digital textkompetens",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Digital textual skills",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": [
+      {
+        "codeElementUri": "oppiaineetluva_lvaik",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ]
+  }
+]

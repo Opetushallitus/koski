@@ -1,611 +1,822 @@
-[ {
-  "koodiUri" : "lahdejarjestelma_espoovarda-1",
-  "koodiArvo" : "EspooVarda",
-  "metadata" : [ {
-    "nimi" : "EspooVarda",
-    "lyhytNimi" : "EspooVarda",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "EspooVarda",
-    "lyhytNimi" : "EspooVarda",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "EspooVarda",
-    "lyhytNimi" : "EspooVarda",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_finnairio",
-  "koodiArvo" : "FinnairIO",
-  "metadata" : [ {
-    "nimi" : "Finnairin Ilmailuopisto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Finnairin Ilmailuopisto",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Finnairin Ilmailuopisto",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_futuraledu",
-  "koodiArvo" : "Futural EDU",
-  "metadata" : [ {
-    "nimi" : "Futural EDU",
-    "lyhytNimi" : "Futural EDU",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Futural EDU",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Futural EDU",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_tietoeducation",
-  "koodiArvo" : "Tieto Education",
-  "metadata" : [ {
-    "nimi" : "Tieto Education",
-    "lyhytNimi" : "Tieto Education",
-    "kuvaus" : "Tieto Education",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tieto Education",
-    "lyhytNimi" : "Tieto Education",
-    "kuvaus" : "Tieto Education",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Tieto Education",
-    "lyhytNimi" : "Tieto Education",
-    "kuvaus" : "Tieto Education",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_upmowd",
-  "koodiArvo" : "UPMOWD",
-  "metadata" : [ {
-    "nimi" : "UPM Teollisuusoppilaitos",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_wilma",
-  "koodiArvo" : "Wilma",
-  "metadata" : [ {
-    "nimi" : "Wilma",
-    "lyhytNimi" : "Wilma",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Wilma",
-    "lyhytNimi" : "Wilma",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Wilma",
-    "lyhytNimi" : "Wilma",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_abilita",
-  "koodiArvo" : "abilita",
-  "metadata" : [ {
-    "nimi" : "Abilita Päivähoito",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Abilita Dagvård",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_ankkalampi",
-  "koodiArvo" : "ankkalampi",
-  "metadata" : [ {
-    "nimi" : "Ankkalampi",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_asio",
-  "koodiArvo" : "asio",
-  "metadata" : [ {
-    "nimi" : "Asio-Data",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Asio-Data",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Asio-Data",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_cgivesa",
-  "koodiArvo" : "cgi-vesa",
-  "metadata" : [ {
-    "nimi" : "Vesa Varhaiskasvatus",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_daisy",
-  "koodiArvo" : "daisy",
-  "metadata" : [ {
-    "nimi" : "Daisy varhaiskasvatus",
-    "lyhytNimi" : "Daisy",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_edukit",
-  "koodiArvo" : "edukit",
-  "metadata" : [ {
-    "nimi" : "Edukit",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_eepos",
-  "koodiArvo" : "eepos",
-  "metadata" : [ {
-    "nimi" : "eepos",
-    "lyhytNimi" : "eepos",
-    "kuvaus" : "eepos",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "eepos",
-    "lyhytNimi" : "eepos",
-    "kuvaus" : "eepos",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "eepos",
-    "lyhytNimi" : "eepos",
-    "kuvaus" : "eepos",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_ekurs",
-  "koodiArvo" : "ekurs",
-  "metadata" : [ {
-    "nimi" : "e-Kurs",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_etaika",
-  "koodiArvo" : "etaika",
-  "metadata" : [ {
-    "nimi" : "eTaika",
-    "kuvaus" : "Visma eTaika",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "eTaika",
-    "kuvaus" : "Visma eTaika",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "eTaika",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_espoovarda",
-  "koodiArvo" : "evakaespoo",
-  "metadata" : [ {
-    "nimi" : "EvakaEspoo",
-    "lyhytNimi" : "EvakaEspoo",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "EvakaEspoo",
-    "lyhytNimi" : "EvakaEspoo",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "EvakaEspoo",
-    "lyhytNimi" : "EvakaEspoo",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_hailer",
-  "koodiArvo" : "hailer",
-  "metadata" : [ {
-    "nimi" : "Hailer",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_hellewi",
-  "koodiArvo" : "hellewi",
-  "metadata" : [ {
-    "nimi" : "Hellewi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Hellewi",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_helmi",
-  "koodiArvo" : "helmi",
-  "metadata" : [ {
-    "nimi" : "Helmi oppilashallintojärjestelmä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_kehatieto",
-  "koodiArvo" : "kehätieto",
-  "metadata" : [ {
-    "nimi" : "Kehätieto opintohallintojärjestelmä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_kursor",
-  "koodiArvo" : "kursor",
-  "metadata" : [ {
-    "nimi" : "Kursor",
-    "kuvaus" : "Grynos Kursor",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kursor",
-    "kuvaus" : "Grynos Kursor",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Kursor",
-    "kuvaus" : "Grynos Kursor",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_msdynamicscrmaes",
-  "koodiArvo" : "msdynamicscrm_aes",
-  "metadata" : [ {
-    "nimi" : "MS Dynamics CRM Accountor Enterprise Solutions",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_nexttime",
-  "koodiArvo" : "nexttime",
-  "metadata" : [ {
-    "nimi" : "Nexttime",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_nokiaedunldh",
-  "koodiArvo" : "nokiaedu-nldh",
-  "metadata" : [ {
-    "nimi" : "NokiaEDU NLDH",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "NokiaEDU NLDH",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "NokiaEDU NLDH",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_paikky",
-  "koodiArvo" : "paikky",
-  "metadata" : [ {
-    "nimi" : "Päikky",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Päikky",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Päikky",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_peppi",
-  "koodiArvo" : "peppi",
-  "metadata" : [ {
-    "nimi" : "Peppi",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_primus",
-  "koodiArvo" : "primus",
-  "metadata" : [ {
-    "nimi" : "primus",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_proconsona",
-  "koodiArvo" : "proconsona",
-  "metadata" : [ {
-    "nimi" : "Pro Consona Varhaiskasvatus",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_pyramus",
-  "koodiArvo" : "pyramus",
-  "metadata" : [ {
-    "nimi" : "Pyramus",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_rediteq",
-  "koodiArvo" : "rediteq",
-  "metadata" : [ {
-    "nimi" : "Rediteq",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_sivisverkko",
-  "koodiArvo" : "sivisverkko",
-  "metadata" : [ {
-    "nimi" : "Sivisverkko",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Sivisverkko",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_studentaplus",
-  "koodiArvo" : "studentaplus",
-  "metadata" : [ {
-    "nimi" : "Studentaplus",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_studyo",
-  "koodiArvo" : "studyo",
-  "metadata" : [ {
-    "nimi" : "Studyo Koski-integraatio",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_varda",
-  "koodiArvo" : "varda",
-  "metadata" : [ {
-    "nimi" : "Varda",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_virta",
-  "koodiArvo" : "virta",
-  "metadata" : [ {
-    "nimi" : "virta",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_waiko",
-  "koodiArvo" : "waiko",
-  "metadata" : [ {
-    "nimi" : "Winha aikuiskoulutus",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_winha",
-  "koodiArvo" : "winha",
-  "metadata" : [ {
-    "nimi" : "Winha",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_winnova",
-  "koodiArvo" : "winnova",
-  "metadata" : [ {
-    "nimi" : "Winnova oppilashallintojärjestelmä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_winnovaeduerp",
-  "koodiArvo" : "winnova-eduerp",
-  "metadata" : [ {
-    "nimi" : "Winnova oppilashallintojärjestelmä, EduErp",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_winnovasopro",
-  "koodiArvo" : "winnova-sopro",
-  "metadata" : [ {
-    "nimi" : "Winnova oppilashallintojärjestelmä, Sopro",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_winnovastudentaplus",
-  "koodiArvo" : "winnova-studentaplus",
-  "metadata" : [ {
-    "nimi" : "Winnova oppilashallintojärjestelmä, Studenta",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lahdejarjestelma_ytr",
-  "koodiArvo" : "ytr",
-  "metadata" : [ {
-    "nimi" : "ytr",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "lahdejarjestelma_espoovarda-1",
+    "koodiArvo": "EspooVarda",
+    "metadata": [
+      {
+        "nimi": "EspooVarda",
+        "lyhytNimi": "EspooVarda",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "EspooVarda",
+        "lyhytNimi": "EspooVarda",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "EspooVarda",
+        "lyhytNimi": "EspooVarda",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_finnairio",
+    "koodiArvo": "FinnairIO",
+    "metadata": [
+      {
+        "nimi": "Finnairin Ilmailuopisto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Finnairin Ilmailuopisto",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Finnairin Ilmailuopisto",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_futuraledu",
+    "koodiArvo": "Futural EDU",
+    "metadata": [
+      {
+        "nimi": "Futural EDU",
+        "lyhytNimi": "Futural EDU",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Futural EDU",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Futural EDU",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_tietoeducation",
+    "koodiArvo": "Tieto Education",
+    "metadata": [
+      {
+        "nimi": "Tieto Education",
+        "lyhytNimi": "Tieto Education",
+        "kuvaus": "Tieto Education",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tieto Education",
+        "lyhytNimi": "Tieto Education",
+        "kuvaus": "Tieto Education",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Tieto Education",
+        "lyhytNimi": "Tieto Education",
+        "kuvaus": "Tieto Education",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_upmowd",
+    "koodiArvo": "UPMOWD",
+    "metadata": [
+      {
+        "nimi": "UPM Teollisuusoppilaitos",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_wilma",
+    "koodiArvo": "Wilma",
+    "metadata": [
+      {
+        "nimi": "Wilma",
+        "lyhytNimi": "Wilma",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Wilma",
+        "lyhytNimi": "Wilma",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Wilma",
+        "lyhytNimi": "Wilma",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_abilita",
+    "koodiArvo": "abilita",
+    "metadata": [
+      {
+        "nimi": "Abilita Päivähoito",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Abilita Dagvård",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_ankkalampi",
+    "koodiArvo": "ankkalampi",
+    "metadata": [
+      {
+        "nimi": "Ankkalampi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_asio",
+    "koodiArvo": "asio",
+    "metadata": [
+      {
+        "nimi": "Asio-Data",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Asio-Data",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Asio-Data",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_cgivesa",
+    "koodiArvo": "cgi-vesa",
+    "metadata": [
+      {
+        "nimi": "Vesa Varhaiskasvatus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_daisy",
+    "koodiArvo": "daisy",
+    "metadata": [
+      {
+        "nimi": "Daisy varhaiskasvatus",
+        "lyhytNimi": "Daisy",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_edukit",
+    "koodiArvo": "edukit",
+    "metadata": [
+      {
+        "nimi": "Edukit",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_eepos",
+    "koodiArvo": "eepos",
+    "metadata": [
+      {
+        "nimi": "eepos",
+        "lyhytNimi": "eepos",
+        "kuvaus": "eepos",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "eepos",
+        "lyhytNimi": "eepos",
+        "kuvaus": "eepos",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "eepos",
+        "lyhytNimi": "eepos",
+        "kuvaus": "eepos",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_ekurs",
+    "koodiArvo": "ekurs",
+    "metadata": [
+      {
+        "nimi": "e-Kurs",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_etaika",
+    "koodiArvo": "etaika",
+    "metadata": [
+      {
+        "nimi": "eTaika",
+        "kuvaus": "Visma eTaika",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "eTaika",
+        "kuvaus": "Visma eTaika",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "eTaika",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_espoovarda",
+    "koodiArvo": "evakaespoo",
+    "metadata": [
+      {
+        "nimi": "EvakaEspoo",
+        "lyhytNimi": "EvakaEspoo",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "EvakaEspoo",
+        "lyhytNimi": "EvakaEspoo",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "EvakaEspoo",
+        "lyhytNimi": "EvakaEspoo",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_hailer",
+    "koodiArvo": "hailer",
+    "metadata": [
+      {
+        "nimi": "Hailer",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_hellewi",
+    "koodiArvo": "hellewi",
+    "metadata": [
+      {
+        "nimi": "Hellewi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Hellewi",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_helmi",
+    "koodiArvo": "helmi",
+    "metadata": [
+      {
+        "nimi": "Helmi oppilashallintojärjestelmä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_kehatieto",
+    "koodiArvo": "kehätieto",
+    "metadata": [
+      {
+        "nimi": "Kehätieto opintohallintojärjestelmä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_kursor",
+    "koodiArvo": "kursor",
+    "metadata": [
+      {
+        "nimi": "Kursor",
+        "kuvaus": "Grynos Kursor",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kursor",
+        "kuvaus": "Grynos Kursor",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Kursor",
+        "kuvaus": "Grynos Kursor",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_msdynamicscrmaes",
+    "koodiArvo": "msdynamicscrm_aes",
+    "metadata": [
+      {
+        "nimi": "MS Dynamics CRM Accountor Enterprise Solutions",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_nexttime",
+    "koodiArvo": "nexttime",
+    "metadata": [
+      {
+        "nimi": "Nexttime",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_nokiaedunldh",
+    "koodiArvo": "nokiaedu-nldh",
+    "metadata": [
+      {
+        "nimi": "NokiaEDU NLDH",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "NokiaEDU NLDH",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "NokiaEDU NLDH",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_paikky",
+    "koodiArvo": "paikky",
+    "metadata": [
+      {
+        "nimi": "Päikky",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Päikky",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Päikky",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_peppi",
+    "koodiArvo": "peppi",
+    "metadata": [
+      {
+        "nimi": "Peppi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_primus",
+    "koodiArvo": "primus",
+    "metadata": [
+      {
+        "nimi": "primus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_proconsona",
+    "koodiArvo": "proconsona",
+    "metadata": [
+      {
+        "nimi": "Pro Consona Varhaiskasvatus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_pyramus",
+    "koodiArvo": "pyramus",
+    "metadata": [
+      {
+        "nimi": "Pyramus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_rediteq",
+    "koodiArvo": "rediteq",
+    "metadata": [
+      {
+        "nimi": "Rediteq",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_sivisverkko",
+    "koodiArvo": "sivisverkko",
+    "metadata": [
+      {
+        "nimi": "Sivisverkko",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Sivisverkko",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_studentaplus",
+    "koodiArvo": "studentaplus",
+    "metadata": [
+      {
+        "nimi": "Studentaplus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_studyo",
+    "koodiArvo": "studyo",
+    "metadata": [
+      {
+        "nimi": "Studyo Koski-integraatio",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_varda",
+    "koodiArvo": "varda",
+    "metadata": [
+      {
+        "nimi": "Varda",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_virta",
+    "koodiArvo": "virta",
+    "metadata": [
+      {
+        "nimi": "virta",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_waiko",
+    "koodiArvo": "waiko",
+    "metadata": [
+      {
+        "nimi": "Winha aikuiskoulutus",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winha",
+    "koodiArvo": "winha",
+    "metadata": [
+      {
+        "nimi": "Winha",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winnova",
+    "koodiArvo": "winnova",
+    "metadata": [
+      {
+        "nimi": "Winnova oppilashallintojärjestelmä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winnovaeduerp",
+    "koodiArvo": "winnova-eduerp",
+    "metadata": [
+      {
+        "nimi": "Winnova oppilashallintojärjestelmä, EduErp",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winnovasopro",
+    "koodiArvo": "winnova-sopro",
+    "metadata": [
+      {
+        "nimi": "Winnova oppilashallintojärjestelmä, Sopro",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winnovastudentaplus",
+    "koodiArvo": "winnova-studentaplus",
+    "metadata": [
+      {
+        "nimi": "Winnova oppilashallintojärjestelmä, Studenta",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lahdejarjestelma_ytr",
+    "koodiArvo": "ytr",
+    "metadata": [
+      {
+        "nimi": "ytr",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

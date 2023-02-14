@@ -1,55 +1,71 @@
-[ {
-  "koodiUri" : "suorituksentila_kesken",
-  "koodiArvo" : "KESKEN",
-  "metadata" : [ {
-    "nimi" : "Suoritus kesken",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Prestationen icke slutförd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentila_keskeytynyt",
-  "koodiArvo" : "KESKEYTYNYT",
-  "metadata" : [ {
-    "nimi" : "Suoritus keskeytynyt",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Prestationen avbruten",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentila_valmis",
-  "koodiArvo" : "VALMIS",
-  "metadata" : [ {
-    "nimi" : "Suoritus valmis",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Prestationen slutförd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "suorituksentila_kesken",
+    "koodiArvo": "KESKEN",
+    "metadata": [
+      {
+        "nimi": "Suoritus kesken",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Prestationen icke slutförd",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "suorituksentila_keskeytynyt",
+    "koodiArvo": "KESKEYTYNYT",
+    "metadata": [
+      {
+        "nimi": "Suoritus keskeytynyt",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Prestationen avbruten",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "suorituksentila_valmis",
+    "koodiArvo": "VALMIS",
+    "metadata": [
+      {
+        "nimi": "Suoritus valmis",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Prestationen slutförd",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

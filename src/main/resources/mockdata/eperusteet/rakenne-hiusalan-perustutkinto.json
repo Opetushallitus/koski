@@ -23,10 +23,7 @@
       "opintoalakoodi": "opintoalaoph2002_710"
     }
   ],
-  "kielet": [
-    "sv",
-    "fi"
-  ],
+  "kielet": ["sv", "fi"],
   "kuvaus": {
     "fi": "<p>Hiusalan perustutkinnon suorittanut on parturi-kampaaja, joka toimii erilaissa hiusten hoidon ja hiusten sekä parran käsittelyn tehtävissä. Hiusalan ammattilaisena hän tukee asiakkaan oman tyylin löytymistä ja hyvinvointia. Hiusalan perustutkinto antaa osaamisen myös kampausten ja ehostusten tekemiseen sekä asiakkaan hiusten ja hiuspohjan hoitamiseen. Lisäksi parturikampaaja voi toimia erilaisissa myynti-, konsultointi- ja koulutustehtävissä.</p>",
     "sv": "<p>Den som avlägger grundexamen inom hårbranschen blir frisör och arbetar med hårvård och hår- och skäggbehandling. Som proffs inom skönhetsbranschen hjälper frisören kunden att hitta sin egen stil och förbättra sitt välbefinnande. Grundexamen inom hårbranschen ger kunskap också om frisyrer och makeup samt om behandling av hår och hårbotten. Frisörer kan dessutom arbeta med försäljning, konsultuppdrag och utbildning.</p>",

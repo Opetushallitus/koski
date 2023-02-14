@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "koskioppiaineetyleissivistava",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Koski oppiaineet yleissivistava",
-    "kuvaus" : "Koski oppiaineet yleissivistava"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Koski oppiaineet yleissivistava",
-    "kuvaus" : "Koski oppiaineet yleissivistava"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Koski oppiaineet yleissivistava",
-    "kuvaus" : "Koski oppiaineet yleissivistava"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2013-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "koskioppiaineetyleissivistava",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Koski oppiaineet yleissivistava",
+      "kuvaus": "Koski oppiaineet yleissivistava"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Koski oppiaineet yleissivistava",
+      "kuvaus": "Koski oppiaineet yleissivistava"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Koski oppiaineet yleissivistava",
+      "kuvaus": "Koski oppiaineet yleissivistava"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2013-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

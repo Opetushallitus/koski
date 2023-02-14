@@ -1,91 +1,117 @@
-[ {
-  "koodiUri" : "perusopetuksentukimuoto_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Osa-aikainen erityisopetus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Specialundervisning på deltid",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "perusopetuksentukimuoto_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Tukiopetus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Stödundervisning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "perusopetuksentukimuoto_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Avustajapalvelut",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Assistenttjänster",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "perusopetuksentukimuoto_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Tulkitsemispalvelut",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tolkningstjäntser",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "perusopetuksentukimuoto_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "Erityiset apuvälineet",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Särskilda hjälmedel",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "perusopetuksentukimuoto_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Osa-aikainen erityisopetus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Specialundervisning på deltid",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "perusopetuksentukimuoto_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Tukiopetus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Stödundervisning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "perusopetuksentukimuoto_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Avustajapalvelut",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Assistenttjänster",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "perusopetuksentukimuoto_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Tulkitsemispalvelut",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tolkningstjäntser",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "perusopetuksentukimuoto_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "Erityiset apuvälineet",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Särskilda hjälmedel",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

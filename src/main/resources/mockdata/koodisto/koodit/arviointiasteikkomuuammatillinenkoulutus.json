@@ -1,27 +1,38 @@
-[ {
-  "koodiUri" : "arviointiasteikkomuuammatillinenkoulutus_osallistunut",
-  "koodiArvo" : "Osallistunut",
-  "metadata" : [ {
-    "nimi" : "Osallistunut",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkomuuammatillinenkoulutus_suoritettu",
-  "koodiArvo" : "Suoritettu",
-  "metadata" : [ {
-    "nimi" : "Suoritettu",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "arviointiasteikkomuuammatillinenkoulutus_osallistunut",
+    "koodiArvo": "Osallistunut",
+    "metadata": [
+      {
+        "nimi": "Osallistunut",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkomuuammatillinenkoulutus_suoritettu",
+    "koodiArvo": "Suoritettu",
+    "metadata": [
+      {
+        "nimi": "Suoritettu",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

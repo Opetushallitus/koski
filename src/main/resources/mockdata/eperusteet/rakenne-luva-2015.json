@@ -12,10 +12,7 @@
   "koulutustyyppi": "koulutustyyppi_23",
   "toteutus": "yksinkertainen",
   "koulutukset": [],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": null,
   "maarayskirje": {
     "id": 1940621,

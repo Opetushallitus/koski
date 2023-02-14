@@ -1,105 +1,136 @@
-[ {
-  "koodiUri" : "lukionmuutopinnot_ld",
-  "koodiArvo" : "LD",
-  "metadata" : [ {
-    "nimi" : "Lukiodiplomit",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Gymnasiediplom",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lukionmuutopinnot_ms",
-  "koodiArvo" : "MS",
-  "metadata" : [ {
-    "nimi" : "Muut suoritukset",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Övriga prestationer",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lukionmuutopinnot_oa",
-  "koodiArvo" : "OA",
-  "metadata" : [ {
-    "nimi" : "Oman äidinkielen opinnot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studier i det egna modersmålet",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lukionmuutopinnot_to",
-  "koodiArvo" : "TO",
-  "metadata" : [ {
-    "nimi" : "Teemaopinnot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Temastudier",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lukionmuutopinnot_tvk",
-  "koodiArvo" : "TVK",
-  "metadata" : [ {
-    "nimi" : "Taiteiden väliset kurssit",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ämnesövergripande kurser i konststudier",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "lukionmuutopinnot_tvo",
-  "koodiArvo" : "TVO",
-  "metadata" : [ {
-    "nimi" : "Taiteiden väliset kurssit",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ämnesövergripande kurser i konststudier",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "lukionmuutopinnot_ld",
+    "koodiArvo": "LD",
+    "metadata": [
+      {
+        "nimi": "Lukiodiplomit",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Gymnasiediplom",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lukionmuutopinnot_ms",
+    "koodiArvo": "MS",
+    "metadata": [
+      {
+        "nimi": "Muut suoritukset",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Övriga prestationer",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lukionmuutopinnot_oa",
+    "koodiArvo": "OA",
+    "metadata": [
+      {
+        "nimi": "Oman äidinkielen opinnot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studier i det egna modersmålet",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lukionmuutopinnot_to",
+    "koodiArvo": "TO",
+    "metadata": [
+      {
+        "nimi": "Teemaopinnot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Temastudier",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lukionmuutopinnot_tvk",
+    "koodiArvo": "TVK",
+    "metadata": [
+      {
+        "nimi": "Taiteiden väliset kurssit",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ämnesövergripande kurser i konststudier",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "lukionmuutopinnot_tvo",
+    "koodiArvo": "TVO",
+    "metadata": [
+      {
+        "nimi": "Taiteiden väliset kurssit",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ämnesövergripande kurser i konststudier",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

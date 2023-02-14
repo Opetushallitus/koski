@@ -1,14 +1,16 @@
 {
-  "koodistoUri" : "vstkoto2022yhteiskuntajatyoosaamiskoulutus",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "VST-KOTO 2022 yhteiskunta- ja työosaamiskoulutus"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2020-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "vstkoto2022yhteiskuntajatyoosaamiskoulutus",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "VST-KOTO 2022 yhteiskunta- ja työosaamiskoulutus"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2020-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

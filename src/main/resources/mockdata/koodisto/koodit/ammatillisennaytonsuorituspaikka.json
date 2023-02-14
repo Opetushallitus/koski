@@ -1,55 +1,71 @@
-[ {
-  "koodiUri" : "ammatillisennaytonsuorituspaikka_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "työpaikka",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "arbetsplats",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisennaytonsuorituspaikka_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "oppilaitos",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "läroanstalt",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisennaytonsuorituspaikka_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "työpaikka ja oppilaitos",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "arbetsplats och läroanstalt",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "ammatillisennaytonsuorituspaikka_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "työpaikka",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "arbetsplats",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisennaytonsuorituspaikka_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "oppilaitos",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "läroanstalt",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisennaytonsuorituspaikka_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "työpaikka ja oppilaitos",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "arbetsplats och läroanstalt",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

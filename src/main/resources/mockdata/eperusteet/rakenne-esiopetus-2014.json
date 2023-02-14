@@ -11,10 +11,7 @@
   "koulutustyyppi": "koulutustyyppi_15",
   "toteutus": "yksinkertainen",
   "koulutukset": [],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": {
     "_id": "4653556",
     "_tunniste": "5dd4c467-6903-4363-ab06-d06c3ccd4688",

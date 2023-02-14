@@ -1,37 +1,48 @@
-[ {
-  "koodiUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty_hylatty",
-  "koodiArvo" : "Hylätty",
-  "metadata" : [ {
-    "nimi" : "Hylätty",
-    "lyhytNimi" : "Hylätty",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Underkänd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty_hyvaksytty",
-  "koodiArvo" : "Hyväksytty",
-  "metadata" : [ {
-    "nimi" : "Hyväksytty",
-    "lyhytNimi" : "Hyväksytty",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Godkänd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty_hylatty",
+    "koodiArvo": "Hylätty",
+    "metadata": [
+      {
+        "nimi": "Hylätty",
+        "lyhytNimi": "Hylätty",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Underkänd",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty_hyvaksytty",
+    "koodiArvo": "Hyväksytty",
+    "metadata": [
+      {
+        "nimi": "Hyväksytty",
+        "lyhytNimi": "Hyväksytty",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Godkänd",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

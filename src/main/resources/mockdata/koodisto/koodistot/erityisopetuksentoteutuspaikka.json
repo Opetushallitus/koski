@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "erityisopetuksentoteutuspaikka",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Erityisopetuksen toteutuspaikka",
-    "kuvaus" : "Erityisopetuksen toteutuspaikka"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2018-05-02",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "erityisopetuksentoteutuspaikka",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Erityisopetuksen toteutuspaikka",
+      "kuvaus": "Erityisopetuksen toteutuspaikka"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2018-05-02",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

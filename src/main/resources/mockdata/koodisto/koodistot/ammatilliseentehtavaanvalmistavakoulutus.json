@@ -1,14 +1,16 @@
 {
-  "koodistoUri" : "ammatilliseentehtavaanvalmistavakoulutus",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Ammatilliseen tehtävään valmistava koulutus"
-  } ],
-  "codesGroupUri" : "koute",
-  "voimassaAlkuPvm" : "2017-01-01",
-  "organisaatioOid" : "1.2.246.562.10.2013112012294919827487",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "ammatilliseentehtavaanvalmistavakoulutus",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Ammatilliseen tehtävään valmistava koulutus"
+    }
+  ],
+  "codesGroupUri": "koute",
+  "voimassaAlkuPvm": "2017-01-01",
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

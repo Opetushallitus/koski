@@ -1,31 +1,42 @@
-[ {
-  "koodiUri" : "valpasvastaanottotieto_ehdollinen",
-  "koodiArvo" : "ehdollinen",
-  "metadata" : [ {
-    "nimi" : "Otettu vastaan ehdollisesti",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasvastaanottotieto_vastaanotettu",
-  "koodiArvo" : "vastaanotettu",
-  "metadata" : [ {
-    "nimi" : "Otettu vastaan",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "valpasvastaanottotieto_ehdollinen",
+    "koodiArvo": "ehdollinen",
+    "metadata": [
+      {
+        "nimi": "Otettu vastaan ehdollisesti",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpasvastaanottotieto_vastaanotettu",
+    "koodiArvo": "vastaanotettu",
+    "metadata": [
+      {
+        "nimi": "Otettu vastaan",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

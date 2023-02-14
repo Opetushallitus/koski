@@ -1,121 +1,162 @@
-[ {
-  "koodiUri" : "valpashaunvalintatila_hylatty",
-  "koodiArvo" : "hylatty",
-  "metadata" : [ {
-    "nimi" : "Hylätty",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpashaunvalintatila_hyvaksytty",
-  "koodiArvo" : "hyvaksytty",
-  "metadata" : [ {
-    "nimi" : "Hyväksytty",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpashaunvalintatila_kesken",
-  "koodiArvo" : "kesken",
-  "metadata" : [ {
-    "nimi" : "Kesken",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpashaunvalintatila_perunut",
-  "koodiArvo" : "perunut",
-  "metadata" : [ {
-    "nimi" : "Perunut",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpashaunvalintatila_peruttu",
-  "koodiArvo" : "peruttu",
-  "metadata" : [ {
-    "nimi" : "Peruttu",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpashaunvalintatila_peruuntunut",
-  "koodiArvo" : "peruuntunut",
-  "metadata" : [ {
-    "nimi" : "Peruuntunut",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpashaunvalintatila_peruutettu",
-  "koodiArvo" : "peruutettu",
-  "metadata" : [ {
-    "nimi" : "Peruutettu",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpashaunvalintatila_varasijalla",
-  "koodiArvo" : "varasijalla",
-  "metadata" : [ {
-    "nimi" : "Varasijalla",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "valpashaunvalintatila_hylatty",
+    "koodiArvo": "hylatty",
+    "metadata": [
+      {
+        "nimi": "Hylätty",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_hyvaksytty",
+    "koodiArvo": "hyvaksytty",
+    "metadata": [
+      {
+        "nimi": "Hyväksytty",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_kesken",
+    "koodiArvo": "kesken",
+    "metadata": [
+      {
+        "nimi": "Kesken",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_perunut",
+    "koodiArvo": "perunut",
+    "metadata": [
+      {
+        "nimi": "Perunut",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_peruttu",
+    "koodiArvo": "peruttu",
+    "metadata": [
+      {
+        "nimi": "Peruttu",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_peruuntunut",
+    "koodiArvo": "peruuntunut",
+    "metadata": [
+      {
+        "nimi": "Peruuntunut",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_peruutettu",
+    "koodiArvo": "peruutettu",
+    "metadata": [
+      {
+        "nimi": "Peruutettu",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpashaunvalintatila_varasijalla",
+    "koodiArvo": "varasijalla",
+    "metadata": [
+      {
+        "nimi": "Varasijalla",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

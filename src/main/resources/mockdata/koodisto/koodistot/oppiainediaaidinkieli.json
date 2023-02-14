@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "oppiainediaaidinkieli",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Oppiaine Dia Aidinkieli",
-    "kuvaus" : "Oppiaine Äidinkieli"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Oppiaine Dia Aidinkieli",
-    "kuvaus" : "Oppiaine Äidinkieli"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Oppiaine Dia Aidinkieli",
-    "kuvaus" : "Oppiaine Äidinkieli"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2019-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "oppiainediaaidinkieli",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaine Dia Aidinkieli",
+      "kuvaus": "Oppiaine Äidinkieli"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Oppiaine Dia Aidinkieli",
+      "kuvaus": "Oppiaine Äidinkieli"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Oppiaine Dia Aidinkieli",
+      "kuvaus": "Oppiaine Äidinkieli"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2019-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

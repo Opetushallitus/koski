@@ -1,20 +1,24 @@
 {
-  "koodistoUri" : "arviointiasteikkomuks",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Arviointiasteikko MUKS"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Arviointiasteikko MUKS"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Arviointiasteikko MUKS"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2020-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "arviointiasteikkomuks",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Arviointiasteikko MUKS"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Arviointiasteikko MUKS"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Arviointiasteikko MUKS"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2020-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

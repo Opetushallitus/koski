@@ -1,19 +1,22 @@
 {
-  "koodistoUri" : "oppiaineetluva",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Oppiaineet LUVA",
-    "kuvaus" : "Oppiaineet LUVA"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Samhällskunskap och kulturkännedom",
-    "kuvaus" : ""
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2017-03-24",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "oppiaineetluva",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaineet LUVA",
+      "kuvaus": "Oppiaineet LUVA"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Samhällskunskap och kulturkännedom",
+      "kuvaus": ""
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2017-03-24",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

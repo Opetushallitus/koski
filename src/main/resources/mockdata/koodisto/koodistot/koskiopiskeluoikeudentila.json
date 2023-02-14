@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "koskiopiskeluoikeudentila",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "EN",
-    "nimi" : "Koski-opiskeluoikeuden tila",
-    "kuvaus" : "Opiskeluoikeuden tila Koski-järjestelmässä "
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2015-11-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 3
+  "koodistoUri": "koskiopiskeluoikeudentila",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "Koski-opiskeluoikeuden tila",
+      "kuvaus": "Opiskeluoikeuden tila Koski-järjestelmässä "
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2015-11-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 3
 }

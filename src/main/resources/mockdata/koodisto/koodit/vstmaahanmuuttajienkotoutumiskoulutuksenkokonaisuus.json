@@ -1,70 +1,91 @@
-[ {
-  "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
-  "metadata" : [ {
-    "nimi" : "Suomen kieli ja viestintätaidot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Svenska och kommunikativa färdigheter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
-  "metadata" : [ {
-    "nimi" : "Ohjaus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Handledning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
-  "metadata" : [ {
-    "nimi" : "Työelämä- ja yhteiskuntataidot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Färdigheter för arbetsliv och samhälle",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Työelämä- ja yhteiskuntataidot",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
-  "koodiArvo" : "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
-  "metadata" : [ {
-    "nimi" : "Valinnaiset opinnot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Valfria studier",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
+    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
+    "metadata": [
+      {
+        "nimi": "Suomen kieli ja viestintätaidot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Svenska och kommunikativa färdigheter",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
+    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
+    "metadata": [
+      {
+        "nimi": "Ohjaus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Handledning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
+    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
+    "metadata": [
+      {
+        "nimi": "Työelämä- ja yhteiskuntataidot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Färdigheter för arbetsliv och samhälle",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Työelämä- ja yhteiskuntataidot",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstmaahanmuuttajienkotoutumiskoulutuksenkokonaisuus_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
+    "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
+    "metadata": [
+      {
+        "nimi": "Valinnaiset opinnot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Valfria studier",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

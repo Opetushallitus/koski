@@ -1,91 +1,117 @@
-[ {
-  "koodiUri" : "erityisopetuksentoteutuspaikka_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Opetus on kokonaan erityisryhmissä tai -luokassa",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Undervisningen ges i specialgrupper eller -klasser",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "erityisopetuksentoteutuspaikka_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Opetuksesta 1-19 % on yleisopetuksen ryhmissä",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Av undervisningen ges 1-19% i grupper inom den allmänna undervisningen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "erityisopetuksentoteutuspaikka_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Opetuksesta 20-49 % on yleisopetuksen ryhmissä",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Av undervisningen ges 20-49% i grupper inom den allmänna undervisningen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "erityisopetuksentoteutuspaikka_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Opetuksesta 50-79 % on yleisopetuksen ryhmissä",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Av undervisningen ges 50-79% i grupper inom den allmänna undervisningen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "erityisopetuksentoteutuspaikka_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "Opetuksesta 80-100 % on yleisopetuksen ryhmissä",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Av undervisningen ges 80-100% i grupper inom den allmänna undervisningen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "erityisopetuksentoteutuspaikka_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Opetus on kokonaan erityisryhmissä tai -luokassa",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Undervisningen ges i specialgrupper eller -klasser",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "erityisopetuksentoteutuspaikka_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Opetuksesta 1-19 % on yleisopetuksen ryhmissä",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Av undervisningen ges 1-19% i grupper inom den allmänna undervisningen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "erityisopetuksentoteutuspaikka_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Opetuksesta 20-49 % on yleisopetuksen ryhmissä",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Av undervisningen ges 20-49% i grupper inom den allmänna undervisningen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "erityisopetuksentoteutuspaikka_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Opetuksesta 50-79 % on yleisopetuksen ryhmissä",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Av undervisningen ges 50-79% i grupper inom den allmänna undervisningen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "erityisopetuksentoteutuspaikka_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "Opetuksesta 80-100 % on yleisopetuksen ryhmissä",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Av undervisningen ges 80-100% i grupper inom den allmänna undervisningen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

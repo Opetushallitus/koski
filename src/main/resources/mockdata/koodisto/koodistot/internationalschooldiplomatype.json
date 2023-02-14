@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "internationalschooldiplomatype",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "internationalschooldiplomatype",
-    "kuvaus" : "International school diplomityyppi"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2019-04-26",
-  "organisaatioOid" : "1.2.246.562.10.2013112012294919827487",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "internationalschooldiplomatype",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "internationalschooldiplomatype",
+      "kuvaus": "International school diplomityyppi"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2019-04-26",
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

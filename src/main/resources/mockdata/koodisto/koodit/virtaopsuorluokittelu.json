@@ -1,259 +1,350 @@
-[ {
-  "koodiUri" : "virtaopsuorluokittelu_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Suoritus on avoimessa korkeakouluopetuksessa suoritettu",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opintosuoritus tulee merkitä avoimesssa korkeakouluopetuksessa suoritetuksi, jos sellaisesta on kyse riippumatta opiskelijan opiskeluoikeuksista.",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_10",
-  "koodiArvo" : "10",
-  "metadata" : [ {
-    "nimi" : "Suoritus on kansainvälinen kaksoistutkinto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_11",
-  "koodiArvo" : "11",
-  "metadata" : [ {
-    "nimi" : "Suoritus on erikoistumiskoulutuksessa suoritettu",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_12",
-  "koodiArvo" : "12",
-  "metadata" : [ {
-    "nimi" : "Suoritus on korkeakoulujen välisillä yhteistyösopimuksilla opiskelevan suorittama ja kirjattu varsinaisena suorituksena opiskelijan kotikorkeakoulussa",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_13",
-  "koodiArvo" : "13",
-  "metadata" : [ {
-    "nimi" : "Opintosuoritus on täydennyskoulutuksessa suoritettu",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_14",
-  "koodiArvo" : "14",
-  "metadata" : [ {
-    "nimi" : "Suoritus on suomi toisena tai vieraana kielenä",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_15",
-  "koodiArvo" : "15",
-  "metadata" : [ {
-    "nimi" : "Suoritus sisältää kotimaista harjoittelua",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_16",
-  "koodiArvo" : "16",
-  "metadata" : [ {
-    "nimi" : "Suoritus on ruotsi toisena tai vieraana kielenä",
-    "lyhytNimi" : "",
-    "kuvaus" : "Suoritus on ruotsi toisena tai vieraana kielenä. Käytetään suorituksille, joissa opintojen tavoitteena on lisätä henkilön ruotsin kielen taitoa ja edistää kulttuuritietoisuutta ja sitä kautta integroitumista Suomeen, työllistymistä ja maahan jäämistä. Opintojen kohderyhmänä ovat korkeakoulujen kansainväliset opiskelijat (tutkinto-opiskelijat, vaihto-opiskelijat, muilla erilaisilla opinto-oikeuksilla opiskelevat).",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_17",
-  "koodiArvo" : "17",
-  "metadata" : [ {
-    "nimi" : "Suoritus on muun kuin korkeakoulun kanssa tehtyyn yhteistyösopimukseen perustuvan opiskeluoikeuden perusteella suoritettu",
-    "lyhytNimi" : "",
-    "kuvaus" : "Yhteistyöorganisaatio voi olla kotimainen tai ulkomainen organisaatio.\n\nKäytetään esim. opintosuorituksille, joita syntyy toisen asteen oppilaitoksen kanssa tehtävässä yhteistyössä.\n\nOpinnot ovat maksuttomia",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_18",
-  "koodiArvo" : "18",
-  "metadata" : [ {
-    "nimi" : "Opintosuoritus on Jatkuvan oppimisen ja työllisyyden palvelukeskuksen-rahoitetussa koulutuksessa suoritettu",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "-",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "-",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Suoritus on tulevan kansainvälisen vaihto-opiskelijan suorittama",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Suoritus on korkeakoulujen välisillä yhteistyösopimuksilla opiskelevan suorittama",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Suoritus on erillisellä opiskeluoikeudella opiskelevan suorittama",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "Suoritus on erillisellä opiskeluoikeudella opettajankoulutuksen opintoja suorittavan opiskelijan suorittama",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_6",
-  "koodiArvo" : "6",
-  "metadata" : [ {
-    "nimi" : "Suoritus on maahanmuuttajien valmentavassa koulutuksessa opiskelevan suorittama",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_7",
-  "koodiArvo" : "7",
-  "metadata" : [ {
-    "nimi" : "Suoritus on kotimainen harjoittelujakso",
-    "lyhytNimi" : "",
-    "kuvaus" : "Suoritus on tutkinto-opiskelijan Suomessa suorittama harjoittelu",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_8",
-  "koodiArvo" : "8",
-  "metadata" : [ {
-    "nimi" : "Suoritus on ulkomainen harjoittelujakso",
-    "lyhytNimi" : "",
-    "kuvaus" : "Suoritus on tutkinto-opiskelijan kansainvälisellä liikkuvuusjaksolla ulkomailla suorittama harjoittelu",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopsuorluokittelu_9",
-  "koodiArvo" : "9",
-  "metadata" : [ {
-    "nimi" : "Suoritus on kansainvälinen yhteistutkinto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "virtaopsuorluokittelu_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Suoritus on avoimessa korkeakouluopetuksessa suoritettu",
+        "lyhytNimi": "",
+        "kuvaus": "Opintosuoritus tulee merkitä avoimesssa korkeakouluopetuksessa suoritetuksi, jos sellaisesta on kyse riippumatta opiskelijan opiskeluoikeuksista.",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_10",
+    "koodiArvo": "10",
+    "metadata": [
+      {
+        "nimi": "Suoritus on kansainvälinen kaksoistutkinto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_11",
+    "koodiArvo": "11",
+    "metadata": [
+      {
+        "nimi": "Suoritus on erikoistumiskoulutuksessa suoritettu",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_12",
+    "koodiArvo": "12",
+    "metadata": [
+      {
+        "nimi": "Suoritus on korkeakoulujen välisillä yhteistyösopimuksilla opiskelevan suorittama ja kirjattu varsinaisena suorituksena opiskelijan kotikorkeakoulussa",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_13",
+    "koodiArvo": "13",
+    "metadata": [
+      {
+        "nimi": "Opintosuoritus on täydennyskoulutuksessa suoritettu",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_14",
+    "koodiArvo": "14",
+    "metadata": [
+      {
+        "nimi": "Suoritus on suomi toisena tai vieraana kielenä",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_15",
+    "koodiArvo": "15",
+    "metadata": [
+      {
+        "nimi": "Suoritus sisältää kotimaista harjoittelua",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_16",
+    "koodiArvo": "16",
+    "metadata": [
+      {
+        "nimi": "Suoritus on ruotsi toisena tai vieraana kielenä",
+        "lyhytNimi": "",
+        "kuvaus": "Suoritus on ruotsi toisena tai vieraana kielenä. Käytetään suorituksille, joissa opintojen tavoitteena on lisätä henkilön ruotsin kielen taitoa ja edistää kulttuuritietoisuutta ja sitä kautta integroitumista Suomeen, työllistymistä ja maahan jäämistä. Opintojen kohderyhmänä ovat korkeakoulujen kansainväliset opiskelijat (tutkinto-opiskelijat, vaihto-opiskelijat, muilla erilaisilla opinto-oikeuksilla opiskelevat).",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_17",
+    "koodiArvo": "17",
+    "metadata": [
+      {
+        "nimi": "Suoritus on muun kuin korkeakoulun kanssa tehtyyn yhteistyösopimukseen perustuvan opiskeluoikeuden perusteella suoritettu",
+        "lyhytNimi": "",
+        "kuvaus": "Yhteistyöorganisaatio voi olla kotimainen tai ulkomainen organisaatio.\n\nKäytetään esim. opintosuorituksille, joita syntyy toisen asteen oppilaitoksen kanssa tehtävässä yhteistyössä.\n\nOpinnot ovat maksuttomia",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_18",
+    "koodiArvo": "18",
+    "metadata": [
+      {
+        "nimi": "Opintosuoritus on Jatkuvan oppimisen ja työllisyyden palvelukeskuksen-rahoitetussa koulutuksessa suoritettu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "-",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "-",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Suoritus on tulevan kansainvälisen vaihto-opiskelijan suorittama",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Suoritus on korkeakoulujen välisillä yhteistyösopimuksilla opiskelevan suorittama",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Suoritus on erillisellä opiskeluoikeudella opiskelevan suorittama",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "Suoritus on erillisellä opiskeluoikeudella opettajankoulutuksen opintoja suorittavan opiskelijan suorittama",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_6",
+    "koodiArvo": "6",
+    "metadata": [
+      {
+        "nimi": "Suoritus on maahanmuuttajien valmentavassa koulutuksessa opiskelevan suorittama",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_7",
+    "koodiArvo": "7",
+    "metadata": [
+      {
+        "nimi": "Suoritus on kotimainen harjoittelujakso",
+        "lyhytNimi": "",
+        "kuvaus": "Suoritus on tutkinto-opiskelijan Suomessa suorittama harjoittelu",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_8",
+    "koodiArvo": "8",
+    "metadata": [
+      {
+        "nimi": "Suoritus on ulkomainen harjoittelujakso",
+        "lyhytNimi": "",
+        "kuvaus": "Suoritus on tutkinto-opiskelijan kansainvälisellä liikkuvuusjaksolla ulkomailla suorittama harjoittelu",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopsuorluokittelu_9",
+    "koodiArvo": "9",
+    "metadata": [
+      {
+        "nimi": "Suoritus on kansainvälinen yhteistutkinto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

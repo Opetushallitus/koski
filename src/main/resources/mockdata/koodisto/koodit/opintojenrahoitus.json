@@ -1,257 +1,328 @@
-[ {
-  "koodiUri" : "opintojenrahoitus_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Valtionosuusrahoitteinen koulutus",
-    "lyhytNimi" : "",
-    "kuvaus" : "Valtionosuusrahoitteisella koulutuksella tarkoitetaan koulutusta, jonka kustannuksista\nosa on rahoitettu esiopetukseen, perusopetukseen, perusopetukseen valmistavaan koulutukseeen, perusopetuksen lisäopetukseen, lukiokoulutukseen tai ammatillisen perus- tai lisäkoulutukseen tarkoitetulla valtion osuudella.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Statsandelsfinansierad utbildning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_10",
-  "koodiArvo" : "10",
-  "metadata" : [ {
-    "nimi" : "Työvoimakoulutus (OKM rahoitus)",
-    "lyhytNimi" : "",
-    "kuvaus" : "Kyseessä on Opetus- ja kulttuuriministeriön valtionosuudella rahoitettu työvoimakoulutus. Koulutuksen järjestäjällä on tähän järjestämisluvassa erillinen lupa.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arbetskraftsutbildning (UKM finansiering)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_11",
-  "koodiArvo" : "11",
-  "metadata" : [ {
-    "nimi" : "Ammatillisen osaamisen pilotit 2019",
-    "lyhytNimi" : "",
-    "kuvaus" : "Ammatillisen osaamisen pilotit ovat ammatillisia koulutuksia, joille on myönnetty OKM:n vuoden 2018 lisätalousarvioiden perusteella kohdennettua lisärahoitusta.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Piloter inom yrkeskompetens 2019",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_12",
-  "koodiArvo" : "12",
-  "metadata" : [ {
-    "nimi" : "Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)",
-    "lyhytNimi" : "",
-    "kuvaus" : "Ammatillisen osaamisen pilotit (työvoimakoulutus) ovat ammatillista koulutusta, jolle on myönnetty OKM:n vuoden 2018 lisäsuoritepäätöksillä työvoimakoulutukseen kohdennettua rahoitusta.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Piloter inom yrkeskompetens 2019 (arbetskraftsutbildning)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_13",
-  "koodiArvo" : "13",
-  "metadata" : [ {
-    "nimi" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
-    "lyhytNimi" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
-    "kuvaus" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus). Vain Pohjoiskalotin koulutussäätiö käyttää rahoituskoodia.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arbetskraftsutbildning (som baserar sig på ett avtal med staten)",
-    "lyhytNimi" : "Arbetskraftsutbildning (som baserar sig på ett avtal med staten)",
-    "kuvaus" : "Arbetskraftsutbildning (som baserar sig på ett avtal med staten). Endast Utbildning Nord använder kod.",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
-    "lyhytNimi" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
-    "kuvaus" : "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_14",
-  "koodiArvo" : "14",
-  "metadata" : [ {
-    "nimi" : "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus",
-    "lyhytNimi" : "",
-    "kuvaus" : "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset. Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Finansiering av Servicecentret för kontinuerligt lärande och sysselsättning",
-    "lyhytNimi" : "",
-    "kuvaus" : "Finansiering av Servicecentret för kontinuerligt lärande och sysselsättning (JOTPA)",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_15",
-  "koodiArvo" : "15",
-  "metadata" : [ {
-    "nimi" : "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus (RRF)",
-    "kuvaus" : "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset, jotka on järjestetty JOTPA:n myöntämällä RRF-rahoituksella (Toimenpide: P3C2R1). Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Finansiering av Servicecentret för kontinuerligt lärande och sysselsättning (RRF)",
-    "kuvaus" : "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset, jotka on järjestetty JOTPA:n myöntämällä RRF-rahoituksella. Koulutuksen järjestäjällä on tästä tieto saamallaan rahoituspäätöksellä (Toimenpide: P3C2R1). Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus (RRF)",
-    "kuvaus" : "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset, jotka on järjestetty JOTPA:n myöntämällä RRF-rahoituksella. Koulutuksen järjestäjällä on tästä tieto saamallaan rahoituspäätöksellä (Toimenpide: P3C2R1). Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arbetskraftsutbildning  NTM-centralen och arbets- och näringsbyrån (nationell finansiering)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Työvoimakoulutus (ESR-rahoitteinen)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arbetskraftsutbildning (ESF-finansierad)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Työnantajan kokonaan rahoittama",
-    "lyhytNimi" : "",
-    "kuvaus" : "Työnantajan\nkokonaan rahoittamalla koulutuksella tarkoitetaan koulutusta, johon ei ole käytetty valtionosuutta\neikä sitä ole rahoitettu työvoimapoliittisena aikuiskoulutuksena. Ko. koulutuksessa pääasiallinen\nkoulutuksen rahoittaja on työnantaja.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "I sin helhet finansierad av arbetsgivaren",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_6",
-  "koodiArvo" : "6",
-  "metadata" : [ {
-    "nimi" : "Muuta kautta rahoitettu",
-    "lyhytNimi" : "",
-    "kuvaus" : "Esimerkiksi opiskelijan kokonaan itse maksama",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Finansierad på annat sätt",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_7",
-  "koodiArvo" : "7",
-  "metadata" : [ {
-    "nimi" : "Nuorten aikuisten osaamisohjelma",
-    "lyhytNimi" : "",
-    "kuvaus" : "Nuorten\naikuisten osaamisohjelmalla tarkoitetaan hallituksen käynnistämää määräaikaista ohjelmaa, joka\ntarjoaa pelkän peruskoulun varassa oleville 20 - 29-vuotiaille lisämahdollisuuden hakea tutkintoon\njohtavaan koulutukseen.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Kompetensprogrammet för unga vuxna",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_8",
-  "koodiArvo" : "8",
-  "metadata" : [ {
-    "nimi" : "Aikuisten osaamisperustan vahvistaminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "Aikuisten osaamisperustan vahvistamisella tarkoitetaan hallituksen\nkäynnistämää määräaikaista ohjelmaa, joka on tarkoitettu 30–50-vuotiaille henkilöille, joilla ei ole\nsuoritettuna perusopetuksen oppimäärää tai perusasteen jälkeistä tutkintoa.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Stärkande av vuxnas kompetensgrund",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "opintojenrahoitus_9",
-  "koodiArvo" : "9",
-  "metadata" : [ {
-    "nimi" : "Maahanmuuttajien ammatillinen koulutus (valtionavustus)",
-    "lyhytNimi" : "",
-    "kuvaus" : "Vuonna 2017 Maahanmuuttajien ammatilliseen koulutukseen myönnetty valtionavustus.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesutbildning för invandrare (statsunderstöd)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "opintojenrahoitus_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Valtionosuusrahoitteinen koulutus",
+        "lyhytNimi": "",
+        "kuvaus": "Valtionosuusrahoitteisella koulutuksella tarkoitetaan koulutusta, jonka kustannuksista\nosa on rahoitettu esiopetukseen, perusopetukseen, perusopetukseen valmistavaan koulutukseeen, perusopetuksen lisäopetukseen, lukiokoulutukseen tai ammatillisen perus- tai lisäkoulutukseen tarkoitetulla valtion osuudella.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Statsandelsfinansierad utbildning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_10",
+    "koodiArvo": "10",
+    "metadata": [
+      {
+        "nimi": "Työvoimakoulutus (OKM rahoitus)",
+        "lyhytNimi": "",
+        "kuvaus": "Kyseessä on Opetus- ja kulttuuriministeriön valtionosuudella rahoitettu työvoimakoulutus. Koulutuksen järjestäjällä on tähän järjestämisluvassa erillinen lupa.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Arbetskraftsutbildning (UKM finansiering)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_11",
+    "koodiArvo": "11",
+    "metadata": [
+      {
+        "nimi": "Ammatillisen osaamisen pilotit 2019",
+        "lyhytNimi": "",
+        "kuvaus": "Ammatillisen osaamisen pilotit ovat ammatillisia koulutuksia, joille on myönnetty OKM:n vuoden 2018 lisätalousarvioiden perusteella kohdennettua lisärahoitusta.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Piloter inom yrkeskompetens 2019",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_12",
+    "koodiArvo": "12",
+    "metadata": [
+      {
+        "nimi": "Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)",
+        "lyhytNimi": "",
+        "kuvaus": "Ammatillisen osaamisen pilotit (työvoimakoulutus) ovat ammatillista koulutusta, jolle on myönnetty OKM:n vuoden 2018 lisäsuoritepäätöksillä työvoimakoulutukseen kohdennettua rahoitusta.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Piloter inom yrkeskompetens 2019 (arbetskraftsutbildning)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_13",
+    "koodiArvo": "13",
+    "metadata": [
+      {
+        "nimi": "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
+        "lyhytNimi": "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
+        "kuvaus": "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus). Vain Pohjoiskalotin koulutussäätiö käyttää rahoituskoodia.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Arbetskraftsutbildning (som baserar sig på ett avtal med staten)",
+        "lyhytNimi": "Arbetskraftsutbildning (som baserar sig på ett avtal med staten)",
+        "kuvaus": "Arbetskraftsutbildning (som baserar sig på ett avtal med staten). Endast Utbildning Nord använder kod.",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
+        "lyhytNimi": "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
+        "kuvaus": "Työvoimakoulutus (valtiosopimukseen perustuva rahoitus)",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_14",
+    "koodiArvo": "14",
+    "metadata": [
+      {
+        "nimi": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus",
+        "lyhytNimi": "",
+        "kuvaus": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset. Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Finansiering av Servicecentret för kontinuerligt lärande och sysselsättning",
+        "lyhytNimi": "",
+        "kuvaus": "Finansiering av Servicecentret för kontinuerligt lärande och sysselsättning (JOTPA)",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_15",
+    "koodiArvo": "15",
+    "metadata": [
+      {
+        "nimi": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus (RRF)",
+        "kuvaus": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset, jotka on järjestetty JOTPA:n myöntämällä RRF-rahoituksella (Toimenpide: P3C2R1). Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Finansiering av Servicecentret för kontinuerligt lärande och sysselsättning (RRF)",
+        "kuvaus": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset, jotka on järjestetty JOTPA:n myöntämällä RRF-rahoituksella. Koulutuksen järjestäjällä on tästä tieto saamallaan rahoituspäätöksellä (Toimenpide: P3C2R1). Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen rahoitus (RRF)",
+        "kuvaus": "Jatkuvan oppimisen ja työllisuuden palvelukeskuksen (JOTPA) valtionavustuksilla tai hankintana rahoittamat koulutukset, jotka on järjestetty JOTPA:n myöntämällä RRF-rahoituksella. Koulutuksen järjestäjällä on tästä tieto saamallaan rahoituspäätöksellä (Toimenpide: P3C2R1). Rahoituskoodia käyttävät vain JOTPA:n myöntämällä rahoituksella koulutusta järjestävät ammatillisen koulutuksen, vapaan sivistystyön tai muun kuin säännellyn koulutuksen järjestäjät. ",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Arbetskraftsutbildning  NTM-centralen och arbets- och näringsbyrån (nationell finansiering)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Työvoimakoulutus (ESR-rahoitteinen)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Arbetskraftsutbildning (ESF-finansierad)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Työnantajan kokonaan rahoittama",
+        "lyhytNimi": "",
+        "kuvaus": "Työnantajan\nkokonaan rahoittamalla koulutuksella tarkoitetaan koulutusta, johon ei ole käytetty valtionosuutta\neikä sitä ole rahoitettu työvoimapoliittisena aikuiskoulutuksena. Ko. koulutuksessa pääasiallinen\nkoulutuksen rahoittaja on työnantaja.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "I sin helhet finansierad av arbetsgivaren",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_6",
+    "koodiArvo": "6",
+    "metadata": [
+      {
+        "nimi": "Muuta kautta rahoitettu",
+        "lyhytNimi": "",
+        "kuvaus": "Esimerkiksi opiskelijan kokonaan itse maksama",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Finansierad på annat sätt",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_7",
+    "koodiArvo": "7",
+    "metadata": [
+      {
+        "nimi": "Nuorten aikuisten osaamisohjelma",
+        "lyhytNimi": "",
+        "kuvaus": "Nuorten\naikuisten osaamisohjelmalla tarkoitetaan hallituksen käynnistämää määräaikaista ohjelmaa, joka\ntarjoaa pelkän peruskoulun varassa oleville 20 - 29-vuotiaille lisämahdollisuuden hakea tutkintoon\njohtavaan koulutukseen.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensprogrammet för unga vuxna",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_8",
+    "koodiArvo": "8",
+    "metadata": [
+      {
+        "nimi": "Aikuisten osaamisperustan vahvistaminen",
+        "lyhytNimi": "",
+        "kuvaus": "Aikuisten osaamisperustan vahvistamisella tarkoitetaan hallituksen\nkäynnistämää määräaikaista ohjelmaa, joka on tarkoitettu 30–50-vuotiaille henkilöille, joilla ei ole\nsuoritettuna perusopetuksen oppimäärää tai perusasteen jälkeistä tutkintoa.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Stärkande av vuxnas kompetensgrund",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "opintojenrahoitus_9",
+    "koodiArvo": "9",
+    "metadata": [
+      {
+        "nimi": "Maahanmuuttajien ammatillinen koulutus (valtionavustus)",
+        "lyhytNimi": "",
+        "kuvaus": "Vuonna 2017 Maahanmuuttajien ammatilliseen koulutukseen myönnetty valtionavustus.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesutbildning för invandrare (statsunderstöd)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

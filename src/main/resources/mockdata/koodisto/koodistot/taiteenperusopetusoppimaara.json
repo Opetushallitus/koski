@@ -1,20 +1,24 @@
 {
-  "koodistoUri" : "taiteenperusopetusoppimaara",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Taiteen perusopetus oppimäärä"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Taiteen perusopetus oppimäärä"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Taiteen perusopetus oppimäärä"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2020-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "taiteenperusopetusoppimaara",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Taiteen perusopetus oppimäärä"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Taiteen perusopetus oppimäärä"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Taiteen perusopetus oppimäärä"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2020-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

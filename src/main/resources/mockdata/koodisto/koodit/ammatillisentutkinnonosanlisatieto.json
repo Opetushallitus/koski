@@ -1,73 +1,94 @@
-[ {
-  "koodiUri" : "ammatillisentutkinnonosanlisatieto_mukautettu",
-  "koodiArvo" : "mukautettu",
-  "metadata" : [ {
-    "nimi" : "Osaamisen arvioinnin mukauttaminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "Osaamisen arvioinnin mukauttaminen tarkoittaa erityisiä opetus- ja opiskelujärjestelyjä, jossa erityistä tukea saavan opiskelijan ammatillisen perustutkinnon perusteiden mukaista osaamisen arviointia muutetaan laatimalla opiskelijalle yksilöllinen osaamisen arviointi, jossa huomioidaan opiskelijan henkilökohtaiset tavoitteet ja valmiudet. Koulutuksen järjestäjä laatii tutkinnon osalle tai osille opiskelijan henkilökohtaisiin tavoitteisiin pohjautuvan osaamisen arvioinnin (L 531/2017, 64 §). Mukautetut arviointikriteerit laaditaan aina perusteissa määrätyn T1-tason alle. Opiskelijan osaaminen arvioidaan näiden mukautettujen arviointikriteerien mukaisesti, jolloin tutkintotodistukseen tulee mukautusmerkintä kyseisen tutkinnon osan kohdalle (M). Osaamisen arviointi voidaan mukauttaa vain siinä määrin, kuin se on opiskelijan henkilökohtaiset tavoitteet ja valmiudet huomioon ottaen välttämätöntä.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Anpassning av bedömningen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisentutkinnonosanlisatieto_muu",
-  "koodiArvo" : "muu",
-  "metadata" : [ {
-    "nimi" : "Muu lisätieto",
-    "lyhytNimi" : "",
-    "kuvaus" : "Muu todistuksella näytettävä lisätieto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Annan tilläggsuppgift",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisentutkinnonosanlisatieto_muutosarviointiasteikossa",
-  "koodiArvo" : "muutosarviointiasteikossa",
-  "metadata" : [ {
-    "nimi" : "Muutos arviointiasteikossa",
-    "lyhytNimi" : "",
-    "kuvaus" : "Tutkinnon osa on Koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ändring i bedömningsskalan",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisentutkinnonosanlisatieto_poikkeusarvioinnissa",
-  "koodiArvo" : "poikkeusarvioinnissa",
-  "metadata" : [ {
-    "nimi" : "Ammattitaitovaatimuksista tai osaamistavoitteista poikkeaminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "Ammattitaitovaatimuksista tai osaamistavoitteista poikkeaminen tarkoittaa järjestelyä, jossa ammatillisen perustutkinnon suorittajan ei tarvitse osoittaa jotakin tutkinnon perusteiden edellyttämää osaamista. Poikkeaminen on mahdollista ainoastaan, jos olosuhteet tai aiemmin hankittu osaaminen huomioiden on opiskelijalle kohtuutonta tai on perusteltua vammaan tai terveydentilaan liittyvistä syistä. Oppijan tutkinnon osan tai osa-alueen suorituksen tavassa on poikkeava arviointi. Tutkinnon osan osa-alueen, toinen kotimainen kieli, osaamistavoitteiden osalta on poikettu ammatillisesta koulutuksesta annetun lain (531/2017) 66 §:n perusteella. Opiskelija on suorittanut toisen kotimaisen kielen osa-alueen tilalla xx osp äidinkielen osaamistavoitteita ja/tai xx osp vieraan kielen osaamistavoitteita ammatillisen tutkinnon muodostumisesta annetun valtioneuvoston asetuksen (673/2017) 3 §:n perusteella.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Avvikande bedömning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "ammatillisentutkinnonosanlisatieto_mukautettu",
+    "koodiArvo": "mukautettu",
+    "metadata": [
+      {
+        "nimi": "Osaamisen arvioinnin mukauttaminen",
+        "lyhytNimi": "",
+        "kuvaus": "Osaamisen arvioinnin mukauttaminen tarkoittaa erityisiä opetus- ja opiskelujärjestelyjä, jossa erityistä tukea saavan opiskelijan ammatillisen perustutkinnon perusteiden mukaista osaamisen arviointia muutetaan laatimalla opiskelijalle yksilöllinen osaamisen arviointi, jossa huomioidaan opiskelijan henkilökohtaiset tavoitteet ja valmiudet. Koulutuksen järjestäjä laatii tutkinnon osalle tai osille opiskelijan henkilökohtaisiin tavoitteisiin pohjautuvan osaamisen arvioinnin (L 531/2017, 64 §). Mukautetut arviointikriteerit laaditaan aina perusteissa määrätyn T1-tason alle. Opiskelijan osaaminen arvioidaan näiden mukautettujen arviointikriteerien mukaisesti, jolloin tutkintotodistukseen tulee mukautusmerkintä kyseisen tutkinnon osan kohdalle (M). Osaamisen arviointi voidaan mukauttaa vain siinä määrin, kuin se on opiskelijan henkilökohtaiset tavoitteet ja valmiudet huomioon ottaen välttämätöntä.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Anpassning av bedömningen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisentutkinnonosanlisatieto_muu",
+    "koodiArvo": "muu",
+    "metadata": [
+      {
+        "nimi": "Muu lisätieto",
+        "lyhytNimi": "",
+        "kuvaus": "Muu todistuksella näytettävä lisätieto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Annan tilläggsuppgift",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisentutkinnonosanlisatieto_muutosarviointiasteikossa",
+    "koodiArvo": "muutosarviointiasteikossa",
+    "metadata": [
+      {
+        "nimi": "Muutos arviointiasteikossa",
+        "lyhytNimi": "",
+        "kuvaus": "Tutkinnon osa on Koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ändring i bedömningsskalan",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisentutkinnonosanlisatieto_poikkeusarvioinnissa",
+    "koodiArvo": "poikkeusarvioinnissa",
+    "metadata": [
+      {
+        "nimi": "Ammattitaitovaatimuksista tai osaamistavoitteista poikkeaminen",
+        "lyhytNimi": "",
+        "kuvaus": "Ammattitaitovaatimuksista tai osaamistavoitteista poikkeaminen tarkoittaa järjestelyä, jossa ammatillisen perustutkinnon suorittajan ei tarvitse osoittaa jotakin tutkinnon perusteiden edellyttämää osaamista. Poikkeaminen on mahdollista ainoastaan, jos olosuhteet tai aiemmin hankittu osaaminen huomioiden on opiskelijalle kohtuutonta tai on perusteltua vammaan tai terveydentilaan liittyvistä syistä. Oppijan tutkinnon osan tai osa-alueen suorituksen tavassa on poikkeava arviointi. Tutkinnon osan osa-alueen, toinen kotimainen kieli, osaamistavoitteiden osalta on poikettu ammatillisesta koulutuksesta annetun lain (531/2017) 66 §:n perusteella. Opiskelija on suorittanut toisen kotimaisen kielen osa-alueen tilalla xx osp äidinkielen osaamistavoitteita ja/tai xx osp vieraan kielen osaamistavoitteita ammatillisen tutkinnon muodostumisesta annetun valtioneuvoston asetuksen (673/2017) 3 §:n perusteella.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Avvikande bedömning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

@@ -1,14 +1,16 @@
 {
-  "koodistoUri" : "lukioonvalmistavankoulutuksenmoduulit2019",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Lukioon valmistavan koulutuksen moduulit 2019"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2021-08-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "lukioonvalmistavankoulutuksenmoduulit2019",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Lukioon valmistavan koulutuksen moduulit 2019"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2021-08-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

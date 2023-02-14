@@ -1,29 +1,40 @@
-[ {
-  "koodiUri" : "internationalschooldiplomatype_ib",
-  "koodiArvo" : "ib",
-  "metadata" : [ {
-    "nimi" : "IB Diploma",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "IB Diploma",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschooldiplomatype_ish",
-  "koodiArvo" : "ish",
-  "metadata" : [ {
-    "nimi" : "ISH Diploma",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "ISH Diploma",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "internationalschooldiplomatype_ib",
+    "koodiArvo": "ib",
+    "metadata": [
+      {
+        "nimi": "IB Diploma",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "IB Diploma",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschooldiplomatype_ish",
+    "koodiArvo": "ish",
+    "metadata": [
+      {
+        "nimi": "ISH Diploma",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "ISH Diploma",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

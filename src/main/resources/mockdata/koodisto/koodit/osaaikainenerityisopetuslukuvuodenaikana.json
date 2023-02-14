@@ -1,27 +1,38 @@
-[ {
-  "koodiUri" : "osaaikainenerityisopetuslukuvuodenaikana_lv1",
-  "koodiArvo" : "LV1",
-  "metadata" : [ {
-    "nimi" : "1. lukuvuosi",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "osaaikainenerityisopetuslukuvuodenaikana_lv2",
-  "koodiArvo" : "LV2",
-  "metadata" : [ {
-    "nimi" : "2. lukuvuosi",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "osaaikainenerityisopetuslukuvuodenaikana_lv1",
+    "koodiArvo": "LV1",
+    "metadata": [
+      {
+        "nimi": "1. lukuvuosi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "osaaikainenerityisopetuslukuvuodenaikana_lv2",
+    "koodiArvo": "LV2",
+    "metadata": [
+      {
+        "nimi": "2. lukuvuosi",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

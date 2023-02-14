@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "virtaopiskeluoikeudenluokittelu",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "VIRTA Opiskeluoikeuden luokittelu",
-    "kuvaus" : "Opiskeluoikeuden luokittelu (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
-  } ],
-  "codesGroupUri" : "virta",
-  "voimassaAlkuPvm" : "2016-04-27",
-  "organisaatioOid" : "1.2.246.562.10.2013112012294919827487",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 2
+  "koodistoUri": "virtaopiskeluoikeudenluokittelu",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "VIRTA Opiskeluoikeuden luokittelu",
+      "kuvaus": "Opiskeluoikeuden luokittelu (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)"
+    }
+  ],
+  "codesGroupUri": "virta",
+  "voimassaAlkuPvm": "2016-04-27",
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 2
 }

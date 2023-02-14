@@ -1,255 +1,341 @@
-[ {
-  "koodiUri" : "arviointiasteikkodiatutkinto_0",
-  "koodiArvo" : "0",
-  "metadata" : [ {
-    "nimi" : "0",
-    "lyhytNimi" : "0",
-    "kuvaus" : "Hylätty",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "1",
-    "lyhytNimi" : "1",
-    "kuvaus" : "välttävä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_10",
-  "koodiArvo" : "10",
-  "metadata" : [ {
-    "nimi" : "10",
-    "lyhytNimi" : "10",
-    "kuvaus" : "hyvä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_11",
-  "koodiArvo" : "11",
-  "metadata" : [ {
-    "nimi" : "11",
-    "lyhytNimi" : "11",
-    "kuvaus" : "hyvä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_12",
-  "koodiArvo" : "12",
-  "metadata" : [ {
-    "nimi" : "12",
-    "lyhytNimi" : "12",
-    "kuvaus" : "hyvä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_13",
-  "koodiArvo" : "13",
-  "metadata" : [ {
-    "nimi" : "13",
-    "lyhytNimi" : "13",
-    "kuvaus" : "erinomainen",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_14",
-  "koodiArvo" : "14",
-  "metadata" : [ {
-    "nimi" : "14",
-    "lyhytNimi" : "14",
-    "kuvaus" : "erinomainen",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_15",
-  "koodiArvo" : "15",
-  "metadata" : [ {
-    "nimi" : "15",
-    "lyhytNimi" : "15",
-    "kuvaus" : "erinomainen",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "2",
-    "lyhytNimi" : "2",
-    "kuvaus" : "välttävä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "3",
-    "lyhytNimi" : "3",
-    "kuvaus" : "välttävä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "4",
-    "lyhytNimi" : "4",
-    "kuvaus" : "kohtalainen",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "5",
-    "lyhytNimi" : "5",
-    "kuvaus" : "kohtalainen",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_6",
-  "koodiArvo" : "6",
-  "metadata" : [ {
-    "nimi" : "6",
-    "lyhytNimi" : "6",
-    "kuvaus" : "kohtalainen",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_7",
-  "koodiArvo" : "7",
-  "metadata" : [ {
-    "nimi" : "7",
-    "lyhytNimi" : "7",
-    "kuvaus" : "tyydyttävä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_8",
-  "koodiArvo" : "8",
-  "metadata" : [ {
-    "nimi" : "8",
-    "lyhytNimi" : "8",
-    "kuvaus" : "tyydyttävä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_9",
-  "koodiArvo" : "9",
-  "metadata" : [ {
-    "nimi" : "9",
-    "lyhytNimi" : "9",
-    "kuvaus" : "tyydyttävä",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "arviointiasteikkodiatutkinto_s",
-  "koodiArvo" : "S",
-  "metadata" : [ {
-    "nimi" : "Suoritettu",
-    "lyhytNimi" : "S",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_0",
+    "koodiArvo": "0",
+    "metadata": [
+      {
+        "nimi": "0",
+        "lyhytNimi": "0",
+        "kuvaus": "Hylätty",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "1",
+        "lyhytNimi": "1",
+        "kuvaus": "välttävä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_10",
+    "koodiArvo": "10",
+    "metadata": [
+      {
+        "nimi": "10",
+        "lyhytNimi": "10",
+        "kuvaus": "hyvä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_11",
+    "koodiArvo": "11",
+    "metadata": [
+      {
+        "nimi": "11",
+        "lyhytNimi": "11",
+        "kuvaus": "hyvä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_12",
+    "koodiArvo": "12",
+    "metadata": [
+      {
+        "nimi": "12",
+        "lyhytNimi": "12",
+        "kuvaus": "hyvä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_13",
+    "koodiArvo": "13",
+    "metadata": [
+      {
+        "nimi": "13",
+        "lyhytNimi": "13",
+        "kuvaus": "erinomainen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_14",
+    "koodiArvo": "14",
+    "metadata": [
+      {
+        "nimi": "14",
+        "lyhytNimi": "14",
+        "kuvaus": "erinomainen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_15",
+    "koodiArvo": "15",
+    "metadata": [
+      {
+        "nimi": "15",
+        "lyhytNimi": "15",
+        "kuvaus": "erinomainen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "2",
+        "lyhytNimi": "2",
+        "kuvaus": "välttävä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "3",
+        "lyhytNimi": "3",
+        "kuvaus": "välttävä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "4",
+        "lyhytNimi": "4",
+        "kuvaus": "kohtalainen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "5",
+        "lyhytNimi": "5",
+        "kuvaus": "kohtalainen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_6",
+    "koodiArvo": "6",
+    "metadata": [
+      {
+        "nimi": "6",
+        "lyhytNimi": "6",
+        "kuvaus": "kohtalainen",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_7",
+    "koodiArvo": "7",
+    "metadata": [
+      {
+        "nimi": "7",
+        "lyhytNimi": "7",
+        "kuvaus": "tyydyttävä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_8",
+    "koodiArvo": "8",
+    "metadata": [
+      {
+        "nimi": "8",
+        "lyhytNimi": "8",
+        "kuvaus": "tyydyttävä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_9",
+    "koodiArvo": "9",
+    "metadata": [
+      {
+        "nimi": "9",
+        "lyhytNimi": "9",
+        "kuvaus": "tyydyttävä",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkodiatutkinto_s",
+    "koodiArvo": "S",
+    "metadata": [
+      {
+        "nimi": "Suoritettu",
+        "lyhytNimi": "S",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

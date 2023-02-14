@@ -1,40 +1,51 @@
-[ {
-  "koodiUri" : "tutkinnonosatvalinnanmahdollisuus_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
-    "lyhytNimi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Delområden av en gemensamma examensdelar, gymnasiestudier eller andra studier som stödjer färdigheter för fortsatta studier",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "tutkinnonosatvalinnanmahdollisuus_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Korkeakouluopinnot",
-    "lyhytNimi" : "Korkeakouluopinnot",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Högskolestudier",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Studies in higher education institution",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "tutkinnonosatvalinnanmahdollisuus_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+        "lyhytNimi": "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Delområden av en gemensamma examensdelar, gymnasiestudier eller andra studier som stödjer färdigheter för fortsatta studier",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "tutkinnonosatvalinnanmahdollisuus_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Korkeakouluopinnot",
+        "lyhytNimi": "Korkeakouluopinnot",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Högskolestudier",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Studies in higher education institution",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

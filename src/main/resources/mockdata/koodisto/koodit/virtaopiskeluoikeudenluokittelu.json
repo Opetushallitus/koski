@@ -1,102 +1,138 @@
-[ {
-  "koodiUri" : "virtaopiskeluoikeudenluokittelu_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Kansainvälinen vaihto, lähtevä",
-    "lyhytNimi" : "",
-    "kuvaus" : "Huom! vanha tieto: Opiskeluoikeus.KansainvalinenVaihto = 2",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopiskeluoikeudenluokittelu_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Kansainvälinen vaihto, saapuva",
-    "lyhytNimi" : "",
-    "kuvaus" : "Huom! Vanha tieto: Opiskeluoikeus.KansainvalinenVaihto = 1",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopiskeluoikeudenluokittelu_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Aikuiskoulutus",
-    "lyhytNimi" : "",
-    "kuvaus" : "Huom! Vanha tieto: Opiskeluoikeus.Aikuiskoulutus = 1",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopiskeluoikeudenluokittelu_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Avoimen väylä",
-    "lyhytNimi" : "",
-    "kuvaus" : "Myönnetty avoimen opintojen perusteella.\nHuom! Vanha tieto: Opiskeluoikeus.AvoinVayla = 1",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopiskeluoikeudenluokittelu_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "Maisteriohjelma",
-    "lyhytNimi" : "",
-    "kuvaus" : "Myönnetty suoraan maisterivaiheeseen.\nEi tehdä erotteluja maisteriohjelmien ja maisteriopintojen välillä.Ei tarvitse enää pitää määrettä \"muu\".",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopiskeluoikeudenluokittelu_6",
-  "koodiArvo" : "6",
-  "metadata" : [ {
-    "nimi" : "Kansainvälinen yhteistutkinto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopiskeluoikeudenluokittelu_7",
-  "koodiArvo" : "7",
-  "metadata" : [ {
-    "nimi" : "Kansainvälinen kaksoistutkinto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "virtaopiskeluoikeudenluokittelu_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Kansainvälinen vaihto, lähtevä",
+        "lyhytNimi": "",
+        "kuvaus": "Huom! vanha tieto: Opiskeluoikeus.KansainvalinenVaihto = 2",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudenluokittelu_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Kansainvälinen vaihto, saapuva",
+        "lyhytNimi": "",
+        "kuvaus": "Huom! Vanha tieto: Opiskeluoikeus.KansainvalinenVaihto = 1",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudenluokittelu_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Aikuiskoulutus",
+        "lyhytNimi": "",
+        "kuvaus": "Huom! Vanha tieto: Opiskeluoikeus.Aikuiskoulutus = 1",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudenluokittelu_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Avoimen väylä",
+        "lyhytNimi": "",
+        "kuvaus": "Myönnetty avoimen opintojen perusteella.\nHuom! Vanha tieto: Opiskeluoikeus.AvoinVayla = 1",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudenluokittelu_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "Maisteriohjelma",
+        "lyhytNimi": "",
+        "kuvaus": "Myönnetty suoraan maisterivaiheeseen.\nEi tehdä erotteluja maisteriohjelmien ja maisteriopintojen välillä.Ei tarvitse enää pitää määrettä \"muu\".",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudenluokittelu_6",
+    "koodiArvo": "6",
+    "metadata": [
+      {
+        "nimi": "Kansainvälinen yhteistutkinto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudenluokittelu_7",
+    "koodiArvo": "7",
+    "metadata": [
+      {
+        "nimi": "Kansainvälinen kaksoistutkinto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

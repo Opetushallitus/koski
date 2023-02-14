@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Ammatillisen näytön arviointikeskusteluun osallistuneet",
-    "kuvaus" : "Näytön arviointikeskusteluun osallistuneet tahot, 1-numeroisella koodiarvolla"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2015-11-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "ammatillisennaytonarviointikeskusteluunosallistuneet",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Ammatillisen näytön arviointikeskusteluun osallistuneet",
+      "kuvaus": "Näytön arviointikeskusteluun osallistuneet tahot, 1-numeroisella koodiarvolla"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2015-11-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

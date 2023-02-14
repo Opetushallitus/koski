@@ -1,105 +1,136 @@
-[ {
-  "koodiUri" : "vstmuuallasuoritetutopinnot_ammatillisentutkinnonosat",
-  "koodiArvo" : "ammatillisentutkinnonosat",
-  "metadata" : [ {
-    "nimi" : "Ammatillisen tutkinnon osat",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Yrkesinriktade examensdelar",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstmuuallasuoritetutopinnot_avoimetkorkeakouluopinnot",
-  "koodiArvo" : "avoimetkorkeakouluopinnot",
-  "metadata" : [ {
-    "nimi" : "Avoimet korkeakouluopinnot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Högskolestudier",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstmuuallasuoritetutopinnot_lukioopinnot",
-  "koodiArvo" : "lukioopinnot",
-  "metadata" : [ {
-    "nimi" : "Lukio-opinnot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studier inom gymnasieutbildning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstmuuallasuoritetutopinnot_perusopetuksenarvosanankorottaminen",
-  "koodiArvo" : "perusopetuksenarvosanankorottaminen",
-  "metadata" : [ {
-    "nimi" : "Perusopetuksen arvosanan korottaminen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Höjning av vitsord inom den grundläggande utbildningen",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstmuuallasuoritetutopinnot_tyoelamaantutustuminen",
-  "koodiArvo" : "tyoelamaantutustuminen",
-  "metadata" : [ {
-    "nimi" : "Työelämään tutustuminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arbetslivsorientering",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "vstmuuallasuoritetutopinnot_vapaansivistystyonopinnot",
-  "koodiArvo" : "vapaansivistystyonopinnot",
-  "metadata" : [ {
-    "nimi" : "Vapaan sivistystyön opinnot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studier inom fritt bildningsarbete",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "vstmuuallasuoritetutopinnot_ammatillisentutkinnonosat",
+    "koodiArvo": "ammatillisentutkinnonosat",
+    "metadata": [
+      {
+        "nimi": "Ammatillisen tutkinnon osat",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yrkesinriktade examensdelar",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstmuuallasuoritetutopinnot_avoimetkorkeakouluopinnot",
+    "koodiArvo": "avoimetkorkeakouluopinnot",
+    "metadata": [
+      {
+        "nimi": "Avoimet korkeakouluopinnot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Högskolestudier",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstmuuallasuoritetutopinnot_lukioopinnot",
+    "koodiArvo": "lukioopinnot",
+    "metadata": [
+      {
+        "nimi": "Lukio-opinnot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studier inom gymnasieutbildning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstmuuallasuoritetutopinnot_perusopetuksenarvosanankorottaminen",
+    "koodiArvo": "perusopetuksenarvosanankorottaminen",
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen arvosanan korottaminen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Höjning av vitsord inom den grundläggande utbildningen",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstmuuallasuoritetutopinnot_tyoelamaantutustuminen",
+    "koodiArvo": "tyoelamaantutustuminen",
+    "metadata": [
+      {
+        "nimi": "Työelämään tutustuminen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Arbetslivsorientering",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "vstmuuallasuoritetutopinnot_vapaansivistystyonopinnot",
+    "koodiArvo": "vapaansivistystyonopinnot",
+    "metadata": [
+      {
+        "nimi": "Vapaan sivistystyön opinnot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studier inom fritt bildningsarbete",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

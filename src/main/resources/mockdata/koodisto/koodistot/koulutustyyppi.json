@@ -1,83 +1,103 @@
 {
-  "koodistoUri" : "koulutustyyppi",
-  "versio" : 2,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "koulutustyyppi",
-    "kuvaus" : "Koulutustarjontapalvelun käyttöliittymän käytössä oleva koodisto"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "koulutustyyppi",
-    "kuvaus" : "koulutustyyppi"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "koulutustyyppi",
-    "kuvaus" : "koulutustyyppi"
-  } ],
-  "codesGroupUri" : "koulutuskoodistot",
-  "voimassaAlkuPvm" : "2015-03-27",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ {
-    "codesUri" : "haunkohdejoukko",
-    "codesVersion" : 1,
-    "passive" : false
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 2,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 3,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 4,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 5,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 6,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 7,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 8,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 9,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 10,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 11,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 12,
-    "passive" : false
-  }, {
-    "codesUri" : "koulutustyyppifasetti",
-    "codesVersion" : 1,
-    "passive" : false
-  }, {
-    "codesUri" : "oppilaitostyyppi",
-    "codesVersion" : 1,
-    "passive" : false
-  }, {
-    "codesUri" : "tutkintotyyppi",
-    "codesVersion" : 1,
-    "passive" : false
-  } ],
-  "tila" : "LUONNOS",
-  "version" : 6
+  "koodistoUri": "koulutustyyppi",
+  "versio": 2,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "koulutustyyppi",
+      "kuvaus": "Koulutustarjontapalvelun käyttöliittymän käytössä oleva koodisto"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "koulutustyyppi",
+      "kuvaus": "koulutustyyppi"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "koulutustyyppi",
+      "kuvaus": "koulutustyyppi"
+    }
+  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "voimassaAlkuPvm": "2015-03-27",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [
+    {
+      "codesUri": "haunkohdejoukko",
+      "codesVersion": 1,
+      "passive": false
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 2,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 3,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 4,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 5,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 6,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 7,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 8,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 9,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 10,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 11,
+      "passive": true
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 12,
+      "passive": false
+    },
+    {
+      "codesUri": "koulutustyyppifasetti",
+      "codesVersion": 1,
+      "passive": false
+    },
+    {
+      "codesUri": "oppilaitostyyppi",
+      "codesVersion": 1,
+      "passive": false
+    },
+    {
+      "codesUri": "tutkintotyyppi",
+      "codesVersion": 1,
+      "passive": false
+    }
+  ],
+  "tila": "LUONNOS",
+  "version": 6
 }

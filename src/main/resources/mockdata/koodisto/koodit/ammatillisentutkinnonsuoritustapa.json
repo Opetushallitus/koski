@@ -1,61 +1,77 @@
-[ {
-  "koodiUri" : "ammatillisentutkinnonsuoritustapa_naytto",
-  "koodiArvo" : "naytto",
-  "metadata" : [ {
-    "nimi" : "Näyttötutkinto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Fristående examen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Näyttö",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisentutkinnonsuoritustapa_ops",
-  "koodiArvo" : "ops",
-  "metadata" : [ {
-    "nimi" : "Ammatillinen perustutkinto",
-    "lyhytNimi" : "ops",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Läroplansbaserad",
-    "lyhytNimi" : "ops",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Opetussuunnitelman mukainen",
-    "lyhytNimi" : "ops",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "ammatillisentutkinnonsuoritustapa_reformi",
-  "koodiArvo" : "reformi",
-  "metadata" : [ {
-    "nimi" : "Reformin mukainen näyttö",
-    "lyhytNimi" : "Reformi",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Reform",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "ammatillisentutkinnonsuoritustapa_naytto",
+    "koodiArvo": "naytto",
+    "metadata": [
+      {
+        "nimi": "Näyttötutkinto",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Fristående examen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Näyttö",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisentutkinnonsuoritustapa_ops",
+    "koodiArvo": "ops",
+    "metadata": [
+      {
+        "nimi": "Ammatillinen perustutkinto",
+        "lyhytNimi": "ops",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Läroplansbaserad",
+        "lyhytNimi": "ops",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Opetussuunnitelman mukainen",
+        "lyhytNimi": "ops",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "ammatillisentutkinnonsuoritustapa_reformi",
+    "koodiArvo": "reformi",
+    "metadata": [
+      {
+        "nimi": "Reformin mukainen näyttö",
+        "lyhytNimi": "Reformi",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Reform",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

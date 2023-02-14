@@ -1,85 +1,116 @@
-[ {
-  "koodiUri" : "dialukukausi_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "10/I",
-    "lyhytNimi" : "10/I",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "dialukukausi_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "10/II",
-    "lyhytNimi" : "10/II",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "dialukukausi_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "11/I",
-    "lyhytNimi" : "11/I",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "dialukukausi_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "11/II",
-    "lyhytNimi" : "11/II",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "dialukukausi_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "12/I",
-    "lyhytNimi" : "12/I",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "dialukukausi_6",
-  "koodiArvo" : "6",
-  "metadata" : [ {
-    "nimi" : "12/II",
-    "lyhytNimi" : "12/II",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "dialukukausi_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "10/I",
+        "lyhytNimi": "10/I",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "dialukukausi_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "10/II",
+        "lyhytNimi": "10/II",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "dialukukausi_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "11/I",
+        "lyhytNimi": "11/I",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "dialukukausi_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "11/II",
+        "lyhytNimi": "11/II",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "dialukukausi_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "12/I",
+        "lyhytNimi": "12/I",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "dialukukausi_6",
+    "koodiArvo": "6",
+    "metadata": [
+      {
+        "nimi": "12/II",
+        "lyhytNimi": "12/II",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

@@ -1,208 +1,259 @@
-[ {
-  "koodiUri" : "valpasopiskeluoikeudentila_eronnut",
-  "koodiArvo" : "eronnut",
-  "metadata" : [ {
-    "nimi" : "Eronnut",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus päättynyt oppijan toivomuksesta, suoritus ei valmistunut",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utskriven",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Discontinued",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_hyvaksytystisuoritettu",
-  "koodiArvo" : "hyvaksytystisuoritettu",
-  "metadata" : [ {
-    "nimi" : "Hyväksytysti suoritettu",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus suoritettu hyväksytysti",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Slutförd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Completed",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_katsotaaneronneeksi",
-  "koodiArvo" : "katsotaaneronneeksi",
-  "metadata" : [ {
-    "nimi" : "Katsotaan eronneeksi",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus päättynyt, suoritus ei valmistunut. Oppija ei ole suorittanut opintojaan ajallaan, tai ollut poissa ilman pätevää syytä.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Anses utskriven",
-    "lyhytNimi" : "",
-    "kuvaus" : "Studierätten har upphört. Prestationen är inte slutförd. Den studerande har inte avlagt studierna inom utsatt tid eller har varit frånvarande utan giltig orsak.",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Considered as discontinued",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_keskeytynyt",
-  "koodiArvo" : "keskeytynyt",
-  "metadata" : [ {
-    "nimi" : "Keskeytynyt",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus keskeytynyt",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Stoppat",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Halted",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_mitatoity",
-  "koodiArvo" : "mitatoity",
-  "metadata" : [ {
-    "nimi" : "Mitätöity",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus mitätöity",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Annullerad",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Invalidated",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_peruutettu",
-  "koodiArvo" : "peruutettu",
-  "metadata" : [ {
-    "nimi" : "Peruutettu",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus peruutettu",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Indragen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Revocated",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_tuntematon",
-  "koodiArvo" : "tuntematon",
-  "metadata" : [ {
-    "nimi" : "Tuntematon",
-    "lyhytNimi" : "",
-    "kuvaus" : "Tuntematon tila",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Okänd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Unknown",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_valmistunut",
-  "koodiArvo" : "valmistunut",
-  "metadata" : [ {
-    "nimi" : "Valmistunut",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus päättynyt suorituksen valmistumiseen",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Utexaminerad",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Graduated",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_voimassa",
-  "koodiArvo" : "voimassa",
-  "metadata" : [ {
-    "nimi" : "Opiskeluoikeus voimassa",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studierättens giltighetstid",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "valpasopiskeluoikeudentila_voimassatulevaisuudessa",
-  "koodiArvo" : "voimassatulevaisuudessa",
-  "metadata" : [ {
-    "nimi" : "Opiskeluoikeus voimassa tulevaisuudessa",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeus ei ole tällä hetkellä voimassa, mutta on voimassa tulevaisuudessa",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studierätten är giltig i framtiden",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Opiskeluoikeus voimassa tulevaisuudessa",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "valpasopiskeluoikeudentila_eronnut",
+    "koodiArvo": "eronnut",
+    "metadata": [
+      {
+        "nimi": "Eronnut",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus päättynyt oppijan toivomuksesta, suoritus ei valmistunut",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utskriven",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Discontinued",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpasopiskeluoikeudentila_hyvaksytystisuoritettu",
+    "koodiArvo": "hyvaksytystisuoritettu",
+    "metadata": [
+      {
+        "nimi": "Hyväksytysti suoritettu",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus suoritettu hyväksytysti",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Slutförd",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Completed",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpasopiskeluoikeudentila_katsotaaneronneeksi",
+    "koodiArvo": "katsotaaneronneeksi",
+    "metadata": [
+      {
+        "nimi": "Katsotaan eronneeksi",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus päättynyt, suoritus ei valmistunut. Oppija ei ole suorittanut opintojaan ajallaan, tai ollut poissa ilman pätevää syytä.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Anses utskriven",
+        "lyhytNimi": "",
+        "kuvaus": "Studierätten har upphört. Prestationen är inte slutförd. Den studerande har inte avlagt studierna inom utsatt tid eller har varit frånvarande utan giltig orsak.",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Considered as discontinued",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpasopiskeluoikeudentila_keskeytynyt",
+    "koodiArvo": "keskeytynyt",
+    "metadata": [
+      {
+        "nimi": "Keskeytynyt",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus keskeytynyt",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Stoppat",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Halted",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpasopiskeluoikeudentila_mitatoity",
+    "koodiArvo": "mitatoity",
+    "metadata": [
+      {
+        "nimi": "Mitätöity",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus mitätöity",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Annullerad",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Invalidated",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpasopiskeluoikeudentila_peruutettu",
+    "koodiArvo": "peruutettu",
+    "metadata": [
+      {
+        "nimi": "Peruutettu",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus peruutettu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Indragen",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Revocated",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpasopiskeluoikeudentila_tuntematon",
+    "koodiArvo": "tuntematon",
+    "metadata": [
+      {
+        "nimi": "Tuntematon",
+        "lyhytNimi": "",
+        "kuvaus": "Tuntematon tila",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Okänd",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Unknown",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpasopiskeluoikeudentila_valmistunut",
+    "koodiArvo": "valmistunut",
+    "metadata": [
+      {
+        "nimi": "Valmistunut",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus päättynyt suorituksen valmistumiseen",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utexaminerad",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Graduated",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpasopiskeluoikeudentila_voimassa",
+    "koodiArvo": "voimassa",
+    "metadata": [
+      {
+        "nimi": "Opiskeluoikeus voimassa",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studierättens giltighetstid",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "valpasopiskeluoikeudentila_voimassatulevaisuudessa",
+    "koodiArvo": "voimassatulevaisuudessa",
+    "metadata": [
+      {
+        "nimi": "Opiskeluoikeus voimassa tulevaisuudessa",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeus ei ole tällä hetkellä voimassa, mutta on voimassa tulevaisuudessa",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studierätten är giltig i framtiden",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Opiskeluoikeus voimassa tulevaisuudessa",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

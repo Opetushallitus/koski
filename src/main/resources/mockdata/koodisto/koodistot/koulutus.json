@@ -1,23 +1,27 @@
 {
-  "koodistoUri" : "koulutus",
-  "versio" : 12,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "koulutus",
-    "kuvaus" : "Koodistoa ylläpitävät Noora Vauhkonen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota."
-  }, {
-    "kieli" : "SV",
-    "nimi" : "koulutus",
-    "kuvaus" : "koulutus"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "koulutus",
-    "kuvaus" : "koulutus"
-  } ],
-  "codesGroupUri" : "koulutuskoodistot",
-  "voimassaAlkuPvm" : "2019-06-06",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 20
+  "koodistoUri": "koulutus",
+  "versio": 12,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "koulutus",
+      "kuvaus": "Koodistoa ylläpitävät Noora Vauhkonen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota."
+    },
+    {
+      "kieli": "SV",
+      "nimi": "koulutus",
+      "kuvaus": "koulutus"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "koulutus",
+      "kuvaus": "koulutus"
+    }
+  ],
+  "codesGroupUri": "koulutuskoodistot",
+  "voimassaAlkuPvm": "2019-06-06",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 20
 }

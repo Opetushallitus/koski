@@ -1,193 +1,244 @@
-[ {
-  "koodiUri" : "oppiaineetluva_lvaik",
-  "koodiArvo" : "LVAIK",
-  "metadata" : [ {
-    "nimi" : "Äidinkieli ja kirjallisuus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Modersmål och litteratur",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Mother tongue and literature",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetluva_lvak",
-  "koodiArvo" : "LVAK",
-  "metadata" : [ {
-    "nimi" : "Lukiokoulutukseen valmistavassa koulutuksessa alkava kieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Språk som påbörjas i utbildningen som förbereder för gymnasieutbildning",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Language studies commenced during preparatory education for general upper secondary education",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetluva_lvhiyh",
-  "koodiArvo" : "LVHIYH",
-  "metadata" : [ {
-    "nimi" : "Historia ja yhteiskuntaoppi",
-    "lyhytNimi" : "Historia ja yhteiskuntaoppi",
-    "kuvaus" : "Historia ja yhteiskuntaoppi",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Historia ja yhteiskuntaoppi",
-    "lyhytNimi" : "Historia ja yhteiskuntaoppi",
-    "kuvaus" : "Historia ja yhteiskuntaoppi",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Historia ja yhteiskuntaoppi",
-    "lyhytNimi" : "Historia ja yhteiskuntaoppi",
-    "kuvaus" : "Historia ja yhteiskuntaoppi",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetluva_lvmai",
-  "koodiArvo" : "LVMAI",
-  "metadata" : [ {
-    "nimi" : "Opiskelijan oma äidinkieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "De studerandes eget modersmål",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "The student's own native language",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetluva_lvmaluo",
-  "koodiArvo" : "LVMALUO",
-  "metadata" : [ {
-    "nimi" : "Matemaattiset ja luonnontieteelliset opinnot",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Matematiska och naturvetenskapliga studier",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Mathematics and natural sciences",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetluva_lvmfkbm",
-  "koodiArvo" : "LVMFKBM",
-  "metadata" : [ {
-    "nimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
-    "lyhytNimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
-    "kuvaus" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
-    "lyhytNimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
-    "kuvaus" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
-    "lyhytNimi" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
-    "kuvaus" : "Matematiikka, fysiikka, kemia, biologia, maantiede",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetluva_lvmuutk",
-  "koodiArvo" : "LVMUUTK",
-  "metadata" : [ {
-    "nimi" : "Muut kielet",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Övriga språk",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Other languages",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetluva_lvopo",
-  "koodiArvo" : "LVOPO",
-  "metadata" : [ {
-    "nimi" : "Opinto-ohjaus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Studiehandledning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Guidance counselling",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetluva_lvpoak",
-  "koodiArvo" : "LVPOAK",
-  "metadata" : [ {
-    "nimi" : "Perusopetuksessa alkanut kieli",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Språk som påbörjats i den grundläggande utbildningen",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Language commenced in basic education",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetluva_lvyhku",
-  "koodiArvo" : "LVYHKU",
-  "metadata" : [ {
-    "nimi" : "Yhteiskuntatietous ja kulttuurintuntemus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Samhällskunskap och kulturkännedom",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Civic education and cultural knowledge",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "oppiaineetluva_lvaik",
+    "koodiArvo": "LVAIK",
+    "metadata": [
+      {
+        "nimi": "Äidinkieli ja kirjallisuus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Modersmål och litteratur",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Mother tongue and literature",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvak",
+    "koodiArvo": "LVAK",
+    "metadata": [
+      {
+        "nimi": "Lukiokoulutukseen valmistavassa koulutuksessa alkava kieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Språk som påbörjas i utbildningen som förbereder för gymnasieutbildning",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Language studies commenced during preparatory education for general upper secondary education",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvhiyh",
+    "koodiArvo": "LVHIYH",
+    "metadata": [
+      {
+        "nimi": "Historia ja yhteiskuntaoppi",
+        "lyhytNimi": "Historia ja yhteiskuntaoppi",
+        "kuvaus": "Historia ja yhteiskuntaoppi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Historia ja yhteiskuntaoppi",
+        "lyhytNimi": "Historia ja yhteiskuntaoppi",
+        "kuvaus": "Historia ja yhteiskuntaoppi",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Historia ja yhteiskuntaoppi",
+        "lyhytNimi": "Historia ja yhteiskuntaoppi",
+        "kuvaus": "Historia ja yhteiskuntaoppi",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvmai",
+    "koodiArvo": "LVMAI",
+    "metadata": [
+      {
+        "nimi": "Opiskelijan oma äidinkieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "De studerandes eget modersmål",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "The student's own native language",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvmaluo",
+    "koodiArvo": "LVMALUO",
+    "metadata": [
+      {
+        "nimi": "Matemaattiset ja luonnontieteelliset opinnot",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Matematiska och naturvetenskapliga studier",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Mathematics and natural sciences",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvmfkbm",
+    "koodiArvo": "LVMFKBM",
+    "metadata": [
+      {
+        "nimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "kuvaus": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "kuvaus": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "lyhytNimi": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "kuvaus": "Matematiikka, fysiikka, kemia, biologia, maantiede",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvmuutk",
+    "koodiArvo": "LVMUUTK",
+    "metadata": [
+      {
+        "nimi": "Muut kielet",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Övriga språk",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Other languages",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvopo",
+    "koodiArvo": "LVOPO",
+    "metadata": [
+      {
+        "nimi": "Opinto-ohjaus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studiehandledning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Guidance counselling",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvpoak",
+    "koodiArvo": "LVPOAK",
+    "metadata": [
+      {
+        "nimi": "Perusopetuksessa alkanut kieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Språk som påbörjats i den grundläggande utbildningen",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Language commenced in basic education",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetluva_lvyhku",
+    "koodiArvo": "LVYHKU",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntatietous ja kulttuurintuntemus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Samhällskunskap och kulturkännedom",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Civic education and cultural knowledge",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

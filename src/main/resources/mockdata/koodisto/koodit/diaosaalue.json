@@ -1,43 +1,59 @@
-[ {
-  "koodiUri" : "diaosaalue_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Kielet, kirjallisuus, taide",
-    "lyhytNimi" : "Kielet, kirjallisuus, taide",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "diaosaalue_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Matematiikka ja luonnontieteet",
-    "lyhytNimi" : "Matematiikka ja luonnontieteet",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "diaosaalue_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Yhteiskuntatieteet",
-    "lyhytNimi" : "Yhteiskuntatieteet",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "diaosaalue_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Kielet, kirjallisuus, taide",
+        "lyhytNimi": "Kielet, kirjallisuus, taide",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "diaosaalue_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Matematiikka ja luonnontieteet",
+        "lyhytNimi": "Matematiikka ja luonnontieteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "diaosaalue_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Yhteiskuntatieteet",
+        "lyhytNimi": "Yhteiskuntatieteet",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

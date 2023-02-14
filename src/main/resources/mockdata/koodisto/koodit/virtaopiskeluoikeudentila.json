@@ -1,106 +1,132 @@
-[ {
-  "koodiUri" : "virtaopiskeluoikeudentila_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "aktiivinen",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeuden tila on aktiivinen silloin, kun opiskelijalla on oikeus suorittaa aktiiviseen opiskeluoikeuteen liittyviä opintoja.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "aktiv",
-    "lyhytNimi" : "",
-    "kuvaus" : "Den studerande studerar vid utbildningen.",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "active",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopiskeluoikeudentila_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "optio",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeuden tila optio tarkoittaa, että oppijalle on myönnetty opiskeluoikeus kyseiseen koulutukseen, mutta oppija ei ole vielä kyseisen koulutuksen opiskelija.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "option",
-    "lyhytNimi" : "",
-    "kuvaus" : "En studierätt som beviljats men inte ännu aktiverats.",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "option",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopiskeluoikeudentila_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "päättynyt",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeuden tila on päättynyt, kun koulutus on saatu päätökseen tarkoitetulla tavalla.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "slutförd",
-    "lyhytNimi" : "",
-    "kuvaus" : "Studierätten har avslutats till följd av att utbildningen har slutförts.",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "concluded",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopiskeluoikeudentila_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "passivoitu",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeuden tila on passivoitu, kun korkeakoulun päätöksen seurauksena oppijalla ei pysyvästi tai tilapäisesti ole enää oikeutta opiskella.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "passiverad",
-    "lyhytNimi" : "",
-    "kuvaus" : "Högskolan har passiverat studierätten, tillfälligt eller permanent.",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "passivated",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "virtaopiskeluoikeudentila_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "luopunut",
-    "lyhytNimi" : "",
-    "kuvaus" : "Opiskeluoikeuden tila on luopunut, mikäli oppija on pysyvästi tai väliaikaisesti luopunut oikeudestaan opiskella siten, että opiskelu ei korkeakoulun sääntöjen mukaan ole mahdollista ilman erillisiä toimenpiteitä opiskeluoikeuden uudelleen aktivoimiseksi.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "avstått",
-    "lyhytNimi" : "",
-    "kuvaus" : "Personen har aktivt avstått från sin studierätt, tillfälligt eller permanent.",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "discontinued",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "virtaopiskeluoikeudentila_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "aktiivinen",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeuden tila on aktiivinen silloin, kun opiskelijalla on oikeus suorittaa aktiiviseen opiskeluoikeuteen liittyviä opintoja.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "aktiv",
+        "lyhytNimi": "",
+        "kuvaus": "Den studerande studerar vid utbildningen.",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "active",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudentila_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "optio",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeuden tila optio tarkoittaa, että oppijalle on myönnetty opiskeluoikeus kyseiseen koulutukseen, mutta oppija ei ole vielä kyseisen koulutuksen opiskelija.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "option",
+        "lyhytNimi": "",
+        "kuvaus": "En studierätt som beviljats men inte ännu aktiverats.",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "option",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudentila_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "päättynyt",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeuden tila on päättynyt, kun koulutus on saatu päätökseen tarkoitetulla tavalla.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "slutförd",
+        "lyhytNimi": "",
+        "kuvaus": "Studierätten har avslutats till följd av att utbildningen har slutförts.",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "concluded",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudentila_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "passivoitu",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeuden tila on passivoitu, kun korkeakoulun päätöksen seurauksena oppijalla ei pysyvästi tai tilapäisesti ole enää oikeutta opiskella.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "passiverad",
+        "lyhytNimi": "",
+        "kuvaus": "Högskolan har passiverat studierätten, tillfälligt eller permanent.",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "passivated",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudentila_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "luopunut",
+        "lyhytNimi": "",
+        "kuvaus": "Opiskeluoikeuden tila on luopunut, mikäli oppija on pysyvästi tai väliaikaisesti luopunut oikeudestaan opiskella siten, että opiskelu ei korkeakoulun sääntöjen mukaan ole mahdollista ilman erillisiä toimenpiteitä opiskeluoikeuden uudelleen aktivoimiseksi.",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "avstått",
+        "lyhytNimi": "",
+        "kuvaus": "Personen har aktivt avstått från sin studierätt, tillfälligt eller permanent.",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "discontinued",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

@@ -1,183 +1,249 @@
-[ {
-  "koodiUri" : "internationalschoolluokkaaste_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Grade 1",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 1",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_10",
-  "koodiArvo" : "10",
-  "metadata" : [ {
-    "nimi" : "Grade 10",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 10",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_11",
-  "koodiArvo" : "11",
-  "metadata" : [ {
-    "nimi" : "Grade 11",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 11",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_12",
-  "koodiArvo" : "12",
-  "metadata" : [ {
-    "nimi" : "Grade 12",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 12",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Grade 2",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 2",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Grade 3",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 3",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Grade 4",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 4",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "Grade 5",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 5",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_6",
-  "koodiArvo" : "6",
-  "metadata" : [ {
-    "nimi" : "Grade 6",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 6",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_7",
-  "koodiArvo" : "7",
-  "metadata" : [ {
-    "nimi" : "Grade 7",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 7",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_8",
-  "koodiArvo" : "8",
-  "metadata" : [ {
-    "nimi" : "Grade 8",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 8",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_9",
-  "koodiArvo" : "9",
-  "metadata" : [ {
-    "nimi" : "Grade 9",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade 9",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "internationalschoolluokkaaste_explorer",
-  "koodiArvo" : "explorer",
-  "metadata" : [ {
-    "nimi" : "Grade explorer",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Grade explorer",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "internationalschoolluokkaaste_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Grade 1",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_10",
+    "koodiArvo": "10",
+    "metadata": [
+      {
+        "nimi": "Grade 10",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 10",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_11",
+    "koodiArvo": "11",
+    "metadata": [
+      {
+        "nimi": "Grade 11",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 11",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_12",
+    "koodiArvo": "12",
+    "metadata": [
+      {
+        "nimi": "Grade 12",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 12",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Grade 2",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 2",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Grade 3",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 3",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Grade 4",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 4",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "Grade 5",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 5",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_6",
+    "koodiArvo": "6",
+    "metadata": [
+      {
+        "nimi": "Grade 6",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 6",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_7",
+    "koodiArvo": "7",
+    "metadata": [
+      {
+        "nimi": "Grade 7",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 7",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_8",
+    "koodiArvo": "8",
+    "metadata": [
+      {
+        "nimi": "Grade 8",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 8",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_9",
+    "koodiArvo": "9",
+    "metadata": [
+      {
+        "nimi": "Grade 9",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade 9",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschoolluokkaaste_explorer",
+    "koodiArvo": "explorer",
+    "metadata": [
+      {
+        "nimi": "Grade explorer",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Grade explorer",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

@@ -1,20 +1,24 @@
 {
-  "koodistoUri" : "arviointiasteikkodiavalmistava",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Arviointiasteikko dia valmistava"
-  }, {
-    "kieli" : "SV",
-    "nimi" : "Arviointiasteikko dia valmistava"
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Arviointiasteikko dia valmistava"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2019-01-01",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 1
+  "koodistoUri": "arviointiasteikkodiavalmistava",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Arviointiasteikko dia valmistava"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Arviointiasteikko dia valmistava"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Arviointiasteikko dia valmistava"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2019-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 1
 }

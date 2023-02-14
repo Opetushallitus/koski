@@ -11,10 +11,7 @@
   "koulutustyyppi": "koulutustyyppi_14",
   "toteutus": "lops",
   "koulutukset": [],
-  "kielet": [
-    "fi",
-    "sv"
-  ],
+  "kielet": ["fi", "sv"],
   "kuvaus": null,
   "maarayskirje": {
     "id": 2055520,

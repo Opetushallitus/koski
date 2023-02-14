@@ -1,202 +1,278 @@
-[ {
-  "koodiUri" : "uskonnonoppimaara_ad",
-  "koodiArvo" : "AD",
-  "metadata" : [ {
-    "nimi" : "Adventistinen uskonto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_ba",
-  "koodiArvo" : "BA",
-  "metadata" : [ {
-    "nimi" : "Bahá’í-uskonto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_bu",
-  "koodiArvo" : "BU",
-  "metadata" : [ {
-    "nimi" : "Buddhalainen uskonto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_ev",
-  "koodiArvo" : "EV",
-  "metadata" : [ {
-    "nimi" : "Evankelis-luterilainen uskonto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Evangelisk-luthersk tro",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_he",
-  "koodiArvo" : "HE",
-  "metadata" : [ {
-    "nimi" : "Helluntailiikkeen uskonto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_hk",
-  "koodiArvo" : "HK",
-  "metadata" : [ {
-    "nimi" : "Herran kansa ry:n uskonto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_is",
-  "koodiArvo" : "IS",
-  "metadata" : [ {
-    "nimi" : "Islam",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Islam",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_ju",
-  "koodiArvo" : "JU",
-  "metadata" : [ {
-    "nimi" : "Juutalainen uskonto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Juutalainen uskonto",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_ka",
-  "koodiArvo" : "KA",
-  "metadata" : [ {
-    "nimi" : "Katolinen uskonto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Katolinen uskonto",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_kr",
-  "koodiArvo" : "KR",
-  "metadata" : [ {
-    "nimi" : "Krishna-uskonto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_ky",
-  "koodiArvo" : "KY",
-  "metadata" : [ {
-    "nimi" : "Kristiyhteisön uskonto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_ma",
-  "koodiArvo" : "MA",
-  "metadata" : [ {
-    "nimi" : "Myöhempien Aikojen Pyhien Jeesuksen Kristuksen Kirkon uskonto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_mu",
-  "koodiArvo" : "MU",
-  "metadata" : [ {
-    "nimi" : "Muut uskonnot",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Andra religioner",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_or",
-  "koodiArvo" : "OR",
-  "metadata" : [ {
-    "nimi" : "Ortodoksinen uskonto",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Ortodox tro",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "uskonnonoppimaara_va",
-  "koodiArvo" : "VA",
-  "metadata" : [ {
-    "nimi" : "Vapaakirkollinen uskonto",
-    "kieli" : "FI"
-  }, {
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "uskonnonoppimaara_ad",
+    "koodiArvo": "AD",
+    "metadata": [
+      {
+        "nimi": "Adventistinen uskonto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_ba",
+    "koodiArvo": "BA",
+    "metadata": [
+      {
+        "nimi": "Bahá’í-uskonto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_bu",
+    "koodiArvo": "BU",
+    "metadata": [
+      {
+        "nimi": "Buddhalainen uskonto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_ev",
+    "koodiArvo": "EV",
+    "metadata": [
+      {
+        "nimi": "Evankelis-luterilainen uskonto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Evangelisk-luthersk tro",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_he",
+    "koodiArvo": "HE",
+    "metadata": [
+      {
+        "nimi": "Helluntailiikkeen uskonto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_hk",
+    "koodiArvo": "HK",
+    "metadata": [
+      {
+        "nimi": "Herran kansa ry:n uskonto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_is",
+    "koodiArvo": "IS",
+    "metadata": [
+      {
+        "nimi": "Islam",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Islam",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_ju",
+    "koodiArvo": "JU",
+    "metadata": [
+      {
+        "nimi": "Juutalainen uskonto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Juutalainen uskonto",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_ka",
+    "koodiArvo": "KA",
+    "metadata": [
+      {
+        "nimi": "Katolinen uskonto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Katolinen uskonto",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_kr",
+    "koodiArvo": "KR",
+    "metadata": [
+      {
+        "nimi": "Krishna-uskonto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_ky",
+    "koodiArvo": "KY",
+    "metadata": [
+      {
+        "nimi": "Kristiyhteisön uskonto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_ma",
+    "koodiArvo": "MA",
+    "metadata": [
+      {
+        "nimi": "Myöhempien Aikojen Pyhien Jeesuksen Kristuksen Kirkon uskonto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_mu",
+    "koodiArvo": "MU",
+    "metadata": [
+      {
+        "nimi": "Muut uskonnot",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Andra religioner",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_or",
+    "koodiArvo": "OR",
+    "metadata": [
+      {
+        "nimi": "Ortodoksinen uskonto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ortodox tro",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "uskonnonoppimaara_va",
+    "koodiArvo": "VA",
+    "metadata": [
+      {
+        "nimi": "Vapaakirkollinen uskonto",
+        "kieli": "FI"
+      },
+      {
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

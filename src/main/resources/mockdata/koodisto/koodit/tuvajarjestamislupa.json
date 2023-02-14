@@ -1,55 +1,71 @@
-[ {
-  "koodiUri" : "tuvajarjestamislupa_ammatillinen",
-  "koodiArvo" : "ammatillinen",
-  "metadata" : [ {
-    "nimi" : "Ammatillisen koulutuksen järjestämislupa (TUVA)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tillstånd att ordna yrkesutbildning (Hux)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "tuvajarjestamislupa_lukio",
-  "koodiArvo" : "lukio",
-  "metadata" : [ {
-    "nimi" : "Lukiokoulutuksen järjestämislupa (TUVA)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tillstånd att ordna gymnasieutbildning (Hux)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "tuvajarjestamislupa_perusopetus",
-  "koodiArvo" : "perusopetus",
-  "metadata" : [ {
-    "nimi" : "Perusopetuksen järjestämislupa (TUVA)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Tillstånd att ordna grundläggande utbildning (Hux)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "tuvajarjestamislupa_ammatillinen",
+    "koodiArvo": "ammatillinen",
+    "metadata": [
+      {
+        "nimi": "Ammatillisen koulutuksen järjestämislupa (TUVA)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tillstånd att ordna yrkesutbildning (Hux)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "tuvajarjestamislupa_lukio",
+    "koodiArvo": "lukio",
+    "metadata": [
+      {
+        "nimi": "Lukiokoulutuksen järjestämislupa (TUVA)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tillstånd att ordna gymnasieutbildning (Hux)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "tuvajarjestamislupa_perusopetus",
+    "koodiArvo": "perusopetus",
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen järjestämislupa (TUVA)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Tillstånd att ordna grundläggande utbildning (Hux)",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

@@ -1,15 +1,17 @@
 {
-  "koodistoUri" : "lukionmuutopinnot",
-  "versio" : 1,
-  "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "Lukion muut opinnot",
-    "kuvaus" : "Lukio-opinnot, jotka eivät liity yksittäisiin oppiaineisiin"
-  } ],
-  "codesGroupUri" : "koski",
-  "voimassaAlkuPvm" : "2017-03-10",
-  "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
-  "tila" : "LUONNOS",
-  "version" : 0
+  "koodistoUri": "lukionmuutopinnot",
+  "versio": 1,
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "Lukion muut opinnot",
+      "kuvaus": "Lukio-opinnot, jotka eivät liity yksittäisiin oppiaineisiin"
+    }
+  ],
+  "codesGroupUri": "koski",
+  "voimassaAlkuPvm": "2017-03-10",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "withinCodes": [],
+  "tila": "LUONNOS",
+  "version": 0
 }

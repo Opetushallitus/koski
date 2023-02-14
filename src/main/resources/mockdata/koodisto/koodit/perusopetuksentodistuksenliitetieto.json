@@ -1,73 +1,94 @@
-[ {
-  "koodiUri" : "perusopetuksentodistuksenliitetieto_kayttaytyminen",
-  "koodiArvo" : "kayttaytyminen",
-  "metadata" : [ {
-    "nimi" : "Käyttäytyminen",
-    "lyhytNimi" : "",
-    "kuvaus" : "Arvio oppilaan käyttäytymisestä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Uppförande",
-    "lyhytNimi" : "",
-    "kuvaus" : "Bedömning av elevens uppförande",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "perusopetuksentodistuksenliitetieto_painotettuopetus",
-  "koodiArvo" : "painotettuopetus",
-  "metadata" : [ {
-    "nimi" : "Painotettu opetus",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Betonad undervisning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "perusopetuksentodistuksenliitetieto_tyoskentely",
-  "koodiArvo" : "tyoskentely",
-  "metadata" : [ {
-    "nimi" : "Työskentely",
-    "lyhytNimi" : "",
-    "kuvaus" : "Arvio oppilaan työskentelystä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Arbetet",
-    "lyhytNimi" : "",
-    "kuvaus" : "Bedömning av arbetet",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "perusopetuksentodistuksenliitetieto_valinnaisetaineet",
-  "koodiArvo" : "valinnaisetaineet",
-  "metadata" : [ {
-    "nimi" : "Valinnaiset aineet",
-    "lyhytNimi" : "",
-    "kuvaus" : "Sanallinen liite alle kaksi vuosiviikkotuntia käsittävistä valinnaisista aineista",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Valfria ämnen",
-    "lyhytNimi" : "",
-    "kuvaus" : "En verbal bedömning som bilaga över valfria ämnen som omfattar mindre än två årsveckotimmar",
-    "kieli" : "SV"
-  }, {
-    "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "perusopetuksentodistuksenliitetieto_kayttaytyminen",
+    "koodiArvo": "kayttaytyminen",
+    "metadata": [
+      {
+        "nimi": "Käyttäytyminen",
+        "lyhytNimi": "",
+        "kuvaus": "Arvio oppilaan käyttäytymisestä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Uppförande",
+        "lyhytNimi": "",
+        "kuvaus": "Bedömning av elevens uppförande",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "perusopetuksentodistuksenliitetieto_painotettuopetus",
+    "koodiArvo": "painotettuopetus",
+    "metadata": [
+      {
+        "nimi": "Painotettu opetus",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Betonad undervisning",
+        "lyhytNimi": "",
+        "kuvaus": "",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "perusopetuksentodistuksenliitetieto_tyoskentely",
+    "koodiArvo": "tyoskentely",
+    "metadata": [
+      {
+        "nimi": "Työskentely",
+        "lyhytNimi": "",
+        "kuvaus": "Arvio oppilaan työskentelystä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Arbetet",
+        "lyhytNimi": "",
+        "kuvaus": "Bedömning av arbetet",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "perusopetuksentodistuksenliitetieto_valinnaisetaineet",
+    "koodiArvo": "valinnaisetaineet",
+    "metadata": [
+      {
+        "nimi": "Valinnaiset aineet",
+        "lyhytNimi": "",
+        "kuvaus": "Sanallinen liite alle kaksi vuosiviikkotuntia käsittävistä valinnaisista aineista",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Valfria ämnen",
+        "lyhytNimi": "",
+        "kuvaus": "En verbal bedömning som bilaga över valfria ämnen som omfattar mindre än två årsveckotimmar",
+        "kieli": "SV"
+      },
+      {
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]
