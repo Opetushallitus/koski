@@ -1,0 +1,43 @@
+[ {
+  "koodiUri" : "taiteenperusopetuskoulutuksentoteutustapa_hankintakoulutus",
+  "koodiArvo" : "hankintakoulutus",
+  "metadata" : [ {
+    "nimi" : "Hankintakoulutus",
+    "lyhytNimi" : "Hankintakoulutus",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Hankintakoulutus",
+    "lyhytNimi" : "Hankintakoulutus",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Hankintakoulutus",
+    "lyhytNimi" : "Hankintakoulutus",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "taiteenperusopetuskoulutuksentoteutustapa_itsejarjestettykoulutus",
+  "koodiArvo" : "itsejarjestettykoulutus",
+  "metadata" : [ {
+    "nimi" : "Itse järjestetty koulutus",
+    "lyhytNimi" : "Itse järjestetty koulutus",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Itse järjestetty koulutus",
+    "lyhytNimi" : "Itse järjestetty koulutus",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Itse järjestetty koulutus",
+    "lyhytNimi" : "Itse järjestetty koulutus",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

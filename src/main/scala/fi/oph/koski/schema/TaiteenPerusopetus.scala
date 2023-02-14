@@ -20,6 +20,10 @@ case class TaiteenPerusopetuksenOpiskeluoikeus(
   @Description("Taiteen perusopetuksen opiskeluoikeuden oppimäärä")
   @KoodistoUri("taiteenperusopetusoppimaara")
   oppimäärä: Koodistokoodiviite,
+  @Title("Koulutuksen toteutustapa")
+  @Description("Taiteen perusopetuksen koulutuksen toteutustapa")
+  @KoodistoUri("taiteenperusopetuskoulutuksentoteutustapa")
+  koulutuksenToteutustapa: Koodistokoodiviite,
   @MaxItems(2)
   suoritukset: List[TaiteenPerusopetuksenPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.taiteenperusopetus.koodiarvo)

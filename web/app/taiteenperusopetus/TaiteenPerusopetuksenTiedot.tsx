@@ -47,6 +47,9 @@ export const TaiteenPerusopetuksenTiedot: React.FC<
       <KeyValueRow name="Oppimäärä">
         <Trans>{opiskeluoikeus.oppimäärä.nimi}</Trans>
       </KeyValueRow>
+      <KeyValueRow name="Koulutuksen toteutustapa">
+        <Trans>{form.state.koulutuksenToteutustapa.nimi}</Trans>
+      </KeyValueRow>
       <KeyValueRow name="Oppilaitos">
         <Trans>{opiskeluoikeus.oppilaitos?.nimi}</Trans>
       </KeyValueRow>

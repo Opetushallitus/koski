@@ -27,6 +27,10 @@ export type TaiteenPerusopetuksenOpiskeluoikeus = {
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
   arvioituPäättymispäivä?: string
+  koulutuksenToteutustapa: Koodistokoodiviite<
+    'taiteenperusopetuskoulutuksentoteutustapa',
+    string
+  >
   oppilaitos?: Oppilaitos
 }
 
@@ -44,6 +48,10 @@ export const TaiteenPerusopetuksenOpiskeluoikeus = (o: {
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
   arvioituPäättymispäivä?: string
+  koulutuksenToteutustapa: Koodistokoodiviite<
+    'taiteenperusopetuskoulutuksentoteutustapa',
+    string
+  >
   oppilaitos?: Oppilaitos
 }): TaiteenPerusopetuksenOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
