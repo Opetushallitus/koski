@@ -56,6 +56,11 @@ watch-prod:
 ts-types:
 	cd web && rm -rf app/types/fi && curl http://localhost:7021/types/update && npx prettier --write app/types
 
+.PHONY: prettier-format-mock-data
+prettier-format-mock-data:
+	./scripts/prettier-format-koodistot.sh
+
+
 ### Running tests
 
 
